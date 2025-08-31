@@ -74,11 +74,19 @@ public:
      * @param widget: optional source widget that triggers the refresh
      * @param refreshStyle: whether to reload stylesheet
      */
+    void refreshOverlays(QWidget *widget=nullptr, bool refreshStyle=false);
+
+    // Backwards-compatible wrapper (deprecated): refresh() -> refreshOverlays()
+    // Provide a non-inline declaration so all translation units see the member symbol
     void refresh(QWidget *widget=nullptr, bool refreshStyle=false);
 
-    /// Setup title bar for a QDockWidget
-    void setupTitleBar(QDockWidget *);
-    QList<QAction*> actionsForDock(QDockWidget *dock) const;
+    /// Setup overlay title bar for a QDockWidget
+    void setupOverlayTitleBar(QDockWidget *);
+    QList<QAction*> getActionsForDock(QDockWidget *dock) const;
+
+    // Backwards-compatible wrappers (deprecated)
+    inline void setupTitleBar(QDockWidget *dw) { setupOverlayTitleBar(dw); }
+    inline QList<QAction*> actionsForDock(QDockWidget *dock) const { return getActionsForDock(dock); }
 
     /// Overlay mode
     enum class OverlayMode {
@@ -114,20 +122,29 @@ public:
     /// Set overlay mode
     void setOverlayMode(OverlayMode mode);
 
-    /// Enable/disable mouse transparent mode
-    void setMouseTransparent(bool enabled);
-    /// Report if mouse transparent mode is active
+    /// Enable/disable mouse passthrough mode
+    void setMousePassthroughEnabled(bool enabled);
+    /// Report if mouse passthrough mode is active
     bool isMouseTransparent() const;
+
+    // Backwards-compatible wrapper (deprecated)
+    inline void setMouseTransparent(bool enabled) { setMousePassthroughEnabled(enabled); }
 
     /// Check if the cursor is within an overlay docked widget
     bool isUnderOverlay() const;
 
-    /// Initialize a newly created dock widget
-    void initDockWidget(QDockWidget *);
+    /// Initialize a newly created dock widget for overlay handling
+    void initializeDockForOverlay(QDockWidget *);
+
+    // Backwards-compatible wrapper (deprecated)
+    inline void initDockWidget(QDockWidget *dw) { initializeDockForOverlay(dw); }
     /// Prepare a dock widget for overlay display
     void setupDockWidget(QDockWidget *, int dockArea = Qt::NoDockWidgetArea);
-    /// Switch a dock widget back to normal display
-    void unsetupDockWidget(QDockWidget *);
+    /// Switch a dock widget back to normal display / cleanup overlay state
+    void cleanupDockWidget(QDockWidget *);
+
+    // Backwards-compatible wrapper (deprecated)
+    inline void unsetupDockWidget(QDockWidget *dw) { cleanupDockWidget(dw); }
 
     /** Mouse event handler for dragging a dock widget
      * @param pos: mouse cursor position

@@ -1480,7 +1480,7 @@ void OverlayManager::setOverlayMode(OverlayMode mode)
     d->setOverlayMode(mode);
 }
 
-QList<QAction*> OverlayManager::actionsForDock(QDockWidget *dock) const
+QList<QAction*> OverlayManager::getActionsForDock(QDockWidget *dock) const
 {
     QList<QAction*> actions;
     if (!dock)
@@ -1495,7 +1495,7 @@ QList<QAction*> OverlayManager::actionsForDock(QDockWidget *dock) const
 }
 
 
-void OverlayManager::initDockWidget(QDockWidget *dw)
+void OverlayManager::initializeDockForOverlay(QDockWidget *dw)
 {
     QObject::connect(dw->toggleViewAction(), &QAction::triggered,
             this, &OverlayManager::onToggleDockWidget);
@@ -1607,9 +1607,9 @@ QWidget *createTitleBar(QWidget *parent)
     if (auto tabWidget = qobject_cast<OverlayTabWidget*>(parent))
         actions = tabWidget->actions();
     else if (auto dock = qobject_cast<QDockWidget*>(parent))
-        actions = OverlayManager::instance()->actionsForDock(dock);
+        actions = OverlayManager::instance()->getActionsForDock(dock);
     else
-        actions = OverlayManager::instance()->actionsForDock(nullptr);
+        actions = OverlayManager::instance()->getActionsForDock(nullptr);
 
     widget->setTitleItem(OverlayTabWidget::prepareTitleWidget(widget, actions));
     return widget;
@@ -1621,7 +1621,7 @@ void OverlayManager::setupDockWidget(QDockWidget *dw, int dockArea)
     d->setupTitleBar(dw);
 }
 
-void OverlayManager::unsetupDockWidget(QDockWidget *dw)
+void OverlayManager::cleanupDockWidget(QDockWidget *dw)
 {
     d->toggleOverlay(dw, ToggleMode::Unset);
 }
@@ -2094,15 +2094,22 @@ void OverlayManager::Private::interceptEvent(QWidget *widget, QEvent *ev)
     }
 }
 
-void OverlayManager::refresh(QWidget *widget, bool refreshStyle)
+void OverlayManager::refreshOverlays(QWidget *widget, bool refreshStyle)
 {
     d->refresh(widget, refreshStyle);
 }
 
-void OverlayManager::setMouseTransparent(bool enabled)
+// Backwards-compatible wrapper (deprecated): refresh() -> refreshOverlays()
+void OverlayManager::refresh(QWidget *widget, bool refreshStyle)
+{
+    refreshOverlays(widget, refreshStyle);
+}
+
+void OverlayManager::setMousePassthroughEnabled(bool enabled)
 {
     d->setMouseTransparent(enabled);
 }
+
 
 bool OverlayManager::isMouseTransparent() const
 {
@@ -2129,10 +2136,11 @@ void OverlayManager::restore()
                 this, &OverlayManager::onTaskViewUpdate);
 }
 
-void OverlayManager::setupTitleBar(QDockWidget *dock)
+void OverlayManager::setupOverlayTitleBar(QDockWidget *dock)
 {
     d->setupTitleBar(dock);
 }
+
 
 void OverlayManager::onFocusChanged(QWidget *old, QWidget *now)
 {

@@ -1,0 +1,57 @@
+# Macro to enable and show the TaskWatcher (Task List) dock widget in FreeCAD using PySide6
+# This macro ensures the TaskWatcher is enabled in user preferences, triggers the update, and shows the dock widget.
+
+import FreeCAD
+import FreeCADGui
+from PySide6 import QtWidgets, QtGui
+
+# 1. Enable TaskWatcher in user preferences
+param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/DockWindows/TaskWatcher")
+param.SetBool("Enabled", True)
+
+
+# 2. Try to find and show the Task List dock widget
+main_win = FreeCADGui.getMainWindow()
+dock_widgets = main_win.findChildren(QtWidgets.QDockWidget)
+found = False
+for dock in dock_widgets:
+    if dock.objectName() == "Task List" or dock.windowTitle() == "Task List":
+        dock.show()
+        dock.raise_()
+        found = True
+        print("Task List dock widget shown.")
+        break
+if not found:
+    print("Task List dock widget not found. Attempting to toggle from menu...")
+    # Try to toggle the panel from the menu (simulate user action)
+    mw = FreeCADGui.getMainWindow()
+    for action in mw.findChildren(QtGui.QAction):
+        if action.text().replace("&&", "&") in ["&Task List", "Task List"]:
+            action.trigger()
+            print("Toggled Task List panel from menu.")
+            break
+    else:
+        print("Task List QAction not found in menu. You may need to restart FreeCAD or enable the panel manually.")
+
+
+# Try again to find and show the Task List dock widget after toggling
+main_win = FreeCADGui.getMainWindow()
+dock_widgets = main_win.findChildren(QtWidgets.QDockWidget)
+found = False
+for dock in dock_widgets:
+    if dock.objectName() == "Task List" or dock.windowTitle() == "Task List":
+        dock.show()
+        dock.raise_()
+        found = True
+        print("Task List dock widget shown.")
+        break
+if not found:
+    print("Task List dock widget not found.")
+
+# 3. Add a reference to TaskWatcher for debugging (as requested)
+# Note: TaskWatcher is not exposed to Python in FreeCADGui, so this will always fail unless FreeCAD changes.
+try:
+    import FreeCADGui
+    print("TaskWatcher C++ reference:", getattr(FreeCADGui, "TaskWatcher", "Not available in Python API"))
+except Exception as e:
+    print("TaskWatcher C++ reference not available:", e)

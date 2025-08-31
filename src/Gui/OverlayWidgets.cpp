@@ -1726,17 +1726,17 @@ void OverlayTabWidget::removeWidget(QDockWidget *dock, QDockWidget *lastDock)
                 }
                 delete oldLayout;
             }
-            QList<QAction*> actions = OverlayManager::instance()->actionsForDock(dock);
+            QList<QAction*> actions = OverlayManager::instance()->getActionsForDock(dock);
             QLayoutItem *titleItem = OverlayTabWidget::prepareTitleWidget(titleBarWidget, actions);
             titleBarWidget->setTitleItem(titleItem);
             dock->setUpdatesEnabled(true);
             titleBarWidget->update();
-        } else {
-            OverlayManager::instance()->setupTitleBar(dock);
+            } else {
+            OverlayManager::instance()->setupOverlayTitleBar(dock);
             dock->setUpdatesEnabled(true);
         }
     } else {
-        OverlayManager::instance()->setupTitleBar(dock);
+        OverlayManager::instance()->setupOverlayTitleBar(dock);
     }
 
     dock->setFeatures(dock->features() | QDockWidget::DockWidgetFloatable);
