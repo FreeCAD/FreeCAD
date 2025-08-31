@@ -470,7 +470,7 @@ public:
                     QApplication::processEvents();
 
                     // Ensure our overlay titlebar is installed for the docked state.
-                    setupTitleBar(dock);
+                    //setupTitleBar(dock);
                 }
 
                 return false;
@@ -1651,7 +1651,7 @@ QWidget *createTitleBar(QWidget *parent)
 void OverlayManager::setupDockWidget(QDockWidget *dw, int dockArea)
 {
     (void)dockArea;
-    d->setupTitleBar(dw);
+    //d->setupTitleBar(dw);
 }
 
 void OverlayManager::cleanupDockWidget(QDockWidget *dw)
@@ -1716,7 +1716,7 @@ void OverlayManager::onDockFeaturesChange(QDockWidget::DockWidgetFeatures featur
         dw->setUpdatesEnabled(true);
         titleBarWidget->update();
     } else {
-        setupTitleBar(dw);
+        //setupTitleBar(dw);
     }
 }
 
@@ -2171,7 +2171,7 @@ void OverlayManager::restore()
 
 void OverlayManager::setupOverlayTitleBar(QDockWidget *dock)
 {
-    d->setupTitleBar(dock);
+    //d->setupTitleBar(dock);
 }
 
 

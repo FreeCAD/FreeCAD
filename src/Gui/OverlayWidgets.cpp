@@ -364,7 +364,7 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
         break;
     case Qt::RightDockWidgetArea:
         _RightOverlay = this;
-        setTabPosition(QTabWidget::East);
+        setTabPosition(QTabWidget::West);
         splitter->setOrientation(Qt::Vertical);
         cmdHide = Application::Instance->commandManager().getCommandByName("Std_DockOverlayToggleRight");
         break;
