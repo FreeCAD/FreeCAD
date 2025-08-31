@@ -933,12 +933,28 @@ public:
 
     void setupTitleBar(QDockWidget *dock)
     {
-        // Only set our custom overlay titlebar for docked widgets.
-        // Floating QDockWidget should use the native OS titlebar.
-        if (dock->isFloating())
-            return;
-        if(!dock->titleBarWidget())
-            dock->setTitleBarWidget(createTitleBar(dock));
+        // Install our custom OverlayTitleBar for all dock widgets, whether
+        // they are part of the overlay tab sets or standalone. For floating
+        // docks we will put the titlebar into "minimal" mode and set the
+        // window flags so the custom bar is visible; for docked widgets we
+        // ensure a proper overlay titlebar is attached.
+        if (dock->titleBarWidget())
+            dock->titleBarWidget()->deleteLater();
+
+        QWidget *tb = createTitleBar(dock);
+        dock->setTitleBarWidget(tb);
+
+        if (auto ot = qobject_cast<OverlayTitleBar*>(tb)) {
+            ot->setMinimal(dock->isFloating());
+        }
+
+        if (dock->isFloating()) {
+            dock->setWindowFlags(dock->windowFlags() | Qt::FramelessWindowHint);
+            dock->setAttribute(Qt::WA_TranslucentBackground, true);
+        } else {
+            dock->setWindowFlags(dock->windowFlags() & ~Qt::FramelessWindowHint);
+            dock->setAttribute(Qt::WA_TranslucentBackground, false);
+        }
     }
 
     void onAction(QAction *action) {
