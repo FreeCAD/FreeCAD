@@ -1538,6 +1538,23 @@ void OverlayManager::initializeDockForOverlay(QDockWidget *dw)
         }
     });
 
+    // Ensure titlebar is present when the dock is re-docked to a different area
+    // Listen to this dock widget's own location changes so we can recreate
+    // or show the overlay titlebar when it is re-docked elsewhere.
+    QObject::connect(dw, &QDockWidget::dockLocationChanged, this,
+        [this, dw](Qt::DockWidgetArea) {
+            // Only adjust titlebar for docked state
+            if (!dw->isFloating()) {
+                // If no titlebar widget exists, create one; otherwise ensure it's visible
+                if (!dw->titleBarWidget()) {
+                    QWidget *tb = ::createTitleBar(dw);
+                    dw->setTitleBarWidget(tb);
+                } else {
+                    dw->titleBarWidget()->show();
+                }
+            }
+        });
+
     // Ensure initial state matches current floating status.
         if (dw->isFloating()) {
             // Install custom minimal titlebar for already-floating docks
