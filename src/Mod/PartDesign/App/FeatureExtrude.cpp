@@ -705,7 +705,7 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(const TopoShape& sketchsha
             params.dir = dir;
             params.solid = makeFace;
             params.lengthFwd = length;
-        
+
             std::vector<TopoShape> drafts;
             Part::ExtrusionHelper::makeElementDraft(params,
                                                     sketchshape,
