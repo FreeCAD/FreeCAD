@@ -4,19 +4,14 @@ from Base.BaseClass import BaseClass
 from Base.Metadata import export
 
 @export(
-    Father="BaseClassPy",
-    Name="PathSimPy",
-    Twin="PathSim",
-    TwinPointer="PathSim",
     FatherInclude="Base/BaseClassPy.h",
-    FatherNamespace="Base",
     Include="Mod/CAM/PathSimulator/App/PathSim.h",
     Namespace="PathSimulator",
     ReadOnly=["Tool"],
     Constructor=True,
     Delete=True,
 )
-class PathSimPy(BaseClass):
+class PathSim(BaseClass):
     """
     FreeCAD python wrapper of PathSimulator
 

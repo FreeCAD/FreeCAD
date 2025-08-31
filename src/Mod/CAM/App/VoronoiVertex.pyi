@@ -4,20 +4,13 @@ from Base.BaseClass import BaseClass
 from Base.Metadata import constmethod, export
 
 @export(
-    Father="BaseClassPy",
-    Name="VoronoiVertexPy",
-    PythonName="Path.Voronoi.Vertex",
-    Twin="VoronoiVertex",
-    TwinPointer="VoronoiVertex",
     Include="Mod/CAM/App/VoronoiVertex.h",
     Namespace="Path",
-    FatherInclude="Base/BaseClassPy.h",
-    FatherNamespace="Base",
     Constructor=True,
     RichCompare=True,
     Delete=True,
 )
-class VoronoiVertexPy(BaseClass):
+class VoronoiVertex(BaseClass):
     """
     Vertex of a Voronoi diagram
     """
