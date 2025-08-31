@@ -4,18 +4,12 @@ from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 
 @export(
-    Father="PyObjectBase",
-    Name="MeshPointPy",
-    Twin="MeshPoint",
-    TwinPointer="MeshPoint",
     Include="Mod/Mesh/App/MeshPoint.h",
     Namespace="Mesh",
-    FatherInclude="Base/PyObjectBase.h",
-    FatherNamespace="Base",
     Constructor=True,
     Delete=True,
 )
-class MeshPointPy(PyObjectBase):
+class MeshPoint(PyObjectBase):
     """
     Point in mesh
     This is a point in a MeshObject. You can get it by e.g. iterating a

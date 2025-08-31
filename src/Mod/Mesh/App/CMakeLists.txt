@@ -30,18 +30,18 @@ list(APPEND Mesh_LIBS
     ${QtConcurrent_LIBRARIES}
 )
 
-generate_from_py(EdgePy)
-generate_from_py(FacetPy)
-generate_from_py(MeshFeaturePy)
-generate_from_py(MeshPointPy)
-generate_from_py(MeshPy)
+generate_from_py(Edge)
+generate_from_py(Facet)
+generate_from_py(MeshFeature)
+generate_from_py(MeshPoint)
+generate_from_py(Mesh)
 
 SET(Mesh_XML_SRCS
-    EdgePy.pyi
-    FacetPy.pyi
-    MeshFeaturePy.pyi
-    MeshPointPy.pyi
-    MeshPy.pyi
+    Edge.pyi
+    Facet.pyi
+    MeshFeature.pyi
+    MeshPoint.pyi
+    Mesh.pyi
 )
 SOURCE_GROUP("XML" FILES ${Mesh_XML_SRCS})
 

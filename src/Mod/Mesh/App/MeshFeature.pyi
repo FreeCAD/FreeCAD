@@ -5,16 +5,10 @@ from Base.Metadata import export
 from App.GeoFeature import GeoFeature
 
 @export(
-    Father="GeoFeaturePy",
-    Name="MeshFeaturePy",
-    Twin="Feature",
-    TwinPointer="Feature",
     Include="Mod/Mesh/App/MeshFeature.h",
     Namespace="Mesh",
-    FatherInclude="App/GeoFeaturePy.h",
-    FatherNamespace="App",
 )
-class MeshFeaturePy(GeoFeature):
+class MeshFeature(GeoFeature):
     """
     The Mesh::Feature class handles meshes.
     The Mesh.MeshFeature() function is for internal use only and cannot be used to create instances of this class.

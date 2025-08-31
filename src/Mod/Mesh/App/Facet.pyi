@@ -4,18 +4,12 @@ from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 
 @export(
-    Father="PyObjectBase",
-    Name="FacetPy",
-    Twin="Facet",
-    TwinPointer="Facet",
     Include="Mod/Mesh/App/Facet.h",
     Namespace="Mesh",
-    FatherInclude="Base/PyObjectBase.h",
-    FatherNamespace="Base",
     Constructor=True,
     Delete=True,
 )
-class FacetPy(PyObjectBase):
+class Facet(PyObjectBase):
     """
     Facet in mesh
     This is a facet in a MeshObject. You can get it by e.g. iterating a

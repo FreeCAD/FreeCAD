@@ -29,7 +29,7 @@ SET(Import_SRCS
     ReaderIges.h
     ReaderStep.cpp
     ReaderStep.h
-    StepShapePy.pyi
+    StepShape.pyi
     StepShape.h
     StepShape.cpp
     StepShapePyImp.cpp
@@ -76,7 +76,7 @@ SET(SCL_Resources
 )
 SOURCE_GROUP("SCL" FILES ${SCL_Resources})
 
-generate_from_py(StepShapePy)
+generate_from_py(StepShape)
 
 add_library(Import SHARED ${Import_SRCS})
 target_link_libraries(Import ${Import_LIBS})

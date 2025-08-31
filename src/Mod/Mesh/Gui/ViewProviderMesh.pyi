@@ -3,14 +3,8 @@ from Gui.ViewProviderGeometryObject import ViewProviderGeometryObject
 from Base.Metadata import export
 
 @export(
-    Father="ViewProviderGeometryObjectPy",
-    Name="ViewProviderMeshPy",
-    Twin="ViewProviderMesh",
-    TwinPointer="ViewProviderMesh",
     Include="Mod/Mesh/Gui/ViewProvider.h",
     Namespace="MeshGui",
-    FatherInclude="Gui/ViewProviderGeometryObjectPy.h",
-    FatherNamespace="Gui",
 )
 class ViewProviderMeshPy(ViewProviderGeometryObject):
     """
