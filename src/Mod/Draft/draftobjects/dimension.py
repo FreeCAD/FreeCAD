@@ -110,8 +110,7 @@ import WorkingPlane
 from draftobjects.draft_annotation import DraftAnnotation
 from draftutils import gui_utils
 from draftutils import utils
-from draftutils.messages import _wrn
-from draftutils.translate import translate
+from draftutils.messages import _log
 
 
 class DimensionBase(DraftAnnotation):
@@ -198,10 +197,8 @@ class DimensionBase(DraftAnnotation):
         """Update view properties."""
         vobj.Proxy.set_text_properties(vobj, vobj.PropertiesList)
         vobj.TextColor = vobj.LineColor
-        _wrn("v0.21, " + obj.Label + ", "
-             + translate("draft", "added view property 'TextColor'"))
-        _wrn("v0.21, " + obj.Label + ", "
-             + translate("draft", "renamed 'DisplayMode' options to 'World/Screen'"))
+        _log("v0.21, " + obj.Name + ", added view property 'TextColor'")
+        _log("v0.21, " + obj.Name + ", renamed 'DisplayMode' options to 'World/Screen'")
 
 
 class LinearDimension(DimensionBase):
