@@ -75,24 +75,15 @@
 # ifdef HAVE_PYSIDE2
 #  define HAVE_PYSIDE
 
-// Since version 5.12 shiboken offers a method to get wrapper by class name (typeForTypeName)
-// This helps to avoid to include the PySide2 headers since MSVC has a compiler bug when
-// compiling together with std::bitset (https://bugreports.qt.io/browse/QTBUG-72073)
-
 // Include shiboken first to get the version
 #  include <shiboken.h>
 
 // Do not use SHIBOKEN_MICRO_VERSION; it might contain a dot
 #  define SHIBOKEN_FULL_VERSION QT_VERSION_CHECK(SHIBOKEN_MAJOR_VERSION, SHIBOKEN_MINOR_VERSION, 0)
-#  if (SHIBOKEN_FULL_VERSION >= QT_VERSION_CHECK(5, 12, 0))
-#   define HAVE_SHIBOKEN_TYPE_FOR_TYPENAME
-#  endif
 
-#  ifndef HAVE_SHIBOKEN_TYPE_FOR_TYPENAME
-#   include <pyside2_qtcore_python.h>
-#   include <pyside2_qtgui_python.h>
-#   include <pyside2_qtwidgets_python.h>
-#  endif
+#  include <pyside2_qtcore_python.h>
+#  include <pyside2_qtgui_python.h>
+#  include <pyside2_qtwidgets_python.h>
 # endif // HAVE_PYSIDE2
 #endif // HAVE_SHIBOKEN2
 
@@ -401,34 +392,39 @@ public:
      */
     void addQObject(QObject* obj, PyObject* pyobj)
     {
-        const auto PyW_unique_name = QString::number(reinterpret_cast <quintptr> (pyobj));
-        auto PyW_invalidator = findChild <QObject *> (PyW_unique_name, Qt::FindDirectChildrenOnly);
+        // static array to contain created connections so they can be safely disconnected later
+        static std::map<QObject*, QMetaObject::Connection> connections = {};
+
+        const auto PyW_uniqueName = QString::number(reinterpret_cast<quintptr>(pyobj));
+        auto PyW_invalidator = findChild<QObject*>(PyW_uniqueName, Qt::FindDirectChildrenOnly);
 
         if (PyW_invalidator == nullptr) {
             PyW_invalidator = new QObject(this);
-            PyW_invalidator->setObjectName(PyW_unique_name);
+            PyW_invalidator->setObjectName(PyW_uniqueName);
 
             Py_INCREF (pyobj);
         }
-        else {
-            PyW_invalidator->disconnect();
+        else if (connections.contains(PyW_invalidator)) {
+            disconnect(connections[PyW_invalidator]);
+            connections.erase(PyW_invalidator);
         }
 
-        auto destroyedFun = [pyobj](){
+        auto destroyedFun = [pyobj]() {
             Base::PyGILStateLocker lock;
-            auto sbk_ptr = reinterpret_cast <SbkObject *> (pyobj);
-            if (sbk_ptr != nullptr) {
-                Shiboken::Object::setValidCpp(sbk_ptr, false);
+
+            if (auto sbkPtr = reinterpret_cast<SbkObject*>(pyobj); sbkPtr != nullptr) {
+                Shiboken::Object::setValidCpp(sbkPtr, false);
             }
             else {
-                Base::Console().DeveloperError("WrapperManager", "A QObject has just been destroyed after its Pythonic wrapper.\n");
+                Base::Console().developerError("WrapperManager", "A QObject has just been destroyed after its Pythonic wrapper.\n");
             }
+
             Py_DECREF (pyobj);
         };
 
-        QObject::connect(PyW_invalidator, &QObject::destroyed, this, destroyedFun);
-        QObject::connect(obj, &QObject::destroyed, PyW_invalidator, &QObject::deleteLater);
-}
+        connections[PyW_invalidator] = connect(PyW_invalidator, &QObject::destroyed, this, destroyedFun);
+        connect(obj, &QObject::destroyed, PyW_invalidator, &QObject::deleteLater);
+    }
 
 private:
     void wrapQApplication()
@@ -610,7 +606,7 @@ qsizetype PythonWrapper::toEnum(PyObject* pyPtr)
     }
     catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
         return 0;
     }
 }

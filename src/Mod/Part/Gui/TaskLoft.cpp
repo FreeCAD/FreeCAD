@@ -99,7 +99,7 @@ void LoftWidget::findShapes()
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
     for (auto obj : objs) {
-        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj);
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (topoShape.isNull()) {
             continue;
         }
@@ -159,25 +159,25 @@ bool LoftWidget::accept()
 {
     QString list, solid, ruled, closed;
     if (d->ui.checkSolid->isChecked())
-        solid = QString::fromLatin1("True");
+        solid = QStringLiteral("True");
     else
-        solid = QString::fromLatin1("False");
+        solid = QStringLiteral("False");
 
     if (d->ui.checkRuledSurface->isChecked())
-        ruled = QString::fromLatin1("True");
+        ruled = QStringLiteral("True");
     else
-        ruled = QString::fromLatin1("False");
+        ruled = QStringLiteral("False");
 
     if (d->ui.checkClosed->isChecked())
-        closed = QString::fromLatin1("True");
+        closed = QStringLiteral("True");
     else
-        closed = QString::fromLatin1("False");
+        closed = QStringLiteral("False");
 
     QTextStream str(&list);
 
     int count = d->ui.selector->selectedTreeWidget()->topLevelItemCount();
     if (count < 2) {
-        QMessageBox::critical(this, tr("Too few elements"), tr("At least two vertices, edges, wires or faces are required."));
+        QMessageBox::critical(this, tr("Too few elements"), tr("At least 2 vertices, edges, wires, or faces are required."));
         return false;
     }
     for (int i=0; i<count; i++) {
@@ -188,7 +188,7 @@ bool LoftWidget::accept()
 
     try {
         QString cmd;
-        cmd = QString::fromLatin1(
+        cmd = QStringLiteral(
             "App.getDocument('%5').addObject('Part::Loft','Loft')\n"
             "App.getDocument('%5').ActiveObject.Sections=[%1]\n"
             "App.getDocument('%5').ActiveObject.Solid=%2\n"

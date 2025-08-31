@@ -4,19 +4,16 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
+if(BUILD_MATERIAL_EXTERNAL)
+    add_definitions(-DBUILD_MATERIAL_EXTERNAL)
+endif(BUILD_MATERIAL_EXTERNAL)
+
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
 )
-link_directories(${OCC_LIBRARY_DIR})
 
 set(MatGui_LIBS
     Materials
@@ -24,6 +21,7 @@ set(MatGui_LIBS
 )
 
 include_directories(
+    SYSTEM
     ${QtConcurrent_INCLUDE_DIRS}
 )
 list(APPEND MatGui_LIBS
@@ -36,10 +34,10 @@ qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
 qt_create_resource_file(${Material_TR_QRC} ${QM_SRCS})
 qt_add_resources(MatGui_QRC_SRCS Resources/Material.qrc ${Material_TR_QRC})
 
-generate_from_xml(MaterialTreeWidgetPy)
+generate_from_py(MaterialTreeWidget)
 
 SET(Python_SRCS
-    MaterialTreeWidgetPy.xml
+    MaterialTreeWidget.pyi
     MaterialTreeWidgetPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
@@ -60,6 +58,12 @@ set(MatGui_UIC_SRCS
     ModelSelect.ui
     TextEdit.ui
 )
+if(BUILD_MATERIAL_EXTERNAL)
+    list(APPEND MatGui_UIC_SRCS
+        DlgSettingsExternal.ui
+        TaskMigrateExternal.ui
+    )
+endif(BUILD_MATERIAL_EXTERNAL)
 
 SET(MatGui_SRCS
     ${Python_SRCS}
@@ -132,6 +136,16 @@ SET(MatGui_SRCS
     WorkbenchManipulator.cpp
     WorkbenchManipulator.h
 )
+if(BUILD_MATERIAL_EXTERNAL)
+    list(APPEND MatGui_SRCS
+        DlgSettingsExternal.cpp
+        DlgSettingsExternal.h
+        DlgSettingsExternal.ui
+        TaskMigrateExternal.cpp
+        TaskMigrateExternal.h
+        TaskMigrateExternal.ui
+    )
+endif(BUILD_MATERIAL_EXTERNAL)
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)

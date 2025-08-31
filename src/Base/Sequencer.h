@@ -24,8 +24,6 @@
 #ifndef BASE_SEQUENCER_H
 #define BASE_SEQUENCER_H
 
-#include "Exception.h"
-
 
 namespace Base
 {

@@ -123,7 +123,7 @@ AttachExtension::AttachExtension()
                                 (false),
                                 "Attachment",
                                 App::Prop_None,
-                                "Reverse Z direction (flip sketch upside down)");
+                                "Reverse Z-direction (flip sketch upside down)");
 
     EXTENSION_ADD_PROPERTY_TYPE(MapPathParameter,
                                 (0.0),
@@ -168,7 +168,7 @@ static inline bool getProp(bool force,
                            const char* name,
                            const char* doc)
 {
-    prop = Base::freecad_dynamic_cast<T>(owner->getDynamicPropertyByName(name));
+    prop = freecad_cast<T*>(owner->getDynamicPropertyByName(name));
     if (prop || !force) {
         return false;
     }
@@ -234,7 +234,7 @@ void AttachExtension::initBase(bool force)
                                props.mapReversed,
                                obj,
                                "BaseMapReversed",
-                               "Reverse Z direction of the base geometry attachment");
+                               "Reverse Z-direction of the base geometry attachment");
 
     getProp<App::PropertyFloat>(force,
                                 props.mapPathParameter,
@@ -414,12 +414,12 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
             }
             catch (Base::Exception &e) {
                 getExtendedObject()->setStatus(App::Error, true);
-                Base::Console().Error("PositionBySupport: %s\n",e.what());
+                Base::Console().error("PositionBySupport: %s\n",e.what());
                 //set error message - how?
             }
             catch (Standard_Failure &e){
                 getExtendedObject()->setStatus(App::Error, true);
-                Base::Console().Error("PositionBySupport: %s\n",e.GetMessageString());
+                Base::Console().error("PositionBySupport: %s\n",e.GetMessageString());
             }
 
             updateSinglePropertyStatus(bAttached);
@@ -573,7 +573,7 @@ AttachExtension::Properties AttachExtension::getInitedProperties(bool base)
 
 App::PropertyPlacement& AttachExtension::getPlacement() const
 {
-    auto pla = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+    auto pla = freecad_cast<App::PropertyPlacement*>(
         getExtendedObject()->getPropertyByName("Placement"));
     if (!pla) {
         throw Base::RuntimeError("AttachExtension cannot find placement property");

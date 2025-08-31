@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <cmath>
+#include <Base/Tools.h>
 #include "Mod/Part/App/FeatureExtrusion.h"
 #include <src/App/InitApplication.h>
 
 #include "BRepBuilderAPI_MakeEdge.hxx"
 
 #include "PartTestHelpers.h"
-#include "Mod/Sketcher/App/SketchObject.h"
 
 class FeatureExtrusionTest: public ::testing::Test, public PartTestHelpers::PartTestHelperClass
 {
@@ -21,7 +21,7 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _extrusion = dynamic_cast<Part::Extrusion*>(_doc->addObject("Part::Extrusion"));
+        _extrusion = _doc->addObject<Part::Extrusion>();
         PartTestHelpers::rectangle(len, wid, "Rect1");
         _extrusion->Base.setValue(_doc->getObjects().back());
         _extrusion->LengthFwd.setValue(ext1);
@@ -173,7 +173,7 @@ TEST_F(FeatureExtrusionTest, testExecuteAngled)
 {
     // Arrange
     const double ang = 30;
-    const double tangent = tan(ang / 180.0 * M_PI);
+    const double tangent = tan(Base::toRadians(ang));
 
     // The shape is a truncated pyramid elongated by a truncated triangular prism in the middle.
     // Calc the volume of full size pyramid and prism, and subtract top volumes to truncate.
@@ -210,7 +210,7 @@ TEST_F(FeatureExtrusionTest, testExecuteAngledRev)
 {
     // Arrange
     const double ang = 30;
-    const double tangent = tan(ang / 180.0 * M_PI);
+    const double tangent = tan(Base::toRadians(ang));
     // The shape is a truncated pyramid elongated by a truncated triangular prism in the middle,
     // plus a rectangular prism.
     // Calc the volume of full size pyramid and prism, and subtract top volumes to truncate.
@@ -250,9 +250,9 @@ TEST_F(FeatureExtrusionTest, testExecuteEdge)
 {
     // Arrange
     const double ang = 30;
-    const double tangent = tan(ang / 180.0 * M_PI);
+    const double tangent = tan(Base::toRadians(ang));
     BRepBuilderAPI_MakeEdge e1(gp_Pnt(0, 0, 0), gp_Pnt(ext1, ext1, ext1));
-    auto edge = dynamic_cast<Part::Feature*>(_doc->addObject("Part::Feature", "Edge"));
+    auto edge = _doc->addObject<Part::Feature>("Edge");
     edge->Shape.setValue(e1);
     _extrusion->DirLink.setValue(edge);
     _extrusion->DirMode.setValue(1);
@@ -271,7 +271,7 @@ TEST_F(FeatureExtrusionTest, testExecuteEdge)
 TEST_F(FeatureExtrusionTest, testExecuteDir)
 {
     // Arrange
-    const double sin45 = sin(45 / 180.0 * M_PI);
+    const double sin45 = sin(Base::toRadians(45.0));
     _extrusion->Dir.setValue(Base::Vector3d(0, 1, 1));
     _extrusion->DirMode.setValue((long)0);
     // Act
@@ -310,7 +310,7 @@ TEST_F(FeatureExtrusionTest, testFaceWithHoles)
     // newFace cleans that up and is the outside minus the internal hole.
     auto face2 = newFace.getShape();
 
-    auto partFeature = dynamic_cast<Part::Feature*>(_doc->addObject("Part::Feature"));
+    auto partFeature = _doc->addObject<Part::Feature>();
     partFeature->Shape.setValue(face2);
     _extrusion->Base.setValue(_doc->getObjects().back());
     _extrusion->FaceMakerClass.setValue("Part::FaceMakerCheese");
@@ -320,8 +320,10 @@ TEST_F(FeatureExtrusionTest, testFaceWithHoles)
     double volume = PartTestHelpers::getVolume(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
     // Assert
-    EXPECT_FLOAT_EQ(volume, len * wid * ext1 - radius * radius * M_PI * ext1);
+    EXPECT_FLOAT_EQ(volume, len * wid * ext1 - radius * radius * std::numbers::pi * ext1);
     EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0, 0, 0, len, wid, ext1)));
-    EXPECT_FLOAT_EQ(PartTestHelpers::getArea(face1), len * wid + radius * radius * M_PI);
-    EXPECT_FLOAT_EQ(PartTestHelpers::getArea(face2), len * wid - radius * radius * M_PI);
+    EXPECT_FLOAT_EQ(PartTestHelpers::getArea(face1),
+                    len * wid + radius * radius * std::numbers::pi);
+    EXPECT_FLOAT_EQ(PartTestHelpers::getArea(face2),
+                    len * wid - radius * radius * std::numbers::pi);
 }

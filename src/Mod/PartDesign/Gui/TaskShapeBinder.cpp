@@ -35,6 +35,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
+#include <Gui/Tools.h>
 #include <Gui/Widgets.h>
 
 #include <Mod/Part/App/PartFeature.h>
@@ -57,7 +58,7 @@ using namespace Gui;
 
 TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder* view, bool newObj, QWidget* parent)
     : Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("PartDesign_ShapeBinder"),
-        tr("Datum shape parameters"), true, parent)
+        tr("Shape Binder Parameters"), true, parent)
     , SelectionObserver(view)
     , ui(new Ui_TaskShapeBinder)
     , vp(view)
@@ -128,16 +129,10 @@ void TaskShapeBinder::setupContextMenu()
 {
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        remove->setShortcut(QKeySequence(shortcut));
-    }
+    remove->setShortcut(Gui::QtTools::deleteKeySequence());
     remove->setShortcutContext(Qt::WidgetShortcut);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     remove->setShortcutVisibleInContextMenu(true);
-#endif
     ui->listWidgetReferences->addAction(remove);
     connect(remove, &QAction::triggered, this, &TaskShapeBinder::deleteItem);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -204,11 +199,10 @@ void TaskShapeBinder::deleteItem()
         PartDesign::ShapeBinder* binder = vp->getObject<PartDesign::ShapeBinder>();
         PartDesign::ShapeBinder::getFilteredReferences(&binder->Support, obj, subs);
 
-        std::string subname = data.constData();
-        std::vector<std::string>::iterator it = std::find(subs.begin(), subs.end(), subname);
+        const std::string subname = data.constData();
 
         // if something was found, delete it and update the support
-        if (it != subs.end()) {
+        if (const auto it = std::ranges::find(subs, subname); it != subs.end()) {
             subs.erase(it);
             binder->Support.setValue(obj, subs);
 
@@ -317,10 +311,11 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const
 
         if (selectionMode != refObjAdd) {
             // ensure the new selected subref belongs to the same object
-            if (strcmp(msg.pObjectName, obj->getNameInDocument()) != 0)
+            if (strcmp(msg.pObjectName, obj->getNameInDocument()) != 0) {
                 return false;
+            }
 
-            std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), subName);
+            const auto f = std::ranges::find(refs, subName);
 
             if (selectionMode == refAdd) {
                 if (f == refs.end())

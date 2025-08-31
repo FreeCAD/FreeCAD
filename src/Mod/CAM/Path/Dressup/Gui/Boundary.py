@@ -182,7 +182,10 @@ class TaskPanel(object):
         self.form.stockInside.setChecked(self.obj.Inside)
 
         self.form.stock.currentIndexChanged.connect(self.updateStockEditor)
-        self.form.stockInside.stateChanged.connect(self.setDirty)
+        if hasattr(self.form.stockInside, "checkStateChanged"):  # Qt version >= 6.7.0
+            self.form.stockInside.checkStateChanged.connect(self.setDirty)
+        else:  # Qt version < 6.7.0
+            self.form.stockInside.stateChanged.connect(self.setDirty)
         self.form.stockExtXneg.textChanged.connect(self.setDirty)
         self.form.stockExtXpos.textChanged.connect(self.setDirty)
         self.form.stockExtYneg.textChanged.connect(self.setDirty)
@@ -256,7 +259,7 @@ class CommandPathDressupPathBoundary:
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupPathBoundary", "Boundary"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_DressupPathBoundary",
-                "Creates a Boundary Dress-up from a selected toolpath",
+                "Creates a boundary dress-up from a selected toolpath",
             ),
         }
 

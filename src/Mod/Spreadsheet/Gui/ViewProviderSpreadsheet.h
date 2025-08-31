@@ -46,12 +46,10 @@ public:
     /// destructor.
     ~ViewProviderSheet() override;
 
-    void setDisplayMode(const char* ModeName) override;
     bool useNewSelectionModel() const override
     {
         return false;
     }
-    std::vector<std::string> getDisplayModes() const override;
 
     bool doubleClicked() override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;

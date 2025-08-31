@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2019 sliptonic <shopinthewoods@gmail.com>               *
+# *                 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,6 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+from lazy_loader.lazy_loader import LazyLoader
 from PySide import QtCore, QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
@@ -28,11 +30,7 @@ import Path
 import Path.Base.Gui.Util as PathGuiUtil
 import Path.Base.Util as PathUtil
 import Path.Tool.Controller as PathToolController
-import Path.Tool.Gui.Bit as PathToolBitGui
-import PathGui
-
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
+from Path.Tool.toolbit.ui.selector import ToolBitSelector
 
 Part = LazyLoader("Part", globals(), "Part")
 
@@ -114,8 +112,11 @@ class ViewProvider:
         for action in menu.actions():
             menu.removeAction(action)
         action = QtGui.QAction(translate("CAM", "Edit"), menu)
-        action.triggered.connect(self.setEdit)
+        action.triggered.connect(self._editInContextMenuTriggered)
         menu.addAction(action)
+
+    def _editInContextMenuTriggered(self, checked):
+        self.setEdit()
 
     def claimChildren(self):
         obj = self.vobj.Object
@@ -139,8 +140,10 @@ class CommandPathToolController(object):
     def GetResources(self):
         return {
             "Pixmap": "CAM_LengthOffset",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolController", "Add Tool Controller to the Job"),
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_ToolController", "Add Tool Controller"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolController", "Tool Controller"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "CAM_ToolController", "Adds a new tool controller to the active job"
+            ),
         }
 
     def selectedJob(self):
@@ -159,19 +162,30 @@ class CommandPathToolController(object):
     def Activated(self):
         Path.Log.track()
         job = self.selectedJob()
-        if job:
-            tool = PathToolBitGui.ToolBitSelector().getTool()
-            if tool:
-                toolNr = None
-                for tc in job.Tools.Group:
-                    if tc.Tool == tool:
-                        toolNr = tc.ToolNumber
-                        break
-                if not toolNr:
-                    toolNr = max([tc.ToolNumber for tc in job.Tools.Group]) + 1
-                tc = Create("TC: {}".format(tool.Label), tool, toolNr)
-                job.Proxy.addToolController(tc)
-                FreeCAD.ActiveDocument.recompute()
+        if not job:
+            return
+
+        # Let the user select a toolbit
+        selector = ToolBitSelector()
+        if not selector.exec_():
+            return
+        tool = selector.get_selected_tool()
+        if not tool:
+            return
+
+        # Find a tool number
+        toolNr = None
+        for tc in job.Tools.Group:
+            if tc.Tool == tool:
+                toolNr = tc.ToolNumber
+                break
+        if not toolNr:
+            toolNr = max([tc.ToolNumber for tc in job.Tools.Group]) + 1
+
+        # Create the new tool controller with the tool.
+        tc = Create("TC: {}".format(tool.Label), tool, toolNr)
+        job.Proxy.addToolController(tc)
+        FreeCAD.ActiveDocument.recompute()
 
 
 class ToolControllerEditor(object):
@@ -220,10 +234,10 @@ class ToolControllerEditor(object):
         tc = self.obj
         self.form.tcName.setText(tc.Label)
         self.form.tcNumber.setValue(tc.ToolNumber)
-        self.horizFeed.updateSpinBox()
-        self.horizRapid.updateSpinBox()
-        self.vertFeed.updateSpinBox()
-        self.vertRapid.updateSpinBox()
+        self.horizFeed.updateWidget()
+        self.horizRapid.updateWidget()
+        self.vertFeed.updateWidget()
+        self.vertRapid.updateWidget()
         self.form.spindleSpeed.setValue(tc.SpindleSpeed)
 
         self.selectInComboBox(tc.SpindleDir, self.form.spindleDirection)
@@ -352,4 +366,4 @@ if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_ToolController", CommandPathToolController())
 
-FreeCAD.Console.PrintLog("Loading PathToolControllerGui... done\n")
+FreeCAD.Console.PrintLog("Loading PathToolControllerGui… done\n")

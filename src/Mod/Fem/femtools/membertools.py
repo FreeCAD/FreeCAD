@@ -21,7 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Collection of functions for the Fem module.
+"""Collection of functions for the Fem module.
 
 This module contains function for managing a analysis and all the different
 types of objects it contains, helper for executing a simulation.
@@ -282,6 +282,10 @@ class AnalysisMember:
         self.cons_temperature = self.get_several_member("Fem::ConstraintTemperature")
         self.cons_tie = self.get_several_member("Fem::ConstraintTie")
         self.cons_transform = self.get_several_member("Fem::ConstraintTransform")
+        self.cons_electrostatic = self.get_several_member("Fem::ConstraintElectrostaticPotential")
+        self.cons_electricchargedensity = self.get_several_member(
+            "Fem::ConstraintElectricChargeDensity"
+        )
 
     def get_several_member(self, t):
         return get_several_member(self.analysis, t)

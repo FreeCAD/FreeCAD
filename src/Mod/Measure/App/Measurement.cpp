@@ -27,6 +27,7 @@
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepGProp.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Circ.hxx>
@@ -113,9 +114,11 @@ MeasureType Measurement::findType()
     int edges = 0;
     int lines = 0;
     int circles = 0;
+    int circleArcs = 0;
     int faces = 0;
     int planes = 0;
     int cylinders = 0;
+    int cylinderSections = 0;
     int cones = 0;
     int torus = 0;
     int spheres = 0;
@@ -125,7 +128,12 @@ MeasureType Measurement::findType()
     for (; obj != objects.end(); ++obj, ++subEl) {
         TopoDS_Shape refSubShape;
         try {
-            refSubShape = Part::Feature::getShape(*obj, (*subEl).c_str(), true);
+            refSubShape = Part::Feature::getShape(*obj,
+                                                  Part::ShapeOption::NeedSubElement
+                                                      | Part::ShapeOption::ResolveLink
+                                                      | Part::ShapeOption::Transform,
+                                                  (*subEl).c_str());
+
             if (refSubShape.IsNull()) {
                 return MeasureType::Invalid;
             }
@@ -150,7 +158,12 @@ MeasureType Measurement::findType()
                     lines++;
                 }
                 else if (sf.GetType() == GeomAbs_Circle) {
-                    circles++;
+                    if (sf.IsClosed()) {
+                        circles++;
+                    }
+                    else {
+                        circleArcs++;
+                    }
                 }
             } break;
             case TopAbs_FACE: {
@@ -162,7 +175,12 @@ MeasureType Measurement::findType()
                     planes++;
                 }
                 else if (sf.GetType() == GeomAbs_Cylinder) {
-                    cylinders++;
+                    if (sf.IsUClosed() || sf.IsVClosed()) {
+                        cylinders++;
+                    }
+                    else {
+                        cylinderSections++;
+                    }
                 }
                 else if (sf.GetType() == GeomAbs_Sphere) {
                     spheres++;
@@ -196,8 +214,18 @@ MeasureType Measurement::findType()
     }
     else if (faces > 0) {
         if (verts > 0 || edges > 0) {
-            if (faces == 1 && verts == 1) {
+            if (faces == 1 && (cylinders + cylinderSections) == 1 && verts == 1 && edges == 0) {
+                mode = MeasureType::PointToCylinder;
+            }
+            else if (faces == 1 && verts == 1) {
                 mode = MeasureType::PointToSurface;
+            }
+            else if (faces == 1 && (cylinders + cylinderSections) == 1
+                     && (circles + circleArcs) == 1 && edges == 1) {
+                mode = MeasureType::CircleToCylinder;
+            }
+            else if (faces == 1 && (circles + circleArcs) == 1 && edges == 1) {
+                mode = MeasureType::CircleToSurface;
             }
             else {
                 mode = MeasureType::Invalid;
@@ -218,6 +246,12 @@ MeasureType Measurement::findType()
             else if (cylinders == 1 && faces == 1) {
                 mode = MeasureType::Cylinder;
             }
+            else if (cylinderSections == 1 && faces == 1) {
+                mode = MeasureType::CylinderSection;
+            }
+            else if ((cylinders + cylinderSections) == 2 && faces == 2) {
+                mode = MeasureType::TwoCylinders;
+            }
             else if (cones == 1 && faces == 1) {
                 mode = MeasureType::Cone;
             }
@@ -234,8 +268,11 @@ MeasureType Measurement::findType()
     }
     else if (edges > 0) {
         if (verts > 0) {
-            if (verts > 1 && edges > 0) {
+            if (verts > 1) {
                 mode = MeasureType::Invalid;
+            }
+            else if ((circles + circleArcs) == 1) {
+                mode = MeasureType::PointToCircle;
             }
             else {
                 mode = MeasureType::PointToEdge;
@@ -254,6 +291,15 @@ MeasureType Measurement::findType()
         }
         else if (circles == 1 && edges == 1) {
             mode = MeasureType::Circle;
+        }
+        else if (circleArcs == 1 && edges == 1) {
+            mode = MeasureType::CircleArc;
+        }
+        else if ((circles + circleArcs) == 2 && edges == 2) {
+            mode = MeasureType::TwoCircles;
+        }
+        else if ((circles + circleArcs == 1) && edges == 2) {
+            mode = MeasureType::CircleToEdge;
         }
         else {
             mode = MeasureType::Edges;
@@ -279,9 +325,14 @@ MeasureType Measurement::getType()
     return measureType;
 }
 
-TopoDS_Shape Measurement::getShape(App::DocumentObject* obj, const char* subName) const
+TopoDS_Shape
+Measurement::getShape(App::DocumentObject* obj, const char* subName, TopAbs_ShapeEnum hint) const
 {
-    return ShapeFinder::getLocatedShape(*obj, subName);
+    return Part::Feature::getShape(obj,
+                                   Part::ShapeOption::NeedSubElement
+                                       | Part::ShapeOption::ResolveLink
+                                       | Part::ShapeOption::Transform,
+                                   subName);
 }
 
 
@@ -292,24 +343,27 @@ double Measurement::length() const
     double result = 0.0;
     int numRefs = References3D.getSize();
     if (numRefs == 0) {
-        Base::Console().Error("Measurement::length - No 3D references available\n");
+        Base::Console().error("Measurement::length - No 3D references available\n");
     }
     else if (measureType == MeasureType::Invalid) {
-        Base::Console().Error("Measurement::length - measureType is Invalid\n");
+        Base::Console().error("Measurement::length - measureType is Invalid\n");
     }
     else {
         const std::vector<App::DocumentObject*>& objects = References3D.getValues();
         const std::vector<std::string>& subElements = References3D.getSubValues();
 
         if (measureType == MeasureType::Points || measureType == MeasureType::PointToPoint
-            || measureType == MeasureType::PointToEdge
-            || measureType == MeasureType::PointToSurface) {
+            || measureType == MeasureType::PointToEdge || measureType == MeasureType::PointToSurface
+            || measureType == MeasureType::PointToCircle
+            || measureType == MeasureType::PointToCylinder) {
 
             Base::Vector3d diff = this->delta();
             result = diff.Length();
         }
         else if (measureType == MeasureType::Edges || measureType == MeasureType::Line
-                 || measureType == MeasureType::TwoLines || measureType == MeasureType::Circle) {
+                 || measureType == MeasureType::TwoLines || measureType == MeasureType::Circle
+                 || measureType == MeasureType::CircleArc || measureType == MeasureType::TwoCircles
+                 || measureType == MeasureType::CircleToEdge) {
 
             // Iterate through edges and calculate each length
             std::vector<App::DocumentObject*>::const_iterator obj = objects.begin();
@@ -318,7 +372,10 @@ double Measurement::length() const
             for (; obj != objects.end(); ++obj, ++subEl) {
 
                 //  Get the length of one edge
-                TopoDS_Shape shape = getShape(*obj, (*subEl).c_str());
+                TopoDS_Shape shape = getShape(*obj, (*subEl).c_str(), TopAbs_EDGE);
+                if (shape.IsNull() || shape.Infinite()) {
+                    continue;
+                }
                 const TopoDS_Edge& edge = TopoDS::Edge(shape);
                 BRepAdaptor_Curve curve(edge);
 
@@ -353,8 +410,8 @@ double Measurement::length() const
                         throw Base::RuntimeError(
                             "Measurement - length - Curve type not currently handled");
                     }
-                }  // end switch
-            }  // end for
+                }
+            }
         }
     }
     return result;
@@ -374,12 +431,12 @@ double Measurement::lineLineDistance() const
     const std::vector<std::string>& subElements = References3D.getSubValues();
 
     // Get the first line
-    TopoDS_Shape shape1 = getShape(objects[0], subElements[0].c_str());
+    TopoDS_Shape shape1 = getShape(objects[0], subElements[0].c_str(), TopAbs_EDGE);
     const TopoDS_Edge& edge1 = TopoDS::Edge(shape1);
     BRepAdaptor_Curve curve1(edge1);
 
     // Get the second line
-    TopoDS_Shape shape2 = getShape(objects[1], subElements[1].c_str());
+    TopoDS_Shape shape2 = getShape(objects[1], subElements[1].c_str(), TopAbs_EDGE);
     const TopoDS_Edge& edge2 = TopoDS::Edge(shape2);
     BRepAdaptor_Curve curve2(edge2);
 
@@ -406,11 +463,88 @@ double Measurement::lineLineDistance() const
         distance = perpendicularComponent.Magnitude();
     }
     else {
-        Base::Console().Error("Measurement::length - TwoLines measureType requires two lines\n");
+        Base::Console().error("Measurement::length - TwoLines measureType requires two lines\n");
     }
     return distance;
 }
+double Measurement::circleCenterDistance() const
+{
+    double distance = 0.0;
 
+    if (References3D.getSize() != 2) {
+        return distance;
+    }
+
+    const std::vector<App::DocumentObject*>& objects = References3D.getValues();
+    const std::vector<std::string>& subElements = References3D.getSubValues();
+
+    // Get the first circle
+    TopoDS_Shape shape1 = getShape(objects[0], subElements[0].c_str());
+    TopoDS_Shape shape2 = getShape(objects[1], subElements[1].c_str());
+
+    if (shape1.ShapeType() != TopAbs_EDGE) {
+        std::swap(shape1, shape2);
+    }
+
+    if (measureType == MeasureType::TwoCircles) {
+        const TopoDS_Edge& edge1 = TopoDS::Edge(shape1);
+        BRepAdaptor_Curve curve1(edge1);
+
+        const TopoDS_Edge& edge2 = TopoDS::Edge(shape2);
+        BRepAdaptor_Curve curve2(edge2);
+
+        if (curve1.GetType() == GeomAbs_Circle && curve2.GetType() == GeomAbs_Circle) {
+            gp_Circ circle1 = curve1.Circle();
+            gp_Circ circle2 = curve2.Circle();
+
+            distance = circle1.Location().Distance(circle2.Location());
+        }
+    }
+    else if (measureType == MeasureType::CircleToEdge || measureType == MeasureType::CircleToSurface
+             || measureType == MeasureType::CircleToCylinder) {
+        const TopoDS_Edge& edge1 = TopoDS::Edge(shape1);
+        BRepAdaptor_Curve curve1(edge1);
+
+        TopoDS_Vertex circleCenter;
+        const TopoDS_Shape* otherShape;
+        if (curve1.GetType() == GeomAbs_Circle) {
+            circleCenter = BRepBuilderAPI_MakeVertex(curve1.Circle().Location());
+            otherShape = &shape2;
+        }
+        else {
+            const TopoDS_Edge& edge2 = TopoDS::Edge(shape2);
+            BRepAdaptor_Curve curve2(edge2);
+
+            circleCenter = BRepBuilderAPI_MakeVertex(curve2.Circle().Location());
+            otherShape = &shape1;
+        }
+
+        BRepExtrema_DistShapeShape extrema(circleCenter, *otherShape);
+
+        if (extrema.IsDone()) {
+            // Found the nearest point between point and curve
+            // NOTE we will assume there is only 1 solution (cyclic topology will create
+            // multiple solutions.
+            gp_Pnt P1 = extrema.PointOnShape1(1);
+            gp_Pnt P2 = extrema.PointOnShape2(1);
+            gp_XYZ diff = P2.XYZ() - P1.XYZ();
+            distance = Base::Vector3d(diff.X(), diff.Y(), diff.Z()).Length();
+        }
+    }
+    else if (measureType == MeasureType::PointToCircle) {
+        const TopoDS_Edge& edge1 = TopoDS::Edge(shape1);
+        BRepAdaptor_Curve curve1(edge1);
+
+        TopoDS_Vertex& vert1 = TopoDS::Vertex(shape2);
+
+        gp_Circ circle1 = curve1.Circle();
+        gp_Pnt pt = BRep_Tool::Pnt(vert1);
+
+        distance = circle1.Location().Distance(pt);
+    }
+
+    return distance;
+}
 double Measurement::planePlaneDistance() const
 {
     if (measureType != MeasureType::TwoPlanes || References3D.getSize() != 2) {
@@ -420,16 +554,14 @@ double Measurement::planePlaneDistance() const
     const auto& objects = References3D.getValues();
     const auto& subElements = References3D.getSubValues();
 
-    std::vector<gp_Pln> planes;
-
     // Get the first plane
-    TopoDS_Shape shape1 = getShape(objects[0], subElements[0].c_str());
+    TopoDS_Shape shape1 = getShape(objects[0], subElements[0].c_str(), TopAbs_FACE);
     const TopoDS_Face& face1 = TopoDS::Face(shape1);
     BRepAdaptor_Surface surface1(face1);
     const gp_Pln& plane1 = surface1.Plane();
 
     // Get the second plane
-    TopoDS_Shape shape2 = getShape(objects[1], subElements[1].c_str());
+    TopoDS_Shape shape2 = getShape(objects[1], subElements[1].c_str(), TopAbs_FACE);
     const TopoDS_Face& face2 = TopoDS::Face(shape2);
     BRepAdaptor_Surface surface2(face2);
     const gp_Pln& plane2 = surface2.Plane();
@@ -446,6 +578,61 @@ double Measurement::planePlaneDistance() const
     // Project this vector onto the plane normal
     double distance = Abs(vectorBetweenPlanes.Dot(normalToPlane1));
 
+    return distance;
+}
+double Measurement::cylinderAxisDistance() const
+{
+    double distance = 0.0;
+
+    if (References3D.getSize() != 2) {
+        return distance;
+    }
+
+    const std::vector<App::DocumentObject*>& objects = References3D.getValues();
+    const std::vector<std::string>& subElements = References3D.getSubValues();
+
+    // Get the first circle
+    TopoDS_Shape shape1 = getShape(objects[0], subElements[0].c_str());
+    TopoDS_Shape shape2 = getShape(objects[1], subElements[1].c_str());
+
+    if (shape1.ShapeType() != TopAbs_FACE) {
+        std::swap(shape1, shape2);
+    }
+
+    if (measureType == MeasureType::PointToCylinder) {
+        TopoDS_Face face = TopoDS::Face(shape1);
+        BRepAdaptor_Surface cylinderFace(face);
+
+        const TopoDS_Vertex& vert1 = TopoDS::Vertex(shape2);
+        gp_Pnt pt = BRep_Tool::Pnt(vert1);
+
+        if (cylinderFace.GetType() == GeomAbs_Cylinder) {
+            distance = gp_Lin(cylinderFace.Cylinder().Axis()).Distance(pt);
+        }
+    }
+    else if (measureType == MeasureType::TwoCylinders) {
+        TopoDS_Face face1 = TopoDS::Face(shape1);
+        BRepAdaptor_Surface surface1(face1);
+
+        TopoDS_Face face2 = TopoDS::Face(shape2);
+        BRepAdaptor_Surface surface2(face2);
+
+        if (surface1.GetType() == GeomAbs_Cylinder && surface2.GetType() == GeomAbs_Cylinder) {
+            distance =
+                gp_Lin(surface1.Cylinder().Axis()).Distance(gp_Lin(surface2.Cylinder().Axis()));
+        }
+    }
+    else if (measureType == MeasureType::CircleToCylinder) {
+        TopoDS_Face face1 = TopoDS::Face(shape1);
+        BRepAdaptor_Surface surface1(face1);
+
+        TopoDS_Edge edge1 = TopoDS::Edge(shape2);
+        BRepAdaptor_Curve curve1(edge1);
+
+        if (surface1.GetType() == GeomAbs_Cylinder && curve1.GetType() == GeomAbs_Circle) {
+            distance = gp_Lin(surface1.Cylinder().Axis()).Distance(curve1.Circle().Location());
+        }
+    }
     return distance;
 }
 
@@ -468,8 +655,8 @@ double Measurement::angle(const Base::Vector3d& /*param*/) const
         // Since we don't know if the directions of the lines point in the same general direction
         // we could get the angle we want or the supplementary angle.
         if (numRefs == 2) {
-            TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str());
-            TopoDS_Shape shape2 = getShape(objects.at(1), subElements.at(1).c_str());
+            TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_EDGE);
+            TopoDS_Shape shape2 = getShape(objects.at(1), subElements.at(1).c_str(), TopAbs_EDGE);
 
             BRepAdaptor_Curve curve1(TopoDS::Edge(shape1));
             BRepAdaptor_Curve curve2(TopoDS::Edge(shape2));
@@ -500,9 +687,9 @@ double Measurement::angle(const Base::Vector3d& /*param*/) const
         // NOTE: we are calculating the 3d angle here, not the projected angle
         // ASSUMPTION: the references are in end-apex-end order
         if (numRefs == 3) {
-            TopoDS_Shape shape0 = getShape(objects.at(0), subElements.at(0).c_str());
-            TopoDS_Shape shape1 = getShape(objects.at(1), subElements.at(1).c_str());
-            TopoDS_Shape shape2 = getShape(objects.at(1), subElements.at(2).c_str());
+            TopoDS_Shape shape0 = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_VERTEX);
+            TopoDS_Shape shape1 = getShape(objects.at(1), subElements.at(1).c_str(), TopAbs_VERTEX);
+            TopoDS_Shape shape2 = getShape(objects.at(1), subElements.at(2).c_str(), TopAbs_VERTEX);
             if (shape0.ShapeType() != TopAbs_VERTEX || shape1.ShapeType() != TopAbs_VERTEX
                 || shape2.ShapeType() != TopAbs_VERTEX) {
                 throw Base::RuntimeError("Measurement references for 3 point angle are not Vertex");
@@ -518,6 +705,44 @@ double Measurement::angle(const Base::Vector3d& /*param*/) const
             return Base::toDegrees<double>(radians);
         }
     }
+    else if (measureType == MeasureType::TwoCylinders || measureType == MeasureType::TwoCircles
+             || measureType == MeasureType::CircleToCylinder) {
+        if (numRefs == 2) {
+            TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_EDGE);
+            TopoDS_Shape shape2 = getShape(objects.at(1), subElements.at(1).c_str(), TopAbs_EDGE);
+
+            gp_Ax1 axis1;
+            gp_Ax1 axis2;
+
+            if (measureType == MeasureType::TwoCylinders) {
+                BRepAdaptor_Surface surface1(TopoDS::Face(shape1));
+                BRepAdaptor_Surface surface2(TopoDS::Face(shape2));
+
+                axis1 = surface1.Cylinder().Axis();
+                axis2 = surface2.Cylinder().Axis();
+            }
+            else if (measureType == MeasureType::TwoCircles) {
+                BRepAdaptor_Curve curve1(TopoDS::Edge(shape1));
+                BRepAdaptor_Curve curve2(TopoDS::Edge(shape2));
+
+                axis1 = curve1.Circle().Axis();
+                axis2 = curve2.Circle().Axis();
+            }
+            else if (measureType == MeasureType::CircleToCylinder) {
+                if (shape1.ShapeType() == TopAbs_FACE) {
+                    std::swap(shape1, shape2);
+                }
+                BRepAdaptor_Curve curve1(TopoDS::Edge(shape1));
+                BRepAdaptor_Surface surface2(TopoDS::Face(shape2));
+
+                axis1 = curve1.Circle().Axis();
+                axis2 = surface2.Cylinder().Axis();
+            }
+            double aRad = axis1.Angle(axis2);
+            return Base::toDegrees<double>(
+                std::min(aRad, std::fmod(aRad + std::numbers::pi, 2.0 * std::numbers::pi)));
+        }
+    }
     throw Base::RuntimeError("Unexpected error for angle measurement");
 }
 
@@ -528,10 +753,10 @@ double Measurement::radius() const
 
     int numRefs = References3D.getSize();
     if (numRefs == 0) {
-        Base::Console().Error("Measurement::radius - No 3D references available\n");
+        Base::Console().error("Measurement::radius - No 3D references available\n");
     }
-    else if (measureType == MeasureType::Circle) {
-        TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str());
+    else if (measureType == MeasureType::Circle || measureType == MeasureType::CircleArc) {
+        TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_EDGE);
         const TopoDS_Edge& edge = TopoDS::Edge(shape);
 
         BRepAdaptor_Curve curve(edge);
@@ -539,9 +764,9 @@ double Measurement::radius() const
             return (double)curve.Circle().Radius();
         }
     }
-    else if (measureType == MeasureType::Cylinder || measureType == MeasureType::Sphere
-             || measureType == MeasureType::Torus) {
-        TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str());
+    else if (measureType == MeasureType::Cylinder || measureType == MeasureType::CylinderSection
+             || measureType == MeasureType::Sphere || measureType == MeasureType::Torus) {
+        TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_FACE);
         TopoDS_Face face = TopoDS::Face(shape);
 
         BRepAdaptor_Surface sf(face);
@@ -555,7 +780,37 @@ double Measurement::radius() const
             return sf.Torus().MinorRadius();
         }
     }
-    Base::Console().Error("Measurement::radius - Invalid References3D Provided\n");
+    Base::Console().error("Measurement::radius - Invalid References3D Provided\n");
+    return 0.0;
+}
+double Measurement::diameter() const
+{
+    const std::vector<App::DocumentObject*>& objects = References3D.getValues();
+    const std::vector<std::string>& subElements = References3D.getSubValues();
+
+    int numRefs = References3D.getSize();
+    if (numRefs == 0) {
+        Base::Console().error("Measurement::diameter - No 3D references available\n");
+    }
+    else if (measureType == MeasureType::Circle) {
+        TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_EDGE);
+        const TopoDS_Edge& edge = TopoDS::Edge(shape);
+
+        BRepAdaptor_Curve curve(edge);
+        if (curve.GetType() == GeomAbs_Circle) {
+            return (double)curve.Circle().Radius() * 2.0;
+        }
+    }
+    else if (measureType == MeasureType::Cylinder) {
+        TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_FACE);
+        TopoDS_Face face = TopoDS::Face(shape);
+
+        BRepAdaptor_Surface sf(face);
+        if (sf.GetType() == GeomAbs_Cylinder) {
+            return sf.Cylinder().Radius() * 2.0;
+        }
+    }
+    Base::Console().error("Measurement::diameter - Invalid References3D Provided\n");
     return 0.0;
 }
 
@@ -564,10 +819,10 @@ Base::Vector3d Measurement::delta() const
     Base::Vector3d result;
     int numRefs = References3D.getSize();
     if (numRefs == 0) {
-        Base::Console().Error("Measurement::delta - No 3D references available\n");
+        Base::Console().error("Measurement::delta - No 3D references available\n");
     }
     else if (measureType == MeasureType::Invalid) {
-        Base::Console().Error("Measurement::delta - measureType is Invalid\n");
+        Base::Console().error("Measurement::delta - measureType is Invalid\n");
     }
     else {
         const std::vector<App::DocumentObject*>& objects = References3D.getValues();
@@ -576,8 +831,10 @@ Base::Vector3d Measurement::delta() const
         if (measureType == MeasureType::PointToPoint) {
             if (numRefs == 2) {
                 // Keep separate case for two points to reduce need for complex algorithm
-                TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str());
-                TopoDS_Shape shape2 = getShape(objects.at(1), subElements.at(1).c_str());
+                TopoDS_Shape shape1 =
+                    getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_VERTEX);
+                TopoDS_Shape shape2 =
+                    getShape(objects.at(1), subElements.at(1).c_str(), TopAbs_VERTEX);
 
                 const TopoDS_Vertex& vert1 = TopoDS::Vertex(shape1);
                 const TopoDS_Vertex& vert2 = TopoDS::Vertex(shape2);
@@ -589,7 +846,9 @@ Base::Vector3d Measurement::delta() const
             }
         }
         else if (measureType == MeasureType::PointToEdge
-                 || measureType == MeasureType::PointToSurface) {
+                 || measureType == MeasureType::PointToSurface
+                 || measureType == MeasureType::PointToCircle
+                 || measureType == MeasureType::PointToCylinder) {
             // BrepExtema can calculate minimum distance between any set of topology sets.
             if (numRefs == 2) {
                 TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str());
@@ -611,7 +870,8 @@ Base::Vector3d Measurement::delta() const
         else if (measureType == MeasureType::Edges) {
             // Only case that is supported is straight line edge
             if (numRefs == 1) {
-                TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str());
+                TopoDS_Shape shape =
+                    getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_EDGE);
                 const TopoDS_Edge& edge = TopoDS::Edge(shape);
                 BRepAdaptor_Curve curve(edge);
 
@@ -623,8 +883,10 @@ Base::Vector3d Measurement::delta() const
                 }
             }
             else if (numRefs == 2) {
-                TopoDS_Shape shape1 = getShape(objects.at(0), subElements.at(0).c_str());
-                TopoDS_Shape shape2 = getShape(objects.at(1), subElements.at(1).c_str());
+                TopoDS_Shape shape1 =
+                    getShape(objects.at(0), subElements.at(0).c_str(), TopAbs_EDGE);
+                TopoDS_Shape shape2 =
+                    getShape(objects.at(1), subElements.at(1).c_str(), TopAbs_EDGE);
 
                 BRepAdaptor_Curve curve1(TopoDS::Edge(shape1));
                 BRepAdaptor_Curve curve2(TopoDS::Edge(shape2));
@@ -646,7 +908,7 @@ Base::Vector3d Measurement::delta() const
             }
         }
         else {
-            Base::Console().Error("Measurement::delta - measureType is not recognized\n");
+            Base::Console().error("Measurement::delta - measureType is not recognized\n");
         }
     }
     return result;
@@ -656,10 +918,10 @@ double Measurement::volume() const
 {
     double result = 0.0;
     if (References3D.getSize() == 0) {
-        Base::Console().Error("Measurement::volume - No 3D references available\n");
+        Base::Console().error("Measurement::volume - No 3D references available\n");
     }
     else if (measureType != MeasureType::Volumes) {
-        Base::Console().Error("Measurement::volume - measureType is not Volumes\n");
+        Base::Console().error("Measurement::volume - measureType is not Volumes\n");
     }
     else {
         const std::vector<App::DocumentObject*>& objects = References3D.getValues();
@@ -667,7 +929,11 @@ double Measurement::volume() const
 
         for (size_t i = 0; i < objects.size(); ++i) {
             GProp_GProps props = GProp_GProps();
-            BRepGProp::VolumeProperties(getShape(objects[i], subElements[i].c_str()), props);
+            TopoDS_Shape shape = getShape(objects[i], subElements[i].c_str());
+            if (shape.IsNull() || shape.Infinite()) {
+                continue;
+            }
+            BRepGProp::VolumeProperties(shape, props);
             result += props.Mass();
         }
     }
@@ -678,10 +944,11 @@ double Measurement::area() const
 {
     double result = 0.0;
     if (References3D.getSize() == 0) {
-        Base::Console().Error("Measurement::area - No 3D references available\n");
+        Base::Console().error("Measurement::area - No 3D references available\n");
     }
     else if (measureType == MeasureType::Volumes || measureType == MeasureType::Surfaces
-             || measureType == MeasureType::Cylinder || measureType == MeasureType::Cone
+             || measureType == MeasureType::Cylinder || measureType == MeasureType::CylinderSection
+             || measureType == MeasureType::TwoCylinders || measureType == MeasureType::Cone
              || measureType == MeasureType::Sphere || measureType == MeasureType::Torus
              || measureType == MeasureType::Plane) {
 
@@ -690,12 +957,16 @@ double Measurement::area() const
 
         for (size_t i = 0; i < objects.size(); ++i) {
             GProp_GProps props;
-            BRepGProp::SurfaceProperties(getShape(objects[i], subElements[i].c_str()), props);
+            TopoDS_Shape shape = getShape(objects[i], subElements[i].c_str());
+            if (shape.IsNull() || shape.Infinite()) {
+                continue;
+            }
+            BRepGProp::SurfaceProperties(shape, props);
             result += props.Mass();  // Area is obtained using Mass method for surface properties
         }
     }
     else {
-        Base::Console().Error("Measurement::area - measureType is not valid\n");
+        Base::Console().error("Measurement::area - measureType is not valid\n");
     }
     return result;
 }
@@ -705,10 +976,10 @@ Base::Vector3d Measurement::massCenter() const
     Base::Vector3d result;
     int numRefs = References3D.getSize();
     if (numRefs == 0) {
-        Base::Console().Error("Measurement::massCenter - No 3D references available\n");
+        Base::Console().error("Measurement::massCenter - No 3D references available\n");
     }
     else if (measureType == MeasureType::Invalid) {
-        Base::Console().Error("Measurement::massCenter - measureType is Invalid\n");
+        Base::Console().error("Measurement::massCenter - measureType is Invalid\n");
     }
     else {
         const std::vector<App::DocumentObject*>& objects = References3D.getValues();
@@ -725,7 +996,11 @@ Base::Vector3d Measurement::massCenter() const
                 // Compute inertia properties
 
                 GProp_GProps props = GProp_GProps();
-                BRepGProp::VolumeProperties(getShape((*obj), ""), props);
+                TopoDS_Shape shape = ShapeFinder::getLocatedShape(*(*obj), "");
+                if (shape.IsNull()) {
+                    continue;
+                }
+                BRepGProp::VolumeProperties(shape, props);
                 gprops.Add(props);
                 // Get inertia properties
             }
@@ -735,7 +1010,7 @@ Base::Vector3d Measurement::massCenter() const
             return Base::Vector3d(cog.X(), cog.Y(), cog.Z());
         }
         else {
-            Base::Console().Error("Measurement::massCenter - measureType is not recognized\n");
+            Base::Console().error("Measurement::massCenter - measureType is not recognized\n");
         }
     }
     return result;
@@ -751,7 +1026,12 @@ bool Measurement::planesAreParallel() const
     for (size_t i = 0; i < objects.size(); ++i) {
         TopoDS_Shape refSubShape;
         try {
-            refSubShape = Part::Feature::getShape(objects[i], subElements[i].c_str(), true);
+            refSubShape = Part::Feature::getShape(objects[i],
+                                                  Part::ShapeOption::NeedSubElement
+                                                      | Part::ShapeOption::ResolveLink
+                                                      | Part::ShapeOption::Transform,
+                                                  subElements[i].c_str());
+
             if (refSubShape.IsNull()) {
                 return false;
             }
@@ -795,12 +1075,18 @@ bool Measurement::linesAreParallel() const
     }
 
     // Get the first line
-    TopoDS_Shape shape1 = getShape(objects[0], subElements[0].c_str());
+    TopoDS_Shape shape1 = getShape(objects[0], subElements[0].c_str(), TopAbs_EDGE);
+    if (shape1.IsNull()) {
+        return false;
+    }
     const TopoDS_Edge& edge1 = TopoDS::Edge(shape1);
     BRepAdaptor_Curve curve1(edge1);
 
     // Get the second line
-    TopoDS_Shape shape2 = getShape(objects[1], subElements[1].c_str());
+    TopoDS_Shape shape2 = getShape(objects[1], subElements[1].c_str(), TopAbs_EDGE);
+    if (shape2.IsNull()) {
+        return false;
+    }
     const TopoDS_Edge& edge2 = TopoDS::Edge(shape2);
     BRepAdaptor_Curve curve2(edge2);
 

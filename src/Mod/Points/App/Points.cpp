@@ -99,6 +99,21 @@ void PointKernel::transformGeometry(const Base::Matrix4D& rclMat)
 #endif
 }
 
+void PointKernel::moveGeometry(const Base::Vector3d& vec)
+{
+    Base::Vector3f offset = Base::toVector<float>(vec);
+    std::vector<value_type>& kernel = getBasicPoints();
+#ifdef _MSC_VER
+    Concurrency::parallel_for_each(kernel.begin(), kernel.end(), [offset](value_type& value) {
+        value += offset;
+    });
+#else
+    QtConcurrent::blockingMap(kernel, [offset](value_type& value) {
+        value += offset;
+    });
+#endif
+}
+
 Base::BoundBox3d PointKernel::getBoundBox() const
 {
     Base::BoundBox3d bnd;
@@ -203,14 +218,14 @@ void PointKernel::Restore(Base::XMLReader& reader)
     clear();
 
     reader.readElement("Points");
-    std::string file(reader.getAttribute("file"));
+    std::string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read
         reader.addFile(file.c_str(), this);
     }
     if (reader.DocumentSchema > 3) {
-        std::string Matrix(reader.getAttribute("mtrx"));
+        std::string Matrix(reader.getAttribute<const char*>("mtrx"));
         _Mtrx.fromString(Matrix);
     }
 }

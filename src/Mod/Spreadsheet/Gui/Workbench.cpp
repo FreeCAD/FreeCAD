@@ -68,7 +68,7 @@ void Workbench::activated()
 {
     if (!initialized) {
         QList<QToolBar*> bars =
-            Gui::getMainWindow()->findChildren<QToolBar*>(QString::fromLatin1("Spreadsheet"));
+            Gui::getMainWindow()->findChildren<QToolBar*>(QStringLiteral("Spreadsheet"));
 
         if (bars.size() == 1) {
             QToolBar* bar = bars[0];
@@ -77,13 +77,13 @@ void Workbench::activated()
             QPalette palette = Gui::getMainWindow()->palette();
 
             QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-                QString::fromLatin1("Spreadsheet_ForegroundColor"));
+                QStringLiteral("Spreadsheet_ForegroundColor"));
             if (!fgList.empty()) {
                 foregroundColor = fgList[0];
             }
             else {
                 foregroundColor = new QtColorPicker(bar);
-                foregroundColor->setObjectName(QString::fromLatin1("Spreadsheet_ForegroundColor"));
+                foregroundColor->setObjectName(QStringLiteral("Spreadsheet_ForegroundColor"));
                 foregroundColor->setStandardColors();
                 foregroundColor->setCurrentColor(palette.color(QPalette::WindowText));
                 QObject::connect(foregroundColor,
@@ -91,19 +91,19 @@ void Workbench::activated()
                                  workbenchHelper.get(),
                                  &WorkbenchHelper::setForegroundColor);
             }
-            foregroundColor->setToolTip(QObject::tr("Set cell(s) text color"));
-            foregroundColor->setWhatsThis(QObject::tr("Sets the Spreadsheet cell(s) text color"));
-            foregroundColor->setStatusTip(QObject::tr("Set cell(s) text color"));
+            foregroundColor->setToolTip(QObject::tr("Sets the text color of cells"));
+            foregroundColor->setWhatsThis(QObject::tr("Sets the text color of spreadsheet cells"));
+            foregroundColor->setStatusTip(QObject::tr("Sets the text color of spreadsheet cells"));
             bar->addWidget(foregroundColor);
 
             QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
-                QString::fromLatin1("Spreadsheet_BackgroundColor"));
+                QStringLiteral("Spreadsheet_BackgroundColor"));
             if (!bgList.empty()) {
                 backgroundColor = bgList[0];
             }
             else {
                 backgroundColor = new QtColorPicker(bar);
-                backgroundColor->setObjectName(QString::fromLatin1("Spreadsheet_BackgroundColor"));
+                backgroundColor->setObjectName(QStringLiteral("Spreadsheet_BackgroundColor"));
                 backgroundColor->setStandardColors();
                 backgroundColor->setCurrentColor(palette.color(QPalette::Base));
                 QObject::connect(backgroundColor,
@@ -111,10 +111,10 @@ void Workbench::activated()
                                  workbenchHelper.get(),
                                  &WorkbenchHelper::setBackgroundColor);
             }
-            backgroundColor->setToolTip(QObject::tr("Set cell(s) background color"));
+            backgroundColor->setToolTip(QObject::tr("Sets the background color of cells"));
             backgroundColor->setWhatsThis(
-                QObject::tr("Sets the Spreadsheet cell(s) background color"));
-            backgroundColor->setStatusTip(QObject::tr("Set cell(s) background color"));
+                QObject::tr("Sets the spreadsheet cells background color"));
+            backgroundColor->setStatusTip(QObject::tr("Sets the background color of cells"));
             bar->addWidget(backgroundColor);
 
             initialized = false;
@@ -129,7 +129,7 @@ void WorkbenchHelper::setForegroundColor(const QColor& color)
     if (doc) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -163,7 +163,7 @@ void WorkbenchHelper::setBackgroundColor(const QColor& color)
     if (doc) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();

@@ -116,6 +116,7 @@ private:
 
 private:
     EditorViewP* d;
+    QList <QMetaObject::Connection> connectionList;
 };
 
 class PythonEditor;

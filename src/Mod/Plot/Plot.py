@@ -28,7 +28,7 @@ import sys
 try:
     import matplotlib
 
-    matplotlib.use("Qt5Agg")
+    matplotlib.use("QtAgg")
 
     # Force matplotlib to use PySide backend by temporarily unloading PyQt
     if "PyQt5.QtCore" in sys.modules:
@@ -36,10 +36,11 @@ try:
         import matplotlib.pyplot as plt
         import PyQt5.QtCore
     else:
+        print("default matplotlib import")
         import matplotlib.pyplot as plt
 
-    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-    from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+    from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as NavigationToolbar
 
     from matplotlib.figure import Figure
 except ImportError:

@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 #include <algorithm>
 #include <cmath>
+#include <limits>
 #include <map>
 #include <queue>
 #include <stdexcept>
@@ -194,7 +195,7 @@ unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet>& rclFAry, bool 
 {
     // Build map of edges of the referencing facets we want to append
 #ifdef FC_DEBUG
-    unsigned long countPoints = CountPoints();
+    [[maybe_unused]] unsigned long countPoints = CountPoints();
 #endif
 
     // if the manifold check shouldn't be done then just add all faces
@@ -310,7 +311,7 @@ unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet>& rclFAry, bool 
 
             if (ulF0 != FACET_INDEX_MAX) {
                 unsigned short usSide = _aclFacetArray[ulF0].Side(ulP0, ulP1);
-                assert(usSide != USHRT_MAX);
+                assert(usSide != std::numeric_limits<unsigned short>::max());
                 _aclFacetArray[ulF0]._aulNeighbours[usSide] = FACET_INDEX_MAX;
             }
         }
@@ -342,13 +343,13 @@ unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet>& rclFAry, bool 
 
             if (ulF0 != FACET_INDEX_MAX) {
                 unsigned short usSide = _aclFacetArray[ulF0].Side(ulP0, ulP1);
-                assert(usSide != USHRT_MAX);
+                assert(usSide != std::numeric_limits<unsigned short>::max());
                 _aclFacetArray[ulF0]._aulNeighbours[usSide] = ulF1;
             }
 
             if (ulF1 != FACET_INDEX_MAX) {
                 unsigned short usSide = _aclFacetArray[ulF1].Side(ulP0, ulP1);
-                assert(usSide != USHRT_MAX);
+                assert(usSide != std::numeric_limits<unsigned short>::max());
                 _aclFacetArray[ulF1]._aulNeighbours[usSide] = ulF0;
             }
         }
@@ -1032,6 +1033,12 @@ void MeshKernel::Read(std::istream& rclIn)
         unsigned long uCtPts = magic, uCtFts = version;
         MeshPointArray pointArray;
         MeshFacetArray facetArray;
+
+        // Sanity checks so we don't over-allocate below: limit the mesh to 1 billion points and
+        // 1 billion facets. Coverity issue 515697.
+        if (uCtPts > 1e9 || uCtFts > 1e9) {
+            throw Base::BadFormatError("Mesh seems to have over a billion points or facets");
+        }
 
         float ratio = 0;
         if (uCtPts > 0) {

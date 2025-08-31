@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Layers manager</string>
+   <string>Layers Manager</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -40,14 +40,14 @@
      <item>
       <widget class="QPushButton" name="buttonSelectAll">
        <property name="text">
-        <string>Select all</string>
+        <string>Select All</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="buttonToggle">
        <property name="text">
-        <string>Toggle on/off</string>
+        <string>Toggle Visibility</string>
        </property>
       </widget>
      </item>

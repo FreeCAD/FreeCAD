@@ -73,7 +73,7 @@ DlgCustomActionsImp::DlgCustomActionsImp(QWidget* parent)
     }
 
     QString systemMacroDirStr =
-        QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
+        QString::fromStdString(App::Application::getHomePath()) + QStringLiteral("Macro");
     d = QDir(systemMacroDirStr, QLatin1String("*.FCMacro *.py"));
     if (d.exists()) {
         for (unsigned int i = 0; i < d.count(); i++) {
@@ -211,7 +211,7 @@ void DlgCustomActionsImp::onActionListWidgetItemActivated(QTreeWidgetItem* item)
         if (!bFound) {
             QMessageBox::critical(this,
                                   tr("Macro not found"),
-                                  tr("Sorry, couldn't find macro file '%1'.").arg(scriptName));
+                                  tr("Could not find macro file '%1'").arg(scriptName));
         }
 
         // fill up labels with the command's data
@@ -219,8 +219,8 @@ void DlgCustomActionsImp::onActionListWidgetItemActivated(QTreeWidgetItem* item)
         ui->actionMenu->setText(QString::fromUtf8(pScript->getMenuText()));
         ui->actionToolTip->setText(QString::fromUtf8(pScript->getToolTipText()));
         ui->actionStatus->setText(QString::fromUtf8(pScript->getStatusTip()));
-        ui->actionAccel->setText(
-            ShortcutManager::instance()->getShortcut(actionName.constData(), pScript->getAccel()));
+        ui->actionAccel->setKeySequence(QKeySequence(
+            ShortcutManager::instance()->getShortcut(actionName.constData(), pScript->getAccel())));
         ui->pixmapLabel->clear();
         m_sPixmap.clear();
         const char* name = pScript->getPixmap();
@@ -235,12 +235,12 @@ void DlgCustomActionsImp::onActionListWidgetItemActivated(QTreeWidgetItem* item)
 void DlgCustomActionsImp::onButtonAddActionClicked()
 {
     if (ui->actionMacros->currentText().isEmpty()) {
-        QMessageBox::warning(this, tr("Empty macro"), tr("Please specify the macro first."));
+        QMessageBox::warning(this, tr("Empty macro"), tr("Specify the macro first"));
         return;
     }
 
     if (ui->actionMenu->text().isEmpty()) {
-        QMessageBox::warning(this, tr("Empty text"), tr("Please specify the menu text first."));
+        QMessageBox::warning(this, tr("Empty text"), tr("Specify the menu text first"));
         return;
     }
 
@@ -257,13 +257,7 @@ void DlgCustomActionsImp::onButtonAddActionClicked()
     item->setData(1, Qt::UserRole, actionName);
     item->setText(1, ui->actionMenu->text());
     item->setSizeHint(0, QSize(32, 32));
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     item->setIcon(0, ui->pixmapLabel->pixmap(Qt::ReturnByValue));
-#else
-    if (ui->pixmapLabel->pixmap()) {
-        item->setIcon(0, *ui->pixmapLabel->pixmap());
-    }
-#endif
 
     // Convert input text into utf8
     if (!ui->actionWhatsThis->text().isEmpty()) {
@@ -296,9 +290,10 @@ void DlgCustomActionsImp::onButtonAddActionClicked()
     ui->pixmapLabel->clear();
     m_sPixmap.clear();
 
-    if (!ui->actionAccel->text().isEmpty()) {
+    if (!ui->actionAccel->isEmpty()) {
+        QString text = ui->actionAccel->text();
         ShortcutManager::instance()->setShortcut(actionName.constData(),
-                                                 ui->actionAccel->text().toLatin1().constData());
+                                                 text.toLatin1().constData());
     }
     ui->actionAccel->clear();
 
@@ -310,12 +305,12 @@ void DlgCustomActionsImp::onButtonReplaceActionClicked()
 {
     QTreeWidgetItem* item = ui->actionListWidget->currentItem();
     if (!item) {
-        QMessageBox::warning(this, tr("No item selected"), tr("Please select a macro item first."));
+        QMessageBox::warning(this, tr("No item selected"), tr("Select a macro item first"));
         return;
     }
 
     if (ui->actionMenu->text().isEmpty()) {
-        QMessageBox::warning(this, tr("Empty text"), tr("Please specify the menu text first."));
+        QMessageBox::warning(this, tr("Empty text"), tr("Specify the menu text first"));
         return;
     }
 
@@ -359,8 +354,9 @@ void DlgCustomActionsImp::onButtonReplaceActionClicked()
     ui->pixmapLabel->clear();
     m_sPixmap.clear();
 
-    if (!ui->actionAccel->text().isEmpty()) {
-        macro->setAccel(ui->actionAccel->text().toLatin1());
+    if (!ui->actionAccel->isEmpty()) {
+        QString text = ui->actionAccel->text();
+        macro->setAccel(text.toLatin1());
     }
     ui->actionAccel->clear();
 
@@ -461,7 +457,7 @@ void IconDialog::onAddIconPath()
     }
 
     IconFolders dlg(pathList, this);
-    dlg.setWindowTitle(tr("Icon folders"));
+    dlg.setWindowTitle(tr("Icon Folders"));
     if (dlg.exec()) {
         QStringList paths = dlg.getPaths();
 
@@ -483,7 +479,7 @@ void IconDialog::onAddIconPath()
                 QStringList filters;
                 QList<QByteArray> formats = QImageReader::supportedImageFormats();
                 for (const auto& format : formats) {
-                    filters << QString::fromLatin1("*.%1").arg(
+                    filters << QStringLiteral("*.%1").arg(
                         QString::fromLatin1(format).toLower());
                 }
                 QDir d(path);
@@ -527,7 +523,6 @@ void DlgCustomActionsImp::changeEvent(QEvent* e)
         ui->retranslateUi(this);
         ui->actionListWidget->clear();
         showActions();
-        ui->actionAccel->setText(qApp->translate("Gui::AccelLineEdit", "none"));
     }
     QWidget::changeEvent(e);
 }
@@ -627,7 +622,7 @@ void IconFolders::removeFolder()
         QMessageBox::information(
             this,
             tr("Remove folder"),
-            tr("Removing a folder only takes effect after an application restart."));
+            tr("Removing a folder only takes effect after an application restart"));
     }
 
     addButton->setEnabled(true);

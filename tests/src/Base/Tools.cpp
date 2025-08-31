@@ -1,47 +1,9 @@
 #include <gtest/gtest.h>
 #include <Base/Tools.h>
 #include <bitset>
+#include <vector>
 
 // NOLINTBEGIN(cppcoreguidelines-*,readability-*)
-TEST(BaseToolsSuite, TestUniqueName1)
-{
-    EXPECT_EQ(Base::Tools::getUniqueName("Body", {}), "Body");
-}
-
-TEST(BaseToolsSuite, TestUniqueName2)
-{
-    EXPECT_EQ(Base::Tools::getUniqueName("Body", {"Body"}, 1), "Body1");
-}
-
-TEST(BaseToolsSuite, TestUniqueName3)
-{
-    EXPECT_EQ(Base::Tools::getUniqueName("Body", {"Body"}, 3), "Body001");
-}
-
-TEST(BaseToolsSuite, TestUniqueName4)
-{
-    EXPECT_EQ(Base::Tools::getUniqueName("Body", {"Body001"}, 3), "Body002");
-}
-
-TEST(BaseToolsSuite, TestUniqueName5)
-{
-    EXPECT_EQ(Base::Tools::getUniqueName("Body", {"Body", "Body001"}, 3), "Body002");
-}
-
-TEST(BaseToolsSuite, TestUniqueName6)
-{
-    EXPECT_EQ(Base::Tools::getUniqueName("Body001", {"Body", "Body001"}, 3), "Body002");
-}
-
-TEST(BaseToolsSuite, TestUniqueName7)
-{
-    EXPECT_EQ(Base::Tools::getUniqueName("Body001", {"Body"}, 3), "Body002");
-}
-
-TEST(BaseToolsSuite, TestUniqueName8)
-{
-    EXPECT_EQ(Base::Tools::getUniqueName("Body12345", {"Body"}, 3), "Body12346");
-}
 
 TEST(Tools, TestIota)
 {
@@ -77,16 +39,16 @@ TEST(Tools, TestSignum)
 TEST(Tools, TestRadian)
 {
     EXPECT_EQ(Base::toRadians<int>(90), 1);
-    EXPECT_DOUBLE_EQ(Base::toRadians<double>(180), M_PI);
-    EXPECT_DOUBLE_EQ(Base::toRadians<double>(90.0), M_PI / 2.0);
+    EXPECT_DOUBLE_EQ(Base::toRadians<double>(180), std::numbers::pi);
+    EXPECT_DOUBLE_EQ(Base::toRadians<double>(90.0), std::numbers::pi / 2.0);
     EXPECT_DOUBLE_EQ(Base::toRadians<double>(0.0), 0.0);
 }
 
 TEST(Tools, TestDegree)
 {
     EXPECT_EQ(Base::toDegrees<int>(3), 171);
-    EXPECT_DOUBLE_EQ(Base::toDegrees<double>(M_PI), 180.0);
-    EXPECT_DOUBLE_EQ(Base::toDegrees<double>(M_PI / 2.0), 90.0);
+    EXPECT_DOUBLE_EQ(Base::toDegrees<double>(std::numbers::pi), 180.0);
+    EXPECT_DOUBLE_EQ(Base::toDegrees<double>(std::numbers::pi / 2.0), 90.0);
     EXPECT_DOUBLE_EQ(Base::toDegrees<double>(0.0), 0.0);
 }
 
@@ -150,5 +112,48 @@ TEST(BaseToolsSuite, TestEscapeQuotesFromString)
     EXPECT_EQ(Base::Tools::escapeQuotesFromString("\'"), "\\\'");
     EXPECT_EQ(Base::Tools::escapeQuotesFromString("\""), "\\\"");
     EXPECT_EQ(Base::Tools::escapeQuotesFromString("\\"), "\\");
+}
+TEST(BaseToolsSuite, TestGetIdentifier)
+{
+    // ASCII and edge cases
+    EXPECT_EQ(Base::Tools::getIdentifier("valid"), "valid");
+    EXPECT_EQ(Base::Tools::getIdentifier("_valid"), "_valid");
+    EXPECT_EQ(Base::Tools::getIdentifier("1invalid"), "_1invalid");
+    EXPECT_EQ(Base::Tools::getIdentifier(""), "_");
+
+    // Unicode letters (valid start and continue)
+    EXPECT_EQ(Base::Tools::getIdentifier("πValue"), "πValue");  // Greek lowercase
+    EXPECT_EQ(Base::Tools::getIdentifier("Δx"), "Δx");          // Greek uppercase
+    EXPECT_EQ(Base::Tools::getIdentifier("ǅz"), "ǅz");          // Titlecase letter
+    EXPECT_EQ(Base::Tools::getIdentifier("ʰindex"), "ʰindex");  // Modifier letter
+    EXPECT_EQ(Base::Tools::getIdentifier("名字"), "名字");      // CJK characters (Lo)
+    EXPECT_EQ(Base::Tools::getIdentifier("ⅨCount"), "ⅨCount");  // Letter number (Nl)
+
+    // Digits not valid as first char
+    EXPECT_EQ(Base::Tools::getIdentifier("٢ndPlace"), "_٢ndPlace");  // Arabic-Indic digit (Nd)
+
+    // Connector punctuation
+    EXPECT_EQ(Base::Tools::getIdentifier("valid_name"), "valid_name");
+    EXPECT_EQ(Base::Tools::getIdentifier("valid‿name"), "valid‿name");
+    EXPECT_EQ(Base::Tools::getIdentifier("valid﹍name"), "valid﹍name");
+
+    // Combining marks (Mn, Mc)
+    EXPECT_EQ(Base::Tools::getIdentifier("éclair"), "éclair");  // 'e' + combining acute accent (Mn)
+    EXPECT_EQ(Base::Tools::getIdentifier("devा"), "devा");      // Devanagari vowel sign (Mc)
+
+    // Invalid symbols
+    EXPECT_EQ(Base::Tools::getIdentifier("hello!"), "hello_");
+    EXPECT_EQ(Base::Tools::getIdentifier("foo-bar"), "foo_bar");
+    EXPECT_EQ(Base::Tools::getIdentifier("a🙂b"), "a_b");  // Emoji replaced
+    EXPECT_EQ(Base::Tools::getIdentifier("a*b&c"), "a_b_c");
+
+    // Edge: starts with underscore, includes mixed types
+    EXPECT_EQ(Base::Tools::getIdentifier("_नमस्ते123"), "_नमस्ते123");
+
+    // Starts with invalid character
+    EXPECT_EQ(Base::Tools::getIdentifier("💡idea"), "_idea");
+
+    // Full-width digit (U+FF11, looks like '1')
+    EXPECT_EQ(Base::Tools::getIdentifier("１start"), "_１start");
 }
 // NOLINTEND(cppcoreguidelines-*,readability-*)

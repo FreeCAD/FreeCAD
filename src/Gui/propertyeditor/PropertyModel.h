@@ -38,7 +38,7 @@ class Property;
 namespace Gui {
 namespace PropertyEditor {
 
-class PropertyModel : public QAbstractItemModel
+class GuiExport PropertyModel : public QAbstractItemModel
 {
     Q_OBJECT
 
@@ -65,6 +65,7 @@ public:
     void updateProperty(const App::Property&);
     void appendProperty(const App::Property&);
     void removeProperty(const App::Property&);
+    void renameProperty(const App::Property&);
 
     QStringList propertyPathFromIndex(const QModelIndex&) const;
     QModelIndex propertyIndexFromPath(const QStringList&) const;

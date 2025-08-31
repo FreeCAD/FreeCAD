@@ -87,6 +87,10 @@ class PropertyItem;
 class PropertyModel;
 class PropertyEditorWidget;
 
+enum class FrameOption : bool {
+    NoFrame=false,
+    WithFrame=true
+};
 /**
  * The PropertyItemFactory provides methods for the dynamic creation of property items.
  * \author Werner Mayer
@@ -121,7 +125,7 @@ public:
 class PropertyItemAttorney
 {
 public:
-    static QVariant toString(PropertyItem* item, const QVariant& v);
+    static QString toString(PropertyItem* item, const QVariant& v);
 };
 
 class GuiExport PropertyItem: public QObject, public ExpressionBinding
@@ -130,6 +134,12 @@ class GuiExport PropertyItem: public QObject, public ExpressionBinding
     PROPERTYITEM_HEADER
 
 public:
+    enum Column {
+        NameColumn = 0,
+        ValueColumn = 1,
+        ColumnCount
+    };
+
     ~PropertyItem() override;
 
     /** Sets the current property objects. */
@@ -139,12 +149,15 @@ public:
     bool hasProperty(const App::Property*) const;
     virtual void assignProperty(const App::Property*);
     bool removeProperty(const App::Property*);
+    bool renameProperty(const App::Property*);
     App::Property* getFirstProperty();
     const App::Property* getFirstProperty() const;
 
     /** Creates the appropriate editor for this item and sets the editor to the value of
      * overrideValue(). */
-    virtual QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const;
+    virtual QWidget* createEditor(QWidget* parent,
+                                  const std::function<void()>& method,
+                                  FrameOption frameOption = FrameOption::NoFrame) const;
     virtual void setEditorData(QWidget* editor, const QVariant& data) const;
     virtual QVariant editorData(QWidget* editor) const;
     virtual bool isSeparator() const
@@ -207,7 +220,7 @@ protected:
     virtual QVariant displayName() const;
     virtual QVariant decoration(const QVariant&) const;
     virtual QVariant toolTip(const App::Property*) const;
-    virtual QVariant toString(const QVariant&) const;
+    virtual QString toString(const QVariant&) const;
     virtual QVariant value(const App::Property*) const;
     virtual void setValue(const QVariant&);
     virtual void initialize();
@@ -216,7 +229,7 @@ protected:
     void onChange() override;
 
 private:
-    QVariant dataProperty(int role) const;
+    QVariant dataPropertyName(int role) const;
     QVariant dataValue(int role) const;
     QString toString(const Py::Object&) const;
     QString asNone(const Py::Object&) const;
@@ -247,7 +260,9 @@ class GuiExport PropertyStringItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
@@ -268,7 +283,9 @@ class GuiExport PropertyFontItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
@@ -293,7 +310,9 @@ class GuiExport PropertySeparatorItem: public PropertyItem
     {
         return true;
     }
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
 
     int row() const override
     {
@@ -314,12 +333,14 @@ class GuiExport PropertyIntegerItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -336,7 +357,9 @@ class GuiExport PropertyIntegerConstraintItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
@@ -352,7 +375,7 @@ class GuiExport PropertyIntegerConstraintItem: public PropertyItem
     }
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -360,8 +383,8 @@ protected:
     PropertyIntegerConstraintItem();
 
 private:
-    int min = INT_MIN;
-    int max = INT_MAX;
+    int min = std::numeric_limits<int>::min();
+    int max = std::numeric_limits<int>::max();
     int steps = 1;
 };
 
@@ -374,12 +397,14 @@ class GuiExport PropertyFloatItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -396,12 +421,14 @@ class GuiExport PropertyUnitItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -434,8 +461,8 @@ protected:
     PropertyUnitConstraintItem();
 
 private:
-    double min = double(INT_MIN);
-    double max = double(INT_MAX);
+    double min = static_cast<double>(std::numeric_limits<int>::min());
+    double max = static_cast<double>(std::numeric_limits<int>::max());
     double steps = 0.1;
 };
 
@@ -448,7 +475,9 @@ class GuiExport PropertyFloatConstraintItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
@@ -464,7 +493,7 @@ class GuiExport PropertyFloatConstraintItem: public PropertyItem
     }
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -472,8 +501,8 @@ protected:
     PropertyFloatConstraintItem();
 
 private:
-    double min = double(INT_MIN);
-    double max = double(INT_MAX);
+    double min = static_cast<double>(std::numeric_limits<int>::min());
+    double max = static_cast<double>(std::numeric_limits<int>::max());
     double steps = 0.1;
 };
 
@@ -499,7 +528,7 @@ class GuiExport PropertyAngleItem: public PropertyUnitConstraintItem
 
 protected:
     void setEditorData(QWidget* editor, const QVariant& data) const override;
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
 
 protected:
     PropertyAngleItem();
@@ -514,7 +543,9 @@ class GuiExport PropertyBoolItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
@@ -541,7 +572,9 @@ class GuiExport PropertyVectorItem: public PropertyItem
     PROPERTYITEM_HEADER
     // clang-format on
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
@@ -553,7 +586,7 @@ class GuiExport PropertyVectorItem: public PropertyItem
     void setZ(double z);
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -620,12 +653,14 @@ class GuiExport PropertyVectorListItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -648,7 +683,9 @@ class GuiExport PropertyVectorDistanceItem: public PropertyItem
     PROPERTYITEM_HEADER
     // clang-format on
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
@@ -662,7 +699,7 @@ class GuiExport PropertyVectorDistanceItem: public PropertyItem
     void setZ(Base::Quantity z);
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -709,7 +746,9 @@ class GuiExport PropertyMatrixItem: public PropertyItem
     PROPERTYITEM_HEADER
     // clang-format on
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
@@ -747,7 +786,7 @@ class GuiExport PropertyMatrixItem: public PropertyItem
     void setA44(double A44);
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -809,7 +848,9 @@ class GuiExport PropertyRotationItem: public PropertyItem
     PROPERTYITEM_HEADER
     // clang-format on
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
@@ -825,7 +866,7 @@ protected:
     PropertyRotationItem();
     ~PropertyRotationItem() override;
     QVariant toolTip(const App::Property*) const override;
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -869,7 +910,9 @@ class GuiExport PropertyPlacementItem: public PropertyItem
     PROPERTYITEM_HEADER
     // clang-format on
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
@@ -887,7 +930,7 @@ protected:
     PropertyPlacementItem();
     ~PropertyPlacementItem() override;
     QVariant toolTip(const App::Property*) const override;
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -912,7 +955,9 @@ class GuiExport PropertyEnumItem: public PropertyItem
     PROPERTYITEM_HEADER
     // clang-format on
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
@@ -955,12 +1000,14 @@ class GuiExport PropertyStringListItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -977,12 +1024,14 @@ class GuiExport PropertyFloatListItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -999,12 +1048,14 @@ class GuiExport PropertyIntegerListItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -1021,13 +1072,15 @@ class GuiExport PropertyColorItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
 protected:
     QVariant decoration(const QVariant&) const override;
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -1052,7 +1105,9 @@ class GuiExport PropertyMaterialItem: public PropertyItem
     PROPERTYITEM_HEADER
     // clang-format on
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
@@ -1077,7 +1132,7 @@ protected:
 
     QVariant decoration(const QVariant&) const override;
     QVariant toolTip(const App::Property*) const override;
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -1103,7 +1158,9 @@ class GuiExport PropertyMaterialListItem: public PropertyItem
     PROPERTYITEM_HEADER
     // clang-format on
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
@@ -1128,7 +1185,7 @@ protected:
 
     QVariant decoration(const QVariant&) const override;
     QVariant toolTip(const App::Property*) const override;
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
 
@@ -1150,7 +1207,9 @@ class GuiExport PropertyFileItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
@@ -1172,7 +1231,9 @@ class GuiExport PropertyPathItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
@@ -1194,7 +1255,9 @@ class GuiExport PropertyTransientFileItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
@@ -1262,12 +1325,14 @@ class GuiExport PropertyLinkItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption = FrameOption::NoFrame) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 
 protected:
-    QVariant toString(const QVariant&) const override;
+    QString toString(const QVariant&) const override;
     QVariant value(const App::Property*) const override;
     void setValue(const QVariant&) override;
     QVariant data(int column, int role) const override;

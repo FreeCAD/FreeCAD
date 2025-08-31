@@ -27,7 +27,7 @@
 #include <gp_Trsf.hxx>
 
 #include <App/PropertyStandard.h>
-#include "Feature.h"
+#include "FeatureRefine.h"
 
 
 namespace PartDesign
@@ -37,15 +37,15 @@ namespace PartDesign
  * Abstract superclass of all features that are created by transformation of another feature
  * Transformations are translation, rotation and mirroring
  */
-class PartDesignExport Transformed: public PartDesign::Feature
+class PartDesignExport Transformed: public PartDesign::FeatureRefine
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::Transformed);
 
 public:
     enum class Mode
     {
-        TransformToolShapes,
-        TransformBody
+        Features,
+        WholeShape
     };
 
     Transformed();
@@ -53,9 +53,7 @@ public:
     /** The features to be transformed
      */
     App::PropertyLinkList Originals;
-
     App::PropertyEnumeration TransformMode;
-
     App::PropertyBool Refine;
 
     /**
@@ -66,6 +64,8 @@ public:
      *               Default is false.
      */
     Part::Feature* getBaseObject(bool silent = false) const override;
+
+    virtual std::vector<App::DocumentObject*> getOriginals() const;
 
     /// Return the sketch of the first original
     App::DocumentObject* getSketchObject() const;
@@ -94,6 +94,10 @@ public:
     short mustExecute() const override;
     //@}
 
+    App::DocumentObjectExecReturn* recomputePreview() override;
+
+    void onChanged(const App::Property* prop) override;
+
     /** returns the compound of the shapes that were rejected during the last execute
      * because they did not overlap with the support
      */
@@ -106,8 +110,6 @@ protected:
                                    App::Property* prop) override;
 
     virtual void positionBySupport();
-    TopoShape refineShapeIfActive(const TopoShape&) const;
-    TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
     static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
 
 private:

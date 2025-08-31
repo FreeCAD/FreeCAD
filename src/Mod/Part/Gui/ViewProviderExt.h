@@ -23,6 +23,9 @@
 #ifndef PARTGUI_VIEWPROVIDERPARTEXT_H
 #define PARTGUI_VIEWPROVIDERPARTEXT_H
 
+#include "SoFCShapeObject.h"
+
+
 #include <map>
 
 #include <App/PropertyUnits.h>
@@ -76,6 +79,9 @@ public:
     App::PropertyAngle AngularDeflection;
     App::PropertyEnumeration Lighting;
     App::PropertyEnumeration DrawStyle;
+    /// Property controlling visibility of the placement indicator, useful for displaying origin
+    /// position of attached Document Object.
+    App::PropertyBool ShowPlacement;
     // Points
     App::PropertyFloatConstraint PointSize;
     App::PropertyColor PointColor;
@@ -120,6 +126,10 @@ public:
     std::vector<Base::Vector3d> getSelectionShape(const char* Element) const override;
     //@}
 
+    virtual Part::TopoShape getRenderedShape() const {
+        return Part::Feature::getTopoShape(getObject(), Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+    }
+
     /** @name Highlight handling
     * This group of methods do the highlighting of elements.
     */
@@ -127,16 +137,16 @@ public:
     void setHighlightedFaces(const std::vector<App::Material>& materials);
     void setHighlightedFaces(const App::PropertyMaterialList& appearance);
     void unsetHighlightedFaces();
-    void setHighlightedEdges(const std::vector<App::Color>& colors);
+    void setHighlightedEdges(const std::vector<Base::Color>& colors);
     void unsetHighlightedEdges();
-    void setHighlightedPoints(const std::vector<App::Color>& colors);
+    void setHighlightedPoints(const std::vector<Base::Color>& colors);
     void unsetHighlightedPoints();
     //@}
 
     /** @name Color management methods
      */
     //@{
-    std::map<std::string,App::Color> getElementColors(const char *element=nullptr) const override;
+    std::map<std::string,Base::Color> getElementColors(const char *element=nullptr) const override;
     //@}
 
     bool isUpdateForced() const override {
@@ -152,6 +162,23 @@ public:
 
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject() override;
+
+    /// configures Coin nodes so they render given toposhape
+    static void setupCoinGeometry(TopoDS_Shape shape,
+                                  SoCoordinate3* coords,
+                                  SoBrepFaceSet* faceset,
+                                  SoNormal* norm,
+                                  SoBrepEdgeSet* lineset,
+                                  SoBrepPointSet* nodeset,
+                                  double deviation,
+                                  double angularDeflection,
+                                  bool normalsFromUV = false);
+
+    static void setupCoinGeometry(TopoDS_Shape shape,
+                                  SoFCShape* node,
+                                  double deviation,
+                                  double angularDeflection,
+                                  bool normalsFromUV = false);
 
 protected:
     bool setEdit(int ModNum) override;

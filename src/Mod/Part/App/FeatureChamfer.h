@@ -29,7 +29,7 @@
 namespace Part
 {
 
-class Chamfer : public Part::FilletBase
+class PartExport Chamfer : public Part::FilletBase
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Chamfer);
 

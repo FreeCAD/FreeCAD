@@ -3,16 +3,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
 )
-link_directories(${OCC_LIBRARY_DIR})
-
-link_directories(${OCC_LIBRARY_DIR})
 
 set(MeasureGui_LIBS
     Measure
@@ -38,6 +29,7 @@ SET(MeasureGui_UIC_SRCS
 )
 
 generate_from_xml(QuickMeasurePy)
+generate_from_py_(QuickMeasurePy)
 
 SET(MeasureGui_SRCS
     ${CMAKE_SOURCE_DIR}/src/Mod/Measure/InitGui.py
@@ -59,8 +51,6 @@ SET(MeasureGui_SRCS
     ViewProviderMeasureAngle.h
     ViewProviderMeasureDistance.cpp
     ViewProviderMeasureDistance.h
-    WorkbenchManipulator.cpp
-    WorkbenchManipulator.h
     DlgPrefsMeasureAppearanceImp.ui
     DlgPrefsMeasureAppearanceImp.cpp
     DlgPrefsMeasureAppearanceImp.h

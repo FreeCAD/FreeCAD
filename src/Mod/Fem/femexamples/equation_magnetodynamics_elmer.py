@@ -194,7 +194,7 @@ def setup(doc=None, solvertype="elmer"):
     Magnetization.Magnetization_re_1 = "7500.000 A/m"
     Magnetization.Magnetization_re_2 = "7500.000 A/m"
     Magnetization.Magnetization_re_3 = "7500.000 A/m"
-    Magnetization.Magnetization_re_2_Disabled = False
+    Magnetization.EnableMagnetization_2 = True
     analysis.addObject(Magnetization)
 
     # mesh

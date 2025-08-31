@@ -224,7 +224,9 @@ private:
     /// positioning matrix
     Base::Matrix4D _Mtrx;
     SMESH_Mesh* myMesh;
+#if SMESH_VERSION_MAJOR < 9
     const int myStudyId;
+#endif
 
     std::list<SMESH_HypothesisPtr> hypoth;
     static SMESH_Gen* _mesh_gen;

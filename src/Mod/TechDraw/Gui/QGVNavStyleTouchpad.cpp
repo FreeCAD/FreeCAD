@@ -113,8 +113,12 @@ void QGVNavStyleTouchpad::handleMouseMoveEvent(QMouseEvent *event)
 
     // if the mouse moves, but we are not zooming or panning, then we should make
     // sure that zoom and pan are turned off.
-    stopPan();
-    stopZoom();
+    if (panningActive) {
+        stopPan();
+    }
+    if (zoomingActive) {
+        stopZoom();
+    }
 }
 
 void QGVNavStyleTouchpad::setAnchor()

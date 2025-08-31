@@ -335,7 +335,7 @@ void Trajectory::Restore(XMLReader& reader)
     // read my element
     reader.readElement("Trajectory");
     // get the value of my Attribute
-    int count = reader.getAttributeAsInteger("count");
+    int count = reader.getAttribute<long>("count");
     vpcWaypoints.resize(count);
 
     for (int i = 0; i < count; i++) {

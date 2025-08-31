@@ -25,6 +25,7 @@
 #define GUI_FLAG_H
 
 #include <QLayout>
+#include <QOpenGLWidget>
 #include <QRect>
 #include <QWidgetItem>
 #include <Inventor/SbVec3f.h>
@@ -36,7 +37,7 @@ class View3DInventorViewer;
 /**
  * @author Werner Mayer
  */
-class GuiExport Flag : public QtGLWidget
+class GuiExport Flag : public QOpenGLWidget
 {
     Q_OBJECT
 

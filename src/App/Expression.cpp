@@ -31,9 +31,12 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/io/ios_state.hpp>
 #include <boost/math/special_functions/round.hpp>
 #include <boost/math/special_functions/trunc.hpp>
 
+#include <numbers>
+#include <limits>
 #include <sstream>
 #include <stack>
 #include <string>
@@ -47,33 +50,17 @@
 #include <Base/PlacementPy.h>
 #include <Base/QuantityPy.h>
 #include <Base/RotationPy.h>
+#include <Base/Tools.h>
 #include <Base/VectorPy.h>
+#include <Base/Precision.h>
 
 #include "ExpressionParser.h"
 
-
-/** \defgroup Expression Expressions framework
-    \ingroup APP
-    \brief The expression system allows users to write expressions and formulas that produce values
-*/
 
 using namespace Base;
 using namespace App;
 
 FC_LOG_LEVEL_INIT("Expression", true, true)
-
-#ifndef M_PI
-#define M_PI       3.14159265358979323846
-#endif
-#ifndef M_E
-#define M_E        2.71828182845904523536
-#endif
-#ifndef  DOUBLE_MAX
-# define DOUBLE_MAX 1.7976931348623157E+308    /* max decimal value of a "double"*/
-#endif
-#ifndef  DOUBLE_MIN
-# define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
-#endif
 
 #if defined(_MSC_VER)
 #define strtoll _strtoi64
@@ -180,6 +167,15 @@ static inline T &&cast(App::any &&value) {
 #else
     return App::any_cast<T&&>(std::move(value));
 #endif
+}
+
+namespace
+{
+
+inline bool asBool(double value) {
+    return std::fabs(value) >= Base::Precision::Confusion();
+}
+
 }
 
 std::string unquote(const std::string & input)
@@ -336,22 +332,22 @@ static inline int essentiallyInteger(double a, long &l, int &i) {
     double intpart;
     if (std::modf(a,&intpart) == 0.0) {
         if (intpart<0.0) {
-            if (intpart >= INT_MIN) {
+            if (intpart >= std::numeric_limits<int>::min()) {
                 i = static_cast<int>(intpart);
                 l = i;
                 return 1;
             }
-            if (intpart >= LONG_MIN) {
+            if (intpart >= std::numeric_limits<long>::min()) {
                 l = static_cast<long>(intpart);
                 return 2;
             }
         }
-        else if (intpart <= INT_MAX) {
+        else if (intpart <= std::numeric_limits<int>::max()) {
             i = static_cast<int>(intpart);
             l = i;
             return 1;
         }
-        else if (intpart <= static_cast<double>(LONG_MAX)) {
+        else if (intpart <= static_cast<double>(std::numeric_limits<long>::max())) {
             l = static_cast<int>(intpart);
             return 2;
         }
@@ -363,12 +359,12 @@ static inline bool essentiallyInteger(double a, long &l) {
     double intpart;
     if (std::modf(a,&intpart) == 0.0) {
         if (intpart<0.0) {
-            if (intpart >= LONG_MIN) {
+            if (intpart >= std::numeric_limits<long>::min()) {
                 l = static_cast<long>(intpart);
                 return true;
             }
         }
-        else if (intpart <= static_cast<double>(LONG_MAX)) {
+        else if (intpart <= static_cast<double>(std::numeric_limits<long>::max())) {
             l = static_cast<long>(intpart);
             return true;
         }
@@ -434,7 +430,7 @@ static Py::Object _pyObjectFromAny(const App::any &value, const Expression *e) {
     } else if (is_type(value,typeid(bool)))
         return Py::Boolean(cast<bool>(value));
     else if (is_type(value,typeid(std::string)))
-        return Py::String(cast<string>(value));
+        return Py::String(cast<std::string>(value));
     else if (is_type(value,typeid(const char*)))
         return Py::String(cast<const char*>(value));
 
@@ -503,7 +499,7 @@ static inline Quantity pyToQuantity(const Py::Object &pyobj,
 }
 
 Py::Object pyFromQuantity(const Quantity &quantity) {
-    if(!quantity.getUnit().isEmpty())
+    if (!quantity.isDimensionless())
         return Py::asObject(new QuantityPy(new Quantity(quantity)));
     double v = quantity.getValue();
     long l;
@@ -634,7 +630,7 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
         return false;
     int res = PyObject_RichCompareBool(o1.ptr(),o2.ptr(),Py_EQ);
     if(res<0)
-        PyException::ThrowException();
+        PyException::throwException();
     return !!res;
 }
 
@@ -1012,7 +1008,7 @@ ExpressionPtr Expression::importSubNames(const std::map<std::string,std::string>
                 if(it!=nameMap.end())
                     subNameMap.emplace(std::make_pair(obj,std::string()),it->second);
                 auto key = std::make_pair(obj,path.getSubObjectName());
-                if(key.second.empty() || subNameMap.count(key))
+                if(key.second.empty() || subNameMap.contains(key))
                     continue;
                 std::string imported = PropertyLinkBase::tryImportSubName(
                                obj,key.second.c_str(),owner->getDocument(), nameMap);
@@ -1494,7 +1490,7 @@ Expression *OperatorExpression::simplify() const
     Expression * v2 = right->simplify();
 
     // Both arguments reduced to numerics? Then evaluate and return answer
-    if (freecad_dynamic_cast<NumberExpression>(v1) && freecad_dynamic_cast<NumberExpression>(v2)) {
+    if (freecad_cast<NumberExpression*>(v1) && freecad_cast<NumberExpression*>(v2)) {
         delete v1;
         delete v2;
         return eval();
@@ -1515,7 +1511,7 @@ void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
     Operator leftOperator(NONE), rightOperator(NONE);
 
     needsParens = false;
-    if (freecad_dynamic_cast<OperatorExpression>(left))
+    if (freecad_cast<OperatorExpression*>(left))
         leftOperator = static_cast<OperatorExpression*>(left)->op;
     if (left->priority() < priority()) // Check on operator priority first
         needsParens = true;
@@ -1587,7 +1583,7 @@ void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
     }
 
     needsParens = false;
-    if (freecad_dynamic_cast<OperatorExpression>(right))
+    if (freecad_cast<OperatorExpression*>(right))
         rightOperator = static_cast<OperatorExpression*>(right)->op;
     if (right->priority() < priority()) // Check on operator priority first
         needsParens = true;
@@ -1728,7 +1724,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     : UnitExpression(_owner)
     , f(_f)
     , fname(std::move(name))
-    , args(_args)
+    , args(std::move(_args))
 {
     switch (f) {
     case ABS:
@@ -1759,6 +1755,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case TANH:
     case TRUNC:
     case VNORMALIZE:
+    case NOT:
         if (args.size() != 1)
             ARGUMENT_THROW("exactly one required.");
         break;
@@ -1824,6 +1821,8 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case MIN:
     case STDDEV:
     case SUM:
+    case AND:
+    case OR:
         if (args.empty())
             ARGUMENT_THROW("at least one required.");
         break;
@@ -1987,6 +1986,36 @@ public:
     }
 };
 
+class AndCollector : public Collector {
+public:
+    void collect(Quantity value) override
+    {
+        if (first) {
+            q = Quantity(asBool(value.getValue()) ? 1 : 0);
+            first = false;
+            return;
+        }
+        if (!asBool(value.getValue())) {
+            q = Quantity(0);
+        }
+    }
+};
+
+class OrCollector : public Collector {
+public:
+    void collect(Quantity value) override
+    {
+        if (first) {
+            q = Quantity(asBool(value.getValue()) ? 1 : 0);
+            first = false;
+            return;
+        }
+        if (asBool(value.getValue())) {
+            q = Quantity(1);
+        }
+    }
+};
+
 Py::Object FunctionExpression::evalAggregate(
         const Expression *owner, int f, const std::vector<Expression*> &args)
 {
@@ -2011,6 +2040,12 @@ Py::Object FunctionExpression::evalAggregate(
     case MAX:
         c = std::make_unique<MaxCollector>();
         break;
+    case AND:
+        c = std::make_unique<AndCollector>();
+        break;
+    case OR:
+        c = std::make_unique<OrCollector>();
+        break;
     default:
         assert(false);
     }
@@ -2028,11 +2063,11 @@ Py::Object FunctionExpression::evalAggregate(
                 if (!p)
                     continue;
 
-                if ((qp = freecad_dynamic_cast<PropertyQuantity>(p)))
+                if ((qp = freecad_cast<PropertyQuantity*>(p)))
                     c->collect(qp->getQuantityValue());
-                else if ((fp = freecad_dynamic_cast<PropertyFloat>(p)))
+                else if ((fp = freecad_cast<PropertyFloat*>(p)))
                     c->collect(Quantity(fp->getValue()));
-                else if ((ip = freecad_dynamic_cast<PropertyInteger>(p)))
+                else if ((ip = freecad_cast<PropertyInteger*>(p)))
                     c->collect(Quantity(ip->getValue()));
                 else
                     _EXPR_THROW("Invalid property type for aggregate.", owner);
@@ -2150,6 +2185,8 @@ Base::Vector3d FunctionExpression::extractVectorArgument(
 
 Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std::vector<Expression*> &args)
 {
+    using std::numbers::pi;
+
     if(!expr || !expr->getOwner())
         _EXPR_THROW("Invalid owner.", expr);
 
@@ -2186,7 +2223,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         Py::Object pyobj = args[0]->getPyValue();
         if (PyObject_TypeCheck(pyobj.ptr(), &Base::MatrixPy::Type)) {
             auto m = static_cast<Base::MatrixPy*>(pyobj.ptr())->value();
-            if (fabs(m.determinant()) <= DBL_EPSILON)
+            if (fabs(m.determinant()) <= std::numeric_limits<double>::epsilon())
                 _EXPR_THROW("Cannot invert singular matrix.", expr);
             m.inverseGauss();
             return Py::asObject(new Base::MatrixPy(m));
@@ -2227,7 +2264,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
 
         Rotation rotation = Base::Rotation(
             Vector3d(static_cast<double>(f == MROTATEX), static_cast<double>(f == MROTATEY), static_cast<double>(f == MROTATEZ)),
-            rotationAngle.getValue() * M_PI / 180.0);
+            Base::toRadians(rotationAngle.getValue()));
         Base::Matrix4D rotationMatrix;
         rotation.getValue(rotationMatrix);
 
@@ -2366,7 +2403,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
 
         switch (f) {
         case VANGLE:
-            return Py::asObject(new QuantityPy(new Quantity(vector1.GetAngle(vector2) * 180 / M_PI, Unit::Angle)));
+            return Py::asObject(new QuantityPy(new Quantity(Base::toDegrees(vector1.GetAngle(vector2)), Unit::Angle)));
         case VCROSS:
             return Py::asObject(new Base::VectorPy(vector1.Cross(vector2)));
         case VDOT:
@@ -2425,7 +2462,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
             _EXPR_THROW("Unit must be either empty or an angle.", expr);
 
         // Convert value to radians
-        value *= M_PI / 180.0;
+        value = Base::toRadians(value);
         unit = Unit();
         break;
     case ACOS:
@@ -2434,7 +2471,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         if (!v1.isDimensionless())
             _EXPR_THROW("Unit must be empty.", expr);
         unit = Unit::Angle;
-        scaler = 180.0 / M_PI;
+        scaler = 180.0 / pi;
         break;
     case EXP:
     case LOG:
@@ -2466,12 +2503,14 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         if (v1.getUnit() != v2.getUnit())
             _EXPR_THROW("Units must be equal.",expr);
         unit = Unit::Angle;
-        scaler = 180.0 / M_PI;
+        scaler = 180.0 / pi;
         break;
     case MOD:
         if (e2.isNone())
             _EXPR_THROW("Invalid second argument.",expr);
-        unit = v1.getUnit() / v2.getUnit();
+        if (v1.getUnit() != v2.getUnit() && !v1.isDimensionless() && !v2.isDimensionless())
+            _EXPR_THROW("Units must be equal or dimensionless.",expr);
+        unit = v1.getUnit();
         break;
     case POW: {
         if (e2.isNone())
@@ -2509,6 +2548,9 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         if (v1.isDimensionlessOrUnit(Unit::Length) && v2.isDimensionlessOrUnit(Unit::Length) && v3.isDimensionlessOrUnit(Unit::Length))
             break;
         _EXPR_THROW("Translation units must be a length or dimensionless.", expr);
+    case NOT:
+        unit = Unit();
+        break;
     default:
         _EXPR_THROW("Unknown function: " << f,0);
     }
@@ -2600,6 +2642,9 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
             value)));
     case TRANSLATIONM:
         return translationMatrix(v1.getValue(), v2.getValue(), v3.getValue());
+    case NOT:
+        output = asBool(value) ? 0 : 1;
+        break;
     default:
         _EXPR_THROW("Unknown function: " << f,0);
     }
@@ -2620,28 +2665,29 @@ Py::Object FunctionExpression::_getPyValue() const {
 Expression *FunctionExpression::simplify() const
 {
     size_t numerics = 0;
-    std::vector<Expression*> a;
+    std::vector<Expression*> simplifiedArgs;
 
     // Try to simplify each argument to function
     for (auto it : args) {
         Expression * v = it->simplify();
 
-        if (freecad_dynamic_cast<NumberExpression>(v))
+        if (freecad_cast<NumberExpression*>(v))
             ++numerics;
-        a.push_back(v);
+        simplifiedArgs.push_back(v);
     }
 
     if (numerics == args.size()) {
         // All constants, then evaluation must also be constant
 
-        // Clean-up
-        for (auto it : args)
+        // Clean-up the simplified arguments
+        for (auto it : simplifiedArgs)
             delete it;
 
         return eval();
     }
     else
-        return new FunctionExpression(owner, f, std::string(fname), a);
+        return new FunctionExpression(owner, f, std::string(fname),
+                                      std::move(simplifiedArgs));
 }
 
 /**
@@ -2783,6 +2829,12 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "stddev("; break;;
     case SUM:
         ss << "sum("; break;;
+    case AND:
+        ss << "and("; break;;
+    case OR:
+        ss << "or("; break;;
+    case NOT:
+        ss << "not("; break;;
     default:
         ss << fname << "("; break;;
     }
@@ -2809,7 +2861,7 @@ Expression *FunctionExpression::_copy() const
         a.push_back((*i)->copy());
         ++i;
     }
-    return new FunctionExpression(owner, f, std::string(fname), a);
+    return new FunctionExpression(owner, f, std::string(fname), std::move(a));
 }
 
 void FunctionExpression::_visit(ExpressionVisitor &v)
@@ -2881,16 +2933,16 @@ void VariableExpression::addComponent(Component *c) {
         }
         long l1=0,l2=0,l3=1;
         if(c->e3) {
-            auto n3 = freecad_dynamic_cast<NumberExpression>(c->e3);
+            auto n3 = freecad_cast<NumberExpression*>(c->e3);
             if(!n3 || !essentiallyEqual(n3->getValue(),(double)l3))
                 break;
         }
         if(c->e1) {
-            auto n1 = freecad_dynamic_cast<NumberExpression>(c->e1);
+            auto n1 = freecad_cast<NumberExpression*>(c->e1);
             if(!n1) {
                 if(c->e2 || c->e3)
                     break;
-                auto s = freecad_dynamic_cast<StringExpression>(c->e1);
+                auto s = freecad_cast<StringExpression*>(c->e1);
                 if(!s)
                     break;
                 var << ObjectIdentifier::MapComponent(
@@ -2907,7 +2959,7 @@ void VariableExpression::addComponent(Component *c) {
                 return;
             }
         }
-        auto n2 = freecad_dynamic_cast<NumberExpression>(c->e2);
+        auto n2 = freecad_cast<NumberExpression*>(c->e2);
         if(n2 && essentiallyInteger(n2->getValue(),l2)) {
             var << ObjectIdentifier::RangeComponent(l1,l2,l3);
             return;
@@ -3207,12 +3259,12 @@ Py::Object ConditionalExpression::_getPyValue() const {
 Expression *ConditionalExpression::simplify() const
 {
     std::unique_ptr<Expression> e(condition->simplify());
-    NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
+    NumberExpression * v = freecad_cast<NumberExpression*>(e.get());
 
     if (!v)
         return new ConditionalExpression(owner, condition->simplify(), trueExpr->simplify(), falseExpr->simplify());
     else {
-        if (fabs(v->getValue()) > 0.5)
+        if (fabs(v->getValue()) >= Base::Precision::Confusion())
             return trueExpr->simplify();
         else
             return falseExpr->simplify();
@@ -3556,13 +3608,13 @@ int ExpressionParserlex();
 # pragma GCC diagnostic ignored "-Wfree-nonheap-object"
 #endif
 
-// Parser, defined in ExpressionParser.y
+// Parser, defined in Expression.y
 # define YYTOKENTYPE
-#include "ExpressionParser.tab.c"
+#include "Expression.tab.c"
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-// Scanner, defined in ExpressionParser.l
-#include "lex.ExpressionParser.c"
+// Scanner, defined in Expression.l
+#include "Expression.lex.c"
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 class StringBufferCleaner
@@ -3672,6 +3724,8 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["hiddenref"] = FunctionExpression::HIDDENREF;
         registered_functions["href"] = FunctionExpression::HREF;
 
+        registered_functions["not"] = FunctionExpression::NOT;
+
         // Aggregates
         registered_functions["average"] = FunctionExpression::AVERAGE;
         registered_functions["count"] = FunctionExpression::COUNT;
@@ -3679,6 +3733,8 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["min"] = FunctionExpression::MIN;
         registered_functions["stddev"] = FunctionExpression::STDDEV;
         registered_functions["sum"] = FunctionExpression::SUM;
+        registered_functions["and"] = FunctionExpression::AND;
+        registered_functions["or"] = FunctionExpression::OR;
 
         has_registered_functions = true;
     }
@@ -3764,11 +3820,11 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     Expression * simplified = ScanResult->simplify();
 
     if (!unitExpression) {
-        OperatorExpression * fraction = freecad_dynamic_cast<OperatorExpression>(ScanResult);
+        OperatorExpression * fraction = freecad_cast<OperatorExpression*>(ScanResult);
 
         if (fraction && fraction->getOperator() == OperatorExpression::DIV) {
-            NumberExpression * nom = freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
-            UnitExpression * denom = freecad_dynamic_cast<UnitExpression>(fraction->getRight());
+            NumberExpression * nom = freecad_cast<NumberExpression*>(fraction->getLeft());
+            UnitExpression * denom = freecad_cast<UnitExpression*>(fraction->getRight());
 
             // If not initially a unit expression, but value is equal to 1, it means the expression is something like 1/unit
             if (denom && nom && essentiallyEqual(nom->getValue(), 1.0))
@@ -3778,13 +3834,13 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     delete ScanResult;
 
     if (unitExpression) {
-        NumberExpression * num = freecad_dynamic_cast<NumberExpression>(simplified);
+        NumberExpression * num = freecad_cast<NumberExpression*>(simplified);
 
         if (num) {
            simplified = new UnitExpression(num->getOwner(), num->getQuantity());
             delete num;
         }
-        return freecad_dynamic_cast<UnitExpression>(simplified);
+        return freecad_cast<UnitExpression*>(simplified);
     }
     else {
         delete simplified;

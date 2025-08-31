@@ -391,7 +391,7 @@ def edgeForCmd(cmd, startPoint):
     Path.Log.debug("startpoint {}".format(startPoint))
 
     endPoint = commandEndPoint(cmd, startPoint)
-    if (cmd.Name in CmdMoveStraight) or (cmd.Name in CmdMoveRapid):
+    if (cmd.Name in CmdMoveStraight) or (cmd.Name in CmdMoveRapid) or (cmd.Name in CmdMoveDrill):
         if pointsCoincide(startPoint, endPoint):
             return None
         return Part.Edge(Part.LineSegment(startPoint, endPoint))

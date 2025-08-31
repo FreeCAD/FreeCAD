@@ -76,11 +76,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         return
 
     import Part
-
-    if App.GuiUp:
-        v_dir = gui_utils.get_3d_view().getViewDirection()
-    else:
-        v_dir = App.Vector(0, 0, -1)
+    from Sketcher import Constraint
 
     # lists to accumulate shapes with defined normal and undefined normal
     shape_norm_yes = list()
@@ -101,7 +97,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
 
         if not DraftGeomUtils.is_planar(shape, tol):
             App.Console.PrintError(translate("draft",
-                                   "All Shapes must be planar") + "\n")
+                                   "All shapes must be planar") + "\n")
             return None
 
         if DraftGeomUtils.get_normal(shape, tol):
@@ -117,7 +113,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         for shape in shapes_list[1:]:
             if not DraftGeomUtils.are_coplanar(shapes_list[0], shape, tol):
                 App.Console.PrintError(translate("draft",
-                                       "All Shapes must be coplanar") + "\n")
+                                       "All shapes must be coplanar") + "\n")
                 return None
         # define sketch normal
         normal = DraftGeomUtils.get_normal(shapes_list[0], tol)
@@ -126,21 +122,20 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         # suppose all geometries are straight lines or points
         points = [vertex.Point for shape in shapes_list for vertex in shape.Vertexes]
         if len(points) >= 2:
-            poly = Part.makePolygon(points)
-            if not DraftGeomUtils.is_planar(poly, tol):
-                App.Console.PrintError(translate("draft",
-                                       "All Shapes must be coplanar") + "\n")
-                return None
-            normal = DraftGeomUtils.get_normal(poly, tol)
-            if not normal:
-                # all points aligned
-                poly_dir = poly.Edges[0].Curve.Direction
-                normal = (v_dir - v_dir.dot(poly_dir)*poly_dir).normalize()
-                normal = normal.negative()
+            try:
+                poly = Part.makePolygon(points)
+            except Part.OCCError:
+                # all points coincide
+                normal = App.Vector(0, 0, 1)
+            else:
+                if not DraftGeomUtils.is_planar(poly, tol):
+                    App.Console.PrintError(translate("draft",
+                                           "All shapes must be coplanar") + "\n")
+                    return None
+                normal = DraftGeomUtils.get_shape_normal(poly)
         else:
             # only one point
-            normal = v_dir.negative()
-
+            normal = App.Vector(0, 0, 1)
 
     if addTo:
         nobj = addTo
@@ -173,7 +168,6 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
             return(edge.Curve.toBSpline(edge.FirstParameter,edge.LastParameter).toShape())
         else:
             return edge
-
 
     axis = App.Vector(0, 0, 1).cross(normal)
     if axis.Length > 1e-6:
@@ -238,9 +232,21 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
     nobj.addConstraint(constraints)
     if autoconstraints:
         nobj.detectMissingPointOnPointConstraints(utils.tolerance())
-        nobj.makeMissingPointOnPointCoincident(True)
+        nobj.makeMissingPointOnPointCoincident(False)
         nobj.detectMissingVerticalHorizontalConstraints(utils.tolerance())
-        nobj.makeMissingVerticalHorizontal(True)
+        nobj.makeMissingVerticalHorizontal(False)
+        # The MissingVerticalHorizontal functions do not work properly.
+        # If elements are added to an existing sketch redundant constraints are created.
+        # This can happen if DXF files are imported with the legacy importer.
+        # https://forum.freecad.org/viewtopic.php?t=97072
+        # https://github.com/FreeCAD/FreeCAD/issues/21396
+        # To address this we check for redundant constraints. This can be necessary even
+        # the functions were to work properly. For example with this scenario:
+        # https://github.com/FreeCAD/FreeCAD/issues/19978
+        nobj.solve()
+        for idx in nobj.RedundantConstraints[::-1]:
+            # Output of RedundantConstraints is one-based.
+            nobj.delConstraint(idx - 1)
 
     return nobj
 

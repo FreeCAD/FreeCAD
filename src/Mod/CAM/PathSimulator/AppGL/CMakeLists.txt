@@ -3,17 +3,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
-    ${OCC_INCLUDE_DIR}
-    ${EIGEN3_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-
 )
-
-link_directories(${OCC_LIBRARY_DIR})
 
 set(CAMSimulator_LIBS
     Path
@@ -78,7 +68,7 @@ SET(CAMSimulator_SRCS_Core
 
 
 generate_from_xml(CAMSimPy)
-
+generate_from_py_(CAMSimPy)
 
 SOURCE_GROUP("Module" FILES ${CAMSimulator_SRCS_Module})
 SOURCE_GROUP("Python" FILES ${CAMSimulator_SRCS_Python})

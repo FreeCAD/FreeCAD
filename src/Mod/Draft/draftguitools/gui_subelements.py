@@ -39,6 +39,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCADGui as Gui
 from draftguitools import gui_base_original
 from draftguitools import gui_tool_utils
+from draftutils import utils
 from draftutils import gui_utils
 from draftutils.messages import _msg
 from draftutils.translate import translate
@@ -58,8 +59,8 @@ class SubelementHighlight(gui_base_original.Modifier):
 
         return {'Pixmap': 'Draft_SubelementHighlight',
                 'Accel': "H, S",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_SubelementHighlight","Subelement highlight"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_SubelementHighlight","Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.")}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_SubelementHighlight","Highlight Subelements"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_SubelementHighlight","Highlights the subelements of the selected objects, to be able to move, rotate, and scale them")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -115,10 +116,12 @@ class SubelementHighlight(gui_base_original.Modifier):
     def get_editable_objects_from_selection(self):
         """Get editable Draft objects for the selection."""
         for obj in Gui.Selection.getSelection():
-            if obj.isDerivedFrom("Part::Part2DObject"):
+            if (obj.isDerivedFrom("Part::Part2DObject")
+                or utils.get_type(obj) in ["BezCurve", "BSpline", "Wire"]):
                 self.editable_objects.append(obj)
             elif (hasattr(obj, "Base")
-                  and obj.Base.isDerivedFrom("Part::Part2DObject")):
+                  and (obj.Base.isDerivedFrom("Part::Part2DObject")
+                       or utils.get_type(obj.Base) in ["BezCurve", "BSpline", "Wire"])):
                 self.editable_objects.append(obj.Base)
 
     def highlight_editable_objects(self):

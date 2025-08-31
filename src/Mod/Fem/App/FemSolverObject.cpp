@@ -35,7 +35,19 @@ using namespace App;
 PROPERTY_SOURCE(Fem::FemSolverObject, App::DocumentObject)
 
 
-FemSolverObject::FemSolverObject() = default;
+FemSolverObject::FemSolverObject()
+{
+    ADD_PROPERTY_TYPE(Results,
+                      (nullptr),
+                      "Solver",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+                      "Solver results list");
+    ADD_PROPERTY_TYPE(WorkingDirectory,
+                      (""),
+                      "Solver",
+                      App::PropertyType(App::Prop_Transient | App::Prop_Hidden | App::Prop_Output),
+                      "Solver working directory");
+}
 
 FemSolverObject::~FemSolverObject() = default;
 

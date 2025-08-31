@@ -14,10 +14,10 @@ from FreeCAD import Base
 class DistanceBolt:
     def __init__(self, obj):
         ''' Add the properties: Length, Edges, Radius, Height '''
-        obj.addProperty("App::PropertyInteger","Edges","Bolt","Number of edges of the outline").Edges=6
-        obj.addProperty("App::PropertyLength","Length","Bolt","Length of the edges of the outline").Length=10.0
-        obj.addProperty("App::PropertyLength","Radius","Bolt","Radius of the inner circle").Radius=4.0
-        obj.addProperty("App::PropertyLength","Height","Bolt","Height of the extrusion").Height=20.0
+        obj.addProperty("App::PropertyInteger","Edges","Bolt","Number of edges of the outline", locked=True).Edges=6
+        obj.addProperty("App::PropertyLength","Length","Bolt","Length of the edges of the outline", locked=True).Length=10.0
+        obj.addProperty("App::PropertyLength","Radius","Bolt","Radius of the inner circle", locked=True).Radius=4.0
+        obj.addProperty("App::PropertyLength","Height","Bolt","Height of the extrusion", locked=True).Height=20.0
         obj.Proxy = self
 
     def onChanged(self, fp, prop):

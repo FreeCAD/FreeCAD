@@ -28,6 +28,7 @@
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "Tag.h"
 #include "Cosmetic.h"
 #include "Geometry.h"
 
@@ -35,35 +36,49 @@
 namespace TechDraw {
 class DrawViewPart;
 
-class TechDrawExport CenterLine: public Base::Persistence
+class TechDrawExport CenterLine: public Base::Persistence, public TechDraw::Tag
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    enum CLMODE
+    enum class Mode
     {
         VERTICAL,
         HORIZONTAL,
         ALIGNED
     };
-    enum CLTYPE
+    // TODO: when C++ 20
+    // using Mode;
+    enum class Type
     {
         FACE,
         EDGE,
         VERTEX
-    };
+    };  // TODO: Make this global
+    // TODO: when C++ 20
+    // using Mode;
+
+    template <typename U, std::enable_if_t<
+        std::is_same_v<CenterLine::Type, U> ||
+        std::is_same_v<CenterLine::Mode, U>,
+        bool
+    > =true>
+    friend std::ostream& operator<<(std::ostream& out, const U& type) {
+        out << static_cast<int>(type);
+        return out;
+    }
 
     CenterLine();
     CenterLine(const CenterLine* cl);
     //set m_faces after using next 3 ctors
     CenterLine(const TechDraw::BaseGeomPtr& bg,
-               const int m = CLMODE::VERTICAL,
+               const Mode m = Mode::VERTICAL,
                const double h = 0.0,
                const double v = 0.0,
                const double r = 0.0,
                const double x = 0.0);
     CenterLine(const Base::Vector3d& p1, const Base::Vector3d& p2,
-               const int m = CLMODE::VERTICAL,
+               const Mode m = Mode::VERTICAL,
                const double h = 0.0,
                const double v = 0.0,
                const double r = 0.0,
@@ -85,7 +100,7 @@ public:
 
     static CenterLine* CenterLineBuilder(const TechDraw::DrawViewPart* partFeat,
                                          const std::vector<std::string>& subs,
-                                         const int mode = 0,
+                                         const Mode mode = Mode::VERTICAL,
                                          const bool flip = false);
     TechDraw::BaseGeomPtr scaledGeometry(const TechDraw::DrawViewPart* partFeat);
     TechDraw::BaseGeomPtr scaledAndRotatedGeometry(TechDraw::DrawViewPart* partFeat);
@@ -107,7 +122,7 @@ public:
     static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints(
                                           const TechDraw::DrawViewPart* partFeat,
                                           const std::vector<std::string>& faceNames,
-                                          const int mode,
+                                          const Mode mode,
                                           const double ext,
                                           const double m_hShift,
                                           const double m_vShift,
@@ -115,7 +130,7 @@ public:
     static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints2Lines(
                                           const TechDraw::DrawViewPart* partFeat,
                                           const std::vector<std::string>& faceNames,
-                                          const int vert,
+                                          const Mode mode,
                                           const double ext,
                                           const double m_hShift,
                                           const double m_vShift,
@@ -124,7 +139,7 @@ public:
     static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints2Points(
                                           const TechDraw::DrawViewPart* partFeat,
                                           const std::vector<std::string>& faceNames,
-                                          const int vert,
+                                          const Mode mode,
                                           const double ext,
                                           const double m_hShift,
                                           const double m_vShift,
@@ -140,8 +155,8 @@ public:
     double getExtend() const;
     void setFlip(const bool f);
     bool getFlip() const;
-    void setType(const int type) { m_type = type; };
-    int getType() const { return m_type; }
+    void setType(const Type type) { m_type = type; };
+    Type getType() const { return m_type; }
 
     Base::Vector3d m_start;
     Base::Vector3d m_end;
@@ -150,8 +165,8 @@ public:
     std::vector<std::string> m_faces;
     std::vector<std::string> m_edges;
     std::vector<std::string> m_verts;
-    int m_type;  // CLTYPE enum
-    int m_mode;  // CLMODE enum
+    Type m_type;
+    Mode m_mode;
     double m_hShift;
     double m_vShift;
     double m_rotate;
@@ -161,20 +176,10 @@ public:
 
     TechDraw::BaseGeomPtr m_geometry;
 
-    //Uniqueness
-    boost::uuids::uuid getTag() const;
-    virtual std::string getTagAsString() const;
-
 protected:
     void initialize();
 
-    void createNewTag();
-    void assignTag(const TechDraw::CenterLine* cl);
-
-    boost::uuids::uuid tag;
-
     Py::Object PythonObject;
-
 };
 
 }  // namespace TechDraw

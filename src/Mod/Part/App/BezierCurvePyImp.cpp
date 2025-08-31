@@ -59,7 +59,7 @@ int BezierCurvePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* BezierCurvePy::isRational(PyObject *args)
+PyObject* BezierCurvePy::isRational(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -69,7 +69,7 @@ PyObject* BezierCurvePy::isRational(PyObject *args)
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* BezierCurvePy::isPeriodic(PyObject *args)
+PyObject* BezierCurvePy::isPeriodic(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -79,7 +79,7 @@ PyObject* BezierCurvePy::isPeriodic(PyObject *args)
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* BezierCurvePy::isClosed(PyObject *args)
+PyObject* BezierCurvePy::isClosed(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -200,7 +200,7 @@ PyObject* BezierCurvePy::setPole(PyObject * args)
     }
 }
 
-PyObject* BezierCurvePy::getPole(PyObject * args)
+PyObject* BezierCurvePy::getPole(PyObject * args) const
 {
     int index;
     if (!PyArg_ParseTuple(args, "i", &index))
@@ -221,7 +221,7 @@ PyObject* BezierCurvePy::getPole(PyObject * args)
     }
 }
 
-PyObject* BezierCurvePy::getPoles(PyObject * args)
+PyObject* BezierCurvePy::getPoles(PyObject * args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -288,7 +288,7 @@ PyObject* BezierCurvePy::setWeight(PyObject * args)
     }
 }
 
-PyObject* BezierCurvePy::getWeight(PyObject * args)
+PyObject* BezierCurvePy::getWeight(PyObject * args) const
 {
     int index;
     if (!PyArg_ParseTuple(args, "i", &index))
@@ -307,7 +307,7 @@ PyObject* BezierCurvePy::getWeight(PyObject * args)
     }
 }
 
-PyObject* BezierCurvePy::getWeights(PyObject * args)
+PyObject* BezierCurvePy::getWeights(PyObject * args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -328,7 +328,7 @@ PyObject* BezierCurvePy::getWeights(PyObject * args)
     }
 }
 
-PyObject* BezierCurvePy::getResolution(PyObject* args)
+PyObject* BezierCurvePy::getResolution(PyObject* args) const
 {
     double tol;
     if (!PyArg_ParseTuple(args, "d", &tol))

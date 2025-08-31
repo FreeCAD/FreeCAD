@@ -39,6 +39,9 @@ on:
         type: string
         required: true
 
+permissions:
+  contents: read
+
 jobs:
 
   WrapUp:
@@ -50,11 +53,16 @@ jobs:
         shell: bash
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit
+
       - name: Make needed directories, files and initializations
         run: |
           mkdir -p ${{ env.artifactsDownloadDir }}
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
         with:
           path: ${{ env.artifactsDownloadDir }}
       - name: Save input data to file
@@ -111,7 +119,7 @@ jobs:
           cat report.md >> $GITHUB_STEP_SUMMARY
       - name: Delete used artifacts
         continue-on-error: true
-        uses: geekyeggo/delete-artifact@v5
+        uses: geekyeggo/delete-artifact@f275313e70c08f6120db482d7a6b98377786765b # v5.1.0
         with:
           name: |
             ${{ env.usedArtifacts }}

@@ -149,7 +149,7 @@ PyObject* GeometryPy::translate(PyObject *args)
     return nullptr;
 }
 
-PyObject* GeometryPy::copy(PyObject *args)
+PyObject* GeometryPy::copy(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -159,7 +159,7 @@ PyObject* GeometryPy::copy(PyObject *args)
     PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
+        cpy = type->tp_new(type, const_cast<GeometryPy*>(this), nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create copy of geometry");
         return nullptr;
@@ -176,7 +176,7 @@ PyObject* GeometryPy::copy(PyObject *args)
     return cpy;
 }
 
-PyObject* GeometryPy::clone(PyObject *args)
+PyObject* GeometryPy::clone(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -186,7 +186,7 @@ PyObject* GeometryPy::clone(PyObject *args)
     PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
+        cpy = type->tp_new(type, const_cast<GeometryPy*>(this), nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create clone of geometry");
         return nullptr;
@@ -203,7 +203,7 @@ PyObject* GeometryPy::clone(PyObject *args)
     return cpy;
 }
 
-PyObject* GeometryPy::isSame(PyObject *args)
+PyObject* GeometryPy::isSame(PyObject *args) const
 {
     PyObject* other {};
     double tol {};
@@ -235,14 +235,14 @@ PyObject* GeometryPy::setExtension(PyObject *args)
     return nullptr;
 }
 
-PyObject* GeometryPy::getExtensionOfType(PyObject *args)
+PyObject* GeometryPy::getExtensionOfType(PyObject *args) const
 {
     char* o;
     if (PyArg_ParseTuple(args, "s", &o)) {
 
         Base::Type type = Base::Type::fromName(o);
 
-        if(type != Base::Type::badType()) {
+        if(!type.isBad()) {
             try {
                 std::shared_ptr<const GeometryExtension> ext(this->getGeometryPtr()->getExtension(type));
 
@@ -275,7 +275,7 @@ PyObject* GeometryPy::getExtensionOfType(PyObject *args)
     return nullptr;
 }
 
-PyObject* GeometryPy::getExtensionOfName(PyObject *args)
+PyObject* GeometryPy::getExtensionOfName(PyObject *args) const
 {
     char* o;
     if (PyArg_ParseTuple(args, "s", &o)) {
@@ -306,14 +306,14 @@ PyObject* GeometryPy::getExtensionOfName(PyObject *args)
     return nullptr;
 }
 
-PyObject* GeometryPy::hasExtensionOfType(PyObject *args)
+PyObject* GeometryPy::hasExtensionOfType(PyObject *args) const
 {
     char* o;
     if (PyArg_ParseTuple(args, "s", &o)) {
 
         Base::Type type = Base::Type::fromName(o);
 
-        if(type != Base::Type::badType()) {
+        if(!type.isBad()) {
             try {
                 return Py::new_reference_to(Py::Boolean(this->getGeometryPtr()->hasExtension(type)));
             }
@@ -334,7 +334,7 @@ PyObject* GeometryPy::hasExtensionOfType(PyObject *args)
     return nullptr;
 }
 
-PyObject* GeometryPy::hasExtensionOfName(PyObject *args)
+PyObject* GeometryPy::hasExtensionOfName(PyObject *args) const
 {
     char* o;
     if (PyArg_ParseTuple(args, "s", &o)) {
@@ -360,7 +360,7 @@ PyObject* GeometryPy::deleteExtensionOfType(PyObject *args)
 
         Base::Type type = Base::Type::fromName(o);
 
-        if(type != Base::Type::badType()) {
+        if(!type.isBad()) {
             try {
                 this->getGeometryPtr()->deleteExtension(type);
                 Py_Return;
@@ -401,7 +401,7 @@ PyObject* GeometryPy::deleteExtensionOfName(PyObject *args)
     return nullptr;
 }
 
-PyObject* GeometryPy::getExtensions(PyObject *args)
+PyObject* GeometryPy::getExtensions(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, "")){
         PyErr_SetString(PartExceptionOCCError, "No arguments were expected");

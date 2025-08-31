@@ -13,6 +13,18 @@
           "CMAKE_EXPORT_COMPILE_COMMANDS": {
             "type": "BOOL",
             "value": "ON"
+          },
+          "CMAKE_JOB_POOL_COMPILE": {
+            "type": "STRING",
+            "value": "compile_jobs"
+          },
+          "CMAKE_JOB_POOL_LINK": {
+            "type": "STRING",
+            "value": "link_jobs"
+          },
+          "CMAKE_POLICY_VERSION_MINIMUM": {
+            "type": "STRING",
+            "value": "3.5"
           }
         }
       },
@@ -58,6 +70,10 @@
           "BUILD_WITH_CONDA": {
             "type": "BOOL",
             "value": "ON"
+          },
+          "BUILD_REVERSEENGINEERING": {
+            "type": "BOOL",
+            "value": "OFF"
           },
           "ENABLE_DEVELOPER_TESTS": {
             "type": "BOOL",
@@ -105,31 +121,38 @@
             "lhs": "${hostSystemName}",
             "rhs": "Linux"
         },
-        "cmakeExecutable": "${sourceDir}/conda/cmake.sh",
         "cacheVariables": {
-          "CMAKE_INCLUDE_PATH": {
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/include"
+          "CMAKE_C_COMPILER": {
+            "type": "STRING",
+            "value": "clang"
           },
-          "CMAKE_INSTALL_LIBDIR": {
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/lib"
+          "CMAKE_CXX_COMPILER": {
+            "type": "STRING",
+            "value": "clang++"
+          },
+          "CMAKE_EXE_LINKER_FLAGS": {
+            "type": "STRING",
+            "value": "-fuse-ld=mold"
           },
           "CMAKE_INSTALL_PREFIX": {
             "type": "FILEPATH",
             "value": "$env{CONDA_PREFIX}"
           },
-          "CMAKE_LIBRARY_PATH":{
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/lib"
-          },
           "CMAKE_PREFIX_PATH": {
             "type": "FILEPATH",
             "value": "$env{CONDA_PREFIX}"
           },
+          "CMAKE_SHARED_LINKER_FLAGS": {
+            "type": "STRING",
+            "value": "-fuse-ld=mold"
+          },
           "OCC_INCLUDE_DIR": {
             "type": "FILEPATH",
             "value": "$env{CONDA_PREFIX}/include/opencascade"
+          },
+          "OCC_LIBRARY_DIR": {
+            "type": "FILEPATH",
+            "value": "$env{CONDA_PREFIX}/lib"
           }
         }
       },
@@ -141,35 +164,30 @@
             "lhs": "${hostSystemName}",
             "rhs": "Darwin"
         },
-        "cmakeExecutable": "${sourceDir}/conda/cmake.sh",
         "cacheVariables": {
           "CMAKE_IGNORE_PREFIX_PATH": {
             "type": "STRING",
             "value": "/opt/homebrew;/usr/local/homebrew"
           },
-          "CMAKE_INCLUDE_PATH": {
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/include"
-          },
-          "CMAKE_INSTALL_LIBDIR": {
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/lib"
-          },
           "CMAKE_INSTALL_PREFIX": {
             "type": "FILEPATH",
             "value": "$env{CONDA_PREFIX}"
-          },
-          "CMAKE_LIBRARY_PATH":{
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/lib"
           },
           "CMAKE_PREFIX_PATH": {
             "type": "FILEPATH",
             "value": "$env{CONDA_PREFIX}"
           },
+          "FREECAD_3DCONNEXION_SUPPORT": {
+            "type": "STRING",
+            "value": "Both"
+          },
           "OCC_INCLUDE_DIR": {
             "type": "FILEPATH",
             "value": "$env{CONDA_PREFIX}/include/opencascade"
+          },
+          "OCC_LIBRARY_DIR": {
+            "type": "FILEPATH",
+            "value": "$env{CONDA_PREFIX}/lib"
           }
         }
       },
@@ -181,31 +199,26 @@
             "lhs": "${hostSystemName}",
             "rhs": "Windows"
         },
-        "cmakeExecutable": "${sourceDir}/conda/cmake.cmd",
         "cacheVariables": {
-          "CMAKE_INCLUDE_PATH": {
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/Library/include"
-          },
-          "CMAKE_INSTALL_LIBDIR": {
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/Library/lib"
-          },
           "CMAKE_INSTALL_PREFIX": {
             "type": "FILEPATH",
             "value": "$env{CONDA_PREFIX}/Library"
-          },
-          "CMAKE_LIBRARY_PATH":{
-            "type": "FILEPATH",
-            "value": "$env{CONDA_PREFIX}/Library/lib"
           },
           "CMAKE_PREFIX_PATH": {
             "type": "FILEPATH",
             "value": "$env{CONDA_PREFIX}/Library"
           },
+          "FREECAD_3DCONNEXION_SUPPORT": {
+            "type": "STRING",
+            "value": "Both"
+          },
           "OCC_INCLUDE_DIR": {
             "type": "FILEPATH",
             "value": "$env{CONDA_PREFIX}/Library/include/opencascade"
+          },
+          "OCC_LIBRARY_DIR": {
+            "type": "FILEPATH",
+            "value": "$env{CONDA_PREFIX}/Library/lib"
           }
         }
       },

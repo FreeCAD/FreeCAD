@@ -31,6 +31,7 @@
 
 class MeshPartWorkbench(Workbench):
     "MeshPart workbench object"
+
     Icon = """
             /* XPM */
             static const char *MeshPart_Box[]={

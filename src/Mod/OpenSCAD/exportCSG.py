@@ -145,7 +145,6 @@ def process_object(csg,ob):
     elif ob.TypeId == "Part::Prism":
         import math
         f = str(ob.Polygon)
-#        r = str(ob.Length/2.0/math.sin(math.pi/ob.Polygon))
         r = str(ob.Circumradius) # length seems to be the outer radius
         h = str(ob.Height.Value)
         mm = check_multmatrix(csg, ob, 0, 0, -float(h)/2)

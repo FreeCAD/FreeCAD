@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <Base/CoordinateSystem.h>
 #include <Base/Exception.h>
+#include <Base/Placement.h>
 
 // NOLINTBEGIN
 TEST(CoordinateSystem, TestDefault)

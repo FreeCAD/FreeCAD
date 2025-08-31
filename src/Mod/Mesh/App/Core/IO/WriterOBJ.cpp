@@ -34,7 +34,7 @@ using namespace MeshCore;
 
 struct WriterOBJ::Color_Less
 {
-    bool operator()(const App::Color& x, const App::Color& y) const
+    bool operator()(const Base::Color& x, const Base::Color& y) const
     {
         if (x.r != y.r) {
             return x.r < y.r;
@@ -83,7 +83,7 @@ bool WriterOBJ::Save(std::ostream& out)
     if (_material) {
         if (_material->binding == MeshIO::PER_FACE) {
             if (_material->diffuseColor.size() != rFacets.size()) {
-                Base::Console().Warning("Cannot export color information because there is a "
+                Base::Console().warning("Cannot export color information because there is a "
                                         "different number of faces and colors");
             }
             else {
@@ -92,7 +92,7 @@ bool WriterOBJ::Save(std::ostream& out)
         }
         else if (_material->binding == MeshIO::PER_VERTEX) {
             if (_material->diffuseColor.size() != rPoints.size()) {
-                Base::Console().Warning("Cannot export color information because there is a "
+                Base::Console().warning("Cannot export color information because there is a "
                                         "different number of points and colors");
             }
             else {
@@ -101,7 +101,7 @@ bool WriterOBJ::Save(std::ostream& out)
         }
         else if (_material->binding == MeshIO::OVERALL) {
             if (_material->diffuseColor.empty()) {
-                Base::Console().Warning(
+                Base::Console().warning(
                     "Cannot export color information because there is no color defined");
             }
             else {
@@ -131,7 +131,7 @@ bool WriterOBJ::Save(std::ostream& out)
         }
 
         if (exportColorPerVertex) {
-            App::Color c;
+            Base::Color c;
             if (_material->binding == MeshIO::PER_VERTEX) {
                 c = _material->diffuseColor[index];
             }
@@ -171,19 +171,18 @@ bool WriterOBJ::Save(std::ostream& out)
             // facet indices (no texture and normal indices)
 
             // make sure to use the 'usemtl' statement as less often as possible
-            std::vector<App::Color> colors = _material->diffuseColor;
+            std::vector<Base::Color> colors = _material->diffuseColor;
             std::sort(colors.begin(), colors.end(), Color_Less());
             colors.erase(std::unique(colors.begin(), colors.end()), colors.end());
 
             std::size_t index = 0;
-            App::Color prev;
+            Base::Color prev;
             int faceIdx = 1;
-            const std::vector<App::Color>& Kd = _material->diffuseColor;
+            const std::vector<Base::Color>& Kd = _material->diffuseColor;
             for (auto it = rFacets.begin(); it != rFacets.end(); ++it, index++) {
                 if (index == 0 || prev != Kd[index]) {
                     prev = Kd[index];
-                    auto c_it = std::find(colors.begin(), colors.end(), prev);
-                    if (c_it != colors.end()) {
+                    if (auto c_it = std::ranges::find(colors, prev); c_it != colors.end()) {
                         out << "usemtl material_" << (c_it - colors.begin()) << '\n';
                     }
                 }
@@ -209,13 +208,13 @@ bool WriterOBJ::Save(std::ostream& out)
     else {
         if (exportColorPerFace) {
             // make sure to use the 'usemtl' statement as less often as possible
-            std::vector<App::Color> colors = _material->diffuseColor;
+            std::vector<Base::Color> colors = _material->diffuseColor;
             std::sort(colors.begin(), colors.end(), Color_Less());
             colors.erase(std::unique(colors.begin(), colors.end()), colors.end());
 
             bool first = true;
-            App::Color prev;
-            const std::vector<App::Color>& Kd = _material->diffuseColor;
+            Base::Color prev;
+            const std::vector<Base::Color>& Kd = _material->diffuseColor;
 
             for (const auto& gt : _groups) {
                 out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt.name.c_str()) << '\n';
@@ -224,8 +223,7 @@ bool WriterOBJ::Save(std::ostream& out)
                     if (first || prev != Kd[it]) {
                         first = false;
                         prev = Kd[it];
-                        auto c_it = std::find(colors.begin(), colors.end(), prev);
-                        if (c_it != colors.end()) {
+                        if (auto c_it = std::ranges::find(colors, prev); c_it != colors.end()) {
                             out << "usemtl material_" << (c_it - colors.begin()) << '\n';
                         }
                     }
@@ -263,7 +261,7 @@ bool WriterOBJ::SaveMaterial(std::ostream& out)
     if (_material) {
         if (_material->binding == MeshIO::PER_FACE) {
 
-            std::vector<App::Color> Kd = _material->diffuseColor;
+            std::vector<Base::Color> Kd = _material->diffuseColor;
             std::sort(Kd.begin(), Kd.end(), Color_Less());
             Kd.erase(std::unique(Kd.begin(), Kd.end()), Kd.end());
 

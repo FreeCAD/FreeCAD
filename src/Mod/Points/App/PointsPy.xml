@@ -67,12 +67,9 @@ With this attribute it is possible to get access to the points of the object
 
 for p in pnt.Points:
 	print p
-
 				</UserDocu>
 			</Documentation>
 			<Parameter Name="Points" Type="List" />
 		</Attribute>
-		<ClassDeclarations>
-		</ClassDeclarations>
 	</PythonExport>
 </GenerateModel>

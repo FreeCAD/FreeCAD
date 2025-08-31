@@ -26,7 +26,10 @@
 #include "WorkbenchManipulatorPython.h"
 #include "MenuManager.h"
 #include "ToolBarManager.h"
+#include <Base/Console.h>
 #include <Base/Interpreter.h>
+
+FC_LOG_LEVEL_INIT("WorkbenchManipulatorPython", true, true)
 
 using namespace Gui;
 
@@ -86,7 +89,7 @@ void WorkbenchManipulatorPython::modifyMenuBar(MenuItem* menuBar)
     }
     catch (Py::Exception&) {
         Base::PyException exc; // extract the Python error text
-        exc.ReportException();
+        exc.reportException();
     }
 }
 
@@ -153,6 +156,11 @@ void WorkbenchManipulatorPython::tryModifyMenuBar(const Py::Dict& dict, MenuItem
         std::string command = static_cast<std::string>(Py::String(dict.getItem(remove)));
         if (auto par = menuBar->findParentOf(command)) {
             if (MenuItem* item = par->findItem(command)) {
+                if (item == menuBar) {
+                    // Can't remove the menubar itself - Coverity issue 512853
+                    FC_WARN("Cannot remove top-level menubar");
+                    return;
+                }
                 par->removeItem(item);
                 delete item;  // NOLINT
             }
@@ -186,7 +194,7 @@ void WorkbenchManipulatorPython::modifyContextMenu(const char* recipient, MenuIt
     }
     catch (Py::Exception&) {
         Base::PyException exc; // extract the Python error text
-        exc.ReportException();
+        exc.reportException();
     }
 }
 
@@ -224,7 +232,7 @@ void WorkbenchManipulatorPython::modifyToolBars(ToolBarItem* toolBar)
     }
     catch (Py::Exception&) {
         Base::PyException exc; // extract the Python error text
-        exc.ReportException();
+        exc.reportException();
     }
 }
 
@@ -310,6 +318,11 @@ void WorkbenchManipulatorPython::tryModifyToolBar(const Py::Dict& dict, ToolBarI
         else {
             for (auto it : toolBar->getItems()) {
                 if (ToolBarItem* item = it->findItem(command)) {
+                    if (item == toolBar) {
+                        // Can't remove the toolBar itself - Coverity issue 513838
+                        FC_WARN("Cannot remove top-level toolbar");
+                        return;
+                    }
                     it->removeItem(item);
                     delete item;  // NOLINT
                     break;
@@ -327,7 +340,7 @@ void WorkbenchManipulatorPython::modifyDockWindows(DockWindowItems* dockWindow)
     }
     catch (Py::Exception&) {
         Base::PyException exc; // extract the Python error text
-        exc.ReportException();
+        exc.reportException();
     }
 }
 

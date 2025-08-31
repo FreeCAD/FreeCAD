@@ -28,6 +28,8 @@
 #include "ui_DlgMaterialProperties.h"
 #include "ViewProvider.h"
 
+#include <Base/Tools.h>
+
 
 using namespace Gui::Dialog;
 
@@ -129,7 +131,7 @@ void DlgMaterialPropertiesImp::onSpecularColorChanged()
  */
 void DlgMaterialPropertiesImp::onShininessValueChanged(int sh)
 {
-    customMaterial.shininess = (float)sh / 100.0F;
+    customMaterial.shininess = Base::fromPercent(sh);
 }
 
 /**
@@ -137,7 +139,7 @@ void DlgMaterialPropertiesImp::onShininessValueChanged(int sh)
  */
 void DlgMaterialPropertiesImp::onTransparencyValueChanged(int sh)
 {
-    customMaterial.transparency = (float)sh / 100.0F;
+    customMaterial.transparency = Base::fromPercent(sh);
 }
 
 /**

@@ -20,7 +20,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-""" Class and methods to migrate old FEM Gui objects
+"""Class and methods to migrate old FEM Gui objects
 
 see module end as well as forum topic
 https://forum.freecad.org/viewtopic.php?&t=46218

@@ -28,6 +28,7 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Tools.h>
 
 #include <Mod/Material/App/Exceptions.h>
 #include <Mod/Material/App/Materials.h>
@@ -58,12 +59,12 @@ Array2D::Array2D(const QString& propertyName,
         _property = material->getAppearanceProperty(propertyName);
     }
     else {
-        Base::Console().Log("Property '%s' not found\n", propertyName.toStdString().c_str());
+        Base::Console().log("Property '%s' not found\n", propertyName.toStdString().c_str());
         _property = nullptr;
     }
     if (_property) {
         _value =
-            std::static_pointer_cast<Materials::Material2DArray>(_property->getMaterialValue());
+            std::static_pointer_cast<Materials::Array2D>(_property->getMaterialValue());
         setWindowTitle(_property->getDisplayName());
     }
     else {
@@ -75,12 +76,9 @@ Array2D::Array2D(const QString& propertyName,
     ui->tableView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->tableView, &QWidget::customContextMenuRequested, this, &Array2D::onContextMenu);
 
-    _deleteAction.setText(tr("Delete row"));
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        _deleteAction.setShortcut(QKeySequence(shortcut));
-    }
+    _deleteAction.setText(tr("Delete Row"));
+    _deleteAction.setShortcut(Gui::QtTools::deleteKeySequence());
+
     connect(&_deleteAction, &QAction::triggered, this, &Array2D::onDelete);
     ui->tableView->addAction(&_deleteAction);
 
@@ -137,7 +135,7 @@ void Array2D::onDataChanged(const QModelIndex& topLeft,
 
 void Array2D::onContextMenu(const QPoint& pos)
 {
-    QMenu contextMenu(tr("Context menu"), this);
+    QMenu contextMenu(tr("Context Menu"), this);
 
     contextMenu.addAction(&_deleteAction);
 
@@ -171,7 +169,7 @@ int Array2D::confirmDelete()
     box.setIcon(QMessageBox::Question);
     box.setWindowTitle(QObject::tr("Confirm Delete"));
 
-    QString prompt = QObject::tr("Are you sure you want to delete the row?");
+    QString prompt = QObject::tr("Delete the row?");
     box.setText(prompt);
 
     box.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);

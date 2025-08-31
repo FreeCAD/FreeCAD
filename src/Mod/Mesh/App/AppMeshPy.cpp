@@ -275,7 +275,7 @@ private:
             exporter = std::make_unique<MergeExporter>(outputFileName, exportFormat);
         }
         else {
-            std::string exStr("Can't determine mesh format from file name.\nPlease specify mesh "
+            std::string exStr("Cannot determine the mesh format from the file name.\nSpecify mesh "
                               "format file extension: '");
             exStr += outputFileName + "'";
             throw Py::ValueError(exStr.c_str());
@@ -303,11 +303,10 @@ private:
             pcDoc = App::GetApplication().newDocument();
         }
         MeshPy* pMesh = static_cast<MeshPy*>(pcObj);
-        Mesh::Feature* pcFeature =
-            static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", name));
+        Mesh::Feature* pcFeature = pcDoc->addObject<Mesh::Feature>(name);
         Mesh::MeshObject* mo = pMesh->getMeshObjectPtr();
         if (!mo) {
-            throw Py::Exception(PyExc_ReferenceError, "object doesn't reference a valid mesh");
+            throw Py::Exception(PyExc_ReferenceError, "object does not reference a valid mesh");
         }
         // copy the data
         pcFeature->Mesh.setValue(*mo);

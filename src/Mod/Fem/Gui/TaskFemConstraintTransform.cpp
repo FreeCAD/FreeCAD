@@ -31,6 +31,7 @@
 #include <QAction>
 #include <QMessageBox>
 #include <TopoDS.hxx>
+#include <limits>
 #include <sstream>
 #endif
 
@@ -59,7 +60,7 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     QMetaObject::connectSlotsByName(this);
 
     // create a context menu for the listview of the references
-    createDeleteAction(ui->lw_Rect);
+    createActions(ui->lw_Rect);
     connect(deleteAction,
             &QAction::triggered,
             this,
@@ -130,14 +131,15 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     ui->qsb_rot_angle->bind(
         App::ObjectIdentifier::parse(pcConstraint, std::string("Rotation.Angle")));
 
-    ui->spb_rot_axis_x->setMinimum(-FLOAT_MAX);
-    ui->spb_rot_axis_x->setMaximum(FLOAT_MAX);
-    ui->spb_rot_axis_y->setMinimum(-FLOAT_MAX);
-    ui->spb_rot_axis_y->setMaximum(FLOAT_MAX);
-    ui->spb_rot_axis_z->setMinimum(-FLOAT_MAX);
-    ui->spb_rot_axis_z->setMaximum(FLOAT_MAX);
-    ui->qsb_rot_angle->setMinimum(-FLOAT_MAX);
-    ui->qsb_rot_angle->setMaximum(FLOAT_MAX);
+    float max = std::numeric_limits<float>::max();
+    ui->spb_rot_axis_x->setMinimum(-max);
+    ui->spb_rot_axis_x->setMaximum(max);
+    ui->spb_rot_axis_y->setMinimum(-max);
+    ui->spb_rot_axis_y->setMaximum(max);
+    ui->spb_rot_axis_z->setMinimum(-max);
+    ui->spb_rot_axis_z->setMaximum(max);
+    ui->qsb_rot_angle->setMinimum(-max);
+    ui->qsb_rot_angle->setMaximum(max);
 
     std::string transform_type = pcConstraint->TransformType.getValueAsString();
     if (transform_type == "Rectangular") {
@@ -198,7 +200,7 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     if ((p == 0) && (!Objects.empty())) {
         QMessageBox::warning(this,
                              tr("Analysis feature update error"),
-                             tr("The transformable faces have changed. Please add only the "
+                             tr("The transformable faces have changed. Add only the "
                                 "transformable faces and remove non-transformable faces!"));
         return;
     }
@@ -349,9 +351,7 @@ void TaskFemConstraintTransform::addToSelection()
                     }
                 }
             }
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
-                 itr != SubElements.end();
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
                                  subName)) {  // for every sub element in selection that
@@ -433,9 +433,7 @@ void TaskFemConstraintTransform::removeFromSelection()
         const App::DocumentObject* obj = it.getObject();
 
         for (const auto& subName : subNames) {  // for every selected sub element
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
-                 itr != SubElements.end();
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
                                  subName)) {  // for every sub element in selection that
@@ -450,7 +448,7 @@ void TaskFemConstraintTransform::removeFromSelection()
             }
         }
     }
-    std::sort(itemsToDel.begin(), itemsToDel.end());
+    std::ranges::sort(itemsToDel);
     while (!itemsToDel.empty()) {
         Objects.erase(Objects.begin() + itemsToDel.back());
         SubElements.erase(SubElements.begin() + itemsToDel.back());

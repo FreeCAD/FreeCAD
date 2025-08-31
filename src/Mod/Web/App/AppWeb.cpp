@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <limits>
 #include <sstream>
 #endif
 
@@ -89,7 +90,7 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "|si", &addr, &port)) {
             throw Py::Exception();
         }
-        if (port > USHRT_MAX) {
+        if (port > std::numeric_limits<unsigned short>::max()) {
             throw Py::OverflowError("port number is greater than maximum");
         }
         else if (port < 0) {
@@ -121,7 +122,7 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "|sii", &addr, &port, &timeout)) {
             throw Py::Exception();
         }
-        if (port > USHRT_MAX) {
+        if (port > std::numeric_limits<unsigned short>::max()) {
             throw Py::OverflowError("port number is greater than maximum");
         }
         else if (port < 0) {
@@ -186,6 +187,6 @@ PyMOD_INIT_FUNC(Web)
     //
     //
     PyObject* mod = Web::initModule();
-    Base::Console().Log("Loading Web module... done\n");
+    Base::Console().log("Loading Web module... done\n");
     PyMOD_Return(mod);
 }

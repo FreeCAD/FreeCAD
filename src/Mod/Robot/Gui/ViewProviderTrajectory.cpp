@@ -52,7 +52,7 @@ ViewProviderTrajectory::ViewProviderTrajectory()
 {
 
     pcTrajectoryRoot = new Gui::SoFCSelection();
-    pcTrajectoryRoot->highlightMode = Gui::SoFCSelection::OFF;
+    pcTrajectoryRoot->preselectionMode = Gui::SoFCSelection::OFF;
     pcTrajectoryRoot->selectionMode = Gui::SoFCSelection::SEL_OFF;
     // pcRobotRoot->style = Gui::SoFCSelection::BOX;
     pcTrajectoryRoot->ref();

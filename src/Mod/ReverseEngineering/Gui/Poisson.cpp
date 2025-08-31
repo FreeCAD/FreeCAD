@@ -66,16 +66,16 @@ bool PoissonWidget::accept()
         QString document = QString::fromStdString(d->obj.getDocumentPython());
         QString object = QString::fromStdString(d->obj.getObjectPython());
 
-        QString argument = QString::fromLatin1("Points=%1.Points, "
-                                               "OctreeDepth=%2, "
-                                               "SolverDivide=%3, "
-                                               "SamplesPerNode=%4")
+        QString argument = QStringLiteral("Points=%1.Points, "
+                                          "OctreeDepth=%2, "
+                                          "SolverDivide=%3, "
+                                          "SamplesPerNode=%4")
                                .arg(object)
                                .arg(d->ui.octreeDepth->value())
                                .arg(d->ui.solverDivide->value())
                                .arg(d->ui.samplesPerNode->value());
-        QString command = QString::fromLatin1("%1.addObject(\"Mesh::Feature\", \"Poisson\").Mesh = "
-                                              "ReverseEngineering.poissonReconstruction(%2)")
+        QString command = QStringLiteral("%1.addObject(\"Mesh::Feature\", \"Poisson\").Mesh = "
+                                         "ReverseEngineering.poissonReconstruction(%2)")
                               .arg(document, argument);
 
         Gui::WaitCursor wc;

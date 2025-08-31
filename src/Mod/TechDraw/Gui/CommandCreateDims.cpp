@@ -23,6 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <cmath>
+#include <limits>
 #include <string>
 #include <vector>
 
@@ -63,6 +65,7 @@
 #include "CommandExtensionDims.h"
 #include "DimensionValidators.h"
 #include "DrawGuiUtil.h"
+#include "QGIDatumLabel.h"
 #include "QGIViewDimension.h"
 #include "QGVPage.h"
 #include "MDIViewPage.h"
@@ -78,6 +81,7 @@ using namespace TechDrawGui;
 using namespace TechDraw;
 using namespace std;
 using DimensionType = TechDraw::DrawViewDimension::DimensionType;
+using DimensionGeometry = TechDraw::DimensionGeometry;
 
 //===========================================================================
 // utility routines
@@ -103,7 +107,7 @@ void execAngle3Pt(Gui::Command* cmd);
 void execRadius(Gui::Command* cmd);
 void execDiameter(Gui::Command* cmd);
 void execArea(Gui::Command* cmd);
-void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometry, std::vector<int> minimumCounts, std::vector<DimensionGeometryType> acceptableDimensionGeometrys);
+void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometry, std::vector<int> minimumCounts, std::vector<DimensionGeometry> acceptableDimensionGeometrys);
 
 void execExtent(Gui::Command* cmd, const std::string& dimType);
 
@@ -116,7 +120,7 @@ void positionDimText(DrawViewDimension* dim, int indexOffset = 0);
 
 void activateHandler(TechDrawHandler* newHandler)
 {
-    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    auto* mdi = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
     if (!mdi) {
         return;
     }
@@ -233,18 +237,18 @@ public:
 
     void activated() override
     {
-        auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+        auto* mdi = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
         if (mdi) {
             mdi->setDimensionsSelectability(false);
         }
         Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::GreedySelection);
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Dimension"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert dimension"));
         handleInitialSelection();
     }
 
     void deactivated() override
     {
-        auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+        auto* mdi = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
         if (mdi) {
             mdi->setDimensionsSelectability(true);
         }
@@ -335,7 +339,7 @@ public:
 
     QGIDatumLabel* getDimLabel(DrawViewDimension* d)
     {
-        auto* vp = dynamic_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(d));
+        auto* vp = freecad_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(d));
         if (!vp) {
             return nullptr;
         }
@@ -357,7 +361,7 @@ public:
     QPointF getDimPositionToBe(QPoint pos, QPointF curPos = QPointF(), bool textToMiddle = false, Base::Vector3d dir = Base::Vector3d(),
         Base::Vector3d delta = Base::Vector3d(), DimensionType type = DimensionType::Distance, int i = 0)
     {
-        auto* vpp = dynamic_cast<ViewProviderDrawingView*>(Gui::Application::Instance->getViewProvider(partFeat));
+        auto* vpp = freecad_cast<ViewProviderDrawingView*>(Gui::Application::Instance->getViewProvider(partFeat));
         if (!vpp) { return QPointF(); }
 
 
@@ -380,7 +384,7 @@ public:
                 if (Rez::guiX(pp.first().y) > scenePos.y())
                     dimDistance = -dimDistance;
 
-                double y = scenePos.y() + i * dimDistance;
+                double y = static_cast<double>(scenePos.y()) + i * static_cast<double>(dimDistance);
                 scenePos = QPointF(curPos.x(), y);
             }
             else if(type == DimensionType::DistanceY) {
@@ -388,7 +392,7 @@ public:
                 if (Rez::guiX(pp.first().x) > scenePos.x())
                     dimDistance = -dimDistance;
 
-                double x = scenePos.x() + i * dimDistance;
+                double x = static_cast<double>(scenePos.x()) + i * static_cast<double>(dimDistance);
                 scenePos = QPointF(x, curPos.y());
             }
         }
@@ -423,7 +427,7 @@ public:
 
     void mouseReleaseEvent(QMouseEvent* event) override
     {
-        // Base::Console().Warning("mouseReleaseEvent TH\n");
+        // Base::Console().warning("mouseReleaseEvent TH\n");
         if (event->button() == Qt::RightButton) {
             if (!dims.empty()) {
                 Gui::Selection().clearSelection();
@@ -442,7 +446,7 @@ public:
 
             if (removedRef.hasGeometry()) {
                 finalize = false;
-                //Base::Console().Warning("RmvSelection \n");
+                //Base::Console().warning("RmvSelection \n");
                 // Remove the reference from the vector
                 ReferenceVector& selVector = getSelectionVector(removedRef);
                 selVector.erase(std::remove(selVector.begin(), selVector.end(), removedRef), selVector.end());
@@ -459,7 +463,7 @@ public:
 
             if (addedRef.hasGeometry()) {
                 finalize = false;
-                //Base::Console().Warning("AddSelection\n");
+                //Base::Console().warning("AddSelection\n");
                 //add the geometry to its type vector. Temporarily if not selAllowed
                 if (addedRef.getSubName() == "") {
                     // Behavior deactivated for now because I found it annoying.
@@ -506,7 +510,7 @@ public:
 
     void onSelectionChanged(const Gui::SelectionChanges& msg) override
     {
-        //Base::Console().Warning("onSelectionChanged %d - --%s--\n", (int)msg.Type, msg.pSubName);
+        //Base::Console().warning("onSelectionChanged %d - --%s--\n", (int)msg.Type, msg.pSubName);
 
         if (msg.Type == Gui::SelectionChanges::ClrSelection) {
             //clearAndRestartCommand();
@@ -522,13 +526,13 @@ public:
         }
 
         /*if (msg.Type == Gui::SelectionChanges::SetPreselect) {
-            Base::Console().Warning("SetPreselect\n");
+            Base::Console().warning("SetPreselect\n");
             std::string geomName = DrawUtil::getGeomTypeFromName(msg.pSubName);
             edgeOrPointPreselected = geomName == "Edge" || geomName == "Vertex";
             return;
         }
         else if (msg.Type == Gui::SelectionChanges::RmvPreselect) {
-            Base::Console().Warning("RmvPreselect\n");
+            Base::Console().warning("RmvPreselect\n");
             edgeOrPointPreselected = false;
             return;
         }*/
@@ -574,7 +578,7 @@ public:
 private:
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("TechDraw_Dimension_Pointer");
+        return QStringLiteral("TechDraw_Dimension_Pointer");
     }
 
 protected:
@@ -629,7 +633,7 @@ protected:
 
     void finalizeCommand()
     {
-        //Base::Console().Warning("finalizeCommand \n");
+        //Base::Console().warning("finalizeCommand \n");
 
         finishDimensionMove();
 
@@ -673,7 +677,7 @@ protected:
                 return emptyVector;
             }
 
-            if (geom->getGeomType() == TechDraw::GENERIC) {
+            if (geom->getGeomType() == GeomType::GENERIC) {
                 TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom);
                 if (gen1->points.size() < 2) {
                     return emptyVector;
@@ -681,13 +685,13 @@ protected:
                 return selLine;
                 //Base::Vector3d line = gen1->points.at(1) - gen1->points.at(0);
             }
-            else if (geom->getGeomType() == TechDraw::CIRCLE || geom->getGeomType() == TechDraw::ARCOFCIRCLE) {
+            else if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
                 return selCircleArc;
             }
-            else if (geom->getGeomType() == TechDraw::ELLIPSE || geom->getGeomType() == TechDraw::ARCOFELLIPSE) {
+            else if (geom->getGeomType() == GeomType::ELLIPSE || geom->getGeomType() == GeomType::ARCOFELLIPSE) {
                 return selEllipseArc;
             }
-            else if (geom->getGeomType() == TechDraw::BSPLINE) {
+            else if (geom->getGeomType() == GeomType::BSPLINE) {
                 //TechDraw::BSplinePtr spline = std::static_pointer_cast<TechDraw::BSpline>(geom);
                 //if (spline->isCircle()) {
                 //    return isBSplineCircle;
@@ -748,7 +752,7 @@ protected:
 
     bool makeAppropriateDimension() {
         bool selAllowed = false;
-        //Base::Console().Warning("makeAppropriateDimension %d %d %d %d %d %d\n", selPoints.size(), selLine.size(), selCircleArc.size(), selEllipseArc.size(), selSplineAndCo.size(), selFaces.size());
+        //Base::Console().warning("makeAppropriateDimension %d %d %d %d %d %d\n", selPoints.size(), selLine.size(), selCircleArc.size(), selEllipseArc.size(), selSplineAndCo.size(), selFaces.size());
 
         GeomSelectionSizes selection(selPoints.size(), selLine.size(), selCircleArc.size(), selEllipseArc.size(), selSplineAndCo.size(), selFaces.size());
         if (selection.hasFaces()) {
@@ -795,7 +799,7 @@ protected:
     {
         //area
         if (availableDimension == AvailableDimension::FIRST) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Area dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add area dimension"));
             createAreaDimension(selFaces[0]);
             selAllowed = true;
             availableDimension = AvailableDimension::RESET;
@@ -806,7 +810,7 @@ protected:
     {
         //distance
         if (availableDimension == AvailableDimension::FIRST) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add distance dimension"));
             createDistanceDimension("Distance", { selPoints[0], selPoints[1] });
             specialDimension = SpecialDimension::LineOr2PointsDistance;
             selAllowed = true;
@@ -815,7 +819,7 @@ protected:
             }
         }
         if (availableDimension == AvailableDimension::SECOND) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceX Chamfer dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add distanceX chamfer dimension"));
             createDistanceDimension("DistanceX", { selPoints[0], selPoints[1] }, true);
             specialDimension = SpecialDimension::LineOr2PointsChamfer;
             availableDimension = AvailableDimension::RESET;
@@ -868,7 +872,7 @@ protected:
     {
         //distance
         if (availableDimension == AvailableDimension::FIRST) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add point to line Distance dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add point to line distance dimension"));
             createDistanceDimension("Distance", { selPoints[0], selLine[0] });
             selAllowed = true;
             availableDimension = AvailableDimension::RESET;
@@ -884,7 +888,7 @@ protected:
             selAllowed = true;
         }
         if (availableDimension == AvailableDimension::SECOND) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Extent dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add extent dimension"));
             createExtentDistanceDimension("DistanceX");
             availableDimension = AvailableDimension::RESET;
         }
@@ -899,7 +903,7 @@ protected:
             selAllowed = true;
         }
         if (availableDimension == AvailableDimension::SECOND) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Extent dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add extent dimension"));
             createExtentDistanceDimension("DistanceX");
             availableDimension = AvailableDimension::RESET;
         }
@@ -921,7 +925,7 @@ protected:
             //addCursorTail(pixmaps);
         }
         if (availableDimension == AvailableDimension::SECOND) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceX Chamfer dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add distanceX chamfer dimension"));
             createDistanceDimension("DistanceX", { selLine[0] }, true);
             specialDimension = SpecialDimension::LineOr2PointsChamfer;
             availableDimension = AvailableDimension::RESET;
@@ -932,12 +936,12 @@ protected:
     {
         //angle (if parallel: Distance (see in createAngleDimension)).
         if (availableDimension == AvailableDimension::FIRST) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Angle dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add angle dimension"));
             createAngleDimension(selLine[0], selLine[1]);
             selAllowed = true;
         }
         if (availableDimension == AvailableDimension::SECOND) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Extent dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add extent dimension"));
             createExtentDistanceDimension("DistanceX");
             availableDimension = AvailableDimension::RESET;
         }
@@ -947,12 +951,12 @@ protected:
     {
         //distance, extent distance
         if (availableDimension == AvailableDimension::FIRST) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add circle to line Distance dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add circle to line distance dimension"));
             createDistanceDimension("Distance", { selCircleArc[0], selLine[0] });
             selAllowed = true;
         }
         if (availableDimension == AvailableDimension::SECOND) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Extent dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add extent dimension"));
             createExtentDistanceDimension("DistanceX");
             availableDimension = AvailableDimension::RESET;
         }
@@ -962,12 +966,12 @@ protected:
     {
         //distance, extent distance
         if (availableDimension == AvailableDimension::FIRST) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add ellipse to line Distance dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add ellipse to line distance dimension"));
             createDistanceDimension("Distance", { selEllipseArc[0], selLine[0] });
             selAllowed = true;
         }
         if (availableDimension == AvailableDimension::SECOND) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Extent dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add extent dimension"));
             createExtentDistanceDimension("DistanceX");
             availableDimension = AvailableDimension::RESET;
         }
@@ -981,12 +985,12 @@ protected:
         }
         if (availableDimension == AvailableDimension::SECOND) {
             createRadiusDiameterDimension(selCircleArc[0], false);
-            if (selCircleArc[0].geomEdgeType() != TechDraw::ARCOFCIRCLE) {
+            if (selCircleArc[0].geomEdgeType() != GeomType::ARCOFCIRCLE) {
                 availableDimension = AvailableDimension::RESET;
             }
         }
         if (availableDimension == AvailableDimension::THIRD) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Arc Length dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add arc length dimension"));
             createArcLengthDimension(selCircleArc[0]);
             availableDimension = AvailableDimension::RESET;
         }
@@ -996,12 +1000,12 @@ protected:
     {
         //Distance
         if (availableDimension == AvailableDimension::FIRST) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add circle to circle Distance dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add circle to circle distance dimension"));
             createDistanceDimension("Distance", { selCircleArc[0], selCircleArc[1] });
             selAllowed = true;
         }
         if (availableDimension == AvailableDimension::SECOND) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Extent dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add extent dimension"));
             createExtentDistanceDimension("DistanceX");
             availableDimension = AvailableDimension::RESET;
         }
@@ -1015,12 +1019,12 @@ protected:
         }
         if (availableDimension == AvailableDimension::SECOND) {
             createRadiusDiameterDimension(selEllipseArc[0], false);
-            if (selEllipseArc[0].geomEdgeType() != TechDraw::ARCOFELLIPSE) {
+            if (selEllipseArc[0].geomEdgeType() != GeomType::ARCOFELLIPSE) {
                 availableDimension = AvailableDimension::RESET;
             }
         }
         if (availableDimension == AvailableDimension::THIRD) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Arc Length dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add arc length dimension"));
             createArcLengthDimension(selEllipseArc[0]);
             availableDimension = AvailableDimension::RESET;
         }
@@ -1030,12 +1034,12 @@ protected:
     {
         //Distance
         if (availableDimension == AvailableDimension::FIRST) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add ellipse to ellipse Distance dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add ellipse to ellipse distance dimension"));
             createDistanceDimension("Distance", { selEllipseArc[0], selEllipseArc[1] });
             selAllowed = true;
         }
         if (availableDimension == AvailableDimension::SECOND) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Extent dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add extent dimension"));
             createExtentDistanceDimension("DistanceX");
             availableDimension = AvailableDimension::RESET;
         }
@@ -1056,7 +1060,7 @@ protected:
     {
         //Extend
         if (availableDimension == AvailableDimension::FIRST) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Extent dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add extent dimension"));
             createExtentDistanceDimension("DistanceX");
             selAllowed = true;
             availableDimension = AvailableDimension::RESET;
@@ -1074,7 +1078,7 @@ protected:
     void createRadiusDiameterDimension(ReferenceEntry ref, bool firstCstr) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(ref.getSubName()));
         TechDraw::BaseGeomPtr geom = partFeat->getGeomByIndex(GeoId);
-        bool isCircleGeom = (geom->getGeomType() == TechDraw::CIRCLE) || (geom->getGeomType() == TechDraw::ELLIPSE);
+        bool isCircleGeom = (geom->getGeomType() == GeomType::CIRCLE) || (geom->getGeomType() == GeomType::ELLIPSE);
 
         // Use same preference as in sketcher?
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/TechDraw/dimensioning");
@@ -1086,11 +1090,11 @@ protected:
             (!firstCstr && !dimensioningRadius && dimensioningDiameter) ||
             (firstCstr && dimensioningRadius && dimensioningDiameter && !isCircleGeom) ||
             (!firstCstr && dimensioningRadius && dimensioningDiameter && isCircleGeom)) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add radius dimension"));
             dim = dimMaker(partFeat, "Radius", { ref }, {});
         }
         else {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Diameter dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add diameter dimension"));
             dim = dimMaker(partFeat, "Diameter", { ref }, {});
         }
 
@@ -1099,9 +1103,9 @@ protected:
     }
 
     void createAngleDimension(ReferenceEntry ref1, ReferenceEntry ref2) {
-        if (TechDraw::isValidMultiEdge({ ref1, ref2 }) != isAngle) {
+        if (TechDraw::isValidMultiEdge({ ref1, ref2 }) != DimensionGeometry::isAngle) {
             //isValidMultiEdge check if lines are parallel.
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add distance dimension"));
             createDistanceDimension("Distance", { ref1, ref2 });
             return;
         }
@@ -1137,7 +1141,7 @@ protected:
             TechDraw::pointPair pp = dim->getLinearPoints();
             float dx = pp.first().x - pp.second().x;
             float dy = pp.first().y - pp.second().y;
-            int alpha = round(Base::toDegrees(abs(atan(type == "DistanceY" ? (dx / dy) : (dy / dx)))));
+            int alpha = std::round(Base::toDegrees(std::abs<float>(std::atan(type == "DistanceY" ? (dx / dy) : (dy / dx)))));
             std::string sAlpha = std::to_string(alpha);
             std::string formatSpec = dim->FormatSpec.getStrValue();
             formatSpec = formatSpec + " x" + sAlpha + "°";
@@ -1182,27 +1186,27 @@ protected:
         if (fpos.x() > minX && fpos.x() < maxX
             && (fpos.y() < minY || fpos.y() > maxY) && type != DimensionType::DistanceX) {
             if (chamfer) {
-                restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceX Chamfer dimension"));
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add distanceX chamfer dimension"));
             }
             else {
-                restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceX dimension"));
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add distanceX dimension"));
             }
             newType = "DistanceX";
         }
         else if (fpos.y() > minY && fpos.y() < maxY
             && (fpos.x() < minX || fpos.x() > maxX) && type != DimensionType::DistanceY) {
             if (chamfer) {
-                restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceY Chamfer dimension"));
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add distanceY chamfer dimension"));
             }
             else {
-                restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceY dimension"));
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add distanceY dimension"));
             }
             newType = "DistanceY";
         }
         else if ((((fpos.y() < minY || fpos.y() > maxY) && (fpos.x() < minX || fpos.x() > maxX))
             || (fpos.y() > minY && fpos.y() < maxY && fpos.x() > minX && fpos.x() < maxX)) && type != DimensionType::Distance
             && !chamfer) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add distance dimension"));
         }
         else {
             return;
@@ -1240,12 +1244,12 @@ protected:
 
         if (fpos.x() > minX && fpos.x() < maxX
             && (fpos.y() < minY || fpos.y() > maxY) && type != DimensionType::DistanceX) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceX extent dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add distanceX extent dimension"));
             createExtentDistanceDimension("DistanceX");
         }
         else if (fpos.y() > minY && fpos.y() < maxY
             && (fpos.x() < minX || fpos.x() > maxX) && type != DimensionType::DistanceY) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceY extent dimension"));
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add distanceY extent dimension"));
             createExtentDistanceDimension("DistanceY");
         }
         else {
@@ -1261,10 +1265,10 @@ protected:
             return;
         }
 
-        double minX = DBL_MAX;
-        double minY = DBL_MAX;
-        double maxX = -DBL_MAX;
-        double maxY = -DBL_MAX;
+        double minX = std::numeric_limits<double>::max();
+        double minY = std::numeric_limits<double>::max();
+        double maxX = -std::numeric_limits<double>::max();
+        double maxY = -std::numeric_limits<double>::max();
         for (auto dim : dims) {
             TechDraw::pointPair pp = dim->getLinearPoints();
             Base::Vector3d pnt1 = Rez::guiX(pp.first());
@@ -1353,20 +1357,15 @@ protected:
 
     bool isVerticalDistance(ReferenceVector refs)
     {
-        DimensionGeometryType geometryRefs2d = validateDimSelection(
-            refs, { "Edge", "Vertex" }, { 1, 2 }, { isDiagonal });
+        DimensionGeometry geometryRefs2d = validateDimSelection(
+            refs, { "Edge", "Vertex" }, { 1, 2 }, { DimensionGeometry::isDiagonal });
 
-        return geometryRefs2d == TechDraw::isDiagonal;
+        return geometryRefs2d == DimensionGeometry::isDiagonal;
     }
 
     QPixmap icon(std::string name)
     {
-        qreal pixelRatio = 1;
-        Gui::View3DInventorViewer* viewer = getViewer();
-        if (viewer) {
-            pixelRatio = viewer->devicePixelRatio();
-        }
-        int width = 16 * pixelRatio;
+        constexpr int width = 16;
         return Gui::BitmapFactory().pixmapFromSvg(name.c_str(), QSize(width, width));
     }
 
@@ -1406,10 +1405,10 @@ CmdTechDrawDimension::CmdTechDrawDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Dimension");
-    sToolTipText = QT_TR_NOOP("Dimension contextually based on your selection.\n"
+    sMenuText = QT_TR_NOOP("Dimension");
+    sToolTipText = QT_TR_NOOP("Inserts new contextual dimensions to the selection.\n"
         "Depending on your selection you might have several dimensions available. You can cycle through them using the M key.\n"
-        "Left clicking on empty space will validate the current Dimension. Right clicking or pressing Esc will cancel.");
+        "Left clicking on empty space will validate the current dimension. Right clicking or pressing Esc will cancel.");
     sWhatsThis = "TechDraw_Dimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_Dimension";
@@ -1446,7 +1445,7 @@ public:
         sAppModule = "TechDraw";
         sGroup = "TechDraw";
         sMenuText = QT_TR_NOOP("Dimension");
-        sToolTipText = QT_TR_NOOP("Dimension tools.");
+        sToolTipText = QT_TR_NOOP("Dimension tools");
         sWhatsThis = "TechDraw_CompDimensionTools";
         sStatusTip = sToolTipText;
 
@@ -1499,8 +1498,8 @@ CmdTechDrawRadiusDimension::CmdTechDrawRadiusDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Radius Dimension");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Radius Dimension");
+    sToolTipText = QT_TR_NOOP("Inserts a radius dimension of a circular edge or arc");
     sWhatsThis = "TechDraw_RadiusDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_RadiusDimension";
@@ -1512,8 +1511,8 @@ void CmdTechDrawRadiusDimension::activated(int iMsg)
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Task In Progress"),
-                             QObject::tr("Close active task dialog and try again."));
+                             QObject::tr("Task in progress"),
+                             QObject::tr("Close the active task dialog and try again"));
         return;
     }
 
@@ -1530,8 +1529,8 @@ void execRadius(Gui::Command* cmd)
     //Define the geometric configuration required for a radius dimension
     StringVector acceptableGeometry({"Edge"});
     std::vector<int> minimumCounts({1});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys(
-        {isCircle, isEllipse, isBSplineCircle, isBSpline});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys(
+        {DimensionGeometry::isCircle, DimensionGeometry::isEllipse, DimensionGeometry::isBSplineCircle, DimensionGeometry::isBSpline});
 
     execDim(cmd, "Radius", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1547,8 +1546,8 @@ CmdTechDrawDiameterDimension::CmdTechDrawDiameterDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Diameter Dimension");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Diameter Dimension");
+    sToolTipText = QT_TR_NOOP("Inserts a diameter dimension of a circular edge or arc");
     sWhatsThis = "TechDraw_DiameterDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_DiameterDimension";
@@ -1560,8 +1559,8 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Task In Progress"),
-                             QObject::tr("Close active task dialog and try again."));
+                             QObject::tr("Task in progress"),
+                             QObject::tr("Close the active task dialog and try again"));
         return;
     }
 
@@ -1578,8 +1577,8 @@ void execDiameter(Gui::Command* cmd)
     //Define the geometric configuration required for a diameter dimension
     StringVector acceptableGeometry({"Edge"});
     std::vector<int> minimumCounts({1});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys(
-        {isCircle, isEllipse, isBSplineCircle, isBSpline});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys(
+        {DimensionGeometry::isCircle, DimensionGeometry::isEllipse, DimensionGeometry::isBSplineCircle, DimensionGeometry::isBSpline});
 
     execDim(cmd, "Diameter", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1595,8 +1594,8 @@ CmdTechDrawLengthDimension::CmdTechDrawLengthDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Length Dimension");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Length Dimension");
+    sToolTipText = QT_TR_NOOP("Inserts a length dimension of an edge or distance between two points");
     sWhatsThis = "TechDraw_LengthDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_LengthDimension";
@@ -1608,8 +1607,8 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Task In Progress"),
-                             QObject::tr("Close active task dialog and try again."));
+                             QObject::tr("Task in progress"),
+                             QObject::tr("Close the active task dialog and try again"));
         return;
     }
 
@@ -1625,8 +1624,8 @@ void execDistance(Gui::Command* cmd)
 {
     StringVector acceptableGeometry({"Edge", "Vertex"});
     std::vector<int> minimumCounts({1, 2});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys(
-        {isVertical, isHorizontal, isDiagonal, isHybrid});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys(
+        {DimensionGeometry::isVertical, DimensionGeometry::isHorizontal, DimensionGeometry::isDiagonal, DimensionGeometry::isHybrid});
 
     execDim(cmd, "Distance", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1642,8 +1641,8 @@ CmdTechDrawHorizontalDimension::CmdTechDrawHorizontalDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Horizontal Dimension");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Horizontal Length Dimension");
+    sToolTipText = QT_TR_NOOP("Inserts a horizontal length dimension of an edge or distance between two points");
     sWhatsThis = "TechDraw_HorizontalDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_HorizontalDimension";
@@ -1656,8 +1655,8 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Task In Progress"),
-                             QObject::tr("Close active task dialog and try again."));
+                             QObject::tr("Task in progress"),
+                             QObject::tr("Close the active task dialog and try again"));
         return;
     }
 
@@ -1674,7 +1673,7 @@ void execDistanceX(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge", "Vertex"});
     std::vector<int> minimumCounts({1, 2});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isHorizontal, isDiagonal, isHybrid});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isHorizontal, DimensionGeometry::isDiagonal, DimensionGeometry::isHybrid});
 
     execDim(cmd, "DistanceX", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1690,8 +1689,8 @@ CmdTechDrawVerticalDimension::CmdTechDrawVerticalDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Vertical Dimension");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Vertical Length Dimension");
+    sToolTipText = QT_TR_NOOP("Inserts a vertical length dimension of an edge or distance between two points");
     sWhatsThis = "TechDraw_VerticalDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_VerticalDimension";
@@ -1704,8 +1703,8 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Task In Progress"),
-                             QObject::tr("Close active task dialog and try again."));
+                             QObject::tr("Task in progress"),
+                             QObject::tr("Close the active task dialog and try again"));
         return;
     }
 
@@ -1722,7 +1721,7 @@ void execDistanceY(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge", "Vertex"});
     std::vector<int> minimumCounts({1, 2});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isVertical, isDiagonal, isHybrid});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isVertical, DimensionGeometry::isDiagonal, DimensionGeometry::isHybrid});
 
     execDim(cmd, "DistanceY", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1738,8 +1737,8 @@ CmdTechDrawAngleDimension::CmdTechDrawAngleDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Angle Dimension");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Angle Dimension");
+    sToolTipText = QT_TR_NOOP("Inserts an angle dimension between two edges");
     sWhatsThis = "TechDraw_AngleDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_AngleDimension";
@@ -1751,8 +1750,8 @@ void CmdTechDrawAngleDimension::activated(int iMsg)
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Task In Progress"),
-                             QObject::tr("Close active task dialog and try again."));
+                             QObject::tr("Task in progress"),
+                             QObject::tr("Close the active task dialog and try again"));
         return;
     }
 
@@ -1769,7 +1768,7 @@ void execAngle(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge"});
     std::vector<int> minimumCounts({2});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isAngle});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isAngle});
 
     execDim(cmd, "Angle", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1785,8 +1784,8 @@ CmdTechDraw3PtAngleDimension::CmdTechDraw3PtAngleDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert 3-Point Angle Dimension");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Angle Dimension From 3 Points");
+    sToolTipText = QT_TR_NOOP("Inserts an angle dimension between 3 selected points");
     sWhatsThis = "TechDraw_3PtAngleDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_3PtAngleDimension";
@@ -1798,8 +1797,8 @@ void CmdTechDraw3PtAngleDimension::activated(int iMsg)
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Task In Progress"),
-                             QObject::tr("Close active task dialog and try again."));
+                             QObject::tr("Task in progress"),
+                             QObject::tr("Close the active task dialog and try again"));
         return;
     }
 
@@ -1816,7 +1815,7 @@ void execAngle3Pt(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Vertex"});
     std::vector<int> minimumCounts({3});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isAngle3Pt});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isAngle3Pt});
 
     execDim(cmd, "Angle3Pt", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1832,8 +1831,8 @@ CmdTechDrawAreaDimension::CmdTechDrawAreaDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Area Annotation");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Area Annotation");
+    sToolTipText = QT_TR_NOOP("Inserts an annotation showing the area of a selected face");
     sWhatsThis = "TechDraw_AreaDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_AreaDimension";
@@ -1845,8 +1844,8 @@ void CmdTechDrawAreaDimension::activated(int iMsg)
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Task In Progress"),
-                             QObject::tr("Close active task dialog and try again."));
+                             QObject::tr("Task in progress"),
+                             QObject::tr("Close the active task dialog and try again"));
         return;
     }
 
@@ -1863,7 +1862,7 @@ void execArea(Gui::Command* cmd)
     //Define the geometric configuration required for a area dimension
     StringVector acceptableGeometry({"Face"});
     std::vector<int> minimumCounts({1});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isFace});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isFace});
 
     execDim(cmd, "Area", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1884,7 +1883,7 @@ CmdTechDrawLinkDimension::CmdTechDrawLinkDimension()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Link Dimension to 3D Geometry");
-    sToolTipText = sMenuText;
+    sToolTipText = QT_TR_NOOP("Links the selected TechDraw dimensions to 3D geometry");
     sWhatsThis = "TechDraw_LinkDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_LinkDimension";
@@ -1922,15 +1921,15 @@ void CmdTechDrawLinkDimension::activated(int iMsg)
 
     if (!obj3D) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect Selection"),
+                             QObject::tr("Incorrect selection"),
                              QObject::tr("There is no 3D object in your selection"));
         return;
     }
 
     if (subs.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect Selection"),
-                             QObject::tr("There are no 3D Edges or Vertices in your selection"));
+                             QObject::tr("Incorrect selection"),
+                             QObject::tr("There are no 3D edges or vertices in your selection"));
         return;
     }
 
@@ -1963,8 +1962,8 @@ CmdTechDrawExtentGroup::CmdTechDrawExtentGroup()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Extent Dimension");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Extent Dimension");
+    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the extent (overall length) of an object or feature");
     sWhatsThis = "TechDraw_ExtentGroup";
     sStatusTip = sToolTipText;
     //    eType           = ForEdit;
@@ -1972,12 +1971,12 @@ CmdTechDrawExtentGroup::CmdTechDrawExtentGroup()
 
 void CmdTechDrawExtentGroup::activated(int iMsg)
 {
-    //    Base::Console().Message("CMD::ExtentGrp - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtentGrp - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Task In Progress"),
-                             QObject::tr("Close active task dialog and try again."));
+                             QObject::tr("Task in progress"),
+                             QObject::tr("Close the active task dialog and try again"));
         return;
     }
 
@@ -1991,7 +1990,7 @@ void CmdTechDrawExtentGroup::activated(int iMsg)
             execExtent(this, "DistanceY");
             break;
         default:
-            Base::Console().Message("CMD::ExtGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::ExtGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -2003,12 +2002,12 @@ Gui::Action* CmdTechDrawExtentGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_HorizontalExtentDimension"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_HorizontalExtentDimension"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_HorizontalExtentDimension"));
+    p1->setObjectName(QStringLiteral("TechDraw_HorizontalExtentDimension"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_HorizontalExtentDimension"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_VerticalExtentDimension"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_VerticalExtentDimension"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_VerticalExtentDimension"));
+    p2->setObjectName(QStringLiteral("TechDraw_VerticalExtentDimension"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_VerticalExtentDimension"));
 
     _pcAction = pcAction;
     languageChange();
@@ -2031,14 +2030,14 @@ void CmdTechDrawExtentGroup::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdTechDrawExtentGroup", "Horizontal Extent"));
+    arc1->setText(QApplication::translate("CmdTechDrawExtentGroup", "Horizontal extent"));
     arc1->setToolTip(
-        QApplication::translate("TechDraw_HorizontalExtent", "Insert Horizontal Extent Dimension"));
+        QApplication::translate("TechDraw_HorizontalExtent", "Insert horizontal extent dimension"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdTechDrawExtentGroup", "Vertical Extent"));
+    arc2->setText(QApplication::translate("CmdTechDrawExtentGroup", "Vertical extent"));
     arc2->setToolTip(QApplication::translate("TechDraw_VerticalExtentDimension",
-                                             "Insert Vertical Extent Dimension"));
+                                             "Insert vertical extent dimension"));
     arc2->setStatusTip(arc2->toolTip());
 }
 
@@ -2058,8 +2057,8 @@ CmdTechDrawHorizontalExtentDimension::CmdTechDrawHorizontalExtentDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Horizontal Extent Dimension");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Horizontal Extent Dimension");
+    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the horizontal extent (overall length) of an object or feature.");
     sWhatsThis = "TechDraw_HorizontalExtentDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_HorizontalExtentDimension";
@@ -2072,8 +2071,8 @@ void CmdTechDrawHorizontalExtentDimension::activated(int iMsg)
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Task In Progress"),
-                             QObject::tr("Close active task dialog and try again."));
+                             QObject::tr("Task in progress"),
+                             QObject::tr("Close the active task dialog and try again"));
         return;
     }
 
@@ -2087,11 +2086,20 @@ bool CmdTechDrawHorizontalExtentDimension::isActive()
 
 void execExtent(Gui::Command* cmd, const std::string& dimType)
 {
+    const char* commandString = nullptr;
+    if (dimType == "DistanceX") {
+        commandString = QT_TRANSLATE_NOOP("Command", "Create Dimension DistanceX");
+    } else if (dimType == "DistanceY") {
+        commandString = QT_TRANSLATE_NOOP("Command", "Create Dimension DistanceY");
+    }
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", commandString));
+
     bool result = _checkDrawViewPart(cmd);
     if (!result) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect selection"),
-                             QObject::tr("No View of a Part in selection."));
+                             QObject::tr("No view of a part in selection."));
+        Gui::Command::abortCommand();
         return;
     }
     ReferenceVector references2d;
@@ -2107,6 +2115,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
                 QMessageBox::warning(Gui::getMainWindow(),
                     QObject::tr("Incorrect selection"),
                     QObject::tr("Selection contains both 2D and 3D geometry"));
+                Gui::Command::abortCommand();
                 return;
             }
         }
@@ -2115,38 +2124,40 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
     //Define the geometric configuration required for a extent dimension
     StringVector acceptableGeometry({"Edge"});
     std::vector<int> minimumCounts({1});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys({isMultiEdge,
-                                                                     isHorizontal,
-                                                                     isVertical,
-                                                                     isDiagonal,
-                                                                     isCircle,
-                                                                     isEllipse,
-                                                                     isBSplineCircle,
-                                                                     isBSpline,
-                                                                     isZLimited});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isMultiEdge,
+                                                                     DimensionGeometry::isHorizontal,
+                                                                     DimensionGeometry::isVertical,
+                                                                     DimensionGeometry::isDiagonal,
+                                                                     DimensionGeometry::isCircle,
+                                                                     DimensionGeometry::isEllipse,
+                                                                     DimensionGeometry::isBSplineCircle,
+                                                                     DimensionGeometry::isBSpline,
+                                                                     DimensionGeometry::isZLimited});
 
     //what 2d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs2d = validateDimSelection(
+    DimensionGeometry geometryRefs2d = validateDimSelection(
         references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-    if (geometryRefs2d == TechDraw::isInvalid) {
+    if (geometryRefs2d == DimensionGeometry::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make 2D extent dimension from selection"));
+                             QObject::tr("Cannot make 2D extent dimension from selection"));
+        Gui::Command::abortCommand();
         return;
     }
 
     //what 3d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs3d;
-    if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
+    DimensionGeometry geometryRefs3d;
+    if (geometryRefs2d == DimensionGeometry::isViewReference && !references3d.empty()) {
         geometryRefs3d = validateDimSelection3d(partFeat,
                                                 references3d,
                                                 acceptableGeometry,
                                                 minimumCounts,
                                                 acceptableDimensionGeometrys);
-        if (geometryRefs3d == isInvalid) {
+        if (geometryRefs3d == DimensionGeometry::isInvalid) {
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make 3D extent dimension from selection"));
+                                 QObject::tr("Cannot make 3D extent dimension from selection"));
+            Gui::Command::abortCommand();
             return;
         }
     }
@@ -2157,6 +2168,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
     else {
         DrawDimHelper::makeExtentDim3d(partFeat, dimType, references3d);
     }
+    Gui::Command::commitCommand();
 }
 
 //===========================================================================
@@ -2170,8 +2182,8 @@ CmdTechDrawVerticalExtentDimension::CmdTechDrawVerticalExtentDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Vertical Extent Dimension");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Vertical Extent Dimension");
+    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the vertical extent (overall length) of an object or feature.");
     sWhatsThis = "TechDraw_VerticalExtentDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_VerticalExtentDimension";
@@ -2184,8 +2196,8 @@ void CmdTechDrawVerticalExtentDimension::activated(int iMsg)
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Task In Progress"),
-                             QObject::tr("Close active task dialog and try again."));
+                             QObject::tr("Task in progress"),
+                             QObject::tr("Close the active task dialog and try again"));
         return;
     }
 
@@ -2209,7 +2221,7 @@ CmdTechDrawDimensionRepair::CmdTechDrawDimensionRepair()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Repair Dimension References");
-    sToolTipText = sMenuText;
+    sToolTipText = QT_TR_NOOP("Repairs broken or incorrect dimension references");
     sWhatsThis = "TechDraw_DimensionRepair";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_DimensionRepair";
@@ -2223,8 +2235,8 @@ void CmdTechDrawDimensionRepair::activated(int iMsg)
     TechDraw::DrawViewDimension* dim = nullptr;
     if (dimObjs.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect Selection"),
-                             QObject::tr("There is no Dimension in your selection"));
+                             QObject::tr("Incorrect selection"),
+                             QObject::tr("There is no dimension in your selection"));
         return;
     } else {
         dim = static_cast<TechDraw::DrawViewDimension*>(dimObjs.at(0));
@@ -2257,8 +2269,8 @@ CmdTechDrawLandmarkDimension::CmdTechDrawLandmarkDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Landmark Dimension - EXPERIMENTAL");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Landmark Dimension");
+    sToolTipText = QT_TR_NOOP("Inserts a landmark dimension (experimental feature). Use with caution.");
     sWhatsThis = "TechDraw_LandmarkDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_LandmarkDimension";
@@ -2277,7 +2289,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
     if (objects.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Wrong selection"),
-                             QObject::tr("Select 2 point objects and 1 View. (1)"));
+                             QObject::tr("Select 2 point objects and 1 view. (1)"));
         return;
     }
 
@@ -2286,7 +2298,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
     if (views.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Wrong selection"),
-                             QObject::tr("Select 2 point objects and 1 View. (2)"));
+                             QObject::tr("Select 2 point objects and 1 view. (2)"));
         return;
     }
 
@@ -2379,13 +2391,13 @@ void CreateTechDrawCommandsDims()
 
 //Common code to build a dimension feature
 
-void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometry, std::vector<int> minimumCounts, std::vector<DimensionGeometryType> acceptableDimensionGeometrys)
+void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometry, std::vector<int> minimumCounts, std::vector<DimensionGeometry> acceptableDimensionGeometrys)
 {
     bool result = _checkDrawViewPart(cmd);
     if (!result) {
         QMessageBox::warning(Gui::getMainWindow(),
             QObject::tr("Incorrect selection"),
-            QObject::tr("No View of a Part in selection."));
+            QObject::tr("No view of a part in selection."));
         return;
     }
 
@@ -2395,28 +2407,28 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
         TechDraw::getReferencesFromSelection(references2d, references3d);
 
     //what 2d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs2d = validateDimSelection(
+    DimensionGeometry geometryRefs2d = validateDimSelection(
         references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-    if (geometryRefs2d == TechDraw::isInvalid) {
+    if (geometryRefs2d == DimensionGeometry::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
-            QObject::tr("Incorrect Selection"),
-            QObject::tr("Can not make 2D dimension from selection"));
+            QObject::tr("Incorrect selection"),
+            QObject::tr("Cannot make 2D dimension from selection"));
         return;
     }
 
     //what 3d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs3d{TechDraw::isInvalid};
-    if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
+    DimensionGeometry geometryRefs3d{DimensionGeometry::isInvalid};
+    if (geometryRefs2d == DimensionGeometry::isViewReference && !references3d.empty()) {
         geometryRefs3d = validateDimSelection3d(partFeat,
             references3d,
             acceptableGeometry,
             minimumCounts,
             acceptableDimensionGeometrys);
 
-        if (geometryRefs3d == TechDraw::isInvalid) {
+        if (geometryRefs3d == DimensionGeometry::isInvalid) {
             QMessageBox::warning(Gui::getMainWindow(),
                 QObject::tr("Incorrect Selection"),
-                QObject::tr("Can not make 3D dimension from selection"));
+                QObject::tr("Cannot make 3D dimension from selection"));
             return;
         }
     }
@@ -2426,10 +2438,10 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
 
     //errors and warnings
     if (type == "Radius" || type == "Diameter") {
-        if (geometryRefs2d == isEllipse || geometryRefs3d == isEllipse) {
+        if (geometryRefs2d == DimensionGeometry::isEllipse || geometryRefs3d == DimensionGeometry::isEllipse) {
             QMessageBox::StandardButton result = QMessageBox::warning(
                 Gui::getMainWindow(),
-                QObject::tr("Ellipse Curve Warning"),
+                QObject::tr("Ellipse curve warning"),
                 QObject::tr("Selected edge is an Ellipse. Value will be approximate. Continue?"),
                 QMessageBox::Ok | QMessageBox::Cancel,
                 QMessageBox::Cancel);
@@ -2437,10 +2449,10 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
                 return;
             }
         }
-        if (geometryRefs2d == isBSplineCircle || geometryRefs3d == isBSplineCircle) {
+        if (geometryRefs2d == DimensionGeometry::isBSplineCircle || geometryRefs3d == DimensionGeometry::isBSplineCircle) {
             QMessageBox::StandardButton result = QMessageBox::warning(
                 Gui::getMainWindow(),
-                QObject::tr("B-spline Curve Warning"),
+                QObject::tr("B-spline curve warning"),
                 QObject::tr("Selected edge is a B-spline. Value will be approximate. Continue?"),
                 QMessageBox::Ok | QMessageBox::Cancel,
                 QMessageBox::Cancel);
@@ -2448,11 +2460,11 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
                 return;
             }
         }
-        if (geometryRefs2d == isBSpline || geometryRefs3d == isBSpline) {
+        if (geometryRefs2d == DimensionGeometry::isBSpline || geometryRefs3d == DimensionGeometry::isBSpline) {
             QMessageBox::critical(
                 Gui::getMainWindow(),
-                QObject::tr("B-spline Curve Error"),
-                QObject::tr("Selected edge is a B-spline and a radius/diameter can not be calculated."));
+                QObject::tr("B-spline curve error"),
+                QObject::tr("Selected edge is a B-spline and a radius/diameter cannot be calculated."));
             return;
         }
     }
@@ -2469,7 +2481,7 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
 DrawViewDimension* dimensionMaker(TechDraw::DrawViewPart* dvp, std::string dimType,
                                   ReferenceVector references2d, ReferenceVector references3d)
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create dimension"));
 
     TechDraw::DrawViewDimension* dim = dimMaker(dvp, dimType, references2d, references3d);
 

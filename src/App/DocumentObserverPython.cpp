@@ -133,7 +133,7 @@ void DocumentObserverPython::slotCreatedDocument(const App::Document& Doc)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -147,7 +147,7 @@ void DocumentObserverPython::slotDeletedDocument(const App::Document& Doc)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -161,7 +161,7 @@ void DocumentObserverPython::slotRelabelDocument(const App::Document& Doc)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -175,7 +175,7 @@ void DocumentObserverPython::slotActivateDocument(const App::Document& Doc)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -189,7 +189,7 @@ void DocumentObserverPython::slotUndoDocument(const App::Document& Doc)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -204,7 +204,7 @@ void DocumentObserverPython::slotRedoDocument(const App::Document& Doc)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -216,7 +216,7 @@ void DocumentObserverPython::slotUndo()
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -228,7 +228,7 @@ void DocumentObserverPython::slotRedo()
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -242,7 +242,7 @@ void DocumentObserverPython::slotBeforeCloseTransaction(bool abort)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -256,7 +256,7 @@ void DocumentObserverPython::slotCloseTransaction(bool abort)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -277,7 +277,7 @@ void DocumentObserverPython::slotBeforeChangeDocument(const App::Document& Doc,
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -298,7 +298,7 @@ void DocumentObserverPython::slotChangedDocument(const App::Document& Doc,
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -312,7 +312,7 @@ void DocumentObserverPython::slotCreatedObject(const App::DocumentObject& Obj)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -326,7 +326,7 @@ void DocumentObserverPython::slotDeletedObject(const App::DocumentObject& Obj)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -347,7 +347,7 @@ void DocumentObserverPython::slotBeforeChangeObject(const App::DocumentObject& O
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -368,7 +368,7 @@ void DocumentObserverPython::slotChangedObject(const App::DocumentObject& Obj,
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -382,7 +382,7 @@ void DocumentObserverPython::slotRecomputedObject(const App::DocumentObject& Obj
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -396,7 +396,7 @@ void DocumentObserverPython::slotRecomputedDocument(const App::Document& doc)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -410,7 +410,7 @@ void DocumentObserverPython::slotBeforeRecomputeDocument(const App::Document& do
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -425,7 +425,7 @@ void DocumentObserverPython::slotOpenTransaction(const App::Document& doc, std::
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -439,7 +439,7 @@ void DocumentObserverPython::slotCommitTransaction(const App::Document& doc)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -453,7 +453,7 @@ void DocumentObserverPython::slotAbortTransaction(const App::Document& doc)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -474,7 +474,7 @@ void DocumentObserverPython::slotAppendDynamicProperty(const App::Property& Prop
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -495,7 +495,7 @@ void DocumentObserverPython::slotRemoveDynamicProperty(const App::Property& Prop
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -517,7 +517,7 @@ void DocumentObserverPython::slotChangePropertyEditor(const App::Document&,
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -533,7 +533,7 @@ void DocumentObserverPython::slotStartSaveDocument(const App::Document& doc,
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -549,7 +549,7 @@ void DocumentObserverPython::slotFinishSaveDocument(const App::Document& doc,
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -566,7 +566,7 @@ void DocumentObserverPython::slotBeforeAddingDynamicExtension(
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -582,6 +582,6 @@ void DocumentObserverPython::slotAddedDynamicExtension(const App::ExtensionConta
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }

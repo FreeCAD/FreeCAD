@@ -191,6 +191,7 @@ public:
                 return true;
             }
         }
+        updateHint();
         return false;
     }
 
@@ -210,13 +211,22 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_CarbonCopy");
+        return QStringLiteral("Sketcher_Pointer_CarbonCopy");
     }
 
     void deactivated() override
     {
         Q_UNUSED(sketchgui);
         setAxisPickStyle(true);
+    }
+
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return {
+            {tr("%1 pick sketch to copy", "Sketcher CarbonCopy: hint"),
+             {Gui::InputHint::UserInput::MouseLeft}},
+        };
     }
 };
 

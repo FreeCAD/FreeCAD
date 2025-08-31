@@ -150,7 +150,7 @@ TopoDS_Shape ReferenceEntry::getGeometry2d() const
         }
     }
     catch (...) {
-        Base::Console().Message("RE::getGeometry2d - no shape for dimension 2d reference - gType: **%s**\n", gType.c_str());
+        Base::Console().message("RE::getGeometry2d - no shape for dimension 2d reference - gType: **%s**\n", gType.c_str());
     }
 
     return {};
@@ -309,7 +309,7 @@ bool ReferenceEntry::hasGeometry() const
 
     // 3d reference
     // TODO: shouldn't this be ShapeFinder.getLocatedShape?
-    auto shape = Part::Feature::getTopoShape(getObject());
+    auto shape = Part::Feature::getTopoShape(getObject(), Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
     auto subShape = shape.getSubShape(getSubName().c_str());
 
     return !subShape.IsNull();

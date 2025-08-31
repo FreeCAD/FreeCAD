@@ -34,7 +34,7 @@ namespace Part
  */
 class PartExport CustomFeature : public Part::Feature
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(Part::UserFeature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::CustomFeature);
 
 public:
     /// Constructor

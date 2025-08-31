@@ -54,7 +54,6 @@ locations = [
     ["../Mod/Assembly/Gui/Resources", "Assembly.qrc"],
     ["../Mod/Complete/Gui/Resources", "Complete.qrc"],
     ["../Mod/Draft/Resources", "Draft.qrc"],
-    ["../Mod/Drawing/Gui/Resources", "Drawing.qrc"],
     ["../Mod/Fem/Gui/Resources", "Fem.qrc"],
     ["../Mod/Image/Gui/Resources", "Image.qrc"],
     ["../Mod/Mesh/Gui/Resources", "Mesh.qrc"],

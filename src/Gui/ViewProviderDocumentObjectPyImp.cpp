@@ -29,7 +29,7 @@
 #include <App/DocumentObjectPy.h>
 #include "Document.h"
 
-// inclusion of the generated files (generated out of ViewProviderDocumentObjectPy.xml)
+// inclusion of the generated files (generated out of ViewProviderDocumentObjectPy.pyi)
 #include "ViewProviderDocumentObjectPy.h"
 #include "ViewProviderDocumentObjectPy.cpp"
 

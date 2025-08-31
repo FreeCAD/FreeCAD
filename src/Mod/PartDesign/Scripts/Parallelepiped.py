@@ -14,9 +14,9 @@ from FreeCAD import Base
 class Parallelepiped:
     def __init__(self, obj):
         ''' Add the properties: Length, Edges, Radius, Height '''
-        obj.addProperty("App::PropertyVector","A","Parallelepiped","Vector").A=Base.Vector(1,0,0)
-        obj.addProperty("App::PropertyVector","B","Parallelepiped","Vector").B=Base.Vector(0,1,0)
-        obj.addProperty("App::PropertyVector","C","Parallelepiped","Vector").C=Base.Vector(0,0,1)
+        obj.addProperty("App::PropertyVector","A","Parallelepiped","Vector", locked=True).A=Base.Vector(1,0,0)
+        obj.addProperty("App::PropertyVector","B","Parallelepiped","Vector", locked=True).B=Base.Vector(0,1,0)
+        obj.addProperty("App::PropertyVector","C","Parallelepiped","Vector", locked=True).C=Base.Vector(0,0,1)
         obj.Proxy = self
 
     def onChanged(self, fp, prop):
@@ -43,9 +43,9 @@ class Parallelepiped:
 
 class BoxCylinder:
     def __init__(self, obj):
-        obj.addProperty("App::PropertyFloat","Length","BoxCylinder","Length").Length=10.0
-        obj.addProperty("App::PropertyFloat","Width","BoxCylinder","Width").Width=10.0
-        obj.addProperty("App::PropertyLink","Source","BoxCylinder","Source").Source=None
+        obj.addProperty("App::PropertyFloat","Length","BoxCylinder","Length", locked=True).Length=10.0
+        obj.addProperty("App::PropertyFloat","Width","BoxCylinder","Width", locked=True).Width=10.0
+        obj.addProperty("App::PropertyLink","Source","BoxCylinder","Source", locked=True).Source=None
         obj.Proxy = self
 
     def onChanged(self, fp, prop):

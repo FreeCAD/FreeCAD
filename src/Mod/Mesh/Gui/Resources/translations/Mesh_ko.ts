@@ -4,56 +4,53 @@
   <context>
     <name>CmdMeshAddFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="719"/>
+      <location filename="../../Command.cpp" line="714"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="720"/>
-      <source>Add triangle</source>
-      <translation>삼각형 추가</translation>
+      <location filename="../../Command.cpp" line="715"/>
+      <source>Add Triangle</source>
+      <translation type="unfinished">Add Triangle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="721"/>
-      <location filename="../../Command.cpp" line="723"/>
-      <source>Add triangle manually to a mesh</source>
-      <translation>삼각형을 메시에 수동으로 추가</translation>
+      <location filename="../../Command.cpp" line="716"/>
+      <source>Adds a triangle manually to a mesh</source>
+      <translation type="unfinished">Adds a triangle manually to a mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshBoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1438"/>
+      <location filename="../../Command.cpp" line="1431"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1439"/>
-      <source>Boundings info...</source>
-      <translation>Boundings 정보...</translation>
+      <location filename="../../Command.cpp" line="1432"/>
+      <source>Bounding Box Info</source>
+      <translation type="unfinished">Bounding Box Info</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1440"/>
-      <location filename="../../Command.cpp" line="1442"/>
-      <source>Shows the boundings of the selected mesh</source>
-      <translation>선택된 메시의 boundings 표시</translation>
+      <location filename="../../Command.cpp" line="1433"/>
+      <source>Shows the bounding box coordinates of the selected mesh</source>
+      <translation type="unfinished">Shows the bounding box coordinates of the selected mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshBuildRegularSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1490"/>
+      <location filename="../../Command.cpp" line="1483"/>
       <source>Mesh</source>
       <translation>메쉬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1491"/>
-      <source>Regular solid...</source>
-      <translation>일반 솔리드...</translation>
+      <location filename="../../Command.cpp" line="1484"/>
+      <source>Regular Solid</source>
+      <translation type="unfinished">Regular Solid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1492"/>
-      <location filename="../../Command.cpp" line="1494"/>
+      <location filename="../../Command.cpp" line="1485"/>
       <source>Builds a regular solid</source>
       <translation>일반 솔리드 만들기</translation>
     </message>
@@ -61,38 +58,35 @@
   <context>
     <name>CmdMeshCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="960"/>
+      <location filename="../../Command.cpp" line="951"/>
       <source>Mesh</source>
       <translation>메쉬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="961"/>
-      <source>Cross-sections...</source>
-      <translation>횡단면...</translation>
+      <location filename="../../Command.cpp" line="952"/>
+      <source>Cross-Sections</source>
+      <translation type="unfinished">Cross-Sections</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="962"/>
-      <location filename="../../Command.cpp" line="963"/>
-      <source>Cross-sections</source>
-      <translation>횡단면</translation>
+      <location filename="../../Command.cpp" line="953"/>
+      <source>Creates cross-sections of the mesh</source>
+      <translation type="unfinished">Creates cross-sections of the mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshDecimating</name>
     <message>
-      <location filename="../../Command.cpp" line="1334"/>
+      <location filename="../../Command.cpp" line="1327"/>
       <source>Mesh</source>
       <translation>메쉬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1335"/>
-      <source>Decimation...</source>
-      <translation>단순화...</translation>
+      <location filename="../../Command.cpp" line="1328"/>
+      <source>Decimate</source>
+      <translation type="unfinished">Decimate</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1336"/>
-      <location filename="../../Command.cpp" line="1337"/>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1329"/>
       <source>Decimates a mesh</source>
       <translation>메쉬 단순화</translation>
     </message>
@@ -100,50 +94,53 @@
   <context>
     <name>CmdMeshDifference</name>
     <message>
-      <location filename="../../Command.cpp" line="165"/>
+      <location filename="../../Command.cpp" line="163"/>
       <source>Mesh</source>
       <translation>메쉬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="166"/>
+      <location filename="../../Command.cpp" line="164"/>
       <source>Difference</source>
       <translation>차이</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="165"/>
+      <source>Creates a boolean difference of the selected meshes</source>
+      <translation type="unfinished">Creates a boolean difference of the selected meshes</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshEvaluateFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="1089"/>
+      <location filename="../../Command.cpp" line="1082"/>
       <source>Mesh</source>
       <translation>메쉬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1090"/>
-      <source>Face info</source>
-      <translation>평면 정보</translation>
+      <location filename="../../Command.cpp" line="1083"/>
+      <source>Face Info</source>
+      <translation type="unfinished">Face Info</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1091"/>
-      <location filename="../../Command.cpp" line="1093"/>
-      <source>Information about face</source>
-      <translation>면에 대한 정보</translation>
+      <location filename="../../Command.cpp" line="1084"/>
+      <source>Displays information about the selected faces</source>
+      <translation type="unfinished">Displays information about the selected faces</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshEvaluateSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1264"/>
+      <location filename="../../Command.cpp" line="1257"/>
       <source>Mesh</source>
       <translation>메쉬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1265"/>
-      <source>Check solid mesh</source>
-      <translation>솔리드 메쉬 검사</translation>
+      <location filename="../../Command.cpp" line="1258"/>
+      <source>Evaluate Solid</source>
+      <translation type="unfinished">Evaluate Solid</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1266"/>
-      <location filename="../../Command.cpp" line="1268"/>
+      <location filename="../../Command.cpp" line="1259"/>
       <source>Checks whether the mesh is a solid</source>
       <translation>메쉬가 솔리드인지 검사</translation>
     </message>
@@ -151,18 +148,17 @@
   <context>
     <name>CmdMeshEvaluation</name>
     <message>
-      <location filename="../../Command.cpp" line="1044"/>
+      <location filename="../../Command.cpp" line="1037"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1046"/>
-      <source>Evaluate and repair mesh...</source>
-      <translation>메쉬 평가 및 수정</translation>
+      <location filename="../../Command.cpp" line="1039"/>
+      <source>Evaluate and Repair</source>
+      <translation type="unfinished">Evaluate and Repair</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1047"/>
-      <location filename="../../Command.cpp" line="1049"/>
+      <location filename="../../Command.cpp" line="1040"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
       <translation>메쉬의 분석/수정을 위한 대화상자 열기</translation>
     </message>
@@ -170,131 +166,125 @@
   <context>
     <name>CmdMeshExport</name>
     <message>
-      <location filename="../../Command.cpp" line="376"/>
+      <location filename="../../Command.cpp" line="372"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="377"/>
-      <source>Export mesh...</source>
-      <translation>메쉬 내보내기...</translation>
+      <location filename="../../Command.cpp" line="373"/>
+      <source>Export Mesh…</source>
+      <translation type="unfinished">Export Mesh…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="378"/>
-      <location filename="../../Command.cpp" line="380"/>
-      <source>Exports a mesh to file</source>
-      <translation>메쉬 파일로 내보냅니다.</translation>
+      <location filename="../../Command.cpp" line="374"/>
+      <source>Exports a mesh to a file</source>
+      <translation type="unfinished">Exports a mesh to a file</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFillInteractiveHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1573"/>
+      <location filename="../../Command.cpp" line="1566"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1574"/>
-      <source>Close hole</source>
-      <translation>구멍 닫기</translation>
+      <location filename="../../Command.cpp" line="1567"/>
+      <source>Close Hole</source>
+      <translation type="unfinished">Close Hole</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1575"/>
-      <location filename="../../Command.cpp" line="1577"/>
-      <source>Close holes interactively</source>
-      <translation>대화식으로 구멍 닫기</translation>
+      <location filename="../../Command.cpp" line="1568"/>
+      <source>Closes a hole interactively in the mesh</source>
+      <translation type="unfinished">Closes a hole interactively in the mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFillupHoles</name>
     <message>
-      <location filename="../../Command.cpp" line="1522"/>
+      <location filename="../../Command.cpp" line="1515"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1523"/>
-      <source>Fill holes...</source>
-      <translation>구멍 메우기...</translation>
+      <location filename="../../Command.cpp" line="1516"/>
+      <source>Fill Holes</source>
+      <translation type="unfinished">Fill Holes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1524"/>
-      <location filename="../../Command.cpp" line="1526"/>
-      <source>Fill holes of the mesh</source>
-      <translation>메시의 구멍 채우기</translation>
+      <location filename="../../Command.cpp" line="1517"/>
+      <source>Fills holes in the mesh</source>
+      <translation type="unfinished">Fills holes in the mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFlipNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1402"/>
+      <location filename="../../Command.cpp" line="1395"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1403"/>
-      <source>Flip normals</source>
-      <translation>법선 뒤집기</translation>
+      <location filename="../../Command.cpp" line="1396"/>
+      <source>Flip Normals</source>
+      <translation type="unfinished">Flip Normals</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1404"/>
-      <location filename="../../Command.cpp" line="1406"/>
-      <source>Flips the normals of the mesh</source>
-      <translation>메쉬의 법선 뒤집기</translation>
+      <location filename="../../Command.cpp" line="1397"/>
+      <source>Flips the normals of the selected mesh</source>
+      <translation type="unfinished">Flips the normals of the selected mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFromGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="459"/>
+      <location filename="../../Command.cpp" line="455"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="460"/>
-      <source>Create mesh from geometry...</source>
-      <translation>기하학을 활용한 메쉬 생성</translation>
+      <location filename="../../Command.cpp" line="456"/>
+      <source>Mesh From Geometry</source>
+      <translation type="unfinished">Mesh From Geometry</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="461"/>
-      <location filename="../../Command.cpp" line="463"/>
-      <source>Create mesh from the selected geometry</source>
-      <translation>선택한 도형을 활용한 메쉬 생성</translation>
+      <location filename="../../Command.cpp" line="457"/>
+      <source>Creates a mesh from the selected geometry</source>
+      <translation type="unfinished">Creates a mesh from the selected geometry</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFromPartShape</name>
     <message>
-      <location filename="../../Command.cpp" line="531"/>
+      <location filename="../../Command.cpp" line="526"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="532"/>
-      <source>Create mesh from shape...</source>
-      <translation>쉐이프에서 메쉬 생성...</translation>
+      <location filename="../../Command.cpp" line="527"/>
+      <source>Mesh From Shape</source>
+      <translation type="unfinished">Mesh From Shape</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="533"/>
-      <source>Tessellate shape</source>
-      <translation>쉐이프 테셀레이션</translation>
+      <location filename="../../Command.cpp" line="528"/>
+      <source>Tessellates the selected shape to a mesh</source>
+      <translation type="unfinished">Tessellates the selected shape to a mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshHarmonizeNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1366"/>
+      <location filename="../../Command.cpp" line="1359"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1367"/>
-      <source>Harmonize normals</source>
-      <translation>법선 융합</translation>
+      <location filename="../../Command.cpp" line="1360"/>
+      <source>Harmonize Normals</source>
+      <translation type="unfinished">Harmonize Normals</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1368"/>
-      <location filename="../../Command.cpp" line="1370"/>
+      <location filename="../../Command.cpp" line="1361"/>
       <source>Harmonizes the normals of the mesh</source>
       <translation>메쉬의 법선을 융합시킴</translation>
     </message>
@@ -302,49 +292,53 @@
   <context>
     <name>CmdMeshImport</name>
     <message>
-      <location filename="../../Command.cpp" line="323"/>
+      <location filename="../../Command.cpp" line="319"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="324"/>
-      <source>Import mesh...</source>
-      <translation>메시 가지오기</translation>
+      <location filename="../../Command.cpp" line="320"/>
+      <source>Import Mesh…</source>
+      <translation type="unfinished">Import Mesh…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="325"/>
-      <location filename="../../Command.cpp" line="327"/>
-      <source>Imports a mesh from file</source>
-      <translation>메쉬를 파일에서 가져오기</translation>
+      <location filename="../../Command.cpp" line="321"/>
+      <source>Imports a mesh from a file</source>
+      <translation type="unfinished">Imports a mesh from a file</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshIntersection</name>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="245"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>Intersection</source>
       <translation>교차</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="243"/>
+      <source>Creates a boolean intersection from the selected meshes</source>
+      <translation type="unfinished">Creates a boolean intersection from the selected meshes</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="1692"/>
+      <location filename="../../Command.cpp" line="1685"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1693"/>
+      <location filename="../../Command.cpp" line="1686"/>
       <source>Merge</source>
       <translation>병합</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1694"/>
+      <location filename="../../Command.cpp" line="1687"/>
       <source>Merges selected meshes into one</source>
       <translation>선택된 메쉬를 하나로 병합</translation>
     </message>
@@ -352,37 +346,35 @@
   <context>
     <name>CmdMeshPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="768"/>
+      <location filename="../../Command.cpp" line="763"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="769"/>
-      <source>Cut mesh</source>
-      <translation>메쉬 자르기</translation>
+      <location filename="../../Command.cpp" line="764"/>
+      <source>Cut</source>
+      <translation>자르기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="770"/>
-      <location filename="../../Command.cpp" line="772"/>
-      <source>Cuts a mesh with a picked polygon</source>
-      <translation>메쉬를 선택한 다각형으로 자르기</translation>
+      <location filename="../../Command.cpp" line="765"/>
+      <source>Cuts the mesh with a selected polygon</source>
+      <translation type="unfinished">Cuts the mesh with a selected polygon</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPolySegm</name>
     <message>
-      <location filename="../../Command.cpp" line="660"/>
+      <location filename="../../Command.cpp" line="655"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="661"/>
-      <source>Make segment</source>
-      <translation>세그먼트 생성</translation>
+      <location filename="../../Command.cpp" line="656"/>
+      <source>Segment</source>
+      <translation>세그먼트</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="662"/>
-      <location filename="../../Command.cpp" line="664"/>
+      <location filename="../../Command.cpp" line="657"/>
       <source>Creates a mesh segment</source>
       <translation>메쉬 세그먼트 생성</translation>
     </message>
@@ -390,37 +382,40 @@
   <context>
     <name>CmdMeshPolySplit</name>
     <message>
-      <location filename="../../Command.cpp" line="987"/>
+      <location filename="../../Command.cpp" line="980"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="988"/>
-      <source>Split mesh</source>
-      <translation>메쉬 분할</translation>
+      <location filename="../../Command.cpp" line="981"/>
+      <source>Split</source>
+      <translation>분할</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="989"/>
-      <location filename="../../Command.cpp" line="991"/>
-      <source>Splits a mesh into two meshes</source>
-      <translation>하나의 메쉬를 2개로 분할</translation>
+      <location filename="../../Command.cpp" line="982"/>
+      <source>Splits a mesh into 2 meshes</source>
+      <translation type="unfinished">Splits a mesh into 2 meshes</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPolyTrim</name>
     <message>
-      <location filename="../../Command.cpp" line="833"/>
+      <location filename="../../Command.cpp" line="828"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="834"/>
-      <source>Trim mesh</source>
-      <translation>메쉬 자르기</translation>
+      <location filename="../../Command.cpp" line="829"/>
+      <source>Trim</source>
+      <translation>자르기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="835"/>
-      <location filename="../../Command.cpp" line="837"/>
+      <location filename="../../Command.cpp" line="830"/>
+      <source>Trims a mesh with a selected polygon</source>
+      <translation type="unfinished">Trims a mesh with a selected polygon</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="832"/>
       <source>Trims a mesh with a picked polygon</source>
       <translation>선택한 다각형으로 메쉬를 자르기</translation>
     </message>
@@ -428,219 +423,215 @@
   <context>
     <name>CmdMeshRemeshGmsh</name>
     <message>
-      <location filename="../../Command.cpp" line="1183"/>
+      <location filename="../../Command.cpp" line="1176"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1184"/>
-      <source>Refinement...</source>
-      <translation>세분화...</translation>
+      <location filename="../../Command.cpp" line="1177"/>
+      <source>Refinement</source>
+      <translation type="unfinished">Refinement</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1185"/>
-      <location filename="../../Command.cpp" line="1186"/>
-      <source>Refine existing mesh</source>
-      <translation>기존 메쉬를 세분화한다</translation>
+      <location filename="../../Command.cpp" line="1178"/>
+      <source>Refines an existing mesh</source>
+      <translation type="unfinished">Refines an existing mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
-      <location filename="../../Command.cpp" line="1217"/>
+      <location filename="../../Command.cpp" line="1210"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1218"/>
-      <source>Remove components by hand...</source>
-      <translation>구성 요소를 직접 제거</translation>
+      <location filename="../../Command.cpp" line="1211"/>
+      <source>Remove Components Manually</source>
+      <translation type="unfinished">Remove Components Manually</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1219"/>
-      <location filename="../../Command.cpp" line="1221"/>
-      <source>Mark a component to remove it from the mesh</source>
-      <translation>메시에서 제거할 구성요소를 표시합니다.</translation>
+      <location filename="../../Command.cpp" line="1212"/>
+      <source>Marks a component to remove it from the mesh</source>
+      <translation type="unfinished">Marks a component to remove it from the mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshRemoveComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1135"/>
+      <location filename="../../Command.cpp" line="1128"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1136"/>
-      <source>Remove components...</source>
-      <translation>구성 요소를 제거</translation>
+      <location filename="../../Command.cpp" line="1129"/>
+      <source>Remove Components</source>
+      <translation type="unfinished">Remove Components</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1137"/>
-      <location filename="../../Command.cpp" line="1139"/>
-      <source>Remove topologic independent components from the mesh</source>
-      <translation>메시에서 토폴로지 독립 구성요소 제거</translation>
+      <location filename="../../Command.cpp" line="1130"/>
+      <source>Removes topologically independent components from the mesh</source>
+      <translation type="unfinished">Removes topologically independent components from the mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1787"/>
+      <location filename="../../Command.cpp" line="1778"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1788"/>
-      <source>Scale...</source>
-      <translation>스케일...</translation>
+      <location filename="../../Command.cpp" line="1779"/>
+      <source>Scale</source>
+      <translation>척도</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1789"/>
-      <source>Scale selected meshes</source>
-      <translation>선택한 메쉬의 스케일</translation>
+      <location filename="../../Command.cpp" line="1780"/>
+      <source>Scales the selected mesh objects</source>
+      <translation type="unfinished">Scales the selected mesh objects</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSectionByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="929"/>
+      <location filename="../../Command.cpp" line="922"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="930"/>
-      <source>Create section from mesh and plane</source>
-      <translation>메쉬와 평면을 활용 단면을 생성</translation>
+      <location filename="../../Command.cpp" line="923"/>
+      <source>Section From Plane</source>
+      <translation type="unfinished">Section From Plane</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="931"/>
-      <location filename="../../Command.cpp" line="932"/>
-      <source>Section from mesh and plane</source>
-      <translation>메쉬와 평면을 바탕으로 한 단면</translation>
+      <location filename="../../Command.cpp" line="924"/>
+      <source>Sections the mesh with the selected plane</source>
+      <translation type="unfinished">Sections the mesh with the selected plane</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="1620"/>
+      <location filename="../../Command.cpp" line="1613"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>메쉬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1621"/>
-      <source>Create mesh segments...</source>
-      <translation>메쉬 세그먼트 생성</translation>
+      <location filename="../../Command.cpp" line="1614"/>
+      <source>Segmentation</source>
+      <translation>분할</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1622"/>
-      <location filename="../../Command.cpp" line="1624"/>
-      <source>Create mesh segments</source>
-      <translation>메쉬 세그먼트 생성</translation>
+      <location filename="../../Command.cpp" line="1615"/>
+      <source>Creates new mesh segments from the mesh</source>
+      <translation type="unfinished">Creates new mesh segments from the mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSegmentationBestFit</name>
     <message>
-      <location filename="../../Command.cpp" line="1656"/>
+      <location filename="../../Command.cpp" line="1649"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1657"/>
-      <source>Create mesh segments from best-fit surfaces...</source>
-      <translation>표면과 가장 잘 맞는 메쉬 세그먼트 생성</translation>
+      <location filename="../../Command.cpp" line="1650"/>
+      <source>Segmentation From Best-Fit Surfaces</source>
+      <translation type="unfinished">Segmentation From Best-Fit Surfaces</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1658"/>
-      <location filename="../../Command.cpp" line="1660"/>
-      <source>Create mesh segments from best-fit surfaces</source>
-      <translation>표면과 가장 잘 맞는 메쉬 세그먼트 생성</translation>
+      <location filename="../../Command.cpp" line="1651"/>
+      <source>Creates new mesh segments from the best-fit surfaces</source>
+      <translation type="unfinished">Creates new mesh segments from the best-fit surfaces</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSmoothing</name>
     <message>
-      <location filename="../../Command.cpp" line="1305"/>
+      <location filename="../../Command.cpp" line="1298"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1306"/>
-      <source>Smooth...</source>
-      <translation>평탄화</translation>
+      <location filename="../../Command.cpp" line="1299"/>
+      <source>Smooth</source>
+      <translation type="unfinished">Smooth</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1307"/>
-      <location filename="../../Command.cpp" line="1309"/>
-      <source>Smooth the selected meshes</source>
-      <translation>선택된 메쉬 평탄화</translation>
+      <location filename="../../Command.cpp" line="1300"/>
+      <source>Smoothes the selected meshes</source>
+      <translation type="unfinished">Smoothes the selected meshes</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSplitComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1738"/>
+      <location filename="../../Command.cpp" line="1730"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1739"/>
-      <source>Split by components</source>
-      <translation>구성요소별로 나눔</translation>
+      <location filename="../../Command.cpp" line="1731"/>
+      <source>Split by Components</source>
+      <translation type="unfinished">Split by Components</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1740"/>
-      <source>Split selected mesh into its components</source>
-      <translation>선택된 메쉬를 구성 요소들로 나눔</translation>
+      <location filename="../../Command.cpp" line="1732"/>
+      <source>Splits the selected mesh into its components</source>
+      <translation type="unfinished">Splits the selected mesh into its components</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="898"/>
+      <location filename="../../Command.cpp" line="893"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="899"/>
-      <source>Trim mesh with a plane</source>
-      <translation>평면을 가지고 메쉬 자르기</translation>
+      <location filename="../../Command.cpp" line="894"/>
+      <source>Trim With Plane</source>
+      <translation type="unfinished">Trim With Plane</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="900"/>
-      <location filename="../../Command.cpp" line="901"/>
-      <source>Trims a mesh with a plane</source>
-      <translation>평면을 가지고 메쉬 자르기</translation>
+      <location filename="../../Command.cpp" line="895"/>
+      <source>Trims a mesh by removing faces on one side of a selected plane</source>
+      <translation type="unfinished">Trims a mesh by removing faces on one side of a selected plane</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshUnion</name>
     <message>
-      <location filename="../../Command.cpp" line="86"/>
+      <location filename="../../Command.cpp" line="85"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="87"/>
+      <location filename="../../Command.cpp" line="86"/>
       <source>Union</source>
       <translation>결합체</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="87"/>
+      <source>Unites the selected meshes</source>
+      <translation type="unfinished">Unites the selected meshes</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshVertexCurvature</name>
     <message>
-      <location filename="../../Command.cpp" line="557"/>
+      <location filename="../../Command.cpp" line="552"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="558"/>
-      <source>Curvature plot</source>
-      <translation>곡률 그래프</translation>
+      <location filename="../../Command.cpp" line="553"/>
+      <source>Curvature Plot</source>
+      <translation type="unfinished">Curvature Plot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="559"/>
-      <location filename="../../Command.cpp" line="561"/>
+      <location filename="../../Command.cpp" line="554"/>
       <source>Calculates the curvature of the vertices of a mesh</source>
       <translation>메쉬의 정점의 곡률을 계산</translation>
     </message>
@@ -648,81 +639,80 @@
   <context>
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
-      <location filename="../../Command.cpp" line="612"/>
+      <location filename="../../Command.cpp" line="607"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="613"/>
-      <source>Curvature info</source>
-      <translation>곡률 정보</translation>
+      <location filename="../../Command.cpp" line="608"/>
+      <source>Curvature Info</source>
+      <translation type="unfinished">Curvature Info</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="614"/>
-      <location filename="../../Command.cpp" line="616"/>
-      <source>Information about curvature</source>
-      <translation>곡률에 대한 정보</translation>
+      <location filename="../../Command.cpp" line="609"/>
+      <source>Displays information about the curvature</source>
+      <translation type="unfinished">Displays information about the curvature</translation>
     </message>
   </context>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="102"/>
       <source>Mesh union</source>
       <translation>메쉬 융합</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="180"/>
+      <location filename="../../Command.cpp" line="178"/>
       <source>Mesh difference</source>
       <translation>차집합 메쉬 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="259"/>
+      <location filename="../../Command.cpp" line="256"/>
       <source>Mesh intersection</source>
       <translation>교집합 메쉬 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="355"/>
+      <location filename="../../Command.cpp" line="351"/>
       <source>Import Mesh</source>
       <translation>메쉬 가져오기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="574"/>
+      <location filename="../../Command.cpp" line="569"/>
       <source>Mesh VertexCurvature</source>
       <translation>메쉬 정점의 곡률 계산</translation>
     </message>
     <message>
-      <location filename="../../DlgSmoothing.cpp" line="175"/>
+      <location filename="../../DlgSmoothing.cpp" line="170"/>
       <source>Mesh Smoothing</source>
       <translation>메쉬 평탄화</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1378"/>
+      <location filename="../../Command.cpp" line="1371"/>
       <source>Harmonize mesh normals</source>
       <translation>메쉬의 법선 융합</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1414"/>
+      <location filename="../../Command.cpp" line="1407"/>
       <source>Flip mesh normals</source>
       <translation>메쉬의 법선 뒤집기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1548"/>
+      <location filename="../../Command.cpp" line="1541"/>
       <source>Fill up holes</source>
       <translation>메쉬 채우기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1707"/>
+      <location filename="../../Command.cpp" line="1700"/>
       <source>Mesh merge</source>
       <translation>메쉬 병합</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1753"/>
+      <location filename="../../Command.cpp" line="1745"/>
       <source>Mesh split</source>
       <translation>메쉬 분할</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1816"/>
+      <location filename="../../Command.cpp" line="1807"/>
       <source>Mesh scale</source>
       <translation>메쉬 스케일</translation>
     </message>
@@ -773,43 +763,43 @@
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1179"/>
-      <source>Repair mesh</source>
-      <translation>매쉬 수정</translation>
+      <source>Repair Mesh</source>
+      <translation type="unfinished">Repair Mesh</translation>
     </message>
     <message>
-      <location filename="../../RemoveComponents.cpp" line="162"/>
+      <location filename="../../RemoveComponents.cpp" line="163"/>
       <source>Delete selection</source>
       <translation>선택 항목 삭제</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="963"/>
-      <location filename="../../ViewProvider.cpp" line="1024"/>
+      <location filename="../../ViewProvider.cpp" line="956"/>
+      <location filename="../../ViewProvider.cpp" line="1017"/>
       <source>Cut</source>
       <translation>자르기</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="973"/>
-      <location filename="../../ViewProvider.cpp" line="1094"/>
+      <location filename="../../ViewProvider.cpp" line="966"/>
+      <location filename="../../ViewProvider.cpp" line="1086"/>
       <source>Trim</source>
       <translation>자르기</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1181"/>
+      <location filename="../../ViewProvider.cpp" line="1173"/>
       <source>Split</source>
       <translation>분할</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1254"/>
+      <location filename="../../ViewProvider.cpp" line="1246"/>
       <source>Segment</source>
       <translation>세그먼트</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1856"/>
+      <location filename="../../ViewProvider.cpp" line="1848"/>
       <source>Delete</source>
       <translation>삭제</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1985"/>
+      <location filename="../../ViewProvider.cpp" line="1974"/>
       <source>Fill hole</source>
       <translation>구멍을 채움</translation>
     </message>
@@ -861,16 +851,6 @@
       <translation>메시 평가 및 수정하기</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="23"/>
-      <source>Mesh information</source>
-      <translation>메시 정보</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="46"/>
-      <source>Number of faces:</source>
-      <translation>면의 수:</translation>
-    </message>
-    <message>
       <location filename="../../DlgEvaluateMesh.ui" line="69"/>
       <location filename="../../DlgEvaluateMesh.ui" line="102"/>
       <location filename="../../DlgEvaluateMesh.ui" line="135"/>
@@ -886,14 +866,24 @@
       <translation>정보가 없음</translation>
     </message>
     <message>
+      <location filename="../../DlgEvaluateMesh.ui" line="23"/>
+      <source>Mesh Information</source>
+      <translation type="unfinished">Mesh Information</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMesh.ui" line="46"/>
+      <source>Number of faces</source>
+      <translation>면의 수</translation>
+    </message>
+    <message>
       <location filename="../../DlgEvaluateMesh.ui" line="79"/>
-      <source>Number of edges:</source>
-      <translation>모서리의 수:</translation>
+      <source>Number of edges</source>
+      <translation type="unfinished">Number of edges</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="112"/>
-      <source>Number of points:</source>
-      <translation>점의 수:</translation>
+      <source>Number of points</source>
+      <translation>점들의 갯수</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="147"/>
@@ -980,11 +970,6 @@
   <context>
     <name>MeshGui::DlgEvaluateMeshImp</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="141"/>
-      <source>Settings...</source>
-      <translation>설정...</translation>
-    </message>
-    <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="253"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="420"/>
       <source>No selection</source>
@@ -1014,6 +999,11 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="524"/>
       <source>No flipped normals</source>
       <translation>뒤집은 법선 없음</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="141"/>
+      <source>Settings</source>
+      <translation>설정</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="530"/>
@@ -1148,8 +1138,8 @@
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="14"/>
-      <source>Evaluation settings</source>
-      <translation>계산 설정</translation>
+      <source>Evaluation Settings</source>
+      <translation type="unfinished">Evaluation Settings</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
@@ -1181,8 +1171,8 @@
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="29"/>
-      <source>Solid:</source>
-      <translation type="unfinished">Solid:</translation>
+      <source>Solid</source>
+      <translation>고체</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="42"/>
@@ -1218,30 +1208,30 @@
       <location filename="../../DlgRegularSolid.ui" line="120"/>
       <location filename="../../DlgRegularSolid.ui" line="236"/>
       <location filename="../../DlgRegularSolid.ui" line="387"/>
-      <source>Length:</source>
+      <source>Length</source>
       <translation>길이:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="143"/>
-      <source>Width:</source>
-      <translation>너비:</translation>
+      <source>Width</source>
+      <translation>너비</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="163"/>
-      <source>Height:</source>
-      <translation>높이:</translation>
+      <source>Height</source>
+      <translation>높이</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="219"/>
       <location filename="../../DlgRegularSolid.ui" line="501"/>
-      <source>Radius:</source>
-      <translation>반지름:</translation>
+      <source>Radius</source>
+      <translation>반지름</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="273"/>
       <location filename="../../DlgRegularSolid.ui" line="424"/>
-      <source>Edge length:</source>
-      <translation>모서리의 길이:</translation>
+      <source>Edge length</source>
+      <translation type="unfinished">Edge length</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="293"/>
@@ -1249,28 +1239,28 @@
       <location filename="../../DlgRegularSolid.ui" line="538"/>
       <location filename="../../DlgRegularSolid.ui" line="642"/>
       <location filename="../../DlgRegularSolid.ui" line="746"/>
-      <source>Sampling:</source>
-      <translation>샘플링:</translation>
+      <source>Sampling</source>
+      <translation type="unfinished">Sampling</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRegularSolid.ui" line="353"/>
+      <location filename="../../DlgRegularSolid.ui" line="588"/>
+      <location filename="../../DlgRegularSolid.ui" line="692"/>
+      <source>Radius 1</source>
+      <translation>반지름 1</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRegularSolid.ui" line="370"/>
+      <location filename="../../DlgRegularSolid.ui" line="605"/>
+      <location filename="../../DlgRegularSolid.ui" line="709"/>
+      <source>Radius 2</source>
+      <translation>반지름 2</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="307"/>
       <location filename="../../DlgRegularSolid.ui" line="455"/>
       <source>Closed</source>
       <translation type="unfinished">Closed</translation>
-    </message>
-    <message>
-      <location filename="../../DlgRegularSolid.ui" line="353"/>
-      <location filename="../../DlgRegularSolid.ui" line="588"/>
-      <location filename="../../DlgRegularSolid.ui" line="692"/>
-      <source>Radius 1:</source>
-      <translation>반경 1:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgRegularSolid.ui" line="370"/>
-      <location filename="../../DlgRegularSolid.ui" line="605"/>
-      <location filename="../../DlgRegularSolid.ui" line="709"/>
-      <source>Radius 2:</source>
-      <translation>반경 2:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="809"/>
@@ -1292,8 +1282,8 @@
     <name>MeshGui::DlgRegularSolidImp</name>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="124"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="209"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="217"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="205"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="213"/>
       <source>Create %1</source>
       <translation>%1 만들기</translation>
     </message>
@@ -1333,7 +1323,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="41"/>
       <source>Maximal deviation between mesh and object</source>
-      <translation>메쉬와 객체의 최대 편차</translation>
+      <translation>메쉬와 대상체의 최대 편차</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="63"/>
@@ -1357,13 +1347,13 @@
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="114"/>
-      <source>Width:</source>
-      <translation>너비:</translation>
+      <source>Width</source>
+      <translation>너비</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="138"/>
-      <source>Height:</source>
-      <translation>높이:</translation>
+      <source>Height</source>
+      <translation>높이</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="39"/>
@@ -1374,16 +1364,6 @@ is used when writing a file in AMF format</source>
   </context>
   <context>
     <name>MeshGui::DlgSettingsMeshView</name>
-    <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="14"/>
-      <source>Mesh view</source>
-      <translation>메시 보기</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="35"/>
-      <source>Default appearance for new meshes</source>
-      <translation>새 메쉬를 위한 기본 외관</translation>
-    </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="73"/>
       <source>Default mesh color</source>
@@ -1420,14 +1400,6 @@ is used when writing a file in AMF format</source>
       <translation>뒷면의 색</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="251"/>
-      <source>The bottom side of surface will be rendered the same way than top side.
-If not checked, it depends on the option "Enable backlight color"
-(preferences section Display -&gt; 3D View). Either the backlight color
-will be used or black.</source>
-      <translation>표면의 바닥면은 상단면과 같은 방식으로 렌더링됩니다. 만약 이 옵션을 체크하지 않으면 '후광 색상 사용' 옵션(환경 설정 -&gt; 표시 -&gt; 3D 보기)에 따라 다릅니다. 옵션을 체크하면  후광 색상이 사용되고 아니면 검은색을 사용한다.</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsMeshView.ui" line="257"/>
       <source>Two-side rendering</source>
       <translation>양면 렌더링</translation>
@@ -1448,19 +1420,6 @@ will be used or black.</source>
       <translation>평탄화</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsMeshView.ui" line="334"/>
-      <source>If this option is set Phong shading is used, otherwise flat shading.
-Shading defines the appearance of surfaces.
-
-With flat shading the surface normals are not defined per vertex that leads
-to a unreal appearance for curved surfaces while using Phong shading leads
-to a smoother appearance.
-</source>
-      <translation>만약 이 옵션이 설정되면 퐁 셰이딩이 사용되고, 아닌 경우에는 플랫 셰이딩이 사용됩니다. 셰이딩은 표면의 외관을 정의합니다.
-
-플랫 셰이딩을 사용할경우 표면의 법선이 정점마다 정의되지 않기 때문에 곡면을 표현하는데에 외관이 비현실적으로 표현 될 수 있습니다. 반면, 퐁 셰이딩을 사용할 경우 곡면의 평탄화된 외관을 표현합니다.</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsMeshView.ui" line="343"/>
       <source>Define normal per vertex</source>
       <translation>각 정점에서 법선을 정의</translation>
@@ -1479,6 +1438,44 @@ to a smoother appearance.
       <location filename="../../DlgSettingsMeshView.ui" line="359"/>
       <source>Crease angle</source>
       <translation>크리즈 각도</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMeshView.ui" line="14"/>
+      <source>Mesh View</source>
+      <translation type="unfinished">Mesh View</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMeshView.ui" line="35"/>
+      <source>Default Appearance for New Meshes</source>
+      <translation type="unfinished">Default Appearance for New Meshes</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMeshView.ui" line="251"/>
+      <source>The bottom side of the surface will be rendered the same way as the top side.
+If not checked, it depends on the option "Enable backlight color"
+(preferences section Display -&gt; 3D View). Either the backlight color
+will be used or black.</source>
+      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top side.
+If not checked, it depends on the option "Enable backlight color"
+(preferences section Display -&gt; 3D View). Either the backlight color
+will be used or black.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsMeshView.ui" line="334"/>
+      <source>If this option is set Phong shading is used, otherwise flat shading.
+Shading defines the appearance of surfaces.
+
+With flat shading the surface normals are not defined per vertex that leads
+to an unreal appearance for curved surfaces while using Phong shading leads
+to a smoother appearance.
+</source>
+      <translation type="unfinished">If this option is set Phong shading is used, otherwise flat shading.
+Shading defines the appearance of surfaces.
+
+With flat shading the surface normals are not defined per vertex that leads
+to an unreal appearance for curved surfaces while using Phong shading leads
+to a smoother appearance.
+</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="369"/>
@@ -1521,18 +1518,18 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="55"/>
-      <source>Iterations:</source>
-      <translation>반복:</translation>
+      <source>Iterations</source>
+      <translation>반복</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="72"/>
-      <source>Lambda:</source>
-      <translation>람다:</translation>
+      <source>Lambda</source>
+      <translation type="unfinished">Lambda</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="95"/>
-      <source>Mu:</source>
-      <translation>Mu:</translation>
+      <source>Mu</source>
+      <translation type="unfinished">Mu</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="118"/>
@@ -1543,48 +1540,53 @@ to a smoother appearance.
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="98"/>
+      <location filename="../../RemeshGmsh.cpp" line="99"/>
       <source>Automatic</source>
       <translation>자동</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="99"/>
+      <location filename="../../RemeshGmsh.cpp" line="100"/>
       <source>Adaptive</source>
       <translation>적용</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="101"/>
+      <location filename="../../RemeshGmsh.cpp" line="102"/>
       <source>Frontal</source>
       <translation>정면</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="103"/>
+      <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Frontal Quad</source>
       <translation>정면 사각형</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <location filename="../../RemeshGmsh.cpp" line="105"/>
       <source>Parallelograms</source>
       <translation>평행사변형</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="195"/>
-      <location filename="../../RemeshGmsh.cpp" line="254"/>
+      <location filename="../../RemeshGmsh.cpp" line="106"/>
+      <source>Quasi-structured Quad</source>
+      <translation type="unfinished">Quasi-structured Quad</translation>
+    </message>
+    <message>
+      <location filename="../../RemeshGmsh.cpp" line="197"/>
+      <location filename="../../RemeshGmsh.cpp" line="255"/>
       <source>Time:</source>
       <translation>시간:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="241"/>
-      <source>Running gmsh...</source>
-      <translation>gmsh 동작중</translation>
+      <location filename="../../RemeshGmsh.cpp" line="243"/>
+      <source>Running Gmsh…</source>
+      <translation type="unfinished">Running Gmsh…</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="265"/>
+      <location filename="../../RemeshGmsh.cpp" line="266"/>
       <source>Failed to start</source>
       <translation>시작에 실패함</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="272"/>
+      <location filename="../../RemeshGmsh.cpp" line="273"/>
       <source>Error</source>
       <translation>오류</translation>
     </message>
@@ -1593,13 +1595,13 @@ to a smoother appearance.
     <name>MeshGui::MeshFaceAddition</name>
     <message>
       <location filename="../../MeshEditor.cpp" line="396"/>
-      <source>Add triangle</source>
-      <translation>삼각형 추가</translation>
+      <source>Add Triangle</source>
+      <translation type="unfinished">Add Triangle</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="397"/>
-      <source>Flip normal</source>
-      <translation>법선 뒤집기</translation>
+      <source>Flip Normal</source>
+      <translation type="unfinished">Flip Normal</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="398"/>
@@ -1623,47 +1625,47 @@ to a smoother appearance.
   <context>
     <name>MeshGui::ParametersDialog</name>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="172"/>
-      <source>Surface fit</source>
-      <translation>표면 맞추기</translation>
+      <location filename="../../SegmentationBestFit.cpp" line="173"/>
+      <source>Surface Fit</source>
+      <translation type="unfinished">Surface Fit</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="179"/>
+      <location filename="../../SegmentationBestFit.cpp" line="180"/>
       <source>Parameters</source>
       <translation>매개변수</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="184"/>
+      <location filename="../../SegmentationBestFit.cpp" line="185"/>
       <source>Selection</source>
       <translation>선택항목</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="192"/>
+      <location filename="../../SegmentationBestFit.cpp" line="193"/>
       <source>Region</source>
       <translation>영역</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="198"/>
+      <location filename="../../SegmentationBestFit.cpp" line="199"/>
       <source>Triangle</source>
       <translation>삼각형</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="204"/>
+      <location filename="../../SegmentationBestFit.cpp" line="205"/>
       <source>Clear</source>
       <translation>지우기</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="210"/>
+      <location filename="../../SegmentationBestFit.cpp" line="211"/>
       <source>Compute</source>
       <translation>계산</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="305"/>
+      <location filename="../../SegmentationBestFit.cpp" line="306"/>
       <source>No selection</source>
       <translation>선택 안 함</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="306"/>
+      <location filename="../../SegmentationBestFit.cpp" line="307"/>
       <source>Before fitting the surface select an area.</source>
       <translation>표면을 맞추기 전에 영역을 선택해주세요.</translation>
     </message>
@@ -1682,23 +1684,23 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
-      <source>Meshing:</source>
-      <translation>메슁:</translation>
+      <source>Meshing</source>
+      <translation type="unfinished">Meshing</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
-      <source>Max element size (0.0 = Auto):</source>
-      <translation>최대 요소 크기 (0.0 = 자동)</translation>
+      <source>Max element size (0.0 = Auto)</source>
+      <translation type="unfinished">Max element size (0.0 = Auto)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
-      <source>Min element size (0.0 = Auto):</source>
-      <translation>최소 요소 크기 (0.0 = 자동)</translation>
+      <source>Min element size (0.0 = Auto)</source>
+      <translation type="unfinished">Min element size (0.0 = Auto)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
-      <source>Angle:</source>
-      <translation>각도:</translation>
+      <source>Angle</source>
+      <translation>각</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="126"/>
@@ -1717,8 +1719,8 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="181"/>
-      <source>Time:</source>
-      <translation>시간:</translation>
+      <source>Time</source>
+      <translation type="unfinished">Time</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="188"/>
@@ -1730,8 +1732,8 @@ to a smoother appearance.
     <name>MeshGui::RemoveComponents</name>
     <message>
       <location filename="../../RemoveComponents.ui" line="14"/>
-      <source>Remove components</source>
-      <translation>구성요소 삭제</translation>
+      <source>Remove Components</source>
+      <translation type="unfinished">Remove Components</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="20"/>
@@ -1764,8 +1766,18 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="89"/>
       <location filename="../../RemoveComponents.ui" line="175"/>
-      <source>Pick triangle</source>
-      <translation>삼각형 선택</translation>
+      <source>Pick Triangle</source>
+      <translation type="unfinished">Pick Triangle</translation>
+    </message>
+    <message>
+      <location filename="../../RemoveComponents.ui" line="192"/>
+      <source>Region Options</source>
+      <translation type="unfinished">Region Options</translation>
+    </message>
+    <message>
+      <location filename="../../RemoveComponents.ui" line="208"/>
+      <source>Respect only triangles with screen-facing normals</source>
+      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="96"/>
@@ -1788,27 +1800,17 @@ to a smoother appearance.
       <translation>전체 구성요소 선택해제</translation>
     </message>
     <message>
-      <location filename="../../RemoveComponents.ui" line="192"/>
-      <source>Region options</source>
-      <translation>영역 옵션</translation>
-    </message>
-    <message>
       <location filename="../../RemoveComponents.ui" line="198"/>
       <source>Respect only visible triangles</source>
       <translation>화면에 보이는 삼각형만 고려</translation>
-    </message>
-    <message>
-      <location filename="../../RemoveComponents.ui" line="208"/>
-      <source>Respect only triangles with normals facing screen</source>
-      <translation>법선 벡터가 컴퓨터 화면을 향하는 삼각형만 고려</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::Segmentation</name>
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
-      <source>Mesh segmentation</source>
-      <translation>메쉬 분할</translation>
+      <source>Mesh Segmentation</source>
+      <translation type="unfinished">Mesh Segmentation</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
@@ -1849,13 +1851,23 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="109"/>
-      <source>Tolerance (Flat)</source>
-      <translation>허용 오차(평면)</translation>
+      <source>Tolerance (flat)</source>
+      <translation type="unfinished">Tolerance (flat)</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="126"/>
-      <source>Tolerance (Curved)</source>
-      <translation>허용 오차(곡선)</translation>
+      <source>Tolerance (curved)</source>
+      <translation type="unfinished">Tolerance (curved)</translation>
+    </message>
+    <message>
+      <location filename="../../Segmentation.ui" line="235"/>
+      <source>Maximum curvature</source>
+      <translation type="unfinished">Maximum curvature</translation>
+    </message>
+    <message>
+      <location filename="../../Segmentation.ui" line="269"/>
+      <source>Minimum curvature</source>
+      <translation type="unfinished">Minimum curvature</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
@@ -1867,35 +1879,25 @@ to a smoother appearance.
       <source>Freeform</source>
       <translation>자유 형식</translation>
     </message>
-    <message>
-      <location filename="../../Segmentation.ui" line="235"/>
-      <source>Max. Curvature</source>
-      <translation>최대 곡률</translation>
-    </message>
-    <message>
-      <location filename="../../Segmentation.ui" line="269"/>
-      <source>Min. Curvature</source>
-      <translation>최소 곡률</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::SegmentationBestFit</name>
-    <message>
-      <location filename="../../SegmentationBestFit.ui" line="14"/>
-      <source>Mesh segmentation</source>
-      <translation>메쉬 분할</translation>
-    </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="20"/>
       <source>Plane</source>
       <translation>평면</translation>
     </message>
     <message>
+      <location filename="../../SegmentationBestFit.ui" line="14"/>
+      <source>Mesh Segmentation</source>
+      <translation type="unfinished">Mesh Segmentation</translation>
+    </message>
+    <message>
       <location filename="../../SegmentationBestFit.ui" line="29"/>
       <location filename="../../SegmentationBestFit.ui" line="82"/>
       <location filename="../../SegmentationBestFit.ui" line="135"/>
-      <source>Parameters...</source>
-      <translation>매개변수...</translation>
+      <source>Parameters</source>
+      <translation>매개변수</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="36"/>
@@ -1922,29 +1924,29 @@ to a smoother appearance.
       <translation>공모양</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="374"/>
-      <location filename="../../SegmentationBestFit.cpp" line="399"/>
+      <location filename="../../SegmentationBestFit.cpp" line="375"/>
+      <location filename="../../SegmentationBestFit.cpp" line="400"/>
       <source>Base</source>
       <translation>베이스</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="375"/>
+      <location filename="../../SegmentationBestFit.cpp" line="376"/>
       <source>Normal</source>
       <translation>일반</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="400"/>
+      <location filename="../../SegmentationBestFit.cpp" line="401"/>
       <source>Axis</source>
       <translation>축</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="401"/>
-      <location filename="../../SegmentationBestFit.cpp" line="428"/>
+      <location filename="../../SegmentationBestFit.cpp" line="402"/>
+      <location filename="../../SegmentationBestFit.cpp" line="429"/>
       <source>Radius</source>
       <translation>반지름</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="427"/>
+      <location filename="../../SegmentationBestFit.cpp" line="428"/>
       <source>Center</source>
       <translation>중심</translation>
     </message>
@@ -1974,8 +1976,8 @@ to a smoother appearance.
     </message>
     <message>
       <location filename="../../Selection.ui" line="63"/>
-      <source>Respect only triangles with normals facing screen</source>
-      <translation>법선 벡터가 컴퓨터 화면을 향하는 삼각형만 고려</translation>
+      <source>Respect only triangles with screen-facing normals</source>
+      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="86"/>
@@ -1991,14 +1993,14 @@ to a smoother appearance.
   <context>
     <name>MeshGui::TaskRemoveComponents</name>
     <message>
-      <location filename="../../RemoveComponents.cpp" line="208"/>
-      <location filename="../../RemoveComponents.cpp" line="253"/>
+      <location filename="../../RemoveComponents.cpp" line="209"/>
+      <location filename="../../RemoveComponents.cpp" line="254"/>
       <source>Delete</source>
       <translation>삭제</translation>
     </message>
     <message>
-      <location filename="../../RemoveComponents.cpp" line="209"/>
-      <location filename="../../RemoveComponents.cpp" line="254"/>
+      <location filename="../../RemoveComponents.cpp" line="210"/>
+      <location filename="../../RemoveComponents.cpp" line="255"/>
       <source>Invert</source>
       <translation>반전</translation>
     </message>
@@ -2006,38 +2008,8 @@ to a smoother appearance.
   <context>
     <name>MeshInfoWatcher</name>
     <message>
-      <location filename="../../Workbench.cpp" line="68"/>
-      <source>Number of points:</source>
-      <translation>점의 수:</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="71"/>
-      <source>Number of facets:</source>
-      <translation>면의 수:</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="77"/>
-      <source>Minimum bound:</source>
-      <translation>최소 경계:</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="80"/>
-      <source>Maximum bound:</source>
-      <translation>최대 경계:</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="87"/>
-      <source>Mesh info box</source>
-      <translation>메쉬 정보 상자</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="88"/>
-      <source>Mesh info</source>
-      <translation>메쉬 정보</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="121"/>
       <location filename="../../Workbench.cpp" line="122"/>
+      <location filename="../../Workbench.cpp" line="123"/>
       <source>X: %1	Y: %2	Z: %3</source>
       <translation type="unfinished">X: %1	Y: %2	Z: %3</translation>
     </message>
@@ -2045,7 +2017,7 @@ to a smoother appearance.
   <context>
     <name>Mesh_BoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1462"/>
+      <location filename="../../Command.cpp" line="1455"/>
       <source>Boundings of %1:</source>
       <translation>%1의 경계</translation>
     </message>
@@ -2053,29 +2025,30 @@ to a smoother appearance.
   <context>
     <name>Mesh_Union</name>
     <message>
-      <location filename="../../Command.cpp" line="138"/>
-      <location filename="../../Command.cpp" line="144"/>
-      <location filename="../../Command.cpp" line="217"/>
-      <location filename="../../Command.cpp" line="223"/>
-      <location filename="../../Command.cpp" line="296"/>
-      <location filename="../../Command.cpp" line="302"/>
+      <location filename="../../Command.cpp" line="137"/>
+      <location filename="../../Command.cpp" line="142"/>
+      <location filename="../../Command.cpp" line="215"/>
+      <location filename="../../Command.cpp" line="220"/>
+      <location filename="../../Command.cpp" line="293"/>
+      <location filename="../../Command.cpp" line="298"/>
       <source>OpenSCAD</source>
       <translation>OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="139"/>
-      <location filename="../../Command.cpp" line="218"/>
-      <location filename="../../Command.cpp" line="297"/>
+      <location filename="../../Command.cpp" line="138"/>
+      <location filename="../../Command.cpp" line="216"/>
+      <location filename="../../Command.cpp" line="294"/>
       <source>Unknown error occurred while running OpenSCAD.</source>
       <translation>OpenSCAD를 실행하는 중 알 수 없는 오류가 발생함.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="145"/>
-      <location filename="../../Command.cpp" line="224"/>
-      <location filename="../../Command.cpp" line="303"/>
-      <source>OpenSCAD cannot be found on your system.
-Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation>당신의 장치에서 OpenSCAD가 발견되지 않았습니다. 다음의 링크를 방문해주세요.http://www.openscad.org/index.html to install it.</translation>
+      <location filename="../../Command.cpp" line="143"/>
+      <location filename="../../Command.cpp" line="221"/>
+      <location filename="../../Command.cpp" line="299"/>
+      <source>OpenSCAD cannot be found on the system.
+Visit https://openscad.org/ to install it.</source>
+      <translation type="unfinished">OpenSCAD cannot be found on the system.
+Visit https://openscad.org/ to install it.</translation>
     </message>
   </context>
   <context>
@@ -2099,175 +2072,175 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>가져오기 내보내기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="332"/>
       <source>All Mesh Files</source>
       <translation>모든 메쉬 파일</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="337"/>
-      <location filename="../../Command.cpp" line="397"/>
+      <location filename="../../Command.cpp" line="333"/>
+      <location filename="../../Command.cpp" line="393"/>
       <source>Binary STL</source>
       <translation>이진 형태의 STL</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="338"/>
-      <location filename="../../Command.cpp" line="398"/>
-      <location filename="../../Command.cpp" line="399"/>
+      <location filename="../../Command.cpp" line="334"/>
+      <location filename="../../Command.cpp" line="394"/>
+      <location filename="../../Command.cpp" line="395"/>
       <source>ASCII STL</source>
       <translation>아스키 형태의 STL</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
-      <location filename="../../Command.cpp" line="400"/>
+      <location filename="../../Command.cpp" line="335"/>
+      <location filename="../../Command.cpp" line="396"/>
       <source>Binary Mesh</source>
       <translation>이진 형식 메쉬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="340"/>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="397"/>
       <source>Alias Mesh</source>
       <translation>Alias 메쉬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
-      <location filename="../../Command.cpp" line="403"/>
+      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="399"/>
       <source>Object File Format</source>
-      <translation>객체 파일 형식</translation>
+      <translation>대상체 파일 형식</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="342"/>
+      <location filename="../../Command.cpp" line="338"/>
       <source>Inventor V2.1 ASCII</source>
       <translation type="unfinished">Inventor V2.1 ASCII</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="343"/>
-      <location filename="../../Command.cpp" line="408"/>
+      <location filename="../../Command.cpp" line="339"/>
+      <location filename="../../Command.cpp" line="404"/>
       <source>Stanford Polygon</source>
       <translation type="unfinished">Stanford Polygon</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="344"/>
+      <location filename="../../Command.cpp" line="340"/>
       <source>NASTRAN</source>
       <translation type="unfinished">NASTRAN</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="345"/>
-      <location filename="../../Command.cpp" line="415"/>
+      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="411"/>
       <source>All Files</source>
       <translation>모든 파일</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="349"/>
-      <source>Import mesh</source>
-      <translation>메시 불러오기</translation>
+      <location filename="../../Command.cpp" line="345"/>
+      <source>Import Mesh</source>
+      <translation>메쉬 가져오기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="402"/>
+      <location filename="../../Command.cpp" line="398"/>
       <source>Simple Model Format</source>
       <translation>기본 파일 형식</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="404"/>
+      <location filename="../../Command.cpp" line="400"/>
       <source>Inventor V2.1 ascii</source>
       <translation type="unfinished">Inventor V2.1 ascii</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="405"/>
+      <location filename="../../Command.cpp" line="401"/>
       <source>X3D Extensible 3D</source>
       <translation type="unfinished">X3D Extensible 3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="406"/>
+      <location filename="../../Command.cpp" line="402"/>
       <source>Compressed X3D</source>
       <translation type="unfinished">Compressed X3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="407"/>
+      <location filename="../../Command.cpp" line="403"/>
       <source>WebGL/X3D</source>
       <translation type="unfinished">WebGL/X3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="409"/>
+      <location filename="../../Command.cpp" line="405"/>
       <source>VRML V2.0</source>
       <translation type="unfinished">VRML V2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="410"/>
+      <location filename="../../Command.cpp" line="406"/>
       <source>Compressed VRML 2.0</source>
       <translation type="unfinished">Compressed VRML 2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="411"/>
+      <location filename="../../Command.cpp" line="407"/>
       <source>Nastran</source>
       <translation type="unfinished">Nastran</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="412"/>
+      <location filename="../../Command.cpp" line="408"/>
       <source>Python module def</source>
       <translation>파이썬 모듈 정의</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="413"/>
+      <location filename="../../Command.cpp" line="409"/>
       <source>Asymptote Format</source>
       <translation>Asymptote 형식</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="414"/>
+      <location filename="../../Command.cpp" line="410"/>
       <source>3D Manufacturing Format</source>
       <translation>3D 제작 형식</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="424"/>
-      <source>Export mesh</source>
-      <translation>메시 내보내기</translation>
+      <location filename="../../Command.cpp" line="420"/>
+      <source>Export Mesh</source>
+      <translation type="unfinished">Export Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="470"/>
+      <location filename="../../Command.cpp" line="466"/>
       <source>Meshing Tolerance</source>
       <translation>메슁 허용 오차</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="471"/>
+      <location filename="../../Command.cpp" line="467"/>
       <source>Enter tolerance for meshing geometry:</source>
       <translation>메슁 도형에 대한 허용 오차 입력:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1280"/>
+      <location filename="../../Command.cpp" line="1273"/>
       <source>The mesh '%1' is not a solid.</source>
       <translation>%1는 솔리드 메쉬가 아니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1284"/>
+      <location filename="../../Command.cpp" line="1277"/>
       <source>The mesh '%1' is a solid.</source>
       <translation>%1는 솔리드 메쉬이다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1287"/>
+      <location filename="../../Command.cpp" line="1280"/>
       <source>Solid Mesh</source>
       <translation>솔리드 메쉬</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1471"/>
+      <location filename="../../Command.cpp" line="1464"/>
       <source>Boundings</source>
       <translation>경계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1537"/>
+      <location filename="../../Command.cpp" line="1530"/>
       <source>Fill holes</source>
       <translation>구멍 채우기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1538"/>
+      <location filename="../../Command.cpp" line="1531"/>
       <source>Fill holes with maximum number of edges:</source>
       <translation>최대 모서리 수로 구멍 채우기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1804"/>
+      <location filename="../../Command.cpp" line="1795"/>
       <source>Scaling</source>
       <translation>크기 조정</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1805"/>
+      <location filename="../../Command.cpp" line="1796"/>
       <source>Enter scaling factor:</source>
       <translation>크기 조정 인수 입력:</translation>
     </message>
@@ -2277,108 +2250,138 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>[점:%1, 모서리:%2, 면%3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="809"/>
-      <source>Display components</source>
-      <translation>구성요소 표시</translation>
+      <location filename="../../ViewProvider.cpp" line="795"/>
+      <source>Display Components</source>
+      <translation type="unfinished">Display Components</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="817"/>
-      <source>Display segments</source>
-      <translation>세그먼트 표시</translation>
+      <location filename="../../ViewProvider.cpp" line="803"/>
+      <source>Display Segments</source>
+      <translation type="unfinished">Display Segments</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="825"/>
-      <source>Display colors</source>
-      <translation>색상 표시</translation>
+      <location filename="../../ViewProvider.cpp" line="811"/>
+      <source>Display Colors</source>
+      <translation type="unfinished">Display Colors</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1687"/>
-      <location filename="../../ViewProviderCurvature.cpp" line="522"/>
-      <source>Leave info mode</source>
-      <translation>정보 모드 나가기</translation>
+      <location filename="../../ViewProvider.cpp" line="1681"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="540"/>
+      <source>Leave Info Mode</source>
+      <translation type="unfinished">Leave Info Mode</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1754"/>
+      <location filename="../../ViewProvider.cpp" line="1748"/>
       <source>Index: %1</source>
       <translation type="unfinished">Index: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1780"/>
-      <source>Leave hole-filling mode</source>
-      <translation>구멍 채우기 모드 종료</translation>
+      <location filename="../../ViewProvider.cpp" line="1774"/>
+      <source>Leave Hole-Filling Mode</source>
+      <translation type="unfinished">Leave Hole-Filling Mode</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1830"/>
-      <source>Leave removal mode</source>
-      <translation>제거 모드 종료</translation>
+      <location filename="../../ViewProvider.cpp" line="1822"/>
+      <source>Leave Removal Mode</source>
+      <translation type="unfinished">Leave Removal Mode</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1831"/>
-      <source>Delete selected faces</source>
-      <translation>선택된 면 삭제</translation>
+      <location filename="../../ViewProvider.cpp" line="1823"/>
+      <source>Delete Selected Faces</source>
+      <translation type="unfinished">Delete Selected Faces</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1832"/>
-      <source>Clear selected faces</source>
-      <translation>선택된 면 지우기</translation>
+      <location filename="../../ViewProvider.cpp" line="1824"/>
+      <source>Clear Selected Faces</source>
+      <translation type="unfinished">Clear Selected Faces</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="519"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="537"/>
       <source>Annotation</source>
       <translation>주석</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="69"/>
+      <source>Number of points</source>
+      <translation>점들의 갯수</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="72"/>
+      <source>Number of facets</source>
+      <translation type="unfinished">Number of facets</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="78"/>
+      <source>Minimum bound</source>
+      <translation type="unfinished">Minimum bound</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="81"/>
+      <source>Maximum bound</source>
+      <translation type="unfinished">Maximum bound</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="88"/>
+      <source>Mesh Info Box</source>
+      <translation type="unfinished">Mesh Info Box</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="89"/>
+      <source>Mesh Info</source>
+      <translation type="unfinished">Mesh Info</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="43"/>
+      <location filename="../../Workbench.cpp" line="44"/>
       <source>Analyze</source>
       <translation>분석</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="44"/>
+      <location filename="../../Workbench.cpp" line="45"/>
       <source>Boolean</source>
       <translation>부울</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="45"/>
+      <location filename="../../Workbench.cpp" line="46"/>
       <source>&amp;Meshes</source>
       <translation>메시(&amp;M)</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="46"/>
+      <location filename="../../Workbench.cpp" line="47"/>
       <source>Cutting</source>
       <translation>절단</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="47"/>
-      <source>Mesh tools</source>
-      <translation>메시 도구</translation>
-    </message>
-    <message>
       <location filename="../../Workbench.cpp" line="48"/>
-      <source>Mesh modify</source>
-      <translation>메쉬 수정</translation>
+      <source>Mesh Tools</source>
+      <translation type="unfinished">Mesh Tools</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
-      <source>Mesh boolean</source>
-      <translation>메쉬 집합연산</translation>
+      <source>Mesh Modify</source>
+      <translation type="unfinished">Mesh Modify</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
-      <source>Mesh cutting</source>
-      <translation>메쉬 절단</translation>
+      <source>Mesh Boolean</source>
+      <translation type="unfinished">Mesh Boolean</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
-      <source>Mesh segmentation</source>
-      <translation>메쉬 분할</translation>
+      <source>Mesh Cutting</source>
+      <translation type="unfinished">Mesh Cutting</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
-      <source>Mesh analyze</source>
-      <translation>메쉬 분석</translation>
+      <source>Mesh Segmentation</source>
+      <translation type="unfinished">Mesh Segmentation</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="53"/>
+      <source>Mesh Analyze</source>
+      <translation type="unfinished">Mesh Analyze</translation>
     </message>
   </context>
 </TS>

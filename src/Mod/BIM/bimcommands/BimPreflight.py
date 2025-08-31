@@ -1,39 +1,39 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """This module contains FreeCAD commands for the BIM workbench"""
 
-
-import sys
+import importlib
+import inspect
 import os
+import sys
+
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
-
-
-import importlib
-import inspect
 
 
 tests = [
@@ -61,7 +61,7 @@ class BIM_Preflight:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Preflight",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Preflight", "Preflight checks..."),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Preflight", "Preflight Checks"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Preflight",
                 "Checks several characteristics of this model before exporting to IFC",
@@ -80,7 +80,7 @@ class BIM_Preflight:
 class BIM_Preflight_TaskPanel:
 
     def __init__(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         self.results = {}  # to store the result message
         self.culprits = {}  # to store objects to highlight
@@ -156,12 +156,12 @@ class BIM_Preflight_TaskPanel:
                             self.customTests[butname] = func
 
     def getStandardButtons(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         return QtGui.QDialogButtonBox.Close
 
     def reject(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         QtGui.QApplication.restoreOverrideCursor()
         FreeCADGui.Control.closeDialog()
@@ -170,7 +170,7 @@ class BIM_Preflight_TaskPanel:
     def passed(self, test):
         "sets the button as passed"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         getattr(self.form, test).setIcon(QtGui.QIcon(":/icons/button_valid.svg"))
         getattr(self.form, test).setText(translate("BIM", "Passed"))
@@ -181,7 +181,7 @@ class BIM_Preflight_TaskPanel:
     def failed(self, test):
         "sets the button as failed"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         getattr(self.form, test).setIcon(QtGui.QIcon(":/icons/process-stop.svg"))
         getattr(self.form, test).setText("Failed")
@@ -192,7 +192,7 @@ class BIM_Preflight_TaskPanel:
     def reset(self, test):
         "reset the button"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         getattr(self.form, test).setIcon(QtGui.QIcon(":/icons/button_right.svg"))
         getattr(self.form, test).setText(translate("BIM", "Test"))
@@ -256,28 +256,20 @@ class BIM_Preflight_TaskPanel:
             objs = FreeCADGui.Selection.getSelection()
         # clean objects list of unwanted types
         objs = Draft.get_group_contents(objs, walls=True, addgroups=True)
-        objs = [obj for obj in objs if not obj.isDerivedFrom("Part::Part2DObject")]
-        objs = [obj for obj in objs if not obj.isDerivedFrom("App::Annotation")]
         objs = [
             obj
             for obj in objs
             if (
-                hasattr(obj, "Shape")
+                not obj.isDerivedFrom("App::DocumentObjectGroup")
+                and not obj.isDerivedFrom("App::Annotation")
+                and not obj.isDerivedFrom("Part::Part2DObject")
+                and Draft.getType(obj) not in ["BezCurve", "BSpline", "Wire", "WorkingPlaneProxy"]
+                and hasattr(obj, "Shape")
                 and obj.Shape
                 and not (obj.Shape.Edges and (not obj.Shape.Faces))
             )
         ]
-        objs = Arch.pruneIncluded(objs)
-        objs = [
-            obj for obj in objs if not obj.isDerivedFrom("App::DocumentObjectGroup")
-        ]
-        objs = [
-            obj
-            for obj in objs
-            if Draft.getType(obj)
-            not in ["DraftText", "Material", "MaterialContainer", "WorkingPlaneProxy"]
-        ]
-        return objs
+        return Arch.pruneIncluded(objs)
 
     def getToolTip(self, test):
         "gets the toolTip text from the ui file"
@@ -293,7 +285,7 @@ class BIM_Preflight_TaskPanel:
     def testAll(self):
         "runs all tests"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
         from draftutils import todo
 
         for test in tests:
@@ -323,7 +315,7 @@ class BIM_Preflight_TaskPanel:
                 msg = (
                     translate(
                         "BIM",
-                        "ifcopenshell is not installed on your system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check %1 to obtain more information.",
+                        "ifcopenshell is not installed on the system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check %1 to obtain more information.",
                     ).replace("%1", "https://www.freecadweb.org/wiki/Extra_python_modules#IfcOpenShell")
                     + " "
                 )
@@ -350,7 +342,7 @@ class BIM_Preflight_TaskPanel:
                             msg = (
                                 translate(
                                     "BIM",
-                                    "The version of Ifcopenshell installed on your system could not be parsed",
+                                    "The version of Ifcopenshell installed on the system could not be parsed",
                                 )
                                 + " "
                             )
@@ -362,7 +354,7 @@ class BIM_Preflight_TaskPanel:
                     msg += (
                         translate(
                             "BIM",
-                            "The version of Ifcopenshell installed on your system will produce files with this schema version:",
+                            "The version of Ifcopenshell installed on the system will produce files with this schema version:",
                         )
                         + "\n\n"
                     )
@@ -474,7 +466,7 @@ class BIM_Preflight_TaskPanel:
                             msg += (
                                 translate(
                                     "BIM",
-                                    "The following Building objects have been found to not be included in any Site. You can resolve the situation by creating a Site object, if none is present in your model, and drag and drop the Building objects into it in the tree view:",
+                                    "The following building objects have been found to not be included in any Site. You can resolve the situation by creating a Site object, if none is present in your model, and drag and drop the building objects into it in the tree view:",
                                 )
                                 + "\n\n"
                             )
@@ -524,7 +516,7 @@ class BIM_Preflight_TaskPanel:
                             msg += (
                                 translate(
                                     "BIM",
-                                    'The following Building Storey (BuildingParts with their IFC role set as "Building Storey") objects have been found to not be included in any Building. You can resolve the situation by creating a Building object, if none is present in your model, and drag and drop the Building Storey objects into it in the tree view:',
+                                    'The following building storey (building parts with their IFC role set as "building storey") objects have been found to not be included in any building. Resolve the situation by creating a building object, if none is present in the model, and drag and drop the building storey objects into it in the tree view:',
                                 )
                                 + "\n\n"
                             )
@@ -585,7 +577,7 @@ class BIM_Preflight_TaskPanel:
                             msg += (
                                 translate(
                                     "BIM",
-                                    'The following BIM objects have been found to not be included in any Building Storey (BuildingParts with their IFC role set as "Building Storey"). You can resolve the situation by creating a Building Storey object, if none is present in your model, and drag and drop these objects into it in the tree view:',
+                                    'The following BIM objects have been found to not be included in any building storey (building parts with their IFC role set as "building storey"). Resolve the situation by creating a building storey object, if none is present in the model, and drag and drop these objects into it in the tree view:',
                                 )
                                 + "\n\n"
                             )
@@ -698,6 +690,7 @@ class BIM_Preflight_TaskPanel:
     def testQuantities(self):
         "tests for explicit quantities export"
 
+        import Draft
         from PySide import QtCore, QtGui
 
         test = "testQuantities"
@@ -726,7 +719,7 @@ class BIM_Preflight_TaskPanel:
                 msg += (
                     translate(
                         "BIM",
-                        "The objects below have Length, Width or Height properties, but these properties won't be explicitly exported to IFC. This is not necessarily an issue, unless you specifically want these quantities to be exported:",
+                        "The objects below have length, width or height properties, but these properties won't be explicitly exported to IFC. This is not necessarily an issue, unless these quantities are desired to be exported:",
                     )
                     + "\n\n"
                 )
@@ -734,7 +727,7 @@ class BIM_Preflight_TaskPanel:
                     msg += o.Label + "\n"
                 msg += "\n" + translate(
                     "BIM",
-                    "To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -> Manage IFC Quantities...",
+                    "To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -> Manage IFC Quantities",
                 )
             if msg:
                 self.failed(test)
@@ -810,7 +803,7 @@ class BIM_Preflight_TaskPanel:
                     msg += o.Label + "\n"
                 msg += "\n" + translate(
                     "BIM",
-                    "To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -> Manage IFC Properties...",
+                    "To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -> Manage IFC Properties",
                 )
             if msg:
                 self.failed(test)
@@ -902,7 +895,7 @@ class BIM_Preflight_TaskPanel:
                 )
                 msg += translate(
                     "BIM",
-                    "To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -> Manage IFC Properties...",
+                    "To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -> Manage IFC Properties",
                 )
             if msg:
                 self.failed(test)
@@ -1128,7 +1121,7 @@ class BIM_Preflight_TaskPanel:
                     "\n"
                     + translate(
                         "BIM",
-                        'An additional object, called "TinyLinesResult" has been added to this model, and selected. It contains all the tiny lines found, so you can inspect them and fix the needed objects. Be sure to delete the TinyLinesResult object when you are done!',
+                        'An additional object, called "TinyLinesResult" has been added to this model, and selected. It contains all the tiny lines found, for inspection. Be sure to delete the TinyLinesResult object when done!',
                     )
                     + "\n\n"
                 )

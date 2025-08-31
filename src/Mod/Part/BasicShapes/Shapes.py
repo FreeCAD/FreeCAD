@@ -42,9 +42,9 @@ def makeTube(outerRadius, innerRadius, height):
 class TubeFeature:
     def __init__(self, obj):
         obj.Proxy = self
-        obj.addProperty("App::PropertyLength","OuterRadius","Tube","Outer radius").OuterRadius = 5.0
-        obj.addProperty("App::PropertyLength","InnerRadius","Tube","Inner radius").InnerRadius = 2.0
-        obj.addProperty("App::PropertyLength","Height","Tube", "Height of the tube").Height = 10.0
+        obj.addProperty("App::PropertyLength","OuterRadius","Tube","Outer radius", locked=True).OuterRadius = 5.0
+        obj.addProperty("App::PropertyLength","InnerRadius","Tube","Inner radius", locked=True).InnerRadius = 2.0
+        obj.addProperty("App::PropertyLength","Height","Tube", "Height of the tube", locked=True).Height = 10.0
         obj.addExtension("Part::AttachExtensionPython")
 
     def execute(self, fp):

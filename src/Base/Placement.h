@@ -26,7 +26,6 @@
 #include <string>
 
 #include "Rotation.h"
-#include "Vector3D.h"
 
 
 namespace Base
@@ -34,6 +33,10 @@ namespace Base
 
 class DualQuat;
 class Matrix4D;
+
+template<typename T>
+class Vector3;
+using Vector3d = Vector3<double>;
 
 /**
  * The Placement class.

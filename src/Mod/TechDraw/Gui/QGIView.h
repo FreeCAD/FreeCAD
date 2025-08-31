@@ -25,7 +25,7 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <QColor>
 #include <QFont>
@@ -36,6 +36,8 @@
 
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
+
+#include "QGIUserTypes.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -74,13 +76,13 @@ class QGCustomImage;
 class QGTracker;
 class QGIVertex;
 
-class TechDrawGuiExport  QGIView : public QObject, public QGraphicsItemGroup
+class TechDrawGuiExport QGIView : public QObject, public QGraphicsItemGroup
 {
     Q_OBJECT
 public:
     QGIView();
 
-    enum {Type = QGraphicsItem::UserType + 101};
+    enum {Type = UserType::QGIView};
     int type() const override { return Type;}
     QRectF boundingRect() const override;
     void paint( QPainter *painter,
@@ -97,7 +99,6 @@ public:
 
     void hideFrame();               //used by derived classes that don't display a frame
 
-    virtual bool getFrameState();
     virtual void toggleCache(bool state);
     virtual void updateView(bool update = false);
     virtual void drawBorder();
@@ -109,7 +110,7 @@ public:
     virtual void setGroupSelection(bool isSelected, const std::vector<std::string> &subNames);
 
     virtual void draw();
-    virtual void drawCaption();
+    virtual void prepareCaption();
     virtual void rotateView();
     void makeMark(double xPos, double yPos, QColor color = Qt::red);
     void makeMark(Base::Vector3d pos, QColor color = Qt::red);
@@ -168,15 +169,24 @@ public:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
+    template <typename T>
+    std::vector<T> getObjects(std::vector<int> indexes);
+
+    bool pseudoEventFilter(QGraphicsItem *watched, QEvent *event) { return sceneEventFilter(watched, event); }
+
 protected:
-    QGIView* getQGIVByName(std::string name);
+    QGIView* getQGIVByName(std::string name) const;
 
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    void dragFinished();
+
     // Preselection events:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     virtual QRectF customChildrenBoundingRect() const;
     void dumpRect(const char* text, QRectF rect);
+    bool m_isHovered;
+
 
     Base::Reference<ParameterGrp> getParmGroupCol();
 
@@ -208,6 +218,13 @@ private:
 
     bool m_snapped{false};
 
+    void layoutDecorations(const QRectF& contentArea,
+                       const QRectF& captionRect,
+                       const QRectF& labelRect,
+                       QRectF& outFrameRect,
+                       QPointF& outCaptionPos,
+                       QPointF& outLabelPos,
+                       QPointF& outLockPos) const;
 };
 
 } // namespace

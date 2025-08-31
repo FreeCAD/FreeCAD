@@ -112,7 +112,7 @@ void QGIViewSymbol::drawSvg()
     }
 
     auto vp = getViewProvider(viewSymbol);
-    auto vps = dynamic_cast<ViewProviderSymbol*>(vp);
+    auto vps = freecad_cast<ViewProviderSymbol*>(vp);
     if (!vp || !vps) {
         return;
     }
@@ -139,7 +139,7 @@ void QGIViewSymbol::symbolToSvg(QByteArray qba)
 
     prepareGeometryChange();
     if (!m_svgItem->load(&qba)) {
-        Base::Console().Error("Error - Could not load Symbol into SVG renderer for %s\n",
+        Base::Console().error("Error - Could not load Symbol into SVG renderer for %s\n",
                               getViewName());
     }
     m_svgItem->centerAt(0., 0.);
@@ -199,11 +199,11 @@ double QGIViewSymbol::symbolScaler(TechDraw::DrawViewSymbol* feature) const
     QByteArray qba(feature->Symbol.getValue(), strlen(feature->Symbol.getValue()));
     QString qSymbolString = QString::fromUtf8(qba);
 
-    const QString pxToken{QString::fromUtf8("px")};
-    const QString mmToken{QString::fromUtf8("mm")};
+    const QString pxToken{QStringLiteral("px")};
+    const QString mmToken{QStringLiteral("mm")};
 
     // heightRegex finds (height="51.8309mm") in the svg text and returns the mm if present
-    QString heightRegex = QString::fromUtf8(R"(height=\"\d*\.?\d+([a-zA-Z]+)\")");
+    QString heightRegex = QStringLiteral(R"(height=\"\d*\.?\d+([a-zA-Z]+)\")");
     QRegularExpression reHeight(heightRegex);
     QRegularExpressionMatch matchHeight = reHeight.match(qSymbolString);
 

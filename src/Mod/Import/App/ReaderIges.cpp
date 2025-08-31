@@ -39,7 +39,6 @@
 #include <Base/Exception.h>
 #include <App/Application.h>
 #include <Mod/Part/App/encodeFilename.h>
-#include <Mod/Part/App/ProgressIndicator.h>
 
 using namespace Import;
 
@@ -69,16 +68,8 @@ void ReaderIges::read(Handle(TDocStd_Document) hDoc)  // NOLINT
         throw Base::FileException("Cannot read IGES file", file);
     }
 
-#if OCC_VERSION_HEX < 0x070500
-    Handle(Message_ProgressIndicator) pi = new Part::ProgressIndicator(100);
-    aReader.WS()->MapReader()->SetProgress(pi);
-    pi->NewScope(100, "Reading IGES file...");
-    pi->Show();
-#endif
     aReader.Transfer(hDoc);
-#if OCC_VERSION_HEX < 0x070500
-    pi->EndScope();
-#endif
+
     // http://opencascade.blogspot.de/2009/03/unnoticeable-memory-leaks-part-2.html
     Handle(IGESToBRep_Actor)::DownCast(aReader.WS()->TransferReader()->Actor())
         ->SetModel(new IGESData_IGESModel);

@@ -21,16 +21,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_APPLICATION_H
-#define APP_APPLICATION_H
+#ifndef SRC_APP_APPLICATION_H_
+#define SRC_APP_APPLICATION_H_
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
+#include <QtCore/qtextstream.h>
 
 #include <deque>
 #include <vector>
+#include <list>
+#include <set>
+#include <map>
+#include <string>
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
+#include <Base/ProgressIndicator.h>
 
 // forward declarations
 using PyObject = struct _object;
@@ -47,6 +53,7 @@ namespace App
 
 class Document;
 class DocumentObject;
+class ApplicationDirectories;
 class ApplicationObserver;
 class Property;
 class AutoTransaction;
@@ -69,7 +76,7 @@ enum class MessageOption {
     Throw, /**< Throw an exception. */
 };
 
-struct DocumentCreateFlags {
+struct DocumentInitFlags {
     bool createView {true};
     bool temporary {false};
 };
@@ -89,22 +96,22 @@ public:
     /** @name methods for document handling */
     //@{
     /** Creates a new document
-     * The first name is a the identifier and some kind of an internal (english)
-     * name. It has to be like an identifier in a programming language, with no
-     * spaces and not starting with a number. This name gets also forced to be unique
-     * in this Application. You can avoid the renaming by using getUniqueDocumentName()
-     * to get a unique name before calling newDoucument().
-     * The second name is a UTF8 name of any kind. It's that name normally shown to
-     * the user and stored in the App::Document::Name property.
+     * @param proposedName: a prototype name used to create the permanent Name for the document.
+     * It is converted to be like an identifier in a programming language,
+     * with no spaces and not starting with a number. This name gets also forced to be unique
+     * in this Application. You can obtain the unique name using doc.getDocumentName
+     * on the returned document.
+     * @param proposedLabel: a UTF8 name of any kind. It's that name normally shown to
+     * the user and stored in the App::Document::Label property.
      */
-    App::Document* newDocument(const char * Name=nullptr, const char * UserName=nullptr,
-            DocumentCreateFlags CreateFlags=DocumentCreateFlags());
+    App::Document* newDocument(const char * proposedName=nullptr, const char * proposedLabel=nullptr,
+            DocumentInitFlags CreateFlags=DocumentInitFlags());
     /// Closes the document \a name and removes it from the application.
     bool closeDocument(const char* name);
     /// find a unique document name
     std::string getUniqueDocumentName(const char *Name, bool tempDoc=false) const;
     /// Open an existing document from a file
-    App::Document* openDocument(const char * FileName=nullptr, DocumentCreateFlags createFlags = DocumentCreateFlags{});
+    App::Document* openDocument(const char * FileName=nullptr, DocumentInitFlags initFlags = DocumentInitFlags{});
     /** Open multiple documents
      *
      * @param filenames: input file names
@@ -126,7 +133,7 @@ public:
             const std::vector<std::string> *paths=nullptr,
             const std::vector<std::string> *labels=nullptr,
             std::vector<std::string> *errs=nullptr,
-            DocumentCreateFlags createFlags = DocumentCreateFlags{});
+            DocumentInitFlags initFlags = DocumentInitFlags{});
     /// Retrieve the active document
     App::Document* getActiveDocument() const;
     /// Retrieve a named document
@@ -164,7 +171,7 @@ public:
     std::vector<App::Document*> getDocuments() const;
     /// Set the active document
     void setActiveDocument(App::Document* pDoc);
-    void setActiveDocument(const char *Name);
+    void setActiveDocument(const char* Name);
     /// close all documents (without saving)
     void closeAllDocuments();
     /// Add pending document to open together with the current opening document
@@ -300,6 +307,8 @@ public:
     //@{
     /// signal on adding a dynamic property
     boost::signals2::signal<void (const App::Property&)> signalAppendDynamicProperty;
+    /// signal on renaming a dynamic property
+    boost::signals2::signal<void (const App::Property&, const char*)> signalRenameDynamicProperty;
     /// signal on about removing a dynamic property
     boost::signals2::signal<void (const App::Property&)> signalRemoveDynamicProperty;
     /// signal on about changing the editor mode of a property
@@ -414,6 +423,11 @@ public:
     static std::string getHomePath();
     static std::string getExecutableName();
     static std::string getNameWithVersion();
+    static bool isDevelopmentVersion();
+
+    /// Access to the various directories for the program a replacement for the get*Path methods below
+    static const std::unique_ptr<ApplicationDirectories>& directories();
+
     /*!
      Returns the temporary directory. By default, this is set to the
      system's temporary directory but can be customized by the user.
@@ -427,6 +441,16 @@ public:
     static std::string getResourceDir();
     static std::string getLibraryDir();
     static std::string getHelpDir();
+    //@}
+
+    /** @name Verbose Information */
+    //@{
+    static void getVerboseCommonInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig);
+    static void getVerboseAddOnsInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig);
+    static void addModuleInfo(QTextStream& str, const QString& modPath, bool& firstMod);
+    static QString prettyProductInfoWrapper();
+    static QString getValueOrEmpty(const std::map<std::string, std::string>& map, const std::string& key);
+    static constexpr const char* verboseVersionEmitMessage{"verbose_version"};
     //@}
 
     /** @name Link handling */
@@ -458,6 +482,9 @@ public:
     bool hasLinksTo(const DocumentObject *obj) const;
     //@}
 
+    /// Gets the base progress indicator instance.
+    Base::ProgressIndicator& getProgressIndicator() { return _progressIndicator; }
+
     friend class App::Document;
 
 protected:
@@ -468,30 +495,30 @@ protected:
      * This slot gets connected to all App::Documents created
      */
     //@{
-    void slotBeforeChangeDocument(const App::Document&, const App::Property&);
-    void slotChangedDocument(const App::Document&, const App::Property&);
-    void slotNewObject(const App::DocumentObject&);
-    void slotDeletedObject(const App::DocumentObject&);
-    void slotBeforeChangeObject(const App::DocumentObject&, const App::Property& Prop);
-    void slotChangedObject(const App::DocumentObject&, const App::Property& Prop);
-    void slotRelabelObject(const App::DocumentObject&);
-    void slotActivatedObject(const App::DocumentObject&);
-    void slotUndoDocument(const App::Document&);
-    void slotRedoDocument(const App::Document&);
-    void slotRecomputedObject(const App::DocumentObject&);
-    void slotRecomputed(const App::Document&);
-    void slotBeforeRecompute(const App::Document&);
-    void slotOpenTransaction(const App::Document&, std::string);
-    void slotCommitTransaction(const App::Document&);
-    void slotAbortTransaction(const App::Document&);
-    void slotStartSaveDocument(const App::Document&, const std::string&);
-    void slotFinishSaveDocument(const App::Document&, const std::string&);
-    void slotChangePropertyEditor(const App::Document&, const App::Property &);
+    void slotBeforeChangeDocument(const App::Document& doc, const App::Property& prop);
+    void slotChangedDocument(const App::Document& doc, const App::Property& prop);
+    void slotNewObject(const App::DocumentObject& obj);
+    void slotDeletedObject(const App::DocumentObject& obj);
+    void slotBeforeChangeObject(const App::DocumentObject& obj, const App::Property& prop);
+    void slotChangedObject(const App::DocumentObject& obj, const App::Property& prop);
+    void slotRelabelObject(const App::DocumentObject& obj);
+    void slotActivatedObject(const App::DocumentObject& obj);
+    void slotUndoDocument(const App::Document& doc);
+    void slotRedoDocument(const App::Document& doc);
+    void slotRecomputedObject(const App::DocumentObject& obj);
+    void slotRecomputed(const App::Document& doc);
+    void slotBeforeRecompute(const App::Document& doc);
+    void slotOpenTransaction(const App::Document& doc, std::string name);
+    void slotCommitTransaction(const App::Document& doc);
+    void slotAbortTransaction(const App::Document& doc);
+    void slotStartSaveDocument(const App::Document& doc, const std::string& filename);
+    void slotFinishSaveDocument(const App::Document& doc, const std::string& filename);
+    void slotChangePropertyEditor(const App::Document& doc, const App::Property& prop);
     //@}
 
     /// open single document only
     App::Document* openDocumentPrivate(const char * FileName, const char *propFileName,
-            const char *label, bool isMainDoc, DocumentCreateFlags createFlags, std::vector<std::string> &&objNames);
+            const char *label, bool isMainDoc, DocumentInitFlags initFlags, std::vector<std::string> &&objNames);
 
     /// Helper class for App::Document to signal on close/abort transaction
     class AppExport TransactionSignaller {
@@ -503,12 +530,15 @@ protected:
     };
 
 private:
-    /// Constructor
+    /// Constructor. The passed configuration must last for the lifetime of the constructed Application
+    // NOLINTNEXTLINE(runtime/references)
     explicit Application(std::map<std::string, std::string> &mConfig);
     /// Destructor
     virtual ~Application();
 
     static void cleanupUnits();
+
+    void setActiveDocumentNoSignal(App::Document* pDoc);
 
     /** @name member for parameter */
     //@{
@@ -601,6 +631,8 @@ private:
     static void SaveEnv(const char *);
     /// startup configuration container
     static std::map<std::string,std::string> mConfig;
+    /// Management of and access to applications directories
+    static std::unique_ptr<ApplicationDirectories> _appDirs;
     static int _argc;
     static char ** _argv;
     //@}
@@ -642,6 +674,8 @@ private:
     int _activeTransactionGuard{0};
     bool _activeTransactionTmpName{false};
 
+    Base::ProgressIndicator _progressIndicator;
+
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;
 };
@@ -654,4 +688,4 @@ inline App::Application &GetApplication(){
 } // namespace App
 
 
-#endif // APP_APPLICATION_H
+#endif // SRC_APP_APPLICATION_H_

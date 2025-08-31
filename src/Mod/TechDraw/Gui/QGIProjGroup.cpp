@@ -55,6 +55,10 @@ TechDraw::DrawProjGroup * QGIProjGroup::getDrawView() const
     App::DocumentObject *obj = getViewObject();
     return dynamic_cast<TechDraw::DrawProjGroup *>(obj);
 }
+bool QGIProjGroup::autoDistributeEnabled() const
+{
+    return getDrawView() && getDrawView()->AutoDistribute.getValue();
+}
 
 bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
 {
@@ -64,27 +68,34 @@ bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
        event->type() == QEvent::GraphicsSceneMouseRelease) {
 
         QGIView *qAnchor = getAnchorQItem();
-        if(qAnchor && watched == qAnchor) {
+        QGIView* qWatched = dynamic_cast<QGIView*>(watched);
+        // If AutoDistribute is enabled, catch events and move the anchor directly
+        if(qAnchor && (watched == qAnchor || (autoDistributeEnabled() && qWatched != nullptr))) {
             auto *mEvent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
 
-            switch(event->type()) {
-              case QEvent::GraphicsSceneMousePress:
-                  // TODO - Perhaps just pass the mouse event on to the anchor somehow?
-                  if (scene() && !qAnchor->isSelected()) {
-                      scene()->clearSelection();
-                      qAnchor->setSelected(true);
-                  }
-                  mousePressEvent(mEvent);
-                  break;
-              case QEvent::GraphicsSceneMouseMove:
-                  mouseMoveEvent(mEvent);
-                  break;
-              case QEvent::GraphicsSceneMouseRelease:
-                  mouseReleaseEvent(mEvent);
-                  break;
-              default:
-                  break;
+            // Disable moves on the view to prevent double drag
+            bool initCanMove = qWatched->flags() & QGraphicsItem::ItemIsMovable;
+            qWatched->setFlag(QGraphicsItem::ItemIsMovable, false);
+            switch (event->type()) {
+                case QEvent::GraphicsSceneMousePress:
+                    // TODO - Perhaps just pass the mouse event on to the watched item somehow?
+                    if (scene() && !qWatched->isSelected()) {
+                        scene()->clearSelection();
+                        qWatched->setSelected(true);
+                    }
+                    mousePressEvent(mEvent);
+                    break;
+                case QEvent::GraphicsSceneMouseMove:
+                    mouseMoveEvent(mEvent);
+                    break;
+                case QEvent::GraphicsSceneMouseRelease:
+                    mouseReleaseEvent(qWatched, mEvent);
+                    break;
+                default:
+                    break;
             }
+            // Restore flag
+            qWatched->setFlag(QGraphicsItem::ItemIsMovable, initCanMove);
             return true;
         }
     }
@@ -102,26 +113,26 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
                 auto *projItemPtr = static_cast<TechDraw::DrawProjGroupItem *>(fView);
                 QString type = QString::fromLatin1(projItemPtr->Type.getValueAsString());
 
-                if (type == QString::fromLatin1("Front")) {
-                    gView->alignTo(m_origin, QString::fromLatin1("None"));
+                if (type == QStringLiteral("Front")) {
+                    gView->alignTo(m_origin, QStringLiteral("None"));
                     installSceneEventFilter(gView);
                 }
-                else if ( type == QString::fromLatin1("Top") ||
-                    type == QString::fromLatin1("Bottom")) {
-                    gView->alignTo(m_origin, QString::fromLatin1("Vertical"));
+                else if ( type == QStringLiteral("Top") ||
+                    type == QStringLiteral("Bottom")) {
+                    gView->alignTo(m_origin, QStringLiteral("Vertical"));
                 }
-                else if ( type == QString::fromLatin1("Left")  ||
-                            type == QString::fromLatin1("Right") ||
-                            type == QString::fromLatin1("Rear") ) {
-                    gView->alignTo(m_origin, QString::fromLatin1("Horizontal"));
+                else if ( type == QStringLiteral("Left")  ||
+                            type == QStringLiteral("Right") ||
+                            type == QStringLiteral("Rear") ) {
+                    gView->alignTo(m_origin, QStringLiteral("Horizontal"));
                 }
-                else if ( type == QString::fromLatin1("FrontTopRight") ||
-                            type == QString::fromLatin1("FrontBottomLeft") ) {
-                    gView->alignTo(m_origin, QString::fromLatin1("45slash"));
+                else if ( type == QStringLiteral("FrontTopRight") ||
+                            type == QStringLiteral("FrontBottomLeft") ) {
+                    gView->alignTo(m_origin, QStringLiteral("45slash"));
                 }
-                else if ( type == QString::fromLatin1("FrontTopLeft") ||
-                            type == QString::fromLatin1("FrontBottomRight") ) {
-                    gView->alignTo(m_origin, QString::fromLatin1("45backslash"));
+                else if ( type == QStringLiteral("FrontTopLeft") ||
+                            type == QStringLiteral("FrontBottomRight") ) {
+                    gView->alignTo(m_origin, QStringLiteral("45backslash"));
                 }
             }
          }
@@ -134,7 +145,7 @@ void QGIProjGroup::mousePressEvent(QGraphicsSceneMouseEvent * event)
     QGIView *qAnchor = getAnchorQItem();
     if(qAnchor) {
         QPointF transPos = qAnchor->mapFromScene(event->scenePos());
-        if(qAnchor->shape().contains(transPos)) {
+        if(qAnchor->shape().contains(transPos) || autoDistributeEnabled()) {
             mousePos = event->screenPos();
         }
     }
@@ -144,28 +155,29 @@ void QGIProjGroup::mousePressEvent(QGraphicsSceneMouseEvent * event)
 void QGIProjGroup::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
     QGIView *qAnchor = getAnchorQItem();
-    if(scene() && qAnchor && (qAnchor == scene()->mouseGrabberItem())) {
+    if(scene() && qAnchor && (qAnchor == scene()->mouseGrabberItem() || autoDistributeEnabled())) {
         if((mousePos - event->screenPos()).manhattanLength() > 5) {    //if the mouse has moved more than 5, process the mouse event
             QGIViewCollection::mouseMoveEvent(event);
         }
-
     }
     event->accept();
 }
 
 void QGIProjGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-     if(scene()) {
-       QGIView *qAnchor = getAnchorQItem();
+    mouseReleaseEvent(getAnchorQItem(), event);
+}
+void QGIProjGroup::mouseReleaseEvent(QGIView* originator, QGraphicsSceneMouseEvent* event)
+{
+    if(scene()) {
         if((mousePos - event->screenPos()).manhattanLength() < 5) {
-            if(qAnchor && qAnchor->shape().contains(event->pos())) {
+            if(originator && originator->shape().contains(event->pos())) {
                 event->ignore();
-                qAnchor->mouseReleaseEvent(event);
+                originator->mouseReleaseEvent(event);
             }
         }
-        else if(scene() && qAnchor) {
-            // End of Drag
-            getViewObject()->setPosition(Rez::appX(x()), Rez::appX(getY()));
+        else if(scene() && originator) {
+            dragFinished();
         }
     }
     QGIViewCollection::mouseReleaseEvent(event);
@@ -195,12 +207,12 @@ QGIView * QGIProjGroup::getAnchorQItem() const
 //QGIPG does not rotate. Only individual views rotate
 void QGIProjGroup::rotateView()
 {
-    Base::Console().Warning("QGIPG: Projection Groups do not rotate. Change ignored\n");
+    Base::Console().warning("QGIPG: Projection Groups do not rotate. Change ignored\n");
 }
 
 void QGIProjGroup::drawBorder()
 {
 //QGIProjGroup does not have a border!
-//    Base::Console().Message("TRACE - QGIProjGroup::drawBorder - doing nothing!!\n");
+//    Base::Console().message("TRACE - QGIProjGroup::drawBorder - doing nothing!!\n");
 }
 

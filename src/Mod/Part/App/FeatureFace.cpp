@@ -68,7 +68,7 @@ App::DocumentObjectExecReturn *Face::execute()
     for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
         if (!(*it))
             return new App::DocumentObjectExecReturn("Linked object is not a Part object (has no Shape).");
-        TopoDS_Shape shape = Feature::getShape(*it);
+        TopoDS_Shape shape = Feature::getShape(*it, ShapeOption::ResolveLink | ShapeOption::Transform);
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Linked shape object is empty");
 

@@ -55,8 +55,7 @@ class DraftAirfoilDAT(test_base.DraftTestCaseDoc):
         _msg("  file={}".format(in_file))
         _msg("  exists={}".format(os.path.exists(in_file)))
 
-        Draft.import_airfoildat = aux.fake_function
-        obj = Draft.import_airfoildat(in_file)
+        obj = aux.fake_function(in_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_export_airfoildat(self):
@@ -69,8 +68,7 @@ class DraftAirfoilDAT(test_base.DraftTestCaseDoc):
         _msg("  file={}".format(out_file))
         _msg("  exists={}".format(os.path.exists(out_file)))
 
-        Draft.export_airfoildat = aux.fake_function
-        obj = Draft.export_airfoildat(out_file)
+        obj = aux.fake_function(out_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
 ## @}

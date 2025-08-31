@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #include <QAction>
 #include <QMessageBox>
+#include <limits>
 #include <sstream>
 #endif
 
@@ -64,7 +65,7 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(
     // Fill data into dialog elements
     ui->if_pressure->setUnit(pcConstraint->Pressure.getUnit());
     ui->if_pressure->setMinimum(0);
-    ui->if_pressure->setMaximum(FLOAT_MAX);
+    ui->if_pressure->setMaximum(std::numeric_limits<float>::max());
     ui->if_pressure->setValue(pcConstraint->Pressure.getQuantityValue());
     ui->if_pressure->bind(pcConstraint->Pressure);
 
@@ -80,7 +81,7 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(
     }
 
     // create a context menu for the listview of the references
-    createDeleteAction(ui->lw_references);
+    createActions(ui->lw_references);
     connect(deleteAction,
             &QAction::triggered,
             this,
@@ -145,13 +146,13 @@ void TaskFemConstraintPressure::addToSelection()
 
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
-            if (subName.substr(0, 4) != "Face") {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+            if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
+                QMessageBox::warning(this,
+                                     tr("Selection error"),
+                                     tr("Only faces (edges in 2D models) can be picked"));
                 return;
             }
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
-                 itr != SubElements.end();
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
                                  subName)) {  // for every sub element in selection that
@@ -198,9 +199,7 @@ void TaskFemConstraintPressure::removeFromSelection()
         const App::DocumentObject* obj = it.getObject();
 
         for (const auto& subName : subNames) {  // for every selected sub element
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
-                 itr != SubElements.end();
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
                                  subName)) {  // for every sub element in selection that
@@ -215,7 +214,7 @@ void TaskFemConstraintPressure::removeFromSelection()
             }
         }
     }
-    std::sort(itemsToDel.begin(), itemsToDel.end());
+    std::ranges::sort(itemsToDel);
     while (!itemsToDel.empty()) {
         Objects.erase(Objects.begin() + itemsToDel.back());
         SubElements.erase(SubElements.begin() + itemsToDel.back());

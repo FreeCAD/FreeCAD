@@ -83,7 +83,9 @@ void AutoSaver::renameFile(QString dirName, QString file, QString tmpFile)
             << " -> " << file.toUtf8().constData());
     QDir dir(dirName);
     dir.remove(file);
-    dir.rename(tmpFile,file);
+    if (!dir.rename(tmpFile,file)) {
+        FC_ERR("Failed to rename autosave file " << tmpFile.toStdString() << " to " << file.toStdString() << "\n");
+    }
 }
 
 void AutoSaver::setTimeout(int ms)
@@ -146,7 +148,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         saver.dirName = dirName;
 
         // Write recovery meta file
-        QFile file(QString::fromLatin1("%1/fc_recovery_file.xml")
+        QFile file(QStringLiteral("%1/fc_recovery_file.xml")
             .arg(QString::fromUtf8(doc->TransientDir.getValue())));
         if (file.open(QFile::WriteOnly)) {
             QTextStream str(&file);
@@ -169,7 +171,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         bool save = hGrp->GetBool("SaveThumbnail",true);
         hGrp->SetBool("SaveThumbnail",false);
 
-        getMainWindow()->showMessage(tr("Please wait until the AutoRecovery file has been saved..."), 5000);
+        getMainWindow()->showMessage(tr("Wait until the auto-recovery file has been saved…"), 5000);
         //qApp->processEvents();
 
         Base::TimeElapsed startTime;
@@ -220,7 +222,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
             }
         }
 
-        Base::Console().Log("Save AutoRecovery file in %fs\n", Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
+        Base::Console().log("Save auto-recovery file in %fs\n", Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
         hGrp->SetBool("SaveThumbnail",save);
     }
 }
@@ -236,7 +238,7 @@ void AutoSaver::timerEvent(QTimerEvent * event)
                 break;
             }
             catch (...) {
-                Base::Console().Error("Failed to auto-save document '%s'\n", it.first.c_str());
+                Base::Console().error("Failed to auto-save document '%s'\n", it.first.c_str());
             }
         }
     }
@@ -333,7 +335,7 @@ public:
 
         dirName = QString::fromUtf8(dir);
         fileName = QString::fromUtf8(file);
-        tmpName = QString::fromLatin1("%1.tmp%2").arg(fileName).arg(rand());
+        tmpName = QStringLiteral("%1.tmp%2").arg(fileName).arg(rand());
         writer.putNextEntry(tmpName.toUtf8().constData());
     }
     ~RecoveryRunnable() override
@@ -342,17 +344,28 @@ public:
     }
     void run() override
     {
-        prop->SaveDocFile(writer);
-        writer.close();
+        try {
+            prop->SaveDocFile(writer);
+            writer.close();
 
-        // We could have renamed the file in this thread. However, there is
-        // still chance of crash when we deleted the original and before rename
-        // the new file. So we ask the main thread to do it. There is still
-        // possibility of crash caused by thread other than the main, but
-        // that's the best we can do for now.
-        QMetaObject::invokeMethod(AutoSaver::instance(), "renameFile",
-                Qt::QueuedConnection, Q_ARG(QString,dirName)
-                ,Q_ARG(QString,fileName),Q_ARG(QString,tmpName));
+            // We could have renamed the file in this thread. However, there is
+            // still chance of crash when we deleted the original and before rename
+            // the new file. So we ask the main thread to do it. There is still
+            // possibility of crash caused by thread other than the main, but
+            // that's the best we can do for now.
+            QMetaObject::invokeMethod(AutoSaver::instance(), "renameFile",
+                    Qt::QueuedConnection, Q_ARG(QString,dirName)
+                    ,Q_ARG(QString,fileName),Q_ARG(QString,tmpName));
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().warning("Exception in auto-saving: %s\n", e.what());
+        }
+        catch (const std::exception& e) {
+            Base::Console().warning("C++ exception in auto-saving: %s\n", e.what());
+        }
+        catch (...) {
+            Base::Console().warning("Unknown exception in auto-saving\n");
+        }
     }
 
 private:

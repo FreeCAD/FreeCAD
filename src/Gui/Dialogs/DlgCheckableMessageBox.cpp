@@ -44,7 +44,7 @@ namespace Gui {
 namespace Dialog {
 QByteArray toParamEntry(QString name)
 {
-    name.replace(QString::fromLatin1(" "), QString::fromLatin1("_"));
+    name.replace(QStringLiteral(" "), QStringLiteral("_"));
     return name.toLatin1();
 }
 
@@ -172,13 +172,7 @@ void DlgCheckableMessageBox::setText(const QString &t)
 
 QPixmap DlgCheckableMessageBox::iconPixmap() const
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
     return m_d->ui.pixmapLabel->pixmap(Qt::ReturnByValue);
-#else
-    if (const QPixmap *p = m_d->ui.pixmapLabel->pixmap())
-        return QPixmap(*p);
-    return QPixmap();
-#endif
 }
 
 void DlgCheckableMessageBox::setIconPixmap(const QPixmap &p)

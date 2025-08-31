@@ -26,14 +26,12 @@
 #define BASE_XMLTOOLS_H
 
 #include <memory>
-#include <iostream>
+#include <ostream>
 #include <xercesc/util/TransService.hpp>
-
-#include <Base/Exception.h>
+#include <xercesc/framework/MemoryManager.hpp>
 
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
 #define XERCES_CPP_NAMESPACE_QUALIFIER
-using namespace XERCES_CPP_NAMESPACE;
 namespace XERCES_CPP_NAMESPACE
 {
 class DOMNode;
@@ -59,6 +57,23 @@ public:
 
 private:
     static std::unique_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> transcoder;  // NOLINT
+};
+
+// Helper class for XStrLiteral macro
+// This implementation is almost same as Xerces default memory manager.
+class BaseExport XStrMemoryManager final: public XERCES_CPP_NAMESPACE::MemoryManager
+{
+public:
+    XStrMemoryManager() = default;
+    ~XStrMemoryManager() = default;
+
+    MemoryManager* getExceptionMemoryManager() override
+    {
+        return this;
+    }
+
+    void* allocate(XMLSize_t size) override;
+    void deallocate(void* p) override;
 };
 
 //**************************************************************************
@@ -152,6 +167,8 @@ class XStr
 public:
     ///  Constructors and Destructor
     explicit XStr(const char* const toTranscode);
+    explicit XStr(const char* const toTranscode,
+                  XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* memMgr);
     ~XStr();
 
 
@@ -162,17 +179,37 @@ public:
 private:
     /// This is the Unicode XMLCh format of the string.
     XMLCh* fUnicodeForm;
+    XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* memMgr;
 };
 
 
 inline XStr::XStr(const char* const toTranscode)
-    : fUnicodeForm(XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode))
+    : XStr(toTranscode, XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgMemoryManager)
+{}
+
+inline XStr::XStr(const char* const toTranscode,
+                  XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* memMgr)
+    : fUnicodeForm(XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode, memMgr))
+    , memMgr(memMgr)
 {}
 
 inline XStr::~XStr()
 {
-    XERCES_CPP_NAMESPACE_QUALIFIER XMLString::release(&fUnicodeForm);
+    XERCES_CPP_NAMESPACE_QUALIFIER XMLString::release(&fUnicodeForm, memMgr);
 }
+
+// Uses the compiler to create a cache of transcoded string literals so that each subsequent call
+// can reuse the data from the lambda's initial creation. Permits the same usage as
+// XStr("literal").unicodeForm()
+// XStrLiteral macro use local memory manager instance to prevent segfault on releasing cached
+// string because xerces default memory manager is already deleted when destructing local static
+// variable.
+#define XStrLiteral(literal)                                                                       \
+    ([]() -> const XStr& {                                                                         \
+        static XStrMemoryManager memMgr;                                                           \
+        static const XStr str {literal, &memMgr};                                                  \
+        return str;                                                                                \
+    }())
 
 
 // -----------------------------------------------------------------------
@@ -210,6 +247,14 @@ inline XUTF8Str::XUTF8Str(const char* const fromTranscode)
 
 inline XUTF8Str::~XUTF8Str() = default;
 
+// Uses the compiler to create a cache of transcoded string literals so that each subsequent call
+// can reuse the data from the lambda's initial creation. Permits the same usage as
+// XStr("literal").unicodeForm()
+#define XUTF8StrLiteral(literal)                                                                   \
+    ([]() -> const XUTF8Str& {                                                                     \
+        static const XUTF8Str str {literal};                                                       \
+        return str;                                                                                \
+    }())
 
 // -----------------------------------------------------------------------
 //  Getter methods

@@ -15,31 +15,31 @@
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="99"/>
-      <source>To get started, set your basic configuration options below.</source>
-      <translation>Om te beginnen, stel hieronder uw basisconfiguratieopties in.</translation>
+      <source>Set your basic configuration options below.</source>
+      <translation type="unfinished">Set your basic configuration options below.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="100"/>
-      <source>These options (and many more) can be changed later in Preferences.</source>
-      <translation>Deze opties (en nog veel meer) kunnen later worden gewijzigd in Voorkeuren.</translation>
+      <source>These options (and many more) can be changed later in the preferences.</source>
+      <translation type="unfinished">These options (and many more) can be changed later in the preferences.</translation>
     </message>
   </context>
   <context>
     <name>StartGui::GeneralSettingsWidget</name>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
       <source>Language</source>
       <translation>Taal</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="214"/>
       <source>Unit System</source>
       <translation>Eenheidsstelsel</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="226"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="230"/>
       <source>Navigation Style</source>
-      <translation>Navigatiestijl</translation>
+      <translation>Navigatie stijl</translation>
     </message>
   </context>
   <context>
@@ -47,113 +47,113 @@
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
       <source>Start</source>
-      <translation>Start</translation>
+      <translation>Beginnen</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="48"/>
       <source>&amp;Start Page</source>
-      <translation type="unfinished">&amp;Start Page</translation>
+      <translation>Startpagina</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
-      <source>Displays the Start Page</source>
-      <translation type="unfinished">Displays the Start Page</translation>
+      <source>Displays the start page</source>
+      <translation type="unfinished">Displays the start page</translation>
     </message>
   </context>
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="289"/>
-      <source>Empty file</source>
-      <translation>Leeg bestand</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="290"/>
-      <source>Create a new empty FreeCAD file</source>
-      <translation>Maak een nieuw leeg FreeCAD-bestand</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="293"/>
+      <location filename="../../StartView.cpp" line="212"/>
       <source>Open File</source>
       <translation>Bestand openen</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="294"/>
-      <source>Open an existing CAD file or 3D model</source>
-      <translation>Open een bestaand CAD-bestand of 3D-model</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="297"/>
-      <source>Parametric Part</source>
-      <translation>Parametrisch onderdeel</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="298"/>
-      <source>Create a part with the Part Design workbench</source>
-      <translation>Maak een onderdeel aan met de Part Design werkbank</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="301"/>
+      <location filename="../../StartView.cpp" line="220"/>
       <source>Assembly</source>
       <translation>Samenstelling</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="302"/>
-      <source>Create an assembly project</source>
-      <translation>Start een samenstelling project</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="305"/>
+      <location filename="../../StartView.cpp" line="224"/>
       <source>2D Draft</source>
       <translation>2D schets</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="306"/>
-      <source>Create a 2D Draft with the Draft workbench</source>
-      <translation>Maak een 2D schets met de Draft werkbank</translation>
+      <location filename="../../StartView.cpp" line="225"/>
+      <source>Creates a 2D Draft document</source>
+      <translation type="unfinished">Creates a 2D Draft document</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="309"/>
+      <location filename="../../StartView.cpp" line="228"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Architectuur</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="310"/>
-      <source>Create an architectural project</source>
-      <translation>Maak een bouwkundig project</translation>
+      <location filename="../../StartView.cpp" line="208"/>
+      <source>Empty File</source>
+      <translation type="unfinished">Empty File</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="525"/>
+      <location filename="../../StartView.cpp" line="209"/>
+      <source>Creates a new empty FreeCAD file</source>
+      <translation type="unfinished">Creates a new empty FreeCAD file</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="213"/>
+      <source>Opens an existing CAD file or 3D model</source>
+      <translation type="unfinished">Opens an existing CAD file or 3D model</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="216"/>
+      <source>Parametric Body</source>
+      <translation type="unfinished">Parametric Body</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="217"/>
+      <source>Creates a body with the Part Design workbench</source>
+      <translation type="unfinished">Creates a body with the Part Design workbench</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="221"/>
+      <source>Creates an assembly project</source>
+      <translation type="unfinished">Creates an assembly project</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="229"/>
+      <source>Creates an architectural project</source>
+      <translation type="unfinished">Creates an architectural project</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="497"/>
       <source>New File</source>
       <translation>Nieuw bestand</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="526"/>
+      <location filename="../../StartView.cpp" line="498"/>
       <source>Examples</source>
       <translation>Voorbeelden</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="527"/>
+      <location filename="../../StartView.cpp" line="499"/>
       <source>Recent Files</source>
       <translation>Recente bestanden</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="530"/>
-      <source>Open first start setup</source>
-      <translation>Stel de eerste start set-up in</translation>
+      <location filename="../../StartView.cpp" line="514"/>
+      <source>Open First Start Setup</source>
+      <translation type="unfinished">Open First Start Setup</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="532"/>
-      <source>Don't show this Start page again (start with blank screen)</source>
-      <translation>Laat deze startpagina niet meer zien (start met een leeg scherm)</translation>
+      <location filename="../../StartView.cpp" line="516"/>
+      <source>Do not show this Start page again (start with blank screen)</source>
+      <translation type="unfinished">Do not show this Start page again (start with blank screen)</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="519"/>
+      <location filename="../../StartView.cpp" line="491"/>
       <source>Start</source>
-      <translation>Start</translation>
+      <translation>Beginnen</translation>
     </message>
   </context>
   <context>
@@ -161,7 +161,7 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="113"/>
       <source>FreeCAD Classic</source>
-      <translation>FreeCAD Classic</translation>
+      <translation>FreeCAD Klassiek</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="114"/>
@@ -199,7 +199,71 @@
       <location filename="../../ThemeSelectorWidget.cpp" line="243"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
-      <translation>FreeCAD Classic</translation>
+      <translation>FreeCAD Klassiek</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgStartPreferences</name>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="14"/>
+      <source>General</source>
+      <translation>Algemeen</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="20"/>
+      <source>Contents</source>
+      <translation>Inhoud</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="26"/>
+      <location filename="../../DlgStartPreferences.ui" line="86"/>
+      <source>Show only FreeCAD files in additional folder</source>
+      <translation>Toon alleen FreeCAD bestanden in de additionele map</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="33"/>
+      <source>Show examples folder contents</source>
+      <translation>Toon de inhoud van de map met voorbeelden</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="40"/>
+      <source>Show additional folder contents</source>
+      <translation>Toon inhoud van een additionele map</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="47"/>
+      <source>An optional custom folder to be displayed on the Start page.
+Multiple folders can be added using ";;" to separate paths.</source>
+      <translation type="unfinished">An optional custom folder to be displayed on the Start page.
+Multiple folders can be added using ";;" to separate paths.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="64"/>
+      <source>Shows example files on the start page</source>
+      <translation type="unfinished">Shows example files on the start page</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="114"/>
+      <source>The start page is closed automatically when FreeCAD launches</source>
+      <translation type="unfinished">The start page is closed automatically when FreeCAD launches</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="108"/>
+      <source>Options</source>
+      <translation>Opties</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="133"/>
+      <source>Close start page after loading</source>
+      <translation>Sluit de Startpagina na het laden</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../AppStartGui.cpp" line="131"/>
+      <source>Start</source>
+      <translation>Start</translation>
     </message>
   </context>
 </TS>

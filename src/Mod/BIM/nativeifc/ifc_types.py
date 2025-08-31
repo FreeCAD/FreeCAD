@@ -1,32 +1,37 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2023 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Library General Public License (LGPL)   *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """Diffing tool for NativeIFC project objects"""
 
-
 import FreeCAD
-from nativeifc import ifc_tools
+
+from . import ifc_tools
 
 translate = FreeCAD.Qt.translate
+
+# Parameters object for NativeIFC preferences
+PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 
 
 def show_type(obj):
@@ -44,6 +49,34 @@ def show_type(obj):
             typeobj = ifc_tools.create_object(typelt, obj.Document, ifcfile)
             ifc_tools.get_group(project, "IfcTypesGroup").addObject(typeobj)
             obj.Type = typeobj
+
+
+def load_types(prj_obj):
+    """
+    Loads IFC types for all objects in the project, used during
+    import of IFC files.
+    prj_obj is the project object, either a document or a document object.
+    """
+
+    def process_object(obj):
+        """Recursively process an object and its children"""
+        # Check if this object has IFC data and can have types
+        if hasattr(obj, 'StepId') and obj.StepId:
+            show_type(obj)
+
+        # Process children recursively
+        if hasattr(obj, 'Group'):
+            for child in obj.Group:
+                process_object(child)
+
+    if isinstance(prj_obj, FreeCAD.DocumentObject):
+        # Handle document object case
+        process_object(prj_obj)
+    else:
+        # Handle document case - process all IFC objects in the document
+        for obj in prj_obj.Objects:
+            if hasattr(obj, 'StepId') and obj.StepId:
+                show_type(obj)
 
 
 def is_typable(obj):
@@ -71,13 +104,35 @@ def convert_to_type(obj, keep_object=False):
         return
     if not getattr(obj, "Shape", None):
         return
-    if FreeCAD.GuiUp:
+
+    # Check preferences
+    always_keep = PARAMS.GetBool("ConvertTypeKeepOriginal", False)
+    ask_again = PARAMS.GetBool("ConvertTypeAskAgain", True)
+
+    if FreeCAD.GuiUp and ask_again:
         import FreeCADGui
         dlg = FreeCADGui.PySideUic.loadUi(":/ui/dialogConvertType.ui")
+
+        original_text = dlg.label.text()
+        dlg.label.setText(original_text.replace("%1", obj.Class+"Type"))
+
+        # Set the initial state of the checkbox from the "always keep" preference
+        dlg.checkKeepObject.setChecked(always_keep)
         result = dlg.exec_()
         if not result:
             return
+
         keep_object = dlg.checkKeepObject.isChecked()
+        do_not_ask_again = dlg.checkDoNotAskAgain.isChecked()
+
+        # If "Do not ask again" is checked, disable future dialogs and save the current choice
+        if do_not_ask_again:
+            PARAMS.SetBool("ConvertTypeAskAgain", False)
+            PARAMS.SetBool("ConvertTypeKeepOriginal", keep_object)
+    else:
+        # Use the saved preference when GUI is not available or user chose "do not ask again"
+        keep_object = always_keep
+
     element = ifc_tools.get_ifc_element(obj)
     ifcfile = ifc_tools.get_ifcfile(obj)
     project = ifc_tools.get_project(obj)

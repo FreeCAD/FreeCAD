@@ -156,7 +156,7 @@ std::vector<App::DocumentObject*> ViewProviderFemConstraint::claimChildren() con
 void ViewProviderFemConstraint::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit analysis feature"), receiver, member);
+    act = menu->addAction(QObject::tr("Edit Analysis Feature"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     ViewProviderGeometryObject::setupContextMenu(menu,
                                                  receiver,
@@ -200,9 +200,19 @@ void ViewProviderFemConstraint::handleChangedPropertyName(Base::XMLReader& reade
     }
 }
 
+void ViewProviderFemConstraint::setRotateSymbol(bool rotate)
+{
+    rotateSymbol = rotate;
+    updateSymbol();
+}
+
 void ViewProviderFemConstraint::updateSymbol()
 {
     auto obj = this->getObject<const Fem::Constraint>();
+    if (!obj) {
+        return;
+    }
+
     const std::vector<Base::Vector3d>& points = obj->Points.getValue();
     const std::vector<Base::Vector3d>& normals = obj->Normals.getValue();
     if (points.size() != normals.size()) {

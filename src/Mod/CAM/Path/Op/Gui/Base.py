@@ -187,8 +187,11 @@ class ViewProvider(object):
         for action in menu.actions():
             menu.removeAction(action)
         action = QtGui.QAction(translate("PathOp", "Edit"), menu)
-        action.triggered.connect(self.setEdit)
+        action.triggered.connect(self._editInContextMenuTriggered)
         menu.addAction(action)
+
+    def _editInContextMenuTriggered(self, checked):
+        self.setEdit()
 
 
 class TaskPanelPage(object):
@@ -808,8 +811,8 @@ class TaskPanelHeightsPage(TaskPanelPage):
         self.clearanceHeight.updateProperty()
 
     def setFields(self, obj):
-        self.safeHeight.updateSpinBox()
-        self.clearanceHeight.updateSpinBox()
+        self.safeHeight.updateWidget()
+        self.clearanceHeight.updateWidget()
 
     def getSignalsForUpdate(self, obj):
         signals = []
@@ -908,13 +911,13 @@ class TaskPanelDepthsPage(TaskPanelPage):
 
     def setFields(self, obj):
         if self.haveStartDepth():
-            self.startDepth.updateSpinBox()
+            self.startDepth.updateWidget()
         if self.haveFinalDepth():
-            self.finalDepth.updateSpinBox()
+            self.finalDepth.updateWidget()
         if self.haveStepDown():
-            self.stepDown.updateSpinBox()
+            self.stepDown.updateWidget()
         if self.haveFinishDepth():
-            self.finishDepth.updateSpinBox()
+            self.finishDepth.updateWidget()
         self.updateSelection(obj, FreeCADGui.Selection.getSelectionEx())
 
     def getSignalsForUpdate(self, obj):
@@ -950,7 +953,7 @@ class TaskPanelDepthsPage(TaskPanelPage):
             if spinbox.expression():
                 obj.setExpression(prop, None)
                 self.setDirty()
-            spinbox.updateSpinBox(FreeCAD.Units.Quantity(z, FreeCAD.Units.Length))
+            spinbox.updateWidget(FreeCAD.Units.Quantity(z, FreeCAD.Units.Length))
             if spinbox.updateProperty():
                 self.setDirty()
         else:
@@ -1002,8 +1005,8 @@ class TaskPanelDiametersPage(TaskPanelPage):
         self.maxDiameter.updateProperty()
 
     def setFields(self, obj):
-        self.minDiameter.updateSpinBox()
-        self.maxDiameter.updateSpinBox()
+        self.minDiameter.updateWidget()
+        self.maxDiameter.updateWidget()
 
     def getSignalsForUpdate(self, obj):
         signals = []
@@ -1289,8 +1292,8 @@ class CommandSetStartPoint:
     def GetResources(self):
         return {
             "Pixmap": "CAM_StartPoint",
-            "MenuText": QT_TRANSLATE_NOOP("PathOp", "Pick Start Point"),
-            "ToolTip": QT_TRANSLATE_NOOP("PathOp", "Pick Start Point"),
+            "MenuText": QT_TRANSLATE_NOOP("PathOp", "Start Point Selection"),
+            "ToolTip": QT_TRANSLATE_NOOP("PathOp", "Selects the start point"),
         }
 
     def IsActive(self):
@@ -1303,12 +1306,18 @@ class CommandSetStartPoint:
         return obj and hasattr(obj, "StartPoint")
 
     def setpoint(self, point, o):
-        obj = FreeCADGui.Selection.getSelection()[0]
+        FreeCADGui.Snapper.grid.off()
+        obj = self.obj
         obj.StartPoint.x = point.x
         obj.StartPoint.y = point.y
         obj.StartPoint.z = obj.ClearanceHeight.Value
+        obj.UseStartPoint = True
+        obj.recompute()
+        textPoint = f"{obj.StartPoint.x:.2f}, {obj.StartPoint.y:.2f}, {obj.StartPoint.z:.2f}"
+        print(f"Set start point for operation {obj.Label} >>> {textPoint}")
 
     def Activated(self):
+        self.obj = FreeCADGui.Selection.getSelection()[0]
         if not hasattr(FreeCADGui, "Snapper"):
             import DraftTools
         FreeCADGui.Snapper.getPoint(callback=self.setpoint)
@@ -1407,4 +1416,4 @@ def SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, set
 
 FreeCADGui.addCommand("CAM_SetStartPoint", CommandSetStartPoint())
 
-FreeCAD.Console.PrintLog("Loading PathOpGui... done\n")
+FreeCAD.Console.PrintLog("Loading PathOpGui… done\n")

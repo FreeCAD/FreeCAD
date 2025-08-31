@@ -88,7 +88,7 @@ AutoTransaction::~AutoTransaction()
             app.closeActiveTransaction();
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         catch (...) {
         }
@@ -241,11 +241,11 @@ TransactionLocker::~TransactionLocker()
             return;
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         catch (Py::Exception&) {
             Base::PyException e;
-            e.ReportException();
+            e.reportException();
         }
         catch (std::exception& e) {
             FC_ERR(e.what());

@@ -33,6 +33,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
+#include <Gui/Tools.h>
 #include <Mod/PartDesign/App/FeatureLoft.h>
 
 #include "ui_TaskLoftParameters.h"
@@ -47,7 +48,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskLoftParameters */
 
 TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(LoftView, parent, "PartDesign_AdditiveLoft", tr("Loft parameters"))
+    : TaskSketchBasedParameters(LoftView, parent, "PartDesign_AdditiveLoft", tr("Loft Parameters"))
     , ui(new Ui_TaskLoftParameters)
 {
     // we need a separate container widget to add all controls to
@@ -72,15 +73,10 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        remove->setShortcut(QKeySequence(shortcut));
-    }
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    remove->setShortcut(Gui::QtTools::deleteKeySequence());
+
     // display shortcut behind the context menu entry
     remove->setShortcutVisibleInContextMenu(true);
-#endif
     ui->listWidgetReferences->addAction(remove);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
     connect(remove, &QAction::triggered, this, &TaskLoftParameters::onDeleteSection);
@@ -214,11 +210,11 @@ bool TaskLoftParameters::referenceSelected(const Gui::SelectionChanges& msg) con
             loft->Profile.setValue(obj, {msg.pSubName});
             return true;
         }
-        else if (selectionMode == refAdd || selectionMode == refRemove) {
+
+        if (selectionMode == refAdd || selectionMode == refRemove) {
             // now check the sections
             std::vector<App::DocumentObject*> refs = loft->Sections.getValues();
-            std::vector<App::DocumentObject*>::iterator f =
-                std::find(refs.begin(), refs.end(), obj);
+            const auto f = std::ranges::find(refs, obj);
 
             if (selectionMode == refAdd) {
                 if (f != refs.end()) {
@@ -266,12 +262,10 @@ void TaskLoftParameters::onDeleteSection()
         delete item;
 
         // search inside the list of sections
-        if (auto loft = getObject<PartDesign::Loft>()) {
+        if (const auto loft = getObject<PartDesign::Loft>()) {
             std::vector<App::DocumentObject*> refs = loft->Sections.getValues();
             App::DocumentObject* obj = loft->getDocument()->getObject(data.constData());
-            std::vector<App::DocumentObject*>::iterator f =
-                std::find(refs.begin(), refs.end(), obj);
-            if (f != refs.end()) {
+            if (const auto f = std::ranges::find(refs, obj); f != refs.end()) {
                 loft->Sections.removeValue(obj);
 
                 recomputeFeature();
@@ -387,6 +381,7 @@ TaskDlgLoftParameters::TaskDlgLoftParameters(ViewProviderLoft* LoftView, bool ne
     parameter = new TaskLoftParameters(LoftView, newObj);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 TaskDlgLoftParameters::~TaskDlgLoftParameters() = default;

@@ -1,33 +1,35 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """This module contains FreeCAD commands for the BIM workbench"""
 
-import os
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 if FreeCAD.GuiUp:
@@ -100,8 +102,8 @@ class BIM_Material:
             searchLayout = QtGui.QHBoxLayout()
             searchLayout.setSpacing(2)
             searchBox = MatLineEdit(self.dlg)
-            searchBox.setPlaceholderText(translate("BIM", "Search..."))
-            searchBox.setToolTip(translate("BIM", "Searches object labels"))
+            searchBox.setPlaceholderText(translate("BIM", "Search Objects"))
+            searchBox.setToolTip(translate("BIM", "Searches for objects in the tree"))
             self.dlg.searchBox = searchBox
             searchLayout.addWidget(searchBox)
             searchBox.textChanged.connect(self.onSearch)
@@ -121,41 +123,50 @@ class BIM_Material:
             buttonClear.clicked.connect(self.onClearSearch)
             lay.addLayout(searchLayout)
 
+            createButtonsLayoutBox = QtGui.QGroupBox(
+                translate("BIM", " Material Operations"), self.dlg
+            )
+            createButtonsLayoutBox.setObjectName("matOpsGrpBox")
+            createButtonsLayout = QtGui.QGridLayout()
+
             # create
-            createLayout = QtGui.QHBoxLayout()
             buttonCreate = QtGui.QPushButton(
-                translate("BIM", "Create new material"), self.dlg
+                translate("BIM", "New Material"), self.dlg
             )
             buttonCreate.setIcon(QtGui.QIcon(":/icons/Arch_Material.svg"))
-            createLayout.addWidget(buttonCreate)
+            createButtonsLayout.addWidget(buttonCreate, 0, 0)
             buttonCreate.clicked.connect(self.onCreate)
 
             # create multi
             buttonMulti = QtGui.QPushButton(
-                translate("BIM", "Create new multi-material"), self.dlg
+                translate("BIM", "Create new Multi-Material"), self.dlg
             )
             buttonMulti.setIcon(QtGui.QIcon(":/icons/Arch_Material_Multi.svg"))
-            createLayout.addWidget(buttonMulti)
+            createButtonsLayout.addWidget(buttonMulti, 0, 1)
             buttonMulti.clicked.connect(self.onMulti)
-            lay.addLayout(createLayout)
 
             # merge dupes
             opsLayout = QtGui.QHBoxLayout()
             buttonMergeDupes = QtGui.QPushButton(
-                translate("BIM", "Merge duplicates"), self.dlg
+                translate("BIM", "Merge Duplicates"), self.dlg
             )
             buttonMergeDupes.setIcon(QtGui.QIcon(":/icons/view-refresh.svg"))
-            opsLayout.addWidget(buttonMergeDupes)
+            createButtonsLayout.addWidget(buttonMergeDupes, 1, 0)
+            self.dlg.buttonMergeDupes = buttonMergeDupes
             buttonMergeDupes.clicked.connect(self.onMergeDupes)
+            if len(self.dlg.materials) < 2:
+                buttonMergeDupes.setEnabled(False)
 
             # delete unused
             buttonDeleteUnused = QtGui.QPushButton(
-                translate("BIM", "Delete unused"), self.dlg
+                translate("BIM", "Delete Unused"), self.dlg
             )
             buttonDeleteUnused.setIcon(QtGui.QIcon(":/icons/delete.svg"))
-            opsLayout.addWidget(buttonDeleteUnused)
+            createButtonsLayout.addWidget(buttonDeleteUnused, 1, 1)
             buttonDeleteUnused.clicked.connect(self.onDeleteUnused)
-            lay.addLayout(opsLayout)
+
+            createButtonsLayoutBox.setLayout(createButtonsLayout)
+            lay.addWidget(createButtonsLayoutBox)
 
             # add standard buttons
             buttonBox = QtGui.QDialogButtonBox(self.dlg)
@@ -173,7 +184,7 @@ class BIM_Material:
             context1.triggered.connect(self.onStartRename)
             context2 = self.contextMenu.addAction(translate("BIM", "Duplicate"))
             context2.triggered.connect(self.onDuplicate)
-            context3 = self.contextMenu.addAction(translate("BIM", "Merge to..."))
+            context3 = self.contextMenu.addAction(translate("BIM", "Merge To…"))
             context3.triggered.connect(self.onMergeTo)
             context4 = self.contextMenu.addAction(translate("BIM", "Delete"))
             context4.triggered.connect(self.onDelete)
@@ -202,20 +213,15 @@ class BIM_Material:
             first = True
             for mat in self.dlg.materials:
                 orig = None
-                for om in mats:
-                    if om.Label == mat.Label:
-                        orig = om
-                        break
-                else:
-                    if (
-                        mat.Label[-1].isdigit()
-                        and mat.Label[-2].isdigit()
-                        and mat.Label[-3].isdigit()
-                    ):
-                        for om in self.dlg.materials:
-                            if om.Label == mat.Label[:-3].strip():
-                                orig = om
-                                break
+                if (
+                    mat.Label[-1].isdigit()
+                    and mat.Label[-2].isdigit()
+                    and mat.Label[-3].isdigit()
+                ):
+                    for om in self.dlg.materials:
+                        if om.Label == mat.Label[:-3].strip():
+                            orig = om
+                            break
                 if orig:
                     for par in mat.InList:
                         for prop in par.PropertiesList:
@@ -516,6 +522,9 @@ class BIM_Material:
                     i.setFlags(i.flags() | QtCore.Qt.ItemIsEditable)
                     if o.Name == name:
                         self.dlg.matList.setCurrentItem(i)
+            if hasattr(self.dlg, "buttonMergeDupes"):
+                hasMultipleMaterials = len(self.dlg.materials) > 1
+                self.dlg.buttonMergeDupes.setEnabled(hasMultipleMaterials)
 
     def createIcon(self, obj):
         from PySide import QtCore, QtGui
@@ -620,7 +629,7 @@ class Arch_MaterialToolsCommand:
     def GetCommands(self):
         return tuple(['Arch_Material','Arch_MultiMaterial'])
     def GetResources(self):
-        return { 'MenuText': QT_TRANSLATE_NOOP("Arch_MaterialTools",'Material tools'),
+        return { 'MenuText': QT_TRANSLATE_NOOP("Arch_MaterialTools",'Material Tools'),
                  'ToolTip': QT_TRANSLATE_NOOP("Arch_MaterialTools",'Material tools')
                }
     def IsActive(self):

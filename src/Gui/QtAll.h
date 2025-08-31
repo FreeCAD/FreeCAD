@@ -87,6 +87,7 @@
 #include <QOpenGLDebugMessage>
 #include <QOpenGLFunctions>
 #include <QOpenGLTexture>
+#include <QOpenGLWidget>
 #include <QPaintEngine>
 #include <QPainter>
 #include <QPainterPath>

@@ -29,6 +29,7 @@
 #include <QContextMenuEvent>
 #include <QLabel>
 #include <QMouseEvent>
+#include <QOpenGLWidget>
 #include <QPaintEvent>
 #include <QPainter>
 #include <QScrollBar>
@@ -59,6 +60,7 @@
 #include "QGVNavStyleOCC.h"
 #include "QGVNavStyleOpenSCAD.h"
 #include "QGVNavStyleRevit.h"
+#include "QGVNavStyleSolidWorks.h"
 #include "QGVNavStyleTinkerCAD.h"
 #include "QGVNavStyleTouchpad.h"
 #include "QGVPage.h"
@@ -166,7 +168,7 @@ public:
 };
 
 QGVPage::QGVPage(ViewProviderPage* vpPage, QGSPage* scenePage, QWidget* parent)
-    : QGraphicsView(parent), m_renderer(Native), drawBkg(true), m_vpPage(nullptr),
+    : QGraphicsView(parent), m_renderer(RendererType::Native), drawBkg(true), m_vpPage(nullptr),
       m_scene(scenePage), balloonPlacing(false), m_showGrid(false),
       m_navStyle(nullptr), d(new Private(this)), toolHandler(nullptr)
 {
@@ -183,7 +185,7 @@ QGVPage::QGVPage(ViewProviderPage* vpPage, QGSPage* scenePage, QWidget* parent)
     m_saveContextEvent = nullptr;
 
     setCacheMode(QGraphicsView::CacheBackground);
-    setRenderer(Native);
+    setRenderer(RendererType::Native);
     //    setRenderer(OpenGL);  //gives rotten quality, don't use this
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
@@ -231,7 +233,6 @@ void QGVPage::initNavigationStyle()
 
 void QGVPage::setNavigationStyle(std::string navParm)
 {
-    //    Base::Console().Message("QGVP::setNavigationStyle(%s)\n", navParm.c_str());
     if (m_navStyle) {
         delete m_navStyle;
     }
@@ -246,6 +247,7 @@ void QGVPage::setNavigationStyle(std::string navParm)
     std::size_t foundOCC = navParm.find("OpenCascade");
     std::size_t foundOpenSCAD = navParm.find("OpenSCAD");
     std::size_t foundRevit = navParm.find("Revit");
+    std::size_t foundSolidWorks = navParm.find("SolidWorks");
 
     if (foundBlender != std::string::npos) {
         m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleBlender(this));
@@ -277,6 +279,9 @@ void QGVPage::setNavigationStyle(std::string navParm)
     else if (foundRevit != std::string::npos) {
         m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleRevit(this));
     }
+    else if (foundSolidWorks != std::string::npos) {
+        m_navStyle = static_cast<QGVNavStyle*>(new QGVNavStyleSolidWorks(this));
+    }
     else {
         m_navStyle = new QGVNavStyle(this);
     }
@@ -303,15 +308,10 @@ void QGVPage::deactivateHandler()
 
 void QGVPage::startBalloonPlacing(DrawView* parent)
 {
-    //    Base::Console().Message("QGVP::startBalloonPlacing(%s)\n", parent->getNameInDocument());
     balloonPlacing = true;
     m_balloonParent = parent;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     activateCursor(
         QCursor(balloonCursor->pixmap(Qt::ReturnByValue), balloonHotspot.x(), balloonHotspot.y()));
-#else
-    activateCursor(QCursor(*balloonCursor->pixmap(), balloonHotspot.x(), balloonHotspot.y()));
-#endif
 }
 
 void QGVPage::cancelBalloonPlacing()
@@ -333,7 +333,6 @@ void QGVPage::drawBackground(QPainter* painter, const QRectF&)
     }
 
     if (!m_vpPage->getDrawPage()) {
-        //        Base::Console().Message("QGVP::drawBackground - no Page Feature!\n");
         return;
     }
 
@@ -369,7 +368,7 @@ void QGVPage::setRenderer(RendererType type)
 {
     m_renderer = type;
 
-    if (m_renderer == OpenGL) {
+    if (m_renderer == RendererType::OpenGL) {
 #ifndef QT_NO_OPENGL
         setViewport(new QOpenGLWidget);
         setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
@@ -392,7 +391,7 @@ void QGVPage::setHighQualityAntialiasing(bool highQualityAntialiasing)
 
 void QGVPage::paintEvent(QPaintEvent* event)
 {
-    if (m_renderer == Image) {
+    if (m_renderer == RendererType::Image) {
         if (m_image.size() != viewport()->size()) {
             m_image = QImage(viewport()->size(), QImage::Format_ARGB32_Premultiplied);
         }
@@ -553,34 +552,19 @@ TechDraw::DrawPage* QGVPage::getDrawPage() { return m_vpPage->getDrawPage(); }
 
 QColor QGVPage::getBackgroundColor()
 {
-    App::Color fcColor;
+    Base::Color fcColor;
     fcColor.setPackedValue(Preferences::getPreferenceGroup("Colors")->GetUnsigned("Background", 0x70707000));
     return fcColor.asValue<QColor>();
-}
-
-double QGVPage::getDevicePixelRatio() const
-{
-    for (Gui::MDIView* view : m_vpPage->getDocument()->getMDIViews()) {
-        if (view->isDerivedFrom<Gui::View3DInventor>()) {
-            return static_cast<Gui::View3DInventor*>(view)->getViewer()->devicePixelRatio();
-        }
-    }
-
-    return 1.0;
 }
 
 QPixmap QGVPage::prepareCursorPixmap(const char* iconName, QPoint& hotspot)
 {
 
     QPointF floatHotspot(hotspot);
-    double pixelRatio = getDevicePixelRatio();
 
-    // Due to impossibility to query cursor size via Qt API, we stick to (32x32)*device_pixel_ratio
+    // Due to impossibility to query cursor size via Qt API, we stick to (32x32)
     // as FreeCAD Wiki suggests - see https://wiki.freecad.org/HiDPI_support#Custom_cursor_size
-    double cursorSize = 32.0 * pixelRatio;
-
-    QPixmap pixmap = Gui::BitmapFactory().pixmapFromSvg(iconName, QSizeF(cursorSize, cursorSize));
-    pixmap.setDevicePixelRatio(pixelRatio);
+    QPixmap pixmap = Gui::BitmapFactory().pixmapFromSvg(iconName, QSizeF(32, 32));
 
     // The default (and here expected) SVG cursor graphics size is 64x64 pixels, thus we must adjust
     // the 64x64 based hotspot position for our 32x32 based cursor pixmaps accordingly
@@ -591,7 +575,7 @@ QPixmap QGVPage::prepareCursorPixmap(const char* iconName, QPoint& hotspot)
     // therefore we must take care of the transformation ourselves...
     // Refer to QTBUG-68571 - https://bugreports.qt.io/browse/QTBUG-68571
     if (qGuiApp->platformName() == QLatin1String("xcb")) {
-        floatHotspot *= pixelRatio;
+        floatHotspot *= Gui::BitmapFactoryInst::getMaximumDPR();
     }
 #endif
 
@@ -691,7 +675,7 @@ static QCursor createCursor(QBitmap &bitmap, QBitmap &mask, int hotX, int hotY, 
 #else
     Q_UNUSED(dpr)
 #endif
-#if defined(Q_OS_LINUX) && QT_VERSION < QT_VERSION_CHECK(6,6,0) && QT_VERSION >= QT_VERSION_CHECK(5,13,0)
+#if defined(Q_OS_LINUX) && QT_VERSION < QT_VERSION_CHECK(6,6,0)
     if (qGuiApp->platformName() == QLatin1String("wayland")) {
         QImage img = bitmap.toImage();
         img.convertTo(QImage::Format_ARGB32);

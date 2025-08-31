@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-//! CommandHelpers is a collection of methods for common actions in commands
 
 
 #ifndef COMMANDHELPERS_H
@@ -46,8 +45,10 @@ namespace TechDraw {
 class DrawView;
 class DrawViewPart;
 
+/**
+ * CommandHelpers is a collection of methods for common actions in commands.
+ */
 namespace CommandHelpers {
-
 TechDraw::DrawView* firstViewInSelection(Gui::Command* cmd);
 TechDraw::DrawView* firstNonSpreadsheetInSelection(Gui::Command* cmd);
 
@@ -55,14 +56,8 @@ std::vector<std::string> getSelectedSubElements(Gui::Command* cmd,
                                                 TechDraw::DrawViewPart* &dvp,
                                                 std::string subType = "Edge");
 
-void getSelectedShapes(Gui::Command* cmd,
-                       std::vector<App::DocumentObject*>& shapes,
-                       std::vector<App::DocumentObject*>& xShapes,
-                       App::DocumentObject* faceObj,
-                       std::string& faceName);
 
 std::pair<App::DocumentObject*, std::string> faceFromSelection();
-std::pair<Base::Vector3d, Base::Vector3d> viewDirection();
 
 
 }   // end namespace CommandHelpers

@@ -5,11 +5,6 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
 )
 
 set(TechDrawLIBS
@@ -24,6 +19,7 @@ if (BUILD_IMPORT)
 endif ()
 
 include_directories(
+    SYSTEM
     ${QtConcurrent_INCLUDE_DIRS}
     ${QtCore_INCLUDE_DIR}
     ${QtGui_INCLUDE_DIR}
@@ -35,8 +31,6 @@ list(APPEND TechDrawLIBS
     ${QtCore_LIBRARIES}
     ${QtWidgets_LIBRARIES}
 )
-
-link_directories(${OCC_LIBRARY_DIR})
 
 generate_from_xml(DrawPagePy)
 generate_from_xml(DrawViewPy)
@@ -66,6 +60,34 @@ generate_from_xml(DrawTileWeldPy)
 generate_from_xml(DrawWeldSymbolPy)
 generate_from_xml(CosmeticExtensionPy)
 generate_from_xml(DrawBrokenViewPy)
+
+generate_from_py_(DrawHatchPy)
+generate_from_py_(DrawViewPy)
+generate_from_py_(DrawPagePy)
+generate_from_py_(DrawViewPartPy)
+generate_from_py_(DrawViewSymbolPy)
+generate_from_py_(DrawTemplatePy)
+generate_from_py_(DrawParametricTemplatePy)
+generate_from_py_(DrawSVGTemplatePy)
+generate_from_py_(DrawViewClipPy)
+generate_from_py_(DrawViewDimensionPy)
+generate_from_py_(DrawViewDimExtentPy)
+generate_from_py_(DrawGeomHatchPy)
+generate_from_py_(DrawViewCollectionPy)
+generate_from_py_(DrawProjGroupPy)
+generate_from_py_(DrawProjGroupItemPy)
+generate_from_py_(DrawViewAnnotationPy)
+generate_from_py_(DrawLeaderLinePy)
+generate_from_py_(DrawRichAnnoPy)
+generate_from_py_(GeomFormatPy)
+generate_from_py_(CenterLinePy)
+generate_from_py_(CosmeticEdgePy)
+generate_from_py_(CosmeticVertexPy)
+generate_from_py_(DrawTilePy)
+generate_from_py_(DrawTileWeldPy)
+generate_from_py_(DrawWeldSymbolPy)
+generate_from_py_(CosmeticExtensionPy)
+generate_from_py_(DrawBrokenViewPy)
 
 SET(Draw_SRCS
     DrawPage.cpp
@@ -173,6 +195,8 @@ SET(TechDraw_SRCS
     MattingPropEnum.h
     Preferences.cpp
     Preferences.h
+    Tag.cpp
+    Tag.h
     TechDrawExport.cpp
     TechDrawExport.h
     ProjectionAlgos.cpp

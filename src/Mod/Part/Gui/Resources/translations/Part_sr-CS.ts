@@ -49,7 +49,7 @@
       <location filename="../../AttacherTexts.cpp" line="328"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
-      <translation>Kupa</translation>
+      <translation>Konus</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="329"/>
@@ -115,13 +115,13 @@
       <location filename="../../AttacherTexts.cpp" line="341"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
-      <translation>Puno</translation>
+      <translation>Puno telo</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="342"/>
       <source>Wire</source>
       <comment>Attacher reference type</comment>
-      <translation>Žičani ram</translation>
+      <translation>Žičani okvir</translation>
     </message>
   </context>
   <context>
@@ -380,7 +380,7 @@
       <location filename="../../AttacherTexts.cpp" line="238"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Normalno na ivicu</translation>
+      <translation>Upravno na ivicu</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="239"/>
@@ -501,7 +501,7 @@
       <location filename="../../AttacherTexts.cpp" line="269"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linija normalna na površinu u tački.</translation>
+      <translation>Linija upravna na površinu u tački.</translation>
     </message>
   </context>
   <context>
@@ -570,7 +570,7 @@
       <location filename="../../AttacherTexts.cpp" line="145"/>
       <source>XY parallel to plane</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>XY paralena sa ravni</translation>
+      <translation>XY paralelna sa ravni</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="146"/>
@@ -606,7 +606,7 @@
       <location filename="../../AttacherTexts.cpp" line="154"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Normalno na ivicu</translation>
+      <translation>Upravno na ivicu</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="155"/>
@@ -662,7 +662,7 @@
       <location filename="../../AttacherTexts.cpp" line="170"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Ravan je normalna na ivicu, a Y osa je podudarna sa osom oskulatornog kruga. Teme može određivati gde.</translation>
+      <translation>Ravan je upravna na ivicu, a Y osa je podudarna sa osom oskulatornog kruga. Teme može određivati gde.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="172"/>
@@ -692,13 +692,13 @@
       <location filename="../../AttacherTexts.cpp" line="178"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Preklapanje</translation>
+      <translation>Savijanje</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="179"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</translation>
+      <translation>Specijalni režim za savijanje poliedara. Izaberi po sledećem redosledu 4 ivice koje dele zajedničku tačku: slobodnu ivicu, savijanja, ivicu savijanja, drugu ivicu savijanja, drugu slobodnu ivicu savijanja. Ravan će biti poravnata sa savijanjem prve ivice.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="181"/>
@@ -779,7 +779,7 @@
       <location filename="../../AttacherTexts.cpp" line="67"/>
       <source>XY parallel to plane</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>XY paralena sa ravni</translation>
+      <translation>XY paralelna sa ravni</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="68"/>
@@ -856,12 +856,6 @@
       <translation>Koncentrično</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="89"/>
-      <source>Align XY plane to osculating circle of an edge. Optional vertex link defines where.</source>
-      <comment>Attachment3D mode tooltip</comment>
-      <translation>Poravnaj ravan XY sa oskulatornim krugom ivice. Teme može određivati gde.</translation>
-    </message>
-    <message>
       <location filename="../../AttacherTexts.cpp" line="91"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
@@ -874,40 +868,46 @@
       <translation>Poravnaj Y' osu da bude podudarna sa osom oskulatornog kruga ivice. Teme može određivati gde.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="94"/>
-      <source>XY plane by 3 points</source>
-      <comment>Attachment3D mode caption</comment>
-      <translation>XY ravan pomoću 3 tačke</translation>
-    </message>
-    <message>
-      <location filename="../../AttacherTexts.cpp" line="95"/>
-      <source>Align XY plane to pass through three vertices.</source>
-      <comment>Attachment3D mode tooltip</comment>
-      <translation>Poravnaj XY ravan tako da prođe kroz tri temena.</translation>
-    </message>
-    <message>
-      <location filename="../../AttacherTexts.cpp" line="97"/>
-      <source>XZ plane by 3 points</source>
-      <comment>Attachment3D mode caption</comment>
-      <translation>XZ ravan pomoću 3 tačke</translation>
-    </message>
-    <message>
-      <location filename="../../AttacherTexts.cpp" line="98"/>
-      <source>Align XZ plane to pass through 3 points; X axis will pass through two first points.</source>
-      <comment>Attachment3D mode tooltip</comment>
-      <translation>Poravnaj XZ ravan tako da prođe kroz tri temena; X osa će proći kroz prve dve tačke.</translation>
-    </message>
-    <message>
       <location filename="../../AttacherTexts.cpp" line="100"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Preklapanje</translation>
+      <translation>Savijanje</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="89"/>
+      <source>Align XY-plane to osculating circle of an edge. Optional vertex link defines where.</source>
+      <comment>Attachment3D mode tooltip</comment>
+      <translation type="unfinished">Align XY-plane to osculating circle of an edge. Optional vertex link defines where.</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="94"/>
+      <source>XY-plane by 3 points</source>
+      <comment>Attachment3D mode caption</comment>
+      <translation type="unfinished">XY-plane by 3 points</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="95"/>
+      <source>Align XY-plane to pass through three vertices.</source>
+      <comment>Attachment3D mode tooltip</comment>
+      <translation type="unfinished">Align XY-plane to pass through three vertices.</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="97"/>
+      <source>XZ-plane by 3 points</source>
+      <comment>Attachment3D mode caption</comment>
+      <translation type="unfinished">XZ-plane by 3 points</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="98"/>
+      <source>Align XZ-plane to pass through 3 points; X axis will pass through two first points.</source>
+      <comment>Attachment3D mode tooltip</comment>
+      <translation type="unfinished">Align XZ-plane to pass through 3 points; X axis will pass through two first points.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="101"/>
-      <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</source>
+      <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY-plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</translation>
+      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY-plane will be aligned to folding the first edge.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="103"/>
@@ -1060,19 +1060,19 @@
     <name>BlockDefinition</name>
     <message>
       <location filename="../../DlgBlock.ui" line="14"/>
-      <source>Block definition</source>
-      <translation>Definicija bloka</translation>
+      <source>Block Definition</source>
+      <translation type="unfinished">Block Definition</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="20"/>
-      <source>First limit</source>
-      <translation>Prvo ograničenje</translation>
+      <source>First Limit</source>
+      <translation type="unfinished">First Limit</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="40"/>
       <location filename="../../DlgBlock.ui" line="201"/>
-      <source>Type:</source>
-      <translation>Vrsta:</translation>
+      <source>Type</source>
+      <translation>Vrsta</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="48"/>
@@ -1107,20 +1107,30 @@
     <message>
       <location filename="../../DlgBlock.ui" line="76"/>
       <location filename="../../DlgBlock.ui" line="237"/>
-      <source>Length:</source>
-      <translation type="unfinished">Length:</translation>
+      <source>Length</source>
+      <translation>Dužina</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBlock.ui" line="93"/>
+      <location filename="../../DlgBlock.ui" line="254"/>
+      <source>Limit</source>
+      <translation type="unfinished">Limit</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBlock.ui" line="135"/>
+      <source>Selection</source>
+      <translation>Izbor</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBlock.ui" line="181"/>
+      <source>Second Limit</source>
+      <translation type="unfinished">Second Limit</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="83"/>
       <location filename="../../DlgBlock.ui" line="244"/>
       <source>mm</source>
       <translation>mm</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBlock.ui" line="93"/>
-      <location filename="../../DlgBlock.ui" line="254"/>
-      <source>Limit:</source>
-      <translation>Granica:</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="103"/>
@@ -1136,11 +1146,6 @@
       <translation>Presek</translation>
     </message>
     <message>
-      <location filename="../../DlgBlock.ui" line="135"/>
-      <source>Selection:</source>
-      <translation>Izbor:</translation>
-    </message>
-    <message>
       <location filename="../../DlgBlock.ui" line="162"/>
       <source>Reverse</source>
       <translation>Obrnuto</translation>
@@ -1149,11 +1154,6 @@
       <location filename="../../DlgBlock.ui" line="169"/>
       <source>Both sides</source>
       <translation>Obe strane</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBlock.ui" line="181"/>
-      <source>Second limit</source>
-      <translation>Druga granica</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="276"/>
@@ -1174,14 +1174,22 @@
   <context>
     <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2125"/>
+      <location filename="../../Command.cpp" line="2133"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2126"/>
-      <location filename="../../Command.cpp" line="2127"/>
-      <location filename="../../Command.cpp" line="2129"/>
+      <location filename="../../Command.cpp" line="2134"/>
+      <source>Box Selection</source>
+      <translation type="unfinished">Box Selection</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2135"/>
+      <source>Selects elements in the 3D view using a box selection</source>
+      <translation type="unfinished">Selects elements in the 3D view using a box selection</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2137"/>
       <source>Box selection</source>
       <translation>Pravougaoni izbor</translation>
     </message>
@@ -1189,55 +1197,55 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2053"/>
+      <location filename="../../Command.cpp" line="2063"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2054"/>
+      <location filename="../../Command.cpp" line="2064"/>
       <source>Check Geometry</source>
       <translation>Proveri Geometriju</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2055"/>
-      <source>Analyzes Geometry For Errors</source>
-      <translation>Analizira geometriju u potrazi za greškama</translation>
+      <location filename="../../Command.cpp" line="2065"/>
+      <source>Analyzes the selected shapes for errors</source>
+      <translation type="unfinished">Analyzes the selected shapes for errors</translation>
     </message>
   </context>
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2086"/>
+      <location filename="../../Command.cpp" line="2096"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2087"/>
-      <source>Appearance per &amp;face</source>
-      <translation type="unfinished">Appearance per &amp;face</translation>
+      <location filename="../../Command.cpp" line="2097"/>
+      <source>Appearance per &amp;Face</source>
+      <translation type="unfinished">Appearance per &amp;Face</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2088"/>
-      <source>Set the appearance of each individual face of the selected object.</source>
-      <translation type="unfinished">Set the appearance of each individual face of the selected object.</translation>
+      <location filename="../../Command.cpp" line="2098"/>
+      <source>Sets the appearance of individual faces of the selected object</source>
+      <translation type="unfinished">Sets the appearance of individual faces of the selected object</translation>
     </message>
   </context>
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1236"/>
+      <location filename="../../Command.cpp" line="1235"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1236"/>
+      <source>Boolean Operation</source>
+      <translation>Bulove operacije</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1237"/>
-      <source>Boolean...</source>
-      <translation>Bulove operacije...</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1238"/>
-      <source>Run a boolean operation with two shapes selected</source>
-      <translation>Izvrši bulovu operaciju ca dva izabrana oblika</translation>
+      <source>Applies a boolean operations with the selected shapes</source>
+      <translation type="unfinished">Applies a boolean operations with the selected shapes</translation>
     </message>
   </context>
   <context>
@@ -1245,7 +1253,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="106"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="107"/>
@@ -1256,8 +1264,8 @@
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="108"/>
-      <source>Create a cube solid</source>
-      <translation>Napravi puno telo u obliku kvadra</translation>
+      <source>Creates a solid cube</source>
+      <translation type="unfinished">Creates a solid cube</translation>
     </message>
   </context>
   <context>
@@ -1265,17 +1273,17 @@
     <message>
       <location filename="../../Command.cpp" line="132"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="133"/>
-      <source>Box fix 1</source>
-      <translation type="unfinished">Box fix 1</translation>
+      <source>Box Fix 1</source>
+      <translation type="unfinished">Box Fix 1</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="134"/>
-      <source>Create a box solid without dialog</source>
-      <translation>Napravi puno telo u obliku kvadra bez dijaloga</translation>
+      <source>Creates a solid box</source>
+      <translation type="unfinished">Creates a solid box</translation>
     </message>
   </context>
   <context>
@@ -1283,30 +1291,30 @@
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
-      <source>Box fix 2</source>
-      <translation type="unfinished">Box fix 2</translation>
+      <source>Box Fix 2</source>
+      <translation type="unfinished">Box Fix 2</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="175"/>
-      <source>Create a box solid without dialog</source>
-      <translation>Napravi puno telo u obliku kvadra bez dijaloga</translation>
+      <source>Creates a solid box</source>
+      <translation type="unfinished">Creates a solid box</translation>
     </message>
   </context>
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1527"/>
+      <location filename="../../Command.cpp" line="1526"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1528"/>
-      <source>Shape builder...</source>
-      <translation>Graditelj oblika...</translation>
+      <location filename="../../Command.cpp" line="1527"/>
+      <source>Shape Builder</source>
+      <translation type="unfinished">Shape Builder</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1529"/>
@@ -1317,89 +1325,89 @@
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1432"/>
+      <location filename="../../Command.cpp" line="1431"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1432"/>
+      <source>Chamfer</source>
+      <translation>Obaranje ivica</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1433"/>
-      <source>Chamfer...</source>
-      <translation>Obaranje ivica...</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1434"/>
-      <source>Chamfer the selected edges of a shape</source>
-      <translation>Obori izabrane ivice oblika</translation>
+      <source>Chamfers the selected edges of a shape</source>
+      <translation type="unfinished">Chamfers the selected edges of a shape</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCommon</name>
     <message>
-      <location filename="../../Command.cpp" line="360"/>
+      <location filename="../../Command.cpp" line="359"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="361"/>
+      <location filename="../../Command.cpp" line="360"/>
       <source>Intersection</source>
       <translation>Presek</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="362"/>
-      <source>Make an intersection of two shapes</source>
-      <translation>Napravi presek dva oblika</translation>
+      <location filename="../../Command.cpp" line="361"/>
+      <source>Intersects the selected shapes</source>
+      <translation type="unfinished">Intersects the selected shapes</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCompCompoundTools</name>
     <message>
-      <location filename="../../Command.cpp" line="724"/>
+      <location filename="../../Command.cpp" line="723"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="724"/>
+      <source>Compound Tools</source>
+      <translation type="unfinished">Compound Tools</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="725"/>
-      <source>Compound tools</source>
-      <translation>Alatke za sastavljanje</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="726"/>
-      <source>Compound tools: working with lists of shapes.</source>
-      <translation>Alatke za sastavljanje: rade sa listama oblika.</translation>
+      <source>Compound tools for working with multiple shapes</source>
+      <translation type="unfinished">Compound tools for working with multiple shapes</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCompJoinFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="500"/>
+      <location filename="../../Command.cpp" line="497"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="501"/>
-      <source>Join objects...</source>
-      <translation>Spoji objekte...</translation>
+      <location filename="../../Command.cpp" line="498"/>
+      <source>Join Shapes</source>
+      <translation type="unfinished">Join Shapes</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="502"/>
-      <source>Join walled objects</source>
-      <translation>Spoji objekte sa zidovima</translation>
+      <location filename="../../Command.cpp" line="500"/>
+      <source>Joins the selected walled shapes</source>
+      <translation type="unfinished">Joins the selected walled shapes</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1726"/>
+      <location filename="../../Command.cpp" line="1723"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1727"/>
-      <source>Offset:</source>
-      <translation>Odmak:</translation>
+      <location filename="../../Command.cpp" line="1724"/>
+      <source>Offset</source>
+      <translation>Odmak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1728"/>
+      <location filename="../../Command.cpp" line="1725"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation>Alati za odmicanje oblika (konstruisanje paralelnih oblika)</translation>
     </message>
@@ -1407,37 +1415,37 @@
   <context>
     <name>CmdPartCompSplitFeatures</name>
     <message>
-      <location filename="../../Command.cpp" line="606"/>
+      <location filename="../../Command.cpp" line="604"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="605"/>
+      <source>Split Shapes</source>
+      <translation type="unfinished">Split Shapes</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="607"/>
-      <source>Split objects...</source>
-      <translation>Podeli objekte...</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="608"/>
-      <source>Shape splitting and Compsolid creation tools.</source>
-      <translation>Alati za podelu objekata i pravljenje sastavljenih objekata.</translation>
+      <source>Shape splitting and compsolid creation tools</source>
+      <translation type="unfinished">Shape splitting and compsolid creation tools</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="831"/>
+      <location filename="../../Command.cpp" line="830"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="831"/>
+      <source>Compound</source>
+      <translation>Sastavljeni objekat</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="832"/>
-      <source>Make compound</source>
-      <translation>Napravi sastavljeni objekat</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="833"/>
-      <source>Make a compound of several shapes</source>
-      <translation>Napravi sastavljeni objekat od nekoliko oblika</translation>
+      <source>Compounds the selected shapes</source>
+      <translation type="unfinished">Compounds the selected shapes</translation>
     </message>
   </context>
   <context>
@@ -1445,7 +1453,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="190"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="191"/>
@@ -1456,26 +1464,26 @@
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="192"/>
-      <source>Create a cone solid</source>
-      <translation>Napravi kupasto puno telo</translation>
+      <source>Creates a solid cone</source>
+      <translation type="unfinished">Creates a solid cone</translation>
     </message>
   </context>
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1488"/>
+      <location filename="../../Command.cpp" line="1487"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Deo</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1488"/>
+      <source>Cross-Sections</source>
+      <translation type="unfinished">Cross-Sections</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1489"/>
-      <source>Cross-sections...</source>
-      <translation>Poprečni preseci...</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1490"/>
-      <source>Cross-sections</source>
-      <translation>Poprečni preseci</translation>
+      <source>Creates cross-sections</source>
+      <translation type="unfinished">Creates cross-sections</translation>
     </message>
   </context>
   <context>
@@ -1483,7 +1491,7 @@
     <message>
       <location filename="../../Command.cpp" line="301"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="302"/>
@@ -1492,8 +1500,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="303"/>
-      <source>Make a cut of two shapes</source>
-      <translation>Isecite jedan oblik sa drugim</translation>
+      <source>Cuts 2 selected shapes</source>
+      <translation type="unfinished">Cuts 2 selected shapes</translation>
     </message>
   </context>
   <context>
@@ -1501,7 +1509,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="64"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="65"/>
@@ -1512,60 +1520,60 @@
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="66"/>
-      <source>Create a Cylinder</source>
-      <translation>Napravi valjak</translation>
+      <source>Creates a solid cylinder</source>
+      <translation type="unfinished">Creates a solid cylinder</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDefeaturing</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="412"/>
+      <location filename="../../CommandSimple.cpp" line="410"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="413"/>
+      <location filename="../../CommandSimple.cpp" line="411"/>
       <source>Defeaturing</source>
       <translation>Odstrani tipske oblike</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="414"/>
-      <source>Remove feature from a shape</source>
-      <translation>Ukloni izabrane tipske oblike</translation>
+      <location filename="../../CommandSimple.cpp" line="412"/>
+      <source>Removes the selected features from a shape</source>
+      <translation type="unfinished">Removes the selected features from a shape</translation>
     </message>
   </context>
   <context>
     <name>CmdPartElementCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="324"/>
+      <location filename="../../CommandSimple.cpp" line="322"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="325"/>
-      <source>Create shape element copy</source>
-      <translation>Napravi kopiju elemenata oblika</translation>
+      <location filename="../../CommandSimple.cpp" line="323"/>
+      <source>Shape Element Copy</source>
+      <translation type="unfinished">Shape Element Copy</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="326"/>
-      <source>Create a non-parametric copy of the selected shape element</source>
-      <translation>Napravi neparametarsku kopiju podelemenata oblika kao što su tačka, ivica ili stranica</translation>
+      <location filename="../../CommandSimple.cpp" line="324"/>
+      <source>Creates a non-parametric copy of the selected shape element</source>
+      <translation type="unfinished">Creates a non-parametric copy of the selected shape element</translation>
     </message>
   </context>
   <context>
     <name>CmdPartExport</name>
     <message>
-      <location filename="../../Command.cpp" line="999"/>
+      <location filename="../../Command.cpp" line="997"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="998"/>
+      <source>Export CAD File</source>
+      <translation>Izvezi CAD datoteku</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1000"/>
-      <source>Export CAD file...</source>
-      <translation>Izvezi CAD datoteku...</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1001"/>
       <source>Exports to a CAD file</source>
       <translation>Izvezi u CAD datoteku</translation>
     </message>
@@ -1573,71 +1581,71 @@
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1267"/>
+      <location filename="../../Command.cpp" line="1266"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1267"/>
+      <source>Extrude</source>
+      <translation>Izvlačenje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1268"/>
-      <source>Extrude...</source>
-      <translation>Izvuci</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1269"/>
-      <source>Extrude a selected sketch</source>
-      <translation>Izvuci izabranu skicu</translation>
+      <source>Extrudes the selected sketch or profile</source>
+      <translation>Izvuci izabranu skicu ili profil</translation>
     </message>
   </context>
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1404"/>
+      <location filename="../../Command.cpp" line="1403"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1404"/>
+      <source>Fillet</source>
+      <translation>Zaobljenje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
-      <source>Fillet...</source>
-      <translation>Zaobli</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1406"/>
-      <source>Fillet the selected edges of a shape</source>
+      <source>Fillets the selected edges of a shape</source>
       <translation>Zaobli izabrane ivice oblika</translation>
     </message>
   </context>
   <context>
     <name>CmdPartFuse</name>
     <message>
-      <location filename="../../Command.cpp" line="420"/>
+      <location filename="../../Command.cpp" line="418"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="421"/>
+      <location filename="../../Command.cpp" line="419"/>
       <source>Union</source>
       <translation>Unija</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="422"/>
-      <source>Make a union of several shapes</source>
-      <translation>Napravi uniju od više oblika</translation>
+      <location filename="../../Command.cpp" line="420"/>
+      <source>Unites the selected shapes</source>
+      <translation>Sjedini izabrane oblike</translation>
     </message>
   </context>
   <context>
     <name>CmdPartImport</name>
     <message>
-      <location filename="../../Command.cpp" line="936"/>
+      <location filename="../../Command.cpp" line="933"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="937"/>
-      <source>Import CAD file...</source>
-      <translation>Uvezi CAD datoteku...</translation>
+      <location filename="../../Command.cpp" line="934"/>
+      <source>Import CAD File</source>
+      <translation>Uvezi CAD datoteku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="938"/>
+      <location filename="../../Command.cpp" line="936"/>
       <source>Imports a CAD file</source>
       <translation>Uvezi CAD datoteku</translation>
     </message>
@@ -1645,19 +1653,19 @@
   <context>
     <name>CmdPartImportCurveNet</name>
     <message>
-      <location filename="../../Command.cpp" line="1047"/>
+      <location filename="../../Command.cpp" line="1046"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1048"/>
-      <source>Import curve network...</source>
-      <translation>Uvezi mrežu krivih...</translation>
+      <location filename="../../Command.cpp" line="1047"/>
+      <source>Import Curve Network</source>
+      <translation type="unfinished">Import Curve Network</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1049"/>
-      <source>Import a curve network</source>
-      <translation>Uvezi mrežu krivih</translation>
+      <source>Imports a curve network</source>
+      <translation type="unfinished">Imports a curve network</translation>
     </message>
   </context>
   <context>
@@ -1665,35 +1673,35 @@
     <message>
       <location filename="../../Command.cpp" line="1556"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1557"/>
-      <source>Loft...</source>
-      <translation>Po presecima...</translation>
+      <source>Loft</source>
+      <translation>Po presecima</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1558"/>
-      <source>Utility to loft</source>
-      <translation>Napravi oblik pomoću dva preseka</translation>
+      <source>Lofts the selected profiles</source>
+      <translation type="unfinished">Lofts the selected profiles</translation>
     </message>
   </context>
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1324"/>
+      <location filename="../../Command.cpp" line="1323"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1324"/>
+      <source>Face From Wires</source>
+      <translation>Stranica pomoću ivica</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1325"/>
-      <source>Make face from wires</source>
-      <translation>Napravi stranicu od žičanih ivica</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1326"/>
-      <source>Make face from set of wires (e.g. from a sketch)</source>
-      <translation>Napravi stranice od žičanih ivica</translation>
+      <source>Creates a face from the selected wires (e.g. from a sketch)</source>
+      <translation>Napravi stranicu od izabranih žičanih elemenata ili skice</translation>
     </message>
   </context>
   <context>
@@ -1701,35 +1709,35 @@
     <message>
       <location filename="../../Command.cpp" line="1095"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1096"/>
-      <source>Convert to solid</source>
+      <source>Convert to Solid</source>
       <translation>Pretvori u puno telo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1097"/>
-      <source>Create solid from a shell or compound</source>
-      <translation>Napravi puno telo od ljuske ili sastavljenog objekta</translation>
+      <source>Converts the selected shell or compound to a solid</source>
+      <translation>Pretvori izabranu ljusku ili sastavljeni objekat u puno telo</translation>
     </message>
   </context>
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1460"/>
+      <location filename="../../Command.cpp" line="1459"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1461"/>
-      <source>Mirroring...</source>
+      <location filename="../../Command.cpp" line="1460"/>
+      <source>Mirror</source>
       <translation>Simetrično preslikaj</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1462"/>
-      <source>Mirroring a selected shape</source>
-      <translation>Simetrično preslikaj izabrani oblika</translation>
+      <location filename="../../Command.cpp" line="1461"/>
+      <source>Mirrors the selected shape</source>
+      <translation>Simetrično preslikaj izabrani oblik</translation>
     </message>
   </context>
   <context>
@@ -1737,35 +1745,35 @@
     <message>
       <location filename="../../Command.cpp" line="1614"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1615"/>
-      <source>3D Offset...</source>
-      <translation>3D odmak...</translation>
+      <source>3D Offset</source>
+      <translation>3D odmak</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1616"/>
-      <source>Utility to offset in 3D</source>
-      <translation>Alatka za 3D odmicanje</translation>
+      <source>Offsets shapes in 3D</source>
+      <translation>Odmakne oblik u 3D</translation>
     </message>
   </context>
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1671"/>
+      <location filename="../../Command.cpp" line="1669"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1672"/>
-      <source>2D Offset...</source>
-      <translation>2D odmak...</translation>
+      <location filename="../../Command.cpp" line="1670"/>
+      <source>2D Offset</source>
+      <translation>2D odmak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1673"/>
-      <source>Utility to offset planar shapes</source>
-      <translation>Alatka za odmicanje ravanskih oblika</translation>
+      <location filename="../../Command.cpp" line="1671"/>
+      <source>Offsets planar shapes in 2D</source>
+      <translation>Odmakne oblik u 2D</translation>
     </message>
   </context>
   <context>
@@ -1773,35 +1781,35 @@
     <message>
       <location filename="../../Command.cpp" line="86"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="87"/>
-      <source>Pick curve network</source>
-      <translation>Izaberi mrežu krivih</translation>
+      <source>Pick Curve Network</source>
+      <translation type="unfinished">Pick Curve Network</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="88"/>
-      <source>Pick a curve network</source>
-      <translation>Izaberi mrežu krivih</translation>
+      <source>Picks a curve network</source>
+      <translation type="unfinished">Picks a curve network</translation>
     </message>
   </context>
   <context>
     <name>CmdPartPointsFromMesh</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="134"/>
+      <location filename="../../CommandSimple.cpp" line="133"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSimple.cpp" line="134"/>
+      <source>Points From Shape</source>
+      <translation>Tačke na osnovu oblika</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
-      <source>Create points object from geometry</source>
-      <translation>Napravi tačkasti objekat od geometrije</translation>
-    </message>
-    <message>
-      <location filename="../../CommandSimple.cpp" line="136"/>
-      <source>Create selectable points object from selected geometric object</source>
-      <translation>Napravi objekat tačaka (koje se mogu birati) od izabranog geometrijskog objekta</translation>
+      <source>Creates distributed points from the selected shape</source>
+      <translation>Pretvori izabrani oblik u raspoređene tačke</translation>
     </message>
   </context>
   <context>
@@ -1809,38 +1817,38 @@
     <message>
       <location filename="../../Command.cpp" line="214"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
-      <source>Create primitives...</source>
-      <translation>Napravi primitive...</translation>
+      <source>Primitive</source>
+      <translation>Primitiv</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="216"/>
-      <source>Creation of parametrized geometric primitives</source>
-      <translation>Pravljenje parametarskih geometrijskih primitiva</translation>
+      <location filename="../../Command.cpp" line="217"/>
+      <source>Creates solid geometric primitives parametrically</source>
+      <translation>Napravi pune geometrijske parametarske primitive</translation>
     </message>
   </context>
   <context>
     <name>CmdPartProjectionOnSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2155"/>
+      <location filename="../../Command.cpp" line="2163"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2156"/>
-      <source>Create projection on surface...</source>
-      <translation>Projekcija na površinu...</translation>
+      <location filename="../../Command.cpp" line="2164"/>
+      <source>Project on Surface</source>
+      <translation>Projiciraj na površinu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2157"/>
-      <source>Project edges, wires, or faces of one object
-onto a face of another object.
+      <location filename="../../Command.cpp" line="2165"/>
+      <source>Projects edges, wires, or faces of one shape
+onto a face of another shape.
 The camera view determines the direction
-of projection.</source>
-      <translation>Projiciraj ivice, žičane ivice ili stranice jednog objekta
+of the projection.</source>
+      <translation>Projiciraj ivice, žičane elemente ili stranice jednog objekta
 na stranicu drugog objekta.
 Pogled kamere određuje pravac
 projekcije.</translation>
@@ -1849,104 +1857,91 @@ projekcije.</translation>
   <context>
     <name>CmdPartRefineShape</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="352"/>
+      <location filename="../../CommandSimple.cpp" line="350"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="353"/>
-      <source>Refine shape</source>
+      <location filename="../../CommandSimple.cpp" line="351"/>
+      <source>Refine Shape</source>
       <translation>Prečisti oblik</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="354"/>
-      <source>Refine the copy of a shape</source>
-      <translation>Prečisti kopiju oblika</translation>
+      <location filename="../../CommandSimple.cpp" line="352"/>
+      <source>Creates a refined copy of the selected shapes</source>
+      <translation>Napravi prečišćenu kopiju izabranog oblika</translation>
     </message>
   </context>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1174"/>
+      <location filename="../../Command.cpp" line="1173"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1174"/>
+      <source>Reverse Shapes</source>
+      <translation>Okreni normale</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1175"/>
-      <source>Reverse shapes</source>
-      <translation>Okreni oblik</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1176"/>
-      <source>Reverse orientation of shapes</source>
-      <translation>Okreni orijentaciju oblika</translation>
+      <source>Reverses the orientation of the selected shapes</source>
+      <translation>Okreni orijentaciju normala stranica izabranog oblika</translation>
     </message>
   </context>
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1376"/>
+      <location filename="../../Command.cpp" line="1375"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1376"/>
+      <source>Revolve</source>
+      <translation>Obrni</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1377"/>
-      <source>Revolve...</source>
-      <translation>Obrni...</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1378"/>
-      <source>Revolve a selected shape</source>
+      <source>Revolves the selected shape</source>
       <translation>Obrni izabrani oblik oko ose</translation>
     </message>
   </context>
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="1948"/>
+      <location filename="../../Command.cpp" line="1944"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1949"/>
-      <source>Create ruled surface</source>
-      <translation>Ravna površina</translation>
+      <location filename="../../Command.cpp" line="1945"/>
+      <source>Ruled Surface</source>
+      <translation>Pravolinijska površ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1950"/>
-      <source>Create a ruled surface from either two Edges or two wires</source>
-      <translation>Napravi ravnu površinu ili od dve ivice ili od dve žičane ivice</translation>
+      <location filename="../../Command.cpp" line="1946"/>
+      <source>Creates a ruled surface between 2 selected wires</source>
+      <translation>Napravi pravolinijsku površ pomoću dva žičana elementa</translation>
     </message>
   </context>
   <context>
     <name>CmdPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="888"/>
+      <location filename="../../Command.cpp" line="885"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="889"/>
+      <location filename="../../Command.cpp" line="886"/>
       <source>Section</source>
       <translation>Presek</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="890"/>
-      <source>Make a section of two shapes</source>
-      <translation>Napravi presek dva oblika</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdPartSectionCut</name>
-    <message>
-      <location filename="../../Command.cpp" line="2189"/>
-      <source>Persiste&amp;nt section cut</source>
-      <translation type="unfinished">Persiste&amp;nt section cut</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2190"/>
-      <source>Creates a persistent section cut of visible part objects</source>
-      <translation>Iseci trajni presek od vidljivih objekata</translation>
+      <location filename="../../Command.cpp" line="887"/>
+      <source>Sections 2 selected shapes</source>
+      <translation type="unfinished">Sections 2 selected shapes</translation>
     </message>
   </context>
   <context>
@@ -1954,35 +1949,35 @@ projekcije.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="105"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="106"/>
-      <source>Create shape from mesh...</source>
-      <translation>Napravi oblik od mreže...</translation>
+      <source>Shape From Mesh</source>
+      <translation type="unfinished">Shape From Mesh</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="107"/>
-      <source>Create shape from selected mesh object</source>
-      <translation>Napravi oblik od izabranog mrežnog objekta</translation>
+      <source>Creates a shape from the selected mesh</source>
+      <translation type="unfinished">Creates a shape from the selected mesh</translation>
     </message>
   </context>
   <context>
     <name>CmdPartSimpleCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="221"/>
+      <location filename="../../CommandSimple.cpp" line="219"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="222"/>
-      <source>Create simple copy</source>
-      <translation>Napravi jednostavnu kopiju</translation>
+      <location filename="../../CommandSimple.cpp" line="220"/>
+      <source>Simple Copy</source>
+      <translation>Kopija putanje</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="223"/>
-      <source>Create a simple non-parametric copy</source>
-      <translation>Napravi jednostavnu neparametarsku kopiju</translation>
+      <location filename="../../CommandSimple.cpp" line="221"/>
+      <source>Creates a simple non-parametric copy of the selected shapes</source>
+      <translation type="unfinished">Creates a simple non-parametric copy of the selected shapes</translation>
     </message>
   </context>
   <context>
@@ -1990,17 +1985,17 @@ projekcije.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="55"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="56"/>
-      <source>Create Cylinder...</source>
-      <translation>Napravi valjak...</translation>
+      <source>Cylinder</source>
+      <translation>Valjak</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="57"/>
-      <source>Create a Cylinder</source>
-      <translation>Napravi valjak</translation>
+      <source>Creates a solid cylinder</source>
+      <translation type="unfinished">Creates a solid cylinder</translation>
     </message>
   </context>
   <context>
@@ -2008,7 +2003,7 @@ projekcije.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="148"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="149"/>
@@ -2019,8 +2014,8 @@ projekcije.</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="150"/>
-      <source>Create a sphere solid</source>
-      <translation>Napravi sferično puno telo</translation>
+      <source>Creates a solid sphere</source>
+      <translation type="unfinished">Creates a solid sphere</translation>
     </message>
   </context>
   <context>
@@ -2028,43 +2023,43 @@ projekcije.</translation>
     <message>
       <location filename="../../Command.cpp" line="1585"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1586"/>
-      <source>Sweep...</source>
-      <translation>Po putanji...</translation>
+      <source>Sweep</source>
+      <translation>Po putanji</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1587"/>
-      <source>Utility to sweep</source>
-      <translation>Napravi oblik izvlačenjem preseka po putanji</translation>
+      <source>Sweeps profiles along a wire</source>
+      <translation type="unfinished">Sweeps profiles along a wire</translation>
     </message>
   </context>
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="1818"/>
+      <location filename="../../Command.cpp" line="1815"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1819"/>
-      <source>Thickness...</source>
-      <translation>Tankozidni objekat...</translation>
+      <location filename="../../Command.cpp" line="1816"/>
+      <source>Thickness</source>
+      <translation>Tankozidni objekat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1820"/>
-      <source>Utility to apply a thickness</source>
-      <translation>Napravi tankozidni objekat</translation>
+      <location filename="../../Command.cpp" line="1817"/>
+      <source>Removes the selected faces and offsets the remaining shape outward to add thickness</source>
+      <translation type="unfinished">Removes the selected faces and offsets the remaining shape outward to add thickness</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1869"/>
+      <location filename="../../Command.cpp" line="1866"/>
       <source>Wrong selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1870"/>
+      <location filename="../../Command.cpp" line="1867"/>
       <source>Selected shape is not a solid</source>
       <translation>Izabrani oblik nije puno telo</translation>
     </message>
@@ -2074,7 +2069,7 @@ projekcije.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="232"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="233"/>
@@ -2085,26 +2080,26 @@ projekcije.</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="234"/>
-      <source>Create a torus solid</source>
-      <translation>Napravi torusno puno telo</translation>
+      <source>Creates a solid torus</source>
+      <translation type="unfinished">Creates a solid torus</translation>
     </message>
   </context>
   <context>
     <name>CmdPartTransformedCopy</name>
     <message>
-      <location filename="../../CommandSimple.cpp" line="296"/>
+      <location filename="../../CommandSimple.cpp" line="294"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="297"/>
-      <source>Create transformed copy</source>
-      <translation>Napravi pomerenu kopiju</translation>
+      <location filename="../../CommandSimple.cpp" line="295"/>
+      <source>Transformed Copy</source>
+      <translation type="unfinished">Transformed Copy</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="298"/>
-      <source>Create a non-parametric copy with transformed placement</source>
-      <translation>Napravi neparametarsku kopiju sa promenjenim položajem</translation>
+      <location filename="../../CommandSimple.cpp" line="296"/>
+      <source>Creates a non-parametric copy with transformed placement of the selected shapes</source>
+      <translation type="unfinished">Creates a non-parametric copy with transformed placement of the selected shapes</translation>
     </message>
   </context>
   <context>
@@ -2121,42 +2116,42 @@ projekcije.</translation>
       <translation>Part isecanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="397"/>
+      <location filename="../../Command.cpp" line="396"/>
       <source>Common</source>
       <translation>Presek</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="476"/>
+      <location filename="../../Command.cpp" line="474"/>
       <source>Fusion</source>
       <translation>Unija</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="866"/>
+      <location filename="../../Command.cpp" line="864"/>
       <source>Compound</source>
       <translation>Sastavljeni objekat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="911"/>
+      <location filename="../../Command.cpp" line="908"/>
       <source>Section</source>
       <translation>Presek</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="963"/>
+      <location filename="../../Command.cpp" line="961"/>
       <source>Import Part</source>
       <translation>Uvezi deo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1070"/>
-      <source>Part Import Curve Net</source>
-      <translation type="unfinished">Part Import Curve Net</translation>
+      <source>Import Curve Net</source>
+      <translation type="unfinished">Import Curve Net</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1187"/>
+      <location filename="../../Command.cpp" line="1186"/>
       <source>Reverse</source>
       <translation>Obrnuto</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1337"/>
       <source>Make face</source>
       <translation>Napravi stranicu</translation>
     </message>
@@ -2166,57 +2161,57 @@ projekcije.</translation>
       <translation>Napravi odmak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1696"/>
+      <location filename="../../Command.cpp" line="1694"/>
       <source>Make 2D Offset</source>
       <translation>Napravi 2D odmak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1876"/>
+      <location filename="../../Command.cpp" line="1873"/>
       <source>Make Thickness</source>
       <translation>Napravi tankozidni objekat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2028"/>
+      <location filename="../../Command.cpp" line="2038"/>
       <source>Create ruled surface</source>
-      <translation>Ravna površina</translation>
+      <translation>Napravi pravolinijsku površ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2257"/>
-      <source>Add a coordinate system</source>
-      <translation type="unfinished">Add a coordinate system</translation>
+      <location filename="../../Command.cpp" line="2266"/>
+      <source>Add coordinate system</source>
+      <translation type="unfinished">Add coordinate system</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2291"/>
-      <source>Add a datum plane</source>
-      <translation type="unfinished">Add a datum plane</translation>
+      <location filename="../../Command.cpp" line="2300"/>
+      <source>Add datum plane</source>
+      <translation type="unfinished">Add datum plane</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2324"/>
-      <source>Add a datum line</source>
-      <translation type="unfinished">Add a datum line</translation>
+      <location filename="../../Command.cpp" line="2333"/>
+      <source>Add datum line</source>
+      <translation type="unfinished">Add datum line</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2357"/>
-      <source>Add a datum point</source>
-      <translation type="unfinished">Add a datum point</translation>
+      <location filename="../../Command.cpp" line="2366"/>
+      <source>Add datum point</source>
+      <translation type="unfinished">Add datum point</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="70"/>
-      <source>Create Part Cylinder</source>
-      <translation>Napravi valjak</translation>
+      <source>Create Cylinder</source>
+      <translation type="unfinished">Create Cylinder</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="181"/>
+      <location filename="../../CommandSimple.cpp" line="180"/>
       <source>Points from geometry</source>
       <translation>Tačke na osnovu geometrije</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="369"/>
+      <location filename="../../CommandSimple.cpp" line="367"/>
       <source>Refine shape</source>
       <translation>Prečisti oblik</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="426"/>
+      <location filename="../../CommandSimple.cpp" line="424"/>
       <source>Defeaturing</source>
       <translation>Odstrani tipske oblike</translation>
     </message>
@@ -2226,12 +2221,12 @@ projekcije.</translation>
       <translation>Pretvori mrežu</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1247"/>
+      <location filename="../../TaskAttacher.cpp" line="1253"/>
       <source>Edit attachment</source>
       <translation>Uredi pridruživanje</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.cpp" line="454"/>
+      <location filename="../../TaskFaceAppearances.cpp" line="455"/>
       <source>Change face colors</source>
       <translation>Promeni boju stranice</translation>
     </message>
@@ -2241,45 +2236,45 @@ projekcije.</translation>
       <translation>Po presecima</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="263"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="259"/>
       <source>Edge</source>
       <translation>Ivica</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="304"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="300"/>
       <source>Wire</source>
-      <translation>Žičani ram</translation>
+      <translation>Žičani okvir</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="356"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="408"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="352"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="404"/>
       <source>Face</source>
       <translation>Stranica</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="469"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="465"/>
       <source>Shell</source>
       <translation>Ljuska</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="521"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="517"/>
       <source>Solid</source>
-      <translation>Puno</translation>
+      <translation>Puno telo</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="368"/>
+      <location filename="../../TaskSweep.cpp" line="373"/>
       <source>Sweep</source>
       <translation>Po putanji</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="210"/>
-      <source>Edit Mirror</source>
-      <translation>Uredi simetriju</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="1559"/>
       <source>Project on surface</source>
       <translation>Projiciraj na površinu</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="210"/>
+      <source>Edit mirror</source>
+      <translation type="unfinished">Edit mirror</translation>
     </message>
   </context>
   <context>
@@ -2311,18 +2306,64 @@ projekcije.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
-      <source>Attachment mode:</source>
-      <translation>Režim pridruživanja:</translation>
+      <source>Attachment mode</source>
+      <translation type="unfinished">Attachment mode</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
-      <source>Attachment Offset (in local coordinates):</source>
-      <translation>Dodatno pomeri (u lokalnim koordinatama):</translation>
+      <source>Attachment Offset in its Local Coordinate System</source>
+      <translation type="unfinished">Attachment Offset in its Local Coordinate System</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
-      <source>In x-direction:</source>
-      <translation>Po osi X:</translation>
+      <source>In x-direction</source>
+      <translation type="unfinished">In x-direction</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="171"/>
+      <source>In y-direction</source>
+      <translation type="unfinished">In y-direction</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="203"/>
+      <source>In z-direction</source>
+      <translation type="unfinished">In z-direction</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="235"/>
+      <source>Around X-axis</source>
+      <translation type="unfinished">Around X-axis</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="254"/>
+      <source>Rotation around the X-axis
+Note: The placement is expressed in local space of object being attached.</source>
+      <translation type="unfinished">Rotation around the X-axis
+Note: The placement is expressed in local space of object being attached.</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
+      <source>Around Y-axis</source>
+      <translation type="unfinished">Around Y-axis</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="299"/>
+      <source>Rotation around the Y-axis
+Note: The placement is expressed in local space of object being attached.</source>
+      <translation type="unfinished">Rotation around the Y-axis
+Note: The placement is expressed in local space of object being attached.</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="325"/>
+      <source>Around Z-axis</source>
+      <translation type="unfinished">Around Z-axis</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="344"/>
+      <source>Rotation around the Z-axis
+Note: The placement is expressed in local space of object being attached.</source>
+      <translation type="unfinished">Rotation around the Z-axis
+Note: The placement is expressed in local space of object being attached.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="158"/>
@@ -2330,52 +2371,6 @@ projekcije.</translation>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="222"/>
       <source>Note: The placement is expressed in local space of object being attached.</source>
       <translation>Napomena: Položaj je izražen u lokalnom koordinatnom sistemu objekta koji se pridružuje.</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="171"/>
-      <source>In y-direction:</source>
-      <translation>Po osi Y:</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="203"/>
-      <source>In z-direction:</source>
-      <translation>Po osi Z:</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="235"/>
-      <source>Around x-axis:</source>
-      <translation>Oko x-ose:</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="254"/>
-      <source>Rotation around the x-axis
-Note: The placement is expressed in local space of object being attached.</source>
-      <translation>Obrtanje oko x-ose
-Napomena: Položaj je izražen u lokalnom koordinatnom sistemu objekta koji se pridružuje.</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
-      <source>Around y-axis:</source>
-      <translation>Oko y-ose:</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="299"/>
-      <source>Rotation around the y-axis
-Note: The placement is expressed in local space of object being attached.</source>
-      <translation>Obrtanje oko y-ose
-Napomena: Položaj je izražen u lokalnom koordinatnom sistemu objekta koji se pridružuje.</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="325"/>
-      <source>Around z-axis:</source>
-      <translation>Oko z-ose:</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="344"/>
-      <source>Rotation around the z-axis
-Note: The placement is expressed in local space of object being attached.</source>
-      <translation>Obrtanje oko z-ose
-Napomena: Položaj je izražen u lokalnom koordinatnom sistemu objekta koji se pridružuje.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="367"/>
@@ -2387,13 +2382,13 @@ Napomena: Položaj je izražen u lokalnom koordinatnom sistemu objekta koji se p
     <name>PartGui::CrossSections</name>
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
-      <source>Cross sections</source>
-      <translation>Poprečni preseci</translation>
+      <source>Cross Sections</source>
+      <translation type="unfinished">Cross Sections</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
-      <source>Guiding plane</source>
-      <translation>Ravan vodilja</translation>
+      <source>Guiding Plane</source>
+      <translation type="unfinished">Guiding Plane</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -2412,8 +2407,13 @@ Napomena: Položaj je izražen u lokalnom koordinatnom sistemu objekta koji se p
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
-      <source>Position:</source>
-      <translation>Položaj:</translation>
+      <source>Position</source>
+      <translation type="unfinished">Position</translation>
+    </message>
+    <message>
+      <location filename="../../CrossSections.ui" line="109"/>
+      <source>Distance</source>
+      <translation>Rastojanje</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
@@ -2431,21 +2431,17 @@ Napomena: Položaj je izražen u lokalnom koordinatnom sistemu objekta koji se p
       <translation>Brojati</translation>
     </message>
     <message>
-      <location filename="../../CrossSections.ui" line="109"/>
-      <source>Distance:</source>
-      <translation>Udaljenost:</translation>
+      <location filename="../../CrossSections.cpp" line="308"/>
+      <source>Cannot compute cross-sections</source>
+      <translation type="unfinished">Cannot compute cross-sections</translation>
     </message>
   </context>
   <context>
     <name>PartGui::DlgBooleanOperation</name>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="14"/>
-      <source>Boolean Operation</source>
-      <translation>Bulove operacije</translation>
-    </message>
-    <message>
       <location filename="../../DlgBooleanOperation.ui" line="20"/>
-      <source>Boolean operation</source>
+      <source>Boolean Operation</source>
       <translation>Bulove operacije</translation>
     </message>
     <message>
@@ -2504,46 +2500,46 @@ Napomena: Položaj je izražen u lokalnom koordinatnom sistemu objekta koji se p
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="155"/>
-      <source>Swap selection</source>
-      <translation>Zameni izbor</translation>
+      <source>Swap Selection</source>
+      <translation type="unfinished">Swap Selection</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="387"/>
-      <source>Select a shape on the left side, first</source>
-      <translation>Izaberi prvo oblik sa leve strane</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="392"/>
-      <source>Select a shape on the right side, first</source>
-      <translation>Izaberi prvo oblik sa desne strane</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="397"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="396"/>
       <source>Cannot perform a boolean operation with the same shape</source>
       <translation>Nije moguće izvršiti bulovu operaciju sa istim oblikom</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="407"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="406"/>
       <source>No active document available</source>
       <translation>Nema dostupnog aktivnog dokumenta</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="417"/>
-      <source>One of the selected objects doesn't exist anymore</source>
-      <translation>Jedan od izabranih objekata više ne postoji</translation>
+      <location filename="../../DlgBooleanOperation.cpp" line="386"/>
+      <source>First, select a shape on the left side</source>
+      <translation type="unfinished">First, select a shape on the left side</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="424"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="391"/>
+      <source>First, select a shape on the right side</source>
+      <translation type="unfinished">First, select a shape on the right side</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBooleanOperation.cpp" line="416"/>
+      <source>One of the selected objects does not exist anymore</source>
+      <translation type="unfinished">One of the selected objects does not exist anymore</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBooleanOperation.cpp" line="423"/>
       <source>Performing union on non-solids is not possible</source>
       <translation>Nije moguće izvođenje unije na objektima koja nisu puna tela</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="432"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="431"/>
       <source>Performing intersection on non-solids is not possible</source>
       <translation>Nije moguće izvođenje preseka na objektima koja nisu puna tela</translation>
     </message>
     <message>
-      <location filename="../../DlgBooleanOperation.cpp" line="440"/>
+      <location filename="../../DlgBooleanOperation.cpp" line="439"/>
       <source>Performing difference on non-solids is not possible</source>
       <translation>Nije moguće izvođenje razlike na objektima koja nisu puna tela</translation>
     </message>
@@ -2559,27 +2555,27 @@ Napomena: Položaj je izražen u lokalnom koordinatnom sistemu objekta koji se p
   <context>
     <name>PartGui::DlgExportHeaderStep</name>
     <message>
-      <location filename="../../DlgExportHeaderStep.ui" line="20"/>
-      <source>If not empty, field contents will be used in the STEP file header.</source>
-      <translation>Ako nije prazno, sadržaj polja će se koristiti u zaglavlju STEP datoteke.</translation>
+      <location filename="../../DlgExportHeaderStep.ui" line="23"/>
+      <source>If not empty, field contents will be used in the STEP file header</source>
+      <translation type="unfinished">If not empty, field contents will be used in the STEP file header</translation>
     </message>
     <message>
-      <location filename="../../DlgExportHeaderStep.ui" line="23"/>
+      <location filename="../../DlgExportHeaderStep.ui" line="26"/>
       <source>Header</source>
       <translation>Zaglavlje</translation>
     </message>
     <message>
-      <location filename="../../DlgExportHeaderStep.ui" line="29"/>
+      <location filename="../../DlgExportHeaderStep.ui" line="32"/>
       <source>Company</source>
       <translation>Prеduzеćе</translation>
     </message>
     <message>
-      <location filename="../../DlgExportHeaderStep.ui" line="39"/>
+      <location filename="../../DlgExportHeaderStep.ui" line="42"/>
       <source>Author</source>
       <translation>Autor</translation>
     </message>
     <message>
-      <location filename="../../DlgExportHeaderStep.ui" line="49"/>
+      <location filename="../../DlgExportHeaderStep.ui" line="52"/>
       <source>Product</source>
       <translation>Proizvod</translation>
     </message>
@@ -2612,9 +2608,20 @@ Napomena: Položaj je izražen u lokalnom koordinatnom sistemu objekta koji se p
       <translation type="unfinished">Inch</translation>
     </message>
     <message>
+      <location filename="../../DlgExportStep.ui" line="104"/>
+      <source>Keeps the placement information when exporting
+a single object. When importing back the STEP file, the
+placement will be encoded into the shape geometry, instead of keeping
+it inside the placement property.</source>
+      <translation type="unfinished">Keeps the placement information when exporting
+a single object. When importing back the STEP file, the
+placement will be encoded into the shape geometry, instead of keeping
+it inside the placement property.</translation>
+    </message>
+    <message>
       <location filename="../../DlgExportStep.ui" line="139"/>
       <source>Write out curves in parametric space of surface</source>
-      <translation>Ispiši krive u parametarskom prostoru površine</translation>
+      <translation>Ispiši krive u parametarskom prostoru površi</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="123"/>
@@ -2624,17 +2631,7 @@ Napomena: Položaj je izražen u lokalnom koordinatnom sistemu objekta koji se p
     <message>
       <location filename="../../DlgExportStep.ui" line="14"/>
       <source>STEP Export Settings</source>
-      <translation type="unfinished">STEP Export Settings</translation>
-    </message>
-    <message>
-      <location filename="../../DlgExportStep.ui" line="104"/>
-      <source>Check this option to keep the placement information when exporting
-a single object. Please note that when importing back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the Placement property.</source>
-      <translation>Čekiraj ovu opciju da bi zadržao informacije o položaju prilikom izvoza objekta. 
-Imaj na umu da kada uvezeš nazad STEP datoteku,
-položaj će biti kodiran u geometriji oblika, a ne unutar osobine Položaj.</translation>
+      <translation>STEP izvozne postavke</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="126"/>
@@ -2661,7 +2658,7 @@ položaj će biti kodiran u geometriji oblika, a ne unutar osobine Položaj.</tr
       <source>This parameter indicates whether parametric curves (curves in parametric space of surface)
 should be written into the STEP file. This parameter can be set to off in order to minimize
 the size of the resulting STEP file.</source>
-      <translation>Ovaj parametar pokazuje da li parametarske krive (krive u parametarskom prostoru površine)
+      <translation>Ovaj parametar pokazuje da li parametarske krive (krive u parametarskom prostoru površi)
 treba upisati u STEP datoteku. Ovaj parametar se može postaviti na isključeno da bi se smanjila
 veličina sačuvane STEP datoteke.</translation>
     </message>
@@ -2679,11 +2676,6 @@ veličina sačuvane STEP datoteke.</translation>
       <translation>Pravac</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.ui" line="32"/>
-      <source>Extrude perpendicularly to plane of input shape.</source>
-      <translation>Izvuci normalno na ravan izabranog oblika.</translation>
-    </message>
-    <message>
       <location filename="../../DlgExtrusion.ui" line="35"/>
       <source>Along normal</source>
       <translation>Duž normale</translation>
@@ -2694,65 +2686,20 @@ veličina sačuvane STEP datoteke.</translation>
       <translation>Podesi pravac da odgovara smeru prave ivice. Savet: da bi uzeo u obzir i dužinu ivice, zadaj obe dužine da budu nula.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.ui" line="48"/>
-      <source>Along edge:</source>
-      <translation>Duž ivice:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgExtrusion.ui" line="55"/>
-      <source>If checked, direction of extrusion is reversed.</source>
-      <translation>Ako je označeno, smer izvlačenja se obrće.</translation>
-    </message>
-    <message>
       <location filename="../../DlgExtrusion.ui" line="58"/>
       <source>Reversed</source>
       <translation>Obrnuti smer</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.ui" line="68"/>
-      <source>Click to start selecting an edge in 3D view.</source>
-      <translation type="unfinished">Click to start selecting an edge in 3D view.</translation>
-    </message>
-    <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
-      <location filename="../../DlgExtrusion.cpp" line="232"/>
+      <location filename="../../DlgExtrusion.cpp" line="240"/>
       <source>Select</source>
       <translation>Izaberi</translation>
-    </message>
-    <message>
-      <location filename="../../DlgExtrusion.ui" line="78"/>
-      <source>Specify direction manually using X,Y,Z values.</source>
-      <translation>Definiši smer ručno pomoću X, Y i Z vrednosti.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgExtrusion.ui" line="81"/>
-      <source>Custom direction:</source>
-      <translation>Sopstveni smer:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgExtrusion.ui" line="99"/>
-      <source>X:</source>
-      <translation>X:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgExtrusion.ui" line="122"/>
-      <source>Y:</source>
-      <translation>Y:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgExtrusion.ui" line="145"/>
-      <source>Z:</source>
-      <translation>Z:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="179"/>
       <source>Length</source>
       <translation>Dužina</translation>
-    </message>
-    <message>
-      <location filename="../../DlgExtrusion.ui" line="185"/>
-      <source>Along:</source>
-      <translation>Duž smera:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="204"/>
@@ -2762,19 +2709,69 @@ If both lengths are zero, magnitude of direction is used.</source>
 Ako su obe dužine nula, koristi se jedinična vrednost.</translation>
     </message>
     <message>
+      <location filename="../../DlgExtrusion.ui" line="32"/>
+      <source>Extrudes perpendicularly to the plane of the input shape</source>
+      <translation type="unfinished">Extrudes perpendicularly to the plane of the input shape</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.ui" line="48"/>
+      <source>Along edge</source>
+      <translation type="unfinished">Along edge</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.ui" line="55"/>
+      <source>Reverses the direction of the extrusion</source>
+      <translation type="unfinished">Reverses the direction of the extrusion</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.ui" line="68"/>
+      <source>Starts the selection of edges in the 3D view</source>
+      <translation type="unfinished">Starts the selection of edges in the 3D view</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.ui" line="78"/>
+      <source>Specify direction manually using X, Y, Z values</source>
+      <translation type="unfinished">Specify direction manually using X, Y, Z values</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.ui" line="81"/>
+      <source>Custom direction</source>
+      <translation>Sopstveni smer</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.ui" line="99"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.ui" line="122"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.ui" line="145"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.ui" line="185"/>
+      <source>Along</source>
+      <translation type="unfinished">Along</translation>
+    </message>
+    <message>
       <location filename="../../DlgExtrusion.ui" line="224"/>
-      <source>Against:</source>
-      <translation>Suprotno smeru:</translation>
+      <source>Against</source>
+      <translation type="unfinished">Against</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="243"/>
-      <source>Length to extrude against the direction (can be negative).</source>
-      <translation>Dužina za izvlačenje suprotno smeru (može biti negativna).</translation>
+      <source>Length to extrude against the direction (can be negative)</source>
+      <translation type="unfinished">Length to extrude against the direction (can be negative)</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="262"/>
-      <source>Distribute extrusion length equally to both sides.</source>
-      <translation>Podjednako rasporedi dužinu izvlačenja na obe strane.</translation>
+      <source>Distributes the extrusion length equally to both sides</source>
+      <translation type="unfinished">Distributes the extrusion length equally to both sides</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="265"/>
@@ -2803,8 +2800,8 @@ Ako su obe dužine nula, koristi se jedinična vrednost.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="337"/>
-      <source>If checked, extruding closed wires will give solids, not shells.</source>
-      <translation>Ako se označi, izvlačenje zatvorene žičane skice će dati puna tela, a ne ljuske.</translation>
+      <source>Results in solids if wires are closed, otherwise in shells</source>
+      <translation type="unfinished">Results in solids if wires are closed, otherwise in shells</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="340"/>
@@ -2822,40 +2819,55 @@ Ako su obe dužine nula, koristi se jedinična vrednost.</translation>
       <translation>Oblik</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="206"/>
-      <source>Selecting...</source>
-      <translation>Izbor...</translation>
+      <location filename="../../DlgExtrusion.cpp" line="214"/>
+      <source>Selecting…</source>
+      <translation type="unfinished">Selecting…</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="454"/>
+      <location filename="../../DlgExtrusion.cpp" line="462"/>
       <source>The document '%1' doesn't exist.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="502"/>
-      <location filename="../../DlgExtrusion.cpp" line="508"/>
+      <location filename="../../DlgExtrusion.cpp" line="511"/>
+      <source>Creating extrusion failed.
+%1</source>
+      <translation type="unfinished">Creating extrusion failed.
+%1</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.cpp" line="517"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>Pravljenje izvlačenja nije uspelo.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="575"/>
+      <location filename="../../DlgExtrusion.cpp" line="584"/>
       <source>Object not found: %1</source>
       <translation>Objekat nije pronađen: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="637"/>
-      <source>No shapes selected for extrusion. Select some, first.</source>
-      <translation>Nema izabranih oblika za izvlačenje. Prvo izaberi neke.</translation>
+      <location filename="../../DlgExtrusion.cpp" line="646"/>
+      <source>No shapes selected for extrusion.</source>
+      <translation type="unfinished">No shapes selected for extrusion.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="654"/>
+      <location filename="../../DlgExtrusion.cpp" line="692"/>
+      <source>Cannot determine normal vector of shape to be extruded. Use other mode. 
+
+(%1)</source>
+      <translation type="unfinished">Cannot determine normal vector of shape to be extruded. Use other mode. 
+
+(%1)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgExtrusion.cpp" line="663"/>
       <source>Unknown error</source>
       <translation>Nepoznata greška</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="658"/>
+      <location filename="../../DlgExtrusion.cpp" line="667"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2864,26 +2876,17 @@ Ako su obe dužine nula, koristi se jedinična vrednost.</translation>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="660"/>
+      <location filename="../../DlgExtrusion.cpp" line="669"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>Kao pravac izvlačenja bi trebala da se koristi ivica, ali ivica nije zadata.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="683"/>
-      <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
-
-(%1)</source>
-      <translation>Ne može se odrediti vektor normale oblika koji se istiskuje. Koristi drugi režim.
-
-(%1)</translation>
-    </message>
-    <message>
-      <location filename="../../DlgExtrusion.cpp" line="693"/>
+      <location filename="../../DlgExtrusion.cpp" line="702"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>Vektor pravca izvlačenja je nulte dužine. Dužina mora biti različita od nule.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="704"/>
+      <location filename="../../DlgExtrusion.cpp" line="713"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>Ukupna dužina izvlačenja je nula (dužina 1 == -dužina2). Mora biti različita od nule.</translation>
     </message>
@@ -2901,19 +2904,14 @@ Ako su obe dužine nula, koristi se jedinična vrednost.</translation>
       <translation>Oblik</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.ui" line="32"/>
-      <source>Selected shape:</source>
-      <translation>Izabrani oblik:</translation>
-    </message>
-    <message>
       <location filename="../../DlgFilletEdges.ui" line="40"/>
       <source>No selection</source>
       <translation>Ništa izabrano</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="280"/>
-      <source>Fillet Parameter</source>
-      <translation>Parametar zaobljenja</translation>
+      <location filename="../../DlgFilletEdges.ui" line="32"/>
+      <source>Selected shape</source>
+      <translation type="unfinished">Selected shape</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
@@ -2947,8 +2945,8 @@ Ako su obe dužine nula, koristi se jedinična vrednost.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="110"/>
-      <source>Type:</source>
-      <translation>Vrsta:</translation>
+      <source>Type</source>
+      <translation>Vrsta</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="118"/>
@@ -2961,22 +2959,17 @@ Ako su obe dužine nula, koristi se jedinična vrednost.</translation>
       <translation>Promenljiv poluprečnik</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.ui" line="142"/>
-      <source>Radius:</source>
-      <translation>Poluprečnik:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgFilletEdges.cpp" line="270"/>
+      <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>Chamfer type</source>
       <translation>Vrsta obaranja ivice</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="271"/>
+      <location filename="../../DlgFilletEdges.cpp" line="272"/>
       <source>Length:</source>
-      <translation>Dužina:</translation>
+      <translation type="unfinished">Length:</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="275"/>
+      <location filename="../../DlgFilletEdges.cpp" line="276"/>
       <source>Edges to chamfer</source>
       <translation>Ivice koje treba oboriti</translation>
     </message>
@@ -2986,48 +2979,53 @@ Ako su obe dužine nula, koristi se jedinična vrednost.</translation>
       <translation>Početna dužina</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="272"/>
+      <location filename="../../DlgFilletEdges.cpp" line="273"/>
       <source>Equal distance</source>
       <translation>Jednako rastojanje</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="269"/>
-      <source>Chamfer Parameters</source>
-      <translation>Parametri obaranja ivica</translation>
+      <location filename="../../DlgFilletEdges.cpp" line="270"/>
+      <source>Chamfer parameters</source>
+      <translation type="unfinished">Chamfer parameters</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="273"/>
+      <location filename="../../DlgFilletEdges.cpp" line="274"/>
       <source>Two distances</source>
       <translation>Dva rastojanja</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="276"/>
+      <location filename="../../DlgFilletEdges.cpp" line="277"/>
       <source>Size</source>
       <translation>Veličina</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="277"/>
+      <location filename="../../DlgFilletEdges.cpp" line="278"/>
       <source>Size2</source>
       <translation>Veličina2</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="281"/>
+      <source>Fillet parameter</source>
+      <translation type="unfinished">Fillet parameter</translation>
+    </message>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="282"/>
       <source>Fillet type</source>
       <translation>Vrsta zaobljenja</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="282"/>
+      <location filename="../../DlgFilletEdges.cpp" line="283"/>
       <source>Edges to fillet</source>
       <translation>Ivice za zaobljenje</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="283"/>
+      <location filename="../../DlgFilletEdges.cpp" line="284"/>
       <location filename="../../DlgFilletEdges.cpp" line="916"/>
       <source>Start radius</source>
       <translation>Početni poluprečnik</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="284"/>
+      <location filename="../../DlgFilletEdges.cpp" line="285"/>
       <source>End radius</source>
       <translation>Krajnji poluprečnik</translation>
     </message>
@@ -3043,6 +3041,21 @@ Ako su obe dužine nula, koristi se jedinična vrednost.</translation>
       <translation>Dužina</translation>
     </message>
     <message>
+      <location filename="../../DlgFilletEdges.cpp" line="963"/>
+      <source>No valid shape is selected.
+Select a valid shape in the drop-down box first.</source>
+      <translation type="unfinished">No valid shape is selected.
+Select a valid shape in the drop-down box first.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgFilletEdges.cpp" line="1015"/>
+      <source>No edge entity is checked to fillet.
+Check one or more edge entities first.</source>
+      <translation type="unfinished">No edge entity is checked to fillet.
+Check one or more edge entities first.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgFilletEdges.ui" line="142"/>
       <location filename="../../DlgFilletEdges.cpp" line="908"/>
       <source>Radius</source>
       <translation>Poluprečnik</translation>
@@ -3053,21 +3066,9 @@ Ako su obe dužine nula, koristi se jedinična vrednost.</translation>
       <translation>Nema odabranih oblika</translation>
     </message>
     <message>
-      <location filename="../../DlgFilletEdges.cpp" line="963"/>
-      <source>No valid shape is selected.
-Please select a valid shape in the drop-down box first.</source>
-      <translation>Nijedan važeći oblik nije izabran. Prvo izaberi važeći oblik u okviru padajuće liste.</translation>
-    </message>
-    <message>
       <location filename="../../DlgFilletEdges.cpp" line="1014"/>
       <source>No edge selected</source>
       <translation>Nema odabranih ivica</translation>
-    </message>
-    <message>
-      <location filename="../../DlgFilletEdges.cpp" line="1015"/>
-      <source>No edge entity is checked to fillet.
-Please check one or more edge entities first.</source>
-      <translation>Nema ivica obeleženih za zaobljenje. Obeležite jednu, ili više ivica.</translation>
     </message>
   </context>
   <context>
@@ -3103,14 +3104,9 @@ Please check one or more edge entities first.</source>
       <translation>Inč</translation>
     </message>
     <message>
-      <location filename="../../DlgImportExportIges.ui" line="65"/>
-      <source>Export solids and shells as</source>
-      <translation>Izvezi puna tela i ljuske kao</translation>
-    </message>
-    <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
       <source>Solids and shells will be exported as trimmed surface</source>
-      <translation>Puna tela i ljuske će se izvoziti kao opsečena površina</translation>
+      <translation>Puna tela i ljuske će se izvoziti kao opsečena površ</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="74"/>
@@ -3118,14 +3114,19 @@ Please check one or more edge entities first.</source>
       <translation>Grupe opsečenih ravni (tip 144)</translation>
     </message>
     <message>
+      <location filename="../../DlgImportExportIges.ui" line="65"/>
+      <source>Export Solids and Shells As</source>
+      <translation type="unfinished">Export Solids and Shells As</translation>
+    </message>
+    <message>
       <location filename="../../DlgImportExportIges.ui" line="84"/>
-      <source>Solids will be exported as manifold solid B-Rep object, shells as shell</source>
-      <translation>Puna tela će biti izvezena kao mnogostruka B-Rep puna tela, ljuske kao ljuske</translation>
+      <source>Solids will be exported as manifold solid B-rep object, shells as shell</source>
+      <translation type="unfinished">Solids will be exported as manifold solid B-rep object, shells as shell</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="87"/>
-      <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
-      <translation>Puna tela (tip 186) i ljuske (tip 514) / B-REP režim</translation>
+      <source>Solids (type 186) and shells (type 514) / B-rep mode</source>
+      <translation type="unfinished">Solids (type 186) and shells (type 514) / B-rep mode</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="100"/>
@@ -3173,201 +3174,146 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="14"/>
       <source>STEP Import Settings</source>
-      <translation type="unfinished">STEP Import Settings</translation>
+      <translation>STEP uvozne postavke</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="20"/>
+      <location filename="../../DlgImportStep.ui" line="23"/>
       <source>Import</source>
       <translation>Uvezi</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="26"/>
-      <source>If checked, Compound merge will be done
-during file reading (slower but higher details).</source>
-      <translation>Ako je označeno, sastavljeni objekat će se sjediniti
-tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
-    </message>
-    <message>
-      <location filename="../../DlgImportStep.ui" line="30"/>
-      <source>Enable STEP Compound merge</source>
-      <translation>Omogući STEP objedinjavanje sastavljenih objekata</translation>
-    </message>
-    <message>
-      <location filename="../../DlgImportStep.ui" line="43"/>
-      <source>Select this to use App::LinkGroup as group container, or else use App::Part.</source>
-      <translation type="unfinished">Select this to use App::LinkGroup as group container, or else use App::Part.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgImportStep.ui" line="46"/>
+      <location filename="../../DlgImportStep.ui" line="48"/>
       <source>Use LinkGroup</source>
       <translation>Koristi grupe veza</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="59"/>
-      <source>Select this to import invisible objects.</source>
-      <translation>Izaberi ovo ako hoćeš uvesti nevidljive objekte.</translation>
+      <location filename="../../DlgImportStep.ui" line="29"/>
+      <source>Merges compounds during file reading (slower but higher details)</source>
+      <translation type="unfinished">Merges compounds during file reading (slower but higher details)</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="62"/>
+      <location filename="../../DlgImportStep.ui" line="32"/>
+      <source>Enable STEP compound merge</source>
+      <translation type="unfinished">Enable STEP compound merge</translation>
+    </message>
+    <message>
+      <location filename="../../DlgImportStep.ui" line="45"/>
+      <source>Select this to use App::LinkGroup as group container, or else use App::Part</source>
+      <translation type="unfinished">Select this to use App::LinkGroup as group container, or else use App::Part</translation>
+    </message>
+    <message>
+      <location filename="../../DlgImportStep.ui" line="61"/>
+      <source>Select this to import invisible objects</source>
+      <translation type="unfinished">Select this to import invisible objects</translation>
+    </message>
+    <message>
+      <location filename="../../DlgImportStep.ui" line="64"/>
       <source>Import invisible objects</source>
       <translation>Uvezi nevidljive objekte</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="75"/>
+      <location filename="../../DlgImportStep.ui" line="77"/>
       <source>Reduce number of objects using Link array</source>
       <translation>Smanji broj objekata korišćenjem Umnožavanje veza</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="78"/>
+      <location filename="../../DlgImportStep.ui" line="80"/>
       <source>Reduce number of objects</source>
       <translation>Smanji broj objekata</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="91"/>
+      <location filename="../../DlgImportStep.ui" line="93"/>
       <source>Expand compound shape with multiple solids</source>
       <translation>Uvezi sastavljeni objekat kao da se sastoji od više punih tela t. j. može se proširiti u Stablu dokumenta</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="94"/>
+      <location filename="../../DlgImportStep.ui" line="96"/>
       <source>Expand compound shape</source>
       <translation>Sastavljeni objekat od više tela</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="107"/>
-      <location filename="../../DlgImportStep.ui" line="110"/>
+      <location filename="../../DlgImportStep.ui" line="109"/>
+      <location filename="../../DlgImportStep.ui" line="112"/>
       <source>Show progress bar when importing</source>
       <translation>Prikaži traku napredovanja prilikom uvoza</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="123"/>
+      <location filename="../../DlgImportStep.ui" line="125"/>
       <source>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</source>
       <translation>Ne koristi ime instance. Korisno za neke stare STEP datoteke sa bez smisla automatski generisanim imenima instanci.</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="126"/>
+      <location filename="../../DlgImportStep.ui" line="128"/>
       <source>Ignore instance names</source>
       <translation>Zanemari imena instanci</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="150"/>
+      <location filename="../../DlgImportStep.ui" line="152"/>
       <source>CodePage</source>
       <translation>Kodna strana</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="177"/>
+      <location filename="../../DlgImportStep.ui" line="179"/>
       <source>Mode</source>
       <translation>Režim</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="197"/>
+      <location filename="../../DlgImportStep.ui" line="199"/>
       <source>Single document</source>
       <translation>Jedan dokument</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="202"/>
+      <location filename="../../DlgImportStep.ui" line="204"/>
       <source>Assembly per document</source>
       <translation>Sklop po dokumentu</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="207"/>
+      <location filename="../../DlgImportStep.ui" line="209"/>
       <source>Assembly per document in sub-directory</source>
       <translation>Sklop po dokumentu u podfascikli</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="212"/>
+      <location filename="../../DlgImportStep.ui" line="214"/>
       <source>Object per document</source>
       <translation>Objekat po dokumentu</translation>
     </message>
     <message>
-      <location filename="../../DlgImportStep.ui" line="217"/>
+      <location filename="../../DlgImportStep.ui" line="219"/>
       <source>Object per document in sub-directory</source>
       <translation>Objekat po dokumentu u podfascikli</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartGui::DlgPartBox</name>
-    <message>
-      <location filename="../../DlgPartBox.ui" line="14"/>
-      <source>Box definition</source>
-      <translation>Definicija kvadra</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPartBox.ui" line="20"/>
-      <source>Position:</source>
-      <translation>Položaj:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPartBox.ui" line="32"/>
-      <source>X:</source>
-      <translation>X:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPartBox.ui" line="52"/>
-      <source>Y:</source>
-      <translation>Y:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPartBox.ui" line="72"/>
-      <source>Z:</source>
-      <translation>Z:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPartBox.ui" line="92"/>
-      <source>Direction:</source>
-      <translation type="unfinished">Direction:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPartBox.ui" line="109"/>
-      <source>Size:</source>
-      <translation>Veličina:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPartBox.ui" line="121"/>
-      <source>Length:</source>
-      <translation>Dužina:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPartBox.ui" line="141"/>
-      <source>Width:</source>
-      <translation>Širina:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPartBox.ui" line="161"/>
-      <source>Height:</source>
-      <translation>Visina:</translation>
     </message>
   </context>
   <context>
     <name>PartGui::DlgPartCylinder</name>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="14"/>
-      <source>Cylinder definition</source>
-      <translation>Definicija cilindra</translation>
+      <source>Cylinder Definition</source>
+      <translation type="unfinished">Cylinder Definition</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="20"/>
-      <source>Position:</source>
-      <translation>Položaj:</translation>
+      <source>Position</source>
+      <translation type="unfinished">Position</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="32"/>
-      <source>X:</source>
-      <translation>X:</translation>
+      <source>X</source>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="52"/>
-      <source>Y:</source>
-      <translation>Y:</translation>
+      <source>Y</source>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="72"/>
-      <source>Z:</source>
-      <translation>Z:</translation>
+      <source>Z</source>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="92"/>
-      <source>Direction:</source>
-      <translation>Pravac:</translation>
+      <source>Direction</source>
+      <translation>Pravac</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="109"/>
@@ -3376,26 +3322,31 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="121"/>
-      <source>Radius:</source>
-      <translation>Poluprečnik:</translation>
+      <source>Radius</source>
+      <translation>Poluprečnik</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="141"/>
-      <source>Height:</source>
-      <translation>Visina:</translation>
+      <source>Height</source>
+      <translation>Visina</translation>
     </message>
   </context>
   <context>
     <name>PartGui::DlgPartImportIges</name>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="14"/>
-      <source>IGES input file</source>
-      <translation>IGES ulazna datoteka</translation>
+      <source>IGES Input File</source>
+      <translation type="unfinished">IGES Input File</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="20"/>
       <source>File Name</source>
       <translation>Ime Datoteke</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPartImportIges.ui" line="54"/>
+      <source>Search File</source>
+      <translation type="unfinished">Search File</translation>
     </message>
   </context>
   <context>
@@ -3415,13 +3366,18 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
     <name>PartGui::DlgPartImportStep</name>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
-      <source>STEP input file</source>
-      <translation>STEP ulazna datoteka</translation>
+      <source>STEP Input File</source>
+      <translation type="unfinished">STEP Input File</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
       <source>File Name</source>
       <translation>Ime Datoteke</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPartImportStep.ui" line="54"/>
+      <source>Search File</source>
+      <translation type="unfinished">Search File</translation>
     </message>
   </context>
   <context>
@@ -3441,79 +3397,79 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="33"/>
-      <location filename="../../DlgPrimitives.cpp" line="279"/>
+      <location filename="../../DlgPrimitives.cpp" line="276"/>
       <source>Plane</source>
       <translation>Ravan</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="42"/>
-      <location filename="../../DlgPrimitives.cpp" line="354"/>
+      <location filename="../../DlgPrimitives.cpp" line="351"/>
       <source>Box</source>
       <translation type="unfinished">Box</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="51"/>
-      <location filename="../../DlgPrimitives.cpp" line="444"/>
+      <location filename="../../DlgPrimitives.cpp" line="441"/>
       <source>Cylinder</source>
       <translation>Valjak</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="60"/>
-      <location filename="../../DlgPrimitives.cpp" line="540"/>
+      <location filename="../../DlgPrimitives.cpp" line="537"/>
       <source>Cone</source>
       <translation>Kupa</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="69"/>
-      <location filename="../../DlgPrimitives.cpp" line="631"/>
+      <location filename="../../DlgPrimitives.cpp" line="628"/>
       <source>Sphere</source>
       <translation>Lopta</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="78"/>
-      <location filename="../../DlgPrimitives.cpp" line="735"/>
+      <location filename="../../DlgPrimitives.cpp" line="732"/>
       <source>Ellipsoid</source>
       <translation>Elipsoid</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="87"/>
-      <location filename="../../DlgPrimitives.cpp" line="842"/>
+      <location filename="../../DlgPrimitives.cpp" line="839"/>
       <source>Torus</source>
       <translation>Torus</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="96"/>
-      <location filename="../../DlgPrimitives.cpp" line="940"/>
+      <location filename="../../DlgPrimitives.cpp" line="937"/>
       <source>Prism</source>
       <translation>Prizma</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="105"/>
-      <location filename="../../DlgPrimitives.cpp" line="1082"/>
+      <location filename="../../DlgPrimitives.cpp" line="1081"/>
       <source>Wedge</source>
       <translation>Klin</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="114"/>
-      <location filename="../../DlgPrimitives.cpp" line="1208"/>
+      <location filename="../../DlgPrimitives.cpp" line="1207"/>
       <source>Helix</source>
       <translation>Zavojnica</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="123"/>
-      <location filename="../../DlgPrimitives.cpp" line="1297"/>
+      <location filename="../../DlgPrimitives.cpp" line="1296"/>
       <source>Spiral</source>
       <translation>Spirala</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="132"/>
-      <location filename="../../DlgPrimitives.cpp" line="1377"/>
+      <location filename="../../DlgPrimitives.cpp" line="1376"/>
       <source>Circle</source>
       <translation>Krug</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="141"/>
-      <location filename="../../DlgPrimitives.cpp" line="1463"/>
+      <location filename="../../DlgPrimitives.cpp" line="1462"/>
       <source>Ellipse</source>
       <translation>Elipsa</translation>
     </message>
@@ -3524,13 +3480,13 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="159"/>
-      <location filename="../../DlgPrimitives.cpp" line="1639"/>
+      <location filename="../../DlgPrimitives.cpp" line="1640"/>
       <source>Line</source>
       <translation>Duž</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="168"/>
-      <location filename="../../DlgPrimitives.cpp" line="1540"/>
+      <location filename="../../DlgPrimitives.cpp" line="1539"/>
       <source>Regular polygon</source>
       <translation>Pravilan mnogougao</translation>
     </message>
@@ -3542,14 +3498,14 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="240"/>
       <location filename="../../DlgPrimitives.ui" line="331"/>
-      <source>Length:</source>
-      <translation>Dužina:</translation>
+      <source>Length</source>
+      <translation>Dužina</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="260"/>
       <location filename="../../DlgPrimitives.ui" line="351"/>
-      <source>Width:</source>
-      <translation>Širina:</translation>
+      <source>Width</source>
+      <translation>Širina</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="371"/>
@@ -3557,8 +3513,8 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
       <location filename="../../DlgPrimitives.ui" line="683"/>
       <location filename="../../DlgPrimitives.ui" line="1419"/>
       <location filename="../../DlgPrimitives.ui" line="1745"/>
-      <source>Height:</source>
-      <translation>Visina:</translation>
+      <source>Height</source>
+      <translation>Visina</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="445"/>
@@ -3566,131 +3522,174 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
       <location filename="../../DlgPrimitives.ui" line="1765"/>
       <location filename="../../DlgPrimitives.ui" line="1914"/>
       <location filename="../../DlgPrimitives.ui" line="1970"/>
-      <source>Radius:</source>
-      <translation>Poluprečnik:</translation>
+      <source>Radius</source>
+      <translation>Poluprečnik</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="569"/>
+      <source>Rotation angle</source>
+      <translation>Ugao okretanja</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="643"/>
+      <location filename="../../DlgPrimitives.ui" line="975"/>
+      <location filename="../../DlgPrimitives.ui" line="1184"/>
+      <source>Radius 1</source>
+      <translation>Poluprečnik 1</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="663"/>
+      <location filename="../../DlgPrimitives.ui" line="995"/>
+      <location filename="../../DlgPrimitives.ui" line="1204"/>
+      <source>Radius 2</source>
+      <translation>Poluprečnik 2</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="729"/>
+      <location filename="../../DlgPrimitives.ui" line="1785"/>
+      <source>Angle</source>
+      <translation>Ugao</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="852"/>
+      <location filename="../../DlgPrimitives.ui" line="1064"/>
+      <location filename="../../DlgPrimitives.ui" line="1253"/>
+      <source>U parameter</source>
+      <translation>U parametar</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="872"/>
+      <source>V parameters</source>
+      <translation>V parametri</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="1015"/>
+      <source>Radius 3</source>
+      <translation>Poluprečnik 3</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="1084"/>
+      <location filename="../../DlgPrimitives.ui" line="1273"/>
+      <source>V parameter</source>
+      <translation>V parametar</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="1376"/>
+      <location filename="../../DlgPrimitives.ui" line="2418"/>
+      <source>Polygon</source>
+      <translation>Mnogougao</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="1399"/>
+      <location filename="../../DlgPrimitives.ui" line="2441"/>
+      <source>Circumradius</source>
+      <translation>Poluprečnik opisanog kruga</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="1518"/>
+      <source>X min/max</source>
+      <translation>X min/maks</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="1548"/>
+      <source>Y min/max</source>
+      <translation>Y min/maks</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="1578"/>
+      <source>Z min/max</source>
+      <translation>Z min/maks</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="1608"/>
+      <source>X2 min/max</source>
+      <translation>X2 min/maks</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="1641"/>
+      <source>Z2 min/max</source>
+      <translation>Z2 min/maks</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="1725"/>
+      <source>Pitch</source>
+      <translation type="unfinished">Pitch</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="1802"/>
+      <source>Coordinate system</source>
+      <translation>Koordinatni sistem</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="1874"/>
+      <source>Growth</source>
+      <translation type="unfinished">Growth</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="1894"/>
+      <source>Number of rotations</source>
+      <translation>Broj obrtaja</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="1990"/>
+      <location filename="../../DlgPrimitives.ui" line="2112"/>
+      <source>Angle 1</source>
+      <translation>Ugao 1</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="2007"/>
+      <location filename="../../DlgPrimitives.ui" line="2129"/>
+      <source>Angle 2</source>
+      <translation>Ugao 2</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="2044"/>
+      <source>From 3 Points</source>
+      <translation>Pomoću 3 tačke</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="2072"/>
+      <source>Major radius</source>
+      <translation>Veća poluosa</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="2092"/>
+      <source>Minor radius</source>
+      <translation>Manja poluosa</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="2170"/>
+      <location filename="../../DlgPrimitives.ui" line="2268"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="2190"/>
+      <location filename="../../DlgPrimitives.ui" line="2301"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrimitives.ui" line="2210"/>
+      <location filename="../../DlgPrimitives.ui" line="2334"/>
+      <source>Z</source>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="485"/>
-      <location filename="../../DlgPrimitives.ui" line="1439"/>
-      <source>Angle in first direction:</source>
-      <translation>Ugao u jednom smeru:</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrimitives.ui" line="492"/>
+      <location filename="../../DlgPrimitives.ui" line="1439"/>
       <location filename="../../DlgPrimitives.ui" line="1446"/>
       <source>Angle in first direction</source>
       <translation>Ugao u jednom smeru</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="511"/>
-      <location filename="../../DlgPrimitives.ui" line="1465"/>
-      <source>Angle in second direction:</source>
-      <translation>Ugao u drugom smeru:</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrimitives.ui" line="518"/>
+      <location filename="../../DlgPrimitives.ui" line="1465"/>
       <location filename="../../DlgPrimitives.ui" line="1472"/>
       <source>Angle in second direction</source>
       <translation>Ugao u drugom smeru</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="569"/>
-      <source>Rotation angle:</source>
-      <translation>Ugao obrtanja:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="643"/>
-      <location filename="../../DlgPrimitives.ui" line="975"/>
-      <location filename="../../DlgPrimitives.ui" line="1184"/>
-      <source>Radius 1:</source>
-      <translation>Poluprečnik 1:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="663"/>
-      <location filename="../../DlgPrimitives.ui" line="995"/>
-      <location filename="../../DlgPrimitives.ui" line="1204"/>
-      <source>Radius 2:</source>
-      <translation>Poluprečnik 2:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="729"/>
-      <location filename="../../DlgPrimitives.ui" line="1785"/>
-      <source>Angle:</source>
-      <translation>Ugao:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="852"/>
-      <location filename="../../DlgPrimitives.ui" line="1064"/>
-      <source>U parameter:</source>
-      <translation>U parametar:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="872"/>
-      <source>V parameters:</source>
-      <translation>V parametri:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="1015"/>
-      <source>Radius 3:</source>
-      <translation>Poluprečnik 3:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="1084"/>
-      <location filename="../../DlgPrimitives.ui" line="1273"/>
-      <source>V parameter:</source>
-      <translation>V parametar:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="1253"/>
-      <source>U Parameter:</source>
-      <translation>U Parametar:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="1376"/>
-      <location filename="../../DlgPrimitives.ui" line="2418"/>
-      <source>Polygon:</source>
-      <translation>Mnogougao:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="1399"/>
-      <location filename="../../DlgPrimitives.ui" line="2441"/>
-      <source>Circumradius:</source>
-      <translation>Poluprečnik opisanog kruga:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="1518"/>
-      <source>X min/max:</source>
-      <translation>X min/maks:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="1548"/>
-      <source>Y min/max:</source>
-      <translation>Y min/maks:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="1578"/>
-      <source>Z min/max:</source>
-      <translation>Z min/maks:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="1608"/>
-      <source>X2 min/max:</source>
-      <translation>X2 min/maks:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="1641"/>
-      <source>Z2 min/max:</source>
-      <translation>Z2 min/maks:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="1725"/>
-      <source>Pitch:</source>
-      <translation>Korak:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="1802"/>
-      <source>Coordinate system:</source>
-      <translation>Koordinatni sistem:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1810"/>
@@ -3703,61 +3702,6 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
       <translation>Levoruk</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.ui" line="1874"/>
-      <source>Growth:</source>
-      <translation>Rast:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="1894"/>
-      <source>Number of rotations:</source>
-      <translation>Broj obrtaja:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="1990"/>
-      <location filename="../../DlgPrimitives.ui" line="2112"/>
-      <source>Angle 1:</source>
-      <translation>Ugao 1:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="2007"/>
-      <location filename="../../DlgPrimitives.ui" line="2129"/>
-      <source>Angle 2:</source>
-      <translation>Ugao 2:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="2044"/>
-      <source>From three points</source>
-      <translation>Iz tri tačke</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="2072"/>
-      <source>Major radius:</source>
-      <translation>Veća poluosa:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="2092"/>
-      <source>Minor radius:</source>
-      <translation>Manja poluosa:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="2170"/>
-      <location filename="../../DlgPrimitives.ui" line="2268"/>
-      <source>X:</source>
-      <translation>X:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="2190"/>
-      <location filename="../../DlgPrimitives.ui" line="2301"/>
-      <source>Y:</source>
-      <translation>Y:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrimitives.ui" line="2210"/>
-      <location filename="../../DlgPrimitives.ui" line="2334"/>
-      <source>Z:</source>
-      <translation>Z:</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrimitives.ui" line="2251"/>
       <source>Start point</source>
       <translation>Početna tačka</translation>
@@ -3768,56 +3712,31 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
       <translation>Krajnja tačka</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1737"/>
+      <location filename="../../DlgPrimitives.cpp" line="1740"/>
       <source>Vertex</source>
       <translation>Teme</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1915"/>
-      <location filename="../../DlgPrimitives.cpp" line="1925"/>
-      <location filename="../../DlgPrimitives.cpp" line="1940"/>
-      <location filename="../../DlgPrimitives.cpp" line="1944"/>
+      <location filename="../../DlgPrimitives.cpp" line="1918"/>
+      <location filename="../../DlgPrimitives.cpp" line="1928"/>
+      <location filename="../../DlgPrimitives.cpp" line="1943"/>
+      <location filename="../../DlgPrimitives.cpp" line="1947"/>
       <source>Create %1</source>
       <translation>Napravi %1</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="1916"/>
+      <location filename="../../DlgPrimitives.cpp" line="1919"/>
       <source>No active document</source>
       <translation>Nema aktivnog dokumenta</translation>
     </message>
     <message>
-      <location filename="../../DlgPrimitives.cpp" line="2209"/>
+      <location filename="../../DlgPrimitives.cpp" line="2212"/>
       <source>&amp;Create</source>
       <translation>&amp;Napravi</translation>
     </message>
   </context>
   <context>
     <name>PartGui::DlgProjectionOnSurface</name>
-    <message>
-      <location filename="../../DlgProjectionOnSurface.ui" line="14"/>
-      <source>Projection on surface</source>
-      <translation>Projekcija na površinu</translation>
-    </message>
-    <message>
-      <location filename="../../DlgProjectionOnSurface.ui" line="20"/>
-      <source>Select projection surface</source>
-      <translation>Izaberi površinu na koju se projicira</translation>
-    </message>
-    <message>
-      <location filename="../../DlgProjectionOnSurface.ui" line="31"/>
-      <source>Add face</source>
-      <translation>Dodaj stranicu</translation>
-    </message>
-    <message>
-      <location filename="../../DlgProjectionOnSurface.ui" line="38"/>
-      <source>Add wire</source>
-      <translation>Dodaj žičani ram</translation>
-    </message>
-    <message>
-      <location filename="../../DlgProjectionOnSurface.ui" line="45"/>
-      <source>Add edge</source>
-      <translation>Dodaj ivicu</translation>
-    </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="56"/>
       <source>Show all</source>
@@ -3829,9 +3748,34 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
       <translation>Prikaži stranice</translation>
     </message>
     <message>
+      <location filename="../../DlgProjectionOnSurface.ui" line="14"/>
+      <source>Project on Surface</source>
+      <translation>Projiciraj na površinu</translation>
+    </message>
+    <message>
+      <location filename="../../DlgProjectionOnSurface.ui" line="20"/>
+      <source>Select Projection Surface</source>
+      <translation type="unfinished">Select Projection Surface</translation>
+    </message>
+    <message>
+      <location filename="../../DlgProjectionOnSurface.ui" line="31"/>
+      <source>Add Face</source>
+      <translation type="unfinished">Add Face</translation>
+    </message>
+    <message>
+      <location filename="../../DlgProjectionOnSurface.ui" line="38"/>
+      <source>Add Wire</source>
+      <translation type="unfinished">Add Wire</translation>
+    </message>
+    <message>
+      <location filename="../../DlgProjectionOnSurface.ui" line="45"/>
+      <source>Add Edge</source>
+      <translation>Dodaj ivicu</translation>
+    </message>
+    <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="76"/>
-      <source>Show Edges</source>
-      <translation>Prikaži ivice</translation>
+      <source>Show edges</source>
+      <translation type="unfinished">Show edges</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="92"/>
@@ -3850,38 +3794,38 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="147"/>
-      <source>Get current camera direction</source>
-      <translation>Isčitaj trenutni pravac kamere</translation>
+      <source>Get Current Camera Direction</source>
+      <translation type="unfinished">Get Current Camera Direction</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="156"/>
-      <source>X:</source>
-      <translation>X:</translation>
+      <source>X</source>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="186"/>
-      <source>Y:</source>
-      <translation>Y:</translation>
+      <source>Y</source>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="213"/>
-      <source>Z:</source>
-      <translation>Z:</translation>
+      <source>Z</source>
+      <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="135"/>
-      <source>Projection Object</source>
-      <translation>Objekat koji se projicira</translation>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="136"/>
+      <source>Projection object</source>
+      <translation type="unfinished">Projection object</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="164"/>
-      <source>Have no active document!!!</source>
-      <translation>Nema aktivnog dokumenta!!!</translation>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="165"/>
+      <source>No active document</source>
+      <translation>Nema aktivnog dokumenta</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="171"/>
-      <source>Can not create a projection object!!!</source>
-      <translation>Ne mogu napraviti projicirani objekat!!!</translation>
+      <source>Cannot create a projection object</source>
+      <translation type="unfinished">Cannot create a projection object</translation>
     </message>
   </context>
   <context>
@@ -3898,60 +3842,74 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="56"/>
-      <source>Revolution axis</source>
-      <translation>Osa obrtanja</translation>
+      <source>Revolution Axis</source>
+      <translation type="unfinished">Revolution Axis</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="64"/>
-      <source>Center X:</source>
-      <translation>Centar X:</translation>
+      <source>Center X</source>
+      <translation type="unfinished">Center X</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="84"/>
-      <source>Center Y:</source>
-      <translation>Centar Y:</translation>
+      <source>Center Y</source>
+      <translation type="unfinished">Center Y</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="104"/>
-      <source>Center Z:</source>
-      <translation>Centar Z:</translation>
+      <source>Center Z</source>
+      <translation type="unfinished">Center Z</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="146"/>
       <location filename="../../DlgRevolution.ui" line="187"/>
-      <source>Click to set this as axis</source>
-      <translation>Klikni da bi ovo podesio kao osu</translation>
+      <source>Sets this as axis</source>
+      <translation type="unfinished">Sets this as axis</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="149"/>
-      <source>Dir. X:</source>
-      <translation>Pravac. X:</translation>
+      <source>X Direction</source>
+      <translation type="unfinished">X Direction</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="190"/>
-      <source>Dir. Y:</source>
-      <translation>Pravac. Y:</translation>
+      <source>Y Direction</source>
+      <translation type="unfinished">Y Direction</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="228"/>
-      <source>Dir. Z:</source>
-      <translation>Pravac. Z:</translation>
+      <source>Z Direction</source>
+      <translation type="unfinished">Z Direction</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="250"/>
-      <location filename="../../DlgRevolution.cpp" line="465"/>
-      <source>Select reference</source>
-      <translation>Izaberi sopstvenu</translation>
+      <source>Select Reference</source>
+      <translation type="unfinished">Select Reference</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="281"/>
-      <source>Angle:</source>
-      <translation>Ugao:</translation>
+      <source>Angle</source>
+      <translation>Ugao</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="315"/>
-      <source>If checked, revolution will extend forwards and backwards by half the angle.</source>
-      <translation>Ako je označeno, obrtanje će se izvršiti u oba smera za po polovinu ugla.</translation>
+      <source>Extends the revolution forwards and backwards by half the angle</source>
+      <translation type="unfinished">Extends the revolution forwards and backwards by half the angle</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRevolution.ui" line="325"/>
+      <source>Creates a solid. Otherwise it results in a shell.</source>
+      <translation type="unfinished">Creates a solid. Otherwise it results in a shell.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRevolution.ui" line="328"/>
+      <source>Create solid</source>
+      <translation>Napravi puno telo</translation>
+    </message>
+    <message>
+      <location filename="../../DlgRevolution.cpp" line="468"/>
+      <source>Select reference</source>
+      <translation>Izaberi sopstvenu</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="318"/>
@@ -3959,29 +3917,19 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
       <translation>Simetrični ugao</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.ui" line="325"/>
-      <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-      <translation>Ako se označi, rotirane zatvorene žičane skice će dati puna tela, a ne ljuske.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgRevolution.ui" line="328"/>
-      <source>Create Solid</source>
-      <translation>Napravi puno telo</translation>
-    </message>
-    <message>
-      <location filename="../../DlgRevolution.cpp" line="185"/>
+      <location filename="../../DlgRevolution.cpp" line="188"/>
       <source>Object not found: %1</source>
       <translation>Objekat nije pronađen: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="266"/>
-      <source>Select a shape for revolution, first.</source>
-      <translation type="unfinished">Select a shape for revolution, first.</translation>
+      <location filename="../../DlgRevolution.cpp" line="269"/>
+      <source>Select a shape for revolution.</source>
+      <translation type="unfinished">Select a shape for revolution.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="282"/>
-      <location filename="../../DlgRevolution.cpp" line="287"/>
-      <location filename="../../DlgRevolution.cpp" line="292"/>
+      <location filename="../../DlgRevolution.cpp" line="285"/>
+      <location filename="../../DlgRevolution.cpp" line="290"/>
+      <location filename="../../DlgRevolution.cpp" line="295"/>
       <source>Revolution axis link is invalid.
 
 %1</source>
@@ -3990,23 +3938,23 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="292"/>
+      <location filename="../../DlgRevolution.cpp" line="295"/>
       <source>Unknown error</source>
       <translation>Nepoznata greška</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="301"/>
+      <location filename="../../DlgRevolution.cpp" line="304"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
       <translation>Pravac ose obrtanja je nulte dužine. Mora biti različit od nule.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="311"/>
+      <location filename="../../DlgRevolution.cpp" line="314"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
       <translation>Ugao obrtanja je nula. Mora biti različit od nule.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="445"/>
-      <location filename="../../DlgRevolution.cpp" line="449"/>
+      <location filename="../../DlgRevolution.cpp" line="448"/>
+      <location filename="../../DlgRevolution.cpp" line="452"/>
       <source>Creating Revolve failed.
 
 %1</source>
@@ -4015,27 +3963,27 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="461"/>
-      <source>Selecting... (line or arc)</source>
-      <translation>Izbor... (linija ili kružnica)</translation>
+      <location filename="../../DlgRevolution.cpp" line="464"/>
+      <source>Selecting… (line or arc)</source>
+      <translation type="unfinished">Selecting… (line or arc)</translation>
     </message>
   </context>
   <context>
     <name>PartGui::DlgSettings3DViewPart</name>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="14"/>
-      <source>Shape view</source>
-      <translation>Prikaz oblika</translation>
+      <source>Shape View</source>
+      <translation type="unfinished">Shape View</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="26"/>
       <source>Tessellation</source>
-      <translation>Popločavanje</translation>
+      <translation>Aproksimacija prikazanog oblika</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="46"/>
       <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation>Određuje odstupanje popločavanja u odnosu na stvarnu površinu</translation>
+      <translation>Određuje odstupanje prikazanog oblika površine u odnosu na stvarnu površinu</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="49"/>
@@ -4045,7 +3993,7 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="52"/>
       <source>Maximum deviation depending on the model bounding box</source>
-      <translation>Maksimalno odstupanje u zavisnosti od graničnog okvira modela</translation>
+      <translation>Maksimalno odstupanje u zavisnosti od granične kutije modela</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="87"/>
@@ -4060,17 +4008,17 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="84"/>
       <source>Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
-      <translation type="unfinished">Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</translation>
+      <translation>Zadavanje premalog odstupanja uzrokuje da aproksimacija traje duže i na taj način se zamrzava ili usporava GUI (Grafičko radno okruženje).</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="104"/>
-      <source>Angle Deflection</source>
-      <translation type="unfinished">Angle Deflection</translation>
+      <source>Angle deflection</source>
+      <translation type="unfinished">Angle deflection</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="105"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
-      <translation type="unfinished">Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</translation>
+      <translation>Zadavanje premalog odstupanja ugla uzrokuje da aproksimacija traje duže i na taj način se zamrzava ili usporava GUI (Grafičko radno okruženje).</translation>
     </message>
   </context>
   <context>
@@ -4079,11 +4027,6 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
       <location filename="../../DlgSettingsGeneral.ui" line="14"/>
       <source>General</source>
       <translation>Opšte</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="20"/>
-      <source>Model settings</source>
-      <translation>Podešavanja modela</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="26"/>
@@ -4096,47 +4039,92 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
       <translation>Automatski prečisti model nakon bulove operacije</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
-      <source>Automatically refine model after sketch-based operation</source>
-      <translation>Automatski prečisti model nakon operacije na bazi skice</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="83"/>
-      <source>Object naming</source>
-      <translation>Imenovanje objekata</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="89"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="105"/>
       <source>Add name of base object</source>
       <translation>Dodaj ime osnovnog objekta</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="108"/>
-      <source>Experimental</source>
-      <translation>Eksperimentalno</translation>
+      <location filename="../../DlgSettingsGeneral.ui" line="20"/>
+      <source>Model Settings</source>
+      <translation type="unfinished">Model Settings</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="117"/>
-      <source>These settings are experimental and may result in decreased stability, more problems and undefined behaviors.</source>
-      <translation>Ova podešavanja su eksperimentalna i mogu izazvati smanjenu stabilnost ili neke druge probleme.</translation>
+      <location filename="../../DlgSettingsGeneral.ui" line="58"/>
+      <source>Automatically refine model after applying operations</source>
+      <translation type="unfinished">Automatically refine model after applying operations</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="99"/>
+      <source>Object Naming</source>
+      <translation type="unfinished">Object Naming</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="127"/>
-      <source>Allow multiple solids in Part Design Body by default (experimental)</source>
-      <translation>Dozvoli nekoliko punih tela unutar jednog kontejnera Telo (eksperimentalno)</translation>
+      <source>Features Settings</source>
+      <translation type="unfinished">Features Settings</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="135"/>
+      <source>Default profile type for holes</source>
+      <translation>Unapred podešena vrsta profila rupe</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="152"/>
+      <source>Circles and arcs</source>
+      <translation>Kružnice i kružni lukovi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="157"/>
+      <source>Points, circles and arcs</source>
+      <translation>Tačke, kružnice i kružni lukovi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="162"/>
+      <source>Points</source>
+      <translation>Tačke</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="172"/>
+      <source>Switch to task panel when entering Part Design workbench</source>
+      <translation type="unfinished">Switch to task panel when entering Part Design workbench</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="175"/>
+      <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
+      <translation type="unfinished">Automatically switch to the task panel when the Part Design workbench is activated</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="197"/>
+      <source>Preview</source>
+      <translation>Pregled</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="206"/>
+      <source>Show final result by default when editing feature</source>
+      <translation type="unfinished">Show final result by default when editing feature</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="219"/>
+      <source>Show transparent preview overlay by default when editing feature</source>
+      <translation type="unfinished">Show transparent preview overlay by default when editing feature</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="74"/>
+      <source>Allow multiple solids in Part Design bodies by default</source>
+      <translation type="unfinished">Allow multiple solids in Part Design bodies by default</translation>
     </message>
   </context>
   <context>
     <name>PartGui::DlgSettingsObjectColor</name>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="14"/>
-      <source>Shape appearance</source>
+      <source>Shape Appearance</source>
       <translation>Izgled oblika</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
-      <source>Default Shape view properties</source>
-      <translation>Podrazumevane osobine izgleda oblika</translation>
+      <source>Default Shape Appearance Properties</source>
+      <translation>Unapred zadana svojstva izgleda oblika</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
@@ -4171,12 +4159,12 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="116"/>
       <source>Emissive shape color</source>
-      <translation>Emitujuća boja</translation>
+      <translation>Zračeća boja</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="123"/>
       <source>The default emissive color for new shapes</source>
-      <translation>Podrazumevana emitujuća boja za nove oblike</translation>
+      <translation>Podrazumevana zračeća boja za nove oblike</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="149"/>
@@ -4229,12 +4217,6 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
       <translation>Podrazumevana debljina linija za nove oblike</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsObjectColor.ui" line="298"/>
-      <location filename="../../DlgSettingsObjectColor.ui" line="366"/>
-      <source>px</source>
-      <translation>px</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="323"/>
       <source>Vertex color</source>
       <translation>Boja temena</translation>
@@ -4257,12 +4239,12 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="391"/>
       <source>Bounding box color</source>
-      <translation>Boja graničnog okvira</translation>
+      <translation>Boja granične kutije</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="398"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation>Boja graničnih okvira u 3D pogledu (kada u opcijama podesite da je granični okvir stalno vidljiv)</translation>
+      <translation>Boja graničnih kutija u 3D pogledu (kada u opcijama podesite da je granična kutija stalno vidljiva)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="424"/>
@@ -4272,7 +4254,7 @@ tokom učitavanja datoteke (sporije, ali sa više detalja).</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="431"/>
       <source>The font size of bounding boxes in the 3D view</source>
-      <translation>Veličina fonta granične kutije u 3D pogledu (kada u opcijama podesite da je granični okvir stalno vidljiv)</translation>
+      <translation>Veličina fonta granične kutije u 3D pogledu (kada u opcijama podesite da je granična kutija stalno vidljiva)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="465"/>
@@ -4281,7 +4263,7 @@ If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
       <translation>Donja strana površine će biti prikazana na isti način kao gornja strana.
-Ako nije označeno, zavisiće od opcije „Omogući boju pozadinskog osvetljenja“
+Ako nije potvrđeno, zavisiće od opcije „Omogući boju pozadinskog osvetljenja“
 (Podešavanja -&gt; Prikaz -&gt; 3D prikaz). Ili će se koristiti boja pozadinskog 
 osvetljenja ili crna boja.</translation>
     </message>
@@ -4292,8 +4274,8 @@ osvetljenja ili crna boja.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="505"/>
-      <source>Default Annotation color</source>
-      <translation>Podrazumevana boja napomene</translation>
+      <source>Default Annotation Color</source>
+      <translation>Unapred zadana boja napomene</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="519"/>
@@ -4316,27 +4298,50 @@ osvetljenja ili crna boja.</translation>
     <message>
       <location filename="../../Location.ui" line="29"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Položaj</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="37"/>
+      <location filename="../../Location.ui" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="54"/>
+      <location filename="../../Location.ui" line="147"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="71"/>
+      <location filename="../../Location.ui" line="176"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="90"/>
-      <source>3D view</source>
+      <source>3D View</source>
       <translation>3D pogled</translation>
+    </message>
+    <message>
+      <location filename="../../Location.ui" line="110"/>
+      <source>Rotation Axis</source>
+      <translation>Osa obrtanja</translation>
+    </message>
+    <message>
+      <location filename="../../Location.ui" line="125"/>
+      <source>X-component of direction vector</source>
+      <translation>X komponenta vektora pravca</translation>
+    </message>
+    <message>
+      <location filename="../../Location.ui" line="154"/>
+      <source>Y-component of direction vector</source>
+      <translation>Y komponenta vektora pravca</translation>
+    </message>
+    <message>
+      <location filename="../../Location.ui" line="183"/>
+      <source>Z-component of direction vector</source>
+      <translation>Z komponenta vektora pravca</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="106"/>
@@ -4344,41 +4349,6 @@ osvetljenja ili crna boja.</translation>
 the sketch plane's normal vector will be used</source>
       <translation>Koristi sopstveni vektor za smer izvlačenja u suprotnom
 će biti upotrebljena normala na ravan skice</translation>
-    </message>
-    <message>
-      <location filename="../../Location.ui" line="110"/>
-      <source>Rotation axis</source>
-      <translation>Osa obrtanja</translation>
-    </message>
-    <message>
-      <location filename="../../Location.ui" line="118"/>
-      <source>x</source>
-      <translation>x</translation>
-    </message>
-    <message>
-      <location filename="../../Location.ui" line="125"/>
-      <source>x-component of direction vector</source>
-      <translation>x-komponenta vektora pravca</translation>
-    </message>
-    <message>
-      <location filename="../../Location.ui" line="147"/>
-      <source>y</source>
-      <translation>y</translation>
-    </message>
-    <message>
-      <location filename="../../Location.ui" line="154"/>
-      <source>y-component of direction vector</source>
-      <translation>y-komponenta vektora pravca</translation>
-    </message>
-    <message>
-      <location filename="../../Location.ui" line="176"/>
-      <source>z</source>
-      <translation>z</translation>
-    </message>
-    <message>
-      <location filename="../../Location.ui" line="183"/>
-      <source>z-component of direction vector</source>
-      <translation>z-komponenta vektora pravca</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="208"/>
@@ -4405,8 +4375,8 @@ the sketch plane's normal vector will be used</source>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="180"/>
-      <source>At least two vertices, edges, wires or faces are required.</source>
-      <translation>Potrebna su najmanje dva temena, ivice, žičane ivice ili stranice.</translation>
+      <source>At least 2 vertices, edges, wires, or faces are required.</source>
+      <translation>Potrebna su najmanje dva temena, ivice, žičana elementa ili stranice.</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="214"/>
@@ -4416,7 +4386,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation>Teme/Ivica/Žičana ivica/Stranica</translation>
+      <translation>Teme/Ivica/Žičani element/Stranica</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="244"/>
@@ -4428,8 +4398,48 @@ the sketch plane's normal vector will be used</source>
     <name>PartGui::Mirroring</name>
     <message>
       <location filename="../../Mirroring.ui" line="14"/>
-      <source>Mirroring</source>
-      <translation>Simetrično preslikavanje</translation>
+      <source>Mirror</source>
+      <translation>Simetrično preslikaj</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.ui" line="20"/>
+      <source>Base Point</source>
+      <translation>Osnovna tačka</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.ui" line="26"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.ui" line="49"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.ui" line="72"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.ui" line="98"/>
+      <source>Mirror plane</source>
+      <translation>Ravan simetrije</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.ui" line="106"/>
+      <source>XY-plane</source>
+      <translation>XY ravan</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.ui" line="111"/>
+      <source>XZ-plane</source>
+      <translation>XZ ravan</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.ui" line="116"/>
+      <source>YZ-plane</source>
+      <translation>YZ ravan</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="121"/>
@@ -4442,28 +4452,8 @@ the sketch plane's normal vector will be used</source>
       <translation>Oblici</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="98"/>
-      <source>Mirror plane:</source>
-      <translation>Ravan simetrije:</translation>
-    </message>
-    <message>
-      <location filename="../../Mirroring.ui" line="106"/>
-      <source>XY plane</source>
-      <translation>XY ravan</translation>
-    </message>
-    <message>
-      <location filename="../../Mirroring.ui" line="111"/>
-      <source>XZ plane</source>
-      <translation>XZ ravan</translation>
-    </message>
-    <message>
-      <location filename="../../Mirroring.ui" line="116"/>
-      <source>YZ plane</source>
-      <translation>YZ ravan</translation>
-    </message>
-    <message>
       <location filename="../../Mirroring.ui" line="150"/>
-      <location filename="../../Mirroring.cpp" line="215"/>
+      <location filename="../../Mirroring.cpp" line="220"/>
       <source>Selecting</source>
       <translation>Izaberi ravan</translation>
     </message>
@@ -4473,37 +4463,17 @@ the sketch plane's normal vector will be used</source>
       <translation>Izabrana ravan simetrije</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="20"/>
-      <source>Base point</source>
-      <translation>Osnovna tačka</translation>
-    </message>
-    <message>
-      <location filename="../../Mirroring.ui" line="26"/>
-      <source>x</source>
-      <translation>x</translation>
-    </message>
-    <message>
-      <location filename="../../Mirroring.ui" line="49"/>
-      <source>y</source>
-      <translation>y</translation>
-    </message>
-    <message>
-      <location filename="../../Mirroring.ui" line="72"/>
-      <source>z</source>
-      <translation>z</translation>
-    </message>
-    <message>
-      <location filename="../../Mirroring.cpp" line="211"/>
+      <location filename="../../Mirroring.cpp" line="216"/>
       <source>Select reference</source>
       <translation>Izaberi sopstvenu</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="280"/>
-      <source>Select a shape for mirroring, first.</source>
-      <translation>Prvo izaberi oblik za simetrično preslikavanje.</translation>
+      <location filename="../../Mirroring.cpp" line="285"/>
+      <source>Select a shape for mirroring.</source>
+      <translation>Izaberi oblik za simetrično preslikavanje.</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="287"/>
+      <location filename="../../Mirroring.cpp" line="292"/>
       <source>No such document '%1'.</source>
       <translation>Nema takvog dokumenta '%1'.</translation>
     </message>
@@ -4511,7 +4481,7 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::OffsetWidget</name>
     <message>
-      <location filename="../../TaskOffset.cpp" line="206"/>
+      <location filename="../../TaskOffset.cpp" line="208"/>
       <source>Input error</source>
       <translation>Greška pri unosu</translation>
     </message>
@@ -4519,17 +4489,17 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::ResultModel</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="340"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="341"/>
       <source>Name</source>
       <translation>Ime</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="342"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="343"/>
       <source>Type</source>
       <translation>Vrsta</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="344"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="345"/>
       <source>Error</source>
       <translation>Greška</translation>
     </message>
@@ -4538,7 +4508,7 @@ the sketch plane's normal vector will be used</source>
     <name>PartGui::SectionCut</name>
     <message>
       <location filename="../../SectionCutting.ui" line="20"/>
-      <source>Persistent Section Cutting</source>
+      <source>Persistent Section Cut</source>
       <translation>Iseci presek</translation>
     </message>
     <message>
@@ -4572,14 +4542,42 @@ the sketch plane's normal vector will be used</source>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="242"/>
-      <source>Cut face</source>
-      <translation>Presek stranice</translation>
+      <source>Cut Face</source>
+      <translation type="unfinished">Cut Face</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="254"/>
       <location filename="../../SectionCutting.ui" line="394"/>
-      <source>Color of cut face</source>
-      <translation>Boja preseka stranice</translation>
+      <source>Color of the cut face</source>
+      <translation type="unfinished">Color of the cut face</translation>
+    </message>
+    <message>
+      <location filename="../../SectionCutting.ui" line="302"/>
+      <location filename="../../SectionCutting.ui" line="445"/>
+      <source>Takes the color and transparency
+from the cut objects.
+Works only properly if all objects
+have the same values.</source>
+      <translation type="unfinished">Takes the color and transparency
+from the cut objects.
+Works only properly if all objects
+have the same values.</translation>
+    </message>
+    <message>
+      <location filename="../../SectionCutting.ui" line="330"/>
+      <location filename="../../SectionCutting.ui" line="473"/>
+      <source>Transparency of the cut face</source>
+      <translation type="unfinished">Transparency of the cut face</translation>
+    </message>
+    <message>
+      <location filename="../../SectionCutting.ui" line="376"/>
+      <source>Cut Intersecting Objects</source>
+      <translation type="unfinished">Cut Intersecting Objects</translation>
+    </message>
+    <message>
+      <location filename="../../SectionCutting.ui" line="514"/>
+      <source>Refresh View</source>
+      <translation type="unfinished">Refresh View</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="257"/>
@@ -4588,28 +4586,10 @@ the sketch plane's normal vector will be used</source>
       <translation>Boja</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.ui" line="302"/>
-      <location filename="../../SectionCutting.ui" line="445"/>
-      <source>If checked, the color and transparency
-will be taken from the cut objects.
-Works only properly if all objects
-have the same values.</source>
-      <translation type="unfinished">If checked, the color and transparency
-will be taken from the cut objects.
-Works only properly if all objects
-have the same values.</translation>
-    </message>
-    <message>
       <location filename="../../SectionCutting.ui" line="308"/>
       <location filename="../../SectionCutting.ui" line="451"/>
       <source>Auto</source>
       <translation>Automatski</translation>
-    </message>
-    <message>
-      <location filename="../../SectionCutting.ui" line="330"/>
-      <location filename="../../SectionCutting.ui" line="473"/>
-      <source>Transparency of cut face</source>
-      <translation>Providnost preseka stranice</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="333"/>
@@ -4619,17 +4599,11 @@ have the same values.</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="371"/>
-      <source>Allows to cut objects intersecting each other
+      <source>Allows cutting objects intersecting each other
 for the price that all cut objects
 will get the same color</source>
-      <translation type="unfinished">Allows to cut objects intersecting each other
-for the price that all cut objects
-will get the same color</translation>
-    </message>
-    <message>
-      <location filename="../../SectionCutting.ui" line="376"/>
-      <source>Cut intersecting objects</source>
-      <translation>Iseci objekte koji se seku</translation>
+      <translation>Sečenje objekata koji se međusobno presecaju,
+svi isečeni objekti će imati istu boju.</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="419"/>
@@ -4640,11 +4614,6 @@ will get the same color</translation>
       <location filename="../../SectionCutting.ui" line="511"/>
       <source>Refreshes the list of visible objects</source>
       <translation>Osvežava listu vidljivih objekata</translation>
-    </message>
-    <message>
-      <location filename="../../SectionCutting.ui" line="514"/>
-      <source>Refresh view</source>
-      <translation>Osveži prikaz</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="544"/>
@@ -4659,7 +4628,7 @@ only created cuts will be visible</source>
       <translation>Posle zatvaranja vidljivi samo isečeni preseci</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="1103"/>
+      <location filename="../../SectionCutting.cpp" line="1091"/>
       <source>Sliders are disabled for assemblies</source>
       <translation>Klizači su onemogućeni za sklopove</translation>
     </message>
@@ -4667,178 +4636,160 @@ only created cuts will be visible</source>
   <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="222"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="218"/>
       <source>Unsupported</source>
       <translation>Nije podržan</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="222"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="218"/>
       <source>Box selection for shells is not supported</source>
       <translation>Pravougaoni izbor ljuski nije podržan</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="231"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="250"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="278"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="319"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="371"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="423"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="484"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="227"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="246"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="274"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="315"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="367"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="419"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="480"/>
       <source>Wrong selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="231"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="250"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="227"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="246"/>
       <source>Select two vertices</source>
       <translation>Izaberi dva temena</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="278"/>
-      <location filename="../../TaskShapeBuilder.cpp" line="371"/>
-      <source>Select one or more edges</source>
-      <translation>Izaberi jednu ili više ivica</translation>
+      <location filename="../../TaskShapeBuilder.cpp" line="274"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="367"/>
+      <source>Select at least 1 edge</source>
+      <translation>Izaberi barem jednu ivicu</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="319"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="419"/>
+      <source>Select at least 2 faces</source>
+      <translation>Izaberi najmanje dve stranice</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBuilder.cpp" line="480"/>
+      <source>Select only 1 shape object</source>
+      <translation type="unfinished">Select only 1 shape object</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBuilder.cpp" line="546"/>
+      <source>Select vertices</source>
+      <translation>Izaberi temena</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBuilder.cpp" line="553"/>
+      <source>Select a closed loop of edges</source>
+      <translation type="unfinished">Select a closed loop of edges</translation>
+    </message>
+    <message>
+      <location filename="../../TaskShapeBuilder.cpp" line="315"/>
       <source>Select three or more vertices</source>
       <translation>Izaberi tri ili više temena</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="423"/>
-      <source>Select two or more faces</source>
-      <translation>Izaberi dve ili više stranice</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="484"/>
-      <source>Select only one part object</source>
-      <translation>Izaberi samo jedan Deo objekat</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="536"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="532"/>
       <source>Select two vertices to create an edge</source>
       <translation>Izaberi dva temena da napravite ivicu</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="543"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="539"/>
       <source>Select adjacent edges</source>
       <translation>Izaberi povezane ivice</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="550"/>
-      <source>Select a list of vertices</source>
-      <translation>Izaberi listu temena</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="557"/>
-      <source>Select a closed set of edges</source>
-      <translation>Izaberi zatvoren skup ivica</translation>
-    </message>
-    <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="564"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="560"/>
       <source>Select adjacent faces</source>
       <translation>Izaberi povezane stranice</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.cpp" line="571"/>
+      <location filename="../../TaskShapeBuilder.cpp" line="567"/>
       <source>All shape types can be selected</source>
       <translation>Sve vrste oblika se mogu izabrati</translation>
     </message>
   </context>
   <context>
-    <name>PartGui::ShapeFromMesh</name>
-    <message>
-      <location filename="../../ShapeFromMesh.ui" line="14"/>
-      <source>Shape from mesh</source>
-      <translation>Oblik od mreže</translation>
-    </message>
-    <message>
-      <location filename="../../ShapeFromMesh.ui" line="20"/>
-      <source>Sew shape</source>
-      <translation>Zašij oblik</translation>
-    </message>
-    <message>
-      <location filename="../../ShapeFromMesh.ui" line="32"/>
-      <source>Enter tolerance for sewing shape:</source>
-      <translation>Unesi toleranciju za šivenje oblika:</translation>
-    </message>
-  </context>
-  <context>
     <name>PartGui::SweepWidget</name>
     <message>
-      <location filename="../../TaskSweep.cpp" line="131"/>
+      <location filename="../../TaskSweep.cpp" line="132"/>
       <source>Available profiles</source>
       <translation>Dostupni preseci</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="132"/>
+      <location filename="../../TaskSweep.cpp" line="133"/>
       <source>Selected profiles</source>
       <translation>Izabrani preseci</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="331"/>
+      <location filename="../../TaskSweep.cpp" line="336"/>
       <source>Too few elements</source>
       <translation>Premalo elemenata</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="331"/>
+      <location filename="../../TaskSweep.cpp" line="336"/>
       <source>At least one edge or wire is required.</source>
-      <translation>Potrebna je najmanje jedna ivica ili žičana ivica.</translation>
+      <translation>Potrebna je najmanje jedna ivica ili žičani element.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="335"/>
+      <location filename="../../TaskSweep.cpp" line="340"/>
       <source>Invalid selection</source>
       <translation>Neispravan izbor</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="335"/>
-      <source>Select one or more edges from a single object.</source>
-      <translation>Izaberi jednu ili više ivica jednog objekta.</translation>
+      <location filename="../../TaskSweep.cpp" line="340"/>
+      <source>Select at least 1 edge from a single object.</source>
+      <translation type="unfinished">Select at least 1 edge from a single object.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="342"/>
+      <location filename="../../TaskSweep.cpp" line="347"/>
       <source>Wrong selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="342"/>
+      <location filename="../../TaskSweep.cpp" line="347"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%1' ne može se koristiti kao profil i putanja.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="380"/>
+      <location filename="../../TaskSweep.cpp" line="385"/>
       <source>Input error</source>
       <translation>Greška pri unosu</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="413"/>
+      <location filename="../../TaskSweep.cpp" line="418"/>
       <source>Done</source>
       <translation>Gotovo</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="415"/>
+      <location filename="../../TaskSweep.cpp" line="420"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
-      <translation type="unfinished">Select one or more connected edges in the 3D view and press 'Done'</translation>
+      <translation>Izaberi u 3D pogledu jednu ili više povezanih ivica i pritisni 'Gotovo'</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="437"/>
-      <location filename="../../TaskSweep.cpp" line="445"/>
+      <location filename="../../TaskSweep.cpp" line="442"/>
+      <location filename="../../TaskSweep.cpp" line="450"/>
       <source>Sweep path</source>
       <translation>Putanja vodilja preseka</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="437"/>
-      <location filename="../../TaskSweep.cpp" line="445"/>
+      <location filename="../../TaskSweep.cpp" line="442"/>
+      <location filename="../../TaskSweep.cpp" line="450"/>
       <source>The selected sweep path is invalid.</source>
       <translation>Izabrana putanja vodilja je nevažeća.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="457"/>
+      <location filename="../../TaskSweep.cpp" line="462"/>
       <source>Vertex/Wire</source>
-      <translation type="unfinished">Vertex/Wire</translation>
+      <translation>Teme/Žičani element</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="458"/>
+      <location filename="../../TaskSweep.cpp" line="463"/>
       <source>Sweep</source>
       <translation>Po putanji</translation>
     </message>
@@ -4872,88 +4823,81 @@ only created cuts will be visible</source>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
-      <source>Attachment mode:</source>
-      <translation>Režim pridruživanja:</translation>
+      <source>Attachment mode</source>
+      <translation type="unfinished">Attachment mode</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
-      <location filename="../../TaskAttacher.cpp" line="344"/>
-      <source>Attachment Offset (in local coordinates):</source>
-      <translation>Dodatno pomeri (u lokalnim koordinatama):</translation>
+      <source>Attachment Offset in its Local Coordinate System</source>
+      <translation type="unfinished">Attachment Offset in its Local Coordinate System</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
-      <source>In x-direction:</source>
-      <translation>Po osi X:</translation>
+      <source>In x-direction</source>
+      <translation type="unfinished">In x-direction</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="155"/>
       <location filename="../../TaskAttacher.ui" line="191"/>
       <location filename="../../TaskAttacher.ui" line="227"/>
-      <source>Note: The placement is expressed in local coordinate system
-of object being attached.</source>
-      <translation>Napomena: Položaj je izražen u lokalnom koordinatnom sistemu
-objekta na koji se pridružuje.</translation>
+      <source>The offset is expressed in the local coordinate system
+of the object being attached</source>
+      <translation type="unfinished">The offset is expressed in the local coordinate system
+of the object being attached</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="172"/>
-      <source>In y-direction:</source>
-      <translation>Po osi Y:</translation>
+      <source>In y-direction</source>
+      <translation type="unfinished">In y-direction</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="208"/>
-      <source>In z-direction:</source>
-      <translation>Po osi Z:</translation>
+      <source>In z-direction</source>
+      <translation type="unfinished">In z-direction</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="244"/>
-      <source>Around x-axis:</source>
-      <translation>Oko x-ose:</translation>
+      <source>Around X-axis</source>
+      <translation type="unfinished">Around X-axis</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="257"/>
-      <source>Rotation around the x-axis
-Note: The placement is expressed in local coordinate system
-of object being attached.</source>
-      <translation>Obrtanje oko x-ose
-Napomena: Položaj je izražen u lokalnom koordinatnom sistemu
-objekta na koji se pridružuje.</translation>
+      <source>Rotation around the local X-axis. The offset is expressed in the local coordinate system
+of the object being attached.</source>
+      <translation type="unfinished">Rotation around the local X-axis. The offset is expressed in the local coordinate system
+of the object being attached.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="284"/>
-      <source>Around y-axis:</source>
-      <translation>Oko y-ose:</translation>
+      <location filename="../../TaskAttacher.ui" line="283"/>
+      <source>Around Y-axis</source>
+      <translation type="unfinished">Around Y-axis</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="297"/>
-      <source>Rotation around the y-axis
-Note: The placement is expressed in local coordinate system
-of object being attached.</source>
-      <translation>Obrtanje oko y-ose
-Napomena: Položaj je izražen u lokalnom koordinatnom sistemu
-objekta na koji se pridružuje.</translation>
+      <location filename="../../TaskAttacher.ui" line="296"/>
+      <source>Rotation around the local Y-axis. The offset is expressed in the local coordinate system
+of the object being attached.</source>
+      <translation type="unfinished">Rotation around the local Y-axis. The offset is expressed in the local coordinate system
+of the object being attached.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="324"/>
-      <source>Around z-axis:</source>
-      <translation>Oko z-ose:</translation>
+      <location filename="../../TaskAttacher.ui" line="322"/>
+      <source>Around Z-axis</source>
+      <translation type="unfinished">Around Z-axis</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="337"/>
-      <source>Rotation around the z-axis
-Note: The placement is expressed in local coordinate system
-of object being attached.</source>
-      <translation>Obrtanje oko z-ose
-Napomena: Položaj je izražen u lokalnom koordinatnom sistemu
-objekta na koji se pridružuje.</translation>
+      <location filename="../../TaskAttacher.ui" line="335"/>
+      <source>Rotation around the local Z-axis. The offset is expressed in the local coordinate system
+of the object being attached.</source>
+      <translation type="unfinished">Rotation around the local Z-axis. The offset is expressed in the local coordinate system
+of the object being attached.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="361"/>
+      <location filename="../../TaskAttacher.ui" line="358"/>
       <source>Flip side of attachment and offset</source>
       <translation>Obrni stranu prodruživanja i odmaka</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="364"/>
+      <location filename="../../TaskAttacher.ui" line="361"/>
       <source>Flip sides</source>
       <translation>Obrni strane</translation>
     </message>
@@ -4984,8 +4928,18 @@ objekta na koji se pridružuje.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="344"/>
-      <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Dodatno pomeri (neaktivno - ništa nije pridruženo):</translation>
+      <source>Attachment offset (in its local coordinate system):</source>
+      <translation type="unfinished">Attachment offset (in its local coordinate system):</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="344"/>
+      <source>Attachment offset (inactive - not attached):</source>
+      <translation type="unfinished">Attachment offset (inactive - not attached):</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="879"/>
+      <source>Selecting…</source>
+      <translation type="unfinished">Selecting…</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="799"/>
@@ -5001,11 +4955,6 @@ objekta na koji se pridružuje.</translation>
       <location filename="../../TaskAttacher.cpp" line="813"/>
       <source>Vertex</source>
       <translation>Teme</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="879"/>
-      <source>Selecting...</source>
-      <translation>Izbor...</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="885"/>
@@ -5036,33 +4985,28 @@ objekta na koji se pridružuje.</translation>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1094"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1080"/>
       <source>Shape Content</source>
       <translation>Podaci o obliku</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1102"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1297"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1088"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1283"/>
       <source>Settings</source>
       <translation>Podešavanja</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1108"/>
-      <source>Skip this settings page and run the geometry check automatically.</source>
-      <translation>Preskoči ovu stranicu sa podešavanjima i automatski pokreni proveru geometrije.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1110"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1096"/>
       <source>Default: false</source>
       <translation>Podrazumevano: netačno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1117"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1103"/>
       <source>Run boolean operation check</source>
       <translation>Pokreni proveru bulove operacije</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1118"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1104"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
@@ -5071,160 +5015,165 @@ standardna BREP provera geometrije propusti. Ove greške ne podrazumevaju
 da je provereni objekat neupotrebljiv. Podrazumevano: netačno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1128"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1114"/>
       <source>Single-threaded</source>
       <translation>Jednonitni</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1115"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>Pokreni proveru geometrije u jednoj niti. Ovo je sporije,
 ali stabilnije. Podrazumevano: netačno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1138"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1124"/>
       <source>Log errors</source>
       <translation>Evidencija grešaka</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1139"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1125"/>
       <source>Log errors to report view.  Default: true</source>
-      <translation>Zabeleži greške u Pregledač objava. Podrazumevano: tačno</translation>
+      <translation>Zabeleži dnevničke greške u Pregledač objava. Podrazumevano: tačno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1146"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1132"/>
       <source>Expand shape content</source>
       <translation>Proširi panel Podaci o obliku</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1147"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1133"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Proširi panel Podaci o obliku u rezultatima provere. Promene će stupiti na snagu sledeći put kada budeš koristio
 alat za proveru geometrije. Podrazumevano: netačno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1156"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1142"/>
       <source>Advanced shape content</source>
       <translation>Napredni podaci o obliku</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1157"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1143"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>Prikaži napredne informacije u panelu Podaci o obliku. Promene će stupiti na snagu sledeći put kada budeš koristio
 alat za proveru geometrije. Podrazumevano: netačno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1165"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1151"/>
       <source>
 Individual boolean operation checks:</source>
       <translation>
 Provera pojedinačnih bulovih operacija:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1168"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1154"/>
       <source>Bad type</source>
       <translation>Loša vrsta</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1176"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1162"/>
       <source>Self-intersect</source>
       <translation>Samo-ukrštanje</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1184"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1170"/>
       <source>Too small edge</source>
       <translation>Suviše mala ivica</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1192"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1178"/>
       <source>Nonrecoverable face</source>
       <translation>Nepopravljiva stranica</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1200"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1186"/>
       <source>Continuity</source>
       <translation>Kontinualnost</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1208"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1194"/>
       <source>Incompatibility of face</source>
       <translation>Nekompatibilnost stranice</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1216"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1202"/>
       <source>Incompatibility of vertex</source>
       <translation>Nekompatibilnost temena</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1224"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1210"/>
       <source>Incompatibility of edge</source>
       <translation>Nekompatibilnost ivice</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1232"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1218"/>
       <source>Invalid curve on surface</source>
       <translation>Neispravna kriva na površini</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1169"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1155"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>Proveri da li postoje loše vrste argumenata. Podrazumevano: tačno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1106"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1092"/>
       <source>Skip this settings page</source>
       <translation>Preskoči ovu stranicu sa podešavanjima</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1177"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1094"/>
+      <source>Skip this settings page and run the geometry check automatically</source>
+      <translation type="unfinished">Skip this settings page and run the geometry check automatically</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="1163"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>Proveri da li postoje samo-ukrštanja. Podrazumevano: tačno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1185"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1171"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>Proveri da li postoje suviše male ivice. Podrazumevano: tačno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1193"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1179"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>Proveri da li postoje stranice koje se ne mogu popraviti. Podrazumevano: tačno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1201"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1187"/>
       <source>Check for continuity.  Default: true</source>
       <translation>Proveri neprekidost. Podrazumevano: tačno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1195"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>Proveri da li postoje nekompatibile stranice. Podrazumevano: tačno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1217"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1203"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>Proveri da li postoje nekompatibilna temena. Podrazumevano: tačno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1225"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1211"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>Proveri da li postoje nekompatibile ivice. Podrazumevano: tačno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1233"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1219"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>Proveri da li postoje neispravne krive na površinama. Podrazumevano: tačno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1296"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1282"/>
       <source>Run check</source>
       <translation>Pokreni proveru</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1302"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1288"/>
       <source>Results</source>
       <translation>Rezultati</translation>
     </message>
@@ -5232,64 +5181,63 @@ Provera pojedinačnih bulovih operacija:</translation>
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="375"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="376"/>
       <source>Check Geometry Results</source>
       <translation>Proverа geometrijskih rezultata</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="398"/>
-      <source>Check is running...</source>
-      <translation>Provera je u toku...</translation>
+      <location filename="../../TaskCheckGeometry.cpp" line="399"/>
+      <source>Check is running…</source>
+      <translation type="unfinished">Check is running…</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="423"/>
-      <source>Boolean operation check...</source>
-      <translation>Provera bulove operacije...</translation>
+      <location filename="../../TaskCheckGeometry.cpp" line="424"/>
+      <source>Boolean operation check…</source>
+      <translation type="unfinished">Boolean operation check…</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="425"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="430"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="426"/>
       <source>Check geometry</source>
       <translation>Proveri geometriju</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="456"/>
-      <source>Null shape</source>
-      <translation type="unfinished">Null shape</translation>
-    </message>
-    <message>
       <location filename="../../TaskCheckGeometry.cpp" line="457"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="468"/>
+      <source>Null shape</source>
+      <translation>Nulti oblik</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="458"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="469"/>
       <source>Skipped</source>
-      <translation type="unfinished">Skipped</translation>
+      <translation>Preskočeno</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="467"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="468"/>
       <source>Infinite shape</source>
-      <translation type="unfinished">Infinite shape</translation>
+      <translation>Beskonačan oblik</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="494"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="495"/>
       <source>Invalid</source>
       <translation>Nevažeće</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="515"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="516"/>
       <source>Checking</source>
       <translation>Provera u toku</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="542"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="535"/>
       <source>No errors</source>
-      <translation type="unfinished">No errors</translation>
+      <translation>Nema grešaka</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="553"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="546"/>
       <source>%1 processed out of %2 selected</source>
       <translation>%1 obrađeno od %2 izabranih</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="554"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="547"/>
       <source>%n invalid shapes.</source>
       <translation type="unfinished">
         <numerusform>%n nevažećih oblika.</numerusform>
@@ -5298,55 +5246,47 @@ Provera pojedinačnih bulovih operacija:</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="555"/>
-      <source>To Report view.</source>
-      <translation type="unfinished">To Report view.</translation>
+      <location filename="../../TaskCheckGeometry.cpp" line="548"/>
+      <source>to report view.</source>
+      <translation type="unfinished">to report view.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="654"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="669"/>
+      <source>Global minimum</source>
+      <translation type="unfinished">Global minimum</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="674"/>
+      <source>Global average</source>
+      <translation type="unfinished">Global average</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="679"/>
+      <source>Global maximum</source>
+      <translation type="unfinished">Global maximum</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="647"/>
       <source>Checked object</source>
       <translation>Proveren objekat</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="671"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="664"/>
       <source>Tolerance information</source>
       <translation>Informacije o tolerancijama</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="676"/>
-      <source>Global Minimum</source>
-      <translation type="unfinished">Global Minimum</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="681"/>
-      <source>Global Average</source>
-      <translation type="unfinished">Global Average</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="686"/>
-      <source>Global Maximum</source>
-      <translation type="unfinished">Global Maximum</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1234"/>
+      <location filename="../../TaskAttacher.cpp" line="1235"/>
       <source>Attachment</source>
       <translation>Pridruživanje</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1289"/>
-      <source>Datum dialog: Input error</source>
-      <translation type="unfinished">Datum dialog: Input error</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartGui::TaskExportStep</name>
-    <message>
-      <location filename="../../DlgExportStep.cpp" line="208"/>
-      <source>Don't show this dialog again</source>
-      <translation>Ne prikazuj više ovaj prozor</translation>
+      <location filename="../../TaskAttacher.cpp" line="1296"/>
+      <source>Datum dialog: input error</source>
+      <translation type="unfinished">Datum dialog: input error</translation>
     </message>
   </context>
   <context>
@@ -5362,12 +5302,12 @@ Provera pojedinačnih bulovih operacija:</translation>
       <translation>Napravi puno telo</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.ui" line="30"/>
+      <location filename="../../TaskLoft.ui" line="33"/>
       <source>Ruled surface</source>
-      <translation>Ravna površina</translation>
+      <translation>Pravolinijska površ</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.ui" line="37"/>
+      <location filename="../../TaskLoft.ui" line="40"/>
       <source>Closed</source>
       <translation>Zatvoreno</translation>
     </message>
@@ -5397,7 +5337,7 @@ Provera pojedinačnih bulovih operacija:</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="52"/>
-      <source>RectoVerso</source>
+      <source>Recto verso</source>
       <translation>Napred-nazad</translation>
     </message>
     <message>
@@ -5447,8 +5387,8 @@ Provera pojedinačnih bulovih operacija:</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="14"/>
       <location filename="../../TaskShapeBuilder.ui" line="20"/>
-      <source>Create shape</source>
-      <translation>Napravi oblik</translation>
+      <source>Create Shape</source>
+      <translation type="unfinished">Create Shape</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="26"/>
@@ -5458,7 +5398,7 @@ Provera pojedinačnih bulovih operacija:</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="33"/>
       <source>Wire from edges</source>
-      <translation>Žičani ram pomoću ivica</translation>
+      <translation>Žičani elementi od ivica</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="40"/>
@@ -5497,11 +5437,11 @@ Provera pojedinačnih bulovih operacija:</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="101"/>
-      <source>Box selection...</source>
-      <translation>Pravougaoni izbor...</translation>
+      <source>Box Selection</source>
+      <translation type="unfinished">Box Selection</translation>
     </message>
     <message>
-      <location filename="../../TaskShapeBuilder.ui" line="121"/>
+      <location filename="../../TaskShapeBuilder.ui" line="122"/>
       <source>Create</source>
       <translation>Napravi</translation>
     </message>
@@ -5524,15 +5464,16 @@ Provera pojedinačnih bulovih operacija:</translation>
       <translation>Napravi puno telo</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.ui" line="60"/>
+      <location filename="../../TaskSweep.ui" line="63"/>
       <source>Frenet</source>
       <translation>Frenet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="483"/>
-      <source>Select one or more profiles and select an edge or wire
+      <location filename="../../TaskSweep.cpp" line="488"/>
+      <source>Select at least 1 profile and an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation>Izaberi jedan ili više profila i izaberi ivicu ili žičanu ivicu u 3D pogledu koja će biti putanja vodilja profila.</translation>
+      <translation type="unfinished">Select at least 1 profile and an edge or wire
+in the 3D view for the sweep path.</translation>
     </message>
   </context>
   <context>
@@ -5559,31 +5500,31 @@ in the 3D view for the sweep path.</source>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="92"/>
-      <source>Height:</source>
-      <translation>Visina:</translation>
+      <source>Height</source>
+      <translation>Visina</translation>
     </message>
   </context>
   <context>
     <name>PartGui::ThicknessWidget</name>
     <message>
-      <location filename="../../TaskThickness.cpp" line="89"/>
-      <location filename="../../TaskThickness.cpp" line="290"/>
-      <location filename="../../TaskThickness.cpp" line="300"/>
+      <location filename="../../TaskThickness.cpp" line="91"/>
+      <location filename="../../TaskThickness.cpp" line="293"/>
+      <location filename="../../TaskThickness.cpp" line="303"/>
       <source>Thickness</source>
       <translation>Tankozidni objekat</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="187"/>
+      <location filename="../../TaskThickness.cpp" line="190"/>
       <source>Select faces of the source object and press 'Done'</source>
       <translation>Izaberi stranice izvornog objekta i pritisni 'Gotovo'</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="190"/>
+      <location filename="../../TaskThickness.cpp" line="193"/>
       <source>Done</source>
       <translation>Gotovo</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="255"/>
+      <location filename="../../TaskThickness.cpp" line="258"/>
       <source>Input error</source>
       <translation>Greška pri unosu</translation>
     </message>
@@ -5593,75 +5534,75 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
+      <location filename="../../ViewProvider.cpp" line="51"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
-      <location filename="../../ViewProvider.cpp" line="49"/>
       <source>Edit %1</source>
       <translation>Uredi %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="243"/>
+      <location filename="../../AppPartGui.cpp" line="248"/>
       <source>Part and Part Design workbench</source>
       <translation>Okruženja Delovi i Konstruisanje delova</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="244"/>
-      <location filename="../../AppPartGui.cpp" line="245"/>
-      <location filename="../../AppPartGui.cpp" line="246"/>
+      <location filename="../../AppPartGui.cpp" line="249"/>
+      <location filename="../../AppPartGui.cpp" line="250"/>
+      <location filename="../../AppPartGui.cpp" line="251"/>
       <source>Part/Part Design</source>
       <translation>Delovi/Konstruisanje delova</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="247"/>
-      <location filename="../../AppPartGui.cpp" line="248"/>
+      <location filename="../../AppPartGui.cpp" line="252"/>
+      <location filename="../../AppPartGui.cpp" line="253"/>
       <source>Import-Export</source>
       <translation>Uvoz/Izvoz</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="315"/>
-      <location filename="../../Command.cpp" line="375"/>
-      <location filename="../../Command.cpp" line="454"/>
-      <location filename="../../Command.cpp" line="845"/>
-      <location filename="../../Command.cpp" line="902"/>
-      <location filename="../../Command.cpp" line="2023"/>
+      <location filename="../../Command.cpp" line="374"/>
+      <location filename="../../Command.cpp" line="452"/>
+      <location filename="../../Command.cpp" line="843"/>
+      <location filename="../../Command.cpp" line="899"/>
+      <location filename="../../Command.cpp" line="2033"/>
       <source>Wrong selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="316"/>
-      <location filename="../../Command.cpp" line="903"/>
-      <source>Select two shapes please.</source>
-      <translation>Izaberi dva oblika.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="326"/>
-      <location filename="../../Command.cpp" line="386"/>
-      <location filename="../../Command.cpp" line="465"/>
+      <location filename="../../Command.cpp" line="385"/>
+      <location filename="../../Command.cpp" line="463"/>
       <source>Non-solids selected</source>
       <translation>Izabran je objekat koji nije puno telo</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="316"/>
+      <location filename="../../Command.cpp" line="900"/>
+      <source>Select 2 shapes</source>
+      <translation type="unfinished">Select 2 shapes</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="327"/>
-      <location filename="../../Command.cpp" line="387"/>
-      <location filename="../../Command.cpp" line="466"/>
+      <location filename="../../Command.cpp" line="386"/>
+      <location filename="../../Command.cpp" line="464"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
-Do you want to continue?</source>
-      <translation>Upotreba objekata koja nisu puna tela za bulove operacije može dovesti do neočekivanih rezultata.
-Da li želiš da nastaviš?</translation>
+Continue?</source>
+      <translation type="unfinished">The use of non-solids for boolean operations may lead to unexpected results.
+Continue?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="376"/>
-      <source>Please select two shapes or more. Or, select one compound containing two or more shapes to compute the intersection between.</source>
-      <translation>Za određivanje preklopa izaberi dva ili više oblika, izaberi jedno sastavljeno telo koje sadrži dva ili više oblika.</translation>
+      <location filename="../../Command.cpp" line="375"/>
+      <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to compute the intersection between.</source>
+      <translation type="unfinished">Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to compute the intersection between.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
-      <source>Please select two shapes or more. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation>Za uniju izaberi dva ili više oblika, izaberi jedno sastavljeno telo koje sadrži dva ili više oblika.</translation>
+      <location filename="../../Command.cpp" line="453"/>
+      <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to be fused.</source>
+      <translation type="unfinished">Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to be fused.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="846"/>
-      <source>Select one shape or more, please.</source>
-      <translation>Izaberi jedan ili više oblika.</translation>
+      <location filename="../../Command.cpp" line="844"/>
+      <source>Select at least one shape</source>
+      <translation type="unfinished">Select at least one shape</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1060"/>
@@ -5674,9 +5615,9 @@ Da li želiš da nastaviš?</translation>
       <translation>Sve datoteke</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2024"/>
-      <source>You have to select either two edges or two wires.</source>
-      <translation>Morate izabrati ili dve ivice ili dve žičane ivice.</translation>
+      <location filename="../../Command.cpp" line="2034"/>
+      <source>Select either 2 edges or 2 wires.</source>
+      <translation type="unfinished">Select either 2 edges or 2 wires.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="68"/>
@@ -5685,309 +5626,309 @@ Da li želiš da nastaviš?</translation>
       <translation>Nije izabrana referenca</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
       <source>Face</source>
       <translation>Stranica</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Edge</source>
       <translation>Ivica</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
       <source>Vertex</source>
       <translation>Teme</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="77"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
       <source>Compound</source>
       <translation>Sastavljeni objekat</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
-      <source>Compound Solid</source>
-      <translation>Sastavljeno puno telo</translation>
-    </message>
-    <message>
       <location filename="../../TaskCheckGeometry.cpp" line="79"/>
-      <source>Solid</source>
-      <translation>Puno</translation>
+      <source>Compound solid</source>
+      <translation type="unfinished">Compound solid</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="80"/>
+      <source>Solid</source>
+      <translation>Puno telo</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Shell</source>
       <translation>Ljuska</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Wire</source>
-      <translation>Žičani ram</translation>
+      <translation>Žičani okvir</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
       <source>Shape</source>
       <translation>Oblik</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="100"/>
-      <source>No Error</source>
-      <translation>Nema Greške</translation>
-    </message>
-    <message>
       <location filename="../../TaskCheckGeometry.cpp" line="101"/>
-      <source>Invalid Point On Curve</source>
-      <translation>Nevažeća tačka na krivi</translation>
+      <source>No error</source>
+      <translation type="unfinished">No error</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="102"/>
-      <source>Invalid Point On Curve On Surface</source>
-      <translation>Neispravna tačka na krivi ili površini</translation>
+      <source>Invalid point on curve</source>
+      <translation type="unfinished">Invalid point on curve</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="103"/>
-      <source>Invalid Point On Surface</source>
-      <translation>Nevažeća tačka na površini</translation>
+      <source>Invalid point on curve on surface</source>
+      <translation type="unfinished">Invalid point on curve on surface</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="104"/>
-      <source>No 3D Curve</source>
-      <translation>Nema 3D krive</translation>
+      <source>Invalid point on surface</source>
+      <translation type="unfinished">Invalid point on surface</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="105"/>
-      <source>Multiple 3D Curve</source>
-      <translation>Više 3D krivih</translation>
+      <source>No 3D curve</source>
+      <translation type="unfinished">No 3D curve</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="106"/>
-      <source>Invalid 3D Curve</source>
-      <translation>Neispravna 3D kriva</translation>
+      <source>Multiple 3D curves</source>
+      <translation type="unfinished">Multiple 3D curves</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="107"/>
-      <source>No Curve On Surface</source>
-      <translation>Nema krive na površini</translation>
+      <source>Invalid 3D curve</source>
+      <translation type="unfinished">Invalid 3D curve</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="108"/>
-      <source>Invalid Curve On Surface</source>
-      <translation>Neispravna kriva na površini</translation>
+      <source>No curve on surface</source>
+      <translation type="unfinished">No curve on surface</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="109"/>
-      <source>Invalid Curve On Closed Surface</source>
-      <translation>Neispravna kriva na zatvorenoj površini</translation>
+      <source>Invalid curve on surface</source>
+      <translation>Neispravna kriva na površini</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="110"/>
-      <source>Invalid Same Range Flag</source>
-      <translation type="unfinished">Invalid Same Range Flag</translation>
+      <source>Invalid curve on closed surface</source>
+      <translation type="unfinished">Invalid curve on closed surface</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="111"/>
-      <source>Invalid Same Parameter Flag</source>
-      <translation type="unfinished">Invalid Same Parameter Flag</translation>
+      <source>Invalid same range flag</source>
+      <translation type="unfinished">Invalid same range flag</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="112"/>
-      <source>Invalid Degenerated Flag</source>
-      <translation type="unfinished">Invalid Degenerated Flag</translation>
+      <source>Invalid same parameter flag</source>
+      <translation type="unfinished">Invalid same parameter flag</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="113"/>
-      <source>Free Edge</source>
-      <translation>Slobodna ivica</translation>
+      <source>Invalid degenerated flag</source>
+      <translation type="unfinished">Invalid degenerated flag</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="114"/>
-      <source>Invalid MultiConnexity</source>
-      <translation type="unfinished">Invalid MultiConnexity</translation>
+      <source>Free edge</source>
+      <translation>Slobodna ivica</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="115"/>
-      <source>Invalid Range</source>
-      <translation>Nevažeći opseg</translation>
+      <source>Invalid multi-connexity</source>
+      <translation type="unfinished">Invalid multi-connexity</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="116"/>
-      <source>Empty Wire</source>
-      <translation>Prazni žičani ram</translation>
+      <source>Invalid range</source>
+      <translation>Neispravan opseg</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="117"/>
-      <source>Redundant Edge</source>
-      <translation>Suvišna ivica</translation>
+      <source>Empty wire</source>
+      <translation>Prazni žičani okvir</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="118"/>
-      <source>Self Intersecting Wire</source>
-      <translation>Žičani element koja se samo-ukršta</translation>
+      <source>Redundant edge</source>
+      <translation>Suvišna ivica</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="119"/>
-      <source>No Surface</source>
-      <translation>Nema površine</translation>
+      <source>Self-intersecting wire</source>
+      <translation>Samoukrštajući žičani okvir</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="120"/>
-      <source>Invalid Wire</source>
-      <translation>Nevažeća žičana ivica</translation>
+      <source>No surface</source>
+      <translation>Nema površi</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="121"/>
-      <source>Redundant Wire</source>
-      <translation>Suvišna žičana ivica</translation>
+      <source>Invalid wire</source>
+      <translation>Neispravan žičani okvir</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="122"/>
-      <source>Intersecting Wires</source>
-      <translation>Žičane ivice se ukrštaju</translation>
+      <source>Redundant wire</source>
+      <translation>Suvišni žičani element</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="123"/>
-      <source>Invalid Imbrication Of Wires</source>
-      <translation type="unfinished">Invalid Imbrication Of Wires</translation>
+      <source>Intersecting wires</source>
+      <translation>Žičani elementi se ukrštaju</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="124"/>
-      <source>Empty Shell</source>
-      <translation>Prazna Ljuska</translation>
+      <source>Invalid imbrication of wires</source>
+      <translation type="unfinished">Invalid imbrication of wires</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="125"/>
-      <source>Redundant Face</source>
-      <translation>Suvišna stranica</translation>
+      <source>Empty shell</source>
+      <translation>Prazna ljuska</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="126"/>
-      <source>Unorientable Shape</source>
-      <translation>Neorijentisani oblik</translation>
+      <source>Redundant face</source>
+      <translation>Suvišna stranica</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="127"/>
-      <source>Not Closed</source>
-      <translation>Nije zatvoreno</translation>
+      <source>Unorientable shape</source>
+      <translation>Oblik koji se ne može orijentisati</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="128"/>
-      <source>Not Connected</source>
-      <translation>Nije spojeno</translation>
+      <source>Not closed</source>
+      <translation>Nije zatvoreno</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="129"/>
-      <source>Sub Shape Not In Shape</source>
-      <translation>Podoblik nije u obliku</translation>
+      <source>Not connected</source>
+      <translation>Nije spojeno</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="130"/>
-      <source>Bad Orientation</source>
-      <translation>Loša orijentacija</translation>
+      <source>Sub-shape not in shape</source>
+      <translation type="unfinished">Sub-shape not in shape</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="131"/>
-      <source>Bad Orientation Of Sub Shape</source>
-      <translation>Loša orijentacija podoblika</translation>
+      <source>Bad orientation</source>
+      <translation type="unfinished">Bad orientation</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="132"/>
-      <source>Invalid Tolerance Value</source>
-      <translation>Neispravna vrednost tolerancije</translation>
+      <source>Bad orientation of sub-shape</source>
+      <translation type="unfinished">Bad orientation of sub-shape</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="133"/>
-      <source>Check Failed</source>
-      <translation>Provera nije uspela</translation>
+      <source>Invalid tolerance value</source>
+      <translation type="unfinished">Invalid tolerance value</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="143"/>
-      <source>No Result</source>
-      <translation>Nema rezultata</translation>
+      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
+      <source>Check failed</source>
+      <translation type="unfinished">Check failed</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="147"/>
-      <source>Out Of Enum Range:</source>
-      <translation>Izvan opsega numerisanja:</translation>
+      <location filename="../../TaskCheckGeometry.cpp" line="144"/>
+      <source>No result</source>
+      <translation type="unfinished">No result</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="159"/>
-      <source>Boolean operation: Unknown check</source>
-      <translation type="unfinished">Boolean operation: Unknown check</translation>
+      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
+      <source>Out of enum range:</source>
+      <translation type="unfinished">Out of enum range:</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
-      <source>Boolean operation: Bad type</source>
-      <translation>Bulova operacija: Loša vrsta</translation>
+      <source>Boolean operation: unknown check</source>
+      <translation type="unfinished">Boolean operation: unknown check</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
-      <source>Boolean operation: Self-intersection found</source>
-      <translation>Bulova operacija: Pronađeno samo-ukrštanje</translation>
+      <source>Boolean operation: bad type</source>
+      <translation type="unfinished">Boolean operation: bad type</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
-      <source>Boolean operation: Edge too small</source>
-      <translation>Bulova operacija: Suviše mala ivica</translation>
+      <source>Boolean operation: self-intersection found</source>
+      <translation type="unfinished">Boolean operation: self-intersection found</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
-      <source>Boolean operation: Non-recoverable face</source>
-      <translation>Bulova operacija: Nepopravljiva stranica</translation>
+      <source>Boolean operation: edge too small</source>
+      <translation type="unfinished">Boolean operation: edge too small</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>Boolean operation: Incompatibility of vertex</source>
-      <translation>Bulova operacija: Nekompatibilnost temena</translation>
+      <source>Boolean operation: non-recoverable face</source>
+      <translation type="unfinished">Boolean operation: non-recoverable face</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>Boolean operation: Incompatibility of edge</source>
-      <translation>Bulova operacija: Nekompatibilnost ivice</translation>
+      <source>Boolean operation: incompatibility of vertex</source>
+      <translation type="unfinished">Boolean operation: incompatibility of vertex</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>Boolean operation: Incompatibility of face</source>
-      <translation>Bulova operacija: Nekompatibilnost stranice</translation>
+      <source>Boolean operation: incompatibility of edge</source>
+      <translation type="unfinished">Boolean operation: incompatibility of edge</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>Boolean operation: Aborted</source>
-      <translation>Bulova operacija: Prekinuto</translation>
+      <source>Boolean operation: incompatibility of face</source>
+      <translation type="unfinished">Boolean operation: incompatibility of face</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
+      <source>Boolean operation: aborted</source>
+      <translation type="unfinished">Boolean operation: aborted</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
+      <source>Boolean operation: invalid curve on surface</source>
+      <translation type="unfinished">Boolean operation: invalid curve on surface</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
+      <source>Boolean operation: not valid</source>
+      <translation type="unfinished">Boolean operation: not valid</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>Boolean operation: GeomAbs_C0</source>
       <translation>Bulova operacija: GeomAbs_C0</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>Boolean operation: Invalid curve on surface</source>
-      <translation>Bulova operacija: Neispravna kriva na površini</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>Boolean operation: Not valid</source>
-      <translation>Bulova operacija: Neispravno</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="785"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="771"/>
       <source>Invalid</source>
       <translation>Nevažeće</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="84"/>
-      <source>Edit mirror plane</source>
-      <translation>Uredi ravan simetrije</translation>
+      <source>Edit Mirror Plane</source>
+      <translation type="unfinished">Edit Mirror Plane</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="294"/>
-      <source>Edit fillet edges</source>
-      <translation>Uredi zaobljene ivice</translation>
+      <source>Edit Fillet</source>
+      <translation>Uredi Zaobljavanje ivica</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="404"/>
-      <source>Edit chamfer edges</source>
-      <translation>Uredi oborene ivice</translation>
+      <source>Edit Chamfer</source>
+      <translation>Uredi Obaranje ivica</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="540"/>
@@ -6000,39 +5941,39 @@ Da li želiš da nastaviš?</translation>
       <translation>Uredi tankozidni objekat</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpline.cpp" line="94"/>
-      <source>Show control points</source>
-      <translation>Prikaži kontrolne tačke</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderAttachExtension.cpp" line="105"/>
-      <source>Attachment editor</source>
-      <translation>Uređivač pridruživanja</translation>
-    </message>
-    <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
       <source>Create tube</source>
       <translation>Cev</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="173"/>
+      <location filename="../../CommandSimple.cpp" line="172"/>
       <source>Distance in parameter space</source>
       <translation>Rastojanje u parametarskom prostoru</translation>
     </message>
     <message>
-      <location filename="../../CommandSimple.cpp" line="174"/>
+      <location filename="../../CommandSimple.cpp" line="173"/>
       <source>Enter distance:</source>
       <translation>Unesi rastojanje:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjectOnSurface.cpp" line="54"/>
-      <source>Edit projection</source>
-      <translation type="unfinished">Edit projection</translation>
+      <location filename="../../ViewProviderAttachExtension.cpp" line="101"/>
+      <source>Attachment Editor</source>
+      <translation type="unfinished">Attachment Editor</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="885"/>
-      <source>Set appearance per face...</source>
-      <translation>Ofarbaj pojedinačne stranice...</translation>
+      <location filename="../../ViewProviderExt.cpp" line="891"/>
+      <source>Appearance per Face</source>
+      <translation type="unfinished">Appearance per Face</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderProjectOnSurface.cpp" line="54"/>
+      <source>Edit Projection</source>
+      <translation type="unfinished">Edit Projection</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpline.cpp" line="94"/>
+      <source>Show Control Points</source>
+      <translation type="unfinished">Show Control Points</translation>
     </message>
   </context>
   <context>
@@ -6059,13 +6000,13 @@ Da li želiš da nastaviš?</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
-      <source>Part tools</source>
-      <translation>Part alati</translation>
+      <source>Part Tools</source>
+      <translation type="unfinished">Part Tools</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
-      <source>Boolean</source>
-      <translation>Bulove operacije</translation>
+      <source>Boolean Tools</source>
+      <translation type="unfinished">Boolean Tools</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
@@ -6097,7 +6038,7 @@ Da li želiš da nastaviš?</translation>
     <name>Part_Tube</name>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
-      <source>Create tube</source>
+      <source>Tube</source>
       <translation>Cev</translation>
     </message>
     <message>
@@ -6123,8 +6064,8 @@ Da li želiš da nastaviš?</translation>
       <location filename="../../../BOPTools/JoinFeatures.py" line="199"/>
       <location filename="../../../BOPTools/JoinFeatures.py" line="295"/>
       <location filename="../../../BOPTools/JoinFeatures.py" line="389"/>
-      <source>Bad selection</source>
-      <translation>Loš izbor</translation>
+      <source>Bad Selection</source>
+      <translation type="unfinished">Bad Selection</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="82"/>
@@ -6148,88 +6089,49 @@ Da li želiš da nastaviš?</translation>
     </message>
   </context>
   <context>
-    <name>Part_JoinConnect</name>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
-      <source>Connect objects</source>
-      <translation>Spoji objekte</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="191"/>
-      <source>Fuses objects, taking care to preserve voids.</source>
-      <translation>Spaja objekte, vodeći računa o očuvanju praznina.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_JoinEmbed</name>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="282"/>
-      <source>Embed object</source>
-      <translation>Ugradi objekat</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="287"/>
-      <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation>Ubacuje jedan objekat u drugi, vodeći računa o očuvanju praznina.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_JoinCutout</name>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="376"/>
-      <source>Cutout for object</source>
-      <translation>Iseci objekat</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
-      <source>Makes a cutout in one object to fit another object.</source>
-      <translation>Pravi isecanje u jednom objektu da bi se u njega mogao ugraditi drugi objekat.</translation>
-    </message>
-  </context>
-  <context>
     <name>Part_SplitFeatures</name>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="155"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="298"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="492"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="294"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="485"/>
       <source>Computing the result failed with an error:</source>
       <translation>Proračun nije uspeo, rezultat ima grešku:</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="156"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="299"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="493"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="295"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="486"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation>Klikni na „Nastavi“ da bi ipak napravio ili „Prekini“ da bi otkazao.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="157"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="199"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="300"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="354"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="385"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="494"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="535"/>
-      <source>Bad selection</source>
-      <translation>Loš izbor</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="195"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="296"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="348"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="378"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="487"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="527"/>
+      <source>Bad Selection</source>
+      <translation type="unfinished">Bad Selection</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="302"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="496"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="298"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="489"/>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="114"/>
       <source>Continue</source>
       <translation>Nastavi</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="534"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="194"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="526"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Izaberi najmanje dva objekta, ili jedan ili više sastavljenih objekata. Ako je izabran samo jedan sastavljeni objekat, oblici od kojih je sastavljen će se međusobno ispresecati (u suprotnom, oblici od kojih je sastavljen će se samoukrštati što je neispravno).</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="353"/>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="384"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="347"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="377"/>
       <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
       <translation>Izaberi najmanje dva objekta. Prvi je objekat koji treba da se iseče; ostalo su objekti uz pomoć kojih se seče.</translation>
     </message>
@@ -6242,26 +6144,26 @@ Da li želiš da nastaviš?</translation>
       <translation>Filter sastavljenih objekata</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="61"/>
-      <source>Filter out objects from a selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</source>
-      <translation>Filtriraj objekte iz izabranog sastavljenog objekta prema karakteristikama kao što su zapremina,
-površina, dužina ili odabirom određenih stavki.
-Ako je izabran drugi objekat, on će se koristiti kao referenca, npr.
-za filtriranje kolizije ili udaljenosti.</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="70"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
       <translation>Prvo izaberi oblik koji je sastavljeni objekat. Ako je izabran drugi objekat (neobavezno) on će biti tretiran kao šablon.</translation>
     </message>
     <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="61"/>
+      <source>Filters out objects from the selected compound by characteristics like volume,
+area, or length, or by choosing specific items.
+If a second object is selected, it will be used as reference, for example,
+for collision or distance filtering.</source>
+      <translation type="unfinished">Filters out objects from the selected compound by characteristics like volume,
+area, or length, or by choosing specific items.
+If a second object is selected, it will be used as reference, for example,
+for collision or distance filtering.</translation>
+    </message>
+    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="71"/>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="112"/>
-      <source>Bad selection</source>
-      <translation>Loš izbor</translation>
+      <source>Bad Selection</source>
+      <translation type="unfinished">Bad Selection</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="110"/>
@@ -6278,25 +6180,23 @@ za filtriranje kolizije ili udaljenosti.</translation>
     <name>Part_ExplodeCompound</name>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="50"/>
-      <source>Explode compound</source>
-      <translation>Rastavi sastavljeni objekat</translation>
+      <source>Explode Compound</source>
+      <translation type="unfinished">Explode Compound</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="56"/>
-      <source>Split up a compound of shapes into separate objects.
-It will create a 'Compound Filter' for each shape.</source>
-      <translation>Rastavi sastavljeni objekat u zasebne objekte.
-To će stvoriti 'Filter sastavljanja' za svaki oblik.</translation>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="55"/>
+      <source>Splits up a compound of shapes into separate objects, creating a compound filter for each shape</source>
+      <translation type="unfinished">Splits up a compound of shapes into separate objects, creating a compound filter for each shape</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="61"/>
       <source>First select a shape that is a compound.</source>
       <translation>Prvo izaberi oblik koji je sastavljeni objekat.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
-      <source>Bad selection</source>
-      <translation>Loš izbor</translation>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
+      <source>Bad Selection</source>
+      <translation type="unfinished">Bad Selection</translation>
     </message>
   </context>
   <context>
@@ -6318,8 +6218,8 @@ To će stvoriti 'Filter sastavljanja' za svaki oblik.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="214"/>
-      <source>{} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation type="unfinished">{} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</translation>
+      <source>{} is not attachable. The attachment editor can still be used to align the object, but the attachment will not be parametric.</source>
+      <translation type="unfinished">{} is not attachable. The attachment editor can still be used to align the object, but the attachment will not be parametric.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="215"/>
@@ -6349,72 +6249,59 @@ To će stvoriti 'Filter sastavljanja' za svaki oblik.</translation>
       <translation type="unfinished">{} depends on object being attached, can't use it for attachment</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="505"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="504"/>
       <source>{} (add {})</source>
       <translation type="unfinished">{} (add {})</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="507"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="506"/>
       <source>{} (add more references)</source>
       <translation type="unfinished">{} (add more references)</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="537"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="536"/>
       <source>Reference combinations:</source>
       <translation>Kombinacije referenci:</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="553"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="552"/>
       <source>Reference{}</source>
       <translation>Referenca{}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="558"/>
-      <source>Selecting...</source>
-      <translation>Izbor...</translation>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="557"/>
+      <source>Selecting…</source>
+      <translation type="unfinished">Selecting…</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="582"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="581"/>
       <source>Failed to resolve links. {}</source>
       <translation type="unfinished">Failed to resolve links. {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="589"/>
       <source>Not attached</source>
       <translation>Nije pridruženo</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="593"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
       <source>Attached with mode {}</source>
       <translation type="unfinished">Attached with mode {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="599"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Error: {}</source>
       <translation>Greška: {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="602"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="601"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Dodatno pomeri (u lokalnim koordinatama):</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="605"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="604"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Dodatno pomeri (neaktivno - ništa nije pridruženo):</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_EditAttachment</name>
-    <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
-      <source>Attachment...</source>
-      <translation>Pridruži</translation>
-    </message>
-    <message>
-      <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
-      <source>Edit attachment of selected object.</source>
-      <translation>Uredi pridruživanje izabranog objekta.</translation>
     </message>
   </context>
   <context>
@@ -6437,7 +6324,7 @@ To će stvoriti 'Filter sastavljanja' za svaki oblik.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="47"/>
       <source>Wires</source>
-      <translation>Žičane ivice</translation>
+      <translation>Žičani okviri</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="53"/>
@@ -6536,75 +6423,20 @@ To će stvoriti 'Filter sastavljanja' za svaki oblik.</translation>
     </message>
   </context>
   <context>
-    <name>Part_BooleanFragments</name>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
-      <source>Boolean fragments</source>
-      <translation>Bulovi fragmenti</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
-      <source>Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Napravi objekat 'Bulovi fragmenti' od dva ili više izabranih objekata,
-ili od oblika unutar sastavljenog objekta.
-Ovo je bulova logička unija koja se zatim iseca po presecanjima
-originalnih oblika.
-'Filter sastavljanja' se može koristiti za izdvajanje pojedinačnih isečenih objekata.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_Slice</name>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
-      <source>Slice to compound</source>
-      <translation>Iseci na sastavljeni</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
-      <source>Slice a selected object by using other objects as cutting tools.
-The resulting pieces will be stored in a compound.
-A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Iseci izabrani objekat koristeći druge objekte kao alate za sečenje.
-Kao rezultat dobija se sastavljeni objekat.
-'Filter sastavljanja' se može koristiti za izdvajanje pojedinačnih rezova.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Part_SliceApart</name>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
-      <source>Slice apart</source>
-      <translation>Iseci na tela</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
-      <source>Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</source>
-      <translation>Iseci izabrani objekat sa drugim objektima i razdvoji ga. Kao rezultat se dobijaju puna tela.
-Napraviće se 'Filter sastavljanja' za svako isečeno puno telo.</translation>
-    </message>
-  </context>
-  <context>
     <name>Part_XOR</name>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="510"/>
       <source>Boolean XOR</source>
       <translation>Bulovo XOR isecanje</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="525"/>
-      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
+      <location filename="../../../BOPTools/SplitFeatures.py" line="517"/>
+      <source>Performs an 'exclusive OR' boolean operation with two or more selected objects,
 or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation>Izvrši bulovu logičku operaciju 'ekskluzivno ILI' sa dva ili više odabranih objekata,
-ili sa oblicima sastavljenog objekta.
-Ova bulova logička operacija uklanja sve delove objekata koji se preklapaju.
-'Filter sastavljanja' se može koristiti za izdvajanje preostalih delova.</translation>
+Overlapping volumes of the shapes will be removed.</source>
+      <translation type="unfinished">Performs an 'exclusive OR' boolean operation with two or more selected objects,
+or with the shapes inside a compound.
+Overlapping volumes of the shapes will be removed.</translation>
     </message>
   </context>
   <context>
@@ -6615,19 +6447,19 @@ Ova bulova logička operacija uklanja sve delove objekata koji se preklapaju.
       <translation>Skaliraj</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.ui" line="22"/>
-      <source>X Factor</source>
-      <translation>X koeficijent</translation>
-    </message>
-    <message>
       <location filename="../../DlgScale.ui" line="29"/>
       <source>Factor</source>
       <translation>Koeficijent</translation>
     </message>
     <message>
+      <location filename="../../DlgScale.ui" line="22"/>
+      <source>X factor</source>
+      <translation type="unfinished">X factor</translation>
+    </message>
+    <message>
       <location filename="../../DlgScale.ui" line="64"/>
-      <source>Z Factor</source>
-      <translation>Z koeficijent</translation>
+      <source>Z factor</source>
+      <translation type="unfinished">Z factor</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="71"/>
@@ -6641,23 +6473,23 @@ Ova bulova logička operacija uklanja sve delove objekata koji se preklapaju.
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
-      <source>Y Factor</source>
-      <translation>Y koeficijent</translation>
+      <source>Y factor</source>
+      <translation type="unfinished">Y factor</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="119"/>
-      <source>Specify a different scale factor for each cardinal direction.</source>
-      <translation>Zadaj drugačiji koeficijent skaliranja za svaki pravac.</translation>
+      <source>Specify a different scale factor for each cardinal direction</source>
+      <translation type="unfinished">Specify a different scale factor for each cardinal direction</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="122"/>
-      <source>Non-Uniform Scaling</source>
-      <translation>Neujednačeno skaliranje</translation>
+      <source>Non-uniform scaling</source>
+      <translation type="unfinished">Non-uniform scaling</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="195"/>
-      <source>Select shape(s) that should be scaled</source>
-      <translation>Izaberi oblik(e) koji treba da budu skalirani</translation>
+      <source>Select shapes to be scaled</source>
+      <translation type="unfinished">Select shapes to be scaled</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="199"/>
@@ -6677,94 +6509,28 @@ Ova bulova logička operacija uklanja sve delove objekata koji se preklapaju.
     <message>
       <location filename="../../DlgScale.cpp" line="254"/>
       <location filename="../../DlgScale.cpp" line="260"/>
-      <source>Creating Scale failed.
+      <source>Creating scale failed.
 %1</source>
-      <translation>Skaliranje nije uspelo.
+      <translation type="unfinished">Creating scale failed.
 %1</translation>
     </message>
   </context>
   <context>
     <name>CmdPartScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1295"/>
+      <location filename="../../Command.cpp" line="1294"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1295"/>
+      <source>Scale</source>
+      <translation>Razmera</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1296"/>
-      <source>Scale...</source>
-      <translation>Skaliraj...</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1297"/>
-      <source>Scale a selected shape</source>
-      <translation>Skaliraj izabrani oblik</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartCmdSelectFilter</name>
-    <message>
-      <location filename="../../CommandFilter.cpp" line="46"/>
-      <source>Selection filter</source>
-      <translation>Filter izbora</translation>
-    </message>
-    <message>
-      <location filename="../../CommandFilter.cpp" line="47"/>
-      <location filename="../../CommandFilter.cpp" line="48"/>
-      <source>Change the selection filter</source>
-      <translation>Promeni filter izbora</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartCmdVertexSelection</name>
-    <message>
-      <location filename="../../CommandFilter.cpp" line="173"/>
-      <source>Vertex selection</source>
-      <translation>Izbor temena</translation>
-    </message>
-    <message>
-      <location filename="../../CommandFilter.cpp" line="174"/>
-      <location filename="../../CommandFilter.cpp" line="176"/>
-      <source>Only allow the selection of vertices</source>
-      <translation>Dozvoli samo izbor temena</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartCmdEdgeSelection</name>
-    <message>
-      <location filename="../../CommandFilter.cpp" line="198"/>
-      <source>Edge selection</source>
-      <translation>Izbor ivice</translation>
-    </message>
-    <message>
-      <location filename="../../CommandFilter.cpp" line="199"/>
-      <location filename="../../CommandFilter.cpp" line="201"/>
-      <source>Only allow the selection of edges</source>
-      <translation>Dozvoli samo izbor ivica</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartCmdFaceSelection</name>
-    <message>
-      <location filename="../../CommandFilter.cpp" line="223"/>
-      <source>Face selection</source>
-      <translation>Izbor stranice</translation>
-    </message>
-    <message>
-      <location filename="../../CommandFilter.cpp" line="224"/>
-      <location filename="../../CommandFilter.cpp" line="226"/>
-      <source>Only allow the selection of faces</source>
-      <translation>Dozvoli samo izbor stranica</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartCmdRemoveSelectionGate</name>
-    <message>
-      <location filename="../../CommandFilter.cpp" line="248"/>
-      <location filename="../../CommandFilter.cpp" line="249"/>
-      <location filename="../../CommandFilter.cpp" line="251"/>
-      <source>All selection filters cleared</source>
-      <translation>Izbor bez filtera</translation>
+      <source>Scales the selected shape</source>
+      <translation type="unfinished">Scales the selected shape</translation>
     </message>
   </context>
   <context>
@@ -6772,7 +6538,7 @@ Ova bulova logička operacija uklanja sve delove objekata koji se preklapaju.
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="79"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
-      <translation>Oblik mora da bude žičana ivica, ivica ili sastavljeni objekat. Nešto drugo je obezbeđeno.</translation>
+      <translation>Oblik mora da bude od žičanih elemenata, ivica ili sastavljeni objekat. Nešto drugo je obezbeđeno.</translation>
     </message>
   </context>
   <context>
@@ -6785,20 +6551,20 @@ Ova bulova logička operacija uklanja sve delove objekata koji se preklapaju.
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="283"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation>Pravi posebnu ravnu stranicu od svake žičane ivice nezavisno. Ne podržava rupe; žice mogu biti na različitim ravnima.</translation>
+      <translation>Pravi posebnu ravnu stranicu od svakog žičanog okvira nezavisno. Ne podržava rupe; žičani elementi mogu biti na različitim ravnima.</translation>
     </message>
   </context>
   <context>
     <name>Part::FaceMakerBullseye</name>
     <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="58"/>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="62"/>
       <source>Bull's-eye facemaker</source>
       <translation>Metoliki tvorac stranica</translation>
     </message>
     <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="63"/>
-      <source>Supports making planar faces with holes with islands.</source>
-      <translation>Podržava pravljenje ravnih stranica sa rupama u kojima se nalaze ostrva.</translation>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="67"/>
+      <source>Supports making planar faces with holes with islands in them</source>
+      <translation type="unfinished">Supports making planar faces with holes with islands in them</translation>
     </message>
   </context>
   <context>
@@ -6810,87 +6576,69 @@ Ova bulova logička operacija uklanja sve delove objekata koji se preklapaju.
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
-      <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation>Podržava pravljenje ravnih stranica sa rupama u kojima se nalaze ostrva.</translation>
+      <source>Supports making planar faces with holes, but no islands inside holes</source>
+      <translation type="unfinished">Supports making planar faces with holes, but no islands inside holes</translation>
     </message>
   </context>
   <context>
     <name>Part::FaceMakerExtrusion</name>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="381"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="395"/>
       <source>Part Extrude facemaker</source>
       <translation>Part izvlačenje tvorac stranica</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="386"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="400"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Podrška pravljenju stranica sa rupama, isključuje mogućnost slaganja.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Exception</name>
-    <message>
-      <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
-      <source>Wire is not closed.</source>
-      <translation>Žičani ram nije zatvoren.</translation>
     </message>
   </context>
   <context>
     <name>PartGui::TaskFaceAppearances</name>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="14"/>
-      <source>Set appearance per face</source>
-      <translation>Ofarbaj pojedinačne stranice</translation>
+      <source>Appearance per Face</source>
+      <translation type="unfinished">Appearance per Face</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="20"/>
-      <source>Click on the faces in the 3D view to select them</source>
-      <translation>Klikni na stranice u 3D pogledu da ih izabereš</translation>
+      <source>Select the faces in the 3D view</source>
+      <translation type="unfinished">Select the faces in the 3D view</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="41"/>
-      <source>Faces:</source>
-      <translation>Stranice:</translation>
+      <source>Faces</source>
+      <translation>Stranice</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="66"/>
-      <source>...</source>
-      <translation>...</translation>
+      <source>Appearance</source>
+      <translation>Izgled</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.ui" line="73"/>
-      <source>Custom appearance:</source>
-      <translation>Sopstveni izgled:</translation>
+      <location filename="../../TaskFaceAppearances.ui" line="74"/>
+      <source>Custom appearance</source>
+      <translation type="unfinished">Custom appearance</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.ui" line="97"/>
-      <source>When checked, you can select multiple faces
-by dragging a selection rectangle in the 3D view</source>
-      <translation>Kada je označeno, možeš izabrati više stranica
-povlačenjem pravougaonog okvira u 3D pogledu</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFaceAppearances.ui" line="87"/>
+      <location filename="../../TaskFaceAppearances.ui" line="88"/>
       <source>Resets color for all faces of the part</source>
       <translation>Resetuje boju svih stranica dela</translation>
     </message>
     <message>
-      <location filename="../../TaskFaceAppearances.ui" line="90"/>
-      <source>Set to default</source>
-      <translation>Podrazumevana boja</translation>
+      <location filename="../../TaskFaceAppearances.ui" line="91"/>
+      <source>Set to Default</source>
+      <translation type="unfinished">Set to Default</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFaceAppearances.ui" line="98"/>
+      <source>Allows the selection of multiple faces by dragging a rectangle in the 3D view</source>
+      <translation type="unfinished">Allows the selection of multiple faces by dragging a rectangle in the 3D view</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="101"/>
-      <source>Box selection</source>
-      <translation>Pravougaoni izbor</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartGui::TaskImportStep</name>
-    <message>
-      <location filename="../../DlgImportStep.cpp" line="149"/>
-      <source>Don't show this dialog again</source>
-      <translation>Ne prikazuj više ovaj prozor</translation>
+      <source>Box Selection</source>
+      <translation type="unfinished">Box Selection</translation>
     </message>
   </context>
   <context>
@@ -6907,8 +6655,8 @@ povlačenjem pravougaonog okvira u 3D pogledu</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="72"/>
-      <source>Bad selection</source>
-      <translation>Loš izbor</translation>
+      <source>Bad Selection</source>
+      <translation type="unfinished">Bad Selection</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="74"/>
@@ -6925,108 +6673,393 @@ povlačenjem pravougaonog okvira u 3D pogledu</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="197"/>
-      <source>Set Tolerance for selected objects.</source>
-      <translation>Zadaj tolerancije izabranom objektu.</translation>
+      <source>Creates a parametric copy of the selected object with all contained tolerances set to at least a certain minimum value</source>
+      <translation type="unfinished">Creates a parametric copy of the selected object with all contained tolerances set to at least a certain minimum value</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/ToleranceFeatures.py" line="205"/>
+      <source>Bad Selection</source>
+      <translation type="unfinished">Bad Selection</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="204"/>
       <source>Select at least one object or compounds</source>
       <translation>Izaberi barem jedan objekat ili sastavljeni objekat</translation>
     </message>
-    <message>
-      <location filename="../../../BOPTools/ToleranceFeatures.py" line="205"/>
-      <source>Bad selection</source>
-      <translation>Loš izbor</translation>
-    </message>
   </context>
   <context>
     <name>CmdPartCoordinateSystem</name>
     <message>
-      <location filename="../../Command.cpp" line="2245"/>
+      <location filename="../../Command.cpp" line="2254"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2246"/>
-      <source>Create a coordinate system</source>
-      <translation type="unfinished">Create a coordinate system</translation>
+      <location filename="../../Command.cpp" line="2255"/>
+      <source>Coordinate System</source>
+      <translation>Koordinatni sistem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2247"/>
-      <source>A coordinate system object that can be attached to other objects.</source>
-      <translation type="unfinished">A coordinate system object that can be attached to other objects.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdPartPlane</name>
-    <message>
-      <location filename="../../Command.cpp" line="2279"/>
-      <source>Part</source>
-      <translation>Part</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2280"/>
-      <source>Create a datum plane</source>
-      <translation>Napravi pomoćnu ravan</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2281"/>
-      <source>A plane object that can be attached to other objects.</source>
-      <translation type="unfinished">A plane object that can be attached to other objects.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdPartLine</name>
-    <message>
-      <location filename="../../Command.cpp" line="2312"/>
-      <source>Part</source>
-      <translation>Part</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2313"/>
-      <source>Create a datum line</source>
-      <translation>Napravi pomoćnu pravu</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2314"/>
-      <source>A line object that can be attached to other objects.</source>
-      <translation type="unfinished">A line object that can be attached to other objects.</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdPartPoint</name>
-    <message>
-      <location filename="../../Command.cpp" line="2345"/>
-      <source>Part</source>
-      <translation>Part</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2346"/>
-      <source>Create a datum point</source>
-      <translation>Napravi pomoćnu tačku</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2347"/>
-      <source>A point object that can be attached to other objects.</source>
-      <translation type="unfinished">A point object that can be attached to other objects.</translation>
+      <location filename="../../Command.cpp" line="2256"/>
+      <source>Creates a coordinate system that can be attached to other objects</source>
+      <translation type="unfinished">Creates a coordinate system that can be attached to other objects</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2380"/>
+      <location filename="../../Command.cpp" line="2389"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Delovi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2381"/>
-      <source>Create a datum</source>
-      <translation>Napravi pomoćne elemente</translation>
+      <location filename="../../Command.cpp" line="2390"/>
+      <source>Datums</source>
+      <translation>Pomoćni elementi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2382"/>
-      <source>Create a datum object (LCS, Plane, Line, Point) that can be attached to other objects.</source>
-      <translation type="unfinished">Create a datum object (LCS, Plane, Line, Point) that can be attached to other objects.</translation>
+      <location filename="../../Command.cpp" line="2391"/>
+      <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
+      <translation type="unfinished">Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</translation>
+    </message>
+  </context>
+  <context>
+    <name>Exceptions</name>
+    <message>
+      <location filename="../../../App/Geometry.cpp" line="6435"/>
+      <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
+      <translation>Nije moguće odrediti presečnu tačku krivih. Pokušaj da dodaš ograničenje podudarnosti između tačaka krivih gde nameravaš da napraviš zaobljenje.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDatumPlane</name>
+    <message>
+      <location filename="../../Command.cpp" line="2288"/>
+      <source>Part</source>
+      <translation>Delovi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2289"/>
+      <source>Datum Plane</source>
+      <translation>Pomoćna ravan</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2290"/>
+      <source>Creates a datum plane that can be attached to other objects</source>
+      <translation type="unfinished">Creates a datum plane that can be attached to other objects</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDatumLine</name>
+    <message>
+      <location filename="../../Command.cpp" line="2321"/>
+      <source>Part</source>
+      <translation>Delovi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2322"/>
+      <source>Datum Line</source>
+      <translation>Pomoćna linija</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2323"/>
+      <source>Creates a datum line that can be attached to other objects</source>
+      <translation type="unfinished">Creates a datum line that can be attached to other objects</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartDatumPoint</name>
+    <message>
+      <location filename="../../Command.cpp" line="2354"/>
+      <source>Part</source>
+      <translation>Delovi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2355"/>
+      <source>Datum Point</source>
+      <translation>Pomoćna tačka</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2356"/>
+      <source>Creates a datum point that can be attached to other objects</source>
+      <translation type="unfinished">Creates a datum point that can be attached to other objects</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_EditAttachment</name>
+    <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
+      <source>Attachment</source>
+      <translation>Pridruživanje</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
+      <source>Opens the attachment editor to change the attachment of the selected object</source>
+      <translation type="unfinished">Opens the attachment editor to change the attachment of the selected object</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinConnect</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
+      <source>Connect Shapes</source>
+      <translation type="unfinished">Connect Shapes</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="191"/>
+      <source>Fuses shapes, taking care to preserve voids</source>
+      <translation type="unfinished">Fuses shapes, taking care to preserve voids</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinEmbed</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="282"/>
+      <source>Embed Shapes</source>
+      <translation type="unfinished">Embed Shapes</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="287"/>
+      <source>Fuses one shape into another, taking care to preserve voids</source>
+      <translation type="unfinished">Fuses one shape into another, taking care to preserve voids</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinCutout</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="376"/>
+      <source>Cutout Shape</source>
+      <translation type="unfinished">Cutout Shape</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
+      <source>Creates a cutout in the selected shape to fit another shape</source>
+      <translation type="unfinished">Creates a cutout in the selected shape to fit another shape</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_BooleanFragments</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
+      <source>Boolean Fragments</source>
+      <translation type="unfinished">Boolean Fragments</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="185"/>
+      <source>Creates a boolean union which is sliced at the intersections of the selected shapes</source>
+      <translation type="unfinished">Creates a boolean union which is sliced at the intersections of the selected shapes</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Slice</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="333"/>
+      <source>Slice to Compound</source>
+      <translation type="unfinished">Slice to Compound</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="338"/>
+      <source>Slices the selected object by using other objects as cutting tools and storing the results in one compound</source>
+      <translation type="unfinished">Slices the selected object by using other objects as cutting tools and storing the results in one compound</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_SliceApart</name>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="363"/>
+      <source>Slice Apart</source>
+      <translation type="unfinished">Slice Apart</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="368"/>
+      <source>Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide</source>
+      <translation type="unfinished">Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::DlgPartBox</name>
+    <message>
+      <location filename="../../DlgPartBox.ui" line="14"/>
+      <source>Box Definition</source>
+      <translation type="unfinished">Box Definition</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPartBox.ui" line="20"/>
+      <source>Position</source>
+      <translation type="unfinished">Position</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPartBox.ui" line="32"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPartBox.ui" line="52"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPartBox.ui" line="72"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPartBox.ui" line="92"/>
+      <source>Direction</source>
+      <translation>Pravac</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPartBox.ui" line="109"/>
+      <source>Size</source>
+      <translation>Veličina</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPartBox.ui" line="121"/>
+      <source>Length</source>
+      <translation>Dužina</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPartBox.ui" line="141"/>
+      <source>Width</source>
+      <translation>Širina</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPartBox.ui" line="161"/>
+      <source>Height</source>
+      <translation>Visina</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::ShapeFromMesh</name>
+    <message>
+      <location filename="../../ShapeFromMesh.ui" line="14"/>
+      <source>Shape From Mesh</source>
+      <translation type="unfinished">Shape From Mesh</translation>
+    </message>
+    <message>
+      <location filename="../../ShapeFromMesh.ui" line="20"/>
+      <source>Sew Shape</source>
+      <translation type="unfinished">Sew Shape</translation>
+    </message>
+    <message>
+      <location filename="../../ShapeFromMesh.ui" line="32"/>
+      <source>Tolerance for sewing the shape</source>
+      <translation type="unfinished">Tolerance for sewing the shape</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerRing</name>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="369"/>
+      <source>Ring facemaker</source>
+      <translation type="unfinished">Ring facemaker</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerBullseye.cpp" line="374"/>
+      <source>Supports making planar faces with holes and holes as faces</source>
+      <translation type="unfinished">Supports making planar faces with holes and holes as faces</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPartSectionCut</name>
+    <message>
+      <location filename="../../Command.cpp" line="2197"/>
+      <source>Persiste&amp;nt Section Cut</source>
+      <translation type="unfinished">Persiste&amp;nt Section Cut</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2198"/>
+      <source>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</source>
+      <translation type="unfinished">Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartCmdSelectFilter</name>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="46"/>
+      <source>Selection Filter</source>
+      <translation type="unfinished">Selection Filter</translation>
+    </message>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="47"/>
+      <source>Changes the selection filter</source>
+      <translation type="unfinished">Changes the selection filter</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartCmdVertexSelection</name>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="173"/>
+      <source>Vertex Selection</source>
+      <translation type="unfinished">Vertex Selection</translation>
+    </message>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="174"/>
+      <source>Only allows the selection of vertices</source>
+      <translation type="unfinished">Only allows the selection of vertices</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartCmdEdgeSelection</name>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="198"/>
+      <source>Edge Selection</source>
+      <translation type="unfinished">Edge Selection</translation>
+    </message>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="199"/>
+      <source>Only allows the selection of edges</source>
+      <translation type="unfinished">Only allows the selection of edges</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartCmdFaceSelection</name>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="223"/>
+      <source>Face Selection</source>
+      <translation type="unfinished">Face Selection</translation>
+    </message>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="224"/>
+      <source>Only allows the selection of faces</source>
+      <translation type="unfinished">Only allows the selection of faces</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartCmdRemoveSelectionGate</name>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="248"/>
+      <source>No Selection Filters</source>
+      <translation type="unfinished">No Selection Filters</translation>
+    </message>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="249"/>
+      <source>Clears all selection filters</source>
+      <translation type="unfinished">Clears all selection filters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::TaskExportStep</name>
+    <message>
+      <location filename="../../DlgExportStep.cpp" line="208"/>
+      <source>Do not show this dialog again</source>
+      <translation type="unfinished">Do not show this dialog again</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartGui::TaskImportStep</name>
+    <message>
+      <location filename="../../DlgImportStep.cpp" line="149"/>
+      <source>Do not show this dialog again</source>
+      <translation type="unfinished">Do not show this dialog again</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPreviewExtension</name>
+    <message>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="223"/>
+      <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
+      <translation type="unfinished">Failure while rendering preview: %1. That usually indicates an error with model.</translation>
     </message>
   </context>
 </TS>

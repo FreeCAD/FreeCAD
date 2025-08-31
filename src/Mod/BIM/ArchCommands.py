@@ -1,41 +1,26 @@
-# -*- coding: utf8 -*-
-#***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
-import FreeCAD
-import ArchComponent
-import Draft
-import DraftVecUtils
-from FreeCAD import Vector
-from draftutils import params
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtGui,QtCore
-    from draftutils.translate import translate
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    # \endcond
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
 
 __title__  = "FreeCAD Arch Commands"
 __author__ = "Yorik van Havre"
@@ -47,6 +32,26 @@ __url__    = "https://www.freecad.org"
 #
 #  This module provides general functions used by Arch tools
 #  and utility commands
+
+import FreeCAD
+import ArchComponent
+import Draft
+import DraftVecUtils
+
+from FreeCAD import Vector
+from draftutils import params
+from draftutils.groups import is_group
+
+if FreeCAD.GuiUp:
+    from PySide import QtGui,QtCore
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    # \endcond
+
 
 # module functions ###############################################
 
@@ -88,6 +93,14 @@ def getDefaultColor(objectType):
     r, g, b, _ = Draft.get_rgba_tuple(c)
     return (r, g, b, alpha)
 
+def _usedForAttachment(host,obj):
+    if not getattr(obj,"AttachmentSupport",[]):
+        return False
+    for sub in obj.AttachmentSupport:
+        if sub[0] == host:
+            return True
+    return False
+
 def addComponents(objectsList,host):
     '''addComponents(objectsList,hostObject): adds the given object or the objects
     from the given list as components to the given host Object. Use this for
@@ -98,26 +111,34 @@ def addComponents(objectsList,host):
     if hostType in ["Floor","Building","Site","Project","BuildingPart"]:
         for o in objectsList:
             host.addObject(o)
-    elif hostType in ["Wall","Structure","Precast","Window","Roof","Stairs","StructuralSystem","Panel","Component","Pipe"]:
+    elif hostType in ["Wall","CurtainWall","Structure","Precast","Window","Roof","Stairs","StructuralSystem","Panel","Component","Pipe"]:
         import DraftGeomUtils
+        outList = host.OutListRecursive
         a = host.Additions
-        if hasattr(host,"Axes"):
-            x = host.Axes
+        x = getattr(host,"Axes",[])
         for o in objectsList:
-            if hasattr(o,'Shape'):
+            if hasattr(o,"Shape"):
                 if Draft.getType(o) == "Window":
                     if hasattr(o,"Hosts"):
                         if not host in o.Hosts:
                             g = o.Hosts
                             g.append(host)
                             o.Hosts = g
-                elif DraftGeomUtils.isValidPath(o.Shape) and (hostType in ["Structure","Precast"]):
-                    if o.AttachmentSupport == host:
-                        o.AttachmentSupport = None
-                    host.Tool = o
+                elif o in outList:
+                    FreeCAD.Console.PrintWarning(
+                        translate(
+                            "Arch",
+                            "Cannot add {0} as it is already referenced by {1}."
+                        ).format(o.Label, host.Label) + "\n"
+                    )
                 elif Draft.getType(o) == "Axis":
                     if not o in x:
                         x.append(o)
+                elif DraftGeomUtils.isValidPath(o.Shape) and (hostType in ["Structure","Precast"]):
+                    if _usedForAttachment(host,o):
+                        o.AttachmentSupport = None
+                        o.MapMode = "Deactivated"
+                    host.Tool = o
                 elif not o in a:
                     if hasattr(o,"Shape"):
                         a.append(o)
@@ -142,16 +163,16 @@ def removeComponents(objectsList,host=None):
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     if host:
-        if Draft.getType(host) in ["Wall","Structure","Precast","Window","Roof","Stairs","StructuralSystem","Panel","Component","Pipe"]:
-            if hasattr(host,"Tool"):
-                if objectsList[0] == host.Tool:
-                    host.Tool = None
+        if Draft.getType(host) in ["Wall","CurtainWall","Structure","Precast","Window","Roof","Stairs","StructuralSystem","Panel","Component","Pipe"]:
+            if getattr(host,"Tool",None) in objectsList:
+                host.Tool = None
             if hasattr(host,"Axes"):
                 a = host.Axes
                 for o in objectsList[:]:
                     if o in a:
                         a.remove(o)
                         objectsList.remove(o)
+                host.Axes = a
             s = host.Subtractions
             for o in objectsList:
                 if Draft.getType(o) == "Window":
@@ -163,34 +184,24 @@ def removeComponents(objectsList,host=None):
                 elif not o in s:
                     s.append(o)
                     if FreeCAD.GuiUp:
-                        if not Draft.getType(o) in ["Window","Roof"]:
+                        if Draft.getType(o) != "Roof":
                             setAsSubcomponent(o)
-                    # Making reference to BimWindow.Arch_Window:
-                    # Check if o and o.Base has Attachment Support, and
-                    # if the support is the host object itself - thus a cyclic
-                    # dependency and probably creating TNP.
-                    # If above is positive, remove its AttachmentSupport:
+                    # Avoid cyclic dependency via Attachment Support:
                     if hasattr(o,"Base") and o.Base:
                         objList = [o, o.Base]
                     else:
                         objList = [o]
                     for i in objList:
-                        objHost = None
-                        if hasattr(i,"AttachmentSupport"):
-                            if i.AttachmentSupport:
-                                if isinstance(i.AttachmentSupport,tuple):
-                                    objHost = i.AttachmentSupport[0]
-                                elif isinstance(i.AttachmentSupport,list):
-                                    objHost = i.AttachmentSupport[0][0]
-                                else:
-                                    objHost = i.AttachmentSupport
-                            if objHost == host:
-                                msg = FreeCAD.Console.PrintMessage
-                                msg(i.Label + " is mapped to " + host.Label +
-                                    ", removing the former's Attachment " +
-                                    "Support to avoid cyclic dependency and " +
-                                    "TNP." + "\n")
-                                i.AttachmentSupport = None # remove
+                        if _usedForAttachment(host,i):
+                            FreeCAD.Console.PrintMessage(
+                                translate(
+                                    "Arch",
+                                    "{0} is mapped to {1}, removing the former's " +
+                                    "Attachment Support to avoid cyclic dependency."
+                                ).format(o.Label, host.Label) + "\n"
+                            )
+                            i.AttachmentSupport = None
+                            i.MapMode = "Deactivated"
             host.Subtractions = s
         elif Draft.getType(host) in ["SectionPlane"]:
             a = host.Objects
@@ -228,6 +239,8 @@ def removeComponents(objectsList,host=None):
                     if o in a:
                         a.remove(o)
                         h.Objects = a
+            if hasattr(o, "Hosts") and Draft.getType(o) == "Window":
+                o.Hosts = []
 
 def makeComponent(baseobj=None,name=None,delete=False):
     '''makeComponent([baseobj],[name],[delete]): creates an undefined, non-parametric BIM
@@ -558,7 +571,10 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
             print("getShapeFromMesh: error creating solid")
             return se
         else:
-            return solid
+            if solid.isClosed():
+                return solid
+            else:
+                return se
 
 def projectToVector(shape,vector):
     '''projectToVector(shape,vector): projects the given shape on the given
@@ -691,7 +707,7 @@ def download(url,force=False):
     if os.path.exists(filepath) and not(force):
         return filepath
     try:
-        FreeCAD.Console.PrintMessage("downloading "+url+" ...\n")
+        FreeCAD.Console.PrintMessage("Downloading "+url+" …\n")
         response = urlopen(url)
         s = response.read()
         f = open(filepath,'wb')
@@ -718,7 +734,7 @@ def check(objectslist,includehidden=False):
             elif not s.isValid():
                 bad.append([o,translate("Arch","is not valid")])
             elif (not s.Solids) and (not (Draft.getType(o) == "Axis")):
-                bad.append([o,translate("Arch","doesn't contain any solid")])
+                bad.append([o,translate("Arch","does not contain any solid")])
             else:
                 f = 0
                 for sol in s.Solids:
@@ -755,14 +771,17 @@ def pruneIncluded(objectslist,strict=False,silent=False):
     for obj in objectslist:
         toplevel = True
         if obj.isDerivedFrom("Part::Feature"):
-            if Draft.getType(obj) not in ["Window","Clone","Pipe","Rebar"]:
+            if Draft.getType(obj) not in ["Window","Clone","Pipe","Rebar","Roof"]:
                 for parent in obj.InList:
                     if not parent.isDerivedFrom("Part::Feature"):
                         pass
-                    elif Draft.getType(parent) in ["Space","Facebinder","Window","Roof","Clone","Site","Project"]:
-                        pass
                     elif parent.isDerivedFrom("Part::Part2DObject"):
                         # don't consider 2D objects based on arch elements
+                        pass
+                    elif Draft.getType(parent) in [
+                            "BezCurve", "BSpline", "Clone", "Facebinder", "Wire",
+                            "Project", "Roof", "Site", "Space", "Window"
+                        ]:
                         pass
                     elif parent.isDerivedFrom("PartDesign::FeatureBase"):
                         # don't consider a PartDesign_Clone that references obj
@@ -810,6 +829,140 @@ def getAllChildren(objectlist):
                     obs.append(c)
     return obs
 
+def get_architectural_contents(
+    initial_objects,
+    recursive=True,
+    discover_hosted_elements=True,
+    include_components_from_additions=False,
+    include_initial_objects_in_result=True
+):
+    """
+    Retrieves a flat list of unique architectural objects that are considered "contents" of or are
+    related to the given initial_objects.
+
+    This includes:
+    - Children from .Group properties (hierarchical traversal if recursive=True).
+    - Architecturally hosted elements (e.g., windows in walls, rebars in structures)
+      if discover_hosted_elements=True.
+    - Optionally, components from .Additions properties.
+
+    The traversal uses a queue and ensures objects are processed only once.
+
+    Parameters:
+    -----------
+    initial_objects : App::DocumentObject or list of App::DocumentObject
+        The starting object(s) from which to discover contents.
+    recursive : bool, optional
+        If True (default), recursively find contents of discovered group-like
+        objects (those with a .Group property and identified by draftutils.groups.is_group()).
+    discover_hosted_elements : bool, optional
+        If True (default), try to find elements like windows, doors, rebars
+        that are architecturally hosted by other elements encountered during traversal.
+        This relies on Draft.getType() and common Arch properties like .Hosts or .Host.
+    include_components_from_additions : bool, optional
+        If False (default), objects found in .Additions lists are not added.
+        Set to True if these components should be part of the discovered contents.
+    include_initial_objects_in_result : bool, optional
+        If True (default), the objects in initial_objects themselves will be
+        included in the output list (if not already discovered as a child of another).
+        If False, only their "descendant" contents are returned.
+
+    Returns:
+    --------
+    list of App::DocumentObject
+        A flat list of unique architectural document objects.
+    """
+
+    final_contents_list = []
+    queue = []
+
+    if not isinstance(initial_objects, list):
+        initial_objects_list = [initial_objects]
+    else:
+        initial_objects_list = list(initial_objects) # Make a copy
+
+    queue.extend(initial_objects_list)
+
+    # Set to keep track of object names already added to the queue or fully processed
+    # This prevents duplicates in the queue and reprocessing.
+    processed_or_queued_names = set()
+    for item in initial_objects_list: # Pre-populate for initial items if they are to be added later
+        processed_or_queued_names.add(item.Name)
+
+
+    idx = 0 # Use an index for iterating the queue, as it can grow
+    while idx < len(queue):
+        obj = queue[idx]
+        idx += 1
+
+        # Add the current object to the final list if it's not already there.
+        # The decision to include initial_objects is handled by how they are first added to queue
+        # and this check.
+        if obj not in final_contents_list:
+            is_initial = obj in initial_objects_list
+            if (is_initial and include_initial_objects_in_result) or not is_initial:
+                final_contents_list.append(obj)
+
+        children_to_add_to_queue_next = []
+
+        # 1. Hierarchical children from .Group (if recursive)
+        if recursive and is_group(obj) and hasattr(obj, "Group") and obj.Group:
+            for child in obj.Group:
+                if child.Name not in processed_or_queued_names:
+                    children_to_add_to_queue_next.append(child)
+                    processed_or_queued_names.add(child.Name) # Mark as queued
+
+        # 2. Architecturally-hosted elements (if discover_hosted_elements)
+        if discover_hosted_elements:
+            host_types = ["Wall", "Structure", "CurtainWall", "Precast", "Panel", "Roof"]
+            if Draft.getType(obj) in host_types:
+                # Hosted elements are typically in the host's InList
+                for item_in_inlist in obj.InList:
+                    element_to_check = item_in_inlist
+                    if hasattr(item_in_inlist, "getLinkedObject"): # Resolve App::Link
+                        linked = item_in_inlist.getLinkedObject()
+                        if linked:
+                            element_to_check = linked
+
+                    if element_to_check.Name in processed_or_queued_names:
+                        continue
+
+                    is_confirmed_hosted = False
+                    element_type = Draft.getType(element_to_check)
+
+                    if element_type == "Window": # This covers Arch Windows and Arch Doors
+                        if hasattr(element_to_check, "Hosts") and obj in element_to_check.Hosts:
+                            is_confirmed_hosted = True
+                    elif element_type == "Rebar":
+                        if hasattr(element_to_check, "Host") and obj == element_to_check.Host:
+                            is_confirmed_hosted = True
+
+                    if is_confirmed_hosted:
+                        children_to_add_to_queue_next.append(element_to_check)
+                        processed_or_queued_names.add(element_to_check.Name) # Mark as queued
+
+        # 3. Components from .Additions list (e.g., walls added to a main wall)
+        if include_components_from_additions and hasattr(obj, "Additions") and obj.Additions:
+            for addition_comp in obj.Additions:
+                actual_addition = addition_comp
+                if hasattr(addition_comp, "getLinkedObject"): # Resolve if Addition is an App::Link
+                    linked_add = addition_comp.getLinkedObject()
+                    if linked_add:
+                        actual_addition = linked_add
+
+                if actual_addition.Name not in processed_or_queued_names:
+                    children_to_add_to_queue_next.append(actual_addition)
+                    processed_or_queued_names.add(actual_addition.Name) # Mark as queued
+
+        if children_to_add_to_queue_next:
+            # Add newly-discovered children to the end of the queue. This function uses an index
+            # (idx) to iterate through the queue, and queue.extend() adds new items to the end. This
+            # results in a breadth-first-like traversal for objects discovered at the same "depth"
+            # from different parent branches. Children of the current 'obj' will be processed after
+            # 'obj's current siblings in the queue.
+            queue.extend(children_to_add_to_queue_next)
+
+    return final_contents_list
 
 def survey(callback=False):
     """survey(): starts survey mode, where you can click edges and faces to get their lengths or area.
@@ -1030,10 +1183,10 @@ class SurveyTaskPanel:
 
     def retranslateUi(self,dlg):
         self.form.setWindowTitle(QtGui.QApplication.translate("Arch", "Survey", None))
-        self.addButton.setText(QtGui.QApplication.translate("Arch", "Set description", None))
+        self.addButton.setText(QtGui.QApplication.translate("Arch", "Set Description", None))
         self.clearButton.setText(QtGui.QApplication.translate("Arch", "Clear", None))
-        self.copyLength.setText(QtGui.QApplication.translate("Arch", "Copy Length", None))
-        self.copyArea.setText(QtGui.QApplication.translate("Arch", "Copy Area", None))
+        self.copyLength.setText(QtGui.QApplication.translate("Arch", "Copy Total Length", None))
+        self.copyArea.setText(QtGui.QApplication.translate("Arch", "Copy Total Area", None))
         self.export.setText(QtGui.QApplication.translate("Arch", "Export CSV", None))
         self.tree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Description", None),
                                    QtGui.QApplication.translate("Arch", "Length", None),
@@ -1162,7 +1315,7 @@ def toggleIfcBrepFlag(obj):
     """toggleIfcBrepFlag(obj): toggles the IFC brep flag of the given object, forcing it
     to be exported as brep geometry or not."""
     if not hasattr(obj,"IfcData"):
-        FreeCAD.Console.PrintMessage(translate("Arch","Object doesn't have settable IFC attributes"))
+        FreeCAD.Console.PrintMessage(translate("Arch","Object does not have settable IFC attributes"))
     else:
         d = obj.IfcData
         if "FlagForceBrep" in d:
@@ -1372,8 +1525,7 @@ def makeIfcSpreadsheet(archobj=None):
             archobj.IfcProperties = ifc_spreadsheet
             return ifc_spreadsheet
         else :
-            FreeCAD.Console.PrintWarning(translate("Arch", "The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:")+ ' ' + archobj.Label)
+            FreeCAD.Console.PrintWarning(translate("Arch", "The object does not have an IfcProperties attribute. Cancel spreadsheet creation for object:")+ ' ' + archobj.Label)
             FreeCAD.ActiveDocument.removeObject(ifc_spreadsheet)
     else :
         return ifc_spreadsheet
-

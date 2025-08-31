@@ -25,6 +25,8 @@
 *.o
 *.orig
 *.output
+# Ignore .db files created by Qt Designer when editing .ui files
+*.db
 qrc_*.cpp
 BuildLog.htm
 cmake_install.cmake
@@ -45,6 +47,7 @@ install_manifest.txt
 /Mod/
 /ZERO_CHECK.dir/
 /build/
+/build-*/
 /cmake-build*/
 /src/Tools/offlinedoc/localwiki/
 /src/Tools/offlinedoc/*.txt
@@ -55,6 +58,8 @@ tags
 /CMakeUserPresets.json
 Testing
 compile_commands.json
+*.sublime-project
+*.sublime-workspace
 
 # crowdin file
 src/Tools/freecad.zip

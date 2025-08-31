@@ -85,7 +85,7 @@ class Ui_TaskSelectLineAttributes;
 //     float getWidthValue();
 //     void setColor(int);
 //     int getColor() const {return color;}
-//     App::Color getColorValue();
+//     Base::Color getColorValue();
 
 // }; // class lineAttributes
 

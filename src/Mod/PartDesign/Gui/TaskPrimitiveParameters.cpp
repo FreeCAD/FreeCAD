@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <limits>
 #include <QMessageBox>
 #endif
 
@@ -47,10 +48,13 @@ using namespace PartDesignGui;
 
 // clang-format off
 TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
-  : TaskBox(QPixmap(),tr("Primitive parameters"), true, parent)
+  : TaskBox(QPixmap(),tr("Primitive Parameters"), true, parent)
   , ui(new Ui_DlgPrimitives)
   , vp(vp)
 {
+    vp->showPreview(true);
+    vp->showPreviousFeature(true);
+
     proxy = new QWidget(this);
     ui->setupUi(proxy);
 
@@ -222,26 +226,26 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui->wedgeZ2max->bind(getObject<PartDesign::Wedge>()->Z2max);
             ui->wedgeZ2min->setValue(getObject<PartDesign::Wedge>()->Z2min.getValue());
             ui->wedgeZ2min->bind(getObject<PartDesign::Wedge>()->Z2min);
-            ui->wedgeXmin->setMinimum(INT_MIN);
+            ui->wedgeXmin->setMinimum(std::numeric_limits<int>::min());
             ui->wedgeXmin->setMaximum(ui->wedgeXmax->rawValue()); // must be < than wedgeXmax
-            ui->wedgeYmin->setMinimum(INT_MIN);
+            ui->wedgeYmin->setMinimum(std::numeric_limits<int>::min());
             ui->wedgeYmin->setMaximum(ui->wedgeYmax->rawValue()); // must be < than wedgeYmax
-            ui->wedgeZmin->setMinimum(INT_MIN);
+            ui->wedgeZmin->setMinimum(std::numeric_limits<int>::min());
             ui->wedgeZmin->setMaximum(ui->wedgeZmax->rawValue()); // must be < than wedgeZmax
-            ui->wedgeX2min->setMinimum(INT_MIN);
+            ui->wedgeX2min->setMinimum(std::numeric_limits<int>::min());;
             ui->wedgeX2min->setMaximum(ui->wedgeX2max->rawValue()); // must be <= than wedgeXmax
-            ui->wedgeZ2min->setMinimum(INT_MIN);
+            ui->wedgeZ2min->setMinimum(std::numeric_limits<int>::min());;
             ui->wedgeZ2min->setMaximum(ui->wedgeZ2max->rawValue()); // must be <= than wedgeXmax
             ui->wedgeXmax->setMinimum(ui->wedgeXmin->rawValue());
-            ui->wedgeXmax->setMaximum(INT_MAX);
+            ui->wedgeXmax->setMaximum(std::numeric_limits<int>::max());
             ui->wedgeYmax->setMinimum(ui->wedgeYmin->rawValue());
-            ui->wedgeYmax->setMaximum(INT_MAX);
+            ui->wedgeYmax->setMaximum(std::numeric_limits<int>::max());
             ui->wedgeZmax->setMinimum(ui->wedgeZmin->rawValue());
-            ui->wedgeZmax->setMaximum(INT_MAX);
+            ui->wedgeZmax->setMaximum(std::numeric_limits<int>::max());
             ui->wedgeX2max->setMinimum(ui->wedgeX2min->rawValue());
-            ui->wedgeX2max->setMaximum(INT_MAX);
+            ui->wedgeX2max->setMaximum(std::numeric_limits<int>::max());
             ui->wedgeZ2max->setMinimum(ui->wedgeZ2min->rawValue());
-            ui->wedgeZ2max->setMaximum(INT_MAX);
+            ui->wedgeZ2max->setMaximum(std::numeric_limits<int>::max());
             break;
     }
 
@@ -264,7 +268,7 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             vpOrigin = static_cast<Gui::ViewProviderCoordinateSystem*>(Gui::Application::Instance->getViewProvider(origin));
             vpOrigin->setTemporaryVisibility(Gui::DatumElement::Planes | Gui::DatumElement::Axes);
         } catch (const Base::Exception &ex) {
-            Base::Console().Error ("%s\n", ex.what () );
+            Base::Console().error ("%s\n", ex.what () );
         }
     }
 
@@ -387,7 +391,7 @@ TaskBoxPrimitives::~TaskBoxPrimitives()
         }
     }
     catch (const Base::Exception& ex) {
-        Base::Console().Error("%s\n", ex.what());
+        Base::Console().error("%s\n", ex.what());
     }
 }
 
@@ -971,8 +975,9 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
     return true;
 }
 
-TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* PrimitiveView)
-    : vp_prm(PrimitiveView)
+TaskDlgPrimitiveParameters::TaskDlgPrimitiveParameters(ViewProviderPrimitive* PrimitiveView)
+    : TaskDlgFeatureParameters(PrimitiveView)
+    , vp_prm(PrimitiveView)
 {
     assert(PrimitiveView);
 
@@ -980,11 +985,12 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
     Content.push_back(primitive);
     parameter = new PartGui::TaskAttacher(PrimitiveView, nullptr, QString(), tr("Attachment"));
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
-TaskPrimitiveParameters::~TaskPrimitiveParameters() = default;
+TaskDlgPrimitiveParameters::~TaskDlgPrimitiveParameters() = default;
 
-bool TaskPrimitiveParameters::accept()
+bool TaskDlgPrimitiveParameters::accept()
 {
     bool primitiveOK = primitive->setPrimitive(vp_prm->getObject());
     if (!primitiveOK) {
@@ -996,7 +1002,7 @@ bool TaskPrimitiveParameters::accept()
     return true;
 }
 
-bool TaskPrimitiveParameters::reject()
+bool TaskDlgPrimitiveParameters::reject()
 {
     // roll back the done things
     Gui::Command::abortCommand();
@@ -1005,7 +1011,7 @@ bool TaskPrimitiveParameters::reject()
     return true;
 }
 
-QDialogButtonBox::StandardButtons TaskPrimitiveParameters::getStandardButtons() const
+QDialogButtonBox::StandardButtons TaskDlgPrimitiveParameters::getStandardButtons() const
 {
     return Gui::TaskView::TaskDialog::getStandardButtons();
 }

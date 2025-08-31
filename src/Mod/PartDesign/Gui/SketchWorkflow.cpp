@@ -141,7 +141,7 @@ public:
             throw WrongSupportException();
         }
 
-        if (!subshape.isPlanar()) {
+        if (!subshape.isPlanar(Attacher::AttachEnginePlane::planarPrecision())) {
             throw SupportNotPlanarException();
         }
     }
@@ -181,7 +181,7 @@ public:
 
     std::string getSupport() const
     {
-        return Gui::Command::getObjectCmd(getObject(), "(",",'')");
+        return faceSelection.getAsPropertyLinkSubString();
     }
 
     App::DocumentObject* getObject() const
@@ -246,7 +246,7 @@ public:
         App::Document* appdocument = guidocument->getDocument();
         std::string FeatName = appdocument->getUniqueObjectName("Sketch");
 
-        guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "Create a Sketch on Face"));
+        guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "Sketch on Face"));
         FCMD_OBJ_CMD(activeBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto Feat = activeBody->getDocument()->getObject(FeatName.c_str());
         FCMD_OBJ_CMD(Feat, "AttachmentSupport = " << supportString);
@@ -380,18 +380,24 @@ public:
             tryFindBasePlanes();
         }
         catch (const Base::Exception &ex) {
-            Base::Console().Error ("%s\n", ex.what() );
+            Base::Console().error ("%s\n", ex.what() );
         }
     }
 
     void findDatumPlanes()
     {
         App::GeoFeatureGroupExtension *geoGroup = getGroupExtensionOfBody();
-        auto datumPlanes( appdocument->getObjectsOfType(PartDesign::Plane::getClassTypeId()) );
+        const std::vector<Base::Type> types = { PartDesign::Plane::getClassTypeId(), App::Plane::getClassTypeId() };
+        auto datumPlanes = appdocument->getObjectsOfType(types);
+
         for (auto plane : datumPlanes) {
+            if (std::find(planes.begin(), planes.end(), plane) != planes.end()) {
+                continue; // Skip if already in planes (for base planes)
+            }
+
             planes.push_back ( plane );
             // Check whether this plane belongs to the active body
-            if ( activeBody->hasObject(plane) ) {
+            if ( activeBody->hasObject(plane, true) ) {
                 if ( !activeBody->isAfterInsertPoint ( plane ) ) {
                     validPlaneCount++;
                     status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
@@ -486,7 +492,7 @@ public:
     {
         try {
             // Start command early, so undo will undo any Body creation
-            guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "Create a new Sketch"));
+            guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "New Sketch"));
             tryFindSupport();
         }
         catch (const RejectException&) {
@@ -651,9 +657,9 @@ private:
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
         if (dlg && !pickDlg) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
+            msgBox.setInformativeText(QObject::tr("Close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             msgBox.setDefaultButton(QMessageBox::Yes);
             int ret = msgBox.exec();
@@ -675,15 +681,24 @@ private:
     {
         // may happen when the user switched to an empty document while the
         // dialog is open
-        if (features.empty())
+        if (features.empty()) {
             return;
-        App::Plane* plane = static_cast<App::Plane*>(features.front());
+        }
         std::string FeatName = documentOfBody->getUniqueObjectName("Sketch");
-        std::string supportString = Gui::Command::getObjectCmd(plane,"(",",[''])");
+        auto* plane = static_cast<App::Plane*>(features.front());
+        auto* lcs = plane->getLCS();
+
+        std::string supportString;
+        if (lcs) {
+            supportString = Gui::Command::getObjectCmd(lcs, "(") + ",['" + plane->getNameInDocument() + "'])";
+        }
+        else {
+            supportString = Gui::Command::getObjectCmd(plane, "(", ",[''])");
+        }
 
         App::Document* doc = partDesignBody->getDocument();
         if (!doc->hasPendingTransaction()) {
-            doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Create a new Sketch"));
+            doc->openTransaction(QT_TRANSLATE_NOOP("Command", "New Sketch"));
         }
 
         FCMD_OBJ_CMD(partDesignBody,"newObject('Sketcher::SketchObject','" << FeatName << "')");
@@ -717,19 +732,19 @@ void SketchWorkflow::createSketch()
     }
     catch (const WrongSelectionException&) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Several sub-elements selected"),
-            QObject::tr("You have to select a single face as support for a sketch!"));
+            QObject::tr("Select a single face as support for a sketch!"));
     }
     catch (const WrongSupportException&) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No support face selected"),
-            QObject::tr("You have to select a face as support for a sketch!"));
+            QObject::tr("Select a face as support for a sketch!"));
     }
     catch (const SupportNotPlanarException&) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No planar support"),
-            QObject::tr("You need a planar face as support for a sketch!"));
+            QObject::tr("Need a planar face as support for a sketch!"));
     }
     catch (const MissingPlanesException&) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid planes in this document"),
-            QObject::tr("Please create a plane first or select a face to sketch on"));
+            QObject::tr("Create a plane first or select a face to sketch on"));
     }
 }
 
@@ -798,8 +813,8 @@ std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> SketchWorkflow::getFaceAn
     // See https://forum.freecad.org/viewtopic.php?f=3&t=44070
 
     Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1");
-    Gui::SelectionFilter PlaneFilter ("SELECT App::Plane COUNT 1");
-    Gui::SelectionFilter PlaneFilter2("SELECT PartDesign::Plane COUNT 1");
+    Gui::SelectionFilter PlaneFilter ("SELECT App::Plane COUNT 1", activeBody);
+    Gui::SelectionFilter PlaneFilter2("SELECT PartDesign::Plane COUNT 1", activeBody);
 
     if (PlaneFilter2.match()) {
         PlaneFilter = PlaneFilter2;

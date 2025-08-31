@@ -295,7 +295,7 @@ void SequencerBar::showRemainingTime()
             QTime time( 0,0, 0);
             time = time.addSecs( rest/1000 );
             QString remain = Gui::ProgressBar::tr("Remaining: %1").arg(time.toString());
-            QString status = QString::fromLatin1("%1\t[%2]").arg(txt, remain);
+            QString status = QStringLiteral("%1\t[%2]").arg(txt, remain);
 
             if (thr != currentThread) {
                 QMetaObject::invokeMethod(getMainWindow(), "showMessage",
@@ -482,7 +482,7 @@ void ProgressBar::aboutToHide()
 bool ProgressBar::canAbort() const
 {
     auto ret = QMessageBox::question(getMainWindow(),tr("Aborting"),
-    tr("Do you really want to abort the operation?"),  QMessageBox::Yes | QMessageBox::No,
+    tr("Abort the operation?"),  QMessageBox::Yes | QMessageBox::No,
     QMessageBox::No);
 
     return (ret == QMessageBox::Yes) ? true : false;

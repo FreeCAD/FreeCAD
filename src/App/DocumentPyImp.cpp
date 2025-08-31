@@ -49,20 +49,21 @@ PyObject* DocumentPy::addProperty(PyObject* args, PyObject* kwd)
     char* sDoc {nullptr};
     short attr = 0;
     std::string sDocStr;
-    PyObject *ro = Py_False, *hd = Py_False;
+    PyObject *ro = Py_False, *hd = Py_False, *lk = Py_False;
     PyObject* enumVals = nullptr;
-    static const std::array<const char*, 9> kwlist {"type",
+    static const std::array<const char*, 10> kwlist {"type",
                                                     "name",
                                                     "group",
                                                     "doc",
                                                     "attr",
                                                     "read_only",
                                                     "hidden",
+                                                    "locked",
                                                     "enum_vals",
                                                     nullptr};
     if (!Base::Wrapped_ParseTupleAndKeywords(args,
                                              kwd,
-                                             "ss|sethO!O!O",
+                                             "ss|sethO!O!O!O",
                                              kwlist,
                                              &sType,
                                              &sName,
@@ -74,6 +75,8 @@ PyObject* DocumentPy::addProperty(PyObject* args, PyObject* kwd)
                                              &ro,
                                              &PyBool_Type,
                                              &hd,
+                                             &PyBool_Type,
+                                             &lk,
                                              &enumVals)) {
         return nullptr;
     }
@@ -90,6 +93,7 @@ PyObject* DocumentPy::addProperty(PyObject* args, PyObject* kwd)
                                                           attr,
                                                           Base::asBoolean(ro),
                                                           Base::asBoolean(hd));
+    prop->setStatus(Property::LockDynamic, Base::asBoolean(lk));
 
     // enum support
     auto* propEnum = dynamic_cast<App::PropertyEnumeration*>(prop);
@@ -377,7 +381,7 @@ PyObject* DocumentPy::addObject(PyObject* args, PyObject* kwd)
                 }
                 catch (Py::Exception&) {
                     Base::PyException e;
-                    e.ReportException();
+                    e.reportException();
                 }
             }
 
@@ -388,7 +392,7 @@ PyObject* DocumentPy::addObject(PyObject* args, PyObject* kwd)
                 pyvp = Py::Object(view);
             }
             if (pyvp.isNone()) {
-                pyvp = Py::Int(1);
+                pyvp = Py::Long(1);
             }
             // 'pyvp' is the python class with the implementation for ViewProvider
             if (pyvp.hasAttr("__vobject__")) {
@@ -426,10 +430,21 @@ PyObject* DocumentPy::removeObject(PyObject* args)
     }
 }
 
-PyObject* DocumentPy::copyObject(PyObject* args)
+PyObject* DocumentPy::copyObject(PyObject* args, PyObject* kwd)
 {
-    PyObject *obj, *rec = Py_False, *retAll = Py_False;
-    if (!PyArg_ParseTuple(args, "O|O!O!", &obj, &PyBool_Type, &rec, &PyBool_Type, &retAll)) {
+    PyObject* obj;
+    PyObject* rec = Py_False;
+    PyObject* retAll = Py_False;
+    static constexpr std::array<const char*, 4> kwlist {"object", "recursive", "return_all", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             kwd,
+                                             "O|O!O!",
+                                             kwlist,
+                                             &obj,
+                                             &PyBool_Type,
+                                             &rec,
+                                             &PyBool_Type,
+                                             &retAll)) {
         return nullptr;
     }
 
@@ -645,6 +660,27 @@ PyObject* DocumentPy::isClosable(PyObject* args)
     return Py::new_reference_to(Py::Boolean(ok));
 }
 
+PyObject *DocumentPy::setAutoCreated(PyObject *args)
+{
+    PyObject *autoCreated;
+    if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &autoCreated)) {
+        return nullptr;
+    }
+    bool value = (autoCreated == Py_True);
+    getDocumentPtr()->setAutoCreated(value);
+
+    Py_RETURN_NONE;
+}
+
+PyObject *DocumentPy::isAutoCreated(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    bool ok = getDocumentPtr()->isAutoCreated();
+    return Py::new_reference_to(Py::Boolean(ok));
+}
+
 PyObject* DocumentPy::recompute(PyObject* args)
 {
     PyObject* pyobjs = Py_None;
@@ -695,7 +731,7 @@ PyObject* DocumentPy::recompute(PyObject* args)
             return nullptr;
         }
 
-        return Py::new_reference_to(Py::Int(objectCount));
+        return Py::new_reference_to(Py::Long(objectCount));
     }
     PY_CATCH;
 }
@@ -890,30 +926,30 @@ Py::List DocumentPy::getRootObjectsIgnoreLinks() const
     return res;
 }
 
-Py::Int DocumentPy::getUndoMode() const
+Py::Long DocumentPy::getUndoMode() const
 {
-    return Py::Int(getDocumentPtr()->getUndoMode());
+    return Py::Long(getDocumentPtr()->getUndoMode());
 }
 
-void DocumentPy::setUndoMode(Py::Int arg)
+void DocumentPy::setUndoMode(Py::Long arg)
 {
     getDocumentPtr()->setUndoMode(arg);
 }
 
 
-Py::Int DocumentPy::getUndoRedoMemSize() const
+Py::Long DocumentPy::getUndoRedoMemSize() const
 {
-    return Py::Int((long)getDocumentPtr()->getUndoMemSize());
+    return Py::Long((long)getDocumentPtr()->getUndoMemSize());
 }
 
-Py::Int DocumentPy::getUndoCount() const
+Py::Long DocumentPy::getUndoCount() const
 {
-    return Py::Int((long)getDocumentPtr()->getAvailableUndos());
+    return Py::Long((long)getDocumentPtr()->getAvailableUndos());
 }
 
-Py::Int DocumentPy::getRedoCount() const
+Py::Long DocumentPy::getRedoCount() const
 {
-    return Py::Int((long)getDocumentPtr()->getAvailableRedos());
+    return Py::Long((long)getDocumentPtr()->getAvailableRedos());
 }
 
 Py::List DocumentPy::getUndoNames() const

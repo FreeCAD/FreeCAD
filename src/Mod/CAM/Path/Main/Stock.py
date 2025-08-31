@@ -120,7 +120,7 @@ class StockFromBase(Stock):
             "Stock",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra allowance from part bound box in negative X direction",
+                "Extra allowance from part bound box in negative X-direction",
             ),
         )
         obj.addProperty(
@@ -129,7 +129,7 @@ class StockFromBase(Stock):
             "Stock",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra allowance from part bound box in positive X direction",
+                "Extra allowance from part bound box in positive X-direction",
             ),
         )
         obj.addProperty(
@@ -138,7 +138,7 @@ class StockFromBase(Stock):
             "Stock",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra allowance from part bound box in negative Y direction",
+                "Extra allowance from part bound box in negative Y-direction",
             ),
         )
         obj.addProperty(
@@ -147,7 +147,7 @@ class StockFromBase(Stock):
             "Stock",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra allowance from part bound box in positive Y direction",
+                "Extra allowance from part bound box in positive Y-direction",
             ),
         )
         obj.addProperty(
@@ -156,7 +156,7 @@ class StockFromBase(Stock):
             "Stock",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra allowance from part bound box in negative Z direction",
+                "Extra allowance from part bound box in negative Z-direction",
             ),
         )
         obj.addProperty(
@@ -165,7 +165,7 @@ class StockFromBase(Stock):
             "Stock",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra allowance from part bound box in positive Z direction",
+                "Extra allowance from part bound box in positive Z-direction",
             ),
         )
 
@@ -341,6 +341,7 @@ def SetupStockObject(obj, stockType):
 
         PathIconViewProvider.ViewProvider(obj.ViewObject, "Stock")
         obj.ViewObject.Transparency = 90
+        obj.ViewObject.PointSize = 5
         obj.ViewObject.DisplayMode = "Wireframe"
 
 

@@ -32,12 +32,10 @@
 #include <Gui/WidgetFactory.h>
 
 #include "DlgPrefsMeasureAppearanceImp.h"
-#include "QuickMeasure.h"
 #include "QuickMeasurePy.h"
 #include "ViewProviderMeasureAngle.h"
 #include "ViewProviderMeasureDistance.h"
 #include "ViewProviderMeasureBase.h"
-#include "WorkbenchManipulator.h"
 
 
 // use a different name to CreateCommand()
@@ -85,10 +83,7 @@ PyMOD_INIT_FUNC(MeasureGui)
     }
 
     PyObject* mod = MeasureGui::initModule();
-    Base::Console().Log("Loading GUI of Measure module... done\n");
-
-    auto manip = std::make_shared<MeasureGui::WorkbenchManipulator>();
-    Gui::WorkbenchManipulator::installManipulator(manip);
+    Base::Console().log("Loading GUI of Measure module… done\n");
 
     // instantiating the commands
     CreateMeasureCommands();
@@ -115,10 +110,6 @@ PyMOD_INIT_FUNC(MeasureGui)
     //    Q_INIT_RESOURCE(Measure);
 
     Base::Interpreter().addType(&MeasureGui::QuickMeasurePy::Type, mod, "QuickMeasure");
-
-    // Create a QuickMeasure instance
-    auto measure = new MeasureGui::QuickMeasure(QApplication::instance());
-    Q_UNUSED(measure)
 
     PyMOD_Return(mod);
 }

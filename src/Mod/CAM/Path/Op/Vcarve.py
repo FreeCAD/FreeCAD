@@ -29,8 +29,6 @@ import PathScripts.PathUtils as PathUtils
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-from PySide import QtCore
-
 __doc__ = "Class and implementation of CAM Vcarve operation"
 
 PRIMARY = 0
@@ -115,12 +113,12 @@ def _collectVoronoiWires(vd):
 def _sortVoronoiWires(wires, start=FreeCAD.Vector(0, 0, 0)):
     def closestTo(start, point):
         p = None
-        l = None
+        length = None
         for i in point:
-            if l is None or l > start.distanceToPoint(point[i]):
-                l = start.distanceToPoint(point[i])
+            if length is None or length > start.distanceToPoint(point[i]):
+                length = start.distanceToPoint(point[i])
                 p = i
-        return (p, l)
+        return (p, length)
 
     begin = {}
     end = {}
@@ -164,7 +162,7 @@ class _Geometry(object):
 
     def incrementStepDownDepth(self, maximumUsableDepth):
         """
-        Increase stepDown depth before staring new carving pass.
+        Increase stepDown depth before starting new carving pass.
         :returns: True if successful, False if maximum depth achieved
         """
 
@@ -205,7 +203,19 @@ class _Geometry(object):
 
     @classmethod
     def FromObj(cls, obj, model):
-        zStart = model.Shape.BoundBox.ZMax
+        if obj.BaseShapes and hasattr(obj.BaseShapes[0], "Shape"):
+            zStart = obj.BaseShapes[0].Shape.BoundBox.ZMax
+        elif obj.Base and obj.Base[0][0] and hasattr(obj.Base[0][0], "Shape"):
+            if len(obj.Base[0]) > 1 and "Face" in obj.Base[0][1][0]:
+                faceName = obj.Base[0][1][0]
+                faceIndex = int(faceName.replace("Face", "")) - 1
+                face = obj.Base[0][0].Shape.Faces[faceIndex]
+                zStart = face.BoundBox.ZMax
+            else:
+                zStart = obj.Base[0][0].Shape.BoundBox.ZMax
+        else:
+            zStart = model.Shape.BoundBox.ZMax
+            Path.Log.error("Base object not set")
         finalDepth = obj.FinalDepth.Value
         stepDown = abs(obj.StepDown.Value)
 
@@ -284,29 +294,34 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             )
         obj.setEditorMode("BaseShapes", 2)  # hide
 
-        obj.addProperty(
-            "App::PropertyBool",
-            "OptimizeMovements",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Optimize movements"),
-        )
+        if not hasattr(obj, "OptimizeMovements"):
 
-        obj.addProperty(
-            "App::PropertyBool",
-            "FinishingPass",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Add finishing pass"),
-        )
+            obj.addProperty(
+                "App::PropertyBool",
+                "OptimizeMovements",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Optimize movements"),
+            )
+            obj.OptimizeMovements = False
 
-        obj.addProperty(
-            "App::PropertyDistance",
-            "FinishingPassZOffset",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Finishing pass Z offset"),
-        )
+        if not hasattr(obj, "FinishingPass"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "FinishingPass",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Add finishing pass"),
+            )
+            obj.FinishingPass = False
 
-        obj.FinishingPass = False
-        obj.FinishingPassZOffset = "0.00"
+        if not hasattr(obj, "FinishingPassZOffset"):
+            obj.addProperty(
+                "App::PropertyDistance",
+                "FinishingPassZOffset",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Finishing pass Z offset"),
+            )
+
+            obj.FinishingPassZOffset = "0.00"
 
     def initOperation(self, obj):
         """initOperation(obj) ... create vcarve specific properties."""
@@ -334,7 +349,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         )
 
         obj.Colinear = 10.0
-        obj.Discretize = 0.01
+        obj.Discretize = 0.25
         obj.Tolerance = Path.Preferences.defaultGeometryTolerance()
         self.setupAdditionalProperties(obj)
 
@@ -349,6 +364,12 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         wires_by_face = dict()
         self.voronoiDebugCache = dict()
+
+        def is_exterior(vertex, face):
+            vector = FreeCAD.Vector(vertex.toPoint(face.BoundBox.ZMin))
+            (u, v) = face.Surface.parameter(vector)
+            # isPartOfDomain is faster than face.IsInside(...)
+            return not face.isPartOfDomain(u, v)
 
         def insert_many_wires(vd, wires):
             for wire in wires:
@@ -390,12 +411,17 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                         e.Color = PRIMARY
                 else:
                     e.Color = SECONDARY
-            vd.colorExterior(EXTERIOR1)
-            vd.colorExterior(
-                EXTERIOR2,
-                lambda v: not f.isInside(v.toPoint(f.BoundBox.ZMin), obj.Tolerance, True),
-            )
+
+            # filter our colinear edged so there are fewer ones
+            # to iterate over in colorExterior which is slow
             vd.colorColinear(COLINEAR, obj.Colinear)
+
+            vd.colorExterior(EXTERIOR1)
+            vd.colorExterior(EXTERIOR2, lambda v: is_exterior(v, f))
+
+            # if colorTwin is done before colorExterior we seem to have
+            # much more weird exterior edges needed to be filtered out,
+            # keep it here to be safe
             vd.colorTwins(TWIN)
 
             wires = _collectVoronoiWires(vd)
@@ -481,10 +507,10 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         pathlist = []
         pathlist.append(Path.Command("(starting)"))
 
+        geom = _Geometry.FromObj(obj, self.model[0])
+
         # iterate over each face separately
         for face, wires in self.buildMedialWires(obj, faces).items():
-
-            geom = _Geometry.FromObj(obj, self.model[0])
 
             # If using depth step-down, calculate maximum usable depth for current face.
             # This is done to avoid adding additional step-down engraving passes when it
@@ -567,7 +593,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                     )
                 )
 
-        except Exception as e:
+        except Exception:
             Path.Log.warning(
                 "Error processing Base object. Engraving operation will produce no output."
             )
@@ -611,7 +637,6 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         for face, wires in self.voronoiDebugCache.items():
             for wire in wires:
-                lastEdge = None
                 currentPartWire = Part.Wire()
                 currentPartWire.fixTolerance(0.01)
                 for edge in wire:

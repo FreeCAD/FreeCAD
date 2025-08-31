@@ -45,17 +45,14 @@ using PyObject = struct _object;
 #undef isalnum
 #endif
 
-#ifdef FC_OS_LINUX
-#include <sstream>
-#endif
-
 #include <map>
 #include <vector>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <xercesc/util/XercesDefs.hpp>
 
 #include "Handle.h"
 #include "Observer.h"
+#include "Color.h"
 
 #ifdef _MSC_VER
 #pragma warning(disable : 4251)
@@ -67,7 +64,6 @@ using PyObject = struct _object;
 
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
 #define XERCES_CPP_NAMESPACE_QUALIFIER
-using namespace XERCES_CPP_NAMESPACE;
 namespace XERCES_CPP_NAMESPACE
 {
 class DOMNode;
@@ -87,7 +83,6 @@ XERCES_CPP_NAMESPACE_END
 #endif
 
 class ParameterManager;
-
 
 /** The parameter container class
  *  This is the base class of all classes handle parameter.
@@ -111,47 +106,135 @@ public:
     ParameterGrp& operator=(const ParameterGrp&) = delete;
     ParameterGrp& operator=(ParameterGrp&&) = delete;
 
-    /** @name copy and insertation */
+    /** @name Copying & Inserting */
     //@{
-    /// make a deep copy to the other group
-    void copyTo(const Base::Reference<ParameterGrp>&);
-    /// overwrite everything similar, leave the others alone
-    void insertTo(const Base::Reference<ParameterGrp>&);
-    /// export this group to a file
+
+    /**
+     *  Overwrites another group with this one.
+     *
+     *  @param[out] Group The group to overwrite.
+     */
+    void copyTo(const Base::Reference<ParameterGrp>& Group);
+
+    /**
+     *  Inserts items from this group into another.
+     *
+     *  @param[out] Group The group to insert into.
+     *
+     *  @note
+     *  Inserts new and replaces existing items.
+     */
+    void insertTo(const Base::Reference<ParameterGrp>& Group);
+
+    /**
+     *  Exports this group to a given file.
+     *
+     *  @param[out] FileName The path to the file.
+     */
     void exportTo(const char* FileName);
-    /// import from a file to this group
+
+    /**
+     *  Overwrites this group with the given file.
+     *
+     *  @param[in] FileName The path to the file.
+     */
     void importFrom(const char* FileName);
-    /// insert from a file to this group, overwrite only the similar
+
+    /**
+     *  Inserts items from the given file.
+     *
+     *  @param[in] FileName The path to the file.
+     *
+     *  @note
+     *  Inserts new and replaces existing items.
+     */
     void insert(const char* FileName);
-    /// revert to default value by deleting any parameter that has the same value in the given file
+
+    /**
+     *  Removes items from this group that are present in the given file.
+     *
+     *  @param[in] FileName The path to the file.
+     *
+     *  @note
+     *  Only removes items that have the same value.
+     */
     void revert(const char* FileName);
-    /// revert to default value by deleting any parameter that has the same value in the given group
-    void revert(const Base::Reference<ParameterGrp>&);
+
+    /**
+     *  Removes items from this group that are present in the other.
+     *
+     *  @param[in] Group The group to compare with.
+     *
+     *  @note
+     *  Only removes items that have the same value.
+     */
+    void revert(const Base::Reference<ParameterGrp>& Group);
+
     //@}
 
     /** @name methods for group handling */
     //@{
-    /// get a handle to a sub group or create one
+
+    /**
+     *  Returns or creates a sub-group with the given name.
+     *
+     *  @param[in] Name Name of the sub-group.
+     *  @returns A handle to the sub-group.
+     */
     Base::Reference<ParameterGrp> GetGroup(const char* Name);
-    /// get a vector of all sub groups in this group
+
+    /**
+     *  Returns all sub-groups.
+     *
+     *  @returns A vector of handles to the sub-groups.
+     */
     std::vector<Base::Reference<ParameterGrp>> GetGroups();
-    /// test if this group is empty
+
+    /**
+     *  Tests if this group is empty.
+     */
     bool IsEmpty() const;
-    /// test if a special sub group is in this group
+
+    /**
+     *  Tests if a sub-group exists.
+     *
+     *  @param[in] Name Name of the sub-group.
+     */
     bool HasGroup(const char* Name) const;
+
     /// type of the handle
     using handle = Base::Reference<ParameterGrp>;
-    /// remove a sub group from this group
+
+    /**
+     *  Removes a sub-group.
+     *
+     *  @param[in] Name Name of the sub-group.
+     */
     void RemoveGrp(const char* Name);
-    /// rename a sub group from this group
+
+    /**
+     *  Renames a sub-group.
+     *
+     *  @param[in] OldName The current name of the sub-group.
+     *  @param[in] NewName The new name the sub-group will have.
+     *  @returns Whether or not the renaming succeeded.
+     *
+     *  @note Does nothing if a sub-group with the new name already exists.
+     */
     bool RenameGrp(const char* OldName, const char* NewName);
-    /// clears everything in this group (all types)
-    /// @param notify: whether to notify on deleted parameters using the Observer interface.
+
+    /**
+     *  Empties this group.
+     *
+     *  @param[in] notify Whether to notify on deleted parameters using the Observer interface.
+     */
     void Clear(bool notify = false);
+
     //@}
 
     /** @name methods for generic attribute handling */
     //@{
+
     enum class ParamType
     {
         FCInvalid = 0,
@@ -164,18 +247,64 @@ public:
     };
     static const char* TypeName(ParamType type);
     static ParamType TypeValue(const char*);
+
+    /**
+     *  Sets the value of an attribute.
+     *
+     *  @param[in] Type The type of the attribute.
+     *  @param[in] Name The name of the attribute.
+     *  @param[in] Value The value to be set.
+     */
     void SetAttribute(ParamType Type, const char* Name, const char* Value);
+
+    /**
+     *  Removes an attribute.
+     *
+     *  @param[in] Type The type of the attribute.
+     *  @param[in] Name The name of the attribute.
+     */
     void RemoveAttribute(ParamType Type, const char* Name);
+
+    /**
+     *  Returns the value of the attribute.
+     *
+     *  If the attribute can't be found, \n
+     *  the fallback value is returned.
+     *
+     *  @param[in] Type The type of the attribute.
+     *  @param[in] Name The name of the attribute.
+     *  @param[out] Value The value of attribute or the fallback value.
+     *  @param[in] Default The fallback value.
+     */
     const char*
     GetAttribute(ParamType Type, const char* Name, std::string& Value, const char* Default) const;
+
+    /**
+     *  Returns all attributes with the given type.
+     *
+     *  Optionally filters them to only include attributes \n
+     *  with names that contain a certain string.
+     *
+     *  @param[in] Type The type of attributes to be returned
+     *  @param[in] sFilter String that has to be present in the names of the attributes.
+     *  @returns Vector of attribute name & value pairs.
+     */
     std::vector<std::pair<std::string, std::string>>
     GetAttributeMap(ParamType Type, const char* sFilter = nullptr) const;
-    /** Return the type and name of all parameters with optional filter
-     *  @param sFilter only strings which name includes sFilter are put in the vector
-     *  @return std::vector of pair(type, name)
+
+
+    /**
+     *  Returns all parameters.
+     *
+     *  Optionally filters them to only include attributes \n
+     *  with names that contain a certain string.
+     *
+     *  @param[in] sFilter String that has to be present in the names of the attributes.
+     *  @returns Vector of attribute type & name pairs.
      */
     std::vector<std::pair<ParamType, std::string>>
     GetParameterNames(const char* sFilter = nullptr) const;
+
     //@}
 
     /** @name methods for bool handling */
@@ -219,6 +348,21 @@ public:
     GetUnsignedMap(const char* sFilter = nullptr) const;
     /// remove a uint value from this group
     void RemoveUnsigned(const char* Name);
+    //@}
+
+    /** @name methods for Colors handling, colors are persisted as packed uints */
+    //@{
+    /// read color value or give default
+    Base::Color GetColor(const char* Name, Base::Color lPreset = Base::Color(1.0, 1.0, 1.0)) const;
+    /// set a color value
+    void SetColor(const char* Name, Base::Color lValue);
+    /// get a vector of all color values in this group
+    std::vector<Base::Color> GetColors(const char* sFilter = nullptr) const;
+    /// get a map with all color values and the keys of this group
+    std::vector<std::pair<std::string, Base::Color>>
+    GetColorMap(const char* sFilter = nullptr) const;
+    /// remove a color value from this group
+    void RemoveColor(const char* Name);
     //@}
 
 

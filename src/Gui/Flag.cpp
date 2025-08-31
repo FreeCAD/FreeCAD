@@ -43,7 +43,7 @@ using namespace Gui;
 //       Embed complete widgets
 
 Flag::Flag(QWidget* parent)
-  : QtGLWidget(parent), coord(0.0f, 0.0f, 0.0f)
+  : QOpenGLWidget(parent), coord(0.0f, 0.0f, 0.0f)
 {
     this->setFixedHeight(20);
     setAutoFillBackground(true);
@@ -124,7 +124,7 @@ void Flag::setText(const QString& t)
 
 void Flag::resizeEvent(QResizeEvent* e)
 {
-    QtGLWidget::resizeEvent(e);
+    QOpenGLWidget::resizeEvent(e);
 }
 
 void Flag::mouseMoveEvent(QMouseEvent *e)
@@ -136,7 +136,7 @@ void Flag::mouseMoveEvent(QMouseEvent *e)
         move(e->globalPosition().toPoint() - dragPosition);
 #endif
         e->accept();
-        auto viewer = dynamic_cast<View3DInventorViewer*>(parentWidget());
+        auto viewer = qobject_cast<View3DInventorViewer*>(parentWidget());
         if (viewer)
             viewer->getSoRenderManager()->scheduleRedraw();
     }
@@ -158,13 +158,13 @@ void Flag::contextMenuEvent(QContextMenuEvent * e)
 {
     QMenu menu(this);
 
-    QAction* topleft = menu.addAction(tr("Top left"));
+    QAction* topleft = menu.addAction(tr("Top Left"));
     topleft->setCheckable(true);
-    QAction* botleft = menu.addAction(tr("Bottom left"));
+    QAction* botleft = menu.addAction(tr("Bottom Left"));
     botleft->setCheckable(true);
-    QAction* topright = menu.addAction(tr("Top right"));
+    QAction* topright = menu.addAction(tr("Top Right"));
     topright->setCheckable(true);
-    QAction* botright = menu.addAction(tr("Bottom right"));
+    QAction* botright = menu.addAction(tr("Bottom Right"));
     botright->setCheckable(true);
     menu.addSeparator();
     QAction* remove = menu.addAction(tr("Remove"));

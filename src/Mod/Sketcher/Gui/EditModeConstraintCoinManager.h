@@ -131,7 +131,7 @@ public:
     void setConstraintSelectability(bool enabled = true);
     //@}
 
-    std::set<int> detectPreselectionConstr(const SoPickedPoint* Point, const SbVec2s& cursorPos);
+    std::set<int> detectPreselectionConstr(const SoPickedPoint* Point);
 
     SoSeparator* getConstraintIdSeparator(int i);
 
@@ -253,7 +253,7 @@ private:
 
     /// Find helper angle for radius/diameter constraint
     void findHelperAngles(double& helperStartAngle,
-                          double& helperAngle,
+                          double& helperRange,
                           double angle,
                           double startAngle,
                           double endAngle);

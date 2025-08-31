@@ -30,6 +30,7 @@
 #endif // #ifndef _PreCmp_
 
 #include <Base/Console.h>
+#include <Gui/MainWindow.h>
 
 #include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
@@ -45,17 +46,24 @@ TemplateTextField::TemplateTextField(QGraphicsItem *parent,
                                      const std::string &myFieldName)
     : QGraphicsItemGroup(parent),
       tmplte(myTmplte),
-      fieldNameStr(myFieldName)
+      fieldNameStr(myFieldName),
+      m_rect(new QGraphicsRectItem()),
+      m_line(new QGraphicsPathItem())
 {
+    setFlag(QGraphicsItem::ItemIsFocusable, true);
+    setAcceptHoverEvents(true);
+    setFiltersChildEvents(true);
+
     setToolTip(QObject::tr("Click to update text"));
-    m_rect = new QGraphicsRectItem();
+
     addToGroup(m_rect);
     QPen rectPen(Qt::transparent);
     QBrush rectBrush(Qt::NoBrush);
     m_rect->setPen(rectPen);
     m_rect->setBrush(rectBrush);
+    m_rect->setAcceptHoverEvents(true);
 
-    m_line = new QGraphicsPathItem();
+    m_line->hide();
     addToGroup(m_line);
  }
 
@@ -73,13 +81,13 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if ( tmplte && m_rect->rect().contains(event->pos()) ) {
         event->accept();
 
-        DlgTemplateField ui;
+        DlgTemplateField ui(Gui::getMainWindow());
 
         ui.setFieldName(fieldNameStr);
         ui.setFieldContent(tmplte->EditableTexts[fieldNameStr]);
 
         auto qName = QString::fromStdString(fieldNameStr);
-        auto svgTemplate = dynamic_cast<DrawSVGTemplate*>(tmplte);
+        auto svgTemplate = freecad_cast<DrawSVGTemplate*>(tmplte);
         if (svgTemplate) {
             // preset the autofill with the current value - something might have changed since this field was created
             m_autofillString = svgTemplate->getAutofillByEditableName(qName);
@@ -108,7 +116,7 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 }
 
 //void setAutofill(std::string autofillString);
-void TemplateTextField::setAutofill(QString autofillString)
+void TemplateTextField::setAutofill(const QString& autofillString)
 {
     m_autofillString = autofillString;
 }
@@ -129,6 +137,21 @@ void TemplateTextField::setLine(QPointF from, QPointF to)
 void TemplateTextField::setLineColor(QColor color)
 {
     QPen pen(color);
-    pen.setWidth(5);
+    constexpr int LineWidth{5};
+    pen.setWidth(LineWidth);
     m_line->setPen(pen);
 }
+
+void TemplateTextField::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    showLine();
+    QGraphicsItemGroup::hoverEnterEvent(event);
+}
+
+void TemplateTextField::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    hideLine();
+    QGraphicsItemGroup::hoverLeaveEvent(event);
+}
+
+

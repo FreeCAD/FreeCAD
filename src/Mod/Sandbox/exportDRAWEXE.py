@@ -305,7 +305,6 @@ class Drawexporter(object):
             spinename = '%s-0-spine' % ob.Name
             saveShape(self.csg,self.filename, path,spinename,None,\
                     self.cleanshape) # placement with shape
-        #safePlacement(ob.Placement,ob.Name)
         self.csg.write('mksweep %s\n' % spinename)
         #setsweep
         setoptions=[]
@@ -327,9 +326,6 @@ class Drawexporter(object):
         sections=ob.Sections
         sectionnames = []
         for i,subobj in enumerate(ob.Sections):
-            #process_object(csg,subobj,filename)
-            #sectionsnames.append(subobj.Name)
-            #d1['basename']=subobj.Name
             sectionname = '%s-0-section-%02d-%s' % (ob.Name,i,subobj.Name)
             addoptions=[]
             explodeshape = self.alwaysexplode or \
@@ -782,9 +778,6 @@ class Drawexporter(object):
                 self.csg.write('compound vl v1l vnl vol vil hl h1l hnl hol hil %s\n' % ob.Name)
             else:
                 self.csg.write('compound vl v1l vnl vol vil %s\n' % ob.Name)
-        #elif ob.isDerivedFrom('Part::FeaturePython') and \
-        #    hasattr(ob.Proxy,'__module__'):
-        #    pass
         elif ob.isDerivedFrom('Part::Feature') :
             if ob.Shape.isNull(): #would crash in exportBrep otherwise
                 raise ValueError('Shape of %s is Null' % ob.Name)
@@ -837,9 +830,6 @@ class Drawexporter(object):
         names = [name for name in toplevelobjs if name is not False]
         self.csg.write('donly %s\n'%(' '.join(names)))
         self.export_annotations(objlst)
-        #for ob in objlst:
-        #    self.process_object(ob,toplevel=toplevel)
-        #self.write_displayonly(objlst)
 
     def __exit__(self,exc_type, exc_val, exc_tb ):
         self.csg.close()

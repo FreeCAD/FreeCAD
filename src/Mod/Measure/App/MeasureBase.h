@@ -131,7 +131,7 @@ public:
 
         auto handler = getGeometryHandler(mod);
         if (!handler) {
-            Base::Console().Log("MeasureBaseExtendable::getMeasureInfo: No geometry handler "
+            Base::Console().log("MeasureBaseExtendable::getMeasureInfo: No geometry handler "
                                 "available for submitted element type");
             return nullptr;
         }

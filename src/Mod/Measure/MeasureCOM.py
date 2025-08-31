@@ -58,12 +58,14 @@ class MeasureCOM(MeasureBasePython):
             "Element",
             "",
             QT_TRANSLATE_NOOP("App::Property", "Element to measure"),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyPosition",
             "Result",
             "",
             QT_TRANSLATE_NOOP("App::PropertyVector", "The result location"),
+            locked=True,
         )
 
     @classmethod

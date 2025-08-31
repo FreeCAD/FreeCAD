@@ -37,7 +37,7 @@
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include <QPrinter>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <cmath>
 #endif
 
@@ -62,6 +62,7 @@
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "MDIViewPage.h"
+#include "QGIDatumLabel.h"
 #include "QGIEdge.h"
 #include "QGIFace.h"
 #include "QGIVertex.h"
@@ -89,26 +90,27 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
     m_toggleKeepUpdatedAction = new QAction(tr("Toggle &Keep Updated"), this);
     connect(m_toggleKeepUpdatedAction, &QAction::triggered, this, &MDIViewPage::toggleKeepUpdated);
 
-    m_toggleFrameAction = new QAction(tr("Toggle &Frames"), this);
-    connect(m_toggleFrameAction, &QAction::triggered, this, &MDIViewPage::toggleFrame);
-
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
+
     connect(m_exportSVGAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::saveSVG));
 
     m_exportDXFAction = new QAction(tr("Export DXF"), this);
+
     connect(m_exportDXFAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::saveDXF));
 
     m_exportPDFAction = new QAction(tr("Export PDF"), this);
+
     connect(m_exportPDFAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::savePDF));
 
     m_printAllAction = new QAction(tr("Print All Pages"), this);
+
     connect(m_printAllAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::printAllPages));
 
     isSelectionBlocked = false;
     isContextualMenuEnabled = true;
 
     QString tabText = QString::fromUtf8(pageVp->getDrawPage()->getNameInDocument());
-    tabText += QString::fromUtf8("[*]");
+    tabText += QStringLiteral("[*]");
     setWindowTitle(tabText);
 
     //NOLINTBEGIN
@@ -142,7 +144,7 @@ void MDIViewPage::setDocumentName(const std::string& name) { m_documentName = na
 
 void MDIViewPage::closeEvent(QCloseEvent* event)
 {
-    //    Base::Console().Message("MDIVP::closeEvent()\n");
+    //    Base::Console().message("MDIVP::closeEvent()\n");
     MDIView::closeEvent(event);
     if (!event->isAccepted()) {
         return;
@@ -283,7 +285,7 @@ void MDIViewPage::zoomOut()
 void MDIViewPage::setTabText(std::string tabText)
 {
     if (!isPassive() && !tabText.empty()) {
-        QString cap = QString::fromLatin1("%1 [*]").arg(QString::fromUtf8(tabText.c_str()));
+        QString cap = QStringLiteral("%1 [*]").arg(QString::fromUtf8(tabText.c_str()));
         setWindowTitle(cap);
     }
 }
@@ -311,7 +313,8 @@ void MDIViewPage::printPdf()
     filter << QObject::tr("PDF (*.pdf)");
     filter << QObject::tr("All Files (*.*)");
     QString fn =
-        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export Page As PDF"),
+        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export Page as PDF"),
+
                                          QString(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
         return;
@@ -431,10 +434,9 @@ PyObject* MDIViewPage::getPyObject()
 
 void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
 {
-    //    Base::Console().Message("MDIVP::contextMenuEvent() - reason: %d\n", event->reason());
+    //    Base::Console().message("MDIVP::contextMenuEvent() - reason: %d\n", event->reason());
     if (isContextualMenuEnabled) {
         QMenu menu;
-        menu.addAction(m_toggleFrameAction);
         menu.addAction(m_toggleKeepUpdatedAction);
         menu.addAction(m_exportSVGAction);
         menu.addAction(m_exportDXFAction);
@@ -443,8 +445,6 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
         menu.exec(event->globalPos());
     }
 }
-
-void MDIViewPage::toggleFrame() { m_vpPage->toggleFrameState(); }
 
 void MDIViewPage::toggleKeepUpdated()
 {
@@ -487,9 +487,10 @@ void MDIViewPage::saveSVG()
 {
     QStringList filter;
     filter << QStringLiteral("SVG (*.svg)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QObject::tr("All files (*.*)");
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as SVG"),
+
                                          defaultFileName(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
         return;
@@ -508,9 +509,10 @@ void MDIViewPage::saveDXF()
 {
     QStringList filter;
     filter << QStringLiteral("DXF (*.dxf)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QObject::tr("All files (*.*)");
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as DXF"),
+
                                          defaultFileName(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
         return;
@@ -535,6 +537,7 @@ void MDIViewPage::savePDF()
     filter << QObject::tr("All Files (*.*)");
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as PDF"),
+
                                          defaultFileName(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
         return;
@@ -1075,7 +1078,7 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel,
 
 void MDIViewPage::showStatusMsg(const char* string1, const char* string2, const char* string3) const
 {
-    QString msg = QString::fromLatin1("%1 %2.%3.%4 ")
+    QString msg = QStringLiteral("%1 %2.%3.%4 ")
                       .arg(tr("Selected:"), QString::fromUtf8(string1), QString::fromUtf8(string2),
                            QString::fromUtf8(string3));
     if (Gui::getMainWindow()) {
@@ -1118,12 +1121,11 @@ MDIViewPagePy::~MDIViewPagePy() {}
 
 Py::Object MDIViewPagePy::repr()
 {
-    std::ostringstream s_out;
     if (!getMDIViewPagePtr()) {
         throw Py::RuntimeError("Cannot print representation of deleted object");
     }
-    s_out << "MDI view page";
-    return Py::String(s_out.str());
+
+    return Py::String("MDI view page");
 }
 
 // Since with PyCXX it is not possible to make a sub-class of MDIViewPy

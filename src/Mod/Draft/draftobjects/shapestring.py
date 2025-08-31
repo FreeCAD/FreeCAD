@@ -36,7 +36,7 @@ import Part
 from draftgeoutils import faces
 from draftobjects.base import DraftObject
 from draftutils import gui_utils
-from draftutils.messages import _wrn
+from draftutils.messages import _err, _wrn
 from draftutils.translate import translate
 
 
@@ -53,19 +53,19 @@ class ShapeString(DraftObject):
 
         if "String" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Text string")
-            obj.addProperty("App::PropertyString", "String", "Draft", _tip)
+            obj.addProperty("App::PropertyString", "String", "Draft", _tip, locked=True)
 
         if "FontFile" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Font file name")
-            obj.addProperty("App::PropertyFile", "FontFile", "Draft", _tip)
+            obj.addProperty("App::PropertyFile", "FontFile", "Draft", _tip, locked=True)
 
         if "Size" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Height of text")
-            obj.addProperty("App::PropertyLength", "Size", "Draft", _tip)
+            obj.addProperty("App::PropertyLength", "Size", "Draft", _tip, locked=True)
 
         if "Justification" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Horizontal and vertical alignment")
-            obj.addProperty("App::PropertyEnumeration", "Justification", "Draft", _tip)
+            obj.addProperty("App::PropertyEnumeration", "Justification", "Draft", _tip, locked=True)
             obj.Justification = ["Top-Left", "Top-Center", "Top-Right",
                                  "Middle-Left", "Middle-Center", "Middle-Right",
                                  "Bottom-Left", "Bottom-Center", "Bottom-Right"]
@@ -73,33 +73,33 @@ class ShapeString(DraftObject):
 
         if "JustificationReference" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Height reference used for justification")
-            obj.addProperty("App::PropertyEnumeration", "JustificationReference", "Draft", _tip)
+            obj.addProperty("App::PropertyEnumeration", "JustificationReference", "Draft", _tip, locked=True)
             obj.JustificationReference = ["Cap Height", "Shape Height"]
             obj.JustificationReference = "Cap Height"
 
         if "KeepLeftMargin" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Keep left margin and leading white space when justification is left")
-            obj.addProperty("App::PropertyBool", "KeepLeftMargin", "Draft", _tip).KeepLeftMargin = False
+            obj.addProperty("App::PropertyBool", "KeepLeftMargin", "Draft", _tip, locked=True).KeepLeftMargin = False
 
         if "ScaleToSize" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Scale to ensure cap height is equal to size")
-            obj.addProperty("App::PropertyBool", "ScaleToSize", "Draft", _tip).ScaleToSize = True
+            obj.addProperty("App::PropertyBool", "ScaleToSize", "Draft", _tip, locked=True).ScaleToSize = True
 
         if "Tracking" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Inter-character spacing")
-            obj.addProperty("App::PropertyDistance", "Tracking", "Draft", _tip)
+            obj.addProperty("App::PropertyDistance", "Tracking", "Draft", _tip, locked=True)
 
         if "ObliqueAngle" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Oblique (slant) angle")
-            obj.addProperty("App::PropertyAngle", "ObliqueAngle", "Draft", _tip)
+            obj.addProperty("App::PropertyAngle", "ObliqueAngle", "Draft", _tip, locked=True)
 
         if "MakeFace" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Fill letters with faces")
-            obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip).MakeFace = True
+            obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip, locked=True).MakeFace = True
 
         if "Fuse" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Fuse faces if faces overlap, usually not required (can be very slow)")
-            obj.addProperty("App::PropertyBool", "Fuse", "Draft", _tip).Fuse = False
+            obj.addProperty("App::PropertyBool", "Fuse", "Draft", _tip, locked=True).Fuse = False
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
@@ -134,8 +134,21 @@ class ShapeString(DraftObject):
             if obj.FontFile[0] == ".":
                 # FontFile path relative to the FreeCAD file directory.
                 font_file = os.path.join(os.path.dirname(obj.Document.FileName), obj.FontFile)
+                # We need the absolute path to do some file checks.
+                font_file = os.path.abspath(font_file)
             else:
                 font_file = obj.FontFile
+
+            # File checks:
+            if not os.path.exists(font_file):
+                _err(obj.Label + ": " + translate("draft", "Font file not found"))
+                return
+            if not os.path.isfile(font_file):
+                _err(obj.Label + ": " + translate("draft", "Specified font file is not a file"))
+                return
+            if not os.path.splitext(font_file)[1].lower() in (".ttc", ".ttf", ".otf", ".pfb"):
+                _err(obj.Label + ": " + translate("draft", "Specified font type is not supported"))
+                return
 
             fill = obj.MakeFace
             if fill is True:
@@ -149,8 +162,13 @@ class ShapeString(DraftObject):
                 if not shapes:
                     fill = False
                 else:
-                    fill = sum([shape.Area for shape in shapes]) > 0.03\
-                            and math.isclose(Part.Compound(char).BoundBox.DiagonalLength,
+                    # Depending on the font the size of char can be very small.
+                    # For the area check to make sense we need to use a scale factor.
+                    # https://github.com/FreeCAD/FreeCAD/issues/21501
+                    char_comp = Part.Compound(char)
+                    factor = 1 / char_comp.BoundBox.YLength
+                    fill = sum([shape.Area for shape in shapes]) > (0.03 / factor ** 2) \
+                            and math.isclose(char_comp.BoundBox.DiagonalLength,
                                              Part.Compound(shapes).BoundBox.DiagonalLength,
                                              rel_tol=1e-7)
 

@@ -1,5 +1,6 @@
 /****************************************************************************
  *   Copyright (c) 2024 Ondsel <development@ondsel.com>                     *
+ *   Copyright (c) 2025 Pieter Hijma <info@pieterhijma.net>                 *
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -24,9 +25,11 @@
 #define GUI_DIALOG_DLG_ADD_PROPERTY_VARSET_H
 
 #include <qcompleter.h>
-#include <unordered_set>
+
 #include <QDialog>
 #include <QComboBox>
+#include <QFormLayout>
+
 #include <FCGlobal.h>
 
 #include <App/VarSet.h>
@@ -68,80 +71,106 @@ class GuiExport DlgAddPropertyVarSet : public QDialog
     Q_OBJECT
 
 public:
-    static const std::string GROUP_BASE;
+    static const std::string GroupBase;
 
 public:
-    DlgAddPropertyVarSet(QWidget *parent, ViewProviderVarSet* viewProvider);
+    DlgAddPropertyVarSet(QWidget* parent, ViewProviderVarSet* viewProvider);
+
+    DlgAddPropertyVarSet(const DlgAddPropertyVarSet&) = delete;
+    DlgAddPropertyVarSet(DlgAddPropertyVarSet&&) = delete;
+    DlgAddPropertyVarSet& operator=(const DlgAddPropertyVarSet&) = delete;
+    DlgAddPropertyVarSet& operator=(DlgAddPropertyVarSet&&) = delete;
+
     ~DlgAddPropertyVarSet() override;
 
     void changeEvent(QEvent* e) override;
     void accept() override;
     void reject() override;
+    static void populateGroup(EditFinishedComboBox& comboBox, const App::DocumentObject* varSet);
+    static void setWidgetForLabel(const char* labelName, QWidget* widget, QLayout* layout);
 
 public Q_SLOTS:
     void valueChanged();
+    void valueChangedEnum();
 
 private:
+    enum class TransactionOption : bool {
+        Commit = false,
+        Abort = true
+    };
+
+    enum class FieldChange : std::uint8_t {
+        Name,
+        Type
+    };
+
     void initializeGroup();
+
+    std::vector<Base::Type> getSupportedTypes();
     void initializeTypes();
-    void initializeWidgets(ViewProviderVarSet* viewProvider);
+
+    void removeSelectionEditor();
+    QVariant getEditorData() const;
+    void setEditorData(const QVariant& data);
+    bool isEnumPropertyItem() const;
+    void addEnumEditor(PropertyEditor::PropertyItem* propertyItem);
+    void addNormalEditor(PropertyEditor::PropertyItem* propertyItem);
+    void addEditor(PropertyEditor::PropertyItem* propertyItem);
+    bool isTypeWithEditor(const Base::Type& type);
+    bool isTypeWithEditor(const std::string& type);
+    void createEditorForType(const Base::Type& type);
+    void initializeValue();
 
     void setTitle();
     void setOkEnabled(bool enabled);
-    void clearEditors(bool clearName = true);
-    void clearCurrentProperty();
+    void initializeWidgets(ViewProviderVarSet* viewProvider);
+
+    bool propertyExists(const std::string& name);
+    bool isNameValid();
+    bool isGroupValid();
+    bool isTypeValid();
+    bool areFieldsValid();
+
+    void setEditor(bool valueNeedsReset);
+    void buildForUnbound(bool valueNeedsReset);
+    void setPropertyItem(App::Property* prop);
+    void buildForBound(bool valueNeedsReset);
+    bool clearBoundProperty();
+    bool clear(FieldChange fieldChange);
+    void onNameChanged(const QString& text);
+    void onGroupFinished();
+    void onTypeChanged(const QString& text);
+
+    void showStatusMessage();
 
     void removeEditor();
-    void addEditor(PropertyEditor::PropertyItem* propertyItem, std::string& type);
-
-    bool isTypeWithEditor(const std::string& type);
-    void createProperty();
-    void changePropertyToAdd();
 
     void openTransaction();
-    bool hasPendingTransaction();
-    void abortTransaction();
-    void closeTransaction(bool abort);
-
-    void checkName();
-    void checkGroup();
-    void checkType();
-    void onEditFinished();
-    void onNamePropertyChanged(const QString& text);
     void critical(const QString& title, const QString& text);
-
-    void getSupportedTypes(std::vector<Base::Type>& types);
-    App::Property* getPropertyToAdd();
+    App::Property* createProperty();
+    void closeTransaction(TransactionOption option);
+    void clearFields();
     void addDocumentation();
 
-private:
-    std::unordered_set<std::string> typesWithoutEditor = {
-        "App::PropertyVector", "App::PropertyVectorDistance", "App::PropertyMatrix",
-        "App::PropertyRotation", "App::PropertyPlacement", "App::PropertyEnumeration",
-        "App::PropertyDirection", "App::PropertyPlacementList", "App::PropertyPosition",
-        "App::PropertyExpressionEngine", "App::PropertyIntegerSet",
-        "Sketcher::PropertyConstraintList"};
+    static void removeExistingWidget(QFormLayout* layout, int labelRow);
+    static int findLabelRow(const char* labelName, QFormLayout* layout);
 
+private:
     App::VarSet* varSet;
     std::unique_ptr<Ui_DlgAddPropertyVarSet> ui;
 
     EditFinishedComboBox comboBoxGroup;
     QCompleter completerType;
 
-    // state between adding properties
     std::unique_ptr<QWidget> editor;
-    std::unique_ptr<QWidget> expressionEditor;
-    std::string namePropertyToAdd;
     std::unique_ptr<PropertyEditor::PropertyItem> propertyItem;
     std::unique_ptr<App::ObjectIdentifier> objectIdentifier;
 
     // a transactionID of 0 means that there is no active transaction.
     int transactionID;
 
-    // connections
     QMetaObject::Connection connComboBoxGroup;
     QMetaObject::Connection connComboBoxType;
-    QMetaObject::Connection connLineEditNameEditFinished;
     QMetaObject::Connection connLineEditNameTextChanged;
 };
 

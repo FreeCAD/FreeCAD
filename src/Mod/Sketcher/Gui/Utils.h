@@ -27,11 +27,11 @@
 #include <Base/Tools.h>
 #include <Base/Tools2D.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
+#include <QListWidget>
 
 #include "AutoConstraint.h"
 #include "ViewProviderSketchGeometryExtension.h"
 #include "GeometryCreationMode.h"
-
 
 namespace App
 {
@@ -74,6 +74,15 @@ namespace SketcherGui
 {
 class DrawSketchHandler;
 class ViewProviderSketch;
+
+enum OffsetMode : bool
+{
+    NoOffset = false,
+    OffsetConstraint = true
+};
+
+// to improve readability, expose the enum cases directly in the namespace
+using enum OffsetMode;
 
 /// This function tries to auto-recompute the active document if the option
 /// is set in the user parameter. If the option is not set nothing will be done
@@ -154,6 +163,11 @@ inline bool isEdge(int GeoId, Sketcher::PointPos PosId)
 
 extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
+inline GeometryCreationMode currentGeometryCreationMode()
+{
+    return geometryCreationMode;
+}
+
 inline bool isConstructionMode()
 {
     return geometryCreationMode == GeometryCreationMode::Construction;
@@ -199,6 +213,9 @@ void ConstraintToAttachment(Sketcher::GeoElementId element,
                             double distance,
                             App::DocumentObject* obj);
 
+void ConstraintLineByAngle(int geoId, double angle, App::DocumentObject* obj);
+void Constraint2LinesByAngle(int geoId1, int geoId2, double angle, App::DocumentObject* obj);
+
 // convenience functions for cursor coordinates
 bool hideUnits();
 bool showCursorCoords();
@@ -208,7 +225,17 @@ std::string angleToDisplayFormat(double value, int digits);
 
 bool areCollinear(const Base::Vector2d& p1, const Base::Vector2d& p2, const Base::Vector2d& p3);
 
+// Returns the index of the element in the vector, GeoUndef if the element is GeoUndef and -1 if not
+// found
 int indexOfGeoId(const std::vector<int>& vec, int elem);
+
+inline void scrollTo(QListWidget* list, int i, bool select)
+{
+    if (select && list->model()) {  // scrollTo only on select, not de-select
+        QModelIndex index = list->model()->index(i, 0);
+        list->scrollTo(index, QAbstractItemView::PositionAtCenter);
+    }
+}
 
 }  // namespace SketcherGui
 

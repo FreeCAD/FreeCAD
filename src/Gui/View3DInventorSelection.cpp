@@ -158,7 +158,7 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges &Reason)
 
     if(objs.find(key.c_str())!=objs.end())
         return;
-    auto vp = dynamic_cast<ViewProviderDocumentObject*>(
+    auto vp = freecad_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(obj));
     if(!vp || !vp->isSelectable() || !vp->isShow())
         return;
@@ -168,7 +168,7 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges &Reason)
         if(!sobj || !sobj->isAttachedToDocument())
             return;
         if(sobj!=obj) {
-            svp = dynamic_cast<ViewProviderDocumentObject*>(
+            svp = freecad_cast<ViewProviderDocumentObject*>(
                     Application::Instance->getViewProvider(sobj));
             if(!svp || !svp->isSelectable())
                 return;
@@ -220,7 +220,7 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges &Reason)
             break;
         }
 
-        grpVp = dynamic_cast<ViewProviderDocumentObject*>(
+        grpVp = freecad_cast<ViewProviderDocumentObject*>(
                 Application::Instance->getViewProvider(grp));
         if (!grpVp) {
             break;

@@ -26,6 +26,7 @@
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoError.h>
+#include <QCheckBox>
 #include <QCloseEvent>
 #include <QDir>
 #include <QFileInfo>
@@ -34,6 +35,7 @@
 #include <QMessageLogContext>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
+#include <QScreen>
 #include <QStatusBar>
 #include <QStyle>
 #include <QTextStream>
@@ -43,6 +45,8 @@
 
 #include <QLoggingCategory>
 #include <fmt/format.h>
+#include <list>
+#include <ranges>
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -75,6 +79,7 @@
 #include "FileDialog.h"
 #include "GuiApplication.h"
 #include "GuiInitScript.h"
+#include "InputHintPy.h"
 #include "LinkViewPy.h"
 #include "MainWindow.h"
 #include "Macro.h"
@@ -134,7 +139,16 @@
 #include "WorkbenchManipulator.h"
 #include "WidgetFactory.h"
 #include "3Dconnexion/navlib/NavlibInterface.h"
+#include "Inventor/SoFCPlacementIndicatorKit.h"
+#include "QtWidgets.h"
 
+#include <OverlayManager.h>
+#include <ParamHandler.h>
+#include <Base/ServiceProvider.h>
+
+#ifdef BUILD_TRACY_FRAME_PROFILER
+#include <tracy/Tracy.hpp>
+#endif
 
 using namespace Gui;
 using namespace Gui::DockWnd;
@@ -155,7 +169,7 @@ public:
     void newObject(const ViewProvider& vp)
     {
         auto vpd =
-            Base::freecad_dynamic_cast<ViewProviderDocumentObject>(const_cast<ViewProvider*>(&vp));
+            freecad_cast<ViewProviderDocumentObject*>(const_cast<ViewProvider*>(&vp));
         if (vpd && vpd->getObject()) {
             map[vpd->getObject()] = vpd;
         }
@@ -163,7 +177,7 @@ public:
     void deleteObject(const ViewProvider& vp)
     {
         auto vpd =
-            Base::freecad_dynamic_cast<ViewProviderDocumentObject>(const_cast<ViewProvider*>(&vp));
+            freecad_cast<ViewProviderDocumentObject*>(const_cast<ViewProvider*>(&vp));
         if (vpd && vpd->getObject()) {
             map.erase(vpd->getObject());
         }
@@ -199,6 +213,8 @@ struct ApplicationP
 
         // Create the Theme Manager
         prefPackManager = new PreferencePackManager();
+        // Create the Style Parameter Manager
+        styleParameterManager = new StyleParameters::ParameterManager();
     }
 
     ~ApplicationP()
@@ -212,8 +228,11 @@ struct ApplicationP
     /// Active document
     Gui::Document* activeDocument {nullptr};
     Gui::Document* editDocument {nullptr};
+
     MacroManager* macroMngr;
     PreferencePackManager* prefPackManager;
+    StyleParameters::ParameterManager* styleParameterManager;
+
     /// List of all registered views
     std::list<Gui::BaseView*> passive;
     bool isClosing {false};
@@ -363,6 +382,61 @@ struct PyMethodDef FreeCADGui_methods[] = {
 
 }  // namespace Gui
 
+void Application::initStyleParameterManager()
+{
+    static ParamHandlers handlers;
+
+    const auto deduceParametersFilePath = []() -> std::string {
+        const auto hMainWindowGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+
+        if (const std::string& path = hMainWindowGrp->GetASCII("ThemeStyleParametersFile");
+            !path.empty()) {
+            return path;
+        }
+
+        return fmt::format("qss:parameters/{}.yaml", hMainWindowGrp->GetASCII("Theme", "Classic"));
+    };
+
+    auto themeParametersSource = new StyleParameters::YamlParameterSource(
+        deduceParametersFilePath(),
+        {.name = QT_TR_NOOP("Theme Parameters"),
+         .options = StyleParameters::ParameterSourceOption::UserEditable});
+
+    handlers.addDelayedHandler(
+        "BaseApp/Preferences/MainWindow",
+        {"ThemeStyleParametersFiles", "Theme"},
+        [themeParametersSource, deduceParametersFilePath, this](ParameterGrp::handle) {
+            themeParametersSource->changeFilePath(deduceParametersFilePath());
+            reloadStyleSheet();
+        });
+
+    Base::registerServiceImplementation<StyleParameters::ParameterSource>(
+        new StyleParameters::BuiltInParameterSource({.name = QT_TR_NOOP("Built-in Parameters")}));
+
+    // todo: left for compatibility with older theme versions, to be removed before release
+    Base::registerServiceImplementation<StyleParameters::ParameterSource>(
+        new StyleParameters::UserParameterSource(
+            App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Themes/UserTokens"),
+            {.name = QT_TR_NOOP("Theme Parameters - Fallback"),
+             .options = StyleParameters::ParameterSourceOption::ReadOnly}));
+
+    Base::registerServiceImplementation<StyleParameters::ParameterSource>(themeParametersSource);
+
+    Base::registerServiceImplementation<StyleParameters::ParameterSource>(
+        new StyleParameters::UserParameterSource(
+            App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Themes/UserParameters"),
+            {.name = QT_TR_NOOP("User Parameters"),
+             .options = StyleParameters::ParameterSource::UserEditable}));
+
+    const auto sources = Base::provideServiceImplementations<StyleParameters::ParameterSource>();
+    for (auto* source : std::views::all(sources) | std::views::reverse) {
+        d->styleParameterManager->addSource(source);
+    }
+
+    Base::registerServiceImplementation(d->styleParameterManager);
+}
 // clang-format off
 Application::Application(bool GUIenabled)
 {
@@ -406,10 +480,9 @@ Application::Application(bool GUIenabled)
                 0,
                 QLatin1String("Invalid system settings"),
                 QLatin1String(
-                    "Your system uses the same symbol for decimal point and group separator.\n\n"
-                    "This causes serious problems and makes the application fail to work "
-                    "properly.\n"
-                    "Go to the system configuration panel of the OS and fix this issue, please."));
+                    "The system locale uses the same symbol for the decimal point and the thousands separator.\n\n"
+                    "This may prevent the application from functioning correctly."
+                    "Go to the system configuration panel of the OS and fix this issue."));
             throw Base::RuntimeError("Invalid system settings");
         }
 #endif
@@ -497,6 +570,26 @@ Application::Application(bool GUIenabled)
                                    Py::Object(Gui::TaskView::ControlPy::getInstance(), true));
         Gui::TaskView::TaskDialogPy::init_type();
 
+        registerUserInputEnumInPython(module);
+        Base::PyRegisterEnum<SoFCPlacementIndicatorKit::Part>(module, "PlacementIndicatorParts", {
+            {"Axes", SoFCPlacementIndicatorKit::Axes},
+            {"ArrowHeads", SoFCPlacementIndicatorKit::ArrowHeads},
+            {"Labels", SoFCPlacementIndicatorKit::Labels},
+            {"PlaneIndicator", SoFCPlacementIndicatorKit::PlaneIndicator},
+            {"OriginIndicator", SoFCPlacementIndicatorKit::OriginIndicator},
+
+            // common configurations
+            {"AllParts", SoFCPlacementIndicatorKit::AllParts},
+            {"AxisCross", SoFCPlacementIndicatorKit::AxisCross},
+        });
+
+        Base::PyRegisterEnum<Gui::BitmapFactoryInst::Position>(module, "IconPosition", {
+            {"TopLeft",     Gui::BitmapFactoryInst::TopLeft},
+            {"TopRight",    Gui::BitmapFactoryInst::TopRight},
+            {"BottomLeft",  Gui::BitmapFactoryInst::BottomLeft},
+            {"BottomRight", Gui::BitmapFactoryInst::BottomRight}
+        });
+
         CommandActionPy::init_type();
         Base::Interpreter().addType(CommandActionPy::type_object(), module, "CommandAction");
 
@@ -554,6 +647,8 @@ Application::Application(bool GUIenabled)
 
     d = new ApplicationP(GUIenabled);
 
+    initStyleParameterManager();
+
     // global access
     Instance = this;
 
@@ -581,7 +676,7 @@ Application::Application(bool GUIenabled)
 
 Application::~Application()
 {
-    Base::Console().Log("Destruct Gui::Application\n");
+    Base::Console().log("Destruct Gui::Application\n");
 #ifdef USE_3DCONNEXION_NAVLIB
     delete pNavlibInterface;
 #endif
@@ -626,7 +721,7 @@ void Application::open(const char* FileName, const char* Module)
     // in case of an automatically created empty document at startup
     App::Document* act = App::GetApplication().getActiveDocument();
     Gui::Document* gui = this->getDocument(act);
-    if (act && act->countObjects() == 0 && gui && !gui->isModified()) {
+    if (act && act->countObjects() == 0 && gui && !gui->isModified() && act->isAutoCreated()) {
         Command::doCommand(Command::App, "App.closeDocument('%s')", act->getName());
         qApp->processEvents();  // an update is needed otherwise the new view isn't shown
     }
@@ -676,7 +771,7 @@ void Application::open(const char* FileName, const char* Module)
         }
         catch (const Base::PyException& e) {
             // Usually thrown if the file is invalid somehow
-            e.ReportException();
+            e.reportException();
         }
     }
     else {
@@ -707,6 +802,11 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
             // load the file with the module
             if (File.hasExtension("FCStd")) {
                 Command::doCommand(Command::App, "%s.open(u\"%s\")", Module, unicodepath.c_str());
+                setStatus(UserInitiatedOpenDocument, false);
+                App::Document* doc = App::GetApplication().getActiveDocument();
+                checkPartialRestore(doc);
+                checkRestoreError(doc);
+                checkForRecomputes();
                 if (activeDocument()) {
                     activeDocument()->setModified(false);
                 }
@@ -770,7 +870,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
         }
         catch (const Base::PyException& e) {
             // Usually thrown if the file is invalid somehow
-            e.ReportException();
+            e.reportException();
         }
     }
     else {
@@ -842,7 +942,7 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
         }
         catch (const Base::PyException& e) {
             // Usually thrown if the file is invalid somehow
-            e.ReportException();
+            e.reportException();
             wc.restoreCursor();
             QMessageBox::critical(getMainWindow(),
                                   QObject::tr("Export failed"),
@@ -907,7 +1007,7 @@ void Application::slotDeleteDocument(const App::Document& Doc)
 {
     std::map<const App::Document*, Gui::Document*>::iterator doc = d->documents.find(&Doc);
     if (doc == d->documents.end()) {
-        Base::Console().Log("GUI document '%s' already deleted\n", Doc.getName());
+        Base::Console().log("GUI document '%s' already deleted\n", Doc.getName());
         return;
     }
 
@@ -985,10 +1085,10 @@ void Application::checkForRecomputes() {
     WaitCursor wc;
     wc.restoreCursor();
     auto res = QMessageBox::warning(getMainWindow(), QObject::tr("Recomputation required"),
-                                    QObject::tr("Some document(s) require recomputation for migration purposes. "
+                                    QObject::tr("Some documents require recomputation for migration purposes. "
                                                 "It is highly recommended to perform a recomputation before "
                                                 "any modification to avoid compatibility problems.\n\n"
-                                                "Do you want to recompute now?"),
+                                                "Recompute now?"),
                                     QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
     if (res != QMessageBox::Yes)
         return;
@@ -997,14 +1097,38 @@ void Application::checkForRecomputes() {
         try {
             doc->recompute({}, false, &hasError);
         } catch (Base::Exception &e) {
-            e.ReportException();
+            e.reportException();
             hasError = true;
         }
     }
     if (hasError)
         QMessageBox::critical(getMainWindow(), QObject::tr("Recompute error"),
-                              QObject::tr("Failed to recompute some document(s).\n"
-                                          "Please check report view for more details."));
+                              QObject::tr("Failed to recompute some documents.\n"
+                                          "Check the report view for more details."));
+}
+
+void Application::checkPartialRestore(App::Document* doc)
+{
+    if (doc && doc->testStatus(App::Document::PartialRestore)) {
+        QMessageBox::critical(
+            getMainWindow(),
+            QObject::tr("Error"),
+            QObject::tr("There were errors while loading the file. Some data might have been "
+                        "modified or not recovered at all. Look in the report view for more "
+                        "specific information about the objects involved."));
+    }
+}
+
+void Application::checkRestoreError(App::Document* doc)
+{
+    if (doc && doc->testStatus(App::Document::RestoreError)) {
+        QMessageBox::critical(
+            getMainWindow(),
+            QObject::tr("Error"),
+            QObject::tr("There were serious errors while loading the file. Some data might have "
+                        "been modified or not recovered at all. Saving the project will most "
+                        "likely result in loss of data."));
+    }
 }
 
 void Application::slotActiveDocument(const App::Document& Doc)
@@ -1038,12 +1162,12 @@ void Application::slotActiveDocument(const App::Document& Doc)
             "User parameter:BaseApp/Preferences/Units");
         if (!hGrp->GetBool("IgnoreProjectSchema")) {
             int userSchema = Doc.UnitSystem.getValue();
-            Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
+            Base::UnitsApi::setSchema(userSchema);
             getMainWindow()->setUserSchema(userSchema);
             Application::Instance->onUpdate();
         }
         else {  // set up Unit system default
-            Base::UnitsApi::setSchema((Base::UnitSystem)hGrp->GetInt("UserSchema", 0));
+            Base::UnitsApi::setSchema(hGrp->GetInt("UserSchema", 0));
             Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
         }
         signalActiveDocument(*doc->second);
@@ -1125,20 +1249,20 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (const Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
     }
     catch (const std::exception& e) {
-        Base::Console().Error(
+        Base::Console().error(
             "Unhandled std::exception caught in Application::onLastWindowClosed.\n"
             "The error message is: %s\n",
             e.what());
     }
     catch (...) {
-        Base::Console().Error(
+        Base::Console().error(
             "Unhandled unknown exception caught in Application::onLastWindowClosed.\n");
     }
 }
@@ -1305,7 +1429,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
         Base::Interpreter().runString(nameGui.c_str());
     }
     catch (const Base::Exception& e) {
-        Base::Console().Warning(e.what());
+        Base::Console().warning(e.what());
         return;
     }
 
@@ -1313,12 +1437,12 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
     // May be useful for error detection
     if (d->activeDocument) {
         App::Document* doc = d->activeDocument->getDocument();
-        Base::Console().Log("Active document is %s (at %p)\n",
+        Base::Console().log("Active document is %s (at %p)\n",
                             doc->getName(),
                             static_cast<void*>(doc));
     }
     else {
-        Base::Console().Log("No active document\n");
+        Base::Console().log("No active document\n");
     }
 #endif
 
@@ -1401,7 +1525,7 @@ void Application::viewActivated(MDIView* pcView)
 {
 #ifdef FC_DEBUG
     // May be useful for error detection
-    Base::Console().Log("Active view is %s (at %p)\n",
+    Base::Console().log("Active view is %s (at %p)\n",
                         (const char*)pcView->windowTitle().toUtf8(),
                         static_cast<void*>(pcView));
 #endif
@@ -1649,12 +1773,12 @@ bool Application::activateWorkbench(const char* name)
             match = rx.match(msg);
         }
 
-        Base::Console().Error("%s\n", (const char*)msg.toUtf8());
+        Base::Console().error("%s\n", (const char*)msg.toUtf8());
         if (!d->startingUp) {
-            Base::Console().Error("%s\n", e.getStackTrace().c_str());
+            Base::Console().error("%s\n", e.getStackTrace().c_str());
         }
         else {
-            Base::Console().Log("%s\n", e.getStackTrace().c_str());
+            Base::Console().log("%s\n", e.getStackTrace().c_str());
         }
 
         if (!d->startingUp) {
@@ -1806,22 +1930,16 @@ QStringList Application::workbenches() const
     QStringList hidden, extra;
     if (ht != config.end()) {
         QString items = QString::fromLatin1(ht->second.c_str());
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
         hidden = items.split(QLatin1Char(';'), Qt::SkipEmptyParts);
-#else
-        hidden = items.split(QLatin1Char(';'), QString::SkipEmptyParts);
-#endif
+
         if (hidden.isEmpty()) {
             hidden.push_back(QLatin1String(""));
         }
     }
     if (et != config.end()) {
         QString items = QString::fromLatin1(et->second.c_str());
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+
         extra = items.split(QLatin1Char(';'), Qt::SkipEmptyParts);
-#else
-        extra = items.split(QLatin1Char(';'), QString::SkipEmptyParts);
-#endif
         if (extra.isEmpty()) {
             extra.push_back(QLatin1String(""));
         }
@@ -1910,6 +2028,11 @@ Gui::PreferencePackManager* Application::prefPackManager()
     return d->prefPackManager;
 }
 
+Gui::StyleParameters::ParameterManager* Application::styleParameterManager()
+{
+    return d->styleParameterManager;
+}
+
 
 //**************************************************************************
 // Init, Destruct and singleton
@@ -1951,20 +2074,20 @@ void messageHandler(QtMsgType type, const QMessageLogContext& context, const QSt
         case QtInfoMsg:
         case QtDebugMsg:
 #ifdef FC_DEBUG
-            Base::Console().Message("%s\n", output.constData());
+            Base::Console().message("%s\n", output.constData());
 #else
             // do not stress user with Qt internals but write to log file if enabled
-            Base::Console().Log("%s\n", output.constData());
+            Base::Console().log("%s\n", output.constData());
 #endif
             break;
         case QtWarningMsg:
-            Base::Console().Warning("%s\n", output.constData());
+            Base::Console().warning("%s\n", output.constData());
             break;
         case QtCriticalMsg:
-            Base::Console().Error("%s\n", output.constData());
+            Base::Console().error("%s\n", output.constData());
             break;
         case QtFatalMsg:
-            Base::Console().Error("%s\n", output.constData());
+            Base::Console().error("%s\n", output.constData());
             abort();  // deliberately core dump
     }
 #ifdef FC_OS_WIN32
@@ -1982,13 +2105,13 @@ void messageHandlerCoin(const SoError* error, void* /*userdata*/)
         const char* msg = error->getDebugString().getString();
         switch (dbg->getSeverity()) {
             case SoDebugError::INFO:
-                Base::Console().Message("%s\n", msg);
+                Base::Console().message("%s\n", msg);
                 break;
             case SoDebugError::WARNING:
-                Base::Console().Warning("%s\n", msg);
+                Base::Console().warning("%s\n", msg);
                 break;
             default:  // error
-                Base::Console().Error("%s\n", msg);
+                Base::Console().error("%s\n", msg);
                 break;
         }
 #ifdef FC_OS_WIN32
@@ -1999,7 +2122,7 @@ void messageHandlerCoin(const SoError* error, void* /*userdata*/)
     }
     else if (error) {
         const char* msg = error->getDebugString().getString();
-        Base::Console().Log(msg);
+        Base::Console().log(msg);
     }
 }
 
@@ -2018,7 +2141,7 @@ void Application::initApplication()
 {
     static bool init = false;
     if (init) {
-        Base::Console().Error("Tried to run Gui::Application::initApplication() twice!\n");
+        Base::Console().error("Tried to run Gui::Application::initApplication() twice!\n");
         return;
     }
 
@@ -2202,7 +2325,7 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
     try {
         boost::interprocess::file_lock flock(filename.c_str());
         if (flock.try_lock()) {
-            Base::Console().Log("Init: Executing event loop...\n");
+            Base::Console().log("Init: Executing event loop…\n");
             QApplication::exec();
 
             // Qt can't handle exceptions thrown from event handlers, so we need
@@ -2218,13 +2341,13 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
             fi.deleteFile();
         }
         else {
-            Base::Console().Warning("Failed to create a file lock for the IPC.\n"
+            Base::Console().warning("Failed to create a file lock for the IPC.\n"
                                     "The application will be terminated\n");
         }
     }
     catch (const boost::interprocess::interprocess_exception& e) {
         QString msg = QString::fromLocal8Bit(e.what());
-        Base::Console().Warning("Failed to create a file lock for the IPC: %s\n",
+        Base::Console().warning("Failed to create a file lock for the IPC: %s\n",
                                 msg.toUtf8().constData());
     }
 }
@@ -2235,18 +2358,18 @@ void runEventLoop(GUISingleApplication& mainApp)
         tryRunEventLoop(mainApp);
     }
     catch (const Base::SystemExitException&) {
-        Base::Console().Message("System exit\n");
+        Base::Console().message("System exit\n");
         throw;
     }
     catch (const std::exception& e) {
         // catching nasty stuff coming out of the event loop
-        Base::Console().Error("Event loop left through unhandled exception: %s\n", e.what());
+        Base::Console().error("Event loop left through unhandled exception: %s\n", e.what());
         App::Application::destructObserver();
         throw;
     }
     catch (...) {
         // catching nasty stuff coming out of the event loop
-        Base::Console().Error("Event loop left through unknown unhandled exception\n");
+        Base::Console().error("Event loop left through unknown unhandled exception\n");
         App::Application::destructObserver();
         throw;
     }
@@ -2258,10 +2381,17 @@ void Application::runApplication()
     StartupProcess::setupApplication();
 
     // A new QApplication
-    Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
+    Base::Console().log("Init: Creating Gui::Application and QApplication\n");
 
     int argc = App::Application::GetARGC();
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
+
+#if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+    // If QT is running with native Wayland then inform Coin to use EGL
+    if (QGuiApplication::platformName() == QString::fromStdString("wayland")) {
+        setenv("COIN_EGL", "1", 1);
+    }
+#endif
 
     // Make sure that we use '.' as decimal point. See also
     // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
@@ -2300,7 +2430,7 @@ void Application::runApplication()
     QTimer::singleShot(0, &mw, SLOT(delayedStartup()));
 
     // run the Application event loop
-    Base::Console().Log("Init: Entering event loop\n");
+    Base::Console().log("Init: Entering event loop\n");
 
     // boot phase reference point
     // https://forum.freecad.org/viewtopic.php?f=10&t=21665
@@ -2314,7 +2444,7 @@ void Application::runApplication()
 
     runEventLoop(mainApp);
 
-    Base::Console().Log("Finish: Event loop left\n");
+    Base::Console().log("Finish: Event loop left\n");
 }
 
 bool Application::hiddenMainWindow()
@@ -2446,36 +2576,22 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     }
 }
 
-QString Application::replaceVariablesInQss(QString qssText)
+void Application::reloadStyleSheet()
 {
-    // First we fetch the colors from preferences,
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Themes");
-    unsigned long longAccentColor1 = hGrp->GetUnsigned("ThemeAccentColor1", 0);
-    unsigned long longAccentColor2 = hGrp->GetUnsigned("ThemeAccentColor2", 0);
-    unsigned long longAccentColor3 = hGrp->GetUnsigned("ThemeAccentColor3", 0);
+    const MainWindow* mw = getMainWindow();
 
-    // convert them to hex.
-    // Note: the ulong contains alpha channels so 8 hex characters when we need 6 here.
-    QString accentColor1 = QString::fromLatin1("#%1")
-                               .arg(longAccentColor1, 8, 16, QLatin1Char('0'))
-                               .toUpper()
-                               .mid(0, 7);
-    QString accentColor2 = QString::fromLatin1("#%1")
-                               .arg(longAccentColor2, 8, 16, QLatin1Char('0'))
-                               .toUpper()
-                               .mid(0, 7);
-    QString accentColor3 = QString::fromLatin1("#%1")
-                               .arg(longAccentColor3, 8, 16, QLatin1Char('0'))
-                               .toUpper()
-                               .mid(0, 7);
+    const QString qssFile = mw->property("fc_currentStyleSheet").toString();
+    const bool tiledBackground = mw->property("fc_tiledBackground").toBool();
 
-    qssText = qssText.replace(QString::fromLatin1("@ThemeAccentColor1"), accentColor1);
-    qssText = qssText.replace(QString::fromLatin1("@ThemeAccentColor2"), accentColor2);
-    qssText = qssText.replace(QString::fromLatin1("@ThemeAccentColor3"), accentColor3);
+    d->styleParameterManager->reload();
 
-    // Base::Console().Warning("%s\n", qssText.toStdString());
-    return qssText;
+    setStyleSheet(qssFile, tiledBackground);
+    OverlayManager::instance()->refresh(nullptr, true);
+}
+
+QString Application::replaceVariablesInQss(const QString& qssText)
+{
+    return QString::fromStdString(d->styleParameterManager->replacePlaceholders(qssText.toStdString()));
 }
 
 void Application::checkForDeprecatedSettings()
@@ -2491,7 +2607,7 @@ void Application::checkForDeprecatedSettings()
                 ->GetBool("UseFCBakExtension", true);
         if (!useFCBakExtension) {
             // TODO: This should be translated
-            Base::Console().Warning("The `.FCStd#` backup format is deprecated and may "
+            Base::Console().warning("The `.FCStd#` backup format is deprecated and may "
                                     "be removed in future versions.\n"
                                     "To update, check the 'Preferences->General->Document->Use "
                                     "date and FCBak extension' option.\n");
@@ -2516,7 +2632,7 @@ void Application::checkForPreviousCrashes()
     }
     catch (const boost::interprocess::interprocess_exception& e) {
         QString msg = QString::fromLocal8Bit(e.what());
-        Base::Console().Warning("Failed check for previous crashes because of IPC error: %s\n",
+        Base::Console().warning("Failed check for previous crashes because of IPC error: %s\n",
                                 msg.toUtf8().constData());
     }
 }
@@ -2562,9 +2678,10 @@ App::Document* Application::reopen(App::Document* doc)
         }
 
         for (auto& file : docs) {
-            App::DocumentCreateFlags createFlags;
-            createFlags.createView = false;
-            App::GetApplication().openDocument(file.c_str(), createFlags);
+            App::DocumentInitFlags initFlags {
+                .createView = false
+            };
+            App::GetApplication().openDocument(file.c_str(), initFlags);
         }
     }
 
@@ -2573,7 +2690,7 @@ App::Document* Application::reopen(App::Document* doc)
         if (name == v.first->FileName.getValue()) {
             doc = const_cast<App::Document*>(v.first);
         }
-        if (untouchedDocs.count(v.second)) {
+        if (untouchedDocs.contains(v.second)) {
             if (!v.second->isModified()) {
                 continue;
             }
@@ -2602,4 +2719,45 @@ App::Document* Application::reopen(App::Document* doc)
         }
     }
     return doc;
+}
+
+void Application::getVerboseDPIStyleInfo(QTextStream& str) {
+    // Add Stylesheet/Theme/Qtstyle information
+    std::string styleSheet =
+        App::GetApplication()
+            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
+            ->GetASCII("StyleSheet");
+    std::string theme =
+        App::GetApplication()
+            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
+            ->GetASCII("Theme");
+#if QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
+    std::string style = qApp->style()->name().toStdString();
+#else
+    std::string style =
+        App::GetApplication()
+            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
+            ->GetASCII("QtStyle");
+    if (style.empty()) {
+        style = "Qt default";
+    }
+#endif
+    if (styleSheet.empty()) {
+        styleSheet = "unset";
+    }
+    if (theme.empty()) {
+        theme = "unset";
+    }
+
+    str << "Stylesheet/Theme/QtStyle: " << QString::fromStdString(styleSheet) << "/"
+        << QString::fromStdString(theme) << "/" << QString::fromStdString(style) << "\n";
+
+    // Add DPI information
+    str << "Logical DPI/Physical DPI/Pixel Ratio: "
+        << QApplication::primaryScreen()->logicalDotsPerInch()
+        << "/"
+        << QApplication::primaryScreen()->physicalDotsPerInch()
+        << "/"
+        << QApplication::primaryScreen()->devicePixelRatio()
+        << "\n";
 }

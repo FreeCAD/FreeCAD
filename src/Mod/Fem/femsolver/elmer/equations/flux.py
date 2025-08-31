@@ -57,28 +57,45 @@ class Proxy(linear.Proxy, equationbase.FluxProxy):
                 "Enforces continuity within the same material\n"
                 "in the 'Discontinuous Galerkin' discretization"
             ),
+            locked=True,
         )
-        obj.addProperty("App::PropertyBool", "CalculateFlux", "Flux", "Computes flux vector")
         obj.addProperty(
-            "App::PropertyBool", "CalculateFluxAbs", "Flux", "Computes absolute of flux vector"
+            "App::PropertyBool", "CalculateFlux", "Flux", "Computes flux vector", locked=True
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "CalculateFluxAbs",
+            "Flux",
+            "Computes absolute of flux vector",
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateFluxMagnitude",
             "Flux",
             "Computes magnitude of flux vector field",
+            locked=True,
         )
         obj.addProperty(
-            "App::PropertyBool", "CalculateGrad", "Flux", "Select calculation of gradient"
+            "App::PropertyBool",
+            "CalculateGrad",
+            "Flux",
+            "Select calculation of gradient",
+            locked=True,
         )
         obj.addProperty(
-            "App::PropertyBool", "CalculateGradAbs", "Flux", "Computes absolute of gradient field"
+            "App::PropertyBool",
+            "CalculateGradAbs",
+            "Flux",
+            "Computes absolute of gradient field",
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
             "CalculateGradMagnitude",
             "Flux",
             "Computes magnitude of gradient field",
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -88,6 +105,7 @@ class Proxy(linear.Proxy, equationbase.FluxProxy):
                 "Enable if standard Galerkin approximation leads to\n"
                 "unphysical results when there are discontinuities"
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -97,15 +115,21 @@ class Proxy(linear.Proxy, equationbase.FluxProxy):
                 "If true, negative values of computed magnitude fields\n"
                 "are a posteriori set to zero."
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "FluxCoefficient",
             "Flux",
             "Proportionality coefficient\nto compute the flux",
+            locked=True,
         )
         obj.addProperty(
-            "App::PropertyEnumeration", "FluxVariable", "Flux", "Variable name for flux calculation"
+            "App::PropertyEnumeration",
+            "FluxVariable",
+            "Flux",
+            "Variable name for flux calculation",
+            locked=True,
         )
 
         obj.CalculateFlux = True

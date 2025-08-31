@@ -30,9 +30,7 @@
 
 #include <App/Application.h>
 
-#if QT_VERSION >= QT_VERSION_CHECK(6,0,0) && QT_VERSION < QT_VERSION_CHECK(6,8,1)
-# define HAS_QTBUG_129596
-#endif
+#include "StyleParameters/ParameterManager.h"
 
 class QCloseEvent;
 class SoNode;
@@ -67,6 +65,9 @@ public:
     /// destruction
     ~Application();
 
+    /// Initializes default configuration for Style Parameter Manager
+    void initStyleParameterManager();
+
     /** @name methods for support of files */
     //@{
     /// open a file
@@ -79,6 +80,10 @@ public:
     App::Document *reopen(App::Document *doc);
     /// Prompt about recomputing if needed
     static void checkForRecomputes();
+    /// Prompt about PartialRestore
+    void checkPartialRestore(App::Document* doc);
+    /// Prompt for Errors on open
+    void checkRestoreError(App::Document* doc);
     //@}
 
 
@@ -221,7 +226,8 @@ public:
     //@{
     /// Activate a stylesheet
     void setStyleSheet(const QString& qssFile, bool tiledBackground);
-    QString replaceVariablesInQss(QString qssText);
+    void reloadStyleSheet();
+    QString replaceVariablesInQss(const QString& qssText);
     //@}
 
     /** @name User Commands */
@@ -235,6 +241,7 @@ public:
     //@}
 
     Gui::PreferencePackManager* prefPackManager();
+    Gui::StyleParameters::ParameterManager* styleParameterManager();
 
     /** @name Init, Destruct an Access methods */
     //@{
@@ -247,6 +254,9 @@ public:
     static void runApplication();
     void tryClose( QCloseEvent * e );
     //@}
+
+    /// get verbose DPI and style info
+    static void getVerboseDPIStyleInfo(QTextStream& str);
 
     /// whenever GUI is about to start with the main window hidden
     static bool hiddenMainWindow();
@@ -282,7 +292,7 @@ protected:
          std::make_pair(QT_TRANSLATE_NOOP("EditMode", "&Color"),
                         QT_TRANSLATE_NOOP("EditMode",
                                           "The object will have the color of its individual faces "
-                                          "editable with the Part FaceAppearances command"))},
+                                          "editable with the Appearance per Face command"))},
     };
     int userEditMode = userEditModes.begin()->first;
 

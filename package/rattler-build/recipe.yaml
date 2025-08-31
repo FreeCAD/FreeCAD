@@ -1,0 +1,177 @@
+context:
+  version: "1.1.0dev"
+
+package:
+  name: freecad
+  version: "${{ version }}"
+
+source:
+  path: ../..
+  use_gitignore: true
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - ccache
+    - cmake
+    - compilers>=1.10,<1.11
+    - doxygen
+    - ninja
+    - noqt5
+    - python>=3.11,<3.12
+    - qt6-main>=6.8,<6.9
+    - swig
+
+    - if: linux and x86_64
+      then:
+        - clang
+        - clangxx
+        - kernel-headers_linux-64
+        - libdrm-cos7-x86_64
+        - libselinux-cos7-x86_64
+        - libsepol-cos7-x86_64
+        - libspnav
+        - libx11-common-cos7-x86_64
+        - libx11-cos7-x86_64
+        - libxau-cos7-x86_64
+        - libxcb-cos7-x86_64
+        - libxdamage-cos7-x86_64
+        - libxext-cos7-x86_64
+        - libxfixes-cos7-x86_64
+        - libxi-cos7-x86_64
+        - libxi-devel-cos7-x86_64
+        - libxxf86vm-cos7-x86_64
+        - mesa-dri-drivers-cos7-x86_64
+        - mesa-libegl-cos7-x86_64
+        - mesa-libegl-devel-cos7-x86_64
+        - mesa-libgl-cos7-x86_64
+        - mesa-libgl-devel-cos7-x86_64
+        - mold
+        - pixman-cos7-x86_64
+        - sed
+        - sysroot_linux-64
+        - xorg-x11-server-common-cos7-x86_64
+        - xorg-x11-server-xvfb-cos7-x86_64
+        - xorg-xproto
+
+    - if: linux and aarch64
+      then:
+        - clang
+        - clangxx
+        - kernel-headers_linux-aarch64
+        - libdrm-cos7-aarch64
+        - libselinux-cos7-aarch64
+        - libsepol-cos7-aarch64
+        - libspnav
+        - libx11-common-cos7-aarch64
+        - libx11-cos7-aarch64
+        - libxau-cos7-aarch64
+        - libxcb-cos7-aarch64
+        - libxdamage-cos7-aarch64
+        - libxext-cos7-aarch64
+        - libxfixes-cos7-aarch64
+        - libxi-cos7-aarch64
+        - libxi-devel-cos7-aarch64
+        - libxxf86vm-cos7-aarch64
+        - mesa-dri-drivers-cos7-aarch64
+        - mesa-libegl-cos7-aarch64
+        - mesa-libegl-devel-cos7-aarch64
+        - mesa-libgl-cos7-aarch64
+        - mesa-libgl-devel-cos7-aarch64
+        - mold
+        - pixman-cos7-aarch64
+        - sed
+        - sysroot_linux-aarch64
+        - xorg-x11-server-common-cos7-aarch64
+        - xorg-x11-server-xvfb-cos7-aarch64
+        - xorg-xproto
+
+    - if: osx and x86_64
+      then:
+        - __osx >=10.13
+
+    - if: build_platform != target_platform
+      then:
+        - cross-python_${{ target_platform }}
+
+  host:
+    - coin3d
+    - eigen
+    - fmt
+    - freetype
+    - hdf5
+    - libboost-devel
+    - matplotlib-base
+    - noqt5
+    - numpy>=1.26,<2
+    - occt>=7.8,<7.9
+    - pcl
+    - pivy
+    - ply
+    - pybind11
+    - pyside6
+    - python>=3.11,<3.12
+    - qt6-main>=6.8,<6.9
+    - six
+    - smesh
+    - vtk
+    - xerces-c
+    - yaml-cpp
+    - zlib
+
+    - if: win
+      then:
+        - winpthreads-devel
+        - tbb-devel
+
+    - if: unix
+      then:
+        - sed
+
+    - if: linux
+      then:
+        - libspnav
+        - xorg-xproto
+
+  run:
+    - blas * openblas*
+    - blinker
+    - calculix
+    - debugpy
+    - docutils
+    - gmsh
+    - graphviz
+    - ifcopenshell
+    - jinja2
+    - lark
+    - lxml
+    - matplotlib-base
+    - nine
+    - noqt5
+    - numpy>=1.26,<2
+    - occt>=7.8,<7.9
+    - olefile
+    - opencamlib
+    - opencv
+    - pandas
+    - pip
+    - pivy
+    - ply
+    - pycollada
+    - pyside6
+    - python>=3.11,<3.12
+    - pythonocc-core
+    - pyyaml
+    - qt6-main>=6.8,<6.9
+    - requests
+    - scipy
+    - sympy
+    - typing_extensions
+    - vtk
+    - xlutils
+
+    - if: linux
+      then:
+        - libspnav

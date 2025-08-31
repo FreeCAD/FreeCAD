@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Convert to IFC type</string>
+   <string>Convert to IFC Type</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -34,6 +34,13 @@
     <widget class="QCheckBox" name="checkKeepObject">
      <property name="text">
       <string>Keep original object. The object will adopt the new type</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkDoNotAskAgain">
+     <property name="text">
+      <string>Do not ask again and use this setting</string>
      </property>
     </widget>
    </item>

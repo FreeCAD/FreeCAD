@@ -118,7 +118,7 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     Q_UNUSED(member);
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
 
-    QAction* act = menu->addAction(tr("Active body"));
+    QAction* act = menu->addAction(tr("Active Body"));
     act->setCheckable(true);
     act->setChecked(isActiveBody());
     func->trigger(act, [this]() {
@@ -183,16 +183,16 @@ bool ViewProviderBody::doubleClicked()
 //    if (ActiveGuiDoc == NULL) return;
 //
 //    // Highlight active body and all its features
-//    //Base::Console().Error("ViewProviderBody::updateTree()\n");
+//    //Base::Console().error("ViewProviderBody::updateTree()\n");
 //    PartDesign::Body* body = getObject<PartDesign::Body>();
 //    bool active = body->IsActive.getValue();
-//    //Base::Console().Error("Body is %s\n", active ? "active" : "inactive");
+//    //Base::Console().error("Body is %s\n", active ? "active" : "inactive");
 //    ActiveGuiDoc->signalHighlightObject(*this, Gui::Blue, active);
 //    std::vector<App::DocumentObject*> features = body->Group.getValues();
 //    bool highlight = true;
 //    App::DocumentObject* tip = body->Tip.getValue();
 //    for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
-//        //Base::Console().Error("Highlighting %s: %s\n", (*f)->getNameInDocument(), highlight ? "true" : "false");
+//        //Base::Console().error("Highlighting %s: %s\n", (*f)->getNameInDocument(), highlight ? "true" : "false");
 //        Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(*f));
 //        if (vp != NULL)
 //            ActiveGuiDoc->signalHighlightObject(*vp, Gui::LightBlue, active ? highlight : false);
@@ -257,7 +257,7 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
             if(getOverrideMode() == "As Is")
                 setDisplayMaskMode(DisplayMode.getValueAsString());
             else {
-                Base::Console().Message("Set override mode: %s\n", getOverrideMode().c_str());
+                Base::Console().message("Set override mode: %s\n", getOverrideMode().c_str());
                 setDisplayMaskMode(getOverrideMode().c_str());
             }
         }
@@ -282,6 +282,7 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
         prop == &Selectable ||
         prop == &DisplayModeBody ||
         prop == &PointColorArray ||
+        prop == &ShowPlacement ||
         prop == &LineColorArray) {
         return;
     }
@@ -329,13 +330,41 @@ void ViewProviderBody::setVisualBodyMode(bool bodymode) {
     }
 }
 
-std::vector< std::string > ViewProviderBody::getDisplayModes() const {
+std::vector<std::string> ViewProviderBody::getDisplayModes() const
+{
 
-    //we get all display modes and remove the "Group" mode, as this is what we use for "Through"
-    //body display mode
-    std::vector< std::string > modes = ViewProviderPart::getDisplayModes();
+    // we get all display modes and remove the "Group" mode, as this is what we use for "Through"
+    // body display mode
+    std::vector<std::string> modes = ViewProviderPart::getDisplayModes();
     modes.erase(modes.begin());
     return modes;
+}
+
+PartDesign::Feature* ViewProviderBody::getShownFeature() const
+{
+    auto body = static_cast<PartDesign::Body*>(getObject());
+    auto features = body->Group.getValues();
+
+    for (auto feature : features) {
+        if (!feature->isDerivedFrom<PartDesign::Feature>()) {
+            continue;
+        }
+
+        if (feature->Visibility.getValue()) {
+            return static_cast<PartDesign::Feature*>(feature);
+        }
+    }
+
+    return nullptr;
+}
+
+Gui::ViewProvider* ViewProviderBody::getShownViewProvider() const
+{
+    if (const auto* feature = getShownFeature()) {
+        return Gui::Application::Instance->getViewProvider(feature);
+    }
+
+    return nullptr;
 }
 
 bool ViewProviderBody::canDropObjects() const
@@ -402,7 +431,7 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
             body->addObjects(move);
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
     }
     else if (!body->BaseFeature.getValue()) {

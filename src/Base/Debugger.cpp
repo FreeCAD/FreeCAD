@@ -66,7 +66,7 @@ bool Debugger::eventFilter(QObject* /*watched*/, QEvent* event)
 int Debugger::exec()
 {
     if (isAttached) {
-        Base::Console().Message("TO CONTINUE PRESS ANY KEY...\n");
+        Base::Console().message("TO CONTINUE PRESS ANY KEY...\n");
     }
     return loop.exec();
 }

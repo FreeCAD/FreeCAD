@@ -134,9 +134,8 @@ void DlgBooleanOperation::slotCreatedObject(const App::DocumentObject& obj)
 void DlgBooleanOperation::slotChangedObject(const App::DocumentObject& obj,
                                             const App::Property& prop)
 {
-    std::list<const App::DocumentObject*>::iterator it;
-    it = std::find(observe.begin(), observe.end(), &obj);
-    if (it != observe.end() && prop.is<Part::PropertyPartShape>()) {
+    if (const auto it = std::ranges::find(observe, &obj);
+        it != observe.end() && prop.is<Part::PropertyPartShape>()) {
         const TopoDS_Shape& shape = static_cast<const Part::PropertyPartShape&>(prop).getValue();
         if (!shape.IsNull()) {
             Gui::Document* activeGui = Gui::Application::Instance->getDocument(obj.getDocument());
@@ -384,12 +383,12 @@ void DlgBooleanOperation::accept()
 
     if (!litem || !indexOfCurrentItem(litem,ltop,lchild)) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Select a shape on the left side, first"));
+            tr("First, select a shape on the left side"));
         return;
     }
     if (!ritem || !indexOfCurrentItem(ritem,rtop,rchild)) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Select a shape on the right side, first"));
+            tr("First, select a shape on the right side"));
         return;
     }
     if (ltop == rtop && lchild == rchild) {
@@ -414,7 +413,7 @@ void DlgBooleanOperation::accept()
     if (!obj1 || !obj2) {
         // objects don't exists (anymore)
         QMessageBox::critical(this, windowTitle(),
-            tr("One of the selected objects doesn't exist anymore"));
+            tr("One of the selected objects does not exist anymore"));
         return;
     }
 
@@ -462,7 +461,7 @@ void DlgBooleanOperation::accept()
         activeDoc->recompute();
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 

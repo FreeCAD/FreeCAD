@@ -28,6 +28,12 @@
 #include <array>
 #include <string>
 
+/**
+ * @brief A namespace for utilities.
+ *
+ * Currently, this namespace contains functionality to define custom syntax to
+ * parse command line options.
+ */
 namespace App::Util
 {
 
@@ -74,7 +80,7 @@ std::pair<std::string, std::string> customSyntax(std::string_view strIn)
                                  "title",
                                  "visual"};
 
-    if (std::find(knowns.begin(), knowns.end(), rest) != knowns.end()) {
+    if (std::ranges::find(knowns, rest) != knowns.end()) {
         return {rest, "null"};
     }
     return {};

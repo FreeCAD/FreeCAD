@@ -53,7 +53,7 @@ int ShapeFix_RootPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     return 0;
 }
 
-PyObject* ShapeFix_RootPy::limitTolerance(PyObject *args)
+PyObject* ShapeFix_RootPy::limitTolerance(PyObject *args) const
 {
     double tol;
     if (!PyArg_ParseTuple(args, "d", &tol))

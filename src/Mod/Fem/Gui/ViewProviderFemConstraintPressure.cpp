@@ -82,7 +82,7 @@ void ViewProviderFemConstraintPressure::transformSymbol(const Base::Vector3d& po
                                                         SbMatrix& mat) const
 {
     auto obj = this->getObject<const Fem::ConstraintPressure>();
-    float rotAngle = obj->Reversed.getValue() ? F_PI : 0.0f;
+    float rotAngle = obj->Reversed.getValue() ? std::numbers::pi_v<float> : 0.0f;
     float s = obj->getScaleFactor();
     // Symbol length from .iv file
     float symLen = 4.0f;

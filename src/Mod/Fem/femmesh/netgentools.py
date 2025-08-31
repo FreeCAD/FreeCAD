@@ -106,12 +106,16 @@ class NetgenTools:
             "brep_file": self.brep_file,
             "threads": self.param_grp.GetInt("NumOfThreads", QThread.idealThreadCount()),
             "heal": self.obj.HealShape,
+            "glue": self.obj.Glue,
             "params": self.get_meshing_parameters(),
             "second_order": self.obj.SecondOrder,
             "second_order_linear": self.obj.SecondOrderLinear,
             "result_file": self.result_file,
             "mesh_region": self.get_mesh_region(),
             "verbosity": self.param_grp.GetInt("LogVerbosity", 2),
+            "zrefine": self.obj.ZRefine,
+            "zrefine_size": self.obj.ZRefineSize,
+            "zrefine_direction": tuple(self.obj.ZRefineDirection),
         }
 
         with open(self.script_file, "w") as file:
@@ -140,12 +144,16 @@ def run_netgen(
     brep_file,
     threads,
     heal,
+    glue,
     params,
     second_order,
     second_order_linear,
     result_file,
     mesh_region,
     verbosity,
+    zrefine,
+    zrefine_size,
+    zrefine_direction,
 ):
     geom = occ.OCCGeometry(brep_file)
     ngcore.SetNumThreads(threads)
@@ -162,12 +170,25 @@ def run_netgen(
             elif t == "Solid":
                 shape.solids.solids[n - 1].maxh = l
 
+    if zrefine in ["Custom", "Regular"]:
+        for sol in shape.solids:
+            bottom = sol.faces.Min(zrefine_direction)
+            top = sol.faces.Max(zrefine_direction)
+            bottom.Identify(top, "bot-top", type=occ.IdentificationType.CLOSESURFACES)
+
     with ngcore.TaskManager():
         meshing.SetMessageImportance(verbosity)
         geom = occ.OCCGeometry(shape)
         if heal:
             geom.Heal()
+        if glue:
+            geom.Glue()
         mesh = geom.GenerateMesh(mp=meshing.MeshingParameters(**params))
+
+        if zrefine == "Regular":
+            mesh.ZRefine("bot-top", np.arange(zrefine_size[0], 1, zrefine_size[0]))
+        elif zrefine == "Custom":
+            mesh.ZRefine("bot-top", zrefine_size)
 
     result = {{
         "coords": [],
@@ -317,7 +338,6 @@ run_netgen(**{kwds})
             "try_hexes": self.obj.TryHexes,
             "inverttets": self.obj.InvertTets,
             "inverttrigs": self.obj.InvertTrigs,
-            "autozrefine": self.obj.AutoZRefine,
             "parallel_meshing": self.obj.ParallelMeshing,
             "nthreads": self.param_grp.GetInt("NumOfThreads", QThread.idealThreadCount()),
             "closeedgefac": self.obj.CloseEdgeFactor,

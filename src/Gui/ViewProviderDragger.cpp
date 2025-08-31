@@ -42,9 +42,10 @@
 #include "BitmapFactory.h"
 #include "Control.h"
 #include "Document.h"
-#include "SoFCCSysDragger.h"
+#include "Inventor/Draggers/SoTransformDragger.h"
+#include "Inventor/SoFCPlacementIndicatorKit.h"
 #include "SoFCUnifiedSelection.h"
-#include "TaskCSysDragger.h"
+#include "TaskTransform.h"
 #include "View3DInventorViewer.h"
 #include "ViewProviderDragger.h"
 #include "Utilities.h"
@@ -52,6 +53,7 @@
 #include <ViewProviderLink.h>
 #include <App/DocumentObjectGroup.h>
 #include <Base/Tools.h>
+#include <Inventor/So3DAnnotation.h>
 
 using namespace Gui;
 
@@ -60,6 +62,9 @@ PROPERTY_SOURCE(Gui::ViewProviderDragger, Gui::ViewProviderDocumentObject)
 ViewProviderDragger::ViewProviderDragger()
 {
     ADD_PROPERTY_TYPE(TransformOrigin, ({}), nullptr, App::Prop_Hidden, nullptr);
+
+    pcPlacement = new SoSwitch;
+    pcPlacement->whichChild = SO_SWITCH_NONE;
 };
 
 ViewProviderDragger::~ViewProviderDragger() = default;
@@ -104,7 +109,7 @@ void ViewProviderDragger::onChanged(const App::Property* property)
 
 TaskView::TaskDialog* ViewProviderDragger::getTransformDialog()
 {
-    return new TaskCSysDragger(this, csysDragger);
+    return new TaskTransformDialog(this, transformDragger);
 }
 
 bool ViewProviderDragger::doubleClicked()
@@ -165,6 +170,20 @@ bool ViewProviderDragger::forwardToLink()
 
     return forwardedViewProvider != nullptr;
 }
+App::PropertyPlacement* ViewProviderDragger::getPlacementProperty() const
+{
+    auto object = getObject();
+
+    if (auto linkExtension = object->getExtensionByType<App::LinkBaseExtension>(true)) {
+        if (auto linkPlacementProp = linkExtension->getLinkPlacementProperty()) {
+            return linkPlacementProp;
+        }
+
+        return linkExtension->getPlacementProperty();
+    }
+
+    return getObject()->getPropertyByName<App::PropertyPlacement>("Placement");
+}
 
 bool ViewProviderDragger::setEdit(int ModNum)
 {
@@ -174,17 +193,17 @@ bool ViewProviderDragger::setEdit(int ModNum)
         return true;
     }
 
-    assert(!csysDragger);
+    assert(!transformDragger);
 
-    csysDragger = new SoFCCSysDragger();
-    csysDragger->setAxisColors(Gui::ViewParams::instance()->getAxisXColor(),
+    transformDragger = new SoTransformDragger();
+    transformDragger->setAxisColors(Gui::ViewParams::instance()->getAxisXColor(),
                                Gui::ViewParams::instance()->getAxisYColor(),
                                Gui::ViewParams::instance()->getAxisZColor());
-    csysDragger->draggerSize.setValue(ViewParams::instance()->getDraggerScale());
+    transformDragger->draggerSize.setValue(ViewParams::instance()->getDraggerScale());
 
-    csysDragger->addStartCallback(dragStartCallback, this);
-    csysDragger->addFinishCallback(dragFinishCallback, this);
-    csysDragger->addMotionCallback(dragMotionCallback, this);
+    transformDragger->addStartCallback(dragStartCallback, this);
+    transformDragger->addFinishCallback(dragFinishCallback, this);
+    transformDragger->addMotionCallback(dragMotionCallback, this);
 
     Gui::Control().showDialog(getTransformDialog());
 
@@ -197,7 +216,7 @@ void ViewProviderDragger::unsetEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
 
-    csysDragger.reset();
+    transformDragger.reset();
 
     Gui::Control().closeDialog();
 }
@@ -206,14 +225,14 @@ void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int M
 {
     Q_UNUSED(ModNum);
 
-    if (csysDragger && viewer) {
-        csysDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
+    if (transformDragger && viewer) {
+        transformDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
 
         auto originPlacement = App::GeoFeature::getGlobalPlacement(getObject()) * getObjectPlacement().inverse();
         auto mat = originPlacement.toMatrix();
 
         viewer->getDocument()->setEditingTransform(mat);
-        viewer->setupEditingRoot(csysDragger, &mat);
+        viewer->setupEditingRoot(transformDragger, &mat);
     }
 }
 
@@ -226,7 +245,7 @@ void ViewProviderDragger::dragStartCallback(void* data, [[maybe_unused]] SoDragg
     auto vp = static_cast<ViewProviderDragger*>(data);
 
     vp->draggerPlacement = vp->getDraggerPlacement();
-    vp->csysDragger->clearIncrementCounts();
+    vp->transformDragger->clearIncrementCounts();
 }
 
 void ViewProviderDragger::dragFinishCallback(void* data, [[maybe_unused]] SoDragger* d)
@@ -235,7 +254,7 @@ void ViewProviderDragger::dragFinishCallback(void* data, [[maybe_unused]] SoDrag
     auto vp = static_cast<ViewProviderDragger*>(data);
 
     vp->draggerPlacement = vp->getDraggerPlacement();
-    vp->csysDragger->clearIncrementCounts();
+    vp->transformDragger->clearIncrementCounts();
 
     vp->updatePlacementFromDragger();
 }
@@ -247,15 +266,121 @@ void ViewProviderDragger::dragMotionCallback(void* data, [[maybe_unused]] SoDrag
     vp->updateTransformFromDragger();
 }
 
-void ViewProviderDragger::updatePlacementFromDragger()
+void ViewProviderDragger::updatePlacementFromDragger(DraggerComponents components)
 {
-    const auto placement = getObject()->getPropertyByName<App::PropertyPlacement>("Placement");
+    const auto placement = getPlacementProperty();
 
     if (!placement) {
         return;
     }
 
-    placement->setValue(getDraggerPlacement() * getTransformOrigin().inverse());
+    // Get new target dragger placement
+    Base::Placement newDraggerPlacement = getDraggerPlacement();
+    Base::Vector3d newDraggerPosition = newDraggerPlacement.getPosition();
+    Base::Rotation newDraggerRotation = newDraggerPlacement.getRotation();
+
+    // Get old dragger placement before movement
+    const Base::Placement oldObjectPlacement = placement->getValue();
+    const Base::Placement oldDraggerPlacement = oldObjectPlacement * getTransformOrigin();
+    const Base::Vector3d oldDraggerPosition = oldDraggerPlacement.getPosition();
+    const Base::Rotation oldDraggerRotation = oldDraggerPlacement.getRotation();
+
+    // --- Mask translation ---
+    const Base::Vector3d deltaPositionGlobal = newDraggerPosition - oldDraggerPosition;
+    const Base::Vector3d deltaPositionLocal = oldDraggerRotation.inverse().multVec(deltaPositionGlobal);
+    Base::Vector3d maskedDeltaPositionLocal = deltaPositionLocal;
+
+    if (!components.testFlag(DraggerComponent::XPos)) {
+        maskedDeltaPositionLocal.x = 0.0;
+    }
+    if (!components.testFlag(DraggerComponent::YPos)) {
+        maskedDeltaPositionLocal.y = 0.0;
+    }
+    if (!components.testFlag(DraggerComponent::ZPos)) {
+        maskedDeltaPositionLocal.z = 0.0;
+    }
+
+    const Base::Vector3d maskedDeltaPositionGlobal = oldDraggerRotation.multVec(maskedDeltaPositionLocal);
+    Base::Vector3d finalPosition = oldDraggerPosition + maskedDeltaPositionGlobal;
+
+    // --- Mask rotation ---
+    Base::Vector3d oldX = oldDraggerRotation.multVec(Base::Vector3d::UnitX);
+    Base::Vector3d oldY = oldDraggerRotation.multVec(Base::Vector3d::UnitY);
+    Base::Vector3d oldZ = oldDraggerRotation.multVec(Base::Vector3d::UnitZ);
+
+    Base::Vector3d newX = newDraggerRotation.multVec(Base::Vector3d::UnitX);
+    Base::Vector3d newY = newDraggerRotation.multVec(Base::Vector3d::UnitY);
+    Base::Vector3d newZ = newDraggerRotation.multVec(Base::Vector3d::UnitZ);
+
+    // Choose which axes to align
+    Base::Vector3d x = components.testFlag(DraggerComponent::XRot) ? newX : oldX;
+    Base::Vector3d y = components.testFlag(DraggerComponent::YRot) ? newY : oldY;
+    Base::Vector3d z = components.testFlag(DraggerComponent::ZRot) ? newZ : oldZ;
+
+    Base::Rotation finalRotation = orthonormalize(x, y, z, components);
+
+    // Create new dragger placement, only if components are masked
+    Base::Placement finalDraggerPlacement(newDraggerPosition, newDraggerRotation);
+    if (!components.testFlag(DraggerComponent::All)){
+        finalDraggerPlacement.setPosition(finalPosition);
+        finalDraggerPlacement.setRotation(finalRotation);
+    }
+
+    placement->setValue((finalDraggerPlacement * getTransformOrigin().inverse()));
+    updateDraggerPosition();
+}
+
+Base::Rotation Gui::ViewProviderDragger::orthonormalize(Base::Vector3d x,
+                                         Base::Vector3d y,
+                                         Base::Vector3d z,
+                                         ViewProviderDragger::DraggerComponents components)
+{
+    // Orthonormalize (Gram–Schmidt process) to find perpendicular unit vector depending on masked axes
+    if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::XRot)
+        && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::YRot)) {
+        x.Normalize();
+        y = y - x * (x * y);
+        y.Normalize();
+        z = x.Cross(y);
+        z.Normalize();
+    }
+    else if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::XRot) && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)) {
+        x.Normalize();
+        z = z - x * (x * z);
+        z.Normalize();
+        y = z.Cross(x);
+        y.Normalize();
+    }
+    else if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::YRot) && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)) {
+        y.Normalize();
+        z = z - y * (y * z);
+        z.Normalize();
+        x = y.Cross(z);
+        x.Normalize();
+    }
+    else if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::XRot)) {
+        x.Normalize();
+        y = y - x * (x * y);
+        y.Normalize();
+        z = x.Cross(y);
+        z.Normalize();
+    }
+    else if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::YRot)) {
+        y.Normalize();
+        x = x - y * (x * y);
+        x.Normalize();
+        z = x.Cross(y);
+        z.Normalize();
+    }
+    else if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)) {
+        z.Normalize();
+        x = x - z * (x * z);
+        x.Normalize();
+        y = z.Cross(x);
+        y.Normalize();
+    }
+
+    return Base::Rotation::makeRotationByAxes(x, y, z);
 }
 
 void ViewProviderDragger::updateTransformFromDragger()
@@ -268,7 +393,7 @@ void ViewProviderDragger::updateTransformFromDragger()
 
 Base::Placement ViewProviderDragger::getObjectPlacement() const
 {
-    if (auto placement = getObject()->getPropertyByName<App::PropertyPlacement>("Placement")) {
+    if (auto placement = getPlacementProperty()) {
         return placement->getValue();
     }
 
@@ -277,10 +402,10 @@ Base::Placement ViewProviderDragger::getObjectPlacement() const
 
 Base::Placement ViewProviderDragger::getDraggerPlacement() const
 {
-    const double translationStep = csysDragger->translationIncrement.getValue();
-    const int xSteps = csysDragger->translationIncrementCountX.getValue();
-    const int ySteps = csysDragger->translationIncrementCountY.getValue();
-    const int zSteps = csysDragger->translationIncrementCountZ.getValue();
+    const double translationStep = transformDragger->translationIncrement.getValue();
+    const int xSteps = transformDragger->translationIncrementCountX.getValue();
+    const int ySteps = transformDragger->translationIncrementCountY.getValue();
+    const int zSteps = transformDragger->translationIncrementCountZ.getValue();
 
     const auto rotation = draggerPlacement.getRotation();
     const auto xBase = rotation.multVec(Base::Vector3d(1, 0, 0));
@@ -292,10 +417,10 @@ Base::Placement ViewProviderDragger::getDraggerPlacement() const
         yBase * (translationStep * ySteps) +
         zBase * (translationStep * zSteps);
 
-    const double rotationStep = csysDragger->rotationIncrement.getValue();
-    const int xRotationSteps = csysDragger->rotationIncrementCountX.getValue();
-    const int yRotationSteps = csysDragger->rotationIncrementCountY.getValue();
-    const int zRotationSteps = csysDragger->rotationIncrementCountZ.getValue();
+    const double rotationStep = transformDragger->rotationIncrement.getValue();
+    const int xRotationSteps = transformDragger->rotationIncrementCountX.getValue();
+    const int yRotationSteps = transformDragger->rotationIncrementCountY.getValue();
+    const int zRotationSteps = transformDragger->rotationIncrementCountZ.getValue();
 
     auto newRotation = rotation;
     newRotation = newRotation * Base::Rotation(Base::Vector3d(1, 0, 0), xRotationSteps * rotationStep);
@@ -315,16 +440,30 @@ Base::Placement ViewProviderDragger::getOriginalDraggerPlacement() const
 
 void ViewProviderDragger::setDraggerPlacement(const Base::Placement& placement)
 {
-    csysDragger->translation.setValue(Base::convertTo<SbVec3f>(placement.getPosition()));
-    csysDragger->rotation.setValue(Base::convertTo<SbRotation>(placement.getRotation()));
+    transformDragger->translation.setValue(Base::convertTo<SbVec3f>(placement.getPosition()));
+    transformDragger->rotation.setValue(Base::convertTo<SbRotation>(placement.getRotation()));
 
     draggerPlacement = placement;
-    csysDragger->clearIncrementCounts();
+    transformDragger->clearIncrementCounts();
+}
+
+void ViewProviderDragger::attach(App::DocumentObject* pcObject)
+{
+    ViewProviderDocumentObject::attach(pcObject);
+
+    getAnnotation()->addChild(pcPlacement);
+
+    auto* pcAxisCrossKit = new Gui::SoFCPlacementIndicatorKit();
+
+    auto* pcAnnotation = new So3DAnnotation();
+    pcAnnotation->addChild(pcAxisCrossKit);
+
+    pcPlacement->addChild(pcAnnotation);
 }
 
 void ViewProviderDragger::updateDraggerPosition()
 {
-    if (!csysDragger) {
+    if (!transformDragger) {
         return;
     }
 

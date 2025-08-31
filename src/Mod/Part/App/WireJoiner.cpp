@@ -26,6 +26,7 @@
 #include <boost/graph/graph_concepts.hpp>
 
 #ifndef _PreComp_
+# include <limits>
 # include <BRepLib.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
@@ -59,7 +60,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <deque>
-#include <boost_geometry.hpp>
+#include <boost/geometry.hpp>
 #include <utility>
 
 #include <Base/Console.h>
@@ -101,12 +102,18 @@ static inline void getEndPoints(const TopoDS_Wire &wire, gp_Pnt &p1, gp_Pnt &p2)
     p2 = BRep_Tool::Pnt(TopoDS::Vertex(xp.CurrentVertex()));
 }
 
-// Originally here there was the definition of the precompiler macro assertCheck() and of the method
-// _assertCheck(), that have been replaced with the already defined precompiler macro assert().
-// See
-// https://github.com/realthunder/FreeCAD/blob/6f15849be2505f98927e75d0e8352185e14e7b72/src/Mod/Part/App/WireJoiner.cpp#L107
-// for reference and https://github.com/FreeCAD/FreeCAD/pull/12535/files#r1526647457 for the
-// discussion about replacing it
+/**
+ * @brief Precompiler macro to ensure a condition is true and throw an exception if it fails
+ *
+ * This macro is used to ensure that certain conditions hold true during the execution of the code.
+ * If the condition evaluates to false, it logs an error message with the file name and line number,
+ * and throws an exception unlike the standard assert which terminates the program.
+ */
+#define ENSURE(cond) \
+    do { if (!(cond)) {\
+        FC_ERR("Condition failed: " #cond);\
+        throw Base::RuntimeError("Condition failed: " #cond);\
+    } } while (0)
 
 class WireJoiner::WireJoinerP {
 public:
@@ -225,10 +232,7 @@ public:
             curve = BRep_Tool::Curve(eForInfo, firstParam, lastParam);
             type = GeomAdaptor_Curve(curve).GetType();
 
-            // Originally here there was a call to the precompiler macro assertCheck(), which has
-            // been replaced with the precompiler macro assert()
-
-            assert(!curve.IsNull());
+            ENSURE(!curve.IsNull());
             const double halving {0.5};
             GeomLProp_CLProps prop(curve,(firstParam+lastParam)*halving,0,Precision::Confusion());
             mid = prop.Value();
@@ -291,13 +295,13 @@ public:
         bool contains(const T &vForContains)
         {
             if (!sorted) {
-                const size_t dataSizeMax = 30;
+                constexpr static size_t dataSizeMax = 30;
                 if (data.size() < dataSizeMax) {
-                    return std::find(data.begin(), data.end(), vForContains) != data.end();
+                    return std::ranges::find(data, vForContains) != data.end();
                 }
                 sort();
             }
-            auto it = std::lower_bound(data.begin(), data.end(), vForContains);
+            auto it = std::ranges::lower_bound(data, vForContains);
             return it!=data.end() && *it == vForContains;
         }
         bool intersects(const VectorSet<T> &other)
@@ -330,7 +334,7 @@ public:
         void insert(const T &vToInsert)
         {
             if (sorted) {
-                data.insert(std::upper_bound(data.begin(), data.end(), vToInsert), vToInsert);
+                data.insert(std::ranges::upper_bound(data, vToInsert), vToInsert);
             }
             else {
                 data.push_back(vToInsert);
@@ -339,7 +343,7 @@ public:
         bool insertUnique(const T &vToInsertUnique)
         {
             if (sorted) {
-                auto it = std::lower_bound(data.begin(), data.end(), vToInsertUnique);
+                auto it = std::ranges::lower_bound(data, vToInsertUnique);
                 bool insert = !(it != data.end() && *it == vToInsertUnique);
                 if (insert) {
                     data.insert(it, vToInsertUnique);
@@ -359,7 +363,7 @@ public:
                 data.erase(std::remove(data.begin(), data.end(), vToErase), data.end());
             }
             else {
-                auto it = std::lower_bound(data.begin(), data.end(), vToErase);
+                auto it = std::ranges::lower_bound(data, vToErase);
                 auto itEnd = it;
                 while (itEnd != data.end() && *itEnd == vToErase) {
                     ++itEnd;
@@ -477,10 +481,7 @@ public:
                 return;
             }
 
-            // Originally here there was a call to the precompiler macro assertCheck(), which has
-            // been replaced with the precompiler macro assert()
-
-            assert(sorted.size() < vertices.size());
+            ENSURE(sorted.size() < vertices.size());
             sorted.reserve(vertices.size());
             for (int i = (int)sorted.size(); i < (int)vertices.size(); ++i) {
                 sorted.push_back(i);
@@ -493,15 +494,15 @@ public:
         {
             const size_t verticesSizeMax = 20;
             if (vertices.size() < verticesSizeMax) {
-                auto it = std::find(vertices.begin(), vertices.end(), info);
+                const auto it = std::ranges::find(vertices, info);
                 if (it == vertices.end()) {
                     return 0;
                 }
                 return (static_cast<int>(it - vertices.begin()) + 1);
             }
             sort();
-            auto it = std::lower_bound(sorted.begin(), sorted.end(), info,
-                    [&](int idx, const VertexInfo &vertex) {return vertices[idx]<vertex;});
+            const auto it = std::lower_bound(sorted.begin(), sorted.end(), info,
+                    [&](const int idx, const VertexInfo &vertex) {return vertices[idx]<vertex;});
             int res = 0;
             if (it != sorted.end() && vertices[*it] == info) {
                 res = *it + 1;
@@ -520,7 +521,7 @@ public:
                 return 0;
             }
             sort();
-            auto it = std::lower_bound(sorted.begin(), sorted.end(), info,
+            const auto it = std::lower_bound(sorted.begin(), sorted.end(), info,
                     [&](int idx, const EdgeInfo *vertex) {return vertices[idx].edgeInfo()<vertex;});
             int res = 0;
             if (it != sorted.end() && vertices[*it].edgeInfo() == info) {
@@ -784,11 +785,12 @@ public:
                        const bool isLinear)
     {
         std::unique_ptr<Geometry> geo;
-        for (auto vit = vmap.qbegin(bgi::nearest(p1, INT_MAX)); vit != vmap.qend(); ++vit) {
+        constexpr int max = std::numeric_limits<int>::max();
+        for (auto vit = vmap.qbegin(bgi::nearest(p1, max)); vit != vmap.qend(); ++vit) {
             auto& vinfo = *vit;
             if (canShowShape()) {
 #if OCC_VERSION_HEX < 0x070800
-                FC_MSG("addcheck " << vinfo.edge().HashCode(INT_MAX));
+                FC_MSG("addcheck " << vinfo.edge().HashCode(max));
 #else
                 FC_MSG("addcheck " << std::hash<TopoDS_Edge> {}(vinfo.edge()));
 #endif
@@ -867,10 +869,7 @@ public:
             TopoDS_Vertex vFirst = TopExp::FirstVertex(newEdge);
             TopoDS_Vertex vLast = TopExp::LastVertex(newEdge);
 
-            // Originally here there was a call to the precompiler macro assertCheck(), which has
-            // been replaced with the precompiler macro assert()
-
-            assert(vLast.IsSame(vOther) || vFirst.IsSame(vOther));
+            ENSURE(vLast.IsSame(vOther) || vFirst.IsSame(vOther));
             eCurrent = newEdge;
         };
 
@@ -917,10 +916,7 @@ public:
             const gp_Pnt& pt = idx == 0 ? pstart : pend;
             vmap.query(bgi::nearest(pt, 1), std::back_inserter(ret));
 
-            // Originally here there was a call to the precompiler macro assertCheck(),
-            // which has been replaced with the precompiler macro assert()
-
-            assert(ret.size() == 1);
+            ENSURE(ret.size() == 1);
             double dist = ret[0].pt().SquareDistance(pt);
             if (dist > tol) {
                 break;
@@ -1030,10 +1026,7 @@ public:
         ShapeAnalysis_Wire analysis(wire, face, myTol);
         analysis.CheckSelfIntersectingEdge(1, points2d, points3d);
 
-        // Originally here there was a call to the precompiler macro assertCheck(), which has been
-        // replaced with the precompiler macro assert()
-
-        assert(points2d.Length() == points3d.Length());
+        ENSURE(points2d.Length() == points3d.Length());
         for (int i=1; i<=points2d.Length(); ++i) {
             params.emplace(points2d(i).ParamOnFirst(), points3d(i), info.edge);
             params.emplace(points2d(i).ParamOnSecond(), points3d(i), info.edge);
@@ -1200,10 +1193,7 @@ public:
         ShapeAnalysis_Wire analysis(wire, face, myTol);
         analysis.CheckIntersectingEdges(1, idx, points2d, points3d, errors);
 
-        // Originally here there was a call to the precompiler macro assertCheck(), which has been
-        // replaced with the precompiler macro assert()
-
-        assert(points2d.Length() == points3d.Length());
+        ENSURE(points2d.Length() == points3d.Length());
         for (int i=1; i<=points2d.Length(); ++i) {
             pushIntersection(params1, points2d(i).ParamOnFirst(), points3d(i), other.edge);
             pushIntersection(params2, points2d(i).ParamOnSecond(), points3d(i), info.edge);
@@ -1531,13 +1521,7 @@ public:
         // populate adjacent list
         for (auto& info : edges) {
             if (info.iteration == -2) {
-
-                // Originally there was the following precompiler directive around assertCheck():
-                // #if OCC_VERSION_HEX >= 0x070000
-                // The precompiler directive has been removed as the minimum OCCT version supported
-                // is 7.3.0 and the precompiler macro has been replaced with assert()
-
-                assert(BRep_Tool::IsClosed(info.shape()));
+                ENSURE(BRep_Tool::IsClosed(info.shape()));
 
                 showShape(&info, "closed");
                 if (!doTightBound) {
@@ -1568,7 +1552,8 @@ public:
                 }
                 info.iEnd[ic] = info.iStart[ic] = (int)adjacentList.size();
 
-                for (auto vit = vmap.qbegin(bgi::nearest(pt[ic], INT_MAX)); vit != vmap.qend();
+                constexpr int max = std::numeric_limits<int>::max();
+                for (auto vit = vmap.qbegin(bgi::nearest(pt[ic], max)); vit != vmap.qend();
                      ++vit) {
                     auto& vinfo = *vit;
                     if (vinfo.pt().SquareDistance(pt[ic]) > myTol2) {
@@ -1692,10 +1677,7 @@ public:
 
             if (tightBound) {
 
-                // Originally here there was a call to the precompiler macro assertCheck(), which
-                // has been replaced with the precompiler macro assert()
-
-                assert(!beginInfo.wireInfo);
+                ENSURE(!beginInfo.wireInfo);
                 beginInfo.wireInfo.reset(new WireInfo());
                 beginInfo.wireInfo->vertices.emplace_back(it, true);
                 beginInfo.wireInfo->wire = wire;
@@ -1719,7 +1701,7 @@ public:
     }
 
     // Originally here there was the definition of the method checkStack(), which does nothing and
-    // therefor has been removed. See
+    // therefore has been removed. See
     // https://github.com/realthunder/FreeCAD/blob/6f15849be2505f98927e75d0e8352185e14e7b72/src/Mod/Part/App/WireJoiner.cpp#L1366
     // for reference
 
@@ -1733,10 +1715,7 @@ public:
             if (auto wire = info.wireInfo.get()) {
                 boost::ignore_unused(wire);
 
-                // Originally here there was a call to the precompiler macro assertCheck(), which
-                // has been replaced with the precompiler macro assert()
-
-                assert(wire->vertices.front().edgeInfo()->wireInfo.get() == wire);
+                ENSURE(wire->vertices.front().edgeInfo()->wireInfo.get() == wire);
             }
         }
     }
@@ -1765,7 +1744,7 @@ public:
                 ++stack.back().iEnd;
 
                 // Originally here there was a call to the method checkStack(),
-                // which does nothing and therefor has been removed.
+                // which does nothing and therefore has been removed.
             }
         }
     }
@@ -1954,10 +1933,7 @@ public:
                 showShape(info.shape(vertex.start), vertex.start ? "failed" : "failed_r", iteration);
             }
 
-            // Originally here there was a call to the precompiler macro assertCheck(), which
-            // has been replaced with the precompiler macro assert()
-
-            assert(false);
+            ENSURE(false);
             return false;
         }
         return true;
@@ -1982,7 +1958,7 @@ public:
         auto stackEnd = stack.size();
 
         // Originally here there was a call to the method checkStack(), which does nothing and
-        // therefor has been removed.
+        // therefore has been removed.
 
         // pstart and pend is the start and end vertex of the current wire
         while (true) {
@@ -2001,7 +1977,7 @@ public:
                                         beginInfo);
 
             // Originally here there was a call to the method checkStack(), which does nothing and
-            // therefor has been removed.
+            // therefore has been removed.
 
             if (proceed) {
                 if (_findClosedWiresUpdateEdges(currentVertex,
@@ -2058,11 +2034,7 @@ public:
                 showShape(*wireInfo, "exception", iteration, true);
                 showShape(info, "exception", iteration, true);
 
-                // Originally here there was a call to the precompiler macro
-                // assertCheck(), which has been replaced with the precompiler macro
-                // assert()
-
-                assert(info != &beginInfo);
+                ENSURE(info != &beginInfo);
             }
             if (info->wireInfo == wireInfo) {
                 if (!splitWire) {
@@ -2096,11 +2068,7 @@ public:
             }
             else {
 
-                // Originally here there was a call to the precompiler macro
-                // assertCheck(), which has been replaced with the precompiler
-                // macro assert()
-
-                assert(pt.SquareDistance(vertex.pt()) < myTol2);
+                ENSURE(pt.SquareDistance(vertex.pt()) < myTol2);
             }
             pt = vertex.ptOther();
             splitEdges.push_back(vertex);
@@ -2108,11 +2076,7 @@ public:
         for (int i = stackPos; i >= stackStart; --i) {
             const auto& vertex = vertexStack[stack[i].iCurrent];
 
-            // Originally here there was a call to the precompiler macro
-            // assertCheck(), which has been replaced with the precompiler macro
-            // assert()
-
-            assert(pt.SquareDistance(vertex.ptOther()) < myTol2);
+            ENSURE(pt.SquareDistance(vertex.ptOther()) < myTol2);
             pt = vertex.pt();
             // The edges in the stack are the ones to slice
             // the wire in half. We construct a new wire
@@ -2125,20 +2089,12 @@ public:
         for (int idx = idxV; idx != idxStart; ++idx) {
             auto& vertex = wireVertices[idx];
 
-            // Originally here there was a call to the precompiler macro
-            // assertCheck(), which has been replaced with the precompiler macro
-            // assert()
-
-            assert(pt.SquareDistance(vertex.pt()) < myTol2);
+            ENSURE(pt.SquareDistance(vertex.pt()) < myTol2);
             pt = vertex.ptOther();
             splitEdges.push_back(vertex);
         }
 
-        // Originally here there was a call to the precompiler macro
-        // assertCheck(), which has been replaced with the precompiler macro
-        // assert()
-
-        assert(pt.SquareDistance(pstart) < myTol2);
+        ENSURE(pt.SquareDistance(pstart) < myTol2);
         showShape(*splitWire, "swire", iteration);
     }
 
@@ -2179,7 +2135,7 @@ public:
             vertexStack.push_back(currentVertex);
 
             // Originally here there was a call to the method checkStack(), which does
-            // nothing and therefor has been removed.
+            // nothing and therefore has been removed.
 
             int idxEnd = (int)wireVertices.size();
             int stackStart = (int)stack.size() - 1;
@@ -2231,10 +2187,7 @@ public:
             }
             ++idxV;
 
-            // Originally here there was a call to the precompiler macro assertCheck(),
-            // which has been replaced with the precompiler macro assert()
-
-            assert(idxV <= idxEnd);
+            ENSURE(idxV <= idxEnd);
             int idxStart = idxV;
 
             findTightBoundSplitWire(wireInfo,
@@ -2299,10 +2252,7 @@ public:
                 }
             }
 
-            // Originally here there was a call to the precompiler macro assertCheck(),
-            // which has been replaced with the precompiler macro assert()
-
-            assert(info != &beginInfo);
+            ENSURE(info != &beginInfo);
             info->wireInfo = beginInfo.wireInfo;
             checkWireInfo(*otherWire);
         }
@@ -2378,7 +2328,7 @@ public:
                     edgeSet.insert(wireVertices[idxV].edgeInfo());
 
                     // Originally here there was a call to the method checkStack(), which does
-                    // nothing and therefor has been removed.
+                    // nothing and therefore has been removed.
                 }
 
                 if (!newWire) {
@@ -2422,7 +2372,7 @@ public:
             vertexStack.push_back(currentVertex);
 
             // Originally here there a call to the method checkStack(), which
-            // does nothing and therefor has been removed.
+            // does nothing and therefore has been removed.
 
             TopoDS_Wire wire;
             if (pstart.SquareDistance(currentVertex.ptOther()) > myTol2) {
@@ -2508,7 +2458,7 @@ public:
             edgeSet.insert(wireVertices[idxV].edgeInfo());
 
             // Originally here there a call to the method checkStack(), which does
-            // nothing and therefor has been removed.
+            // nothing and therefore has been removed.
         }
     }
 
@@ -2600,11 +2550,7 @@ public:
                 for (auto& vertex : wireInfo->vertices) {
                     auto edgeInfo = vertex.edgeInfo();
 
-                    // Originally here there was a call to the precompiler macro
-                    // assertCheck(), which has been replaced with the precompiler macro
-                    // assert()
-
-                    assert(edgeInfo->wireInfo != nullptr);
+                    ENSURE(edgeInfo->wireInfo != nullptr);
                     if (edgeInfo->wireInfo->isSame(*wireInfo)) {
                         wireInfo = edgeInfo->wireInfo;
                         break;
@@ -2617,12 +2563,8 @@ public:
                     }
                 }
 
-                // Originally here there were two calls to the precompiler macro
-                // assertCheck(), which have been replaced with the precompiler macro
-                // assert()
-
-                assert(info.wireInfo2 == wireInfo);
-                assert(info.wireInfo2 != info.wireInfo);
+                ENSURE(info.wireInfo2 == wireInfo);
+                ENSURE(info.wireInfo2 != info.wireInfo);
                 showShape(*wireInfo, "exhaust");
                 break;
             }
@@ -2639,10 +2581,7 @@ public:
 
         int idx = info.wireInfo->find(&info);
 
-        // Originally here there was a call to the precompiler macro assertCheck(), which has
-        // been replaced with the precompiler macro assert()
-
-        assert(idx > 0);
+        ENSURE(idx > 0);
         const auto& vertices = info.wireInfo->vertices;
         --idx;
         int nextIdx = idx == (int)vertices.size() - 1 ? 0 : idx + 1;
@@ -2717,7 +2656,8 @@ public:
         FC_MSG("init:");
         for (const auto& shape : sourceEdges) {
 #if OCC_VERSION_HEX < 0x070800
-            FC_MSG(shape.getShape().TShape().get() << ", " << shape.getShape().HashCode(INT_MAX));
+            constexpr int max = std::numeric_limits<int>::max();
+            FC_MSG(shape.getShape().TShape().get() << ", " << shape.getShape().HashCode(max));
 #else
             FC_MSG(shape.getShape().TShape().get()
                    << ", " << std::hash<TopoDS_Shape> {}(shape.getShape()));
@@ -2736,7 +2676,8 @@ public:
         for (int i = 1; i <= wireData->NbEdges(); ++i) {
             auto shape = wireData->Edge(i);
 #if OCC_VERSION_HEX < 0x070800
-            FC_MSG(shape.TShape().get() << ", " << shape.HashCode(INT_MAX));
+            constexpr int max = std::numeric_limits<int>::max();
+            FC_MSG(shape.TShape().get() << ", " << shape.HashCode(max));
 #else
             FC_MSG(shape.TShape().get() << ", " << std::hash<TopoDS_Edge> {}(shape));
 #endif
@@ -2800,9 +2741,10 @@ public:
         for (TopTools_ListIteratorOfListOfShape it(hist->Modified(shape.getShape())); it.More();
              it.Next()) {
 #if OCC_VERSION_HEX < 0x070800
-            FC_MSG(shape.getShape().TShape().get()
-                   << ", " << shape.getShape().HashCode(INT_MAX) << " -> "
-                   << it.Value().TShape().get() << ", " << it.Value().HashCode(INT_MAX));
+                constexpr int max = std::numeric_limits<int>::max();
+                FC_MSG(shape.getShape().TShape().get()
+                   << ", " << shape.getShape().HashCode(max) << " -> "
+                   << it.Value().TShape().get() << ", " << it.Value().HashCode(max));
 #else
             FC_MSG(shape.getShape().TShape().get()
                    << ", " << std::hash<TopoDS_Shape> {}(shape.getShape()) << " -> "

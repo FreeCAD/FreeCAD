@@ -1,34 +1,37 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """The BIM Classification command"""
 
+import os
 
 import FreeCAD
 import FreeCADGui
-import os
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
@@ -38,11 +41,11 @@ class BIM_Classification:
         return {
             "Pixmap": "BIM_Classification",
             "MenuText": QT_TRANSLATE_NOOP(
-                "BIM_Classification", "Manage classification..."
+                "BIM_Classification", "Manage Classification"
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Classification",
-                "Manage how the different materials of this documents use classification systems",
+                "Manages classification systems and apply classification to objects",
             ),
         }
 
@@ -71,6 +74,7 @@ class BIM_Classification:
 
         # restore saved values
         self.form.onlyVisible.setChecked(PARAMS.GetInt("BimClassificationVisibleState", 0))
+        self.form.checkPrefix.setChecked(PARAMS.GetInt("BimClassificationSystemNamePrefix", 1))
         w = PARAMS.GetInt("BimClassificationDialogWidth", 629)
         h = PARAMS.GetInt("BimClassificationDialogHeight", 516)
         self.form.resize(w, h)
@@ -156,8 +160,12 @@ class BIM_Classification:
         self.form.treeClass.itemDoubleClicked.connect(self.apply)
         self.form.search.up.connect(self.onUpArrow)
         self.form.search.down.connect(self.onDownArrow)
-        self.form.onlyVisible.stateChanged.connect(self.onVisible)
-
+        if hasattr(self.form.onlyVisible, "checkStateChanged"): # Qt version >= 6.7.0
+            self.form.onlyVisible.checkStateChanged.connect(self.onVisible)
+            self.form.checkPrefix.checkStateChanged.connect(self.onPrefix)
+        else: # Qt version < 6.7.0
+            self.form.onlyVisible.stateChanged.connect(self.onVisible)
+            self.form.checkPrefix.stateChanged.connect(self.onPrefix)
         # center the dialog over FreeCAD window
         mw = FreeCADGui.getMainWindow()
         self.form.move(
@@ -306,7 +314,7 @@ class BIM_Classification:
         # self.spanTopLevels()
 
     def updateByTree(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         # order by hierarchy
         def istop(obj):
@@ -368,8 +376,8 @@ class BIM_Classification:
         self.form.treeObjects.expandAll()
 
     def updateDefault(self):
+        from PySide import QtGui
         import Draft
-        from PySide import QtCore, QtGui
 
         d = self.objectslist.copy()
         d.update(self.matlist)
@@ -389,7 +397,7 @@ class BIM_Classification:
                         self.form.treeObjects.setCurrentItem(it)
 
     def updateClasses(self, search=""):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         self.form.treeClass.clear()
 
@@ -436,7 +444,7 @@ class BIM_Classification:
                 first = False
 
     def addChildren(self, children, parent, search=""):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         if children:
             for c in children:
@@ -526,7 +534,8 @@ class BIM_Classification:
         )
         if not os.path.exists(preset):
             return None
-        import codecs, re
+        import codecs
+        import re
 
         d = Item()
         with codecs.open(preset, "r", "utf-8") as f:
@@ -601,7 +610,7 @@ class BIM_Classification:
                                     obj.StandardCode = code
                             elif hasattr(obj, "IfcClass"):
                                 if not "Classification" in obj.PropertiesList:
-                                    obj.addProperty("App::PropertyString", "Classification", "IFC")
+                                    obj.addProperty("App::PropertyString", "Classification", "IFC", locked=True)
                                 if code != obj.Classification:
                                     if not changed:
                                         FreeCAD.ActiveDocument.openTransaction(
@@ -620,6 +629,12 @@ class BIM_Classification:
                 FreeCAD.ActiveDocument.commitTransaction()
                 FreeCAD.ActiveDocument.recompute()
         else:
+            # Close the form if user has pressed Enter and did not
+            # select anything
+            if len(self.form.treeClass.selectedItems()) < 1:
+                self.form.close()
+                return
+
             code = self.form.treeClass.selectedItems()[0].text(0)
             pl = self.isEditing.PropertiesList
             if ("StandardCode" in pl) or ("IfcClass" in pl):
@@ -630,7 +645,7 @@ class BIM_Classification:
                     self.isEditing.StandardCode = code
                 else:
                     if not "Classification" in self.isEditing.PropertiesList:
-                        self.isEditing.addProperty("App::PropertyString", "Classification", "IFC")
+                        self.isEditing.addProperty("App::PropertyString", "Classification", "IFC", locked=True)
                     self.isEditing.Classification = code
                 if hasattr(self.isEditing.ViewObject, "Proxy") and hasattr(
                     self.isEditing.ViewObject.Proxy, "setTaskValue"
@@ -657,13 +672,16 @@ class BIM_Classification:
                 self.form.treeClass.setCurrentItem(self.form.treeClass.itemBelow(i))
 
     def onVisible(self, index):
-        PARAMS.SetInt("BimClassificationVisibleState", index)
+        PARAMS.SetInt("BimClassificationVisibleState", getattr(index, "value", index))
         self.updateObjects()
+
+    def onPrefix(self, index):
+        PARAMS.SetInt("BimClassificationSystemNamePrefix", getattr(index, "value", index))
 
     def getIcon(self,obj):
         """returns a QIcon for an object"""
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
         import Arch_rc
 
         if hasattr(obj.ViewObject, "Icon"):

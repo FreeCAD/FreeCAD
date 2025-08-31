@@ -37,6 +37,7 @@ PROPERTY_SOURCE(Gui::ViewProviderVarSet, Gui::ViewProviderDocumentObject)
 
 ViewProviderVarSet::ViewProviderVarSet()
 {
+    setToggleVisibility(ToggleVisibilityMode::NoToggleVisibility);
     sPixmap = "VarSet";
 }
 

@@ -57,7 +57,7 @@ public:
         if (pObj != this->object) {
             return false;
         }
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
         if (disabled) {
@@ -110,6 +110,9 @@ public:
     void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
+
+        using std::numbers::pi;
+
         if (Mode == STATUS_SEEK_Second) {
             const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(BaseGeoId);
             if (geom->is<Part::GeomLineSegment>()) {
@@ -142,7 +145,7 @@ public:
                  */
                 bool inCurve = (projection.Length() < recenteredLine.Length()
                                 && projection.GetAngle(recenteredLine)
-                                    < 0.1);  // Two possible values here, M_PI and 0, but 0.1 is to
+                                    < 0.1);  // Two possible values here, pi and 0, but 0.1 is to
                                              // avoid floating point problems.
                 if (inCurve) {
                     Increment = SavedExtendFromStart
@@ -185,8 +188,8 @@ public:
                     bool isCCWFromStart = crossProduct(angle, startAngle) < 0;
                     if (outOfArc) {
                         if (isCCWFromStart) {
-                            modStartAngle -= 2 * M_PI - angleToStartAngle;
-                            modArcAngle += 2 * M_PI - angleToStartAngle;
+                            modStartAngle -= 2 * pi - angleToStartAngle;
+                            modArcAngle += 2 * pi - angleToStartAngle;
                         }
                         else {
                             modStartAngle -= angleToStartAngle;
@@ -199,8 +202,8 @@ public:
                             modArcAngle -= angleToStartAngle;
                         }
                         else {
-                            modStartAngle += 2 * M_PI - angleToStartAngle;
-                            modArcAngle -= 2 * M_PI - angleToStartAngle;
+                            modStartAngle += 2 * pi - angleToStartAngle;
+                            modArcAngle -= 2 * pi - angleToStartAngle;
                         }
                     }
                 }
@@ -208,7 +211,7 @@ public:
                     bool isCWFromEnd = crossProduct(angle, endAngle) >= 0;
                     if (outOfArc) {
                         if (isCWFromEnd) {
-                            modArcAngle += 2 * M_PI - angleToEndAngle;
+                            modArcAngle += 2 * pi - angleToEndAngle;
                         }
                         else {
                             modArcAngle += angleToEndAngle;
@@ -219,7 +222,7 @@ public:
                             modArcAngle -= angleToEndAngle;
                         }
                         else {
-                            modArcAngle -= 2 * M_PI - angleToEndAngle;
+                            modArcAngle -= 2 * pi - angleToEndAngle;
                         }
                     }
                 }
@@ -341,6 +344,8 @@ public:
             sketchgui
                 ->purgeHandler();  // no code after this line, Handler get deleted in ViewProvider
         }
+
+        updateHint();
         return true;
     }
 
@@ -355,7 +360,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Extension");
+        return QStringLiteral("Sketcher_Pointer_Extension");
     }
 
 protected:
@@ -368,6 +373,27 @@ protected:
     double Increment;
     std::vector<AutoConstraint> SugConstr;
 
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using enum Gui::InputHint::UserInput;
+
+        return Gui::lookupHints<SelectMode>(
+            Mode,
+            {
+                {.state = STATUS_SEEK_First,
+                 .hints =
+                     {
+                         {tr("%1 pick edge to extend", "Sketcher Extend: hint"), {MouseLeft}},
+                     }},
+                {.state = STATUS_SEEK_Second,
+                 .hints =
+                     {
+                         {tr("%1 set extension length", "Sketcher Extend: hint"), {MouseLeft}},
+                     }},
+            });
+    }
+
 private:
     int crossProduct(Base::Vector2d& vec1, Base::Vector2d& vec2)
     {
@@ -375,8 +401,6 @@ private:
     }
 };
 
-
 }  // namespace SketcherGui
-
 
 #endif  // SKETCHERGUI_DrawSketchHandlerExtend_H

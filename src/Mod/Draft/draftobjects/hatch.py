@@ -30,6 +30,7 @@ import FreeCAD as App
 from draftgeoutils.general import geomType
 from draftobjects.base import DraftObject
 from draftutils import gui_utils
+from draftutils.messages import _err
 from draftutils.translate import translate
 
 
@@ -39,6 +40,7 @@ class Hatch(DraftObject):
     def __init__(self,obj):
 
         obj.Proxy = self
+        self.Type = "Hatch"
         self.setProperties(obj)
 
     def setProperties(self,obj):
@@ -46,24 +48,23 @@ class Hatch(DraftObject):
         pl = obj.PropertiesList
         if not "Base" in pl:
             obj.addProperty("App::PropertyLink","Base","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","The base object used by this object"))
+                            QT_TRANSLATE_NOOP("App::Property","The base object used by this object"), locked=True)
         if not "File" in pl:
             obj.addProperty("App::PropertyFile","File","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","The PAT file used by this object"))
+                            QT_TRANSLATE_NOOP("App::Property","The PAT file used by this object"), locked=True)
         if not "Pattern" in pl:
             obj.addProperty("App::PropertyString","Pattern","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","The pattern name used by this object"))
+                            QT_TRANSLATE_NOOP("App::Property","The pattern name used by this object"), locked=True)
         if not "Scale" in pl:
             obj.addProperty("App::PropertyFloat","Scale","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","The pattern scale used by this object"))
+                            QT_TRANSLATE_NOOP("App::Property","The pattern scale used by this object"), locked=True)
         if not "Rotation" in pl:
             obj.addProperty("App::PropertyAngle","Rotation","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","The pattern rotation used by this object"))
+                            QT_TRANSLATE_NOOP("App::Property","The pattern rotation used by this object"), locked=True)
         if not "Translate" in pl:
             obj.addProperty("App::PropertyBool","Translate","Hatch",
-                            QT_TRANSLATE_NOOP("App::Property","If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)"))
+                            QT_TRANSLATE_NOOP("App::Property","If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)"), locked=True)
             obj.Translate = True
-        self.Type = "Hatch"
 
     def onDocumentRestored(self,obj):
         self.setProperties(obj)
@@ -73,12 +74,10 @@ class Hatch(DraftObject):
         )
 
     def dumps(self):
+        return
 
-        return None
-
-    def loads(self,state):
-
-        return None
+    def loads(self, state):
+        self.Type = "Hatch"
 
     def execute(self,obj):
 
@@ -87,9 +86,34 @@ class Hatch(DraftObject):
                 or not obj.File \
                 or not obj.Pattern \
                 or not obj.Scale \
-                or not obj.Pattern in self.getPatterns(obj.File) \
                 or not obj.Base.isDerivedFrom("Part::Feature") \
                 or not obj.Base.Shape.Faces:
+            self.props_changed_clear()
+            return
+
+        if obj.File[0] == ".":
+            # File path relative to the FreeCAD file directory.
+            pat_file = os.path.join(os.path.dirname(obj.Document.FileName), obj.File)
+            # We need the absolute path to do some file checks.
+            pat_file = os.path.abspath(pat_file)
+        else:
+            pat_file = obj.File
+
+        # File checks:
+        if not os.path.exists(pat_file):
+            _err(obj.Label + ": " + translate("draft", "PAT file not found"))
+            self.props_changed_clear()
+            return
+        if not os.path.isfile(pat_file):
+            _err(obj.Label + ": " + translate("draft", "Specified PAT file is not a file"))
+            self.props_changed_clear()
+            return
+        if os.path.splitext(pat_file)[1].lower() != ".pat":
+            _err(obj.Label + ": " + translate("draft", "Specified file type is not supported"))
+            self.props_changed_clear()
+            return
+        if not obj.Pattern in self.getPatterns(pat_file):
+            _err(obj.Label + ": " + translate("draft", "Pattern not found in PAT file"))
             self.props_changed_clear()
             return
 
@@ -136,7 +160,7 @@ class Hatch(DraftObject):
                 if obj.Rotation.Value:
                     face.rotate(App.Vector(), App.Vector(0, 0, 1), -obj.Rotation)
 
-                shape = TechDraw.makeGeomHatch(face, obj.Scale, obj.Pattern, obj.File)
+                shape = TechDraw.makeGeomHatch(face, obj.Scale, obj.Pattern, pat_file)
 
                 if obj.Rotation.Value:
                     shape.rotate(App.Vector(), App.Vector(0, 0, 1), obj.Rotation)

@@ -24,14 +24,17 @@
 #ifndef PARTDESIGN_FeatureAdditive_H
 #define PARTDESIGN_FeatureAdditive_H
 
-#include "Feature.h"
+#include "FeatureRefine.h"
+
+#include <QtCore>
 
 /// Base class of all additive features in PartDesign
 namespace PartDesign
 {
 
-class PartDesignExport FeatureAddSub : public PartDesign::Feature
+class PartDesignExport FeatureAddSub : public PartDesign::FeatureRefine
 {
+    Q_DECLARE_TR_FUNCTIONS(PartDesign::FeatureAddSub)
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::FeatureAddSub);
 
 public:
@@ -40,31 +43,22 @@ public:
         Subtractive
     };
 
-    enum class RefineErrorPolicy {
-        Raise = 0,
-        Warn
-    };
-
     FeatureAddSub();
 
+    void onChanged(const App::Property *) override;
     Type getAddSubType();
 
     short mustExecute() const override;
 
     virtual void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape);
 
+    void updatePreviewShape() override;
+
     Part::PropertyPartShape   AddSubShape;
-    App::PropertyBool Refine;
 
 
 protected:
     Type addSubType{Additive};
-
-    //store the shape before refinement
-    TopoShape rawShape;
-
-    bool onlyHasToRefine() const;
-    TopoShape refineShapeIfActive(const TopoShape& oldShape, const RefineErrorPolicy onError = RefineErrorPolicy::Raise) const;
 };
 
 using FeatureAddSubPython = App::FeaturePythonT<FeatureAddSub>;

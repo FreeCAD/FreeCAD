@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cfloat>
+#include <limits>
 #include <sstream>
 
 #include <BRepBuilderAPI_MakePolygon.hxx>
@@ -179,9 +179,10 @@ CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::Wi
     ui->setupUi(this);
     setupConnections();
 
-    ui->position->setRange(-DBL_MAX, DBL_MAX);
+    constexpr double max = std::numeric_limits<double>::max();
+    ui->position->setRange(-max, max);
     ui->position->setUnit(Base::Unit::Length);
-    ui->distance->setRange(0, DBL_MAX);
+    ui->distance->setRange(0, max);
     ui->distance->setUnit(Base::Unit::Length);
     ui->spinEpsilon->setMinimum(0.0001);
     vp = new ViewProviderCrossSections();
@@ -327,8 +328,7 @@ void CrossSections::apply()
         App::Document* doc = it->getDocument();
         std::string s = it->getNameInDocument();
         s += "_cs";
-        Part::Feature* section =
-            static_cast<Part::Feature*>(doc->addObject("Part::Feature", s.c_str()));
+        Part::Feature* section = doc->addObject<Part::Feature>(s.c_str());
         section->Shape.setValue(comp);
         section->purgeTouched();
     }
@@ -355,7 +355,7 @@ void CrossSections::apply()
             s += "_cs";
             Gui::Command::runCommand(
                 Gui::Command::App,
-                QString::fromLatin1(
+                QStringLiteral(
                     "points=FreeCAD.getDocument(\"%1\").%2.Mesh.crossSections(%3, %4, %5)\n"
                     "wires=[]\n"
                     "for i in points:\n"
@@ -369,7 +369,7 @@ void CrossSections::apply()
 
             Gui::Command::runCommand(
                 Gui::Command::App,
-                QString::fromLatin1(
+                QStringLiteral(
                     "comp=Part.Compound(wires)\n"
                     "slice=FreeCAD.getDocument(\"%1\").addObject(\"Part::Feature\",\"%2\")\n"
                     "slice.Shape=comp\n"

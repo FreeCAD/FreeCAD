@@ -112,7 +112,7 @@ void ViewProviderCurveNet::updateData(const App::Property* prop)
             computeVertices(VertexRoot,cShape);
         }
         catch (...){
-            Base::Console().Error("ViewProviderPart::create() Cannot compute Inventor representation for the actual shape");
+            Base::Console().error("ViewProviderPart::create() Cannot compute Inventor representation for the actual shape");
         }
     }
 }
@@ -183,7 +183,7 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
         switch (button) {
             case SoMouseButtonEvent::BUTTON1:
                 if (press) {
-                    Base::Console().Log("ViewProviderCurveNet::handleEvent() press left\n");
+                    Base::Console().log("ViewProviderCurveNet::handleEvent() press left\n");
 
                     bool bIsNode =  false;
                     for (const auto & It : NodeList)
@@ -207,7 +207,7 @@ bool ViewProviderCurveNet::handleEvent(const SoEvent * const ev, Gui::View3DInve
                     else if(Viewer.pickPoint(pos,point,norm))
                     {
                         Node n;
-                        Base::Console().Log("Picked(%f,%f,%f)\n",point[0],point[1],point[2]);
+                        Base::Console().log("Picked(%f,%f,%f)\n",point[0],point[1],point[2]);
 
                         SoSeparator *TransRoot = new SoSeparator();
                         n.pcTransform          = new SoTransform();

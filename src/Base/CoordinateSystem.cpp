@@ -26,6 +26,8 @@
 #include "CoordinateSystem.h"
 #include "Exception.h"
 #include "Matrix.h"
+#include "Placement.h"
+#include "Rotation.h"
 
 
 using namespace Base;
@@ -43,7 +45,7 @@ void CoordinateSystem::setAxes(const Axis& vec, const Vector3d& xd)
     }
     Vector3d yd = vec.getDirection() % xd;
     if (yd.Sqr() < Base::Vector3d::epsilon()) {
-        throw Base::ValueError("Direction is parallel to Z direction");
+        throw Base::ValueError("Direction is parallel to Z-direction");
     }
     ydir = yd;
     ydir.Normalize();
@@ -62,7 +64,7 @@ void CoordinateSystem::setAxes(const Vector3d& n, const Vector3d& xd)
     }
     Vector3d yd = n % xd;
     if (yd.Sqr() < Base::Vector3d::epsilon()) {
-        throw Base::ValueError("Direction is parallel to Z direction");
+        throw Base::ValueError("Direction is parallel to Z-direction");
     }
     ydir = yd;
     ydir.Normalize();
@@ -82,7 +84,7 @@ void CoordinateSystem::setXDirection(const Vector3d& dir)
 {
     Vector3d yd = axis.getDirection() % dir;
     if (yd.Sqr() < Base::Vector3d::epsilon()) {
-        throw Base::ValueError("Direction is parallel to Z direction");
+        throw Base::ValueError("Direction is parallel to Z-direction");
     }
     ydir = yd;
     ydir.Normalize();
@@ -94,7 +96,7 @@ void CoordinateSystem::setYDirection(const Vector3d& dir)
 {
     Vector3d xd = dir % axis.getDirection();
     if (xd.Sqr() < Base::Vector3d::epsilon()) {
-        throw Base::ValueError("Direction is parallel to Z direction");
+        throw Base::ValueError("Direction is parallel to Z-direction");
     }
     xdir = xd;
     xdir.Normalize();

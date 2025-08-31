@@ -1,37 +1,36 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2024 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """Misc Arch util commands"""
 
-
-import os
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
-
-
 
 
 class Arch_Add:
@@ -39,7 +38,7 @@ class Arch_Add:
 
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Add',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Add","Add component"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Add","Add Component"),
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Add","Adds the selected components to the active object")}
 
     def IsActive(self):
@@ -79,8 +78,8 @@ class Arch_Remove:
 
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Remove',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Remove","Remove component"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Remove","Remove the selected components from their parents, or create a hole in a component")}
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Remove","Remove Component"),
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Remove","Removes the selected components from their parents, or creates a hole in a component")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -150,7 +149,7 @@ class Arch_MeshToShape:
     def GetResources(self):
         return {'Pixmap'  : 'Arch_MeshToShape',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_MeshToShape","Mesh to Shape"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_MeshToShape","Turns selected meshes into Part Shape objects")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_MeshToShape","Turns selected meshes into Part shape objects")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -175,7 +174,7 @@ class Arch_MeshToShape:
             tol = params.get_param_arch("ConversionTolerance")
             flat = params.get_param_arch("ConversionFlat")
             cut = params.get_param_arch("ConversionCut")
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Mesh to Shape"))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Mesh to shape"))
             for obj in FreeCADGui.Selection.getSelection():
                 newobj = Arch.meshToShape(obj,True,fast,tol,flat,cut)
                 if g and newobj:
@@ -187,7 +186,7 @@ class Arch_SelectNonSolidMeshes:
 
     def GetResources(self):
         return {'Pixmap': 'Arch_SelectNonManifold.svg',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Select non-manifold meshes"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Select Non-Manifold Meshes"),
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Selects all non-manifold meshes from the document or from the selected groups")}
 
     def IsActive(self):
@@ -217,7 +216,7 @@ class Arch_RemoveShape:
     "the Arch RemoveShape command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_RemoveShape',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_RemoveShape","Remove Shape from BIM"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_RemoveShape","Remove Shape From BIM"),
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_RemoveShape","Removes cubic shapes from BIM components")}
 
     def IsActive(self):
@@ -235,8 +234,8 @@ class Arch_CloseHoles:
 
     def GetResources(self):
         return {'Pixmap'  : 'Arch_CloseHoles',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_CloseHoles","Close holes"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_CloseHoles","Closes holes in open shapes, turning them solids")}
+                'MenuText': QT_TRANSLATE_NOOP("Arch_CloseHoles","Close Holes"),
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_CloseHoles","Closes holes in open shapes, turning them into solids")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -265,7 +264,7 @@ class Arch_Check:
         import Arch
         result = Arch.check(FreeCADGui.Selection.getSelection())
         if not result:
-            FreeCAD.Console.PrintMessage(str(translate("Arch","All good! No problems found")))
+            FreeCAD.Console.PrintMessage(str(translate("Arch","No problems found!")))
         else:
             FreeCADGui.Selection.clearSelection()
             for i in result:
@@ -295,8 +294,8 @@ class Arch_ToggleIfcBrepFlag:
 
     def GetResources(self):
         return {'Pixmap'  : 'Arch_ToggleIfcBrepFlag',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Toggle IFC B-rep flag"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Force an object to be exported as B-rep or not")}
+                'MenuText': QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Toggle IFC B-Rep Flag"),
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Forces an object to be exported as B-rep or not")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -340,7 +339,7 @@ class Arch_CloneComponent:
 
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Component_Clone',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_CloneComponent","Clone component"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_CloneComponent","Clone Component"),
                 'Accel': "C, C",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_CloneComponent","Clones an object as an undefined architectural component")}
 
@@ -367,9 +366,9 @@ class Arch_IfcSpreadsheet:
 
     def GetResources(self):
         return {'Pixmap': 'Arch_Schedule',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_IfcSpreadsheet","Create IFC spreadsheet..."),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_IfcSpreadsheet","New IFC Spreadsheet"),
                 'Accel': "I, P",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_IfcSpreadsheet","Creates a spreadsheet to store IFC properties of an object.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_IfcSpreadsheet","Creates a spreadsheet to store IFC properties of an object")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -395,7 +394,7 @@ class Arch_ToggleSubs:
     def GetResources(self):
         return {'Pixmap'  : 'Arch_ToggleSubs',
                 'Accel'   : 'Ctrl+Space',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_ToggleSubs","Toggle subcomponents"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_ToggleSubs","Toggle Subcomponents"),
                 'ToolTip' : QT_TRANSLATE_NOOP("Arch_ToggleSubs","Shows or hides the subcomponents of this object")}
 
     def IsActive(self):
@@ -472,14 +471,14 @@ class Arch_MergeWalls:
                     FreeCAD.ActiveDocument.commitTransaction()
                     return
                 else:
-                    FreeCAD.Console.PrintWarning(translate("Arch","The selected wall contains no subwall to merge"))
+                    FreeCAD.Console.PrintWarning(translate("Arch","The selected wall contains no subwalls to merge"))
                     return
             else:
-                FreeCAD.Console.PrintWarning(translate("Arch","Please select only wall objects"))
+                FreeCAD.Console.PrintWarning(translate("Arch","Select only wall objects"))
                 return
         for w in walls:
             if Draft.getType(w) != "Wall":
-                FreeCAD.Console.PrintMessage(translate("Arch","Please select only wall objects"))
+                FreeCAD.Console.PrintMessage(translate("Arch","Select only wall objects"))
                 return
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Merge Walls"))
         FreeCADGui.addModule("Arch")

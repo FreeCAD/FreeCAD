@@ -246,7 +246,7 @@ bool MeshInput::LoadAny(const char* FileName)
     else if (fi.hasExtension("iv")) {
         ok = LoadInventor(str);
         if (ok && _rclMesh.CountFacets() == 0) {
-            Base::Console().Warning("No usable mesh found in file '%s'", FileName);
+            Base::Console().warning("No usable mesh found in file '%s'", FileName);
         }
     }
     else if (fi.hasExtension({"nas", "bdf"})) {
@@ -481,7 +481,7 @@ bool MeshInput::LoadOFF(std::istream& input)
     boost::cmatch what;
 
     bool colorPerVertex = false;
-    std::vector<App::Color> diffuseColor;
+    std::vector<Base::Color> diffuseColor;
     MeshPointArray meshPoints;
     MeshFacetArray meshFacets;
 
@@ -867,29 +867,29 @@ void MeshInput::LoadXML(Base::XMLReader& reader)
     //  reader.readElement("Mesh");
 
     reader.readElement("Points");
-    int Cnt = reader.getAttributeAsInteger("Count");
+    int Cnt = reader.getAttribute<long>("Count");
 
     cPoints.resize(Cnt);
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("P");
-        cPoints[i].x = (float)reader.getAttributeAsFloat("x");
-        cPoints[i].y = (float)reader.getAttributeAsFloat("y");
-        cPoints[i].z = (float)reader.getAttributeAsFloat("z");
+        cPoints[i].x = (float)reader.getAttribute<double>("x");
+        cPoints[i].y = (float)reader.getAttribute<double>("y");
+        cPoints[i].z = (float)reader.getAttribute<double>("z");
     }
     reader.readEndElement("Points");
 
     reader.readElement("Faces");
-    Cnt = reader.getAttributeAsInteger("Count");
+    Cnt = reader.getAttribute<long>("Count");
 
     cFacets.resize(Cnt);
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("F");
-        cFacets[i]._aulPoints[0] = reader.getAttributeAsInteger("p0");
-        cFacets[i]._aulPoints[1] = reader.getAttributeAsInteger("p1");
-        cFacets[i]._aulPoints[2] = reader.getAttributeAsInteger("p2");
-        cFacets[i]._aulNeighbours[0] = reader.getAttributeAsInteger("n0");
-        cFacets[i]._aulNeighbours[1] = reader.getAttributeAsInteger("n1");
-        cFacets[i]._aulNeighbours[2] = reader.getAttributeAsInteger("n2");
+        cFacets[i]._aulPoints[0] = reader.getAttribute<long>("p0");
+        cFacets[i]._aulPoints[1] = reader.getAttribute<long>("p1");
+        cFacets[i]._aulPoints[2] = reader.getAttribute<long>("p2");
+        cFacets[i]._aulNeighbours[0] = reader.getAttribute<long>("n0");
+        cFacets[i]._aulNeighbours[1] = reader.getAttribute<long>("n1");
+        cFacets[i]._aulNeighbours[2] = reader.getAttribute<long>("n2");
     }
 
     reader.readEndElement("Faces");
@@ -1151,14 +1151,14 @@ bool MeshInput::LoadNastran(std::istream& input)
     }
 
     if (badElementCounter > 0) {
-        Base::Console().Warning("Found bad elements while reading NASTRAN file.\n");
+        Base::Console().warning("Found bad elements while reading NASTRAN file.\n");
     }
 
     // Check the triangles to make sure the vertices they refer to actually exist:
     for (const auto& tri : mTria) {
         for (int i : tri.second.iV) {
             if (mNode.find(i) == mNode.end()) {
-                Base::Console().Error(
+                Base::Console().error(
                     "CTRIA3 element refers to a node that does not exist, or could not be read.\n");
                 return false;
             }
@@ -1169,7 +1169,7 @@ bool MeshInput::LoadNastran(std::istream& input)
     for (const auto& quad : mQuad) {
         for (int i : quad.second.iV) {
             if (mNode.find(i) == mNode.end()) {
-                Base::Console().Error(
+                Base::Console().error(
                     "CQUAD4 element refers to a node that does not exist, or could not be read.\n");
                 return false;
             }
@@ -1808,7 +1808,7 @@ bool MeshOutput::SaveAsymptote(std::ostream& out) const
     bool saveFaceColor = (_material && _material->binding == MeshIO::PER_FACE
                           && _material->diffuseColor.size() == rFacets.size());
     // global mesh color
-    App::Color mc(0.8F, 0.8F, 0.8F);
+    Base::Color mc(0.8F, 0.8F, 0.8F);
     if (_material && _material->binding == MeshIO::OVERALL && _material->diffuseColor.size() == 1) {
         mc = _material->diffuseColor[0];
     }
@@ -1831,7 +1831,7 @@ bool MeshOutput::SaveAsymptote(std::ostream& out) const
             const MeshFacet& face = rFacets[index];
             out << ",\n             new pen[] {";
             for (int i = 0; i < 3; i++) {
-                const App::Color& c = _material->diffuseColor[face._aulPoints[i]];
+                const Base::Color& c = _material->diffuseColor[face._aulPoints[i]];
                 out << "rgb(" << c.r << ", " << c.g << ", " << c.b << ")";
                 if (i < 2) {
                     out << ", ";
@@ -1840,7 +1840,7 @@ bool MeshOutput::SaveAsymptote(std::ostream& out) const
             out << "}));\n";
         }
         else if (saveFaceColor) {
-            const App::Color& c = _material->diffuseColor[index];
+            const Base::Color& c = _material->diffuseColor[index];
             out << "),\n     rgb(" << c.r << ", " << c.g << ", " << c.b << "));\n";
         }
         else {
@@ -1869,12 +1869,12 @@ bool MeshOutput::SaveOFF(std::ostream& out) const
     bool exportColor = false;
     if (_material) {
         if (_material->binding == MeshIO::PER_FACE) {
-            Base::Console().Warning(
+            Base::Console().warning(
                 "Cannot export color information because it's defined per face");
         }
         else if (_material->binding == MeshIO::PER_VERTEX) {
             if (_material->diffuseColor.size() != rPoints.size()) {
-                Base::Console().Warning("Cannot export color information because there is a "
+                Base::Console().warning("Cannot export color information because there is a "
                                         "different number of points and colors");
             }
             else {
@@ -1883,7 +1883,7 @@ bool MeshOutput::SaveOFF(std::ostream& out) const
         }
         else if (_material->binding == MeshIO::OVERALL) {
             if (_material->diffuseColor.empty()) {
-                Base::Console().Warning(
+                Base::Console().warning(
                     "Cannot export color information because there is no color defined");
             }
             else {
@@ -1912,7 +1912,7 @@ bool MeshOutput::SaveOFF(std::ostream& out) const
         }
 
         if (exportColor) {
-            App::Color c;
+            Base::Color c;
             if (_material->binding == MeshIO::PER_VERTEX) {
                 c = _material->diffuseColor[index];
             }
@@ -1984,7 +1984,7 @@ bool MeshOutput::SaveBinaryPLY(std::ostream& out) const
             os << p.x << p.y << p.z;
         }
         if (saveVertexColor) {
-            const App::Color& c = _material->diffuseColor[i];
+            const Base::Color& c = _material->diffuseColor[i];
             uint8_t r = uint8_t(255.0F * c.r);
             uint8_t g = uint8_t(255.0F * c.g);
             uint8_t b = uint8_t(255.0F * c.b);
@@ -2046,7 +2046,7 @@ bool MeshOutput::SaveAsciiPLY(std::ostream& out) const
                 out << p.x << " " << p.y << " " << p.z;
             }
 
-            const App::Color& c = _material->diffuseColor[i];
+            const Base::Color& c = _material->diffuseColor[i];
             int r = (int)(255.0F * c.r);
             int g = (int)(255.0F * c.g);
             int b = (int)(255.0F * c.b);
@@ -2359,7 +2359,7 @@ bool MeshOutput::SaveX3DContent(std::ostream& out, bool exportViewpoints) const
         bbox = bbox.Transformed(_transform);
     }
 
-    App::Color mat(0.65F, 0.65F, 0.65F);
+    Base::Color mat(0.65F, 0.65F, 0.65F);
     if (_material && _material->binding == MeshIO::Binding::OVERALL) {
         if (!_material->diffuseColor.empty()) {
             mat = _material->diffuseColor.front();
@@ -2679,7 +2679,7 @@ bool MeshOutput::SaveVRML(std::ostream& output) const
            << "        Material {\n";
     if (_material && _material->binding == MeshIO::OVERALL) {
         if (!_material->diffuseColor.empty()) {
-            App::Color c = _material->diffuseColor.front();
+            Base::Color c = _material->diffuseColor.front();
             output << "          diffuseColor " << c.r << " " << c.g << " " << c.b << "\n";
         }
         else {
@@ -2828,7 +2828,7 @@ void MeshCleanup::RemoveInvalidFacets()
         // adjust the material array if needed
         if (materialArray && materialArray->binding == MeshIO::PER_FACE
             && materialArray->diffuseColor.size() == facetArray.size()) {
-            std::vector<App::Color> colors;
+            std::vector<Base::Color> colors;
             colors.reserve(facetArray.size() - countInvalidFacets);
             for (std::size_t index = 0; index < facetArray.size(); index++) {
                 if (facetArray[index].IsValid()) {
@@ -2887,7 +2887,7 @@ void MeshCleanup::RemoveInvalidPoints()
         // adjust the material array if needed
         if (materialArray && materialArray->binding == MeshIO::PER_VERTEX
             && materialArray->diffuseColor.size() == pointArray.size()) {
-            std::vector<App::Color> colors;
+            std::vector<Base::Color> colors;
             colors.reserve(validPoints);
             for (std::size_t index = 0; index < pointArray.size(); index++) {
                 if (pointArray[index].IsValid()) {

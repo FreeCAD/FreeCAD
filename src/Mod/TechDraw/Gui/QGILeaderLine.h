@@ -34,6 +34,7 @@
 #include <Base/Vector3D.h>
 
 #include "QGIView.h"
+#include "QGIUserTypes.h"
 
 
 namespace TechDraw
@@ -56,10 +57,7 @@ class TechDrawGuiExport QGILeaderLine: public QGIView
     Q_OBJECT
 
 public:
-    enum
-    {
-        Type = QGraphicsItem::UserType + 232
-    };
+    enum {Type = UserType::QGILeaderLine};
 
     explicit QGILeaderLine();
     ~QGILeaderLine() override = default;

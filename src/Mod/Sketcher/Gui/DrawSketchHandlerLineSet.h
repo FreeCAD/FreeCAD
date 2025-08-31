@@ -31,6 +31,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -95,6 +96,7 @@ public:
         SNAP_MODE_Free,
         SNAP_MODE_45Degree
     };
+
 
     void registerPressedKey(bool pressed, int key) override
     {
@@ -188,6 +190,8 @@ public:
 
     void mouseMove(Base::Vector2d onSketchPos) override
     {
+        using std::numbers::pi;
+
         suppressTransition = false;
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -222,7 +226,7 @@ public:
                 if (showCursorCoords()) {
                     SbString text;
                     std::string lengthString = lengthToDisplayFormat(length, 1);
-                    std::string angleString = angleToDisplayFormat(angle * 180.0 / M_PI, 1);
+                    std::string angleString = angleToDisplayFormat(angle * 180.0 / pi, 1);
                     text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
                     setPositionText(EditCurve[1], text);
                 }
@@ -289,14 +293,14 @@ public:
                     arcAngle = 0.f;
                 }
                 if (arcRadius >= 0 && arcAngle > 0) {
-                    arcAngle -= 2 * M_PI;
+                    arcAngle -= 2 * pi;
                 }
                 if (arcRadius < 0 && arcAngle < 0) {
-                    arcAngle += 2 * M_PI;
+                    arcAngle += 2 * pi;
                 }
 
                 if (SnapMode == SNAP_MODE_45Degree) {
-                    arcAngle = round(arcAngle / (M_PI / 4)) * M_PI / 4;
+                    arcAngle = round(arcAngle / (pi / 4)) * pi / 4;
                 }
 
                 endAngle = startAngle + arcAngle;
@@ -316,7 +320,7 @@ public:
                 if (showCursorCoords()) {
                     SbString text;
                     std::string radiusString = lengthToDisplayFormat(std::abs(arcRadius), 1);
-                    std::string angleString = angleToDisplayFormat(arcAngle * 180.0 / M_PI, 1);
+                    std::string angleString = angleToDisplayFormat(arcAngle * 180.0 / pi, 1);
                     text.sprintf(" (R%s, %s)", radiusString.c_str(), angleString.c_str());
                     setPositionText(onSketchPos, text);
                 }
@@ -328,6 +332,7 @@ public:
 
     bool pressButton(Base::Vector2d onSketchPos) override
     {
+
         if (Mode == STATUS_SEEK_First) {
 
             EditCurve[0] = onSketchPos;  // this may be overwritten if previousCurve is found
@@ -434,6 +439,9 @@ public:
                 }
             }
         }
+
+        updateHint();
+
         return true;
     }
 
@@ -536,8 +544,8 @@ public:
 
                     // #3974: if in radians, the printf %f defaults to six decimals, which leads to
                     // loss of precision
-                    double arcAngle =
-                        abs(round((endAngle - startAngle) / (M_PI / 4)) * 45);  // in degrees
+                    double arcAngle = abs(round((endAngle - startAngle) / (std::numbers::pi / 4))
+                                          * 45);  // in degrees
 
                     Gui::cmdAppObjectArgs(sketchgui->getObject(),
                                           "addConstraint(Sketcher.Constraint('Angle',%i,App.Units."
@@ -706,6 +714,9 @@ public:
                 mouseMove(onSketchPos);  // trigger an update of EditCurve
             }
         }
+
+        updateHint();
+
         return true;
     }
 
@@ -751,7 +762,31 @@ public:
 private:
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Create_Lineset");
+        return QStringLiteral("Sketcher_Pointer_Create_Lineset");
+    }
+
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using enum Gui::InputHint::UserInput;
+
+        // clang-format off
+        return Gui::lookupHints<SELECT_MODE>(
+            Mode,
+            {
+                {.state = STATUS_SEEK_First,
+                 .hints =
+                     {
+                         {tr("%1 pick first point"), {MouseLeft}},
+                     }},
+                {.state = STATUS_SEEK_Second,
+                 .hints =
+                     {
+                         {tr("%1 pick next point"), {MouseLeft}},
+                         {tr("%1 finish"), {MouseRight}},
+                         {tr("%1 switch mode"), {KeyM}},
+                     }},
+            });
+        // clang-format on
     }
 
 protected:
@@ -813,8 +848,6 @@ protected:
         dirVec.Normalize();
     }
 };
-
-
 }  // namespace SketcherGui
 
 

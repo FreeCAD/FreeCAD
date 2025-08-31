@@ -125,7 +125,7 @@ PyObject*  TopoShapeCompoundPy::add(PyObject *args)
     Py_Return;
 }
 
-PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject *args)
+PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject *args) const
 {
     PyObject *shared=Py_True;
     double tol = Precision::Confusion();

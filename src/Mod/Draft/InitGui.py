@@ -100,19 +100,19 @@ class DraftWorkbench(FreeCADGui.Workbench):
 
         # Set up toolbars
         it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Workbench", "Draft creation tools"),
+                        QT_TRANSLATE_NOOP("Workbench", "Draft Creation"),
                         self.drawing_commands)
         it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Workbench", "Draft annotation tools"),
+                        QT_TRANSLATE_NOOP("Workbench", "Draft Annotation"),
                         self.annotation_commands)
         it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Workbench", "Draft modification tools"),
+                        QT_TRANSLATE_NOOP("Workbench", "Draft Modification"),
                         self.modification_commands)
         it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Workbench", "Draft utility tools"),
+                        QT_TRANSLATE_NOOP("Workbench", "Draft Utility"),
                         self.utility_commands_toolbar)
         it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Workbench", "Draft snap"),
+                        QT_TRANSLATE_NOOP("Workbench", "Draft Snap"),
                         it.get_draft_snap_commands())
 
         # Set up menus
@@ -165,12 +165,8 @@ class DraftWorkbench(FreeCADGui.Workbench):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.hide()
-            from PySide import QtCore
             from draftutils import init_draft_statusbar
-            # Delay required in case the Draft WB is preloaded,
-            # else show_draft_statusbar will not yet be done:
-            t = QtCore.QTimer()
-            t.singleShot(700, init_draft_statusbar.hide_draft_statusbar)
+            init_draft_statusbar.hide_draft_statusbar()
         import WorkingPlane
         WorkingPlane._view_observer_stop()
         from draftutils import grid_observer

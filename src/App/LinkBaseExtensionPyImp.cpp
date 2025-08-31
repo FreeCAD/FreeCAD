@@ -258,7 +258,7 @@ PyObject* LinkBaseExtensionPy::setLink(PyObject* _args)
             PyObject *key, *value;
             Py_ssize_t pos = 0;
             while (PyDict_Next(pcObj, &pos, &key, &value)) {
-                parseLink(ext, Py::Int(key), value);
+                parseLink(ext, Py::Long(key), value);
             }
         }
         else if (PySequence_Check(pcObj)) {

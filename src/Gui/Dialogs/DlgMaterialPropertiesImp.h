@@ -29,9 +29,13 @@
 #include <vector>
 #include <App/Material.h>
 
-namespace App
+namespace Base
 {
 class Color;
+}
+
+namespace App
+{
 class Material;
 }
 

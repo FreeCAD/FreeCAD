@@ -5,7 +5,7 @@
 #define LINMATH_H
 
 #include <string.h>
-#include <math.h>
+#include <cmath>
 
 #ifdef LINMATH_NO_INLINE
 #define LINMATH_H_FUNC static

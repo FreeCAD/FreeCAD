@@ -160,8 +160,8 @@ def export(objectslist, filename, argstring):
     # Write the preamble
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(begin preamble)\n"
-    for line in PREAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in PREAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
 
     for obj in objectslist:
 
@@ -183,8 +183,8 @@ def export(objectslist, filename, argstring):
 
     if OUTPUT_COMMENTS:
         gcode += "(begin postamble)\n"
-    for line in POSTAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in POSTAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
 
     if SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
@@ -199,9 +199,12 @@ def export(objectslist, filename, argstring):
 
     print("done postprocessing.")
 
-    gfile = pyopen(filename, "w")
-    gfile.write(final)
-    gfile.close()
+    if not filename == "-":
+        gfile = pyopen(filename, "w")
+        gfile.write(final)
+        gfile.close()
+
+    return final
 
 
 def linenumber():
@@ -251,7 +254,7 @@ def parse(pathobj):
             command = c.Name
 
             # fablin does not support parenthesis syntax, so removing that (pocket) in the agnostic gcode
-            if command[0] == "(":
+            if command.startswith("("):
                 if not OUTPUT_COMMENTS:
                     pass
             else:

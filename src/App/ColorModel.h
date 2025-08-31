@@ -32,7 +32,6 @@
 #include <string>
 #include <vector>
 
-
 namespace App
 {
 
@@ -64,7 +63,7 @@ namespace App
 class AppExport ValueFloatToRGB
 {
 public:
-    virtual Color getColor(float fVal) const = 0;
+    virtual Base::Color getColor(float fVal) const = 0;
 
 protected:
     ValueFloatToRGB() = default;
@@ -87,7 +86,7 @@ public:
     {
         return colors.size();
     }
-    std::vector<Color> colors;
+    std::vector<Base::Color> colors;
 };
 
 class AppExport ColorModelBlueGreenRed: public ColorModel
@@ -96,11 +95,11 @@ public:
     ColorModelBlueGreenRed()
         : ColorModel(5)
     {
-        colors[0] = Color(0, 0, 1);
-        colors[1] = Color(0, 1, 1);
-        colors[2] = Color(0, 1, 0);
-        colors[3] = Color(1, 1, 0);
-        colors[4] = Color(1, 0, 0);
+        colors[0] = Base::Color(0, 0, 1);
+        colors[1] = Base::Color(0, 1, 1);
+        colors[2] = Base::Color(0, 1, 0);
+        colors[3] = Base::Color(1, 1, 0);
+        colors[4] = Base::Color(1, 0, 0);
     }
 };
 
@@ -110,9 +109,9 @@ public:
     ColorModelBlueCyanGreen()
         : ColorModel(3)
     {
-        colors[0] = Color(0, 0, 1);
-        colors[1] = Color(0, 1, 1);
-        colors[2] = Color(0, 1, 0);
+        colors[0] = Base::Color(0, 0, 1);
+        colors[1] = Base::Color(0, 1, 1);
+        colors[2] = Base::Color(0, 1, 0);
     }
 };
 
@@ -122,9 +121,9 @@ public:
     ColorModelGreenYellowRed()
         : ColorModel(3)
     {
-        colors[0] = Color(0, 1, 0);
-        colors[1] = Color(1, 1, 0);
-        colors[2] = Color(1, 0, 0);
+        colors[0] = Base::Color(0, 1, 0);
+        colors[1] = Base::Color(1, 1, 0);
+        colors[2] = Base::Color(1, 0, 0);
     }
 };
 
@@ -134,11 +133,11 @@ public:
     ColorModelRedGreenBlue()
         : ColorModel(5)
     {
-        colors[0] = Color(1, 0, 0);
-        colors[1] = Color(1, 1, 0);
-        colors[2] = Color(0, 1, 0);
-        colors[3] = Color(0, 1, 1);
-        colors[4] = Color(0, 0, 1);
+        colors[0] = Base::Color(1, 0, 0);
+        colors[1] = Base::Color(1, 1, 0);
+        colors[2] = Base::Color(0, 1, 0);
+        colors[3] = Base::Color(0, 1, 1);
+        colors[4] = Base::Color(0, 0, 1);
     }
 };
 
@@ -148,9 +147,9 @@ public:
     ColorModelGreenCyanBlue()
         : ColorModel(3)
     {
-        colors[0] = Color(0, 1, 0);
-        colors[1] = Color(0, 1, 1);
-        colors[2] = Color(0, 0, 1);
+        colors[0] = Base::Color(0, 1, 0);
+        colors[1] = Base::Color(0, 1, 1);
+        colors[2] = Base::Color(0, 0, 1);
     }
 };
 
@@ -160,9 +159,9 @@ public:
     ColorModelRedYellowGreen()
         : ColorModel(3)
     {
-        colors[0] = Color(1, 0, 0);
-        colors[1] = Color(1, 1, 0);
-        colors[2] = Color(0, 1, 0);
+        colors[0] = Base::Color(1, 0, 0);
+        colors[1] = Base::Color(1, 1, 0);
+        colors[2] = Base::Color(0, 1, 0);
     }
 };
 
@@ -172,11 +171,11 @@ public:
     ColorModelBlueWhiteRed()
         : ColorModel(5)
     {
-        colors[0] = Color(0, 0, 1);
-        colors[1] = Color(float(85.0 / 255), float(170.0 / 255), 1);
-        colors[2] = Color(1, 1, 1);
-        colors[3] = Color(1, float(85.0 / 255), 0);
-        colors[4] = Color(1, 0, 0);
+        colors[0] = Base::Color(0, 0, 1);
+        colors[1] = Base::Color(float(85.0 / 255), float(170.0 / 255), 1);
+        colors[2] = Base::Color(1, 1, 1);
+        colors[3] = Base::Color(1, float(85.0 / 255), 0);
+        colors[4] = Base::Color(1, 0, 0);
     }
 };
 
@@ -186,9 +185,9 @@ public:
     ColorModelBlueWhite()
         : ColorModel(3)
     {
-        colors[0] = Color(0, 0, 1);
-        colors[1] = Color(float(85.0 / 255), float(170.0 / 255), 1);
-        colors[2] = Color(1, 1, 1);
+        colors[0] = Base::Color(0, 0, 1);
+        colors[1] = Base::Color(float(85.0 / 255), float(170.0 / 255), 1);
+        colors[2] = Base::Color(1, 1, 1);
     }
 };
 
@@ -198,9 +197,9 @@ public:
     ColorModelWhiteRed()
         : ColorModel(3)
     {
-        colors[0] = Color(1, 1, 1);
-        colors[1] = Color(1, float(85.0 / 255), 0);
-        colors[2] = Color(1, 0, 0);
+        colors[0] = Base::Color(1, 1, 1);
+        colors[1] = Base::Color(1, float(85.0 / 255), 0);
+        colors[2] = Base::Color(1, 0, 0);
     }
 };
 
@@ -210,8 +209,8 @@ public:
     ColorModelBlackWhite()
         : ColorModel(2)
     {
-        colors[0] = Color(0, 0, 0);
-        colors[1] = Color(1, 1, 1);
+        colors[0] = Base::Color(0, 0, 0);
+        colors[1] = Base::Color(1, 1, 1);
     }
 };
 
@@ -221,8 +220,8 @@ public:
     ColorModelBlackGray()
         : ColorModel(2)
     {
-        colors[0] = Color(0.0f, 0.0f, 0.0f);
-        colors[1] = Color(0.5f, 0.5f, 0.5f);
+        colors[0] = Base::Color(0.0f, 0.0f, 0.0f);
+        colors[1] = Base::Color(0.5f, 0.5f, 0.5f);
     }
 };
 
@@ -232,8 +231,8 @@ public:
     ColorModelGrayWhite()
         : ColorModel(2)
     {
-        colors[0] = Color(0.5f, 0.5f, 0.5f);
-        colors[1] = Color(1.0f, 1.0f, 1.0f);
+        colors[0] = Base::Color(0.5f, 0.5f, 0.5f);
+        colors[1] = Base::Color(1.0f, 1.0f, 1.0f);
     }
 };
 
@@ -243,8 +242,8 @@ public:
     ColorModelWhiteBlack()
         : ColorModel(2)
     {
-        colors[0] = Color(1, 1, 1);
-        colors[1] = Color(0, 0, 0);
+        colors[0] = Base::Color(1, 1, 1);
+        colors[1] = Base::Color(0, 0, 0);
     }
 };
 
@@ -254,8 +253,8 @@ public:
     ColorModelWhiteGray()
         : ColorModel(2)
     {
-        colors[0] = Color(1.0f, 1.0f, 1.0f);
-        colors[1] = Color(0.5f, 0.5f, 0.5f);
+        colors[0] = Base::Color(1.0f, 1.0f, 1.0f);
+        colors[1] = Base::Color(0.5f, 0.5f, 0.5f);
     }
 };
 
@@ -265,8 +264,8 @@ public:
     ColorModelGrayBlack()
         : ColorModel(2)
     {
-        colors[0] = Color(0.5f, 0.5f, 0.5f);
-        colors[1] = Color(0.0f, 0.0f, 0.0f);
+        colors[0] = Base::Color(0.5f, 0.5f, 0.5f);
+        colors[1] = Base::Color(0.0f, 0.0f, 0.0f);
     }
 };
 
@@ -320,7 +319,7 @@ public:
     {
         return colorModel;
     }
-    void setDirect(std::size_t usInd, Color clCol)
+    void setDirect(std::size_t usInd, Base::Color clCol)
     {
         colorField[usInd] = clCol;
     }
@@ -333,11 +332,11 @@ public:
         return fMax;
     }
 
-    Color getColor(std::size_t usIndex) const
+    Base::Color getColor(std::size_t usIndex) const
     {
         return colorField[usIndex];
     }
-    inline Color getColor(float fVal) const;
+    inline Base::Color getColor(float fVal) const;
     inline std::size_t getColorIndex(float fVal) const;
 
 protected:
@@ -345,13 +344,13 @@ protected:
     float fMin, fMax;
     float fAscent, fConstant;  // Index := _fConstant + _fAscent * WERT
     std::size_t ctColors;
-    std::vector<Color> colorField;
+    std::vector<Base::Color> colorField;
 
     void rebuild();
-    void interpolate(Color clCol1, std::size_t usPos1, Color clCol2, std::size_t usPos2);
+    void interpolate(Base::Color clCol1, std::size_t usPos1, Base::Color clCol2, std::size_t usPos2);
 };
 
-inline Color ColorField::getColor(float fVal) const
+inline Base::Color ColorField::getColor(float fVal) const
 {
     // if the value is outside or at the border of the range
     std::size_t ct = colorModel.getCountColors() - 1;
@@ -362,16 +361,16 @@ inline Color ColorField::getColor(float fVal) const
         return colorModel.colors[ct];
     }
 
-    // get the color field position (with 0 < t < 1)
+    // get the Base::Color field position (with 0 < t < 1)
     float t = (fVal - fMin) / (fMax - fMin);
-    Color col(1.0f, 1.0f, 1.0f);  // white as default
+    Base::Color col(1.0f, 1.0f, 1.0f);  // white as default
     for (std::size_t i = 0; i < ct; i++) {
         float r = (float)(i + 1) / (float)ct;
         if (t < r) {
             // calculate the exact position in the subrange
             float s = t * float(ct) - float(i);
-            Color c1 = colorModel.colors[i];
-            Color c2 = colorModel.colors[i + 1];
+            Base::Color c1 = colorModel.colors[i];
+            Base::Color c2 = colorModel.colors[i + 1];
             col.r = (1.0f - s) * c1.r + s * c2.r;
             col.g = (1.0f - s) * c1.g + s * c2.g;
             col.b = (1.0f - s) * c1.b + s * c2.b;
@@ -484,11 +483,11 @@ public:
         return profile.fMax;
     }
 
-    inline Color getColor(float fVal) const;
+    inline Base::Color getColor(float fVal) const;
     inline std::size_t getColorIndex(float fVal) const;
 
 private:
-    inline Color _getColor(float fVal) const;
+    inline Base::Color _getColor(float fVal) const;
 
 protected:
     void createStandardPacks();
@@ -525,7 +524,7 @@ public:
     void removeFirst();
     void removeLast();
 
-    Color getColor(std::size_t ulPos) const;
+    Base::Color getColor(std::size_t ulPos) const;
     uint32_t getPackedColor(std::size_t ulPos) const;
     bool setColor(std::size_t ulPos, float ucRed, float ucGreen, float ucBlue);
     bool setColor(std::size_t ulPos, unsigned long ulColor);
@@ -548,17 +547,17 @@ public:
     inline float getMinValue() const;
     inline float getMaxValue() const;
 
-    inline Color getColor(float fVal) const;
+    inline Base::Color getColor(float fVal) const;
     inline std::size_t getColorIndex(float fVal) const;
 
 protected:
-    std::deque<Color> colorFields;
+    std::deque<Base::Color> colorFields;
     std::deque<std::string> names;
     std::deque<float> values;
     bool outsideGrayed {false};
 };
 
-inline Color ColorLegend::getColor(float fVal) const
+inline Base::Color ColorLegend::getColor(float fVal) const
 {
     std::deque<float>::const_iterator pI;
     for (pI = values.begin(); pI != values.end(); ++pI) {
@@ -569,7 +568,7 @@ inline Color ColorLegend::getColor(float fVal) const
 
     if (outsideGrayed) {
         if ((pI == values.begin()) || (pI == values.end())) {
-            return Color(0.5f, 0.5f, 0.5f);
+            return Base::Color(0.5f, 0.5f, 0.5f);
         }
         else {
             return colorFields[pI - values.begin() - 1];
@@ -617,23 +616,23 @@ inline float ColorLegend::getMaxValue() const
     return values.back();
 }
 
-inline Color ColorGradient::getColor(float fVal) const
+inline Base::Color ColorGradient::getColor(float fVal) const
 {
-    Color color = _getColor(fVal);
+    Base::Color Color = _getColor(fVal);
     if (isOutsideInvisible()) {
         if (isOutOfRange(fVal)) {
-            color.a = 0.2F;
+            Color.a = 0.2F;
         }
     }
 
-    return color;
+    return Color;
 }
 
-inline Color ColorGradient::_getColor(float fVal) const
+inline Base::Color ColorGradient::_getColor(float fVal) const
 {
     if (isOutsideGrayed()) {
         if (isOutOfRange(fVal)) {
-            return Color(0.5f, 0.5f, 0.5f);
+            return Base::Color(0.5f, 0.5f, 0.5f);
         }
     }
 

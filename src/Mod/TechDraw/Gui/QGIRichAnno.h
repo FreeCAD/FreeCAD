@@ -31,6 +31,7 @@
 #include <QStyleOptionGraphicsItem>
 
 #include "QGIView.h"
+#include "QGIUserTypes.h"
 
 
 namespace TechDraw {
@@ -55,7 +56,7 @@ class TechDrawGuiExport QGIRichAnno : public QGIView
     Q_OBJECT
 
 public:
-    enum {Type = QGraphicsItem::UserType + 233};
+    enum {Type = UserType::QGIRichAnno};
 
     explicit QGIRichAnno();
     ~QGIRichAnno() override = default;

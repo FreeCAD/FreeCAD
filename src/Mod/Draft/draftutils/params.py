@@ -34,7 +34,6 @@ try:
 except ModuleNotFoundError:
     pass
 
-from draftutils import init_draft_statusbar
 from draftutils.translate import translate
 
 if App.GuiUp:
@@ -95,6 +94,8 @@ def _param_observer_callback_tray():
 
 def _param_observer_callback_scalemultiplier(value):
     # value is a string.
+    # import has to happen here to avoid circular imports
+    from draftutils import init_draft_statusbar
     if not value:
         return
     value = float(value)
@@ -135,12 +136,16 @@ def _param_observer_callback_snapbar(value):
 
 
 def _param_observer_callback_snapwidget():
+    # import has to happen here to avoid circular imports
+    from draftutils import init_draft_statusbar
     if Gui.activeWorkbench().name() == "DraftWorkbench":
         init_draft_statusbar.hide_draft_statusbar()
         init_draft_statusbar.show_draft_statusbar()
 
 
 def _param_observer_callback_scalewidget():
+    # import has to happen here to avoid circular imports
+    from draftutils import init_draft_statusbar
     if Gui.activeWorkbench().name() == "DraftWorkbench":
         init_draft_statusbar.hide_draft_statusbar()
         init_draft_statusbar.show_draft_statusbar()
@@ -357,6 +362,7 @@ def _param_from_PrefLineEdit(widget):
 
 
 def _param_from_PrefFileChooser(widget):
+    # Does not occur in Draft preferences anymore.
     for elem in list(widget):
         if "name" in elem.keys():
             att_name = elem.attrib["name"]
@@ -367,33 +373,85 @@ def _param_from_PrefFileChooser(widget):
     return path, entry, ""
 
 
+def _param_from_PrefFontBox(widget):
+    if App.GuiUp:
+        from PySide import QtGui
+        font = QtGui.QFont()
+        font.setStyleHint(QtGui.QFont.StyleHint.SansSerif)
+        value = font.defaultFamily()
+    else:
+        value = ""
+    for elem in list(widget):
+        if "name" in elem.keys():
+            att_name = elem.attrib["name"]
+            if att_name == "prefEntry":
+                entry = elem.find("cstring").text
+            elif att_name == "prefPath":
+                path = elem.find("cstring").text
+    # We must set the parameter if it does not exist, else
+    # the Gui::PrefFontBox will show the wrong value.
+    param_grp = App.ParamGet("User parameter:BaseApp/Preferences/" + path)
+    if entry not in param_grp.GetStrings():
+        param_grp.SetString(entry, value)
+    return path, entry, value
+
+
+def _get_shape_string_font_file():
+    """Try to get the file name of a sans serif font (TTC or TTF) from the OS."""
+    # https://forum.freecad.org/viewtopic.php?t=96770
+    # Windows font: "arial"
+    # Mac fonts: "geneva" and "helvetica"
+    # Linux fonts: "dejavusans" and "freesans"
+    favorite_names = ("arial", "geneva", "helvetica", "dejavusans", "freesans")
+    font_file_sans = None   # Font with name containing "sans". 1st fallback.
+    font_file_alpha = None  # Font with name starting with a letter. 2nd fallback.
+    # Reverse the order of the paths so that user related paths come last:
+    for path in QtCore.QStandardPaths.standardLocations(QtCore.QStandardPaths.FontsLocation)[::-1]:
+        # We don't use os.path.join as dir_path has forward slashes even on Windows.
+        for (dir_path, dir_names, file_names) in os.walk(path):
+            for file_name in file_names:
+                base_name, ext = [s.lower() for s in os.path.splitext(file_name)]
+                if not ext in (".ttc", ".ttf"):
+                    continue
+                if base_name in favorite_names:
+                    return dir_path + "/" + file_name
+                if font_file_sans is None and "sans" in base_name:
+                    font_file_sans = dir_path + "/" + file_name
+                if font_file_alpha is None and base_name[0].isalpha():
+                    font_file_alpha = dir_path + "/" + file_name
+    if font_file_sans is not None:
+        return font_file_sans
+    if font_file_alpha is not None:
+        return font_file_alpha
+    return ""
+
+
 def _get_param_dictionary():
 
     # print("Creating preferences dictionary...")
 
     param_dict = {}
 
-    hatch_pattern_file = os.path.join(
-        App.getResourceDir().replace("\\", "/"), "Mod/TechDraw/PAT/FCPAT.pat"
-    )
+    hatch_pattern_file = App.getResourceDir().replace("\\", "/").rstrip("/") \
+            + "/Mod/TechDraw/PAT/FCPAT.pat"
 
     # Draft parameters that are not in the preferences:
     param_dict["Mod/Draft"] = {
         "AnnotationStyleEditorHeight": ("int",       450),
         "AnnotationStyleEditorWidth":  ("int",       450),
         "CenterPlaneOnView":           ("bool",      False),
-        "ContinueMode":                ("bool",      False),
+        "ChainedMode":                 ("bool",      False),
         "CopyMode":                    ("bool",      False),
         "DefaultAnnoDisplayMode":      ("int",       0),
         "DefaultDisplayMode":          ("int",       0),
         "DefaultDrawStyle":            ("int",       0),
         "DefaultPrintColor":           ("unsigned",  255),
+        "DimAutoFlipText":             ("bool",      True),
         "Draft_array_fuse":            ("bool",      False),
         "Draft_array_Link":            ("bool",      True),
-        "FilletRadius":                ("float",     100.0),
         "FilletChamferMode":           ("bool",      False),
         "FilletDeleteMode":            ("bool",      False),
-        "fillmode":                    ("bool",      True),
+        "FilletRadius":                ("float",     100.0),
         "GlobalMode":                  ("bool",      False),
         "GridHideInOtherWorkbenches":  ("bool",      True),
         "HatchPatternFile":            ("string",    hatch_pattern_file),
@@ -401,10 +459,13 @@ def _get_param_dictionary():
         "HatchPatternResolution":      ("int",       128),  # used for SVG patterns
         "HatchPatternRotation":        ("float",     0.0),
         "HatchPatternScale":           ("float",     100.0),
+        "HatchPatternTranslate":       ("bool",      True),
         "labeltype":                   ("string",    "Custom"),
         "LayersManagerHeight":         ("int",       320),
         "LayersManagerWidth":          ("int",       640),
+        "MakeFaceMode":                ("bool",      True),
         "maxSnapEdges":                ("int",       0),
+        "maxSnapFaces":                ("int",       0),
         "OffsetCopyMode":              ("bool",      False),
         "Offset_OCC":                  ("bool",      False),
         "RelativeMode":                ("bool",      True),
@@ -412,11 +473,55 @@ def _get_param_dictionary():
         "ScaleCopy":                   ("bool",      False),
         "ScaleRelative":               ("bool",      False),
         "ScaleUniform":                ("bool",      False),
+        "ShapeStringFontFile":         ("string",    _get_shape_string_font_file()),
+        "ShapeStringHeight":           ("float",     10.0),
+        "ShapeStringText":             ("string",    translate("draft", "Default")),
         "snapModes":                   ("string",    "100000000000000"),
         "snapRange":                   ("int",       8),
         "SubelementMode":              ("bool",      False),
         "SvgLinesBlack":               ("bool",      True),
         "useSupport":                  ("bool",      False),
+    }
+
+    param_dict["Mod/Draft/ContinueMode"] = {
+        # Draft
+        "Arc":                         ("bool",      False),
+        "Arc_3Points":                 ("bool",      False),
+        "BezCurve":                    ("bool",      False),
+        "Bspline":                     ("bool",      False),
+        "Circle":                      ("bool",      False),
+        "CubicBezCurve":               ("bool",      False),
+        "Dimension":                   ("bool",      False),
+        "Ellipse":                     ("bool",      False),
+        "Line":                        ("bool",      False),
+        "Point":                       ("bool",      False),
+        "Polygon":                     ("bool",      False),
+        "Polyline":                    ("bool",      False),
+        "Rectangle":                   ("bool",      False),
+        "Text":                        ("bool",      False),
+
+        # Standard operations (Draft)
+        "Copy":                        ("bool",      False),
+        "Move":                        ("bool",      False),
+        "Rotate":                      ("bool",      False),
+
+        # Arch/BIM
+        "Beam":                        ("bool",      False),
+        "Column":                      ("bool",      False),
+        "Panel":                       ("bool",      False),
+        "Wall":                        ("bool",      False),
+    }
+
+    start_val = App.Units.Quantity(100.0, App.Units.Length).Value
+    param_dict["Mod/Draft/OrthoArrayLinearMode"] = {
+        "LinearModeOn": ("bool", True),
+        "AxisSelected": ("string", "X"),
+        "XInterval": ("float", start_val),
+        "YInterval": ("float", start_val),
+        "ZInterval": ("float", start_val),
+        "XNumOfElements": ("int", 2),
+        "YNumOfElements": ("int", 2),
+        "ZNumOfElements": ("int", 2)
     }
 
     # Arch parameters that are not in the preferences:
@@ -459,6 +564,7 @@ def _get_param_dictionary():
         "PrecastHoleSpacing":          ("float",     0.0),
         "PrecastRiser":                ("float",     0.0),
         "PrecastTread":                ("float",     0.0),
+        "ProfilePreset":               ("string",    ""),
         "ScheduleColumnWidth0":        ("int",       100),
         "ScheduleColumnWidth1":        ("int",       100),
         "ScheduleColumnWidth2":        ("int",       50),
@@ -474,6 +580,7 @@ def _get_param_dictionary():
         "WallAlignment":               ("int",       0),
         "WallHeight":                  ("float",     3000.0),
         "WallWidth":                   ("float",     200.0),
+        "WallOffset":                  ("float",     0.0),
         "WindowH1":                    ("float",     50.0),
         "WindowH2":                    ("float",     50.0),
         "WindowH3":                    ("float",     50.0),
@@ -542,7 +649,8 @@ def _get_param_dictionary():
                 ":/ui/preferences-dae.ui",
                 ":/ui/preferences-ifc.ui",
                 ":/ui/preferences-ifc-export.ui",
-                ":/ui/preferences-sh3d-import.ui",):
+                ":/ui/preferences-sh3d-import.ui",
+                ":/ui/preferences-webgl.ui",):
 
         # https://stackoverflow.com/questions/14750997/load-txt-file-from-resources-in-python
         fd = QtCore.QFile(fnm)
@@ -550,7 +658,6 @@ def _get_param_dictionary():
             text = QtCore.QTextStream(fd).readAll()
             fd.close()
         else:
-            print("Preferences file " + fnm + " not found")
             continue
 
         # https://docs.python.org/3/library/xml.etree.elementtree.html
@@ -594,6 +701,14 @@ def _get_param_dictionary():
                 elif att_class == "Gui::PrefFileChooser":
                     path, entry, value = _param_from_PrefFileChooser(widget)
                     typ = "string"
+                elif att_class == "Gui::PrefFontBox":
+                    path, entry, value = _param_from_PrefFontBox(widget)
+                    typ = "string"
+                elif att_class == "Gui::PrefCheckableGroupBox":
+                    # It's a boolean preference, so we can reuse the parsing logic
+                    # from _param_from_PrefCheckBox, which looks for <property name="checked">.
+                    path, entry, value = _param_from_PrefCheckBox(widget)
+                    typ = "bool"
 
                 if path is not None:
                     if path in param_dict:
@@ -607,7 +722,7 @@ def _get_param_dictionary():
 PARAM_DICT = _get_param_dictionary()
 
 
-def get_param(entry, path="Mod/Draft", ret_default=False):
+def get_param(entry, path="Mod/Draft", ret_default=False, silent=False):
     """Return a stored parameter value or its default.
 
     Parameters
@@ -621,13 +736,17 @@ def get_param(entry, path="Mod/Draft", ret_default=False):
     ret_default: bool, optional
         Defaults to `False`.
         If `True`, always return the default value even if a stored value is available.
+    silent: bool, optional
+        Defaults to `False`.
+        If `True`, do not log anything if entry wasn't found.
 
     Returns
     -------
     bool, float, int or str (if successful) or `None`.
     """
     if path not in PARAM_DICT or entry not in PARAM_DICT[path]:
-        print(f"draftutils.params.get_param: Unable to find '{entry}' in '{path}'")
+        if not silent:
+            print(f"draftutils.params.get_param: Unable to find '{entry}' in '{path}'")
         return None
     param_grp = App.ParamGet("User parameter:BaseApp/Preferences/" + path)
     typ, default = PARAM_DICT[path][entry]

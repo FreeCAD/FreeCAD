@@ -107,8 +107,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.reverseDirection.setCheckState(QtCore.Qt.Unchecked)
 
     def updateQuantitySpinBoxes(self):
-        self.geo1Extension.updateSpinBox()
-        self.geo2Extension.updateSpinBox()
+        self.geo1Extension.updateWidget()
+        self.geo2Extension.updateWidget()
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
@@ -142,7 +142,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.geo2Reference.currentIndexChanged)
         signals.append(self.form.layerMode.currentIndexChanged)
         signals.append(self.form.pathOrientation.currentIndexChanged)
-        signals.append(self.form.reverseDirection.stateChanged)
+        if hasattr(self.form.reverseDirection, "checkStateChanged"):  # Qt version >= 6.7.0
+            signals.append(self.form.reverseDirection.checkStateChanged)
+        else:  # Qt version < 6.7.0
+            signals.append(self.form.reverseDirection.stateChanged)
         return signals
 
     def updateVisibility(self, sentObj=None):

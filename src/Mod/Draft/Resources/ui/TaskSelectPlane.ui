@@ -11,14 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Working plane setup</string>
+   <string>Working Plane Setup</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Select 3 vertices, one or more shapes or a WP Proxy. Then confirm by clicking in the 3D view.
-Or choose one of the options below.</string>
+      <string>Choose an option below. Or define a working plane by selecting 3 vertices, 1 or more shapes, or a working plane proxy, and then confirm with a click in the 3D view.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -28,7 +27,7 @@ Or choose one of the options below.</string>
    <item>
     <widget class="QPushButton" name="buttonTop">
      <property name="toolTip">
-      <string>Sets the working plane to the XY plane (ground plane)</string>
+      <string>Sets the working plane to the XY-plane (ground plane)</string>
      </property>
      <property name="text">
       <string>Top (XY)</string>
@@ -38,7 +37,7 @@ Or choose one of the options below.</string>
    <item>
     <widget class="QPushButton" name="buttonFront">
      <property name="toolTip">
-      <string>Sets the working plane to the XZ plane (front plane)</string>
+      <string>Sets the working plane to the XZ-plane (front plane)</string>
      </property>
      <property name="text">
       <string>Front (XZ)</string>
@@ -48,7 +47,7 @@ Or choose one of the options below.</string>
    <item>
     <widget class="QPushButton" name="buttonSide">
      <property name="toolTip">
-      <string>Sets the working plane to the YZ plane (side plane)</string>
+      <string>Sets the working plane to the YZ-plane (side plane)</string>
      </property>
      <property name="text">
       <string>Side (YZ)</string>
@@ -61,7 +60,7 @@ Or choose one of the options below.</string>
       <string>Sets the working plane facing the current view</string>
      </property>
      <property name="text">
-      <string>Align to view</string>
+      <string>Align to View</string>
      </property>
     </widget>
    </item>
@@ -115,8 +114,7 @@ of the buttons above</string>
      <item row="1" column="1">
       <widget class="QCheckBox" name="checkCenter">
        <property name="toolTip">
-        <string>If this is selected, the working plane will be
-centered on the current view when pressing one
+        <string>Centers the working plane on the current view when pressing one
 of the buttons above</string>
        </property>
        <property name="layoutDirection">
@@ -147,7 +145,7 @@ orientation. If no point is selected, the plane
 will be moved to the center of the view.</string>
      </property>
      <property name="text">
-      <string>Move working plane</string>
+      <string>Move Working Plane</string>
      </property>
     </widget>
    </item>
@@ -213,7 +211,7 @@ will be moved to the center of the view.</string>
      <item row="3" column="0">
       <widget class="QLabel" name="label_8">
        <property name="toolTip">
-        <string>The number of squares in the X and Y direction of the grid</string>
+        <string>The number of squares in the X- and Y-direction of the grid</string>
        </property>
        <property name="text">
         <string>Grid size</string>
@@ -223,7 +221,7 @@ will be moved to the center of the view.</string>
      <item row="3" column="1">
       <widget class="QSpinBox" name="fieldGridExtension">
        <property name="toolTip">
-        <string>The number of squares in the X and Y direction of the grid</string>
+        <string>The number of squares in the X- and Y-direction of the grid</string>
        </property>
        <property name="suffix">
         <string> squares</string>
@@ -264,7 +262,7 @@ will be moved to the center of the view.</string>
       <string>Centers the view on the current working plane</string>
      </property>
      <property name="text">
-      <string>Center view</string>
+      <string>Center View</string>
      </property>
     </widget>
    </item>

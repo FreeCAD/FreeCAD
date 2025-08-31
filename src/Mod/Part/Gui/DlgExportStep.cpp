@@ -146,7 +146,7 @@ DlgExportHeaderStep::DlgExportHeaderStep(QWidget* parent)
     ui->lineEditProduct->setReadOnly(true);
 
     QRegularExpression rx;
-    rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
+    rx.setPattern(QStringLiteral("[\\x00-\\x7F]+"));
     QRegularExpressionValidator* companyValidator = new QRegularExpressionValidator(ui->lineEditCompany);
     companyValidator->setRegularExpression(rx);
     ui->lineEditCompany->setValidator(companyValidator);
@@ -205,7 +205,7 @@ TaskExportStep::TaskExportStep(QWidget* parent)
     setLayout(layout);
 
     showThis = new QCheckBox(this);
-    showThis->setText(tr("Don't show this dialog again"));
+    showThis->setText(tr("Do not show this dialog again"));
     layout->addWidget(showThis);
 
     QDialogButtonBox* buttonBox = new QDialogButtonBox(this);

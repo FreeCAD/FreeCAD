@@ -50,25 +50,16 @@ using namespace Spreadsheet;
 
 PROPERTY_SOURCE(SpreadsheetGui::ViewProviderSheet, Gui::ViewProviderDocumentObject)
 
-ViewProviderSheet::ViewProviderSheet() = default;
+ViewProviderSheet::ViewProviderSheet()
+{
+    setToggleVisibility(ToggleVisibilityMode::NoToggleVisibility);
+}
 
 ViewProviderSheet::~ViewProviderSheet()
 {
     if (!view.isNull()) {
         Gui::getMainWindow()->removeWindow(view);
     }
-}
-
-void ViewProviderSheet::setDisplayMode(const char* ModeName)
-{
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
-}
-
-std::vector<std::string> ViewProviderSheet::getDisplayModes() const
-{
-    std::vector<std::string> StrList;
-    StrList.emplace_back("Spreadsheet");
-    return StrList;
 }
 
 QIcon ViewProviderSheet::getIcon() const
@@ -115,7 +106,7 @@ void ViewProviderSheet::exportAsFile()
     QString selectedFilter;
     QString formatList = QObject::tr("CSV (*.csv *.CSV);;All (*)");
     QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
-                                                        QObject::tr("Export file"),
+                                                        QObject::tr("Export File"),
                                                         QString(),
                                                         formatList,
                                                         &selectedFilter);
@@ -131,7 +122,7 @@ void ViewProviderSheet::exportAsFile()
                 sheet->exportToFile(fileName.toStdString(), delim, quote, escape);
             }
             else {
-                Base::Console().Error(errMsg.c_str());
+                Base::Console().error(errMsg.c_str());
             }
         }
     }
@@ -140,13 +131,13 @@ void ViewProviderSheet::exportAsFile()
 void ViewProviderSheet::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Show spreadsheet"), receiver, member);
+    act = menu->addAction(QObject::tr("Show Spreadsheet"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
 }
 
 Sheet* ViewProviderSheet::getSpreadsheetObject() const
 {
-    return freecad_dynamic_cast<Sheet>(pcObject);
+    return freecad_cast<Sheet*>(pcObject);
 }
 
 void ViewProviderSheet::beforeDelete()
@@ -167,8 +158,7 @@ SheetView* ViewProviderSheet::showSpreadsheetView()
         Gui::Document* doc = Gui::Application::Instance->getDocument(this->pcObject->getDocument());
         view = new SheetView(doc, this->pcObject, Gui::getMainWindow());
         view->setWindowIcon(Gui::BitmapFactory().pixmap(":icons/Spreadsheet.svg"));
-        view->setWindowTitle(QString::fromUtf8(pcObject->Label.getValue())
-                             + QString::fromLatin1("[*]"));
+        view->setWindowTitle(QString::fromUtf8(pcObject->Label.getValue()) + QStringLiteral("[*]"));
         Gui::getMainWindow()->addWindow(view);
         startEditing();
     }

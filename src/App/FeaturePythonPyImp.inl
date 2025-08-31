@@ -34,11 +34,7 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     0,                                                /*tp_itemsize*/
     /* methods */
     FeaturePyT::PyDestructor,                         /*tp_dealloc*/
-#if PY_VERSION_HEX >= 0x03080000
     0,                                                /*tp_vectorcall_offset*/
-#else
-    nullptr,                                          /*tp_print*/
-#endif
     nullptr,                                          /*tp_getattr*/
     nullptr,                                          /*tp_setattr*/
     nullptr,                                          /*tp_compare*/
@@ -83,11 +79,9 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     nullptr,                                          /*tp_del */
     0,                                                /*tp_version_tag */
     nullptr                                           /*tp_finalize */
-#if PY_VERSION_HEX >= 0x03080000
     ,0                                                /*tp_vectorcall */
 #if PY_VERSION_HEX >= 0x030c0000
     ,0                                                /*tp_watched */
-#endif
 #endif
 };
 

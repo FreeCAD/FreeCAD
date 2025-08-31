@@ -63,7 +63,7 @@
         else {                                                                                     \
             str += "No OCCT Exception Message";                                                    \
         }                                                                                          \
-        Base::Console().Error(str.c_str());                                                        \
+        Base::Console().error(str.c_str());                                                        \
         PyErr_SetString(Part::PartExceptionOCCError, str.c_str());                                 \
     }                                                                                              \
     catch (Base::Exception & e)                                                                    \
@@ -72,7 +72,7 @@
         str += "FreeCAD exception thrown (";                                                       \
         str += e.what();                                                                           \
         str += ")";                                                                                \
-        e.ReportException();                                                                       \
+        e.reportException();                                                                       \
         PyErr_SetString(Base::PyExc_FC_GeneralError, str.c_str());                                 \
     }                                                                                              \
     catch (std::exception & e)                                                                     \
@@ -81,7 +81,7 @@
         str += "STL exception thrown (";                                                           \
         str += e.what();                                                                           \
         str += ")";                                                                                \
-        Base::Console().Error(str.c_str());                                                        \
+        Base::Console().error(str.c_str());                                                        \
         PyErr_SetString(Base::PyExc_FC_GeneralError, str.c_str());                                 \
     }                                                                                              \
     catch (const char* e)                                                                          \
@@ -228,8 +228,7 @@ private:
             std::string gcode = buffer.str();
             Path::Toolpath path;
             path.setFromGCode(gcode);
-            Path::Feature* object = static_cast<Path::Feature*>(
-                pcDoc->addObject("Path::Feature", file.fileNamePure().c_str()));
+            auto* object = pcDoc->addObject<Path::Feature>(file.fileNamePure().c_str());
             object->Path.setValue(path);
             pcDoc->recompute();
         }
@@ -254,9 +253,8 @@ private:
             if (!pcDoc) {
                 pcDoc = App::GetApplication().newDocument();
             }
-            Path::PathPy* pPath = static_cast<Path::PathPy*>(pcObj);
-            Path::Feature* pcFeature =
-                static_cast<Path::Feature*>(pcDoc->addObject("Path::Feature", name));
+            auto* pPath = static_cast<Path::PathPy*>(pcObj);
+            auto* pcFeature = pcDoc->addObject<Path::Feature>(name);
             Path::Toolpath* pa = pPath->getToolpathPtr();
             if (!pa) {
                 throw Py::Exception(PyExc_ReferenceError, "object doesn't reference a valid path");

@@ -1,33 +1,33 @@
-# -*- coding: utf8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """The BIM TDPage command"""
 
+import os
 
 import FreeCAD
 import FreeCADGui
-import os
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
@@ -37,7 +37,7 @@ class BIM_TDPage:
     def GetResources(self):
         return {
             "Pixmap": "BIM_PageDefault",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_TDPage", "Page"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_TDPage", "New Page"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_TDPage", "Creates a new TechDraw page from a template"
             ),
@@ -49,7 +49,7 @@ class BIM_TDPage:
         return v
 
     def Activated(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
         import TechDraw
 
         templatedir = FreeCAD.ParamGet(
@@ -57,14 +57,13 @@ class BIM_TDPage:
         ).GetString("TDTemplateDir", "")
         if not templatedir:
             templatedir = None
-        filename = QtGui.QFileDialog.getOpenFileName(
+        filename, _ = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
             translate("BIM", "Select page template"),
             templatedir,
             "SVG file (*.svg)",
         )
         if filename:
-            filename = filename[0]
             name = os.path.splitext(os.path.basename(filename))[0]
             FreeCAD.ActiveDocument.openTransaction("Create page")
             page = FreeCAD.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
@@ -103,6 +102,7 @@ class BIM_TDPage:
                 page.Scale = FreeCAD.ParamGet(
                     "User parameter:BaseApp/Preferences/Mod/BIM"
                 ).GetFloat("DefaultPageScale", 0.01)
+            page.ViewObject.show()
             FreeCAD.ActiveDocument.recompute()
 
 

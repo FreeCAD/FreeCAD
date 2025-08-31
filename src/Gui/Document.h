@@ -26,7 +26,7 @@
 #include <list>
 #include <map>
 #include <string>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <QString>
 
 #include <Base/Persistence.h>
@@ -57,6 +57,12 @@ class ViewProviderDocumentObject;
 class Application;
 class DocumentPy;
 class TransactionViewProvider;
+
+enum class CreateViewMode
+{
+    Normal,
+    Clone
+};
 
 /** The Gui Document
  *  This is the document on GUI level. Its main responsibility is keeping
@@ -94,6 +100,7 @@ protected:
     void slotSkipRecompute(const App::Document &doc, const std::vector<App::DocumentObject*> &objs);
     void slotTouchedObject(const App::DocumentObject &);
     void slotChangePropertyEditor(const App::Document&, const App::Property &);
+    void callSignalBeforeRecompute();
     //@}
 
 public:
@@ -185,9 +192,7 @@ public:
     Gui::MDIView* getViewOfViewProvider(const Gui::ViewProvider*) const;
     Gui::MDIView* getViewOfNode(SoNode*) const;
     /// Create a new view
-    MDIView *createView(const Base::Type& typeId);
-    /// Create a clone of the given view
-    Gui::MDIView* cloneView(Gui::MDIView*);
+    MDIView* createView(const Base::Type& typeId, CreateViewMode mode = CreateViewMode::Normal);
     /** send messages to the active view
      * Send a specific massage to the active view and is able to receive a
      * return message

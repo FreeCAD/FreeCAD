@@ -44,6 +44,8 @@
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <CXX/Objects.hxx>
 
+#include <Gui/PreferencePages/DlgSettingsPDF.h>
+
 #include "Application.h"
 #include "ApplicationPy.h"
 #include "BitmapFactory.h"
@@ -428,6 +430,12 @@ PyMethodDef ApplicationPy::Methods[] = {
    "Remove all children from a group node.\n"
    "\n"
    "node : object"},
+  {"suspendWaitCursor", (PyCFunction) ApplicationPy::sSuspendWaitCursor, METH_VARARGS,
+   "suspendWaitCursor() -> None\n\n"
+   "Temporarily suspends the application's wait cursor and event filter."},
+  {"resumeWaitCursor",  (PyCFunction) ApplicationPy::sResumeWaitCursor, METH_VARARGS,
+   "resumeWaitCursor() -> None\n\n"
+   "Resumes the application's wait cursor and event filter."},
   {nullptr, nullptr, 0, nullptr}    /* Sentinel */
 };
 
@@ -659,7 +667,7 @@ PyObject* ApplicationPy::sOpen(PyObject * /*self*/, PyObject *args)
         FileHandler handler(fileName);
         if (!handler.openFile()) {
             QString ext = handler.extension();
-            Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
+            Base::Console().error("File type '%s' not supported\n", ext.toLatin1().constData());
         }
     }
     PY_CATCH;
@@ -683,7 +691,7 @@ PyObject* ApplicationPy::sInsert(PyObject * /*self*/, PyObject *args)
         FileHandler handler(fileName);
         if (!handler.importFile(std::string(DocName ? DocName : ""))) {
             QString ext = handler.extension();
-            Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
+            Base::Console().error("File type '%s' not supported\n", ext.toLatin1().constData());
         }
     } PY_CATCH;
 
@@ -773,8 +781,10 @@ PyObject* ApplicationPy::sExport(PyObject * /*self*/, PyObject *args)
                         view3d->viewAll();
                     }
                     QPrinter printer(QPrinter::ScreenResolution);
-                    // setPdfVersion sets the printed PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
-                    printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
+                    // setPdfVersion sets the printed PDF Version to what is chosen in
+                    // Preferences/Import-Export/PDF more details under:
+                    // https://www.kdab.com/creating-pdfa-documents-qt/
+                    printer.setPdfVersion(Gui::Dialog::DlgSettingsPDF::evaluatePDFVersion());
                     printer.setOutputFormat(QPrinter::PdfFormat);
                     printer.setOutputFileName(fileName);
                     printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
@@ -783,7 +793,7 @@ PyObject* ApplicationPy::sExport(PyObject * /*self*/, PyObject *args)
             }
         }
         else {
-            Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
+            Base::Console().error("File type '%s' not supported\n", ext.toLatin1().constData());
         }
     } PY_CATCH;
 
@@ -802,7 +812,7 @@ PyObject* ApplicationPy::sSendActiveView(PyObject * /*self*/, PyObject *args)
     const char* ppReturn = nullptr;
     if (!Application::Instance->sendMsgToActiveView(psCommandStr,&ppReturn)) {
         if (!Base::asBoolean(suppress)) {
-            Base::Console().Warning("Unknown view command: %s\n",psCommandStr);
+            Base::Console().warning("Unknown view command: %s\n",psCommandStr);
         }
     }
 
@@ -826,7 +836,7 @@ PyObject* ApplicationPy::sSendFocusView(PyObject * /*self*/, PyObject *args)
     const char* ppReturn = nullptr;
     if (!Application::Instance->sendMsgToFocusView(psCommandStr,&ppReturn)) {
         if (!Base::asBoolean(suppress)) {
-            Base::Console().Warning("Unknown view command: %s\n",psCommandStr);
+            Base::Console().warning("Unknown view command: %s\n",psCommandStr);
         }
     }
 
@@ -1289,37 +1299,39 @@ PyObject* ApplicationPy::sAddCommand(PyObject * /*self*/, PyObject *args)
     std::string group;
     try {
         Base::PyGILStateLocker lock;
-        Py::Module mod(PyImport_ImportModule("inspect"), true);
-        if (mod.isNull()) {
-            PyErr_SetString(PyExc_ImportError, "Cannot load inspect module");
-            return nullptr;
-        }
-        Py::Callable inspect(mod.getAttr("stack"));
-        Py::List list(inspect.apply());
 
-        std::string file;
-        // usually this is the file name of the calling script
-        Py::Object info = list.getItem(0);
-        PyObject *pyfile = PyStructSequence_GET_ITEM(*info,1);
-        if(!pyfile) {
-            throw Py::Exception();
-        }
+        // Get the filename of the running code by using the low-level sys._getframe() method.
+        // We use this instead of the `inspect` module (which may actually cause imports to execute
+        // and can result in a circular import if sAddCommand is being called as part of an import
+        // statement itself), and the `traceback` module (which cannot access the filename of code
+        // that is being run through the C interface).
 
-        file = Py::Object(pyfile).as_string();
-        Base::FileInfo fi(file);
+        Py::Module sysMod(PyImport_ImportModule("sys"), /*owned=*/true);
+        Py::Callable getFrame(sysMod.getAttr("_getframe"));
+
+        Py::Object callerFrame;
+        Py::Tuple getFrameArgs(1);
+        getFrameArgs[0] = Py::Long(0);
+        callerFrame = getFrame.apply(getFrameArgs);
+
+        Py::Object codeObj (callerFrame.getAttr("f_code"));
+
+        Py::Object filenameObj (codeObj.getAttr("co_filename"));
+        std::string filename (Py::String(filenameObj).as_std_string());
+
+        Base::FileInfo fi(filename);
         // convert backslashes to slashes
-        file = fi.filePath();
+        filename = fi.filePath();
         module = fi.fileNamePure();
-
         // for the group name get the directory name after 'Mod'
         boost::regex rx("/Mod/(\\w+)/");
         boost::smatch what;
-        if (boost::regex_search(file, what, rx)) {
+        if (boost::regex_search(filename, what, rx)) {
             group = what[1];
         }
         else {
-            boost::regex rx("/Ext/freecad/(\\w+)/");
-            if (boost::regex_search(file, what, rx)) {
+            rx = "/Ext/freecad/(\\w+)/";
+            if (boost::regex_search(filename, what, rx)) {
                 group = what[1];
             } else {
                 group = module;
@@ -1626,7 +1638,7 @@ PyObject* ApplicationPy::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
         //get the marker size
         auto sizeList = Gui::Inventor::MarkerBitmaps::getSupportedSizes(marker_arg);
 
-        if (std::find(std::begin(sizeList), std::end(sizeList), defSize) == std::end(sizeList)) {
+        if (std::ranges::find(sizeList, defSize) == std::end(sizeList)) {
             defSize = defaultSize;
         }
 
@@ -1796,4 +1808,24 @@ PyObject* ApplicationPy::sSetUserEditMode(PyObject * /*self*/, PyObject *args)
     bool ok = Application::Instance->setUserEditMode(std::string(mode));
 
     return Py::new_reference_to(Py::Boolean(ok));
+}
+
+PyObject* ApplicationPy::sSuspendWaitCursor(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    WaitCursor::suspend();
+    Py_RETURN_NONE;
+}
+
+PyObject* ApplicationPy::sResumeWaitCursor(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    WaitCursor::resume();
+    Py_RETURN_NONE;
 }

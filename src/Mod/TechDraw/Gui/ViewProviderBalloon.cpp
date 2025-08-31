@@ -48,6 +48,7 @@
 #include "QGIViewBalloon.h"
 #include "TaskBalloon.h"
 #include "ViewProviderBalloon.h"
+#include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -115,10 +116,16 @@ void ViewProviderBalloon::updateData(const App::Property* prop)
     //Balloon handles X, Y updates differently that other QGIView
     //call QGIViewBalloon::updateView
     if (prop == &(getViewObject()->X)  ||
-        prop == &(getViewObject()->Y) ){
+        prop == &(getViewObject()->Y)){
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
+        }
+    }
+    if (prop == &(getViewObject()->SourceView)) {
+        // Ensure the QGraphicsItems hierarchy matches the DocumentObject's
+        if (ViewProviderPage* vpp = getViewProviderPage()) {
+            vpp->fixSceneDependencies();
         }
     }
 
@@ -172,7 +179,7 @@ bool ViewProviderBalloon::canDelete(App::DocumentObject *obj) const
 bool ViewProviderBalloon::onDelete(const std::vector<std::string> & parms)
 {
     Q_UNUSED(parms)
-//    Base::Console().Message("VPB::onDelete() - parms: %d\n", parms.size());
+//    Base::Console().message("VPB::onDelete() - parms: %d\n", parms.size());
     if (Gui::Control().activeDialog())  {
         // TODO: make this selective so only a dialog involving this vp's
         // feature is blocked.  As is, this will prevent deletion during any

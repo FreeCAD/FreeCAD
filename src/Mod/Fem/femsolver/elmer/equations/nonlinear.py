@@ -47,17 +47,25 @@ class Proxy(linear.Proxy):
             "NonlinearIterations",
             "Nonlinear System",
             "Maximum number of iterations",
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyIntegerConstraint",
             "NonlinearNewtonAfterIterations",
             "Nonlinear System",
             "",
+            locked=True,
         )
         obj.addProperty(
-            "App::PropertyFloat", "NonlinearNewtonAfterTolerance", "Nonlinear System", ""
+            "App::PropertyFloat",
+            "NonlinearNewtonAfterTolerance",
+            "Nonlinear System",
+            "",
+            locked=True,
         )
-        obj.addProperty("App::PropertyFloat", "NonlinearTolerance", "Nonlinear System", "")
+        obj.addProperty(
+            "App::PropertyFloat", "NonlinearTolerance", "Nonlinear System", "", locked=True
+        )
         obj.addProperty(
             "App::PropertyFloatConstraint",
             "RelaxationFactor",
@@ -66,6 +74,7 @@ class Proxy(linear.Proxy):
                 "Value below 1.0 might be necessary to achieve convergence\n"
                 "Typical values are in the range [0.3, 1.0]"
             ),
+            locked=True,
         )
 
         obj.NonlinearIterations = (20, 1, int(1e6), 10)

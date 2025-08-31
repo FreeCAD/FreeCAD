@@ -1,24 +1,24 @@
-# -*- coding: utf8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -37,7 +37,7 @@ class BIM_SetWPFront:
             "Pixmap": "view-front.svg",
             "MenuText": QT_TRANSLATE_NOOP("BIM_SetWPFront", "Working Plane Front"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_SetWPFront", "Set the working plane to Front"
+                "BIM_SetWPFront", "Sets the working plane to Front"
             ),
             "Accel": "W,P,1",
         }
@@ -54,7 +54,7 @@ class BIM_SetWPSide:
             "Pixmap": "view-right.svg",
             "MenuText": QT_TRANSLATE_NOOP("BIM_SetWPSide", "Working Plane Side"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_SetWPSide", "Set the working plane to Side"
+                "BIM_SetWPSide", "Sets the working plane to Side"
             ),
             "Accel": "W,P,3",
         }
@@ -71,7 +71,7 @@ class BIM_SetWPTop:
             "Pixmap": "view-top.svg",
             "MenuText": QT_TRANSLATE_NOOP("BIM_SetWPTop", "Working Plane Top"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_SetWPTop", "Set the working plane to Top"
+                "BIM_SetWPTop", "Sets the working plane to Top"
             ),
             "Accel": "W,P,2",
         }
@@ -89,7 +89,7 @@ class BIM_WPView:
             "MenuText": QT_TRANSLATE_NOOP("BIM_WPView", "Working Plane View"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_WPView",
-                "Aligns the view on the current item in BIM Views window or on the current working plane",
+                "Aligns the view to the current item in BIM Views window or to the current working plane",
             ),
             "Accel": "9",
         }
@@ -99,32 +99,22 @@ class BIM_WPView:
         return v
 
     def Activated(self):
-        done = False
-        try:
-            import BimViews
-        except ImportError:
-            pass
-        else:
-            v = BimViews.findWidget()
-            if v:
-                i = v.tree.currentItem()
-                if i:
-                    # Aligning on current widget item
-                    BimViews.show(i)
-                    done = True
-                elif hasattr(v, "lastSelected"):
-                    BimViews.show(v.lastSelected)
-                    # Aligning on stored widget item
-                    done = True
-            elif hasattr(FreeCAD, "DraftWorkingPlane"):
-                if hasattr(FreeCAD.DraftWorkingPlane, "lastBuildingPart"):
-                    BimViews.show(FreeCAD.DraftWorkingPlane.lastBuildingPart)
-                    done = True
-        if not done:
-            # Aligning on current working plane
-            c = FreeCADGui.ActiveDocument.ActiveView.getCameraNode()
-            r = FreeCAD.DraftWorkingPlane.getRotation().Rotation.Q
-            c.orientation.setValue(r)
+        from bimcommands import BimViews
+        import WorkingPlane
+
+        vm = BimViews.findWidget()
+        if vm:
+            sel = vm.tree.selectedItems()
+            if sel:
+                # Aligning to current widget item
+                BimViews.show(sel[0])
+                return
+            if hasattr(vm, "lastSelected"):
+                # Aligning to stored widget item
+                BimViews.show(vm.lastSelected)
+                return
+        # Aligning to current working plane
+        WorkingPlane.get_working_plane().align_view()
 
 
 FreeCADGui.addCommand("BIM_WPView", BIM_WPView())

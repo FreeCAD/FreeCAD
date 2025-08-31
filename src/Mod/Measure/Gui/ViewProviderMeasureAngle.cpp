@@ -67,6 +67,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Quantity.h>
+#include <Base/Tools.h>
 #include <Gui/ArcEngine.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -128,7 +129,7 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
 
         GeomAPI_ProjectPointOnCurve projection(tempPoint, heapLine2);
         if (projection.NbPoints() < 1) {
-            throw Base::RuntimeError("parallel vectors: couldn't project onto line");
+            throw Base::RuntimeError("parallel vectors: could not project onto line");
         }
         gp_Vec newPoint2;
         newPoint2.SetXYZ(projection.Point(1).XYZ());
@@ -194,7 +195,7 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
         GeomAPI_ExtremaCurveCurve extrema(heapLine1, heapLine2);
 
         if (extrema.NbExtrema() < 1) {
-            throw Base::RuntimeError("couldn't get extrema");
+            throw Base::RuntimeError("Could not get extrema");
         }
 
         gp_Pnt extremaPoint1, extremaPoint2, dimensionOriginPoint;
@@ -325,8 +326,7 @@ void ViewProviderMeasureAngle::redrawAnnotation()
 {
     auto obj = dynamic_cast<Measure::MeasureAngle*>(getMeasureObject());
     double angleDeg = obj->Angle.getValue();
-    constexpr double radiansPerDegree = M_PI / 180.0;
-    this->fieldAngle = angleDeg * radiansPerDegree;
+    this->fieldAngle = Base::toRadians(angleDeg);
 
     // Set matrix
     try {
@@ -334,7 +334,7 @@ void ViewProviderMeasureAngle::redrawAnnotation()
         pcTransform->setMatrix(matrix);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n",
+        Base::Console().error("Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n",
                               e.what());
         return;
     }

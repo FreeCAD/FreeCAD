@@ -29,9 +29,13 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include "ViewProvider.h"
+
+#include <Base/Tools.h>
 
 
 using namespace PartGui;
@@ -48,18 +52,18 @@ bool ViewProviderPart::doubleClicked()
     try {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
         Gui::Command::openCommand(text.toUtf8());
-        FCMD_SET_EDIT(pcObject);
+        Gui::cmdSetEdit(pcObject);
         return true;
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Base::Console().error("%s\n", e.what());
         return false;
     }
 }
 
 void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
-                                  const std::vector<App::Color>& colBase,
-                                  std::vector<App::Color>& colBool)
+                                  const std::vector<Base::Color>& colBase,
+                                  std::vector<Base::Color>& colBool)
 {
     // apply color from modified faces
     for (const auto& jt : hist.shapeMap) {
@@ -81,14 +85,14 @@ void ViewProviderPart::applyMaterial(const Part::ShapeHistory& hist,
     }
 }
 
-void ViewProviderPart::applyTransparency(float transparency, std::vector<App::Color>& colors)
+void ViewProviderPart::applyTransparency(float transparency, std::vector<Base::Color>& colors)
 {
     if (transparency != 0.0) {
         // transparency has been set object-wide
         for (auto& j : colors) {
             // transparency hasn't been set for this face
             if (j.a == 0.0) {
-                j.setTransparency(transparency/100.0F);  // transparency comes in percent
+                j.setTransparency(Base::fromPercent(transparency));  // transparency comes in percent
             }
         }
     }
@@ -101,10 +105,29 @@ void ViewProviderPart::applyTransparency(float transparency, std::vector<App::Ma
         for (auto& j : colors) {
             // transparency hasn't been set for this face
             if (j.transparency == 0.0) {
-                j.transparency = transparency / 100.0F;  // transparency comes in percent
+                j.transparency = Base::fromPercent(transparency);  // transparency comes in percent
             }
         }
     }
+}
+
+void ViewProviderPart::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
+{
+    ViewProviderPartExt::setEditViewer(viewer, ModNum);
+
+    if (gizmoContainer) {
+        gizmoContainer->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
+
+        auto originPlacement = App::GeoFeature::getGlobalPlacement(getObject())
+            * getObjectPlacement().inverse();
+        gizmoContainer->attachViewer(viewer, originPlacement);
+    }
+}
+
+void ViewProviderPart::setGizmoContainer(Gui::GizmoContainer* gizmoContainer)
+{
+    assert(gizmoContainer);
+    this->gizmoContainer = gizmoContainer;
 }
 
 // ----------------------------------------------------------------------------

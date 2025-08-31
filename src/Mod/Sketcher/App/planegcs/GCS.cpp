@@ -47,10 +47,10 @@
 #endif
 
 #include <algorithm>
-#include <cfloat>
 #include <future>
 #include <iostream>
 #include <limits>
+#include <numbers>
 
 #include "GCS.h"
 #include "qp_eq.h"
@@ -302,7 +302,7 @@ SolverReportingManager& SolverReportingManager::Manager()
 
 void SolverReportingManager::LogToConsole(const std::string& str)
 {
-    Base::Console().Log(str.c_str());
+    Base::Console().log(str.c_str());
 }
 
 void SolverReportingManager::LogToFile(const std::string& str)
@@ -540,16 +540,13 @@ void System::invalidatedDiagnosis()
 void System::clearByTag(int tagId)
 {
     std::vector<Constraint*> constrvec;
-    for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
-         ++constr) {
-        if ((*constr)->getTag() == tagId) {
-            constrvec.push_back(*constr);
+    for (const auto& constr : clist) {
+        if (constr->getTag() == tagId) {
+            constrvec.push_back(constr);
         }
     }
-    for (std::vector<Constraint*>::const_iterator constr = constrvec.begin();
-         constr != constrvec.end();
-         ++constr) {
-        removeConstraint(*constr);
+    for (const auto& constr : constrvec) {
+        removeConstraint(constr);
     }
 }
 
@@ -562,11 +559,10 @@ int System::addConstraint(Constraint* constr)
 
     clist.push_back(constr);
     VEC_pD constr_params = constr->params();
-    for (VEC_pD::const_iterator param = constr_params.begin(); param != constr_params.end();
-         ++param) {
-        //        jacobi.set(constr, *param, 0.);
-        c2p[constr].push_back(*param);
-        p2c[*param].push_back(constr);
+    for (const auto& param : constr_params) {
+        // jacobi.set(constr, *param, 0.);
+        c2p[constr].push_back(param);
+        p2c[param].push_back(constr);
     }
     return clist.size() - 1;
 }
@@ -574,7 +570,7 @@ int System::addConstraint(Constraint* constr)
 void System::removeConstraint(Constraint* constr)
 {
     std::vector<Constraint*>::iterator it;
-    it = std::find(clist.begin(), clist.end(), constr);
+    it = std::ranges::find(clist, constr);
     if (it == clist.end()) {
         return;
     }
@@ -585,12 +581,8 @@ void System::removeConstraint(Constraint* constr)
     }
     clearSubSystems();
 
-    VEC_pD constr_params = c2p[constr];
-    for (VEC_pD::const_iterator param = constr_params.begin(); param != constr_params.end();
-         ++param) {
-        std::vector<Constraint*>& constraints = p2c[*param];
-        it = std::find(constraints.begin(), constraints.end(), constr);
-        constraints.erase(it);
+    for (const auto& param : c2p[constr]) {
+        p2c[param].erase(std::ranges::find(p2c[param], constr));
     }
     c2p.erase(constr);
 
@@ -1029,6 +1021,8 @@ int System::addConstraintPerpendicularLine2Arc(Point& p1,
                                                int tagId,
                                                bool driving)
 {
+    using std::numbers::pi;
+
     addConstraintP2PCoincident(p2, a.start, tagId, driving);
     double dx = *(p2.x) - *(p1.x);
     double dy = *(p2.y) - *(p1.y);
@@ -1046,6 +1040,8 @@ int System::addConstraintPerpendicularArc2Line(Arc& a,
                                                int tagId,
                                                bool driving)
 {
+    using std::numbers::pi;
+
     addConstraintP2PCoincident(p1, a.end, tagId, driving);
     double dx = *(p2.x) - *(p1.x);
     double dy = *(p2.y) - *(p1.y);
@@ -1063,8 +1059,10 @@ int System::addConstraintPerpendicularCircle2Arc(Point& center,
                                                  int tagId,
                                                  bool driving)
 {
+    using std::numbers::pi;
+
     addConstraintP2PDistance(a.start, center, radius, tagId, driving);
-    double incrAngle = *(a.startAngle) < *(a.endAngle) ? pi_2 : -pi_2;
+    double incrAngle = *(a.startAngle) < *(a.endAngle) ? pi / 2 : -pi / 2;
     double tangAngle = *a.startAngle + incrAngle;
     double dx = *(a.start.x) - *(center.x);
     double dy = *(a.start.y) - *(center.y);
@@ -1082,8 +1080,10 @@ int System::addConstraintPerpendicularArc2Circle(Arc& a,
                                                  int tagId,
                                                  bool driving)
 {
+    using std::numbers::pi;
+
     addConstraintP2PDistance(a.end, center, radius, tagId, driving);
-    double incrAngle = *(a.startAngle) < *(a.endAngle) ? -pi_2 : pi_2;
+    double incrAngle = *(a.startAngle) < *(a.endAngle) ? -pi / 2 : pi / 2;
     double tangAngle = *a.endAngle + incrAngle;
     double dx = *(a.end.x) - *(center.x);
     double dy = *(a.end.y) - *(center.y);
@@ -1758,10 +1758,9 @@ double System::calculateConstraintErrorByTag(int tagId)
     double sqErr = 0.0;  // accumulator of squared errors
     double err = 0.0;    // last computed signed error value
 
-    for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
-         ++constr) {
-        if ((*constr)->getTag() == tagId) {
-            err = (*constr)->error();
+    for (const auto& constr : clist) {
+        if (constr->getTag() == tagId) {
+            err = constr->error();
             sqErr += err * err;
             cnt++;
         };
@@ -1836,7 +1835,7 @@ void System::initSolution(Algorithm alg)
 
     std::vector<Constraint*> clistR;
     if (!redundant.empty()) {
-        std::copy_if(clist.begin(), clist.end(), std::back_inserter(clistR), [this](auto constr) {
+        std::ranges::copy_if(clist, std::back_inserter(clistR), [this](auto constr) {
             return this->redundant.count(constr) == 0;
         });
     }
@@ -1887,7 +1886,7 @@ void System::initSolution(Algorithm alg)
             reducedConstrs.insert(constr);
             double* p_kept = reducedParams[it1->second];
             double* p_replaced = reducedParams[it2->second];
-            std::replace(reducedParams.begin(), reducedParams.end(), p_replaced, p_kept);
+            std::ranges::replace(reducedParams, p_replaced, p_kept);
         }
         for (size_t i = 0; i < plist.size(); ++i) {
             if (plist[i] != reducedParams[i]) {
@@ -1924,13 +1923,12 @@ void System::initSolution(Algorithm alg)
     subSystemsAux.resize(clists.size(), nullptr);
     for (std::size_t cid = 0; cid < clists.size(); ++cid) {
         std::vector<Constraint*> clist0, clist1;
-        std::partition_copy(clists[cid].begin(),
-                            clists[cid].end(),
-                            std::back_inserter(clist0),
-                            std::back_inserter(clist1),
-                            [](auto constr) {
-                                return constr->getTag() >= 0;
-                            });
+        std::ranges::partition_copy(clists[cid],
+                                    std::back_inserter(clist0),
+                                    std::back_inserter(clist1),
+                                    [](auto constr) {
+                                        return constr->getTag() >= 0;
+                                    });
 
         if (!clist0.empty()) {
             subSystems[cid] = new SubSystem(clist0, plists[cid], reductionmaps[cid]);
@@ -1947,8 +1945,8 @@ void System::setReference()
 {
     reference.clear();
     reference.reserve(plist.size());
-    for (VEC_pD::const_iterator param = plist.begin(); param != plist.end(); ++param) {
-        reference.push_back(**param);
+    for (const auto& param : plist) {
+        reference.push_back(*param);
     }
 }
 
@@ -2078,7 +2076,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
                << ", maxIter: " << maxIterNumber << "\n";
 
         const std::string tmp = stream.str();
-        Base::Console().Log(tmp.c_str());
+        Base::Console().log(tmp.c_str());
     }
 
     double divergingLim = 1e6 * err + 1e12;
@@ -2093,7 +2091,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
                        << ", err: " << err << ", h_norm: " << h_norm << "\n";
 
                 const std::string tmp = stream.str();
-                Base::Console().Log(tmp.c_str());
+                Base::Console().log(tmp.c_str());
             }
             break;
         }
@@ -2105,7 +2103,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
                        << ", err: " << err << ", divergingLim: " << divergingLim << "\n";
 
                 const std::string tmp = stream.str();
-                Base::Console().Log(tmp.c_str());
+                Base::Console().log(tmp.c_str());
             }
             break;
         }
@@ -2142,7 +2140,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
                    << "\n";
 
             const std::string tmp = stream.str();
-            Base::Console().Log(tmp.c_str());
+            Base::Console().log(tmp.c_str());
         }
     }
 
@@ -2205,7 +2203,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
                << ", xsize: " << xsize << ", maxIter: " << maxIterNumber << "\n";
 
         const std::string tmp = stream.str();
-        Base::Console().Log(tmp.c_str());
+        Base::Console().log(tmp.c_str());
     }
 
     double nu = 2, mu = 0;
@@ -2270,12 +2268,13 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
                 x_new = x + h;
                 h_norm = h.squaredNorm();
 
+                constexpr double epsilon = std::numeric_limits<double>::epsilon();
                 if (h_norm <= eps1 * eps1 * x.norm()) {
                     // relative change in p is small, stop
                     stop = 3;
                     break;
                 }
-                else if (h_norm >= (x.norm() + eps1) / (DBL_EPSILON * DBL_EPSILON)) {
+                else if (h_norm >= (x.norm() + eps1) / (epsilon * epsilon)) {
                     // almost singular
                     stop = 4;
                     break;
@@ -2323,7 +2322,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
                    << ", g_inf(eps1): " << g_inf << ", h_norm: " << h_norm << "\n";
 
             const std::string tmp = stream.str();
-            Base::Console().Log(tmp.c_str());
+            Base::Console().log(tmp.c_str());
         }
     }
 
@@ -2376,7 +2375,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
                << "\n";
 
         const std::string tmp = stream.str();
-        Base::Console().Log(tmp.c_str());
+        Base::Console().log(tmp.c_str());
     }
 
     Eigen::VectorXd x(xsize), x_new(xsize);
@@ -2533,7 +2532,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
                    << ", err(divergingLim): " << err << "\n";
 
             const std::string tmp = stream.str();
-            Base::Console().Log(tmp.c_str());
+            Base::Console().log(tmp.c_str());
         }
 
         // count this iteration and start again
@@ -2547,7 +2546,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
         stream << "DL: stopcode: " << stop << ((stop == 1) ? ", Success" : ", Failed") << "\n";
 
         const std::string tmp = stream.str();
-        Base::Console().Log(tmp.c_str());
+        Base::Console().log(tmp.c_str());
     }
 
     return (stop == 1) ? Success : Failed;
@@ -2588,7 +2587,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
     int ips = 0;
     for (VEC_pD::iterator it = plistout.begin(); it != plistout.end(); ++it, ++ips) {
-        VEC_pD::iterator p = std::find(plist.begin(), plist.end(), (*it));
+        VEC_pD::iterator p = std::ranges::find(plist, (*it));
         size_t p_index = std::distance(plist.begin(), p);
 
         if (p_index == plist.size()) {
@@ -2605,14 +2604,13 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
         switch ((*it)->getTypeId()) {
             case Equal: {  // 2
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
+                VEC_pD::iterator p1 = std::ranges::find(plist, (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::ranges::find(plist, (*it)->pvec[1]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
 
                 bool npb1 = false;
-                VEC_pD::iterator np1 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
+                VEC_pD::iterator np1 = std::ranges::find(clist_params_, (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
                 if (i1 == plist.size()) {
@@ -2630,8 +2628,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb2 = false;
-                VEC_pD::iterator np2 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
+                VEC_pD::iterator np2 = std::ranges::find(clist_params_, (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
                 if (i2 == plist.size()) {
@@ -2656,16 +2653,15 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 break;
             }
             case Difference: {  // 3
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
+                VEC_pD::iterator p1 = std::ranges::find(plist, (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::ranges::find(plist, (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::ranges::find(plist, (*it)->pvec[2]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
 
                 bool npb1 = false;
-                VEC_pD::iterator np1 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
+                VEC_pD::iterator np1 = std::ranges::find(clist_params_, (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
                 if (i1 == plist.size()) {
@@ -2683,8 +2679,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb2 = false;
-                VEC_pD::iterator np2 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
+                VEC_pD::iterator np2 = std::ranges::find(clist_params_, (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
                 if (i2 == plist.size()) {
@@ -2702,8 +2697,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb3 = false;
-                VEC_pD::iterator np3 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
+                VEC_pD::iterator np3 = std::ranges::find(clist_params_, (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
                 if (i3 == plist.size()) {
@@ -2730,11 +2724,11 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 break;
             }
             case P2PDistance: {  // 5
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
+                VEC_pD::iterator p1 = std::ranges::find(plist, (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::ranges::find(plist, (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::ranges::find(plist, (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::ranges::find(plist, (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::ranges::find(plist, (*it)->pvec[4]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -2742,8 +2736,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 size_t i5 = std::distance(plist.begin(), p5);
 
                 bool npb1 = false;
-                VEC_pD::iterator np1 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
+                VEC_pD::iterator np1 = std::ranges::find(clist_params_, (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
                 if (i1 == plist.size()) {
@@ -2761,8 +2754,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb2 = false;
-                VEC_pD::iterator np2 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
+                VEC_pD::iterator np2 = std::ranges::find(clist_params_, (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
                 if (i2 == plist.size()) {
@@ -2780,8 +2772,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb3 = false;
-                VEC_pD::iterator np3 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
+                VEC_pD::iterator np3 = std::ranges::find(clist_params_, (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
                 if (i3 == plist.size()) {
@@ -2799,8 +2790,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb4 = false;
-                VEC_pD::iterator np4 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
+                VEC_pD::iterator np4 = std::ranges::find(clist_params_, (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
                 if (i4 == plist.size()) {
@@ -2818,8 +2808,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb5 = false;
-                VEC_pD::iterator np5 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
+                VEC_pD::iterator np5 = std::ranges::find(clist_params_, (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
                 if (i5 == plist.size()) {
@@ -2862,11 +2851,11 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 break;
             }
             case P2PAngle: {  // 5
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
+                VEC_pD::iterator p1 = std::ranges::find(plist, (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::ranges::find(plist, (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::ranges::find(plist, (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::ranges::find(plist, (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::ranges::find(plist, (*it)->pvec[4]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -2874,8 +2863,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 size_t i5 = std::distance(plist.begin(), p5);
 
                 bool npb1 = false;
-                VEC_pD::iterator np1 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
+                VEC_pD::iterator np1 = std::ranges::find(clist_params_, (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
                 if (i1 == plist.size()) {
@@ -2893,8 +2881,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb2 = false;
-                VEC_pD::iterator np2 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
+                VEC_pD::iterator np2 = std::ranges::find(clist_params_, (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
                 if (i2 == plist.size()) {
@@ -2912,8 +2899,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb3 = false;
-                VEC_pD::iterator np3 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
+                VEC_pD::iterator np3 = std::ranges::find(clist_params_, (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
                 if (i3 == plist.size()) {
@@ -2931,8 +2917,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb4 = false;
-                VEC_pD::iterator np4 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
+                VEC_pD::iterator np4 = std::ranges::find(clist_params_, (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
                 if (i4 == plist.size()) {
@@ -2950,8 +2935,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb5 = false;
-                VEC_pD::iterator np5 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
+                VEC_pD::iterator np5 = std::ranges::find(clist_params_, (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
                 if (i5 == plist.size()) {
@@ -2994,13 +2978,13 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 break;
             }
             case P2LDistance: {  // 7
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
-                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(), (*it)->pvec[6]);
+                VEC_pD::iterator p1 = std::ranges::find(plist, (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::ranges::find(plist, (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::ranges::find(plist, (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::ranges::find(plist, (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::ranges::find(plist, (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::ranges::find(plist, (*it)->pvec[5]);
+                VEC_pD::iterator p7 = std::ranges::find(plist, (*it)->pvec[6]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -3010,8 +2994,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 size_t i7 = std::distance(plist.begin(), p7);
 
                 bool npb1 = false;
-                VEC_pD::iterator np1 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
+                VEC_pD::iterator np1 = std::ranges::find(clist_params_, (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
                 if (i1 == plist.size()) {
@@ -3029,8 +3012,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb2 = false;
-                VEC_pD::iterator np2 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
+                VEC_pD::iterator np2 = std::ranges::find(clist_params_, (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
                 if (i2 == plist.size()) {
@@ -3048,8 +3030,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb3 = false;
-                VEC_pD::iterator np3 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
+                VEC_pD::iterator np3 = std::ranges::find(clist_params_, (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
                 if (i3 == plist.size()) {
@@ -3067,8 +3048,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb4 = false;
-                VEC_pD::iterator np4 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
+                VEC_pD::iterator np4 = std::ranges::find(clist_params_, (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
                 if (i4 == plist.size()) {
@@ -3086,8 +3066,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb5 = false;
-                VEC_pD::iterator np5 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
+                VEC_pD::iterator np5 = std::ranges::find(clist_params_, (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
                 if (i5 == plist.size()) {
@@ -3105,8 +3084,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb6 = false;
-                VEC_pD::iterator np6 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
+                VEC_pD::iterator np6 = std::ranges::find(clist_params_, (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
                 if (i6 == plist.size()) {
@@ -3124,8 +3102,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb7 = false;
-                VEC_pD::iterator np7 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[6]);
+                VEC_pD::iterator np7 = std::ranges::find(clist_params_, (*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
 
                 if (i7 == plist.size()) {
@@ -3175,12 +3152,12 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 break;
             }
             case PointOnLine: {  // 6
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
+                VEC_pD::iterator p1 = std::ranges::find(plist, (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::ranges::find(plist, (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::ranges::find(plist, (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::ranges::find(plist, (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::ranges::find(plist, (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::ranges::find(plist, (*it)->pvec[5]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -3189,8 +3166,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 size_t i6 = std::distance(plist.begin(), p6);
 
                 bool npb1 = false;
-                VEC_pD::iterator np1 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
+                VEC_pD::iterator np1 = std::ranges::find(clist_params_, (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
                 if (i1 == plist.size()) {
@@ -3208,8 +3184,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb2 = false;
-                VEC_pD::iterator np2 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
+                VEC_pD::iterator np2 = std::ranges::find(clist_params_, (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
                 if (i2 == plist.size()) {
@@ -3227,8 +3202,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb3 = false;
-                VEC_pD::iterator np3 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
+                VEC_pD::iterator np3 = std::ranges::find(clist_params_, (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
                 if (i3 == plist.size()) {
@@ -3246,8 +3220,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb4 = false;
-                VEC_pD::iterator np4 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
+                VEC_pD::iterator np4 = std::ranges::find(clist_params_, (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
                 if (i4 == plist.size()) {
@@ -3265,8 +3238,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb5 = false;
-                VEC_pD::iterator np5 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
+                VEC_pD::iterator np5 = std::ranges::find(clist_params_, (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
                 if (i5 == plist.size()) {
@@ -3284,8 +3256,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb6 = false;
-                VEC_pD::iterator np6 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
+                VEC_pD::iterator np6 = std::ranges::find(clist_params_, (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
                 if (i6 == plist.size()) {
@@ -3331,12 +3302,12 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 break;
             }
             case PointOnPerpBisector: {  // 6
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
+                VEC_pD::iterator p1 = std::ranges::find(plist, (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::ranges::find(plist, (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::ranges::find(plist, (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::ranges::find(plist, (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::ranges::find(plist, (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::ranges::find(plist, (*it)->pvec[5]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -3345,8 +3316,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 size_t i6 = std::distance(plist.begin(), p6);
 
                 bool npb1 = false;
-                VEC_pD::iterator np1 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
+                VEC_pD::iterator np1 = std::ranges::find(clist_params_, (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
                 if (i1 == plist.size()) {
@@ -3364,8 +3334,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb2 = false;
-                VEC_pD::iterator np2 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
+                VEC_pD::iterator np2 = std::ranges::find(clist_params_, (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
                 if (i2 == plist.size()) {
@@ -3383,8 +3352,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb3 = false;
-                VEC_pD::iterator np3 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
+                VEC_pD::iterator np3 = std::ranges::find(clist_params_, (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
                 if (i3 == plist.size()) {
@@ -3402,8 +3370,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb4 = false;
-                VEC_pD::iterator np4 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
+                VEC_pD::iterator np4 = std::ranges::find(clist_params_, (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
                 if (i4 == plist.size()) {
@@ -3421,8 +3388,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb5 = false;
-                VEC_pD::iterator np5 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
+                VEC_pD::iterator np5 = std::ranges::find(clist_params_, (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
                 if (i5 == plist.size()) {
@@ -3440,8 +3406,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb6 = false;
-                VEC_pD::iterator np6 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
+                VEC_pD::iterator np6 = std::ranges::find(clist_params_, (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
                 if (i6 == plist.size()) {
@@ -3487,14 +3452,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 break;
             }
             case Parallel: {  // 8
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
-                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(), (*it)->pvec[6]);
-                VEC_pD::iterator p8 = std::find(plist.begin(), plist.end(), (*it)->pvec[7]);
+                VEC_pD::iterator p1 = std::ranges::find(plist, (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::ranges::find(plist, (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::ranges::find(plist, (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::ranges::find(plist, (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::ranges::find(plist, (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::ranges::find(plist, (*it)->pvec[5]);
+                VEC_pD::iterator p7 = std::ranges::find(plist, (*it)->pvec[6]);
+                VEC_pD::iterator p8 = std::ranges::find(plist, (*it)->pvec[7]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -3505,8 +3470,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 size_t i8 = std::distance(plist.begin(), p8);
 
                 bool npb1 = false;
-                VEC_pD::iterator np1 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
+                VEC_pD::iterator np1 = std::ranges::find(clist_params_, (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
                 if (i1 == plist.size()) {
@@ -3524,8 +3488,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb2 = false;
-                VEC_pD::iterator np2 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
+                VEC_pD::iterator np2 = std::ranges::find(clist_params_, (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
                 if (i2 == plist.size()) {
@@ -3543,8 +3506,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb3 = false;
-                VEC_pD::iterator np3 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
+                VEC_pD::iterator np3 = std::ranges::find(clist_params_, (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
                 if (i3 == plist.size()) {
@@ -3562,8 +3524,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb4 = false;
-                VEC_pD::iterator np4 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
+                VEC_pD::iterator np4 = std::ranges::find(clist_params_, (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
                 if (i4 == plist.size()) {
@@ -3581,8 +3542,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb5 = false;
-                VEC_pD::iterator np5 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
+                VEC_pD::iterator np5 = std::ranges::find(clist_params_, (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
                 if (i5 == plist.size()) {
@@ -3600,8 +3560,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb6 = false;
-                VEC_pD::iterator np6 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
+                VEC_pD::iterator np6 = std::ranges::find(clist_params_, (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
                 if (i6 == plist.size()) {
@@ -3619,8 +3578,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb7 = false;
-                VEC_pD::iterator np7 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[6]);
+                VEC_pD::iterator np7 = std::ranges::find(clist_params_, (*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
 
                 if (i7 == plist.size()) {
@@ -3638,8 +3596,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb8 = false;
-                VEC_pD::iterator np8 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[7]);
+                VEC_pD::iterator np8 = std::ranges::find(clist_params_, (*it)->pvec[7]);
                 size_t ni8 = std::distance(clist_params_.begin(), np8);
 
                 if (i8 == plist.size()) {
@@ -3692,14 +3649,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 break;
             }
             case Perpendicular: {  // 8
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
-                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(), (*it)->pvec[6]);
-                VEC_pD::iterator p8 = std::find(plist.begin(), plist.end(), (*it)->pvec[7]);
+                VEC_pD::iterator p1 = std::ranges::find(plist, (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::ranges::find(plist, (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::ranges::find(plist, (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::ranges::find(plist, (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::ranges::find(plist, (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::ranges::find(plist, (*it)->pvec[5]);
+                VEC_pD::iterator p7 = std::ranges::find(plist, (*it)->pvec[6]);
+                VEC_pD::iterator p8 = std::ranges::find(plist, (*it)->pvec[7]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -3710,8 +3667,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 size_t i8 = std::distance(plist.begin(), p8);
 
                 bool npb1 = false;
-                VEC_pD::iterator np1 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
+                VEC_pD::iterator np1 = std::ranges::find(clist_params_, (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
                 if (i1 == plist.size()) {
@@ -3729,8 +3685,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb2 = false;
-                VEC_pD::iterator np2 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
+                VEC_pD::iterator np2 = std::ranges::find(clist_params_, (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
                 if (i2 == plist.size()) {
@@ -3748,8 +3703,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb3 = false;
-                VEC_pD::iterator np3 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
+                VEC_pD::iterator np3 = std::ranges::find(clist_params_, (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
                 if (i3 == plist.size()) {
@@ -3767,8 +3721,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb4 = false;
-                VEC_pD::iterator np4 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
+                VEC_pD::iterator np4 = std::ranges::find(clist_params_, (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
                 if (i4 == plist.size()) {
@@ -3786,8 +3739,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb5 = false;
-                VEC_pD::iterator np5 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
+                VEC_pD::iterator np5 = std::ranges::find(clist_params_, (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
                 if (i5 == plist.size()) {
@@ -3805,8 +3757,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb6 = false;
-                VEC_pD::iterator np6 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
+                VEC_pD::iterator np6 = std::ranges::find(clist_params_, (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
                 if (i6 == plist.size()) {
@@ -3824,8 +3775,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb7 = false;
-                VEC_pD::iterator np7 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[6]);
+                VEC_pD::iterator np7 = std::ranges::find(clist_params_, (*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
 
                 if (i7 == plist.size()) {
@@ -3843,8 +3793,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb8 = false;
-                VEC_pD::iterator np8 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[7]);
+                VEC_pD::iterator np8 = std::ranges::find(clist_params_, (*it)->pvec[7]);
                 size_t ni8 = std::distance(clist_params_.begin(), np8);
 
                 if (i8 == plist.size()) {
@@ -3897,15 +3846,15 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 break;
             }
             case L2LAngle: {  // 9
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
-                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(), (*it)->pvec[6]);
-                VEC_pD::iterator p8 = std::find(plist.begin(), plist.end(), (*it)->pvec[7]);
-                VEC_pD::iterator p9 = std::find(plist.begin(), plist.end(), (*it)->pvec[8]);
+                VEC_pD::iterator p1 = std::ranges::find(plist, (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::ranges::find(plist, (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::ranges::find(plist, (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::ranges::find(plist, (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::ranges::find(plist, (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::ranges::find(plist, (*it)->pvec[5]);
+                VEC_pD::iterator p7 = std::ranges::find(plist, (*it)->pvec[6]);
+                VEC_pD::iterator p8 = std::ranges::find(plist, (*it)->pvec[7]);
+                VEC_pD::iterator p9 = std::ranges::find(plist, (*it)->pvec[8]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -3917,8 +3866,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 size_t i9 = std::distance(plist.begin(), p9);
 
                 bool npb1 = false;
-                VEC_pD::iterator np1 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
+                VEC_pD::iterator np1 = std::ranges::find(clist_params_, (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
                 if (i1 == plist.size()) {
@@ -3936,8 +3884,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb2 = false;
-                VEC_pD::iterator np2 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
+                VEC_pD::iterator np2 = std::ranges::find(clist_params_, (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
                 if (i2 == plist.size()) {
@@ -3955,8 +3902,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb3 = false;
-                VEC_pD::iterator np3 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
+                VEC_pD::iterator np3 = std::ranges::find(clist_params_, (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
                 if (i3 == plist.size()) {
@@ -3974,8 +3920,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb4 = false;
-                VEC_pD::iterator np4 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
+                VEC_pD::iterator np4 = std::ranges::find(clist_params_, (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
                 if (i4 == plist.size()) {
@@ -3993,8 +3938,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb5 = false;
-                VEC_pD::iterator np5 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
+                VEC_pD::iterator np5 = std::ranges::find(clist_params_, (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
                 if (i5 == plist.size()) {
@@ -4012,8 +3956,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb6 = false;
-                VEC_pD::iterator np6 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
+                VEC_pD::iterator np6 = std::ranges::find(clist_params_, (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
                 if (i6 == plist.size()) {
@@ -4031,8 +3974,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb7 = false;
-                VEC_pD::iterator np7 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[6]);
+                VEC_pD::iterator np7 = std::ranges::find(clist_params_, (*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
 
                 if (i7 == plist.size()) {
@@ -4050,8 +3992,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb8 = false;
-                VEC_pD::iterator np8 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[7]);
+                VEC_pD::iterator np8 = std::ranges::find(clist_params_, (*it)->pvec[7]);
                 size_t ni8 = std::distance(clist_params_.begin(), np8);
 
                 if (i8 == plist.size()) {
@@ -4069,8 +4010,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb9 = false;
-                VEC_pD::iterator np9 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[8]);
+                VEC_pD::iterator np9 = std::ranges::find(clist_params_, (*it)->pvec[8]);
                 size_t ni9 = std::distance(clist_params_.begin(), np9);
 
                 if (i9 == plist.size()) {
@@ -4126,14 +4066,14 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 break;
             }
             case MidpointOnLine: {  // 8
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
-                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(), (*it)->pvec[6]);
-                VEC_pD::iterator p8 = std::find(plist.begin(), plist.end(), (*it)->pvec[7]);
+                VEC_pD::iterator p1 = std::ranges::find(plist, (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::ranges::find(plist, (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::ranges::find(plist, (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::ranges::find(plist, (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::ranges::find(plist, (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::ranges::find(plist, (*it)->pvec[5]);
+                VEC_pD::iterator p7 = std::ranges::find(plist, (*it)->pvec[6]);
+                VEC_pD::iterator p8 = std::ranges::find(plist, (*it)->pvec[7]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -4144,8 +4084,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 size_t i8 = std::distance(plist.begin(), p8);
 
                 bool npb1 = false;
-                VEC_pD::iterator np1 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
+                VEC_pD::iterator np1 = std::ranges::find(clist_params_, (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
                 if (i1 == plist.size()) {
@@ -4163,8 +4102,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb2 = false;
-                VEC_pD::iterator np2 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
+                VEC_pD::iterator np2 = std::ranges::find(clist_params_, (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
                 if (i2 == plist.size()) {
@@ -4182,8 +4120,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb3 = false;
-                VEC_pD::iterator np3 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
+                VEC_pD::iterator np3 = std::ranges::find(clist_params_, (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
                 if (i3 == plist.size()) {
@@ -4201,8 +4138,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb4 = false;
-                VEC_pD::iterator np4 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
+                VEC_pD::iterator np4 = std::ranges::find(clist_params_, (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
                 if (i4 == plist.size()) {
@@ -4220,8 +4156,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb5 = false;
-                VEC_pD::iterator np5 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
+                VEC_pD::iterator np5 = std::ranges::find(clist_params_, (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
                 if (i5 == plist.size()) {
@@ -4239,8 +4174,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb6 = false;
-                VEC_pD::iterator np6 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
+                VEC_pD::iterator np6 = std::ranges::find(clist_params_, (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
                 if (i6 == plist.size()) {
@@ -4258,8 +4192,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb7 = false;
-                VEC_pD::iterator np7 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[6]);
+                VEC_pD::iterator np7 = std::ranges::find(clist_params_, (*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
 
                 if (i7 == plist.size()) {
@@ -4277,8 +4210,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb8 = false;
-                VEC_pD::iterator np8 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[7]);
+                VEC_pD::iterator np8 = std::ranges::find(clist_params_, (*it)->pvec[7]);
                 size_t ni8 = std::distance(clist_params_.begin(), np8);
 
                 if (i8 == plist.size()) {
@@ -4331,12 +4263,12 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 break;
             }
             case TangentCircumf: {  // 6
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
+                VEC_pD::iterator p1 = std::ranges::find(plist, (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::ranges::find(plist, (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::ranges::find(plist, (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::ranges::find(plist, (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::ranges::find(plist, (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::ranges::find(plist, (*it)->pvec[5]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -4345,8 +4277,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 size_t i6 = std::distance(plist.begin(), p6);
 
                 bool npb1 = false;
-                VEC_pD::iterator np1 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
+                VEC_pD::iterator np1 = std::ranges::find(clist_params_, (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
                 if (i1 == plist.size()) {
@@ -4364,8 +4295,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb2 = false;
-                VEC_pD::iterator np2 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
+                VEC_pD::iterator np2 = std::ranges::find(clist_params_, (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
                 if (i2 == plist.size()) {
@@ -4383,8 +4313,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb3 = false;
-                VEC_pD::iterator np3 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
+                VEC_pD::iterator np3 = std::ranges::find(clist_params_, (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
                 if (i3 == plist.size()) {
@@ -4402,8 +4331,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb4 = false;
-                VEC_pD::iterator np4 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
+                VEC_pD::iterator np4 = std::ranges::find(clist_params_, (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
                 if (i4 == plist.size()) {
@@ -4421,8 +4349,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb5 = false;
-                VEC_pD::iterator np5 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
+                VEC_pD::iterator np5 = std::ranges::find(clist_params_, (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
                 if (i5 == plist.size()) {
@@ -4440,8 +4367,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb6 = false;
-                VEC_pD::iterator np6 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
+                VEC_pD::iterator np6 = std::ranges::find(clist_params_, (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
                 if (i6 == plist.size()) {
@@ -4491,13 +4417,13 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 break;
             }
             case PointOnEllipse: {  // 7
-                VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
-                VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
-                VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
-                VEC_pD::iterator p4 = std::find(plist.begin(), plist.end(), (*it)->pvec[3]);
-                VEC_pD::iterator p5 = std::find(plist.begin(), plist.end(), (*it)->pvec[4]);
-                VEC_pD::iterator p6 = std::find(plist.begin(), plist.end(), (*it)->pvec[5]);
-                VEC_pD::iterator p7 = std::find(plist.begin(), plist.end(), (*it)->pvec[6]);
+                VEC_pD::iterator p1 = std::ranges::find(plist, (*it)->pvec[0]);
+                VEC_pD::iterator p2 = std::ranges::find(plist, (*it)->pvec[1]);
+                VEC_pD::iterator p3 = std::ranges::find(plist, (*it)->pvec[2]);
+                VEC_pD::iterator p4 = std::ranges::find(plist, (*it)->pvec[3]);
+                VEC_pD::iterator p5 = std::ranges::find(plist, (*it)->pvec[4]);
+                VEC_pD::iterator p6 = std::ranges::find(plist, (*it)->pvec[5]);
+                VEC_pD::iterator p7 = std::ranges::find(plist, (*it)->pvec[6]);
                 size_t i1 = std::distance(plist.begin(), p1);
                 size_t i2 = std::distance(plist.begin(), p2);
                 size_t i3 = std::distance(plist.begin(), p3);
@@ -4507,8 +4433,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 size_t i7 = std::distance(plist.begin(), p7);
 
                 bool npb1 = false;
-                VEC_pD::iterator np1 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[0]);
+                VEC_pD::iterator np1 = std::ranges::find(clist_params_, (*it)->pvec[0]);
                 size_t ni1 = std::distance(clist_params_.begin(), np1);
 
                 if (i1 == plist.size()) {
@@ -4526,8 +4451,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb2 = false;
-                VEC_pD::iterator np2 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[1]);
+                VEC_pD::iterator np2 = std::ranges::find(clist_params_, (*it)->pvec[1]);
                 size_t ni2 = std::distance(clist_params_.begin(), np2);
 
                 if (i2 == plist.size()) {
@@ -4545,8 +4469,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb3 = false;
-                VEC_pD::iterator np3 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[2]);
+                VEC_pD::iterator np3 = std::ranges::find(clist_params_, (*it)->pvec[2]);
                 size_t ni3 = std::distance(clist_params_.begin(), np3);
 
                 if (i3 == plist.size()) {
@@ -4564,8 +4487,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb4 = false;
-                VEC_pD::iterator np4 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[3]);
+                VEC_pD::iterator np4 = std::ranges::find(clist_params_, (*it)->pvec[3]);
                 size_t ni4 = std::distance(clist_params_.begin(), np4);
 
                 if (i4 == plist.size()) {
@@ -4583,8 +4505,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb5 = false;
-                VEC_pD::iterator np5 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[4]);
+                VEC_pD::iterator np5 = std::ranges::find(clist_params_, (*it)->pvec[4]);
                 size_t ni5 = std::distance(clist_params_.begin(), np5);
 
                 if (i5 == plist.size()) {
@@ -4602,8 +4523,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb6 = false;
-                VEC_pD::iterator np6 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[5]);
+                VEC_pD::iterator np6 = std::ranges::find(clist_params_, (*it)->pvec[5]);
                 size_t ni6 = std::distance(clist_params_.begin(), np6);
 
                 if (i6 == plist.size()) {
@@ -4621,8 +4541,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                 }
 
                 bool npb7 = false;
-                VEC_pD::iterator np7 =
-                    std::find(clist_params_.begin(), clist_params_.end(), (*it)->pvec[6]);
+                VEC_pD::iterator np7 = std::ranges::find(clist_params_, (*it)->pvec[6]);
                 size_t ni7 = std::distance(clist_params_.begin(), np7);
 
                 if (i7 == plist.size()) {
@@ -4886,7 +4805,7 @@ void System::makeReducedJacobian(Eigen::MatrixXd& J,
 {
     // construct specific parameter list for diagonose ignoring driven constraint parameters
     for (int j = 0; j < int(plist.size()); j++) {
-        auto result1 = std::find(std::begin(pdrivenlist), std::end(pdrivenlist), plist[j]);
+        auto result1 = std::ranges::find(pdrivenlist, plist[j]);
 
         if (result1 == std::end(pdrivenlist)) {
             pdiagnoselist.push_back(plist[j]);
@@ -4898,22 +4817,21 @@ void System::makeReducedJacobian(Eigen::MatrixXd& J,
 
     int jacobianconstraintcount = 0;
     int allcount = 0;
-    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end();
-         ++constr) {
-        (*constr)->revertParams();
+    for (auto& constr : clist) {
+        constr->revertParams();
         ++allcount;
-        if ((*constr)->getTag() >= 0 && (*constr)->isDriving()) {
+        if (constr->getTag() >= 0 && constr->isDriving()) {
             jacobianconstraintcount++;
             for (int j = 0; j < int(pdiagnoselist.size()); j++) {
-                J(jacobianconstraintcount - 1, j) = (*constr)->grad(pdiagnoselist[j]);
+                J(jacobianconstraintcount - 1, j) = constr->grad(pdiagnoselist[j]);
             }
 
             // parallel processing: create tag multiplicity map
-            if (tagmultiplicity.find((*constr)->getTag()) == tagmultiplicity.end()) {
-                tagmultiplicity[(*constr)->getTag()] = 0;
+            if (tagmultiplicity.find(constr->getTag()) == tagmultiplicity.end()) {
+                tagmultiplicity[constr->getTag()] = 0;
             }
             else {
-                tagmultiplicity[(*constr)->getTag()]++;
+                tagmultiplicity[constr->getTag()]++;
             }
 
             jacobianconstraintmap[jacobianconstraintcount - 1] = allcount - 1;
@@ -5046,7 +4964,7 @@ int System::diagnose(Algorithm alg)
 
 #ifndef EIGEN_SPARSEQR_COMPATIBLE
     if (qrAlgorithm == EigenSparseQR) {
-        Base::Console().Warning("SparseQR not supported by you current version of Eigen. It "
+        Base::Console().warning("SparseQR not supported by you current version of Eigen. It "
                                 "requires Eigen 3.2.2 or higher. Falling back to Dense QR\n");
         qrAlgorithm = EigenDenseQR;
     }
@@ -5124,7 +5042,7 @@ int System::diagnose(Algorithm alg)
 
         auto SolveTime = Base::TimeElapsed::diffTimeF(DenseQR_start_time, DenseQR_end_time);
 
-        Base::Console().Log("\nDenseQR - Lapsed Time: %f seconds\n", SolveTime);
+        Base::Console().log("\nDenseQR - Lapsed Time: %f seconds\n", SolveTime);
 #endif
     }
 
@@ -5199,7 +5117,7 @@ int System::diagnose(Algorithm alg)
 
         auto SolveTime = Base::TimeElapsed::diffTimeF(SparseQR_start_time, SparseQR_end_time);
 
-        Base::Console().Log("\nSparseQR - Lapsed Time: %f seconds\n", SolveTime);
+        Base::Console().log("\nSparseQR - Lapsed Time: %f seconds\n", SolveTime);
 #endif
     }
 #endif
@@ -5692,9 +5610,7 @@ void System::identifyConflictingRedundantConstraints(
             }
 
             skipped.insert(constr);
-            std::copy(conflSet.begin(),
-                      conflSet.end(),
-                      std::inserter(satisfiedGroups, satisfiedGroups.begin()));
+            std::ranges::copy(conflSet, std::inserter(satisfiedGroups, satisfiedGroups.begin()));
         }
     }
 
@@ -5705,12 +5621,9 @@ void System::identifyConflictingRedundantConstraints(
 
     std::vector<Constraint*> clistTmp;
     clistTmp.reserve(clist.size());
-    std::copy_if(clist.begin(),
-                 clist.end(),
-                 std::back_inserter(clistTmp),
-                 [&skipped](const auto& constr) {
-                     return (constr->isDriving() && skipped.count(constr) == 0);
-                 });
+    std::ranges::copy_if(clist, std::back_inserter(clistTmp), [&skipped](const auto& constr) {
+        return (constr->isDriving() && skipped.count(constr) == 0);
+    });
 
     SubSystem* subSysTmp = new SubSystem(clistTmp, pdiagnoselist);
     int res = solve(subSysTmp, true, alg, true);
@@ -5729,33 +5642,31 @@ void System::identifyConflictingRedundantConstraints(
                 break;
         }
 
-        Base::Console().Log("Sketcher::RedundantSolving-%s-\n", solvername.c_str());
+        Base::Console().log("Sketcher::RedundantSolving-%s-\n", solvername.c_str());
     }
 
     if (res == Success) {
         subSysTmp->applySolution();
-        std::copy_if(skipped.begin(),
-                     skipped.end(),
-                     std::inserter(redundant, redundant.begin()),
-                     [this](const auto& constr) {
-                         double err = constr->error();
-                         return (err * err < this->convergenceRedundant);
-                     });
+        std::ranges::copy_if(skipped,
+                             std::inserter(redundant, redundant.begin()),
+                             [this](const auto& constr) {
+                                 double err = constr->error();
+                                 return (err * err < this->convergenceRedundant);
+                             });
         resetToReference();
 
         if (debugMode == Minimal || debugMode == IterationLevel) {
-            Base::Console().Log("Sketcher Redundant solving: %d redundants\n", redundant.size());
+            Base::Console().log("Sketcher Redundant solving: %d redundants\n", redundant.size());
         }
 
         // TODO: Figure out why we need to iterate in reverse order and add explanation here.
         std::vector<std::vector<Constraint*>> conflictGroupsOrig = conflictGroups;
         conflictGroups.clear();
         for (int i = conflictGroupsOrig.size() - 1; i >= 0; i--) {
-            auto iterRedundantEntry = std::find_if(conflictGroupsOrig[i].begin(),
-                                                   conflictGroupsOrig[i].end(),
-                                                   [this](const auto item) {
-                                                       return (this->redundant.count(item) > 0);
-                                                   });
+            auto iterRedundantEntry =
+                std::ranges::find_if(conflictGroupsOrig[i], [this](const auto item) {
+                    return (this->redundant.count(item) > 0);
+                });
             bool hasRedundant = (iterRedundantEntry != conflictGroupsOrig[i].end());
             if (!hasRedundant) {
                 conflictGroups.push_back(conflictGroupsOrig[i]);
@@ -5763,7 +5674,7 @@ void System::identifyConflictingRedundantConstraints(
             }
 
             if (debugMode == IterationLevel) {
-                Base::Console().Log("(Partially) Redundant, Group %d, index %d, Tag: %d\n",
+                Base::Console().log("(Partially) Redundant, Group %d, index %d, Tag: %d\n",
                                     i,
                                     iterRedundantEntry - conflictGroupsOrig[i].begin(),
                                     (*iterRedundantEntry)->getTag());
@@ -5778,21 +5689,21 @@ void System::identifyConflictingRedundantConstraints(
     SET_I conflictingTagsSet;
     for (const auto& cGroup : conflictGroups) {
         // exclude internal alignment
-        std::transform(cGroup.begin(),
-                       cGroup.end(),
-                       std::inserter(conflictingTagsSet, conflictingTagsSet.begin()),
-                       [](const auto& constr) {
-                           bool isinternalalignment = (constr->isInternalAlignment()
-                                                       == Constraint::Alignment::InternalAlignment);
-                           return (isinternalalignment ? 0 : constr->getTag());
-                       });
+        std::ranges::transform(cGroup,
+                               std::inserter(conflictingTagsSet, conflictingTagsSet.begin()),
+                               [](const auto& constr) {
+                                   bool isinternalalignment =
+                                       (constr->isInternalAlignment()
+                                        == Constraint::Alignment::InternalAlignment);
+                                   return (isinternalalignment ? 0 : constr->getTag());
+                               });
     }
 
     // exclude constraints tagged with zero
     conflictingTagsSet.erase(0);
 
     conflictingTags.resize(conflictingTagsSet.size());
-    std::copy(conflictingTagsSet.begin(), conflictingTagsSet.end(), conflictingTags.begin());
+    std::ranges::copy(conflictingTagsSet, conflictingTags.begin());
 
     // output of redundant tags
     SET_I redundantTagsSet, partiallyRedundantTagsSet;
@@ -5809,16 +5720,14 @@ void System::identifyConflictingRedundantConstraints(
     }
 
     redundantTags.resize(redundantTagsSet.size());
-    std::copy(redundantTagsSet.begin(), redundantTagsSet.end(), redundantTags.begin());
+    std::ranges::copy(redundantTagsSet, redundantTags.begin());
 
     for (auto r : redundantTagsSet) {
         partiallyRedundantTagsSet.erase(r);
     }
 
     partiallyRedundantTags.resize(partiallyRedundantTagsSet.size());
-    std::copy(partiallyRedundantTagsSet.begin(),
-              partiallyRedundantTagsSet.end(),
-              partiallyRedundantTags.begin());
+    std::ranges::copy(partiallyRedundantTagsSet, partiallyRedundantTags.begin());
 
     nonredundantconstrNum = constrNum;
 }

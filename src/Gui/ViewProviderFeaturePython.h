@@ -26,16 +26,19 @@
 #include <App/AutoTransaction.h>
 #include <App/PropertyPythonObject.h>
 #include <App/FeaturePython.h>
+#include <Gui/Selection/SelectionObserverPython.h>
 
 #include "ViewProviderGeometryObject.h"
 #include "Document.h"
-
+#include "BitmapFactory.h"
 
 class SoSensor;
 class SoDragger;
 class SoNode;
 
 namespace Gui {
+
+class SelectionChanges;
 
 class GuiExport ViewProviderFeaturePythonImp
 {
@@ -53,8 +56,11 @@ public:
 
     // Returns the icon
     QIcon getIcon() const;
+    // returns a map of position -> icon name.
+    std::map<BitmapFactoryInst::Position, std::string> getOverlayIcons() const;
     bool claimChildren(std::vector<App::DocumentObject*>&) const;
     ValueT useNewSelectionModel() const;
+    void onSelectionChanged(const SelectionChanges&);
     ValueT getElementPicked(const SoPickedPoint *pp, std::string &subname) const;
     bool getElement(const SoDetail *det, std::string &) const;
     bool getDetail(const char*, SoDetail *&det) const;
@@ -130,10 +136,12 @@ public:
 private:
     ViewProviderDocumentObject* object;
     App::PropertyPythonObject &Proxy;
+    SelectionObserverPythonHandler selectionObserver;
     bool has__object__{false};
 
 #define FC_PY_VIEW_OBJECT \
     FC_PY_ELEMENT(getIcon) \
+    FC_PY_ELEMENT(getOverlayIcons) \
     FC_PY_ELEMENT(claimChildren) \
     FC_PY_ELEMENT(useNewSelectionModel) \
     FC_PY_ELEMENT(getElementPicked) \
@@ -220,6 +228,29 @@ public:
         return icon;
     }
 
+    QIcon mergeColorfulOverlayIcons(const QIcon& orig) const override
+    {
+        QIcon currentIcon = orig;
+
+        // Get the map of overlay names from the Python implementation
+        std::map<BitmapFactoryInst::Position, std::string> overlayMap = imp->getOverlayIcons();
+
+        if (!overlayMap.empty()) {
+            // Use the static instance of BitmapFactory to perform the merge
+            for (const auto& [position, name] : overlayMap) {
+                static const QSize overlayIconSize  { 10, 10 };
+                QPixmap overlayPixmap =
+                    Gui::BitmapFactory().pixmapFromSvg(name.c_str(), overlayIconSize);
+                if (!overlayPixmap.isNull()) {
+                    currentIcon =
+                        Gui::BitmapFactoryInst::mergePixmap(currentIcon, overlayPixmap, position);
+                }
+            }
+        }
+
+        return ViewProviderT::mergeColorfulOverlayIcons(currentIcon);
+    }
+
     std::vector<App::DocumentObject*> claimChildren() const override {
         std::vector<App::DocumentObject *> res;
         if(!imp->claimChildren(res))
@@ -252,6 +283,10 @@ public:
         default:
             return ViewProviderT::useNewSelectionModel();
         }
+    }
+    /// called when the selection changes for the view provider
+    void onSelectionChanged(const SelectionChanges& changes) override {
+        return imp->onSelectionChanged(changes);
     }
     bool getElementPicked(const SoPickedPoint *pp, std::string &subname) const override {
         auto ret = imp->getElementPicked(pp,subname);

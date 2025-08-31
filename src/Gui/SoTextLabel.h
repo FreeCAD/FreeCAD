@@ -120,6 +120,7 @@ public:
     SoSFBool   frame;
     SoSFBool   border;
     SoSFBool   backgroundUseBaseColor;
+    SoSFBool   textUseBaseColor;
   //SoSFImage  image;
     QPixmap    iconPixmap;
 

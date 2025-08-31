@@ -29,7 +29,7 @@ TEST_F(FeaturePartMakeElementRefineTest, makeElementRefineBoxes)
 {
     // Arrange
     auto _doc = App::GetApplication().getActiveDocument();
-    auto _fuse = dynamic_cast<Part::Fuse*>(_doc->addObject("Part::Fuse"));
+    auto _fuse = _doc->addObject<Part::Fuse>();
     _fuse->Base.setValue(_boxes[0]);
     _fuse->Tool.setValue(_boxes[3]);
     // Act

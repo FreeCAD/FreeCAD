@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cfloat>
+#include <limits>
 #endif
 
 #include <Base/QuantityPy.h>
@@ -37,7 +37,8 @@ using namespace Base;
 using namespace std;
 
 
-const PropertyQuantityConstraint::Constraints LengthStandard = {0.0, DBL_MAX, 1.0};
+const PropertyQuantityConstraint::Constraints LengthStandard = {
+    0.0, std::numeric_limits<double>::max(), 1.0};
 const PropertyQuantityConstraint::Constraints AngleStandard = {-360, 360, 1.0};
 
 //**************************************************************************
@@ -104,13 +105,12 @@ void PropertyQuantity::setPyObject(PyObject* value)
     else {
         Base::Quantity quant = createQuantityFromPy(value);
 
-        Unit unit = quant.getUnit();
-        if (unit.isEmpty()) {
+        if (quant.isDimensionless()) {
             PropertyFloat::setValue(quant.getValue());
             return;
         }
 
-        if (unit != _Unit) {
+        if (_Unit != quant.getUnit()) {
             throw Base::UnitsMismatchError("Not matching Unit!");
         }
 
@@ -122,7 +122,7 @@ void PropertyQuantity::setPathValue(const ObjectIdentifier& /*path*/, const boos
 {
     auto q = App::anyToQuantity(value);
     aboutToSetValue();
-    if (!q.getUnit().isEmpty()) {
+    if (!q.isDimensionless()) {
         _Unit = q.getUnit();
     }
     _dValue = q.getValue();
@@ -186,7 +186,6 @@ void PropertyQuantityConstraint::setPyObject(PyObject* value)
 {
     Base::Quantity quant = createQuantityFromPy(value);
 
-    Unit unit = quant.getUnit();
     double temp = quant.getValue();
     if (_ConstStruct) {
         if (temp > _ConstStruct->UpperBound) {
@@ -198,12 +197,12 @@ void PropertyQuantityConstraint::setPyObject(PyObject* value)
     }
     quant.setValue(temp);
 
-    if (unit.isEmpty()) {
+    if (quant.isDimensionless()) {
         PropertyFloat::setValue(quant.getValue());  // clazy:exclude=skipped-base-method
         return;
     }
 
-    if (unit != _Unit) {
+    if (_Unit != quant.getUnit()) {
         throw Base::UnitsMismatchError("Not matching Unit!");
     }
 
@@ -401,6 +400,17 @@ TYPESYSTEM_SOURCE(App::PropertySurfaceChargeDensity, App::PropertyQuantity)
 PropertySurfaceChargeDensity::PropertySurfaceChargeDensity()
 {
     setUnit(Base::Unit::SurfaceChargeDensity);
+}
+
+//**************************************************************************
+// PropertyVolumeChargeDensity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyVolumeChargeDensity, App::PropertyQuantity)
+
+PropertyVolumeChargeDensity::PropertyVolumeChargeDensity()
+{
+    setUnit(Base::Unit::VolumeChargeDensity);
 }
 
 //**************************************************************************

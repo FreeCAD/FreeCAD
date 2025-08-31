@@ -57,7 +57,7 @@ public:
         if (pObj != this->object) {
             return false;
         }
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
         std::string element(sSubName);
@@ -129,7 +129,7 @@ public:
             // clang-format on
         }
         else {
-            // No curve of interest is pre-selected. Try pre-selected point.
+            // No curve of interest is preselected. Try preselected point.
             int pointGeoId = getPreselectPoint();
 
             if (pointGeoId >= 0) {
@@ -185,7 +185,25 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Splitting");
+        return QStringLiteral("Sketcher_Pointer_Splitting");
+    }
+
+    enum State
+    {
+        WaitingForEdge
+    };
+
+private:
+    std::vector<Base::Vector2d> EditMarkers;
+    bool mousePressed = false;
+
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return {
+            {tr("%1 pick location on edge to split", "Sketcher Splitting: hint"),
+             {Gui::InputHint::UserInput::MouseLeft}},
+        };
     }
 };
 

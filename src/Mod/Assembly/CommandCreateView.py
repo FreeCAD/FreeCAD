@@ -38,7 +38,6 @@ if App.GuiUp:
 import UtilsAssembly
 import Preferences
 
-# translate = App.Qt.translate
 
 __title__ = "Assembly Command Create Exploded View"
 __author__ = "Ondsel"
@@ -52,12 +51,12 @@ class CommandCreateView:
     def GetResources(self):
         return {
             "Pixmap": "Assembly_ExplodedView",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateView", "Create Exploded View"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateView", "Exploded View"),
             "Accel": "E",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateView",
-                "Create an exploded view of the current assembly.",
+                "Creates an exploded view of the current assembly",
             )
             + "</p>",
             "CmdType": "ForEdit",
@@ -77,7 +76,11 @@ class CommandCreateView:
         Gui.addModule("CommandCreateView")  # NOLINT
         Gui.doCommand("panel = CommandCreateView.TaskAssemblyCreateView()")
         self.panel = Gui.doCommandEval("panel")
-        Gui.doCommandGui("Gui.Control.showDialog(panel)")
+        Gui.doCommandGui("dialog = Gui.Control.showDialog(panel)")
+        dialog = Gui.doCommandEval("dialog")
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
 
 ######### Exploded View Object ###########
@@ -215,7 +218,10 @@ class ViewProviderExplodedView:
             Gui.ActiveDocument.setEdit(assembly)
 
         panel = TaskAssemblyCreateView(vobj.Object)
-        Gui.Control.showDialog(panel)
+        dialog = Gui.Control.showDialog(panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
         return True
 
@@ -253,6 +259,7 @@ class ExplodedViewStep:
                 "References",
                 "Exploded Move",
                 QT_TRANSLATE_NOOP("App::Property", "The objects moved by the move"),
+                locked=True,
             )
 
         if not hasattr(evStep, "MovementTransform"):
@@ -264,6 +271,7 @@ class ExplodedViewStep:
                     "App::Property",
                     "This is the movement of the move. The end placement is the result of the start placement * this placement.",
                 ),
+                locked=True,
             )
 
         if not hasattr(evStep, "MoveType"):
@@ -272,6 +280,7 @@ class ExplodedViewStep:
                 "MoveType",
                 "Exploded Move",
                 QT_TRANSLATE_NOOP("App::Property", "The type of the move"),
+                locked=True,
             )
 
     def migrationScript(self, evStep):
@@ -287,6 +296,7 @@ class ExplodedViewStep:
                 "References",
                 "Exploded Move",
                 QT_TRANSLATE_NOOP("App::Property", "The objects moved by the move"),
+                locked=True,
             )
 
             rootObj = None

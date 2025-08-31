@@ -30,110 +30,110 @@ using namespace Materials;
 TYPESYSTEM_SOURCE(Materials::ModelUUIDs, Base::BaseClass)
 
 const QString ModelUUIDs::ModelUUID_Legacy_Father =
-    QString::fromStdString("9cdda8b6-b606-4778-8f13-3934d8668e67");
+    QStringLiteral("9cdda8b6-b606-4778-8f13-3934d8668e67");
 const QString ModelUUIDs::ModelUUID_Legacy_MaterialStandard =
-    QString::fromStdString("1e2c0088-904a-4537-925f-64064c07d700");
+    QStringLiteral("1e2c0088-904a-4537-925f-64064c07d700");
 
 const QString ModelUUIDs::ModelUUID_Machining_Machinability =
-    QString::fromStdString("9d81fcb2-bf81-48e3-bb57-d45ecf380096");
+    QStringLiteral("9d81fcb2-bf81-48e3-bb57-d45ecf380096");
 
 const QString ModelUUIDs::ModelUUID_Mechanical_ArrudaBoyce =
-    QString::fromStdString("e10d00de-c7de-4e59-bcdd-058c2ea19ec6");
+    QStringLiteral("e10d00de-c7de-4e59-bcdd-058c2ea19ec6");
 const QString ModelUUIDs::ModelUUID_Mechanical_Density =
-    QString::fromStdString("454661e5-265b-4320-8e6f-fcf6223ac3af");
+    QStringLiteral("454661e5-265b-4320-8e6f-fcf6223ac3af");
 const QString ModelUUIDs::ModelUUID_Mechanical_Hardness =
-    QString::fromStdString("3d1a6141-d032-4d82-8bb5-a8f339fff8ad");
+    QStringLiteral("3d1a6141-d032-4d82-8bb5-a8f339fff8ad");
 const QString ModelUUIDs::ModelUUID_Mechanical_IsotropicLinearElastic =
-    QString::fromStdString("f6f9e48c-b116-4e82-ad7f-3659a9219c50");
+    QStringLiteral("f6f9e48c-b116-4e82-ad7f-3659a9219c50");
 const QString ModelUUIDs::ModelUUID_Mechanical_LinearElastic =
-    QString::fromStdString("7b561d1d-fb9b-44f6-9da9-56a4f74d7536");
+    QStringLiteral("7b561d1d-fb9b-44f6-9da9-56a4f74d7536");
 const QString ModelUUIDs::ModelUUID_Mechanical_MooneyRivlin =
-    QString::fromStdString("beeed169-7770-4da0-ab67-c9172cf7d23d");
+    QStringLiteral("beeed169-7770-4da0-ab67-c9172cf7d23d");
 const QString ModelUUIDs::ModelUUID_Mechanical_NeoHooke =
-    QString::fromStdString("569ebc58-ef29-434a-83be-555a0980d505");
+    QStringLiteral("569ebc58-ef29-434a-83be-555a0980d505");
 const QString ModelUUIDs::ModelUUID_Mechanical_OgdenN1 =
-    QString::fromStdString("a2634a2c-412f-468d-9bec-74ae5d87a9c0");
+    QStringLiteral("a2634a2c-412f-468d-9bec-74ae5d87a9c0");
 const QString ModelUUIDs::ModelUUID_Mechanical_OgdenN2 =
-    QString::fromStdString("233540bb-7b13-4f49-ac12-126a5c82cedf");
+    QStringLiteral("233540bb-7b13-4f49-ac12-126a5c82cedf");
 const QString ModelUUIDs::ModelUUID_Mechanical_OgdenN3 =
-    QString::fromStdString("a917d6b8-209f-429e-9972-fe4bbb97af3f");
+    QStringLiteral("a917d6b8-209f-429e-9972-fe4bbb97af3f");
 const QString ModelUUIDs::ModelUUID_Mechanical_OgdenYld2004p18 =
-    QString::fromStdString("3ef9e427-cc25-43f7-817f-79ff0d49625f");
+    QStringLiteral("3ef9e427-cc25-43f7-817f-79ff0d49625f");
 const QString ModelUUIDs::ModelUUID_Mechanical_OrthotropicLinearElastic =
-    QString::fromStdString("b19ccc6b-a431-418e-91c2-0ac8c649d146");
+    QStringLiteral("b19ccc6b-a431-418e-91c2-0ac8c649d146");
 const QString ModelUUIDs::ModelUUID_Mechanical_PolynomialN1 =
-    QString::fromStdString("285a6042-0f0c-4a36-a898-4afadd6408ce");
+    QStringLiteral("285a6042-0f0c-4a36-a898-4afadd6408ce");
 const QString ModelUUIDs::ModelUUID_Mechanical_PolynomialN2 =
-    QString::fromStdString("4c2fb7b2-5121-4d6f-be0d-8c5970c9e682");
+    QStringLiteral("4c2fb7b2-5121-4d6f-be0d-8c5970c9e682");
 const QString ModelUUIDs::ModelUUID_Mechanical_PolynomialN3 =
-    QString::fromStdString("e83ada22-947e-4beb-91e7-482a16f5ba77");
+    QStringLiteral("e83ada22-947e-4beb-91e7-482a16f5ba77");
 const QString ModelUUIDs::ModelUUID_Mechanical_ReducedPolynomialN1 =
-    QString::fromStdString("f8052a3c-db17-42ea-b2be-13aa5ef30730");
+    QStringLiteral("f8052a3c-db17-42ea-b2be-13aa5ef30730");
 const QString ModelUUIDs::ModelUUID_Mechanical_ReducedPolynomialN2 =
-    QString::fromStdString("c52b5021-4bb8-441c-80d4-855fce9de15e");
+    QStringLiteral("c52b5021-4bb8-441c-80d4-855fce9de15e");
 const QString ModelUUIDs::ModelUUID_Mechanical_ReducedPolynomialN3 =
-    QString::fromStdString("fa4e58b4-74c7-4292-8e79-7d5fd232fb55");
+    QStringLiteral("fa4e58b4-74c7-4292-8e79-7d5fd232fb55");
 const QString ModelUUIDs::ModelUUID_Mechanical_Yeoh =
-    QString::fromStdString("cd13c492-21a9-4578-8191-deec003e4c01");
+    QStringLiteral("cd13c492-21a9-4578-8191-deec003e4c01");
 
 const QString ModelUUIDs::ModelUUID_Fluid_Default =
-    QString::fromStdString("1ae66d8c-1ba1-4211-ad12-b9917573b202");
+    QStringLiteral("1ae66d8c-1ba1-4211-ad12-b9917573b202");
 
 const QString ModelUUIDs::ModelUUID_Thermal_Default =
-    QString::fromStdString("9959d007-a970-4ea7-bae4-3eb1b8b883c7");
+    QStringLiteral("9959d007-a970-4ea7-bae4-3eb1b8b883c7");
 
 const QString ModelUUIDs::ModelUUID_Electromagnetic_Default =
-    QString::fromStdString("b2eb5f48-74b3-4193-9fbb-948674f427f3");
+    QStringLiteral("b2eb5f48-74b3-4193-9fbb-948674f427f3");
 
 const QString ModelUUIDs::ModelUUID_Architectural_Default =
-    QString::fromStdString("32439c3b-262f-4b7b-99a8-f7f44e5894c8");
+    QStringLiteral("32439c3b-262f-4b7b-99a8-f7f44e5894c8");
 const QString ModelUUIDs::ModelUUID_Rendering_Architectural =
-    QString::fromStdString("27e48ac9-54e1-4a1f-aa49-d5d690242705");
+    QStringLiteral("27e48ac9-54e1-4a1f-aa49-d5d690242705");
 
 const QString ModelUUIDs::ModelUUID_Costs_Default =
-    QString::fromStdString("881df808-8726-4c2e-be38-688bb6cce466");
+    QStringLiteral("881df808-8726-4c2e-be38-688bb6cce466");
 
 const QString ModelUUIDs::ModelUUID_Rendering_Basic =
-    QString::fromStdString("f006c7e4-35b7-43d5-bbf9-c5d572309e6e");
+    QStringLiteral("f006c7e4-35b7-43d5-bbf9-c5d572309e6e");
 const QString ModelUUIDs::ModelUUID_Rendering_Texture =
-    QString::fromStdString("bbdcc65b-67ca-489c-bd5c-a36e33d1c160");
+    QStringLiteral("bbdcc65b-67ca-489c-bd5c-a36e33d1c160");
 const QString ModelUUIDs::ModelUUID_Rendering_Advanced =
-    QString::fromStdString("c880f092-cdae-43d6-a24b-55e884aacbbf");
+    QStringLiteral("c880f092-cdae-43d6-a24b-55e884aacbbf");
 const QString ModelUUIDs::ModelUUID_Rendering_Vector =
-    QString::fromStdString("fdf5a80e-de50-4157-b2e5-b6e5f88b680e");
+    QStringLiteral("fdf5a80e-de50-4157-b2e5-b6e5f88b680e");
 
 const QString ModelUUIDs::ModelUUID_Render_Appleseed =
-    QString::fromStdString("b0a10f70-13bf-4598-ab63-bcfbbcd813e3");
+    QStringLiteral("b0a10f70-13bf-4598-ab63-bcfbbcd813e3");
 const QString ModelUUIDs::ModelUUID_Render_Carpaint =
-    QString::fromStdString("4d2cc163-0707-40e2-a9f7-14288c4b97bd");
+    QStringLiteral("4d2cc163-0707-40e2-a9f7-14288c4b97bd");
 const QString ModelUUIDs::ModelUUID_Render_Cycles =
-    QString::fromStdString("a6da1b66-929c-48bf-ae80-3b0495c7b50b");
+    QStringLiteral("a6da1b66-929c-48bf-ae80-3b0495c7b50b");
 const QString ModelUUIDs::ModelUUID_Render_Diffuse =
-    QString::fromStdString("c19b2d30-c55b-48aa-a938-df9e2f7779cf");
+    QStringLiteral("c19b2d30-c55b-48aa-a938-df9e2f7779cf");
 const QString ModelUUIDs::ModelUUID_Render_Disney =
-    QString::fromStdString("f8723572-4470-4c39-a749-6d3b71358a5b");
+    QStringLiteral("f8723572-4470-4c39-a749-6d3b71358a5b");
 const QString ModelUUIDs::ModelUUID_Render_Emission =
-    QString::fromStdString("9f6cb588-c89d-4a74-9d0f-2786a8568cec");
+    QStringLiteral("9f6cb588-c89d-4a74-9d0f-2786a8568cec");
 const QString ModelUUIDs::ModelUUID_Render_Glass =
-    QString::fromStdString("d76a56f5-7250-4efb-bb89-8ea0a9ccaa6b");
+    QStringLiteral("d76a56f5-7250-4efb-bb89-8ea0a9ccaa6b");
 const QString ModelUUIDs::ModelUUID_Render_Luxcore =
-    QString::fromStdString("6b992304-33e0-490b-a391-e9d0af79bb69");
+    QStringLiteral("6b992304-33e0-490b-a391-e9d0af79bb69");
 const QString ModelUUIDs::ModelUUID_Render_Luxrender =
-    QString::fromStdString("67ac6a63-e173-4e05-898b-af743f1f9563");
+    QStringLiteral("67ac6a63-e173-4e05-898b-af743f1f9563");
 const QString ModelUUIDs::ModelUUID_Render_Mixed =
-    QString::fromStdString("84bab333-984f-47fe-a512-d17c7cb2daa9");
+    QStringLiteral("84bab333-984f-47fe-a512-d17c7cb2daa9");
 const QString ModelUUIDs::ModelUUID_Render_Ospray =
-    QString::fromStdString("a4792c23-0be9-47c2-b16d-47b2d2d5efd6");
+    QStringLiteral("a4792c23-0be9-47c2-b16d-47b2d2d5efd6");
 const QString ModelUUIDs::ModelUUID_Render_Pbrt =
-    QString::fromStdString("35b34b82-4325-4d27-97bd-d10bb2c56586");
+    QStringLiteral("35b34b82-4325-4d27-97bd-d10bb2c56586");
 const QString ModelUUIDs::ModelUUID_Render_Povray =
-    QString::fromStdString("6ec8b415-4c7b-4206-a80b-2ea64101f34b");
+    QStringLiteral("6ec8b415-4c7b-4206-a80b-2ea64101f34b");
 const QString ModelUUIDs::ModelUUID_Render_SubstancePBR =
-    QString::fromStdString("f212b643-db96-452e-8428-376a4534e5ab");
+    QStringLiteral("f212b643-db96-452e-8428-376a4534e5ab");
 const QString ModelUUIDs::ModelUUID_Render_Texture =  // ???
-    QString::fromStdString("fc9b6135-95cd-4ba8-ad9a-0972caeebad2");
+    QStringLiteral("fc9b6135-95cd-4ba8-ad9a-0972caeebad2");
 const QString ModelUUIDs::ModelUUID_RenderWB =
-    QString::fromStdString("344008be-a837-43af-90bc-f795f277b309");
+    QStringLiteral("344008be-a837-43af-90bc-f795f277b309");
 
 const QString ModelUUIDs::ModelUUID_Test_Model =
-    QString::fromStdString("34d0583d-f999-49ba-99e6-aa40bd5c3a6b");
+    QStringLiteral("34d0583d-f999-49ba-99e6-aa40bd5c3a6b");

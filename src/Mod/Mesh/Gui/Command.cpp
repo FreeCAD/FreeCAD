@@ -26,6 +26,7 @@
 #include <windows.h>
 #endif
 #include <map>
+#include <limits>
 
 #include <QApplication>
 #include <QPointer>
@@ -35,9 +36,7 @@
 #include <qstringlist.h>
 #endif
 
-#ifndef __InventorAll__
 #include <Gui/InventorAll.h>
-#endif
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
@@ -85,9 +84,9 @@ CmdMeshUnion::CmdMeshUnion()
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
     sMenuText = QT_TR_NOOP("Union");
-    sToolTipText = sMenuText;
+    sToolTipText = QT_TR_NOOP("Unites the selected meshes");
     sWhatsThis = "Mesh_Union";
-    sStatusTip = sMenuText;
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_Union";
 }
 
@@ -139,12 +138,11 @@ void CmdMeshUnion::activated(int)
                 qApp->translate("Mesh_Union", "Unknown error occurred while running OpenSCAD."));
         }
         else {
-            QMessageBox::warning(
-                Gui::getMainWindow(),
-                qApp->translate("Mesh_Union", "OpenSCAD"),
-                qApp->translate("Mesh_Union",
-                                "OpenSCAD cannot be found on your system.\n"
-                                "Please visit http://www.openscad.org/index.html to install it."));
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 qApp->translate("Mesh_Union", "OpenSCAD"),
+                                 qApp->translate("Mesh_Union",
+                                                 "OpenSCAD cannot be found on the system.\n"
+                                                 "Visit https://openscad.org/ to install it."));
         }
     }
 }
@@ -164,9 +162,9 @@ CmdMeshDifference::CmdMeshDifference()
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
     sMenuText = QT_TR_NOOP("Difference");
-    sToolTipText = sMenuText;
+    sToolTipText = QT_TR_NOOP("Creates a boolean difference of the selected meshes");
     sWhatsThis = "Mesh_Difference";
-    sStatusTip = sMenuText;
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_Difference";
 }
 
@@ -218,12 +216,11 @@ void CmdMeshDifference::activated(int)
                 qApp->translate("Mesh_Union", "Unknown error occurred while running OpenSCAD."));
         }
         else {
-            QMessageBox::warning(
-                Gui::getMainWindow(),
-                qApp->translate("Mesh_Union", "OpenSCAD"),
-                qApp->translate("Mesh_Union",
-                                "OpenSCAD cannot be found on your system.\n"
-                                "Please visit http://www.openscad.org/index.html to install it."));
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 qApp->translate("Mesh_Union", "OpenSCAD"),
+                                 qApp->translate("Mesh_Union",
+                                                 "OpenSCAD cannot be found on the system.\n"
+                                                 "Visit https://openscad.org/ to install it."));
         }
     }
 }
@@ -243,9 +240,9 @@ CmdMeshIntersection::CmdMeshIntersection()
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
     sMenuText = QT_TR_NOOP("Intersection");
-    sToolTipText = sMenuText;
+    sToolTipText = QT_TR_NOOP("Creates a boolean intersection from the selected meshes");
     sWhatsThis = "Mesh_Intersection";
-    sStatusTip = sMenuText;
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_Intersection";
 }
 
@@ -297,12 +294,11 @@ void CmdMeshIntersection::activated(int)
                 qApp->translate("Mesh_Union", "Unknown error occurred while running OpenSCAD."));
         }
         else {
-            QMessageBox::warning(
-                Gui::getMainWindow(),
-                qApp->translate("Mesh_Union", "OpenSCAD"),
-                qApp->translate("Mesh_Union",
-                                "OpenSCAD cannot be found on your system.\n"
-                                "Please visit http://www.openscad.org/index.html to install it."));
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 qApp->translate("Mesh_Union", "OpenSCAD"),
+                                 qApp->translate("Mesh_Union",
+                                                 "OpenSCAD cannot be found on the system.\n"
+                                                 "Visit https://openscad.org/ to install it."));
         }
     }
 }
@@ -321,10 +317,10 @@ CmdMeshImport::CmdMeshImport()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Import mesh...");
-    sToolTipText = QT_TR_NOOP("Imports a mesh from file");
+    sMenuText = QT_TR_NOOP("Import Mesh…");
+    sToolTipText = QT_TR_NOOP("Imports a mesh from a file");
     sWhatsThis = "Mesh_Import";
-    sStatusTip = QT_TR_NOOP("Imports a mesh from file");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_Import";
 }
 
@@ -332,21 +328,21 @@ void CmdMeshImport::activated(int)
 {
     // use current path as default
     QStringList filter;
-    filter << QString::fromLatin1("%1 (*.stl *.ast *.bms *.obj *.off *.iv *.ply *.nas *.bdf)")
+    filter << QStringLiteral("%1 (*.stl *.ast *.bms *.obj *.off *.iv *.ply *.nas *.bdf)")
                   .arg(QObject::tr("All Mesh Files"));
-    filter << QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("Binary STL"));
-    filter << QString::fromLatin1("%1 (*.ast)").arg(QObject::tr("ASCII STL"));
-    filter << QString::fromLatin1("%1 (*.bms)").arg(QObject::tr("Binary Mesh"));
-    filter << QString::fromLatin1("%1 (*.obj)").arg(QObject::tr("Alias Mesh"));
-    filter << QString::fromLatin1("%1 (*.off)").arg(QObject::tr("Object File Format"));
-    filter << QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ASCII"));
-    filter << QString::fromLatin1("%1 (*.ply)").arg(QObject::tr("Stanford Polygon"));
-    filter << QString::fromLatin1("%1 (*.nas *.bdf)").arg(QObject::tr("NASTRAN"));
-    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
+    filter << QStringLiteral("%1 (*.stl)").arg(QObject::tr("Binary STL"));
+    filter << QStringLiteral("%1 (*.ast)").arg(QObject::tr("ASCII STL"));
+    filter << QStringLiteral("%1 (*.bms)").arg(QObject::tr("Binary Mesh"));
+    filter << QStringLiteral("%1 (*.obj)").arg(QObject::tr("Alias Mesh"));
+    filter << QStringLiteral("%1 (*.off)").arg(QObject::tr("Object File Format"));
+    filter << QStringLiteral("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ASCII"));
+    filter << QStringLiteral("%1 (*.ply)").arg(QObject::tr("Stanford Polygon"));
+    filter << QStringLiteral("%1 (*.nas *.bdf)").arg(QObject::tr("NASTRAN"));
+    filter << QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files"));
 
     // Allow multi selection
     QStringList fn = Gui::FileDialog::getOpenFileNames(Gui::getMainWindow(),
-                                                       QObject::tr("Import mesh"),
+                                                       QObject::tr("Import Mesh"),
                                                        QString(),
                                                        filter.join(QLatin1String(";;")));
     for (const auto& it : fn) {
@@ -374,10 +370,10 @@ CmdMeshExport::CmdMeshExport()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Export mesh...");
-    sToolTipText = QT_TR_NOOP("Exports a mesh to file");
+    sMenuText = QT_TR_NOOP("Export Mesh…");
+    sToolTipText = QT_TR_NOOP("Exports a mesh to a file");
     sWhatsThis = "Mesh_Export";
-    sStatusTip = QT_TR_NOOP("Exports a mesh to file");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_Export";
 }
 
@@ -394,25 +390,25 @@ void CmdMeshExport::activated(int)
     // clang-format off
     QString dir = QString::fromUtf8(docObj->Label.getValue());
     QList<QPair<QString, QByteArray> > ext;
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("Binary STL")), "STL");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("ASCII STL")), "AST");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.ast)").arg(QObject::tr("ASCII STL")), "AST");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.bms)").arg(QObject::tr("Binary Mesh")), "BMS");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.obj)").arg(QObject::tr("Alias Mesh")), "OBJ");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.smf)").arg(QObject::tr("Simple Model Format")), "SMF");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.off)").arg(QObject::tr("Object File Format")), "OFF");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ascii")), "IV");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.x3d)").arg(QObject::tr("X3D Extensible 3D")), "X3D");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.x3dz)").arg(QObject::tr("Compressed X3D")), "X3DZ");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.xhtml)").arg(QObject::tr("WebGL/X3D")), "X3DOM");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.ply)").arg(QObject::tr("Stanford Polygon")), "PLY");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.wrl *.vrml)").arg(QObject::tr("VRML V2.0")), "VRML");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.wrz)").arg(QObject::tr("Compressed VRML 2.0")), "WRZ");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.nas *.bdf)").arg(QObject::tr("Nastran")), "NAS");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.py)").arg(QObject::tr("Python module def")), "PY");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.asy)").arg(QObject::tr("Asymptote Format")), "ASY");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.3mf)").arg(QObject::tr("3D Manufacturing Format")), "3MF");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files")), ""); // Undefined
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.stl)").arg(QObject::tr("Binary STL")), "STL");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.stl)").arg(QObject::tr("ASCII STL")), "AST");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.ast)").arg(QObject::tr("ASCII STL")), "AST");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.bms)").arg(QObject::tr("Binary Mesh")), "BMS");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.obj)").arg(QObject::tr("Alias Mesh")), "OBJ");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.smf)").arg(QObject::tr("Simple Model Format")), "SMF");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.off)").arg(QObject::tr("Object File Format")), "OFF");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ascii")), "IV");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.x3d)").arg(QObject::tr("X3D Extensible 3D")), "X3D");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.x3dz)").arg(QObject::tr("Compressed X3D")), "X3DZ");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.xhtml)").arg(QObject::tr("WebGL/X3D")), "X3DOM");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.ply)").arg(QObject::tr("Stanford Polygon")), "PLY");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.wrl *.vrml)").arg(QObject::tr("VRML V2.0")), "VRML");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.wrz)").arg(QObject::tr("Compressed VRML 2.0")), "WRZ");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.nas *.bdf)").arg(QObject::tr("Nastran")), "NAS");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.py)").arg(QObject::tr("Python module def")), "PY");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.asy)").arg(QObject::tr("Asymptote Format")), "ASY");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.3mf)").arg(QObject::tr("3D Manufacturing Format")), "3MF");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files")), ""); // Undefined
     // clang-format on
     QStringList filter;
     for (const auto& it : ext) {
@@ -421,7 +417,7 @@ void CmdMeshExport::activated(int)
 
     QString format;
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
-                                                  QObject::tr("Export mesh"),
+                                                  QObject::tr("Export Mesh"),
                                                   dir,
                                                   filter.join(QLatin1String(";;")),
                                                   &format);
@@ -457,10 +453,10 @@ CmdMeshFromGeometry::CmdMeshFromGeometry()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Create mesh from geometry...");
-    sToolTipText = QT_TR_NOOP("Create mesh from the selected geometry");
+    sMenuText = QT_TR_NOOP("Mesh From Geometry");
+    sToolTipText = QT_TR_NOOP("Creates a mesh from the selected geometry");
     sWhatsThis = "Mesh_FromGeometry";
-    sStatusTip = QT_TR_NOOP("Create mesh from the selected geometry");
+    sStatusTip = sToolTipText;
 }
 
 void CmdMeshFromGeometry::activated(int)
@@ -503,8 +499,7 @@ void CmdMeshFromGeometry::activated(int)
             }
 
             // create a mesh feature and assign the mesh
-            Mesh::Feature* mf =
-                static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature", "Mesh"));
+            Mesh::Feature* mf = doc->addObject<Mesh::Feature>("Mesh");
             mf->Mesh.setValue(mesh.getKernel());
         }
     }
@@ -529,8 +524,8 @@ CmdMeshFromPartShape::CmdMeshFromPartShape()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Create mesh from shape...");
-    sToolTipText = QT_TR_NOOP("Tessellate shape");
+    sMenuText = QT_TR_NOOP("Mesh From Shape");
+    sToolTipText = QT_TR_NOOP("Tessellates the selected shape to a mesh");
     sWhatsThis = "Mesh_FromPartShape";
     sStatusTip = sToolTipText;
     sPixmap = "Mesh_FromPartShape.svg";
@@ -555,10 +550,10 @@ CmdMeshVertexCurvature::CmdMeshVertexCurvature()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Curvature plot");
+    sMenuText = QT_TR_NOOP("Curvature Plot");
     sToolTipText = QT_TR_NOOP("Calculates the curvature of the vertices of a mesh");
     sWhatsThis = "Mesh_VertexCurvature";
-    sStatusTip = QT_TR_NOOP("Calculates the curvature of the vertices of a mesh");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_VertexCurvature";
 }
 
@@ -610,10 +605,10 @@ CmdMeshVertexCurvatureInfo::CmdMeshVertexCurvatureInfo()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Curvature info");
-    sToolTipText = QT_TR_NOOP("Information about curvature");
+    sMenuText = QT_TR_NOOP("Curvature Info");
+    sToolTipText = QT_TR_NOOP("Displays information about the curvature");
     sWhatsThis = "Mesh_CurvatureInfo";
-    sStatusTip = QT_TR_NOOP("Information about curvature");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_CurvatureInfo";
 }
 
@@ -658,10 +653,10 @@ CmdMeshPolySegm::CmdMeshPolySegm()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Make segment");
+    sMenuText = QT_TR_NOOP("Segment");
     sToolTipText = QT_TR_NOOP("Creates a mesh segment");
     sWhatsThis = "Mesh_PolySegm";
-    sStatusTip = QT_TR_NOOP("Creates a mesh segment");
+    sStatusTip = sToolTipText;
     sPixmap = "PolygonPick";
 }
 
@@ -717,10 +712,10 @@ CmdMeshAddFacet::CmdMeshAddFacet()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Add triangle");
-    sToolTipText = QT_TR_NOOP("Add triangle manually to a mesh");
+    sMenuText = QT_TR_NOOP("Add Triangle");
+    sToolTipText = QT_TR_NOOP("Adds a triangle manually to a mesh");
     sWhatsThis = "Mesh_AddFacet";
-    sStatusTip = QT_TR_NOOP("Add triangle manually to a mesh");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_AddFacet";
 }
 
@@ -766,10 +761,10 @@ CmdMeshPolyCut::CmdMeshPolyCut()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Cut mesh");
-    sToolTipText = QT_TR_NOOP("Cuts a mesh with a picked polygon");
+    sMenuText = QT_TR_NOOP("Cut");
+    sToolTipText = QT_TR_NOOP("Cuts the mesh with a selected polygon");
     sWhatsThis = "Mesh_PolyCut";
-    sStatusTip = QT_TR_NOOP("Cuts a mesh with a picked polygon");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_PolyCut";
 }
 
@@ -831,8 +826,8 @@ CmdMeshPolyTrim::CmdMeshPolyTrim()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Trim mesh");
-    sToolTipText = QT_TR_NOOP("Trims a mesh with a picked polygon");
+    sMenuText = QT_TR_NOOP("Trim");
+    sToolTipText = QT_TR_NOOP("Trims a mesh with a selected polygon");
     sWhatsThis = "Mesh_PolyTrim";
     sStatusTip = QT_TR_NOOP("Trims a mesh with a picked polygon");
     sPixmap = "Mesh_PolyTrim";
@@ -896,9 +891,9 @@ CmdMeshTrimByPlane::CmdMeshTrimByPlane()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Trim mesh with a plane");
-    sToolTipText = QT_TR_NOOP("Trims a mesh with a plane");
-    sStatusTip = QT_TR_NOOP("Trims a mesh with a plane");
+    sMenuText = QT_TR_NOOP("Trim With Plane");
+    sToolTipText = QT_TR_NOOP("Trims a mesh by removing faces on one side of a selected plane");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_TrimByPlane";
 }
 
@@ -925,9 +920,9 @@ CmdMeshSectionByPlane::CmdMeshSectionByPlane()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Create section from mesh and plane");
-    sToolTipText = QT_TR_NOOP("Section from mesh and plane");
-    sStatusTip = QT_TR_NOOP("Section from mesh and plane");
+    sMenuText = QT_TR_NOOP("Section From Plane");
+    sToolTipText = QT_TR_NOOP("Sections the mesh with the selected plane");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_SectionByPlane";
 }
 
@@ -954,9 +949,9 @@ CmdMeshCrossSections::CmdMeshCrossSections()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Cross-sections...");
-    sToolTipText = QT_TR_NOOP("Cross-sections");
-    sStatusTip = QT_TR_NOOP("Cross-sections");
+    sMenuText = QT_TR_NOOP("Cross-Sections");
+    sToolTipText = QT_TR_NOOP("Creates cross-sections of the mesh");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_CrossSections";
 }
 
@@ -983,10 +978,10 @@ CmdMeshPolySplit::CmdMeshPolySplit()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Split mesh");
-    sToolTipText = QT_TR_NOOP("Splits a mesh into two meshes");
+    sMenuText = QT_TR_NOOP("Split");
+    sToolTipText = QT_TR_NOOP("Splits a mesh into 2 meshes");
     sWhatsThis = "Mesh_PolySplit";
-    sStatusTip = QT_TR_NOOP("Splits a mesh into two meshes");
+    sStatusTip = sToolTipText;
 }
 
 void CmdMeshPolySplit::activated(int)
@@ -1041,10 +1036,10 @@ CmdMeshEvaluation::CmdMeshEvaluation()
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
     // needs two ampersands to display one
-    sMenuText = QT_TR_NOOP("Evaluate and repair mesh...");
+    sMenuText = QT_TR_NOOP("Evaluate and Repair");
     sToolTipText = QT_TR_NOOP("Opens a dialog to analyze and repair a mesh");
     sWhatsThis = "Mesh_Evaluation";
-    sStatusTip = QT_TR_NOOP("Opens a dialog to analyze and repair a mesh");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_Evaluation";
 }
 
@@ -1085,10 +1080,10 @@ CmdMeshEvaluateFacet::CmdMeshEvaluateFacet()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Face info");
-    sToolTipText = QT_TR_NOOP("Information about face");
+    sMenuText = QT_TR_NOOP("Face Info");
+    sToolTipText = QT_TR_NOOP("Displays information about the selected faces");
     sWhatsThis = "Mesh_EvaluateFacet";
-    sStatusTip = QT_TR_NOOP("Information about face");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_EvaluateFacet";
 }
 
@@ -1131,10 +1126,10 @@ CmdMeshRemoveComponents::CmdMeshRemoveComponents()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Remove components...");
-    sToolTipText = QT_TR_NOOP("Remove topologic independent components from the mesh");
+    sMenuText = QT_TR_NOOP("Remove Components");
+    sToolTipText = QT_TR_NOOP("Removes topologically independent components from the mesh");
     sWhatsThis = "Mesh_RemoveComponents";
-    sStatusTip = QT_TR_NOOP("Remove topologic independent components from the mesh");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_RemoveComponents";
 }
 
@@ -1179,9 +1174,9 @@ CmdMeshRemeshGmsh::CmdMeshRemeshGmsh()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Refinement...");
-    sToolTipText = QT_TR_NOOP("Refine existing mesh");
-    sStatusTip = QT_TR_NOOP("Refine existing mesh");
+    sMenuText = QT_TR_NOOP("Refinement");
+    sToolTipText = QT_TR_NOOP("Refines an existing mesh");
+    sStatusTip = sToolTipText;
     sWhatsThis = "Mesh_RemeshGmsh";
     sPixmap = "Mesh_RemeshGmsh";
 }
@@ -1213,10 +1208,10 @@ CmdMeshRemoveCompByHand::CmdMeshRemoveCompByHand()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Remove components by hand...");
-    sToolTipText = QT_TR_NOOP("Mark a component to remove it from the mesh");
+    sMenuText = QT_TR_NOOP("Remove Components Manually");
+    sToolTipText = QT_TR_NOOP("Marks a component to remove it from the mesh");
     sWhatsThis = "Mesh_RemoveCompByHand";
-    sStatusTip = QT_TR_NOOP("Mark a component to remove it from the mesh");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_RemoveCompByHand";
 }
 
@@ -1260,10 +1255,10 @@ CmdMeshEvaluateSolid::CmdMeshEvaluateSolid()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Check solid mesh");
+    sMenuText = QT_TR_NOOP("Evaluate Solid");
     sToolTipText = QT_TR_NOOP("Checks whether the mesh is a solid");
     sWhatsThis = "Mesh_EvaluateSolid";
-    sStatusTip = QT_TR_NOOP("Checks whether the mesh is a solid");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_EvaluateSolid";
 }
 
@@ -1301,10 +1296,10 @@ CmdMeshSmoothing::CmdMeshSmoothing()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Smooth...");
-    sToolTipText = QT_TR_NOOP("Smooth the selected meshes");
+    sMenuText = QT_TR_NOOP("Smooth");
+    sToolTipText = QT_TR_NOOP("Smoothes the selected meshes");
     sWhatsThis = "Mesh_Smoothing";
-    sStatusTip = QT_TR_NOOP("Smooth the selected meshes");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_Smoothing";
 }
 
@@ -1330,10 +1325,10 @@ CmdMeshDecimating::CmdMeshDecimating()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Decimation...");
+    sMenuText = QT_TR_NOOP("Decimate");
     sToolTipText = QT_TR_NOOP("Decimates a mesh");
-    sWhatsThis = QT_TR_NOOP("Decimates a mesh");
-    sStatusTip = QT_TR_NOOP("Decimates a mesh");
+    sWhatsThis = "Mesh_Decimating";
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_Decimating";
 }
 
@@ -1362,10 +1357,10 @@ CmdMeshHarmonizeNormals::CmdMeshHarmonizeNormals()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Harmonize normals");
+    sMenuText = QT_TR_NOOP("Harmonize Normals");
     sToolTipText = QT_TR_NOOP("Harmonizes the normals of the mesh");
     sWhatsThis = "Mesh_HarmonizeNormals";
-    sStatusTip = QT_TR_NOOP("Harmonizes the normals of the mesh");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_HarmonizeNormals";
 }
 
@@ -1398,10 +1393,10 @@ CmdMeshFlipNormals::CmdMeshFlipNormals()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Flip normals");
-    sToolTipText = QT_TR_NOOP("Flips the normals of the mesh");
+    sMenuText = QT_TR_NOOP("Flip Normals");
+    sToolTipText = QT_TR_NOOP("Flips the normals of the selected mesh");
     sWhatsThis = "Mesh_FlipNormals";
-    sStatusTip = QT_TR_NOOP("Flips the normals of the mesh");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_FlipNormals";
 }
 
@@ -1434,10 +1429,10 @@ CmdMeshBoundingBox::CmdMeshBoundingBox()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Boundings info...");
-    sToolTipText = QT_TR_NOOP("Shows the boundings of the selected mesh");
+    sMenuText = QT_TR_NOOP("Bounding Box Info");
+    sToolTipText = QT_TR_NOOP("Shows the bounding box coordinates of the selected mesh");
     sWhatsThis = "Mesh_BoundingBox";
-    sStatusTip = QT_TR_NOOP("Shows the boundings of the selected mesh");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_BoundingBox";
 }
 
@@ -1449,7 +1444,7 @@ void CmdMeshBoundingBox::activated(int)
         const MeshCore::MeshKernel& rMesh = ((Mesh::Feature*)it)->Mesh.getValue().getKernel();
         const Base::BoundBox3f& box = rMesh.GetBoundBox();
 
-        Base::Console().Message("Boundings: Min=<%f,%f,%f>, Max=<%f,%f,%f>\n",
+        Base::Console().message("Boundings: Min=<%f,%f,%f>, Max=<%f,%f,%f>\n",
                                 box.MinX,
                                 box.MinY,
                                 box.MinZ,
@@ -1459,7 +1454,7 @@ void CmdMeshBoundingBox::activated(int)
 
         QString bound = qApp->translate("Mesh_BoundingBox", "Boundings of %1:")
                             .arg(QString::fromUtf8(it->Label.getValue()));
-        bound += QString::fromLatin1("\n\nMin=<%1,%2,%3>\n\nMax=<%4,%5,%6>")
+        bound += QStringLiteral("\n\nMin=<%1,%2,%3>\n\nMax=<%4,%5,%6>")
                      .arg(box.MinX)
                      .arg(box.MinY)
                      .arg(box.MinZ)
@@ -1486,10 +1481,10 @@ CmdMeshBuildRegularSolid::CmdMeshBuildRegularSolid()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Regular solid...");
+    sMenuText = QT_TR_NOOP("Regular Solid");
     sToolTipText = QT_TR_NOOP("Builds a regular solid");
     sWhatsThis = "Mesh_BuildRegularSolid";
-    sStatusTip = QT_TR_NOOP("Builds a regular solid");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_BuildRegularSolid";
 }
 
@@ -1518,10 +1513,10 @@ CmdMeshFillupHoles::CmdMeshFillupHoles()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Fill holes...");
-    sToolTipText = QT_TR_NOOP("Fill holes of the mesh");
+    sMenuText = QT_TR_NOOP("Fill Holes");
+    sToolTipText = QT_TR_NOOP("Fills holes in the mesh");
     sWhatsThis = "Mesh_FillupHoles";
-    sStatusTip = QT_TR_NOOP("Fill holes of the mesh");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_FillupHoles";
 }
 
@@ -1532,8 +1527,8 @@ void CmdMeshFillupHoles::activated(int)
     bool ok {};
     int FillupHolesOfLength =
         QInputDialog::getInt(Gui::getMainWindow(),
-                             QObject::tr("Fill holes"),
-                             QObject::tr("Fill holes with maximum number of edges:"),
+                             QObject::tr("Fill Holes"),
+                             QObject::tr("Fill holes with maximum number of edges"),
                              3,
                              3,
                              10000,
@@ -1569,10 +1564,10 @@ CmdMeshFillInteractiveHole::CmdMeshFillInteractiveHole()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Close hole");
-    sToolTipText = QT_TR_NOOP("Close holes interactively");
+    sMenuText = QT_TR_NOOP("Close Hole");
+    sToolTipText = QT_TR_NOOP("Closes a hole interactively in the mesh");
     sWhatsThis = "Mesh_FillInteractiveHole";
-    sStatusTip = QT_TR_NOOP("Close holes interactively");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_FillInteractiveHole";
 }
 
@@ -1616,10 +1611,10 @@ CmdMeshSegmentation::CmdMeshSegmentation()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Create mesh segments...");
-    sToolTipText = QT_TR_NOOP("Create mesh segments");
+    sMenuText = QT_TR_NOOP("Segmentation");
+    sToolTipText = QT_TR_NOOP("Creates new mesh segments from the mesh");
     sWhatsThis = "Mesh_Segmentation";
-    sStatusTip = QT_TR_NOOP("Create mesh segments");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_Segmentation";
 }
 
@@ -1652,10 +1647,10 @@ CmdMeshSegmentationBestFit::CmdMeshSegmentationBestFit()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Create mesh segments from best-fit surfaces...");
-    sToolTipText = QT_TR_NOOP("Create mesh segments from best-fit surfaces");
+    sMenuText = QT_TR_NOOP("Segmentation From Best-Fit Surfaces");
+    sToolTipText = QT_TR_NOOP("Creates new mesh segments from the best-fit surfaces");
     sWhatsThis = "Mesh_SegmentationBestFit";
-    sStatusTip = QT_TR_NOOP("Create mesh segments from best-fit surfaces");
+    sStatusTip = sToolTipText;
     sPixmap = "Mesh_SegmentationBestFit";
 }
 
@@ -1703,8 +1698,7 @@ void CmdMeshMerge::activated(int)
     }
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Mesh merge"));
-    Mesh::Feature* pcFeature =
-        static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", "Mesh"));
+    Mesh::Feature* pcFeature = pcDoc->addObject<Mesh::Feature>("Mesh");
     Mesh::MeshObject* newMesh = pcFeature->Mesh.startEditing();
     std::vector<App::DocumentObject*> objs =
         Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
@@ -1734,8 +1728,8 @@ CmdMeshSplitComponents::CmdMeshSplitComponents()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Split by components");
-    sToolTipText = QT_TR_NOOP("Split selected mesh into its components");
+    sMenuText = QT_TR_NOOP("Split by Components");
+    sToolTipText = QT_TR_NOOP("Splits the selected mesh into its components");
     sWhatsThis = "Mesh_SplitComponents";
     sStatusTip = sToolTipText;
     sPixmap = "Mesh_SplitComponents";
@@ -1759,8 +1753,7 @@ void CmdMeshSplitComponents::activated(int)
             std::unique_ptr<MeshObject> kernel(mesh.meshFromSegment(comp));
             kernel->setTransform(mesh.getTransform());
 
-            Mesh::Feature* feature =
-                static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", "Component"));
+            Mesh::Feature* feature = pcDoc->addObject<Mesh::Feature>("Component");
             feature->Mesh.setValuePtr(kernel.release());
         }
     }
@@ -1783,8 +1776,8 @@ CmdMeshScale::CmdMeshScale()
 {
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Scale...");
-    sToolTipText = QT_TR_NOOP("Scale selected meshes");
+    sMenuText = QT_TR_NOOP("Scale");
+    sToolTipText = QT_TR_NOOP("Scales the selected mesh objects");
     sWhatsThis = "Mesh_Scale";
     sStatusTip = sToolTipText;
     sPixmap = "Mesh_Scale";
@@ -1803,7 +1796,7 @@ void CmdMeshScale::activated(int)
                                             QObject::tr("Enter scaling factor:"),
                                             1,
                                             0,
-                                            DBL_MAX,
+                                            std::numeric_limits<double>::max(),
                                             5,
                                             &ok,
                                             Qt::MSWindowsFixedSizeDialogHint);

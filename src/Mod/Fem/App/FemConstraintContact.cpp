@@ -30,6 +30,8 @@ using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintContact, Fem::Constraint)
 
+static const char* SurfaceBehaviors[] = {"Hard", "Linear", "Tied", nullptr};
+
 ConstraintContact::ConstraintContact()
 {
     /*Note: Initialise parameters here*/
@@ -58,6 +60,22 @@ ConstraintContact::ConstraintContact()
                       "ConstraintContact",
                       App::PropertyType(App::Prop_None),
                       "Stick slope");
+    ADD_PROPERTY_TYPE(EnableThermalContact,
+                      (false),
+                      "ConstraintContact",
+                      App::PropertyType(App::Prop_None),
+                      "Enable thermal contact");
+    ADD_PROPERTY_TYPE(ThermalContactConductance,
+                      (std::vector<std::string> {}),
+                      "ConstraintContact",
+                      App::PropertyType(App::Prop_None),
+                      "Thermal contact conductance");
+    ADD_PROPERTY_TYPE(SurfaceBehavior,
+                      (1),
+                      "ConstraintContact",
+                      App::Prop_None,
+                      "Surface behavior type");
+    SurfaceBehavior.setEnums(SurfaceBehaviors);
 }
 
 App::DocumentObjectExecReturn* ConstraintContact::execute()

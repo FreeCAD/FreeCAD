@@ -130,11 +130,10 @@ View3DInventorViewerPy::~View3DInventorViewerPy()
 
 Py::Object View3DInventorViewerPy::repr()
 {
-    std::ostringstream s_out;
     if (!_viewer)
         throw Py::RuntimeError("Cannot print representation of deleted object");
-    s_out << "View3DInventorViewer";
-    return Py::String(s_out.str());
+
+    return Py::String("View3DInventorViewer");
 }
 
 View3DInventorViewerPy::method_varargs_handler View3DInventorViewerPy::pycxx_handler = nullptr;
@@ -277,8 +276,8 @@ Py::Object View3DInventorViewerPy::seekToPoint(const Py::Tuple& args)
             _viewer->seekToPoint(hitpoint);
         }
         else {
-            Py::Int x(tuple[0]);
-            Py::Int y(tuple[1]);
+            Py::Long x(tuple[0]);
+            Py::Long y(tuple[1]);
 
             SbVec2s hitpoint ((long)x,(long)y);
             _viewer->seekToPoint(hitpoint);
@@ -344,8 +343,8 @@ Py::Object View3DInventorViewerPy::getPointOnFocalPlane(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "hh", &x, &y)) {
         PyErr_Clear();
         Py::Tuple t(args[0]);
-        x = (int)Py::Int(t[0]);
-        y = (int)Py::Int(t[1]);
+        x = (int)Py::Long(t[0]);
+        y = (int)Py::Long(t[1]);
     }
     try {
         SbVec3f pt = _viewer->getPointOnFocalPlane(SbVec2s(x,y));

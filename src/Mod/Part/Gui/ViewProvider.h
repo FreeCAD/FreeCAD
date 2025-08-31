@@ -24,10 +24,17 @@
 #ifndef PARTGUI_VIEWPROVIDERPART_H
 #define PARTGUI_VIEWPROVIDERPART_H
 
+#include <utility>
+
 #include <Gui/ViewProviderBuilder.h>
 #include <Mod/Part/Gui/ViewProviderExt.h>
 
 class SoSeparator;
+
+namespace Gui
+{
+class GizmoContainer;
+}
 
 namespace Part { struct ShapeHistory; }
 
@@ -53,15 +60,22 @@ public:
     ~ViewProviderPart() override;
     bool doubleClicked() override;
 
+    void setGizmoContainer(Gui::GizmoContainer* gizmoContainer);
+
 protected:
     void applyColor(const Part::ShapeHistory& hist,
-                    const std::vector<App::Color>& colBase,
-                    std::vector<App::Color>& colBool);
+                    const std::vector<Base::Color>& colBase,
+                    std::vector<Base::Color>& colBool);
     void applyMaterial(const Part::ShapeHistory& hist,
                        const std::vector<App::Material>& colBase,
                        std::vector<App::Material>& colBool);
-    void applyTransparency(float transparency, std::vector<App::Color>& colors);
+    void applyTransparency(float transparency, std::vector<Base::Color>& colors);
     void applyTransparency(float transparency, std::vector<App::Material>& colors);
+
+    void setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum) override;
+
+private:
+    Gui::GizmoContainer* gizmoContainer = nullptr;
 };
 
 } // namespace PartGui

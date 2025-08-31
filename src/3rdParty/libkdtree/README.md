@@ -24,12 +24,12 @@ Please leave bugreports on Github Issues page <https://github.com/nvmd/libkdtree
 Historical background
 ---------------------
 
-In the past, this library was available from [http://libkdtree.alioth.debian.org/](https://web.archive.org/web/20180422154001/http://libkdtree.alioth.debian.org/).
-This page seems to be gone now, available only via [WebArchive](https://web.archive.org/web/20180422154001/http://libkdtree.alioth.debian.org/).
+In the past, this library was available from <http://libkdtree.alioth.debian.org/>.
+This page seems to be gone now, available only via WebArchive.
 This is a mirror and a fork of that original repository, created in
 2011 and maintained ever since.
 
-Notes of the original author are preserved below.
+Notes of the original author a preserved below.
 
 Installation
 ------------
@@ -114,8 +114,8 @@ without the help of a number of people. Foremost, I would like to thank the
 folks from the #c++ channel on Freenode, specifically (in no particular order)
 orbitz, quix, Erwin, pwned, wcstok, dasOp, Chaku, Adrinael, The_Vulture, and
 LIM2 (if I left anyone out, let me know). Finally, I thank the Artificial
-Intelligence Laboratory of the University of Zurich, Dr. Peter Eggenberger, and
-Gabriel GÃ³mez for giving me the opportunity to write this stuff.
+Intelligence Laboratory of the University of Zurich, Dr. Peter Eggenberger and
+Gabriel Gómez for giving me the opportunity to write this stuff.
 
 Since libkdtree++ makes an effort to stay as close as possible to the feel of
 a STL container, concepts and inspiration was gained from the SGI C++

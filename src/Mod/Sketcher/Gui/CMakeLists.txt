@@ -3,15 +3,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${COIN3D_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
-    ${XercesC_INCLUDE_DIRS}
-    ${EIGEN3_INCLUDE_DIR}
 )
-link_directories(${OCC_LIBRARY_DIR})
 
 set(SketcherGui_LIBS
     Sketcher
@@ -25,13 +17,12 @@ qt_find_and_add_translation(QM_SRCS "Resources/translations/*_*.ts"
 qt_create_resource_file(${Sketcher_TR_QRC} ${QM_SRCS})
 qt_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc ${Sketcher_TR_QRC})
 
-generate_from_xml(ViewProviderSketchGeometryExtensionPy)
+generate_from_py(ViewProviderSketchGeometryExtension)
 
 set(SketcherGui_UIC_SRCS
     TaskSketcherConstraints.ui
     TaskSketcherElements.ui
     SketcherToolDefaultWidget.ui
-    TaskSketcherMessages.ui
     TaskSketcherSolverAdvanced.ui
     TaskSketcherValidation.ui
     InsertDatum.ui
@@ -50,6 +41,7 @@ SET(SketcherGui_SRCS
     ${SketcherGui_UIC_HDRS}
     AppSketcherGui.cpp
     GeometryCreationMode.h
+    Command.h
     Command.cpp
     AutoConstraint.h
     Utils.h
@@ -83,6 +75,7 @@ SET(SketcherGui_SRCS
     CommandCreateGeo.cpp
     CommandConstraints.h
     CommandConstraints.cpp
+    CommandSketcherTools.h
     CommandSketcherTools.cpp
     CommandSketcherBSpline.cpp
     CommandSketcherOverlay.cpp
@@ -109,7 +102,6 @@ SET(SketcherGui_SRCS
     SketcherToolDefaultWidget.h
     TaskSketcherTool.cpp
     TaskSketcherTool.h
-    TaskSketcherMessages.ui
     TaskSketcherMessages.cpp
     TaskSketcherMessages.h
     TaskSketcherSolverAdvanced.ui
@@ -162,6 +154,7 @@ SET(SketcherGui_SRCS
     SketcherRegularPolygonDialog.cpp
     SnapManager.cpp
     SnapManager.h
+    StyleParameters.h
     TaskDlgEditSketch.cpp
     TaskDlgEditSketch.h
     ViewProviderPython.cpp
@@ -173,7 +166,7 @@ SET(SketcherGui_SRCS
 )
 
 SET(Python_SRCS
-    ViewProviderSketchGeometryExtensionPy.xml
+    ViewProviderSketchGeometryExtension.pyi
     ViewProviderSketchGeometryExtensionPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})

@@ -1,24 +1,38 @@
-# -*- coding: utf8 -*-
-#***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+__title__= "FreeCAD Site"
+__author__ = "Yorik van Havre"
+__url__ = "https://www.freecad.org"
+
+## @package ArchSite
+#  \ingroup ARCH
+#  \brief The Site object and tools
+#
+#  This module provides tools to build Site objects.
+#  Sites are containers for Arch objects, and also define a
+#  terrain surface
 
 """This module provides tools to build Site objects. Sites are
 containers for Arch objects, and also define a terrain surface.
@@ -33,13 +47,14 @@ import ArchCommands
 import ArchComponent
 import ArchIFC
 import Draft
+
 from draftutils import params
 
 if FreeCAD.GuiUp:
-    import FreeCADGui
     from PySide import QtGui,QtCore
-    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
 else:
     # \cond
     def translate(ctxt,txt):
@@ -47,18 +62,6 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-
-## @package ArchSite
-#  \ingroup ARCH
-#  \brief The Site object and tools
-#
-#  This module provides tools to build Site objects.
-#  Sites are containers for Arch objects, and also define a
-#  terrain surface
-
-__title__= "FreeCAD Site"
-__author__ = "Yorik van Havre"
-__url__ = "https://www.freecad.org"
 
 
 def toNode(shape):
@@ -195,12 +198,18 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
                                 h = "SUMMER"
                     hourpos.append((h,ep))
         if i < 7:
-            sunpaths.append(Part.makePolygon(pts))
+            if len(pts) > 1:
+                b_spline = Part.BSplineCurve()
+                b_spline.buildFromPoles(pts)
+                sunpaths.append(b_spline.toShape())
 
     for h in hpts:
         if complete:
             h.append(h[0])
-        hourpaths.append(Part.makePolygon(h))
+        if len(h) > 1:
+            b_spline = Part.BSplineCurve()
+            b_spline.buildFromPoles(h)
+            hourpaths.append(b_spline.toShape())
 
     # cut underground lines
     sz = 2.1*scale
@@ -501,6 +510,7 @@ class _Site(ArchIFC.IfcProduct):
 
     def __init__(self,obj):
         obj.Proxy = self
+        self.Type = "Site"
         self.setProperties(obj)
         obj.IfcType = "Site"
         obj.CompositionType = "ELEMENT"
@@ -520,60 +530,62 @@ class _Site(ArchIFC.IfcProduct):
 
         pl = obj.PropertiesList
         if not "Terrain" in pl:
-            obj.addProperty("App::PropertyLink","Terrain","Site",QT_TRANSLATE_NOOP("App::Property","The base terrain of this site"))
+            obj.addProperty("App::PropertyLink","Terrain","Site",QT_TRANSLATE_NOOP("App::Property","The base terrain of this site"), locked=True)
         if not "Address" in pl:
-            obj.addProperty("App::PropertyString","Address","Site",QT_TRANSLATE_NOOP("App::Property","The street and house number of this site, with postal box or apartment number if needed"))
+            obj.addProperty("App::PropertyString","Address","Site",QT_TRANSLATE_NOOP("App::Property","The street and house number of this site, with postal box or apartment number if needed"), locked=True)
         if not "PostalCode" in pl:
-            obj.addProperty("App::PropertyString","PostalCode","Site",QT_TRANSLATE_NOOP("App::Property","The postal or zip code of this site"))
+            obj.addProperty("App::PropertyString","PostalCode","Site",QT_TRANSLATE_NOOP("App::Property","The postal or zip code of this site"), locked=True)
         if not "City" in pl:
-            obj.addProperty("App::PropertyString","City","Site",QT_TRANSLATE_NOOP("App::Property","The city of this site"))
+            obj.addProperty("App::PropertyString","City","Site",QT_TRANSLATE_NOOP("App::Property","The city of this site"), locked=True)
         if not "Region" in pl:
-            obj.addProperty("App::PropertyString","Region","Site",QT_TRANSLATE_NOOP("App::Property","The region, province or county of this site"))
+            obj.addProperty("App::PropertyString","Region","Site",QT_TRANSLATE_NOOP("App::Property","The region, province or county of this site"), locked=True)
         if not "Country" in pl:
-            obj.addProperty("App::PropertyString","Country","Site",QT_TRANSLATE_NOOP("App::Property","The country of this site"))
+            obj.addProperty("App::PropertyString","Country","Site",QT_TRANSLATE_NOOP("App::Property","The country of this site"), locked=True)
         if not "Latitude" in pl:
-            obj.addProperty("App::PropertyFloat","Latitude","Site",QT_TRANSLATE_NOOP("App::Property","The latitude of this site"))
+            obj.addProperty("App::PropertyFloat","Latitude","Site",QT_TRANSLATE_NOOP("App::Property","The latitude of this site"), locked=True)
         if not "Longitude" in pl:
-            obj.addProperty("App::PropertyFloat","Longitude","Site",QT_TRANSLATE_NOOP("App::Property","The latitude of this site"))
+            obj.addProperty("App::PropertyFloat","Longitude","Site",QT_TRANSLATE_NOOP("App::Property","The latitude of this site"), locked=True)
         if not "Declination" in pl:
-            obj.addProperty("App::PropertyAngle","Declination","Site",QT_TRANSLATE_NOOP("App::Property","Angle between the true North and the North direction in this document"))
+            obj.addProperty("App::PropertyAngle","Declination","Site",QT_TRANSLATE_NOOP("App::Property","Angle between the true North and the North direction in this document"), locked=True)
         if "NorthDeviation"in pl:
             obj.Declination = obj.NorthDeviation.Value
             obj.removeProperty("NorthDeviation")
         if not "Elevation" in pl:
-            obj.addProperty("App::PropertyLength","Elevation","Site",QT_TRANSLATE_NOOP("App::Property","The elevation of level 0 of this site"))
+            obj.addProperty("App::PropertyLength","Elevation","Site",QT_TRANSLATE_NOOP("App::Property","The elevation of level 0 of this site"), locked=True)
         if not "Url" in pl:
-            obj.addProperty("App::PropertyString","Url","Site",QT_TRANSLATE_NOOP("App::Property","A URL that shows this site in a mapping website"))
+            obj.addProperty("App::PropertyString","Url","Site",QT_TRANSLATE_NOOP("App::Property","A URL that shows this site in a mapping website"), locked=True)
         if not "Additions" in pl:
-            obj.addProperty("App::PropertyLinkList","Additions","Site",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
+            obj.addProperty("App::PropertyLinkList","Additions","Site",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"), locked=True)
         if not "Subtractions" in pl:
-            obj.addProperty("App::PropertyLinkList","Subtractions","Site",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"))
+            obj.addProperty("App::PropertyLinkList","Subtractions","Site",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"), locked=True)
         if not "ProjectedArea" in pl:
-            obj.addProperty("App::PropertyArea","ProjectedArea","Site",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
+            obj.addProperty("App::PropertyArea","ProjectedArea","Site",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"), locked=True)
         if not "Perimeter" in pl:
-            obj.addProperty("App::PropertyLength","Perimeter","Site",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the projected area"))
+            obj.addProperty("App::PropertyLength","Perimeter","Site",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the projected area"), locked=True)
         if not "AdditionVolume" in pl:
-            obj.addProperty("App::PropertyVolume","AdditionVolume","Site",QT_TRANSLATE_NOOP("App::Property","The volume of earth to be added to this terrain"))
+            obj.addProperty("App::PropertyVolume","AdditionVolume","Site",QT_TRANSLATE_NOOP("App::Property","The volume of earth to be added to this terrain"), locked=True)
         if not "SubtractionVolume" in pl:
-            obj.addProperty("App::PropertyVolume","SubtractionVolume","Site",QT_TRANSLATE_NOOP("App::Property","The volume of earth to be removed from this terrain"))
+            obj.addProperty("App::PropertyVolume","SubtractionVolume","Site",QT_TRANSLATE_NOOP("App::Property","The volume of earth to be removed from this terrain"), locked=True)
         if not "ExtrusionVector" in pl:
-            obj.addProperty("App::PropertyVector","ExtrusionVector","Site",QT_TRANSLATE_NOOP("App::Property","An extrusion vector to use when performing boolean operations"))
+            obj.addProperty("App::PropertyVector","ExtrusionVector","Site",QT_TRANSLATE_NOOP("App::Property","An extrusion vector to use when performing boolean operations"), locked=True)
             obj.ExtrusionVector = FreeCAD.Vector(0,0,-100000)
         if not "RemoveSplitter" in pl:
-            obj.addProperty("App::PropertyBool","RemoveSplitter","Site",QT_TRANSLATE_NOOP("App::Property","Remove splitters from the resulting shape"))
+            obj.addProperty("App::PropertyBool","RemoveSplitter","Site",QT_TRANSLATE_NOOP("App::Property","Remove splitters from the resulting shape"), locked=True)
         if not "OriginOffset" in pl:
-            obj.addProperty("App::PropertyVector","OriginOffset","Site",QT_TRANSLATE_NOOP("App::Property","An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates"))
+            obj.addProperty("App::PropertyVector","OriginOffset","Site",QT_TRANSLATE_NOOP("App::Property","An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates"), locked=True)
         if not hasattr(obj,"Group"):
             obj.addExtension("App::GroupExtensionPython")
         if not "IfcType" in pl:
-            obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"))
+            obj.addProperty("App::PropertyEnumeration","IfcType","IFC",QT_TRANSLATE_NOOP("App::Property","The type of this object"), locked=True)
             obj.IfcType = ArchIFC.IfcTypes
             obj.IcfType = "Site"
         if not "TimeZone" in pl:
-            obj.addProperty("App::PropertyInteger","TimeZone","Site",QT_TRANSLATE_NOOP("App::Property","The time zone where this site is located"))
+            obj.addProperty("App::PropertyInteger","TimeZone","Site",QT_TRANSLATE_NOOP("App::Property","The time zone where this site is located"), locked=True)
         if not "EPWFile" in pl:
-            obj.addProperty("App::PropertyFileIncluded","EPWFile","Site",QT_TRANSLATE_NOOP("App::Property","An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one"))
-        self.Type = "Site"
+            obj.addProperty("App::PropertyFileIncluded","EPWFile","Site",QT_TRANSLATE_NOOP("App::Property","An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one"), locked=True)
+        if not "SunRay" in pl:
+            obj.addProperty("App::PropertyLink", "SunRay", "Sun", QT_TRANSLATE_NOOP("App::Property", "The generated sun ray object"), locked=True)
+            obj.setEditorMode("SunRay", ["ReadOnly", "Hidden"])
 
     def onDocumentRestored(self,obj):
         """Method run when the document is restored. Re-adds the properties."""
@@ -656,8 +668,15 @@ class _Site(ArchIFC.IfcProduct):
 
     def onChanged(self, obj, prop):
         ArchComponent.Component.onChanged(self, obj, prop)
-        if prop == "Terrain" and obj.Terrain and FreeCAD.GuiUp:
-            obj.Terrain.ViewObject.hide()
+        if prop == "Terrain" and obj.Terrain:
+            if obj.Terrain in getattr(obj,"Group",[]):
+                grp = obj.Group
+                grp.remove(obj.Terrain)
+                obj.Group = grp
+            if FreeCAD.GuiUp:
+                obj.Terrain.ViewObject.hide()
+        if prop == "Group" and getattr(obj,"Terrain",None) in obj.Group:
+            obj.Terrain = None
 
     def getMovableChildren(self, obj):
         return obj.Additions + obj.Subtractions
@@ -748,7 +767,7 @@ class _Site(ArchIFC.IfcProduct):
 
     def loads(self,state):
 
-        return None
+        self.Type = "Site"
 
 
 class _ViewProviderSite:
@@ -776,30 +795,46 @@ class _ViewProviderSite:
 
         pl = vobj.PropertiesList
         if not "WindRose" in pl:
-            vobj.addProperty("App::PropertyBool","WindRose","Site",QT_TRANSLATE_NOOP("App::Property","Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module"))
+            vobj.addProperty("App::PropertyBool","WindRose","Site",QT_TRANSLATE_NOOP("App::Property","Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module"), locked=True)
         if not "SolarDiagram" in pl:
-            vobj.addProperty("App::PropertyBool","SolarDiagram","Site",QT_TRANSLATE_NOOP("App::Property","Show solar diagram or not"))
+            vobj.addProperty("App::PropertyBool","SolarDiagram","Site",QT_TRANSLATE_NOOP("App::Property","Show solar diagram or not"), locked=True)
         if not "SolarDiagramScale" in pl:
-            vobj.addProperty("App::PropertyFloat","SolarDiagramScale","Site",QT_TRANSLATE_NOOP("App::Property","The scale of the solar diagram"))
-            vobj.SolarDiagramScale = 1
+            vobj.addProperty("App::PropertyFloat","SolarDiagramScale","Site",QT_TRANSLATE_NOOP("App::Property","The scale of the solar diagram"), locked=True)
+            vobj.SolarDiagramScale = 20000.0 # Default diagram of 20 m radius
         if not "SolarDiagramPosition" in pl:
-            vobj.addProperty("App::PropertyVector","SolarDiagramPosition","Site",QT_TRANSLATE_NOOP("App::Property","The position of the solar diagram"))
+            vobj.addProperty("App::PropertyVector","SolarDiagramPosition","Site",QT_TRANSLATE_NOOP("App::Property","The position of the solar diagram"), locked=True)
         if not "SolarDiagramColor" in pl:
-            vobj.addProperty("App::PropertyColor","SolarDiagramColor","Site",QT_TRANSLATE_NOOP("App::Property","The color of the solar diagram"))
+            vobj.addProperty("App::PropertyColor","SolarDiagramColor","Site",QT_TRANSLATE_NOOP("App::Property","The color of the solar diagram"), locked=True)
             vobj.SolarDiagramColor = (0.16,0.16,0.25)
         if not "Orientation" in pl:
             vobj.addProperty("App::PropertyEnumeration", "Orientation", "Site", QT_TRANSLATE_NOOP(
-                "App::Property", "When set to 'True North' the whole geometry will be rotated to match the true north of this site"))
+                "App::Property", "When set to 'True North' the whole geometry will be rotated to match the true north of this site"), locked=True)
             vobj.Orientation = ["Project North", "True North"]
             vobj.Orientation = "Project North"
         if not "Compass" in pl:
-            vobj.addProperty("App::PropertyBool", "Compass", "Compass", QT_TRANSLATE_NOOP("App::Property", "Show compass or not"))
+            vobj.addProperty("App::PropertyBool", "Compass", "Compass", QT_TRANSLATE_NOOP("App::Property", "Show compass or not"), locked=True)
         if not "CompassRotation" in pl:
-            vobj.addProperty("App::PropertyAngle", "CompassRotation", "Compass", QT_TRANSLATE_NOOP("App::Property", "The rotation of the Compass relative to the Site"))
+            vobj.addProperty("App::PropertyAngle", "CompassRotation", "Compass", QT_TRANSLATE_NOOP("App::Property", "The rotation of the Compass relative to the Site"), locked=True)
         if not "CompassPosition" in pl:
-            vobj.addProperty("App::PropertyVector", "CompassPosition", "Compass", QT_TRANSLATE_NOOP("App::Property", "The position of the Compass relative to the Site placement"))
+            vobj.addProperty("App::PropertyVector", "CompassPosition", "Compass", QT_TRANSLATE_NOOP("App::Property", "The position of the Compass relative to the Site placement"), locked=True)
         if not "UpdateDeclination" in pl:
-            vobj.addProperty("App::PropertyBool", "UpdateDeclination", "Compass", QT_TRANSLATE_NOOP("App::Property", "Update the Declination value based on the compass rotation"))
+            vobj.addProperty("App::PropertyBool", "UpdateDeclination", "Compass", QT_TRANSLATE_NOOP("App::Property", "Update the Declination value based on the compass rotation"), locked=True)
+        if not "ShowSunPosition" in pl:
+            vobj.addProperty("App::PropertyBool", "ShowSunPosition", "Sun", QT_TRANSLATE_NOOP("App::Property", "Show the sun position for a specific date and time"), locked=True)
+        if not "SunDateMonth" in pl:
+            vobj.addProperty("App::PropertyIntegerConstraint", "SunDateMonth", "Sun", QT_TRANSLATE_NOOP("App::Property", "The month of the year to show the sun position"), locked=True)
+            vobj.SunDateMonth = (6, 1, 12, 1) # Default to June
+        if not "SunDateDay" in pl:
+            vobj.addProperty("App::PropertyIntegerConstraint", "SunDateDay", "Sun", QT_TRANSLATE_NOOP("App::Property", "The day of the month to show the sun position"), locked=True)
+            # 31 is a safe maximum; the datetime object will handle invalid dates like Feb 31.
+            vobj.SunDateDay =  (21, 1, 31, 1) # Default to the 21st (solstice)
+        if not "SunTimeHour" in pl:
+            vobj.addProperty("App::PropertyFloatConstraint", "SunTimeHour", "Sun", QT_TRANSLATE_NOOP("App::Property", "The hour of the day to show the sun position"), locked=True)
+            # Use 23.99 to avoid issues with hour 24
+            vobj.SunTimeHour = (12.0, 0.0, 23.5, 0.5) # Default to noon
+        if not "ShowHourLabels" in pl:
+            vobj.addProperty("App::PropertyBool", "ShowHourLabels", "Sun", QT_TRANSLATE_NOOP("App::Property", "Show text labels for key hours on the sun path"), locked=True)
+            vobj.ShowHourLabels = True # Show hour labels by default
 
     def getIcon(self):
         """Return the path to the appropriate icon.
@@ -867,7 +902,7 @@ class _ViewProviderSite:
         menu.addAction(actionEdit)
 
         actionToggleSubcomponents = QtGui.QAction(QtGui.QIcon(":/icons/Arch_ToggleSubs.svg"),
-                                                  translate("Arch", "Toggle subcomponents"),
+                                                  translate("Arch", "Toggle Subcomponents"),
                                                   menu)
         QtCore.QObject.connect(actionToggleSubcomponents,
                                QtCore.SIGNAL("triggered()"),
@@ -926,6 +961,67 @@ class _ViewProviderSite:
         self.rotateCompass(vobj)
         vobj.Annotation.addChild(self.compass.rootNode)
 
+        self.sunSwitch = coin.SoSwitch() # Toggle the sun sphere on and off
+        self.sunSwitch.whichChild = -1   # -1 means hidden
+
+        self.sunSep = coin.SoSeparator() # A separator to group all sun elements
+        self.sunTransform = coin.SoTransform() # Position the sphere
+        self.sunMaterial = coin.SoMaterial()
+        self.sunMaterial.diffuseColor.setValue(1, 1, 0) # Yellow color
+        self.sunSphere = coin.SoSphere()
+
+        # Assemble the scene graph for the sphere
+        self.sunSep.addChild(self.sunTransform)
+        self.sunSep.addChild(self.sunMaterial)
+        self.sunSep.addChild(self.sunSphere)
+        self.sunSwitch.addChild(self.sunSep)
+
+        # Add the entire sun assembly to the object's annotation node
+        vobj.Annotation.addChild(self.sunSwitch)
+
+        def setup_path_segment(color_tuple):
+            separator = coin.SoSeparator()
+            material = coin.SoMaterial()
+            material.diffuseColor.setValue(color_tuple)
+            node = coin.SoSeparator() # This will hold the geometry
+            separator.addChild(material)
+            separator.addChild(node)
+            self.sunSwitch.addChild(separator)
+            return node
+
+        # Create nodes for different segments of the sun path representing
+        # morning, midday, and afternoon with distinct colors.
+        self.sunPathMorningNode = setup_path_segment((0.2, 0.8, 1.0))   # Sky Blue
+        self.sunPathMiddayNode = setup_path_segment((1.0, 0.75, 0.0))  # Golden Yellow / Amber
+        self.sunPathAfternoonNode = setup_path_segment((1.0, 0.35, 0.0)) # Orange-Red
+
+        # Create nodes for the hour marker points.
+        self.hourMarkerSep = coin.SoSeparator()
+        self.hourMarkerMaterial = coin.SoMaterial()
+        self.hourMarkerMaterial.diffuseColor.setValue(0.8, 0.8, 0.8) # Grey
+
+        self.hourMarkerDrawStyle = coin.SoDrawStyle()
+        self.hourMarkerDrawStyle.pointSize.setValue(5) # Set a visible point size (e.g., 5 pixels)
+        self.hourMarkerDrawStyle.style.setValue(coin.SoDrawStyle.POINTS)
+
+        self.hourMarkerCoords = coin.SoCoordinate3()
+        self.hourMarkerSet = coin.SoPointSet()
+
+        self.hourMarkerSep.addChild(self.hourMarkerMaterial)
+        self.hourMarkerSep.addChild(self.hourMarkerDrawStyle)
+        self.hourMarkerSep.addChild(self.hourMarkerCoords)
+        self.hourMarkerSep.addChild(self.hourMarkerSet)
+        self.sunSwitch.addChild(self.hourMarkerSep)
+
+        # Create nodes for the hour labels.
+        self.hourLabelSep = coin.SoSeparator()
+        self.hourLabelMaterial = coin.SoMaterial()
+        self.hourLabelMaterial.diffuseColor.setValue(0.8, 0.8, 0.8) # Same grey as markers
+        self.hourLabelFont = coin.SoFont()
+        self.hourLabelSep.addChild(self.hourLabelMaterial)
+        self.hourLabelSep.addChild(self.hourLabelFont)
+        self.sunSwitch.addChild(self.hourLabelSep)
+
     def updateData(self,obj,prop):
         """Method called when the host object has a property changed.
 
@@ -968,19 +1064,12 @@ class _ViewProviderSite:
         """
 
         from pivy import coin
-
-        def find_node(parent, nodetype):
-            for i in range(parent.getNumChildren()):
-                if isinstance(parent.getChild(i), nodetype):
-                    return parent.getChild(i)
-            return None
+        from draftutils import gui_utils
 
         if not hasattr(self, "terrain_switches"):
-            if vobj.RootNode.getNumChildren() > 2:
-                main_switch = find_node(vobj.RootNode, coin.SoSwitch)
-                if not main_switch:
-                    return
-                if main_switch.getNumChildren() == 4:   # Check if all display modes are available.
+            if vobj.RootNode.getNumChildren():
+                main_switch = gui_utils.find_coin_node(vobj.RootNode, coin.SoSwitch)  # The display mode switch.
+                if main_switch is not None and main_switch.getNumChildren() == 4:  # Check if all display modes are available.
                     self.terrain_switches = []
                     for node in tuple(main_switch.getChildren()):
                         new_switch = coin.SoSwitch()
@@ -1010,6 +1099,16 @@ class _ViewProviderSite:
             switch.whichChild = idx
 
     def onChanged(self,vobj,prop):
+        from pivy import coin
+
+        if prop == 'Visibility':
+            if vobj.Visibility:
+                # When the site becomes visible, check if the sun elements should also be shown.
+                if vobj.ShowSunPosition:
+                    self.sunSwitch.whichChild = coin.SO_SWITCH_ALL
+            else:
+                # When the site is hidden, always hide the sun elements.
+                self.sunSwitch.whichChild = coin.SO_SWITCH_NONE
 
         # onChanged is called multiple times when a document is opened.
         # Some display mode nodes can be missing during initial calls.
@@ -1045,6 +1144,10 @@ class _ViewProviderSite:
                         del self.diagramnode
                 else:
                     self.diagramswitch.whichChild = -1
+        elif prop in [
+            "ShowSunPosition", "SunDateMonth", "SunDateDay", "SunTimeHour",
+            "SolarDiagramScale", "SolarDiagramPosition", "ShowHourLabels"]:
+            self.updateSunPosition(vobj)
         elif prop == "WindRose":
             if hasattr(self,"windrosenode"):
                 del self.windrosenode
@@ -1066,7 +1169,7 @@ class _ViewProviderSite:
                     self.windroseswitch.whichChild = -1
         elif prop == 'Visibility':
             if vobj.Visibility:
-                self.updateCompassVisibility(self.Object)
+                self.updateCompassVisibility(vobj)
             else:
                 self.compass.hide()
         elif prop == 'Orientation':
@@ -1180,4 +1283,179 @@ class _ViewProviderSite:
     def loads(self,state):
 
         return None
+
+    def updateSunPosition(self, vobj):
+        """Calculates sun position and updates the sphere, path arc, and ray object."""
+        import math
+        import Part
+        import datetime
+        from pivy import coin
+
+        obj = vobj.Object
+
+        # Handle the visibility toggle for all elements
+        self.sunPathMorningNode.removeAllChildren()
+        self.sunPathMiddayNode.removeAllChildren()
+        self.sunPathAfternoonNode.removeAllChildren()
+        self.hourLabelSep.removeAllChildren()
+        self.hourMarkerCoords.point.deleteValues(0)
+
+        if not vobj.ShowSunPosition:
+            self.sunSwitch.whichChild = -1 # Hide the Pivy sphere and path
+            if obj.SunRay and hasattr(obj.SunRay, "ViewObject"):
+                obj.SunRay.ViewObject.Visibility = False
+            return
+
+        self.sunSwitch.whichChild = coin.SO_SWITCH_ALL # Show sphere and path
+
+        dt_object_for_label = None
+
+        try:
+            from ladybug import location, sunpath
+            loc = location.Location(latitude=obj.Latitude, longitude=obj.Longitude, time_zone=obj.TimeZone)
+            sp = sunpath.Sunpath.from_location(loc)
+            is_ladybug = True
+        except ImportError:
+            try:
+                import pysolar.solar as solar
+                is_ladybug = False
+            except ImportError:
+                FreeCAD.Console.PrintError("Ladybug or Pysolar module not found. Cannot calculate sun position.\n")
+                return
+
+        morning_points, midday_points, afternoon_points = [], [], []
+        self.hourMarkerCoords.point.deleteValues(0) # Clear previous marker coordinates
+        marker_coords = []
+
+        for hour_float in [h / 2.0 for h in range(48)]: # Loop from 0.0 to 23.5
+            if is_ladybug:
+                sun = sp.calculate_sun(month=vobj.SunDateMonth, day=vobj.SunDateDay, hour=hour_float)
+                alt = sun.altitude
+                az = sun.azimuth
+            else:
+                tz = datetime.timezone(datetime.timedelta(hours=obj.TimeZone))
+                dt = datetime.datetime(2023, vobj.SunDateMonth, vobj.SunDateDay, int(hour_float), int((hour_float % 1)*60), tzinfo=tz)
+                alt = solar.get_altitude(obj.Latitude, obj.Longitude, dt)
+                az = solar.get_azimuth(obj.Latitude, obj.Longitude, dt)
+
+            if alt > 0:
+                alt_rad = math.radians(alt)
+                az_rad = math.radians(90 - az)
+                xy_proj = math.cos(alt_rad) * vobj.SolarDiagramScale
+                x = math.cos(az_rad) * xy_proj
+                y = math.sin(az_rad) * xy_proj
+                z = math.sin(alt_rad) * vobj.SolarDiagramScale
+                point = FreeCAD.Vector(x, y, z)
+                if hour_float < 10:
+                    morning_points.append(point)
+                elif hour_float <= 14:
+                    midday_points.append(point)
+                else:
+                    afternoon_points.append(point)
+                # Check if the current time is a full hour
+                if hour_float % 1 == 0:
+                    marker_coords.append(FreeCAD.Vector(x, y, z))
+
+                if hasattr(vobj, "ShowHourLabels") and vobj.ShowHourLabels:
+                    if vobj.ShowHourLabels and (hour_float in [9.0, 12.0, 15.0]):
+                        # Create a text node for the label
+                        text_node = coin.SoText2()
+                        text_node.string = f"{int(hour_float)}h"
+
+                        # Create a transform to position the text slightly offset from the marker
+                        text_transform = coin.SoTransform()
+                        offset_vec = FreeCAD.Vector(x, y, z).normalize() * (vobj.SolarDiagramScale * 0.03)
+                        text_pos = FreeCAD.Vector(x, y, z).add(offset_vec)
+                        text_transform.translation.setValue(text_pos.x, text_pos.y, text_pos.z)
+
+                        # Add a separator for this specific label
+                        label_sep = coin.SoSeparator()
+                        label_sep.addChild(text_transform)
+                        label_sep.addChild(text_node)
+                        self.hourLabelSep.addChild(label_sep)
+
+        if marker_coords:
+            self.hourMarkerCoords.point.setValues(marker_coords)
+
+        if len(morning_points) > 1:
+            path_b_spline = Part.BSplineCurve()
+            path_b_spline.buildFromPoles(morning_points)
+            self.sunPathMorningNode.addChild(toNode(path_b_spline.toShape()))
+
+        if len(midday_points) > 1:
+            # To connect midday to morning, we need the last point from the morning list
+            if morning_points:
+                midday_points.insert(0, morning_points[-1])
+            path_b_spline = Part.BSplineCurve()
+            path_b_spline.buildFromPoles(midday_points)
+            self.sunPathMiddayNode.addChild(toNode(path_b_spline.toShape()))
+
+        if len(afternoon_points) > 1:
+            # To connect afternoon to midday, we need the last point from the midday list
+            if midday_points:
+                afternoon_points.insert(0, midday_points[-1])
+            path_b_spline = Part.BSplineCurve()
+            path_b_spline.buildFromPoles(afternoon_points)
+            self.sunPathAfternoonNode.addChild(toNode(path_b_spline.toShape()))
+
+        self.hourLabelFont.size = vobj.SolarDiagramScale * 0.015
+
+        # Sun sphere and sun ray logic
+        if is_ladybug:
+            sun = sp.calculate_sun(month=vobj.SunDateMonth, day=vobj.SunDateDay, hour=vobj.SunTimeHour)
+            altitude_deg, azimuth_deg = sun.altitude, sun.azimuth
+            dt_object_for_label = datetime.datetime(2023, vobj.SunDateMonth, vobj.SunDateDay, int(vobj.SunTimeHour), int((vobj.SunTimeHour % 1)*60))
+        else:
+            tz = datetime.timezone(datetime.timedelta(hours=obj.TimeZone))
+            dt_object_for_label = datetime.datetime(2023, vobj.SunDateMonth, vobj.SunDateDay, int(vobj.SunTimeHour), int((vobj.SunTimeHour % 1)*60), tzinfo=tz)
+            altitude_deg = solar.get_altitude(obj.Latitude, obj.Longitude, dt_object_for_label)
+            azimuth_deg = solar.get_azimuth(obj.Latitude, obj.Longitude, dt_object_for_label)
+
+        altitude_rad = math.radians(altitude_deg)
+        azimuth_rad = math.radians(90 - azimuth_deg)
+        xy_proj = math.cos(altitude_rad) * vobj.SolarDiagramScale
+        x = math.cos(azimuth_rad) * xy_proj
+        y = math.sin(azimuth_rad) * xy_proj
+        z = math.sin(altitude_rad) * vobj.SolarDiagramScale
+        sun_pos_3d = vobj.SolarDiagramPosition.add(FreeCAD.Vector(x, y, z)) # Final absolute position
+
+        self.sunTransform.translation.setValue(sun_pos_3d.x, sun_pos_3d.y, sun_pos_3d.z)
+        self.sunSphere.radius = vobj.SolarDiagramScale * 0.02
+
+        try:
+            ray_object = obj.SunRay
+            if not ray_object: raise AttributeError
+            ray_object.Start = sun_pos_3d
+            ray_object.End = vobj.SolarDiagramPosition
+            ray_object.ViewObject.Visibility = True
+        except (AttributeError, ReferenceError):
+            ray_object = Draft.make_line(sun_pos_3d, vobj.SolarDiagramPosition)
+            vo = ray_object.ViewObject
+            vo.LineColor = (1.0, 1.0, 0.0)
+            vo.DrawStyle = "Dashed"
+            vo.ArrowType = "Arrow"
+            vo.LineWidth = 2
+            vo.EndArrow = True
+            vo.ArrowSize = vobj.SolarDiagramScale * 0.015
+
+            if hasattr(obj, "addObject"):
+                obj.addObject(ray_object)
+            obj.SunRay = ray_object
+
+        ray_object.recompute()
+
+        # Add and update custom data properties
+        if not hasattr(ray_object, "Altitude"):
+            ray_object.addProperty("App::PropertyAngle", "Altitude", "Sun Data", QT_TRANSLATE_NOOP("App::Property", "The altitude of the sun above the horizon"), locked=True)
+            ray_object.setEditorMode("Altitude", ["ReadOnly", "Hidden"])
+            ray_object.addProperty("App::PropertyAngle", "Azimuth", "Sun Data", QT_TRANSLATE_NOOP("App::Property", "The compass direction of the sun (0° is North)"), locked=True)
+            ray_object.setEditorMode("Azimuth", ["ReadOnly", "Hidden"])
+            ray_object.addProperty("App::PropertyString", "Time", "Sun Data", QT_TRANSLATE_NOOP("App::Property", "The date and time for this sun position"), locked=True)
+            ray_object.setEditorMode("Time", ["ReadOnly", "Hidden"])
+
+        ray_object.Altitude = math.radians(altitude_deg)
+        ray_object.Azimuth = math.radians(azimuth_deg)
+        time_string = dt_object_for_label.strftime("%B %d, %H:%M")
+        ray_object.Time = time_string
+        ray_object.Label = f"Sun Ray ({time_string})"
 

@@ -79,7 +79,7 @@ PropertyView::PropertyView(QWidget *parent)
     connect(timer, &QTimer::timeout, this, &PropertyView::onTimer);
 
     tabs = new QTabWidget (this);
-    tabs->setObjectName(QString::fromUtf8("propertyTab"));
+    tabs->setObjectName(QStringLiteral("propertyTab"));
     tabs->setTabPosition(QTabWidget::South);
     pLayout->addWidget(tabs, 0, 0);
 
@@ -116,6 +116,9 @@ PropertyView::PropertyView(QWidget *parent)
     this->connectPropRemove =
     App::GetApplication().signalRemoveDynamicProperty.connect(std::bind
         (&PropertyView::slotRemoveDynamicProperty, this, sp::_1));
+    this->connectPropRename =
+    App::GetApplication().signalRenameDynamicProperty.connect(std::bind
+        (&PropertyView::slotRenameDynamicProperty, this, sp::_1, sp::_2));
     this->connectPropChange =
     App::GetApplication().signalChangePropertyEditor.connect(std::bind
         (&PropertyView::slotChangePropertyEditor, this, sp::_1, sp::_2));
@@ -214,7 +217,7 @@ void PropertyView::slotRollback() {
 
 void PropertyView::slotChangePropertyData(const App::Property& prop)
 {
-    if (propertyEditorData->propOwners.count(prop.getContainer())) {
+    if (propertyEditorData->propOwners.contains(prop.getContainer())) {
         propertyEditorData->updateProperty(prop);
         timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
@@ -222,7 +225,7 @@ void PropertyView::slotChangePropertyData(const App::Property& prop)
 
 void PropertyView::slotChangePropertyView(const Gui::ViewProvider&, const App::Property& prop)
 {
-    if (propertyEditorView->propOwners.count(prop.getContainer())) {
+    if (propertyEditorView->propOwners.contains(prop.getContainer())) {
         propertyEditorView->updateProperty(prop);
         timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
@@ -239,8 +242,8 @@ void PropertyView::slotAppendDynamicProperty(const App::Property& prop)
         return;
 
     App::PropertyContainer* parent = prop.getContainer();
-    if (propertyEditorData->propOwners.count(parent)
-            || propertyEditorView->propOwners.count(parent))
+    if (propertyEditorData->propOwners.contains(parent)
+            || propertyEditorView->propOwners.contains(parent))
     {
         timer->start(ViewParams::instance()->getPropertyViewTimer());
     }
@@ -249,25 +252,42 @@ void PropertyView::slotAppendDynamicProperty(const App::Property& prop)
 void PropertyView::slotRemoveDynamicProperty(const App::Property& prop)
 {
     App::PropertyContainer* parent = prop.getContainer();
-    if(propertyEditorData->propOwners.count(parent))
+    if(propertyEditorData->propOwners.contains(parent))
         propertyEditorData->removeProperty(prop);
-    else if(propertyEditorView->propOwners.count(parent))
+    else if(propertyEditorView->propOwners.contains(parent))
         propertyEditorView->removeProperty(prop);
     else
         return;
     timer->start(ViewParams::instance()->getPropertyViewTimer());
 }
 
+void PropertyView::slotRenameDynamicProperty(const App::Property& prop,
+                                             const char* /*oldName*/)
+{
+    App::PropertyContainer* parent = prop.getContainer();
+    if (propertyEditorData->propOwners.contains(parent)) {
+        propertyEditorData->renameProperty(prop);
+    }
+    else if (propertyEditorView->propOwners.contains(parent)) {
+        propertyEditorView->renameProperty(prop);
+    }
+    else {
+        return;
+    }
+    clearPropertyItemSelection();
+    timer->start(ViewParams::instance()->getPropertyViewTimer());
+}
+
 void PropertyView::slotChangePropertyEditor(const App::Document &, const App::Property& prop)
 {
     App::PropertyContainer* parent = prop.getContainer();
-    if (propertyEditorData->propOwners.count(parent)
-            || propertyEditorView->propOwners.count(parent))
+    if (propertyEditorData->propOwners.contains(parent)
+            || propertyEditorView->propOwners.contains(parent))
         timer->start(ViewParams::instance()->getPropertyViewTimer());
 }
 
 void PropertyView::slotDeleteDocument(const Gui::Document &doc) {
-    if(propertyEditorData->propOwners.count(doc.getDocument())) {
+    if(propertyEditorData->propOwners.contains(doc.getDocument())) {
         propertyEditorView->buildUp();
         propertyEditorData->buildUp();
         clearPropertyItemSelection();
@@ -276,7 +296,7 @@ void PropertyView::slotDeleteDocument(const Gui::Document &doc) {
 }
 
 void PropertyView::slotDeletedViewObject(const Gui::ViewProvider &vp) {
-    if(propertyEditorView->propOwners.count(&vp)) {
+    if(propertyEditorView->propOwners.contains(&vp)) {
         propertyEditorView->buildUp();
         propertyEditorData->buildUp();
         clearPropertyItemSelection();
@@ -285,7 +305,7 @@ void PropertyView::slotDeletedViewObject(const Gui::ViewProvider &vp) {
 }
 
 void PropertyView::slotDeletedObject(const App::DocumentObject &obj) {
-    if(propertyEditorData->propOwners.count(&obj)) {
+    if(propertyEditorData->propOwners.contains(&obj)) {
         propertyEditorView->buildUp();
         propertyEditorData->buildUp();
         clearPropertyItemSelection();
@@ -341,7 +361,7 @@ void PropertyView::onTimer()
 {
     // See https://forum.freecad.org/viewtopic.php?f=8&t=72526
     if (this->updating) {
-        Base::Console().Log("Ignore recursive call of PropertyView::onTimer()\n");
+        Base::Console().log("Ignore recursive call of PropertyView::onTimer()\n");
         return;
     }
     Base::StateLocker guard(this->updating);
@@ -559,7 +579,7 @@ void PropertyView::changeEvent(QEvent *e)
 PropertyDockView::PropertyDockView(Gui::Document* pcDocument, QWidget *parent)
   : DockWindow(pcDocument,parent)
 {
-    setWindowTitle(tr("Property view"));
+    setWindowTitle(tr("Property View"));
 
     auto view = new PropertyView(this);
     auto pLayout = new QGridLayout(this);

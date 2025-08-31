@@ -57,7 +57,7 @@ def fuse(object1, object2):
         if len(f.Wires) > 1:
             holes = True
     if DraftGeomUtils.isCoplanar(object1.Shape.fuse(object2.Shape).Faces) and not holes:
-        obj = App.ActiveDocument.addObject("Part::Part2DObjectPython","Fusion")
+        obj = App.ActiveDocument.addObject("Part::FeaturePython", "Fusion")
         Wire(obj)
         if App.GuiUp:
             ViewProviderWire(obj.ViewObject)
@@ -65,10 +65,10 @@ def fuse(object1, object2):
         obj.Tool = object2
     elif holes:
         # temporary hack, since Part::Fuse objects don't remove splitters
-        obj = App.ActiveDocument.addObject("Part::Feature","Fusion")
+        obj = App.ActiveDocument.addObject("Part::Feature", "Fusion")
         obj.Shape = fshape
     else:
-        obj = App.ActiveDocument.addObject("Part::Fuse","Fusion")
+        obj = App.ActiveDocument.addObject("Part::Fuse", "Fusion")
         obj.Base = object1
         obj.Tool = object2
     if App.GuiUp:

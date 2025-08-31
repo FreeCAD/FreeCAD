@@ -1078,7 +1078,7 @@ PyObject* FemMeshPy::addVolumeList(PyObject* args)
 }
 
 
-PyObject* FemMeshPy::copy(PyObject* args)
+PyObject* FemMeshPy::copy(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -1107,7 +1107,7 @@ PyObject* FemMeshPy::read(PyObject* args)
     Py_Return;
 }
 
-PyObject* FemMeshPy::write(PyObject* args)
+PyObject* FemMeshPy::write(PyObject* args) const
 {
     char* Name;
     if (!PyArg_ParseTuple(args, "et", "utf-8", &Name)) {
@@ -1156,7 +1156,7 @@ std::map<std::string, ABAQUS_EdgeVariant> edgeVariantPyMap = {
 
 }  // namespace
 
-PyObject* FemMeshPy::writeABAQUS(PyObject* args, PyObject* kwd)
+PyObject* FemMeshPy::writeABAQUS(PyObject* args, PyObject* kwd) const
 {
     char* Name;
     int elemParam;
@@ -1230,7 +1230,7 @@ PyObject* FemMeshPy::setTransform(PyObject* args)
 }
 
 
-PyObject* FemMeshPy::getFacesByFace(PyObject* args)
+PyObject* FemMeshPy::getFacesByFace(PyObject* args) const
 {
     PyObject* pW;
     if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeFacePy::Type), &pW)) {
@@ -1262,7 +1262,7 @@ PyObject* FemMeshPy::getFacesByFace(PyObject* args)
 }
 
 
-PyObject* FemMeshPy::getEdgesByEdge(PyObject* args)
+PyObject* FemMeshPy::getEdgesByEdge(PyObject* args) const
 {
     PyObject* pW;
     if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeEdgePy::Type), &pW)) {
@@ -1293,7 +1293,7 @@ PyObject* FemMeshPy::getEdgesByEdge(PyObject* args)
     }
 }
 
-PyObject* FemMeshPy::getVolumesByFace(PyObject* args)
+PyObject* FemMeshPy::getVolumesByFace(PyObject* args) const
 {
     PyObject* pW;
     if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeFacePy::Type), &pW)) {
@@ -1329,7 +1329,7 @@ PyObject* FemMeshPy::getVolumesByFace(PyObject* args)
     }
 }
 
-PyObject* FemMeshPy::getccxVolumesByFace(PyObject* args)
+PyObject* FemMeshPy::getccxVolumesByFace(PyObject* args) const
 {
     PyObject* pW;
     if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeFacePy::Type), &pW)) {
@@ -1364,7 +1364,7 @@ PyObject* FemMeshPy::getccxVolumesByFace(PyObject* args)
     }
 }
 
-PyObject* FemMeshPy::getNodeById(PyObject* args)
+PyObject* FemMeshPy::getNodeById(PyObject* args) const
 {
     int id;
     if (!PyArg_ParseTuple(args, "i", &id)) {
@@ -1385,7 +1385,7 @@ PyObject* FemMeshPy::getNodeById(PyObject* args)
     }
 }
 
-PyObject* FemMeshPy::getNodesBySolid(PyObject* args)
+PyObject* FemMeshPy::getNodesBySolid(PyObject* args) const
 {
     PyObject* pW;
     if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeSolidPy::Type), &pW)) {
@@ -1414,7 +1414,7 @@ PyObject* FemMeshPy::getNodesBySolid(PyObject* args)
     }
 }
 
-PyObject* FemMeshPy::getNodesByFace(PyObject* args)
+PyObject* FemMeshPy::getNodesByFace(PyObject* args) const
 {
     PyObject* pW;
     if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeFacePy::Type), &pW)) {
@@ -1443,7 +1443,7 @@ PyObject* FemMeshPy::getNodesByFace(PyObject* args)
     }
 }
 
-PyObject* FemMeshPy::getNodesByEdge(PyObject* args)
+PyObject* FemMeshPy::getNodesByEdge(PyObject* args) const
 {
     PyObject* pW;
     if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeEdgePy::Type), &pW)) {
@@ -1472,7 +1472,7 @@ PyObject* FemMeshPy::getNodesByEdge(PyObject* args)
     }
 }
 
-PyObject* FemMeshPy::getNodesByVertex(PyObject* args)
+PyObject* FemMeshPy::getNodesByVertex(PyObject* args) const
 {
     PyObject* pW;
     if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeVertexPy::Type), &pW)) {
@@ -1501,7 +1501,7 @@ PyObject* FemMeshPy::getNodesByVertex(PyObject* args)
     }
 }
 
-PyObject* FemMeshPy::getElementNodes(PyObject* args)
+PyObject* FemMeshPy::getElementNodes(PyObject* args) const
 {
     int id;
     if (!PyArg_ParseTuple(args, "i", &id)) {
@@ -1536,7 +1536,7 @@ const std::vector<pairStrElemType> vecTypeName = {
     {"Ball", SMDSAbs_Ball},
 };
 
-PyObject* FemMeshPy::getNodeElements(PyObject* args)
+PyObject* FemMeshPy::getNodeElements(PyObject* args) const
 {
     int id;
     const char* typeStr = "All";
@@ -1564,7 +1564,7 @@ PyObject* FemMeshPy::getNodeElements(PyObject* args)
     return Py::new_reference_to(result);
 }
 
-PyObject* FemMeshPy::getGroupName(PyObject* args)
+PyObject* FemMeshPy::getGroupName(PyObject* args) const
 {
     int id;
     if (!PyArg_ParseTuple(args, "i", &id)) {
@@ -1579,7 +1579,7 @@ PyObject* FemMeshPy::getGroupName(PyObject* args)
     return PyUnicode_FromString(group->GetName());
 }
 
-PyObject* FemMeshPy::getGroupElementType(PyObject* args)
+PyObject* FemMeshPy::getGroupElementType(PyObject* args) const
 {
     int id;
     if (!PyArg_ParseTuple(args, "i", &id)) {
@@ -1602,7 +1602,7 @@ PyObject* FemMeshPy::getGroupElementType(PyObject* args)
     return PyUnicode_FromString(typeStr);
 }
 
-PyObject* FemMeshPy::getGroupElements(PyObject* args)
+PyObject* FemMeshPy::getGroupElements(PyObject* args) const
 {
     int id;
     if (!PyArg_ParseTuple(args, "i", &id)) {
@@ -1635,7 +1635,7 @@ PyObject* FemMeshPy::getGroupElements(PyObject* args)
 Add Groups and elements to these.
 */
 
-PyObject* FemMeshPy::addGroup(PyObject* args)
+PyObject* FemMeshPy::addGroup(PyObject* args) const
 {
     // get name and typestring from arguments
     char* Name;
@@ -1665,7 +1665,7 @@ PyObject* FemMeshPy::addGroup(PyObject* args)
     return PyLong_FromLong(retId);
 }
 
-PyObject* FemMeshPy::addGroupElements(PyObject* args)
+PyObject* FemMeshPy::addGroupElements(PyObject* args) const
 {
     int id;
     // the second object should be a list
@@ -1711,7 +1711,7 @@ PyObject* FemMeshPy::addGroupElements(PyObject* args)
     Py_Return;
 }
 
-PyObject* FemMeshPy::removeGroup(PyObject* args)
+PyObject* FemMeshPy::removeGroup(PyObject* args) const
 {
     int theId;
     if (!PyArg_ParseTuple(args, "i", &theId)) {
@@ -1721,7 +1721,7 @@ PyObject* FemMeshPy::removeGroup(PyObject* args)
 }
 
 
-PyObject* FemMeshPy::getElementType(PyObject* args)
+PyObject* FemMeshPy::getElementType(PyObject* args) const
 {
     int id;
     if (!PyArg_ParseTuple(args, "i", &id)) {
@@ -1749,7 +1749,7 @@ PyObject* FemMeshPy::getElementType(PyObject* args)
     return PyUnicode_FromString(typeStr);
 }
 
-PyObject* FemMeshPy::getIdByElementType(PyObject* args)
+PyObject* FemMeshPy::getIdByElementType(PyObject* args) const
 {
     const char* typeStr;
     if (!PyArg_ParseTuple(args, "s", &typeStr)) {

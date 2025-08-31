@@ -30,7 +30,7 @@
 class QColor;
 class QString;
 
-namespace App
+namespace Base
 {
 class Color;
 }
@@ -39,6 +39,10 @@ class QFont;
 class QString;
 
 #include <Mod/TechDraw/App/Preferences.h>
+
+namespace TechDraw{
+enum class ArrowType : int;
+}
 
 namespace TechDrawGui
 {
@@ -54,21 +58,21 @@ static int         dimFontSizePX();
 static QColor      normalQColor();
 static QColor      selectQColor();
 static QColor      preselectQColor();
-static App::Color  sectionLineColor();
+static Base::Color sectionLineColor();
 static QColor      sectionLineQColor();
-static App::Color  centerColor();
+static Base::Color centerColor();
 static QColor      centerQColor();
 static QColor      vertexQColor();
-static App::Color  leaderColor();
+static Base::Color leaderColor();
 static QColor      leaderQColor();
-static App::Color  dimColor();
+static Base::Color dimColor();
 static QColor      dimQColor();
-static App::Color  pageColor();
+static Base::Color pageColor();
 static QColor      pageQColor();
-static App::Color  breaklineColor();
+static Base::Color breaklineColor();
 static QColor      breaklineQColor();
 
-static int         dimArrowStyle();
+static TechDraw::ArrowType dimArrowStyle();
 static double      dimArrowSize();
 
 static double      edgeFuzz();
@@ -76,7 +80,7 @@ static double      edgeFuzz();
 static QString     weldingDirectory();
 
 static bool showGrid();
-static App::Color gridColor();
+static Base::Color gridColor();
 static QColor gridQColor();
 static double gridSpacing();
 static bool multiSelection();

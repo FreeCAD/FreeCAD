@@ -64,22 +64,25 @@ class CommandCreateSimulation:
     def GetResources(self):
         return {
             "Pixmap": "Assembly_CreateSimulation",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateSimulation", "Create Simulation"),
-            "Accel": "S",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateSimulation", "Simulation"),
+            "Accel": "V",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateSimulation",
-                "Create a simulation of the current assembly.",
+                "Creates a new simulation of the current assembly",
             )
             + "</p>",
             "CmdType": "ForEdit",
         }
 
     def IsActive(self):
-        return (
-            UtilsAssembly.isAssemblyCommandActive()
-            and UtilsAssembly.assembly_has_at_least_n_parts(1)
-        )
+        if not UtilsAssembly.isAssemblyCommandActive():
+            return False
+
+        assembly = UtilsAssembly.activeAssembly()
+        joint_types = ["Revolute", "Slider", "Cylindrical"]
+        joints = UtilsAssembly.getJointsOfType(assembly, joint_types)
+        return len(joints) > 0
 
     def Activated(self):
         assembly = UtilsAssembly.activeAssembly()
@@ -87,7 +90,10 @@ class CommandCreateSimulation:
             return
 
         self.panel = TaskAssemblyCreateSimulation()
-        Gui.Control.showDialog(self.panel)
+        dialog = Gui.Control.showDialog(self.panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
 
 ######### Simulation Object ###########
@@ -105,6 +111,7 @@ class Simulation:
                     "App::Property",
                     "Simulation start time.",
                 ),
+                locked=True,
             )
 
         if not hasattr(feaPy, "bTimeEnd"):
@@ -116,6 +123,7 @@ class Simulation:
                     "App::Property",
                     "Simulation end time.",
                 ),
+                locked=True,
             )
 
         if not hasattr(feaPy, "cTimeStepOutput"):
@@ -127,6 +135,7 @@ class Simulation:
                     "App::Property",
                     "Simulation time step for output.",
                 ),
+                locked=True,
             )
 
         if not hasattr(feaPy, "fGlobalErrorTolerance"):
@@ -138,6 +147,7 @@ class Simulation:
                     "App::Property",
                     "Integration global error tolerance.",
                 ),
+                locked=True,
             )
 
         if not hasattr(feaPy, "jFramesPerSecond"):
@@ -149,6 +159,7 @@ class Simulation:
                     "App::Property",
                     "Frames Per Second.",
                 ),
+                locked=True,
             )
 
         feaPy.aTimeStart = 0.0
@@ -175,7 +186,6 @@ class Simulation:
 
     def execute(self, feaPy):
         """Do something when doing a recomputation, this method is mandatory"""
-        # App.Console.PrintMessage("Recompute Python Box feature\n")
         pass
 
     def getAssembly(self, feaPy):
@@ -201,6 +211,7 @@ class ViewProviderSimulation:
                 QT_TRANSLATE_NOOP(
                     "App::Property", "The number of decimals to use for calculated texts"
                 ),
+                locked=True,
             )
             vpDoc.Decimals = 9
 
@@ -259,7 +270,10 @@ class ViewProviderSimulation:
             Gui.ActiveDocument.setEdit(assembly)
 
         panel = TaskAssemblyCreateSimulation(vpDoc.Object)
-        Gui.Control.showDialog(panel)
+        dialog = Gui.Control.showDialog(panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
         return True
 
@@ -297,6 +311,7 @@ class Motion:
                 "Joint",
                 "Motion",
                 QT_TRANSLATE_NOOP("App::Property", "The joint that is moved by the motion"),
+                locked=True,
             )
 
         if not hasattr(feaPy, "Formula"):
@@ -308,6 +323,7 @@ class Motion:
                     "App::Property",
                     "This is the formula of the motion. For example '1.0*time'.",
                 ),
+                locked=True,
             )
 
         if not hasattr(feaPy, "MotionType"):
@@ -316,6 +332,7 @@ class Motion:
                 "MotionType",
                 "Motion",
                 QT_TRANSLATE_NOOP("App::Property", "The type of the motion"),
+                locked=True,
             )
 
     def dumps(self):
@@ -329,7 +346,6 @@ class Motion:
 
     def execute(self, feaPy):
         """Do something when doing a recomputation, this method is mandatory"""
-        # App.Console.PrintMessage("Recompute Python Box feature\n")
         pass
 
     def getSimulation(self, feaPy):
@@ -485,13 +501,13 @@ class MotionEditDialog:
         layout = QGridLayout(self.dialog)
 
         # Add labels and widgets to the layout
-        layout.addWidget(QLabel("Joint:"), 0, 0)
+        layout.addWidget(QLabel("Joint"), 0, 0)
         layout.addWidget(self.joint_combo, 0, 1)
 
-        layout.addWidget(QLabel("Motion Type:"), 1, 0)
+        layout.addWidget(QLabel("Motion Type"), 1, 0)
         layout.addWidget(self.motion_type_combo, 1, 1)
 
-        layout.addWidget(QLabel("Formula:"), 2, 0)
+        layout.addWidget(QLabel("Formula"), 2, 0)
         layout.addWidget(formula_edit, 2, 1)
 
         # Add the help label above the buttons
@@ -516,7 +532,7 @@ class MotionEditDialog:
         self.help_label0 = QLabel(
             translate(
                 "Assembly",
-                "In capital are variables that you need to replace with actual values. More details about each example in it's tooltip.",
+                "In capital are variables that you need to replace with actual values. More details about each example in its tooltip.",
             ),
             self.dialog,
         )

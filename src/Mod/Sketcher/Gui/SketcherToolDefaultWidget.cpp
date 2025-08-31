@@ -144,7 +144,7 @@ void SketcherToolDefaultWidget::setupConnections()
             &SketcherToolDefaultWidget::comboBox3_currentIndexChanged);
 }
 
-// pre-select the number of the spinbox when it gets the focus.
+// preselect the number of the spinbox when it gets the focus.
 bool SketcherToolDefaultWidget::eventFilter(QObject* object, QEvent* event)
 {
     if (event->type() == QEvent::FocusIn) {

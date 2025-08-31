@@ -28,9 +28,12 @@
 
 #include <App/FeaturePythonPyImp.h>
 #include <Mod/Part/App/modelRefine.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "FeatureAddSub.h"
 #include "FeaturePy.h"
+
+#include <Mod/Part/App/Tools.h>
 
 
 using namespace PartDesign;
@@ -39,13 +42,16 @@ namespace PartDesign {
 
 extern bool getPDRefineModelParameter();
 
-PROPERTY_SOURCE(PartDesign::FeatureAddSub, PartDesign::Feature)
+PROPERTY_SOURCE(PartDesign::FeatureAddSub, PartDesign::FeatureRefine)
 
 FeatureAddSub::FeatureAddSub()
 {
-    ADD_PROPERTY(AddSubShape,(TopoDS_Shape()));
-    ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
-    this->Refine.setValue(getPDRefineModelParameter());
+    ADD_PROPERTY(AddSubShape, (TopoDS_Shape()));
+}
+
+void FeatureAddSub::onChanged(const App::Property* property)
+{
+    Feature::onChanged(property);
 }
 
 FeatureAddSub::Type FeatureAddSub::getAddSubType()
@@ -60,57 +66,52 @@ short FeatureAddSub::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
-
-bool FeatureAddSub::onlyHasToRefine() const
+void FeatureAddSub::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShape)
 {
-    if( ! Refine.isTouched()){
-        return false;
-    }
-    if (rawShape.isNull()){
-        return false;
-    }
-    std::vector<App::Property*> propList;
-    getPropertyList(propList);
-    for (auto prop : propList){
-        if (prop != &Refine
-            /*&& prop != &SuppressedShape*/
-            && prop->isTouched()){
-            return false;
-        }
-    }
-    return true;
-}
-
-
-
-TopoShape FeatureAddSub::refineShapeIfActive(const TopoShape& oldShape, const RefineErrorPolicy onError) const
-{
-    if (this->Refine.getValue()) {
-        TopoShape shape(oldShape);
-        //        this->fixShape(shape);        // Todo:  Not clear that this is required
-        try{
-            return shape.makeElementRefine();
-        }
-        catch (Standard_Failure& err) {
-            if(onError == RefineErrorPolicy::Warn){
-                Base::Console().Warning((std::string("Refine failed: ") + err.GetMessageString()).c_str());
-            } else {
-                throw;
-            }
-        }
-    }
-    return oldShape;
-}
-
-void FeatureAddSub::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape)
-{
-    if (addSubType == Additive)
+    if (addSubType == Additive) {
         addShape = AddSubShape.getShape();
-    else if (addSubType == Subtractive)
+    }
+    else if (addSubType == Subtractive) {
         subShape = AddSubShape.getShape();
+    }
 }
 
+void FeatureAddSub::updatePreviewShape()
+{
+    const auto notifyWarning = [](const QString& message) {
+        Base::Console().translatedUserWarning(
+            "Preview",
+            tr("Failure while computing removed volume preview: %1")
+                .arg(message)
+                .toUtf8());
+    };
+
+    // for subtractive shapes we want to also showcase removed volume, not only the tool
+    if (addSubType == Subtractive) {
+        TopoShape base = getBaseTopoShape(true).moved(getLocation().Inverted());
+
+        if (const TopoShape& addSubShape = AddSubShape.getShape(); !addSubShape.isEmpty()) {
+            try {
+                base.makeElementBoolean(Part::OpCodes::Common, { base, addSubShape });
+            } catch (Standard_Failure& e) {
+                notifyWarning(QString::fromUtf8(e.GetMessageString()));
+            } catch (Base::Exception& e) {
+                notifyWarning(QString::fromStdString(e.getMessage()));
+            }
+
+            if (base.isEmpty()) {
+                notifyWarning(tr("Resulting shape is empty. That may indicate that no material will be removed or a problem with the model."));
+            }
+
+            PreviewShape.setValue(base);
+            return;
+        }
+    }
+
+    PreviewShape.setValue(AddSubShape.getShape());
 }
+
+}  // namespace PartDesign
 
 namespace App {
 /// @cond DOXERR

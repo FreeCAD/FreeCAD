@@ -35,10 +35,9 @@ import Path.Main.Gui.JobCmd as PathJobCmd
 import Path.Main.Gui.JobDlg as PathJobDlg
 import Path.Main.Job as PathJob
 import Path.Main.Stock as PathStock
-import Path.Tool.Gui.Bit as PathToolBitGui
 import Path.Tool.Gui.Controller as PathToolControllerGui
 import PathScripts.PathUtils as PathUtils
-import json
+from Path.Tool.toolbit.ui.selector import ToolBitSelector
 import math
 import traceback
 from PySide import QtWidgets
@@ -127,48 +126,20 @@ class ViewProvider:
 
         # Setup the axis display at the origin
         self.switch = coin.SoSwitch()
-        self.sep = coin.SoSeparator()
-        self.axs = coin.SoType.fromName("SoAxisCrossKit").createInstance()
+        self.sep = coin.SoType.fromName("So3DAnnotation").createInstance()
 
-        # Adjust the axis heads if needed, the scale here is just for the head
-        self.axs.set("xHead.transform", "scaleFactor 1.5 1.5 1")
-        self.axs.set("yHead.transform", "scaleFactor 1.5 1.5 1")
-        self.axs.set("zHead.transform", "scaleFactor 1.5 1.5 1")
+        self.axs = coin.SoType.fromName("SoFCPlacementIndicatorKit").createInstance()
+        self.axs.axisLength.setValue(1.2)
 
-        # Adjust the axis heads if needed, the scale here is just for the head
-        self.axs.set("xHead.transform", "translation 50 0 0")
-        self.axs.set("yHead.transform", "translation 0 50 0")
-        self.axs.set("zHead.transform", "translation 0 0 50")
+        # enum values for SoFCPlacementIndicatorKit
+        parts = FreeCADGui.PlacementIndicatorParts
+        self.axs.parts.setValue(
+            parts.Axes | parts.Labels | parts.ArrowHeads | parts.OriginIndicator
+        )
 
-        # Adjust the axis line width if needed
-        self.axs.set("xAxis.transform", "scaleFactor 0.5 0.5 1")
-        self.axs.set("xAxis.appearance.drawStyle", "lineWidth 9")
-        self.axs.set("yAxis.transform", "scaleFactor 0.5 0.5 1")
-        self.axs.set("yAxis.appearance.drawStyle", "lineWidth 9")
-        self.axs.set("zAxis.transform", "scaleFactor 0.5 0.5 1")
-        self.axs.set("zAxis.appearance.drawStyle", "lineWidth 9")
-
-        self.sca = coin.SoType.fromName("SoShapeScale").createInstance()
-        self.sca.setPart("shape", self.axs)
-        self.sca.scaleFactor.setValue(2)  # Keep or adjust if needed
-
-        self.mat = coin.SoMaterial()
-        # Set sphere color to bright yellow
-        self.mat.diffuseColor = coin.SbColor(1, 1, 0)
-        self.mat.transparency = 0.35  # Keep or adjust if needed
-
-        self.sph = coin.SoSphere()
-        self.scs = coin.SoType.fromName("SoShapeScale").createInstance()
-        self.scs.setPart("shape", self.sph)
-        # Increase the scaleFactor to make the sphere larger
-        self.scs.scaleFactor.setValue(20)  # Adjust this value as needed
-
-        self.sep.addChild(self.sca)
-        self.sep.addChild(self.mat)
-        self.sep.addChild(self.scs)
+        self.sep.addChild(self.axs)
         self.switch.addChild(self.sep)
 
-        self.switch.addChild(self.sep)
         vobj.RootNode.addChild(self.switch)
         self.showOriginAxis(True)
 
@@ -178,37 +149,76 @@ class ViewProvider:
     def onChanged(self, vobj, prop):
         if prop == "Visibility":
             self.showOriginAxis(vobj.Visibility)
+
+            # if we're currently restoring the document we do NOT want to call
+            # hideXXX as this would mark all currently hidden children as
+            # explicitly hidden by the user and prevent showing them when
+            # showing the job
+
+            if self.obj.Document.Restoring:
+                return
+
             if vobj.Visibility:
-                self.rememberStockVisibility()
-                self.obj.Stock.ViewObject.Visibility = True
-
-                self.KeepBaseVisibility()
-                for base in self.obj.Model.Group:
-                    base.ViewObject.Visibility = True
-            else:
+                self.restoreOperationsVisibility()
+                self.restoreModelsVisibility()
                 self.restoreStockVisibility()
-                self.RestoreBaseVisibility()
+                self.restoreToolsVisibility()
+            else:
+                self.hideOperations()
+                self.hideModels()
+                self.hideStock()
+                self.hideTools()
 
-    def rememberStockVisibility(self):
-        self.stockVisibility = self.obj.Stock.ViewObject.Visibility
+    def hideOperations(self):
+        self.operationsVisibility = {}
+        for op in self.obj.Operations.Group:
+            self.operationsVisibility[op.Name] = op.Visibility
+            op.Visibility = False
+
+    def restoreOperationsVisibility(self):
+        if hasattr(self, "operationsVisibility"):
+            for op in self.obj.Operations.Group:
+                if self.operationsVisibility.get(op.Name, True):
+                    op.Visibility = True
+        else:
+            for op in self.obj.Operations.Group:
+                op.Visibility = True
+
+    def hideModels(self):
+        self.modelsVisibility = {}
+        for model in self.obj.Model.Group:
+            self.modelsVisibility[model.Name] = model.Visibility
+            model.Visibility = False
+
+    def restoreModelsVisibility(self):
+        if hasattr(self, "modelsVisibility"):
+            for model in self.obj.Model.Group:
+                if self.modelsVisibility.get(model.Name, True):
+                    model.Visibility = True
+        else:
+            for model in self.obj.Model.Group:
+                model.Visibility = True
+
+    def hideStock(self):
+        self.stockVisibility = self.obj.Stock.Visibility
+        self.obj.Stock.Visibility = False
 
     def restoreStockVisibility(self):
-        self.obj.Stock.ViewObject.Visibility = self.stockVisibility
+        if hasattr(self, "stockVisibility"):
+            if self.stockVisibility:
+                self.obj.Stock.Visibility = True
 
-    def KeepBaseVisibility(self):
-        Path.Log.debug("KeepBaseVisibility")
-        self.visibilitystate = {}
-        for base in self.obj.Model.Group:
-            Path.Log.debug(f"{base.Name}: {base.ViewObject.Visibility}")
-            self.visibilitystate[base.Name] = base.ViewObject.Visibility
-        Path.Log.debug(self.visibilitystate)
+    def hideTools(self):
+        self.toolsVisibility = {}
+        for tc in self.obj.Tools.Group:
+            self.toolsVisibility[tc.Tool.Name] = tc.Tool.Visibility
+            tc.Tool.Visibility = False
 
-    def RestoreBaseVisibility(self):
-        Path.Log.debug("RestoreBaseVisibility")
-        if hasattr(self, "visibilitystate"):
-            for base in self.obj.Model.Group:
-                base.ViewObject.Visibility = self.visibilitystate[base.Name]
-            Path.Log.debug(self.visibilitystate)
+    def restoreToolsVisibility(self):
+        if hasattr(self, "toolsVisibility"):
+            for tc in self.obj.Tools.Group:
+                if self.toolsVisibility.get(tc.Tool.Name, True):
+                    tc.Tool.Visibility = True
 
     def showOriginAxis(self, yes):
         sw = coin.SO_SWITCH_ALL if yes else coin.SO_SWITCH_NONE
@@ -345,8 +355,11 @@ class ViewProvider:
         for action in menu.actions():
             menu.removeAction(action)
         action = QtGui.QAction(translate("CAM_Job", "Edit"), menu)
-        action.triggered.connect(self.setEdit)
+        action.triggered.connect(self._editInContextMenuTriggered)
         menu.addAction(action)
+
+    def _editInContextMenuTriggered(self, checked):
+        self.setEdit()
 
 
 class MaterialDialog(QtWidgets.QDialog):
@@ -664,19 +677,45 @@ class StockFromExistingEdit(StockEdit):
         if job.Stock in solids:
             # regardless, what stock is/was, it's not a valid choice
             solids.remove(job.Stock)
+        excludeIndexes = []
+        for index, model in enumerate(solids):
+            if [ob.Name for ob in model.InListRecursive if "Tools" in ob.Name]:
+                excludeIndexes.append(index)
+            elif hasattr(model, "PathResource"):
+                excludeIndexes.append(index)
+            elif model.InList and hasattr(model.InList[0], "ToolBitID"):
+                excludeIndexes.append(index)
+            elif hasattr(model, "ToolBitID"):
+                excludeIndexes.append(index)
+            elif model.TypeId == "App::DocumentObjectGroup":
+                excludeIndexes.append(index)
+            elif hasattr(model, "StockType"):
+                excludeIndexes.append(index)
+            elif not model.ViewObject.ShowInTree:
+                excludeIndexes.append(index)
+
+        for i in sorted(excludeIndexes, reverse=True):
+            del solids[i]
+
         return sorted(solids, key=lambda c: c.Label)
 
     def setFields(self, obj):
-        self.form.stockExisting.clear()
-        stockName = obj.Stock.Label if obj.Stock else None
-        index = -1
-        for i, solid in enumerate(self.candidates(obj)):
-            self.form.stockExisting.addItem(solid.Label, solid)
-            label = "{}-{}".format(self.StockLabelPrefix, solid.Label)
+        # Block signal propagation during stock dropdown population. This prevents
+        # the `currentIndexChanged` signal from being emitted while populating the
+        # dropdown list. This is important because the `currentIndexChanged` signal
+        # will in the end result in the stock object being recreated in `getFields`
+        # method, discarding any changes made (like position in respect to origin).
+        with QtCore.QSignalBlocker(self.form.stockExisting):
+            self.form.stockExisting.clear()
+            stockName = obj.Stock.Label if obj.Stock else None
+            index = -1
+            for i, solid in enumerate(self.candidates(obj)):
+                self.form.stockExisting.addItem(solid.Label, solid)
+                label = "{}-{}".format(self.StockLabelPrefix, solid.Label)
+                if label == stockName:
+                    index = i
 
-            if label == stockName:
-                index = i
-        self.form.stockExisting.setCurrentIndex(index if index != -1 else 0)
+            self.form.stockExisting.setCurrentIndex(index if index != -1 else 0)
 
         if not self.IsStock(obj):
             self.getFields(obj)
@@ -1091,29 +1130,14 @@ class TaskPanel:
         self.toolControllerSelect()
 
     def toolControllerAdd(self):
-        # adding a TC from a toolbit directly.
-        # Try to find a tool number from the currently selected lib. Otherwise
-        # use next available number
-
-        tools = PathToolBitGui.LoadTools()
-
-        curLib = Path.Preferences.lastFileToolLibrary()
-
-        library = None
-        if curLib is not None:
-            with open(curLib) as fp:
-                library = json.load(fp)
-
-        for tool in tools:
-            toolNum = self.obj.Proxy.nextToolNumber()
-            if library is not None:
-                for toolBit in library["tools"]:
-
-                    if toolBit["path"] == tool.File:
-                        toolNum = toolBit["nr"]
-
-            tc = PathToolControllerGui.Create(name=tool.Label, tool=tool, toolNumber=toolNum)
-            self.obj.Proxy.addToolController(tc)
+        selector = ToolBitSelector(compact=True)
+        if not selector.exec_():
+            return
+        toolbit = selector.get_selected_tool()
+        toolbit.attach_to_doc(FreeCAD.ActiveDocument)
+        toolNum = self.obj.Proxy.nextToolNumber()
+        tc = PathToolControllerGui.Create(name=toolbit.label, tool=toolbit.obj, toolNumber=toolNum)
+        self.obj.Proxy.addToolController(tc)
 
         FreeCAD.ActiveDocument.recompute()
         self.updateToolController()
@@ -1411,7 +1435,7 @@ class TaskPanel:
 
     def isValidDatumSelection(self, sel):
         if sel.ShapeType in ["Vertex", "Edge", "Face"]:
-            if hasattr(sel, "Curve") and type(sel.Curve) not in [Part.Circle]:
+            if hasattr(sel, "Curve") and not isinstance(sel.Curve, Part.Circle):
                 return False
             return True
 
@@ -1420,7 +1444,7 @@ class TaskPanel:
 
     def isValidAxisSelection(self, sel):
         if sel.ShapeType in ["Vertex", "Edge", "Face"]:
-            if hasattr(sel, "Curve") and type(sel.Curve) in [Part.Circle]:
+            if hasattr(sel, "Curve") and isinstance(sel.Curve, Part.Circle):
                 return False
             if hasattr(sel, "Surface") and sel.Surface.curvature(0, 0, "Max") != 0:
                 return False

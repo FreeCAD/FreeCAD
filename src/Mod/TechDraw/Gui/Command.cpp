@@ -107,8 +107,8 @@ CmdTechDrawPageDefault::CmdTechDrawPageDefault() : Command("TechDraw_PageDefault
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Default Page");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("New Page");
+    sToolTipText = QT_TR_NOOP("Creates a new page with the default template");
     sWhatsThis = "TechDraw_PageDefault";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_PageDefault";
@@ -124,15 +124,13 @@ void CmdTechDrawPageDefault::activated(int iMsg)
         Gui::WaitCursor wc;
         openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
 
-        auto page = dynamic_cast<TechDraw::DrawPage *>
-                        (getDocument()->addObject("TechDraw::DrawPage", "Page"));
+        auto page = getDocument()->addObject<TechDraw::DrawPage>("Page");
         if (!page) {
             throw Base::TypeError("CmdTechDrawPageDefault - page not created");
         }
         page->translateLabel("DrawPage", "Page", page->getNameInDocument());
 
-        auto svgTemplate = dynamic_cast<TechDraw::DrawSVGTemplate *>
-                               (getDocument()->addObject("TechDraw::DrawSVGTemplate", "Template"));
+        auto svgTemplate = getDocument()->addObject<TechDraw::DrawSVGTemplate>("Template");
         if (!svgTemplate) {
             throw Base::TypeError("CmdTechDrawPageDefault - template not created");
         }
@@ -169,8 +167,8 @@ CmdTechDrawPageTemplate::CmdTechDrawPageTemplate() : Command("TechDraw_PageTempl
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Page using Template");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("New Page From Template");
+    sToolTipText = QT_TR_NOOP("Creates a new page from a custom template");
     sWhatsThis = "TechDraw_PageTemplate";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_PageTemplate";
@@ -182,7 +180,7 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
     QString work_dir = Gui::FileDialog::getWorkingDirectory();
     QString templateDir = Preferences::defaultTemplateDir();
     QString templateFileName = Gui::FileDialog::getOpenFileName(
-        Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Select a Template File")), templateDir,
+        Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Select a template file")), templateDir,
         QString::fromUtf8(QT_TR_NOOP("Template (*.svg)")));
     Gui::FileDialog::setWorkingDirectory(work_dir);// Don't overwrite WD with templateDir
 
@@ -195,15 +193,13 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
         Gui::WaitCursor wc;
         openCommand(QT_TRANSLATE_NOOP("Command", "Drawing create page"));
 
-        auto page = dynamic_cast<TechDraw::DrawPage *>
-                        (getDocument()->addObject("TechDraw::DrawPage", "Page"));
+        auto page = getDocument()->addObject<TechDraw::DrawPage>("Page");
         if (!page) {
             throw Base::TypeError("CmdTechDrawPageTemplate - page not created");
         }
         page->translateLabel("DrawPage", "Page", page->getNameInDocument());
 
-        auto svgTemplate = dynamic_cast<TechDraw::DrawSVGTemplate *>
-                               (getDocument()->addObject("TechDraw::DrawSVGTemplate", "Template"));
+        auto svgTemplate = getDocument()->addObject<TechDraw::DrawSVGTemplate>("Template");
         if (!svgTemplate) {
             throw Base::TypeError("CmdTechDrawPageTemplate - template not created");
         }
@@ -241,7 +237,7 @@ CmdTechDrawRedrawPage::CmdTechDrawRedrawPage() : Command("TechDraw_RedrawPage")
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Redraw Page");
-    sToolTipText = sMenuText;
+    sToolTipText = QT_TR_NOOP("Redraws the current page");
     sWhatsThis = "TechDraw_RedrawPage";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_RedrawPage";
@@ -277,7 +273,7 @@ CmdTechDrawPrintAll::CmdTechDrawPrintAll() : Command("TechDraw_PrintAll")
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Print All Pages");
-    sToolTipText = sMenuText;
+    sToolTipText = QT_TR_NOOP("Prints all pages with the print dialog");
     sWhatsThis = "TechDraw_PrintAll";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_PrintAll";
@@ -301,10 +297,11 @@ CmdTechDrawView::CmdTechDrawView() : Command("TechDraw_View")
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert View");
-    sToolTipText = QT_TR_NOOP("Insert a View in current page.\n"
-        "Selected objects, spreadsheets or BIM section planes will be added.\n"
-        "Without a selection, a file browser lets you select a SVG or image file.");
+    sMenuText = QT_TR_NOOP("New View");
+    sToolTipText = QT_TR_NOOP(
+        "Inserts a new view into the current page based on the selected object in the tree view "
+        "or 3D view.\n"
+        "If no object is selected, a file browser opens to select an SVG or image file.");
     sWhatsThis = "TechDraw_View";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_View";
@@ -321,7 +318,7 @@ void CmdTechDrawView::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     // switch to the page if it's not current active window
-    auto* vpp = dynamic_cast<ViewProviderPage*>
+    auto* vpp = freecad_cast<ViewProviderPage*>
         (Gui::Application::Instance->getViewProvider(page));
     if (vpp) {
         vpp->show();
@@ -427,8 +424,10 @@ void CmdTechDrawView::activated(int iMsg)
             // If nothing was selected, then we offer to insert SVG or Images files.
             bool dontShowAgain = hGrp->GetBool("DontShowInsertFileMessage", false);
             if (!dontShowAgain) {
-                auto msgText = QObject::tr("If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.");
-                QMessageBox msgBox;
+                auto msgText = QObject::tr("to insert a view from existing objects, "
+                        "select them before invoking this tool. Without a selection, a "
+                        "file browser will open to insert a SVG or image file.");
+                QMessageBox msgBox(Gui::getMainWindow());
                 msgBox.setText(msgText);
                 auto dontShowMsg = QObject::tr("Do not show this message again");
                 QCheckBox dontShowCheckBox(dontShowMsg, &msgBox);
@@ -446,12 +445,12 @@ void CmdTechDrawView::activated(int iMsg)
             QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
                 QObject::tr("Select a SVG or Image file to open"),
                 Preferences::defaultSymbolDir(),
-                QString::fromLatin1("%1 (*.svg *.svgz *.jpg *.jpeg *.png *.bmp);;%2 (*.*)")
+                QStringLiteral("%1 (*.svg *.svgz *.jpg *.jpeg *.png *.bmp);;%2 (*.*)")
                 .arg(QObject::tr("SVG or Image files"), QObject::tr("All Files")));
 
             if (!filename.isEmpty()) {
-                if (filename.endsWith(QString::fromLatin1(".svg"), Qt::CaseInsensitive)
-                    || filename.endsWith(QString::fromLatin1(".svgz"), Qt::CaseInsensitive)) {
+                if (filename.endsWith(QStringLiteral(".svg"), Qt::CaseInsensitive)
+                    || filename.endsWith(QStringLiteral(".svgz"), Qt::CaseInsensitive)) {
                     std::string FeatName = getUniqueObjectName("Symbol");
                     filename = Base::Tools::escapeEncodeFilename(filename);
                     auto filespec = DU::cleanFilespecBackslash(filename.toStdString());
@@ -480,7 +479,7 @@ void CmdTechDrawView::activated(int iMsg)
                     std::string FeatName = getUniqueObjectName("Image");
                     filename = Base::Tools::escapeEncodeFilename(filename);
                     auto filespec = DU::cleanFilespecBackslash(filename.toStdString());
-                    openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
+                    openCommand(QT_TRANSLATE_NOOP("Command", "Create image"));
                     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
                     doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewImage', 'Image', '%s')",
                         FeatName.c_str(), FeatName.c_str());
@@ -548,8 +547,8 @@ CmdTechDrawBrokenView::CmdTechDrawBrokenView()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert Broken View");
-    sToolTipText    = QT_TR_NOOP("Insert Broken View");
+    sMenuText       = QT_TR_NOOP("Broken View");
+    sToolTipText    = QT_TR_NOOP("Inserts a new broken view for the selected objects or base view and break definition objects");
     sWhatsThis      = "TechDraw_BrokenView";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_BrokenView";
@@ -591,7 +590,7 @@ void CmdTechDrawBrokenView::activated(int iMsg)
     // we need either a base view (dvp) or some shape objects in the selection
     if (!dvp && (shapes.empty() && xShapes.empty())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Empty selection"),
-            QObject::tr("Please select objects to break or a base view and break definition objects."));
+            QObject::tr("Select objects to break or a base view and break definition objects"));
         return;
     }
 
@@ -630,7 +629,7 @@ void CmdTechDrawBrokenView::activated(int iMsg)
     }
     if (breakObjects.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("No Break objects found in this selection"));
+            QObject::tr("No break objects found in this selection"));
         return;
     }
 
@@ -640,7 +639,7 @@ void CmdTechDrawBrokenView::activated(int iMsg)
     if (shapes.empty() &&
         xShapes.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("No Shapes, Groups or Links in this selection"));
+            QObject::tr("No shapes, groups, or links in this selection"));
         return;
     }
 
@@ -697,8 +696,9 @@ CmdTechDrawActiveView::CmdTechDrawActiveView() : Command("TechDraw_ActiveView")
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Active View (3D View)");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Active View");
+    sToolTipText = "Inserts an image of the open 3D view in the current page.\n"
+               "If multiple 3D views are open, a selection dialog will be shown.";
     sWhatsThis = "TechDraw_ActiveView";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ActiveView";
@@ -727,19 +727,19 @@ CmdTechDrawSectionGroup::CmdTechDrawSectionGroup() : Command("TechDraw_SectionGr
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert a simple or complex Section View");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Section View (Simple or Complex)");
+    sToolTipText = QT_TR_NOOP("Inserts a simple or complex section view in the current page");
     sWhatsThis = "TechDraw_SectionGroup";
     sStatusTip = sToolTipText;
 }
 
 void CmdTechDrawSectionGroup::activated(int iMsg)
 {
-    //    Base::Console().Message("CMD::SectionGrp - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::SectionGrp - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
-                             QObject::tr("Close active task dialog and try again."));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
+                             QObject::tr("Close active task dialog and try again"));
         return;
     }
 
@@ -753,7 +753,7 @@ void CmdTechDrawSectionGroup::activated(int iMsg)
             execComplexSection(this);
             break;
         default:
-            Base::Console().Message("CMD::SectionGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::SectionGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -765,12 +765,12 @@ Gui::Action* CmdTechDrawSectionGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_SectionView"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_SectionView"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_SectionView"));
+    p1->setObjectName(QStringLiteral("TechDraw_SectionView"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_SectionView"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_ComplexSection"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_ComplexSection"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_ComplexSection"));
+    p2->setObjectName(QStringLiteral("TechDraw_ComplexSection"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_ComplexSection"));
 
     _pcAction = pcAction;
     languageChange();
@@ -793,12 +793,12 @@ void CmdTechDrawSectionGroup::languageChange()
 
     QAction* arc1 = a[0];
     arc1->setText(QApplication::translate("CmdTechDrawSectionGroup", "Section View"));
-    arc1->setToolTip(QApplication::translate("TechDraw_SectionView", "Insert simple Section View"));
+    arc1->setToolTip(QApplication::translate("TechDraw_SectionView", "Inserts a simple section view"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdTechDrawSectionGroup", "Complex Section"));
+    arc2->setText(QApplication::translate("CmdTechDrawSectionGroup", "Complex Section View"));
     arc2->setToolTip(
-        QApplication::translate("TechDraw_ComplexSection", "Insert complex Section View"));
+        QApplication::translate("TechDraw_ComplexSection", "Inserts a complex section view"));
     arc2->setStatusTip(arc2->toolTip());
 }
 
@@ -819,8 +819,8 @@ CmdTechDrawSectionView::CmdTechDrawSectionView() : Command("TechDraw_SectionView
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Section View");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Section View");
+    sToolTipText = QT_TR_NOOP("Inserts a new section view based on the selected view in the current page");
     sWhatsThis = "TechDraw_SectionView";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_SectionView";
@@ -831,8 +831,8 @@ void CmdTechDrawSectionView::activated(int iMsg)
     Q_UNUSED(iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
-                             QObject::tr("Close active task dialog and try again."));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
+                             QObject::tr("Close active task dialog and try again"));
         return;
     }
 
@@ -856,7 +856,7 @@ void execSimpleSection(Gui::Command* cmd)
         cmd->getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
     if (baseObj.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select at least 1 DrawViewPart object as Base."));
+                             QObject::tr("Select at least 1 DrawViewPart object as base"));
         return;
     }
 
@@ -882,8 +882,8 @@ CmdTechDrawComplexSection::CmdTechDrawComplexSection() : Command("TechDraw_Compl
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Complex Section View");
-    sToolTipText = QT_TR_NOOP("Insert a Complex Section View");
+    sMenuText = QT_TR_NOOP("Complex Section View");
+    sToolTipText = QT_TR_NOOP("Inserts a complex section view based on the selected view in the current page");
     sWhatsThis = "TechDraw_ComplexSection";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ComplexSection";
@@ -894,8 +894,8 @@ void CmdTechDrawComplexSection::activated(int iMsg)
     Q_UNUSED(iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
-                             QObject::tr("Close active task dialog and try again."));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
+                             QObject::tr("Close active task dialog and try again"));
         return;
     }
 
@@ -913,8 +913,8 @@ void execComplexSection(Gui::Command* cmd)
     std::vector<App::DocumentObject*> xShapes;
     App::DocumentObject* profileObject(nullptr);
     std::vector<std::string> profileSubs;
-    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;//mystery
-    bool single = false;                                         //mystery
+    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;
+    bool single = false;
     auto selection = cmd->getSelection().getSelectionEx(
         nullptr, App::DocumentObject::getClassTypeId(), resolve, single);
     for (auto& sel : selection) {
@@ -973,14 +973,14 @@ void execComplexSection(Gui::Command* cmd)
 
     if (!baseView) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("I do not know what base view to use."));
+                             QObject::tr("No base view selected"));
         return;
     }
 
     if (shapes.empty() && xShapes.empty() && !baseView) {
         QMessageBox::warning(
             Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("No Base View, Shapes, Groups or Links in this selection"));
+            QObject::tr("No base view, shapes, groups, or links in this selection"));
         return;
     }
     if (!profileObject) {
@@ -1008,8 +1008,8 @@ CmdTechDrawDetailView::CmdTechDrawDetailView() : Command("TechDraw_DetailView")
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Detail View");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Detail View");
+    sToolTipText = QT_TR_NOOP("Inserts a new detail view based on the selected view in the current page");
     sWhatsThis = "TechDraw_DetailView";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_DetailView";
@@ -1023,7 +1023,7 @@ void CmdTechDrawDetailView::activated(int iMsg)
         getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
     if (baseObj.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select at least 1 DrawViewPart object as Base."));
+                             QObject::tr("Select at least 1 DrawViewPart object as base"));
         return;
     }
     TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(*(baseObj.begin()));
@@ -1052,8 +1052,8 @@ CmdTechDrawProjectionGroup::CmdTechDrawProjectionGroup() : Command("TechDraw_Pro
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Projection Group");
-    sToolTipText = QT_TR_NOOP("Insert multiple linked views of drawable object(s)");
+    sMenuText = QT_TR_NOOP("Projection Group");
+    sToolTipText = QT_TR_NOOP("Inserts multiple new linked views of the selected objects in the current page");
     sWhatsThis = "TechDraw_ProjectionGroup";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ProjectionGroup";
@@ -1069,8 +1069,8 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     std::vector<App::DocumentObject*> xShapes;
     App::DocumentObject* partObj = nullptr;
     std::string faceName;
-    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;//mystery
-    bool single = false;                                         //mystery
+    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;
+    bool single = false;
     auto selection = getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
                                                    resolve, single);
     for (auto& sel : selection) {
@@ -1122,7 +1122,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     }
     if (shapes.empty() && xShapes.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("No Shapes, Groups or Links in this selection"));
+                             QObject::tr("No shapes, groups, or links in this selection"));
         return;
     }
 
@@ -1135,7 +1135,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     Base::Vector3d projDir;
     Gui::WaitCursor wc;
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Projection Group"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create projection group"));
 
     std::string multiViewName = getUniqueObjectName("ProjGroup");
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawProjGroup', '%s')",
@@ -1205,7 +1205,7 @@ bool _checkSelectionBalloon(Gui::Command* cmd, unsigned maxObjs)
         cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     if (pages.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
-                             QObject::tr("Create a page first."));
+                             QObject::tr("Create a page first"));
         return false;
     }
     return true;
@@ -1217,7 +1217,7 @@ bool _checkDrawViewPartBalloon(Gui::Command* cmd)
     auto objFeat(dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject()));
     if (!objFeat) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
-                             QObject::tr("No View of a Part in selection."));
+                             QObject::tr("No view of a part in selection"));
         return false;
     }
     return true;
@@ -1274,8 +1274,8 @@ CmdTechDrawBalloon::CmdTechDrawBalloon() : Command("TechDraw_Balloon")
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Balloon Annotation");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Balloon Annotation");
+    sToolTipText = QT_TR_NOOP("Inserts a new balloon annotation in the selected view");
     sWhatsThis = "TechDraw_Balloon";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_Balloon";
@@ -1300,9 +1300,9 @@ void CmdTechDrawBalloon::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
-    ViewProviderPage* pageVP = dynamic_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
+    ViewProviderPage* pageVP = freecad_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
     ViewProviderDrawingView* viewVP =
-        dynamic_cast<ViewProviderDrawingView*>(guiDoc->getViewProvider(objFeat));
+        freecad_cast<ViewProviderDrawingView*>(guiDoc->getViewProvider(objFeat));
 
     if (pageVP && viewVP) {
         QGVPage* viewPage = pageVP->getQGVPage();
@@ -1338,8 +1338,8 @@ CmdTechDrawClipGroup::CmdTechDrawClipGroup() : Command("TechDraw_ClipGroup")
 {
     // setting the
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Clip Group");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Clip Group");
+    sToolTipText = QT_TR_NOOP("Inserts a new clip group for the selected view");
     sWhatsThis = "TechDraw_ClipGroup";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ClipGroup";
@@ -1355,7 +1355,7 @@ void CmdTechDrawClipGroup::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     std::string FeatName = getUniqueObjectName("Clip");
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Clip"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create clip"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewClip', '%s')",
               FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
@@ -1375,8 +1375,8 @@ DEF_STD_CMD_A(CmdTechDrawClipGroupAdd)
 CmdTechDrawClipGroupAdd::CmdTechDrawClipGroupAdd() : Command("TechDraw_ClipGroupAdd")
 {
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add View to Clip Group");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Add View To Clip Group");
+    sToolTipText = QT_TR_NOOP("Adds the selected view to a clip group");
     sWhatsThis = "TechDraw_ClipGroupAdd";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ClipGroupAdd";
@@ -1388,7 +1388,7 @@ void CmdTechDrawClipGroupAdd::activated(int iMsg)
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
     if (selection.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select one Clip group and one View."));
+                             QObject::tr("Select one clip group and one view"));
         return;
     }
 
@@ -1405,12 +1405,12 @@ void CmdTechDrawClipGroupAdd::activated(int iMsg)
     }
     if (!view) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select exactly one View to add to group."));
+                             QObject::tr("Select exactly one view to add to group"));
         return;
     }
     if (!clip) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select exactly one Clip group."));
+                             QObject::tr("Select exactly one clip group"));
         return;
     }
 
@@ -1419,7 +1419,7 @@ void CmdTechDrawClipGroupAdd::activated(int iMsg)
 
     if (pageClip != pageView) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Clip and View must be from same Page."));
+                             QObject::tr("Clip and view must be from same page"));
         return;
     }
 
@@ -1459,8 +1459,8 @@ DEF_STD_CMD_A(CmdTechDrawClipGroupRemove)
 CmdTechDrawClipGroupRemove::CmdTechDrawClipGroupRemove() : Command("TechDraw_ClipGroupRemove")
 {
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Remove View from Clip Group");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Remove From Clip Group");
+    sToolTipText = QT_TR_NOOP("Removes a view based on the selected clip group");
     sWhatsThis = "TechDraw_ClipGroupRemove";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ClipGroupRemove";
@@ -1472,7 +1472,7 @@ void CmdTechDrawClipGroupRemove::activated(int iMsg)
     auto dObj(getSelection().getObjectsOfType(TechDraw::DrawView::getClassTypeId()));
     if (dObj.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select exactly one View to remove from Group."));
+                             QObject::tr("Select exactly one view to remove from group"));
         return;
     }
 
@@ -1491,7 +1491,7 @@ void CmdTechDrawClipGroupRemove::activated(int iMsg)
 
     if (!clip) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("View does not belong to a Clip"));
+                             QObject::tr("View does not belong to a clip"));
         return;
     }
 
@@ -1532,8 +1532,8 @@ CmdTechDrawSymbol::CmdTechDrawSymbol() : Command("TechDraw_Symbol")
 {
     // setting the Gui eye-candy
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert SVG Symbol");
-    sToolTipText = QT_TR_NOOP("Insert symbol from an SVG file");
+    sMenuText = QT_TR_NOOP("Insert SVG");
+    sToolTipText = QT_TR_NOOP("Inserts a symbol from an SVG file");
     sWhatsThis = "TechDraw_Symbol";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_Symbol";
@@ -1552,8 +1552,8 @@ void CmdTechDrawSymbol::activated(int iMsg)
     QString filename = Gui::FileDialog::getOpenFileName(
         Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"),
         Preferences::defaultSymbolDir(),
-        QString::fromLatin1("%1 (*.svg *.svgz);;%2 (*.*)")
-            .arg(QObject::tr("Scalable Vector Graphic"), QObject::tr("All Files")));
+        QStringLiteral("%1 (*.svg *.svgz);;%2 (*.*)")
+            .arg(QObject::tr("Scalable vector graphic"), QObject::tr("All files")));
 
     if (!filename.isEmpty()) {
         std::string FeatName = getUniqueObjectName("Symbol");
@@ -1597,8 +1597,9 @@ CmdTechDrawDraftView::CmdTechDrawDraftView() : Command("TechDraw_DraftView")
 {
     // setting the Gui eye-candy
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Draft Workbench Object");
-    sToolTipText = QT_TR_NOOP("Insert a View of a Draft Workbench object");
+    sMenuText = QT_TR_NOOP("Draft View");
+    //: "Draft" is a workbench and should not be translated
+    sToolTipText = QT_TR_NOOP("Inserts a view of a Draft object");
     sWhatsThis = "TechDraw_NewDraft";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_DraftView";
@@ -1613,7 +1614,7 @@ void CmdTechDrawDraftView::activated(int iMsg)
 
     if (objects.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select at least one object."));
+                             QObject::tr("Select at least one object"));
         return;
     }
 
@@ -1660,8 +1661,8 @@ CmdTechDrawArchView::CmdTechDrawArchView() : Command("TechDraw_ArchView")
 {
     // setting the Gui eye-candy
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert BIM Workbench Object");
-    sToolTipText = QT_TR_NOOP("Insert a View of a BIM Workbench section plane");
+    sMenuText = QT_TR_NOOP("BIM View");
+    sToolTipText = QT_TR_NOOP("Inserts a view of a BIM section plane");
     sWhatsThis = "TechDraw_NewArch";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ArchView";
@@ -1688,13 +1689,13 @@ void CmdTechDrawArchView::activated(int iMsg)
     }
     if (archCount > 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Please select only 1 BIM section plane."));
+                             QObject::tr("Select only 1 BIM section plane"));
         return;
     }
 
     if (!archObject) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("No BIM section plane in selection."));
+                             QObject::tr("No BIM section plane in selection"));
         return;
     }
 
@@ -1715,6 +1716,8 @@ void CmdTechDrawArchView::activated(int iMsg)
               SourceName.c_str());
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
               FeatName.c_str());
+    doCommand(Doc, "if App.activeDocument().%s.Scale: App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
+        PageName.c_str(), FeatName.c_str(), PageName.c_str());
     updateActive();
     commitCommand();
 }
@@ -1731,8 +1734,8 @@ CmdTechDrawSpreadsheetView::CmdTechDrawSpreadsheetView() : Command("TechDraw_Spr
 {
     // setting the
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Spreadsheet View");
-    sToolTipText = QT_TR_NOOP("Insert View to a spreadsheet");
+    sMenuText = QT_TR_NOOP("Spreadsheet View");
+    sToolTipText = QT_TR_NOOP("Inserts a view of a spreadsheet in the current page");
     sWhatsThis = "TechDraw_SpreadsheetView";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_SpreadsheetView";
@@ -1751,7 +1754,7 @@ void CmdTechDrawSpreadsheetView::activated(int iMsg)
         getSelection().getObjectsOfType(Spreadsheet::Sheet::getClassTypeId());
     if (spreads.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select exactly one Spreadsheet object."));
+                             QObject::tr("Select exactly one spreadsheet object"));
         return;
     }
     std::string SpreadName = spreads.front()->getNameInDocument();
@@ -1805,7 +1808,7 @@ CmdTechDrawExportPageSVG::CmdTechDrawExportPageSVG() : Command("TechDraw_ExportP
 {
     sGroup = QT_TR_NOOP("File");
     sMenuText = QT_TR_NOOP("Export Page as SVG");
-    sToolTipText = sMenuText;
+    sToolTipText = QT_TR_NOOP("Exports the current page as an SVG");
     sWhatsThis = "TechDraw_ExportPageSVG";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ExportPageSVG";
@@ -1822,7 +1825,7 @@ void CmdTechDrawExportPageSVG::activated(int iMsg)
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-    ViewProviderPage* vpPage = dynamic_cast<ViewProviderPage*>(vp);
+    ViewProviderPage* vpPage = freecad_cast<ViewProviderPage*>(vp);
 
     if (vpPage) {
         vpPage->show();  // make sure a mdi will be available
@@ -1830,7 +1833,7 @@ void CmdTechDrawExportPageSVG::activated(int iMsg)
     }
     else {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("No Drawing Page"),
+                             QObject::tr("No drawing page"),
                              QObject::tr("FreeCAD could not find a page to export"));
         return;
     }
@@ -1848,7 +1851,7 @@ CmdTechDrawExportPageDXF::CmdTechDrawExportPageDXF() : Command("TechDraw_ExportP
 {
     sGroup = QT_TR_NOOP("File");
     sMenuText = QT_TR_NOOP("Export Page as DXF");
-    sToolTipText = sMenuText;
+    sToolTipText = QT_TR_NOOP("Exports the current page as a DXF");
     sWhatsThis = "TechDraw_ExportPageDXF";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ExportPageDXF";
@@ -1866,8 +1869,8 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     for (auto& v : views) {
         if (v->isDerivedFrom<TechDraw::DrawViewArch>()) {
             QMessageBox::StandardButton rc = QMessageBox::question(
-                Gui::getMainWindow(), QObject::tr("Can not export selection"),
-                QObject::tr("Page contains DrawViewArch which will not be exported. Continue?"),
+                Gui::getMainWindow(), QObject::tr("Cannot export selection"),
+                QObject::tr("Page contains DrawViewBIM which will not be exported. Continue?"),
                 QMessageBox::StandardButtons(QMessageBox::Yes | QMessageBox::No));
             if (rc == QMessageBox::No) {
                 return;
@@ -1882,7 +1885,7 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save DXF file")), defaultDir,
-        QString::fromUtf8("DXF (*.dxf)"));
+        QStringLiteral("DXF (*.dxf)"));
 
     if (fileName.isEmpty()) {
         return;
@@ -1911,8 +1914,8 @@ CmdTechDrawProjectShape::CmdTechDrawProjectShape() : Command("TechDraw_ProjectSh
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Project shape...");
-    sToolTipText = sMenuText;
+    sMenuText = QT_TR_NOOP("Project Shape");
+    sToolTipText = QT_TR_NOOP("Creates a projected geometry of the selected object in the 3D view from the current camera angle");
     sWhatsThis = "TechDraw_ProjectShape";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ProjectShape";
@@ -1970,8 +1973,8 @@ void getSelectedShapes(Gui::Command* cmd,
                       App::DocumentObject* faceObj,
                       std::string& faceName)
 {
-    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;//mystery
-    bool single = false;                                         //mystery
+    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;
+    bool single = false;
     auto selection = cmd->getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),
                                                    resolve, single);
     for (auto& sel : selection) {

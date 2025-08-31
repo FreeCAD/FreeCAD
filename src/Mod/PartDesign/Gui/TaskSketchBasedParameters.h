@@ -33,6 +33,7 @@
 
 namespace App {
 class Property;
+class PropertyLinkSubList;
 }
 
 namespace PartDesignGui {
@@ -51,7 +52,7 @@ public:
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override =0;
-    const QString onAddSelection(const Gui::SelectionChanges& msg);
+    const QString onAddSelection(const Gui::SelectionChanges& msg, App::PropertyLinkSub& prop);
     virtual void startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
     virtual void finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
     /*!
@@ -72,6 +73,9 @@ protected:
     /// or the subelement's name if the object is a solid.
     QString make2DLabel(const App::DocumentObject* section,
                         const std::vector<std::string>& subValues);
+
+private:
+    Gui::ViewProvider* previouslyVisibleViewProvider {nullptr};
 };
 
 class TaskDlgSketchBasedParameters : public PartDesignGui::TaskDlgFeatureParameters

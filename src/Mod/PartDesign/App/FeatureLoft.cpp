@@ -65,28 +65,55 @@ short Loft::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
-std::vector<Part::TopoShape>
-Loft::getSectionShape(const char *name,
-                      App::DocumentObject *obj,
-                      const std::vector<std::string> &subs,
-                      size_t expected_size)
+std::vector<Part::TopoShape> Loft::getSectionShape(const char* name,
+                                                   App::DocumentObject* obj,
+                                                   const std::vector<std::string>& subs,
+                                                   size_t expected_size)
 {
+    auto useSketch = [](App::DocumentObject* obj, const std::vector<std::string>& subs) {
+        // Be smart. If part of a sketch is selected, use the entire sketch unless it is a single
+        // vertex - backward compatibility (#16630)
+        if (!obj) {
+            return false;
+        }
+
+        auto subName = subs.empty() ? "" : subs.front();
+        return obj->isDerivedFrom<Part::Part2DObject>() && subName.find("Vertex") != 0;
+    };
+
     std::vector<TopoShape> shapes;
-    // Be smart. If part of a sketch is selected, use the entire sketch unless it is a single vertex - 
-    // backward compatibility (#16630)
-    auto subName = subs.empty() ? "" : subs.front();
-    auto useEntireSketch = obj->isDerivedFrom<Part::Part2DObject>() &&  subName.find("Vertex") != 0;
-    if (subs.empty() || std::find(subs.begin(), subs.end(), std::string()) != subs.end() || useEntireSketch ) {
-        shapes.push_back(Part::Feature::getTopoShape(obj));
-        if (shapes.back().isNull())
-            FC_THROWM(Part::NullShapeException, "Failed to get shape of "
-                          << name << " " << App::SubObjectT(obj, "").getSubObjectFullName(obj->getDocument()->getName()));
-    } else {
-        for (const auto &sub : subs) {
-            shapes.push_back(Part::Feature::getTopoShape(obj, sub.c_str(), /*needSubElement*/true));
-            if (shapes.back().isNull())
-                FC_THROWM(Part::NullShapeException, "Failed to get shape of " << name << " "
-                                                                              << App::SubObjectT(obj, sub.c_str()).getSubObjectFullName(obj->getDocument()->getName()));
+    auto useEntireSketch = useSketch(obj, subs);
+    if (subs.empty() || std::ranges::find(subs, std::string()) != subs.end() || useEntireSketch) {
+        shapes.push_back(Part::Feature::getTopoShape(obj,
+                                                     Part::ShapeOption::ResolveLink
+                                                         | Part::ShapeOption::Transform));
+        if (shapes.back().isNull()) {
+            std::stringstream str;
+            str << "Failed to get shape of " << name;
+            if (obj) {
+                auto doc = obj->getDocument();
+                str << " " << App::SubObjectT(obj, "").getSubObjectFullName(doc->getName());
+            }
+            THROWM(Part::NullShapeException, str.str());
+        }
+    }
+    else {
+        for (const auto& sub : subs) {
+            shapes.push_back(Part::Feature::getTopoShape(obj,
+                                                         Part::ShapeOption::NeedSubElement
+                                                             | Part::ShapeOption::ResolveLink
+                                                             | Part::ShapeOption::Transform,
+                                                         sub.c_str()));
+            if (shapes.back().isNull()) {
+                std::stringstream str;
+                str << "Failed to get shape of " << name;
+                if (obj) {
+                    auto doc = obj->getDocument();
+                    App::SubObjectT subObj(obj, sub.c_str());
+                    str << " " << subObj.getSubObjectFullName(doc->getName());
+                }
+                THROWM(Part::NullShapeException, str.str());
+            }
         }
     }
     auto compound = TopoShape(0).makeElementCompound(shapes, "", TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
@@ -112,11 +139,7 @@ Loft::getSectionShape(const char *name,
 
 App::DocumentObjectExecReturn *Loft::execute()
 {
-    if (onlyHasToRefine()){
-        TopoShape result = refineShapeIfActive(rawShape);
-        Shape.setValue(result);
-        return App::DocumentObject::StdReturn;
-    }
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
 
     std::vector<TopoShape> wires;
     try {
@@ -190,7 +213,23 @@ App::DocumentObjectExecReturn *Loft::execute()
             std::vector<TopoShape> backwires;
             for(auto& sectionWires : wiresections)
                 backwires.push_back(sectionWires.back());
-            back = TopoShape(0).makeElementFace(backwires);
+            const char *faceMaker[] = {
+                "Part::FaceMakerBullseye",
+                "Part::FaceMakerCheese",
+                "Part::FaceMakerSimple",
+            };
+            for (size_t i = 0; i < std::size(faceMaker); i++) {
+                try {
+                    back = TopoShape(0).makeElementFace(backwires, nullptr, faceMaker[i]);
+                    break;
+                }
+                catch (...) {
+                   if (i == std::size(faceMaker) - 1) {
+                       throw;
+                   }
+                   continue;
+                }
+            }
         }
 
         if (!front.isNull() || !back.isNull()) {
@@ -234,6 +273,9 @@ App::DocumentObjectExecReturn *Loft::execute()
             result = shapes.front();
 
         if(base.isNull()) {
+            if (!isSingleSolidRuleSatisfied(result.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
+            }
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
@@ -258,18 +300,18 @@ App::DocumentObjectExecReturn *Loft::execute()
         catch(Standard_Failure&) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Failed to perform boolean operation"));
         }
-        boolOp = this->getSolid(boolOp);
+        TopoShape solid = getSolid(boolOp);
         // lets check if the result is a solid
-        if (boolOp.isNull())
+        if (solid.isNull()) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
-
+        }
         // store shape before refinement
         this->rawShape = boolOp;
         boolOp = refineShapeIfActive(boolOp);
-        boolOp = getSolid(boolOp);
         if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
         }
+        boolOp = getSolid(boolOp);
         Shape.setValue(boolOp);
         return App::DocumentObject::StdReturn;
     }
@@ -304,3 +346,5 @@ void Loft::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeNa
         ProfileBased::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
+
+

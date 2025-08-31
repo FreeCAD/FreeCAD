@@ -66,9 +66,7 @@ class DraftObject(object):
         allows distinguishing among various types of objects
         derived from the same C++ class.
 
-            >>> print(A.TypeId, "->", A.Proxy.Type)
-            Part::Part2DObjectPython -> Wire
-            >>> print(B.TypeId, "->", B.Proxy.Type)
+            >>> print(obj.TypeId, "->", obj.Proxy.Type)
             Part::Part2DObjectPython -> Circle
 
     This class attribute is accessible through the `Proxy` object:

@@ -48,7 +48,6 @@
 
 namespace MatGui
 {
-class CommandManager;
 class WidgetFactoryInst;
 class MaterialTreeWidgetPy;
 
@@ -77,7 +76,7 @@ class MatGuiExport MaterialTreeWidget: public QWidget, public Base::BaseClass
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    explicit MaterialTreeWidget(const std::shared_ptr<Materials::MaterialFilter>& filter,
+    explicit MaterialTreeWidget(const Materials::MaterialFilter& filter,
                                 QWidget* parent = nullptr);
     explicit MaterialTreeWidget(
         const std::shared_ptr<std::list<std::shared_ptr<Materials::MaterialFilter>>>& filterList,
@@ -93,7 +92,7 @@ public:
     QString getMaterialUUID() const;
     /** Set the material filter
      */
-    void setFilter(const std::shared_ptr<Materials::MaterialFilter>& filter);
+    void setFilter(const Materials::MaterialFilter& filter);
     void setFilter(
         const std::shared_ptr<std::list<std::shared_ptr<Materials::MaterialFilter>>>& filterList);
     void setActiveFilter(const QString& name);
@@ -145,7 +144,7 @@ public:
     }
     void setIncludeEmptyLibraries(bool value)
     {
-        Base::Console().Log("setIncludeEmptyLibraries(%s)\n", (value ? "true" : "false"));
+        Base::Console().log("setIncludeEmptyLibraries(%s)\n", (value ? "true" : "false"));
         _filterOptions.setIncludeEmptyLibraries(value);
     }
 
@@ -201,23 +200,19 @@ private:
 
     std::list<QString> _favorites;
     std::list<QString> _recents;
-    std::shared_ptr<Materials::MaterialFilter> _filter;
+    Materials::MaterialFilter _filter;
     Materials::MaterialFilterTreeWidgetOptions _filterOptions;
     std::shared_ptr<std::list<std::shared_ptr<Materials::MaterialFilter>>> _filterList;
     int _recentMax;
     MaterialTreeWidgetPy* pyTreeWidget {nullptr};
 
-    Materials::MaterialManager _materialManager;
-
     // friends
     friend class Gui::WidgetFactoryInst;
 
 protected:
-    //   bool m_Restored = false;
-
     Materials::MaterialManager& getMaterialManager()
     {
-        return _materialManager;
+        return Materials::MaterialManager::getManager();
     }
 
     void getFavorites();

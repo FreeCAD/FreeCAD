@@ -143,7 +143,7 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
             cmd.doCommand(Gui::Command::Doc,"App.activeDocument().recompute()");  // recompute the feature based on its references
             PartDesignGui::setEdit(Feat,pcActiveBody);
         } else {
-            QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"), QObject::tr("There is no active body. Please make a body active before inserting a datum entity."));
+            QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"), QObject::tr("There is no active body. Please activate a body before inserting a datum entity."));
         }
     } catch (Base::Exception &e) {
         QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"),QApplication::translate("Exception", e.what()));
@@ -161,8 +161,8 @@ CmdPartDesignPlane::CmdPartDesignPlane()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Create a datum plane");
-    sToolTipText    = QT_TR_NOOP("Create a new datum plane");
+    sMenuText       = QT_TR_NOOP("Datum Plane");
+    sToolTipText    = QT_TR_NOOP("Creates a new datum plane");
     sWhatsThis      = "PartDesign_Plane";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Plane";
@@ -189,8 +189,8 @@ CmdPartDesignLine::CmdPartDesignLine()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Create a datum line");
-    sToolTipText    = QT_TR_NOOP("Create a new datum line");
+    sMenuText       = QT_TR_NOOP("Datum Line");
+    sToolTipText    = QT_TR_NOOP("Creates a new datum line");
     sWhatsThis      = "PartDesign_Line";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Line";
@@ -217,8 +217,8 @@ CmdPartDesignPoint::CmdPartDesignPoint()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Create a datum point");
-    sToolTipText    = QT_TR_NOOP("Create a new datum point");
+    sMenuText       = QT_TR_NOOP("Datum Point");
+    sToolTipText    = QT_TR_NOOP("Creates a new datum point");
     sWhatsThis      = "PartDesign_Point";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Point";
@@ -245,8 +245,8 @@ CmdPartDesignCS::CmdPartDesignCS()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Create a local coordinate system");
-    sToolTipText    = QT_TR_NOOP("Create a new local coordinate system");
+    sMenuText       = QT_TR_NOOP("Local Coordinate System");
+    sToolTipText    = QT_TR_NOOP("Creates a new local coordinate system");
     sWhatsThis      = "PartDesign_CoordinateSystem";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_CoordinateSystem";
@@ -277,8 +277,8 @@ CmdPartDesignShapeBinder::CmdPartDesignShapeBinder()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Create a shape binder");
-    sToolTipText    = QT_TR_NOOP("Create a new shape binder");
+    sMenuText       = QT_TR_NOOP("Shape Binder");
+    sToolTipText    = QT_TR_NOOP("Creates a new shape binder");
     sWhatsThis      = "PartDesign_ShapeBinder";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_ShapeBinder";
@@ -297,7 +297,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
     }
 
     if (bEditSelected) {
-        openCommand(QT_TRANSLATE_NOOP("Command", "Edit ShapeBinder"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Edit Shape Binder"));
         PartDesignGui::setEdit(support.getValue());
     } else {
         PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
@@ -306,7 +306,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
 
         std::string FeatName = getUniqueObjectName("ShapeBinder",pcActiveBody);
 
-        openCommand(QT_TRANSLATE_NOOP("Command", "Create ShapeBinder"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create Shape Binder"));
         FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::ShapeBinder','" << FeatName << "')");
 
         // remove the body from links in case it's selected as
@@ -343,8 +343,8 @@ CmdPartDesignSubShapeBinder::CmdPartDesignSubShapeBinder()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Create a sub-object(s) shape binder");
-    sToolTipText    = QT_TR_NOOP("Create a sub-object(s) shape binder");
+    sMenuText       = QT_TR_NOOP("Sub-Shape Binder");
+    sToolTipText    = QT_TR_NOOP("Creates a reference to geometry from one or more objects, allowing it to be used inside or outside a body. It tracks relative placements, supports multiple geometry types (solids, faces, edges, vertices), and can work with objects in the same or external documents.");
     sWhatsThis      = "PartDesign_SubShapeBinder";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_SubShapeBinder";
@@ -389,7 +389,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
 
     PartDesign::SubShapeBinder *binder = nullptr;
     try {
-        openCommand(QT_TRANSLATE_NOOP("Command", "Create SubShapeBinder"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Create Sub-Shape Binder"));
         if (pcActiveBody) {
             FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::SubShapeBinder','" << FeatName << "')");
             binder = dynamic_cast<PartDesign::SubShapeBinder*>(pcActiveBody->getObject(FeatName.c_str()));
@@ -405,9 +405,9 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         updateActive();
         commitCommand();
     } catch (Base::Exception &e) {
-        e.ReportException();
+        e.reportException();
         QMessageBox::critical(Gui::getMainWindow(),
-                QObject::tr("Sub-Shape Binder"), QApplication::translate("Exception", e.what()));
+                QObject::tr("Sub-shape binder"), QApplication::translate("Exception", e.what()));
         abortCommand();
     }
 }
@@ -427,8 +427,8 @@ CmdPartDesignClone::CmdPartDesignClone()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Create a clone");
-    sToolTipText    = QT_TR_NOOP("Create a new clone");
+    sMenuText       = QT_TR_NOOP("Clone");
+    sToolTipText    = QT_TR_NOOP("Copies a solid object parametrically as the base feature of a new body");
     sWhatsThis      = "PartDesign_Clone";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Clone";
@@ -501,8 +501,8 @@ CmdPartDesignNewSketch::CmdPartDesignNewSketch()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Create sketch");
-    sToolTipText    = QT_TR_NOOP("Create a new sketch");
+    sMenuText       = QT_TR_NOOP("New Sketch");
+    sToolTipText    = QT_TR_NOOP("Creates a new sketch");
     sWhatsThis      = "PartDesign_NewSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_NewSketch";
@@ -528,17 +528,18 @@ bool CmdPartDesignNewSketch::isActive()
 // Common utility functions for all features creating solids
 //===========================================================================
 
-void finishFeature(const Gui::Command* cmd, App::DocumentObject *Feat,
+static void finishFeature(const Gui::Command* cmd, App::DocumentObject *feature,
                    App::DocumentObject* prevSolidFeature = nullptr,
                    const bool hidePrevSolid = true,
                    const bool updateDocument = true)
 {
-    PartDesign::Body *pcActiveBody;
+    PartDesign::Body *activeBody;
 
     if (prevSolidFeature) {
-        pcActiveBody = PartDesignGui::getBodyFor(prevSolidFeature, /*messageIfNot = */false);
-    } else { // insert into the same body as the given previous one
-        pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
+        // insert into the same body as the given previous one
+        activeBody = PartDesignGui::getBodyFor(prevSolidFeature, /*messageIfNot = */false);
+    } else {
+        activeBody = PartDesignGui::getBody(/*messageIfNot = */false);
     }
 
     if (hidePrevSolid && prevSolidFeature)
@@ -547,27 +548,24 @@ void finishFeature(const Gui::Command* cmd, App::DocumentObject *Feat,
     if (updateDocument)
         cmd->updateActive();
 
-    auto base = dynamic_cast<PartDesign::Feature*>(Feat);
+    auto base = dynamic_cast<PartDesign::Feature*>(feature);
     if (base)
         base = dynamic_cast<PartDesign::Feature*>(base->getBaseObject(true));
     App::DocumentObject *obj = base;
     if (!obj)
-        obj = pcActiveBody;
+        obj = activeBody;
 
     // Do this before calling setEdit to avoid to override the 'Shape preview' mode (#0003621)
     if (obj) {
-        cmd->copyVisual(Feat, "ShapeAppearance", obj);
-        cmd->copyVisual(Feat, "LineColor", obj);
-        cmd->copyVisual(Feat, "PointColor", obj);
-        cmd->copyVisual(Feat, "Transparency", obj);
-        cmd->copyVisual(Feat, "DisplayMode", obj);
+        cmd->copyVisual(feature, "ShapeAppearance", obj);
+        cmd->copyVisual(feature, "LineColor", obj);
+        cmd->copyVisual(feature, "PointColor", obj);
+        cmd->copyVisual(feature, "Transparency", obj);
+        cmd->copyVisual(feature, "DisplayMode", obj);
     }
 
-    // #0001721: use '0' as edit value to avoid switching off selection in
-    // ViewProviderGeometryObject::setEditViewer
-    PartDesignGui::setEdit(Feat,pcActiveBody);
+    PartDesignGui::setEdit(feature, activeBody);
     cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
-    //cmd->doCommand(cmd->Gui,"Gui.Selection.addSelection(App.ActiveDocument.ActiveObject)");
 }
 
 //===========================================================================
@@ -611,13 +609,13 @@ unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
             continue;
         }
 
-        //Base::Console().Error("Checking sketch %s\n", (*s)->getNameInDocument());
+        //Base::Console().error("Checking sketch %s\n", (*s)->getNameInDocument());
         // Check whether this sketch is already being used by another feature
         // Body features don't count...
         std::vector<App::DocumentObject*> inList = (*s)->getInList();
         std::vector<App::DocumentObject*>::iterator o = inList.begin();
         while (o != inList.end()) {
-            //Base::Console().Error("Inlist: %s\n", (*o)->getNameInDocument());
+            //Base::Console().error("Inlist: %s\n", (*o)->getNameInDocument());
             if ((*o)->isDerivedFrom<PartDesign::Body>())
                 o = inList.erase(o); //ignore bodies
             else if (!(  (*o)->isDerivedFrom<PartDesign::Feature>()  ))
@@ -679,7 +677,7 @@ bool importExternalElements(App::PropertyLinkSub& prop, std::vector<App::SubObje
     if (!prop.getName() || !prop.getName()[0]) {
         FC_THROWM(Base::RuntimeError, "Invalid property");
     }
-    auto editObj = Base::freecad_dynamic_cast<App::DocumentObject>(prop.getContainer());
+    auto editObj = freecad_cast<App::DocumentObject*>(prop.getContainer());
     if (!editObj) {
         FC_THROWM(Base::RuntimeError, "Editing object not found");
     }
@@ -786,7 +784,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
         // Populate the subs parameter by checking for external elements before
         // we construct our command.
-        auto ProfileFeature = Base::freecad_dynamic_cast<PartDesign::ProfileBased>(Feat);
+        auto ProfileFeature = freecad_cast<PartDesign::ProfileBased*>(Feat);
 
         std::vector<std::string>& cmdSubs = const_cast<vector<std::string>&>(subs);
         if (subs.size() == 0) {
@@ -892,7 +890,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         (which.compare("Pocket") == 0)) {
 
         if (!pcActiveBody->isSolid()) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("Cannot use this command as there is no solid to subtract from."));
             msgBox.setInformativeText(QObject::tr("Ensure that the body contains a feature before attempting a subtractive command."));
             msgBox.setStandardButtons(QMessageBox::Ok);
@@ -914,9 +912,9 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             }
         }
         if (!onlyAllowed) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("Cannot use selected object. Selected object must belong to the active body"));
-            msgBox.setInformativeText(QObject::tr("Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body."));
+            msgBox.setInformativeText(QObject::tr("Consider using a shape binder or a base feature to reference external geometry in a body"));
             msgBox.setStandardButtons(QMessageBox::Ok);
             msgBox.setDefaultButton(QMessageBox::Ok);
             msgBox.exec();
@@ -992,7 +990,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             return;
 
         if (!dlg.radioXRef->isChecked()) {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make copy"));
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make Copy"));
             auto copy = PartDesignGui::TaskFeaturePick::makeCopy(sketches[0], "", dlg.radioIndependent->isChecked());
             auto oBody = PartDesignGui::getBodyFor(sketches[0], false);
             if (oBody)
@@ -1012,9 +1010,9 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
         if (dlg && !pickDlg) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
+            msgBox.setInformativeText(QObject::tr("Close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             msgBox.setDefaultButton(QMessageBox::Yes);
             int ret = msgBox.exec();
@@ -1077,7 +1075,6 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which, double len
         }
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, cmd, which, worker);
@@ -1094,7 +1091,7 @@ CmdPartDesignPad::CmdPartDesignPad()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Pad");
-    sToolTipText  = QT_TR_NOOP("Pad a selected sketch");
+    sToolTipText  = QT_TR_NOOP("Extrudes the selected sketch or profile and adds it to the body");
     sWhatsThis    = "PartDesign_Pad";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Pad";
@@ -1123,7 +1120,7 @@ CmdPartDesignPocket::CmdPartDesignPocket()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Pocket");
-    sToolTipText  = QT_TR_NOOP("Create a pocket with the selected sketch");
+    sToolTipText  = QT_TR_NOOP("Extrudes the selected sketch or profile and removes it from the body");
     sWhatsThis    = "PartDesign_Pocket";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Pocket";
@@ -1152,7 +1149,7 @@ CmdPartDesignHole::CmdPartDesignHole()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Hole");
-    sToolTipText  = QT_TR_NOOP("Create a hole with the selected sketch");
+    sToolTipText  = QT_TR_NOOP("Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile");
     sWhatsThis    = "PartDesign_Hole";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Hole";
@@ -1174,7 +1171,6 @@ void CmdPartDesignHole::activated(int iMsg)
             return;
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "Hole", worker);
@@ -1195,8 +1191,8 @@ CmdPartDesignRevolution::CmdPartDesignRevolution()
 {
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("Revolution");
-    sToolTipText  = QT_TR_NOOP("Revolve a selected sketch");
+    sMenuText     = QT_TR_NOOP("Revolve");
+    sToolTipText  = QT_TR_NOOP("Revolves the selected sketch or profile around a line or axis and adds it to the body");
     sWhatsThis    = "PartDesign_Revolution";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Revolution";
@@ -1230,7 +1226,6 @@ void CmdPartDesignRevolution::activated(int iMsg)
             FCMD_OBJ_CMD(Feat,"Reversed = 1");
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "Revolution", worker);
@@ -1252,7 +1247,7 @@ CmdPartDesignGroove::CmdPartDesignGroove()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Groove");
-    sToolTipText  = QT_TR_NOOP("Groove a selected sketch");
+    sToolTipText  = QT_TR_NOOP("Revolves the sketch or profile around a line or axis and removes it from the body");
     sWhatsThis    = "PartDesign_Groove";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Groove";
@@ -1290,11 +1285,10 @@ void CmdPartDesignGroove::activated(int iMsg)
                 FCMD_OBJ_CMD(Feat,"Reversed = 1");
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "Groove", worker);
@@ -1315,8 +1309,8 @@ CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
 {
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("Additive pipe");
-    sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles");
+    sMenuText     = QT_TR_NOOP("Additive Pipe");
+    sToolTipText  = QT_TR_NOOP("Sweeps the selected sketch or profile along a path and adds it to the body");
     sWhatsThis    = "PartDesign_AdditivePipe";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_AdditivePipe";
@@ -1341,7 +1335,6 @@ void CmdPartDesignAdditivePipe::activated(int iMsg)
         Gui::Command::updateActive();
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "AdditivePipe", worker);
@@ -1363,8 +1356,8 @@ CmdPartDesignSubtractivePipe::CmdPartDesignSubtractivePipe()
 {
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("Subtractive pipe");
-    sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles and remove it from the body");
+    sMenuText     = QT_TR_NOOP("Subtractive Pipe");
+    sToolTipText  = QT_TR_NOOP("Sweeps the selected sketch or profile along a path and removes it from the body");
     sWhatsThis    = "PartDesign_SubtractivePipe";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_SubtractivePipe";
@@ -1389,7 +1382,6 @@ void CmdPartDesignSubtractivePipe::activated(int iMsg)
         Gui::Command::updateActive();
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "SubtractivePipe", worker);
@@ -1411,8 +1403,8 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
 {
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("Additive loft");
-    sToolTipText  = QT_TR_NOOP("Loft a selected profile through other profile sections");
+    sMenuText     = QT_TR_NOOP("Additive Loft");
+    sToolTipText = QT_TR_NOOP("Lofts the selected sketch or profile along a path and adds it to the body");
     sWhatsThis    = "PartDesign_AdditiveLoft";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_AdditiveLoft";
@@ -1437,7 +1429,6 @@ void CmdPartDesignAdditiveLoft::activated(int iMsg)
         Gui::Command::updateActive();
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "AdditiveLoft", worker);
@@ -1459,8 +1450,8 @@ CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
 {
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("Subtractive loft");
-    sToolTipText  = QT_TR_NOOP("Loft a selected profile through other profile sections and remove it from the body");
+    sMenuText     = QT_TR_NOOP("Subtractive Loft");
+    sToolTipText = QT_TR_NOOP("Lofts the selected sketch or profile along a path and removes it from the body");
     sWhatsThis    = "PartDesign_SubtractiveLoft";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_SubtractiveLoft";
@@ -1485,7 +1476,6 @@ void CmdPartDesignSubtractiveLoft::activated(int iMsg)
         Gui::Command::updateActive();
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "SubtractiveLoft", worker);
@@ -1506,8 +1496,8 @@ CmdPartDesignAdditiveHelix::CmdPartDesignAdditiveHelix()
 {
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("Additive helix");
-    sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a helix");
+    sMenuText     = QT_TR_NOOP("Additive Helix");
+    sToolTipText = QT_TR_NOOP("Sweeps the selected sketch or profile along a helix and adds it to the body");
     sWhatsThis    = "PartDesign_AdditiveHelix";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_AdditiveHelix";
@@ -1557,8 +1547,6 @@ void CmdPartDesignAdditiveHelix::activated(int iMsg)
                     view->makeTemporaryVisible(true);
             }
         }
-
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "AdditiveHelix", worker);
@@ -1580,8 +1568,8 @@ CmdPartDesignSubtractiveHelix::CmdPartDesignSubtractiveHelix()
 {
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("Subtractive helix");
-    sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a helix and remove it from the body");
+    sMenuText     = QT_TR_NOOP("Subtractive Helix");
+    sToolTipText  = QT_TR_NOOP("Sweeps the selected sketch or profile along a helix and removes it from the body");
     sWhatsThis    = "PartDesign_SubtractiveHelix";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_SubtractiveHelix";
@@ -1613,7 +1601,6 @@ void CmdPartDesignSubtractiveHelix::activated(int iMsg)
         }
 
         finishProfileBased(cmd, sketch, Feat);
-        cmd->adjustCameraPosition();
     };
 
     prepareProfileBased(pcActiveBody, this, "SubtractiveHelix", worker);
@@ -1648,7 +1635,7 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
         return false;
     }
     else if (pcActiveBody != PartDesignGui::getBodyFor(selection[0].getObject(), false)) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not in Active Body"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not in the active body"),
             QObject::tr("Select an edge, face, or body from an active body."));
         return false;
     }
@@ -1670,7 +1657,7 @@ bool dressupGetSelected(Gui::Command* cmd, const std::string& which,
 
     if (TopShape.getShape().IsNull()){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Shape of the selected Part is empty"));
+            QObject::tr("Shape of the selected part is empty"));
         return false;
     }
 
@@ -1762,7 +1749,7 @@ CmdPartDesignFillet::CmdPartDesignFillet()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Fillet");
-    sToolTipText  = QT_TR_NOOP("Make a fillet on an edge, face or body");
+    sToolTipText  = QT_TR_NOOP("Applies a fillet to the selected edges or faces");
     sWhatsThis    = "PartDesign_Fillet";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Fillet";
@@ -1790,7 +1777,7 @@ CmdPartDesignChamfer::CmdPartDesignChamfer()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Chamfer");
-    sToolTipText  = QT_TR_NOOP("Chamfer the selected edges of a shape");
+    sToolTipText  = QT_TR_NOOP("Applies a chamfer to the selected edges or faces");
     sWhatsThis    = "PartDesign_Chamfer";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Chamfer";
@@ -1819,7 +1806,7 @@ CmdPartDesignDraft::CmdPartDesignDraft()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Draft");
-    sToolTipText  = QT_TR_NOOP("Make a draft on a face");
+    sToolTipText  = QT_TR_NOOP("Applies a draft to the selected faces");
     sWhatsThis    = "PartDesign_Draft";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Draft";
@@ -1887,7 +1874,7 @@ CmdPartDesignThickness::CmdPartDesignThickness()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Thickness");
-    sToolTipText  = QT_TR_NOOP("Make a thick solid");
+    sToolTipText  = QT_TR_NOOP("Applies thickness and removes the selected faces");
     sWhatsThis    = "PartDesign_Thickness";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Thickness";
@@ -1955,7 +1942,7 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
 
         if (features.empty()) {
-            FCMD_OBJ_CMD(Feat, "TransformMode = \"Transform body\"");
+            FCMD_OBJ_CMD(Feat, "TransformMode = \"Whole shape\"");
         } else {
             std::stringstream str;
             str << "Originals = [";
@@ -1980,7 +1967,7 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
     PartDesign::Body* activeBody = PartDesignGui::getBody(true);
     for (auto feature : features) {
         if (activeBody != PartDesignGui::getBodyFor(feature, false)) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not in Active Body"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not in the active body"),
                 QObject::tr("Please select only one feature in an active body."));
             return;
         }
@@ -2003,8 +1990,8 @@ CmdPartDesignMirrored::CmdPartDesignMirrored()
 {
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("Mirrored");
-    sToolTipText  = QT_TR_NOOP("Create a mirrored feature");
+    sMenuText     = QT_TR_NOOP("Mirror");
+    sToolTipText  = QT_TR_NOOP("Mirrors the selected features or active body");
     sWhatsThis    = "PartDesign_Mirrored";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Mirrored";
@@ -2054,8 +2041,8 @@ CmdPartDesignLinearPattern::CmdPartDesignLinearPattern()
 {
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("LinearPattern");
-    sToolTipText  = QT_TR_NOOP("Create a linear pattern feature");
+    sMenuText     = QT_TR_NOOP("Linear Pattern");
+    sToolTipText  = QT_TR_NOOP("Duplicates the selected features or the active body in a linear pattern");
     sWhatsThis    = "PartDesign_LinearPattern";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_LinearPattern";
@@ -2077,6 +2064,7 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
             Part::Part2DObject *sketch = (static_cast<PartDesign::ProfileBased*>(features.front()))->getVerifiedSketch(/* silent =*/ true);
             if (sketch) {
                 FCMD_OBJ_CMD(Feat,"Direction = ("<<Gui::Command::getObjectCmd(sketch)<<", ['H_Axis'])");
+                FCMD_OBJ_CMD(Feat,"Direction2 = ("<<Gui::Command::getObjectCmd(sketch)<<", ['V_Axis'])");
                 direction = true;
             }
         }
@@ -2107,8 +2095,8 @@ CmdPartDesignPolarPattern::CmdPartDesignPolarPattern()
 {
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("PolarPattern");
-    sToolTipText  = QT_TR_NOOP("Create a polar pattern feature");
+    sMenuText     = QT_TR_NOOP("Polar Pattern");
+    sToolTipText  = QT_TR_NOOP("Duplicates the selected features or the active body in a circular pattern");
     sWhatsThis    = "PartDesign_PolarPattern";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_PolarPattern";
@@ -2162,8 +2150,8 @@ CmdPartDesignScaled::CmdPartDesignScaled()
 {
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("Scaled");
-    sToolTipText  = QT_TR_NOOP("Create a scaled feature");
+    sMenuText     = QT_TR_NOOP("Scale");
+    sToolTipText  = QT_TR_NOOP("Scales the selected features or the active body");
     sWhatsThis    = "PartDesign_Scaled";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Scaled";
@@ -2186,7 +2174,7 @@ void CmdPartDesignScaled::activated(int iMsg)
         finishTransformed(cmd, Feat);
     };
 
-    prepareTransformed(pcActiveBody, this, "Scaled", worker);
+    prepareTransformed(pcActiveBody, this, "Scale", worker);
 }
 
 bool CmdPartDesignScaled::isActive()
@@ -2204,8 +2192,8 @@ CmdPartDesignMultiTransform::CmdPartDesignMultiTransform()
 {
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("Create MultiTransform");
-    sToolTipText  = QT_TR_NOOP("Create a multitransform feature");
+    sMenuText     = QT_TR_NOOP("Multi-Transform");
+    sToolTipText  = QT_TR_NOOP("Applies multiple transformations to the selected features or active body");
     sWhatsThis    = "PartDesign_MultiTransform";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_MultiTransform";
@@ -2248,7 +2236,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         if (prevFeature)
             Gui::Selection().addSelection(prevFeature->getDocument()->getName(), prevFeature->getNameInDocument());
 
-        openCommand(QT_TRANSLATE_NOOP("Command", "Convert to MultiTransform feature"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Convert to Multi-Transform feature"));
 
         Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
         rcCmdMgr.runCommandByName("PartDesign_MoveTip");
@@ -2319,8 +2307,8 @@ CmdPartDesignBoolean::CmdPartDesignBoolean()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Boolean operation");
-    sToolTipText    = QT_TR_NOOP("Boolean operation with two or more bodies");
+    sMenuText       = QT_TR_NOOP("Boolean Operation");
+    sToolTipText    = QT_TR_NOOP("Applies boolean operations with the selected objects and the active body");
     sWhatsThis      = "PartDesign_Boolean";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Boolean";
@@ -2381,8 +2369,8 @@ public:
     {
         sAppModule = "PartDesign";
         sGroup = "PartDesign";
-        sMenuText = QT_TR_NOOP("Create datum");
-        sToolTipText = QT_TR_NOOP("Create a datum object or local coordinate system");
+        sMenuText = QT_TR_NOOP("Create Datum");
+        sToolTipText = QT_TR_NOOP("Creates a datum object or local coordinate system");
         sWhatsThis = "PartDesign_CompDatums";
         sStatusTip = sToolTipText;
         eType = ForEdit;
@@ -2416,8 +2404,8 @@ public:
     {
         sAppModule = "PartDesign";
         sGroup = "PartDesign";
-        sMenuText = QT_TR_NOOP("Create datum");
-        sToolTipText = QT_TR_NOOP("Create a datum object or local coordinate system");
+        sMenuText = QT_TR_NOOP("Create Datum");
+        sToolTipText = QT_TR_NOOP("Creates a datum object or local coordinate system");
         sWhatsThis = "PartDesign_CompDatums";
         sStatusTip = sToolTipText;
         eType = ForEdit;

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>567</width>
+    <width>1200</width>
     <height>608</height>
    </rect>
   </property>
@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="labelinfo">
      <property name="text">
-      <string>This dialog allows you to display and manage IFC properties attached to BIM objects. Only properties and sets present in all selected objects will be displayed and editable.</string>
+      <string>Display and manage IFC properties common to all selected BIM objects</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -47,7 +47,7 @@
      <item>
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>Order by:</string>
+        <string>Order by</string>
        </property>
       </widget>
      </item>
@@ -108,7 +108,7 @@
          <item>
           <widget class="QLabel" name="label_7">
            <property name="text">
-            <string>Search for a property or property set:</string>
+            <string>Search for a property or property set</string>
            </property>
           </widget>
          </item>
@@ -147,7 +147,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>List of IFC properties for the selected objects. Double-click to edit, drag and drop to reorganize</string>
+          <string>List of IFC properties for the selected objects. Double-click to edit. Drag and drop to reorganize.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -162,26 +162,34 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_5">
-     <item>
-      <widget class="QComboBox" name="comboProperty"/>
-     </item>
-     <item>
-      <widget class="QComboBox" name="comboPset"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonDelete">
-       <property name="text">
-        <string>Delete selected property/set</string>
-       </property>
-       <property name="icon">
-        <iconset theme="gtk-delete">
-         <normaloff/>
-        </iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QGroupBox" name="GroupBoxIfcProperties">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="title">
+      <string>IFC Properties</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <item>
+       <widget class="QComboBox" name="comboProperty"/>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboPset"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="buttonIFCPropertiesDelete">
+        <property name="text">
+         <string>Delete Selected Property/Property Set</string>
+        </property>
+        <property name="icon">
+         <iconset theme="gtk-delete">
+          <normaloff/>
+         </iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">

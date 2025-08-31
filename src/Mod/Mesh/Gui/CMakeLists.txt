@@ -1,11 +1,5 @@
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIRS}/Inventor/annex
-    ${PYTHON_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
-    ${XercesC_INCLUDE_DIRS}
 )
 
 if(MSVC)
@@ -22,6 +16,7 @@ set(MeshGui_LIBS
 )
 
 generate_from_xml(ViewProviderMeshPy)
+generate_from_py_(ViewProviderMeshPy)
 
 SET(MeshGui_XML_SRCS
     ViewProviderMeshPy.xml

@@ -26,7 +26,6 @@
 
 #include <Python.h>
 #include <array>
-#include <type_traits>
 
 namespace Base
 {

@@ -139,7 +139,7 @@ Py::Object PathPy::getBoundBox() const
 
 // specific methods
 
-PyObject* PathPy::copy(PyObject* args)
+PyObject* PathPy::copy(PyObject* args) const
 {
     if (PyArg_ParseTuple(args, "")) {
         return new PathPy(new Path::Toolpath(*getToolpathPtr()));
@@ -192,7 +192,7 @@ PyObject* PathPy::deleteCommand(PyObject* args)
     Py_Error(PyExc_TypeError, "Wrong parameters - expected an integer (optional)");
 }
 
-PyObject* PathPy::getCycleTime(PyObject* args)
+PyObject* PathPy::getCycleTime(PyObject* args) const
 {
     double hFeed, vFeed, hRapid, vRapid;
     if (PyArg_ParseTuple(args, "dddd", &hFeed, &vFeed, &hRapid, &vRapid)) {
@@ -203,7 +203,7 @@ PyObject* PathPy::getCycleTime(PyObject* args)
 
 // GCode methods
 
-PyObject* PathPy::toGCode(PyObject* args)
+PyObject* PathPy::toGCode(PyObject* args) const
 {
     if (PyArg_ParseTuple(args, "")) {
         std::string result = getToolpathPtr()->toGCode();

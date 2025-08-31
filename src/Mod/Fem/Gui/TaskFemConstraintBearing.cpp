@@ -28,6 +28,7 @@
 #include <QAction>
 #include <QMessageBox>
 #include <TopoDS.hxx>
+#include <limits>
 #include <sstream>
 #endif
 
@@ -60,24 +61,25 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint* Co
     QMetaObject::connectSlotsByName(this);
 
     // create a context menu for the listview of the references
-    createDeleteAction(ui->listReferences);
+    createActions(ui->listReferences);
     connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintBearing::onReferenceDeleted);
 
     this->groupLayout()->addWidget(proxy);
 
     // setup ranges
-    ui->spinDiameter->setMinimum(-FLOAT_MAX);
-    ui->spinDiameter->setMaximum(FLOAT_MAX);
-    ui->spinOtherDiameter->setMinimum(-FLOAT_MAX);
-    ui->spinOtherDiameter->setMaximum(FLOAT_MAX);
-    ui->spinCenterDistance->setMinimum(-FLOAT_MAX);
-    ui->spinCenterDistance->setMaximum(FLOAT_MAX);
-    ui->spinForce->setMinimum(-FLOAT_MAX);
-    ui->spinForce->setMaximum(FLOAT_MAX);
-    ui->spinTensionForce->setMinimum(-FLOAT_MAX);
-    ui->spinTensionForce->setMaximum(FLOAT_MAX);
-    ui->spinDistance->setMinimum(-FLOAT_MAX);
-    ui->spinDistance->setMaximum(FLOAT_MAX);
+    constexpr float max = std::numeric_limits<float>::max();
+    ui->spinDiameter->setMinimum(-max);
+    ui->spinDiameter->setMaximum(max);
+    ui->spinOtherDiameter->setMinimum(-max);
+    ui->spinOtherDiameter->setMaximum(max);
+    ui->spinCenterDistance->setMinimum(-max);
+    ui->spinCenterDistance->setMaximum(max);
+    ui->spinForce->setMinimum(-max);
+    ui->spinForce->setMaximum(max);
+    ui->spinTensionForce->setMinimum(-max);
+    ui->spinTensionForce->setMaximum(max);
+    ui->spinDistance->setMinimum(-max);
+    ui->spinDistance->setMaximum(max);
 
     // Get the feature data
     Fem::ConstraintBearing* pcConstraint = ConstraintView->getObject<Fem::ConstraintBearing>();
@@ -164,10 +166,9 @@ void TaskFemConstraintBearing::onSelectionChanged(const Gui::SelectionChanges& m
             std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
             if (!Objects.empty()) {
-                QMessageBox::warning(
-                    this,
-                    tr("Selection error"),
-                    tr("Please use only a single reference for bearing constraint"));
+                QMessageBox::warning(this,
+                                     tr("Selection error"),
+                                     tr("Use only a single reference for bearing constraint"));
                 return;
             }
             if (subName.substr(0, 4) != "Face") {
@@ -349,7 +350,7 @@ bool TaskDlgFemConstraintBearing::accept()
         std::string locobj = parameterBearing->getLocationObject().data();
 
         if (!locname.empty()) {
-            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
+            QString buf = QStringLiteral("(App.ActiveDocument.%1,[\"%2\"])");
             buf = buf.arg(QString::fromStdString(locname));
             buf = buf.arg(QString::fromStdString(locobj));
             Gui::Command::doCommand(Gui::Command::Doc,

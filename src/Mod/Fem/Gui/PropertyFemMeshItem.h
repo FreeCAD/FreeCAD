@@ -28,6 +28,8 @@
 namespace FemGui
 {
 
+using FrameOption = Gui::PropertyEditor::FrameOption;
+
 /**
  * Display data of an FEM mesh.
  * \author Werner Mayer
@@ -44,7 +46,9 @@ class PropertyFemMeshItem: public Gui::PropertyEditor::PropertyItem
     Q_PROPERTY(int Groups READ countGroups CONSTANT)
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const std::function<void()>& method) const override;
+    QWidget* createEditor(QWidget* parent,
+                          const std::function<void()>& method,
+                          FrameOption frameOption) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
 

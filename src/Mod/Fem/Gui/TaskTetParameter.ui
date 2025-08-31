@@ -25,7 +25,7 @@
      <item>
       <widget class="QLabel" name="maxSizeLabel">
        <property name="text">
-        <string>Max. Size:</string>
+        <string>Maximum size</string>
        </property>
       </widget>
      </item>
@@ -43,7 +43,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Min. Size:</string>
+        <string>Minimum size</string>
        </property>
       </widget>
      </item>
@@ -68,7 +68,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Fineness:</string>
+        <string>Fineness</string>
        </property>
       </widget>
      </item>
@@ -112,7 +112,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Growth Rate:</string>
+        <string>Growth rate</string>
        </property>
       </widget>
      </item>
@@ -126,7 +126,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Number of Segments per Edge:</string>
+        <string>Number of segments per edge</string>
        </property>
       </widget>
      </item>
@@ -143,7 +143,7 @@
      <item row="3" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>Number of Segments per Radius:</string>
+        <string>Number of segments per radius</string>
        </property>
       </widget>
      </item>
@@ -181,7 +181,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>Node count:</string>
+        <string>Node count</string>
        </property>
       </widget>
      </item>
@@ -195,7 +195,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>Triangle count:</string>
+        <string>Triangle count</string>
        </property>
       </widget>
      </item>
@@ -209,7 +209,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_9">
        <property name="text">
-        <string>Tetrahedron count:</string>
+        <string>Tetrahedron count</string>
        </property>
       </widget>
      </item>

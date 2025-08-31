@@ -334,6 +334,14 @@ public:
         return FeatureT::canLoadPartial();
     }
 
+    /**
+     * @brief Called when a property is edited by the user.
+     *
+     * This override first attempts to handle the property edit in the
+     * associated Python object.
+     *
+     * @param[in] propName The name of the property to be edited.
+     */
     void editProperty(const char* propName) override
     {
         if (!imp->editProperty(propName)) {

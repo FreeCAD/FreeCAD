@@ -21,10 +21,8 @@
 # ***************************************************************************
 
 import FreeCAD
-import Path
-import Path.Tool.Bit as PathToolBit
+from Path.Tool.toolbit import ToolBit
 import Path.Tool.Controller as PathToolController
-
 from CAMTests.PathTestUtils import PathTestBase
 
 
@@ -39,12 +37,14 @@ class TestPathToolController(PathTestBase):
 
     def createTool(self, name="t1", diameter=1.75):
         attrs = {
-            "shape": None,
-            "name": name,
+            "name": name or "t1",
+            "shape": "endmill.fcstd",
             "parameter": {"Diameter": diameter},
-            "attribute": [],
+            "attribute": {},
         }
-        return PathToolBit.Factory.CreateFromAttrs(attrs, name)
+        print(f"Debug: attrs['attribute'] is {attrs['attribute']}")
+        toolbit = ToolBit.from_dict(attrs)
+        return toolbit.attach_to_doc(doc=FreeCAD.ActiveDocument)
 
     def test00(self):
         """Verify ToolController templateAttrs"""
@@ -72,7 +72,7 @@ class TestPathToolController(PathTestBase):
         self.assertEqual(attrs["hrapid"], "28.0 mm/s")
         self.assertEqual(attrs["dir"], "Reverse")
         self.assertEqual(attrs["speed"], 12000)
-        self.assertEqual(attrs["tool"], t.Proxy.templateAttrs(t))
+        self.assertEqual(attrs["tool"], t.Proxy.to_dict())
 
         return tc
 

@@ -24,14 +24,21 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QApplication>
-#include <QDir>
 #include <QImageReader>
 #include <QLabel>
+#include <QMessageBox>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
+#include <QProcess>
 #include <QStatusBar>
+#include <QThread>
+#include <QTimer>
 #include <QWindow>
 #include <Inventor/SoDB.h>
+
+#include <set>
+#include <string>
+#include <ranges>
 #endif
 
 #include "StartupProcess.h"
@@ -43,6 +50,7 @@
 #include "MainWindow.h"
 #include "Language/Translator.h"
 #include <App/Application.h>
+#include <App/ApplicationDirectories.h>
 #include <Base/Console.h>
 
 
@@ -54,10 +62,7 @@ StartupProcess::StartupProcess() = default;
 void StartupProcess::setupApplication()
 {
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
     QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
-#endif
 
     // Automatic scaling for legacy apps (disable once all parts of GUI are aware of HiDpi)
     ParameterGrp::handle hDPI =
@@ -76,7 +81,7 @@ void StartupProcess::setupApplication()
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
-#if QT_VERSION >= QT_VERSION_CHECK(5,14,0) && defined(Q_OS_WIN)
+#if defined(Q_OS_WIN)
         QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
     }
@@ -93,8 +98,6 @@ void StartupProcess::setupApplication()
     if (useSoftwareOpenGL) {
         QApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
     }
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
     // By default (on platforms that support it, see docs for
     // Qt::AA_CompressHighFrequencyEvents) QT applies compression
     // for high frequency events (mouse move, touch, window resizes)
@@ -106,7 +109,6 @@ void StartupProcess::setupApplication()
     // leading to unacceptable slowdowns using a tablet pen. Enable
     // compression for tablet events here to solve that.
     QCoreApplication::setAttribute(Qt::AA_CompressTabletEvents);
-#endif
 }
 
 void StartupProcess::execute()
@@ -135,7 +137,7 @@ void StartupProcess::setStyleSheetPaths()
         (App::Application::getUserAppDataDir() + "Gui/Stylesheets/").c_str())
             << QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str())
             << QLatin1String(":/stylesheets");
-    QDir::setSearchPaths(QString::fromLatin1("qss"), qssPaths);
+    QDir::setSearchPaths(QStringLiteral("qss"), qssPaths);
     // setup the search paths for Qt overlay style sheets
     QStringList qssOverlayPaths;
     qssOverlayPaths << QString::fromUtf8((App::Application::getUserAppDataDir()
@@ -152,7 +154,7 @@ void StartupProcess::setImagePaths()
     imagePaths << QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/images").c_str())
             << QString::fromUtf8((App::Application::getUserAppDataDir() + "pixmaps").c_str())
             << QLatin1String(":/icons");
-    QDir::setSearchPaths(QString::fromLatin1("images"), imagePaths);
+    QDir::setSearchPaths(QStringLiteral("images"), imagePaths);
 }
 
 void StartupProcess::registerEventType()
@@ -165,7 +167,7 @@ void StartupProcess::setThemePaths()
 {
 #if !defined(Q_OS_LINUX)
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths()
-                            << QString::fromLatin1(":/icons/FreeCAD-default"));
+                            << QStringLiteral(":/icons/FreeCAD-default"));
 #endif
 
     ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath(
@@ -226,6 +228,7 @@ void StartupPostProcess::execute()
     showMainWindow();
     activateWorkbench();
     checkParameters();
+    runWelcomeScreen();
 }
 
 void StartupPostProcess::setWindowTitle()
@@ -285,7 +288,7 @@ void StartupPostProcess::setLocale()
             hGrp->GetASCII("Language", Translator::instance()->activeLanguage().c_str()));
     }
     else if (localeFormat == 2) {
-        Translator::instance()->setLocale("C");
+        Translator::instance()->setLocale("C.UTF-8");
     }
 }
 
@@ -301,7 +304,15 @@ void StartupPostProcess::setQtStyle()
 {
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("MainWindow");
     auto qtStyle = hGrp->GetASCII("QtStyle");
+    if (qtStyle.empty()) {
+        qtStyle = "Fusion";
+        hGrp->SetASCII("QtStyle", qtStyle);
+    } else if (qtStyle == "System") {
+        // Special value to not set a QtStyle explicitly
+        return;
+    }
     QApplication::setStyle(QString::fromStdString(qtStyle));
+
 }
 
 void StartupPostProcess::checkOpenGL()
@@ -314,10 +325,10 @@ void StartupPostProcess::checkOpenGL()
     if (context.create()) {
         context.makeCurrent(&window);
         if (!context.functions()->hasOpenGLFeature(QOpenGLFunctions::Framebuffers)) {
-            Base::Console().Log("This system does not support framebuffer objects\n");
+            Base::Console().log("This system does not support framebuffer objects\n");
         }
         if (!context.functions()->hasOpenGLFeature(QOpenGLFunctions::NPOTTextures)) {
-            Base::Console().Log("This system does not support NPOT textures\n");
+            Base::Console().log("This system does not support NPOT textures\n");
         }
 
         int major = context.format().majorVersion();
@@ -330,11 +341,11 @@ void StartupPostProcess::checkOpenGL()
             auto message =
                 QObject::tr("This system is running OpenGL %1.%2. "
                             "FreeCAD requires OpenGL 2.0 or above. "
-                            "Please upgrade your graphics driver and/or card as required.")
+                            "Upgrade the graphics driver and/or card as required.")
                     .arg(major)
                     .arg(minor)
                 + QStringLiteral("\n");
-            Base::Console().Warning(message.toStdString().c_str());
+            Base::Console().warning(message.toStdString().c_str());
             Dialog::DlgCheckableMessageBox::showMessage(
                 QCoreApplication::applicationName() + QStringLiteral(" - ")
                     + QObject::tr("Invalid OpenGL Version"),
@@ -342,7 +353,7 @@ void StartupPostProcess::checkOpenGL()
         }
 #endif
         const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-        Base::Console().Log("OpenGL version is: %d.%d (%s)\n", major, minor, glVersion);
+        Base::Console().log("OpenGL version is: %d.%d (%s)\n", major, minor, glVersion);
     }
 }
 
@@ -417,12 +428,12 @@ void StartupPostProcess::showMainWindow()
 
     // running the GUI init script
     try {
-        Base::Console().Log("Run Gui init script\n");
+        Base::Console().log("Run Gui init script\n");
         Application::runInitGuiScript();
         setImportImageFormats();
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Error in FreeCADGuiInit.py: %s\n", e.what());
+        Base::Console().error("Error in FreeCADGuiInit.py: %s\n", e.what());
         mainWindow->stopSplasher();
         throw;
 
@@ -438,7 +449,7 @@ void StartupPostProcess::activateWorkbench()
 {
     // Activate the correct workbench
     std::string start = App::Application::Config()["StartWorkbench"];
-    Base::Console().Log("Init: Activating default workbench %s\n", start.c_str());
+    Base::Console().log("Init: Activating default workbench %s\n", start.c_str());
     std::string autoload =
         App::GetApplication()
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
@@ -475,7 +486,7 @@ void StartupPostProcess::activateWorkbench()
 
     // show the main window
     if (!Application::hiddenMainWindow()) {
-        Base::Console().Log("Init: Showing main window\n");
+        Base::Console().log("Init: Showing main window\n");
         mainWindow->loadWindowSettings();
     }
 
@@ -534,11 +545,154 @@ void StartupPostProcess::autoloadModules(const QStringList& wb)
 void StartupPostProcess::checkParameters()
 {
     if (App::GetApplication().GetSystemParameter().IgnoreSave()) {
-        Base::Console().Warning("System parameter file couldn't be opened.\n"
+        Base::Console().warning("System parameter file couldn't be opened.\n"
                                 "Continue with an empty configuration that won't be saved.\n");
     }
     if (App::GetApplication().GetUserParameter().IgnoreSave()) {
-        Base::Console().Warning("User parameter file couldn't be opened.\n"
+        Base::Console().warning("User parameter file couldn't be opened.\n"
                                 "Continue with an empty configuration that won't be saved.\n");
     }
 }
+
+void StartupPostProcess::runWelcomeScreen()
+{
+    // If the user is running a custom directory set, there is no migration to versioned directories
+    if (App::Application::directories()->usingCustomDirectories()) {
+        return;
+    }
+
+    auto prefGroup = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Migration");
+
+    // Split our comma-separated list of already-migrated-to version directories into a set for easy
+    // searching
+    auto splitCommas = [](const std::string &input) {
+        std::set<std::string> result;
+        std::stringstream ss(input);
+        std::string token;
+
+        while (std::getline(ss, token, ',')) {
+            result.insert(token);
+        }
+
+        return result;
+    };
+
+    std::string offeredToMigrateToVersionedConfig =
+        prefGroup->GetASCII("OfferedToMigrateToVersionedConfig", "");
+    std::set<std::string> knownVersions;
+    if (!offeredToMigrateToVersionedConfig.empty()) {
+        knownVersions = splitCommas(offeredToMigrateToVersionedConfig);
+    }
+
+    auto joinCommas = [](const std::set<std::string>& s) {
+        std::ostringstream oss;
+        for (auto it = s.begin(); it != s.end(); ++it) {
+            if (it != s.begin()) {
+                oss << ',';
+            }
+            oss << *it;
+        }
+        return oss.str();
+    };
+
+    int major = std::stoi(App::Application::Config()["BuildVersionMajor"]);
+    int minor = std::stoi(App::Application::Config()["BuildVersionMinor"]);
+    std::string currentVersionedDirName = App::ApplicationDirectories::versionStringForPath(major, minor);
+    if (!knownVersions.contains(currentVersionedDirName)
+        && !App::Application::directories()->usingCurrentVersionConfig(
+            App::Application::directories()->getUserAppDataDir())) {
+        auto programName = QString::fromStdString(App::Application::getExecutableName());
+        auto result = QMessageBox::question(
+            mainWindow,
+            QObject::tr("Welcome to %1 v%2.%3").arg(programName, QString::number(major), QString::number(minor)),
+            QObject::tr("Welcome to %1 v%2.%3\n\n").arg(programName, QString::number(major), QString::number(minor))
+                + QObject::tr("Configuration data and addons from previous program version found. "
+                              "Migrate the old configuration to this version?"),
+            QMessageBox::Yes | QMessageBox::No);
+        knownVersions.insert(currentVersionedDirName);
+        prefGroup->SetASCII("OfferedToMigrateToVersionedConfig", joinCommas(knownVersions));
+        if (result == QMessageBox::Yes) {
+            migrateToCurrentVersion();
+        }
+    }
+}
+
+class PathMigrationWorker : public QObject
+{
+    Q_OBJECT
+
+public:
+    void run () {
+        try {
+            App::GetApplication().GetUserParameter().SaveDocument();
+            App::Application::directories()->migrateAllPaths(
+                {App::Application::getUserAppDataDir(), App::Application::getUserConfigPath()});
+            Q_EMIT(complete());
+        } catch (const Base::Exception& e) {
+            Base::Console().error("Error migrating configuration data: %s\n", e.what());
+            Q_EMIT(failed());
+        } catch (const std::exception& e) {
+            Base::Console().error("Unrecognized error migrating configuration data: %s\n", e.what());
+            Q_EMIT(failed());
+        } catch (...) {
+            Base::Console().error("Error migrating configuration data\n");
+            Q_EMIT(failed());
+        }
+    }
+
+Q_SIGNALS:
+    void complete();
+    void failed();
+};
+
+void StartupPostProcess::migrateToCurrentVersion()
+{
+    auto *workerThread = new QThread(mainWindow);
+    auto *worker = new PathMigrationWorker();
+    worker->moveToThread(workerThread);
+    QObject::connect(workerThread, &QThread::started, worker, &PathMigrationWorker::run);
+
+    auto migrationRunning = new QMessageBox(mainWindow);
+    migrationRunning->setWindowTitle(QObject::tr("Migrating"));
+    migrationRunning->setText(QObject::tr("Migrating configuration data and addons..."));
+    migrationRunning->setStandardButtons(QMessageBox::NoButton);
+    QObject::connect(worker, &PathMigrationWorker::complete, migrationRunning, &QMessageBox::accept);
+    QObject::connect(worker, &PathMigrationWorker::failed, migrationRunning, &QMessageBox::reject);
+
+    workerThread->start();
+    migrationRunning->exec();
+
+    if (migrationRunning->result() == QDialog::Accepted) {
+        auto* restarting = new QMessageBox(mainWindow);
+        restarting->setText(
+            QObject::tr("Migration complete. Restarting..."));
+        restarting->setWindowTitle(QObject::tr("Restarting"));
+        restarting->setStandardButtons(QMessageBox::NoButton);
+        auto closeNotice = [restarting]() {
+            restarting->reject();
+        };
+
+        // Insert a short delay before restart so the user can see the success message, and
+        // knows it's a restart and not a crash...
+        const int delayRestartMillis {2000};
+        QTimer::singleShot(delayRestartMillis, closeNotice);
+        restarting->exec();
+
+        QObject::connect(qApp, &QCoreApplication::aboutToQuit, [=] {
+            if (getMainWindow()->close()) {
+                auto args = QApplication::arguments();
+                args.removeFirst();
+                QProcess::startDetached(QApplication::applicationFilePath(),
+                                        args,
+                                        QApplication::applicationDirPath());
+            }
+            });
+        QCoreApplication::exit(0);
+        _exit(0); // No really. Die.
+    } else {
+        QMessageBox::critical(mainWindow, QObject::tr("Migration failed"),QObject::tr("Migration failed. See the Report View for details."));
+    }
+}
+
+#include "StartupProcess.moc"

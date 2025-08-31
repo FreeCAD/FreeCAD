@@ -21,6 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <limits>
+#endif
 
 #include <Mod/Mesh/App/WildMagic4/Wm4DistSegment3Triangle3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4DistVector3Triangle3.h>
@@ -1309,9 +1312,9 @@ unsigned short MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt) co
     const Base::Vector3f& rcP2 = _aclPoints[1];
     const Base::Vector3f& rcP3 = _aclPoints[2];
 
-    float fD1 = FLOAT_MAX;
-    float fD2 = FLOAT_MAX;
-    float fD3 = FLOAT_MAX;
+    float fD1 = std::numeric_limits<float>::max();
+    float fD2 = std::numeric_limits<float>::max();
+    float fD3 = std::numeric_limits<float>::max();
 
     // 1st edge
     Base::Vector3f clDir = rcP2 - rcP1;
@@ -1383,9 +1386,9 @@ void MeshGeomFacet::NearestEdgeToPoint(const Base::Vector3f& rclPt,
     const Base::Vector3f& rcP2 = _aclPoints[1];
     const Base::Vector3f& rcP3 = _aclPoints[2];
 
-    float fD1 = FLOAT_MAX;
-    float fD2 = FLOAT_MAX;
-    float fD3 = FLOAT_MAX;
+    float fD1 = std::numeric_limits<float>::max();
+    float fD2 = std::numeric_limits<float>::max();
+    float fD3 = std::numeric_limits<float>::max();
 
     // 1st edge
     Base::Vector3f clDir = rcP2 - rcP1;

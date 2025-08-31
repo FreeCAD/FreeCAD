@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Create Simulation</string>
+   <string>Simulation</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -86,7 +86,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_settings">
      <property name="title">
-      <string>Simulation settings</string>
+      <string>Simulation Settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
@@ -129,14 +129,14 @@
          <string>Step</string>
         </property>
         <property name="toolTip">
-         <string>Time Step</string>
+         <string>Time step</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
        <widget class="Gui::PrefQuantitySpinBox" name="TimeStepOutputSpinBox">
         <property name="toolTip">
-         <string>Time Step</string>
+         <string>Time step</string>
         </property>
        </widget>
       </item>
@@ -146,14 +146,14 @@
          <string>Tolerance</string>
         </property>
         <property name="toolTip">
-         <string>Global Error Tolerance</string>
+         <string>Global error tolerance</string>
         </property>
        </widget>
       </item>
       <item row="5" column="1">
        <widget class="Gui::PrefQuantitySpinBox" name="GlobalErrorToleranceSpinBox">
         <property name="toolTip">
-         <string>Global Error Tolerance</string>
+         <string>Global error tolerance</string>
         </property>
        </widget>
       </item>
@@ -170,7 +170,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_player">
      <property name="title">
-      <string>Animation player</string>
+      <string>Animation Player</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
@@ -209,7 +209,7 @@
         <item>
          <widget class="QLabel" name="FramesPerSecondLabel">
           <property name="text">
-           <string>Frames Per Second</string>
+           <string>Frames per second</string>
           </property>
          </widget>
         </item>

@@ -38,10 +38,8 @@ using namespace TechDrawGui;
 using namespace TechDraw;
 
 QGIDecoration::QGIDecoration() :
-    m_colCurrent(Qt::black),
-    m_styleCurrent(Qt::SolidLine),
-    m_brushCurrent(Qt::SolidPattern),
-    m_dragState(DECORNODRAG)
+    m_pen(Qt::SolidLine),
+    m_dragState(DragState::NoDrag)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);
@@ -68,22 +66,18 @@ void QGIDecoration::paint ( QPainter * painter, const QStyleOptionGraphicsItem *
 
 void QGIDecoration::setWidth(double w)
 {
-    m_width = w;
-    m_pen.setWidthF(m_width);
+    m_pen.setWidthF(w);
 }
 
 void QGIDecoration::setStyle(Qt::PenStyle s)
 {
-    m_styleCurrent = s;
-    m_pen.setStyle(m_styleCurrent);
+    m_pen.setStyle(s);
 }
 
 void QGIDecoration::setColor(QColor c)
 {
-    m_colNormal = c;
-    m_colCurrent = c;
-    m_pen.setColor(m_colCurrent);
-    m_brush.setColor(m_colCurrent);
+    m_pen.setColor(c);
+    m_brush.setColor(c);
 }
 
 QColor QGIDecoration::prefNormalColor()
@@ -124,27 +118,27 @@ void QGIDecoration::makeMark(Base::Vector3d v)
 
 void QGIDecoration::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().Message("QGID::mousePressEvent() - %s\n", getViewName());
-    m_dragState = DECORDRAGSTARTED;
+//    Base::Console().message("QGID::mousePressEvent() - %s\n", getViewName());
+    m_dragState = DragState::DragStarted;
 
     QGraphicsItem::mousePressEvent(event);
 }
 
 void QGIDecoration::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
-    if (m_dragState == DECORDRAGSTARTED) {
-        m_dragState = DECORDRAGGING;
+    if (m_dragState == DragState::DragStarted) {
+        m_dragState = DragState::Dragging;
     }
     QGraphicsItem::mouseMoveEvent(event);
 }
 
 void QGIDecoration::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-//    Base::Console().Message("QGID::mouseReleaseEvent() - %s\n", getViewName());
-    if (m_dragState == DECORDRAGGING) {
+//    Base::Console().message("QGID::mouseReleaseEvent() - %s\n", getViewName());
+    if (m_dragState == DragState::Dragging) {
         onDragFinished();
     }
-    m_dragState = DECORNODRAG;
+    m_dragState = DragState::NoDrag;
 
     QGraphicsItem::mouseReleaseEvent(event);
 }

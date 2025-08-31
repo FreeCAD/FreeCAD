@@ -62,6 +62,9 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
     retranslate();
 #if !defined(_USE_3DCONNEXION_SDK) && !defined(SPNAV_FOUND)
     ui->legacySpaceMouseDevices->setDisabled(true);
+#elif !defined(USE_3DCONNEXION_NAVLIB)
+    ui->spaceMouseDevice->setHidden(true);
+    ui->legacySpaceMouseDevices->setHidden(true);
 #endif
 }
 
@@ -159,11 +162,11 @@ void DlgSettingsNavigation::loadSettings()
     int index = ui->comboNavigationStyle->findData(QByteArray(model.c_str()));
     if (index > -1) ui->comboNavigationStyle->setCurrentIndex(index);
 
-    index = hGrp->GetInt("OrbitStyle", int(NavigationStyle::Trackball));
+    index = hGrp->GetInt("OrbitStyle", int(NavigationStyle::RoundedArcball));
     index = Base::clamp(index, 0, ui->comboOrbitStyle->count()-1);
     ui->comboOrbitStyle->setCurrentIndex(index);
 
-    index = hGrp->GetInt("RotationMode", 1);
+    index = hGrp->GetInt("RotationMode", 0);
     ui->comboRotationMode->setCurrentIndex(index);
 
     bool showNaviCube = hGrp->GetBool("ShowNaviCube", true);
@@ -285,21 +288,21 @@ void DlgSettingsNavigation::onMouseButtonClicked()
         ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(), Qt::UserRole);
     void* instance = Base::Type::createInstanceByName((const char*)data.toByteArray());
     std::unique_ptr<UserNavigationStyle> ns(static_cast<UserNavigationStyle*>(instance));
-    uimb.groupBox->setTitle(uimb.groupBox->title() + QString::fromLatin1(" ")
+    uimb.groupBox->setTitle(uimb.groupBox->title() + QStringLiteral(" ")
                             + ui->comboNavigationStyle->currentText());
     QString descr;
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::SELECTION));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    uimb.selectionLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
+    uimb.selectionLabel->setText(QStringLiteral("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::PANNING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    uimb.panningLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
+    uimb.panningLabel->setText(QStringLiteral("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::DRAGGING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    uimb.rotationLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
+    uimb.rotationLabel->setText(QStringLiteral("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::ZOOMING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    uimb.zoomingLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
+    uimb.zoomingLabel->setText(QStringLiteral("<b>%1</b>").arg(descr));
     dlg.exec();
 }
 
@@ -355,7 +358,7 @@ void DlgSettingsNavigation::onNewDocViewChanged(int index)
 CameraDialog::CameraDialog(QWidget* parent)
     : QDialog(parent)
 {
-    this->setWindowTitle(tr("Camera settings"));
+    this->setWindowTitle(tr("Camera Settings"));
 
     QGridLayout *gridLayout;
     gridLayout = new QGridLayout(this);
@@ -415,8 +418,8 @@ CameraDialog::CameraDialog(QWidget* parent)
     layout->addWidget(sb3, 3, 1, 1, 1);
 
     auto currentViewButton = new QPushButton(this);
-    currentViewButton->setText(tr("Current view"));
-    currentViewButton->setObjectName(QString::fromLatin1("currentView"));
+    currentViewButton->setText(tr("Current View"));
+    currentViewButton->setObjectName(QStringLiteral("currentView"));
     layout->addWidget(currentViewButton, 4, 1, 2, 1);
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);

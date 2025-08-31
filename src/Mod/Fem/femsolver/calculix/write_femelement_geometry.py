@@ -114,7 +114,15 @@ def write_femelement_geometry(f, ccxwriter):
             elif "shellthickness_obj" in matgeoset:  # shell mesh
                 shellth_obj = matgeoset["shellthickness_obj"]
                 if ccxwriter.solver_obj.ModelSpace == "3D":
-                    section_def = f"*SHELL SECTION, {elsetdef}{material}\n"
+                    offset = shellth_obj.Offset
+                    if ccxwriter.solver_obj.ExcludeBendingStiffness:
+                        section_def = (
+                            f"*MEMBRANE SECTION, {elsetdef}{material}, OFFSET={offset:.13G}\n"
+                        )
+                    else:
+                        section_def = (
+                            f"*SHELL SECTION, {elsetdef}{material}, OFFSET={offset:.13G}\n"
+                        )
                 else:
                     section_def = f"*SOLID SECTION, {elsetdef}{material}\n"
                 thickness = shellth_obj.Thickness.getValueAs("mm").Value

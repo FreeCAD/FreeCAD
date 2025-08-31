@@ -25,25 +25,25 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-
 class QGraphicsScene;
 class QGraphicsSvgItem;
 class QSvgRenderer;
 class QFile;
 class QString;
 
+#include "QGITemplate.h"
+#include "QGIUserTypes.h"
+
 namespace TechDraw
 {
 class DrawSVGTemplate;
 }
 
-#include "QGITemplate.h"
-
 namespace TechDrawGui
 {
 class QGSPage;
 
-class TechDrawGuiExport QGISVGTemplate: public QGITemplate
+class TechDrawGuiExport QGISVGTemplate : public TechDrawGui::QGITemplate
 {
     Q_OBJECT
 
@@ -51,26 +51,23 @@ public:
     explicit QGISVGTemplate(QGSPage* scene);
     ~QGISVGTemplate() override;
 
-    enum
-    {
-        Type = QGraphicsItem::UserType + 153
-    };
+    enum {Type = UserType::QGISVGTemplate};
     int type() const override { return Type; }
 
     void draw() override;
     void updateView(bool update = false) override;
 
     TechDraw::DrawSVGTemplate* getSVGTemplate();
+    std::vector<TemplateTextField*> getTextFields() override;
 
 protected:
     void openFile(const QFile& file);
-    void load(const QByteArray& svgCode);
-    void createClickHandles(void);
-    static double getFontSizeFromStyle(QString style);
-    static double getFontSizeFromElement(QString element);
+    void load(QByteArray svgCode);
 
-protected:
-    bool firstTime;
+    void createClickHandles();
+    void clearClickHandles();
+
+private:
     QGraphicsSvgItem* m_svgItem;
     QSvgRenderer* m_svgRender;
 };// class QGISVGTemplate

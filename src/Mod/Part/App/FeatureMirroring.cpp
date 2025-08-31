@@ -170,7 +170,13 @@ App::DocumentObjectExecReturn *Mirroring::execute()
             bool isEdge = false; //will be true if user selected edge subobject or if object only has 1 edge
             TopoDS_Shape shape;
             if (!subStrings.empty() && subStrings[0].length() > 0){
-                shape = Feature::getTopoShape(linked, subStrings[0].c_str(), true).getShape();
+
+                shape = Feature::getTopoShape(linked,
+                                                 ShapeOption::NeedSubElement
+                                               | ShapeOption::ResolveLink
+                                               | ShapeOption::Transform,
+                                              subStrings[0].c_str()).getShape();
+                            
                 if (strstr(subStrings[0].c_str(), "Face")){
                     isFace = true; //was face subobject, e.g. Face3
                 } else {
@@ -179,7 +185,8 @@ App::DocumentObjectExecReturn *Mirroring::execute()
                     }
                 }
             } else {
-                shape = Feature::getShape(linked); //no subobjects were selected, so this is entire shape of feature
+                //no subobjects were selected, so this is entire shape of feature
+                shape = Feature::getShape(linked, ShapeOption::ResolveLink | ShapeOption::Transform); 
             }
 
             // if there is only 1 face or 1 edge, then we don't need to force the user to select that face or edge
@@ -253,7 +260,7 @@ App::DocumentObjectExecReturn *Mirroring::execute()
 
     try {
         gp_Ax2 ax2(gp_Pnt(base.x,base.y,base.z), gp_Dir(norm.x,norm.y,norm.z));
-        auto shape = Feature::getTopoShape(link);
+        auto shape = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
         if (shape.isNull())
             Standard_Failure::Raise("Cannot mirror empty shape");
         this->Shape.setValue(TopoShape(0).makeElementMirror(shape,ax2));

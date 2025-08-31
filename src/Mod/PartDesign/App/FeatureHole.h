@@ -56,6 +56,7 @@ public:
     App::PropertyEnumeration    ThreadClass;
     App::PropertyEnumeration    ThreadFit;
     App::PropertyLength         Diameter;
+    App::PropertyLength         ThreadDiameter;
     App::PropertyEnumeration    ThreadDirection;
     App::PropertyEnumeration    HoleCutType;
     App::PropertyBool           HoleCutCustomValues;
@@ -73,6 +74,19 @@ public:
     App::PropertyAngle          TaperedAngle;
     App::PropertyBool           UseCustomThreadClearance;
     App::PropertyLength         CustomThreadClearance;
+    App::PropertyInteger        BaseProfileType;
+
+    enum BaseProfileTypeOptions {
+        OnPoints    = 1 << 0,
+        OnCircles   = 1 << 1,
+        OnArcs      = 1 << 2,
+
+        // Common combos
+        OnPointsCirclesArcs = OnPoints | OnCircles | OnArcs,
+        OnCirclesArcs = OnCircles | OnArcs
+    };
+    static int baseProfileOption_idxToBitmask(int index);
+    static int baseProfileOption_bitmaskToIdx(int bitmask);
 
     /** @name methods override feature */
     //@{
@@ -102,22 +116,31 @@ public:
         double normal;
         double loose;
     };
-    static const UTSClearanceDefinition UTSHoleDiameters[22];
+    static const UTSClearanceDefinition UTSHoleDiameters[23];
 
     void Restore(Base::XMLReader & reader) override;
 
     virtual void updateProps();
+    bool isDynamicCounterbore(const std::string &thread, const std::string &holeCutType);
+    bool isDynamicCountersink(const std::string &thread, const std::string &holeCutType);
+
+    Base::Vector3d guessNormalDirection(const TopoShape& profileshape) const;
+    TopoShape findHoles(std::vector<TopoShape> &holes, const TopoShape& profileshape, const TopoDS_Shape& protohole) const;
 
 protected:
     void onChanged(const App::Property* prop) override;
+    void setupObject() override;
+
     static const App::PropertyAngle::Constraints floatAngle;
 
 private:
     static const char* DepthTypeEnums[];
     static const char* ThreadDepthTypeEnums[];
     static const char* ThreadTypeEnums[];
+    static const char* ClearanceNoneEnums[];
     static const char* ClearanceMetricEnums[];
     static const char* ClearanceUTSEnums[];
+    static const char* ClearanceOtherEnums[];
     static const char* DrillPointEnums[];
     static const char* ThreadDirectionEnums[];
 
@@ -218,9 +241,9 @@ private:
     const CutDimensionSet& find_cutDimensionSet(const CutDimensionKey &k);
 
     void addCutType(const CutDimensionSet& dimensions);
-    bool isDynamicCounterbore(const std::string &thread, const std::string &holeCutType);
-    bool isDynamicCountersink(const std::string &thread, const std::string &holeCutType);
     void updateHoleCutParams();
+    void calculateAndSetCounterbore();
+    void calculateAndSetCountersink();
     std::optional<double> determineDiameter() const;
     void updateDiameterParam();
     void updateThreadDepthParam();
@@ -231,10 +254,10 @@ private:
     double getThreadRunout(int mode = 1) const;
     double getThreadPitch() const;
     double getThreadProfileAngle();
+    void findClosestDesignation();
     void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;
     gp_Vec computePerpendicular(const gp_Vec&) const;
     TopoDS_Shape makeThread(const gp_Vec&, const gp_Vec&, double);
-    TopoShape findHoles(std::vector<TopoShape> &holes, const TopoShape& profileshape, const TopoDS_Shape& protohole) const;
 
     // helpers for nlohmann json
     friend void from_json(const nlohmann::json &j, CounterBoreDimension &t);

@@ -121,8 +121,8 @@ def process(filename):
 
     Returns
     -------
-    Part::Part2DObject or None.
-        The created Draft Wire object or None if the file contains less
+    Part::Feature or None.
+        The created object or None if the file contains fewer
         than 3 points.
     """
     # Regex to identify data rows and throw away unused metadata
@@ -132,7 +132,7 @@ def process(filename):
 
     regex = re.compile(_regex)
     afile = pyopen(filename, 'r')
-    # read the airfoil name which is always at the first line
+    # read the airfoil name which is always in the first line
     airfoilname = afile.readline().strip()
 
     coords = []

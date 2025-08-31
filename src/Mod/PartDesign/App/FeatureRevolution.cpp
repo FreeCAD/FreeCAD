@@ -62,6 +62,7 @@ Revolution::Revolution()
     ADD_PROPERTY_TYPE(Angle2, (60.0), "Revolution", App::Prop_None, "Revolution length in 2nd direction");
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Revolution", App::Prop_None, "Face where revolution will end");
     Angle.setConstraints(&floatAngle);
+    Angle2.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(ReferenceAxis,(nullptr),"Revolution",(App::Prop_None),"Reference axis of revolution");
 }
 
@@ -80,11 +81,8 @@ short Revolution::mustExecute() const
 
 App::DocumentObjectExecReturn* Revolution::execute()
 {
-    if (onlyHasToRefine()){
-        TopoShape result = refineShapeIfActive(rawShape);
-        Shape.setValue(result);
-        return App::DocumentObject::StdReturn;
-    }
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
+
 
     // Validate parameters
     // All angles are in radians unless explicitly stated
@@ -231,7 +229,11 @@ App::DocumentObjectExecReturn* Revolution::execute()
                 this->rawShape = result;
                 result = refineShapeIfActive(result);
             }
-            this->Shape.setValue(getSolid(result));
+            if (!isSingleSolidRuleSatisfied(result.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
+            }
+            result = getSolid(result);
+            this->Shape.setValue(result);
         }
         else {
             return new App::DocumentObjectExecReturn(
@@ -414,3 +416,5 @@ void Revolution::updateProperties(RevolMethod method)
 }
 
 }
+
+

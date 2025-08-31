@@ -21,22 +21,30 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TOOLS_H
-#define BASE_TOOLS_H
+#ifndef SRC_BASE_TOOLS_H_
+#define SRC_BASE_TOOLS_H_
 
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
-#include <functional>
-#include <algorithm>
 #include <cmath>
-#include <iostream>
-#include <vector>
+#include <numbers>
+#include <ostream>
 #include <string>
-#include <boost_signals2.hpp>
-#include <QString>
+#include <vector>
 
-// ----------------------------------------------------------------------------
+#include <boost/signals2/shared_connection_block.hpp>
+
+namespace boost
+{
+namespace signals2
+{
+class connection;
+}
+}  // namespace boost
+
+
+class QString;
 
 namespace Base
 {
@@ -105,43 +113,115 @@ inline manipulator<int> blanks(int n)
 // ----------------------------------------------------------------------------
 
 template<class T>
+    requires std::is_arithmetic_v<T>
 inline T clamp(T num, T lower, T upper)
 {
-    return std::max<T>(std::min<T>(upper, num), lower);
+    return std::clamp<T>(num, lower, upper);
 }
 
-template<class T>
-inline T sgn(T t)
+/// Returns -1, 0 or 1 depending on if the value is negative, zero or positive
+/// As this function might be used in hot paths, it uses branchless implementation
+template<typename T>
+constexpr std::enable_if_t<std::is_arithmetic_v<T> && std::is_signed_v<T>, T> sgn(T val)
 {
-    if (t == 0) {
-        return T(0);
-    }
-
-    return (t > 0) ? T(1) : T(-1);
+    int oneIfPositive = int(0 < val);
+    int oneIfNegative = int(val < 0);
+    return T(oneIfPositive - oneIfNegative);  // 0/1 - 0/1 = -1/0/1
 }
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-
-template<class T>
-inline T toRadians(T d)
+/// Convert degrees to radians, allow deduction for floating point types
+template<std::floating_point T>
+constexpr T toRadians(T degrees)
 {
-    return static_cast<T>((d * M_PI) / 180.0);
+    constexpr auto degToRad = std::numbers::pi_v<T> / T(180);
+    return degrees * degToRad;
 }
 
-template<class T>
-inline T toDegrees(T r)
+/// Convert degrees to radians, allow **explicit-only** for any arithmetic type
+template<typename T>
+    requires(std::is_arithmetic_v<T> && !std::floating_point<T>)
+constexpr T toRadians(std::type_identity_t<T> degrees)
 {
-    return static_cast<T>((r / M_PI) * 180.0);
+    using ResultT = std::conditional_t<std::is_integral_v<T>, double, T>;
+    return static_cast<T>(toRadians<ResultT>(static_cast<ResultT>(degrees)));
 }
 
-template<class T>
+/// Convert radians to degrees, allow deduction for floating point types
+template<std::floating_point T>
+constexpr T toDegrees(T radians)
+{
+    constexpr auto radToDeg = T(180) / std::numbers::pi_v<T>;
+    return radians * radToDeg;
+}
+
+/// Convert radians to degrees, allow **explicit-only** for any arithmetic type
+template<typename T>
+    requires(std::is_arithmetic_v<T> && !std::floating_point<T>)
+constexpr T toDegrees(std::type_identity_t<T> radians)
+{
+    using ResultT = std::conditional_t<std::is_integral_v<T>, double, T>;
+    return static_cast<T>(toDegrees<ResultT>(static_cast<ResultT>(radians)));
+}
+
+inline float fromPercent(const long value)
+{
+    return std::roundf(static_cast<float>(value)) / 100.0F;
+}
+
+inline long toPercent(float value)
+{
+    return std::lround(100.0 * value);
+}
+
+template<std::floating_point T>
 inline T fmod(T numerator, T denominator)
 {
     T modulo = std::fmod(numerator, denominator);
     return (modulo >= T(0)) ? modulo : modulo + denominator;
 }
+
+template<std::floating_point T>
+inline T angularDist(T v1, T v2)
+{
+    return std::min(std::fabs(v1 - v2), 360 - std::fabs(v1 - v2));
+}
+
+// Returns a value between [0, 360) or (-180, 180] depending on if the
+// minimum value was positive or negetive. This is done because the taper angle
+// values in FreeCAD usually treat values like -10 and 350 differently
+template<std::floating_point T>
+inline double clampAngle(T value, T min, T max, T precision)
+{
+    // Normalize the angles between 0 and 360
+    value = Base::fmod(value, 360.0);
+    T nMin = Base::fmod(min, 360.0);
+    T nMax = Base::fmod(max, 360.0);
+
+    if (std::abs(nMax - nMin) > precision) {
+        if (nMax > nMin) {
+            if (value < nMin || value > nMax) {
+                value = angularDist(value, nMin) > angularDist(value, nMax) ? nMax : nMin;
+            }
+        }
+        else {
+            if (value < nMin && value > nMax) {
+                value = angularDist(value, nMin) > angularDist(value, nMax) ? nMax : nMin;
+            }
+        }
+    }
+
+    if (min >= 0.0) {
+        // Return in [0, 360)
+        return value;
+    }
+
+    // Map to (-180, 180]
+    if (value > 180.0) {
+        value = value - 360;
+    }
+    return value;
+}
+
 
 // ----------------------------------------------------------------------------
 
@@ -266,10 +346,14 @@ public:
 
 struct BaseExport Tools
 {
-    static std::string
-    getUniqueName(const std::string&, const std::vector<std::string>&, int d = 0);
-    static std::string addNumber(const std::string&, unsigned int, int d = 0);
-    static std::string getIdentifier(const std::string&);
+    /**
+     * Given an arbitrary string, ensure that it conforms to Python3 identifier rules, replacing
+     * invalid characters with an underscore. If the first character is invalid, prepends an
+     * underscore to the name. See https://unicode.org/reports/tr31/ for complete naming rules.
+     * @param String to be checked and sanitized.
+     * @return A std::string that is a valid Python 3 identifier.
+     */
+    static std::string getIdentifier(const std::string& name);
     static std::wstring widen(const std::string& str);
     static std::string narrow(const std::wstring& str);
     static std::string escapedUnicodeFromUtf8(const char* s);
@@ -294,6 +378,11 @@ struct BaseExport Tools
      */
     static std::string quoted(const std::string&);
 
+    static constexpr bool isNullOrEmpty(const char* str)
+    {
+        return !str || str[0] == '\0';
+    }
+
     /**
      * @brief joinList
      * Join the vector of strings \a vec using the separator \a sep
@@ -317,6 +406,37 @@ struct BaseExport ZipTools
 };
 
 
+/**
+ * Helper struct to define inline overloads for the visitor pattern in std::visit.
+ *
+ * It uses type deduction to infer the type from the expression and creates a dedicated type that
+ * essentially is callable using any overload supplied.
+ *
+ * @code
+ * using Base::Overloads;
+ *
+ * const auto visitor = Overloads
+ * {
+ *     [](int i){ std::print("int = {}\n", i); },
+ *     [](std::string_view s){ std::println("string = “{}”", s); },
+ *     [](const Base&){ std::println("base"); },
+ * };
+ * @endcode
+ *
+ * @see https://en.cppreference.com/w/cpp/utility/variant/visit
+ *
+ * @tparam Ts Types for functions that will be used for overloads
+ */
+template<class... Ts>
+struct Overloads: Ts...
+{
+    using Ts::operator()...;
+};
+
+template<class... Ts>
+Overloads(Ts...) -> Overloads<Ts...>;
+
 }  // namespace Base
 
-#endif  // BASE_TOOLS_H
+
+#endif  // SRC_BASE_TOOLS_H_

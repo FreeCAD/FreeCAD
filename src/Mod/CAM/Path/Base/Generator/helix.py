@@ -126,7 +126,7 @@ def generate(
             )
         outer_radius = hole_radius
 
-    else:  # inner_radius > 0:
+    else:
         Path.Log.debug("(annulus mode / full hole)\n")
         outer_radius = hole_radius - tool_diameter / 2
         step_radius = inner_radius + tool_diameter / 2

@@ -4,198 +4,202 @@
   <context>
     <name>CmdApproxCylinder</name>
     <message>
-      <location filename="../../Command.cpp" line="248"/>
+      <location filename="../../Command.cpp" line="249"/>
       <source>Reverse Engineering</source>
       <translation>Зваротны інжынірынг</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="249"/>
+      <location filename="../../Command.cpp" line="250"/>
       <source>Cylinder</source>
       <translation>Цыліндр</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="250"/>
-      <source>Approximate a cylinder</source>
-      <translation>Прыблізна цыліндр</translation>
+      <location filename="../../Command.cpp" line="251"/>
+      <source>Approximates a cylinder</source>
+      <translation>Прыбліжае цыліндр</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="140"/>
+      <location filename="../../Command.cpp" line="141"/>
       <source>Reverse Engineering</source>
       <translation>Зваротны інжынірынг</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="141"/>
+      <location filename="../../Command.cpp" line="142"/>
       <source>Plane</source>
       <translation>Плоскасьць</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="142"/>
-      <source>Approximate a plane</source>
-      <translation>Прыблізна плоскасць</translation>
+      <location filename="../../Command.cpp" line="143"/>
+      <source>Approximates a plane</source>
+      <translation>Прыбліжае плоскасць</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxPolynomial</name>
     <message>
-      <location filename="../../Command.cpp" line="364"/>
+      <location filename="../../Command.cpp" line="365"/>
       <source>Reverse Engineering</source>
       <translation>Зваротны інжынірынг</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="365"/>
-      <source>Polynomial surface</source>
+      <location filename="../../Command.cpp" line="366"/>
+      <source>Polynomial Surface</source>
       <translation>Паліномная паверхня</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="366"/>
-      <source>Approximate a polynomial surface</source>
-      <translation>Прыблізна паліномная паверхня</translation>
+      <location filename="../../Command.cpp" line="367"/>
+      <source>Approximates a polynomial surface</source>
+      <translation>Прыбліжае паліномную паверхню</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxSphere</name>
     <message>
-      <location filename="../../Command.cpp" line="316"/>
+      <location filename="../../Command.cpp" line="317"/>
       <source>Reverse Engineering</source>
       <translation>Зваротны інжынірынг</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="318"/>
       <source>Sphere</source>
       <translation>Сфера</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
-      <source>Approximate a sphere</source>
-      <translation>Прыблізна сфера</translation>
+      <location filename="../../Command.cpp" line="319"/>
+      <source>Approximates a sphere</source>
+      <translation>Прыбліжае сферу</translation>
     </message>
   </context>
   <context>
     <name>CmdApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="102"/>
+      <location filename="../../Command.cpp" line="103"/>
       <source>Reverse Engineering</source>
       <translation>Зваротны інжынірынг</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
-      <source>Approximate B-spline surface...</source>
-      <translation>Прыблізна B-сплайн паверхня...</translation>
+      <location filename="../../Command.cpp" line="104"/>
+      <source>Approximate B-Spline Surface…</source>
+      <translation>Прыблізіць B-сплайн паверхню…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
-      <source>Approximate a B-spline surface</source>
-      <translation>Прыблізна B-сплайн паверхня</translation>
+      <location filename="../../Command.cpp" line="105"/>
+      <source>Approximates a B-spline surface</source>
+      <translation>Прыбліжае B-сплайн паверхню</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshBoundary</name>
     <message>
-      <location filename="../../Command.cpp" line="536"/>
+      <location filename="../../Command.cpp" line="535"/>
       <source>Reverse Engineering</source>
       <translation>Зваротны інжынірынг</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="537"/>
-      <source>Wire from mesh boundary...</source>
-      <translation>Ломаная лінія з мяжы паліганальнай сеткі...</translation>
+      <location filename="../../Command.cpp" line="536"/>
+      <source>Wire From Mesh Boundary…</source>
+      <translation>Ломаная лінія з мяжы паліганальнай сеткі…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="538"/>
-      <source>Create wire from mesh boundaries</source>
-      <translation>Стварыць ломаную лінія з мяжы паліганальнай сеткі</translation>
+      <location filename="../../Command.cpp" line="537"/>
+      <source>Creates a wire from mesh boundaries</source>
+      <translation>Стварае ломаную лінія з мяжы паліганальнай сеткі</translation>
     </message>
   </context>
   <context>
     <name>CmdPoissonReconstruction</name>
     <message>
-      <location filename="../../Command.cpp" line="603"/>
+      <location filename="../../Command.cpp" line="600"/>
       <source>Reverse Engineering</source>
       <translation>Зваротны інжынірынг</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="604"/>
-      <source>Poisson...</source>
-      <translation>Размеркаванне Пуасона...</translation>
+      <location filename="../../Command.cpp" line="601"/>
+      <source>Poisson…</source>
+      <translation>Размеркаванне Пуасона…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="605"/>
-      <source>Poisson surface reconstruction</source>
-      <translation>Рэканструкцыя паверхні Пуансона</translation>
+      <location filename="../../Command.cpp" line="602"/>
+      <source>Performs Poisson surface reconstruction</source>
+      <translation>Выконвае рэканструкцыю паверхні Пуансона</translation>
     </message>
   </context>
   <context>
     <name>CmdSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="422"/>
+      <location filename="../../Command.cpp" line="423"/>
       <source>Reverse Engineering</source>
       <translation>Зваротны інжынірынг</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="423"/>
-      <source>Mesh segmentation...</source>
-      <translation>Сегментацыя паліганальнай сеткі...</translation>
+      <location filename="../../Command.cpp" line="424"/>
+      <source>Mesh Segmentation…</source>
+      <translation>Сегментацыя паліганальнай сеткі…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="424"/>
-      <source>Create mesh segments</source>
-      <translation>Стварыць адрэзкі паліганальнай сеткі</translation>
+      <location filename="../../Command.cpp" line="425"/>
+      <source>Creates separate mesh segments based on surface types</source>
+      <translation>Стварае асобныя сегменты паліганальнай сеткі на аснове тыпаў паверхняў</translation>
     </message>
   </context>
   <context>
     <name>CmdSegmentationFromComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="484"/>
+      <location filename="../../Command.cpp" line="485"/>
       <source>Reverse Engineering</source>
       <translation>Зваротны інжынірынг</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="485"/>
-      <source>From components</source>
+      <location filename="../../Command.cpp" line="486"/>
+      <source>From Components</source>
       <translation>З кампанентаў</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="486"/>
-      <source>Create mesh segments from components</source>
-      <translation>Стварыць сегменты паліганальнай сеткі з кампанентаў</translation>
+      <location filename="../../Command.cpp" line="487"/>
+      <source>Creates mesh segments from components</source>
+      <translation>Стварае сегменты паліганальнай сеткі з кампанентаў</translation>
     </message>
   </context>
   <context>
     <name>CmdSegmentationManual</name>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
+      <location filename="../../Command.cpp" line="455"/>
       <source>Reverse Engineering</source>
       <translation>Зваротны інжынірынг</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
-      <source>Manual segmentation...</source>
-      <translation>Ручная сегментацыя...</translation>
+      <location filename="../../Command.cpp" line="456"/>
+      <source>Manual Segmentation…</source>
+      <translation>Ручная сегментацыя…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="456"/>
-      <source>Create mesh segments manually</source>
-      <translation>Стварыць сегменты паліганальнай сеткі ўручную</translation>
+      <location filename="../../Command.cpp" line="457"/>
+      <source>Creates mesh segments manually</source>
+      <translation>Стварае сегменты паліганальнай сеткі ўручную</translation>
     </message>
   </context>
   <context>
     <name>CmdViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="638"/>
+      <location filename="../../Command.cpp" line="634"/>
       <source>Reverse Engineering</source>
       <translation>Зваротны інжынірынг</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="639"/>
-      <source>Structured point clouds</source>
+      <location filename="../../Command.cpp" line="635"/>
+      <source>Structured Point Clouds</source>
       <translation>Воблакі структураваных кропак</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="640"/>
-      <location filename="../../Command.cpp" line="641"/>
+      <location filename="../../Command.cpp" line="636"/>
+      <source>Triangulates structured point clouds</source>
+      <translation>Трыянгулюе воблакі структураваных кропак</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="637"/>
       <source>Triangulation of structured point clouds</source>
       <translation>Трыянгуляцыя воблакаў структураваных кропак</translation>
     </message>
@@ -203,27 +207,27 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="226"/>
+      <location filename="../../Command.cpp" line="227"/>
       <source>Fit plane</source>
       <translation>Запоўніць плоскасць</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="258"/>
+      <location filename="../../Command.cpp" line="259"/>
       <source>Fit cylinder</source>
       <translation>Запоўніць цыліндр</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="326"/>
+      <location filename="../../Command.cpp" line="327"/>
       <source>Fit sphere</source>
       <translation>Запоўніць сферу</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="375"/>
+      <location filename="../../Command.cpp" line="376"/>
       <source>Fit polynomial surface</source>
       <translation>Запоўніць паліномную паверхню</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="650"/>
+      <location filename="../../Command.cpp" line="646"/>
       <source>View triangulation</source>
       <translation>Выгляд трыянгуляцыі</translation>
     </message>
@@ -233,8 +237,8 @@
       <translation>Размясціць</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="231"/>
       <location filename="../../FitBSplineCurve.cpp" line="139"/>
+      <location filename="../../FitBSplineSurface.cpp" line="230"/>
       <source>Fit B-spline</source>
       <translation>Запоўніць B-сплайн</translation>
     </message>
@@ -252,16 +256,6 @@
   <context>
     <name>ReenGui::FitBSplineSurface</name>
     <message>
-      <location filename="../../FitBSplineSurface.ui" line="14"/>
-      <source>Fit B-spline surface</source>
-      <translation>Запоўніць B-сплайн паверхню</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="20"/>
-      <source>u-Direction</source>
-      <translation>u-Напрамак</translation>
-    </message>
-    <message>
       <location filename="../../FitBSplineSurface.ui" line="26"/>
       <location filename="../../FitBSplineSurface.ui" line="93"/>
       <source>Degree</source>
@@ -274,9 +268,19 @@
       <translation>Кантрольныя кропкі</translation>
     </message>
     <message>
+      <location filename="../../FitBSplineSurface.ui" line="14"/>
+      <source>Fit B-Spline Surface</source>
+      <translation>Запоўніць B-сплайн паверхню</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="20"/>
+      <source>U-Direction</source>
+      <translation>U-напрамак</translation>
+    </message>
+    <message>
       <location filename="../../FitBSplineSurface.ui" line="87"/>
-      <source>v-Direction</source>
-      <translation>v-Напрамак</translation>
+      <source>V-Direction</source>
+      <translation>V-напрамак</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
@@ -300,18 +304,18 @@
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="231"/>
-      <source>Create placement</source>
+      <source>Create Placement</source>
       <translation>Стварыць размяшчэнне</translation>
+    </message>
+    <message>
+      <location filename="../../FitBSplineSurface.ui" line="247"/>
+      <source>Total weight</source>
+      <translation>Агульная вага</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
       <source>Smoothing</source>
       <translation>Згладжванне</translation>
-    </message>
-    <message>
-      <location filename="../../FitBSplineSurface.ui" line="247"/>
-      <source>Total Weight</source>
-      <translation>Агульная вага</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="276"/>
@@ -333,19 +337,19 @@
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="165"/>
-      <location filename="../../FitBSplineSurface.cpp" line="238"/>
+      <location filename="../../FitBSplineSurface.cpp" line="237"/>
       <source>Input error</source>
       <translation>Памылка ўводу</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="206"/>
+      <location filename="../../FitBSplineSurface.cpp" line="205"/>
       <source>Wrong selection</source>
       <translation>Няправільны выбар</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="207"/>
-      <source>Please select a single placement object to get local orientation.</source>
-      <translation>Калі ласка, абярыце адзін аб'ект размяшчэння, каб атрымаць лакальную арыентацыю.</translation>
+      <location filename="../../FitBSplineSurface.cpp" line="206"/>
+      <source>Select a single placement object to get the local orientation.</source>
+      <translation>Абраць адзін аб'ект размяшчэння, каб атрымаць лакальную арыентацыю.</translation>
     </message>
   </context>
   <context>
@@ -384,32 +388,32 @@
   <context>
     <name>Reen_ApproxSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="82"/>
-      <location filename="../../Command.cpp" line="120"/>
-      <location filename="../../Command.cpp" line="618"/>
+      <location filename="../../Command.cpp" line="83"/>
+      <location filename="../../Command.cpp" line="121"/>
+      <location filename="../../Command.cpp" line="614"/>
       <source>Wrong selection</source>
       <translation>Няправільны выбар</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="83"/>
-      <source>Please select a point cloud.</source>
-      <translation>Калі ласка, абярыце воблака кропак.</translation>
+      <location filename="../../Command.cpp" line="84"/>
+      <source>Select a point cloud.</source>
+      <translation>Абраць воблака кропак.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="121"/>
-      <source>Please select a point cloud or mesh.</source>
-      <translation>Калі ласка, абярыце воблака кропак ці паліганальную сетку.</translation>
+      <location filename="../../Command.cpp" line="122"/>
+      <source>Select a point cloud or mesh.</source>
+      <translation>Абраць воблака кропак ці паліганальную сетку.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="619"/>
-      <source>Please select a single point cloud.</source>
-      <translation>Калі ласка, абярыце адно воблака кропак.</translation>
+      <location filename="../../Command.cpp" line="615"/>
+      <source>Select a single point cloud.</source>
+      <translation>Абраць адно воблака кропак.</translation>
     </message>
   </context>
   <context>
     <name>Reen_ViewTriangulation</name>
     <message>
-      <location filename="../../Command.cpp" line="672"/>
+      <location filename="../../Command.cpp" line="668"/>
       <source>View triangulation failed</source>
       <translation>Прагляд трыянгуляцыі не атрымаўся</translation>
     </message>
@@ -418,7 +422,7 @@
     <name>ReverseEngineeringGui::Segmentation</name>
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
-      <source>Mesh segmentation</source>
+      <source>Mesh Segmentation</source>
       <translation>Сегментацыя паліганальнай сеткі</translation>
     </message>
     <message>
@@ -460,11 +464,6 @@
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.ui" line="14"/>
-      <source>Manual segmentation</source>
-      <translation>Ручная сегментацыя</translation>
-    </message>
-    <message>
       <location filename="../../SegmentationManual.ui" line="20"/>
       <source>Select</source>
       <translation>Абраць</translation>
@@ -490,9 +489,14 @@
       <translation>граней менш чым</translation>
     </message>
     <message>
+      <location filename="../../SegmentationManual.ui" line="14"/>
+      <source>Manual Mesh Segmentation</source>
+      <translation>Ручная сегментацыя паліганальнай сеткі</translation>
+    </message>
+    <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
-      <source>Pick triangle</source>
-      <translation>Выбраце трыкутнік</translation>
+      <source>Pick Triangle</source>
+      <translation>Выбраць трыкутнік</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="105"/>
@@ -542,18 +546,18 @@
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
-      <source>Region options</source>
+      <source>Region Options</source>
       <translation>Налады вобласці</translation>
+    </message>
+    <message>
+      <location filename="../../SegmentationManual.ui" line="297"/>
+      <source>Respect only triangles with screen-facing normals</source>
+      <translation>Прымаць толькі трыкутнікі з вектарамі нармалі, якія павернутыя да экрану</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
       <source>Respect only visible triangles</source>
       <translation>Прымаць толькі бачныя трыкутнікі</translation>
-    </message>
-    <message>
-      <location filename="../../SegmentationManual.ui" line="297"/>
-      <source>Respect only triangles with normals facing screen</source>
-      <translation>Прымаць толькі трыкутнікі з павернутымі вектарамі нармалі да экрану</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>
@@ -574,7 +578,7 @@
   <context>
     <name>ReverseEngineeringGui::TaskSegmentationManual</name>
     <message>
-      <location filename="../../SegmentationManual.cpp" line="352"/>
+      <location filename="../../SegmentationManual.cpp" line="351"/>
       <source>Create</source>
       <translation>Стварыць</translation>
     </message>
@@ -591,8 +595,8 @@
     <name>ReenGui::FitBSplineCurve</name>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
-      <source>Fit B-spline curve</source>
-      <translation type="unfinished">Fit B-spline curve</translation>
+      <source>Fit B-Spline Curve</source>
+      <translation>Запоўніць крывую B-сплайна</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>
@@ -698,19 +702,19 @@
   <context>
     <name>CmdApproxCurve</name>
     <message>
-      <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="70"/>
       <source>Reverse Engineering</source>
       <translation>Зваротны інжынірынг</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="70"/>
-      <source>Approximate B-spline curve...</source>
-      <translation>Прыблізная B-сплайн крывая...</translation>
+      <location filename="../../Command.cpp" line="71"/>
+      <source>Approximate B-Spline Curve…</source>
+      <translation>Прыблізіць B-сплайн крывую…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="71"/>
-      <source>Approximate a B-spline curve</source>
-      <translation>Прыблізная B-сплайн крывая</translation>
+      <location filename="../../Command.cpp" line="72"/>
+      <source>Approximates a B-spline curve</source>
+      <translation>Прыбліжае B-сплайн крывую</translation>
     </message>
   </context>
   <context>

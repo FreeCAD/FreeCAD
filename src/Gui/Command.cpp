@@ -291,6 +291,12 @@ Application *Command::getGuiApplication()
     return Application::Instance;
 }
 
+App::Document* Command::getActiveDocument() const
+{
+    Gui::Document* doc = getActiveGuiDocument();
+    return doc ? doc->getDocument() : nullptr;
+}
+
 Gui::Document* Command::getActiveGuiDocument() const
 {
     return getGuiApplication()->activeDocument();
@@ -301,22 +307,14 @@ App::Document* Command::getDocument(const char* Name) const
     if (Name) {
         return App::GetApplication().getDocument(Name);
     }
-    else {
-        Gui::Document * pcDoc = getGuiApplication()->activeDocument();
-        if (pcDoc)
-            return pcDoc->getDocument();
-        else
-            return nullptr;
-    }
+
+    return getActiveDocument();
 }
 
 App::DocumentObject* Command::getObject(const char* Name) const
 {
-    App::Document*pDoc = getDocument();
-    if (pDoc)
-        return pDoc->getObject(Name);
-    else
-        return nullptr;
+    App::Document* pDoc = getDocument();
+    return pDoc ? pDoc->getObject(Name) : nullptr;
 }
 
 int Command::_busy;
@@ -383,7 +381,7 @@ void Command::setupCheckable(int iMsg) {
         if (!wasBlocked) // if the original block signal value was true, we do nothing
             action->blockSignals(wasBlocked);
         if(action!=_pcAction->action())
-            _pcAction->setChecked(checked,true);
+            _pcAction->setBlockedChecked(checked);
     }
 
 }
@@ -400,7 +398,7 @@ void Command::invoke(int i, TriggerSource trigger)
 
     // Do not query _pcAction since it isn't created necessarily
 #ifdef FC_LOGUSERACTION
-    Base::Console().Log("CmdG: %s\n",sName);
+    Base::Console().log("CmdG: %s\n",sName);
 #endif
 
     _invoke(i, bCanLog && !_busy);
@@ -471,29 +469,29 @@ void Command::_invoke(int id, bool disablelog)
         throw;
     }
     catch (Base::PyException &e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
     }
     catch (Base::AbortException&) {
     }
     catch (Base::Exception &e) {
-        e.ReportException();
+        e.reportException();
         // Pop-up a dialog for FreeCAD-specific exceptions
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Exception"), QLatin1String(e.what()));
     }
     catch (std::exception &e) {
-        Base::Console().Error("C++ exception thrown (%s)\n", e.what());
+        Base::Console().error("C++ exception thrown (%s)\n", e.what());
     }
     catch (const char* e) {
-        Base::Console().Error("%s\n", e);
+        Base::Console().error("%s\n", e);
     }
 #ifndef FC_DEBUG
     catch (...) {
-        Base::Console().Error("Gui::Command::activated(%d): Unknown C++ exception thrown\n", id);
+        Base::Console().error("Gui::Command::activated(%d): Unknown C++ exception thrown\n", id);
     }
 #endif
 }
@@ -658,18 +656,14 @@ void Command::_doCommand(const char *file, int line, DoCmd_Type eType, const cha
     va_list ap;
     va_start(ap, sCmd);
     QString s;
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    const QString cmd = s.vsprintf(sCmd, ap);
-#else
     const QString cmd = s.vasprintf(sCmd, ap);
-#endif
     va_end(ap);
 
     // 'vsprintf' expects a utf-8 string for '%s'
     QByteArray format = cmd.toUtf8();
 
 #ifdef FC_LOGUSERACTION
-    Base::Console().Log("CmdC: %s\n", format.constData());
+    Base::Console().log("CmdC: %s\n", format.constData());
 #endif
 
     _runCommand(file,line,eType,format.constData());
@@ -723,7 +717,7 @@ void Command::_runCommand(const char *file, int line, DoCmd_Type eType, const ch
         Base::Interpreter().runString(sCmd);
     }
     catch(Py::Exception &) {
-        Base::PyException::ThrowException();
+        Base::PyException::throwException();
     }
 }
 
@@ -783,10 +777,7 @@ void Command::_copyVisual(const char *file, int line, const App::DocumentObject 
     if(!from || !from->isAttachedToDocument() || !to || !to->isAttachedToDocument())
         return;
     static std::map<std::string,std::string> attrMap = {
-        // {"ShapeColor","ShapeMaterial.DiffuseColor"},
         {"ShapeAppearance", "ShapeMaterial"},
-        // {"LineColor","ShapeMaterial.DiffuseColor"},
-        // {"PointColor","ShapeMaterial.DiffuseColor"},
         {"Transparency","Transparency"},
     };
     auto it = attrMap.find(attr_to);
@@ -815,7 +806,6 @@ void Command::_copyVisual(const char *file, int line, const App::DocumentObject 
                 objCmd.c_str(),attr_to,getObjectCmd(from).c_str(),attr_from,objCmd.c_str(),attr_to);
     }
     catch(Base::Exception& /*e*/) {
-        // e.ReportException();
     }
 }
 
@@ -858,18 +848,6 @@ bool Command::isActiveObjectValid()
     App::DocumentObject* object = document->getActiveObject();
     assert(object);
     return object->isValid();
-}
-
-/// Updates the (all or listed) documents (propagate changes)
-void Command::updateAll(std::list<Gui::Document*> cList)
-{
-    if (!cList.empty()) {
-        for (auto & it : cList)
-            it->onUpdate();
-    }
-    else {
-        Gui::Application::Instance->onUpdate();
-    }
 }
 
 //--------------------------------------------------------------------------
@@ -918,8 +896,14 @@ const char* Command::keySequenceToAccel(int sk) const
     static StringMap strings;
     auto i = strings.find(sk);
 
-    if (i != strings.end())
+    if (i != strings.end()) {
         return i->second.c_str();
+    }
+
+    // In case FreeCAD is loaded without GUI (issue 16407)
+    if (!QApplication::instance()) {
+        return "";
+    }
 
     auto type = static_cast<QKeySequence::StandardKey>(sk);
     QKeySequence ks(type);
@@ -929,52 +913,11 @@ const char* Command::keySequenceToAccel(int sk) const
     return (strings[sk] = static_cast<const char*>(data)).c_str();
 }
 
-void Command::adjustCameraPosition()
-{
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        auto view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
-        Gui::View3DInventorViewer* viewer = view->getViewer();
-        SoCamera* camera = viewer->getSoRenderManager()->getCamera();
-        if (!camera || !camera->isOfType(SoOrthographicCamera::getClassTypeId()))
-            return;
-
-        // get scene bounding box
-        SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
-        action.apply(viewer->getSceneGraph());
-        SbBox3f box = action.getBoundingBox();
-        if (box.isEmpty())
-            return;
-
-        // get cirumscribing sphere and check if camera is inside
-        SbVec3f cam_pos = camera->position.getValue();
-        SbVec3f box_cnt = box.getCenter();
-        SbSphere bs;
-        bs.circumscribe(box);
-        float radius = bs.getRadius();
-        float distance_to_midpoint = (box_cnt-cam_pos).length();
-        if (radius >= distance_to_midpoint) {
-            // Move the camera to the edge of the bounding sphere, while still
-            // pointing at the scene.
-            SbVec3f direction = cam_pos - box_cnt;
-            (void) direction.normalize(); // we know this is not a null vector
-            camera->position.setValue(box_cnt + direction * radius);
-
-            // New distance to mid point
-            distance_to_midpoint =
-                (camera->position.getValue() - box.getCenter()).length();
-            camera->nearDistance = distance_to_midpoint - radius;
-            camera->farDistance = distance_to_midpoint + radius;
-            camera->focalDistance = distance_to_midpoint;
-        }
-    }
-}
-
 void Command::printConflictingAccelerators() const
 {
     auto cmd = Application::Instance->commandManager().checkAcceleratorForConflicts(sAccel, this);
     if (cmd)
-        Base::Console().Warning("Accelerator conflict between %s (%s) and %s (%s)\n", sName, sAccel, cmd->sName, cmd->sAccel);
+        Base::Console().warning("Accelerator conflict between %s (%s) and %s (%s)\n", sName, sAccel, cmd->sName, cmd->sAccel);
 }
 
 Action * Command::createAction()
@@ -1078,7 +1021,7 @@ Action * GroupCommand::createAction() {
 
     for(auto &v : cmds) {
         if(!v.first)
-            pcAction->addAction(QString::fromLatin1(""))->setSeparator(true);
+            pcAction->addAction(QStringLiteral(""))->setSeparator(true);
         else
             v.first->addToGroup(pcAction);
     }
@@ -1120,6 +1063,8 @@ void GroupCommand::setup(Action *pcAction) {
     int idx = pcAction->property("defaultAction").toInt();
     if(idx>=0 && idx<(int)cmds.size() && cmds[idx].first) {
         auto cmd = cmds[idx].first;
+        QString shortcut = cmd->getShortcut();
+        pcAction->setShortcut(shortcut);
         pcAction->setText(QCoreApplication::translate(className(), getMenuText()));
         QIcon icon;
         if (auto childAction = cmd->getAction())
@@ -1174,7 +1119,7 @@ void MacroCommand::activated(int iMsg)
         d = QDir(QString::fromUtf8(cMacroPath.c_str()));
     }
     else {
-        QString dirstr = QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
+        QString dirstr = QString::fromStdString(App::Application::getHomePath()) + QStringLiteral("Macro");
         d = QDir(dirstr);
     }
 
@@ -1339,11 +1284,11 @@ void PythonCommand::activated(int iMsg)
             }
         }
         catch (const Base::PyException& e) {
-            Base::Console().Error("Running the Python command '%s' failed:\n%s\n%s",
+            Base::Console().error("Running the Python command '%s' failed:\n%s\n%s",
                                   sName, e.getStackTrace().c_str(), e.what());
         }
         catch (const Base::Exception&) {
-            Base::Console().Error("Running the Python command '%s' failed, try to resume",sName);
+            Base::Console().error("Running the Python command '%s' failed, try to resume",sName);
         }
     }
     else {
@@ -1412,7 +1357,7 @@ Action * PythonCommand::createAction()
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Base::Console().error("%s\n", e.what());
     }
 
     return pcAction;
@@ -1421,7 +1366,7 @@ Action * PythonCommand::createAction()
 const char* PythonCommand::getWhatsThis() const
 {
     const char* whatsthis = getResource("WhatsThis");
-    if (!whatsthis || whatsthis[0] == '\0')
+    if (Base::Tools::isNullOrEmpty(whatsthis))
         whatsthis = this->getName();
     return whatsthis;
 }
@@ -1444,7 +1389,7 @@ const char* PythonCommand::getStatusTip() const
 const char* PythonCommand::getPixmap() const
 {
     const char* ret = getResource("Pixmap");
-    return (ret && ret[0] != '\0') ? ret : nullptr;
+    return !Base::Tools::isNullOrEmpty(ret) ? ret : nullptr;
 }
 
 const char* PythonCommand::getAccel() const
@@ -1559,7 +1504,7 @@ void PythonGroupCommand::activated(int iMsg)
         if (cmd.hasAttr("Activated")) {
             Py::Callable call(cmd.getAttr("Activated"));
             Py::Tuple args(1);
-            args.setItem(0, Py::Int(iMsg));
+            args.setItem(0, Py::Long(iMsg));
             Py::Object ret = call.apply(args);
         }
         // If the command group doesn't implement the 'Activated' method then invoke the command directly
@@ -1576,7 +1521,7 @@ void PythonGroupCommand::activated(int iMsg)
     catch(Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().Error("Running the Python command '%s' failed:\n%s\n%s",
+        Base::Console().error("Running the Python command '%s' failed:\n%s\n%s",
                               sName, e.getStackTrace().c_str(), e.what());
     }
 }
@@ -1639,7 +1584,7 @@ Action * PythonGroupCommand::createAction()
 
         if (cmd.hasAttr("GetDefaultCommand")) {
             Py::Callable call2(cmd.getAttr("GetDefaultCommand"));
-            Py::Int def(call2.apply(args));
+            Py::Long def(call2.apply(args));
             defaultId = static_cast<int>(def);
         }
 
@@ -1654,7 +1599,7 @@ Action * PythonGroupCommand::createAction()
                     qtAction->blockSignals(false);
                 }else if(qtAction->isCheckable()){
                     pcAction->setCheckable(true);
-                    pcAction->setChecked(qtAction->isChecked(),true);
+                    pcAction->setBlockedChecked(qtAction->isChecked());
                 }
             }
         }
@@ -1662,7 +1607,7 @@ Action * PythonGroupCommand::createAction()
     catch(Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().Error("createAction() of the Python command '%s' failed:\n%s\n%s",
+        Base::Console().error("createAction() of the Python command '%s' failed:\n%s\n%s",
                               sName, e.getStackTrace().c_str(), e.what());
     }
 
@@ -1739,7 +1684,7 @@ const char* PythonGroupCommand::getResource(const char* sName) const
 const char* PythonGroupCommand::getWhatsThis() const
 {
     const char* whatsthis = getResource("WhatsThis");
-    if (!whatsthis || whatsthis[0] == '\0')
+    if (Base::Tools::isNullOrEmpty(whatsthis))
         whatsthis = this->getName();
     return whatsthis;
 }
@@ -1762,7 +1707,7 @@ const char* PythonGroupCommand::getStatusTip() const
 const char* PythonGroupCommand::getPixmap() const
 {
     const char* ret = getResource("Pixmap");
-    return (ret && ret[0] != '\0') ? ret : nullptr;
+    return !Base::Tools::isNullOrEmpty(ret) ? ret : nullptr;
 }
 
 const char* PythonGroupCommand::getAccel() const
@@ -1895,9 +1840,9 @@ bool CommandManager::addTo(const char* Name, QWidget *pcWidget)
     if (_sCommands.find(Name) == _sCommands.end()) {
         // Print in release mode only a log message instead of an error message to avoid to annoy the user
 #ifdef FC_DEBUG
-        Base::Console().Error("CommandManager::addTo() try to add an unknown command (%s) to a widget!\n",Name);
+        Base::Console().error("CommandManager::addTo() try to add an unknown command (%s) to a widget!\n",Name);
 #else
-        Base::Console().Warning("Unknown command '%s'\n",Name);
+        Base::Console().warning("Unknown command '%s'\n",Name);
 #endif
         return false;
     }
@@ -1987,14 +1932,14 @@ void CommandManager::updateCommands(const char* sContext, int mode)
 
 const Command* Gui::CommandManager::checkAcceleratorForConflicts(const char* accel, const Command* ignore) const
 {
-    if (!accel || accel[0] == '\0')
+    if (Base::Tools::isNullOrEmpty(accel))
         return nullptr;
 
     QString newCombo = QString::fromLatin1(accel);
     if (newCombo.isEmpty())
         return nullptr;
     auto newSequence = QKeySequence::fromString(newCombo);
-    if (newSequence.count() == 0)
+    if (newSequence.isEmpty())
         return nullptr;
 
     // Does this command shortcut conflict with other commands already defined?
@@ -2003,7 +1948,7 @@ const Command* Gui::CommandManager::checkAcceleratorForConflicts(const char* acc
         if (cmd == ignore)
             continue;
         auto existingAccel = cmd->getAccel();
-        if (!existingAccel || existingAccel[0] == '\0')
+        if (Base::Tools::isNullOrEmpty(existingAccel))
             continue;
 
         // Three possible conflict scenarios:
@@ -2015,7 +1960,7 @@ const Command* Gui::CommandManager::checkAcceleratorForConflicts(const char* acc
         if (existingCombo.isEmpty())
             continue;
         auto existingSequence = QKeySequence::fromString(existingCombo);
-        if (existingSequence.count() == 0)
+        if (existingSequence.isEmpty())
             continue;
 
         // Exact match

@@ -26,6 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "QGIViewSymbol.h"
+#include "QGIUserTypes.h"
 
 namespace TechDraw {
 class DrawViewSpreadsheet;
@@ -40,7 +41,7 @@ public:
     QGIViewSpreadsheet();
     ~QGIViewSpreadsheet() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 124};
+    enum {Type = UserType::QGISpreadsheet};
     int type() const override { return Type;}
 
     void setViewFeature(TechDraw::DrawViewSpreadsheet *obj);

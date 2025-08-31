@@ -44,10 +44,10 @@ class MeasureExport Preferences
 public:
     static Base::Reference<ParameterGrp> getPreferenceGroup(const char* Name);
 
-    static App::Color defaultLineColor();
-    static App::Color defaultTextColor();
+    static Base::Color defaultLineColor();
+    static Base::Color defaultTextColor();
     static int defaultFontSize();
-    static App::Color defaultTextBackgroundColor();
+    static Base::Color defaultTextBackgroundColor();
 };
 
 

@@ -97,7 +97,7 @@ PyObject* ViewProviderAssemblyPy::getDragger(PyObject* args)
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
-    Gui::SoFCCSysDragger* asmDragger = getViewProviderAssemblyPtr()->getDragger();
+    Gui::SoTransformDragger* asmDragger = getViewProviderAssemblyPtr()->getDragger();
 
     return Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDragger *", asmDragger, 0);
 }

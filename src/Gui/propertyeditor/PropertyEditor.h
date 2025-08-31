@@ -60,7 +60,7 @@ class PropertyModel;
  See also: https://man42.net/blog/2011/09/qt-4-7-modify-a-custom-q_property-with-a-qt-style-sheet/
 */
 
-class PropertyEditor: public QTreeView
+class GuiExport PropertyEditor: public QTreeView
 {
     // clang-format off
     Q_OBJECT
@@ -78,6 +78,7 @@ public:
                  bool checkDocument = false);
     void updateProperty(const App::Property&);
     void removeProperty(const App::Property&);
+    void renameProperty(const App::Property&);
     void setAutomaticExpand(bool);
     bool isAutomaticExpand(bool) const;
     void setAutomaticDocumentUpdate(bool);

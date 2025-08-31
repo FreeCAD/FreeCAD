@@ -19,14 +19,12 @@
 namespace QSint
 {
 
-
 TaskHeader::TaskHeader(const QIcon &icon, const QString &title, bool expandable, QWidget *parent)
   : BaseClass(parent),
   myExpandable(expandable),
   m_over(false),
   m_buttonOver(false),
   m_fold(true),
-  m_opacity(0.1),
   myButton(nullptr)
 {
     setProperty("class", "header");
@@ -36,11 +34,14 @@ TaskHeader::TaskHeader(const QIcon &icon, const QString &title, bool expandable,
     myTitle->setText(title);
     myTitle->setIcon(icon);
     myTitle->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+    QFont font = myTitle->font();
+    font.setBold(true);
+    myTitle->setFont(font);
 
     connect(myTitle, &ActionLabel::clicked, this, &TaskHeader::fold);
 
     QHBoxLayout *hbl = new QHBoxLayout();
-    hbl->setContentsMargins(2, 2, 2, 2);
+    hbl->setContentsMargins(4, 2, 8, 2);
     setLayout(hbl);
 
     hbl->addWidget(myTitle);
@@ -48,7 +49,6 @@ TaskHeader::TaskHeader(const QIcon &icon, const QString &title, bool expandable,
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
 
     setScheme(ActionPanelScheme::defaultScheme());
-    //myTitle->setSchemePointer(&myLabelScheme);
 
     setExpandable(myExpandable);
 }
@@ -58,9 +58,9 @@ void TaskHeader::setExpandable(bool expandable)
     if (expandable) {
         myExpandable = true;
 
-        if (myButton)
+        if (myButton) {
             return;
-
+        }
         myButton = new QLabel(this);
         myButton->installEventFilter(this);
         myButton->setFixedSize(myScheme->headerButtonSize);
@@ -71,9 +71,9 @@ void TaskHeader::setExpandable(bool expandable)
     } else {
         myExpandable = false;
 
-        if (!myButton)
+        if (!myButton) {
             return;
-
+        }
         myButton->removeEventFilter(this);
         myButton->setParent(nullptr);
         delete myButton;
@@ -86,8 +86,9 @@ bool TaskHeader::eventFilter(QObject *obj, QEvent *event)
 {
   switch (event->type()) {
     case QEvent::MouseButtonPress:
-      if (myExpandable)
+      if (myExpandable) {
         fold();
+      }
       return true;
 
     case QEvent::Enter:
@@ -110,86 +111,12 @@ void TaskHeader::setScheme(ActionPanelScheme *scheme)
 {
   if (scheme) {
     myScheme = scheme;
-    //myLabelScheme = &(scheme->headerLabelScheme);
-    setStyleSheet(myScheme->actionStyle);
-
     if (myExpandable) {
-      //setCursor(myLabelScheme->cursorOver ? Qt::PointingHandCursor : cursor());
       changeIcons();
     }
-
     setFixedHeight(scheme->headerSize);
-
     update();
   }
-}
-
-void TaskHeader::paintEvent ( QPaintEvent * event )
-{
-  QPainter p(this);
-
-  if (myScheme->headerAnimation)
-    p.setOpacity(m_opacity+0.7);
-
-//  p.setPen(m_over ? myScheme->headerBorderOver : myScheme->headerBorder);
-//  p.setBrush(m_over ? myScheme->headerBackgroundOver : myScheme->headerBackground);
-
-//  myScheme->headerCorners.draw(&p, rect());
-
-  BaseClass::paintEvent(event);
-}
-
-void TaskHeader::animate()
-{
-  if (!myScheme->headerAnimation)
-    return;
-
-  if (!isEnabled()) {
-    m_opacity = 0.1;
-    update();
-    return;
-  }
-
-  if (m_over) {
-    if (m_opacity >= 0.3) {
-      m_opacity = 0.3;
-      return;
-    }
-    m_opacity += 0.05;
-  } else {
-    if (m_opacity <= 0.1) {
-      m_opacity = 0.1;
-      return;
-    }
-    m_opacity = qMax(0.1, m_opacity-0.05);
-  }
-
-  QTimer::singleShot(100, this, &TaskHeader::animate);
-  update();
-}
-
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-void TaskHeader::enterEvent ( QEvent * /*event*/ )
-#else
-void TaskHeader::enterEvent ( QEnterEvent * /*event*/ )
-#endif
-{
-  m_over = true;
-
-  if (isEnabled())
-    QTimer::singleShot(100, this, &TaskHeader::animate);
-
-  update();
-}
-
-void TaskHeader::leaveEvent ( QEvent * /*event*/ )
-{
-  m_over = false;
-
-  if (isEnabled())
-    QTimer::singleShot(100, this, &TaskHeader::animate);
-
-  update();
 }
 
 void TaskHeader::fold()
@@ -217,21 +144,25 @@ void TaskHeader::setFold(bool on)
 
 void TaskHeader::changeIcons()
 {
-  if (!myButton)
+  if (!myButton) {
     return;
-
+  }
   if (m_buttonOver)
   {
-    if (m_fold)
+    if (m_fold) {
       myButton->setPixmap(myScheme->headerButtonFoldOver);
-    else
+    }
+    else {
       myButton->setPixmap(myScheme->headerButtonUnfoldOver);
+    }
   } else
   {
-    if (m_fold)
+    if (m_fold) {
       myButton->setPixmap(myScheme->headerButtonFold);
-    else
+    }
+    else {
       myButton->setPixmap(myScheme->headerButtonUnfold);
+    }
   }
 
   myButton->setFixedSize(myScheme->headerButtonSize);

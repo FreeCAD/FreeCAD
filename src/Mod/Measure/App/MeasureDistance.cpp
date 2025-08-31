@@ -72,19 +72,19 @@ MeasureDistance::MeasureDistance()
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in X direction");
+                      "Distance in X-direction");
     DistanceX.setUnit(Base::Unit::Length);
     ADD_PROPERTY_TYPE(DistanceY,
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in Y direction");
+                      "Distance in Y-direction");
     DistanceY.setUnit(Base::Unit::Length);
     ADD_PROPERTY_TYPE(DistanceZ,
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in Z direction");
+                      "Distance in Z-direction");
     DistanceZ.setUnit(Base::Unit::Length);
 
     ADD_PROPERTY_TYPE(Position1,
@@ -333,19 +333,19 @@ MeasureDistanceDetached::MeasureDistanceDetached()
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in X direction");
+                      "Distance in X-direction");
     DistanceX.setUnit(Base::Unit::Length);
     ADD_PROPERTY_TYPE(DistanceY,
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in Y direction");
+                      "Distance in Y-direction");
     DistanceY.setUnit(Base::Unit::Length);
     ADD_PROPERTY_TYPE(DistanceZ,
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in Z direction");
+                      "Distance in Z-direction");
     DistanceZ.setUnit(Base::Unit::Length);
 
     ADD_PROPERTY_TYPE(Position1,
@@ -415,12 +415,12 @@ std::vector<App::DocumentObject*> MeasureDistanceDetached::getSubject() const
 
 Base::Type MeasureDistanceType::getClassTypeId()
 {
-    return Base::Type::badType();
+    return Base::Type::BadType;
 }
 
 Base::Type MeasureDistanceType::getTypeId() const
 {
-    return Base::Type::badType();
+    return Base::Type::BadType;
 }
 
 void MeasureDistanceType::init()
@@ -436,7 +436,7 @@ void* MeasureDistanceType::create()
     return new MeasureDistanceDetached();
 }
 
-Base::Type MeasureDistanceType::classTypeId = Base::Type::badType();
+Base::Type MeasureDistanceType::classTypeId = Base::Type::BadType;
 
 
 // Migrate old MeasureDistance Type

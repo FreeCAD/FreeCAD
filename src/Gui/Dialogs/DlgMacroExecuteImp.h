@@ -60,6 +60,7 @@ private:
     void onDuplicateButtonClicked();
     void onToolbarButtonClicked();
     void onAddonsButtonClicked();
+    void onFolderButtonClicked();
 
     void onUserMacroListBoxCurrentItemChanged(QTreeWidgetItem*);
     void onSystemMacroListBoxCurrentItemChanged(QTreeWidgetItem*);

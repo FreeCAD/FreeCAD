@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Doors and windows</string>
+   <string>Doors and Windows</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>This screen lists all the windows of the current document. You can modify them individually or together</string>
+      <string>This screen lists all the windows of the current document. They can modified individually or together</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -29,7 +29,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Group by:</string>
+        <string>Group by</string>
        </property>
       </widget>
      </item>
@@ -94,14 +94,14 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_10">
        <property name="text">
-        <string>Total number of doors:</string>
+        <string>Total number of doors</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_9">
        <property name="text">
-        <string>Total number of windows:</string>
+        <string>Total number of windows</string>
        </property>
       </widget>
      </item>

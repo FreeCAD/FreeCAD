@@ -73,9 +73,9 @@ StdCmdWorkbench::StdCmdWorkbench()
 {
     sGroup        = "View";
     sMenuText     = QT_TR_NOOP("&Workbench");
-    sToolTipText  = QT_TR_NOOP("Switch between workbenches");
+    sToolTipText  = QT_TR_NOOP("Switches between workbenches");
     sWhatsThis    = "Std_Workbench";
-    sStatusTip    = QT_TR_NOOP("Switch between workbenches");
+    sStatusTip    = sToolTipText;
     sPixmap       = "freecad";
     eType         = 0;
 }
@@ -138,9 +138,9 @@ StdCmdRecentFiles::StdCmdRecentFiles()
 {
     sGroup        = "File";
     sMenuText     = QT_TR_NOOP("Open &Recent");
-    sToolTipText  = QT_TR_NOOP("Recent file list");
+    sToolTipText  = QT_TR_NOOP("Displays the list of recently opened files");
     sWhatsThis    = "Std_RecentFiles";
-    sStatusTip    = QT_TR_NOOP("Recent file list");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_RecentFiles";
     eType         = NoTransaction;
 }
@@ -178,10 +178,10 @@ StdCmdRecentMacros::StdCmdRecentMacros()
   :Command("Std_RecentMacros")
 {
     sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("&Recent macros");
-    sToolTipText  = QT_TR_NOOP("Recent macro list");
+    sMenuText     = QT_TR_NOOP("&Recent Macros");
+    sToolTipText  = QT_TR_NOOP("Displays the list of recently used macros");
     sWhatsThis    = "Std_RecentMacros";
-    sStatusTip    = QT_TR_NOOP("Recent macro list");
+    sStatusTip = sToolTipText;
     sPixmap       = "Std_RecentMacros";
     eType         = NoTransaction;
 }
@@ -220,7 +220,7 @@ StdCmdAbout::StdCmdAbout()
 {
     sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("&About %1");
-    sToolTipText  = QT_TR_NOOP("Displays important information About %1");
+    sToolTipText  = QT_TR_NOOP("Displays information about %1");
     sWhatsThis    = "Std_About";
     sStatusTip    = sToolTipText;
     eType         = 0;
@@ -286,9 +286,9 @@ StdCmdAboutQt::StdCmdAboutQt()
 {
   sGroup        = "Help";
   sMenuText     = QT_TR_NOOP("About &Qt");
-  sToolTipText  = QT_TR_NOOP("About Qt");
+  sToolTipText  = QT_TR_NOOP("Displays information about Qt");
   sWhatsThis    = "Std_AboutQt";
-  sStatusTip    = QT_TR_NOOP("About Qt");
+  sStatusTip    = sToolTipText;
   eType         = 0;
 }
 
@@ -308,7 +308,7 @@ StdCmdWhatsThis::StdCmdWhatsThis()
 {
     sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("&What's This?");
-    sToolTipText  = QT_TR_NOOP("Opens the documentation corresponding to the selection");
+    sToolTipText  = QT_TR_NOOP("Opens the documentation for the selected command");
     sWhatsThis    = "Std_WhatsThis";
     sStatusTip    = sToolTipText;
     sAccel        = keySequenceToAccel(QKeySequence::WhatsThis);
@@ -343,11 +343,11 @@ void StdCmdRestartInSafeMode::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    QMessageBox restartBox;
+    QMessageBox restartBox(Gui::getMainWindow());
     restartBox.setIcon(QMessageBox::Warning);
-    restartBox.setWindowTitle(QObject::tr("Restart in safe mode"));
-    restartBox.setText(QObject::tr("Are you sure you want to restart FreeCAD and enter safe mode?"));
-    restartBox.setInformativeText(QObject::tr("Safe mode temporarily disables your configuration and addons."));
+    restartBox.setWindowTitle(QObject::tr("Restart in Safe Mode"));
+    restartBox.setText(QObject::tr("Restart FreeCAD and enter safe mode?"));
+    restartBox.setInformativeText(QObject::tr("Safe mode temporarily disables the configuration and addons."));
     restartBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     restartBox.setDefaultButton(QMessageBox::No);
 
@@ -358,7 +358,7 @@ void StdCmdRestartInSafeMode::activated(int iMsg)
         {
             QStringList args = QApplication::arguments();
             args.pop_front();
-            auto const safeModeArgument = QString::fromLatin1("--safe-mode");
+            auto const safeModeArgument = QStringLiteral("--safe-mode");
             if (!args.contains(safeModeArgument)) {
                 args.append(safeModeArgument);
             }
@@ -378,10 +378,11 @@ StdCmdDlgParameter::StdCmdDlgParameter()
   :Command("Std_DlgParameter")
 {
   sGroup        = "Tools";
-  sMenuText     = QT_TR_NOOP("E&dit parameters...");
-  sToolTipText  = QT_TR_NOOP("Opens a Dialog to edit the parameters");
+  sMenuText     = QT_TR_NOOP("E&dit Parameters");
+
+  sToolTipText  = QT_TR_NOOP("Opens a dialog to edit the parameters");
   sWhatsThis    = "Std_DlgParameter";
-  sStatusTip    = QT_TR_NOOP("Opens a Dialog to edit the parameters");
+  sStatusTip    = sToolTipText;
   sPixmap       = "Std_DlgParameter";
   eType         = 0;
 }
@@ -403,10 +404,11 @@ StdCmdDlgPreferences::StdCmdDlgPreferences()
   :Command("Std_DlgPreferences")
 {
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Prefere&nces ...");
-    sToolTipText  = QT_TR_NOOP("Opens a Dialog to edit the preferences");
+    sMenuText     = QT_TR_NOOP("Prefere&nces");
+
+    sToolTipText  = QT_TR_NOOP("Opens a dialog to edit the preferences");
     sWhatsThis    = "Std_DlgPreferences";
-    sStatusTip    = QT_TR_NOOP("Opens a Dialog to edit the preferences");
+    sStatusTip    = sToolTipText;
     sPixmap     = "preferences-system";
     eType         = 0;
     sAccel        = "Ctrl+,";
@@ -447,10 +449,10 @@ StdCmdDlgCustomize::StdCmdDlgCustomize()
   :Command("Std_DlgCustomize")
 {
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Cu&stomize...");
-    sToolTipText  = QT_TR_NOOP("Customize toolbars and command bars");
+    sMenuText     = QT_TR_NOOP("Cu&stomize…");
+    sToolTipText  = QT_TR_NOOP("Opens a dialog to edit toolbars, shortcuts, and macros");
     sWhatsThis    = "Std_DlgCustomize";
-    sStatusTip    = QT_TR_NOOP("Customize toolbars and command bars");
+    sStatusTip    = sToolTipText;
     sPixmap       = "applications-accessories";
     eType         = 0;
 }
@@ -474,10 +476,11 @@ StdCmdCommandLine::StdCmdCommandLine()
   :Command("Std_CommandLine")
 {
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Start command &line...");
-    sToolTipText  = QT_TR_NOOP("Opens the command line in the console");
+    sMenuText     = QT_TR_NOOP("Command &Line");
+
+    sToolTipText  = QT_TR_NOOP("Opens a command line interface in the console");
     sWhatsThis    = "Std_CommandLine";
-    sStatusTip    = QT_TR_NOOP("Opens the command line in the console");
+    sStatusTip    = sToolTipText;
     sPixmap       = "utilities-terminal";
     eType         = 0;
 }
@@ -534,7 +537,7 @@ StdCmdOnlineHelp::StdCmdOnlineHelp()
 void StdCmdOnlineHelp::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::getMainWindow()->showDocumentation(QString::fromLatin1("Online_Help_Startpage"));
+    Gui::getMainWindow()->showDocumentation(QStringLiteral("Online_Help_Startpage"));
 }
 
 //===========================================================================
@@ -574,8 +577,8 @@ StdCmdFreeCADDonation::StdCmdFreeCADDonation()
   :Command("Std_FreeCADDonation")
 {
     sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("Support FreeCA&D");
-    sToolTipText  = QT_TR_NOOP("Support FreeCAD development");
+    sMenuText     = QT_TR_NOOP("Donate to FreeCA&D");
+    sToolTipText  = QT_TR_NOOP("Support the FreeCAD development");
     sWhatsThis    = "Std_FreeCADDonation";
     sStatusTip    = sToolTipText;
     sPixmap       = "internet-web-browser";
@@ -586,8 +589,42 @@ void StdCmdFreeCADDonation::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
-    std::string url = hURLGrp->GetASCII("DonatePage", "https://wiki.freecad.org/Donate");
+    std::string url = hURLGrp->GetASCII("DonatePage", "https://www.freecad.org/sponsor");
     hURLGrp->SetASCII("DonatePage", url.c_str());
+    OpenURLInBrowser(url.c_str());
+}
+
+//===========================================================================
+// Std_FreeDevHandbook
+
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDevHandbook)
+
+StdCmdDevHandbook::StdCmdDevHandbook()
+
+    : Command("Std_DevHandbook")
+{
+    sGroup = "Help";
+    sMenuText = QT_TR_NOOP("Developers Handbook");
+
+    sToolTipText = QT_TR_NOOP("Handbook about FreeCAD development");
+
+    sWhatsThis = "Std_DevHandbook";
+    sStatusTip = sToolTipText;
+    sPixmap = "internet-web-browser";
+    eType = 0;
+}
+
+void StdCmdDevHandbook::activated(int iMsg)
+
+{
+    Q_UNUSED(iMsg);
+    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Websites");
+    std::string url = hURLGrp->GetASCII("DevHandbook", "https://freecad.github.io/DevelopersHandbook/");
+
+    hURLGrp->SetASCII("DevHandbook", url.c_str());
     OpenURLInBrowser(url.c_str());
 }
 
@@ -648,34 +685,6 @@ void StdCmdFreeCADUserHub::activated(int iMsg)
 }
 
 //===========================================================================
-// Std_FreeCADPowerUserHub
-//===========================================================================
-
-DEF_STD_CMD(StdCmdFreeCADPowerUserHub)
-
-StdCmdFreeCADPowerUserHub::StdCmdFreeCADPowerUserHub()
-  :Command("Std_FreeCADPowerUserHub")
-{
-    sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("&Python Scripting Documentation");
-    sToolTipText  = QT_TR_NOOP("Opens the Python Scripting documentation");
-    sWhatsThis    = "Std_FreeCADPowerUserHub";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "applications-python";
-    eType         = 0;
-}
-
-void StdCmdFreeCADPowerUserHub::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    std::string defaulturl = QCoreApplication::translate(this->className(),"https://wiki.freecad.org/Power_users_hub").toStdString();
-    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
-    std::string url = hURLGrp->GetASCII("PowerUsers", defaulturl.c_str());
-    hURLGrp->SetASCII("PowerUsers", url.c_str());
-    OpenURLInBrowser(url.c_str());
-}
-
-//===========================================================================
 // Std_FreeCADForum
 //===========================================================================
 
@@ -704,59 +713,6 @@ void StdCmdFreeCADForum::activated(int iMsg)
 }
 
 //===========================================================================
-// Std_FreeCADFAQ
-//===========================================================================
-
-DEF_STD_CMD(StdCmdFreeCADFAQ)
-
-StdCmdFreeCADFAQ::StdCmdFreeCADFAQ()
-  :Command("Std_FreeCADFAQ")
-{
-    sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("FreeCAD FA&Q");
-    sToolTipText  = QT_TR_NOOP("Opens the Frequently Asked Questions");
-    sWhatsThis    = "Std_FreeCADFAQ";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "internet-web-browser";
-    eType         = 0;
-}
-
-void StdCmdFreeCADFAQ::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    std::string defaulturl = QCoreApplication::translate(this->className(),"https://wiki.freecad.org/Frequently_asked_questions").toStdString();
-    ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Websites");
-    std::string url = hURLGrp->GetASCII("FAQ", defaulturl.c_str());
-    hURLGrp->SetASCII("FAQ", url.c_str());
-    OpenURLInBrowser(url.c_str());
-}
-
-//===========================================================================
-// Std_PythonWebsite
-//===========================================================================
-
-DEF_STD_CMD(StdCmdPythonWebsite)
-
-StdCmdPythonWebsite::StdCmdPythonWebsite()
-  :Command("Std_PythonWebsite")
-{
-    sGroup        = "Help";
-    sMenuText     = QT_TR_NOOP("Python Website");
-    sToolTipText  = QT_TR_NOOP("The official Python website");
-    sWhatsThis    = "Std_PythonWebsite";
-    sStatusTip    = QT_TR_NOOP("Python Website");
-    sPixmap       = "applications-python";
-    eType         = 0;
-}
-
-void StdCmdPythonWebsite::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    OpenURLInBrowser("https://www.python.org");
-}
-
-
-//===========================================================================
 // Std_ReportBug
 //===========================================================================
 
@@ -767,7 +723,7 @@ StdCmdReportBug::StdCmdReportBug()
 {
     sGroup        = "Help";
     sMenuText     = QT_TR_NOOP("Report an &Issue");
-    sToolTipText  = QT_TR_NOOP("Report an issue or suggest a new feature");
+    sToolTipText  = QT_TR_NOOP("Opens the bugtracker to report an issue");
     sWhatsThis    = "Std_ReportBug";
     sStatusTip    = sToolTipText;
     sPixmap       = "internet-web-browser";
@@ -793,10 +749,10 @@ StdCmdTextDocument::StdCmdTextDocument()
   :Command("Std_TextDocument")
 {
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Add te&xt document");
-    sToolTipText  = QT_TR_NOOP("Add text document to active document");
+    sMenuText     = QT_TR_NOOP("Te&xt Document");
+    sToolTipText  = QT_TR_NOOP("Adds a text document to the active document");
     sWhatsThis    = "Std_TextDocument";
-    sStatusTip    = QT_TR_NOOP("Add text document to active document");
+    sStatusTip    = sToolTipText;
     sPixmap       = "TextDocument";
     eType         = 0;
 }
@@ -826,10 +782,11 @@ StdCmdUnitsCalculator::StdCmdUnitsCalculator()
   : Command("Std_UnitsCalculator")
 {
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("&Units converter...");
-    sToolTipText  = QT_TR_NOOP("Start the units converter");
+    sMenuText     = QT_TR_NOOP("&Units Converter");
+
+    sToolTipText  = QT_TR_NOOP("Starts the units converter");
     sWhatsThis    = "Std_UnitsCalculator";
-    sStatusTip    = QT_TR_NOOP("Start the units converter");
+    sStatusTip    = sToolTipText;
     sPixmap       = "accessories-calculator";
     eType         = 0;
 }
@@ -862,9 +819,9 @@ StdCmdUserEditMode::StdCmdUserEditMode()
   : Command("Std_UserEditMode")
 {
     sGroup        = "Edit";
-    sMenuText     = QT_TR_NOOP("Edit &mode");
-    sToolTipText  = QT_TR_NOOP("Defines behavior when editing an object from tree");
-    sStatusTip    = QT_TR_NOOP("Defines behavior when editing an object from tree");
+    sMenuText     = QT_TR_NOOP("Edit &Mode");
+    sToolTipText  = QT_TR_NOOP("Defines behavior when editing an object from the tree view");
+    sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_UserEditMode";
     sPixmap       = "Std_UserEditModeDefault";
     eType         = ForEdit;
@@ -885,8 +842,8 @@ Gui::Action * StdCmdUserEditMode::createAction()
         QAction* act = pcAction->addAction(QString());
         auto modeName = QString::fromStdString(uem.second.first).remove(QChar::fromLatin1('&'));
         act->setCheckable(true);
-        act->setIcon(BitmapFactory().iconFromTheme(qPrintable(QString::fromLatin1("Std_UserEditMode")+modeName)));
-        act->setObjectName(QString::fromLatin1("Std_UserEditMode")+modeName);
+        act->setIcon(BitmapFactory().iconFromTheme(qPrintable(QStringLiteral("Std_UserEditMode")+modeName)));
+        act->setObjectName(QStringLiteral("Std_UserEditMode")+modeName);
         act->setWhatsThis(QString::fromLatin1(getWhatsThis()));
         act->setToolTip(QString::fromStdString(uem.second.second));
 
@@ -954,22 +911,17 @@ StdCmdReloadStyleSheet::StdCmdReloadStyleSheet()
   : Command("Std_ReloadStyleSheet")
 {
     sGroup        = "View";
-    sMenuText     = QT_TR_NOOP("&Reload stylesheet");
+    sMenuText     = QT_TR_NOOP("&Reload Stylesheet");
     sToolTipText  = QT_TR_NOOP("Reloads the current stylesheet");
     sWhatsThis    = "Std_ReloadStyleSheet";
-    sStatusTip    = QT_TR_NOOP("Reloads the current stylesheet");
+    sStatusTip    = sToolTipText;
     sPixmap       = "view-refresh";
     sWhatsThis    = "Std_ReloadStyleSheet";
 }
 
 void StdCmdReloadStyleSheet::activated(int )
 {
-    auto mw = getMainWindow();
-
-    auto qssFile = mw->property("fc_currentStyleSheet").toString();
-    auto tiledBackground = mw->property("fc_tiledBackground").toBool();
-
-    Gui::Application::Instance->setStyleSheet(qssFile, tiledBackground);
+    Application::Instance->reloadStyleSheet();
 }
 
 namespace Gui {
@@ -996,15 +948,13 @@ void CreateStdCommands()
     rcCmdMgr.addCommand(new StdCmdFreeCADWebsite());
     rcCmdMgr.addCommand(new StdCmdFreeCADDonation());
     rcCmdMgr.addCommand(new StdCmdFreeCADUserHub());
-    rcCmdMgr.addCommand(new StdCmdFreeCADPowerUserHub());
     rcCmdMgr.addCommand(new StdCmdFreeCADForum());
-    rcCmdMgr.addCommand(new StdCmdFreeCADFAQ());
-    rcCmdMgr.addCommand(new StdCmdPythonWebsite());
     rcCmdMgr.addCommand(new StdCmdReportBug());
     rcCmdMgr.addCommand(new StdCmdTextDocument());
     rcCmdMgr.addCommand(new StdCmdUnitsCalculator());
     rcCmdMgr.addCommand(new StdCmdUserEditMode());
     rcCmdMgr.addCommand(new StdCmdReloadStyleSheet());
+    rcCmdMgr.addCommand(new StdCmdDevHandbook());
     //rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     //rcCmdMgr.addCommand(new StdCmdDescription());
 }

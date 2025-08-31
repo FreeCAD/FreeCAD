@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Gui::Dialog::DlgSettingsPDF</class>
+ <widget class="QWidget" name="Gui::Dialog::DlgSettingsPDF">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>446</width>
+    <height>462</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>PDF</string>
+  </property>
+  <layout class="QVBoxLayout">
+   <property name="spacing">
+    <number>6</number>
+   </property>
+   <property name="margin">
+    <number>9</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>PDF Export</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>PDF version</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="comboBox">
+          <property name="toolTip">
+           <string>This is the PDF Version FreeCAD will use to export to PDF</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>PDFVersion</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>PDF/1.4</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>PDF/A-1b</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>PDF/1.6</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>PDF/X-4</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+        <widget class="QLabel" name="warningLabel">
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

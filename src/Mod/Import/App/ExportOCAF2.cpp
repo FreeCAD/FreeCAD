@@ -232,7 +232,7 @@ void ExportOCAF2::setupObject(TDF_Label label,
         return;
     }
 
-    std::map<std::string, std::map<std::string, App::Color>> colors;
+    std::map<std::string, std::map<std::string, Base::Color>> colors;
     static std::string marker(App::DocumentObject::hiddenMarker() + "*");
     static std::array<const char*, 3> keys = {"Face*", "Edge*", marker.c_str()};
     std::string childName;
@@ -280,7 +280,7 @@ void ExportOCAF2::setupObject(TDF_Label label,
                 aColorTool->SetVisibility(nodeLabel, Standard_False);
                 continue;
             }
-            const App::Color& c = vv.second;
+            const Base::Color& c = vv.second;
             Quantity_ColorRGBA color = Tools::convertColor(c);
             auto colorType = vv.first[0] == 'F' ? XCAFDoc_ColorSurf : XCAFDoc_ColorCurv;
             if (vv.first == "Face" || vv.first == "Edge") {
@@ -381,7 +381,12 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
                                     const char* name)
 {
     App::DocumentObject* obj;
-    auto shape = Part::Feature::getTopoShape(parentObj, sub, false, nullptr, &obj, false, !sub);
+    auto shape = Part::Feature::getTopoShape(
+        parentObj,
+        (sub ? Part::ShapeOption::NoFlag : Part::ShapeOption::Transform),
+        sub,
+        nullptr,
+        &obj);
     if (!obj || shape.isNull()) {
         if (obj) {
             FC_WARN(obj->getFullName() << " has null shape");
@@ -415,7 +420,9 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
     auto linked = obj;
     auto linkedShape = shape;
     while (true) {
-        auto s = Part::Feature::getTopoShape(linked);
+        auto s = Part::Feature::getTopoShape(linked,
+                                             Part::ShapeOption::ResolveLink
+                                                 | Part::ShapeOption::Transform);
         if (s.isNull() || !s.getShape().IsPartner(shape.getShape())) {
             break;
         }
@@ -563,15 +570,29 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
             // Can be fixed with following
             // if ( !override.IsNull() && isComponent )
             //     setDefaultInstanceColor( override, PSA);
-            //
-            auto childShape = aShapeTool->GetShape(childLabel);
-            Quantity_ColorRGBA col;
-            if (!aColorTool->GetInstanceColor(childShape, XCAFDoc_ColorGen, col)
-                && !aColorTool->GetInstanceColor(childShape, XCAFDoc_ColorSurf, col)
-                && !aColorTool->GetInstanceColor(childShape, XCAFDoc_ColorCurv, col)) {
-                auto& c = options.defaultColor;
-                aColorTool->SetColor(childLabel, Tools::convertColor(c), XCAFDoc_ColorGen);
-                FC_WARN(Tools::labelName(childLabel) << " set default color");
+
+            // First, check if a color was already set (e.g., for a sub-element).
+            Quantity_ColorRGBA existingColor;
+            bool hasExplicitColor =
+                aColorTool->GetColor(childLabel, XCAFDoc_ColorGen, existingColor)
+                || aColorTool->GetColor(childLabel, XCAFDoc_ColorSurf, existingColor)
+                || aColorTool->GetColor(childLabel, XCAFDoc_ColorCurv, existingColor);
+
+            if (!hasExplicitColor) {
+                // The label has no color, which would causes a crash.
+
+                Quantity_ColorRGBA inheritedColor;
+                // Fetch the effective color from the shape instance.
+                auto childShape = aShapeTool->GetShape(childLabel);
+                if (aColorTool->GetInstanceColor(childShape, XCAFDoc_ColorSurf, inheritedColor)
+                    || aColorTool->GetInstanceColor(childShape, XCAFDoc_ColorGen, inheritedColor)) {
+                    aColorTool->SetColor(childLabel, inheritedColor, XCAFDoc_ColorSurf);
+                }
+                else {
+                    // As a fallback, use the exporter's default color.
+                    auto& c = options.defaultColor;
+                    aColorTool->SetColor(childLabel, Tools::convertColor(c), XCAFDoc_ColorGen);
+                }
             }
             aColorTool->SetVisibility(childLabel, Standard_False);
         }

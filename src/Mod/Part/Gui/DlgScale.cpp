@@ -92,7 +92,7 @@ void DlgScale::changeEvent(QEvent *e)
 
 void DlgScale::onUniformScaleToggled(bool state)
 {
-//    Base::Console().Message("DS::onUniformScaleToggled()\n");
+//    Base::Console().message("DS::onUniformScaleToggled()\n");
     if (state) {
         // this is uniform scaling, so hide the non-uniform input fields
         ui->dsbUniformScale->setEnabled(true);
@@ -112,7 +112,7 @@ void DlgScale::onUniformScaleToggled(bool state)
 //! list widget
 void DlgScale::findShapes()
 {
-//    Base::Console().Message("DS::findShapes()\n");
+//    Base::Console().message("DS::findShapes()\n");
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (!activeDoc)
         return;
@@ -123,7 +123,7 @@ void DlgScale::findShapes()
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
     for (auto obj : objs) {
-        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj);
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (topoShape.isNull()) {
             continue;
         }
@@ -179,19 +179,19 @@ bool DlgScale::canScale(const TopoDS_Shape& shape) const
 
 void DlgScale::accept()
 {
-//    Base::Console().Message("DS::accept()\n");
+//    Base::Console().message("DS::accept()\n");
     try{
         apply();
         QDialog::accept();
     } catch (Base::AbortException&){
-        Base::Console().Message("DS::accept - apply failed!\n");
+        Base::Console().message("DS::accept - apply failed!\n");
     };
 }
 
 // create a FeatureScale for each scalable object
 void DlgScale::apply()
 {
-//    Base::Console().Message("DS::apply()\n");
+//    Base::Console().message("DS::apply()\n");
     try{
         if (!validate()) {
             QMessageBox::critical(this, windowTitle(),
@@ -216,9 +216,9 @@ void DlgScale::apply()
         for (App::DocumentObject* sourceObj: objects) {
             assert(sourceObj);
 
-            if (Part::Feature::getTopoShape(sourceObj).isNull()){
+            if (Part::Feature::getTopoShape(sourceObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform).isNull()){
                 FC_ERR("Object " << sourceObj->getFullName()
-                        << " is not Part object (has no OCC shape). Can't scale it.");
+                        << " is not a shape object. Scaling is not possible.");
                 continue;
             }
 
@@ -226,8 +226,8 @@ void DlgScale::apply()
             name = sourceObj->getDocument()->getUniqueObjectName("Scale").c_str();
             if (addBaseName) {
                 //FIXME: implement
-                //QString baseName = QString::fromLatin1("Scale_%1").arg(sourceObjectName);
-                //label = QString::fromLatin1("%1_Scale").arg((*it)->text(0));
+                //QString baseName = QStringLiteral("Scale_%1").arg(sourceObjectName);
+                //label = QStringLiteral("%1_Scale").arg((*it)->text(0));
             }
 
             FCMD_OBJ_DOC_CMD(sourceObj,"addObject('Part::Scale','" << name << "')");
@@ -251,13 +251,13 @@ void DlgScale::apply()
     catch (Base::Exception &err){
         QMessageBox::critical(this,
                               windowTitle(),
-                              tr("Creating Scale failed.\n%1")
+                              tr("Creating scale failed.\n%1")
                                   .arg(QCoreApplication::translate("Exception", err.what())));
         return;
     }
     catch(...) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Creating Scale failed.\n%1").arg(QString::fromUtf8("Unknown error")));
+            tr("Creating scale failed.\n%1").arg(QStringLiteral("Unknown error")));
         return;
     }
 }
@@ -271,7 +271,7 @@ void DlgScale::reject()
 //! widget
 std::vector<App::DocumentObject*> DlgScale::getShapesToScale() const
 {
-//    Base::Console().Message("DS::getShapesToScale()\n");
+//    Base::Console().message("DS::getShapesToScale()\n");
     QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
     App::Document* doc = App::GetApplication().getDocument(m_document.c_str());
     if (!doc)
@@ -309,7 +309,7 @@ bool DlgScale::validate()
 //! update a FeatureScale with the parameters from the UI
 void DlgScale::writeParametersToFeature(App::DocumentObject &feature, App::DocumentObject* base) const
 {
-//    Base::Console().Message("DS::writeParametersToFeature()\n");
+//    Base::Console().message("DS::writeParametersToFeature()\n");
     Gui::Command::doCommand(Gui::Command::Doc,"f = App.getDocument('%s').getObject('%s')", feature.getDocument()->getName(), feature.getNameInDocument());
 
     if (!base) {

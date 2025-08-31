@@ -46,7 +46,7 @@ CmdPathArea::CmdPathArea()
     sAppModule = "Path";
     sGroup = QT_TR_NOOP("CAM");
     sMenuText = QT_TR_NOOP("Area");
-    sToolTipText = QT_TR_NOOP("Creates a feature area from selected objects");
+    sToolTipText = QT_TR_NOOP("Creates a feature area from the selected objects");
     sWhatsThis = "CAM_Area";
     sStatusTip = sToolTipText;
     sPixmap = "CAM_Area";
@@ -76,7 +76,7 @@ void CmdPathArea::activated(int iMsg)
         }
         for (const std::string& name : subnames) {
             if (name.compare(0, 4, "Face") && name.compare(0, 4, "Edge")) {
-                Base::Console().Error("Selected shape is not 2D\n");
+                Base::Console().error("Selected shape is not 2D\n");
                 return;
             }
 
@@ -140,8 +140,8 @@ CmdPathAreaWorkplane::CmdPathAreaWorkplane()
 {
     sAppModule = "Path";
     sGroup = QT_TR_NOOP("CAM");
-    sMenuText = QT_TR_NOOP("Area workplane");
-    sToolTipText = QT_TR_NOOP("Select a workplane for a FeatureArea");
+    sMenuText = QT_TR_NOOP("Area Workplane");
+    sToolTipText = QT_TR_NOOP("Selects a workplane for a feature area");
     sWhatsThis = "CAM_Area_Workplane";
     sStatusTip = sToolTipText;
     sPixmap = "CAM_Area_Workplane";
@@ -159,14 +159,14 @@ void CmdPathAreaWorkplane::activated(int iMsg)
          getSelection().getSelectionEx(nullptr, Part::Feature::getClassTypeId())) {
         const std::vector<std::string>& subnames = selObj.getSubNames();
         if (subnames.size() > 1) {
-            Base::Console().Error("Please select one sub shape object for plane only\n");
+            Base::Console().error("Select one sub shape object for plane only\n");
             return;
         }
         const Part::Feature* pcObj = static_cast<Part::Feature*>(selObj.getObject());
         if (subnames.empty()) {
             if (pcObj->isDerivedFrom<Path::FeatureArea>()) {
                 if (!areaName.empty()) {
-                    Base::Console().Error("Please select one FeatureArea only\n");
+                    Base::Console().error("Select one feature area only\n");
                     return;
                 }
                 areaName = pcObj->getNameInDocument();
@@ -174,12 +174,12 @@ void CmdPathAreaWorkplane::activated(int iMsg)
             }
             for (TopExp_Explorer it(pcObj->Shape.getShape().getShape(), TopAbs_SHELL); it.More();
                  it.Next()) {
-                Base::Console().Error("Selected shape is not 2D\n");
+                Base::Console().error("Selected shape is not 2D\n");
                 return;
             }
         }
         if (!planeName.empty()) {
-            Base::Console().Error("Please select one shape object for plane only\n");
+            Base::Console().error("Select one shape object for plane only\n");
             return;
         }
         else {
@@ -189,7 +189,7 @@ void CmdPathAreaWorkplane::activated(int iMsg)
 
         for (const std::string& name : subnames) {
             if (name.compare(0, 4, "Face") && name.compare(0, 4, "Edge")) {
-                Base::Console().Error("Selected shape is not 2D\n");
+                Base::Console().error("Selected shape is not 2D\n");
                 return;
             }
             std::ostringstream subname;
@@ -198,11 +198,11 @@ void CmdPathAreaWorkplane::activated(int iMsg)
         }
     }
     if (areaName.empty()) {
-        Base::Console().Error("Please select one FeatureArea\n");
+        Base::Console().error("Please select one FeatureArea\n");
         return;
     }
     if (planeName.empty()) {
-        Base::Console().Error("Please select one shape object\n");
+        Base::Console().error("Please select one shape object\n");
         return;
     }
 
@@ -236,7 +236,7 @@ CmdPathCompound::CmdPathCompound()
     sAppModule = "Path";
     sGroup = QT_TR_NOOP("CAM");
     sMenuText = QT_TR_NOOP("Compound");
-    sToolTipText = QT_TR_NOOP("Creates a compound from selected toolpaths");
+    sToolTipText = QT_TR_NOOP("Creates a compound from the selected toolpaths");
     sWhatsThis = "CAM_Compound";
     sStatusTip = sToolTipText;
     sPixmap = "CAM_Compound";
@@ -258,8 +258,8 @@ void CmdPathCompound::activated(int iMsg)
                 cmd << "FreeCAD.activeDocument()." << pcPathObject->getNameInDocument() << ",";
             }
             else {
-                Base::Console().Error(
-                    "Only Path objects must be selected before running this command\n");
+                Base::Console().error(
+                    "Only path objects must be selected before running this command\n");
                 return;
             }
         }
@@ -277,7 +277,7 @@ void CmdPathCompound::activated(int iMsg)
         updateActive();
     }
     else {
-        Base::Console().Error("At least one Path object must be selected\n");
+        Base::Console().error("At least one path object must be selected\n");
         return;
     }
 }
@@ -320,7 +320,7 @@ void CmdPathShape::activated(int iMsg)
         }
         for (const std::string& name : subnames) {
             if (name.compare(0, 4, "Face") && name.compare(0, 4, "Edge")) {
-                Base::Console().Warning("Ignored shape %s %s\n",
+                Base::Console().warning("Ignored shape %s %s\n",
                                         pcObj->getNameInDocument(),
                                         name.c_str());
                 continue;

@@ -39,7 +39,6 @@
 
 // standard
 #include <cassert>
-#include <cfloat>
 #include <cmath>
 #include <cstdio>
 #include <fcntl.h>
@@ -51,6 +50,7 @@
 #include <iomanip>
 #include <iostream>
 #include <list>
+#include <limits>
 #include <map>
 #include <queue>
 #include <set>
@@ -60,6 +60,7 @@
 #include <vector>
 
 // boost
+#include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/core/ignore_unused.hpp>
 #include <boost/lexical_cast.hpp>

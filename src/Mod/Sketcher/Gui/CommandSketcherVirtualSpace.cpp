@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cfloat>
 #endif
 
 #include <App/Application.h>
@@ -92,7 +91,7 @@ CmdSketcherSwitchVirtualSpace::CmdSketcherSwitchVirtualSpace()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Switch virtual space");
+    sMenuText = QT_TR_NOOP("Switch Virtual Space");
     sToolTipText =
         QT_TR_NOOP("Switches the selected constraints or the view to the other virtual space");
     sWhatsThis = "Sketcher_SwitchVirtualSpace";
@@ -118,7 +117,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
             || !selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
             Gui::TranslatedUserWarning(getActiveGuiDocument(),
                                        QObject::tr("Wrong selection"),
-                                       QObject::tr("Select constraint(s) from the sketch."));
+                                       QObject::tr("Select constraints from the sketch."));
             return;
         }
 
@@ -127,7 +126,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
         if (SubNames.empty()) {
             Gui::TranslatedUserWarning(getActiveGuiDocument(),
                                        QObject::tr("Wrong selection"),
-                                       QObject::tr("Select constraint(s) from the sketch."));
+                                       QObject::tr("Select constraints from the sketch."));
             return;
         }
 
@@ -154,7 +153,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
         if (SubNames.empty()) {
             Gui::TranslatedUserWarning(getActiveGuiDocument(),
                                        QObject::tr("Wrong selection"),
-                                       QObject::tr("Select constraint(s) from the sketch."));
+                                       QObject::tr("Select constraints from the sketch."));
 
             return;
         }

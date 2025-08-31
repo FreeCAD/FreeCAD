@@ -68,7 +68,7 @@ public:
 
 
 protected:
-    App::Color getDefLineColor();
+    Base::Color getDefLineColor();
     std::string getDefFont();
     double getDefFontSize();
     double getDefLineWeight();

@@ -49,14 +49,20 @@ def write_meshdata_constraint(f, femobj, heatflux_obj, ccxwriter):
     if heatflux_obj.ConstraintType == "Convection":
         heatflux_key_word = "FILM"
         heatflux_facetype = "F"
+        heatflux_facesubtype = ""
         heatflux_values = "{:.13G},{:.13G}".format(
             heatflux_obj.AmbientTemp.getValueAs("K").Value,
             heatflux_obj.FilmCoef.getValueAs("t/s^3/K").Value,
         )
 
     elif heatflux_obj.ConstraintType == "Radiation":
-        heatflux_key_word = "RADIATE"
         heatflux_facetype = "R"
+        if heatflux_obj.CavityRadiation:
+            heatflux_key_word = f"RADIATE, CAVITY={heatflux_obj.CavityName}"
+            heatflux_facesubtype = "CR"
+        else:
+            heatflux_key_word = "RADIATE"
+            heatflux_facesubtype = ""
         heatflux_values = "{:.13G},{:.13G}".format(
             heatflux_obj.AmbientTemp.getValueAs("K").Value, heatflux_obj.Emissivity
         )
@@ -64,13 +70,19 @@ def write_meshdata_constraint(f, femobj, heatflux_obj, ccxwriter):
     elif heatflux_obj.ConstraintType == "DFlux":
         heatflux_key_word = "DFLUX"
         heatflux_facetype = "S"
+        heatflux_facesubtype = ""
         heatflux_values = "{:.13G}".format(heatflux_obj.DFlux.getValueAs("t/s^3").Value)
 
-    f.write(f"*{heatflux_key_word}\n")
-    for ref_shape in femobj["HeatFluxFaceTable"]:
-        elem_string = ref_shape[0]
-        face_table = ref_shape[1]
-        f.write(f"** Heat flux on face {elem_string}\n")
-        for i in face_table:
-            # OvG: Only write out the VolumeIDs linked to a particular face
-            f.write(f"{i[0]},{heatflux_facetype}{i[1]},{heatflux_values}\n")
+    else:
+        return
+
+    if heatflux_obj.EnableAmplitude:
+        heatflux_amplitude = f", AMPLITUDE={heatflux_obj.Name}"
+    else:
+        heatflux_amplitude = ""
+
+    f.write(f"*{heatflux_key_word}{heatflux_amplitude}\n")
+    for feat, surf, is_sub_el in femobj["HeatFluxFaces"]:
+        f.write("** {0.Name}.{1[0]}\n".format(*feat))
+        for face, fno in surf:
+            f.write(f"{face},{heatflux_facetype}{fno}{heatflux_facesubtype},{heatflux_values}\n")

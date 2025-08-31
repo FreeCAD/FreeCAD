@@ -55,6 +55,7 @@
 #include "QuantitySpinBox_p.h"
 #include "Tools.h"
 #include "Dialogs/ui_DlgTreeWidget.h"
+#include "MainWindow.h"
 
 using namespace Gui;
 using namespace App;
@@ -94,7 +95,7 @@ void CommandIconView::startDrag (Qt::DropActions supportedActions)
     }
 
     auto mimeData = new QMimeData;
-    mimeData->setData(QString::fromLatin1("text/x-action-items"), itemData);
+    mimeData->setData(QStringLiteral("text/x-action-items"), itemData);
 
     auto drag = new QDrag(this);
     drag->setMimeData(mimeData);
@@ -358,105 +359,39 @@ void ActionSelector::onDownButtonClicked()
 
 /**
  * Constructs a line edit with no text.
- * The \a parent argument is sent to the QLineEdit constructor.
+ * The \a parent argument is sent to the QKeySequenceEdit constructor.
  */
-AccelLineEdit::AccelLineEdit ( QWidget * parent )
-  : QLineEdit(parent)
+AccelLineEdit::AccelLineEdit(QWidget* parent)
+  : QKeySequenceEdit(parent)
 {
-    setPlaceholderText(tr("Press a keyboard shortcut"));
-    setClearButtonEnabled(true);
-    keyPressedCount = 0;
+    if (auto le = findChild<QLineEdit*>()) {
+        le->setClearButtonEnabled(true);
+    }
 }
 
-bool AccelLineEdit::isNone() const
+AccelLineEdit::AccelLineEdit(const QKeySequence& keySequence, QWidget* parent)
+  : QKeySequenceEdit(keySequence, parent)
 {
-    return text().isEmpty();
+    if (auto le = findChild<QLineEdit*>()) {
+        le->setClearButtonEnabled(true);
+    }
 }
 
-/**
- * Checks which keys are pressed and show it as text.
- */
-void AccelLineEdit::keyPressEvent (QKeyEvent * e)
+void AccelLineEdit::setReadOnly(bool value)
 {
-    if (isReadOnly()) {
-        QLineEdit::keyPressEvent(e);
-        return;
+    if (auto le = findChild<QLineEdit*>()) {
+        le->setReadOnly(value);
     }
+}
 
-    QString txtLine = text();
+bool AccelLineEdit::isEmpty() const
+{
+    return keySequence().isEmpty();
+}
 
-    int key = e->key();
-    Qt::KeyboardModifiers state = e->modifiers();
-
-    // Backspace clears the shortcut if text is present, else sets Backspace as shortcut.
-    // If a modifier is pressed without any other key, return.
-    // AltGr is not a modifier but doesn't have a QString representation.
-    switch(key) {
-    case Qt::Key_Backspace:
-    case Qt::Key_Delete:
-        if (state == Qt::NoModifier) {
-            keyPressedCount = 0;
-            if (isNone()) {
-                QKeySequence ks(key);
-                setText(ks.toString(QKeySequence::NativeText));
-            }
-            else {
-                clear();
-            }
-        }
-    case Qt::Key_Control:
-    case Qt::Key_Shift:
-    case Qt::Key_Alt:
-    case Qt::Key_Meta:
-    case Qt::Key_AltGr:
-        return;
-    default:
-        break;
-    }
-
-    if (txtLine.isEmpty()) {
-        // Text maybe cleared by QLineEdit's built in clear button
-        keyPressedCount = 0;
-    } else {
-        // 4 keys are allowed for QShortcut
-        switch (keyPressedCount) {
-        case 4:
-            keyPressedCount = 0;
-            txtLine.clear();
-            break;
-        case 0:
-            txtLine.clear();
-            break;
-        default:
-            txtLine += QString::fromLatin1(",");
-            break;
-        }
-    }
-
-    // Handles modifiers applying a mask.
-    if ((state & Qt::ControlModifier) == Qt::ControlModifier) {
-        QKeySequence ks(Qt::CTRL);
-        txtLine += ks.toString(QKeySequence::NativeText);
-    }
-    if ((state & Qt::AltModifier) == Qt::AltModifier) {
-        QKeySequence ks(Qt::ALT);
-        txtLine += ks.toString(QKeySequence::NativeText);
-    }
-    if ((state & Qt::ShiftModifier) == Qt::ShiftModifier) {
-        QKeySequence ks(Qt::SHIFT);
-        txtLine += ks.toString(QKeySequence::NativeText);
-    }
-    if ((state & Qt::MetaModifier) == Qt::MetaModifier) {
-        QKeySequence ks(Qt::META);
-        txtLine += ks.toString(QKeySequence::NativeText);
-    }
-
-    // Handles normal keys
-    QKeySequence ks(key);
-    txtLine += ks.toString(QKeySequence::NativeText);
-
-    setText(txtLine);
-    keyPressedCount++;
+QString AccelLineEdit::text() const
+{
+    return keySequence().toString(QKeySequence::NativeText);
 }
 
 // ------------------------------------------------------------------------------
@@ -524,7 +459,7 @@ void ModifierLineEdit::keyPressEvent (QKeyEvent * e)
 ClearLineEdit::ClearLineEdit (QWidget * parent)
   : QLineEdit(parent)
 {
-    clearAction = this->addAction(QIcon(QString::fromLatin1(":/icons/edit-cleartext.svg")),
+    clearAction = this->addAction(QIcon(QStringLiteral(":/icons/edit-cleartext.svg")),
                                         QLineEdit::TrailingPosition);
     connect(clearAction, &QAction::triggered, this, &ClearLineEdit::clear);
     connect(this, &QLineEdit::textChanged, this, &ClearLineEdit::updateClearButton);
@@ -622,7 +557,6 @@ struct ColorButtonP
     bool drawFrame{true};
     bool allowTransparency{false};
     bool modal{true};
-    bool dirty{true};
 };
 }
 
@@ -654,7 +588,6 @@ ColorButton::~ColorButton()
 void ColorButton::setColor(const QColor& c)
 {
     d->col = c;
-    d->dirty = true;
     update();
 }
 
@@ -671,13 +604,12 @@ QColor ColorButton::color() const
  */
 void ColorButton::setPackedColor(uint32_t c)
 {
-    App::Color color;
+    Base::Color color;
     color.setPackedValue(c);
     d->col.setRedF(color.r);
     d->col.setGreenF(color.g);
     d->col.setBlueF(color.b);
     d->col.setAlphaF(color.a);
-    d->dirty = true;
     update();
 }
 
@@ -686,7 +618,7 @@ void ColorButton::setPackedColor(uint32_t c)
  */
 uint32_t ColorButton::packedColor() const
 {
-    App::Color color(d->col.redF(), d->col.greenF(), d->col.blueF(), d->col.alphaF());
+    Base::Color color(d->col.redF(), d->col.greenF(), d->col.blueF(), d->col.alphaF());
     return color.getPackedValue();
 }
 
@@ -750,29 +682,26 @@ bool ColorButton::autoChangeColor() const
  */
 void ColorButton::paintEvent (QPaintEvent * e)
 {
-    if (d->dirty) {
-        QSize isize = iconSize();
-        QPixmap pix(isize);
-        pix.fill(palette().button().color());
-
-        QPainter p(&pix);
-
-        int w = pix.width();
-        int h = pix.height();
-        p.setPen(QPen(Qt::gray));
-        if (d->drawFrame) {
-            p.setBrush(d->col);
-            p.drawRect(2, 2, w - 5, h - 5);
-        }
-        else {
-            p.fillRect(0, 0, w, h, QBrush(d->col));
-        }
-        setIcon(QIcon(pix));
-
-        d->dirty = false;
-    }
-
     QPushButton::paintEvent(e);
+
+    QSize isize = iconSize();
+    QRectF colorRect(0, 0, isize.width(), isize.height());
+    QPointF buttonCenter = rect().center();
+    colorRect.moveCenter(buttonCenter);  // move colorRect to center of button
+
+    QPainter painter(this);
+    if(d->drawFrame) {
+        // frame is drawn on the outside of rectangle
+        // so we need to adjust to get same size as for non-frame button
+        constexpr qreal strokeWidth = 2;
+        colorRect.adjust(strokeWidth, strokeWidth, -strokeWidth, -strokeWidth);
+        painter.setBrush(d->col);
+        painter.setPen(Qt::gray);
+        painter.drawRect(colorRect);
+    }
+    else {
+        painter.fillRect(colorRect, d->col);
+    }
 }
 
 void ColorButton::showModeless()
@@ -860,7 +789,7 @@ UrlLabel::UrlLabel(QWidget* parent, Qt::WindowFlags f)
     , _url (QStringLiteral("http://localhost"))
     , _launchExternal(true)
 {
-    setToolTip(this->_url);    
+    setToolTip(this->_url);
     setCursor(Qt::PointingHandCursor);
     if (qApp->styleSheet().isEmpty())
         setStyleSheet(QStringLiteral("Gui--UrlLabel {color: #0000FF;text-decoration: underline;}"));
@@ -925,9 +854,9 @@ void StatefulLabel::setParameterGroup(const std::string& groupName)
 {
     if (_parameterGroup.isValid())
         _parameterGroup->Detach(this);
-        
+
     // Attach to the Parametergroup so we know when it changes
-    _parameterGroup = App::GetApplication().GetParameterGroupByPath(groupName.c_str());    
+    _parameterGroup = App::GetApplication().GetParameterGroupByPath(groupName.c_str());
     if (_parameterGroup.isValid())
         _parameterGroup->Attach(this);
 }
@@ -943,7 +872,7 @@ void StatefulLabel::registerState(const QString& state, const QColor& color,
 {
     QString css;
     if (color.isValid())
-        css = QString::fromUtf8("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(color.red()).arg(color.green()).arg(color.blue()).arg(color.alpha());
+        css = QStringLiteral("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(color.red()).arg(color.green()).arg(color.blue()).arg(color.alpha());
     _availableStates[state] = { css, preferenceName };
 }
 
@@ -952,10 +881,10 @@ void StatefulLabel::registerState(const QString& state, const QColor& fg, const 
 {
     QString colorEntries;
     if (fg.isValid())
-        colorEntries.append(QString::fromUtf8("color : rgba(%1,%2,%3,%4);").arg(fg.red()).arg(fg.green()).arg(fg.blue()).arg(fg.alpha()));
+        colorEntries.append(QStringLiteral("color : rgba(%1,%2,%3,%4);").arg(fg.red()).arg(fg.green()).arg(fg.blue()).arg(fg.alpha()));
     if (bg.isValid())
-        colorEntries.append(QString::fromUtf8("background-color : rgba(%1,%2,%3,%4);").arg(bg.red()).arg(bg.green()).arg(bg.blue()).arg(bg.alpha()));
-    QString css = QString::fromUtf8("Gui--StatefulLabel{ %1 }").arg(colorEntries);
+        colorEntries.append(QStringLiteral("background-color : rgba(%1,%2,%3,%4);").arg(bg.red()).arg(bg.green()).arg(bg.blue()).arg(bg.alpha()));
+    QString css = QStringLiteral("Gui--StatefulLabel{ %1 }").arg(colorEntries);
     _availableStates[state] = { css, preferenceName };
 }
 
@@ -1009,8 +938,8 @@ void StatefulLabel::setState(QString state)
                 if (unsignedEntry.first == entry->second.preferenceString) {
                     // Convert the stored Uint into usable color data:
                     unsigned int col = unsignedEntry.second;
-                    QColor qcolor(App::Color::fromPackedRGB<QColor>(col));
-                    this->setStyleSheet(QString::fromUtf8("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(qcolor.red()).arg(qcolor.green()).arg(qcolor.blue()).arg(qcolor.alpha()));
+                    QColor qcolor(Base::Color::fromPackedRGB<QColor>(col));
+                    this->setStyleSheet(QStringLiteral("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(qcolor.red()).arg(qcolor.green()).arg(qcolor.blue()).arg(qcolor.alpha()));
                     _styleCache[state] = this->styleSheet();
                     return;
                 }
@@ -1020,7 +949,7 @@ void StatefulLabel::setState(QString state)
             auto availableStringPrefs = _parameterGroup->GetASCIIMap();
             for (const auto& stringEntry : availableStringPrefs) {
                 if (stringEntry.first == entry->second.preferenceString) {
-                    QString css = QString::fromUtf8("Gui--StatefulLabel{ %1 }").arg(QString::fromStdString(stringEntry.second));
+                    QString css = QStringLiteral("Gui--StatefulLabel{ %1 }").arg(QString::fromStdString(stringEntry.second));
                     this->setStyleSheet(css);
                     _styleCache[state] = this->styleSheet();
                     return;
@@ -1067,7 +996,7 @@ LabelButton::LabelButton (QWidget * parent)
     label->setAutoFillBackground(true);
     layout->addWidget(label);
 
-    button = new QPushButton(QLatin1String("..."), this);
+    button = new QPushButton(QStringLiteral("…"), this);
 #if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
@@ -1409,7 +1338,7 @@ public:
         if (edit) {
             QString inputText = edit->toPlainText();
             if (!inputText.isEmpty()) // let pass empty input, regardless of the type, so user can void the value
-                lines = inputText.split(QString::fromLatin1("\n"));
+                lines = inputText.split(QStringLiteral("\n"));
         }
         if (!lines.isEmpty()) {
             if (type == 1) { // floats
@@ -1455,7 +1384,7 @@ LabelEditor::LabelEditor (QWidget * parent)
     connect(lineEdit, &QLineEdit::textChanged,
             this, &LabelEditor::validateText);
 
-    button = new QPushButton(QLatin1String("..."), this);
+    button = new QPushButton(QStringLiteral("…"), this);
 #if defined (Q_OS_MACOS)
     button->setAttribute(Qt::WA_LayoutUsesWidgetRect); // layout size from QMacStyle was not correct
 #endif
@@ -1483,7 +1412,7 @@ void LabelEditor::setText(const QString& s)
 {
     this->plainText = s;
 
-    QString text = QString::fromLatin1("[%1]").arg(this->plainText);
+    QString text = QStringLiteral("[%1]").arg(this->plainText);
     lineEdit->setText(text);
 }
 
@@ -1506,7 +1435,7 @@ void LabelEditor::changeText()
     connect(buttonBox, &QDialogButtonBox::rejected, dlg, &PropertyListDialog::reject);
     connect(dlg, &PropertyListDialog::accepted, this, [&] {
         QString inputText = edit->toPlainText();
-        QString text = QString::fromLatin1("[%1]").arg(inputText);
+        QString text = QStringLiteral("[%1]").arg(inputText);
         lineEdit->setText(text);
     });
 
@@ -1531,7 +1460,7 @@ void LabelEditor::setButtonText(const QString& txt)
 {
     button->setText(txt);
     int w1 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), txt);
-    int w2 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), QLatin1String(" ... "));
+    int w2 = 2 * QtTools::horizontalAdvance(button->fontMetrics(), QStringLiteral(" … "));
     button->setFixedWidth((w1 > w2 ? w1 : w2));
 }
 
@@ -1578,7 +1507,7 @@ void ExpLineEdit::bind(const ObjectIdentifier& _path) {
     ExpressionBinding::bind(_path);
 
     int frameWidth = style()->pixelMetric(QStyle::PM_SpinBoxFrameWidth);
-    setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
+    setStyleSheet(QStringLiteral("QLineEdit { padding-right: %1px } ").arg(iconLabel->sizeHint().width() + frameWidth + 1));
 
     iconLabel->show();
 }
@@ -1678,6 +1607,7 @@ void ExpLineEdit::openFormulaDialog()
     QPoint pos = mapToGlobal(QPoint(0,0));
     box->move(pos-box->expressionPosition());
     box->setExpressionInputSize(width(), height());
+    Gui::adjustDialogPosition(box);
 }
 
 void ExpLineEdit::finishFormulaDialog()
@@ -1735,5 +1665,54 @@ bool ButtonGroup::exclusive() const
     return _exclusive;
 }
 
+namespace Gui {
+
+void adjustDialogPosition(QDialog* dialog) {
+    if (!dialog) {
+        return;
+    }
+    const MainWindow* mw = getMainWindow();
+    if (!mw) {
+        return;
+    }
+    
+    dialog->adjustSize(); // ensure correct size
+
+    const QRect mainWindowRect{ mw->mapToGlobal(QPoint(0, 0)), mw->size() };
+    const QRect dialogRect{ dialog->frameGeometry() };
+
+    const bool isFullyInside = mainWindowRect.contains(dialogRect);
+    if (isFullyInside) {
+        return;
+    }
+
+    const bool isCompletelyOutside = !mainWindowRect.intersects(dialogRect);
+    if (isCompletelyOutside) {
+        return;
+    }
+
+    const int margin = 5;
+    const QRect availableArea = mainWindowRect.adjusted(
+        margin, margin, -margin, -margin
+    );
+
+    QPoint adjustedTopLeft = dialogRect.topLeft();
+
+    adjustedTopLeft.setX(std::clamp(
+        adjustedTopLeft.x(),
+        availableArea.left(),
+        availableArea.right() - dialogRect.width()
+    ));
+
+    adjustedTopLeft.setY(std::clamp(
+        adjustedTopLeft.y(),
+        availableArea.top(),
+        availableArea.bottom() - dialogRect.height()
+    ));
+
+    dialog->move(adjustedTopLeft);
+}
+
+}
 
 #include "moc_Widgets.cpp"

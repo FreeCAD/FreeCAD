@@ -928,15 +928,16 @@ from enum import IntEnum
 # The values must match with that of the
 # C++ enum class UnitSystem
 class Scheme(IntEnum):
-    SI1 = 0
-    SI2 = 1
-    Imperial1 = 2
+    Internal = 0
+    MKS = 1
+    Imperial = 2
     ImperialDecimal = 3
-    Centimeters = 4
+    Centimeter = 4
     ImperialBuilding = 5
     MmMin = 6
     ImperialCivil = 7
-    FemMilliMeterNewton = 8
+    FEM = 8
+    MeterDecimal = 9
 
 App.Units.Scheme = Scheme
 

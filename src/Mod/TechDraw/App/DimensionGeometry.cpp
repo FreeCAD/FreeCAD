@@ -28,6 +28,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Tools.h>
 
 #include "DimensionGeometry.h"
@@ -97,10 +98,10 @@ void pointPair::mapToPage(const DrawViewPart* dvp)
     gp_Ax3 OXYZ;
     xOXYZ.SetTransformation(OXYZ, gp_Ax3(dvp->getRotatedCS()));
 
-    gp_Vec gvFirst = DU::togp_Vec(m_first).Transformed(xOXYZ);
-    m_first = DU::toVector3d(gvFirst);
-    gp_Vec gvSecond = DU::togp_Vec(m_second).Transformed(xOXYZ);
-    m_second = DU::toVector3d(gvSecond);
+    gp_Vec gvFirst = Base::convertTo<gp_Vec>(m_first).Transformed(xOXYZ);
+    m_first = Base::convertTo<Base::Vector3d>(gvFirst);
+    gp_Vec gvSecond = Base::convertTo<gp_Vec>(m_second).Transformed(xOXYZ);
+    m_second = Base::convertTo<Base::Vector3d>(gvSecond);
 }
 
 // this routine is no longer needed since we now use the dvp's projectPoint
@@ -113,8 +114,8 @@ void pointPair::invertY()
 
 void pointPair::dump(const std::string& text) const
 {
-    Base::Console().Message("pointPair - %s\n", text.c_str());
-    Base::Console().Message("pointPair - first: %s  second: %s\n",
+    Base::Console().message("pointPair - %s\n", text.c_str());
+    Base::Console().message("pointPair - first: %s  second: %s\n",
                             DU::formatVector(first()).c_str(), DU::formatVector(second()).c_str());
 }
 
@@ -194,8 +195,8 @@ void anglePoints::mapToPage(const DrawViewPart* dvp)
     gp_Trsf xOXYZ;
     gp_Ax3 OXYZ;
     xOXYZ.SetTransformation(OXYZ, gp_Ax3(dvp->getRotatedCS()));
-    gp_Vec gvVertex = DU::togp_Vec(m_vertex).Transformed(xOXYZ);
-    m_vertex = DU::toVector3d(gvVertex);
+    gp_Vec gvVertex = Base::convertTo<gp_Vec>(m_vertex).Transformed(xOXYZ);
+    m_vertex = Base::convertTo<Base::Vector3d>(gvVertex);
 }
 
 // map the points onto the coordinate system used for drawing where -Y direction is "up"
@@ -232,10 +233,10 @@ anglePoints anglePoints::toDisplayForm(DrawViewPart* dvp) const
 }
 void anglePoints::dump(const std::string& text) const
 {
-    Base::Console().Message("anglePoints - %s\n", text.c_str());
-    Base::Console().Message("anglePoints - ends - first: %s  second: %s\n",
+    Base::Console().message("anglePoints - %s\n", text.c_str());
+    Base::Console().message("anglePoints - ends - first: %s  second: %s\n",
                             DU::formatVector(first()).c_str(), DU::formatVector(second()).c_str());
-    Base::Console().Message("anglePoints - vertex: %s\n", DU::formatVector(vertex()).c_str());
+    Base::Console().message("anglePoints - vertex: %s\n", DU::formatVector(vertex()).c_str());
 }
 
 arcPoints::arcPoints() :
@@ -291,18 +292,18 @@ void arcPoints::mapToPage(const DrawViewPart* dvp)
     gp_Ax3 OXYZ;
     xOXYZ.SetTransformation(OXYZ, gp_Ax3(dvp->getRotatedCS()));
 
-    gp_Vec gvCenter = DU::togp_Vec(center).Transformed(xOXYZ);
-    center = DU::toVector3d(gvCenter);
-    gp_Vec gvOnCurve1 = DU::togp_Vec(onCurve.first()).Transformed(xOXYZ);
-    onCurve.first(DU::toVector3d(gvOnCurve1));
-    gp_Vec gvOnCurve2 = DU::togp_Vec(onCurve.second()).Transformed(xOXYZ);
-    onCurve.second(DU::toVector3d(gvOnCurve2));
-    gp_Vec gvArcEnds1 = DU::togp_Vec(arcEnds.first()).Transformed(xOXYZ);
-    arcEnds.first(DU::toVector3d(gvArcEnds1));
-    gp_Vec gvArcEnds2 = DU::togp_Vec(arcEnds.second()).Transformed(xOXYZ);
-    arcEnds.second(DU::toVector3d(gvArcEnds2));
-    gp_Vec gvMidArc = DU::togp_Vec(midArc).Transformed(xOXYZ);
-    midArc = DU::toVector3d(gvMidArc);
+    gp_Vec gvCenter = Base::convertTo<gp_Vec>(center).Transformed(xOXYZ);
+    center = Base::convertTo<Base::Vector3d>(gvCenter);
+    gp_Vec gvOnCurve1 = Base::convertTo<gp_Vec>(onCurve.first()).Transformed(xOXYZ);
+    onCurve.first(Base::convertTo<Base::Vector3d>(gvOnCurve1));
+    gp_Vec gvOnCurve2 = Base::convertTo<gp_Vec>(onCurve.second()).Transformed(xOXYZ);
+    onCurve.second(Base::convertTo<Base::Vector3d>(gvOnCurve2));
+    gp_Vec gvArcEnds1 = Base::convertTo<gp_Vec>(arcEnds.first()).Transformed(xOXYZ);
+    arcEnds.first(Base::convertTo<Base::Vector3d>(gvArcEnds1));
+    gp_Vec gvArcEnds2 = Base::convertTo<gp_Vec>(arcEnds.second()).Transformed(xOXYZ);
+    arcEnds.second(Base::convertTo<Base::Vector3d>(gvArcEnds2));
+    gp_Vec gvMidArc = Base::convertTo<gp_Vec>(midArc).Transformed(xOXYZ);
+    midArc = Base::convertTo<Base::Vector3d>(gvMidArc);
 }
 
 // obsolete. see above
@@ -349,17 +350,17 @@ arcPoints arcPoints::toCanonicalForm(DrawViewPart* dvp) const
 
 void arcPoints::dump(const std::string& text) const
 {
-    Base::Console().Message("arcPoints - %s\n", text.c_str());
-    Base::Console().Message("arcPoints - radius: %.3f center: %s\n", radius,
+    Base::Console().message("arcPoints - %s\n", text.c_str());
+    Base::Console().message("arcPoints - radius: %.3f center: %s\n", radius,
                             DrawUtil::formatVector(center).c_str());
-    Base::Console().Message("arcPoints - isArc: %d arcCW: %d\n", isArc, arcCW);
-    Base::Console().Message("arcPoints - onCurve: %s  %s\n",
+    Base::Console().message("arcPoints - isArc: %d arcCW: %d\n", isArc, arcCW);
+    Base::Console().message("arcPoints - onCurve: %s  %s\n",
                             DrawUtil::formatVector(onCurve.first()).c_str(),
                             DrawUtil::formatVector(onCurve.second()).c_str());
-    Base::Console().Message("arcPoints - arcEnds: %s  %s\n",
+    Base::Console().message("arcPoints - arcEnds: %s  %s\n",
                             DrawUtil::formatVector(arcEnds.first()).c_str(),
                             DrawUtil::formatVector(arcEnds.second()).c_str());
-    Base::Console().Message("arcPoints - midArc: %s\n", DrawUtil::formatVector(midArc).c_str());
+    Base::Console().message("arcPoints - midArc: %s\n", DrawUtil::formatVector(midArc).c_str());
 }
 
 
@@ -395,7 +396,7 @@ void areaPoint::invertY()
 
 void areaPoint::dump(const std::string& text) const
 {
-    Base::Console().Message("areaPoint - %s\n", text.c_str());
-    Base::Console().Message("areaPoint - area: %.3f center: %s\n", area,
+    Base::Console().message("areaPoint - %s\n", text.c_str());
+    Base::Console().message("areaPoint - area: %.3f center: %s\n", area,
         DrawUtil::formatVector(center).c_str());
 }

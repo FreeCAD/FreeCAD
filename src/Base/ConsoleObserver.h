@@ -43,12 +43,12 @@ public:
     explicit ConsoleObserverFile(const char* sFileName);
     ~ConsoleObserverFile() override;
 
-    void SendLog(const std::string& notifiername,
+    void sendLog(const std::string& notifiername,
                  const std::string& msg,
                  LogStyle level,
                  IntendedRecipient recipient,
                  ContentType content) override;
-    const char* Name() override
+    const char* name() override
     {
         return "File";
     }
@@ -70,12 +70,12 @@ class BaseExport ConsoleObserverStd: public ILogger
 public:
     ConsoleObserverStd();
     ~ConsoleObserverStd() override;
-    void SendLog(const std::string& notifiername,
+    void sendLog(const std::string& notifiername,
                  const std::string& msg,
                  LogStyle level,
                  IntendedRecipient recipient,
                  ContentType content) override;
-    const char* Name() override
+    const char* name() override
     {
         return "Console";
     }
@@ -127,20 +127,20 @@ private:
 ILoggerBlocker::ILoggerBlocker(const char* co, ConsoleMsgFlags msgTypes)
     : conObs(co)
 {
-    msgTypesBlocked = Console().SetEnabledMsgType(conObs, msgTypes, false);
+    msgTypesBlocked = Console().setEnabledMsgType(conObs, msgTypes, false);
 }
 
 ILoggerBlocker::~ILoggerBlocker()
 {
     try {
 #ifdef FC_DEBUG
-        auto debug = Console().SetEnabledMsgType(conObs, msgTypesBlocked, true);
+        auto debug = Console().setEnabledMsgType(conObs, msgTypesBlocked, true);
         if (debug != msgTypesBlocked) {
-            Console().Warning(
+            Console().warning(
                 "Enabled message types have been changed while ILoggerBlocker was set\n");
         }
 #else
-        Console().SetEnabledMsgType(conObs, msgTypesBlocked, true);
+        Console().setEnabledMsgType(conObs, msgTypesBlocked, true);
 #endif
     }
     catch (...) {

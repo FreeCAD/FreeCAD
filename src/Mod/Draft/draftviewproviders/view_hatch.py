@@ -67,6 +67,7 @@ class ViewProviderDraftHatch:
         taskd.form.Pattern.setCurrentText(vobj.Object.Pattern)
         taskd.form.Scale.setValue(vobj.Object.Scale)
         taskd.form.Rotation.setValue(vobj.Object.Rotation)
+        taskd.form.Translate.setChecked(vobj.Object.Translate)
         Gui.Control.showDialog(taskd)
         return True
 

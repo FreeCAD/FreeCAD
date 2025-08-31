@@ -42,7 +42,7 @@ class PartGuiExport ViewProvider2DObject : public PartGui::ViewProviderPart
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProvider2DObject);
 
     static constexpr float horizontalPlanePadding = 8;
-    static constexpr float verticalPlanePadding = 5;
+    static constexpr float verticalPlanePadding = 6;
 
 public:
     /// constructor

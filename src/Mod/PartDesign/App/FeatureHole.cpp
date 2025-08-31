@@ -23,7 +23,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
+# include <gp_Circ.hxx>
 # include <gp_Dir.hxx>
+# include <gp_Cylinder.hxx>
 # include <BRep_Builder.hxx>
 # include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 # include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
@@ -36,6 +39,8 @@
 # include <BRepClass3d_SolidClassifier.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
 # include <Geom_Circle.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <Geom_TrimmedCurve.hxx>
@@ -55,9 +60,12 @@
 #include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Part/App/TopoShapeMapper.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "FeatureHole.h"
 #include "json.hpp"
+
+#include <numbers>
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true);
 
@@ -67,9 +75,12 @@ namespace PartDesign {
 
 const char* Hole::DepthTypeEnums[]                   = { "Dimension", "ThroughAll", /*, "UpToFirst", */ nullptr };
 const char* Hole::ThreadDepthTypeEnums[]             = { "Hole Depth", "Dimension", "Tapped (DIN76)",  nullptr };
-const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", "NPT", "BSP", "BSW", "BSF", nullptr};
-const char* Hole::ClearanceMetricEnums[]             = { "Standard", "Close", "Wide", nullptr};
+const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", "NPT", "BSP", "BSW", "BSF", "ISOTyre", nullptr};
+
+const char* Hole::ClearanceNoneEnums[]               = { "-", "-", "-", nullptr};
+const char* Hole::ClearanceMetricEnums[]             = { "Medium", "Fine", "Coarse", nullptr};
 const char* Hole::ClearanceUTSEnums[]                = { "Normal", "Close", "Loose", nullptr };
+const char* Hole::ClearanceOtherEnums[]              = { "Normal", "Close", "Wide", nullptr };
 const char* Hole::DrillPointEnums[]                  = { "Flat", "Angled", nullptr};
 
 /* "None" profile */
@@ -94,46 +105,46 @@ const std::vector<Hole::ThreadDescription> Hole::threadDescription[] =
     /* ISO metric threaded Tap-Drill diameters according to ISO 2306 */
     // {name, thread diameter, thread pitch, Tap-Drill diameter}
     {
-        { "M1",     1.0,    0.25,   0.75 },
-        { "M1.1",   1.1,    0.25,   0.85 },
-        { "M1.2",   1.2,    0.25,   0.95 },
-        { "M1.4",   1.4,    0.30,   1.10 },
-        { "M1.6",   1.6,    0.35,   1.25 },
-        { "M1.8",   1.8,    0.35,   1.45 },
-        { "M2",     2.0,    0.40,   1.60 },
-        { "M2.2",   2.2,    0.45,   1.75 },
-        { "M2.5",   2.5,    0.45,   2.05 },
-        { "M3",     3.0,    0.50,   2.50 },
-        { "M3.5",   3.5,    0.60,   2.90 },
-        { "M4",     4.0,    0.70,   3.30 },
-        { "M4.5",   4.5,    0.75,   3.70 },
-        { "M5",     5.0,    0.80,   4.20 },
-        { "M6",     6.0,    1.00,   5.00 },
-        { "M7",     7.0,    1.00,   6.00 },
-        { "M8",     8.0,    1.25,   6.80 },
-        { "M9",     9.0,    1.25,   7.80 },
-        { "M10",    10.0,   1.50,   8.50 },
-        { "M11",    11.0,   1.50,   9.50 },
-        { "M12",    12.0,   1.75,   10.20 },
-        { "M14",    14.0,   2.00,   12.00 },
-        { "M16",    16.0,   2.00,   14.00 },
-        { "M18",    18.0,   2.50,   15.50 },
-        { "M20",    20.0,   2.50,   17.50 },
-        { "M22",    22.0,   2.50,   19.50 },
-        { "M24",    24.0,   3.00,   21.00 },
-        { "M27",    27.0,   3.00,   24.00 },
-        { "M30",    30.0,   3.50,   26.50 },
-        { "M33",    33.0,   3.50,   29.50 },
-        { "M36",    36.0,   4.00,   32.00 },
-        { "M39",    39.0,   4.00,   35.00 },
-        { "M42",    42.0,   4.50,   37.50 },
-        { "M45",    45.0,   4.50,   40.50 },
-        { "M48",    48.0,   5.00,   43.00 },
-        { "M52",    52.0,   5.00,   47.00 },
-        { "M56",    56.0,   5.50,   50.50 },
-        { "M60",    60.0,   5.50,   54.50 },
-        { "M64",    64.0,   6.00,   58.00 },
-        { "M68",    68.0,   6.00,   62.00 },
+        { "M1x0.25",     1.0, 0.25,  0.75 },
+        { "M1.1x0.25",   1.1, 0.25,  0.85 },
+        { "M1.2x0.25",   1.2, 0.25,  0.95 },
+        { "M1.4x0.3",    1.4, 0.30,  1.10 },
+        { "M1.6x0.35",   1.6, 0.35,  1.25 },
+        { "M1.8x0.35",   1.8, 0.35,  1.45 },
+        { "M2x0.4",      2.0, 0.40,  1.60 },
+        { "M2.2x0.45",   2.2, 0.45,  1.75 },
+        { "M2.5x0.45",   2.5, 0.45,  2.05 },
+        { "M3x0.5",      3.0, 0.50,  2.50 },
+        { "M3.5x0.6",    3.5, 0.60,  2.90 },
+        { "M4x0.7",      4.0, 0.70,  3.30 },
+        { "M4.5x0.75",   4.5, 0.75,  3.70 },
+        { "M5x0.8",      5.0, 0.80,  4.20 },
+        { "M6x1.0",      6.0, 1.00,  5.00 },
+        { "M7x1.0",      7.0, 1.00,  6.00 },
+        { "M8x1.25",     8.0, 1.25,  6.80 },
+        { "M9x1.25",     9.0, 1.25,  7.80 },
+        { "M10x1.5",    10.0, 1.50,  8.50 },
+        { "M11x1.5",    11.0, 1.50,  9.50 },
+        { "M12x1.75",   12.0, 1.75, 10.20 },
+        { "M14x2.0",    14.0, 2.00, 12.00 },
+        { "M16x2.0",    16.0, 2.00, 14.00 },
+        { "M18x2.5",    18.0, 2.50, 15.50 },
+        { "M20x2.5",    20.0, 2.50, 17.50 },
+        { "M22x2.5",    22.0, 2.50, 19.50 },
+        { "M24x3.0",    24.0, 3.00, 21.00 },
+        { "M27x3.0",    27.0, 3.00, 24.00 },
+        { "M30x3.5",    30.0, 3.50, 26.50 },
+        { "M33x3.5",    33.0, 3.50, 29.50 },
+        { "M36x4.0",    36.0, 4.00, 32.00 },
+        { "M39x4.0",    39.0, 4.00, 35.00 },
+        { "M42x4.5",    42.0, 4.50, 37.50 },
+        { "M45x4.5",    45.0, 4.50, 40.50 },
+        { "M48x5.0",    48.0, 5.00, 43.00 },
+        { "M52x5.0",    52.0, 5.00, 47.00 },
+        { "M56x5.5",    56.0, 5.50, 50.50 },
+        { "M60x5.5",    60.0, 5.50, 54.50 },
+        { "M64x6.0",    64.0, 6.00, 58.00 },
+        { "M68x6.0",    68.0, 6.00, 62.00 },
      },
     /* ISO metric fine (drill = diameter - pitch) */
     {
@@ -368,6 +379,7 @@ const std::vector<Hole::ThreadDescription> Hole::threadDescription[] =
         { "7/8",        22.225, 1.814,    20.40 },
         { "1",          25.400, 2.117,    23.25 },
         { "1 1/8",      28.575, 2.117,    26.50 },
+        { "1 3/16",     30.163, 1.588,    28.58 },
         { "1 1/4",      31.750, 2.117,    29.50 },
         { "1 3/8",      34.925, 2.117,    32.75 },
         { "1 1/2",      38.100, 2.117,    36.00 },
@@ -519,13 +531,37 @@ const std::vector<Hole::ThreadDescription> Hole::threadDescription[] =
         { "3 3/4",  95.250,   5.644,   0.0   },
         { "4",      101.600,  5.644,   0.0   },
         { "4 1/4",  107.950,  6.350,   0.0   },
+    },
+    /* ISO Tyre valve threads */
+    // ISO 4570:2002
+    // Ordered as the standard
+    {
+        { "5v1",  5.334, 0.705, 0 }, // Schrader internal
+        { "5v2",  5.370, 1.058, 0 }, // Presta cap
+        { "6v1",  6.160, 0.800, 0 }, // Presta body
+        { "8v1",  7.798, 0.794, 0 }, // Schrader external
+        { "9v1",  9.525, 0.794, 0 },
+        { "10v2", 10.414, 0.907, 0 },
+        { "12v1", 12.319, 0.977, 0 },
+        { "13v1", 12.700, 1.270, 0 },
+        { "8v2",  7.938, 1.058, 0 },
+        { "10v1", 9.800, 1.000, 0 },
+        { "11v1", 11.113, 1.270, 0 },
+        { "13v2", 12.700, 0.794, 0 },
+        { "15v1", 15.137, 1.000, 0 },
+        { "16v1", 15.875, 0.941, 0 },
+        { "17v1", 17.137, 1.000, 0 },
+        { "17v2", 17.463, 1.058, 0 },
+        { "17v3", 17.463, 1.588, 0 },
+        { "19v1", 19.050, 1.588, 0 },
+        { "20v1", 20.642, 1.000, 0 },
     }
 };
 
 const double Hole::metricHoleDiameters[51][4] =
 {
     /* ISO metric clearance hole diameters according to ISO 273 */
-    // {screw diameter, close, standard, coarse}
+    // {screw diameter, fine, medium, coarse}
         { 1.0,    1.1,    1.2,    1.3},
         { 1.2,    1.3,    1.4,    1.5},
         { 1.4,    1.5,    1.6,    1.8},
@@ -581,7 +617,7 @@ const double Hole::metricHoleDiameters[51][4] =
         { 150.0,  155.0,  158.0,  165.0}
 };
 
-const Hole::UTSClearanceDefinition Hole::UTSHoleDiameters[22] =
+const Hole::UTSClearanceDefinition Hole::UTSHoleDiameters[23] =
 {
     /* UTS clearance hole diameters according to ASME B18.2.8 */
     // for information: the norm defines a drill bit number (that is in turn standardized in another ASME norm).
@@ -609,6 +645,7 @@ const Hole::UTSClearanceDefinition Hole::UTSHoleDiameters[22] =
         { "7/8",   23.0, 23.8, 26.2 },
         { "1",     26.2, 27.8, 29.4 },
         { "1 1/8", 29.4, 31.0, 33.3 },
+        { "1 3/16", 31.0, 32.5, 34.9 },
         { "1 1/4", 32.5, 34.1, 36.5 },
         { "1 3/8", 36.5, 38.1, 40.9 },
         { "1 1/2", 39.7, 41.3, 44.0 }
@@ -732,7 +769,7 @@ PROPERTY_SOURCE(PartDesign::Hole, PartDesign::ProfileBased)
 
 const App::PropertyAngle::Constraints Hole::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 180.0 - Base::toDegrees<double>(Precision::Angular()), 1.0 };
 // OCC can only create holes with a min diameter of 10 times the Precision::Confusion()
-const App::PropertyQuantityConstraint::Constraints diameterRange = { 10 * Precision::Confusion(), FLT_MAX, 1.0 };
+const App::PropertyQuantityConstraint::Constraints diameterRange = { 10 * Precision::Confusion(), std::numeric_limits<float>::max(), 1.0 };
 
 Hole::Hole()
 {
@@ -758,6 +795,9 @@ Hole::Hole()
 
     ADD_PROPERTY_TYPE(Diameter, (6.0), "Hole", App::Prop_None, "Diameter");
     Diameter.setConstraints(&diameterRange);
+
+    ADD_PROPERTY_TYPE(ThreadDiameter, (0.0), "Hole", App::Prop_None, "Thread major diameter");
+    ThreadDiameter.setReadOnly(true);
 
     ADD_PROPERTY_TYPE(ThreadDirection, (0L), "Hole", App::Prop_None, "Thread direction");
     ThreadDirection.setEnums(ThreadDirectionEnums);
@@ -806,6 +846,9 @@ Hole::Hole()
 
     ADD_PROPERTY_TYPE(CustomThreadClearance, (0.0), "Hole", App::Prop_None, "Custom thread clearance (overrides ThreadClass)");
 
+    // Defaults to circles & arcs so that older files are kept intact
+    // while new file get points, circles and arcs set in setupObject()
+    ADD_PROPERTY_TYPE(BaseProfileType, (BaseProfileTypeOptions::OnCirclesArcs), "Hole", App::Prop_None, "Which profile feature to base the holes on");
 }
 
 void Hole::updateHoleCutParams()
@@ -850,9 +893,7 @@ void Hole::updateHoleCutParams()
                     HoleCutDepth.setValue(dimen.depth);
                 }
                 else {
-                    // valid values for visual feedback
-                    HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
-                    HoleCutDepth.setValue(0.1);
+                    calculateAndSetCounterbore();
                 }
             }
             if (HoleCutDepth.getValue() == 0.0)
@@ -866,25 +907,30 @@ void Hole::updateHoleCutParams()
             const CutDimensionSet& counter = find_cutDimensionSet(threadTypeStr, "ISO 10642");
             if (HoleCutDiameter.getValue() == 0.0 || HoleCutDiameter.getValue() <= diameterVal) {
                 const CounterSinkDimension& dimen = counter.get_sink(threadSizeStr);
+                HoleCutCountersinkAngle.setValue(counter.angle);
                 if (dimen.diameter != 0.0) {
                     HoleCutDiameter.setValue(dimen.diameter);
                 }
                 else {
-                    HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
+                    calculateAndSetCountersink();
                 }
-                HoleCutCountersinkAngle.setValue(counter.angle);
             }
             if (HoleCutCountersinkAngle.getValue() == 0.0) {
                 HoleCutCountersinkAngle.setValue(counter.angle);
             }
-            if (HoleCutDepth.getValue() == 0.0 && holeCutTypeStr == "Counterdrill") {
-                HoleCutDepth.setValue(1.0);
+            if (HoleCutDepth.getValue() == 0.0) {
+                if (holeCutTypeStr == "Counterdrill") {
+                    HoleCutDepth.setValue(1.0);
+                } else {
+                    ProfileBased::onChanged(&HoleCutDiameter);
+                }
             }
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
             HoleCutCountersinkAngle.setReadOnly(false);
         }
 
+        // Tag: MIGRATION
         // handle since FreeCAD 0.18 deprecated types that were
         // removed after FreeCAD 0.20
         if (holeCutTypeStr == "Cheesehead (deprecated)") {
@@ -926,9 +972,7 @@ void Hole::updateHoleCutParams()
                 HoleCutCountersinkAngle.setReadOnly(true);
                 const CounterBoreDimension& dimen = counter.get_bore(threadSizeStr);
                 if (dimen.thread == "None") {
-                    // valid values for visual feedback
-                    HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
-                    HoleCutDepth.setValue(0.1);
+                    calculateAndSetCounterbore();
                     // we force custom values since there are no normed ones
                     HoleCutCustomValues.setReadOnly(true);
                     // important to set only if not already true, to avoid loop call of updateHoleCutParams()
@@ -960,12 +1004,11 @@ void Hole::updateHoleCutParams()
             else if (counter.cut_type == CutDimensionSet::Countersink) {
                 const CounterSinkDimension& dimen = counter.get_sink(threadSizeStr);
                 if (dimen.thread == "None") {
-                    // valid values for visual feedback
-                    HoleCutDiameter.setValue(Diameter.getValue() + 0.1);
                     // there might be an angle of zero (if no norm exists for the size)
                     if (HoleCutCountersinkAngle.getValue() == 0.0) {
                         HoleCutCountersinkAngle.setValue(counter.angle);
                     }
+                    calculateAndSetCountersink();
                     // we force custom values since there are no normed ones
                     HoleCutCustomValues.setReadOnly(true);
                     // important to set only if not already true, to avoid loop call of updateHoleCutParams()
@@ -1023,8 +1066,12 @@ void Hole::updateHoleCutParams()
             if (HoleCutCountersinkAngle.getValue() == 0.0) {
                 HoleCutCountersinkAngle.setValue(getCountersinkAngle());
             }
-            if (HoleCutDepth.getValue() == 0.0 && holeCutTypeStr == "Counterdrill") {
-                HoleCutDepth.setValue(1.0);
+            if (HoleCutDepth.getValue() == 0.0) {
+                if (holeCutTypeStr == "Counterdrill") {
+                    HoleCutDepth.setValue(1.0);
+                } else {
+                    ProfileBased::onChanged(&HoleCutDiameter);
+                }
             }
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
@@ -1173,12 +1220,13 @@ std::optional<double> Hole::determineDiameter() const
             return std::nullopt;
         throw Base::IndexError("Thread size out of range");
     }
-    double diameter = threadDescription[threadType][threadSize].diameter;
-    double pitch = threadDescription[threadType][threadSize].pitch;
-    double clearance = 0.0;
 
     if (threadType == 0)
         return std::nullopt;
+
+    double diameter = threadDescription[threadType][threadSize].diameter;
+    double pitch = threadDescription[threadType][threadSize].pitch;
+    double clearance = 0.0;
 
     if (Threaded.getValue()) {
 
@@ -1346,6 +1394,12 @@ std::optional<double> Hole::determineDiameter() const
 
 void Hole::updateDiameterParam()
 {
+    int threadType = ThreadType.getValue();
+    int threadSize = ThreadSize.getValue();
+    if (threadType > 0 && threadSize > 0)
+        ThreadDiameter.setValue(
+            threadDescription[threadType][threadSize].diameter
+        );
     if (auto opt = determineDiameter())
         Diameter.setValue(opt.value());
 }
@@ -1356,172 +1410,136 @@ double Hole::getThreadProfileAngle()
     return 90 - 1.79;
 }
 
+void Hole::findClosestDesignation()
+{
+    int threadType = ThreadType.getValue();
+    const int numTypes = static_cast<int>(std::size(threadDescription));
+
+    if (threadType < 0 || threadType >= numTypes) {
+        throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread type is invalid"));
+    }
+
+    double diameter = ThreadDiameter.getValue();
+    if (diameter == 0.0) {
+        diameter = Diameter.getValue();
+    }
+
+    int oldSizeIndex = ThreadSize.getValue();
+    const auto &options = threadDescription[threadType];
+    double targetPitch = 0.0;
+    if (oldSizeIndex >= 0 && oldSizeIndex < static_cast<int>(options.size())) {
+        targetPitch = options[oldSizeIndex].pitch;
+    }
+
+    // Scan all entries to find the minimal (Δdiameter, Δpitch) Euclidean distance
+    size_t bestIndex = 0;
+    double bestMetric = std::numeric_limits<double>::infinity();
+
+    for (size_t i = 0; i < options.size(); ++i) {
+        double dDiff = options[i].diameter - diameter;
+        double pDiff = options[i].pitch - targetPitch;
+        double metric = std::hypot(dDiff, pDiff);
+        if (metric < bestMetric) {
+            bestMetric = metric;
+            bestIndex = i;
+        }
+    }
+
+    ThreadSize.setValue(static_cast<int>(bestIndex));
+}
+
 void Hole::onChanged(const App::Property* prop)
 {
     if (prop == &ThreadType) {
-        std::string type, holeCutTypeStr;
+        std::string type;
+
         if (ThreadType.isValid()) {
             type = ThreadType.getValueAsString();
             ThreadSize.setEnums(getThreadDesignations(ThreadType.getValue()));
+            if (type != "None") {
+                findClosestDesignation();
+            }
         }
-        if (HoleCutType.isValid())
-            holeCutTypeStr = HoleCutType.getValueAsString();
 
         if (type == "None") {
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_None_Enums);
-            Threaded.setReadOnly(true);
-            ThreadSize.setReadOnly(true);
-            ThreadFit.setReadOnly(true);
-            ThreadClass.setReadOnly(true);
-            Diameter.setReadOnly(false);
-            ModelThread.setReadOnly(true);
-            UseCustomThreadClearance.setReadOnly(true);
-            CustomThreadClearance.setReadOnly(true);
-            ThreadDepth.setReadOnly(true);
-            ThreadDepthType.setReadOnly(true);
             Threaded.setValue(false);
             ModelThread.setValue(false);
             UseCustomThreadClearance.setValue(false);
+            ThreadFit.setEnums(ClearanceNoneEnums);
         }
         else if (type == "ISOMetricProfile") {
             ThreadClass.setEnums(ThreadClass_ISOmetric_Enums);
             HoleCutType.setEnums(HoleCutType_ISOmetric_Enums);
             ThreadFit.setEnums(ClearanceMetricEnums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
-            // thread class and direction are only sensible if threaded
-            // fit only sensible if not threaded
-            ThreadFit.setReadOnly(Threaded.getValue());
-            ThreadClass.setReadOnly(!Threaded.getValue());
-            Diameter.setReadOnly(true);
-            ModelThread.setReadOnly(!Threaded.getValue());
-            UseCustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue());
-            CustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue() || !UseCustomThreadClearance.getValue());
-            ThreadDepthType.setReadOnly(!Threaded.getValue());
-            ThreadDepth.setReadOnly(!Threaded.getValue());
         }
         else if (type == "ISOMetricFineProfile") {
             ThreadClass.setEnums(ThreadClass_ISOmetricfine_Enums);
             HoleCutType.setEnums(HoleCutType_ISOmetricfine_Enums);
             ThreadFit.setEnums(ClearanceMetricEnums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
-            // thread class and direction are only sensible if threaded
-            // fit only sensible if not threaded
-            ThreadFit.setReadOnly(Threaded.getValue());
-            ThreadClass.setReadOnly(!Threaded.getValue());
-            Diameter.setReadOnly(true);
-            ModelThread.setReadOnly(!Threaded.getValue());
-            UseCustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue());
-            CustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue() || !UseCustomThreadClearance.getValue());
-            ThreadDepthType.setReadOnly(!Threaded.getValue());
-            ThreadDepth.setReadOnly(!Threaded.getValue());
         }
         else if (type == "UNC") {
             ThreadClass.setEnums(ThreadClass_UNC_Enums);
             HoleCutType.setEnums(HoleCutType_UNC_Enums);
             ThreadFit.setEnums(ClearanceUTSEnums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
-            // thread class and direction are only sensible if threaded
-            // fit only sensible if not threaded
-            ThreadFit.setReadOnly(Threaded.getValue());
-            ThreadClass.setReadOnly(!Threaded.getValue());
-            Diameter.setReadOnly(true);
-            ModelThread.setReadOnly(!Threaded.getValue());
-            UseCustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue());
-            CustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue() || !UseCustomThreadClearance.getValue());
-            ThreadDepthType.setReadOnly(!Threaded.getValue());
-            ThreadDepth.setReadOnly(!Threaded.getValue());
         }
         else if (type == "UNF") {
             ThreadClass.setEnums(ThreadClass_UNF_Enums);
             HoleCutType.setEnums(HoleCutType_UNF_Enums);
             ThreadFit.setEnums(ClearanceUTSEnums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
-            // thread class and direction are only sensible if threaded
-            // fit only sensible if not threaded
-            ThreadFit.setReadOnly(Threaded.getValue());
-            ThreadClass.setReadOnly(!Threaded.getValue());
-            Diameter.setReadOnly(true);
-            ModelThread.setReadOnly(!Threaded.getValue());
-            UseCustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue());
-            CustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue() || !UseCustomThreadClearance.getValue());
-            ThreadDepthType.setReadOnly(!Threaded.getValue());
-            ThreadDepth.setReadOnly(!Threaded.getValue());
         }
         else if (type == "UNEF") {
             ThreadClass.setEnums(ThreadClass_UNEF_Enums);
             HoleCutType.setEnums(HoleCutType_UNEF_Enums);
             ThreadFit.setEnums(ClearanceUTSEnums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
-            // thread class and direction are only sensible if threaded
-            // fit only sensible if not threaded
-            ThreadFit.setReadOnly(Threaded.getValue());
-            ThreadClass.setReadOnly(!Threaded.getValue());
-            Diameter.setReadOnly(true);
-            ModelThread.setReadOnly(!Threaded.getValue());
-            UseCustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue());
-            CustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue() || !UseCustomThreadClearance.getValue());
-            ThreadDepthType.setReadOnly(!Threaded.getValue());
-            ThreadDepth.setReadOnly(!Threaded.getValue());
         }
         else if (type == "BSP") {
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_BSP_Enums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
-            ThreadFit.setReadOnly(Threaded.getValue());
-            Diameter.setReadOnly(true);
-            ModelThread.setReadOnly(!Threaded.getValue());
-            UseCustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue());
-            CustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue() || !UseCustomThreadClearance.getValue());
-            ThreadDepthType.setReadOnly(!Threaded.getValue());
-            ThreadDepth.setReadOnly(!Threaded.getValue());
+            ThreadFit.setEnums(ClearanceMetricEnums);
         }
         else if (type == "NPT") {
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_NPT_Enums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
-            ThreadFit.setReadOnly(Threaded.getValue());
-            Diameter.setReadOnly(true);
-            ModelThread.setReadOnly(!Threaded.getValue());
-            UseCustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue());
-            CustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue() || !UseCustomThreadClearance.getValue());
-            ThreadDepthType.setReadOnly(!Threaded.getValue());
-            ThreadDepth.setReadOnly(!Threaded.getValue());
+            ThreadFit.setEnums(ClearanceUTSEnums);
         }
         else if (type == "BSW") {
             ThreadClass.setEnums(ThreadClass_BSW_Enums);
             HoleCutType.setEnums(HoleCutType_BSW_Enums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
-            ThreadFit.setReadOnly(Threaded.getValue());
-            Diameter.setReadOnly(true);
-            ModelThread.setReadOnly(!Threaded.getValue());
-            UseCustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue());
-            CustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue() || !UseCustomThreadClearance.getValue());
-            ThreadDepthType.setReadOnly(!Threaded.getValue());
-            ThreadDepth.setReadOnly(!Threaded.getValue());
+            ThreadFit.setEnums(ClearanceOtherEnums);
         }
         else if (type == "BSF") {
             ThreadClass.setEnums(ThreadClass_BSF_Enums);
             HoleCutType.setEnums(HoleCutType_BSF_Enums);
-            Threaded.setReadOnly(false);
-            ThreadSize.setReadOnly(false);
-            ThreadFit.setReadOnly(Threaded.getValue());
-            Diameter.setReadOnly(true);
-            ModelThread.setReadOnly(!Threaded.getValue());
-            UseCustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue());
-            CustomThreadClearance.setReadOnly(!Threaded.getValue() || !ModelThread.getValue() || !UseCustomThreadClearance.getValue());
-            ThreadDepthType.setReadOnly(!Threaded.getValue());
-            ThreadDepth.setReadOnly(!Threaded.getValue());
+            ThreadFit.setEnums(ClearanceOtherEnums);
+        }
+        else if (type == "ISOTyre") {
+            ThreadClass.setEnums(ThreadClass_None_Enums);
+            HoleCutType.setEnums(HoleCutType_None_Enums);
         }
 
+        bool isNone = type == "None";
+        bool isThreaded = Threaded.getValue();
+
+        Diameter.setReadOnly(!isNone);
+        Threaded.setReadOnly(isNone);
+        ThreadSize.setReadOnly(isNone);
+        ThreadFit.setReadOnly(isNone || isThreaded);
+        ThreadClass.setReadOnly(isNone || !isThreaded);
+        ThreadDepthType.setReadOnly(isNone || !isThreaded);
+        ThreadDepth.setReadOnly(isNone || !isThreaded);
+        ModelThread.setReadOnly(!isNone && isThreaded);
+        UseCustomThreadClearance.setReadOnly(isNone || !isThreaded || !ModelThread.getValue());
+        CustomThreadClearance.setReadOnly(
+            !UseCustomThreadClearance.getValue()
+            || UseCustomThreadClearance.isReadOnly()
+        );
+
+        std::string holeCutTypeStr;
+        if (HoleCutType.isValid()) {
+            std::string holeCutTypeStr = HoleCutType.getValueAsString();
+        }
         if (holeCutTypeStr == "None") {
             HoleCutCustomValues.setReadOnly(true);
             HoleCutDiameter.setReadOnly(true);
@@ -1639,14 +1657,18 @@ void Hole::onChanged(const App::Property* prop)
         // a changed diameter means we also need to check the hole cut
         // because the hole cut diameter must not be <= than the diameter
         updateHoleCutParams();
+        if (ThreadType.getValue() == 0) {
+            // Profile is None but this is needed to find the closest
+            // designation if the user switch to threaded
+            ThreadDiameter.setValue(Diameter.getValue());
+        }
     }
     else if (prop == &HoleCutType) {
+        // the read-only states are set in updateHoleCutParams()
+        updateHoleCutParams();
         ProfileBased::onChanged(&HoleCutDiameter);
         ProfileBased::onChanged(&HoleCutDepth);
         ProfileBased::onChanged(&HoleCutCountersinkAngle);
-
-        // the read-only states are set in updateHoleCutParams()
-        updateHoleCutParams();
     }
     else if (prop == &HoleCutCustomValues) {
         // when going back to standardized values, we must recalculate
@@ -1654,17 +1676,44 @@ void Hole::onChanged(const App::Property* prop)
         // both an also the read-only states is done in updateHoleCutParams()
         updateHoleCutParams();
     }
+    else if (prop == &HoleCutDiameter || prop == &HoleCutCountersinkAngle) {
+        // Recalculate depth if Countersink
+        const std::string holeCutTypeString = HoleCutType.getValueAsString();
+        const std::string threadTypeString = ThreadType.getValueAsString();
+        if (!(holeCutTypeString == "Countersink"
+            || isDynamicCountersink(threadTypeString, holeCutTypeString))) {
+            return;
+        }
+        auto angle = Base::toRadians(HoleCutCountersinkAngle.getValue());
+        constexpr double fallback = 2.0;
+        constexpr double EPSILON = 1e-6;
+        if (angle <= 0.0 || angle >= std::numbers::pi) {
+            HoleCutDepth.setValue(fallback);
+        } else {
+            double tanHalfAngle = std::tan(angle / 2.0);
+            if (std::abs(tanHalfAngle) < EPSILON) {
+                // Avoid near-zero division
+                HoleCutDepth.setValue(fallback);
+            } else {
+                double diameter = HoleCutDiameter.getValue();
+                HoleCutDepth.setValue((diameter / 2.0) / tanHalfAngle);
+            }
+        }
+        ProfileBased::onChanged(&HoleCutDepth);
+    }
     else if (prop == &DepthType) {
         std::string DepthMode(DepthType.getValueAsString());
-        Depth.setReadOnly(DepthMode != "Dimension");
-        DrillPoint.setReadOnly(DepthMode != "Dimension");
-        DrillPointAngle.setReadOnly(DepthMode != "Dimension");
-        DrillForDepth.setReadOnly(DepthMode != "Dimension");
+        bool isNotDimension = (DepthMode != "Dimension");
+
+        Depth.setReadOnly(isNotDimension);
+        DrillPoint.setReadOnly(isNotDimension);
+        DrillPointAngle.setReadOnly(isNotDimension);
+        DrillForDepth.setReadOnly(isNotDimension);
+
         if (!isRestoring()) {
-            if (DepthMode != "Dimension") {
+            if (isNotDimension) {
                 // if through all, set the depth accordingly
                 Depth.setValue(getThroughAllLength());
-                // the thread depth is not dimension, it is the same as the hole depth
                 ThreadDepth.setValue(getThroughAllLength());
             }
             updateThreadDepthParam();
@@ -1703,6 +1752,19 @@ void Hole::onChanged(const App::Property* prop)
     }
 
     ProfileBased::onChanged(prop);
+}
+void Hole::setupObject()
+{
+    // Set the BaseProfileType to the user defined value
+    // here so that new objects use points, but older files
+    // keep the default value of "Circles and Arcs"
+
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+
+    BaseProfileType.setValue(baseProfileOption_idxToBitmask(hGrp->GetInt("defaultBaseTypeHole", 1)));
+
+    ProfileBased::setupObject();
 }
 
 /**
@@ -1780,7 +1842,8 @@ short Hole::mustExecute() const
         UseCustomThreadClearance.isTouched() ||
         CustomThreadClearance.isTouched() ||
         ThreadDepthType.isTouched() ||
-        ThreadDepth.isTouched()
+        ThreadDepth.isTouched() ||
+        BaseProfileType.isTouched()
         )
         return 1;
     return ProfileBased::mustExecute();
@@ -1816,6 +1879,7 @@ void Hole::updateProps()
     onChanged(&CustomThreadClearance);
     onChanged(&ThreadDepthType);
     onChanged(&ThreadDepth);
+    onChanged(&BaseProfileType);
 }
 
 static gp_Pnt toPnt(gp_Vec dir)
@@ -1825,13 +1889,11 @@ static gp_Pnt toPnt(gp_Vec dir)
 
 App::DocumentObjectExecReturn* Hole::execute()
 {
-     TopoShape profileshape;
-    try {
-        profileshape = getTopoShapeVerifiedFace();
-    }
-    catch (const Base::Exception& e) {
-        return new App::DocumentObjectExecReturn(e.what());
-    }
+    TopoShape profileshape =
+        getProfileShape(  Part::ShapeOption::NeedSubElement
+                        | Part::ShapeOption::ResolveLink
+                        | Part::ShapeOption::Transform
+                        | Part::ShapeOption::DontSimplifyCompound);
 
     // Find the base shape
     TopoShape base;
@@ -1854,16 +1916,13 @@ App::DocumentObjectExecReturn* Hole::execute()
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
         base.move(invObjLoc);
-
-        if (profileshape.isNull())
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Hole error: Creating a face from sketch failed"));
         profileshape.move(invObjLoc);
 
         /* Build the prototype hole */
 
         // Get vector normal to profile
-        Base::Vector3d  SketchVector = getProfileNormal();
+        Base::Vector3d SketchVector = guessNormalDirection(profileshape);
+
         if (Reversed.getValue())
             SketchVector *= -1.0;
 
@@ -2088,10 +2147,10 @@ App::DocumentObjectExecReturn* Hole::execute()
             retry = false;
         } catch (Standard_Failure & e) {
             FC_WARN(getFullName() << ": boolean operation with compound failed ("
-                                  << e.GetMessageString() << "), retry...");
+                                  << e.GetMessageString() << "), retry…");
         } catch (Base::Exception & e)  {
-            FC_WARN(getFullName() << ": boolean operation with compound failed ("
-                                  << e.what() << "), retry...");
+            FC_WARN(getFullName() << ": boolean operation with compound failed (" << e.what()
+                                  << "), retry…");
         }
 
         if (retry) {
@@ -2105,7 +2164,7 @@ App::DocumentObjectExecReturn* Hole::execute()
                     msg += std::to_string(i);
                     return new App::DocumentObjectExecReturn(msg.c_str());
                 } catch (Base::Exception &e) {
-                    e.ReportException();
+                    e.reportException();
                     std::string msg(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed on profile Edge"));
                     msg += std::to_string(i);
                     return new App::DocumentObjectExecReturn(msg.c_str());
@@ -2123,7 +2182,7 @@ App::DocumentObjectExecReturn* Hole::execute()
 
         if (!isSingleSolidRuleSatisfied(result.getShape())) {
             return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+                    QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
         }
         this->Shape.setValue(result);
 
@@ -2199,41 +2258,81 @@ gp_Vec Hole::computePerpendicular(const gp_Vec& zDir) const
     xDir.Normalize();
     return xDir;
 }
+Base::Vector3d Hole::guessNormalDirection(const TopoShape& profileshape) const
+{
+    // If trying to build a hole from a cylinder face
+    // we must try to find the direction ourselves as
+    // getProfileNormal() will try to find the normal to
+    // the middle of the face
+    if (profileshape.hasSubShape(TopAbs_FACE)) {
+        BRepAdaptor_Surface sf(TopoDS::Face(profileshape.getSubShape(TopAbs_FACE, 1)));
+        
+        if (sf.GetType() == GeomAbs_Cylinder) {
+            return Base::convertTo<Base::Vector3d>(sf.Cylinder().Axis().Direction());
+        }
+    }
+
+    return getProfileNormal();
+}
 TopoShape Hole::findHoles(std::vector<TopoShape> &holes,
                           const TopoShape& profileshape,
                           const TopoDS_Shape& protoHole) const
 {
     TopoShape result(0);
 
-    int i = 0;
-    for(const auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
-        ++i;
-        Standard_Real c_start;
-        Standard_Real c_end;
-        TopoDS_Edge edge = TopoDS::Edge(profileEdge.getShape());
-        Handle(Geom_Curve) c = BRep_Tool::Curve(edge, c_start, c_end);
-
-        // Circle?
-        if (c->DynamicType() != STANDARD_TYPE(Geom_Circle))
-            continue;
-
-        Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(c);
-        gp_Pnt loc = circle->Axis().Location();
-
-
+    auto addHole = [&](Part::TopoShape const& baseshape, gp_Pnt loc) {
         gp_Trsf localSketchTransformation;
         localSketchTransformation.SetTranslation( gp_Pnt( 0, 0, 0 ),
                                                   gp_Pnt(loc.X(), loc.Y(), loc.Z()) );
 
         Part::ShapeMapper mapper;
-        mapper.populate(Part::MappingStatus::Modified, profileEdge, TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
+        mapper.populate(Part::MappingStatus::Modified, baseshape, TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
 
         TopoShape hole(-getID());
-        hole.makeShapeWithElementMap(protoHole, mapper, {profileEdge});
+        hole.makeShapeWithElementMap(protoHole, mapper, {baseshape});
 
         // transform and generate element map.
         hole = hole.makeElementTransform(localSketchTransformation);
         holes.push_back(hole);
+    };
+
+    int baseProfileType = BaseProfileType.getValue();
+
+    // Iterate over edges and filter out non-circle/non-arc types
+    if (baseProfileType & BaseProfileTypeOptions::OnCircles ||
+       baseProfileType & BaseProfileTypeOptions::OnArcs) {
+        for (const auto &profileEdge : profileshape.getSubTopoShapes(TopAbs_EDGE)) {
+            TopoDS_Edge edge = TopoDS::Edge(profileEdge.getShape());
+            BRepAdaptor_Curve adaptor(edge);
+
+            // Circle base?
+            if (adaptor.GetType() != GeomAbs_Circle) {
+                continue;
+            }
+            // Filter for circles
+            if (!(baseProfileType & BaseProfileTypeOptions::OnCircles) && adaptor.IsClosed()) {
+                continue;
+            }
+
+            // Filter for arcs
+            if (!(baseProfileType & BaseProfileTypeOptions::OnArcs) && !adaptor.IsClosed()) {
+                continue;
+            }
+
+            gp_Circ circle = adaptor.Circle();
+            addHole(profileEdge, circle.Axis().Location());
+        }
+    }
+
+    // To avoid breaking older files which where not made with
+    // holes on points
+    if (baseProfileType & BaseProfileTypeOptions::OnPoints) {
+        // Iterate over vertices while avoiding edges so that curve handles are ignored
+        for (const auto &profileVertex : profileshape.getSubTopoShapes(TopAbs_VERTEX, TopAbs_EDGE)) {
+            TopoDS_Vertex vertex = TopoDS::Vertex(profileVertex.getShape());
+
+            addHole(profileVertex, BRep_Tool::Pnt(vertex));
+        }
     }
     return TopoShape().makeElementCompound(holes);
 }
@@ -2283,7 +2382,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
         //      | base-sharpV             Rmaj     H
 
         // the little adjustment of p1 and p4 is here to prevent coincidencies
-        double marginX = std::tan(62.5 * M_PI / 180.0) * marginZ;
+        double marginX = std::tan(Base::toRadians(62.5)) * marginZ;
 
         gp_Pnt p1 = toPnt(
             (RmajC - 5 * H / 6 + marginX) * xDir
@@ -2320,7 +2419,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
         //       | base-sharpV    Rmaj
 
         // the little adjustment of p1 and p4 is here to prevent coincidencies
-        double marginX = std::tan(60.0 * M_PI / 180.0) * marginZ;
+        double marginX = std::tan(Base::toRadians(60.0)) * marginZ;
         gp_Pnt p1 = toPnt(
             (RmajC - h + marginX) * xDir
             + marginZ * zDir
@@ -2333,7 +2432,13 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
         );
 
         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
-        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p2, p3).Edge());
+        if (threadTypeStr == "ISOTyre") {
+            gp_Pnt crest = toPnt((RmajC + (Pitch / 32)) * xDir + Pitch / 2 * zDir);
+            Handle(Geom_TrimmedCurve) arc1 = GC_MakeArcOfCircle(p2, crest, p3).Value();
+            mkThreadWire.Add(BRepBuilderAPI_MakeEdge(arc1).Edge());
+        } else {
+            mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p2, p3).Edge());
+        }
         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p3, p4).Edge());
         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p1).Edge());
     }
@@ -2382,7 +2487,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
 
     // Reverse the direction of the helix. So that it goes into the material
     gp_Trsf mov;
-    mov.SetRotation(gp_Ax1(origo, dir_axis2), M_PI);
+    mov.SetRotation(gp_Ax1(origo, dir_axis2), std::numbers::pi);
     TopLoc_Location loc1(mov);
     helix.Move(loc1);
 
@@ -2481,6 +2586,28 @@ bool Hole::isDynamicCountersink(const std::string& thread,
 
 const Hole::CounterBoreDimension Hole::CounterBoreDimension::nothing{ "None", 0.0, 0.0 };
 const Hole::CounterSinkDimension Hole::CounterSinkDimension::nothing{ "None", 0.0 };
+
+void Hole::calculateAndSetCounterbore()
+{
+    // estimate a reasonable value since it's not on the standard
+    double threadDiameter = Diameter.getValue();
+    double dk = (1.5 * threadDiameter) + 1.0;
+    double k = threadDiameter;
+
+    HoleCutDiameter.setValue(dk);
+    HoleCutDepth.setValue(k);
+}
+
+void Hole::calculateAndSetCountersink()
+{
+    // estimate a reasonable value since it's not on the standard
+    double threadDiameter = Diameter.getValue();
+    double dk = 2.24 * threadDiameter;
+
+    HoleCutDiameter.setValue(dk);
+    ProfileBased::onChanged(&HoleCutDiameter);
+}
+
 
 Hole::CutDimensionKey::CutDimensionKey(const std::string& t, const std::string& c) :
     thread_type{ t }, cut_name{ c }
@@ -2607,4 +2734,39 @@ void Hole::readCutDefinitions()
     }
 }
 
+int Hole::baseProfileOption_idxToBitmask(int index)
+{
+    // Translate combobox index to bitmask value
+    // More options could be made available
+    if (index == 0) {
+        return PartDesign::Hole::BaseProfileTypeOptions::OnCirclesArcs;
+    }
+    if (index == 1) {
+        return PartDesign::Hole::BaseProfileTypeOptions::OnPointsCirclesArcs;
+    }
+     if (index == 2) {
+        return PartDesign::Hole::BaseProfileTypeOptions::OnPoints;
+    }
+    Base::Console().error("Unexpected hole base profile combobox index: %i", index);
+    return 0;
+}
+int Hole::baseProfileOption_bitmaskToIdx(int bitmask)
+{
+    if (bitmask == PartDesign::Hole::BaseProfileTypeOptions::OnCirclesArcs) {
+        return 0;
+    }
+    if (bitmask == PartDesign::Hole::BaseProfileTypeOptions::OnPointsCirclesArcs) {
+        return 1;
+    }
+    if (bitmask == PartDesign::Hole::BaseProfileTypeOptions::OnPoints) {
+        return 2;
+    }
+
+    Base::Console().error("Unexpected hole base profile bitmask: %i", bitmask);
+    return -1;
+}
+
+
 } // namespace PartDesign
+
+

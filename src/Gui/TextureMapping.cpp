@@ -65,7 +65,7 @@ TextureMapping::TextureMapping(QWidget* parent, Qt::WindowFlags fl)
     QStringList formats;
     QList<QByteArray> qtformats = QImageReader::supportedImageFormats();
     for (const auto & it : qtformats) {
-        formats << QString::fromLatin1("*.%1").arg(QLatin1String(it));
+        formats << QStringLiteral("*.%1").arg(QLatin1String(it));
     }
 
     ui->fileChooser->setFilter(tr("Image files (%1)").arg(formats.join(QLatin1String(" "))));
@@ -142,14 +142,13 @@ void TextureMapping::onFileChooserFileNameSelected(const QString& s)
     if (!this->grp) {
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
-            Gui::MDIView* mdi = doc->getActiveView();
-            if (mdi && mdi->isDerivedFrom<View3DInventor>()) {
-                Gui::View3DInventorViewer* view = static_cast<View3DInventor*>(mdi)->getViewer();
-                this->grp = static_cast<SoGroup *>(view->getSceneGraph());
+            auto view = qobject_cast<View3DInventor*>(doc->getActiveView());
+            if (view) {
+                this->grp = static_cast<SoGroup*>(view->getViewer()->getSceneGraph());
                 this->grp->ref();
-                this->grp->insertChild(this->tex,1);
+                this->grp->insertChild(this->tex, 1);
                 if (ui->checkEnv->isChecked())
-                    this->grp->insertChild(this->env,2);
+                    this->grp->insertChild(this->env, 2);
             }
         }
     }

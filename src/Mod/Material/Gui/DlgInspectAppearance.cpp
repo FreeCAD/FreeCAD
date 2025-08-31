@@ -39,7 +39,7 @@
 
 using namespace MatGui;
 
-ColorWidget::ColorWidget(const App::Color& color, QWidget* parent)
+ColorWidget::ColorWidget(const Base::Color& color, QWidget* parent)
     : QWidget(parent)
 {
     _color = color.asValue<QColor>();
@@ -151,7 +151,7 @@ void DlgInspectAppearance::update(std::vector<Gui::ViewProvider*>& views)
                 ui->editObjectLabel->setText(QString::fromUtf8(labelProp->getValue()));
             }
             else {
-                ui->editObjectLabel->setText(QLatin1String(""));
+                ui->editObjectLabel->setText(QStringLiteral(""));
             }
             ui->editObjectName->setText(QLatin1String(obj->getNameInDocument()));
 
@@ -162,15 +162,15 @@ void DlgInspectAppearance::update(std::vector<Gui::ViewProvider*>& views)
                     ui->editSubShape->setText(QString::fromStdString(subObject.getSubNames()[0]));
                 }
                 else {
-                    ui->editSubShape->setText(QLatin1String(""));
+                    ui->editSubShape->setText(QStringLiteral(""));
                 }
             }
             else {
-                ui->editSubShape->setText(QLatin1String(""));
+                ui->editSubShape->setText(QStringLiteral(""));
             }
 
             auto subShapeType = QString::fromUtf8(obj->getTypeId().getName());
-            subShapeType.remove(subShapeType.indexOf(QLatin1String("::")), subShapeType.size());
+            subShapeType.remove(subShapeType.indexOf(QStringLiteral("::")), subShapeType.size());
             ui->editSubShapeType->setText(subShapeType);
             ui->editShapeType->setText(QString::fromUtf8(obj->getTypeId().getName()));
 
@@ -199,7 +199,7 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
 
     int row = 0;
     auto* labelDiffuse = new QLabel();
-    labelDiffuse->setText(tr("Diffuse Color"));
+    labelDiffuse->setText(tr("Diffuse color"));
     auto* colorDiffuse = new ColorWidget(material.diffuseColor);
     colorDiffuse->setMaximumHeight(23);
 
@@ -208,7 +208,7 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
     row += 1;
 
     auto* labelAmbient = new QLabel();
-    labelAmbient->setText(tr("Ambient Color"));
+    labelAmbient->setText(tr("Ambient color"));
     auto* colorAmbient = new ColorWidget(material.ambientColor);
     colorAmbient->setMaximumHeight(23);
 
@@ -217,7 +217,7 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
     row += 1;
 
     auto* labelEmissive = new QLabel();
-    labelEmissive->setText(tr("Emissive Color"));
+    labelEmissive->setText(tr("Emissive color"));
     auto* colorEmissive = new ColorWidget(material.emissiveColor);
     colorEmissive->setMaximumHeight(23);
 
@@ -226,7 +226,7 @@ QWidget* DlgInspectAppearance::makeAppearanceTab(const App::Material& material)
     row += 1;
 
     auto* labelSpecular = new QLabel();
-    labelSpecular->setText(tr("Specular Color"));
+    labelSpecular->setText(tr("Specular color"));
     auto* colorSpecular = new ColorWidget(material.specularColor);
     colorSpecular->setMaximumHeight(23);
 

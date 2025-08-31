@@ -36,13 +36,8 @@
 #include <cstdio>
 #include <cassert>
 #include <ctime>
-#include <cfloat>
 #include <chrono>
-#ifdef FC_OS_WIN32
-#define _USE_MATH_DEFINES
-#endif  // FC_OS_WIN32
 #include <cmath>
-#include <climits>
 #include <codecvt>
 
 #ifdef FC_OS_WIN32
@@ -61,23 +56,26 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <sys/stat.h>
-#include <limits.h>
 #endif
 
 // STL
-#include <string>
-#include <string_view>
+#include <algorithm>
+#include <bitset>
+#include <iomanip>
 #include <list>
+#include <limits>
 #include <map>
-#include <unordered_map>
-#include <vector>
-#include <set>
-#include <stack>
-#include <queue>
 #include <memory>
 #include <mutex>
-#include <bitset>
-#include <algorithm>
+#include <new>
+#include <numbers>
+#include <queue>
+#include <set>
+#include <stack>
+#include <string>
+#include <string_view>
+#include <unordered_map>
+#include <vector>
 
 // streams
 #include <iostream>
@@ -85,42 +83,43 @@
 #include <sstream>
 
 // Xerces
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/util/XercesVersion.hpp>
 #include <xercesc/dom/DOM.hpp>
-#include <xercesc/dom/DOMImplementation.hpp>
-#include <xercesc/dom/DOMImplementationLS.hpp>
 #include <xercesc/dom/DOMDocument.hpp>
 #include <xercesc/dom/DOMElement.hpp>
+#include <xercesc/dom/DOMImplementation.hpp>
+#include <xercesc/dom/DOMImplementationLS.hpp>
 #include <xercesc/dom/DOMText.hpp>
-#include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 #include <xercesc/framework/LocalFileInputSource.hpp>
 #include <xercesc/framework/MemBufFormatTarget.hpp>
 #include <xercesc/framework/MemBufInputSource.hpp>
+#include <xercesc/framework/MemoryManager.hpp>
+#include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
-#include <xercesc/util/XMLUni.hpp>
-#include <xercesc/util/XMLUniDefs.hpp>
-#include <xercesc/util/XMLString.hpp>
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/sax/SAXParseException.hpp>
+#include <xercesc/sax/EntityResolver.hpp>
 #include <xercesc/sax/ErrorHandler.hpp>
-#include <xercesc/sax/SAXParseException.hpp>
 #include <xercesc/sax/SAXException.hpp>
+#include <xercesc/sax/SAXParseException.hpp>
 #include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/DefaultHandler.hpp>
-#include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/SAX2XMLReader.hpp>
 #include <xercesc/sax2/XMLReaderFactory.hpp>
+#include <xercesc/util/OutOfMemoryException.hpp>
+#include <xercesc/util/PlatformUtils.hpp>
+#include <xercesc/util/XMLString.hpp>
+#include <xercesc/util/XMLUni.hpp>
+#include <xercesc/util/XMLUniDefs.hpp>
+#include <xercesc/util/XercesVersion.hpp>
 
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/exception.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/regex.hpp>
 #include <boost/tokenizer.hpp>
+
+// Unicode
+#include <unicode/unistr.h>
+#include <unicode/uchar.h>
 
 // QtCore
 #include <QBuffer>
@@ -135,6 +134,7 @@
 #include <QReadLocker>
 #include <QReadWriteLock>
 #include <QTime>
+#include <QTimeZone>
 #include <QUuid>
 
 

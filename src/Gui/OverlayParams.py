@@ -99,7 +99,7 @@ class ParamAnimationCurve(ParamProxy):
 
 Params = [
     ParamBool('DockOverlayAutoView', True, on_change=True, title="Auto hide in non 3D view"),
-    ParamInt('DockOverlayDelay', 200, "Overlay dock (re),layout delay.", title="Layout delay", proxy=ParamSpinBox(0, 5000, 100, suffix=" ms")),
+    ParamInt('DockOverlayDelay', 200, "Overlay layout delay", title="Layout delay", proxy=ParamSpinBox(0, 5000, 100, suffix=" ms")),
     ParamInt('DockOverlayRevealDelay', 2000),
     ParamInt('DockOverlaySplitterHandleTimeout', 0, title="Splitter auto hide delay", proxy=ParamSpinBox(0, 99999, 100, suffix=" ms"),
          doc="Overlay splitter handle auto hide delay. Set zero to disable auto hiding."),
@@ -109,7 +109,7 @@ Params = [
     ParamBool('DockOverlayAutoMouseThrough', True,
          "Auto mouse click through transparent part of dock overlay.", title="Auto mouse pass through"),
     ParamBool('DockOverlayWheelPassThrough', True,
-         "Auto pass through mouse wheel event on transparent dock overlay.", title="Auto mouse wheel pass through"),
+         "Automatically passes mouse wheel events through the transparent areas of an overlay panel", title="Auto mouse wheel pass through"),
     ParamInt('DockOverlayWheelDelay', 1000, title="Delay mouse wheel pass through", proxy=ParamSpinBox(0, 99999, 1, suffix=" ms"),
          doc="Delay capturing mouse wheel event for passing through if it is\n"
               "previously handled by other widget."),

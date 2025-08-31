@@ -45,9 +45,9 @@ using namespace TechDraw;
 using DU = DrawUtil;
 
 QGITile::QGITile(TechDraw::DrawTileWeld* dtw) :
-    m_textL(QString::fromUtf8(" ")),
-    m_textR(QString::fromUtf8(" ")),
-    m_textC(QString::fromUtf8(" ")),
+    m_textL(QStringLiteral(" ")),
+    m_textR(QStringLiteral(" ")),
+    m_textC(QStringLiteral(" ")),
     m_scale(1.0),
     m_row(0),
     m_col(0),
@@ -84,7 +84,6 @@ QGITile::QGITile(TechDraw::DrawTileWeld* dtw) :
     setFlag(QGraphicsItem::ItemStacksBehindParent, true);
 
     m_colNormal = prefNormalColor();
-    m_colCurrent = m_colNormal;
 }
 
 
@@ -100,7 +99,6 @@ void QGITile::draw()
 
 void QGITile::makeSymbol()
 {
-//    m_effect->setColor(m_colCurrent);
 //    m_qgSvg->setGraphicsEffect(m_effect);
 
     std::string symbolString = getStringFromFile(m_tileFeat->SymbolFile.getValue());
@@ -109,7 +107,7 @@ void QGITile::makeSymbol()
         return;
     }
     if (!m_qgSvg->load(&qba)) {
-        Base::Console().Error("Error - Could not load SVG renderer with **%s**\n", qPrintable(m_svgPath));
+        Base::Console().error("Error - Could not load SVG renderer with **%s**\n", qPrintable(m_svgPath));
         return;
    }
    m_qgSvg->setScale(getSymbolFactor());
@@ -123,7 +121,6 @@ void QGITile::makeText()
 
     m_qgTextL->setFont(m_font);
     m_qgTextL->setPlainText(m_textL);
-    m_qgTextL->setColor(m_colCurrent);
     double textWidth = m_qgTextL->boundingRect().width();
     double charWidth = textWidth / m_textL.size();   //not good for non-ASCII chars
     double hMargin = 1;
@@ -148,7 +145,6 @@ void QGITile::makeText()
 
     m_qgTextR->setFont(m_font);
     m_qgTextR->setPlainText(m_textR);
-    m_qgTextR->setColor(m_colCurrent);
     textWidth = m_qgTextR->boundingRect().width();
     charWidth = textWidth / m_textR.size();
     hMargin = 1;
@@ -165,7 +161,6 @@ void QGITile::makeText()
 
     m_qgTextC->setFont(m_font);
     m_qgTextC->setPlainText(m_textC);
-    m_qgTextC->setColor(m_colCurrent);
     double textHeightC = m_qgTextC->boundingRect().height();
     if (m_row < 0) {                      // below line
         vOffset = m_high  * (1 + verticalFudge);
@@ -235,8 +230,6 @@ void QGITile::setSymbolFile(const std::string &fileSpec)
 }
 
 void QGITile::setPrettyNormal() {
-    m_colCurrent = m_colNormal;
-
 //    m_effect->setColor(m_colNormal);
     m_qgTextL->setColor(m_colNormal);
     m_qgTextR->setColor(m_colNormal);
@@ -246,23 +239,23 @@ void QGITile::setPrettyNormal() {
 }
 
 void QGITile::setPrettyPre() {
-    m_colCurrent = prefPreColor();
+    QColor color = prefPreColor();
 
-//    m_effect->setColor(m_colCurrent);
-    m_qgTextL->setColor(m_colCurrent);
-    m_qgTextR->setColor(m_colCurrent);
-    m_qgTextC->setColor(m_colCurrent);
+//    m_effect->setColor(color);
+    m_qgTextL->setColor(color);
+    m_qgTextR->setColor(color);
+    m_qgTextC->setColor(color);
 
     draw();
 }
 
 void QGITile::setPrettySel() {
-    m_colCurrent = prefSelectColor();
+    QColor color = prefSelectColor();
 
-//    m_effect->setColor(m_colCurrent);
-    m_qgTextL->setColor(m_colCurrent);
-    m_qgTextR->setColor(m_colCurrent);
-    m_qgTextC->setColor(m_colCurrent);
+//    m_effect->setColor(color);
+    m_qgTextL->setColor(color);
+    m_qgTextR->setColor(color);
+    m_qgTextC->setColor(color);
 
     draw();
 }
@@ -280,7 +273,7 @@ bool QGITile::getAltWeld() const
 //TODO: this is Pen, not Brush. sb Brush to colour background
 QColor QGITile::getTileColor() const
 {
-    App::Color fcColor = App::Color((uint32_t) Preferences::getPreferenceGroup("Colors")->GetUnsigned("TileColor", 0x00000000));
+    Base::Color fcColor = Base::Color((uint32_t) Preferences::getPreferenceGroup("Colors")->GetUnsigned("TileColor", 0x00000000));
     return PreferencesGui::getAccessibleQColor( fcColor.asValue<QColor>());
 }
 

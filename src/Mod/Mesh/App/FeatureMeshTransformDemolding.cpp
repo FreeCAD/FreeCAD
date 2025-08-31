@@ -40,7 +40,7 @@ TransformDemolding::TransformDemolding()
 
 App::DocumentObjectExecReturn* TransformDemolding::execute()
 { /*
-  Feature *pcFirst  = dynamic_cast<Feature*>(Source.getValue());
+  Feature *pcFirst  = freecad_cast<Feature*>(Source.getValue());
   if (!pcFirst || pcFirst->isError())
       return new App::DocumentObjectExecReturn("Unknown Error");
 

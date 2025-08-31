@@ -71,7 +71,7 @@ bool Property::hasName() const
 
 bool Property::isValidName(const char* name)
 {
-    return name && name[0] != '\0';
+    return !Base::Tools::isNullOrEmpty(name);
 }
 
 std::string Property::getFullName() const
@@ -159,9 +159,9 @@ const char* Property::getDocumentation() const
     return father->getPropertyDocumentation(this);
 }
 
-void Property::setContainer(PropertyContainer* Father)
+void Property::setContainer(PropertyContainer* father)
 {
-    father = Father;
+    this->father = father;
 }
 
 void Property::setPathValue(const ObjectIdentifier& path, const boost::any& value)

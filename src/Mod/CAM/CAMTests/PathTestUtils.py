@@ -21,10 +21,20 @@
 # ***************************************************************************
 
 import FreeCAD
+import os
 import Part
 import Path
 import math
+import pathlib
 import unittest
+from Path.Tool.assets import AssetManager, MemoryStore, DummyAssetSerializer
+from Path.Tool.library.serializers import FCTLSerializer
+from Path.Tool.toolbit.serializers import FCTBSerializer
+from Path.Tool.camassets import ensure_assets_initialized, ensure_toolbitshape_assets_present
+from Path.Tool.library import Library
+from Path.Tool.toolbit import ToolBit
+from Path.Tool.shape import ToolBitShape
+from Path.Tool.shape.models.icon import ToolBitShapeSvgIcon, ToolBitShapePngIcon
 
 from FreeCAD import Vector
 
@@ -196,3 +206,44 @@ class PathTestBase(unittest.TestCase):
         failed_objects = [o.Name for o in objs if "Invalid" in o.State]
         if len(failed_objects) > 0:
             self.fail(msg or f"Recompute failed for {failed_objects}")
+
+
+class PathTestWithAssets(PathTestBase):
+    """
+    A base class that creates an AssetManager, so tests can easily fetch
+    test data. Examples:
+
+        toolbit = self.assets.get("toolbit://ballend")
+        toolbit = self.assets.get("toolbitshape://chamfer")
+    """
+
+    __tool_dir = pathlib.Path(os.path.realpath(__file__)).parent.parent / "Tools"
+
+    def setUp(self):
+        # Set up the manager with an in-memory store.
+        self.assets: AssetManager = AssetManager()
+        self.asset_store: MemoryStore = MemoryStore("local")
+        self.assets.register_store(self.asset_store)
+
+        # Register some asset classes.
+        self.assets.register_asset(Library, FCTLSerializer)
+        self.assets.register_asset(ToolBit, FCTBSerializer)
+        self.assets.register_asset(ToolBitShape, DummyAssetSerializer)
+        self.assets.register_asset(ToolBitShapeSvgIcon, DummyAssetSerializer)
+        self.assets.register_asset(ToolBitShapePngIcon, DummyAssetSerializer)
+
+        # Include the built-in assets from src/Mod/CAM/Tools.
+        # These functions only copy if there are no assets, so this
+        # must be done BEFORE adding the additional test assets below.
+        ensure_toolbitshape_assets_present(self.assets, self.asset_store.name)
+        ensure_assets_initialized(self.assets, self.asset_store.name)
+
+        # Additional test assets.
+        for path in pathlib.Path(self.__tool_dir / "Bit").glob("*.fctb"):
+            self.assets.add_file("toolbit", path)
+        for path in pathlib.Path(self.__tool_dir / "Shape").glob("*.fcstd"):
+            self.assets.add_file("toolbitshape", path)
+
+    def tearDown(self):
+        del self.assets
+        del self.asset_store

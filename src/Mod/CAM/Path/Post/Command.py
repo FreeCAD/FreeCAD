@@ -21,7 +21,7 @@
 # ***************************************************************************
 
 """Post Process command that will make use of the Output File and Post
-Processor entries in PathJob """
+Processor entries in PathJob"""
 
 
 import FreeCAD
@@ -108,7 +108,7 @@ class CommandPathPost:
             "Pixmap": "CAM_Post",
             "MenuText": QT_TRANSLATE_NOOP("CAM_Post", "Post Process"),
             "Accel": "P, P",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Post", "Post Process the selected Job"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Post", "Post Processes the selected job"),
         }
 
     def IsActive(self):
@@ -122,6 +122,34 @@ class CommandPathPost:
         return self.candidate is not None
 
     def _write_file(self, filename, gcode, policy):
+        #
+        # Up to this point the postprocessors have been using "\n" as the end-of-line
+        # characters in the gcode and using the process of writing out the file as a way
+        # to convert the "\n" into whatever end-of-line characters match the system
+        # running the postprocessor.  This can be a problem if the controller which will
+        # run the gcode doesn't like the same end-of-line characters as the system that
+        # ran the postprocessor to generate the gcode.
+        # The refactored code base now allows for four possible types of end-of-line
+        # characters in the gcode.
+        #
+        if len(gcode) > 1 and gcode[0:2] == "\n\n":
+            # The gcode shouldn't normally start with "\n\n".
+            # This means that the gcode contains "\n" as the end-of-line characters and
+            # that the gcode should be written out exactly that way.
+            newline_handling = ""
+            gcode = gcode[2:]
+        elif "\r" in gcode:
+            # Write out the gcode with whatever end-of-line characters it already has,
+            # presumably either "\r" or "\r\n".
+            newline_handling = ""
+        else:
+            # The gcode is assumed to contain "\n" as the end-of-line characters (if
+            # there are any end-of-line characters in the gcode).  This case also
+            # handles a zero-length gcode string.
+            # Write out the gcode but convert "\n" to whatever the system uses.
+            # This is also backwards compatible with the "previous" way of doing things.
+            newline_handling = None
+
         if policy == "Open File Dialog":
             dlg = QtGui.QFileDialog()
             dlg.setFileMode(QtGui.QFileDialog.FileMode.AnyFile)
@@ -131,7 +159,7 @@ class CommandPathPost:
             if dlg.exec_():
                 filename = dlg.selectedFiles()[0]
                 Path.Log.debug(filename)
-                with open(filename, "w") as f:
+                with open(filename, "w", encoding="utf-8", newline=newline_handling) as f:
                     f.write(gcode)
             else:
                 return
@@ -140,7 +168,7 @@ class CommandPathPost:
             while os.path.isfile(filename):
                 base, ext = os.path.splitext(filename)
                 filename = f"{base}-1{ext}"
-            with open(filename, "w") as f:
+            with open(filename, "w", encoding="utf-8", newline=newline_handling) as f:
                 f.write(gcode)
 
         elif policy == "Open File Dialog on conflict":
@@ -153,16 +181,16 @@ class CommandPathPost:
                 if dlg.exec_():
                     filename = dlg.selectedFiles()[0]
                     Path.Log.debug(filename)
-                    with open(filename, "w") as f:
+                    with open(filename, "w", encoding="utf-8", newline=newline_handling) as f:
                         f.write(gcode)
                 else:
                     return
             else:
-                with open(filename, "w") as f:
+                with open(filename, "w", encoding="utf-8", newline=newline_handling) as f:
                     f.write(gcode)
 
         else:  # Overwrite
-            with open(filename, "w") as f:
+            with open(filename, "w", encoding="utf-8", newline=newline_handling) as f:
                 f.write(gcode)
 
         FreeCAD.Console.PrintMessage(f"File written to {filename}\n")
@@ -186,6 +214,8 @@ class CommandPathPost:
         postprocessor = PostProcessorFactory.get_post_processor(self.candidate, postprocessor_name)
 
         post_data = postprocessor.export()
+        # None is returned if there was an error during argument processing
+        # otherwise the "usual" post_data data structure is returned.
         if not post_data:
             FreeCAD.ActiveDocument.abortTransaction()
             return
@@ -203,8 +233,26 @@ class CommandPathPost:
             generator.set_subpartname(subpart)
             fname = next(generated_filename)
 
-            # write the results to the file
-            self._write_file(fname, gcode, policy)
+            #
+            # It is useful for a postprocessor to be able to either skip writing out
+            # a file or write out a zero-length file to indicate that something unusual
+            # has happened.  The "gcode" variable is usually a string containing gcode
+            # formatted for output.  If the gcode string is zero length then a zero
+            # length file will be written out.  If the "gcode" variable contains None
+            # instead, that indicates that the postprocessor doesn't want a file to be
+            # written at all.
+            #
+            # There is at least one old-style postprocessor that currently puts the
+            # gcode file out to a file server and doesn't need to write out a file to
+            # the system where FreeCAD is running.  In the old-style postprocessors the
+            # postprocessor code decided whether to write out a file.  Eventually a
+            # newer (more object-oriented) version of that postprocessor will return
+            # None for the "gcode" variable value to tell this code not to write out
+            # a file.  There may be other uses found for this capability over time.
+            #
+            if gcode is not None:
+                # write the results to the file
+                self._write_file(fname, gcode, policy)
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -214,4 +262,4 @@ if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_Post", CommandPathPost())
 
-FreeCAD.Console.PrintLog("Loading PathPost... done\n")
+FreeCAD.Console.PrintLog("Loading PathPost… done\n")

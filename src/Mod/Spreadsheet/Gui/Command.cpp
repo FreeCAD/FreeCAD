@@ -58,8 +58,8 @@ CmdSpreadsheetMergeCells::CmdSpreadsheetMergeCells()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("&Merge cells");
-    sToolTipText = QT_TR_NOOP("Merge selected cells");
+    sMenuText = QT_TR_NOOP("&Merge Cells");
+    sToolTipText = QT_TR_NOOP("Merges the selected cells");
     sWhatsThis = "Spreadsheet_MergeCells";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetMergeCells";
@@ -71,7 +71,7 @@ void CmdSpreadsheetMergeCells::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -101,7 +101,7 @@ bool CmdSpreadsheetMergeCells::isActive()
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             return (sheetView->selectedIndexesRaw().size() > 1);
@@ -119,8 +119,8 @@ CmdSpreadsheetSplitCell::CmdSpreadsheetSplitCell()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Sp&lit cell");
-    sToolTipText = QT_TR_NOOP("Split previously merged cells");
+    sMenuText = QT_TR_NOOP("Sp&lit Cell");
+    sToolTipText = QT_TR_NOOP("Splits a previously merged cell");
     sWhatsThis = "Spreadsheet_SplitCell";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetSplitCell";
@@ -132,7 +132,7 @@ void CmdSpreadsheetSplitCell::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -157,7 +157,7 @@ bool CmdSpreadsheetSplitCell::isActive()
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             QModelIndex current = sheetView->currentIndex();
@@ -181,8 +181,8 @@ CmdSpreadsheetImport::CmdSpreadsheetImport()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("&Import spreadsheet");
-    sToolTipText = QT_TR_NOOP("Import CSV file into spreadsheet");
+    sMenuText = QT_TR_NOOP("&Import Spreadsheet");
+    sToolTipText = QT_TR_NOOP("Imports a CSV file into a new spreadsheet");
     sWhatsThis = "Spreadsheet_Import";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetImport";
@@ -200,9 +200,8 @@ void CmdSpreadsheetImport::activated(int iMsg)
                                                         &selectedFilter);
     if (!fileName.isEmpty()) {
         std::string FeatName = getUniqueObjectName("Spreadsheet");
-        Sheet* sheet = freecad_dynamic_cast<Sheet>(
-            App::GetApplication().getActiveDocument()->addObject("Spreadsheet::Sheet",
-                                                                 FeatName.c_str()));
+        auto* doc = App::GetApplication().getActiveDocument();
+        Sheet* sheet = doc->addObject<Spreadsheet::Sheet>(FeatName.c_str());
         if (sheet) {
             char delim, quote, escape;
             std::string errMsg = "Import";
@@ -213,7 +212,7 @@ void CmdSpreadsheetImport::activated(int iMsg)
                 sheet->execute();
             }
             else {
-                Base::Console().Error(errMsg.c_str());
+                Base::Console().error(errMsg.c_str());
                 return;
             }
         }
@@ -234,8 +233,8 @@ CmdSpreadsheetExport::CmdSpreadsheetExport()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("&Export spreadsheet");
-    sToolTipText = QT_TR_NOOP("Export spreadsheet to CSV file");
+    sMenuText = QT_TR_NOOP("&Export Spreadsheet");
+    sToolTipText = QT_TR_NOOP("Exports the spreadsheet to a CSV file");
     sWhatsThis = "Spreadsheet_Export";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetExport";
@@ -247,12 +246,12 @@ void CmdSpreadsheetExport::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
             Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sheet);
-            auto* vps = dynamic_cast<ViewProviderSheet*>(vp);
+            auto* vps = freecad_cast<ViewProviderSheet*>(vp);
             if (vps) {
                 vps->exportAsFile();
             }
@@ -264,7 +263,7 @@ bool CmdSpreadsheetExport::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -280,8 +279,8 @@ CmdSpreadsheetAlignLeft::CmdSpreadsheetAlignLeft()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Align &left");
-    sToolTipText = QT_TR_NOOP("Left-align contents of selected cells");
+    sMenuText = QT_TR_NOOP("Align &Left");
+    sToolTipText = QT_TR_NOOP("Aligns cell contents to the left");
     sWhatsThis = "Spreadsheet_AlignLeft";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignLeft";
@@ -293,7 +292,7 @@ void CmdSpreadsheetAlignLeft::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -321,7 +320,7 @@ bool CmdSpreadsheetAlignLeft::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -337,8 +336,8 @@ CmdSpreadsheetAlignCenter::CmdSpreadsheetAlignCenter()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Align &center");
-    sToolTipText = QT_TR_NOOP("Center-align contents of selected cells");
+    sMenuText = QT_TR_NOOP("Align Horizontal &Center");
+    sToolTipText = QT_TR_NOOP("Aligns cell contents to the horizontal center");
     sWhatsThis = "Spreadsheet_AlignCenter";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignCenter";
@@ -350,7 +349,7 @@ void CmdSpreadsheetAlignCenter::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -378,7 +377,7 @@ bool CmdSpreadsheetAlignCenter::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -394,8 +393,8 @@ CmdSpreadsheetAlignRight::CmdSpreadsheetAlignRight()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Align &right");
-    sToolTipText = QT_TR_NOOP("Right-align contents of selected cells");
+    sMenuText = QT_TR_NOOP("Align &Right");
+    sToolTipText = QT_TR_NOOP("Aligns cell contents to the right");
     sWhatsThis = "Spreadsheet_AlignRight";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignRight";
@@ -407,7 +406,7 @@ void CmdSpreadsheetAlignRight::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -435,7 +434,7 @@ bool CmdSpreadsheetAlignRight::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -451,8 +450,8 @@ CmdSpreadsheetAlignTop::CmdSpreadsheetAlignTop()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Align &top");
-    sToolTipText = QT_TR_NOOP("Top-align contents of selected cells");
+    sMenuText = QT_TR_NOOP("Align &Top");
+    sToolTipText = QT_TR_NOOP("Aligns cell contents to the top");
     sWhatsThis = "Spreadsheet_AlignTop";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignTop";
@@ -464,7 +463,7 @@ void CmdSpreadsheetAlignTop::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -492,7 +491,7 @@ bool CmdSpreadsheetAlignTop::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -508,8 +507,8 @@ CmdSpreadsheetAlignBottom::CmdSpreadsheetAlignBottom()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Align &bottom");
-    sToolTipText = QT_TR_NOOP("Bottom-align contents of selected cells");
+    sMenuText = QT_TR_NOOP("Align &Bottom");
+    sToolTipText = QT_TR_NOOP("Aligns cell contents to the bottom");
     sWhatsThis = "Spreadsheet_AlignBottom";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignBottom";
@@ -521,7 +520,7 @@ void CmdSpreadsheetAlignBottom::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -549,7 +548,7 @@ bool CmdSpreadsheetAlignBottom::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -565,8 +564,8 @@ CmdSpreadsheetAlignVCenter::CmdSpreadsheetAlignVCenter()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("&Vertically center-align");
-    sToolTipText = QT_TR_NOOP("Vertically center-align contents of selected cells");
+    sMenuText = QT_TR_NOOP("Align &Vertical Center");
+    sToolTipText = QT_TR_NOOP("Aligns cell contents to the vertical center");
     sWhatsThis = "Spreadsheet_AlignVCenter";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignVCenter";
@@ -578,7 +577,7 @@ void CmdSpreadsheetAlignVCenter::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -606,7 +605,7 @@ bool CmdSpreadsheetAlignVCenter::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -622,8 +621,8 @@ CmdSpreadsheetStyleBold::CmdSpreadsheetStyleBold()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("&Bold text");
-    sToolTipText = QT_TR_NOOP("Set text in selected cells bold");
+    sMenuText = QT_TR_NOOP("&Bold Text");
+    sToolTipText = QT_TR_NOOP("Sets the text in the selected cells bold");
     sWhatsThis = "Spreadsheet_StyleBold";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetStyleBold";
@@ -636,7 +635,7 @@ void CmdSpreadsheetStyleBold::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -690,7 +689,7 @@ bool CmdSpreadsheetStyleBold::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -706,8 +705,8 @@ CmdSpreadsheetStyleItalic::CmdSpreadsheetStyleItalic()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("&Italic text");
-    sToolTipText = QT_TR_NOOP("Set text in selected cells italic");
+    sMenuText = QT_TR_NOOP("&Italic Text");
+    sToolTipText = QT_TR_NOOP("Sets the text in the selected cells italic");
     sWhatsThis = "Spreadsheet_StyleItalic";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetStyleItalic";
@@ -720,7 +719,7 @@ void CmdSpreadsheetStyleItalic::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -774,7 +773,7 @@ bool CmdSpreadsheetStyleItalic::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -790,8 +789,8 @@ CmdSpreadsheetStyleUnderline::CmdSpreadsheetStyleUnderline()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("&Underline text");
-    sToolTipText = QT_TR_NOOP("Underline text in selected cells");
+    sMenuText = QT_TR_NOOP("&Underline Text");
+    sToolTipText = QT_TR_NOOP("Underlines the text in the selected cells");
     sWhatsThis = "Spreadsheet_StyleUnderline";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetStyleUnderline";
@@ -804,7 +803,7 @@ void CmdSpreadsheetStyleUnderline::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -858,7 +857,7 @@ bool CmdSpreadsheetStyleUnderline::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow)) {
+        if (activeWindow && freecad_cast<SpreadsheetGui::SheetView*>(activeWindow)) {
             return true;
         }
     }
@@ -874,8 +873,8 @@ CmdSpreadsheetSetAlias::CmdSpreadsheetSetAlias()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("Set alias");
-    sToolTipText = QT_TR_NOOP("Set alias for selected cell");
+    sMenuText = QT_TR_NOOP("Set Alias");
+    sToolTipText = QT_TR_NOOP("Sets an alias for the selected cell");
     sWhatsThis = "Spreadsheet_SetAlias";
     sStatusTip = sToolTipText;
     sAccel = "Ctrl+Shift+A";
@@ -888,7 +887,7 @@ void CmdSpreadsheetSetAlias::activated(int iMsg)
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
         SpreadsheetGui::SheetView* sheetView =
-            freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+            freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
         if (sheetView) {
             Sheet* sheet = sheetView->getSheet();
@@ -922,7 +921,7 @@ bool CmdSpreadsheetSetAlias::isActive()
 
         if (activeWindow) {
             SpreadsheetGui::SheetView* sheetView =
-                freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
+                freecad_cast<SpreadsheetGui::SheetView*>(activeWindow);
 
             if (sheetView) {
                 QModelIndexList selection = sheetView->selectedIndexes();
@@ -945,8 +944,8 @@ CmdCreateSpreadsheet::CmdCreateSpreadsheet()
 {
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
-    sMenuText = QT_TR_NOOP("&Create spreadsheet");
-    sToolTipText = QT_TR_NOOP("Create a new spreadsheet");
+    sMenuText = QT_TR_NOOP("&New Spreadsheet");
+    sToolTipText = QT_TR_NOOP("Creates a new spreadsheet");
     sWhatsThis = "Spreadsheet_CreateSheet";
     sStatusTip = sToolTipText;
     sPixmap = "Spreadsheet";

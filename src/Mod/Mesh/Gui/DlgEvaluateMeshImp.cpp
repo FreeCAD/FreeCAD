@@ -138,7 +138,7 @@ DlgEvaluateMeshImp::DlgEvaluateMeshImp(QWidget* parent, Qt::WindowFlags fl)
     d->showFoldsFunction(d->enableFoldsCheck);
 
     QPushButton* button = d->ui.buttonBox->button(QDialogButtonBox::Open);
-    button->setText(tr("Settings..."));
+    button->setText(tr("Settings"));
 
     // try to attach to the active document
     this->onRefreshButtonClicked();
@@ -439,9 +439,9 @@ void DlgEvaluateMeshImp::showInformation()
 
     if (d->meshFeature) {
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
-        d->ui.textLabel4->setText(QString::fromLatin1("%1").arg(rMesh.CountFacets()));
-        d->ui.textLabel5->setText(QString::fromLatin1("%1").arg(rMesh.CountEdges()));
-        d->ui.textLabel6->setText(QString::fromLatin1("%1").arg(rMesh.CountPoints()));
+        d->ui.textLabel4->setText(QStringLiteral("%1").arg(rMesh.CountFacets()));
+        d->ui.textLabel5->setText(QStringLiteral("%1").arg(rMesh.CountEdges()));
+        d->ui.textLabel6->setText(QStringLiteral("%1").arg(rMesh.CountPoints()));
     }
 }
 
@@ -1017,7 +1017,7 @@ void DlgEvaluateMeshImp::onAnalyzeSelfIntersectionButtonClicked()
             eval.GetIntersections(intersection);
         }
         catch (const Base::AbortException&) {
-            Base::Console().Message("The self-intersection analysis was aborted by the user\n");
+            Base::Console().message("The self-intersection analysis was aborted by the user\n");
         }
 
         if (intersection.empty()) {
@@ -1176,7 +1176,7 @@ void DlgEvaluateMeshImp::onRepairAllTogetherClicked()
         const char* docName = App::GetApplication().getDocumentName(d->meshFeature->getDocument());
         const char* objName = d->meshFeature->getNameInDocument();
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
-        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Repair mesh"));
+        doc->openCommand(QT_TRANSLATE_NOOP("Command", "Repair Mesh"));
 
         bool run = false;
         bool self = true;
@@ -1278,7 +1278,7 @@ void DlgEvaluateMeshImp::onRepairAllTogetherClicked()
             QMessageBox::warning(this, tr("Mesh repair"), QString::fromLatin1(e.what()));
         }
         catch (...) {
-            QMessageBox::warning(this, tr("Mesh repair"), QString::fromLatin1("Unknown error occurred."));
+            QMessageBox::warning(this, tr("Mesh repair"), QStringLiteral("Unknown error occurred."));
         }
 
         doc->commitCommand();

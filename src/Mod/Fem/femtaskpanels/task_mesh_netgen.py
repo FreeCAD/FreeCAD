@@ -36,10 +36,10 @@ import FreeCADGui
 
 from femmesh import netgentools
 
-from . import base_femmeshtaskpanel
+from . import base_femlogtaskpanel
 
 
-class _TaskPanel(base_femmeshtaskpanel._BaseMeshTaskPanel):
+class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
     """
     The TaskPanel for editing References property of
     MeshNetgen objects and creation of new FEM mesh
@@ -97,10 +97,10 @@ class _TaskPanel(base_femmeshtaskpanel._BaseMeshTaskPanel):
             self.form.pb_get_netgen_version, QtCore.SIGNAL("clicked()"), self.get_version
         )
 
-        self.get_mesh_params()
+        self.get_object_params()
         self.set_widgets()
 
-    def get_mesh_params(self):
+    def get_object_params(self):
         self.min_size = self.obj.MinSize
         self.max_size = self.obj.MaxSize
         self.fineness = self.obj.Fineness
@@ -110,7 +110,7 @@ class _TaskPanel(base_femmeshtaskpanel._BaseMeshTaskPanel):
         self.second_order = self.obj.SecondOrder
         self.user_p = self.get_user_fineness_params(self.obj)
 
-    def set_mesh_params(self):
+    def set_object_params(self):
         self.obj.MinSize = self.min_size
         self.obj.MaxSize = self.max_size
         self.obj.Fineness = self.fineness

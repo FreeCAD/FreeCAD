@@ -145,9 +145,11 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
         prop.append(
             _PropHelper(
                 type="App::PropertySurfaceChargeDensity",
-                name="SurfaceChargeDensity",
+                name="ElectricFluxDensity",
                 group="Parameter",
-                doc="Free surface charge density",
+                doc="Electric displacement field D.\n"
+                + "For interfaces, it represents the difference\n"
+                + "between the normal component in the two media",
                 value="0 C/m^2",
             )
         )
@@ -296,6 +298,15 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
             obj.removeProperty("AV_im_3_Disabled")
             obj.setPropertyStatus("AV_im_Disabled", "-LockDynamic")
             obj.removeProperty("AV_im_Disabled")
+
+        except Base.PropertyError:
+            pass
+
+        # set electric flux density from old surface charge density
+        try:
+            obj.ElectricFluxDensity = obj.getPropertyByName("SurfaceChargeDensity")
+            obj.setPropertyStatus("SurfaceChargeDensity", "-LockDynamic")
+            obj.removeProperty("SurfaceChargeDensity")
 
         except Base.PropertyError:
             pass

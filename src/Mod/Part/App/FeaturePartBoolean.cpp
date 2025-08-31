@@ -116,12 +116,12 @@ App::DocumentObjectExecReturn* Boolean::execute()
         std::vector<TopoShape> shapes;
         shapes.reserve(2);
         // Now, let's get the TopoDS_Shape
-        shapes.push_back(Feature::getTopoShape(Base.getValue()));
+        shapes.push_back(Feature::getTopoShape(Base.getValue(), ShapeOption::ResolveLink | ShapeOption::Transform));
         auto BaseShape = shapes[0].getShape();
         if (BaseShape.IsNull()) {
             throw NullShapeException("Base shape is null");
         }
-        shapes.push_back(Feature::getTopoShape(Tool.getValue()));
+        shapes.push_back(Feature::getTopoShape(Tool.getValue(), ShapeOption::ResolveLink | ShapeOption::Transform));
         auto ToolShape = shapes[1].getShape();
         if (ToolShape.IsNull()) {
             throw NullShapeException("Tool shape is null");

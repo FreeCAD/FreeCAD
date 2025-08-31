@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>555</width>
-    <height>797</height>
+    <height>836</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Texts and dimensions</string>
+   <string>Texts and Dimensions</string>
   </property>
   <layout class="QVBoxLayout">
    <item>
@@ -75,22 +75,20 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
       <item row="0" column="0">
        <widget class="QLabel" name="label_textfont">
         <property name="text">
-         <string>Font name or family</string>
+         <string>Font name</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1" colspan="2">
-       <widget class="Gui::PrefLineEdit" name="lineEdit_textfont">
+       <widget class="Gui::PrefFontBox" name="fontBox_textfont">
+        <property name="minimumSize">
+         <size>
+          <width>280</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="toolTip">
-         <string>The default font for texts, dimensions and labels. It can be a font name such
-as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &quot;mono&quot;, or a family such as
-&quot;Arial,Helvetica,sans&quot;, or a name with a style such as &quot;Arial:Bold&quot;.</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="placeholderText">
-         <string>Internal font</string>
+         <string>The default font for texts, dimensions and labels</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>textfont</cstring>
@@ -99,6 +97,13 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
          <cstring>Mod/Draft</cstring>
         </property>
        </widget>
+      </item>
+      <item row="0" column="3">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </spacer>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_textheight">
@@ -137,13 +142,6 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
          <cstring>Mod/Draft</cstring>
         </property>
        </widget>
-      </item>
-      <item row="1" column="2">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </spacer>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_LineSpacing">
@@ -204,7 +202,7 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>Lines and arrows</string>
+      <string>Lines and Arrows</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0" colspan="3">
@@ -263,14 +261,14 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
        </spacer>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="label_dimsymbol">
+       <widget class="QLabel" name="label_dimsymbolstart">
         <property name="text">
-         <string>Arrow type</string>
+         <string>Start arrow type</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::PrefComboBox" name="comboBox_dimsymbol">
+       <widget class="Gui::PrefComboBox" name="comboBox_dimsymbolstart">
         <property name="minimumSize">
          <size>
           <width>140</width>
@@ -278,10 +276,10 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
          </size>
         </property>
         <property name="toolTip">
-         <string>The default symbol displayed at the ends of dimension lines</string>
+         <string>The default symbol displayed at the start of dimension lines</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>dimsymbol</cstring>
+         <cstring>dimsymbolstart</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>
@@ -311,19 +309,24 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
           <string>Tick-2</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="label_arrowsize">
+       <widget class="QLabel" name="label_arrowsizestart">
         <property name="text">
-         <string>Arrow size</string>
+         <string>Start arrow size</string>
         </property>
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="Gui::PrefUnitSpinBox" name="spinBox_arrowsize">
+       <widget class="Gui::PrefUnitSpinBox" name="spinBox_arrowsizestart">
         <property name="toolTip">
-         <string>The default arrow size</string>
+         <string>The default starting arrow size</string>
         </property>
         <property name="singleStep">
          <double>0.1</double>
@@ -338,7 +341,7 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
          <double>1.0</double>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>arrowsize</cstring>
+         <cstring>arrowsizestart</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>
@@ -346,13 +349,101 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
        </widget>
       </item>
       <item row="4" column="0">
+       <widget class="QLabel" name="label_dimsymbolend">
+        <property name="text">
+         <string>End arrow type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::PrefComboBox" name="comboBox_dimsymbolend">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>The default symbol displayed at the end of dimension lines</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>dimsymbolend</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+        <item>
+         <property name="text">
+          <string>Dot</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Circle</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Arrow</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Tick</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Tick-2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_arrowsizeend">
+        <property name="text">
+         <string>End arrow size</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="Gui::PrefUnitSpinBox" name="spinBox_arrowsizeend">
+        <property name="toolTip">
+         <string>The default ending arrow size</string>
+        </property>
+        <property name="singleStep">
+         <double>0.1</double>
+        </property>
+        <property name="unit" stdset="0">
+         <string>mm</string>
+        </property>
+        <property name="minimum">
+         <double>0.0</double>
+        </property>
+        <property name="rawValue" stdset="0">
+         <double>1.0</double>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>arrowsizeend</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
        <widget class="QLabel" name="label_DefaultAnnoLineColor">
         <property name="text">
          <string>Line and arrow color</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="6" column="1">
        <widget class="Gui::PrefColorButton" name="colorButton_DefaultAnnoLineColor">
         <property name="toolTip">
          <string>The default color for lines and arrows</string>
@@ -495,7 +586,7 @@ or cm, leave blank to use the current unit defined in FreeCAD.</string>
    <item>
     <widget class="QGroupBox" name="groupBox_5">
      <property name="title">
-      <string>Dimension details</string>
+      <string>Dimension Details</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
       <item row="0" column="0">
@@ -637,38 +728,6 @@ used for linear dimensions.</string>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_6">
-     <property name="title">
-      <string>ShapeStrings</string>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_1">
-      <item>
-       <widget class="QLabel" name="label_FontFile">
-        <property name="text">
-         <string>Default ShapeString font file</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Gui::PrefFileChooser" name="fileChooser_FontFile">
-        <property name="filter">
-         <string>Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</string>
-        </property>
-        <property name="toolTip">
-         <string>Select a font file</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>FontFile</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <spacer name="verticalSpacer_1">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -678,7 +737,6 @@ used for linear dimensions.</string>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="30"/>
- <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
    <class>Gui::PrefCheckBox</class>
@@ -693,6 +751,11 @@ used for linear dimensions.</string>
   <customwidget>
    <class>Gui::PrefComboBox</class>
    <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefFontBox</class>
+   <extends>QFontComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>

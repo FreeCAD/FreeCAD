@@ -3,13 +3,7 @@ include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
 )
-link_directories(${OCC_LIBRARY_DIR})
 
 set(Measure_LIBS
     Part
@@ -18,6 +12,9 @@ set(Measure_LIBS
 
 generate_from_xml(MeasurementPy)
 generate_from_xml(MeasureBasePy)
+
+generate_from_py_(MeasurementPy)
+generate_from_py_(MeasureBasePy)
 
 SET(Python_SRCS
     MeasurementPy.xml

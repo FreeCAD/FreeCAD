@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>370</width>
-    <height>508</height>
+    <width>442</width>
+    <height>528</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,7 +25,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>BaseView</string>
+        <string>Base view</string>
        </property>
       </widget>
      </item>
@@ -50,7 +50,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>22</height>
+         <height>24</height>
         </size>
        </property>
       </widget>
@@ -67,7 +67,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>22</height>
+         <height>24</height>
         </size>
        </property>
        <property name="toolTip">
@@ -78,7 +78,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Scale Type</string>
+        <string>Scale type</string>
        </property>
       </widget>
      </item>
@@ -87,7 +87,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>22</height>
+         <height>24</height>
         </size>
        </property>
        <property name="toolTip">
@@ -164,7 +164,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Preset view direction looking up.</string>
+           <string>Preset view direction looking up</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -200,7 +200,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Preset view direction looking down.</string>
+           <string>Preset view direction looking down</string>
           </property>
           <property name="text">
            <string/>
@@ -230,7 +230,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Preset view direction looking left.</string>
+           <string>Preset view direction looking left</string>
           </property>
           <property name="text">
            <string/>
@@ -260,7 +260,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Preset view direction looking right.</string>
+           <string>Preset view direction looking right</string>
           </property>
           <property name="text">
            <string/>
@@ -292,14 +292,55 @@
    <item>
     <widget class="QGroupBox" name="gbPlane">
      <property name="toolTip">
-      <string>Position from the 3D origin of the object in the view</string>
+      <string>Global 3D coordinates defining the shortest distance from the 3D origin to the section plane</string>
      </property>
      <property name="title">
       <string>Section Plane Location</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayoutPlane">
       <item>
-       <layout class="QGridLayout" name="gridLayout_2">
+       <layout class="QGridLayout" name="gridLayout" columnstretch="1,0">
+        <item row="1" column="1">
+         <widget class="Gui::QuantitySpinBox" name="sbOrgY">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_12">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string notr="true">Z</string>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="label_10">
           <property name="sizePolicy">
@@ -319,20 +360,20 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <spacer name="horizontalSpacer_3">
+        <item row="3" column="0">
+         <spacer name="verticalSpacer">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>40</width>
-            <height>20</height>
+            <width>20</width>
+            <height>40</height>
            </size>
           </property>
          </spacer>
         </item>
-        <item row="0" column="2">
+        <item row="0" column="1">
          <widget class="Gui::QuantitySpinBox" name="sbOrgX">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -343,7 +384,7 @@
           <property name="minimumSize">
            <size>
             <width>150</width>
-            <height>22</height>
+            <height>24</height>
            </size>
           </property>
           <property name="keyboardTracking">
@@ -354,7 +395,29 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0" colspan="2">
+        <item row="2" column="1">
+         <widget class="Gui::QuantitySpinBox" name="sbOrgZ">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
          <widget class="QLabel" name="label_11">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -370,69 +433,6 @@
           </property>
           <property name="text">
            <string notr="true">Y</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="Gui::QuantitySpinBox" name="sbOrgY">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>150</width>
-            <height>22</height>
-           </size>
-          </property>
-          <property name="keyboardTracking">
-           <bool>false</bool>
-          </property>
-          <property name="unit" stdset="0">
-           <string notr="true"/>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0" colspan="2">
-         <widget class="QLabel" name="label_12">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string notr="true">Z</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="Gui::QuantitySpinBox" name="sbOrgZ">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>150</width>
-            <height>22</height>
-           </size>
-          </property>
-          <property name="keyboardTracking">
-           <bool>false</bool>
-          </property>
-          <property name="unit" stdset="0">
-           <string notr="true"/>
           </property>
          </widget>
         </item>
@@ -452,7 +452,7 @@
         <item row="0" column="1">
          <widget class="QPushButton" name="pbUpdateNow">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rebuild display now.  May be slow for complex models.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rebuild display now. May be slow for complex models.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Update Now</string>
@@ -462,10 +462,10 @@
         <item row="0" column="0">
          <widget class="QCheckBox" name="cbLiveUpdate">
           <property name="toolTip">
-           <string>Check to update display after every property change.</string>
+           <string>Check to update display after every property change</string>
           </property>
           <property name="text">
-           <string>Live Update</string>
+           <string>Live update</string>
           </property>
          </widget>
         </item>

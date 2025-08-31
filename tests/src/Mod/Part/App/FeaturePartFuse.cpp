@@ -20,8 +20,8 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _fuse = dynamic_cast<Part::Fuse*>(_doc->addObject("Part::Fuse"));
-        _multiFuse = dynamic_cast<Part::MultiFuse*>(_doc->addObject("Part::MultiFuse"));
+        _fuse = _doc->addObject<Part::Fuse>();
+        _multiFuse = _doc->addObject<Part::MultiFuse>();
     }
 
     void TearDown() override
@@ -58,7 +58,7 @@ TEST_F(FeaturePartFuseTest, testCompound)
 {
     // Arrange
     Part::Compound* _compound = nullptr;
-    _compound = dynamic_cast<Part::Compound*>(_doc->addObject("Part::Compound"));
+    _compound = _doc->addObject<Part::Compound>();
     _compound->Links.setValues({_boxes[0], _boxes[1]});
     _multiFuse->Shapes.setValues({_compound});
 
@@ -85,7 +85,7 @@ TEST_F(FeaturePartFuseTest, testRecursiveCompound)
     Part::Compound* _compound[3] = {nullptr};
     int t;
     for (t = 0; t < 3; t++) {
-        _compound[t] = dynamic_cast<Part::Compound*>(_doc->addObject("Part::Compound"));
+        _compound[t] = _doc->addObject<Part::Compound>();
     }
     _compound[0]->Links.setValues({_boxes[0], _boxes[1]});
     _compound[1]->Links.setValues({_compound[0]});

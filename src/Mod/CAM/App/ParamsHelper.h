@@ -27,7 +27,7 @@
  * \ingroup PATH
  * Collections of macros for managing groups of parameters.
  *
- * \section Motivation
+ * \section motivation_groups_params Motivation
  *
  * For an application like FreeCAD, there are often cases where the same set of
  * parameters are referred in dozons of different places. The macros here is
@@ -61,7 +61,7 @@
  *     <your_build_dir>/src/Mod/CAM/App.CMakeFiles/Path.dir/Area.cpp.i
  * \endcode
  *
- * \section Introduction of Boost.Preprocessor
+ * \section intro_boost_preproc Introduction of Boost.Preprocessor
  *
  * The macros here make heavy use of the awesome
  * [Boost.Preprocessor](http://www.boost.org/libs/preprocessor/) (short for
@@ -1017,6 +1017,7 @@
  *      if(name1.isTouched()) return 1;
  *      if(name2.isTouched()) return 1;
  *      ...
+ * \endcode
  * \ingroup ParamProperty
  */
 #define PARAM_PROP_TOUCHED(_seq) PARAM_FOREACH(PARAM_PROP_TOUCHED_, _seq)

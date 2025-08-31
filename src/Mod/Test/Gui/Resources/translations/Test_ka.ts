@@ -4,19 +4,19 @@
   <context>
     <name>TestGui::UnitTest</name>
     <message>
-      <location filename="../../UnitTest.ui" line="17"/>
-      <source>FreeCAD UnitTest</source>
-      <translation>FreeCAD UnitTest</translation>
-    </message>
-    <message>
       <location filename="../../UnitTest.ui" line="32"/>
       <source>Test</source>
       <translation>ტესტი</translation>
     </message>
     <message>
+      <location filename="../../UnitTest.ui" line="17"/>
+      <source>FreeCAD Unit Test</source>
+      <translation>FreeCAD-ის ერთეულის ტესტი</translation>
+    </message>
+    <message>
       <location filename="../../UnitTest.ui" line="44"/>
-      <source>Select test name:</source>
-      <translation>აირჩიეთ ტესტის სახელი:</translation>
+      <source>Select test name</source>
+      <translation>აირჩიეთ ტესტის სახელი</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="96"/>
@@ -65,28 +65,28 @@
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="188"/>
-      <source>Run:</source>
-      <translation>გაშვება:</translation>
+      <source>Run</source>
+      <translation>გაშვება</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="205"/>
-      <source>Failures:</source>
-      <translation>შეცდომები:</translation>
+      <source>Failures</source>
+      <translation>ჩავარდნები</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="222"/>
-      <source>Errors:</source>
-      <translation>შეცდომები:</translation>
+      <source>Errors</source>
+      <translation>შეცდომები</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="239"/>
-      <source>Remaining:</source>
-      <translation>დარჩენილია:</translation>
+      <source>Remaining</source>
+      <translation>დარჩენილია</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="259"/>
-      <source>Failures and errors</source>
-      <translation>შეცდომები</translation>
+      <source>Failures and Errors</source>
+      <translation>შეცდომები და ჩავარდნები</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="275"/>

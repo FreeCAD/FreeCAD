@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>456</width>
-    <height>338</height>
+    <width>513</width>
+    <height>516</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_1">
      <property name="title">
-      <string>In-command shortcuts</string>
+      <string>In-Command Shortcuts</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_1">
       <item row="0" column="0">
@@ -41,7 +41,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -89,7 +89,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -137,7 +137,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -165,14 +165,14 @@
        </spacer>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_inCommandShortcutFill">
+       <widget class="QLabel" name="label_inCommandShortcutMakeFace">
         <property name="text">
-         <string>Fill</string>
+         <string>Make face</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutFill">
+       <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutMakeFace">
         <property name="maximumSize">
          <size>
           <width>25</width>
@@ -185,11 +185,11 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>inCommandShortcutFill</cstring>
+         <cstring>inCommandShortcutMakeFace</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>
@@ -217,7 +217,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -249,7 +249,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -281,7 +281,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -313,7 +313,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -345,7 +345,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -377,7 +377,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -409,7 +409,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -441,7 +441,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -473,7 +473,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -505,7 +505,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -537,7 +537,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -569,7 +569,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -601,7 +601,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -633,7 +633,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -665,7 +665,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -697,7 +697,7 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
@@ -729,11 +729,43 @@
         <property name="maxLength">
          <number>1</number>
         </property>
-        <property name="clearButtonEnabled" stdset="0">
+        <property name="clearButtonEnabled">
          <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>inCommandShortcutRestrictZ</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_inCommandShortcutRecenter">
+        <property name="text">
+         <string>Recenter</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="Gui::PrefLineEdit" name="lineEdit_inCommandShortcutRecenter">
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>D</string>
+        </property>
+        <property name="maxLength">
+         <number>1</number>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>inCommandShortcutRecenter</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>
@@ -746,7 +778,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>UI options</string>
+      <string>UI Options</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
@@ -790,10 +822,10 @@
       <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBox_DisplayStatusbarScaleWidget">
         <property name="toolTip">
-         <string>If checked, the Annotation scale widget is displayed in the Draft status bar</string>
+         <string>If checked, the annotation scale widget is displayed in the Draft status bar</string>
         </property>
         <property name="text">
-         <string>Show the Annotation scale widget in the Draft Workbench</string>
+         <string>Show the Annotation Scale Widget in the Draft Workbench</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -814,12 +846,17 @@
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
     </spacer>
    </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
    <class>Gui::PrefCheckBox</class>

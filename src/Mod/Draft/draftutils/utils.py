@@ -56,17 +56,20 @@ if App.GuiUp:
     True if Draft_rc else False
 
 
-ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"]
+ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2", "None"]
 DISPLAY_MODES = ["Flat Lines", "Shaded", "Wireframe", "Points"]
 DRAW_STYLES = ["Solid", "Dashed", "Dotted", "Dashdot"]
 arrowtypes = ARROW_TYPES
 
 
 def get_default_annotation_style():
-    arrow_type_index = params.get_param("dimsymbol")
+    arrow_start_type_index = params.get_param("dimsymbolstart")
+    arrow_end_type_index = params.get_param("dimsymbolend")
     return {
-        "ArrowSize":       ("float", params.get_param("arrowsize")),
-        "ArrowType":       ("index", arrow_type_index, ARROW_TYPES[arrow_type_index]),
+        "ArrowSizeStart":  ("float", params.get_param("arrowsizestart")),
+        "ArrowSizeEnd":    ("float", params.get_param("arrowsizeend")),
+        "ArrowTypeStart":  ("index", arrow_start_type_index, ARROW_TYPES[arrow_start_type_index]),
+        "ArrowTypeEnd":    ("index", arrow_end_type_index, ARROW_TYPES[arrow_end_type_index]),
         "Decimals":        ("int",   params.get_param("dimPrecision")),
         "DimOvershoot":    ("float", params.get_param("dimovershoot")),
         "ExtLines":        ("float", params.get_param("extlines")),
@@ -83,6 +86,37 @@ def get_default_annotation_style():
         "TextSpacing":     ("float", params.get_param("dimspacing")),
         "UnitOverride":    ("str",   params.get_param("overrideUnit"))
     }
+
+
+def repair_annotation_style(style):
+    """Repair a V0.19, V0.20 or < V1.1 style.
+
+    V0.19 and V0.20:
+    Some properties were missing or misspelled.
+    Some float values were wrongly stored as strings.
+
+    V1.0 -> V1.1:
+    ArrowSize has been replaced by ArrowSizeStart and ArrowSizeEnd.
+    ArrowType has been replaced by ArrowTypeStart and ArrowTypeEnd.
+    """
+    for key in ("ArrowSize", "ArrowType"):
+        if style.get(key) is not None \
+                and style.get(key + "Start") is None \
+                and style.get(key + "End") is None:
+            style[key + "Start"] = style[key]
+            style[key + "End"] = style[key]
+    default = get_default_annotation_style()
+    new = {}
+    for key, val in default.items():
+        if style.get(key) is None:
+            new[key] = val[1]
+        elif type(style[key]) == type(val[1]):
+            new[key] = style[key]
+        elif isinstance(style[key], str):
+            new[key] = float(style[key].replace(",", "."))
+        else:
+            new[key] = val[1]
+    return new
 
 
 def get_default_shape_style():
@@ -183,178 +217,6 @@ def type_check(args_and_types, name="?"):
 typecheck = type_check
 
 
-def get_param_type(param):
-    """Return the type of the parameter entered.
-
-    Parameters
-    ----------
-    param : str
-        A string that indicates a parameter in the parameter database.
-
-    Returns
-    -------
-    str or None
-        The returned string could be `'int'`, `'string'`, `'float'`,
-        `'bool'`, `'unsigned'`, depending on the parameter.
-        It returns `None` for unhandled situations.
-    """
-    if param in ("dimsymbol", "dimPrecision",
-                 "precision", "defaultWP", "snapRange", "gridEvery",
-                 "linewidth", "modconstrain", "modsnap",
-                 "maxSnapEdges", "modalt", "HatchPatternResolution",
-                 "snapStyle", "DefaultAnnoDisplayMode", "DefaultAnnoLineWidth",
-                 "DefaultDrawStyle", "DefaultDisplayMode",
-                 "gridSize", "gridTransparency"):
-        return "int"
-    elif param in ("constructiongroupname", "textfont",
-                   "patternFile", "snapModes",
-                   "FontFile", "ClonePrefix", "overrideUnit",
-                   "labeltype", "gridSpacing") or "inCommandShortcut" in param:
-        return "string"
-    elif param in ("textheight", "arrowsize", "extlines", "dimspacing",
-                   "dimovershoot", "extovershoot", "HatchPatternSize",
-                   "LineSpacing", "DefaultAnnoScaleMultiplier"):
-        return "float"
-    elif param in ("selectBaseObjects", "alwaysSnap", "grid",
-                   "fillmode", "DimShowLine",
-                   "SvgLinesBlack", "dxfStdSize", "SnapBarShowOnlyDuringCommands",
-                   "alwaysShowGrid", "renderPolylineWidth",
-                   "showPlaneTracker", "UsePartPrimitives",
-                   "DiscretizeEllipses", "showUnit", "coloredGridAxes",
-                   "Draft_array_fuse", "Draft_array_Link", "gridBorder"):
-        return "bool"
-    elif param in ("color", "constructioncolor", "snapcolor",
-                   "gridColor", "DefaultTextColor", "DefaultAnnoLineColor"):
-        return "unsigned"
-    else:
-        return None
-
-
-getParamType = get_param_type
-
-
-def get_param(param, default=None):
-    """Return a parameter value from the current parameter database.
-
-    The parameter database is located in the tree
-    ::
-        'User parameter:BaseApp/Preferences/Mod/Draft'
-
-    In the case that `param` is `'linewidth'` or `'color'` it will get
-    the values from the View parameters
-    ::
-        'User parameter:BaseApp/Preferences/View/DefaultShapeLineWidth'
-        'User parameter:BaseApp/Preferences/View/DefaultShapeLineColor'
-
-    Parameters
-    ----------
-    param : str
-        A string that indicates a parameter in the parameter database.
-
-    default : optional
-        It indicates the default value of the given parameter.
-        It defaults to `None`, in which case it will use a specific
-        value depending on the type of parameter determined
-        with `get_param_type`.
-
-    Returns
-    -------
-    int, or str, or float, or bool
-        Depending on `param` and its type, by returning `ParameterGrp.GetInt`,
-        `ParameterGrp.GetString`, `ParameterGrp.GetFloat`,
-        `ParameterGrp.GetBool`, or `ParameterGrp.GetUnsinged`.
-    """
-    draft_params = "User parameter:BaseApp/Preferences/Mod/Draft"
-    view_params = "User parameter:BaseApp/Preferences/View"
-
-    p = App.ParamGet(draft_params)
-    v = App.ParamGet(view_params)
-    t = get_param_type(param)
-    # print("getting param ",param, " of type ",t, " default: ",str(default))
-    if t == "int":
-        if default is None:
-            default = 0
-        if param == "linewidth":
-            return v.GetInt("DefaultShapeLineWidth", default)
-        return p.GetInt(param, default)
-    elif t == "string":
-        if default is None:
-            default = ""
-        return p.GetString(param, default)
-    elif t == "float":
-        if default is None:
-            default = 0
-        return p.GetFloat(param, default)
-    elif t == "bool":
-        if default is None:
-            default = False
-        return p.GetBool(param, default)
-    elif t == "unsigned":
-        if default is None:
-            default = 0
-        if param == "color":
-            return v.GetUnsigned("DefaultShapeLineColor", default)
-        return p.GetUnsigned(param, default)
-    else:
-        return None
-
-
-getParam = get_param
-
-
-def set_param(param, value):
-    """Set a Draft parameter with the given value.
-
-    The parameter database is located in the tree
-    ::
-        'User parameter:BaseApp/Preferences/Mod/Draft'
-
-    In the case that `param` is `'linewidth'` or `'color'` it will set
-    the View parameters
-    ::
-        'User parameter:BaseApp/Preferences/View/DefaultShapeLineWidth'
-        'User parameter:BaseApp/Preferences/View/DefaultShapeLineColor'
-
-    Parameters
-    ----------
-    param : str
-        A string that indicates a parameter in the parameter database.
-
-    value : int, or str, or float, or bool
-        The appropriate value of the parameter.
-        Depending on `param` and its type, determined with `get_param_type`,
-        it sets the appropriate value by calling `ParameterGrp.SetInt`,
-        `ParameterGrp.SetString`, `ParameterGrp.SetFloat`,
-        `ParameterGrp.SetBool`, or `ParameterGrp.SetUnsinged`.
-    """
-    draft_params = "User parameter:BaseApp/Preferences/Mod/Draft"
-    view_params = "User parameter:BaseApp/Preferences/View"
-
-    p = App.ParamGet(draft_params)
-    v = App.ParamGet(view_params)
-    t = get_param_type(param)
-
-    if t == "int":
-        if param == "linewidth":
-            v.SetInt("DefaultShapeLineWidth", value)
-        else:
-            p.SetInt(param, value)
-    elif t == "string":
-        p.SetString(param, value)
-    elif t == "float":
-        p.SetFloat(param, value)
-    elif t == "bool":
-        p.SetBool(param, value)
-    elif t == "unsigned":
-        if param == "color":
-            v.SetUnsigned("DefaultShapeLineColor", value)
-        else:
-            p.SetUnsigned(param, value)
-
-
-setParam = set_param
-
-
 def precision():
     """Return the precision value from the parameter database.
 
@@ -378,6 +240,29 @@ def precision():
     return params.get_param("precision")
 
 
+def svg_precision():
+    """Return the precision value for SVG import from the parameter database.
+
+    It is the number of decimal places that a float will have.
+    Example
+    ::
+        precision=5, 0.12345
+        precision=4, 0.1234
+        precision=3, 0.123
+
+    Due to floating point operations there may be rounding errors.
+    Therefore, this precision number is used to round up values
+    so that all operations are consistent.
+    By default the precision is 3 decimal places.
+
+    Returns
+    -------
+    int
+        params.get_param("svgPrecision")
+    """
+    return params.get_param("svgPrecision")
+
+
 def tolerance():
     """Return a tolerance based on the precision() value
 
@@ -387,6 +272,14 @@ def tolerance():
         10 ** -precision()
     """
     return 10 ** -precision()
+
+
+def is_deleted(obj):
+    """Return `True` if obj is deleted."""
+    try:
+        return not obj.isAttachedToDocument()
+    except:
+        return True
 
 
 def get_real_name(name):
@@ -598,7 +491,7 @@ def get_clone_base(obj, strict=False, recursive=True):
 getCloneBase = get_clone_base
 
 
-def shapify(obj):
+def shapify(obj, delete=True):
     """Transform a parametric object into a static, non-parametric shape.
 
     Parameters
@@ -609,6 +502,10 @@ def shapify(obj):
         This object will be removed, and a non-parametric object
         with the same topological shape (`Part::TopoShape`)
         will be created.
+
+    delete: bool, optional
+        It defaults to `False`.
+        If it is `True`, the original object is deleted.
 
     Returns
     -------
@@ -647,7 +544,8 @@ def shapify(obj):
     else:
         name = getRealName(obj.Name)
 
-    App.ActiveDocument.removeObject(obj.Name)
+    if delete:
+        App.ActiveDocument.removeObject(obj.Name)
     newobj = App.ActiveDocument.addObject("Part::Feature", name)
     newobj.Shape = shape
 
@@ -1203,5 +1101,70 @@ def pyopen(file, mode='r', buffering=-1, encoding=None, errors=None, newline=Non
     if encoding is None:
         encoding = 'utf-8'
     return open(file, mode, buffering, encoding, errors, newline, closefd, opener)
+
+def toggle_working_plane(obj, action=None, restore=False, dialog=None):
+    """Toggle the active state of a working plane object.
+
+    This function handles the common logic for activating and deactivating
+    working plane objects like BuildingParts and WorkingPlaneProxies.
+    It can be used by different modules that need to implement similar
+    working plane activation behavior.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        The object to activate or deactivate as a working plane.
+    action : QAction, optional
+        The action button that triggered this function, to update its checked state.
+    restore : bool, optional
+        If True, will restore the previous working plane when deactivating.
+        Defaults to False.
+    dialog : QDialog, optional
+        If provided, will update the checked state of the activate button in the dialog.
+
+    Returns
+    -------
+    bool
+        True if the object was activated, False if it was deactivated.
+    """
+    import FreeCADGui
+    import Draft
+
+    # Determine the appropriate context based on object type
+    context = "Arch"
+    obj_type = get_type(obj)
+    if obj_type == "IfcBuildingStorey":
+        context = "NativeIFC"
+
+    # Check if the object is already active in its context
+    is_active_arch = (FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == obj)
+    is_active_ifc = (FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") == obj)
+    is_active = is_active_arch or is_active_ifc
+    if is_active:
+        # Deactivate the object
+        if is_active_arch:
+            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
+        if is_active_ifc:
+            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", None)
+
+        if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "Proxy") and \
+           hasattr(obj.ViewObject.Proxy, "setWorkingPlane"):
+            obj.ViewObject.Proxy.setWorkingPlane(restore=True)
+        if action:
+            action.setChecked(False)
+        if dialog and hasattr(dialog, "buttonActive"):
+            dialog.buttonActive.setChecked(False)
+        return False
+    else:
+        # Activate the object
+        FreeCADGui.ActiveDocument.ActiveView.setActiveObject(context, obj)
+        if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "Proxy") and \
+           hasattr(obj.ViewObject.Proxy, "setWorkingPlane"):
+            obj.ViewObject.Proxy.setWorkingPlane()
+        if action:
+            action.setChecked(True)
+        if dialog and hasattr(dialog, "buttonActive"):
+            dialog.buttonActive.setChecked(True)
+        return True
 
 ## @}

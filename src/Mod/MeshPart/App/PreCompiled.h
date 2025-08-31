@@ -43,6 +43,7 @@
 #include <array>
 #include <map>
 #include <memory>
+#include <numbers>
 #include <set>
 #include <sstream>
 #include <stdexcept>

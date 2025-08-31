@@ -66,10 +66,10 @@ CmdPointsImport::CmdPointsImport()
 {
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
-    sMenuText = QT_TR_NOOP("Import points...");
+    sMenuText = QT_TR_NOOP("Import Points…");
     sToolTipText = QT_TR_NOOP("Imports a point cloud");
     sWhatsThis = "Points_Import";
-    sStatusTip = QT_TR_NOOP("Imports a point cloud");
+    sStatusTip = sToolTipText;
     sPixmap = "Points_Import_Point_cloud";
 }
 
@@ -81,7 +81,7 @@ void CmdPointsImport::activated(int iMsg)
         Gui::getMainWindow(),
         QString(),
         QString(),
-        QString::fromLatin1("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
+        QStringLiteral("%1 (*.asc *.pcd *.ply *.e57);;%2 (*.*)")
             .arg(QObject::tr("Point formats"), QObject::tr("All Files")));
     if (fn.isEmpty()) {
         return;
@@ -89,13 +89,13 @@ void CmdPointsImport::activated(int iMsg)
 
     if (!fn.isEmpty()) {
         fn = Base::Tools::escapeEncodeFilename(fn);
-        Gui::Document* doc = getActiveGuiDocument();
+        App::Document* doc = getActiveDocument();
         openCommand(QT_TRANSLATE_NOOP("Command", "Import points"));
         addModule(Command::App, "Points");
         doCommand(Command::Doc,
                   "Points.insert(\"%s\", \"%s\")",
                   fn.toUtf8().data(),
-                  doc->getDocument()->getName());
+                  doc->getName());
         commitCommand();
 
         updateActive();
@@ -105,29 +105,26 @@ void CmdPointsImport::activated(int iMsg)
          *  origin had inaccuracies in the relative positioning of the points due to
          *  imprecise floating point variables used in COIN
          **/
-        auto* pcFtr = dynamic_cast<Points::Feature*>(doc->getDocument()->getActiveObject());
-        if (pcFtr) {
+        if (auto pcFtr = dynamic_cast<Points::Feature*>(doc->getActiveObject())) {
             auto points = pcFtr->Points.getValue();
             auto bbox = points.getBoundBox();
             auto center = bbox.GetCenter();
 
             if (!bbox.IsInBox(Base::Vector3d(0, 0, 0))) {
-                QMessageBox msgBox;
+                QMessageBox msgBox(Gui::getMainWindow());
                 msgBox.setIcon(QMessageBox::Question);
                 msgBox.setWindowTitle(QObject::tr("Points not at Origin"));
                 msgBox.setText(QObject::tr(
-                    "The Bounding Box of the imported points does not contain the origin.  "
-                    "Do you want to translate it to the origin?"));
+                    "The bounding box of the imported points does not contain the origin. "
+                    "Translate it to the origin?"));
                 msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
                 msgBox.setDefaultButton(QMessageBox::Yes);
                 auto ret = msgBox.exec();
 
                 if (ret == QMessageBox::Yes) {
-                    Points::PointKernel translatedPoints;
-                    for (const auto& point : points) {
-                        translatedPoints.push_back(point - center);
-                    }
-                    pcFtr->Points.setValue(translatedPoints);
+                    Points::PointKernel* kernel = pcFtr->Points.startEditing();
+                    kernel->moveGeometry(-center);
+                    pcFtr->Points.finishEditing();
                 }
             }
         }
@@ -151,7 +148,7 @@ CmdPointsExport::CmdPointsExport()
 {
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
-    sMenuText = QT_TR_NOOP("Export points...");
+    sMenuText = QT_TR_NOOP("Export Points…");
     sToolTipText = QT_TR_NOOP("Exports a point cloud");
     sWhatsThis = "Points_Export";
     sStatusTip = QT_TR_NOOP("Exports a point cloud");
@@ -170,7 +167,7 @@ void CmdPointsExport::activated(int iMsg)
             Gui::getMainWindow(),
             QString(),
             QString(),
-            QString::fromLatin1("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
+            QStringLiteral("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
                 .arg(QObject::tr("Point formats"), QObject::tr("All Files")));
         if (fn.isEmpty()) {
             break;
@@ -199,9 +196,9 @@ CmdPointsTransform::CmdPointsTransform()
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
     sMenuText = QT_TR_NOOP("Transform Points");
-    sToolTipText = QT_TR_NOOP("Test to transform a point cloud");
+    sToolTipText = QT_TR_NOOP("Performs tests to transform a point cloud");
     sWhatsThis = "Points_Transform";
-    sStatusTip = QT_TR_NOOP("Test to transform a point cloud");
+    sStatusTip = sToolTipText;
     sPixmap = "Test1";
 }
 
@@ -237,10 +234,10 @@ CmdPointsConvert::CmdPointsConvert()
 {
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
-    sMenuText = QT_TR_NOOP("Convert to points...");
-    sToolTipText = QT_TR_NOOP("Convert to points");
+    sMenuText = QT_TR_NOOP("Convert to Points");
+    sToolTipText = QT_TR_NOOP("Converts to points");
     sWhatsThis = "Points_Convert";
-    sStatusTip = QT_TR_NOOP("Convert to points");
+    sStatusTip = sToolTipText;
     sPixmap = "Points_Convert";
 }
 
@@ -309,7 +306,7 @@ void CmdPointsConvert::activated(int iMsg)
     catch (const Py::Exception&) {
         abortCommand();
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -325,10 +322,10 @@ CmdPointsPolyCut::CmdPointsPolyCut()
 {
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
-    sMenuText = QT_TR_NOOP("Cut point cloud");
-    sToolTipText = QT_TR_NOOP("Cuts a point cloud with a picked polygon");
+    sMenuText = QT_TR_NOOP("Cut Point Cloud");
+    sToolTipText = QT_TR_NOOP("Cuts a point cloud with a selected polygon");
     sWhatsThis = "Points_PolyCut";
-    sStatusTip = QT_TR_NOOP("Cuts a point cloud with a picked polygon");
+    sStatusTip = sToolTipText;
     sPixmap = "PolygonPick";
 }
 
@@ -373,10 +370,10 @@ CmdPointsMerge::CmdPointsMerge()
 {
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
-    sMenuText = QT_TR_NOOP("Merge point clouds");
-    sToolTipText = QT_TR_NOOP("Merge several point clouds into one");
+    sMenuText = QT_TR_NOOP("Merge Point Clouds");
+    sToolTipText = QT_TR_NOOP("Merges several point clouds into one");
     sWhatsThis = "Points_Merge";
-    sStatusTip = QT_TR_NOOP("Merge several point clouds into one");
+    sStatusTip = sToolTipText;
     sPixmap = "Points_Merge";
 }
 
@@ -386,8 +383,7 @@ void CmdPointsMerge::activated(int iMsg)
 
     App::Document* doc = App::GetApplication().getActiveDocument();
     doc->openTransaction("Merge point clouds");
-    Points::Feature* pts =
-        static_cast<Points::Feature*>(doc->addObject("Points::Feature", "Merged Points"));
+    Points::Feature* pts = doc->addObject<Points::Feature>("Merged Points");
     Points::PointKernel* kernel = pts->Points.startEditing();
 
     std::vector<App::DocumentObject*> docObj =
@@ -436,10 +432,10 @@ CmdPointsStructure::CmdPointsStructure()
 {
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
-    sMenuText = QT_TR_NOOP("Structured point cloud");
-    sToolTipText = QT_TR_NOOP("Convert points to structured point cloud");
+    sMenuText = QT_TR_NOOP("Structured Point Cloud");
+    sToolTipText = QT_TR_NOOP("Converts points to a structured point cloud");
     sWhatsThis = "Points_Structure";
-    sStatusTip = QT_TR_NOOP("Convert points to structured point cloud");
+    sStatusTip = sToolTipText;
     sPixmap = "Points_Structure";
 }
 
@@ -455,8 +451,7 @@ void CmdPointsStructure::activated(int iMsg)
     for (auto it : docObj) {
         std::string name = it->Label.getValue();
         name += " (Structured)";
-        Points::Structured* output =
-            static_cast<Points::Structured*>(doc->addObject("Points::Structured", name.c_str()));
+        Points::Structured* output = doc->addObject<Points::Structured>(name.c_str());
         output->Label.setValue(name);
 
         // Already sorted, so just make a copy

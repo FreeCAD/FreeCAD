@@ -62,8 +62,7 @@ class DraftSVG(test_base.DraftTestCaseDoc):
         _msg("  file={}".format(in_file))
         _msg("  exists={}".format(os.path.exists(in_file)))
 
-        Draft.import_svg = aux.fake_function
-        obj = Draft.import_svg(in_file)
+        obj = aux.fake_function(in_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_export_svg(self):
@@ -76,8 +75,7 @@ class DraftSVG(test_base.DraftTestCaseDoc):
         _msg("  file={}".format(out_file))
         _msg("  exists={}".format(os.path.exists(out_file)))
 
-        Draft.export_svg = aux.fake_function
-        obj = Draft.export_svg(out_file)
+        obj = aux.fake_function(out_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     @unittest.skipIf(not have_arch, "BIM module is not installed")

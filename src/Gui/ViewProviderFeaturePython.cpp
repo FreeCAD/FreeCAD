@@ -36,6 +36,7 @@
 #include <App/DocumentObjectPy.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
+#include <CXX/Python3/Objects.hxx>
 
 #include "ViewProviderFeaturePython.h"
 #include "Application.h"
@@ -44,6 +45,7 @@
 #include "PythonWrapper.h"
 #include "View3DInventorViewer.h"
 #include "ViewProviderDocumentObjectPy.h"
+#include "Selection.h"
 
 
 FC_LOG_LEVEL_INIT("ViewProviderFeaturePython", true, true)
@@ -74,6 +76,8 @@ ViewProviderFeaturePythonImp::~ViewProviderFeaturePythonImp()
     catch (Py::Exception& e) {
         e.clear();
     }
+
+    this->selectionObserver.~SelectionObserverPythonHandler();
 }
 
 void ViewProviderFeaturePythonImp::init(PyObject *pyobj) {
@@ -84,6 +88,8 @@ void ViewProviderFeaturePythonImp::init(PyObject *pyobj) {
 #define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_INIT(_name)
 
     FC_PY_VIEW_OBJECT
+
+    this->selectionObserver.init(pyobj);
 }
 
 #define FC_PY_CALL_CHECK(_name) _FC_PY_CALL_CHECK(_name,return(NotImplemented))
@@ -145,11 +151,69 @@ QIcon ViewProviderFeaturePythonImp::getIcon() const
             PyErr_Clear();
         else {
             Base::PyException e; // extract the Python error text
-            e.ReportException();
+            e.reportException();
         }
     }
 
     return {};
+}
+
+std::map<BitmapFactoryInst::Position, std::string>
+ViewProviderFeaturePythonImp::getOverlayIcons() const
+{
+    std::map<BitmapFactoryInst::Position, std::string> overlays;
+    _FC_PY_CALL_CHECK(getOverlayIcons, return overlays);
+
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Object ret(Base::pyCall(py_getOverlayIcons.ptr()));
+        if (ret.isNone()) {
+            return overlays;
+        }
+
+        // Expect a dictionary (dict) from Python
+        if (!PyDict_Check(ret.ptr())) {
+            return overlays;
+        }
+
+        Py::Dict dict(ret);
+        PyObject *key, *value;
+        Py_ssize_t pos = 0;
+
+        // Iterate over the dictionary items
+        while (PyDict_Next(dict.ptr(), &pos, &key, &value)) {
+            // Key should be an integer (from the enum)
+            if (!PyLong_Check(key)) {
+                continue;
+            }
+            // Value should be a string
+            if (!PyUnicode_Check(value)) {
+                continue;
+            }
+
+            long position_val = PyLong_AsLong(key);
+            // Basic validation for the enum range
+            if (position_val >= BitmapFactoryInst::TopLeft
+                && position_val <= BitmapFactoryInst::BottomRight) {
+                auto position = static_cast<BitmapFactoryInst::Position>(position_val);
+                std::string iconName = Py::String(value).as_std_string("utf-8");
+                if (!iconName.empty()) {
+                    overlays[position] = iconName;
+                }
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+        }
+        else {
+            Base::PyException e;
+            e.reportException();
+        }
+    }
+
+    return overlays;
 }
 
 bool ViewProviderFeaturePythonImp::claimChildren(std::vector<App::DocumentObject*> &children) const
@@ -173,7 +237,7 @@ bool ViewProviderFeaturePythonImp::claimChildren(std::vector<App::DocumentObject
             return false;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return true;
@@ -196,10 +260,14 @@ ViewProviderFeaturePythonImp::useNewSelectionModel() const
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return Accepted;
+}
+
+void ViewProviderFeaturePythonImp::onSelectionChanged(const SelectionChanges& changes) {
+    this->selectionObserver.handleSelectionChanged(changes);
 }
 
 bool ViewProviderFeaturePythonImp::getElement(const SoDetail *det, std::string &res) const
@@ -221,7 +289,7 @@ bool ViewProviderFeaturePythonImp::getElement(const SoDetail *det, std::string &
         return true;
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
@@ -229,7 +297,7 @@ bool ViewProviderFeaturePythonImp::getElement(const SoDetail *det, std::string &
             return false;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return true;
@@ -253,7 +321,7 @@ ViewProviderFeaturePythonImp::getElementPicked(const SoPickedPoint *pp, std::str
         return Accepted;
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
@@ -261,7 +329,7 @@ ViewProviderFeaturePythonImp::getElementPicked(const SoPickedPoint *pp, std::str
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return Rejected;
@@ -284,7 +352,7 @@ bool ViewProviderFeaturePythonImp::getDetail(const char* name, SoDetail *&det) c
         return true;
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
@@ -292,7 +360,7 @@ bool ViewProviderFeaturePythonImp::getDetail(const char* name, SoDetail *&det) c
             return false;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return true;
@@ -327,7 +395,7 @@ ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::getDetailPath
         delete det;
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
@@ -335,7 +403,7 @@ ViewProviderFeaturePythonImp::ValueT ViewProviderFeaturePythonImp::getDetailPath
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
     path->truncate(length);
     return Rejected;
@@ -356,7 +424,7 @@ ViewProviderFeaturePythonImp::setEdit(int ModNum)
     try {
         if (has__object__) {
             Py::Tuple args(1);
-            args.setItem(0, Py::Int(ModNum));
+            args.setItem(0, Py::Long(ModNum));
             Py::Object ret(Base::pyCall(py_setEdit.ptr(),args.ptr()));
             if (ret.isNone())
                 return NotImplemented;
@@ -367,7 +435,7 @@ ViewProviderFeaturePythonImp::setEdit(int ModNum)
         else {
             Py::Tuple args(2);
             args.setItem(0, Py::Object(object->getPyObject(), true));
-            args.setItem(1, Py::Int(ModNum));
+            args.setItem(1, Py::Long(ModNum));
             Py::Object ret(Base::pyCall(py_setEdit.ptr(),args.ptr()));
             if (ret.isNone())
                 return NotImplemented;
@@ -382,7 +450,7 @@ ViewProviderFeaturePythonImp::setEdit(int ModNum)
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return Rejected;
@@ -397,7 +465,7 @@ ViewProviderFeaturePythonImp::unsetEdit(int ModNum)
     try {
         if (has__object__) {
             Py::Tuple args(1);
-            args.setItem(0, Py::Int(ModNum));
+            args.setItem(0, Py::Long(ModNum));
             Py::Object ret(Base::pyCall(py_unsetEdit.ptr(),args.ptr()));
             if (ret.isNone())
                 return NotImplemented;
@@ -408,7 +476,7 @@ ViewProviderFeaturePythonImp::unsetEdit(int ModNum)
         else {
             Py::Tuple args(2);
             args.setItem(0, Py::Object(object->getPyObject(), true));
-            args.setItem(1, Py::Int(ModNum));
+            args.setItem(1, Py::Long(ModNum));
             Py::Object ret(Base::pyCall(py_unsetEdit.ptr(),args.ptr()));
             if (ret.isNone())
                 return NotImplemented;
@@ -423,7 +491,7 @@ ViewProviderFeaturePythonImp::unsetEdit(int ModNum)
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return Rejected;
@@ -439,7 +507,7 @@ ViewProviderFeaturePythonImp::setEditViewer(View3DInventorViewer *viewer, int Mo
         Py::Tuple args(3);
         args.setItem(0, Py::Object(object->getPyObject(),true));
         args.setItem(1, Py::Object(viewer->getPyObject(),true));
-        args.setItem(2, Py::Int(ModNum));
+        args.setItem(2, Py::Long(ModNum));
         Py::Object ret(Base::pyCall(py_setEditViewer.ptr(),args.ptr()));
         return ret.isTrue()?Accepted:Rejected;
     }
@@ -449,7 +517,7 @@ ViewProviderFeaturePythonImp::setEditViewer(View3DInventorViewer *viewer, int Mo
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
     return Rejected;
 }
@@ -474,7 +542,7 @@ ViewProviderFeaturePythonImp::unsetEditViewer(View3DInventorViewer *viewer)
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
     return Rejected;
 }
@@ -506,7 +574,7 @@ ViewProviderFeaturePythonImp::doubleClicked()
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return Rejected;
@@ -543,7 +611,7 @@ bool ViewProviderFeaturePythonImp::setupContextMenu(QMenu* menu)
             return false;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
     return true;
 }
@@ -570,7 +638,7 @@ void ViewProviderFeaturePythonImp::attach(App::DocumentObject *pcObject)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -602,7 +670,7 @@ void ViewProviderFeaturePythonImp::updateData(const App::Property* prop)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -634,7 +702,7 @@ void ViewProviderFeaturePythonImp::onChanged(const App::Property* prop)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -666,7 +734,7 @@ void ViewProviderFeaturePythonImp::onBeforeChange(const App::Property* prop)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -681,14 +749,14 @@ void ViewProviderFeaturePythonImp::finishRestoring()
         Py::Object vp = Proxy.getValue();
         if (vp.isNone()) {
             object->show();
-            Proxy.setValue(Py::Int(1));
+            Proxy.setValue(Py::Long(1));
         } else {
             _FC_PY_CALL_CHECK(finishRestoring,return);
             Base::pyCall(py_finishRestoring.ptr());
         }
     }catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -725,7 +793,7 @@ ViewProviderFeaturePythonImp::onDelete(const std::vector<std::string> & sub)
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return Rejected;
     }
 }
@@ -747,7 +815,7 @@ ViewProviderFeaturePythonImp::canDelete(App::DocumentObject *obj) const
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return Rejected;
     }
 }
@@ -767,7 +835,7 @@ ViewProviderFeaturePythonImp::canAddToSceneGraph() const
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
     return Accepted;
 }
@@ -789,7 +857,7 @@ bool ViewProviderFeaturePythonImp::getDefaultDisplayMode(std::string &mode) cons
             return false;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return true;
@@ -825,7 +893,7 @@ std::vector<std::string> ViewProviderFeaturePythonImp::getDisplayModes() const
             PyErr_Clear();
         else {
             Base::PyException e; // extract the Python error text
-            e.ReportException();
+            e.reportException();
         }
     }
 
@@ -846,7 +914,7 @@ std::string ViewProviderFeaturePythonImp::setDisplayMode(const char* ModeName)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return ModeName;
@@ -868,7 +936,7 @@ ViewProviderFeaturePythonImp::canDragObjects() const
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return Rejected;
@@ -892,7 +960,7 @@ ViewProviderFeaturePythonImp::canDragObject(App::DocumentObject* obj) const
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return Rejected;
@@ -926,7 +994,7 @@ ViewProviderFeaturePythonImp::dragObject(App::DocumentObject* obj)
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return Rejected;
@@ -948,7 +1016,7 @@ ViewProviderFeaturePythonImp::canDropObjects() const
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return Rejected;
@@ -972,7 +1040,7 @@ ViewProviderFeaturePythonImp::canDropObject(App::DocumentObject* obj) const
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return Rejected;
@@ -1004,7 +1072,7 @@ ViewProviderFeaturePythonImp::dropObject(App::DocumentObject* obj)
             PyErr_Clear();
             return NotImplemented;
         }
-        Base::PyException::ThrowException();
+        Base::PyException::throwException();
     }
 
     return Rejected;
@@ -1027,7 +1095,7 @@ ViewProviderFeaturePythonImp::canDragAndDropObject(App::DocumentObject *obj) con
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return Rejected;
@@ -1059,7 +1127,7 @@ ViewProviderFeaturePythonImp::canDropObjectEx(App::DocumentObject* obj,
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return Rejected;
@@ -1092,7 +1160,7 @@ bool ViewProviderFeaturePythonImp::dropObjectEx(App::DocumentObject* obj, App::D
             PyErr_Clear();
             return false;
         }
-        Base::PyException::ThrowException();
+        Base::PyException::throwException();
     }
     return true;
 }
@@ -1113,7 +1181,7 @@ ViewProviderFeaturePythonImp::isShow() const
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return Rejected;
@@ -1136,7 +1204,7 @@ ViewProviderFeaturePythonImp::canRemoveChildrenFromRoot() const {
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
     return Rejected;
 }
@@ -1159,7 +1227,7 @@ bool ViewProviderFeaturePythonImp::getDropPrefix(std::string &prefix) const {
             return false;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
     return true;
 }
@@ -1187,7 +1255,7 @@ ViewProviderFeaturePythonImp::replaceObject(
             return NotImplemented;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
     return Rejected;
 }
@@ -1229,7 +1297,7 @@ bool ViewProviderFeaturePythonImp::getLinkedViewProvider(
             return false;
         }
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
     return true;
 }
@@ -1251,7 +1319,7 @@ bool ViewProviderFeaturePythonImp::editProperty(const char *name)
         }
 
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
     return false;
 }

@@ -39,11 +39,14 @@ class BaseExport Persistence: public BaseClass
     TYPESYSTEM_HEADER();
 
 public:
-    /** This method is used to get the size of objects
-     * It is not meant to have the exact size, it is more or less an estimation
-     * which runs fast! Is it two bytes or a GB?
+    /**
+     * @brief Get the size of objects.
+     *
+     * It is not meant to have the exact size, it is more or less a fast
+     * estimation to tell whether it is two bytes or a GB.
      */
     virtual unsigned int getMemSize() const = 0;
+
     /** This method is used to save properties to an XML document.
      * A good example you'll find in PropertyStandard.cpp, e.g. the vector:
      * \code
@@ -70,9 +73,9 @@ public:
      *   // read my Element
      *   reader.readElement("PropertyVector");
      *   // get the value of my Attribute
-     *   _cVec.x = reader.getAttributeAsFloat("valueX");
-     *   _cVec.y = reader.getAttributeAsFloat("valueY");
-     *   _cVec.z = reader.getAttributeAsFloat("valueZ");
+     *   _cVec.x = reader.getAttribute<double>("valueX");
+     *   _cVec.y = reader.getAttribute<double>("valueY");
+     *   _cVec.z = reader.getAttribute<double>("valueZ");
      * }
      * \endcode
      */
@@ -119,7 +122,7 @@ public:
      * void PropertyMeshKernel::Restore(Base::XMLReader &reader)
      * {
      *   reader.readElement("Mesh");
-     *   std::string file (reader.getAttribute("file") );
+     *   std::string file (reader.getAttribute<const char*>("file") );
      *
      *   if(file == "")
      *   {

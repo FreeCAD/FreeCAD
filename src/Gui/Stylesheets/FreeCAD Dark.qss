@@ -58,17 +58,14 @@ Gui--PropertyEditor--PropertyEditor QLineEdit:read-only,
 Gui--PropertyEditor--PropertyEditor QLineEdit:disabled,
 Gui--PropertyEditor--PropertyEditor QAbstractSpinBox:read-only,
 Gui--PropertyEditor--PropertyEditor QAbstractSpinBox:disabled {
-    color: transparent;
     border-color: transparent;
     background-color: #444444;
-    selection-color: transparent;
     selection-background-color: transparent;
     border-radius: 2px;
 }
 
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel,
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel:disabled {
-    color: transparent;
     background-color: transparent;
     border: none;
     border-radius: 2px;
@@ -94,8 +91,8 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QFrame:focus {
 
 /* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel {
-	color: #ffffff;
-	background-color: #ACC8E5; /* same as focused background color */
+  color: #ffffff;
+  background-color: #ACC8E5; /* same as focused background color */
   border-radius: 2px;
 }
 
@@ -237,6 +234,12 @@ QStatusBar QToolTip {
 QStatusBar QLabel {
   /* Fixes Spyder #9120, #9121 */
   background-color: transparent;
+}
+
+QStatusBar QPushButton {
+    min-width: 0;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 /* QCheckBox --------------------------------------------------------------
@@ -956,31 +959,25 @@ QToolBar::separator:vertical {
 
 /* undo button */
 
+QToolBar[objectName="Edit"] > QToolButton {
+  padding-right:14px;
+}
+
 QToolBar[objectName="Edit"] > QToolButton::menu-arrow {
   background-image: url(qss:images_classic/arrow-down-lightgray.png);
   background-position: center center;
   background-repeat: none;
   subcontrol-origin: padding;
-  subcontrol-position: bottom right;
+  subcontrol-position: center center;
   height: 6px;
 }
 
 QToolBar[objectName="Edit"] > QToolButton::menu-arrow:hover {
   background-image: url(qss:images_classic/arrow-down-white.png);
-  background-position: center center;
-  background-repeat: none;
-  subcontrol-origin: padding;
-  subcontrol-position: bottom right;
-  height: 6px;
 }
 
 QToolBar[objectName="Edit"] > QToolButton::menu-arrow:open {
   background-image: url(qss:images_classic/arrow-down-white.png);
-  background-position: center center;
-  background-repeat: none;
-  subcontrol-origin: padding;
-  subcontrol-position: bottom right;
-  height: 6px;
 }
 
 /*The "show more" button  (it can also be stylable with "QToolBarExtension"  icon is not working Qproperty works but breaks when you move the toolbar see also */
@@ -1287,15 +1284,6 @@ QPushButton::menu-indicator {
   bottom: 4px;
 }
 
-QDialogButtonBox QPushButton {
-  /* Issue # 194 # 248 - Special case of QPushButton inside dialogs, for better UI */
-  min-width: 80px;
-}
-
-QMessageBox[objectName="macroGuideWalkthrough"] QDialogButtonBox QPushButton,
-QMessageBox[objectName="confirmSave"] QDialogButtonBox QPushButton {
-  min-width: 20px;
-}
 /* QToolButton ------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbutton
@@ -1696,6 +1684,10 @@ color: white;
 background-color: #252525;
 }
 
+/* Fix for tables inside task panels, see https://github.com/FreeCAD/FreeCAD/issues/22957 */
+QSint--ActionGroup QFrame[class="content"] QTableView {
+  min-height: 300px;
+}
 
 /* found inside Part Design Workbench and "make a draft on a face" Task panel options */
 QSint--ActionGroup QFrame[class="content"] QToolButton {
@@ -1727,8 +1719,7 @@ QSint--ActionGroup QToolButton::menu-button {
 }
 
 QSint--ActionGroup QToolButton#settingsButton,
-QSint--ActionGroup QToolButton#filterButton,
-QSint--ActionGroup QToolButton#manualUpdate {
+QSint--ActionGroup QToolButton#filterButton {
     padding-right: 20px; /* make way for the popup button */
 }
 
@@ -2296,6 +2287,8 @@ QListView::indicator,
 QTableView::indicator,
 QColumnView::indicator {
   border: 1px solid #ffffff;
+  width: 12px;
+  height: 12px;
 }
 
 QTreeView::indicator:unchecked:disabled,
@@ -2746,7 +2739,7 @@ PlotWidget {
 SKETCHER
 ==================================================================================================*/
 
-Gui--StatefulLabel[state="empty_sketch"] {
+Gui--StatefulLabel[state="empty"] {
   color : #ffffff; /* 50% opacity white */
 }
 Gui--StatefulLabel[state="under_constrained"] {
@@ -2860,26 +2853,34 @@ QTreeView::branch#groupsTreeView:has-siblings:!adjoins-item  {
 /*==================================================================================================
 Start page
 ==================================================================================================*/
-QWidget#thumbnailWidget {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #333333, stop:1 #252525);
+#thumbnailWidget {
+  background-color: #2f2f2f;
   border-radius: 8px;
   border: 1px solid #020202;
 }
 
-QWidget#thumbnailWidget[state="hovered"] {
+#thumbnailWidget:hover {
   border: 1px solid @ThemeAccentColor1;
 }
 
-QWidget#thumbnailWidget[state="pressed"] {
+#thumbnailWidget:pressed {
   border: 1px solid @ThemeAccentColor1;
 }
 
 /**
  * Special handling for WB Tab Bar
  */
- #WbTabBar #WbTabBarMore {
+#WbTabBar #WbTabBarMore {
   padding-right: 12px;
- }
+}
+
+QPushButton[objectName="buttonIFCPropertiesDelete"] {
+  min-width: 100px;
+}
+
+QGroupBox[objectName="matOpsGrpBox"] QPushButton {
+  min-width: 235px;
+}
 
 /* Below is a fix for indentation in properties, but this is a QT 6 bug only and so is disabled since Windows is as I write this still on QT 5. */
 /* QTreeView::item:selected:active#groupsTreeView {

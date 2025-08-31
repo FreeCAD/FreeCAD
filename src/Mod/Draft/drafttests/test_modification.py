@@ -183,8 +183,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         line2 = Draft.make_line(c, d)
         self.doc.recompute()
 
-        Draft.trim_objects = aux.fake_function
-        obj = Draft.trim_objects(line, line2)
+        obj = aux.fake_function(line, line2)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_extend(self):
@@ -204,8 +203,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         line2 = Draft.make_line(c, d)
         self.doc.recompute()
 
-        Draft.extrude = aux.fake_function
-        obj = Draft.extrude(line, line2)
+        obj = aux.fake_function(line, line2)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_join(self):
@@ -238,6 +236,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={0}, d={1}".format(c, d))
         wire = Draft.make_wire([a, b, c, d])
+        self.doc.recompute()
 
         index = 1
         _msg("  Split at")
@@ -293,7 +292,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         Draft.upgrade(obj3[0], delete=True)
         # when draftifying, upgrade doesn't return a new object
         wire = self.doc.ActiveObject
-        wire.MakeFace = True  # make test independent of fillmode parameter
+        wire.MakeFace = True  # make test independent of MakeFaceMode parameter
         self.doc.recompute()
         _msg("  4: Result '{0}' ({1})".format(wire.Proxy.Type, wire.TypeId))
         self.assertTrue(bool(wire), "'{}' failed".format(operation))
@@ -315,7 +314,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={0}, a={1}".format(c, a))
         wire = Draft.make_wire([a, b, c, a])
-        wire.MakeFace = True  # make test independent of fillmode parameter
+        wire.MakeFace = True  # make test independent of MakeFaceMode parameter
         self.doc.recompute()
 
         # downgrade to face
@@ -651,8 +650,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
         line = Draft.make_line(a, b)
         direction = Vector(4, 1, 0)
 
-        Draft.stretch = aux.fake_function
-        obj = Draft.stretch(line, direction)
+        obj = aux.fake_function(line, direction)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_scale_part_feature_arcs(self):

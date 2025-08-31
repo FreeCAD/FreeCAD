@@ -26,6 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "QGITemplate.h"
+#include "QGIUserTypes.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -48,7 +49,7 @@ public:
     explicit QGIDrawingTemplate(QGSPage *);
     ~QGIDrawingTemplate() override;
 
-    enum {Type = QGraphicsItem::UserType + 151};
+    enum {Type = UserType::QGIDrawingTemplate};
     int type() const override { return Type;}
 
     void clearContents();

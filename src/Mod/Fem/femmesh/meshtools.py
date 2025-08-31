@@ -224,6 +224,7 @@ def get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_set):
     The number in the ele_dict is organized as a bit array.
     The corresponding bit is set, if the node of the node_set is contained in the element.
     """
+    # print("BIT PATTERN", femelement_table, femnodes_ele_table, node_set)
     FreeCAD.Console.PrintLog("len femnodes_ele_table: " + str(len(femnodes_ele_table)) + "\n")
     FreeCAD.Console.PrintLog("len node_set: " + str(len(node_set)) + "\n")
     FreeCAD.Console.PrintLog(f"node_set: {node_set}\n")
@@ -241,6 +242,80 @@ def get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_set):
 
 
 # ************************************************************************************************
+def get_ccxelement_volumes_elements_from_binary_search(bit_pattern_dict):
+    tet10_mask = {0b1111111111: 1}
+    tet4_mask = {0b1111: 1}
+    hex8_mask = {0b11111111: 1}
+    hex20_mask = {0b11111111111111111111: 1}
+    pent6_mask = {0b111111: 1}
+    pent15_mask = {0b111111111111111: 1}
+    vol_dict = {
+        4: tet4_mask,
+        6: pent6_mask,
+        8: hex8_mask,
+        10: tet10_mask,
+        15: pent15_mask,
+        20: hex20_mask,
+    }
+    volumes = []
+    for ele in bit_pattern_dict:
+        mask_dict = vol_dict[bit_pattern_dict[ele][0]]
+        for key in mask_dict:
+            if (key & bit_pattern_dict[ele][1]) == key:
+                volumes.append(ele)
+    # print("VOLUMES:", volumes)
+    FreeCAD.Console.PrintLog(f"found Volumes: {len(volumes)}\n")
+    # FreeCAD.Console.PrintMessage("faces: {}\n".format(faces))
+    return volumes
+
+
+def get_ccxelement_faces_elements_from_binary_search(bit_pattern_dict):
+    tria3_mask = {0b111: 1}
+    tria6_mask = {0b111111: 1}
+    quad4_mask = {0b1111: 1}
+    quad8_mask = {0b11111111: 1}
+    vol_dict = {
+        3: tria3_mask,
+        6: tria6_mask,
+        4: quad4_mask,
+        8: quad8_mask,
+    }
+    faces = []
+    for ele in bit_pattern_dict:
+        mask_dict = vol_dict[bit_pattern_dict[ele][0]]
+        for key in mask_dict:
+            if (key & bit_pattern_dict[ele][1]) == key:
+                faces.append(ele)
+    # print("CARAS:", faces)
+    FreeCAD.Console.PrintMessage(f"found Edges: {len(faces)}\n")
+    return faces
+
+
+def get_ccxelement_edges_from_binary_search(bit_pattern_dict, sets_getter):
+    shell_mode = sets_getter.solver_obj.ModelSpace == "3D"
+    offset = 2 if shell_mode else 0
+    tria3_mask = {0b011: 1, 0b110: 2, 0b101: 3}
+    tria6_mask = {0b001011: 1, 0b010110: 2, 0b100101: 3}
+    quad4_mask = {0b0011: 1, 0b0110: 2, 0b1100: 3, 0b1001: 4}
+    quad8_mask = {0b00010011: 1, 0b00100110: 2, 0b01001100: 3, 0b10001001: 4}
+    vol_dict = {
+        3: tria3_mask,
+        6: tria6_mask,
+        4: quad4_mask,
+        8: quad8_mask,
+    }
+    faces = []
+    for ele in bit_pattern_dict:
+        mask_dict = vol_dict[bit_pattern_dict[ele][0]]
+        for key in mask_dict:
+            if (key & bit_pattern_dict[ele][1]) == key:
+                faces.append([ele, mask_dict[key] + offset])
+    # print("EDGES:", faces)
+    FreeCAD.Console.PrintMessage(f"found Edges: {len(faces)}\n")
+
+    return faces
+
+
 def get_ccxelement_faces_from_binary_search(bit_pattern_dict):
     """get the CalculiX element face numbers"""
     # the forum topic discussion with ulrich1a and others ... Better mesh last instead of mesh first
@@ -268,6 +343,7 @@ def get_ccxelement_faces_from_binary_search(bit_pattern_dict):
         for key in mask_dict:
             if (key & bit_pattern_dict[ele][1]) == key:
                 faces.append([ele, mask_dict[key]])
+    # print("FACES:", faces)
     FreeCAD.Console.PrintLog(f"found Faces: {len(faces)}\n")
     # FreeCAD.Console.PrintMessage("faces: {}\n".format(faces))
     return faces
@@ -1427,6 +1503,138 @@ def get_ref_shape_node_sum_geom_table(node_geom_table):
 
 # ************************************************************************************************
 # ***** methods for retrieving element face sets *************************************************
+# ***** charged faces ****************************************************************************
+def pair_obj_reference(obj_ref):
+    pairs = []
+    for feat, ref in obj_ref:
+        for sub_ref in ref:
+            sub = (feat, sub_ref)
+            pairs.append(sub)
+
+    return pairs
+
+
+def get_ccx_elements(sets_getter, ref_pair):
+    ref_obj, sub_ref = ref_pair
+    geom_type = ref_obj.getSubObject(sub_ref).ShapeType
+    elem = []
+    is_sub_element = False
+    model_dim = 0
+    if is_solid_femmesh(sets_getter.femmesh):
+        model_dim = 3
+    elif is_face_femmesh(sets_getter.femmesh):
+        model_dim = 2
+    elif is_edge_femmesh(sets_getter.femmesh):
+        model_dim = 1
+
+    match model_dim:
+        case 3:
+            match geom_type:
+                case "Solid":
+                    elem = get_ccx_elements_by_references(sets_getter, ref_pair)
+                    is_sub_element = False
+                case "Face" | "Edge" | "Vertex":
+                    elem = get_ccx_subelements_by_references(sets_getter, ref_pair)
+                    is_sub_element = True
+        case 2:
+            match geom_type:
+                case "Face":
+                    elem = get_ccx_elements_by_references(sets_getter, ref_pair)
+                    is_sub_element = False
+                case "Edge" | "Vertex":
+                    elem = get_ccx_subelements_by_references(sets_getter, ref_pair)
+                    is_sub_element = True
+        case 1:
+            match geom_type:
+                case "Edge":
+                    is_sub_element = False
+                    elem = get_ccx_elements_by_references(sets_getter, ref_pair)
+                case "Vertex":
+                    elem = get_ccx_subelements_by_references(sets_getter, ref_pair)
+                    is_sub_element = True
+        case 0:
+            match geom_type:
+                case "Vertex":
+                    elem = get_ccx_elements_by_references(sets_getter, ref_pair)
+                    is_sub_element = False
+
+    return (*elem, is_sub_element)
+
+
+def get_ccx_elements_by_references(sets_getter, femobj_ref):
+    node_set = []
+    result = []
+    # TODO get elements from mesh groups
+    # if femmesh.GroupCount:
+    #     node_set = get_femmesh_groupdata_sets_by_name(femmesh, femobj, "Node")
+    #     # FreeCAD.Console.PrintMessage("node_set_group: {}\n".format(node_set))
+    #     if node_set:
+    #         FreeCAD.Console.PrintLog(
+    #             "    Finite element mesh nodes where retrieved "
+    #             "from existent finite element mesh group data.\n"
+    #         )
+    if not node_set:
+        elem = []
+        FreeCAD.Console.PrintLog(
+            "    Finite element mesh nodes will be retrieved "
+            "by searching the appropriate nodes in the finite element mesh.\n"
+        )
+        feat, sub_ref = femobj_ref
+        sub = (feat, (sub_ref,))
+        node_set = get_femnodes_by_references(sets_getter.femmesh, [sub])
+        charged_volume_node_set = sorted(set(node_set))
+
+        bit_pattern_dict = get_bit_pattern_dict(
+            sets_getter.femelement_table, sets_getter.femnodes_ele_table, charged_volume_node_set
+        )
+        sh = feat.getSubObject(sub_ref)
+        if sh.ShapeType == "Solid":
+            elem = get_ccxelement_volumes_elements_from_binary_search(bit_pattern_dict)
+        elif sh.ShapeType == "Face":
+            elem = get_ccxelement_faces_elements_from_binary_search(bit_pattern_dict)
+
+        result = (sub, elem)
+
+    return result
+
+
+def get_ccx_subelements_by_references(sets_getter, femobj_ref):
+    node_set = []
+    result = []
+    # TODO get elements from mesh groups
+    # if femmesh.GroupCount:
+    #     node_set = get_femmesh_groupdata_sets_by_name(femmesh, femobj, "Node")
+    #     # FreeCAD.Console.PrintMessage("node_set_group: {}\n".format(node_set))
+    #     if node_set:
+    #         FreeCAD.Console.PrintLog(
+    #             "    Finite element mesh nodes where retrieved "
+    #             "from existent finite element mesh group data.\n"
+    #         )
+    if not node_set:
+        sub_elem = []
+        FreeCAD.Console.PrintLog(
+            "    Finite element mesh nodes will be retrieved "
+            "by searching the appropriate nodes in the finite element mesh.\n"
+        )
+        feat, sub_ref = femobj_ref
+        sub = (feat, (sub_ref,))
+        node_set = get_femnodes_by_references(sets_getter.femmesh, [sub])
+        charged_face_node_set = sorted(set(node_set))
+
+        bit_pattern_dict = get_bit_pattern_dict(
+            sets_getter.femelement_table, sets_getter.femnodes_ele_table, charged_face_node_set
+        )
+        sh = feat.getSubObject(sub_ref)
+        if sh.ShapeType == "Face":
+            sub_elem = get_ccxelement_faces_from_binary_search(bit_pattern_dict)
+        elif sh.ShapeType == "Edge":
+            sub_elem = get_ccxelement_edges_from_binary_search(bit_pattern_dict, sets_getter)
+
+        result = (sub, sub_elem)
+
+    return result
+
+
 # ***** pressure faces ***************************************************************************
 def get_pressure_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
     # see get_ccxelement_faces_from_binary_search for more information
@@ -1509,7 +1717,7 @@ def get_contact_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj)
 
     contact_obj = femobj["Object"]
     if len(contact_obj.References) == 1 and len(contact_obj.References[0][1]) == 2:
-        # [(<Part::PartFeature>, ('Face7', 'Face3'))]
+        # [(<Part::Feature>, ('Face7', 'Face3'))]
         # refs are merged because they are on the same doc obj
         # but only one element face for each contact face (Gui, TaskPael contact)
         ref_obj = contact_obj.References[0][0]
@@ -1521,7 +1729,7 @@ def get_contact_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj)
         and len(contact_obj.References[0][1]) == 1
         and len(contact_obj.References[1][1]) == 1
     ):
-        # [(<Part::PartFeature>, ('Face3',)), (<Part::PartFeature>, ('Face7',))]
+        # [(<Part::Feature>, ('Face3',)), (<Part::Feature>, ('Face7',))]
         # refs are on different objects
         # but only one element face for each contact face (Gui, TaskPael contact)
         slave_ref = contact_obj.References[0]
@@ -1591,7 +1799,7 @@ def get_tie_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
 
     tie_obj = femobj["Object"]
     if len(tie_obj.References) == 1 and len(tie_obj.References[0][1]) == 2:
-        # [(<Part::PartFeature>, ('Face7', 'Face3'))]
+        # [(<Part::Feature>, ('Face7', 'Face3'))]
         # refs are merged because they are on the same doc obj
         # but only one element face for each contact face (Gui, TaskPael tie)
         ref_obj = tie_obj.References[0][0]
@@ -1603,7 +1811,7 @@ def get_tie_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
         and len(tie_obj.References[0][1]) == 1
         and len(tie_obj.References[1][1]) == 1
     ):
-        # [(<Part::PartFeature>, ('Face3',)), (<Part::PartFeature>, ('Face7',))]
+        # [(<Part::Feature>, ('Face3',)), (<Part::Feature>, ('Face7',))]
         # refs are on different objects
         # but only one element face for each contact face (Gui, TaskPael tie)
         slave_ref = tie_obj.References[0]

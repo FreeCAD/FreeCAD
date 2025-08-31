@@ -42,6 +42,7 @@ class AppExport GeoFeature: public App::DocumentObject
 
 public:
     PropertyPlacement Placement;
+    PropertyString _ElementMapVersion;
 
     /// Constructor
     GeoFeature();
@@ -150,11 +151,13 @@ public:
     /**
      * @brief Virtual function to get the camera alignment direction
      *
-     * Finds a direction to align the camera with.
+     * Finds a directionZ to align the camera with.
+     * May also find an optional directionX which could be used for horizontal or vertical alignment.
      *
-     * @return bool whether or not a direction is found.
+     * @return bool whether or not a directionZ is found.
      */
-    virtual bool getCameraAlignmentDirection(Base::Vector3d& direction,
+    virtual bool getCameraAlignmentDirection(Base::Vector3d& directionZ,
+                                             Base::Vector3d& directionX,
                                              const char* subname = nullptr) const;
     /** Search sub element using internal cached geometry
      *
@@ -199,7 +202,7 @@ public:
 
 protected:
     void onChanged(const Property* prop) override;
-    //    void onDocumentRestored() override;
+    void onDocumentRestored() override;
     void updateElementReference();
 
 protected:

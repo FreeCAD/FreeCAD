@@ -114,9 +114,9 @@ public:
     //@{
 
     /// set the color for each node
-    void setColorByNodeId(const std::map<std::vector<long>, App::Color>& NodeColorMap);
+    void setColorByNodeId(const std::map<std::vector<long>, Base::Color>& NodeColorMap);
     void setColorByNodeId(const std::vector<long>& NodeIds,
-                          const std::vector<App::Color>& NodeColors);
+                          const std::vector<Base::Color>& NodeColors);
 
     /// reset the view of the node colors
     void resetColorByNodeId();
@@ -129,7 +129,7 @@ public:
     /// reaply the node displacement with a certain factor and do a redraw
     void applyDisplacementToNodes(double factor);
     /// set the color for each element
-    void setColorByElementId(const std::map<std::vector<long>, App::Color>& ElementColorMap);
+    void setColorByElementId(const std::map<std::vector<long>, Base::Color>& ElementColorMap);
     /// reset the view of the element colors
     void resetColorByElementId();
     void setMaterialByElement();
@@ -151,9 +151,9 @@ protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
 
-    void setColorByNodeIdHelper(const std::vector<App::Color>&);
+    void setColorByNodeIdHelper(const std::vector<Base::Color>&);
     void setDisplacementByNodeIdHelper(const std::vector<Base::Vector3d>& DispVector, long startId);
-    void setColorByIdHelper(const std::map<std::vector<long>, App::Color>& elemColorMap,
+    void setColorByIdHelper(const std::map<std::vector<long>, Base::Color>& elemColorMap,
                             const std::vector<unsigned long>& vElementIdx,
                             int rShift,
                             App::PropertyColorList& prop);

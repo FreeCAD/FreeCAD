@@ -1,58 +1,64 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the exporter for IFC files used above all in Arch and BIM.
 
-Internally it uses IfcOpenShell, which must be installed before using.
-"""
+__title__  = "FreeCAD IFC export"
+__author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
+__url__    = "https://www.freecad.org"
+
 ## @package exportIFC
 #  \ingroup ARCH
 #  \brief IFC file format exporter
 #
 #  This module provides tools to export IFC files.
 
+"""Provide the exporter for IFC files used above all in Arch and BIM.
+
+Internally it uses IfcOpenShell, which must be installed before using.
+"""
+
+import math
 import os
 import time
 import tempfile
-import math
 from builtins import open as pyopen
 
 import FreeCAD
-import Part
-import Draft
+import FreeCADGui
 import Arch
+import Draft
 import DraftVecUtils
+import Part
 import ArchIFCSchema
-from importers import exportIFCHelper
-from importers import exportIFCStructuralTools
 
 from DraftGeomUtils import vec
-from importers.importIFCHelper import dd2dms
 from draftutils import params
 from draftutils.messages import _msg, _err
 
-import FreeCADGui
+from importers import exportIFCHelper
+from importers import exportIFCStructuralTools
+from importers.importIFCHelper import dd2dms
 
-__title__  = "FreeCAD IFC export"
-__author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
-__url__    = "https://www.freecad.org"
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
@@ -103,6 +109,57 @@ ENDSEC;
 END-ISO-10303-21;
 """
 
+def _prepare_export_list_skipping_std_groups(initial_export_list, preferences_dict):
+    """
+    Builds the list of objects for IFC export. This function is called when the preference to skip
+    standard groups is active. Standard FreeCAD groups (App::DocumentObjectGroup that would become
+    IfcGroup) are omitted from the returned list, and their children are processed. This includes
+    children from their .Group property and also architecturally hosted elements (like windows in
+    walls) if a child of the skipped group is a host.
+
+    The re-parenting of children of a skipped FreeCAD group in the resulting IFC file is achieved
+    implicitly:
+
+    1. The skipped FreeCAD group itself is not converted into an IFC product. It will not exist as
+        an IfcGroup or IfcElementAssembly in the IFC file.
+    2. Children of the skipped group (and architecturally hosted elements like windows within walls
+       that were part of the skipped group's content) are processed and converted into their
+       respective IFC products.
+    3. These IFC products, initially "orphaned" from the skipped FreeCAD group's potential IFC
+       representation, are then handled by the exporter's subsequent spatial relationship logic.
+       This logic typically assigns such "untreated" elements to the current or default IFC spatial
+       container (e.g., an IfcBuildingStorey if the skipped group was under a Level).
+
+    The net effect is that the children appear directly contained within the IFC representation of
+    the skipped group's parent container.
+    """
+    all_potential_objects = Arch.get_architectural_contents(
+        initial_export_list,
+        recursive=True,
+        discover_hosted_elements=True,
+        include_components_from_additions=True,
+        include_initial_objects_in_result=True
+    )
+
+    final_objects_for_processing = []
+
+    for obj in all_potential_objects:
+        is_std_group_to_skip = False
+        # Determine if the current object is a standard FreeCAD group that should be skipped
+        if obj.isDerivedFrom("App::DocumentObjectGroup"):
+            # Check its potential IFC type; only skip if it would become a generic IfcGroup
+            potential_ifc_type = getIfcTypeFromObj(obj)
+            if potential_ifc_type == "IfcGroup":
+                is_std_group_to_skip = True
+
+        if not is_std_group_to_skip:
+            if obj not in final_objects_for_processing: # Ensure uniqueness
+                final_objects_for_processing.append(obj)
+        elif preferences_dict['DEBUG']:
+            print(f"DEBUG: IFC Exporter: StdGroup '{obj.Label}' ({obj.Name}) "
+                  "was identified by get_architectural_contents but is now being filtered out.")
+
+    return final_objects_for_processing
 
 def getPreferences():
     """Retrieve the IFC preferences available in import and export."""
@@ -156,6 +213,7 @@ def getPreferences():
         'GET_STANDARD': params.get_param_arch("getStandardType"),
         'EXPORT_MODEL': ['arch', 'struct', 'hybrid'][params.get_param_arch("ifcExportModel")],
         'GROUPS_AS_ASSEMBLIES': params.get_param_arch("IfcGroupsAsAssemblies"),
+        'IGNORE_STD_GROUPS': not params.get_param_arch("IfcExportStdGroups"),
     }
 
     # get ifcopenshell version
@@ -268,17 +326,25 @@ def export(exportList, filename, colors=None, preferences=None):
     else:
         # IFC4 allows one to not write any history
         history = None
-    objectslist = Draft.get_group_contents(exportList, walls=True,
-                                           addgroups=True)
+
+    if preferences['IGNORE_STD_GROUPS']:
+        if preferences['DEBUG']:
+            print("IFC Export: Skipping standard FreeCAD groups and processing their children.")
+        objectslist = _prepare_export_list_skipping_std_groups(exportList, preferences)
+    else:
+        objectslist = Draft.get_group_contents(exportList, walls=True, addgroups=True)
 
     # separate 2D and special objects. Special objects provide their own IFC export method
 
     annotations = []
     specials = []
     for obj in objectslist:
-        if obj.isDerivedFrom("Part::Part2DObject"):
-            annotations.append(obj)
-        elif obj.isDerivedFrom("App::Annotation") or (Draft.getType(obj) in ["DraftText","Text","Dimension","LinearDimension","AngularDimension"]):
+        if obj.isDerivedFrom("Part::Part2DObject") \
+                or obj.isDerivedFrom("App::Annotation") \
+                or Draft.getType(obj) in [
+                        "BezCurve", "BSpline", "Wire",
+                        "DraftText", "Text", "Dimension", "LinearDimension", "AngularDimension"
+                    ]:
             annotations.append(obj)
         elif hasattr(obj, "Proxy") and hasattr(obj.Proxy, "export_ifc"):
             specials.append(obj)
@@ -2340,6 +2406,7 @@ def getRepresentation(
                     if hasattr(obj,"Material"):
                         if obj.Material:
                             m = obj.Material.Label
+                            rgbt[i] = (rgbt[i][0], rgbt[i][1], rgbt[i][2], obj.Material.Transparency/100.0)
                     psa = ifcbin.createIfcPresentationStyleAssignment(m,rgbt[i][0],rgbt[i][1],rgbt[i][2],rgbt[i][3])
                     surfstyles[key] = psa
                 isi = ifcfile.createIfcStyledItem(shape,[psa],None)
@@ -2423,7 +2490,8 @@ def getUID(obj,preferences):
                 obj.IfcData = d
             if hasattr(obj, "GlobalId"):
                 obj.GlobalId = uid
-    uids.append(uid)
+    if "uids" in globals():
+        uids.append(uid)
     return uid
 
 
@@ -2499,6 +2567,11 @@ def create_annotation(anno, ifcfile, context, history, preferences):
     """Creates an annotation object"""
 
     global curvestyles, ifcbin
+    reps = []
+    repid = "Annotation"
+    reptype = "Annotation2D"
+    description = getattr(anno, "Description", None)
+    # uses global ifcbin, curvestyles
     objectType = None
     ovc = None
     zvc = None
@@ -2506,7 +2579,6 @@ def create_annotation(anno, ifcfile, context, history, preferences):
     reps = []
     repid = "Annotation"
     reptype = "Annotation2D"
-    description = getattr(anno, "Description", None)
     if anno.isDerivedFrom("Part::Feature"):
         if Draft.getType(anno) == "Hatch":
             objectType = "HATCH"
@@ -2525,15 +2597,8 @@ def create_annotation(anno, ifcfile, context, history, preferences):
                 axes.append(axis)
             if axes:
                 if len(axes) > 1:
-                    xvc =  ifcbin.createIfcDirection((1.0,0.0,0.0))
-                    zvc =  ifcbin.createIfcDirection((0.0,0.0,1.0))
-                    ovc =  ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-                    gpl =  ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
-                    plac = ifcbin.createIfcLocalPlacement(gpl)
-                    grid = ifcfile.createIfcGrid(uid,history,name,description,None,plac,None,axes,None,None)
-                    return grid
-                else:
-                    return axes[0]
+                    print("DEBUG: exportIFC.create_annotation: Cannot create more than one axis",anno.Label)
+                return axes[0]
             else:
                 print("Unable to handle object",anno.Label)
                 return None

@@ -37,7 +37,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderLoft,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderLoft, PartDesignGui::ViewProvider)
 
 ViewProviderLoft::ViewProviderLoft() = default;
 
@@ -63,44 +63,12 @@ std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren()const
 
 void ViewProviderLoft::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit loft"));
-    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
-}
-
-bool ViewProviderLoft::setEdit(int ModNum)
-{
-    if (ModNum == ViewProvider::Default)
-        setPreviewDisplayMode(true);
-
-    return ViewProviderAddSub::setEdit(ModNum);
+    addDefaultAction(menu, QObject::tr("Edit Loft"));
+    ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 TaskDlgFeatureParameters* ViewProviderLoft::getEditDialog() {
     return new TaskDlgLoftParameters(this);
-}
-
-
-void ViewProviderLoft::unsetEdit(int ModNum) {
-    setPreviewDisplayMode(false);
-    ViewProviderAddSub::unsetEdit(ModNum);
-}
-
-
-bool ViewProviderLoft::onDelete(const std::vector<std::string> & /*s*/)
-{/*
-    PartDesign::Loft* pcLoft = getObject<PartDesign::Loft>();
-
-    // get the Sketch
-    Sketcher::SketchObject *pcSketch = 0;
-    if (pcLoft->Sketch.getValue())
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcLoft->Sketch.getValue());
-
-    // if abort command deleted the object the sketch is visible again
-    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-        Gui::Application::Instance->getViewProvider(pcSketch)->show();
-
-    return ViewProvider::onDelete(s);*/
-    return true;
 }
 
 void ViewProviderLoft::highlightProfile(bool on)
@@ -153,11 +121,11 @@ void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vecto
     if (!svp)
         return;
 
-    std::vector<App::Color>& edgeColors = originalLineColors[base->getID()];
+    std::vector<Base::Color>& edgeColors = originalLineColors[base->getID()];
 
     if (on) {
         edgeColors = svp->LineColorArray.getValues();
-        std::vector<App::Color> colors = edgeColors;
+        std::vector<Base::Color> colors = edgeColors;
 
         PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), svp->LineColor.getValue());
         highlighter.getEdgeColors(elements, colors);
@@ -170,14 +138,14 @@ void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vecto
 }
 
 QIcon ViewProviderLoft::getIcon() const {
-    QString str = QString::fromLatin1("PartDesign_");
+    QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::Loft>();
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive");
+        str += QStringLiteral("Additive");
     else
-        str += QString::fromLatin1("Subtractive");
+        str += QStringLiteral("Subtractive");
 
-    str += QString::fromLatin1("Loft.svg");
+    str += QStringLiteral("Loft.svg");
     return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }
 

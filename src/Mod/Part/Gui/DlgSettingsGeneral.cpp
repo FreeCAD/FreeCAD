@@ -62,6 +62,12 @@ void DlgSettingsGeneral::saveSettings()
     ui->checkSketchBaseRefine->onSave();
     ui->checkObjectNaming->onSave();
     ui->checkAllowCompoundBody->onSave();
+    ui->enableGizmos->onSave();
+    ui->delayedGizmoUpdate->onSave();
+    ui->comboDefaultProfileTypeForHole->onSave();
+    ui->checkShowFinalPreview->onSave();
+    ui->checkShowTransparentPreview->onSave();
+    ui->checkSwitchToTask->onSave();
 }
 
 void DlgSettingsGeneral::loadSettings()
@@ -71,6 +77,12 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkSketchBaseRefine->onRestore();
     ui->checkObjectNaming->onRestore();
     ui->checkAllowCompoundBody->onRestore();
+    ui->enableGizmos->onRestore();
+    ui->delayedGizmoUpdate->onRestore();
+    ui->comboDefaultProfileTypeForHole->onRestore();
+    ui->checkShowFinalPreview->onRestore();
+    ui->checkShowTransparentPreview->onRestore();
+    ui->checkSwitchToTask->onRestore();
 }
 
 /**
@@ -99,7 +111,7 @@ DlgImportExportIges::DlgImportExportIges(QWidget* parent)
     bg->addButton(ui->radioButtonBRepOn, 1);
 
     QRegularExpression rx;
-    rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
+    rx.setPattern(QStringLiteral("[\\x00-\\x7F]+"));
     QRegularExpressionValidator* companyValidator = new QRegularExpressionValidator(ui->lineEditCompany);
     companyValidator->setRegularExpression(rx);
     ui->lineEditCompany->setValidator(companyValidator);

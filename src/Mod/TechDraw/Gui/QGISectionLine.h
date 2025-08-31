@@ -35,6 +35,7 @@
 
 #include "QGCustomText.h"
 #include "QGIDecoration.h"
+#include "QGIUserTypes.h"
 
 
 namespace TechDrawGui
@@ -49,7 +50,7 @@ public:
     explicit QGISectionLine();
     ~QGISectionLine() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 172};
+    enum {Type = UserType::QGISectionLine};
     int type() const override { return Type;}
 
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;

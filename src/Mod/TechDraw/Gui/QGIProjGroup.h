@@ -26,6 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "QGIViewCollection.h"
+#include "QGIUserTypes.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -49,7 +50,7 @@ public:
     // TODO: if the QGIVO is deleted, should we clean up any remaining QGIVParts??
     ~QGIProjGroup() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 113};
+    enum {Type = UserType::QGIProjGroup};
     int type() const override { return Type;}
 
     void alignTo(QGIProjGroup *, const QString &alignment);
@@ -65,11 +66,14 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent * event ) override;
     void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
-    QGIView * getAnchorQItem() const;
+
+    void mouseReleaseEvent(QGIView* originator, QGraphicsSceneMouseEvent* event);
+    QGIView* getAnchorQItem() const;
 
 private:
     /// Convenience function
     TechDraw::DrawProjGroup* getDrawView() const;
+    bool autoDistributeEnabled() const;
 
     QGraphicsItem* m_origin;
     QPoint mousePos;

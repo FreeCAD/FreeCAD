@@ -159,7 +159,6 @@ void AssemblyLink::onChanged(const App::Property* prop)
                 propPlc->setValue(movePlc);
             }
         }
-
         return;
     }
     App::Part::onChanged(prop);
@@ -175,7 +174,6 @@ void AssemblyLink::updateContents()
     else {
         synchronizeJoints();
     }
-
     purgeTouched();
 }
 
@@ -207,8 +205,9 @@ void AssemblyLink::synchronizeComponents()
         for (auto* obj2 : assemblyLinkGroup) {
             App::DocumentObject* linkedObj;
 
-            auto* subAsmLink = dynamic_cast<AssemblyLink*>(obj2);
+            auto* subAsmLink = freecad_cast<AssemblyLink*>(obj2);
             auto* link2 = dynamic_cast<App::Link*>(obj2);
+
             if (subAsmLink) {
                 linkedObj = subAsmLink->getLinkedObject2(false);  // not recursive
             }
@@ -216,10 +215,9 @@ void AssemblyLink::synchronizeComponents()
                 linkedObj = link2->getLinkedObject(false);  // not recursive
             }
             else {
-                // We consider only Links and AssemblyLinks in the AssemblyLink.
+                // We consider only Links and AssemblyLinks
                 continue;
             }
-
 
             if (linkedObj == obj) {
                 found = true;
@@ -231,8 +229,10 @@ void AssemblyLink::synchronizeComponents()
             // Add a link or a AssemblyLink to it in the AssemblyLink.
             if (obj->isDerivedFrom<AssemblyLink>()) {
                 auto* asmLink = static_cast<AssemblyLink*>(obj);
-                auto* subAsmLink = new AssemblyLink();
-                doc->addObject(subAsmLink, obj->getNameInDocument());
+
+                App::DocumentObject* newObj =
+                    doc->addObject("Assembly::AssemblyLink", obj->getNameInDocument());
+                auto* subAsmLink = static_cast<AssemblyLink*>(newObj);
                 subAsmLink->LinkedObject.setValue(obj);
                 subAsmLink->Rigid.setValue(asmLink->Rigid.getValue());
                 subAsmLink->Label.setValue(obj->Label.getValue());
@@ -272,24 +272,6 @@ void AssemblyLink::synchronizeComponents()
         if (objLinkMap.find(link) != objLinkMap.end()) {
             doc->removeObject(link->getNameInDocument());
         }
-
-        /*if (!link->isDerivedFrom<App::Link>() && !link->isDerivedFrom<AssemblyLink>()) {
-            // AssemblyLink should contain only Links or assembly links.
-            continue;
-        }
-
-        auto* linkedObj = link->getLinkedObject(false);  // not recursive
-
-        bool found = false;
-        for (auto* obj2 : assemblyGroup) {
-            if (obj2 == linkedObj) {
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            doc->removeObject(link->getNameInDocument());
-        }*/
     }
 }
 
@@ -300,8 +282,8 @@ void copyPropertyIfDifferent(App::DocumentObject* source,
                              App::DocumentObject* target,
                              const char* propertyName)
 {
-    auto sourceProp = dynamic_cast<T*>(source->getPropertyByName(propertyName));
-    auto targetProp = dynamic_cast<T*>(target->getPropertyByName(propertyName));
+    auto sourceProp = freecad_cast<T*>(source->getPropertyByName(propertyName));
+    auto targetProp = freecad_cast<T*>(target->getPropertyByName(propertyName));
     if (sourceProp && targetProp && sourceProp->getValue() != targetProp->getValue()) {
         targetProp->setValue(sourceProp->getValue());
     }
@@ -370,7 +352,7 @@ void AssemblyLink::synchronizeJoints()
         }
 
         // Then we have to check the properties one by one.
-        copyPropertyIfDifferent<App::PropertyBool>(joint, lJoint, "Activated");
+        copyPropertyIfDifferent<App::PropertyBool>(joint, lJoint, "Suppressed");
         copyPropertyIfDifferent<App::PropertyFloat>(joint, lJoint, "Distance");
         copyPropertyIfDifferent<App::PropertyFloat>(joint, lJoint, "Distance2");
         copyPropertyIfDifferent<App::PropertyEnumeration>(joint, lJoint, "JointType");
@@ -512,8 +494,6 @@ JointGroup* AssemblyLink::ensureJointGroup()
         jGroup = new JointGroup();
         getDocument()->addObject(jGroup, tr("Joints").toStdString().c_str());
 
-        // we want to add jgroup at the start, so we don't use
-        // addObject(jGroup);
         std::vector<DocumentObject*> grp = Group.getValues();
         grp.insert(grp.begin(), jGroup);
         Group.setValues(grp);
@@ -524,12 +504,12 @@ JointGroup* AssemblyLink::ensureJointGroup()
 App::DocumentObject* AssemblyLink::getLinkedObject2(bool recursive) const
 {
     auto* obj = LinkedObject.getValue();
-    auto* assembly = dynamic_cast<AssemblyObject*>(obj);
+    auto* assembly = freecad_cast<AssemblyObject*>(obj);
     if (assembly) {
         return assembly;
     }
     else {
-        auto* assemblyLink = dynamic_cast<AssemblyLink*>(obj);
+        auto* assemblyLink = freecad_cast<AssemblyLink*>(obj);
         if (assemblyLink) {
             if (recursive) {
                 return assemblyLink->getLinkedObject2(recursive);
@@ -545,14 +525,14 @@ App::DocumentObject* AssemblyLink::getLinkedObject2(bool recursive) const
 
 AssemblyObject* AssemblyLink::getLinkedAssembly() const
 {
-    return dynamic_cast<AssemblyObject*>(getLinkedObject2());
+    return freecad_cast<AssemblyObject*>(getLinkedObject2());
 }
 
 AssemblyObject* AssemblyLink::getParentAssembly() const
 {
     std::vector<App::DocumentObject*> inList = getInList();
     for (auto* obj : inList) {
-        auto* assembly = dynamic_cast<AssemblyObject*>(obj);
+        auto* assembly = freecad_cast<AssemblyObject*>(obj);
         if (assembly) {
             return assembly;
         }
@@ -567,7 +547,6 @@ bool AssemblyLink::isRigid()
     if (!prop) {
         return true;
     }
-
     return prop->getValue();
 }
 
@@ -578,6 +557,5 @@ std::vector<App::DocumentObject*> AssemblyLink::getJoints()
     if (!jointGroup) {
         return {};
     }
-
     return jointGroup->getJoints();
 }

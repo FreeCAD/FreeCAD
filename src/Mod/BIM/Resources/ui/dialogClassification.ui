@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
+ <class>bimDialogClassification</class>
  <widget class="QDialog" name="bimDialogClassification">
   <property name="geometry">
    <rect>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Classification manager</string>
+   <string>Classification Manager</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -57,7 +57,7 @@
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>Sort by:</string>
+            <string>Sort by</string>
            </property>
           </widget>
          </item>
@@ -69,8 +69,7 @@
             </property>
             <property name="icon">
              <iconset theme="format-text-direction-ltr">
-              <normaloff/>
-             </iconset>
+              <normaloff>.</normaloff>.</iconset>
             </property>
            </item>
            <item>
@@ -79,8 +78,7 @@
             </property>
             <property name="icon">
              <iconset theme="application-drawing">
-              <normaloff/>
-             </iconset>
+              <normaloff>.</normaloff>.</iconset>
             </property>
            </item>
            <item>
@@ -119,7 +117,7 @@
          </attribute>
          <column>
           <property name="text">
-           <string>Object / Material</string>
+           <string>Object/Material</string>
           </property>
          </column>
          <column>
@@ -175,20 +173,20 @@
             </size>
            </property>
            <property name="toolTip">
-            <string>Apply the selected class to selected materials</string>
+            <string>Apply the selected class to selected objects</string>
            </property>
            <property name="text">
-            <string>&lt;&lt; Apply to selected</string>
+            <string>&lt;&lt; Apply to Selected</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="buttonRename">
            <property name="toolTip">
-            <string>Use this class as material name</string>
+            <string>Use this class as object name</string>
            </property>
            <property name="text">
-            <string>&lt;&lt; Set as name</string>
+            <string>&lt;&lt; Set as Name</string>
            </property>
           </widget>
          </item>
@@ -197,7 +195,7 @@
        <item>
         <widget class="QCheckBox" name="checkPrefix">
          <property name="text">
-          <string>Prefix with class name when applying</string>
+          <string>Prefix with classification system name</string>
          </property>
          <property name="checked">
           <bool>true</bool>
@@ -232,44 +230,22 @@
     </widget>
    </item>
   </layout>
-  <zorder>labelDownload</zorder>
-  <zorder>buttonBox</zorder>
-  <zorder>groupMaterials</zorder>
-  <zorder>groupClasses</zorder>
-  <zorder>groupMaterials</zorder>
-  <zorder>groupClasses</zorder>
  </widget>
  <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>Dialog</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>bimDialogClassification</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>503</x>
+     <y>496</y>
     </hint>
     <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
+     <x>547</x>
+     <y>-18</y>
     </hint>
    </hints>
   </connection>

@@ -29,6 +29,7 @@ __url__ = "https://www.freecad.org"
 #  @{
 
 import collections
+from FreeCAD import Units
 
 SIMULATION = "Simulation"
 CONSTANTS = "Constants"
@@ -410,22 +411,28 @@ class _Writer:
     def _getSifDataType(self, dataType):
         if issubclass(dataType, Section):
             return _TYPE_INTEGER
-        if issubclass(dataType, bool):
+        elif issubclass(dataType, bool):
             return _TYPE_LOGICAL
-        if issubclass(dataType, int):
+        elif issubclass(dataType, int):
             return _TYPE_INTEGER
-        if issubclass(dataType, float):
+        elif issubclass(dataType, float):
             return _TYPE_REAL
-        if issubclass(dataType, str):
+        elif issubclass(dataType, str):
             return _TYPE_STRING
-        raise ValueError("Unsupported data type: %s" % dataType)
+        elif issubclass(dataType, Units.Quantity):
+            return _TYPE_REAL
+        else:
+            raise ValueError("Unsupported data type: %s" % dataType)
 
     def _preprocess(self, data, dataType):
         if issubclass(dataType, Section):
             return str(self._idMgr.getId(data))
-        if issubclass(dataType, str):
+        elif issubclass(dataType, str):
             return '"%s"' % data
-        return str(data)
+        elif issubclass(dataType, Units.Quantity):
+            return f"{data.Value:.13g}"
+        else:
+            return str(data)
 
     def _getAttrTypeScalar(self, data):
         return self._getSifDataType(type(data))

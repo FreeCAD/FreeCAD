@@ -25,10 +25,10 @@
      <item row="0" column="0">
       <widget class="QCheckBox" name="chkLeadIn">
        <property name="toolTip">
-        <string>Enable Lead-in move</string>
+        <string>Enable lead-in move</string>
        </property>
        <property name="text">
-        <string>Enable Lead In</string>
+        <string>Enable lead-in</string>
        </property>
       </widget>
      </item>
@@ -58,14 +58,14 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
-        <string>Length / Radius</string>
+        <string>Length/radius</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
       <widget class="Gui::InputField" name="dspLenIn">
        <property name="toolTip">
-        <string>length or radius of the Lead-in</string>
+        <string>Length or radius of the lead-in</string>
        </property>
        <property name="minimum">
         <double>0.100000000000000</double>
@@ -85,7 +85,7 @@
      <item row="3" column="1">
       <widget class="Gui::InputField" name="dspExtendIn">
        <property name="toolTip">
-        <string>extends the leadin distance</string>
+        <string>Extends the lead-in distance</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
@@ -99,10 +99,10 @@
      <item row="0" column="0">
       <widget class="QCheckBox" name="chkLeadOut">
        <property name="toolTip">
-        <string>Enable Lead-out move</string>
+        <string>Enable lead-out move</string>
        </property>
        <property name="text">
-        <string>Enable Lead Out</string>
+        <string>Enable lead out</string>
        </property>
       </widget>
      </item>
@@ -132,14 +132,14 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>Length / Radius</string>
+        <string>Length/radius</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
       <widget class="Gui::InputField" name="dspLenOut">
        <property name="toolTip">
-        <string>length or radius of the Lead-out</string>
+        <string>Length or radius of the lead-out</string>
        </property>
        <property name="minimum">
         <double>0.100000000000000</double>
@@ -159,7 +159,7 @@
      <item row="3" column="1">
       <widget class="Gui::InputField" name="dspExtendOut">
        <property name="toolTip">
-        <string>Extends the leadout distance</string>
+        <string>Extends the lead-out distance</string>
        </property>
        <property name="unit" stdset="0">
         <string notr="true"/>
@@ -182,17 +182,17 @@
         <string>Plunge at rapid speed</string>
        </property>
        <property name="text">
-        <string>Rapid Plunge</string>
+        <string>Rapid plunge</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
       <widget class="QCheckBox" name="chkLayers">
        <property name="toolTip">
-        <string>Apply Lead In/Out on all layers</string>
+        <string>Apply lead-in/out on all layers</string>
        </property>
        <property name="text">
-        <string>Include Layers</string>
+        <string>Include layers</string>
        </property>
       </widget>
      </item>
@@ -202,7 +202,7 @@
         <string>Keep the tool down in the path</string>
        </property>
        <property name="text">
-        <string>Keep Tool Down</string>
+        <string>Keep tool down</string>
        </property>
       </widget>
      </item>

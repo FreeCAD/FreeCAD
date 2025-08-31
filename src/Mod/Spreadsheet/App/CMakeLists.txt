@@ -5,10 +5,6 @@ endif(WIN32)
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${PYTHON_INCLUDE_DIRS}
-    ${Boost_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
-    ${XercesC_INCLUDE_DIRS}
 )
 
 set(Spreadsheet_LIBS
@@ -48,6 +44,11 @@ generate_from_xml(SheetPy)
 generate_from_xml(PropertySheetPy)
 generate_from_xml(PropertyColumnWidthsPy)
 generate_from_xml(PropertyRowHeightsPy)
+
+generate_from_py_(SheetPy)
+generate_from_py_(PropertySheetPy)
+generate_from_py_(PropertyColumnWidthsPy)
+generate_from_py_(PropertyRowHeightsPy)
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)

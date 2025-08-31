@@ -25,7 +25,7 @@
 #define GUI_TOOLBARMANAGER_H
 
 #include <string>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <QStringList>
 #include <QPointer>
@@ -234,6 +234,7 @@ private:
     int _toolBarIconSize = 0;
     int _statusBarIconSize = 0;
     int _menuBarIconSize = 0;
+    bool blockRestore = false;
 };
 
 } // namespace Gui

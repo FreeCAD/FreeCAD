@@ -24,7 +24,6 @@
 #ifndef SANDBOXGUI_OVERLAY_H
 #define SANDBOXGUI_OVERLAY_H
 
-#include <QtOpenGL.h>
 #include <Gui/MouseSelection.h>
 #include <QColor>
 #include <QPoint>
@@ -55,7 +54,7 @@ private:
     QPoint lastPoint;
     QList<QPoint> selection;
 
-    QtGLFramebufferObject* fbo;
+    QOpenGLFramebufferObject* fbo;
 };
 
 } // SandboxGui

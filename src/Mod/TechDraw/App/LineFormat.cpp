@@ -72,7 +72,7 @@ void LineFormat::setCurrentLineFormat(LineFormat& newFormat)
 
 LineFormat::LineFormat(const int style,
                        const double weight,
-                       const App::Color& color,
+                       const Base::Color& color,
                        const bool visible) :
     m_style(style),
     m_weight(weight),
@@ -84,8 +84,8 @@ LineFormat::LineFormat(const int style,
 
 void LineFormat::dump(const char* title)
 {
-    Base::Console().Message("LF::dump - %s \n", title);
-    Base::Console().Message("LF::dump - %s \n", toString().c_str());
+    Base::Console().message("LF::dump - %s \n", title);
+    Base::Console().message("LF::dump - %s \n", toString().c_str());
 }
 
 std::string LineFormat::toString() const
@@ -104,7 +104,7 @@ double LineFormat::getDefEdgeWidth()
     return TechDraw::LineGroup::getDefaultWidth("Graphic");
 }
 
-App::Color LineFormat::getDefEdgeColor()
+Base::Color LineFormat::getDefEdgeColor()
 {
     return Preferences::normalColor();
 }

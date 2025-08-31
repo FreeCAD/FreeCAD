@@ -58,7 +58,11 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 10. Changes that break python API used by extensions SHALL be avoided. If it is not possible to avoid breaking changes, the amount of them MUST be minimized and PR MUST clearly describe all breaking changes with clear description on how to replace no longer working solution with newer one. Contributor SHOULD search for addons that will be broken and list them in the PR.
 11. Each commit message in a PR MUST succinctly explain what the commit achieves. The commit message SHALL follow the suggestions in the `git commit --help` documentation, section DISCUSSION.
 12. The PR message MUST consist of a single short line, the PR Title, summarizing the problem being solved, followed by a blank line and then the proposed solution in the Body. If a PR consists of more than one commit, the PR Title MUST succinctly explain what the PR achieves. The Body MAY be as detailed as needed. If a PR changes the user interface (UI), the body of the text MUST include a presentation of these UI changes, preferably with screenshots of the previous and revised state.
-13. A “Valid PR” is one which satisfies the above requirements.
+13. If a PR contains the work of another author (for example, if it is cherry-picked from a fork by someone other than the PR-submitter):
+    1. the PR description MUST contain proper attribution as the first line, for example: "This is work of XYZ cherry-picked from <link>";
+    2. all commits MUST have proper authorship, i.e. be authored by the original author and committed by the author of the PR;
+    3. if changes to cherry-picked commits are necessary they SHOULD be done as follow-up commits. If it is not possible to do so, then the modified commits MUST contain a `Co-Authored-By` trailer in their commit message.
+14. A “Valid PR” is one which satisfies the above requirements.
 
 ## 6. Process
 
@@ -82,9 +86,11 @@ The FreeCAD Contribution Process is expressed here with the following specific g
     2. capture toxic contributions in the historical record
     3. engage with the Contributor on improving their contribution quality.
 14. Maintainers SHALL NOT make value judgments on correct contributions.
-15. Any Contributor who has value judgments on a PR SHOULD express these via their own PR.
-16. The User who created an issue SHOULD close the issue after checking the PR is successful.
-17. Maintainers SHOULD close issues that are left open without action or update for an unreasonable period.
+15. If a PR requires significant further work before merging, the PR SHOULD be moved to draft status.
+16. If a PR is complete, but should not be merged yet (for example, because it depends on another in-process PR), the "On hold" label SHOULD be applied.
+17. Any Contributor who has value judgments on a PR SHOULD express these via their own PR.
+18. The User who created an issue SHOULD close the issue after checking the PR is successful.
+19. Maintainers SHOULD close issues that are left open without action or update for an unreasonable period.
 
 ## 7. Branches and Releases
 

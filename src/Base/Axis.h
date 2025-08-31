@@ -24,11 +24,13 @@
 #ifndef BASE_AXIS_H
 #define BASE_AXIS_H
 
-#include "Placement.h"
+#include <FCGlobal.h>
+
 #include "Vector3D.h"
 
 namespace Base
 {
+class Placement;
 
 /**
  * The Axis class.

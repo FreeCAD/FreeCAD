@@ -55,9 +55,9 @@ class CommandInvoluteGear:
     "GUI command to create an InvoluteGear"
     def GetResources(self):
         return {'Pixmap'  : 'PartDesign_InternalExternalGear',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PartDesign_InvoluteGear","Involute gear..."),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("PartDesign_InvoluteGear","Involute Gear"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PartDesign_InvoluteGear","Creates or edit the involute gear definition.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PartDesign_InvoluteGear","Creates or edits the involute gear definition")}
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create involute gear")
@@ -86,7 +86,7 @@ class _InvoluteGear:
     def _ensure_properties(self, obj, is_restore):
         def ensure_property(type_, name, doc, default):
             if not hasattr(obj, name):
-                obj.addProperty(type_, name, "Gear", doc)
+                obj.addProperty(type_, name, "Gear", doc, locked=True)
                 if callable(default):
                     setattr(obj, name, default())
                 else:

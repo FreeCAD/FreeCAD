@@ -339,7 +339,7 @@ void SoFCColorLegend::setColorLegend(const App::ColorLegend& legend)
     auto mat = new SoMaterial;
     mat->diffuseColor.setNum(intFields);
     for (std::size_t k = 0; k < numFields; k++) {
-        App::Color col = legend.getColor(k);
+        Base::Color col = legend.getColor(k);
         mat->diffuseColor.set1Value(k, col.r, col.g, col.b);
     }
 

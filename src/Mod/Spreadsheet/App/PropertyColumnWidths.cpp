@@ -129,11 +129,13 @@ void PropertyColumnWidths::Restore(Base::XMLReader& reader)
 
     // Column info
     reader.readElement("ColumnInfo");
-    Cnt = reader.hasAttribute("Count") ? reader.getAttributeAsInteger("Count") : 0;
+    Cnt = reader.hasAttribute("Count") ? reader.getAttribute<long>("Count") : 0;
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("Column");
-        const char* name = reader.hasAttribute("name") ? reader.getAttribute("name") : nullptr;
-        const char* width = reader.hasAttribute("width") ? reader.getAttribute("width") : nullptr;
+        const char* name =
+            reader.hasAttribute("name") ? reader.getAttribute<const char*>("name") : nullptr;
+        const char* width =
+            reader.hasAttribute("width") ? reader.getAttribute<const char*>("width") : nullptr;
 
         try {
             if (name && width) {

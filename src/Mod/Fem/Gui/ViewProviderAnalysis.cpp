@@ -101,6 +101,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemAnalysis, Gui::ViewProviderDocumentObject
 
 ViewProviderFemAnalysis::ViewProviderFemAnalysis()
 {
+    setToggleVisibility(ToggleVisibilityMode::NoToggleVisibility);
     sPixmap = "FEM_Analysis";
 }
 
@@ -147,11 +148,6 @@ std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren() const
     return Gui::ViewProviderDocumentObjectGroup::claimChildren();
 }
 
-std::vector<std::string> ViewProviderFemAnalysis::getDisplayModes() const
-{
-    return {"Analysis"};
-}
-
 void ViewProviderFemAnalysis::hide()
 {
     Gui::ViewProviderDocumentObjectGroup::hide();
@@ -165,7 +161,7 @@ void ViewProviderFemAnalysis::show()
 void ViewProviderFemAnalysis::setupContextMenu(QMenu* menu, QObject*, const char*)
 {
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(tr("Activate analysis"));
+    QAction* act = menu->addAction(tr("Activate Analysis"));
     func->trigger(act, [this]() {
         this->doubleClicked();
     });

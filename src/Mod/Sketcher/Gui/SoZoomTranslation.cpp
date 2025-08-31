@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cfloat>
 #include <cmath>
 
 #include <Inventor/actions/SoGLRenderAction.h>

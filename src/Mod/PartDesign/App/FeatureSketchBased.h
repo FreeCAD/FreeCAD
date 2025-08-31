@@ -38,7 +38,7 @@ namespace PartDesign
 
 class PartDesignExport ProfileBased : public PartDesign::FeatureAddSub
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SketchBased);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::ProfileBased);
 
 public:
     enum class ForbiddenAxis {
@@ -57,8 +57,10 @@ public:
     App::PropertyBool    Midplane;
     /// Face to extrude up to
     App::PropertyLinkSub UpToFace;
+    App::PropertyLinkSub UpToFace2;
     /// Shape to extrude up to
     App::PropertyLinkSubList UpToShape;
+    App::PropertyLinkSubList UpToShape2;
 
     App::PropertyBool AllowMultiFace;
 
@@ -131,7 +133,11 @@ public:
 
     virtual Base::Vector3d getProfileNormal() const;
 
-    TopoShape getProfileShape() const;
+    // Use Part::ShapeOptions enum to pass flags
+    TopoShape getProfileShape(Part::ShapeOptions subShapeOptions = 
+                                                      Part::ShapeOption::NeedSubElement 
+                                                    | Part::ShapeOption::ResolveLink 
+                                                    | Part::ShapeOption::Transform) const;
 
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
     int getSketchAxisCount() const;
@@ -154,15 +160,6 @@ protected:
     /// Extract a face from a given LinkSub
     static void getFaceFromLinkSub(TopoDS_Face& upToFace, const App::PropertyLinkSub& refFace);
 
-    /// Find a valid face to extrude up to
-    static void getUpToFace(TopoDS_Face& upToFace,
-                            const TopoDS_Shape& support,
-                            const TopoDS_Shape& sketchshape,
-                            const std::string& method,
-                            const gp_Dir& dir);
-
-    /// Add an offset to the face
-    static void addOffsetToFace(TopoDS_Face& upToFace, const gp_Dir& dir, double offset);
     /// Extract a face from a given LinkSub
     static void getUpToFaceFromLinkSub(TopoShape& upToFace, const App::PropertyLinkSub& refFace);
 

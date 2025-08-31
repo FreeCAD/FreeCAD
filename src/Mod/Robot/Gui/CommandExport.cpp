@@ -44,8 +44,8 @@ CmdRobotExportKukaCompact::CmdRobotExportKukaCompact()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Kuka compact subroutine...");
-    sToolTipText = QT_TR_NOOP("Export the trajectory as a compact KRL subroutine.");
+    sMenuText = QT_TR_NOOP("Kuka Compact Subroutine");
+    sToolTipText = QT_TR_NOOP("Exports the trajectory as a compact KRL subroutine");
     sWhatsThis = "Robot_ExportKukaCompact";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_Export";
@@ -86,8 +86,8 @@ void CmdRobotExportKukaCompact::activated(int)
     // std::string TrakName = pcTrajectoryObject->getNameInDocument();
 
     QStringList filter;
-    filter << QString::fromLatin1("%1 (*.src)").arg(QObject::tr("KRL file"));
-    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
+    filter << QStringLiteral("%1 (*.src)").arg(QObject::tr("KRL file"));
+    filter << QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files"));
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
                                                   QObject::tr("Export program"),
                                                   QString(),
@@ -119,8 +119,8 @@ CmdRobotExportKukaFull::CmdRobotExportKukaFull()
 {
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
-    sMenuText = QT_TR_NOOP("Kuka full subroutine...");
-    sToolTipText = QT_TR_NOOP("Export the trajectory as a full KRL subroutine.");
+    sMenuText = QT_TR_NOOP("Kuka Full Subroutine");
+    sToolTipText = QT_TR_NOOP("Exports the trajectory as a full KRL subroutine");
     sWhatsThis = "Robot_ExportKukaFull";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_Export";
@@ -161,8 +161,8 @@ void CmdRobotExportKukaFull::activated(int)
     // std::string TrakName = pcTrajectoryObject->getNameInDocument();
 
     QStringList filter;
-    filter << QString::fromLatin1("%1 (*.src)").arg(QObject::tr("KRL file"));
-    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
+    filter << QStringLiteral("%1 (*.src)").arg(QObject::tr("KRL file"));
+    filter << QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files"));
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
                                                   QObject::tr("Export program"),
                                                   QString(),

@@ -25,7 +25,7 @@
 
 #include "DriverGMF.hxx"
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 extern "C"
 {
@@ -55,7 +55,7 @@ namespace DriverGMF
 
   bool isExtensionCorrect( const std::string& fileName )
   {
-    std::string ext = boost::filesystem::path(fileName).extension().string();
+    std::string ext = std::filesystem::path(fileName).extension().string();
     switch ( ext.size() ) {
     case 5: return ( ext == ".mesh" || ext == ".solb" );
     case 6: return ( ext == ".meshb" );

@@ -22,6 +22,11 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+#include <limits>
+#endif
+
+
 #if defined(FC_OS_WIN32)
 #include <Windows.h>
 #include <cstdint>
@@ -57,7 +62,7 @@ XERCES_CPP_NAMESPACE_USE
 PyMOD_INIT_FUNC(Cloud)
 {
     PyObject* mod = Cloud::initModule();
-    Base::Console().Log("Loading Cloud module... done\n");
+    Base::Console().log("Loading Cloud module... done\n");
     PyMOD_Return(mod);
 }
 
@@ -348,23 +353,7 @@ void Cloud::CloudWriter::createBucket()
         curl_easy_cleanup(curl);
     }
 }
-//
-// #if defined(FC_OS_WIN32)
-//
-// #include <chrono>
-// #undef timezone
-//
-//
-// int gettimeofday( time_t* tp, struct timezone* tzp) {
-//  namespace sc = std::chrono;
-//  sc::system_clock::duration d = sc::system_clock::now().time_since_epoch();
-//  sc::seconds s = sc::duration_cast<sc::seconds>(d);
-//  tp->tv_sec = s.count();
-//  tp->tv_usec = sc::duration_cast<sc::microseconds>(d - s).count();
-//
-//  return 0;
-//}
-// #endif
+
 
 struct Cloud::AmzDatav4* Cloud::ComputeDigestAmzS3v4(char* operation,
                                                      const char* server,
@@ -639,7 +628,6 @@ Cloud::BuildHeaderAmzS3v4(const char* URL, const char* PublicKey, struct Cloud::
     struct curl_slist* chunk = nullptr;
 
     // Build the Host: entry
-    // sprintf(header_data,"Host: %s:%s", URL, TCPPort);
     sprintf(header_data, "Host: %s", URL);
     chunk = curl_slist_append(chunk, header_data);
 
@@ -1314,7 +1302,6 @@ void Cloud::CloudWriter::pushCloud(const char* FileName, const char* data, long 
 
 void Cloud::CloudWriter::writeFiles(void)
 {
-
     // use a while loop because it is possible that while
     // processing the files, new ones can be added
     std::string tmp = "";
@@ -1505,11 +1492,10 @@ bool Cloud::Module::cloudRestore(const char* BucketName)
     doc->setStatus(Document::Restoring, true);
 
     try {
-        // Document::Restore(reader);
         doc->Restore(reader);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Invalid Document.xml: %s\n", e.what());
+        Base::Console().error("Invalid Document.xml: %s\n", e.what());
     }
 
     // Special handling for Gui document, the view representations must already

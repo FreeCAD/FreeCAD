@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2023 Uwe Stöhr <uwestoehr@lyx.org>                      *
+# *   Copyright (c) 2025 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,12 +23,14 @@
 # ***************************************************************************
 
 __title__ = "FreeCAD FEM constraint current density task panel for the document object"
-__author__ = "Uwe Stöhr"
+__author__ = "Uwe Stöhr, Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
 ## @package task_constraint_currentdensity
 #  \ingroup FEM
 #  \brief task panel for constraint current density object
+
+from PySide import QtCore
 
 import FreeCAD
 import FreeCADGui
@@ -43,10 +46,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     def __init__(self, obj):
         super().__init__(obj)
 
-        self._paramWidget = FreeCADGui.PySideUic.loadUi(
+        self.parameter_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/CurrentDensity.ui"
         )
-        self._initParamWidget()
 
         # geometry selection widget
         # start with Solid in list!
@@ -55,7 +57,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         )
 
         # form made from param and selection widget
-        self.form = [self._paramWidget, self._selectionWidget]
+        self.form = [self.parameter_widget, self._selectionWidget]
 
         analysis = obj.getParentGroup()
         self._mesh = None
@@ -66,6 +68,69 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self._part = self._mesh.Shape
         self._partVisible = None
         self._meshVisible = None
+
+        QtCore.QObject.connect(
+            self.parameter_widget.cb_mode,
+            QtCore.SIGNAL("currentIndexChanged(int)"),
+            self.mode_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_current_density_1,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.current_density_1_enabled_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_current_density_re_1,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.current_density_re_1_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_current_density_2,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.current_density_2_enabled_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_current_density_re_2,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.current_density_re_2_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_current_density_3,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.current_density_3_enabled_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_current_density_re_3,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.current_density_re_3_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_current_density_im_1,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.current_density_im_1_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_current_density_im_2,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.current_density_im_2_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_current_density_im_3,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.current_density_im_3_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_normal_current_density_re,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.normal_current_density_re_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_normal_current_density_im,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.normal_current_density_im_changed,
+        )
+
+        self.init_parameter_widget()
 
     def open(self):
         if self._mesh is not None and self._part is not None:
@@ -82,7 +147,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     def accept(self):
         if self.obj.References != self._selectionWidget.references:
             self.obj.References = self._selectionWidget.references
-        self._applyWidgetChanges()
+        self._set_params()
         self._selectionWidget.finish_selection()
         self._restoreVisibility()
         return super().accept()
@@ -98,81 +163,158 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             else:
                 self._part.ViewObject.hide()
 
-    def _initParamWidget(self):
-        self._paramWidget.realXQSB.setProperty("value", self.obj.CurrentDensity_re_1)
-        FreeCADGui.ExpressionBinding(self._paramWidget.realXQSB).bind(
+    def _get_params(self):
+        self.mode = self.obj.Mode
+
+        self.current_density_re_1 = self.obj.CurrentDensity_re_1
+        self.current_density_re_2 = self.obj.CurrentDensity_re_2
+        self.current_density_re_3 = self.obj.CurrentDensity_re_3
+        self.current_density_im_1 = self.obj.CurrentDensity_im_1
+        self.current_density_im_2 = self.obj.CurrentDensity_im_2
+        self.current_density_im_3 = self.obj.CurrentDensity_im_3
+
+        self.current_density_1_enabled = self.obj.EnableCurrentDensity_1
+        self.current_density_2_enabled = self.obj.EnableCurrentDensity_2
+        self.current_density_3_enabled = self.obj.EnableCurrentDensity_3
+
+        self.normal_current_density_re = self.obj.NormalCurrentDensity_re
+        self.normal_current_density_im = self.obj.NormalCurrentDensity_im
+
+    def _set_params(self):
+        self.obj.Mode = self.mode
+
+        self.obj.CurrentDensity_re_1 = self.current_density_re_1
+        self.obj.CurrentDensity_re_2 = self.current_density_re_2
+        self.obj.CurrentDensity_re_3 = self.current_density_re_3
+        self.obj.CurrentDensity_im_1 = self.current_density_im_1
+        self.obj.CurrentDensity_im_2 = self.current_density_im_2
+        self.obj.CurrentDensity_im_3 = self.current_density_im_3
+
+        self.obj.EnableCurrentDensity_1 = self.current_density_1_enabled
+        self.obj.EnableCurrentDensity_2 = self.current_density_2_enabled
+        self.obj.EnableCurrentDensity_3 = self.current_density_3_enabled
+
+        self.obj.NormalCurrentDensity_re = self.normal_current_density_re
+        self.obj.NormalCurrentDensity_im = self.normal_current_density_im
+
+    def init_parameter_widget(self):
+        self._get_params()
+
+        # custom current density
+        self.parameter_widget.qsb_current_density_re_1.setProperty(
+            "value", self.current_density_re_1
+        )
+        self.parameter_widget.qsb_current_density_re_1.setEnabled(self.current_density_1_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_current_density_re_1).bind(
             self.obj, "CurrentDensity_re_1"
         )
-        self._paramWidget.realYQSB.setProperty("value", self.obj.CurrentDensity_re_2)
-        FreeCADGui.ExpressionBinding(self._paramWidget.realYQSB).bind(
+
+        self.parameter_widget.qsb_current_density_re_2.setProperty(
+            "value", self.current_density_re_2
+        )
+        self.parameter_widget.qsb_current_density_re_2.setEnabled(self.current_density_2_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_current_density_re_2).bind(
             self.obj, "CurrentDensity_re_2"
         )
-        self._paramWidget.realZQSB.setProperty("value", self.obj.CurrentDensity_re_3)
-        FreeCADGui.ExpressionBinding(self._paramWidget.realZQSB).bind(
+
+        self.parameter_widget.qsb_current_density_re_3.setProperty(
+            "value", self.current_density_re_3
+        )
+        self.parameter_widget.qsb_current_density_re_3.setEnabled(self.current_density_3_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_current_density_re_3).bind(
             self.obj, "CurrentDensity_re_3"
         )
-        self._paramWidget.imagXQSB.setProperty("value", self.obj.CurrentDensity_im_1)
-        FreeCADGui.ExpressionBinding(self._paramWidget.imagXQSB).bind(
+
+        self.parameter_widget.qsb_current_density_im_1.setProperty(
+            "value", self.current_density_im_1
+        )
+        self.parameter_widget.qsb_current_density_im_1.setEnabled(self.current_density_1_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_current_density_im_1).bind(
             self.obj, "CurrentDensity_im_1"
         )
-        self._paramWidget.imagYQSB.setProperty("value", self.obj.CurrentDensity_im_2)
-        FreeCADGui.ExpressionBinding(self._paramWidget.imagYQSB).bind(
+
+        self.parameter_widget.qsb_current_density_im_2.setProperty(
+            "value", self.current_density_im_2
+        )
+        self.parameter_widget.qsb_current_density_im_2.setEnabled(self.current_density_2_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_current_density_im_2).bind(
             self.obj, "CurrentDensity_im_2"
         )
-        self._paramWidget.imagZQSB.setProperty("value", self.obj.CurrentDensity_im_3)
-        FreeCADGui.ExpressionBinding(self._paramWidget.imagZQSB).bind(
+
+        self.parameter_widget.qsb_current_density_im_3.setProperty(
+            "value", self.current_density_im_3
+        )
+        self.parameter_widget.qsb_current_density_im_3.setEnabled(self.current_density_3_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_current_density_im_3).bind(
             self.obj, "CurrentDensity_im_3"
         )
 
-        self._paramWidget.reXunspecBox.setChecked(self.obj.CurrentDensity_re_1_Disabled)
-        self._paramWidget.reYunspecBox.setChecked(self.obj.CurrentDensity_re_2_Disabled)
-        self._paramWidget.reZunspecBox.setChecked(self.obj.CurrentDensity_re_3_Disabled)
-        self._paramWidget.imXunspecBox.setChecked(self.obj.CurrentDensity_im_1_Disabled)
-        self._paramWidget.imYunspecBox.setChecked(self.obj.CurrentDensity_im_2_Disabled)
-        self._paramWidget.imZunspecBox.setChecked(self.obj.CurrentDensity_im_3_Disabled)
+        self.parameter_widget.ckb_current_density_1.setChecked(self.current_density_1_enabled)
+        self.parameter_widget.ckb_current_density_2.setChecked(self.current_density_2_enabled)
+        self.parameter_widget.ckb_current_density_3.setChecked(self.current_density_3_enabled)
 
-    def _applyCurrentDensityChanges(self, enabledBox, currentDensityQSB):
-        enabled = enabledBox.isChecked()
-        currentdensity = None
-        try:
-            currentdensity = currentDensityQSB.property("value")
-        except ValueError:
-            FreeCAD.Console.PrintMessage(
-                "Wrong input. Not recognised input: '{}' "
-                "Current density has not been set.\n".format(currentDensityQSB.text())
-            )
-            currentdensity = "0.0 A/m^2"
-        return enabled, currentdensity
+        self.parameter_widget.qsb_normal_current_density_re.setProperty(
+            "value", self.normal_current_density_re
+        )
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_normal_current_density_re).bind(
+            self.obj, "NormalCurrentDensity_re"
+        )
+        self.parameter_widget.qsb_normal_current_density_im.setProperty(
+            "value", self.normal_current_density_im
+        )
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_normal_current_density_im).bind(
+            self.obj, "NormalCurrentDensity_im"
+        )
 
-    def _applyWidgetChanges(self):
-        # apply the current densities and their enabled state
-        self.obj.CurrentDensity_re_1_Disabled, self.obj.CurrentDensity_re_1 = (
-            self._applyCurrentDensityChanges(
-                self._paramWidget.reXunspecBox, self._paramWidget.realXQSB
-            )
-        )
-        self.obj.CurrentDensity_re_2_Disabled, self.obj.CurrentDensity_re_2 = (
-            self._applyCurrentDensityChanges(
-                self._paramWidget.reYunspecBox, self._paramWidget.realYQSB
-            )
-        )
-        self.obj.CurrentDensity_re_3_Disabled, self.obj.CurrentDensity_re_3 = (
-            self._applyCurrentDensityChanges(
-                self._paramWidget.reZunspecBox, self._paramWidget.realZQSB
-            )
-        )
-        self.obj.CurrentDensity_im_1_Disabled, self.obj.CurrentDensity_im_1 = (
-            self._applyCurrentDensityChanges(
-                self._paramWidget.imXunspecBox, self._paramWidget.imagXQSB
-            )
-        )
-        self.obj.CurrentDensity_im_2_Disabled, self.obj.CurrentDensity_im_2 = (
-            self._applyCurrentDensityChanges(
-                self._paramWidget.imYunspecBox, self._paramWidget.imagYQSB
-            )
-        )
-        self.obj.CurrentDensity_im_3_Disabled, self.obj.CurrentDensity_im_3 = (
-            self._applyCurrentDensityChanges(
-                self._paramWidget.imZunspecBox, self._paramWidget.imagZQSB
-            )
-        )
+        self.mode_enum = self.obj.getEnumerationsOfProperty("Mode")
+        index = self.mode_enum.index(self.mode)
+        self.parameter_widget.cb_mode.addItems(self.mode_enum)
+        self.parameter_widget.cb_mode.setCurrentIndex(index)
+
+    def current_density_1_enabled_changed(self, value):
+        self.current_density_1_enabled = value
+        self.parameter_widget.qsb_current_density_re_1.setEnabled(value)
+        self.parameter_widget.qsb_current_density_im_1.setEnabled(value)
+
+    def current_density_2_enabled_changed(self, value):
+        self.current_density_2_enabled = value
+        self.parameter_widget.qsb_current_density_re_2.setEnabled(value)
+        self.parameter_widget.qsb_current_density_im_2.setEnabled(value)
+
+    def current_density_3_enabled_changed(self, value):
+        self.current_density_3_enabled = value
+        self.parameter_widget.qsb_current_density_re_3.setEnabled(value)
+        self.parameter_widget.qsb_current_density_im_3.setEnabled(value)
+
+    def current_density_re_1_changed(self, value):
+        self.current_density_re_1 = value
+
+    def current_density_re_2_changed(self, value):
+        self.current_density_re_2 = value
+
+    def current_density_re_3_changed(self, value):
+        self.current_density_re_3 = value
+
+    def current_density_im_1_changed(self, value):
+        self.current_density_im_1 = value
+
+    def current_density_im_2_changed(self, value):
+        self.current_density_im_2 = value
+
+    def current_density_im_3_changed(self, value):
+        self.current_density_im_3 = value
+
+    def normal_current_density_re_changed(self, value):
+        self.normal_current_density_re = value
+
+    def normal_current_density_im_changed(self, value):
+        self.normal_current_density_im = value
+
+    def mode_changed(self, index):
+        self.mode = self.mode_enum[index]
+        if self.mode == "Custom":
+            self.parameter_widget.gb_custom.setEnabled(True)
+            self.parameter_widget.gb_normal.setEnabled(False)
+        elif self.mode == "Normal":
+            self.parameter_widget.gb_custom.setEnabled(False)
+            self.parameter_widget.gb_normal.setEnabled(True)

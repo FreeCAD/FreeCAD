@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>350</width>
+    <height>40</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Analysis Feature Properties</string>
+  </property>
+  <layout class="QVBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QGroupBox" name="gpb_electric_charge_density">
+     <layout class="QVBoxLayout" name="vlt_Layout">
+      <item>
+       <layout class="QFormLayout" name="flt_electric_charge_density">
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_mode">
+          <property name="text">
+           <string>Mode</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="cb_mode"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QStackedWidget" name="sw_mode">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="page_0">
+         <layout class="QVBoxLayout" name="verticalLayout_0">
+          <item>
+           <layout class="QFormLayout" name="formLayout_0">
+            <property name="toolTip">
+             <string>Free surface charge density</string>
+            </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="lbl_interface_charge_density">
+              <property name="text">
+               <string>Density</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="Gui::QuantitySpinBox" name="qsb_interface_charge_density">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true">C/mm^2</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+              <property name="keyboardTracking">
+               <bool>true</bool>
+              </property>
+              <property name="singleStep">
+               <double>1.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>0.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <widget class="QWidget" name="page_1">
+         <layout class="QVBoxLayout" name="verticalLayout_1">
+          <item>
+           <layout class="QFormLayout" name="formLayout_1">
+            <property name="toolTip">
+             <string>Free volume charge density</string>
+            </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="lbl_source_charge_density">
+              <property name="text">
+               <string>Density</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="Gui::QuantitySpinBox" name="qsb_source_charge_density">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true">C/mm^3</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+              <property name="keyboardTracking">
+               <bool>true</bool>
+              </property>
+              <property name="singleStep">
+               <double>1.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>0.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <property name="currentIndex">
+         <number>2</number>
+        </property>
+        <widget class="QWidget" name="page_2">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <layout class="QFormLayout" name="formLayout_2">
+            <property name="toolTip">
+             <string>Free total charge</string>
+            </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="lbl_total_charge">
+              <property name="text">
+               <string>Total charge</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="Gui::QuantitySpinBox" name="qsb_total_charge">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="unit" stdset="0">
+               <string notr="true">C</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+              <property name="keyboardTracking">
+               <bool>true</bool>
+              </property>
+              <property name="singleStep">
+               <double>1.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>0.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -45,7 +45,6 @@
 
 #include "ImportIges.h"
 #include "PartFeature.h"
-#include "ProgressIndicator.h"
 
 
 using namespace Part;
@@ -75,20 +74,11 @@ int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
         aReader.PrintCheckLoad(Standard_True,IFSelect_GeneralInfo);
 
         std::string aName = fi.fileNamePure();
-#if OCC_VERSION_HEX < 0x070500
-        Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
-        pi->NewScope(100, "Reading IGES file...");
-        pi->Show();
-        aReader.WS()->MapReader()->SetProgress(pi);
-#endif
 
         // make model
         aReader.ClearShapes();
         //Standard_Integer nbRootsForTransfer = aReader.NbRootsForTransfer();
         aReader.TransferRoots();
-#if OCC_VERSION_HEX < 0x070500
-        pi->EndScope();
-#endif
 
         // put all other free-flying shapes into a single compound
         Standard_Boolean emptyComp = Standard_True;
@@ -103,8 +93,8 @@ int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
                 if (aShape.ShapeType() == TopAbs_SOLID ||
                     aShape.ShapeType() == TopAbs_COMPOUND ||
                     aShape.ShapeType() == TopAbs_SHELL) {
-                        App::DocumentObject* obj = pcDoc->addObject("Part::Feature", aName.c_str());
-                        static_cast<Part::Feature*>(obj)->Shape.setValue(aShape);
+                        auto* obj = pcDoc->addObject<Part::Feature>(aName.c_str());
+                        obj->Shape.setValue(aShape);
                 }
                 else {
                     builder.Add(comp, aShape);
@@ -114,8 +104,7 @@ int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
         }
         if (!emptyComp) {
             std::string name = fi.fileNamePure();
-            Part::Feature *pcFeature = static_cast<Part::Feature*>(pcDoc->addObject
-                ("Part::Feature", name.c_str()));
+            auto* pcFeature = pcDoc->addObject<Part::Feature>(name.c_str());
             pcFeature->Shape.setValue(comp);
         }
     }

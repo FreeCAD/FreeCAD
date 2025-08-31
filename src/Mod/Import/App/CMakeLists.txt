@@ -2,14 +2,7 @@ include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
 )
-
-link_directories(${OCC_LIBRARY_DIR})
 
 set(Import_LIBS
     Part
@@ -84,6 +77,7 @@ SET(SCL_Resources
 SOURCE_GROUP("SCL" FILES ${SCL_Resources})
 
 generate_from_xml(StepShapePy)
+generate_from_py_(StepShapePy)
 
 add_library(Import SHARED ${Import_SRCS})
 target_link_libraries(Import ${Import_LIBS})

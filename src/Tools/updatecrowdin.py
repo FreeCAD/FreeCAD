@@ -108,11 +108,8 @@ GENERATE_QM = {
 # locations list contains Module name, relative path to translation folder and relative path to qrc file
 
 locations = [
-    [
-        "AddonManager",
-        "../Mod/AddonManager/Resources/translations",
-        "../Mod/AddonManager/Resources/AddonManager.qrc",
-    ],
+    ["App", "../App/Resources/translations", "../App/Resources/App.qrc"],
+    ["Arch", "../Mod/BIM/Resources/translations", "../Mod/BIM/Resources/Arch.qrc"],
     ["App", "../App/Resources/translations", "../App/Resources/App.qrc"],
     ["Arch", "../Mod/BIM/Resources/translations", "../Mod/BIM/Resources/Arch.qrc"],
     [
@@ -126,11 +123,6 @@ locations = [
         "../Mod/Draft/Resources/Draft.qrc",
     ],
     ["Base", "../Base/Resources/translations", "../Base/Resources/Base.qrc"],
-    [
-        "Drawing",
-        "../Mod/Drawing/Gui/Resources/translations",
-        "../Mod/Drawing/Gui/Resources/Drawing.qrc",
-    ],
     [
         "Fem",
         "../Mod/Fem/Gui/Resources/translations",
@@ -316,7 +308,7 @@ class CrowdinUpdater:
         files_info = self._get_files_info()
         futures = []
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
             for ts_file in ts_files:
                 if self.multithread:
                     future = executor.submit(
@@ -328,6 +320,7 @@ class CrowdinUpdater:
 
         # This blocks until all futures are complete and will also throw any exception
         for future in futures:
+            print(f"{future.result()} done.")
             future.result()
 
 
@@ -341,7 +334,6 @@ def load_token():
 
 
 def updateqrc(qrcpath, lncode):
-
     "updates a qrc file with the given translation entry"
 
     # print("opening " + qrcpath + "...")
@@ -398,7 +390,6 @@ def updateqrc(qrcpath, lncode):
 
 
 def updateTranslatorCpp(lncode):
-
     "updates the Translator.cpp file with the given translation entry"
 
     cppfile = os.path.join(os.path.dirname(__file__), "..", "Gui", "Language", "Translator.cpp")
@@ -440,7 +431,6 @@ def updateTranslatorCpp(lncode):
 
 
 def doFile(tsfilepath, targetpath, lncode, qrcpath):
-
     "updates a single ts file, and creates a corresponding qm file"
 
     basename = os.path.basename(tsfilepath)[:-3]
@@ -475,7 +465,6 @@ def doFile(tsfilepath, targetpath, lncode, qrcpath):
 
 
 def doLanguage(lncode):
-
     "treats a single language"
 
     if lncode == "en":

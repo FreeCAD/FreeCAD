@@ -17,8 +17,7 @@
    <item>
     <widget class="QToolButton" name="buttonRefSel">
      <property name="toolTip">
-      <string>Click button to enter selection mode,
-click again to end selection</string>
+      <string>Toggles between selection and preview mode</string>
      </property>
      <property name="text">
       <string>Select</string>
@@ -44,7 +43,7 @@ click again to end selection</string>
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Radius:</string>
+        <string>Radius</string>
        </property>
       </widget>
      </item>
@@ -60,7 +59,7 @@ click again to end selection</string>
    <item>
     <widget class="QCheckBox" name="checkBoxUseAllEdges">
      <property name="text">
-      <string>Use All Edges</string>
+      <string>Use all edges</string>
      </property>
     </widget>
    </item>

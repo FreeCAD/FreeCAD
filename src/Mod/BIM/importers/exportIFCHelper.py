@@ -1,32 +1,38 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2019 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 import json
 import math
 
-import FreeCAD
-# import Draft
 import ifcopenshell
 from ifcopenshell import guid
+
+import FreeCAD
+# import Draft
+
 from draftutils import params
+
 
 def getObjectsOfIfcType(objects, ifcType):
     results = []
@@ -375,15 +381,15 @@ class recycler:
                 self.rgbs[key] = c
             return c
 
-    def createIfcSurfaceStyleRendering(self,col,trans=0):
-        key = (col.Red,col.Green,col.Blue,trans)
+    def createIfcSurfaceStyleRendering(self,col,alpha=1):
+        key = (col.Red,col.Green,col.Blue,alpha)
         if self.compress and key in self.ssrenderings:
             self.spared += 1
             return self.ssrenderings[key]
         else:
-            if trans == 0:
-                trans = None
-            c = self.ifcfile.createIfcSurfaceStyleRendering(col,trans,None,None,None,None,None,None,"FLAT")
+            if alpha == 1:
+                alpha = None
+            c = self.ifcfile.createIfcSurfaceStyleRendering(col,alpha,None,None,None,None,None,None,"FLAT")
             if self.compress:
                 self.ssrenderings[key] = c
             return c
@@ -399,7 +405,7 @@ class recycler:
                 self.transformationoperators[key] = c
             return c
 
-    def createIfcSurfaceStyle(self,name,r,g,b,t=0):
+    def createIfcSurfaceStyle(self,name,r,g,b,a=1):
         if name:
             key = name + str((r,g,b))
         else:
@@ -409,22 +415,22 @@ class recycler:
             return self.sstyles[key]
         else:
             col = self.createIfcColourRgb(r,g,b)
-            ssr = self.createIfcSurfaceStyleRendering(col,t)
+            ssr = self.createIfcSurfaceStyleRendering(col,a)
             c = self.ifcfile.createIfcSurfaceStyle(name,"BOTH",[ssr])
             if self.compress:
                 self.sstyles[key] = c
             return c
 
-    def createIfcPresentationStyleAssignment(self,name,r,g,b,t=0,ifc4=False):
+    def createIfcPresentationStyleAssignment(self,name,r,g,b,a=1,ifc4=False):
         if name:
-            key = name+str((r,g,b,t))
+            key = name+str((r,g,b,a))
         else:
-            key = str((r,g,b,t))
+            key = str((r,g,b,a))
         if self.compress and key in self.psas:
             self.spared += 1
             return self.psas[key]
         else:
-            iss = self.createIfcSurfaceStyle(name,r,g,b,t)
+            iss = self.createIfcSurfaceStyle(name,r,g,b,a)
             if ifc4:
                 c = iss
             else:

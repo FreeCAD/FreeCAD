@@ -46,7 +46,7 @@ SheetTableViewAccessibleInterface::SheetTableViewAccessibleInterface(
 QString SheetTableViewAccessibleInterface::text(QAccessible::Text txt) const
 {
     if (txt == QAccessible::Help) {
-        return QString::fromLatin1("Implement me");
+        return QStringLiteral("Implement me");
     }
     return QAccessibleWidget::text(txt);
 }
@@ -81,7 +81,7 @@ QAccessibleInterface* SheetTableViewAccessibleInterface::child(int index) const
 
 QAccessibleInterface* SheetTableViewAccessibleInterface::ifactory(const QString& key, QObject* obj)
 {
-    if (key == QString::fromUtf8("SpreadsheetGui::SheetTableView")) {
+    if (key == QStringLiteral("SpreadsheetGui::SheetTableView")) {
         return new SheetTableViewAccessibleInterface(
             static_cast<SpreadsheetGui::SheetTableView*>(obj));
     }

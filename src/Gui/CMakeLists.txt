@@ -1,4 +1,16 @@
-#add_subdirectory(Icons)
+add_library(FreeCADGui SHARED)
+
+if ( EXISTS "${CMAKE_SOURCE_DIR}/src/3rdParty/GSL/include" )
+    include_directories( ${CMAKE_SOURCE_DIR}/src/3rdParty/GSL/include )
+else()
+    find_package(Microsoft.GSL)
+    if( Microsoft.GSL_FOUND )
+        message( STATUS "Found Microsoft.GSL: version ${Microsoft.GSL_VERSION}" )
+    else()
+        message( SEND_ERROR "The C++ Guidelines Support Library (GSL) submodule is not available. Please run git submodule update --init" )
+    endif()
+endif()
+
 add_subdirectory(Stylesheets)
 add_subdirectory(PreferencePacks)
 add_subdirectory(PreferencePackTemplates)
@@ -12,7 +24,7 @@ if(FC_FLATPAK)
 endif(FC_FLATPAK)
 
 if(WIN32)
-add_definitions(-DFCGui -DQSINT_MAKEDLL -DOVR_OS_WIN32 -DQUARTER_INTERNAL -DQUARTER_MAKE_DLL -DCOIN_DLL)
+    add_definitions(-DFCGui -DQSINT_MAKEDLL -DOVR_OS_WIN32 -DQUARTER_INTERNAL -DQUARTER_MAKE_DLL -DCOIN_DLL)
 endif(WIN32)
 
 IF(CMAKE_BUILD_TYPE)
@@ -44,12 +56,17 @@ if (BUILD_ADDONMGR)
     add_definitions(-DBUILD_ADDONMGR )
 endif(BUILD_ADDONMGR)
 
+if (BUILD_TRACY_FRAME_PROFILER)
+    add_definitions(-DBUILD_TRACY_FRAME_PROFILER)
+endif()
+
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/Quarter
     ${CMAKE_CURRENT_SOURCE_DIR}/PreferencePages
     ${CMAKE_CURRENT_SOURCE_DIR}/Selection
+    ${CMAKE_CURRENT_SOURCE_DIR}/StyleParameters
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_CURRENT_BINARY_DIR}/..
@@ -58,11 +75,13 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/TaskView
     ${CMAKE_CURRENT_BINARY_DIR}/Quarter
     ${CMAKE_CURRENT_BINARY_DIR}/DAGView
-    ${Boost_INCLUDE_DIRS}
+)
+
+target_include_directories(
+    FreeCADGui
+    SYSTEM
+    PRIVATE
     ${EIGEN3_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
     ${3DCONNEXION_INCLUDE_DIR}
 )
 
@@ -93,11 +112,15 @@ else(MSVC)
     )
 endif(MSVC)
 
+if(BUILD_TRACY_FRAME_PROFILER)
+    list(APPEND FreeCADGui_LIBS TracyClient)
+endif()
+
 if (TARGET Coin::Coin)
     list(APPEND FreeCADGui_LIBS Coin::Coin)
 else()
-    include_directories(${COIN3D_INCLUDE_DIRS})
-    link_directories(${COIN3D_LIB_DIRS})
+    target_include_directories(FreeCADGui SYSTEM PUBLIC ${COIN3D_INCLUDE_DIRS})
+    target_link_directories(FreeCADGui PUBLIC ${COIN3D_LIB_DIRS})
     list(APPEND FreeCADGui_LIBS ${COIN3D_LIBRARIES})
 endif()
 
@@ -109,21 +132,28 @@ if (WIN32)
     endif()
 endif()
 
-include_directories(
+target_include_directories(
+    FreeCADGui
+    SYSTEM
+    PUBLIC
     ${QtCore_INCLUDE_DIRS}
     ${QtWidgets_INCLUDE_DIRS}
     ${QtOpenGL_INCLUDE_DIRS}
+    ${QtOpenGLWidgets_INCLUDE_DIRS}
     ${QtPrintSupport_INCLUDE_DIRS}
     ${QtSvg_INCLUDE_DIRS}
     ${QtSvgWidgets_INCLUDE_DIRS}
     ${QtNetwork_INCLUDE_DIRS}
     ${QtUiTools_INCLUDE_DIRS}
     ${QtXml_INCLUDE_DIRS}
+    ${YAML_CPP_INCLUDE_DIRS}
 )
+
 list(APPEND FreeCADGui_LIBS
     ${QtCore_LIBRARIES}
     ${QtWidgets_LIBRARIES}
     ${QtOpenGL_LIBRARIES}
+    ${QtOpenGLWidgets_LIBRARIES}
     ${QtPrintSupport_LIBRARIES}
     ${QtSvg_LIBRARIES}
     ${QtSvgWidgets_LIBRARIES}
@@ -131,8 +161,23 @@ list(APPEND FreeCADGui_LIBS
     ${QtUiTools_LIBRARIES}
 )
 
+link_directories(${YAML_CPP_LIBRARY_DIR})
+
+if(yaml-cpp_VERSION VERSION_LESS 0.8.0)
+    list(APPEND FreeCADGui_LIBS
+            ${YAML_CPP_LIBRARIES}
+    )
+else()
+    list(APPEND FreeCADGui_LIBS
+            yaml-cpp::yaml-cpp
+    )
+endif()
+
 if(${Qt5WinExtras_FOUND})
-    include_directories(
+    target_include_directories(
+        FreeCADGui
+        SYSTEM
+        PUBLIC
         ${Qt5WinExtras_INCLUDE_DIRS}
     )
     list(APPEND FreeCADGui_LIBS
@@ -146,7 +191,7 @@ IF(SPNAV_FOUND AND FREECAD_USE_3DCONNEXION_LEGACY)
         add_definitions(-DSPNAV_USE_X11)
         if (FREECAD_QT_MAJOR_VERSION EQUAL 5 AND UNIX AND NOT APPLE)
             find_package(Qt5X11Extras REQUIRED)
-            include_directories(${Qt5X11Extras_INCLUDE_DIRS})
+            include_directories(SYSTEM ${Qt5X11Extras_INCLUDE_DIRS})
             list(APPEND FreeCADGui_LIBS ${Qt5X11Extras_LIBRARIES})
             # Note that Qt6 has removed the QtX11Extras files
         endif()
@@ -184,6 +229,7 @@ IF(SPNAV_FOUND AND FREECAD_USE_3DCONNEXION_LEGACY)
 
     add_definitions(-DSPNAV_FOUND)
     include_directories(
+        SYSTEM
         ${SPNAV_INCLUDE_DIR}
     )
     list(APPEND FreeCADGui_LIBS
@@ -194,6 +240,7 @@ ENDIF(SPNAV_FOUND AND FREECAD_USE_3DCONNEXION_LEGACY)
 IF(OCULUS_FOUND)
     add_definitions(-DOCULUS_FOUND)
     include_directories(
+        SYSTEM
         ${OCULUS_INCLUDE_DIRS}
     )
     list(APPEND FreeCADGui_LIBS
@@ -204,6 +251,7 @@ ENDIF(OCULUS_FOUND)
 if(FREECAD_USE_SHIBOKEN)
     add_definitions(-DHAVE_SHIBOKEN${PYSIDE_MAJOR_VERSION})
     include_directories(
+        SYSTEM
         ${SHIBOKEN_INCLUDE_DIR}
     )
     if (SHIBOKEN_LIBRARY)
@@ -225,9 +273,11 @@ endif(FREECAD_USE_SHIBOKEN)
 
 if(FREECAD_USE_PYSIDE)
     include_directories(
+        SYSTEM
         ${PYSIDE_INCLUDE_DIR}
         ${PYSIDE_INCLUDE_DIR}/QtCore
         ${PYSIDE_INCLUDE_DIR}/QtGui
+        ${PYSIDE_INCLUDE_DIR}/QtWidgets
     )
     if (PYSIDE_LIBRARY)
         list(APPEND FreeCADGui_LIBS
@@ -244,44 +294,42 @@ if(FREECAD_USE_PYSIDE)
             )
         endif ()
     endif (PYSIDE_LIBRARY)
-    include_directories(
-        ${PYSIDE_INCLUDE_DIR}/QtWidgets
-    )
+
     add_definitions(-DHAVE_PYSIDE${PYSIDE_MAJOR_VERSION})
 endif(FREECAD_USE_PYSIDE)
 
-generate_from_xml(DocumentPy)
-generate_from_xml(PythonWorkbenchPy)
-generate_from_xml(ViewProviderPy)
-generate_from_xml(ViewProviderDocumentObjectPy)
-generate_from_xml(ViewProviderGeometryObjectPy)
-generate_from_xml(ViewProviderExtensionPy)
-generate_from_xml(WorkbenchPy)
-generate_from_xml(Selection/SelectionObjectPy)
-generate_from_xml(LinkViewPy)
-generate_from_xml(ViewProviderLinkPy)
-generate_from_xml(AxisOriginPy)
-generate_from_xml(CommandPy)
-generate_from_xml(Navigation/NavigationStylePy)
+generate_from_py(Document)
+generate_from_py(PythonWorkbench)
+generate_from_py(ViewProvider)
+generate_from_py(ViewProviderDocumentObject)
+generate_from_py(ViewProviderGeometryObject)
+generate_from_py(ViewProviderExtension)
+generate_from_py(Workbench)
+generate_from_py(Selection/SelectionObject)
+generate_from_py(LinkView)
+generate_from_py(ViewProviderLink)
+generate_from_py(AxisOrigin)
+generate_from_py(Command)
+generate_from_py(Navigation/NavigationStyle)
 
-generate_from_py(FreeCADGuiInit GuiInitScript.h)
+generate_embed_from_py(FreeCADGuiInit GuiInitScript.h)
 
-# The XML files
-SET(FreeCADGui_XML_SRCS
-    ViewProviderDocumentObjectPy.xml
-    ViewProviderGeometryObjectPy.xml
-    ViewProviderPy.xml
-    ViewProviderExtensionPy.xml
-    PythonWorkbenchPy.xml
-    WorkbenchPy.xml
-    Selection/SelectionObjectPy.xml
-    DocumentPy.xml
-    LinkViewPy.xml
-    ViewProviderLinkPy.xml
-    AxisOriginPy.xml
-    CommandPy.xml
+# The Pyi files
+SET(FreeCADGui_Pyi_SRCS
+    ViewProviderDocumentObject.pyi
+    ViewProviderGeometryObject.pyi
+    ViewProvider.pyi
+    ViewProviderExtension.pyi
+    PythonWorkbench.pyi
+    Workbench.pyi
+    Selection/SelectionObject.pyi
+    Document.pyi
+    LinkView.pyi
+    ViewProviderLink.pyi
+    AxisOrigin.pyi
+    Command.pyi
 )
-SOURCE_GROUP("XML" FILES ${FreeCADApp_XML_SRCS})
+SOURCE_GROUP("Pyi" FILES ${FreeCADGui_Pyi_SRCS})
 
 # The 3D Connexion SDK files
 if(FREECAD_USE_3DCONNEXION_LEGACY AND MSVC)
@@ -381,6 +429,7 @@ SET(Gui_UIC_SRCS
     Dialogs/DlgProjectUtility.ui
     Dialogs/DlgPropertyLink.ui
     Dialogs/DlgRevertToBackupConfig.ui
+    Dialogs/DlgThemeEditor.ui
     PreferencePages/DlgSettings3DView.ui
     PreferencePages/DlgSettingsCacheDirectory.ui
     Dialogs/DlgSettingsColorGradient.ui
@@ -398,6 +447,7 @@ SET(Gui_UIC_SRCS
     PreferencePages/DlgSettingsUI.ui
     PreferencePages/DlgSettingsViewColor.ui
     PreferencePages/DlgSettingsWorkbenches.ui
+    PreferencePages/DlgSettingsPDF.ui
     Dialogs/DlgCheckableMessageBox.ui
     Dialogs/DlgToolbars.ui
     Dialogs/DlgTreeWidget.ui
@@ -411,11 +461,12 @@ SET(Gui_UIC_SRCS
     SceneInspector.ui
     InputVector.ui
     Placement.ui
-    TaskCSysDragger.ui
+    TaskTransform.ui
     TextureMapping.ui
     TaskView/TaskAppearance.ui
     TaskView/TaskOrientation.ui
     TaskView/TaskImage.ui
+    TaskView/TaskSolverMessages.ui
     TaskView/TaskSelectLinkProperty.ui
     TaskElementColors.ui
     Dialogs/DlgObjectSelection.ui
@@ -436,7 +487,6 @@ set(Gui_RES_SRCS
     Icons/resource.qrc
     Language/translation.qrc
     ${FreeCAD_TR_QRC}
-    QSint/actionpanel/schemes.qrc
 )
 
 qt_add_resources(Gui_QRC_SRCS ${Gui_RES_SRCS})
@@ -496,9 +546,10 @@ SET(Dialog_CPP_SRCS
     Dialogs/DlgPropertyLink.cpp
     Dialogs/DlgRevertToBackupConfigImp.cpp
     Dialogs/DlgExpressionInput.cpp
+    Dialogs/DlgThemeEditor.cpp
     TaskDlgRelocation.cpp
     Dialogs/DlgCheckableMessageBox.cpp
-    TaskCSysDragger.cpp
+    TaskTransform.cpp
     Dialogs/DlgUndoRedo.cpp
     InputVector.cpp
     Placement.cpp
@@ -538,8 +589,9 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgRevertToBackupConfigImp.h
     Dialogs/DlgCheckableMessageBox.h
     Dialogs/DlgExpressionInput.h
+    Dialogs/DlgThemeEditor.h
     TaskDlgRelocation.h
-    TaskCSysDragger.h
+    TaskTransform.h
     Dialogs/DlgUndoRedo.h
     InputVector.h
     Placement.h
@@ -640,6 +692,7 @@ SET(Dialog_Settings_CPP_SRCS
     Dialogs/DlgOnlineHelpImp.cpp
     Dialogs/DlgPreferencesImp.cpp
     PreferencePages/DlgSettings3DViewImp.cpp
+    PreferencePages/DlgSettingsPDF.cpp
     PreferencePages/DlgSettingsCacheDirectory.cpp
     Dialogs/DlgSettingsColorGradientImp.cpp
     PreferencePages/DlgSettingsDocumentImp.cpp
@@ -662,6 +715,7 @@ SET(Dialog_Settings_HPP_SRCS
     Dialogs/DlgOnlineHelpImp.h
     Dialogs/DlgPreferencesImp.h
     PreferencePages/DlgSettings3DViewImp.h
+    PreferencePages/DlgSettingsPDF.h
     PreferencePages/DlgSettingsCacheDirectory.h
     Dialogs/DlgSettingsColorGradientImp.h
     PreferencePages/DlgSettingsDocumentImp.h
@@ -702,6 +756,7 @@ SET(Dialog_Settings_SRCS
     PreferencePages/DlgSettingsUI.ui
     PreferencePages/DlgSettingsViewColor.ui
     PreferencePages/DlgSettingsWorkbenches.ui
+    PreferencePages/DlgSettingsPDF.ui
 )
 SOURCE_GROUP("Dialog\\Settings" FILES ${Dialog_Settings_SRCS})
 
@@ -719,7 +774,6 @@ SET(Dock_Windows_CPP_SRCS
     DAGView/DAGModel.cpp
     DAGView/DAGRectItem.cpp
     DAGView/DAGModelGraph.cpp
-    DAGView/DAGFilter.cpp
 )
 SET(Dock_Windows_HPP_SRCS
     ComboView.h
@@ -734,7 +788,6 @@ SET(Dock_Windows_HPP_SRCS
     DAGView/DAGModel.h
     DAGView/DAGRectItem.h
     DAGView/DAGModelGraph.h
-    DAGView/DAGFilter.h
 )
 SET(Dock_Windows_SRCS
     ${Dock_Windows_CPP_SRCS}
@@ -824,6 +877,9 @@ SET(Task_View_SRCS
     TaskView/TaskSelectLinkProperty.cpp
     TaskView/TaskSelectLinkProperty.h
     TaskView/TaskSelectLinkProperty.ui
+    TaskView/TaskSolverMessages.cpp
+    TaskView/TaskSolverMessages.h
+    TaskView/TaskSolverMessages.ui
     TaskView/TaskEditControl.cpp
     TaskView/TaskEditControl.h
     TaskView/TaskEditControl.ui
@@ -849,20 +905,10 @@ SET(qsintActionPanel_SRCS
     QSint/actionpanel/actionpanel.h
     QSint/actionpanel/actionpanelscheme.cpp
     QSint/actionpanel/actionpanelscheme.h
-    QSint/actionpanel/androidpanelscheme.cpp
-    QSint/actionpanel/androidpanelscheme.h
-    QSint/actionpanel/macpanelscheme.cpp
-    QSint/actionpanel/macpanelscheme.h
     QSint/actionpanel/taskgroup_p.cpp
     QSint/actionpanel/taskgroup_p.h
     QSint/actionpanel/taskheader_p.cpp
     QSint/actionpanel/taskheader_p.h
-    QSint/actionpanel/winvistapanelscheme.cpp
-    QSint/actionpanel/winvistapanelscheme.h
-    QSint/actionpanel/winxppanelscheme.cpp
-    QSint/actionpanel/winxppanelscheme.h
-    QSint/actionpanel/freecadscheme.cpp
-    QSint/actionpanel/freecadscheme.h
 )
 SOURCE_GROUP("Widget\\QSintActionPanel" FILES ${qsintActionPanel_SRCS})
 set(qsint_MOC_HDRS
@@ -875,17 +921,6 @@ set(qsint_MOC_HDRS
 
 qt_wrap_cpp(qsint_MOC_SRCS ${qsint_MOC_HDRS})
 SOURCE_GROUP("Widget\\QSintActionPanel\\Mocs" FILES ${qsint_MOC_SRCS})
-
-#SET(Resource_RCS
-#   Icons/resource.qrc
-#   Language/translation.qrc)
-#qt_add_resources(Resource_SRCS ${Resource_RCS})
-#SET(Resource_SRCS
-#   ${Resource_SRCS}
-#   Icons/resource.qrc
-#   Language/translation.qrc
-#)
-#SOURCE_GROUP("Resource" FILES ${Resource_SRCS})
 
 # The 3d view
 SET(View3D_CPP_SRCS
@@ -930,12 +965,15 @@ SET(View3D_SRCS
 SOURCE_GROUP("View3D" FILES ${View3D_SRCS})
 
 SET(Navigation_CPP_SRCS
+    Navigation/NavigationStateChart.cpp
     Navigation/NavigationStyle.cpp
     Navigation/NavigationStylePyImp.cpp
     Navigation/InventorNavigationStyle.cpp
     Navigation/CADNavigationStyle.cpp
     Navigation/RevitNavigationStyle.cpp
     Navigation/BlenderNavigationStyle.cpp
+    Navigation/SiemensNXNavigationStyle.cpp
+    Navigation/SolidWorksNavigationStyle.cpp
     Navigation/MayaGestureNavigationStyle.cpp
     Navigation/OpenCascadeNavigationStyle.cpp
     Navigation/OpenSCADNavigationStyle.cpp
@@ -947,11 +985,13 @@ SET(Navigation_CPP_SRCS
 )
 SET(Navigation_SRCS
     ${Navigation_CPP_SRCS}
+    Navigation/NavigationStateChart.h
     Navigation/NavigationStyle.h
-    Navigation/NavigationStylePy.xml
+    Navigation/NavigationStyle.pyi
     Navigation/GestureNavigationStyle.h
     Navigation/NavigationAnimator.h
     Navigation/NavigationAnimation.h
+    Navigation/SiemensNXNavigationStyle.h
 )
 SOURCE_GROUP("Navigation" FILES ${Navigation_SRCS})
 
@@ -1066,11 +1106,20 @@ SET(Inventor_CPP_SRCS
     Inventor/So3DAnnotation.cpp
     Inventor/SoAutoZoomTranslation.cpp
     Inventor/SoAxisCrossKit.cpp
+    Inventor/SoFCPlacementIndicatorKit.cpp
     Inventor/SoDrawingGrid.cpp
     Inventor/SoFCBackgroundGradient.cpp
     Inventor/SoFCBoundingBox.cpp
     Inventor/SoMouseWheelEvent.cpp
     Inventor/SoFCTransform.cpp
+    Inventor/SoToggleSwitch.cpp
+    Inventor/Draggers/SoTransformDragger.cpp
+    Inventor/Draggers/SoLinearDragger.cpp
+    Inventor/Draggers/SoLinearDraggerGeometry.cpp
+    Inventor/Draggers/SoPlanarDragger.cpp
+    Inventor/Draggers/SoRotationDragger.cpp
+    Inventor/Draggers/SoRotationDraggerGeometry.cpp
+    Inventor/Draggers/Gizmo.cpp
     SoFCColorBar.cpp
     SoFCColorBarNotifier.cpp
     SoFCColorGradient.cpp
@@ -1089,7 +1138,6 @@ SET(Inventor_CPP_SRCS
     SoTextLabel.cpp
     SoDatumLabel.cpp
     SoTouchEvents.cpp
-    SoFCCSysDragger.cpp
     ArcEngine.cpp
 )
 SET(Inventor_SRCS
@@ -1098,11 +1146,21 @@ SET(Inventor_SRCS
     Inventor/SmSwitchboard.h
     Inventor/SoAutoZoomTranslation.h
     Inventor/SoAxisCrossKit.h
+    Inventor/SoFCPlacementIndicatorKit.h
     Inventor/SoDrawingGrid.h
     Inventor/SoFCBackgroundGradient.h
     Inventor/SoFCBoundingBox.h
     Inventor/SoMouseWheelEvent.h
     Inventor/SoFCTransform.h
+    Inventor/SoToggleSwitch.h
+    Inventor/Draggers/SoTransformDragger.h
+    Inventor/Draggers/SoLinearDragger.h
+    Inventor/Draggers/SoLinearDraggerGeometry.h
+    Inventor/Draggers/SoPlanarDragger.h
+    Inventor/Draggers/SoRotationDragger.h
+    Inventor/Draggers/SoRotationDraggerGeometry.h
+    Inventor/Draggers/Gizmo.h
+    Inventor/Draggers/GizmoHelper.h
     SoFCColorBar.h
     SoFCColorBarNotifier.h
     SoFCColorGradient.h
@@ -1121,13 +1179,13 @@ SET(Inventor_SRCS
     SoTextLabel.h
     SoDatumLabel.h
     SoTouchEvents.h
-    SoFCCSysDragger.h
     ArcEngine.h
 )
 SOURCE_GROUP("View3D\\Inventor" FILES ${Inventor_SRCS})
 
 # The widget sources
 SET(Widget_CPP_SRCS
+    ComboLinks.cpp
     FileDialog.cpp
     MainWindow.cpp
     MainWindowPy.cpp
@@ -1146,8 +1204,12 @@ SET(Widget_CPP_SRCS
     Widgets.cpp
     Window.cpp
     WorkbenchSelector.cpp
+    ElideLabel.cpp
+    ElideCheckBox.cpp
+    FontScaledSVG.cpp
 )
 SET(Widget_HPP_SRCS
+    ComboLinks.h
     FileDialog.h
     MainWindow.h
     MainWindowPy.h
@@ -1167,6 +1229,9 @@ SET(Widget_HPP_SRCS
     Widgets.h
     Window.h
     WorkbenchSelector.h
+    ElideLabel.h
+    ElideCheckBox.h
+    FontScaledSVG.h
 )
 SET(Widget_SRCS
     ${Widget_CPP_SRCS}
@@ -1288,6 +1353,8 @@ SET(FreeCADGui_CPP_SRCS
     GuiApplication.cpp
     GuiApplicationNativeEventAware.cpp
     GuiConsole.cpp
+    InputHintWidget.cpp
+    InputHintPy.cpp
     Macro.cpp
     MergeDocuments.cpp
     ModuleIO.cpp
@@ -1303,6 +1370,8 @@ SET(FreeCADGui_CPP_SRCS
     StartupProcess.cpp
     TransactionObject.cpp
     ToolHandler.cpp
+    StyleParameters/Parser.cpp
+    StyleParameters/ParameterManager.cpp
 )
 SET(FreeCADGui_SRCS
     Application.h
@@ -1323,6 +1392,9 @@ SET(FreeCADGui_SRCS
     3Dconnexion/GuiAbstractNativeEvent.h
     GuiConsole.h
     InventorAll.h
+    InputHint.h
+    InputHintPy.h
+    InputHintWidget.h
     Macro.h
     MergeDocuments.h
     MetaTypes.h
@@ -1342,13 +1414,15 @@ SET(FreeCADGui_SRCS
     StartupProcess.h
     TransactionObject.h
     ToolHandler.h
+    StyleParameters/Parser.h
+    StyleParameters/ParameterManager.h
 )
 
 SET(FreeCADGui_SRCS
     ${FreeCADGui_connexion_SRCS}
     ${FreeCADGui_connexion_HDRS}
     ${FreeCADGui_CPP_SRCS}
-    ${FreeCADGui_XML_SRCS}
+    ${FreeCADGui_Pyi_SRCS}
     ${qsint_MOC_SRCS}
     ${Gui_QRC_SRCS}
     ${Gui_UIC_HDRS}
@@ -1388,6 +1462,7 @@ if(MSVC)
         TaskView/TaskOrientation.cpp
         TaskView/TaskImage.cpp
         TaskView/TaskSelectLinkProperty.cpp
+        TaskView/TaskSolverMessages.ui
         TaskView/TaskEditControl.cpp
         TaskView/TaskView.cpp
         ${Command_CPP_SRCS}
@@ -1421,16 +1496,22 @@ if (EIGEN3_NO_DEPRECATED_COPY)
     set_source_files_properties(
         NaviCube.cpp
         Inventor/SoAutoZoomTranslation.cpp
+        Inventor/Draggers/SoTransformDragger.cpp
+        Inventor/Draggers/SoLinearDragger.cpp
+        Inventor/Draggers/SoLinearDraggerGeometry.cpp
+        Inventor/Draggers/SoPlanarDragger.cpp
+        Inventor/Draggers/SoRotationDragger.cpp
+        Inventor/Draggers/SoRotationDraggerGeometry.cpp
+        Inventor/Draggers/Gizmo.cpp
         SoFCOffscreenRenderer.cpp
         Selection/SoFCSelectionAction.cpp
-        SoFCCSysDragger.cpp
         Quarter/QuarterWidget.cpp
         View3DInventorViewer.cpp
         PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
 endif ()
 
-add_library(FreeCADGui SHARED ${FreeCADGui_SRCS})
-target_link_libraries(FreeCADGui ${FreeCADGui_LIBS})
+target_sources(FreeCADGui PRIVATE ${FreeCADGui_SRCS})
+target_link_libraries(FreeCADGui PUBLIC ${FreeCADGui_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(FreeCADGui)
 endif()
@@ -1446,15 +1527,6 @@ else(WIN32)
     INSTALL(TARGETS FreeCADGui
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
-    #INSTALL(FILES
-    #    Icons/freecad-icon-16.png
-    #    Icons/freecad-icon-32.png
-    #    Icons/freecad-icon-48.png
-    #    Icons/freecad-icon-64.png
-    #    Icons/freecad.svg
-    #    Icons/freecad-doc.png
-    #    DESTINATION ${CMAKE_INSTALL_DATADIR}
-    #)
     INSTALL(FILES Icons/freecad-icon-16.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps RENAME org.freecad.FreeCAD.png)
     INSTALL(FILES Icons/freecad-icon-32.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/32x32/apps RENAME org.freecad.FreeCAD.png)
     INSTALL(FILES Icons/freecad-icon-48.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps RENAME org.freecad.FreeCAD.png)

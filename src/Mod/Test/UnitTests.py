@@ -96,9 +96,9 @@ class UnitBasicCases(unittest.TestCase):
         qu2 = FreeCAD.Units.Quantity("m/s")
         self.assertTrue(qu1 / qu2, 1)
 
-    def testSchemes(self):
-        schemes = FreeCAD.Units.listSchemas()
-        num = len(schemes)
+    def testSchemas(self):
+        schemas = FreeCAD.Units.listSchemas()
+        num = len(schemas)
 
         psi = FreeCAD.Units.parseQuantity("1psi")
         for i in range(num):
@@ -108,7 +108,7 @@ class UnitBasicCases(unittest.TestCase):
                 1,
                 v.Value,
                 msg='Failed with "{0}" scheme: {1} != 1 (delta: {2})'.format(
-                    schemes[i], v.Value, self.delta
+                    schemas[i], v.Value, self.delta
                 ),
                 delta=self.delta,
             )
@@ -121,7 +121,7 @@ class UnitBasicCases(unittest.TestCase):
                 1,
                 v.Value,
                 msg='Failed with "{0}" scheme: {1} != 1 (delta: {2})'.format(
-                    schemes[i], v.Value, self.delta
+                    schemas[i], v.Value, self.delta
                 ),
                 delta=self.delta,
             )
@@ -135,7 +135,7 @@ class UnitBasicCases(unittest.TestCase):
                 1,
                 v.Value,
                 msg='Failed with "{0}" scheme: {1} != 1 (delta: {2})'.format(
-                    schemes[i], v.Value, self.delta
+                    schemas[i], v.Value, self.delta
                 ),
                 delta=self.delta,
             )
@@ -146,12 +146,12 @@ class UnitBasicCases(unittest.TestCase):
             if issubclass(type(getattr(FreeCAD.Units, i)), FreeCAD.Units.Quantity):
                 quantities.append(i)
 
-        schemes = FreeCAD.Units.listSchemas()
+        schemas = FreeCAD.Units.listSchemas()
         for i in quantities:
             q1 = getattr(FreeCAD.Units, i)
             q1 = FreeCAD.Units.Quantity(q1)
             q1.Format = {"Precision": 16}
-            for idx, val in enumerate(schemes):
+            for idx, val in enumerate(schemas):
                 [t, amountPerUnit, unit] = FreeCAD.Units.schemaTranslate(q1, idx)
                 try:
                     q2 = FreeCAD.Units.Quantity(t)

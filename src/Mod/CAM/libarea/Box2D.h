@@ -29,7 +29,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 
 #include <string.h>  // for memcpy() prototype
-#include <math.h>    // for sqrt() prototype
+#include <cmath>     // for sqrt() prototype
 
 class CBox2D
 {

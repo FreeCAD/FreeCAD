@@ -8,122 +8,87 @@
 #include "actionpanelscheme.h"
 
 
-class StaticLibInitializer
-{
-public:
-    StaticLibInitializer()
-    {
-        Q_INIT_RESOURCE(schemes);
-    }
-};
-
-StaticLibInitializer staticLibInitializer;
-
-
 namespace QSint
 {
 
+QPixmap ActionPanelScheme::drawFoldIcon(const QPalette& palette, bool fold, bool hover) const
+{
+    QSize bSize = headerButtonSize;
+    QImage img(bSize.width(), bSize.height(), QImage::Format_ARGB32_Premultiplied);
+    img.fill(Qt::transparent);
 
-const char* ActionPanelDefaultStyle =
+    QPainter painter(&img);
 
-    "QFrame[class='panel'] {"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #99cccc, stop: 1 #EAF7FF);"
-    "}"
+    painter.setRenderHint(QPainter::Antialiasing);
 
-    "QSint--ActionGroup QFrame[class='header'] {"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #F9FDFF, stop: 1 #EAF7FF);"
-        "border: 1px solid #00aa99;"
-        "border-bottom: 1px solid #99cccc;"
-        "border-top-left-radius: 3px;"
-        "border-top-right-radius: 3px;"
-    "}"
+    qreal penWidth = bSize.width() / 14.0;
+    qreal lef_X = 0.25 * bSize.width();
+    qreal mid_X = 0.50 * bSize.width();
+    qreal rig_X = 0.75 * bSize.width();
+    qreal bot_Y = 0.40 * bSize.height();
+    qreal top_Y = 0.64 * bSize.height();
 
-    "QSint--ActionGroup QFrame[class='header']:hover {"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #EAF7FF, stop: 1 #F9FDFF);"
-    "}"
+    QPolygon chevron;
+    if (fold) {
+        // Upward
+        chevron << QPoint(lef_X, top_Y)
+                << QPoint(mid_X, bot_Y)
+                << QPoint(rig_X, top_Y);
+    } else {
+        // Downward
+        chevron << QPoint(lef_X, bot_Y)
+                << QPoint(mid_X, top_Y)
+                << QPoint(rig_X, bot_Y);
+    }
 
-    "QSint--ActionGroup QToolButton[class='header'] {"
-        "text-align: left;"
-        "font: 14px;"
-        "color: #006600;"
-        "background-color: transparent;"
-        "border: 1px solid transparent;"
-    "}"
+    painter.setBrush(Qt::NoBrush);
+    // Outline
+    QColor outlineColor = palette.color(QPalette::Button);
+    painter.setPen(QPen(outlineColor, penWidth * 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter.drawPolyline(chevron);
 
-    "QSint--ActionGroup QToolButton[class='header']:hover {"
-        "color: #00cc00;"
-        "text-decoration: underline;"
-    "}"
+    // Chevron
+    if (hover) {
+        penWidth *= 1.8;
+    }
+    QColor mainColor = palette.color(QPalette::Text);
+    painter.setPen(QPen(mainColor, penWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter.drawPolyline(chevron);
 
-    "QSint--ActionGroup QFrame[class='content'] {"
-        "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #F9FDFF, stop: 1 #EAF7FF);"
-        "border: 1px solid #00aa99;"
-    "}"
-
-    "QSint--ActionGroup QFrame[class='content'][header='true'] {"
-        "border-top: none;"
-    "}"
-
-    "QSint--ActionGroup QToolButton[class='action'] {"
-        "background-color: transparent;"
-        "border: 1px solid transparent;"
-        "color: #0033ff;"
-        "text-align: left;"
-        "font: 11px;"
-    "}"
-
-    "QSint--ActionGroup QToolButton[class='action']:!enabled {"
-        "color: #999999;"
-    "}"
-
-    "QSint--ActionGroup QToolButton[class='action']:hover {"
-        "color: #0099ff;"
-        "text-decoration: underline;"
-    "}"
-
-    "QSint--ActionGroup QToolButton[class='action']:focus {"
-        "border: 1px dotted black;"
-    "}"
-
-    "QSint--ActionGroup QToolButton[class='action']:on {"
-        "background-color: #ddeeff;"
-        "color: #006600;"
-    "}"
-
-    // set a QGroupBox to avoid that the OS style is used, see
-    // https://github.com/FreeCAD/FreeCAD/issues/6102
-    // the px values are taken from Behave-dark.qss, except the padding
-    "QSint--ActionGroup QFrame[class='content'] QGroupBox {"
-    "border: 1px solid #bbbbbb;"
-    "border-radius: 3px;"
-    "margin-top: 10px;"
-    "padding: 2px;"
-    "}"
-    // since we set a custom frame we also need to set the title
-    "QSint--ActionGroup QFrame[class='content'] QGroupBox::title {"
-    "padding-left: 3px;"
-    "top: -6px;"
-    "left: 12px;"
-    "}"
-;
-
+    painter.end();
+    return QPixmap::fromImage(img);
+}
 
 ActionPanelScheme::ActionPanelScheme()
 {
-    headerSize = 28;
-    headerAnimation = true;
+    QFontMetrics fm(QApplication::font());
+    headerSize = fm.height() + 10;
 
-    headerButtonFold = QPixmap(":/default/Fold.png");
-    headerButtonFoldOver = QPixmap(":/default/FoldOver.png");
-    headerButtonUnfold = QPixmap(":/default/Unfold.png");
-    headerButtonUnfoldOver = QPixmap(":/default/UnfoldOver.png");
-    headerButtonSize = QSize(18,18);
+    QPalette p = QApplication::palette();
 
-    groupFoldSteps = 20; groupFoldDelay = 15;
+    int iconSize = fm.height();
+    headerButtonSize = QSize(iconSize, iconSize);
+    builtinFold = drawFoldIcon(p, true, false);
+    builtinFoldOver = drawFoldIcon(p, true, true);
+    builtinUnfold = drawFoldIcon(p, false, false);
+    builtinUnfoldOver = drawFoldIcon(p, false, true);
+
+    if (qApp->styleSheet().isEmpty()) {
+        headerButtonFold = builtinFold;
+        headerButtonFoldOver = builtinFoldOver;
+        headerButtonUnfold = builtinUnfold;
+        headerButtonUnfoldOver = builtinUnfoldOver;
+    } else {
+        headerButtonFold = QPixmap();
+        headerButtonFoldOver = QPixmap();
+        headerButtonUnfold = QPixmap();
+        headerButtonUnfoldOver = QPixmap();
+    }
+
+    groupFoldSteps = 20;
+    groupFoldDelay = 15;
     groupFoldEffect = NoFolding;
     groupFoldThaw = true;
-
-    actionStyle = QString(ActionPanelDefaultStyle);
 }
 
 ActionPanelScheme* ActionPanelScheme::defaultScheme()
@@ -132,5 +97,20 @@ ActionPanelScheme* ActionPanelScheme::defaultScheme()
     return &scheme;
 }
 
-
+void ActionPanelScheme::clearActionStyle()
+{
+    headerButtonFold = QPixmap();
+    headerButtonFoldOver = QPixmap();
+    headerButtonUnfold = QPixmap();
+    headerButtonUnfoldOver = QPixmap();
 }
+
+void ActionPanelScheme::restoreActionStyle()
+{
+    headerButtonFold = builtinFold;
+    headerButtonFoldOver = builtinFoldOver;
+    headerButtonUnfold = builtinUnfold;
+    headerButtonUnfoldOver = builtinUnfoldOver;
+}
+
+} // namespace QSint

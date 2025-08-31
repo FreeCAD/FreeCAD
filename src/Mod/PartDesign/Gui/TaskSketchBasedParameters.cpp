@@ -58,7 +58,7 @@ TaskSketchBasedParameters::TaskSketchBasedParameters(PartDesignGui::ViewProvider
     this->blockSelection(true);
 }
 
-const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChanges& msg)
+const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChanges& msg, App::PropertyLinkSub& prop)
 {
     // Note: The validity checking has already been done in ReferenceSelection.cpp
     auto sketchBased = getObject<PartDesign::ProfileBased>();
@@ -77,11 +77,11 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     }
     else if (subname.size() > 4) {
         int faceId = std::atoi(&subname[4]);
-        refStr = QString::fromLatin1(selObj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Face") + QString::number(faceId);
+        refStr = QString::fromLatin1(selObj->getNameInDocument()) + QStringLiteral(":") + QObject::tr("Face") + QString::number(faceId);
     }
 
     std::vector<std::string> upToFaces(1,subname);
-    sketchBased->UpToFace.setValue(selObj, upToFaces);
+    prop.setValue(selObj, upToFaces);
     recomputeFeature();
 
     return refStr;
@@ -90,22 +90,37 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
 void TaskSketchBasedParameters::startReferenceSelection(App::DocumentObject* profile,
                                                         App::DocumentObject* base)
 {
-    if (Gui::Document* doc = getGuiDocument()) {
-        doc->setHide(profile->getNameInDocument());
-        if (base) {
-            doc->setShow(base->getNameInDocument());
+    const auto* bodyViewProvider = getViewObject<ViewProvider>()->getBodyViewProvider();
+
+    previouslyVisibleViewProvider = bodyViewProvider->getShownViewProvider();
+
+    if (!base) {
+        return;
+    }
+
+    if (Document* doc = getGuiDocument()) {
+        if (previouslyVisibleViewProvider) {
+            previouslyVisibleViewProvider->hide();
         }
+
+        doc->setShow(base->getNameInDocument());
     }
 }
 
 void TaskSketchBasedParameters::finishReferenceSelection(App::DocumentObject* profile,
                                                          App::DocumentObject* base)
 {
-    if (Gui::Document* doc = getGuiDocument()) {
-        doc->setShow(profile->getNameInDocument());
+    if (!previouslyVisibleViewProvider) {
+        return;
+    }
+
+    if (Document* doc = getGuiDocument()) {
         if (base) {
             doc->setHide(base->getNameInDocument());
         }
+
+        previouslyVisibleViewProvider->show();
+        previouslyVisibleViewProvider = nullptr;
     }
 }
 
@@ -226,7 +241,7 @@ QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QS
         return {};
     }
 
-    QString o = obj.left(obj.indexOf(QString::fromLatin1(":")));
+    QString o = obj.left(obj.indexOf(QStringLiteral(":")));
     if (o.isEmpty()) {
         return {};
     }
@@ -242,7 +257,7 @@ QString TaskSketchBasedParameters::make2DLabel(const App::DocumentObject* sectio
         return QString::fromUtf8(section->Label.getValue());
     }
     else if (subValues.empty()) {
-        Base::Console().Error("No valid subelement linked in %s\n", section->Label.getValue());
+        Base::Console().error("No valid subelement linked in %s\n", section->Label.getValue());
         return {};
     }
     else {

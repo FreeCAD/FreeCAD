@@ -851,7 +851,7 @@ void ColorPickerPopup::showEvent(QShowEvent *)
     }
 
     if (!foundSelected) {
-    if (items.count() == 0)
+    if (items.isEmpty())
         setFocus();
     else
         widgetAt[0][0]->setFocus();

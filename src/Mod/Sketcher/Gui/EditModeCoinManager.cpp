@@ -161,6 +161,10 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updateWidth(drawingParameters.ExternalWidth, param, 2);
          }},
+        {"ExternalDefiningWidth",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updateWidth(drawingParameters.ExternalDefiningWidth, param, 2);
+         }},
         {"EdgePattern",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updatePattern(drawingParameters.CurvePattern, param, 0b1111111111111111);
@@ -177,9 +181,9 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updatePattern(drawingParameters.ExternalPattern, param, 0b1111110011111100);
          }},
-        {"CreateLineColor",
-         [this, drawingParameters = Client.drawingParameters](const std::string& param) {
-             updateColor(drawingParameters.CreateCurveColor, param);
+        {"ExternalDefiningPattern",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updatePattern(drawingParameters.ExternalDefiningPattern, param, 0b1111111111111111);
          }},
         {"EditedEdgeColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
@@ -240,6 +244,10 @@ void EditModeCoinManager::ParameterObserver::initParameters()
         {"ExternalColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
              updateColor(drawingParameters.CurveExternalColor, param);
+         }},
+        {"ExternalDefiningColor",
+         [this, drawingParameters = Client.drawingParameters](const std::string& param) {
+             updateColor(drawingParameters.CurveExternalDefiningColor, param);
          }},
         {"HighlightColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
@@ -305,7 +313,7 @@ void EditModeCoinManager::ParameterObserver::updateConstraintPresentationParamet
 
     Client.constraintParameters.bHideUnits = hGrpskg->GetBool("HideUnits", false);
     Client.constraintParameters.bShowDimensionalName =
-        hGrpskg->GetBool("ShowDimensionalName", false);
+        hGrpskg->GetBool("ShowDimensionalName", true);
     Client.constraintParameters.sDimensionalStringFormat =
         QString::fromStdString(hGrpskg->GetASCII("DimensionalStringFormat", "%N = %V"));
 }
@@ -357,53 +365,40 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
 
     double viewScalingFactor = hGrp->GetFloat("ViewScalingFactor", 1.0);
-    viewScalingFactor = Base::clamp<double>(viewScalingFactor, 0.5, 5.0);
+    viewScalingFactor = std::clamp<double>(viewScalingFactor, 0.5, 5.0);
 
-    int markersize = hGrp->GetInt("MarkerSize", 7);
+    int markerSize = hGrp->GetInt("MarkerSize", 7);
 
     int defaultFontSizePixels =
         Client.defaultApplicationFontSizePixels();  // returns height in pixels, not points
 
     int sketcherfontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSizePixels);
 
-    int dpi = Client.getApplicationLogicalDPIX();
+    double dpi = Client.getApplicationLogicalDPIX();
+    double devicePixelRatio = Client.getDevicePixelRatio();
 
     // simple scaling factor for hardcoded pixel values in the Sketcher
-    Client.drawingParameters.pixelScalingFactor = viewScalingFactor * dpi
-        / 96;  // 96 ppi is the standard pixel density for which pixel quantities were calculated
+    Client.drawingParameters.pixelScalingFactor = devicePixelRatio * viewScalingFactor;
 
     // About sizes:
     // SoDatumLabel takes the size in points, not in pixels. This is because it uses QFont
     // internally. Coin, at least our coin at this time, takes pixels, not points.
-    //
-    // DPI considerations:
-    // With hdpi monitors, the coin font labels do not respect the size passed in pixels:
-    // https://forum.freecad.org/viewtopic.php?f=3&t=54347&p=467610#p467610
-    // https://forum.freecad.org/viewtopic.php?f=10&t=49972&start=40#p467471
-    //
-    // Because I (abdullah) have  96 dpi logical, 82 dpi physical, and I see a 35px font setting for
-    // a "1" in a datum label as 34px, and I see kilsore and Elyas screenshots showing 41px and 61px
-    // in higher resolution monitors for the same configuration, I think that coin pixel size has to
-    // be corrected by the logical dpi of the monitor. The rationale is that: a) it obviously needs
-    // dpi correction, b) with physical dpi, the ratio of representation between kilsore and me is
-    // too far away.
-    //
-    // This means that the following correction does not have a documented basis, but appears
-    // necessary so that the Sketcher is usable in HDPI monitors.
 
     Client.drawingParameters.coinFontSize =
-        std::lround(sketcherfontSize * 96.0f / dpi);  // this is in pixels
-    Client.drawingParameters.labelFontSize = std::lround(
-        sketcherfontSize * 72.0f / dpi);  // this is in points, as SoDatumLabel uses points
+        std::lround(sketcherfontSize * devicePixelRatio);  // in pixels
+    Client.drawingParameters.labelFontSize =
+        std::lround(sketcherfontSize * devicePixelRatio * 72.0f
+                    / dpi);  // in points, as SoDatumLabel uses points
     Client.drawingParameters.constraintIconSize = std::lround(0.8 * sketcherfontSize);
 
-    // For marker size the global default is used.
-    //
-    // Rationale:
-    // -> Other WBs use the default value as is
-    // -> If a user has a HDPI, he will eventually change the value for the other WBs
-    // -> If we correct the value here in addition, we would get two times a resize
-    Client.drawingParameters.markerSize = markersize;
+    auto supportedsizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes("CIRCLE_LINE");
+    auto scaledMarkerSize = std::lround(markerSize * devicePixelRatio);
+    auto const it =
+        std::lower_bound(supportedsizes.begin(), supportedsizes.end(), scaledMarkerSize);
+    if (it != supportedsizes.end()) {
+        scaledMarkerSize = *it;
+    }
+    Client.drawingParameters.markerSize = scaledMarkerSize;
 
     Client.updateInventorNodeSizes();
 }
@@ -474,7 +469,7 @@ void EditModeCoinManager::ParameterObserver::subscribeToParameters()
     }
     catch (const Base::ValueError& e) {  // ensure that if parameter strings are not well-formed,
                                          // the exception is not propagated
-        Base::Console().DeveloperError("EditModeCoinManager",
+        Base::Console().developerError("EditModeCoinManager",
                                        "Malformed parameter string: %s\n",
                                        e.what());
     }
@@ -502,7 +497,7 @@ void EditModeCoinManager::ParameterObserver::unsubscribeToParameters()
     catch (const Base::ValueError&
                e) {  // ensure that if parameter strings are not well-formed, the program is not
                      // terminated when calling the noexcept destructor.
-        Base::Console().DeveloperError("EditModeCoinManager",
+        Base::Console().developerError("EditModeCoinManager",
                                        "Malformed parameter string: %s\n",
                                        e.what());
     }
@@ -570,13 +565,12 @@ void EditModeCoinManager::drawEditMarkers(const std::vector<Base::Vector2d>& Edi
 
     auto supportedsizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes("CIRCLE_LINE");
 
-    auto defaultmarker =
-        std::find(supportedsizes.begin(), supportedsizes.end(), drawingParameters.markerSize);
+    const auto defaultmarker = std::ranges::find(supportedsizes, drawingParameters.markerSize);
 
     if (defaultmarker != supportedsizes.end()) {
-        auto validAugmentationLevels = std::distance(defaultmarker, supportedsizes.end());
 
-        if (augmentationlevel >= validAugmentationLevels) {
+        if (const auto validAugmentationLevels = std::distance(defaultmarker, supportedsizes.end());
+            augmentationlevel >= validAugmentationLevels) {
             augmentationlevel = validAugmentationLevels - 1;
         }
 
@@ -609,7 +603,8 @@ void EditModeCoinManager::drawEditMarkers(const std::vector<Base::Vector2d>& Edi
     editModeScenegraphNodes.EditMarkerSet->markerIndex.finishEditing();
 }
 
-void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve)
+void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve,
+                                   GeometryCreationMode mode)
 {
     editModeScenegraphNodes.EditCurveSet->numVertices.setNum(1);
     editModeScenegraphNodes.EditCurvesCoordinate->point.setNum(EditCurve.size());
@@ -618,6 +613,8 @@ void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve)
     int32_t* index = editModeScenegraphNodes.EditCurveSet->numVertices.startEditing();
     SbColor* color = editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.startEditing();
 
+    setEditDrawStyle(mode);
+
     int i = 0;  // setting up the line set
     for (std::vector<Base::Vector2d>::const_iterator it = EditCurve.begin(); it != EditCurve.end();
          ++it, i++) {
@@ -625,7 +622,14 @@ void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve)
                           it->y,
                           ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
                               * drawingParameters.zEdit);
-        color[i] = drawingParameters.CreateCurveColor;
+        switch (mode) {
+            case GeometryCreationMode::Normal:
+                color[i] = drawingParameters.CurveColor;
+                break;
+            case GeometryCreationMode::Construction:
+                color[i] = drawingParameters.CurveDraftColor;
+                break;
+        }
     }
 
     index[0] = EditCurve.size();
@@ -634,7 +638,8 @@ void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve)
     editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.finishEditing();
 }
 
-void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>>& list)
+void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>>& list,
+                                   GeometryCreationMode mode)
 {
     int ncoords = 0;
 
@@ -649,6 +654,8 @@ void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>>&
     int32_t* index = editModeScenegraphNodes.EditCurveSet->numVertices.startEditing();
     SbColor* color = editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.startEditing();
 
+    setEditDrawStyle(mode);
+
     int coordindex = 0;
     int indexindex = 0;
     for (const auto& v : list) {
@@ -658,7 +665,16 @@ void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>>&
                 p.y,
                 ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
                     * drawingParameters.zEdit);
-            color[coordindex] = drawingParameters.CreateCurveColor;
+
+            switch (mode) {
+                case GeometryCreationMode::Normal:
+                    color[coordindex] = drawingParameters.CurveColor;
+                    break;
+                case GeometryCreationMode::Construction:
+                    color[coordindex] = drawingParameters.CurveDraftColor;
+                    break;
+            }
+
             coordindex++;
         }
         index[indexindex] = v.size();
@@ -707,7 +723,7 @@ void EditModeCoinManager::setAxisPickStyle(bool on)
 }
 
 EditModeCoinManager::PreselectionResult
-EditModeCoinManager::detectPreselection(SoPickedPoint* Point, const SbVec2s& cursorPos)
+EditModeCoinManager::detectPreselection(SoPickedPoint* Point)
 {
     EditModeCoinManager::PreselectionResult result;
 
@@ -715,9 +731,19 @@ EditModeCoinManager::detectPreselection(SoPickedPoint* Point, const SbVec2s& cur
         return result;
     }
 
-    // Base::Console().Log("Point pick\n");
+    // Base::Console().log("Point pick\n");
     SoPath* path = Point->getPath();
     SoNode* tail = path->getTail();  // Tail is directly the node containing points and curves
+
+    // checking for a hit on the separate Origin Point
+    if (tail == editModeScenegraphNodes.OriginPointSet) {
+        const SoDetail* point_detail = Point->getDetail(editModeScenegraphNodes.OriginPointSet);
+        if (point_detail && point_detail->getTypeId() == SoPointDetail::getClassTypeId()) {
+            result.PointIndex = -1;  // The logical ID of the origin
+            result.Cross = PreselectionResult::Axes::RootPoint;
+            return result;
+        }
+    }
 
     for (int l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
         // checking for a hit in the points
@@ -771,8 +797,7 @@ EditModeCoinManager::detectPreselection(SoPickedPoint* Point, const SbVec2s& cur
         }
     }
     // checking if a constraint is hit
-    result.ConstrIndices =
-        pEditModeConstraintCoinManager->detectPreselectionConstr(Point, cursorPos);
+    result.ConstrIndices = pEditModeConstraintCoinManager->detectPreselectionConstr(Point);
 
     return result;
 }
@@ -947,6 +972,33 @@ void EditModeCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.RootCrossSet->setName("RootCrossLineSet");
     crossRoot->addChild(editModeScenegraphNodes.RootCrossSet);
 
+    // stuff for the Origin Point
+    SoGroup* originPointRoot = new Gui::SoSkipBoundingGroup;
+    originPointRoot->setName("OriginPointRoot_SkipBBox");
+    editModeScenegraphNodes.EditRoot->addChild(originPointRoot);
+
+    editModeScenegraphNodes.OriginPointMaterial = new SoMaterial;
+    editModeScenegraphNodes.OriginPointMaterial->setName("OriginPointMaterial");
+    originPointRoot->addChild(editModeScenegraphNodes.OriginPointMaterial);
+
+    editModeScenegraphNodes.OriginPointDrawStyle = new SoDrawStyle;
+    editModeScenegraphNodes.OriginPointDrawStyle->setName("OriginPointDrawStyle");
+    editModeScenegraphNodes.OriginPointDrawStyle->pointSize =
+        8 * drawingParameters.pixelScalingFactor;
+    originPointRoot->addChild(editModeScenegraphNodes.OriginPointDrawStyle);
+
+    editModeScenegraphNodes.OriginPointCoordinate = new SoCoordinate3;
+    editModeScenegraphNodes.OriginPointCoordinate->setName("OriginPointCoordinate");
+    // A default position, which will be updated later
+    editModeScenegraphNodes.OriginPointCoordinate->point.set1Value(0, SbVec3f(0.0f, 0.0f, 0.0f));
+    originPointRoot->addChild(editModeScenegraphNodes.OriginPointCoordinate);
+
+    editModeScenegraphNodes.OriginPointSet = new SoMarkerSet;
+    editModeScenegraphNodes.OriginPointSet->setName("OriginPointSet");
+    editModeScenegraphNodes.OriginPointSet->markerIndex =
+        Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", drawingParameters.markerSize);
+    originPointRoot->addChild(editModeScenegraphNodes.OriginPointSet);
+
     // stuff for the EditCurves +++++++++++++++++++++++++++++++++++++++
     SoSeparator* editCurvesRoot = new SoSeparator;
     editModeScenegraphNodes.EditRoot->addChild(editCurvesRoot);
@@ -961,7 +1013,7 @@ void EditModeCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.EditCurvesDrawStyle = new SoDrawStyle;
     editModeScenegraphNodes.EditCurvesDrawStyle->setName("EditCurvesDrawStyle");
     editModeScenegraphNodes.EditCurvesDrawStyle->lineWidth =
-        3 * drawingParameters.pixelScalingFactor;
+        3 * drawingParameters.pixelScalingFactor;  // Default value will be overridden in drawEdit()
     editCurvesRoot->addChild(editModeScenegraphNodes.EditCurvesDrawStyle);
 
     editModeScenegraphNodes.EditCurveSet = new SoLineSet;
@@ -1046,6 +1098,24 @@ void EditModeCoinManager::redrawViewProvider()
 {
     viewProvider.draw(false, false);
 }
+void EditModeCoinManager::setEditDrawStyle(GeometryCreationMode mode)
+{
+    SoDrawStyle* toCopy = nullptr;
+
+    switch (mode) {
+        case GeometryCreationMode::Normal:
+            toCopy = editModeScenegraphNodes.CurvesDrawStyle;
+            break;
+        case GeometryCreationMode::Construction:
+            toCopy = editModeScenegraphNodes.CurvesConstructionDrawStyle;
+            break;
+    }
+
+    editModeScenegraphNodes.EditCurvesDrawStyle->lineWidth = toCopy->lineWidth;
+    editModeScenegraphNodes.EditCurvesDrawStyle->linePattern = toCopy->linePattern;
+    editModeScenegraphNodes.EditCurvesDrawStyle->linePatternScaleFactor =
+        toCopy->linePatternScaleFactor;
+}
 
 /************************ Delegated constraint public interface **********/
 
@@ -1072,6 +1142,11 @@ int EditModeCoinManager::defaultApplicationFontSizePixels() const
     return ViewProviderSketchCoinAttorney::defaultApplicationFontSizePixels(viewProvider);
 }
 
+double EditModeCoinManager::getDevicePixelRatio() const
+{
+    return ViewProviderSketchCoinAttorney::getDevicePixelRatio(viewProvider);
+}
+
 int EditModeCoinManager::getApplicationLogicalDPIX() const
 {
     return ViewProviderSketchCoinAttorney::getApplicationLogicalDPIX(viewProvider);
@@ -1090,6 +1165,11 @@ void EditModeCoinManager::updateInventorNodeSizes()
             Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED",
                                                          drawingParameters.markerSize);
     }
+
+    editModeScenegraphNodes.OriginPointDrawStyle->pointSize =
+        8 * drawingParameters.pixelScalingFactor;
+    editModeScenegraphNodes.OriginPointSet->markerIndex =
+        Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", drawingParameters.markerSize);
 
     editModeScenegraphNodes.RootCrossDrawStyle->lineWidth =
         2 * drawingParameters.pixelScalingFactor;
@@ -1119,6 +1199,8 @@ void EditModeCoinManager::updateInventorWidths()
         drawingParameters.InternalWidth * drawingParameters.pixelScalingFactor;
     editModeScenegraphNodes.CurvesExternalDrawStyle->lineWidth =
         drawingParameters.ExternalWidth * drawingParameters.pixelScalingFactor;
+    editModeScenegraphNodes.CurvesExternalDefiningDrawStyle->lineWidth =
+        drawingParameters.ExternalDefiningWidth * drawingParameters.pixelScalingFactor;
 }
 
 void EditModeCoinManager::updateInventorPatterns()
@@ -1130,6 +1212,8 @@ void EditModeCoinManager::updateInventorPatterns()
         drawingParameters.InternalPattern;
     editModeScenegraphNodes.CurvesExternalDrawStyle->linePattern =
         drawingParameters.ExternalPattern;
+    editModeScenegraphNodes.CurvesExternalDefiningDrawStyle->linePattern =
+        drawingParameters.ExternalDefiningPattern;
 }
 
 void EditModeCoinManager::updateInventorColors()

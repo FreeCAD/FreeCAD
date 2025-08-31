@@ -282,7 +282,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
         self._autoEnableExtensions()  # Check edge count for auto-disable Extensions on initial Task Panel loading
         self._initializeExtensions(obj)  # Efficiently initialize Extensions
-        self.defaultLength.updateSpinBox()
+        self.defaultLength.updateWidget()
         self._getUseOutlineState()  # Find `useOutline` checkbox and get its boolean value
         self.lastDefaultLength = self.form.defaultLength.text()  # set last DL value
         self.fieldsSet = True  # flag to identify initial values set
@@ -304,7 +304,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         """_applyDefaultLengthChange(index=None)...
         Helper method to update Default Length spinbox,
         and update extensions due to change in Default Length."""
-        self.defaultLength.updateSpinBox()
+        self.defaultLength.updateWidget()
         if self.form.defaultLength.text() != self.lastDefaultLength:
             self.lastDefaultLength = self.form.defaultLength.text()
             self._resetCachedExtensions()  # Reset extension cache because extension dimensions likely changed

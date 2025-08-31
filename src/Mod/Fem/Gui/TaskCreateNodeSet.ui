@@ -93,7 +93,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_AngleSearch">
      <property name="title">
-      <string>Angle-search</string>
+      <string>Angle-Search</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -108,7 +108,7 @@
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Stop angle:</string>
+           <string>Stop angle</string>
           </property>
          </widget>
         </item>

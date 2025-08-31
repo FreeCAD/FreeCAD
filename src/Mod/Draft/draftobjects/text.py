@@ -42,8 +42,8 @@ class Text(DraftAnnotation):
 
     def __init__(self, obj):
         obj.Proxy = self
-        self.set_properties(obj)
         self.Type = "Text"
+        self.set_properties(obj)
 
     def set_properties(self, obj):
         """Add properties to the object and set them."""
@@ -56,7 +56,8 @@ class Text(DraftAnnotation):
             obj.addProperty("App::PropertyPlacement",
                             "Placement",
                             "Base",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Placement = App.Placement()
 
         if "Text" not in properties:
@@ -68,22 +69,25 @@ class Text(DraftAnnotation):
             obj.addProperty("App::PropertyStringList",
                             "Text",
                             "Base",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Text = []
 
     def onDocumentRestored(self,obj):
         """Execute code when the document is restored."""
         super().onDocumentRestored(obj)
         gui_utils.restore_view_object(obj, vp_module="view_text", vp_class="ViewProviderText")
-        # See loads: old_type is None for new objects.
-        old_type = self.Type
-        self.Type = "Text"
 
-        if old_type is None:
+        vobj = getattr(obj, "ViewObject", None)
+        if vobj is None:
             return
-        if not getattr(obj, "ViewObject", None):
-            return
-        self.update_properties_0v21(obj, obj.ViewObject)
+
+        # See loads:
+        if self.stored_type is not None:
+            self.update_properties_0v21(obj, vobj)
+
+        if hasattr(vobj, "LineWidth") or hasattr(vobj, "LineColor"):
+            self.update_properties_1v1(obj, vobj)
 
     def update_properties_0v21(self, obj, vobj):
         """Update view properties."""
@@ -94,10 +98,25 @@ class Text(DraftAnnotation):
         _wrn("v0.21, " + obj.Label + ", "
              + translate("draft", "renamed 'DisplayMode' options to 'World/Screen'"))
 
-    def loads(self,state):
+    def update_properties_1v1(self, obj, vobj):
+        if hasattr(vobj, "LineWidth"):
+            vobj.setPropertyStatus("LineWidth", "-LockDynamic")
+            vobj.removeProperty("LineWidth")
+        if hasattr(vobj, "LineColor"):
+            vobj.setPropertyStatus("LineColor", "-LockDynamic")
+            vobj.removeProperty("LineColor")
+        _wrn(
+            "v1.1, "
+            + obj.Label
+            + ", "
+            + translate("draft", "removed view properties")
+        )
+
+    def loads(self, state):
         # Before update_properties_0v21 the self.Type value was stored.
         # We use this to identify older objects that need to be updated.
-        self.Type = state
+        self.stored_type = state
+        self.Type = "Text"
 
 
 # Alias for compatibility with v0.18 and earlier

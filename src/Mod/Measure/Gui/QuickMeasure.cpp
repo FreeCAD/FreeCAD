@@ -40,6 +40,7 @@
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/DatumFeature.h>
 
 #include <Mod/Measure/App/Measurement.h>
 
@@ -91,7 +92,7 @@ void QuickMeasure::processSelection()
             // sub-element e.g. when selecting a constraint in sketcher
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         catch (const Standard_Failure& e) {
             FC_ERR(e);
@@ -133,8 +134,8 @@ bool QuickMeasure::shouldMeasure(const Gui::SelectionChanges& msg) const
 
 bool QuickMeasure::isObjAcceptable(App::DocumentObject* obj)
 {
-    // only measure shapes
-    if (obj && obj->isDerivedFrom<Part::Feature>()) {
+    // only measure shapes. Exclude datums that derive from Part::Feature
+    if (obj && obj->isDerivedFrom<Part::Feature>() && !obj->isDerivedFrom<Part::Datum>()) {
         return true;
     }
 
@@ -217,10 +218,30 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::Cone || mtype == MeasureType::Plane) {
         print(tr("Area: %1").arg(areaStr(measurement->area())));
     }
-    else if (mtype == MeasureType::Cylinder || mtype == MeasureType::Sphere
+    else if (mtype == MeasureType::CylinderSection || mtype == MeasureType::Sphere
              || mtype == MeasureType::Torus) {
         print(tr("Area: %1, Radius: %2")
                   .arg(areaStr(measurement->area()), lengthStr(measurement->radius())));
+    }
+    else if (mtype == MeasureType::Cylinder) {
+        print(tr("Area: %1, Diameter: %2")
+                  .arg(areaStr(measurement->area()), lengthStr(measurement->diameter())));
+    }
+    else if (mtype == MeasureType::TwoCylinders) {
+
+        double angle = measurement->angle();
+
+        if (angle <= Precision::Confusion()) {
+            print(tr("Total area: %1, Axis distance: %2")
+                      .arg(areaStr(measurement->area()),
+                           lengthStr(measurement->cylinderAxisDistance())));
+        }
+        else {
+            print(tr("Total area: %1, Axis distance: %2, Axis angle: %3")
+                      .arg(areaStr(measurement->area()),
+                           lengthStr(measurement->cylinderAxisDistance()),
+                           angleStr(angle)));
+        }
     }
     else if (mtype == MeasureType::Edges) {
         print(tr("Total length: %1").arg(lengthStr(measurement->length())));
@@ -235,8 +256,11 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::Line) {
         print(tr("Length: %1").arg(lengthStr(measurement->length())));
     }
-    else if (mtype == MeasureType::Circle) {
+    else if (mtype == MeasureType::CircleArc) {
         print(tr("Radius: %1").arg(lengthStr(measurement->radius())));
+    }
+    else if (mtype == MeasureType::Circle) {
+        print(tr("Diameter: %1").arg(lengthStr(measurement->diameter())));
     }
     else if (mtype == MeasureType::PointToPoint) {
         print(tr("Distance: %1").arg(lengthStr(measurement->length())));
@@ -244,8 +268,52 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::PointToEdge || mtype == MeasureType::PointToSurface) {
         print(tr("Minimum distance: %1").arg(lengthStr(measurement->length())));
     }
+    else if (mtype == MeasureType::PointToCylinder) {
+        print(tr("Minimum distance: %1, Axis distance: %2")
+                  .arg(lengthStr(measurement->length()),
+                       lengthStr(measurement->cylinderAxisDistance())));
+    }
+    else if (mtype == MeasureType::PointToCircle) {
+        print(tr("Minimum distance: %1, Center distance: %2")
+                  .arg(lengthStr(measurement->length()),
+                       lengthStr(measurement->circleCenterDistance())));
+    }
+    else if (mtype == MeasureType::TwoCircles) {
+        double angle = measurement->angle();
+        if (angle <= Precision::Confusion()) {
+            print(tr("Total length: %1, Center distance: %2")
+                      .arg(lengthStr(measurement->length()),
+                           lengthStr(measurement->circleCenterDistance())));
+        }
+        else {
+            print(tr("Total length: %1, Center distance: %2, Axis angle: %3")
+                      .arg(lengthStr(measurement->length()),
+                           lengthStr(measurement->circleCenterDistance()),
+                           angleStr(angle)));
+        }
+    }
+    else if (mtype == MeasureType::CircleToEdge) {
+        print(tr("Total length: %1, Center distance: %2")
+                  .arg(lengthStr(measurement->length()),
+                       lengthStr(measurement->circleCenterDistance())));
+    }
+    else if (mtype == MeasureType::CircleToSurface) {
+        print(
+            tr("Center surface distance: %1").arg(lengthStr(measurement->circleCenterDistance())));
+    }
+    else if (mtype == MeasureType::CircleToCylinder) {
+        double angle = measurement->angle();
+        if (angle <= Precision::Confusion()) {
+            print(
+                tr("Center axis distance: %1").arg(lengthStr(measurement->cylinderAxisDistance())));
+        }
+        else {
+            print(tr("Center axis distance: %1, Axis angle: %2")
+                      .arg(lengthStr(measurement->cylinderAxisDistance()), angleStr(angle)));
+        }
+    }
     else {
-        print(QString::fromLatin1(""));
+        print(QStringLiteral(""));
     }
 }
 

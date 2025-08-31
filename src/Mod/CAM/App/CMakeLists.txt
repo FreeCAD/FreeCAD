@@ -7,14 +7,13 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${Boost_INCLUDE_DIRS}
+)
+
+include_directories(
+    SYSTEM
     ${OCC_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
-    ${XercesC_INCLUDE_DIRS}
 )
-link_directories(${OCC_LIBRARY_DIR})
 
 set(Path_LIBS
     Part
@@ -31,6 +30,16 @@ generate_from_xml(VoronoiPy)
 generate_from_xml(VoronoiCellPy)
 generate_from_xml(VoronoiEdgePy)
 generate_from_xml(VoronoiVertexPy)
+
+generate_from_py_(CommandPy)
+generate_from_py_(PathPy)
+generate_from_py_(FeaturePathCompoundPy)
+generate_from_py_(AreaPy)
+generate_from_py_(FeatureAreaPy)
+generate_from_py_(VoronoiPy)
+generate_from_py_(VoronoiCellPy)
+generate_from_py_(VoronoiEdgePy)
+generate_from_py_(VoronoiVertexPy)
 
 SET(Python_SRCS
     CommandPy.xml
@@ -123,20 +132,6 @@ if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Path)
 endif()
 
-# Boost >= 1.75.0
-if(NOT ${Boost_VERSION} LESS 107500)
-    set_target_properties(Path PROPERTIES CXX_STANDARD_REQUIRED ON)
-    set_target_properties(Path PROPERTIES CXX_STANDARD 14)
-
-    # Suppress -Wc++17-extensions when using  OCCT 7.5 or newer
-    if (MINGW AND CMAKE_COMPILER_IS_CLANGXX)
-        unset(_flag_found CACHE)
-        check_cxx_compiler_flag("-Wno-c++17-extensions" _flag_found)
-        if (_flag_found)
-            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-c++17-extensions")
-        endif()
-    endif()
-endif()
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)

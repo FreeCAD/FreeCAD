@@ -36,6 +36,7 @@ QT_END_NAMESPACE
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
 
+#include "QGIUserTypes.h"
 #include "QGIPrimPath.h"
 
 namespace TechDrawGui
@@ -44,7 +45,7 @@ namespace TechDrawGui
 class QGSPage;
 class QGIView;
 
-enum TrackerAction
+enum class TrackerAction
 {
     PICK = 0,
     EDIT = 1,
@@ -58,13 +59,19 @@ class TechDrawGuiExport QGTracker : public QObject, public QGIPrimPath
 {
     Q_OBJECT
 public:
-    enum TrackerMode { None, Line, Circle, Rectangle, Point };
+    enum class TrackerMode {
+        None,
+        Line,
+        Circle,
+        Rectangle,
+        Point
+    };
 
-    explicit QGTracker(QGSPage* scene = nullptr, QGTracker::TrackerMode m = QGTracker::TrackerMode::None);
+    explicit QGTracker(QGSPage* scene = nullptr, TrackerMode m = TrackerMode::None);
     ~QGTracker() override;
 
 
-    enum {Type = QGraphicsItem::UserType + 210};
+    enum {Type = UserType::QGTracker};
 
     int type() const override { return Type;}
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;

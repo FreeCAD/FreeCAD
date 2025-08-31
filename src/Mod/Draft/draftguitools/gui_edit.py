@@ -235,6 +235,7 @@ class Edit(gui_base_original.Modifier):
         self.gui_tools_repository.add('Ellipse', edit_draft.DraftEllipseGuiTools())
         self.gui_tools_repository.add('Dimension', edit_draft.DraftDimensionGuiTools()) # Backward compatibility
         self.gui_tools_repository.add('LinearDimension', edit_draft.DraftDimensionGuiTools())
+        self.gui_tools_repository.add('Label', edit_draft.DraftLabelGuiTools())
 
         self.gui_tools_repository.add('Wall', edit_arch.ArchWallGuiTools())
         self.gui_tools_repository.add('Window', edit_arch.ArchWindowGuiTools())
@@ -256,7 +257,7 @@ class Edit(gui_base_original.Modifier):
         return {'Pixmap': 'Draft_Edit',
                 'Accel': "D, E",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edit"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edits the active object.\nPress E or ALT + Left Click to display context menu\non supported nodes and on supported objects.")
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edits the active object")
                 }
 
 
@@ -412,14 +413,14 @@ class Edit(gui_base_original.Modifier):
         """Execute as callback for keyboard event."""
         # TODO: Get the keys from preferences
         event = event_callback.getEvent()
-        if event.getState() == coin.SoKeyboardEvent.DOWN:
+        if event.getState() in (coin.SoKeyboardEvent.DOWN, coin.SoKeyboardEvent.UP):
             key = event.getKey()
             # App.Console.PrintMessage("pressed key : "+str(key)+"\n")
             if key == 65307:  # ESC
                 self.finish()
             if key == 101:  # "e"
                 self.display_tracker_menu(event)
-            if key == 65535 and Gui.Selection.GetSelection() is None: # BUG: delete key activate Std::Delete command at the same time!
+            if key == 65535 and Gui.Selection.getSelection() is None: # BUG: delete key activate Std::Delete command at the same time!
                 print("DELETE PRESSED\n")
                 self.delPoint(event)
 
@@ -481,7 +482,7 @@ class Edit(gui_base_original.Modifier):
                                  + ": editing node number "
                                  + str(node_idx) + "\n")
 
-        self.ui.lineUi(title=translate("draft", "Edit node"), icon="Draft_Edit")
+        self.ui.lineUi(title=translate("draft", "Edit Node"), icon="Draft_Edit")
         self.ui.continueCmd.hide()
         self.editing = node_idx
         self.trackers[obj.Name][node_idx].off()
@@ -679,7 +680,7 @@ class Edit(gui_base_original.Modifier):
 
         else:
             # try if user is over an edited object
-            pos = event.getPosition()
+            pos = event.getPosition().getValue()
             obj = self.get_selected_obj_at_position(pos)
 
             obj_gui_tools = self.get_obj_gui_tools(obj)
@@ -798,7 +799,7 @@ class Edit(gui_base_original.Modifier):
         selection = Gui.Selection.getSelection()
         self.edited_objects = []
         if len(selection) > self.max_objects:
-            _err = translate("draft", "Too many objects selected, max number set to:")
+            _err = translate("draft", "Too many objects selected, maximum number set to:")
             App.Console.PrintMessage(_err + " " + str(self.max_objects) + "\n")
             return None
 
@@ -825,8 +826,7 @@ class Edit(gui_base_original.Modifier):
         """Restore objects style during editing mode.
         """
         for obj in objs:
-            if not obj.isAttachedToDocument():
-                # Object has been deleted.
+            if utils.is_deleted(obj):
                 continue
             obj_gui_tools = self.get_obj_gui_tools(obj)
             if obj_gui_tools:

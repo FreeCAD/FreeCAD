@@ -22,7 +22,7 @@ protected:
     {
         _docName = App::GetApplication().getUniqueDocumentName("test");
         _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
-        _body = dynamic_cast<PartDesign::Body*>(_doc->addObject("PartDesign::Body"));
+        _body = _doc->addObject<PartDesign::Body>();
     }
 
     void TearDown() override
@@ -48,7 +48,7 @@ private:
 
 TEST_F(DatumPlaneTest, attachDatumPlane)
 {
-    auto datumPlane = getDocument()->addObject("PartDesign::Plane", "Plane");
+    auto datumPlane = getDocument()->addObject<PartDesign::Plane>("Plane");
     ASSERT_TRUE(datumPlane);
     getBody()->addObject(datumPlane);
     auto origin = getBody()->getOrigin();

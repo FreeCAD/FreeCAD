@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 
+#include <Base/Tools.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include "FemConstraintTransform.h"
@@ -119,9 +120,9 @@ Base::Rotation anglesToRotation(double xAngle, double yAngle, double zAngle)
     static Base::Vector3d a(1, 0, 0);
     static Base::Vector3d b(0, 1, 0);
     static int count = 0;
-    double xRad = xAngle * D_PI / 180.0;
-    double yRad = yAngle * D_PI / 180.0;
-    double zRad = zAngle * D_PI / 180.0;
+    double xRad = Base::toRadians(xAngle);
+    double yRad = Base::toRadians(yAngle);
+    double zRad = Base::toRadians(zAngle);
     if (xAngle != 0) {
         a[1] = 0;
         a[2] = 0;

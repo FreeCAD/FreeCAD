@@ -14,10 +14,13 @@
    <string notr="true">STEP</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
+   <property name="margin">
+    <number>0</number>
+   </property>
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBoxHeader">
      <property name="toolTip">
-      <string>If not empty, field contents will be used in the STEP file header.</string>
+      <string>If not empty, field contents will be used in the STEP file header</string>
      </property>
      <property name="title">
       <string>Header</string>

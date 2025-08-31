@@ -26,6 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "QGIViewPart.h"
+#include "QGIUserTypes.h"
 
 namespace TechDrawGui
 {
@@ -39,7 +40,7 @@ public:
 
     void draw() override;
     void updateView(bool update = false) override;
-    enum { Type = QGraphicsItem::UserType + 108 };
+    enum {Type = UserType::QGIViewSection};
     int type() const override { return Type; }
 
 protected:

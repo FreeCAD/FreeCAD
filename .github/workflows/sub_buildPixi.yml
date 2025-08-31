@@ -49,13 +49,18 @@ jobs:
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
-      CCACHE_DIR: ${{ github.workspace }}/ccache
-      CCACHE_CONFIGPATH: ${{ github.workspace }}/ccache/config
-      CCACHE_MAXSIZE: 1G
       CCACHE_COMPRESS: true
       CCACHE_COMPRESSLEVEL: 5
-      builddir: ${{ github.workspace }}/build/
+      CCACHE_CONFIGPATH: ${{ github.workspace }}/ccache/config
+      CCACHE_DIR: ${{ github.workspace }}/ccache
+      CCACHE_MAXSIZE: 1G
+      CCACHE_NODIRECT: true
+      CCACHE_NOHASHDIR: true
+      CCACHE_NOINODECACHE: true
+      CCACHE_SLOPPINESS: "include_file_ctime,include_file_mtime,pch_defines,time_macros"
+      builddir: ${{ github.workspace }}/build/release/
       cacheKey: pixi-${{ matrix.os }}
+      config: release
       logdir: ${{ github.workspace }}/logs/
       reportdir: ${{ github.workspace }}/report/
       reportfilename: ${{ inputs.artifactBasename }}-${{ matrix.os }}-report.md
@@ -69,6 +74,11 @@ jobs:
         os: [windows-latest, ubuntu-latest, macos-latest]
 
     steps:
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+      with:
+        egress-policy: audit
+
     - name: Set Platform Environment Variables
       shell: bash -l {0}
       env:
@@ -81,7 +91,7 @@ jobs:
         fi
 
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
     - name: Add GCC Problem Matcher
       if: runner.os == 'Linux'
@@ -106,13 +116,15 @@ jobs:
         mkdir -p ${{ env.reportdir }}
         echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
 
-    - uses: prefix-dev/setup-pixi@v0.8.1
+    - uses: prefix-dev/setup-pixi@fef5c9568ca6c4ff7707bf840ab0692ba3f08293 # v0.9.0
       with:
-        pixi-version: v0.40.0
+        pixi-version: v0.48.1
         cache: false
 
     - name: Restore Compiler Cache
-      uses: actions/cache/restore@v4
+      id: cache-restore
+      if: always()
+      uses: actions/cache/restore@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
       with:
         path: ${{ env.CCACHE_DIR }}
         key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
@@ -128,13 +140,14 @@ jobs:
 
     - name: CMake Configure
       run: |
-        pixi run configure-release
+        pixi run configure-${{ env.config }}
 
     - name: CMake Build
       run: |
-        pixi run build
+        pixi run build-${{ env.config }}
 
     - name: Print ccache statistics after Build
+      if: always()
       run: |
         pixi run ccache -s
 
@@ -169,7 +182,7 @@ jobs:
 
     - name: CMake Install
       run: |
-        pixi run install
+        pixi run install-${{ env.config }}
 
     - name: FreeCAD CLI tests on install
       if: runner.os != 'Windows'
@@ -194,15 +207,16 @@ jobs:
         reportFile: ${{env.reportdir}}${{ env.reportfilename }}
 
     - name: Save Compiler Cache
+      id: cache-save
       if: always()
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
       with:
         path: ${{ env.CCACHE_DIR }}
         key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
 
     - name: Upload logs
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
         name: ${{ inputs.artifactBasename }}-${{ matrix.os }}-Logs
         path: |
@@ -211,7 +225,7 @@ jobs:
 
     - name: Upload report
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
         name: ${{ env.reportfilename }}
         path: |

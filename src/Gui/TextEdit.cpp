@@ -36,7 +36,7 @@
 #include "TextEdit.h"
 #include "SyntaxHighlighter.h"
 #include "Tools.h"
-#include <App/Color.h>
+#include <Base/Color.h>
 
 
 using namespace Gui;
@@ -60,7 +60,7 @@ TextEdit::TextEdit(QWidget* parent)
     //Note: Set the correct context to this shortcut as we may use several instances of this
     //class at a time
     auto shortcut = new QShortcut(this);
-    shortcut->setKey(QKeySequence(QString::fromLatin1("CTRL+Space")));
+    shortcut->setKey(QKeySequence(QStringLiteral("CTRL+Space")));
     shortcut->setContext(Qt::WidgetShortcut);
     connect(shortcut, &QShortcut::activated, this, &TextEdit::complete);
 
@@ -281,7 +281,8 @@ TextEditor::TextEditor(QWidget* parent)
     d = new TextEditorP();
     lineNumberArea = new LineMarker(this);
 
-    QFont serifFont(QLatin1String("Courier"), 10, QFont::Normal);
+    QFont serifFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    serifFont.setPointSize(10);
     setFont(serifFont);
 
     ParameterGrp::handle hPrefGrp = getWindowParameter();
@@ -375,7 +376,7 @@ void TextEditor::highlightCurrentLine()
     if (!isReadOnly() && isEnabledHighlightCurrentLine()) {
         QTextEdit::ExtraSelection selection;
         QColor lineColor = d->colormap[QLatin1String("Current line highlight")];
-        unsigned int col = App::Color::asPackedRGB<QColor>(lineColor);
+        unsigned int col = Base::Color::asPackedRGB<QColor>(lineColor);
         ParameterGrp::handle hPrefGrp = getWindowParameter();
         auto value = static_cast<unsigned long>(col);
         value = hPrefGrp->GetUnsigned( "Current line highlight", value);
@@ -447,9 +448,8 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
 #else
         int fontSize = hPrefGrp->GetInt("FontSize", 10);
 #endif
-        QString fontFamily = QString::fromLatin1(hPrefGrp->GetASCII( "Font", "Courier" ).c_str());
-
-        QFont font(fontFamily, fontSize);
+        QFont font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+        font.setPointSize(fontSize);
         setFont(font);
         lineNumberArea->setFont(font);
     }
@@ -457,7 +457,7 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
         QMap<QString, QColor>::Iterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
             QColor color = it.value();
-            unsigned int col = App::Color::asPackedRGB<QColor>(color);
+            unsigned int col = Base::Color::asPackedRGB<QColor>(color);
             auto value = static_cast<unsigned long>(col);
             value = hPrefGrp->GetUnsigned(sReason, value);
             col = static_cast<unsigned int>(value);
@@ -495,6 +495,58 @@ PythonTextEditor::PythonTextEditor(QWidget *parent)
 
 PythonTextEditor::~PythonTextEditor() = default;
 
+void PythonTextEditor::prepend(const QString& str)
+{
+    QTextCursor cursor = textCursor();
+    // for each selected block insert a tab or spaces
+    int selStart = cursor.selectionStart();
+    int selEnd = cursor.selectionEnd();
+    QTextBlock block;
+    cursor.beginEditBlock();
+    for (block = document()->begin(); block.isValid(); block = block.next()) {
+        int pos = block.position();
+        int off = block.length()-1;
+        // at least one char of the block is part of the selection
+        if ( pos >= selStart || pos+off >= selStart) {
+            if ( pos+1 > selEnd )
+                break; // end of selection reached
+            cursor.setPosition(block.position());
+            cursor.insertText(str);
+            selEnd += str.length();
+        }
+    }
+
+    cursor.endEditBlock();
+}
+
+void PythonTextEditor::remove(const QString& str)
+{
+    QTextCursor cursor = textCursor();
+    int selStart = cursor.selectionStart();
+    int selEnd = cursor.selectionEnd();
+    QTextBlock block;
+    cursor.beginEditBlock();
+    for (block = document()->begin(); block.isValid(); block = block.next()) {
+        int pos = block.position();
+        int off = block.length()-1;
+        // at least one char of the block is part of the selection
+        if ( pos >= selStart || pos+off >= selStart) {
+            if ( pos+1 > selEnd )
+                break; // end of selection reached
+            QString text = block.text();
+            if (text.startsWith(str)) {
+                cursor.setPosition(block.position());
+                for (int i = 0; i < str.length(); i++) {
+                    cursor.deleteChar();
+                    selEnd--;
+                }
+            }
+        }
+    }
+
+    cursor.endEditBlock();
+}
+
 void PythonTextEditor::keyPressEvent (QKeyEvent * e)
 {
     if ( e->key() == Qt::Key_Tab ) {
@@ -502,7 +554,7 @@ void PythonTextEditor::keyPressEvent (QKeyEvent * e)
         bool space = hPrefGrp->GetBool("Spaces", true);
         int indent = hPrefGrp->GetInt( "IndentSize", 4 );
         QString ch = space ? QString(indent, QLatin1Char(' '))
-                           : QString::fromLatin1("\t");
+                           : QStringLiteral("\t");
 
         QTextCursor cursor = textCursor();
         if (!cursor.hasSelection()) {
@@ -511,25 +563,7 @@ void PythonTextEditor::keyPressEvent (QKeyEvent * e)
             cursor.insertText(ch);
             cursor.endEditBlock();
         } else {
-            // for each selected block insert a tab or spaces
-            int selStart = cursor.selectionStart();
-            int selEnd = cursor.selectionEnd();
-            QTextBlock block;
-            cursor.beginEditBlock();
-            for (block = document()->begin(); block.isValid(); block = block.next()) {
-                int pos = block.position();
-                int off = block.length()-1;
-                // at least one char of the block is part of the selection
-                if ( pos >= selStart || pos+off >= selStart) {
-                    if ( pos+1 > selEnd )
-                        break; // end of selection reached
-                    cursor.setPosition(block.position());
-                    cursor.insertText(ch);
-                    selEnd += ch.length();
-                }
-            }
-
-            cursor.endEditBlock();
+            prepend(ch);
         }
 
         return;
@@ -541,40 +575,13 @@ void PythonTextEditor::keyPressEvent (QKeyEvent * e)
         // If some text is selected we remove a leading tab or
         // spaces from each selected block
         ParameterGrp::handle hPrefGrp = getWindowParameter();
+        bool space = hPrefGrp->GetBool("Spaces", true);
         int indent = hPrefGrp->GetInt( "IndentSize", 4 );
+        QString ch = space ? QString(indent, QLatin1Char(' '))
+                           : QStringLiteral("\t");
 
-        int selStart = cursor.selectionStart();
-        int selEnd = cursor.selectionEnd();
-        QTextBlock block;
-        cursor.beginEditBlock();
-        for (block = document()->begin(); block.isValid(); block = block.next()) {
-            int pos = block.position();
-            int off = block.length()-1;
-            // at least one char of the block is part of the selection
-            if ( pos >= selStart || pos+off >= selStart) {
-                if ( pos+1 > selEnd )
-                    break; // end of selection reached
-                // if possible remove one tab or several spaces
-                QString text = block.text();
-                if (text.startsWith(QLatin1String("\t"))) {
-                    cursor.setPosition(block.position());
-                    cursor.deleteChar();
-                    selEnd--;
-                }
-                else {
-                    cursor.setPosition(block.position());
-                    for (int i=0; i<indent; i++) {
-                        if (!text.startsWith(QLatin1String(" ")))
-                            break;
-                        text = text.mid(1);
-                        cursor.deleteChar();
-                        selEnd--;
-                    }
-                }
-            }
-        }
-
-        cursor.endEditBlock();
+        // if possible remove one tab or several spaces
+        remove(ch);
         return;
     }
 

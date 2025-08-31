@@ -199,7 +199,6 @@ Py::String UUIDsPy::getTextureRendering() const
 
 Py::String UUIDsPy::getAdvancedRendering() const
 {
-    Base::Console().Log(getModelUUIDsPtr()->ModelUUID_Rendering_Advanced.toStdString().c_str());
     return Py::String(getModelUUIDsPtr()->ModelUUID_Rendering_Advanced.toStdString());
 }
 

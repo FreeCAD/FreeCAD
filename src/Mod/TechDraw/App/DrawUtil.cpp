@@ -25,6 +25,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
+#include <limits>
 #include <sstream>
 
 #include <boost_regex.hpp>
@@ -58,9 +59,11 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
 #include <Base/Stream.h>
+#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Base/Vector3D.h>
 
@@ -75,7 +78,7 @@ using namespace TechDraw;
 
 /*static*/ int DrawUtil::getIndexFromName(const std::string& geomName)
 {
-    //   Base::Console().Message("DU::getIndexFromName(%s)\n", geomName.c_str());
+    //   Base::Console().message("DU::getIndexFromName(%s)\n", geomName.c_str());
     boost::regex re("\\d+$");// one of more digits at end of string
     boost::match_results<std::string::const_iterator> what;
     boost::match_flag_type flags = boost::match_default;
@@ -101,6 +104,16 @@ using namespace TechDraw;
     }
 }
 
+/*static*/ std::vector<int> DrawUtil::getIndexFromName(const std::vector<std::string>& geomNames)
+{
+    std::vector<int> result;
+    result.reserve(200);
+    for (const std::string& geomName : geomNames) {
+        result.push_back(getIndexFromName(geomName));
+    }
+    return result;
+}
+
 std::string DrawUtil::getGeomTypeFromName(const std::string& geomName)
 {
     if (geomName.empty()) {
@@ -124,6 +137,20 @@ std::string DrawUtil::getGeomTypeFromName(const std::string& geomName)
         ErrorMsg << "In getGeomTypeFromName: malformed geometry name - " << geomName;
         throw Base::ValueError(ErrorMsg.str());
     }
+}
+
+//! Check if all geomNames are of same geomType
+//! Edge1, Edge2, Edge3 -> true
+//! Edge1, Edge2, Vertex7 -> false
+bool DrawUtil::isGeomTypeConsistent(const std::vector<std::string>& geomNames)
+{
+    std::string reference = getGeomTypeFromName(geomNames.at(0));
+    for (std::string geomName : geomNames) {
+        if (reference != getGeomTypeFromName(geomName)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 std::string DrawUtil::makeGeomName(const std::string& geomType, int index)
@@ -162,7 +189,7 @@ double DrawUtil::simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2)
 {
     BRepExtrema_DistShapeShape extss(s1, s2);
     if (!extss.IsDone()) {
-        Base::Console().Message("DU::simpleMinDist - BRepExtrema_DistShapeShape failed");
+        Base::Console().message("DU::simpleMinDist - BRepExtrema_DistShapeShape failed");
         return -1;
     }
     int count = extss.NbSolution();
@@ -178,7 +205,7 @@ double DrawUtil::angleWithX(Base::Vector3d inVec)
 {
     double result = atan2(inVec.y, inVec.x);
     if (result < 0) {
-        result += 2.0 * M_PI;
+        result += 2.0 * std::numbers::pi;
     }
 
     return result;
@@ -200,7 +227,7 @@ double DrawUtil::angleWithX(TopoDS_Edge e, bool reverse)
     }
     double result = atan2(u.y, u.x);
     if (result < 0) {
-        result += 2.0 * M_PI;
+        result += 2.0 * std::numbers::pi;
     }
 
     return result;
@@ -218,7 +245,7 @@ double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
         param = adapt.LastParameter();
     } else {
         //TARFU
-        Base::Console().Message("Error: DU::angleWithX - v is neither first nor last \n");
+        Base::Console().message("Error: DU::angleWithX - v is neither first nor last \n");
     }
     gp_Pnt paramPoint;
     gp_Vec derivative;
@@ -226,7 +253,7 @@ double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v, double tolerance)
     c->D1(param, paramPoint, derivative);
     double angle = atan2(derivative.Y(), derivative.X());
     if (angle < 0) {//map from [-PI:PI] to [0:2PI]
-        angle += 2.0 * M_PI;
+        angle += 2.0 * std::numbers::pi;
     }
     return angle;
 }
@@ -257,14 +284,14 @@ double DrawUtil::incidenceAngleAtVertex(TopoDS_Edge e, TopoDS_Vertex v, double t
         offsetPoint = Base::Vector3d(gOffsetPoint.X(), gOffsetPoint.Y(), gOffsetPoint.Z());
     } else {
         //TARFU
-        //        Base::Console().Message("DU::incidenceAngle - v is neither first nor last \n");
+        //        Base::Console().message("DU::incidenceAngle - v is neither first nor last \n");
     }
     incidenceVec = anglePoint - offsetPoint;
     incidenceAngle = atan2(incidenceVec.y, incidenceVec.x);
 
     //map to [0:2PI]
     if (incidenceAngle < 0.0) {
-        incidenceAngle = M_2PI + incidenceAngle;
+        incidenceAngle = 2*std::numbers::pi + incidenceAngle;
     }
 
     return incidenceAngle;
@@ -390,7 +417,7 @@ bool DrawUtil::apparentIntersection(const Handle(Geom_Curve) curve1,
     //for our purposes, only one intersection point is required.
     gp_Pnt p1, p2;
     intersector.Points(1, p1, p2);
-    result = toVector3d(p1);
+    result = Base::convertTo<Base::Vector3d>(p1);
     return true;
 }
 
@@ -407,7 +434,7 @@ bool DrawUtil::apparentIntersection(TopoDS_Edge& edge0, TopoDS_Edge& edge1, gp_P
     gp_Vec D(gStart1.XYZ());
     gp_Vec e(gEnd0.XYZ() - gStart0.XYZ());//direction of line0
     gp_Vec f(gEnd1.XYZ() - gStart1.XYZ());//direction of line1
-    Base::Console().Message(
+    Base::Console().message(
         "DU::apparentInter - e: %s  f: %s\n", formatVector(e).c_str(), formatVector(f).c_str());
 
     //check for cases the algorithm doesn't handle well
@@ -423,7 +450,7 @@ bool DrawUtil::apparentIntersection(TopoDS_Edge& edge0, TopoDS_Edge& edge1, gp_P
     }
 
     gp_Vec g(D - C);//between a point on each line
-    Base::Console().Message("DU::apparentInter - C: %s  D: %s  g: %s\n",
+    Base::Console().message("DU::apparentInter - C: %s  D: %s  g: %s\n",
                             formatVector(C).c_str(),
                             formatVector(D).c_str(),
                             formatVector(g).c_str());
@@ -432,7 +459,7 @@ bool DrawUtil::apparentIntersection(TopoDS_Edge& edge0, TopoDS_Edge& edge1, gp_P
     double h = fxg.Magnitude();
     gp_Vec fxe = f.Crossed(e);
     double k = fxe.Magnitude();
-    Base::Console().Message("DU::apparentInter - h: %.3f k: %.3f\n", h, k);
+    Base::Console().message("DU::apparentInter - h: %.3f k: %.3f\n", h, k);
     if (fpCompare(k, 0.0)) {
         //no intersection
         return false;
@@ -465,7 +492,7 @@ bool DrawUtil::intersect2Lines3d(Base::Vector3d point0, Base::Vector3d dir0, Bas
     dir1n.Normalize();
     if (fabs(dir0n.Dot(dir1n)) == 1.0) {
         //parallel lines, no intersection
-        Base::Console().Message("DU::intersect2 - parallel lines, no intersection\n");
+        Base::Console().message("DU::intersect2 - parallel lines, no intersection\n");
         return false;
     }
 
@@ -485,7 +512,8 @@ Base::Vector3d DrawUtil::vertex2Vector(const TopoDS_Vertex& v)
     return Base::Vector3d(gp.X(), gp.Y(), gp.Z());
 }
 
-//TODO: make formatVector using toVector3d
+// template specialization
+//template <>  // GCC BUG 85282, wanting this to be outside class body
 std::string DrawUtil::formatVector(const Base::Vector3d& v)
 {
     std::stringstream builder;
@@ -493,46 +521,9 @@ std::string DrawUtil::formatVector(const Base::Vector3d& v)
     builder << " (" << v.x << ", " << v.y << ", " << v.z << ") ";
     return builder.str();
 }
+//template std::string DrawUtil::formatVector<Base::Vector3d>(const Base::Vector3d &v);
 
-std::string DrawUtil::formatVector(const gp_Dir& v)
-{
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
-    builder << " (" << v.X() << ", " << v.Y() << ", " << v.Z() << ") ";
-    return builder.str();
-}
-
-std::string DrawUtil::formatVector(const gp_Dir2d& v)
-{
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
-    builder << " (" << v.X() << ", " << v.Y() << ") ";
-    return builder.str();
-}
-std::string DrawUtil::formatVector(const gp_Vec& v)
-{
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
-    builder << " (" << v.X() << ", " << v.Y() << ", " << v.Z() << ") ";
-    return builder.str();
-}
-
-std::string DrawUtil::formatVector(const gp_Pnt& v)
-{
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
-    builder << " (" << v.X() << ", " << v.Y() << ", " << v.Z() << ") ";
-    return builder.str();
-}
-
-std::string DrawUtil::formatVector(const gp_Pnt2d& v)
-{
-    std::stringstream builder;
-    builder << std::fixed << std::setprecision(Base::UnitsApi::getDecimals());
-    builder << " (" << v.X() << ", " << v.Y() << ") ";
-    return builder.str();
-}
-
+// template specialization
 std::string DrawUtil::formatVector(const QPointF& v)
 {
     std::stringstream builder;
@@ -669,7 +660,7 @@ Base::Vector3d DrawUtil::vecRotate(Base::Vector3d vec, double angle, Base::Vecto
 
 gp_Vec DrawUtil::closestBasis(gp_Vec inVec)
 {
-    return gp_Vec(togp_Dir(closestBasis(toVector3d(inVec))));
+    return gp_Vec(Base::convertTo<gp_Dir>(closestBasis(Base::convertTo<Base::Vector3d>(inVec))));
 }
 
 //! returns stdX, stdY or stdZ.
@@ -857,7 +848,7 @@ double DrawUtil::getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape)
     Base::Vector3d stdXr(-1.0, 0.0, 0.0);
     Base::Vector3d stdYr(0.0, -1.0, 0.0);
     Base::Vector3d stdZr(0.0, 0.0, -1.0);
-    Base::Vector3d vClosestBasis = closestBasis(toVector3d(direction));
+    Base::Vector3d vClosestBasis = closestBasis(Base::convertTo<Base::Vector3d>(direction));
 
     Bnd_Box shapeBox;
     shapeBox.SetGap(0.0);
@@ -866,7 +857,7 @@ double DrawUtil::getWidthInDirection(gp_Dir direction, TopoDS_Shape& shape)
     if (shapeBox.IsVoid()) {
         //this really shouldn't happen here as null shapes should have been caught
         //long before this
-        Base::Console().Error("DU::getWidthInDirection - shapeBox is void\n");
+        Base::Console().error("DU::getWidthInDirection - shapeBox is void\n");
         return 0.0;
     }
     shapeBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
@@ -903,13 +894,13 @@ gp_Vec DrawUtil::maskDirection(gp_Vec inVec, gp_Dir directionToMask)
             return {inVec.X(), inVec.Y(), 0.0};
     }
 
-    Base::Console().Message("DU:maskDirection - directionToMask is not cardinal\n");
+    Base::Console().message("DU:maskDirection - directionToMask is not cardinal\n");
     return {};
 }
 
 Base::Vector3d DrawUtil::maskDirection(Base::Vector3d inVec, Base::Vector3d directionToMask)
 {
-    return toVector3d(maskDirection(togp_Vec(inVec), togp_Vec(directionToMask)));
+    return Base::convertTo<Base::Vector3d>(maskDirection(Base::convertTo<gp_Vec>(inVec), Base::convertTo<gp_Vec>(directionToMask)));
 }
 
 //! get the coordinate of inPoint for the cardinal unit direction.
@@ -998,7 +989,7 @@ Base::Vector3d DrawUtil::Intersect2d(Base::Vector3d p1, Base::Vector3d d1, Base:
 
     double det = A1 * B2 - A2 * B1;
     if (fpCompare(det, 0.0, Precision::Confusion())) {
-        Base::Console().Message("Lines are parallel\n");
+        Base::Console().message("Lines are parallel\n");
         return Base::Vector3d(0.0, 0.0, 0.0);
     }
 
@@ -1022,7 +1013,7 @@ Base::Vector2d DrawUtil::Intersect2d(Base::Vector2d p1, Base::Vector2d d1, Base:
 
     double det = A1 * B2 - A2 * B1;
     if (fpCompare(det, 0.0, Precision::Confusion())) {
-        Base::Console().Message("Lines are parallel\n");
+        Base::Console().message("Lines are parallel\n");
         return Base::Vector2d(0.0, 0.0);
     }
 
@@ -1064,14 +1055,14 @@ QPointF DrawUtil::invertY(QPointF v)
 //! Note: the centering operation is not considered here
 Base::Vector3d  DrawUtil::toAppSpace(const DrawViewPart& dvp, const Base::Vector3d &qtPoint)
 {
-//    Base::Console().Message("DGU::toPaperSpace(%s)\n", formatVector(qtPoint).c_str());
+//    Base::Console().message("DGU::toPaperSpace(%s)\n", formatVector(qtPoint).c_str());
     // From Y+ is down to Y+ is up
     Base::Vector3d appPoint = invertY(qtPoint);
 
     // remove the effect of the Rotation property
     double rotDeg = dvp.Rotation.getValue();
-    double rotRad = rotDeg * M_PI / 180.0;
     if (rotDeg != 0.0) {
+        double rotRad = Base::toRadians(rotDeg);
         // we always rotate around the origin.
         appPoint.RotateZ(-rotRad);
     }
@@ -1090,7 +1081,7 @@ Base::Vector3d  DrawUtil::toAppSpace(const DrawViewPart& dvp, const QPointF& qtP
 //obs? was used in CSV prototype of Cosmetics
 std::vector<std::string> DrawUtil::split(std::string csvLine)
 {
-    //    Base::Console().Message("DU::split - csvLine: %s\n", csvLine.c_str());
+    //    Base::Console().message("DU::split - csvLine: %s\n", csvLine.c_str());
     std::vector<std::string> result;
     std::stringstream lineStream(csvLine);
     std::string cell;
@@ -1104,7 +1095,7 @@ std::vector<std::string> DrawUtil::split(std::string csvLine)
 //obs? was used in CSV prototype of Cosmetics
 std::vector<std::string> DrawUtil::tokenize(std::string csvLine, std::string delimiter)
 {
-    //    Base::Console().Message("DU::tokenize - csvLine: %s delimit: %s\n", csvLine.c_str(), delimiter.c_str());
+    //    Base::Console().message("DU::tokenize - csvLine: %s delimit: %s\n", csvLine.c_str(), delimiter.c_str());
     std::string s(csvLine);
     size_t pos = 0;
     std::vector<std::string> tokens;
@@ -1118,12 +1109,12 @@ std::vector<std::string> DrawUtil::tokenize(std::string csvLine, std::string del
     return tokens;
 }
 
-App::Color DrawUtil::pyTupleToColor(PyObject* pColor)
+Base::Color DrawUtil::pyTupleToColor(PyObject* pColor)
 {
-    //    Base::Console().Message("DU::pyTupleToColor()\n");
+    //    Base::Console().message("DU::pyTupleToColor()\n");
     double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
     if (!PyTuple_Check(pColor)) {
-        return App::Color(red, green, blue, alpha);
+        return Base::Color(red, green, blue, alpha);
     }
 
     int tSize = (int)PyTuple_Size(pColor);
@@ -1139,12 +1130,12 @@ App::Color DrawUtil::pyTupleToColor(PyObject* pColor)
         PyObject* pAlpha = PyTuple_GetItem(pColor, 3);
         alpha = PyFloat_AsDouble(pAlpha);
     }
-    return App::Color(red, green, blue, alpha);
+    return Base::Color(red, green, blue, alpha);
 }
 
-PyObject* DrawUtil::colorToPyTuple(App::Color color)
+PyObject* DrawUtil::colorToPyTuple(Base::Color color)
 {
-    //    Base::Console().Message("DU::pyTupleToColor()\n");
+    //    Base::Console().message("DU::pyTupleToColor()\n");
     PyObject* pTuple = PyTuple_New(4);
     PyObject* pRed = PyFloat_FromDouble(color.r);
     PyObject* pGreen = PyFloat_FromDouble(color.g);
@@ -1206,7 +1197,7 @@ bool DrawUtil::isCrazy(TopoDS_Edge e)
         }
     }
 
-    //    Base::Console().Message("DU::isCrazy - returns: %d ratio: %.3f\n", false, ratio);
+    //    Base::Console().message("DU::isCrazy - returns: %d ratio: %.3f\n", false, ratio);
     return false;
 }
 
@@ -1407,11 +1398,13 @@ double DrawUtil::sqr(double x)
 
 void DrawUtil::angleNormalize(double& fi)
 {
-    while (fi <= -M_PI) {
-        fi += M_2PI;
+    using std::numbers::pi;
+
+    while (fi <= -pi) {
+        fi += 2*pi;
     }
-    while (fi > M_PI) {
-        fi -= M_2PI;
+    while (fi > pi) {
+        fi -= 2*pi;
     }
 }
 
@@ -1425,13 +1418,14 @@ double DrawUtil::angleComposition(double fi, double delta)
 
 double DrawUtil::angleDifference(double fi1, double fi2, bool reflex)
 {
+    using std::numbers::pi;
     angleNormalize(fi1);
     angleNormalize(fi2);
 
     fi1 -= fi2;
 
-    if ((fi1 > +M_PI || fi1 <= -M_PI) != reflex) {
-        fi1 += fi1 > 0.0 ? -M_2PI : +M_2PI;
+    if ((fi1 > +pi || fi1 <= -pi) != reflex) {
+        fi1 += fi1 > 0.0 ? -2*pi : +2*pi;
     }
 
     return fi1;
@@ -1570,6 +1564,7 @@ void DrawUtil::intervalMarkLinear(std::vector<std::pair<double, bool>>& marking,
 void DrawUtil::intervalMarkCircular(std::vector<std::pair<double, bool>>& marking, double start,
                                     double length, bool value)
 {
+    using std::numbers::pi;
     if (length == 0.0) {
         return;
     }
@@ -1577,15 +1572,15 @@ void DrawUtil::intervalMarkCircular(std::vector<std::pair<double, bool>>& markin
         length = -length;
         start -= length;
     }
-    if (length > M_2PI) {
-        length = M_2PI;
+    if (length > 2*pi) {
+        length = 2*pi;
     }
 
     angleNormalize(start);
 
     double end = start + length;
-    if (end > M_PI) {
-        end -= M_2PI;
+    if (end > pi) {
+        end -= 2*pi;
     }
 
     // Just make sure the point is stored, its index is read last
@@ -1796,13 +1791,15 @@ void DrawUtil::findCircularArcRectangleIntersections(const Base::Vector2d& circl
                                                      const Base::BoundBox2d& rectangle,
                                                      std::vector<Base::Vector2d>& intersections)
 {
+    using std::numbers::pi;
+
     findCircleRectangleIntersections(circleCenter, circleRadius, rectangle, intersections);
 
     if (arcRotation < 0.0) {
         arcRotation = -arcRotation;
         arcBaseAngle -= arcRotation;
-        if (arcBaseAngle <= -M_PI) {
-            arcBaseAngle += M_2PI;
+        if (arcBaseAngle <= -pi) {
+            arcBaseAngle += 2*pi;
         }
     }
 
@@ -1810,7 +1807,7 @@ void DrawUtil::findCircularArcRectangleIntersections(const Base::Vector2d& circl
     for (unsigned int i = 0; i < intersections.size();) {
         double pointAngle = (intersections[i] - circleCenter).Angle();
         if (pointAngle < arcBaseAngle - Precision::Confusion()) {
-            pointAngle += M_2PI;
+            pointAngle += 2*pi;
         }
 
         if (pointAngle > arcBaseAngle + arcRotation + Precision::Confusion()) {
@@ -1834,7 +1831,7 @@ void DrawUtil::findCircularArcRectangleIntersections(const Base::Vector2d& circl
 //create empty outSpec file if inSpec
 void DrawUtil::copyFile(std::string inSpec, std::string outSpec)
 {
-    //    Base::Console().Message("DU::copyFile(%s, %s)\n", inSpec.c_str(), outSpec.c_str());
+    //    Base::Console().message("DU::copyFile(%s, %s)\n", inSpec.c_str(), outSpec.c_str());
     if (inSpec.empty()) {
         // create an empty file
         Base::FileInfo fi(outSpec);
@@ -1847,7 +1844,7 @@ void DrawUtil::copyFile(std::string inSpec, std::string outSpec)
     }
     bool rc = fi.copyTo(outSpec.c_str());
     if (!rc) {
-        Base::Console().Message(
+        Base::Console().message(
             "DU::copyFile - failed - in: %s out:%s\n", inSpec.c_str(), outSpec.c_str());
     }
 }
@@ -1863,40 +1860,6 @@ std::string DrawUtil::translateArbitrary(std::string context, std::string baseNa
     return qTranslated.toStdString() + suffix;
 }
 
-// true if owner->element is a cosmetic vertex
-bool DrawUtil::isCosmeticVertex(App::DocumentObject* owner, std::string element)
-{
-    auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
-    auto vertexIndex = DrawUtil::getIndexFromName(element);
-    auto vertex = ownerView->getProjVertexByIndex(vertexIndex);
-    if (vertex) {
-        return vertex->getCosmetic();
-    }
-    return false;
-}
-
-// true if owner->element is a cosmetic edge
-bool DrawUtil::isCosmeticEdge(App::DocumentObject* owner, std::string element)
-{
-    auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
-    auto edge = ownerView->getEdge(element);
-    if (edge && edge->source() == 1 && edge->getCosmetic()) {
-        return true;
-    }
-    return false;
-}
-
-// true if owner->element is a center line
-bool DrawUtil::isCenterLine(App::DocumentObject* owner, std::string element)
-{
-    auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
-    auto edge = ownerView->getEdge(element);
-    if (edge && edge->source() == 2 && edge->getCosmetic()) {
-        return true;
-    }
-    return false;
-}
-
 //! convert a filespec (string) containing '\' to only use '/'.
 //! prevents situation where '\' is interpreted as an escape of the next character in Python
 //! commands.
@@ -1908,17 +1871,24 @@ std::string DrawUtil::cleanFilespecBackslash(const std::string& filespec)
     return noBackslash;
 }
 
+//! returns true if the Gui module and its event loop are active.
+bool DrawUtil::isGuiUp()
+{
+    auto* app = QCoreApplication::instance();
+    return (app != nullptr) && app->inherits("QApplication");
+}
+
 
 //============================
 // various debugging routines.
 void DrawUtil::dumpVertexes(const char* text, const TopoDS_Shape& s)
 {
-    Base::Console().Message("DUMP - %s\n", text);
+    Base::Console().message("DUMP - %s\n", text);
     TopExp_Explorer expl(s, TopAbs_VERTEX);
     for (int i = 1; expl.More(); expl.Next(), i++) {
         const TopoDS_Vertex& v = TopoDS::Vertex(expl.Current());
         gp_Pnt pnt = BRep_Tool::Pnt(v);
-        Base::Console().Message("v%d: (%.3f, %.3f, %.3f)\n", i, pnt.X(), pnt.Y(), pnt.Z());
+        Base::Console().message("v%d: (%.3f, %.3f, %.3f)\n", i, pnt.X(), pnt.Y(), pnt.Z());
     }
 }
 
@@ -1927,7 +1897,7 @@ void DrawUtil::countFaces(const char* text, const TopoDS_Shape& s)
     TopTools_IndexedMapOfShape mapOfFaces;
     TopExp::MapShapes(s, TopAbs_FACE, mapOfFaces);
     int num = mapOfFaces.Extent();
-    Base::Console().Message("COUNT - %s has %d Faces\n", text, num);
+    Base::Console().message("COUNT - %s has %d Faces\n", text, num);
 }
 
 //count # of unique Wires in shape.
@@ -1936,7 +1906,7 @@ void DrawUtil::countWires(const char* text, const TopoDS_Shape& s)
     TopTools_IndexedMapOfShape mapOfWires;
     TopExp::MapShapes(s, TopAbs_WIRE, mapOfWires);
     int num = mapOfWires.Extent();
-    Base::Console().Message("COUNT - %s has %d wires\n", text, num);
+    Base::Console().message("COUNT - %s has %d wires\n", text, num);
 }
 
 void DrawUtil::countEdges(const char* text, const TopoDS_Shape& s)
@@ -1944,12 +1914,12 @@ void DrawUtil::countEdges(const char* text, const TopoDS_Shape& s)
     TopTools_IndexedMapOfShape mapOfEdges;
     TopExp::MapShapes(s, TopAbs_EDGE, mapOfEdges);
     int num = mapOfEdges.Extent();
-    Base::Console().Message("COUNT - %s has %d edges\n", text, num);
+    Base::Console().message("COUNT - %s has %d edges\n", text, num);
 }
 
 void DrawUtil::dumpEdges(const char* text, const TopoDS_Shape& s)
 {
-    Base::Console().Message("DUMP - %s\n", text);
+    Base::Console().message("DUMP - %s\n", text);
     TopExp_Explorer expl(s, TopAbs_EDGE);
     for (int i = 1; expl.More(); expl.Next(), i++) {
         const TopoDS_Edge& e = TopoDS::Edge(expl.Current());
@@ -1959,9 +1929,9 @@ void DrawUtil::dumpEdges(const char* text, const TopoDS_Shape& s)
 
 void DrawUtil::dump1Vertex(const char* text, const TopoDS_Vertex& v)
 {
-    //    Base::Console().Message("DUMP - dump1Vertex - %s\n",text);
+    //    Base::Console().message("DUMP - dump1Vertex - %s\n",text);
     gp_Pnt pnt = BRep_Tool::Pnt(v);
-    Base::Console().Message("%s: (%.3f, %.3f, %.3f)\n", text, pnt.X(), pnt.Y(), pnt.Z());
+    Base::Console().message("%s: (%.3f, %.3f, %.3f)\n", text, pnt.X(), pnt.Y(), pnt.Z());
 }
 
 void DrawUtil::dumpEdge(const char* label, int i, TopoDS_Edge e)
@@ -1973,9 +1943,9 @@ void DrawUtil::dumpEdge(const char* label, int i, TopoDS_Edge e)
     const gp_Pnt& vStart = propStart.Value();
     BRepLProp_CLProps propEnd(adapt, end, 0, Precision::Confusion());
     const gp_Pnt& vEnd = propEnd.Value();
-    //Base::Console().Message("%s edge:%d start:(%.3f, %.3f, %.3f)/%0.3f end:(%.2f, %.3f, %.3f)/%.3f\n", label, i,
+    //Base::Console().message("%s edge:%d start:(%.3f, %.3f, %.3f)/%0.3f end:(%.2f, %.3f, %.3f)/%.3f\n", label, i,
     //                        vStart.X(), vStart.Y(), vStart.Z(), start, vEnd.X(), vEnd.Y(), vEnd.Z(), end);
-    Base::Console().Message(
+    Base::Console().message(
         "%s edge:%d start:(%.3f, %.3f, %.3f)  end:(%.2f, %.3f, %.3f) Orient: %d\n",
         label,
         i,
@@ -1987,7 +1957,7 @@ void DrawUtil::dumpEdge(const char* label, int i, TopoDS_Edge e)
         vEnd.Z(),
         static_cast<int>(e.Orientation()));
     double edgeLength = GCPnts_AbscissaPoint::Length(adapt, Precision::Confusion());
-    Base::Console().Message(">>>>>>> length: %.3f  distance: %.3f ratio: %.3f type: %d\n",
+    Base::Console().message(">>>>>>> length: %.3f  distance: %.3f ratio: %.3f type: %d\n",
                             edgeLength,
                             vStart.Distance(vEnd),
                             edgeLength / vStart.Distance(vEnd),
@@ -2009,7 +1979,7 @@ QString DrawUtil::qbaToDebug(const QByteArray& line)
         if ((c >= 0x20) && (c <= 126)) {
             s.append(QChar::fromLatin1(c));
         } else {
-            s.append(QString::fromUtf8("<%1>").arg(c, 2, 16, QChar::fromLatin1('0')));
+            s.append(QStringLiteral("<%1>").arg(c, 2, 16, QChar::fromLatin1('0')));
         }
     }
     return s;
@@ -2021,7 +1991,7 @@ void DrawUtil::dumpCS(const char* text, const gp_Ax2& CS)
     gp_Dir baseX = CS.XDirection();
     gp_Dir baseY = CS.YDirection();
     gp_Pnt baseOrg = CS.Location();
-    Base::Console().Message("DU::dumpCS - %s Loc: %s Axis: %s X: %s Y: %s\n",
+    Base::Console().message("DU::dumpCS - %s Loc: %s Axis: %s X: %s Y: %s\n",
                             text,
                             DrawUtil::formatVector(baseOrg).c_str(),
                             DrawUtil::formatVector(baseAxis).c_str(),
@@ -2035,7 +2005,7 @@ void DrawUtil::dumpCS3(const char* text, const gp_Ax3& CS)
     gp_Dir baseX = CS.XDirection();
     gp_Dir baseY = CS.YDirection();
     gp_Pnt baseOrg = CS.Location();
-    Base::Console().Message("DU::dumpCS3 - %s Loc: %s Axis: %s X: %s Y: %s\n",
+    Base::Console().message("DU::dumpCS3 - %s Loc: %s Axis: %s X: %s Y: %s\n",
                             text,
                             DrawUtil::formatVector(baseOrg).c_str(),
                             DrawUtil::formatVector(baseAxis).c_str(),

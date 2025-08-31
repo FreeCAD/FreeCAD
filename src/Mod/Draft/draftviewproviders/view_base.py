@@ -106,7 +106,8 @@ class ViewProviderDraft(object):
                              "Pattern",
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property",
-                                               "Defines an SVG pattern."))
+                                               "Defines an SVG pattern."),
+                             locked=True)
             patterns = list(utils.svg_patterns())
             patterns.sort()
             vobj.Pattern = ["None"] + patterns
@@ -116,7 +117,8 @@ class ViewProviderDraft(object):
                              "PatternSize",
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property",
-                                               "Defines the size of the SVG pattern."))
+                                               "Defines the size of the SVG pattern."),
+                             locked=True)
             vobj.PatternSize = params.get_param("HatchPatternSize")
 
     def dumps(self):

@@ -30,6 +30,7 @@
 #include <QObject>
 
 #include "QGIPrimPath.h"
+#include "QGIUserTypes.h"
 #include "QGIVertex.h"
 
 namespace TechDrawGui
@@ -48,14 +49,14 @@ public:
     explicit QGMarker(int idx);
     ~QGMarker() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 302};
+    enum {Type = UserType::QGMarker};
     int type() const override { return Type;}
 
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
     void keyPressEvent(QKeyEvent * event) override;
 
-    void setRadius(float radius) override;
+    void setRadius(double radius) override;
 
 Q_SIGNALS:
     void dragging(QPointF pos, int idx);
@@ -84,7 +85,7 @@ public:
     explicit QGEPath();
     ~QGEPath() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 301};
+    enum {Type = UserType::QGEPath};
     int type() const override { return Type;}
     QRectF boundingRect() const override;
     QPainterPath shape() const override;

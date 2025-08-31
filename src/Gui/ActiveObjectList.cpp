@@ -62,7 +62,7 @@ void ActiveObjectList::setHighlight(const ObjectInfo &info, HighlightMode mode, 
     auto obj = getObject(info, false);
     if (!obj)
         return;
-    auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
+    auto vp = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
     if (!vp)
         return;
 
@@ -196,4 +196,16 @@ void ActiveObjectList::objectDeleted(const ViewProviderDocumentObject &vp)
             ++it;
         }
     }
+}
+
+App::DocumentObject* ActiveObjectList::getObjectWithExtension(const Base::Type extensionTypeId) const
+{
+    for (const auto& pair : _ObjectMap) {
+        App::DocumentObject* obj = getObject(pair.second, true);
+        if (obj && obj->hasExtension(extensionTypeId)) {
+            return obj;
+        }
+    }
+
+    return nullptr;
 }

@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 #include <algorithm>
+#include <limits>
 #endif
 
 #include <Base/Console.h>
@@ -295,7 +296,7 @@ float MeshAlgorithm::GetAverageEdgeLength() const
 
 float MeshAlgorithm::GetMinimumEdgeLength() const
 {
-    float fLen = FLOAT_MAX;
+    float fLen = std::numeric_limits<float>::max();
     MeshFacetIterator cF(_rclMesh);
     for (cF.Init(); cF.More(); cF.Next()) {
         for (int i = 0; i < 3; i++) {
@@ -785,19 +786,20 @@ bool MeshAlgorithm::FillupHole(const std::vector<PointIndex>& boundary,
             }
         }
 
+        constexpr auto max = std::numeric_limits<unsigned short>::max();
         // Get the new neighbour to our reference facet
         MeshFacet facet;
         unsigned short ref_side = rFace.Side(refPoint0, refPoint1);
-        unsigned short tri_side = USHRT_MAX;
+        unsigned short tri_side = max;
         if (cTria.NeedsReindexing()) {
             // the referenced indices of the polyline
             refPoint0 = 0;
             refPoint1 = 1;
         }
-        if (ref_side < USHRT_MAX) {
+        if (ref_side < max) {
             for (const auto& face : faces) {
                 tri_side = face.Side(refPoint0, refPoint1);
-                if (tri_side < USHRT_MAX) {
+                if (tri_side < max) {
                     facet = face;
                     break;
                 }
@@ -805,8 +807,8 @@ bool MeshAlgorithm::FillupHole(const std::vector<PointIndex>& boundary,
         }
 
         // in case the reference facet has not an open edge print a log message
-        if (ref_side == USHRT_MAX || tri_side == USHRT_MAX) {
-            Base::Console().Log(
+        if (ref_side == max || tri_side == max) {
+            Base::Console().log(
                 "MeshAlgorithm::FillupHole: Expected open edge for facet <%d, %d, %d>\n",
                 rFace._aulPoints[0],
                 rFace._aulPoints[1],
@@ -1461,7 +1463,7 @@ bool MeshAlgorithm::NearestPointFromPoint(const Base::Vector3f& rclPt,
     }
 
     // calc each facet
-    float fMinDist = FLOAT_MAX;
+    float fMinDist = std::numeric_limits<float>::max();
     FacetIndex ulInd = FACET_INDEX_MAX;
     MeshFacetIterator pF(_rclMesh);
     for (pF.Init(); pF.More(); pF.Next()) {

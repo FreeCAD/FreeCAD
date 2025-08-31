@@ -59,7 +59,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>This screen lists all the components of the current document. You can select them to create a FreeCAD spreadsheet containing information from them.</string>
+    <string>This display lists all the components of the current document. Select them to create a FreeCAD spreadsheet containing information from them.</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -75,7 +75,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>This dialogue window will help you to generate list of components, dimensions, materials from a opened BIM file for Quantity Surveyor purposes.</string>
+    <string>This dialog window will help generate a list of components, dimensions, and materials from an opened BIM file for quantity surveyor purposes.</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -91,7 +91,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Select from these options the values you want from each component. FreeCAD will generate a line in the spreadsheet with these values (if they are present).</string>
+    <string>Select from these options the values desired from each component. FreeCAD will generate a line in the spreadsheet with these values (if they are present).</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -172,7 +172,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Select these components from the list if you want to hide the rest of them and move to Survey mode.</string>
+    <string>Select these components from the list to hide the rest of them and move to survey mode.</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -214,7 +214,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Select these components from the list if you want to hide the rest of them and move to schedule definition mode.</string>
+    <string>Select these components from the list to hide the rest of them and move to schedule definition mode.</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>

@@ -112,7 +112,7 @@ int MeshingOutput::sync()
             else {
                 sub = buffer;
             }
-            Base::Console().Error("%s", sub.c_str());
+            Base::Console().error("%s", sub.c_str());
         }
         buffer.clear();
     }
@@ -197,7 +197,7 @@ public:
                 std::stringstream str;
                 str << "patch" << index++;
                 segm.setName(str.str());
-                App::Color col;
+                Base::Color col;
                 col.setPackedValue(it.first);
                 segm.setColor(col.asHexString());
                 meshdata->addSegment(segm);
@@ -570,7 +570,7 @@ Mesh::MeshObject* Mesher::createFrom(SMESH_Mesh* mesh) const
             faces.push_back(f6);
         }
         else {
-            Base::Console().Warning("Face with %d nodes ignored\n", aFace->NbNodes());
+            Base::Console().warning("Face with %d nodes ignored\n", aFace->NbNodes());
         }
     }
 

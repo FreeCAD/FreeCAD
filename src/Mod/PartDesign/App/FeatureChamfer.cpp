@@ -23,6 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
+
 # include <BRepAlgo.hxx>
 # include <BRepFilletAPI_MakeChamfer.hxx>
 # include <TopExp.hxx>
@@ -49,7 +51,7 @@ using namespace PartDesign;
 PROPERTY_SOURCE(PartDesign::Chamfer, PartDesign::DressUp)
 
 const char* ChamferTypeEnums[] = {"Equal distance", "Two distances", "Distance and Angle", nullptr};
-const App::PropertyQuantityConstraint::Constraints Chamfer::floatSize = {0.0, FLT_MAX, 0.1};
+const App::PropertyQuantityConstraint::Constraints Chamfer::floatSize = {0.0, std::numeric_limits<float>::max(), 0.1};
 const App::PropertyAngle::Constraints Chamfer::floatAngle = {0.0, 180.0, 1.0};
 
 static App::DocumentObjectExecReturn *validateParameters(int chamferType, double size, double size2, double angle);
@@ -104,11 +106,7 @@ short Chamfer::mustExecute() const
 
 App::DocumentObjectExecReturn *Chamfer::execute()
 {
-    if (onlyHasToRefine()){
-        TopoShape result = refineShapeIfActive(rawShape);
-        Shape.setValue(result);
-        return App::DocumentObject::StdReturn;
-    }
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
 
     // NOTE: Normally the Base property and the BaseFeature property should point to the same object.
     // The only difference is that the Base property also stores the edges that are to be chamfered
@@ -161,7 +159,6 @@ App::DocumentObjectExecReturn *Chamfer::execute()
 
         TopTools_ListOfShape aLarg;
         aLarg.Append(TopShape.getShape());
-        bool failed = false;
         if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False)) {
             ShapeFix_ShapeTolerance aSFT;
             aSFT.LimitTolerance(shape.getShape(),
@@ -169,21 +166,16 @@ App::DocumentObjectExecReturn *Chamfer::execute()
                                 Precision::Confusion(),
                                 TopAbs_SHAPE);
         }
-        if (!failed) {
 
-            // store shape before refinement
-            this->rawShape = shape;
-            shape = refineShapeIfActive(shape);
-            shape = getSolid(shape);
-        }
+        // store shape before refinement
+        this->rawShape = shape;
+        shape = refineShapeIfActive(shape);
         if (!isSingleSolidRuleSatisfied(shape.getShape())) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
         }
+
+        shape = getSolid(shape);
         this->Shape.setValue(shape);
-        if (failed) {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Resulting shape is invalid"));
-        }
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
@@ -267,5 +259,4 @@ static App::DocumentObjectExecReturn *validateParameters(int chamferType, double
 
     return App::DocumentObject::StdReturn;
 }
-
 

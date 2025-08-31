@@ -25,6 +25,16 @@
 #ifndef _PreComp_
 # include <atomic>
 # include <cctype>
+# include <unordered_set>
+# include <unordered_map>
+# include <utility>
+# include <deque>
+# include <memory>
+# include <algorithm>
+# include <vector>
+# include <set>
+# include <map>
+# include <string>
 # include <boost/algorithm/string/predicate.hpp>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -41,7 +51,6 @@
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransform.h>
 # include <Inventor/sensors/SoNodeSensor.h>
-# include <Inventor/SoPickedPoint.h>
 # include <QApplication>
 # include <QMenu>
 # include <QCheckBox>
@@ -62,11 +71,11 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Control.h"
+#include "Inventor/Draggers/SoTransformDragger.h"
 #include "LinkViewPy.h"
 #include "Selection.h"
-#include "SoFCCSysDragger.h"
 #include "SoFCUnifiedSelection.h"
-#include "TaskCSysDragger.h"
+#include "TaskTransform.h"
 #include "TaskElementColors.h"
 #include "View3DInventor.h"
 #include "ViewParams.h"
@@ -191,7 +200,7 @@ public:
         }
     }
 
-    LinkInfo(ViewProviderDocumentObject *vp)
+    explicit LinkInfo(ViewProviderDocumentObject *vp)
         :ref(0),pcLinked(vp)
     {
         FC_LOG("new link to " << pcLinked->getObject()->getFullName());
@@ -664,8 +673,11 @@ public:
 
     QIcon getIcon(QPixmap px) {
         static int iconSize = -1;
-        if(iconSize < 0)
-            iconSize = QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon).width();
+        if (iconSize < 0) {
+            auto sampleIcon = QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon);
+            double pixelRatio = sampleIcon.devicePixelRatio();
+            iconSize = static_cast<int>(sampleIcon.width() / pixelRatio);
+        }
 
         if(!isLinked())
             return QIcon();
@@ -697,7 +709,7 @@ namespace Gui
     {
         px->release();
     }
-}
+} // namespace Gui
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -736,7 +748,7 @@ void ViewProviderLinkObserver::extensionBeforeDelete() {
 void ViewProviderLinkObserver::extensionReattach(App::DocumentObject *) {
     if(linkInfo) {
         linkInfo->pcLinked =
-            Base::freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
+            freecad_cast<ViewProviderDocumentObject*>(getExtendedContainer());
         linkInfo->update();
     }
 }
@@ -746,7 +758,7 @@ void ViewProviderLinkObserver::extensionOnChanged(const App::Property *prop) {
 }
 
 void ViewProviderLinkObserver::extensionModeSwitchChange() {
-    auto owner = freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
+    auto owner = freecad_cast<ViewProviderDocumentObject*>(getExtendedContainer());
     if(owner && linkInfo)
         linkInfo->updateSwitch();
 }
@@ -997,7 +1009,7 @@ void LinkView::setMaterial(int index, const App::Material *material) {
             pcLinkRoot->removeColorOverride();
             return;
         }
-        App::Color c = material->diffuseColor;
+        Base::Color c = material->diffuseColor;
         c.setTransparency(material->transparency);
         pcLinkRoot->setColorOverride(c);
         for(int i=0;i<getSize();++i)
@@ -1010,14 +1022,14 @@ void LinkView::setMaterial(int index, const App::Material *material) {
             info.pcRoot->removeColorOverride();
             return;
         }
-        App::Color c = material->diffuseColor;
+        Base::Color c = material->diffuseColor;
         c.setTransparency(material->transparency);
         info.pcRoot->setColorOverride(c);
     }
 }
 
 void LinkView::setLink(App::DocumentObject *obj, const std::vector<std::string> &subs) {
-    setLinkViewObject(Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+    setLinkViewObject(freecad_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(obj)),subs);
 
 }
@@ -1525,8 +1537,9 @@ bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail
             return true;
 
         if(info.isLinked()) {
-            info.linkInfo->getDetail(false,childType,subname,det,path);
-            return true;
+            if (info.linkInfo->getDetail(false,childType,subname,det,path)) {
+                return true;
+            }
         }
     }
     if(isLinked()) {
@@ -1720,7 +1733,7 @@ QIcon ViewProviderLink::getIcon() const {
 
 QPixmap ViewProviderLink::getOverlayPixmap() const {
     auto ext = getLinkExtension();
-    int px = 12 * getMainWindow()->devicePixelRatioF();
+    constexpr int px = 12;
     if(ext && ext->getLinkedObjectProperty() && ext->_getElementCountValue())
         return BitmapFactory().pixmapFromSvg("LinkArrayOverlay", QSizeF(px,px));
     else if(hasSubElement)
@@ -1733,7 +1746,7 @@ QPixmap ViewProviderLink::getOverlayPixmap() const {
 
 void ViewProviderLink::onChanged(const App::Property* prop) {
     if(prop==&ChildViewProvider) {
-        childVp = freecad_dynamic_cast<ViewProviderDocumentObject>(ChildViewProvider.getObject().get());
+        childVp = freecad_cast<ViewProviderDocumentObject*>(ChildViewProvider.getObject().get());
         if(childVp && getObject()) {
             if(strcmp(childVp->getTypeId().getName(),getObject()->getViewProviderName())!=0
                     && !childVp->allowOverride(*getObject()))
@@ -1854,7 +1867,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
         }
     }else if(prop == ext->getLinkCopyOnChangeGroupProperty()) {
         if (auto group = ext->getLinkCopyOnChangeGroupValue()) {
-            auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+            auto vp = freecad_cast<ViewProviderDocumentObject*>(
                     Application::Instance->getViewProvider(group));
             if (vp) {
                 vp->hide();
@@ -1905,7 +1918,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     }else if(prop == ext->_getShowElementProperty()) {
         if(!ext->_getShowElementValue()) {
 
-            auto linked = freecad_dynamic_cast<ViewProviderDocumentObject>(getLinkedView(true,ext));
+            auto linked = freecad_cast<ViewProviderDocumentObject*>(getLinkedView(true,ext));
             if(linked && linked->getDocument()==getDocument())
                 linked->hide();
 
@@ -1919,9 +1932,9 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
                 bool hasMaterial = false;
                 materials.reserve(elements.size());
                 for(size_t i=0;i<elements.size();++i) {
-                    auto element = freecad_dynamic_cast<App::LinkElement>(elements[i]);
+                    auto element = freecad_cast<App::LinkElement*>(elements[i]);
                     if(!element) continue;
-                    auto vp = freecad_dynamic_cast<ViewProviderLink>(
+                    auto vp = freecad_cast<ViewProviderLink*>(
                             Application::Instance->getViewProvider(element));
                     if(!vp) continue;
                     overrideMaterial = overrideMaterial || vp->OverrideMaterial.getValue();
@@ -2006,7 +2019,7 @@ void ViewProviderLink::updateElementList(App::LinkBaseExtension *ext) {
         int i=-1;
         for(auto obj : elements) {
             ++i;
-            auto vp = freecad_dynamic_cast<ViewProviderLink>(
+            auto vp = freecad_cast<ViewProviderLink*>(
                     Application::Instance->getViewProvider(obj));
             if(!vp) continue;
             if(OverrideMaterialList.getSize()>i)
@@ -2224,7 +2237,7 @@ bool ViewProviderLink::canDropObjectEx(App::DocumentObject *obj,
     if(!hasSubName && linkView->isLinked()) {
         auto linked = getLinkedView(false,ext);
         if(linked) {
-            auto linkedVdp = freecad_dynamic_cast<ViewProviderDocumentObject>(linked);
+            auto linkedVdp = freecad_cast<ViewProviderDocumentObject*>(linked);
             if(linkedVdp) {
                 if(linkedVdp->getObject()==obj || linkedVdp->getObject()==owner)
                     return false;
@@ -2233,7 +2246,7 @@ bool ViewProviderLink::canDropObjectEx(App::DocumentObject *obj,
         }
     }
     if(obj->getDocument() != getObject()->getDocument() &&
-       !freecad_dynamic_cast<App::PropertyXLink>(ext->getLinkedObjectProperty()))
+       !freecad_cast<App::PropertyXLink*>(ext->getLinkedObjectProperty()))
         return false;
 
     return true;
@@ -2342,7 +2355,7 @@ bool ViewProviderLink::getDetailPath(
         return false;
     }
     std::string _subname;
-    if(subname && subname[0]) {
+    if(!Base::Tools::isNullOrEmpty(subname)) {
         if (auto linked = ext->getLinkedObjectValue()) {
             if (const char *dot = strchr(subname,'.')) {
                 if(subname[0]=='$') {
@@ -2375,8 +2388,19 @@ bool ViewProviderLink::getDetailPath(
 
 bool ViewProviderLink::onDelete(const std::vector<std::string> &) {
     auto element = getObject<App::LinkElement>();
-    if (element && !element->canDelete())
+    if (element && !element->canDelete()) {
         return false;
+    }
+
+    auto link = getObject<App::Link>();
+    if (link && link->ElementCount.getValue() != 0) {
+        auto doc = link->getDocument();
+        auto elements = link->ElementList.getValues();
+        for (auto element : elements) {
+            doc->removeObject(element->getNameInDocument());
+        }
+    }
+    
     auto ext = getLinkExtension();
     if (ext->isLinkMutated()) {
         auto linked = ext->getLinkedObjectValue();
@@ -2442,9 +2466,9 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
         if (!src) src = ext->getLinkedObjectValue();
         if (src && !ext->getOnChangeCopyObjects(nullptr, src).empty()) {
             QAction *act = menu->addAction(
-                    QObject::tr("Setup configurable object"));
+                    QObject::tr("Setup Configurable Object"));
             act->setToolTip(QObject::tr(
-                        "Select which object to copy or exclude when configuration changes. "
+                        "Selects which object to copy or exclude when configuration changes. "
                         "All external linked objects are excluded by default."));
             act->setData(-1);
             if (!func) func = new Gui::ActionFunction(menu);
@@ -2459,10 +2483,9 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                         return;
                     DlgObjectSelection dlg({src}, excludes, getMainWindow());
                     dlg.setMessage(QObject::tr(
-                                "Please select which objects to copy when the configuration is changed"));
+                                "Select which objects to copy when the configuration is changed"));
                     auto box = new QCheckBox(QObject::tr("Apply to all"), &dlg);
-                    box->setToolTip(QObject::tr("Apply the setting to all links. Or, uncheck this\n"
-                                                "option to apply only to this link."));
+                    box->setToolTip(QObject::tr("Applies the setting to all links"));
                     box->setChecked(App::LinkParams::getCopyOnChangeApplyToAll());
                     dlg.addCheckBox(box);
                     if(dlg.exec()!=QDialog::Accepted)
@@ -2500,13 +2523,13 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                     }
                     Command::updateActive();
                 } catch (Base::Exception &e) {
-                    e.ReportException();
+                    e.reportException();
                 }
             });
         }
 
         if (ext->getLinkCopyOnChangeValue() == 0) {
-            auto submenu = menu->addMenu(QObject::tr("Copy on change"));
+            auto submenu = menu->addMenu(QObject::tr("Copy on Change"));
             auto act = submenu->addAction(QObject::tr("Enable"));
             act->setToolTip(QObject::tr(
                         "Enable auto copy of linked object when its configuration is changed"));
@@ -2518,12 +2541,12 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                     ext->getLinkCopyOnChangeProperty()->setValue(1);
                     Command::updateActive();
                 } catch (Base::Exception &e) {
-                    e.ReportException();
+                    e.reportException();
                 }
             });
             act = submenu->addAction(QObject::tr("Tracking"));
             act->setToolTip(QObject::tr(
-                        "Copy the linked object when its configuration is changed.\n"
+                        "Copies the linked object when its configuration is changed.\n"
                         "Also auto redo the copy if the original linked object is changed.\n"));
             act->setData(-1);
             func->trigger(act, [ext](){
@@ -2532,7 +2555,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                     ext->getLinkCopyOnChangeProperty()->setValue(3);
                     Command::updateActive();
                 } catch (Base::Exception &e) {
-                    e.ReportException();
+                    e.reportException();
                 }
             });
         }
@@ -2541,7 +2564,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     if (ext->getLinkCopyOnChangeValue() != 2
             && ext->getLinkCopyOnChangeValue() != 0) {
         QAction *act = menu->addAction(
-                QObject::tr("Disable copy on change"));
+                QObject::tr("Disable Copy on Change"));
         act->setData(-1);
         if (!func) func = new Gui::ActionFunction(menu);
         func->trigger(act, [ext](){
@@ -2550,16 +2573,16 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                 ext->getLinkCopyOnChangeProperty()->setValue((long)0);
                 Command::updateActive();
             } catch (Base::Exception &e) {
-                e.ReportException();
+                e.reportException();
             }
         });
     }
 
     if (ext->isLinkMutated()) {
-        QAction* act = menu->addAction(QObject::tr("Refresh configurable object"));
+        QAction* act = menu->addAction(QObject::tr("Refresh Configurable Object"));
         act->setToolTip(QObject::tr(
-                    "Synchronize the original configurable source object by\n"
-                    "creating a new deep copy. Note that any changes made to\n"
+                    "Synchronizes the original configurable source object by\n"
+                    "creating a new deep copy. Any changes made to\n"
                     "the current copy will be lost.\n"));
         act->setData(-1);
         if (!func) func = new Gui::ActionFunction(menu);
@@ -2569,7 +2592,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                 ext->syncCopyOnChange();
                 Command::updateActive();
             } catch (Base::Exception &e) {
-                e.ReportException();
+                e.reportException();
             }
         });
     }
@@ -2579,7 +2602,7 @@ void ViewProviderLink::_setupContextMenu(
         App::LinkBaseExtension *ext, QMenu* menu, QObject* receiver, const char* member)
 {
     if(linkEdit(ext)) {
-        if (auto linkvp = Base::freecad_dynamic_cast<ViewProviderLink>(linkView->getLinkedView()))
+        if (auto linkvp = freecad_cast<ViewProviderLink*>(linkView->getLinkedView()))
             linkvp->_setupContextMenu(ext, menu, receiver, member);
         else
             linkView->getLinkedView()->setupContextMenu(menu,receiver,member);
@@ -2589,17 +2612,17 @@ void ViewProviderLink::_setupContextMenu(
             && ext->_getShowElementProperty()
             && ext->_getElementCountValue() > 1)
     {
-        auto action = menu->addAction(QObject::tr("Toggle array elements"), [ext] {
+        auto action = menu->addAction(QObject::tr("Toggle Array Elements"), [ext] {
             try {
                 App::AutoTransaction guard(QT_TRANSLATE_NOOP("Command", "Toggle array elements"));
                 ext->getShowElementProperty()->setValue(!ext->getShowElementValue());
                 Command::updateActive();
             } catch (Base::Exception &e) {
-                e.ReportException();
+                e.reportException();
             }
         });
         action->setToolTip(QObject::tr(
-                    "Change whether show each link array element as individual objects"));
+                    "Changes whether to show each link array element as individual objects"));
     }
 
     if((ext->getPlacementProperty() && !ext->getPlacementProperty()->isReadOnly())
@@ -2616,7 +2639,7 @@ void ViewProviderLink::_setupContextMenu(
         if (!found) {
             QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Std_TransformManip.svg"));
             QAction* act = menu->addAction(iconObject, QObject::tr("Transform"), receiver, member);
-            act->setToolTip(QObject::tr("Transform at the origin of the placement"));
+            act->setToolTip(QObject::tr("Transforms the object at the origin of the placement"));
             act->setData(QVariant((int)ViewProvider::Transform));
         }
     }
@@ -2626,13 +2649,13 @@ void ViewProviderLink::_setupContextMenu(
         const auto actions = menu->actions();
         for(auto action : actions) {
             if(action->data().toInt() == ViewProvider::Color) {
-                action->setText(QObject::tr("Override colors..."));
+                action->setText(QObject::tr("Override Colors"));
                 found = true;
                 break;
             }
         }
         if(!found) {
-            QAction* act = menu->addAction(QObject::tr("Override colors..."), receiver, member);
+            QAction* act = menu->addAction(QObject::tr("Override Colors"), receiver, member);
             act->setData(QVariant((int)ViewProvider::Color));
         }
     }
@@ -2671,7 +2694,7 @@ bool ViewProviderLink::initDraggingPlacement() {
         }
     } catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
         return false;
     }
 
@@ -2722,7 +2745,7 @@ bool ViewProviderLink::initDraggingPlacement() {
     {
         App::PropertyPlacement *propPla = nullptr;
         if(ext->getLinkTransformValue() && ext->getLinkedObjectValue()) {
-            propPla = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+            propPla = freecad_cast<App::PropertyPlacement*>(
                     ext->getLinkedObjectValue()->getPropertyByName("Placement"));
         }
         if(propPla) {
@@ -2772,11 +2795,13 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
         }
 
         if (auto result = inherited::startEditing(mode)) {
-            csysDragger->addStartCallback(dragStartCallback, this);
-            csysDragger->addFinishCallback(dragFinishCallback, this);
-            csysDragger->addMotionCallback(dragMotionCallback, this);
+            if (transformDragger.get()) {
+                transformDragger->addStartCallback(dragStartCallback, this);
+                transformDragger->addFinishCallback(dragFinishCallback, this);
+                transformDragger->addMotionCallback(dragMotionCallback, this);
 
-            setDraggerPlacement(dragCtx->initialPlacement);
+                setDraggerPlacement(dragCtx->initialPlacement);
+            }
 
             return result;
         }
@@ -2807,7 +2832,7 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
         FC_ERR("no linked object");
         return nullptr;
     }
-    auto vpd = freecad_dynamic_cast<ViewProviderDocumentObject>(
+    auto vpd = freecad_cast<ViewProviderDocumentObject*>(
                 Application::Instance->getViewProvider(linked));
     if(!vpd) {
         FC_ERR("no linked viewprovider");
@@ -2858,7 +2883,7 @@ void ViewProviderLink::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 }
 
 bool ViewProviderLink::callDraggerProxy(const char* fname) {
-    if (!csysDragger) {
+    if (!transformDragger) {
         return false;
     }
 
@@ -2876,7 +2901,7 @@ bool ViewProviderLink::callDraggerProxy(const char* fname) {
         }
     } catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
         return true;
     }
 
@@ -2915,10 +2940,10 @@ void ViewProviderLink::updateLinks(ViewProvider *vp) {
             ext->linkInfo->update();
     }
     catch (const Base::TypeError &e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (const Base::ValueError &e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -2933,7 +2958,7 @@ PyObject *ViewProviderLink::getPyLinkView() {
     return linkView->getPyObject();
 }
 
-std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char *subname) const {
+std::map<std::string, Base::Color> ViewProviderLink::getElementColors(const char *subname) const {
     bool isPrefix = true;
     if(!subname)
         subname = "";
@@ -2941,7 +2966,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
         auto len = strlen(subname);
         isPrefix = !len || subname[len-1]=='.';
     }
-    std::map<std::string, App::Color> colors;
+    std::map<std::string, Base::Color> colors;
     auto ext = getLinkExtension();
     if(!ext || ! ext->getColoredElementsProperty())
         return colors;
@@ -2951,7 +2976,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
     std::string wildcard(subname);
     if(wildcard == "Face" || wildcard == "Face*" || wildcard.empty()) {
         if(wildcard.size()==4 || OverrideMaterial.getValue()) {
-            App::Color c = ShapeMaterial.getValue().diffuseColor;
+            Base::Color c = ShapeMaterial.getValue().diffuseColor;
             c.setTransparency(ShapeMaterial.getValue().transparency);
             colors["Face"] = c;
             if(wildcard.size()==4)
@@ -2997,7 +3022,7 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
             auto link = vp->getObject()->getLinkedObject(false);
             if(!link || link==vp->getObject())
                 break;
-            auto next = freecad_dynamic_cast<ViewProviderLink>(
+            auto next = freecad_cast<ViewProviderLink*>(
                     Application::Instance->getViewProvider(link));
             if(!next)
                 break;
@@ -3072,9 +3097,9 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
     bool found = true;
     if(colors.empty()) {
         found = false;
-        colors.emplace(subname,App::Color());
+        colors.emplace(subname,Base::Color());
     }
-    std::map<std::string, App::Color> ret;
+    std::map<std::string, Base::Color> ret;
     for(const auto &v : colors) {
         const char *pos = nullptr;
         auto sobj = getObject()->resolve(v.first.c_str(),nullptr,nullptr,&pos);
@@ -3098,18 +3123,18 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
     return ret;
 }
 
-void ViewProviderLink::setElementColors(const std::map<std::string, App::Color> &colorMap) {
+void ViewProviderLink::setElementColors(const std::map<std::string, Base::Color> &colorMap) {
     auto ext = getLinkExtension();
     if(!ext || ! ext->getColoredElementsProperty())
         return;
 
     // For checking and collapsing array element color
-    std::map<std::string,std::map<int,App::Color> > subMap;
+    std::map<std::string,std::map<int,Base::Color> > subMap;
     int element_count = ext->getElementCountValue();
 
     std::vector<std::string> subs;
-    std::vector<App::Color> colors;
-    App::Color faceColor;
+    std::vector<Base::Color> colors;
+    Base::Color faceColor;
     bool hasFaceColor = false;
     for(const auto &v : colorMap) {
         if(!hasFaceColor && v.first == "Face") {
@@ -3133,7 +3158,7 @@ void ViewProviderLink::setElementColors(const std::map<std::string, App::Color> 
     }
     for(auto &v : subMap) {
         if(element_count == (int)v.second.size()) {
-            App::Color firstColor = v.second.begin()->second;
+            Base::Color firstColor = v.second.begin()->second;
             subs.push_back(v.first);
             colors.push_back(firstColor);
             for(auto it=v.second.begin();it!=v.second.end();) {
@@ -3179,7 +3204,7 @@ void ViewProviderLink::applyColors() {
     // reset color and visibility first
     action.apply(linkView->getLinkRoot());
 
-    std::map<std::string, std::map<std::string,App::Color> > colorMap;
+    std::map<std::string, std::map<std::string,Base::Color> > colorMap;
     std::set<std::string> hideList;
     auto colors = getElementColors();
     colors.erase("Face");
@@ -3286,7 +3311,16 @@ void ViewProviderLink::getPropertyMap(std::map<std::string,App::Property*> &Map)
     }
 }
 
-void ViewProviderLink::getPropertyList(std::vector<App::Property*> &List) const {
+void ViewProviderLink::visitProperties(const std::function<void(App::Property*)>& visitor) const
+{
+    inherited::visitProperties(visitor);
+    if (childVp != nullptr) {
+        childVp->visitProperties(visitor);
+    }
+}
+
+void ViewProviderLink::getPropertyList(std::vector<App::Property*>& List) const
+{
     std::map<std::string,App::Property*> Map;
     getPropertyMap(Map);
     List.reserve(List.size()+Map.size());
@@ -3311,7 +3345,7 @@ ViewProviderDocumentObject *ViewProviderLink::getLinkedViewProvider(
         linked = ext->getTrueLinkedObject(recursive);
     if(!linked)
         return self;
-    auto res = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+    auto res = freecad_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(linked));
     if(res)
         return res;

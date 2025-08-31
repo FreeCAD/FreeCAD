@@ -93,11 +93,11 @@ const char* MayaGestureNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::SELECTION:
         return QT_TR_NOOP("Tap OR click left mouse button.");
     case NavigationStyle::PANNING:
-        return QT_TR_NOOP("Drag screen with two fingers OR press ALT + middle mouse button.");
+        return QT_TR_NOOP("Drag screen with two fingers OR press Alt + middle mouse button.");
     case NavigationStyle::DRAGGING:
-        return QT_TR_NOOP("Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.");
+        return QT_TR_NOOP("Drag screen with one finger OR press Alr + left mouse button. In Sketcher and other edit modes, hold Alt in addition.");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.");
+        return QT_TR_NOOP("Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR press Alt + right mouse button OR PgUp/PgDown on keyboard.");
     default:
         return "No description";
     }
@@ -111,6 +111,19 @@ const char* MayaGestureNavigationStyle::mouseButtons(ViewerMode mode)
 bool MayaGestureNavigationStyle::testMoveThreshold(const SbVec2s currentPos) const {
     SbVec2s movedBy = currentPos - this->mousedownPos;
     return SbVec2f(movedBy).length() >= this->mouseMoveThreshold;
+}
+
+void MayaGestureNavigationStyle::zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos)
+{
+    const float dx = thispos[0] - prevpos[0];
+    const float dy = thispos[1] - prevpos[1];
+
+    // Compute zoom based on diagonal difference.
+    float value = (dx - dy) * 10.0f;
+
+    if (this->invertZoom)
+        value = -value;
+    zoom(viewer->getSoRenderManager()->getCamera(), value);
 }
 
 SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
@@ -279,11 +292,14 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
         switch (event->getKey()) {
         case SoKeyboardEvent::H:
-            processed = true;
-            if (!press) {
-                setupPanningPlane(viewer->getCamera());
-                lookAtPoint(event->getPosition());
-            }
+                // Disable H key in editing mode because of conflict with sketcher
+                if (!viewer->isEditing()) {
+                    processed = true;
+                    if (!press) {
+                        setupPanningPlane(viewer->getCamera());
+                        lookAtPoint(event->getPosition());
+                    }
+                }
             break;
         default:
             break;
@@ -514,7 +530,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                         processed = true;
                     } else { //all buttons are released
                         //end of dragging/panning/whatever
-                        setViewingMode(NavigationStyle::SELECTION);
+                        setViewingMode(NavigationStyle::IDLE);
                         processed = true;
                     } //end of else (some buttons down)
                 break;

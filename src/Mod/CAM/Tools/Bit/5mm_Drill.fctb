@@ -2,6 +2,7 @@
   "version": 2,
   "name": "5mm Drill",
   "shape": "drill.fcstd",
+  "shape-type": "Drill",
   "parameter": {
     "Diameter": "5.0000 mm",
     "Length": "50.0000 mm",

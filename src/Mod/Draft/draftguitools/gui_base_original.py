@@ -33,7 +33,6 @@ of the DraftToolBar, the Snapper, and the working plane.
 
 ## \addtogroup draftguitools
 # @{
-
 from PySide import QtCore
 
 import FreeCAD as App
@@ -136,6 +135,15 @@ class DraftTool:
         _toolmsg("{}".format(16*"-"))
         _toolmsg("GuiCommand: {}".format(self.featureName))
 
+        # update hints after the tool is fully initialized
+        QtCore.QTimer.singleShot(0, self.update_hints)
+
+    def update_hints(self):
+        Gui.HintManager.show(*self.get_hints())
+
+    def get_hints(self):
+        return []
+
     def end_callbacks(self, call):
         try:
             self.view.removeEventCallback("SoEvent", call)
@@ -184,6 +192,8 @@ class DraftTool:
                 todo.ToDo.delayCommit(self.commitList)
         self.commitList = []
 
+        QtCore.QTimer.singleShot(0, Gui.HintManager.hide)
+
     def commit(self, name, func):
         """Store actions in the commit list to be run later.
 
@@ -212,8 +222,8 @@ class DraftTool:
             * the current working plane rotation quaternion as a string
             * the support object if available as a string
             * the list of nodes inside the `node` attribute as a string
-            * the string `'True'` or `'False'` depending on the fill mode
-              of the current tool
+            * the string `'True'` or `'False'` depending on the make face
+              setting
         """
         # Current plane rotation as a string
         qr = self.wp.get_placement().Rotation.Q
@@ -234,13 +244,13 @@ class DraftTool:
             points += DraftVecUtils.toString(n)
         points += ']'
 
-        # Fill mode
+        # Make face
         if self.ui:
-            fil = str(bool(self.ui.fillmode))
+            make_face = str(self.ui.makeFaceMode)
         else:
-            fil = "True"
+            make_face = "True"
 
-        return qr, sup, points, fil
+        return qr, sup, points, make_face
 
 
 class Creator(DraftTool):

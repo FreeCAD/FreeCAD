@@ -107,7 +107,7 @@ protected Q_SLOTS:
 
 private:
     double requiredRotation(double inputAngle);
-    std::string makeSectionLabel(QString symbol);
+    std::string makeSectionLabel(const QString& symbol);
 
     void createComplexSection();
     void updateComplexSection();
@@ -161,8 +161,8 @@ public:
                           std::vector<App::DocumentObject*> xShapes,
                           App::DocumentObject* profileObject,
                           std::vector<std::string> profileSubs);
-    TaskDlgComplexSection(TechDraw::DrawComplexSection* page);
-    ~TaskDlgComplexSection() override;
+    explicit TaskDlgComplexSection(TechDraw::DrawComplexSection* page) ;
+    ~TaskDlgComplexSection() override = default;
 
 public:
     /// is called the TaskView when the dialog is opened

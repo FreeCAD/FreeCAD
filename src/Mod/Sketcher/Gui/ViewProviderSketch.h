@@ -26,7 +26,7 @@
 #include <Inventor/SoRenderManager.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <QCoreApplication>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <memory>
 
 #include <Base/Parameter.h>
@@ -43,6 +43,10 @@
 #include "PropertyVisualLayerList.h"
 
 #include "ShortcutListener.h"
+#include "Utils.h"
+
+#include <Gui/Inventor/SoToggleSwitch.h>
+#include <Mod/Part/Gui/ViewProviderPreviewExtension.h>
 
 
 class TopoDS_Shape;
@@ -95,6 +99,20 @@ class DrawSketchHandler;
 
 using GeoList = Sketcher::GeoList;
 using GeoListFacade = Sketcher::GeoListFacade;
+
+class SketcherGuiExport SoSketchFaces: public PartGui::SoFCShape
+{
+    using inherited = SoFCShape;
+    SO_NODE_HEADER(SoSketchFaces);
+
+public:
+    SoSketchFaces();
+
+    static void initClass();
+
+    SoSFColor color;
+    SoSFFloat transparency;
+};
 
 /** @brief The Sketch ViewProvider
  *
@@ -189,6 +207,8 @@ private:
                                  float r,
                                  float g,
                                  float b);
+
+        void updateShapeAppearanceProperty(const std::string& string, App::Property* property);
 
         void updateEscapeKeyBehaviour(const std::string& string, App::Property* property);
 
@@ -548,10 +568,8 @@ public:
     };
 
     /// is called by GuiCommands to set the drawing mode
-    void setSketchMode(SketchMode mode)
-    {
-        Mode = mode;
-    }
+    void setSketchMode(SketchMode mode);
+
     /// get the sketch mode
     SketchMode getSketchMode() const
     {
@@ -748,6 +766,12 @@ protected:
     void startRestoring() override;
     void finishRestoring() override;
 
+    bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override;
+    bool getDetailPath(const char* subname,
+                       SoFullPath* pPath,
+                       bool append,
+                       SoDetail*& det) const override;
+
 private:
     /// function to handle OCCT BSpline weight calculation singularities and representation
     void scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(
@@ -767,7 +791,7 @@ private:
     /** @name preselection functions */
     //@{
     /// helper to detect preselection
-    bool detectAndShowPreselection(SoPickedPoint* Point, const SbVec2s& cursorPos);
+    bool detectAndShowPreselection(SoPickedPoint* Point);
     int getPreselectPoint() const;
     int getPreselectCurve() const;
     int getPreselectCross() const;
@@ -810,8 +834,11 @@ private:
     /** @name miscelanea utilities */
     //@{
     /// moves a selected constraint
-    void moveConstraint(int constNum, const Base::Vector2d& toPos);
-    void moveConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
+    void moveConstraint(int constNum, const Base::Vector2d& toPos, OffsetMode offset = NoOffset);
+    void moveConstraint(Sketcher::Constraint*,
+                        int constNum,
+                        const Base::Vector2d& toPos,
+                        OffsetMode offset = NoOffset);
     void moveAngleConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
 
     /// returns whether the sketch is in edit mode.
@@ -825,6 +852,8 @@ private:
     //@}
 
     void slotToolWidgetChanged(QWidget* newwidget);
+
+    void updateColorPropertiesVisibility();
 
     /** @name Attorney functions*/
     //@{
@@ -856,6 +885,8 @@ private:
     QFont getApplicationFont() const;
 
     int defaultFontSizePixels() const;
+
+    qreal getDevicePixelRatio() const;
 
     int getApplicationLogicalDPIX() const;
 
@@ -939,6 +970,9 @@ private:
     std::string editDocName;
     std::string editObjName;
     std::string editSubName;
+
+    Gui::CoinPtr<SoSketchFaces> pcSketchFaces;
+    Gui::CoinPtr<SoToggleSwitch> pcSketchFacesToggle;
 
     ShortcutListener* listener;
 

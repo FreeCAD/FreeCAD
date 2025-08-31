@@ -1,11 +1,7 @@
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${COIN3D_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
 )
-link_directories(${OCC_LIBRARY_DIR})
 
 set(AssemblyGui_LIBS
     Assembly
@@ -27,6 +23,7 @@ qt_add_resources(AssemblyResource_SRCS Resources/Assembly.qrc ${Assembly_TR_QRC}
 SOURCE_GROUP("Resources" FILES ${AssemblyResource_SRCS})
 
 generate_from_xml(ViewProviderAssemblyPy)
+generate_from_py_(ViewProviderAssemblyPy)
 
 set(AssemblyGui_UIC_SRCS
     TaskAssemblyCreateBom.ui
@@ -78,7 +75,7 @@ SET(AssemblyGui_SRCS
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
     GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${AssemblyGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(PathGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+    ADD_MSVC_PRECOMPILED_HEADER(AssemblyGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif(FREECAD_USE_PCH)
 
 SET(AssemblyGuiIcon_SVG

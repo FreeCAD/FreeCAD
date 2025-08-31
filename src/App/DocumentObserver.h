@@ -26,7 +26,7 @@
 
 #include <Base/BaseClass.h>
 #include <Base/Bitmask.h>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <memory>
 #include <set>
 #include <FCGlobal.h>
@@ -148,12 +148,12 @@ public:
     template<typename T>
     inline T* getObjectAs() const
     {
-        return Base::freecad_dynamic_cast<T>(getObject());
+        return freecad_cast<T*>(getObject());
     }
     template<typename T>
     inline T* getPropertyAs() const
     {
-        return Base::freecad_dynamic_cast<T>(getProperty());
+        return freecad_cast<T*>(getProperty());
     }
 
 private:
@@ -409,7 +409,7 @@ public:
     template<typename T>
     inline T* get() const noexcept
     {
-        return Base::freecad_dynamic_cast<T>(_get());
+        return freecad_cast<T*>(_get());
     }
 
 private:

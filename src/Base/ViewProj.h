@@ -24,12 +24,15 @@
 #ifndef BASE_VIEWPROJ_H
 #define BASE_VIEWPROJ_H
 
-#include "Vector3D.h"
 #include "Matrix.h"
 
 
 namespace Base
 {
+template<typename T>
+class Vector3;
+using Vector3d = Vector3<double>;
+
 
 /**
  * Abstract base class for all project methods.

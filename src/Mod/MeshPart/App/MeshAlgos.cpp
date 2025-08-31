@@ -61,7 +61,7 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
     Base::Builder3D builder;
     std::vector<Base::Vector3f> PointNormals = Mesh->CalcVertexNormals();
     std::vector<Base::Vector3f> FaceNormals;
-    std::set<MeshCore::FacetIndex> fliped;
+    std::set<MeshCore::FacetIndex> flipped;
 
     MeshFacetIterator it(*Mesh);
     for (it.Init(); it.More(); it.Next()) {
@@ -98,18 +98,18 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
                                       drawStyle,
                                       Base::ColorRGB {1.0F, 0.0F, 0.0F}};
                 builder.addNode(item);
-                fliped.insert(it.Position());
+                flipped.insert(it.Position());
             }
         }
 
-        if (fliped.empty()) {
+        if (flipped.empty()) {
             break;
         }
 
-        for (MeshCore::FacetIndex It : fliped) {
+        for (MeshCore::FacetIndex It : flipped) {
             alg.CollapseFacet(It);
         }
-        fliped.clear();
+        flipped.clear();
     }
 
     alg.Cleanup();

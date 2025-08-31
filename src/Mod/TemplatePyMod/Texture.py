@@ -6,7 +6,7 @@ from pivy import coin
 class Texture:
 	def __init__(self, obj, source):
 		"Add some custom properties to our box feature"
-		obj.addProperty("App::PropertyLink","Source","Texture", "Link to the shape").Source = source
+                obj.addProperty("App::PropertyLink","Source","Texture", "Link to the shape", locked=True).Source = source
 		obj.Proxy = self
 
 	def onChanged(self, fp, prop):
@@ -17,7 +17,7 @@ class Texture:
 
 class ViewProviderTexture:
 	def __init__(self, obj):
-		obj.addProperty("App::PropertyPath","File","Texture", "File name to the texture resource")
+                obj.addProperty("App::PropertyPath","File","Texture", "File name to the texture resource", locked=True)
 		self.obj = obj
 		obj.Proxy = self
 

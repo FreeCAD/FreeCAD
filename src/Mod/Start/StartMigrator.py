@@ -26,11 +26,19 @@ import FreeCAD
 
 def _remove_from_list(prefs, pref_name):
     # Remove Start and Web from a preference that consists of a comma-separated list of workbenches
-    mods = prefs.GetString(pref_name, "").split(",")
+    # and ensure that the list was not empty
+
+    is_empty_string = "<IS_EMPTY>"
+    mods = prefs.GetString(pref_name, is_empty_string).split(",")
+
+    if is_empty_string in mods:
+        return
+
     if "StartWorkbench" in mods:
         mods.remove("StartWorkbench")
     if "WebWorkbench" in mods:
         mods.remove("WebWorkbench")
+
     prefs.SetString(pref_name, ",".join(mods))
 
 
@@ -104,14 +112,13 @@ class StartMigrator2024:
         show_on_startup = self.start_prefs.GetBool("ShowOnStartup", True)
         show_examples = self.start_prefs.GetBool("ShowExamples", True)
         close_start = self.start_prefs.GetBool("closeStart", False)
-        custom_folder = self.start_prefs.GetString(
-            "ShowCustomFolder", ""
-        )  # Note: allow multiple locations separated by ";;"
+        custom_folder = self.start_prefs.GetString("ShowCustomFolder", "")
         self.start_prefs.Clear()
         self.start_prefs.SetBool("ShowOnStartup", show_on_startup)
         self.start_prefs.SetBool("ShowExamples", show_examples)
         self.start_prefs.SetBool("CloseStart", close_start)
-        self.start_prefs.SetString("ShowCustomFolder", custom_folder)
+        # ShowCustomFolder renamed to CustomFolder in 1.1
+        self.start_prefs.SetString("CustomFolder", custom_folder)
 
     # Indicate that this migration has been run
     def _mark_complete(self):

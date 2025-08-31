@@ -23,10 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# ifdef _MSC_VER
-#  define _USE_MATH_DEFINES
-#  include <cmath>
-# endif
 # include <QAction>
 # include <QMenu>
 #endif
@@ -102,7 +98,7 @@ void ViewProviderAttachExtension::extensionSetupContextMenu(QMenu* menu, QObject
     if (attach) {
         // toggle command to display components
         Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-        QAction* act = menu->addAction(QObject::tr("Attachment editor"));
+        QAction* act = menu->addAction(QObject::tr("Attachment Editor"));
         if (Gui::Control().activeDialog())
             act->setDisabled(true);
         func->trigger(act, [this](){

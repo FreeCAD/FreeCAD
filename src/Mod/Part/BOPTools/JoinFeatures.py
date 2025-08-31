@@ -77,7 +77,7 @@ def cmdCreateJoinFeature(name, mode):
         error_text1 = translate("Part_JoinFeatures", "Computing the result failed with an error:")
         error_text2 = translate("Part_JoinFeatures", "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.")
         mb.setText(error_text1 + "\n\n" + str(err) + "\n\n" + error_text2)
-        mb.setWindowTitle(translate("Part_JoinFeatures","Bad selection", None))
+        mb.setWindowTitle(translate("Part_JoinFeatures","Bad Selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
         btnOK = mb.addButton(translate("Part_JoinFeatures","Continue",None),
                              QtGui.QMessageBox.ButtonRole.ActionRole)
@@ -114,13 +114,13 @@ class FeatureConnect:
     """The PartJoinFeature object."""
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLinkList","Objects","Connect","Object to be connected.")
+        obj.addProperty("App::PropertyLinkList","Objects","Connect","Object to be connected.", locked=True)
         obj.addProperty("App::PropertyBool","Refine","Connect",
-                        "True = refine resulting shape. False = output as is.")
+                        "True = refine resulting shape. False = output as is.", locked=True)
         obj.Refine = getParamRefine()
         obj.addProperty("App::PropertyLength","Tolerance","Connect",
                         "Tolerance when intersecting (fuzzy value). "
-                        "In addition to tolerances of the shapes.")
+                        "In addition to tolerances of the shapes.", locked=True)
 
         obj.Proxy = self
         self.Type = "FeatureConnect"
@@ -183,10 +183,10 @@ class CommandConnect:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_JoinConnect.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinConnect","Connect objects"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinConnect","Connect Shapes"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinConnect",
-                                                    "Fuses objects, taking care to preserve voids.")}
+                                                    "Fuses shapes, taking care to preserve voids")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1:
@@ -196,7 +196,7 @@ class CommandConnect:
             mb.setIcon(mb.Icon.Warning)
             mb.setText(translate("Part_JoinFeatures",
                                   "Select at least two objects, or one or more compounds", None))
-            mb.setWindowTitle(translate("Part_JoinFeatures","Bad selection", None))
+            mb.setWindowTitle(translate("Part_JoinFeatures","Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):
@@ -224,14 +224,14 @@ class FeatureEmbed:
     """The Part Embed object."""
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Embed","Object to embed into.")
-        obj.addProperty("App::PropertyLink","Tool","Embed","Object to be embedded.")
+        obj.addProperty("App::PropertyLink","Base","Embed","Object to embed into.", locked=True)
+        obj.addProperty("App::PropertyLink","Tool","Embed","Object to be embedded.", locked=True)
         obj.addProperty("App::PropertyBool","Refine","Embed",
-                        "True = refine resulting shape. False = output as is.")
+                        "True = refine resulting shape. False = output as is.", locked=True)
         obj.Refine = getParamRefine()
         obj.addProperty("App::PropertyLength","Tolerance","Embed",
                         "Tolerance when intersecting (fuzzy value). "
-                        "In addition to tolerances of the shapes.")
+                        "In addition to tolerances of the shapes.", locked=True)
 
         obj.Proxy = self
         self.Type = "FeatureEmbed"
@@ -279,10 +279,10 @@ class CommandEmbed:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_JoinEmbed.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinEmbed","Embed object"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinEmbed","Embed Shapes"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinEmbed",
-                                                    "Fuses one object into another, taking care to preserve voids.")}
+                                                    "Fuses one shape into another, taking care to preserve voids")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) == 2:
@@ -292,7 +292,7 @@ class CommandEmbed:
             mb.setIcon(mb.Icon.Warning)
             mb.setText(translate("Part_JoinFeatures",
                                  "Select base object, then the object to embed, and then invoke this tool.", None))
-            mb.setWindowTitle(translate("Part_JoinFeatures","Bad selection", None))
+            mb.setWindowTitle(translate("Part_JoinFeatures","Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):
@@ -319,13 +319,13 @@ class FeatureCutout:
     """The Part Cutout object."""
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Cutout","Object to be cut.")
-        obj.addProperty("App::PropertyLink","Tool","Cutout","Object to make cutout for.")
+        obj.addProperty("App::PropertyLink","Base","Cutout","Object to be cut.", locked=True)
+        obj.addProperty("App::PropertyLink","Tool","Cutout","Object to make cutout for.", locked=True)
         obj.addProperty("App::PropertyBool","Refine","Cutout",
-                        "True = refine resulting shape. False = output as is.")
+                        "True = refine resulting shape. False = output as is.", locked=True)
         obj.Refine = getParamRefine()
         obj.addProperty("App::PropertyLength","Tolerance","Cutout",
-                        "Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.")
+                        "Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.", locked=True)
 
         obj.Proxy = self
         self.Type = "FeatureCutout"
@@ -373,10 +373,10 @@ class CommandCutout:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_JoinCutout.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinCutout","Cutout for object"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinCutout","Cutout Shape"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinCutout",
-                                                    "Makes a cutout in one object to fit another object.")}
+                                                    "Creates a cutout in the selected shape to fit another shape")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) == 2:
@@ -386,7 +386,7 @@ class CommandCutout:
             mb.setIcon(mb.Icon.Warning)
             mb.setText(translate("Part_JoinFeatures",
                                   "Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.", None))
-            mb.setWindowTitle(translate("Part_JoinFeatures","Bad selection", None))
+            mb.setWindowTitle(translate("Part_JoinFeatures","Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):

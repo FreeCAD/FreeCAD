@@ -469,11 +469,32 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyBool",
-                name="AutoZRefine",
+                type="App::PropertyEnumeration",
+                name="ZRefine",
                 group="Mesh Parameters",
-                doc="Automatic Z refine",
-                value=False,
+                doc="Z-refinement for extruded shapes",
+                value=["No", "Regular", "Custom"],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyVector",
+                name="ZRefineDirection",
+                group="Mesh Parameters",
+                doc="Z-refinement direction",
+                value=Base.Vector(0, 0, 1),
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyFloatList",
+                name="ZRefineSize",
+                group="Mesh Parameters",
+                doc="Z-refinement size given as a fraction of the shape size.\n"
+                + "For a regular partition only one value is needed",
+                value=[
+                    0.1,
+                ],
             )
         )
         prop.append(
@@ -492,6 +513,15 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
                 group="Mesh Parameters",
                 doc="Heal shape before meshing",
                 value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="Glue",
+                group="Mesh Parameters",
+                doc="Glue shapes to get a conformal mesh",
+                value=True,
             )
         )
         prop.append(

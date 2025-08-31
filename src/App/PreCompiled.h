@@ -50,7 +50,6 @@
 #include <csignal>
 #include <cstdio>
 #include <ctime>
-#include <cfloat>
 
 #ifdef FC_OS_WIN32
 #include <crtdbg.h>
@@ -71,9 +70,13 @@
 // STL
 #include <bitset>
 #include <chrono>
+#if defined(FC_OS_WIN32)
+#include <codecvt>
+#endif
 #include <exception>
 #include <functional>
 #include <iterator>
+#include <limits>
 #include <list>
 #include <map>
 #include <memory>
@@ -89,7 +92,7 @@
 
 // Boost
 #include <boost_graph_adjacency_list.hpp>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <boost/program_options.hpp>
 #include <boost/regex.hpp>
@@ -97,12 +100,15 @@
 #include <boost/bind/bind.hpp>
 #include <boost/core/ignore_unused.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/filesystem/exception.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/path.hpp>
 #include <boost/scope_exit.hpp>
 
 #include <fmt/format.h>
+
+// Qt -- only QtCore
+#include <QDir>
+#include <QProcessEnvironment>
+#include <QStandardPaths>
+#include <QString>
 
 #endif  //_PreComp_
 

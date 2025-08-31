@@ -23,160 +23,90 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <unicode/unistr.h>
+#include <unicode/uchar.h>
+#include <vector>
+#include <string>
 #include <sstream>
-#include <locale>
-#include <iostream>
 #include <QDateTime>
+#include <QTimeZone>
 #endif
 
 #include "PyExport.h"
 #include "Interpreter.h"
 #include "Tools.h"
 
-namespace Base
+namespace
 {
-struct string_comp
+constexpr auto underscore = static_cast<UChar32>(U'_');
+
+bool isValidFirstChar(UChar32 c)
 {
-    // s1 and s2 must be numbers represented as string
-    bool operator()(const std::string& s1, const std::string& s2)
-    {
-        if (s1.size() < s2.size()) {
-            return true;
-        }
-        if (s1.size() > s2.size()) {
-            return false;
-        }
+    auto category = static_cast<UCharCategory>(u_charType(c));
 
-        return s1 < s2;
-    }
-    static std::string increment(const std::string& s)
-    {
-        std::string n = s;
-        int addcarry = 1;
-        for (std::string::reverse_iterator it = n.rbegin(); it != n.rend(); ++it) {
-            if (addcarry == 0) {
-                break;
-            }
-            int d = *it - 48;
-            d = d + addcarry;
-            *it = ((d % 10) + 48);
-            addcarry = d / 10;
-        }
-        if (addcarry > 0) {
-            std::string b;
-            b.resize(1);
-            b[0] = addcarry + 48;
-            n = b + n;
-        }
-
-        return n;
-    }
-};
-
-class unique_name
-{
-public:
-    unique_name(std::string name, const std::vector<std::string>& names, int padding)
-        : base_name {std::move(name)}
-        , padding {padding}
-    {
-        removeDigitsFromEnd();
-        findHighestSuffix(names);
-    }
-
-    std::string get() const
-    {
-        return appendSuffix();
-    }
-
-private:
-    void removeDigitsFromEnd()
-    {
-        std::string::size_type pos = base_name.find_last_not_of("0123456789");
-        if (pos != std::string::npos && (pos + 1) < base_name.size()) {
-            num_suffix = base_name.substr(pos + 1);
-            base_name.erase(pos + 1);
-        }
-    }
-
-    void findHighestSuffix(const std::vector<std::string>& names)
-    {
-        for (const auto& name : names) {
-            if (name.substr(0, base_name.length()) == base_name) {  // same prefix
-                std::string suffix(name.substr(base_name.length()));
-                if (!suffix.empty()) {
-                    std::string::size_type pos = suffix.find_first_not_of("0123456789");
-                    if (pos == std::string::npos) {
-                        num_suffix = std::max<std::string>(num_suffix, suffix, Base::string_comp());
-                    }
-                }
-            }
-        }
-    }
-
-    std::string appendSuffix() const
-    {
-        std::stringstream str;
-        str << base_name;
-        if (padding > 0) {
-            str.fill('0');
-            str.width(padding);
-        }
-        str << Base::string_comp::increment(num_suffix);
-        return str.str();
-    }
-
-private:
-    std::string num_suffix;
-    std::string base_name;
-    int padding;
-};
-
-}  // namespace Base
-
-std::string
-Base::Tools::getUniqueName(const std::string& name, const std::vector<std::string>& names, int pad)
-{
-    if (names.empty()) {
-        return name;
-    }
-
-    Base::unique_name unique(name, names, pad);
-    return unique.get();
+    return (c == underscore)
+        || (category == U_UPPERCASE_LETTER || category == U_LOWERCASE_LETTER
+            || category == U_TITLECASE_LETTER || category == U_MODIFIER_LETTER
+            || category == U_OTHER_LETTER || category == U_LETTER_NUMBER);
 }
 
-std::string Base::Tools::addNumber(const std::string& name, unsigned int num, int d)
+bool isValidSubsequentChar(UChar32 c)
 {
-    std::stringstream str;
-    str << name;
-    if (d > 0) {
-        str.fill('0');
-        str.width(d);
-    }
-    str << num;
-    return str.str();
+    auto category = static_cast<UCharCategory>(u_charType(c));
+    return (c == underscore)
+        || (category == U_UPPERCASE_LETTER || category == U_LOWERCASE_LETTER
+            || category == U_TITLECASE_LETTER || category == U_MODIFIER_LETTER
+            || category == U_OTHER_LETTER || category == U_LETTER_NUMBER
+            || category == U_DECIMAL_DIGIT_NUMBER || category == U_NON_SPACING_MARK
+            || category == U_COMBINING_SPACING_MARK || category == U_CONNECTOR_PUNCTUATION);
 }
+
+std::string unicodeCharToStdString(UChar32 c)
+{
+    icu::UnicodeString uChar(c);
+    std::string utf8Char;
+    return uChar.toUTF8String(utf8Char);
+}
+
+};  // namespace
 
 std::string Base::Tools::getIdentifier(const std::string& name)
 {
     if (name.empty()) {
         return "_";
     }
-    // check for first character whether it's a digit
-    std::string CleanName = name;
-    if (!CleanName.empty() && CleanName[0] >= 48 && CleanName[0] <= 57) {
-        CleanName[0] = '_';
+
+    icu::UnicodeString uName = icu::UnicodeString::fromUTF8(name);
+    std::stringstream result;
+
+    // Handle the first character independently, prepending an underscore if it is not a valid
+    // first character, but *is* a valid later character
+    UChar32 firstChar = uName.char32At(0);
+    const int32_t firstCharLength = U16_LENGTH(firstChar);
+    if (!isValidFirstChar(firstChar)) {
+        result << "_";
+        if (isValidSubsequentChar(firstChar)) {
+            result << unicodeCharToStdString(firstChar);
+        }
     }
-    // strip illegal chars
-    for (char& it : CleanName) {
-        if (!((it >= 48 && it <= 57) ||    // number
-              (it >= 65 && it <= 90) ||    // uppercase letter
-              (it >= 97 && it <= 122))) {  // lowercase letter
-            it = '_';                      // it's neither number nor letter
+    else {
+        result << unicodeCharToStdString(firstChar);
+    }
+
+    for (int32_t i = firstCharLength; i < uName.length(); /* will increment by char length */) {
+        UChar32 c = uName.char32At(i);
+        int32_t charLength = U16_LENGTH(c);
+        i += charLength;
+
+        if (isValidSubsequentChar(c)) {
+            result << unicodeCharToStdString(c);
+        }
+        else {
+            result << "_";
         }
     }
 
-    return CleanName;
+    return result.str();
 }
 
 std::wstring Base::Tools::widen(const std::string& str)
@@ -368,7 +298,7 @@ std::string Base::Tools::joinList(const std::vector<std::string>& vec, const std
 std::string Base::Tools::currentDateTimeString()
 {
     return QDateTime::currentDateTime()
-        .toTimeSpec(Qt::OffsetFromUTC)
+        .toTimeZone(QTimeZone::systemTimeZone())
         .toString(Qt::ISODate)
         .toStdString();
 }

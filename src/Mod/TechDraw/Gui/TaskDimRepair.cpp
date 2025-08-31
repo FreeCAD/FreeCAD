@@ -70,15 +70,16 @@ void TaskDimRepair::setUiPrimary()
     ui->leName->setText(QString::fromStdString(m_dim->getNameInDocument()));
     ui->leLabel->setText(QString::fromStdString(m_dim->Label.getValue()));
 
-    std::string objName = m_dim->getViewPart()->getNameInDocument();
-    std::string objLabel = m_dim->getViewPart()->Label.getValue();
+    DrawViewPart* viewPart = m_dim->getViewPart();
+    std::string objName = viewPart ?  viewPart->getNameInDocument() : "";
+    std::string objLabel = viewPart ?  viewPart->Label.getValue() : "";
     ui->leObject2d->setText(QString::fromStdString(objName + " / " + objLabel));
     const std::vector<std::string>& subElements2d = m_dim->References2D.getSubValues();
-    std::vector<std::string> noLabels(subElements2d.size());
-    fillList(ui->lwGeometry2d, subElements2d, noLabels);
+    std::vector<std::string> labelsInOut(subElements2d.size());
+    fillList(ui->lwGeometry2d, labelsInOut, subElements2d);
 
     QStringList headers;
-    headers << tr("Object Name") << tr("Object Label") << tr("SubElement");
+    headers << tr("Object name") << tr("Object label") << tr("Sub-element");
     ui->twReferences3d->setHorizontalHeaderLabels(headers);
 
     ReferenceVector references3d = m_dim->getReferences3d();
@@ -119,33 +120,36 @@ void TaskDimRepair::slotUseSelection()
     ReferenceVector references2d;
     ReferenceVector references3d;
     TechDraw::DrawViewPart* dvp = TechDraw::getReferencesFromSelection(references2d, references3d);
-    if (dvp != m_saveDvp) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not use references from a different View"));
-        return;
+     if (dvp != m_saveDvp) {
+        int ret = QMessageBox::warning(Gui::getMainWindow(),
+                                       QObject::tr("Incorrect Selection?"),
+                                       QObject::tr("This will change the dimension's owner view. Continue?"),
+                                       QMessageBox::Cancel | QMessageBox::Ok);
+        if (ret == QMessageBox::Cancel) {
+            return;
+        }
     }
 
     StringVector acceptableGeometry({ "Edge", "Vertex", "Face" });
     std::vector<int> minimumCounts({1, 1, 1});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys;//accept anything
-    DimensionGeometryType geometryRefs2d = validateDimSelection(
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys;//accept anything
+    DimensionGeometry geometryRefs2d = validateDimSelection(
         references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-    if (geometryRefs2d == isInvalid) {
+    if (geometryRefs2d == DimensionGeometry::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect Selection"),
-                             QObject::tr("Can not make dimension from selection"));
+                             QObject::tr("Incorrect selection"),
+                             QObject::tr("Cannot make dimension from selection"));
         return;
     }
     //what 3d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs3d(isInvalid);
-    if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
+    DimensionGeometry geometryRefs3d(DimensionGeometry::isInvalid);
+    if (geometryRefs2d == DimensionGeometry::isViewReference && !references3d.empty()) {
         geometryRefs3d = validateDimSelection3d(
             dvp, references3d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-        if (geometryRefs3d == isInvalid) {
+        if (geometryRefs3d == DimensionGeometry::isInvalid) {
             QMessageBox::warning(Gui::getMainWindow(),
-                                 QObject::tr("Incorrect Selection"),
-                                 QObject::tr("Can not make dimension from selection"));
+                                 QObject::tr("Incorrect selection"),
+                                 QObject::tr("Cannot make dimension from selection"));
             return;
         }
     }
@@ -161,16 +165,24 @@ void TaskDimRepair::slotUseSelection()
 
 void TaskDimRepair::updateUi()
 {
-    std::string objName = m_dim->getViewPart()->getNameInDocument();
-    std::string objLabel = m_dim->getViewPart()->Label.getValue();
+    // if the dimension is very broken, it may not have a valid 2d view reference.  This can happen if the
+    // restore process breaks and the reference target object does not get properly loaded.
+
+    DrawViewPart* viewPart = m_dim->getViewPart();
+    if (!viewPart && !m_toApply2d.empty()) {
+        viewPart = Base::freecad_cast<DrawViewPart*>(m_toApply2d.front().getObject());
+    }
+
+    std::string objName = viewPart ?  viewPart->getNameInDocument() : "";
+    std::string objLabel = viewPart ?  viewPart->Label.getValue() : "";
     ui->leObject2d->setText(QString::fromStdString(objName + " / " + objLabel));
 
     std::vector<std::string> subElements2d;
     for (auto& ref : m_toApply2d) {
         subElements2d.push_back(ref.getSubName());
     }
-    std::vector<std::string> noLabels(subElements2d.size());
-    fillList(ui->lwGeometry2d, subElements2d, noLabels);
+    std::vector<std::string> labelsInOut(subElements2d.size());
+    fillList(ui->lwGeometry2d, labelsInOut, subElements2d);
 
     loadTableWidget(ui->twReferences3d, m_toApply3d);
 }
@@ -210,7 +222,7 @@ void TaskDimRepair::fillList(QListWidget* lwItems, std::vector<std::string> labe
     for (; i < labelCount; i++) {
         qLabel = QString::fromStdString(labels[i]);
         qName = QString::fromStdString(names[i]);
-        qText = QString::fromUtf8("%1 %2").arg(qName, qLabel);
+        qText = QStringLiteral("%1 %2").arg(qName, qLabel);
         item = new QListWidgetItem(qText, lwItems);
         item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         item->setData(Qt::UserRole, qName);
@@ -218,12 +230,12 @@ void TaskDimRepair::fillList(QListWidget* lwItems, std::vector<std::string> labe
 }
 void TaskDimRepair::replaceReferences()
 {
-    if (!m_dim) {
+    if (!m_dim || m_toApply2d.empty()) {
         return;
     }
-    if (!m_toApply2d.empty()) {
-        m_dim->setReferences2d(m_toApply2d);
-    }
+
+    m_dim->setReferences2d(m_toApply2d);
+
     if (!m_toApply3d.empty()) {
         m_dim->setReferences3d(m_toApply3d);
     }
@@ -233,7 +245,7 @@ bool TaskDimRepair::accept()
 {
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
-    Gui::Command::openCommand(tr("Repair Dimension").toStdString().c_str());
+    Gui::Command::openCommand(tr("Repair dimension").toStdString().c_str());
     replaceReferences();
     Gui::Command::commitCommand();
 

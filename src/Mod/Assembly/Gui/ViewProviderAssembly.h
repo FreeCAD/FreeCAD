@@ -38,7 +38,7 @@ class SoFieldSensor;
 
 namespace Gui
 {
-class SoFCCSysDragger;
+class SoTransformDragger;
 class View3DInventorViewer;
 }  // namespace Gui
 
@@ -51,13 +51,13 @@ struct MovingObject
     Base::Placement plc;
     App::PropertyXLinkSub* ref;
     App::DocumentObject* rootObj;  // object of the selection object
-    std::string sub;               // sub name given by the selection.
+    const std::string sub;         // sub name given by the selection.
 
     // Constructor
     MovingObject(App::DocumentObject* o,
                  const Base::Placement& p,
                  App::DocumentObject* ro,
-                 std::string& s)
+                 const std::string& s)
         : obj(o)
         , plc(p)
         , ref(nullptr)
@@ -106,6 +106,8 @@ public:
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     bool onDelete(const std::vector<std::string>& subNames) override;
     bool canDelete(App::DocumentObject* obj) const override;
+
+    void updateData(const App::Property*) override;
 
     /** @name enter/exit edit mode */
     //@{
@@ -194,7 +196,7 @@ public:
     bool getDraggerVisibility();
     void setDraggerPlacement(Base::Placement plc);
     Base::Placement getDraggerPlacement();
-    Gui::SoFCCSysDragger* getDragger();
+    Gui::SoTransformDragger* getDragger();
 
     static Base::Vector3d getCenterOfBoundingBox(const std::vector<MovingObject>& movingObjs);
 
@@ -222,7 +224,7 @@ public:
     std::vector<std::pair<App::DocumentObject*, double>> objectMasses;
     std::vector<MovingObject> docsToMove;
 
-    Gui::SoFCCSysDragger* asmDragger = nullptr;
+    Gui::SoTransformDragger* asmDragger = nullptr;
     SoSwitch* asmDraggerSwitch = nullptr;
     SoFieldSensor* translationSensor = nullptr;
     SoFieldSensor* rotationSensor = nullptr;
@@ -230,6 +232,11 @@ public:
 private:
     bool tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
     void tryInitMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
+
+    void collectMovableObjects(App::DocumentObject* selRoot,
+                               const std::string& subNamePrefix,
+                               App::DocumentObject* currentObject,
+                               bool onlySolids);
 };
 
 }  // namespace AssemblyGui

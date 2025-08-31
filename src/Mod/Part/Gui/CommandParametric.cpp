@@ -44,11 +44,11 @@ QString getAutoGroupCommandStr()
     App::Part* activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("part");
     if (activePart) {
         QString activePartName = QString::fromLatin1(activePart->getNameInDocument());
-        return QString::fromLatin1("App.ActiveDocument.getObject('%1\')."
+        return QStringLiteral("App.ActiveDocument.getObject('%1\')."
             "addObject(App.ActiveDocument.ActiveObject)\n")
             .arg(activePartName);
     }
-    return QString::fromLatin1("# Object created at document root.");
+    return QStringLiteral("# Object created at document root.");
 }
 }
 
@@ -63,7 +63,7 @@ CmdPartCylinder::CmdPartCylinder()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Cylinder");
-    sToolTipText  = QT_TR_NOOP("Create a Cylinder");
+    sToolTipText  = QT_TR_NOOP("Creates a solid cylinder");
     sWhatsThis    = "Part_Cylinder";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Cylinder_Parametric";
@@ -77,7 +77,7 @@ void CmdPartCylinder::activated(int iMsg)
     openCommand((const char*)cmd.toUtf8());
 
     runCommand(Doc,"App.ActiveDocument.addObject(\"Part::Cylinder\",\"Cylinder\")");
-    cmd = QString::fromLatin1("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+    cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartCylinder","Cylinder"));
     runCommand(Doc,cmd.toUtf8());
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
@@ -105,7 +105,7 @@ CmdPartBox::CmdPartBox()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Cube");
-    sToolTipText  = QT_TR_NOOP("Create a cube solid");
+    sToolTipText  = QT_TR_NOOP("Creates a solid cube");
     sWhatsThis    = "Part_Box";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Box_Parametric";
@@ -119,7 +119,7 @@ void CmdPartBox::activated(int iMsg)
     openCommand((const char*)cmd.toUtf8());
 
     runCommand(Doc,"App.ActiveDocument.addObject(\"Part::Box\",\"Box\")");
-    cmd = QString::fromLatin1("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+    cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartBox","Cube"));
     runCommand(Doc,cmd.toUtf8());
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
@@ -147,7 +147,7 @@ CmdPartSphere::CmdPartSphere()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Sphere");
-    sToolTipText  = QT_TR_NOOP("Create a sphere solid");
+    sToolTipText  = QT_TR_NOOP("Creates a solid sphere");
     sWhatsThis    = "Part_Sphere";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Sphere_Parametric";
@@ -161,7 +161,7 @@ void CmdPartSphere::activated(int iMsg)
     openCommand((const char*)cmd.toUtf8());
 
     runCommand(Doc,"App.ActiveDocument.addObject(\"Part::Sphere\",\"Sphere\")");
-    cmd = QString::fromLatin1("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+    cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartSphere","Sphere"));
     runCommand(Doc,cmd.toUtf8());
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
@@ -189,7 +189,7 @@ CmdPartCone::CmdPartCone()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Cone");
-    sToolTipText  = QT_TR_NOOP("Create a cone solid");
+    sToolTipText  = QT_TR_NOOP("Creates a solid cone");
     sWhatsThis    = "Part_Cone";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Cone_Parametric";
@@ -203,7 +203,7 @@ void CmdPartCone::activated(int iMsg)
     openCommand((const char*)cmd.toUtf8());
 
     runCommand(Doc,"App.ActiveDocument.addObject(\"Part::Cone\",\"Cone\")");
-    cmd = QString::fromLatin1("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+    cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartCone","Cone"));
     runCommand(Doc,cmd.toUtf8());
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());
@@ -231,7 +231,7 @@ CmdPartTorus::CmdPartTorus()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Torus");
-    sToolTipText  = QT_TR_NOOP("Create a torus solid");
+    sToolTipText  = QT_TR_NOOP("Creates a solid torus");
     sWhatsThis    = "Part_Torus";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Torus_Parametric";
@@ -245,7 +245,7 @@ void CmdPartTorus::activated(int iMsg)
     openCommand((const char*)cmd.toUtf8());
 
     runCommand(Doc,"App.ActiveDocument.addObject(\"Part::Torus\",\"Torus\")");
-    cmd = QString::fromLatin1("App.ActiveDocument.ActiveObject.Label = \"%1\"")
+    cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartTorus","Torus"));
     runCommand(Doc,cmd.toUtf8());
     runCommand(Doc, getAutoGroupCommandStr().toUtf8());

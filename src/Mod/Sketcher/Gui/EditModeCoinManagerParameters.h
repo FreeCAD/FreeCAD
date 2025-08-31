@@ -40,7 +40,7 @@
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
 
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <Gui/ViewParams.h>
 #include <Gui/Inventor/SmSwitchboard.h>
 #include <Mod/Sketcher/App/GeoList.h>
@@ -75,7 +75,7 @@ struct DrawingParameters
     const float zMidLines = 0.006f;    // Height used for in-the-middle rendered lines
     const float zHighLines = 0.007f;   // Height used for on top rendered lines
     const float zHighLine = 0.008f;    // Height for highlighted lines (selected/preselected)
-    const float zConstr = 0.009f;      // Height for rendering constraints
+    const float zConstr = 0.004f;      // Height for rendering constraints
     const float zRootPoint = 0.010f;   // Height used for rendering the root point
     const float zLowPoints = 0.011f;   // Height used for bottom rendered points
     const float zMidPoints = 0.012f;   // Height used for mid rendered points
@@ -102,7 +102,6 @@ struct DrawingParameters
     /** @name Rendering Coin Colors **/
     //@{
     static SbColor InformationColor;                       // Information Overlay Color
-    static SbColor CreateCurveColor;                       // Color for Edit Curves during creation
     static SbColor CrossColorH;                            // Color for the Horizontal Axis
     static SbColor CrossColorV;                            // Color for the Vertical Axis
     static SbColor InvalidSketchColor;                     // Color for rendering an invalid sketch
@@ -112,12 +111,13 @@ struct DrawingParameters
     static SbColor InternalAlignedGeoColor;  // Color for non-fully constrained internal geometry
     static SbColor FullyConstraintElementColor;  // Color for a fully constrained element
     static SbColor CurveColor;                   // Color for curves
-    static SbColor PreselectColor;               // Color used for pre-selection
+    static SbColor PreselectColor;               // Color used for preselection
     static SbColor
-        PreselectSelectedColor;  // Color used for pre-selection when geometry is already selected
+        PreselectSelectedColor;  // Color used for preselection when geometry is already selected
     static SbColor SelectColor;  // Color used for selected geometry
-    static SbColor CurveExternalColor;                       // Color used for external geometry
-    static SbColor CurveDraftColor;                          // Color used for construction geometry
+    static SbColor CurveExternalColor;          // Color used for external geometry
+    static SbColor CurveExternalDefiningColor;  // Color used for external defining geometry
+    static SbColor CurveDraftColor;             // Color used for construction geometry
     static SbColor FullyConstraintConstructionElementColor;  // Color used for a fully constrained
                                                              // construction element
     static SbColor ConstrDimColor;  // Color used for a dimensional constraints
@@ -139,28 +139,31 @@ struct DrawingParameters
     int constraintIconSize = 15;  // Size of constraint icons
     int markerSize = 7;           // Size used for markers
 
-    int CurveWidth = 2;         // width of normal edges
-    int ConstructionWidth = 1;  // width of construction edges
-    int InternalWidth = 1;      // width of internal edges
-    int ExternalWidth = 1;      // width of external edges
+    int CurveWidth = 2;             // width of normal edges
+    int ConstructionWidth = 1;      // width of construction edges
+    int InternalWidth = 1;          // width of internal edges
+    int ExternalWidth = 1;          // width of external edges
+    int ExternalDefiningWidth = 1;  // width of external defining edges
 
     unsigned int CurvePattern = 0b1111111111111111;         // pattern of normal edges
     unsigned int ConstructionPattern = 0b1111110011111100;  // pattern of construction edges
     unsigned int InternalPattern = 0b1111110011111100;      // pattern of internal edges
     unsigned int ExternalPattern = 0b1111110011111100;      // pattern of external edges
+    unsigned int ExternalDefiningPattern =
+        0b1111111111111111;  // pattern of external defining edges
     //@}
 
     DrawingParameters()
     {
         unsigned long colorLong;
-        App::Color color;
+        Base::Color color;
 
         colorLong = Gui::ViewParams::instance()->getAxisXColor();
-        color = App::Color(static_cast<uint32_t>(colorLong));
+        color = Base::Color(static_cast<uint32_t>(colorLong));
         CrossColorH = SbColor(color.r, color.g, color.b);
 
         colorLong = Gui::ViewParams::instance()->getAxisYColor();
-        color = App::Color(static_cast<uint32_t>(colorLong));
+        color = Base::Color(static_cast<uint32_t>(colorLong));
         CrossColorV = SbColor(color.r, color.g, color.b);
     }
 };
@@ -289,6 +292,7 @@ public:
         Construction = 1,
         Internal = 2,
         External = 3,
+        ExternalDefining = 4
     };
 
     void reset()
@@ -342,9 +346,15 @@ public:
         return t == static_cast<int>(SubLayer::External);
     }
 
+    bool isExternalDefiningSubLayer(int t) const
+    {
+        return t == static_cast<int>(SubLayer::ExternalDefining);
+    }
+
+
 private:
     int CoinLayers = 1;  // defaults to a single Coin Geometry Layer.
-    int SubLayers = 4;   // Normal, Construction, Internal, External.
+    int SubLayers = 5;   // Normal, Construction, Internal, External.
 };
 
 /** @brief     Struct to hold the results of analysis performed on geometry
@@ -400,6 +410,14 @@ struct EditModeScenegraphNodes
     std::vector<SoMarkerSet*> PointSet;
     //@}
 
+    /** @name Origin Point nodes*/
+    //@{
+    SoMaterial* OriginPointMaterial;
+    SoCoordinate3* OriginPointCoordinate;
+    SoMarkerSet* OriginPointSet;
+    SoDrawStyle* OriginPointDrawStyle;
+    //@}
+
     /** @name Curve nodes*/
     //@{
     SmSwitchboard* CurvesGroup;
@@ -410,11 +428,11 @@ struct EditModeScenegraphNodes
     SoDrawStyle* CurvesConstructionDrawStyle;
     SoDrawStyle* CurvesInternalDrawStyle;
     SoDrawStyle* CurvesExternalDrawStyle;
+    SoDrawStyle* CurvesExternalDefiningDrawStyle;
     SoDrawStyle* HiddenCurvesDrawStyle;
     //@}
 
     /** @name Axes nodes*/
-    /// @warning Root Point is added together with the Point nodes above
     //@{
     SoMaterial* RootCrossMaterials;
     SoCoordinate3* RootCrossCoordinate;
@@ -487,12 +505,31 @@ struct CoinMapping
     {
         return CurvIdToGeoId[layerindex][sublayerindex][curveindex];
     }
+
+    bool isValidCurveId(int curveindex, int layerindex, int sublayerindex = 0) const
+    {
+        // clang-format off
+        return static_cast<int>(CurvIdToGeoId.size()) > layerindex &&
+               static_cast<int>(CurvIdToGeoId[layerindex].size()) > sublayerindex &&
+               static_cast<int>(CurvIdToGeoId[layerindex][sublayerindex].size()) > curveindex;
+        // clang-format on
+    }
+
     /// given the MF index of a point and the coin layer in which it is drawn returns the GeoId of
     /// the point
     int getPointGeoId(int pointindex, int layerindex)
     {
         return PointIdToGeoId[layerindex][pointindex];
     }
+
+    bool isValidPointId(int pointindex, int layerindex) const
+    {
+        // clang-format off
+        return static_cast<int>(PointIdToGeoId.size()) > layerindex &&
+               static_cast<int>(PointIdToGeoId[layerindex].size()) > pointindex;
+        // clang-format on
+    }
+
     /// given the MF index of a point and the coin layer in which it is drawn returns the PosId of
     /// the point
     Sketcher::PointPos getPointPosId(int pointindex, int layerindex)
@@ -510,6 +547,10 @@ struct CoinMapping
     /// index and the coin layer of the curve or point
     MultiFieldId getIndexLayer(int geoid, Sketcher::PointPos pos)
     {
+        if (geoid == -1) {
+            return MultiFieldId(-1, 0, 0);
+        }
+
         auto indexit = GeoElementId2SetId.find(Sketcher::GeoElementId(geoid, pos));
 
         if (indexit != GeoElementId2SetId.end()) {
@@ -523,12 +564,14 @@ struct CoinMapping
     /// layer of the point
     MultiFieldId getIndexLayer(int vertexId)
     {
+        if (vertexId == -1) {
+            return MultiFieldId(-1, 0, 0);
+        }
 
         for (size_t l = 0; l < PointIdToVertexId.size(); l++) {
-            auto indexit =
-                std::find(PointIdToVertexId[l].begin(), PointIdToVertexId[l].end(), vertexId);
 
-            if (indexit != PointIdToVertexId[l].end()) {
+            if (auto indexit = std::ranges::find(PointIdToVertexId[l], vertexId);
+                indexit != PointIdToVertexId[l].end()) {
                 return MultiFieldId(std::distance(PointIdToVertexId[l].begin(), indexit), l);
             }
         }

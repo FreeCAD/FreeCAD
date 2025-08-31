@@ -37,7 +37,7 @@
 #endif
 
 #include <Base/Interpreter.h>
-#include <App/Color.h>
+#include <Base/Color.h>
 
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"
@@ -123,11 +123,7 @@ InteractiveInterpreter::InteractiveInterpreter()
     PyObject* func = PyObject_GetAttrString(module, "InteractiveInterpreter");
     PyObject* args = Py_BuildValue("()");
     d = new InteractiveInterpreterP;
-#if PY_VERSION_HEX < 0x03090000
-    d->interpreter = PyEval_CallObject(func,args);
-#else
     d->interpreter = PyObject_CallObject(func,args);
-#endif
     Py_DECREF(args);
     Py_DECREF(func);
     Py_DECREF(module);
@@ -175,11 +171,7 @@ PyObject* InteractiveInterpreter::compile(const char* source) const
     Base::PyGILStateLocker lock;
     PyObject* func = PyObject_GetAttrString(d->interpreter, "compile");
     PyObject* args = Py_BuildValue("(s)", source);
-#if PY_VERSION_HEX < 0x03090000
-    PyObject* eval = PyEval_CallObject(func,args);  // must decref later
-#else
     PyObject* eval = PyObject_CallObject(func,args);  // must decref later
-#endif
 
     Py_XDECREF(args);
     Py_XDECREF(func);
@@ -211,11 +203,7 @@ int InteractiveInterpreter::compileCommand(const char* source) const
     Base::PyGILStateLocker lock;
     PyObject* func = PyObject_GetAttrString(d->interpreter, "compile");
     PyObject* args = Py_BuildValue("(s)", source);
-#if PY_VERSION_HEX < 0x03090000
-    PyObject* eval = PyEval_CallObject(func,args);  // must decref later
-#else
     PyObject* eval = PyObject_CallObject(func,args);  // must decref later
-#endif
 
     Py_DECREF(args);
     Py_DECREF(func);
@@ -437,7 +425,8 @@ PythonConsole::PythonConsole(QWidget *parent)
 
     setVisibleLineNumbers(false);
     setEnabledHighlightCurrentLine(false);
-    QFont serifFont(QLatin1String("Courier"), 10, QFont::Normal);
+    QFont serifFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    serifFont.setPointSize(10);
     setFont(serifFont);
 
     // set colors and font from settings
@@ -468,7 +457,7 @@ PythonConsole::PythonConsole(QWidget *parent)
 
     const char* version  = PyUnicode_AsUTF8(PySys_GetObject("version"));
     const char* platform = PyUnicode_AsUTF8(PySys_GetObject("platform"));
-    d->info = QString::fromLatin1("Python %1 on %2\n"
+    d->info = QStringLiteral("Python %1 on %2\n"
     "Type 'help', 'copyright', 'credits' or 'license' for more information.")
     .arg(QString::fromLatin1(version), QString::fromLatin1(platform));
     d->output = d->info;
@@ -609,7 +598,7 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
               if (!inputStrg.isEmpty())
               {
                   d->history.append( QLatin1String("# ") + inputStrg );  //< put commented string to history ...
-                  inputLineBegin.insertText( QString::fromLatin1("# ") ); //< and comment it on console
+                  inputLineBegin.insertText( QStringLiteral("# ") ); //< and comment it on console
                   setTextCursor( inputLineBegin );
                   printPrompt(d->interpreter->hasPendingInput()          //< print adequate prompt
                       ? PythonConsole::Incomplete
@@ -753,10 +742,10 @@ void PythonConsole::printPrompt(PythonConsole::Prompt mode)
       switch (mode)
       {
       case PythonConsole::Incomplete:
-          cursor.insertText(QString::fromLatin1("... "));
+          cursor.insertText(QStringLiteral("... "));
           break;
       case PythonConsole::Complete:
-          cursor.insertText(QString::fromLatin1(">>> "));
+          cursor.insertText(QStringLiteral(">>> "));
           break;
       default:
           break;
@@ -806,7 +795,7 @@ void PythonConsole::runSource(const QString& line)
     }
 
     if (d->interpreter->isOccupied()) {
-        insertPythonError(QString::fromLatin1("Previous command still running!"));
+        insertPythonError(QStringLiteral("Previous command still running!"));
         return;
     }
 
@@ -838,7 +827,7 @@ void PythonConsole::runSource(const QString& line)
         int ret = QMessageBox::Yes;
         if (check) {
             ret = QMessageBox::question(this, tr("System exit"),
-                tr("The application is still running.\nDo you want to exit without saving your data?"),
+                tr("The application is still running.\nExit without saving all data?"),
                 QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
         }
         if (ret == QMessageBox::Yes) {
@@ -850,16 +839,16 @@ void PythonConsole::runSource(const QString& line)
         }
     }
     catch (const Py::Exception&) {
-        QMessageBox::critical(this, tr("Python console"), tr("Unhandled PyCXX exception."));
+        QMessageBox::critical(this, tr("Python Console"), tr("Unhandled PyCXX exception."));
     }
     catch (const Base::Exception&) {
-        QMessageBox::critical(this, tr("Python console"), tr("Unhandled FreeCAD exception."));
+        QMessageBox::critical(this, tr("Python Console"), tr("Unhandled FreeCAD exception."));
     }
     catch (const std::exception&) {
-        QMessageBox::critical(this, tr("Python console"), tr("Unhandled std C++ exception."));
+        QMessageBox::critical(this, tr("Python Console"), tr("Unhandled std C++ exception."));
     }
     catch (...) {
-        QMessageBox::critical(this, tr("Python console"), tr("Unhandled unknown C++ exception."));
+        QMessageBox::critical(this, tr("Python Console"), tr("Unhandled unknown C++ exception."));
     }
 
     printPrompt(incomplete ? PythonConsole::Incomplete
@@ -947,7 +936,7 @@ void PythonConsole::changeEvent(QEvent *e)
     else if (e->type() == QEvent::StyleChange) {
         QPalette pal = qApp->palette();
         QColor color = pal.windowText().color();
-        unsigned int text = App::Color::asPackedRGB<QColor>(color);
+        unsigned int text = Base::Color::asPackedRGB<QColor>(color);
         auto value = static_cast<unsigned long>(text);
         // if this parameter is not already set use the style's window text color
         value = getWindowParameter()->GetUnsigned("Text", value);
@@ -1000,7 +989,7 @@ void PythonConsole::dropEvent (QDropEvent * e)
         for (int i=0; i<ctActions; i++) {
             QString action;
             dataStream >> action;
-            printStatement(QString::fromLatin1("Gui.runCommand(\"%1\")").arg(action));
+            printStatement(QStringLiteral("Gui.runCommand(\"%1\")").arg(action));
         }
 
         e->setDropAction(Qt::CopyAction);
@@ -1305,19 +1294,19 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     bool mayPasteHere = cursorBeyond( this->textCursor(), this->inputBegin() );
 
     a = menu.addAction(tr("&Copy"), this, &PythonConsole::copy);
-    a->setShortcut(QKeySequence(QString::fromLatin1("CTRL+C")));
+    a->setShortcut(QKeySequence(QStringLiteral("CTRL+C")));
     a->setEnabled(textCursor().hasSelection());
 
-    a = menu.addAction(tr("&Copy command"), this, &PythonConsole::onCopyCommand);
+    a = menu.addAction(tr("&Copy Command"), this, &PythonConsole::onCopyCommand);
     a->setEnabled(textCursor().hasSelection());
 
-    a = menu.addAction(tr("&Copy history"), this, &PythonConsole::onCopyHistory);
+    a = menu.addAction(tr("&Copy History"), this, &PythonConsole::onCopyHistory);
     a->setEnabled(!d->history.isEmpty());
 
-    a = menu.addAction( tr("Save history as..."), this, &PythonConsole::onSaveHistoryAs);
+    a = menu.addAction(tr("Save History As…"), this, &PythonConsole::onSaveHistoryAs);
     a->setEnabled(!d->history.isEmpty());
 
-    QAction* saveh = menu.addAction(tr("Save history"));
+    QAction* saveh = menu.addAction(tr("Save History"));
     saveh->setToolTip(tr("Saves Python history across %1 sessions").arg(qApp->applicationName()));
     saveh->setCheckable(true);
     saveh->setChecked(d->hGrpSettings->GetBool("SavePythonHistory", false));
@@ -1325,22 +1314,22 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     menu.addSeparator();
 
     a = menu.addAction(tr("&Paste"), this, &PythonConsole::paste);
-    a->setShortcut(QKeySequence(QString::fromLatin1("CTRL+V")));
+    a->setShortcut(QKeySequence(QStringLiteral("CTRL+V")));
     const QMimeData *md = QApplication::clipboard()->mimeData();
     a->setEnabled( mayPasteHere && md && canInsertFromMimeData(md));
 
     a = menu.addAction(tr("Select All"), this, &PythonConsole::selectAll);
-    a->setShortcut(QKeySequence(QString::fromLatin1("CTRL+A")));
+    a->setShortcut(QKeySequence(QStringLiteral("CTRL+A")));
     a->setEnabled(!document()->isEmpty());
 
-    a = menu.addAction(tr("Clear console"), this, &PythonConsole::onClearConsole);
+    a = menu.addAction(tr("Clear Console"), this, &PythonConsole::onClearConsole);
     a->setEnabled(!document()->isEmpty());
 
     menu.addSeparator();
-    menu.addAction( tr("Insert file name..."), this, &PythonConsole::onInsertFileName);
+    menu.addAction(tr("Insert File Name…"), this, &PythonConsole::onInsertFileName);
     menu.addSeparator();
 
-    QAction* wrap = menu.addAction(tr("Word wrap"));
+    QAction* wrap = menu.addAction(tr("Word Wrap"));
     wrap->setCheckable(true);
 
     wrap->setChecked(d->hGrpSettings->GetBool("PythonWordWrap", true));
@@ -1365,7 +1354,7 @@ void PythonConsole::onSaveHistoryAs()
     QString cMacroPath = QString::fromUtf8(getDefaultParameter()->GetGroup( "Macro" )->
         GetASCII("MacroPath",App::Application::getUserMacroDir().c_str()).c_str());
     QString fn = FileDialog::getSaveFileName(this, tr("Save History"), cMacroPath,
-        QString::fromLatin1("%1 (*.FCMacro *.py)").arg(tr("Macro Files")));
+        QStringLiteral("%1 (*.FCMacro *.py)").arg(tr("Macro Files")));
     if (!fn.isEmpty()) {
         int dot = fn.indexOf(QLatin1Char('.'));
         if (dot != -1) {
@@ -1385,7 +1374,7 @@ void PythonConsole::onSaveHistoryAs()
 void PythonConsole::onInsertFileName()
 {
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), tr("Insert file name"), QString(),
-        QString::fromLatin1("%1 (*.*)").arg(tr("All Files")));
+        QStringLiteral("%1 (*.*)").arg(tr("All Files")));
     if ( !fn.isEmpty() ) {
         insertPlainText(fn);
     }

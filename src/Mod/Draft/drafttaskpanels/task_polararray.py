@@ -78,54 +78,24 @@ class TaskPanelPolarArray:
     """
 
     def __init__(self):
-        self.name = "Polar array"
-        _log(translate("draft","Task panel:") + " {}".format(self.name))
 
-        # The .ui file must be loaded into an attribute
-        # called `self.form` so that it is displayed in the task panel.
-        ui_file = ":/ui/TaskPanel_PolarArray.ui"
-        self.form = Gui.PySideUic.loadUi(ui_file)
-
-        icon_name = "Draft_PolarArray"
-        svg = ":/icons/" + icon_name
-        pix = QtGui.QPixmap(svg)
-        icon = QtGui.QIcon.fromTheme(icon_name, QtGui.QIcon(svg))
-        self.form.setWindowIcon(icon)
-        self.form.setWindowTitle(translate("draft","Polar array"))
-
-        self.form.label_icon.setPixmap(pix.scaled(32, 32))
+        self.form = Gui.PySideUic.loadUi(":/ui/TaskPanel_PolarArray.ui")
+        self.form.setWindowTitle(translate("draft", "Polar Array"))
+        self.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_PolarArray.svg"))
 
         # -------------------------------------------------------------------
-        # Default values for the internal function,
-        # and for the task panel interface
-        start_angle = U.Quantity(360.0, App.Units.Angle)
-        angle_unit = start_angle.getUserPreferred()[2]
-
-        self.angle = start_angle.Value
+        # Default values for the internal function, and for the task panel interface
+        self.center = App.Vector()
+        self.angle = 360
         self.number = 5
-
-        self.form.spinbox_angle.setProperty('rawValue', self.angle)
-        self.form.spinbox_angle.setProperty('unit', angle_unit)
-
-        self.form.spinbox_number.setValue(self.number)
-
-        start_point = U.Quantity(0.0, App.Units.Length)
-        length_unit = start_point.getUserPreferred()[2]
-
-        self.center = App.Vector(start_point.Value,
-                                 start_point.Value,
-                                 start_point.Value)
-
-        self.form.input_c_x.setProperty('rawValue', self.center.x)
-        self.form.input_c_x.setProperty('unit', length_unit)
-        self.form.input_c_y.setProperty('rawValue', self.center.y)
-        self.form.input_c_y.setProperty('unit', length_unit)
-        self.form.input_c_z.setProperty('rawValue', self.center.z)
-        self.form.input_c_z.setProperty('unit', length_unit)
-
         self.fuse = params.get_param("Draft_array_fuse")
         self.use_link = params.get_param("Draft_array_Link")
 
+        self.form.input_c_x.setProperty('rawValue', self.center.x)
+        self.form.input_c_y.setProperty('rawValue', self.center.y)
+        self.form.input_c_z.setProperty('rawValue', self.center.z)
+        self.form.spinbox_angle.setProperty('rawValue', self.angle)
+        self.form.spinbox_number.setValue(self.number)
         self.form.checkbox_fuse.setChecked(self.fuse)
         self.form.checkbox_link.setChecked(self.use_link)
         # -------------------------------------------------------------------
@@ -152,8 +122,12 @@ class TaskPanelPolarArray:
         self.form.button_reset.clicked.connect(self.reset_point)
 
         # When the checkbox changes, change the internal value
-        self.form.checkbox_fuse.stateChanged.connect(self.set_fuse)
-        self.form.checkbox_link.stateChanged.connect(self.set_link)
+        if hasattr(self.form.checkbox_fuse, "checkStateChanged"): # Qt version >= 6.7.0
+            self.form.checkbox_fuse.checkStateChanged.connect(self.set_fuse)
+            self.form.checkbox_link.checkStateChanged.connect(self.set_link)
+        else: # Qt version < 6.7.0
+            self.form.checkbox_fuse.stateChanged.connect(self.set_fuse)
+            self.form.checkbox_link.stateChanged.connect(self.set_link)
 
 
     def accept(self):
@@ -183,19 +157,19 @@ class TaskPanelPolarArray:
         the interface may not allow one to input wrong data.
         """
         if not selection:
-            _err(translate("draft","At least one element must be selected."))
+            _err(translate("draft","At least 1 element must be selected"))
             return False
 
         # TODO: this should handle multiple objects.
         # Each of the elements of the selection should be tested.
         obj = selection[0]
         if obj.isDerivedFrom("App::FeaturePython"):
-            _err(translate("draft","Selection is not suitable for array."))
+            _err(translate("draft","Selection is not suitable for array"))
             _err(translate("draft","Object:") + " {}".format(selection[0].Label))
             return False
 
         if number < 2:
-            _err(translate("draft","Number of elements must be at least 2."))
+            _err(translate("draft","Number of elements must be at least 2"))
             return False
 
         if angle > 360:
@@ -254,7 +228,7 @@ class TaskPanelPolarArray:
                      "App.ActiveDocument.recompute()"]
 
         # We commit the command list through the parent command
-        self.source_command.commit(translate("draft","Polar array"), _cmd_list)
+        self.source_command.commit(translate("draft","Create Polar Array"), _cmd_list)
 
     def get_number_angle(self):
         """Get the number and angle parameters from the widgets."""
@@ -301,7 +275,7 @@ class TaskPanelPolarArray:
             state = self.tr_true
         else:
             state = self.tr_false
-        _msg(translate("draft","Create Link array:") + " {}".format(state))
+        _msg(translate("draft","Create link array:") + " {}".format(state))
 
     def set_link(self):
         """Execute as a callback when the link checkbox changes."""

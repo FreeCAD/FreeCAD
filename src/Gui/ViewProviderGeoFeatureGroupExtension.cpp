@@ -104,7 +104,7 @@ std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensio
     for(auto obj : model) {
         if(!obj || !obj->isAttachedToDocument())
             continue;
-        if(outSet.count(obj))
+        if(outSet.contains(obj))
             obj->setStatus(App::ObjectStatus::GeoExcluded,true);
         else {
             obj->setStatus(App::ObjectStatus::GeoExcluded,false);

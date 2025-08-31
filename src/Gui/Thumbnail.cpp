@@ -113,7 +113,7 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
     if (!px.isNull()) {
         // according to specification add some meta-information to the image
         qint64 mt = QDateTime::currentDateTimeUtc().toSecsSinceEpoch();
-        QString mtime = QString::fromLatin1("%1").arg(mt);
+        QString mtime = QStringLiteral("%1").arg(mt);
         img.setText(QLatin1String("Software"), qApp->applicationName());
         img.setText(QLatin1String("Thumb::Mimetype"), QLatin1String("application/x-extension-fcstd"));
         img.setText(QLatin1String("Thumb::MTime"), mtime);

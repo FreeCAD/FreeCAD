@@ -50,17 +50,14 @@ Py::Object PythonStdout::getattr(const char *name)
 {
     if (strcmp(name, "softspace") == 0) {
         int i=0;
-        return Py::Int(i);
+        return Py::Long(i);
     }
     return getattr_methods(name);
 }
 
 Py::Object PythonStdout::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "PythonStdout";
-    return Py::String(s_out.str());
+    return Py::String("PythonStdout");
 }
 
 Py::Object PythonStdout::write(const Py::Tuple& args)
@@ -114,17 +111,14 @@ Py::Object PythonStderr::getattr(const char *name)
 {
     if (strcmp(name, "softspace") == 0) {
         int i=0;
-        return Py::Int(i);
+        return Py::Long(i);
     }
     return getattr_methods(name);
 }
 
 Py::Object PythonStderr::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "PythonStderr";
-    return Py::String(s_out.str());
+    return Py::String("PythonStderr");
 }
 
 Py::Object PythonStderr::write(const Py::Tuple& args)
@@ -175,17 +169,14 @@ Py::Object OutputStdout::getattr(const char *name)
 {
     if (strcmp(name, "softspace") == 0) {
         int i=0;
-        return Py::Int(i);
+        return Py::Long(i);
     }
     return getattr_methods(name);
 }
 
 Py::Object OutputStdout::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "OutputStdout";
-    return Py::String(s_out.str());
+    return Py::String("OutputStdout");
 }
 
 Py::Object OutputStdout::write(const Py::Tuple& args)
@@ -197,7 +188,7 @@ Py::Object OutputStdout::write(const Py::Tuple& args)
     PyObject* unicode = PyUnicode_AsEncodedString(output, "utf-8", nullptr);
     if (unicode) {
         const char* string = PyBytes_AsString(unicode);
-        Base::Console().Message("%s",string);
+        Base::Console().message("%s",string);
         Py_DECREF(unicode);
     }
 
@@ -236,17 +227,14 @@ Py::Object OutputStderr::getattr(const char *name)
 {
     if (strcmp(name, "softspace") == 0) {
         int i=0;
-        return Py::Int(i);
+        return Py::Long(i);
     }
     return getattr_methods(name);
 }
 
 Py::Object OutputStderr::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "OutputStderr";
-    return Py::String(s_out.str());
+    return Py::String("OutputStderr");
 }
 
 Py::Object OutputStderr::write(const Py::Tuple& args)
@@ -258,7 +246,7 @@ Py::Object OutputStderr::write(const Py::Tuple& args)
     PyObject* unicode = PyUnicode_AsEncodedString(output, "utf-8", nullptr);
     if (unicode) {
         const char* string = PyBytes_AsString(unicode);
-        Base::Console().Error("%s",string);
+        Base::Console().error("%s",string);
         Py_DECREF(unicode);
     }
 
@@ -297,10 +285,7 @@ PythonStdin::~PythonStdin() = default;
 
 Py::Object PythonStdin::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "PythonStdin";
-    return Py::String(s_out.str());
+    return Py::String("PythonStdin");
 }
 
 Py::Object PythonStdin::getattr(const char *name)

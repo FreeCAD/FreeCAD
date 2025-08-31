@@ -71,7 +71,7 @@ GUIApplication::~GUIApplication() = default;
 bool GUIApplication::notify (QObject * receiver, QEvent * event)
 {
     if (!receiver) {
-        Base::Console().Log("GUIApplication::notify: Unexpected null receiver, event type: %d\n",
+        Base::Console().log("GUIApplication::notify: Unexpected null receiver, event type: %d\n",
             (int)event->type());
         return false;
     }
@@ -98,15 +98,15 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
         return true;
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Unhandled Base::Exception caught in GUIApplication::notify.\n"
+        Base::Console().error("Unhandled Base::Exception caught in GUIApplication::notify.\n"
                               "The error message is: %s\n%s", e.what(), exceptionWarning);
     }
     catch (const std::exception& e) {
-        Base::Console().Error("Unhandled std::exception caught in GUIApplication::notify.\n"
+        Base::Console().error("Unhandled std::exception caught in GUIApplication::notify.\n"
                               "The error message is: %s\n%s", e.what(), exceptionWarning);
     }
     catch (...) {
-        Base::Console().Error("Unhandled unknown exception caught in GUIApplication::notify.\n%s",
+        Base::Console().error("Unhandled unknown exception caught in GUIApplication::notify.\n%s",
                               exceptionWarning);
     }
 
@@ -129,11 +129,11 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
                     dump << " is child of\n";
             }
             std::string str = dump.str();
-            Base::Console().Log("%s",str.c_str());
+            Base::Console().log("%s",str.c_str());
         }
     }
     catch (...) {
-        Base::Console().Log("Invalid recipient and/or event in GUIApplication::notify\n");
+        Base::Console().log("Invalid recipient and/or event in GUIApplication::notify\n");
     }
 
     return true;
@@ -232,10 +232,10 @@ public:
             }
         }
         if (server->isListening()) {
-            Base::Console().Log("Local server '%s' started\n", qPrintable(serverName));
+            Base::Console().log("Local server '%s' started\n", qPrintable(serverName));
         }
         else {
-            Base::Console().Log("Local server '%s' failed to start\n", qPrintable(serverName));
+            Base::Console().log("Local server '%s' failed to start\n", qPrintable(serverName));
         }
     }
 
@@ -311,7 +311,7 @@ void GUISingleApplication::readFromSocket()
         while (socket->canReadLine()) {
             d_ptr->timer->stop();
             QString message = in.readLine();
-            Base::Console().Log("Received message: %s\n", message.toStdString());
+            Base::Console().log("Received message: %s\n", message.toStdString());
             d_ptr->messages.push_back(message);
             d_ptr->timer->start(1000);
         }

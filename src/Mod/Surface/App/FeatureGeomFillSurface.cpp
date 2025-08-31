@@ -283,6 +283,7 @@ void GeomFillSurface::createBezierSurface(TopoDS_Wire& aWire)
             Handle(Geom_BezierCurve)::DownCast(c_geom);  // Try to get Bezier curve
 
         if (!bezier.IsNull()) {
+            bezier->Segment(u1, u2);  // DownCast(c_geom) will not trim bezier, so DIY
             gp_Trsf transf = heloc.Transformation();
             bezier->Transform(transf);  // apply original transformation to control points
             // Store Underlying Geometry
@@ -331,8 +332,10 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
         Handle(Geom_Curve) c_geom = BRep_Tool::Curve(edge, heloc, u1, u2);  // The geometric curve
         Handle(Geom_BSplineCurve) bspline =
             Handle(Geom_BSplineCurve)::DownCast(c_geom);  // Try to get BSpline curve
+
         gp_Trsf transf = heloc.Transformation();
         if (!bspline.IsNull()) {
+            bspline->Segment(u1, u2);    // DownCast(c_geom) will not trim spline, so DIY
             bspline->Transform(transf);  // apply original transformation to control points
             // Store Underlying Geometry
             curves.push_back(bspline);

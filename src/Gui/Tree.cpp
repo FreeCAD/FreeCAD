@@ -29,11 +29,14 @@
 # include <QApplication>
 # include <QContextMenuEvent>
 # include <QCursor>
+# include <QDir>
+# include <QFileInfo>
 # include <QHeaderView>
 # include <QMenu>
 # include <QMessageBox>
 # include <QPainter>
 # include <QPixmap>
+# include <QProcess>
 # include <QThread>
 # include <QTimer>
 # include <QToolTip>
@@ -46,7 +49,7 @@
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/AutoTransaction.h>
@@ -72,11 +75,11 @@ FC_LOG_LEVEL_INIT("Tree", false, true, true)
 
 #define _TREE_PRINT(_level,_func,_msg) \
     _FC_PRINT(FC_LOG_INSTANCE,_level,_func, '['<<getTreeName()<<"] " << _msg)
-#define TREE_MSG(_msg) _TREE_PRINT(FC_LOGLEVEL_MSG,Notify<Base::LogStyle::Message>,_msg)
-#define TREE_WARN(_msg) _TREE_PRINT(FC_LOGLEVEL_WARN,Notify<Base::LogStyle::Warning>,_msg)
-#define TREE_ERR(_msg) _TREE_PRINT(FC_LOGLEVEL_ERR,Notify<Base::LogStyle::Error>,_msg)
-#define TREE_LOG(_msg) _TREE_PRINT(FC_LOGLEVEL_LOG,Notify<Base::LogStyle::Log>,_msg)
-#define TREE_TRACE(_msg) _TREE_PRINT(FC_LOGLEVEL_TRACE,Notify<Base::LogStyle::Log>,_msg)
+#define TREE_MSG(_msg) _TREE_PRINT(FC_LOGLEVEL_MSG,notify<Base::LogStyle::Message>,_msg)
+#define TREE_WARN(_msg) _TREE_PRINT(FC_LOGLEVEL_WARN,notify<Base::LogStyle::Warning>,_msg)
+#define TREE_ERR(_msg) _TREE_PRINT(FC_LOGLEVEL_ERR,notify<Base::LogStyle::Error>,_msg)
+#define TREE_LOG(_msg) _TREE_PRINT(FC_LOGLEVEL_LOG,notify<Base::LogStyle::Log>,_msg)
+#define TREE_TRACE(_msg) _TREE_PRINT(FC_LOGLEVEL_TRACE,notify<Base::LogStyle::Log>,_msg)
 
 using namespace Gui;
 namespace sp = std::placeholders;
@@ -98,7 +101,7 @@ static bool isVisibilityIconEnabled() {
 }
 
 static bool isOnlyNameColumnDisplayed() {
-    return TreeParams::getHideInternalNames() 
+    return TreeParams::getHideInternalNames()
         && TreeParams::getHideColumn();
 }
 
@@ -109,7 +112,7 @@ static bool isSelectionCheckBoxesEnabled() {
 void TreeParams::onItemBackgroundChanged()
 {
     if (getItemBackground()) {
-        App::Color color;
+        Base::Color color;
         color.setPackedValue(getItemBackground());
         QColor col;
         col.setRedF(color.r);
@@ -384,10 +387,10 @@ class DocumentItem::ExpandInfo :
 public:
     void restore(Base::XMLReader& reader) {
         int level = reader.level();
-        int count = reader.getAttributeAsInteger("count");
+        int count = reader.getAttribute<long>("count");
         for (int i = 0; i < count; ++i) {
             reader.readElement("Expand");
-            auto& entry = (*this)[reader.getAttribute("name")];
+            auto& entry = (*this)[reader.getAttribute<const char*>("name")];
             if (!reader.hasAttribute("count"))
                 continue;
             entry.reset(new ExpandInfo);
@@ -439,7 +442,7 @@ TreeWidgetItemDelegate::TreeWidgetItemDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
 {
     artificial = new QTreeView(qobject_cast<QWidget*>(parent));
-    artificial->setObjectName(QString::fromLatin1("DocumentTreeItems"));
+    artificial->setObjectName(QStringLiteral("DocumentTreeItems"));
     artificial->setFixedSize(0, 0); // ensure that it does not render
 }
 
@@ -485,7 +488,7 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
 
     // If only the first column is shown, we'll trim the color background when
     // rendering as transparent overlay.
-    bool trimColumnSize = isOnlyNameColumnDisplayed(); 
+    bool trimColumnSize = isOnlyNameColumnDisplayed();
 
     if (index.column() == 0) {
         if (tree->testAttribute(Qt::WA_NoSystemBackground)
@@ -516,6 +519,7 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
         return;
     }
 
+    option->textElideMode = Qt::ElideMiddle;
     auto mousePos = option->widget->mapFromGlobal(QCursor::pos());
     auto isHovered = option->rect.contains(mousePos);
     if (!isHovered) {
@@ -547,7 +551,7 @@ public:
 
     QSize sizeHint() const override
     {
-        QSize size = QLineEdit::sizeHint(); 
+        QSize size = QLineEdit::sizeHint();
         QFontMetrics fm(font());
         int availableWidth = parentWidget()->width() - geometry().x(); // Calculate available width
         int margin = 2 * (style()->pixelMetric(QStyle::PM_FocusFrameHMargin) + 1)
@@ -664,6 +668,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     this->skipRecomputeAction->setCheckable(true);
     connect(this->skipRecomputeAction, &QAction::toggled,
             this, &TreeWidget::onSkipRecompute);
+    this->skipRecomputeCommand = Gui::Application::Instance->commandManager().getCommandByName("Std_ToggleSkipRecompute");
 
     this->allowPartialRecomputeAction = new QAction(this);
     this->allowPartialRecomputeAction->setCheckable(true);
@@ -678,10 +683,14 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     connect(this->recomputeObjectAction, &QAction::triggered,
             this, &TreeWidget::onRecomputeObject);
     this->searchObjectsAction = new QAction(this);
-    this->searchObjectsAction->setText(tr("Search..."));
-    this->searchObjectsAction->setStatusTip(tr("Search for objects"));
+    this->searchObjectsAction->setText(tr("Search Objects"));
+    this->searchObjectsAction->setStatusTip(tr("Searches for objects in the tree"));
     connect(this->searchObjectsAction, &QAction::triggered,
             this, &TreeWidget::onSearchObjects);
+
+    this->openFileLocationAction = new QAction(this);
+    connect(this->openFileLocationAction, &QAction::triggered,
+            this, &TreeWidget::onOpenFileLocation);
 
     //NOLINTBEGIN
     // Setup connections
@@ -1032,6 +1041,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
 
         showHiddenAction->setChecked(docitem->showHidden());
         contextMenu.addAction(this->showHiddenAction);
+        contextMenu.addAction(this->openFileLocationAction);
         contextMenu.addAction(this->searchObjectsAction);
         contextMenu.addAction(this->closeDocAction);
         if (doc->testStatus(App::Document::PartialDoc))
@@ -1044,8 +1054,14 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
                 }
             }
             contextMenu.addAction(this->selectDependentsAction);
-            this->skipRecomputeAction->setChecked(doc->testStatus(App::Document::SkipRecompute));
-            contextMenu.addAction(this->skipRecomputeAction);
+            if (doc == App::GetApplication().getActiveDocument() && this->skipRecomputeCommand != nullptr) {
+                // if active document is selected, use Command
+                this->skipRecomputeCommand->addTo(&contextMenu);
+            } else {
+                // if other document is selected or Command load fails, edit selected Document directly
+                this->skipRecomputeAction->setChecked(doc->testStatus(App::Document::SkipRecompute));
+                contextMenu.addAction(this->skipRecomputeAction);
+            }         
             this->allowPartialRecomputeAction->setChecked(doc->testStatus(App::Document::AllowPartialRecompute));
             if (doc->testStatus(App::Document::SkipRecompute))
                 contextMenu.addAction(this->allowPartialRecomputeAction);
@@ -1115,14 +1131,14 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     if (docs.size() >= 2) {
         contextMenu.addSeparator();
         App::Document* activeDoc = App::GetApplication().getActiveDocument();
-        subMenu.setTitle(tr("Activate document"));
+        subMenu.setTitle(tr("Activate Document"));
         contextMenu.addMenu(&subMenu);
         QAction* active = nullptr;
         for (auto it = docs.begin(); it != docs.end(); ++it) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
             QAction* action = subMenuGroup.addAction(label);
             action->setCheckable(true);
-            action->setStatusTip(tr("Activate document %1").arg(label));
+            action->setStatusTip(tr("Activates document %1").arg(label));
             action->setData(QByteArray((*it)->getName()));
             if (*it == activeDoc) active = action;
         }
@@ -1134,13 +1150,13 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
 
     // add a submenu to present the settings of the tree.
     QMenu settingsMenu;
-    settingsMenu.setTitle(tr("Tree settings"));
+    settingsMenu.setTitle(tr("Tree Settings"));
     contextMenu.addSeparator();
     contextMenu.addMenu(&settingsMenu);
 
-    QAction* action = new QAction(tr("Show description"), this);
-    QAction* internalNameAction = new QAction(tr("Show internal name"), this);
-    action->setStatusTip(tr("Show a description column for items. An item's description can be set by pressing F2 (or your OS's edit button) or by editing the 'label2' property."));
+    QAction* action = new QAction(tr("Show Description"), this);
+    QAction* internalNameAction = new QAction(tr("Show Internal Name"), this);
+    action->setStatusTip(tr("Shows a description column for items. An item's description can be set by by editing the 'label2' property."));
     action->setCheckable(true);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
@@ -1155,7 +1171,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     });
 
 
-    internalNameAction->setStatusTip(tr("Show an internal name column for items."));
+    internalNameAction->setStatusTip(tr("Shows an internal name column for items."));
     internalNameAction->setCheckable(true);
 
     internalNameAction->setChecked(!hGrp->GetBool("HideInternalNames", true));
@@ -1169,12 +1185,12 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
         header()->setVisible(action->isChecked()||internalNameAction->isChecked());
     });
 
-    if (contextMenu.actions().count() > 0) {
+    if (!contextMenu.actions().isEmpty()) {
         try {
             contextMenu.exec(QCursor::pos());
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         catch (std::exception& e) {
             FC_ERR("C++ exception: " << e.what());
@@ -1201,7 +1217,7 @@ void TreeWidget::onCreateGroup()
     if (this->contextItem->type() == DocumentType) {
         auto docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
-        QString cmd = QString::fromLatin1("App.getDocument(\"%1\").addObject"
+        QString cmd = QStringLiteral("App.getDocument(\"%1\").addObject"
             "(\"App::DocumentObjectGroup\",\"Group\").Label=\"%2\"")
             .arg(QString::fromLatin1(doc->getName()), name);
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
@@ -1211,7 +1227,7 @@ void TreeWidget::onCreateGroup()
             (this->contextItem);
         App::DocumentObject* obj = objitem->object()->getObject();
         App::Document* doc = obj->getDocument();
-        QString cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\")"
+        QString cmd = QStringLiteral("App.getDocument(\"%1\").getObject(\"%2\")"
             ".newObject(\"App::DocumentObjectGroup\",\"Group\").Label=\"%3\"")
             .arg(QString::fromLatin1(doc->getName()),
                 QString::fromLatin1(obj->getNameInDocument()),
@@ -1297,9 +1313,11 @@ void TreeWidget::addDependentToSelection(App::Document* doc, App::DocumentObject
     Selection().addSelection(doc->getName(), docObject->getNameInDocument());
     // get the dependent
     auto subObjectList = docObject->getOutList();
-    // the dependent can in turn have dependents, thus add them recursively
-    for (auto itDepend = subObjectList.begin(); itDepend != subObjectList.end(); ++itDepend)
-        addDependentToSelection(doc, (*itDepend));
+    for (auto itDepend : subObjectList) {
+        if (!Selection().isSelected(itDepend)) {
+            addDependentToSelection(doc, itDepend);
+        }
+    }
 }
 
 // add dependents of the selected tree object to selection
@@ -1574,7 +1592,7 @@ void TreeWidget::selectAllLinks(App::DocumentObject* obj) {
             TREE_ERR("invalid linked object");
             continue;
         }
-        auto vp = dynamic_cast<ViewProviderDocumentObject*>(
+        auto vp = freecad_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(link));
         if (!vp) {
             TREE_ERR("invalid view provider of the linked object");
@@ -1801,7 +1819,7 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
         }
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (std::exception& e) {
         FC_ERR("C++ exception: " << e.what());
@@ -1911,14 +1929,14 @@ namespace {
                     if (topObj) {
                         auto sobj = topObj->getSubObject(info.topSubname.c_str(), nullptr, &mat);
                         if (sobj == obj) {
-                            propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+                            propPlacement = freecad_cast<App::PropertyPlacement*>(
                                 obj->getPropertyByName("Placement"));
                         }
                     }
                 }
             }
             else {
-                propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+                propPlacement = freecad_cast<App::PropertyPlacement*>(
                     obj->getPropertyByName("Placement"));
                 if (propPlacement)
                     mat = propPlacement->getValue().toMatrix();
@@ -2064,7 +2082,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
             }
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             event->ignore();
         }
         catch (std::exception& e) {
@@ -2191,7 +2209,7 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
             auto doc = App::GetApplication().getDocument(info.doc.c_str());
             if (!doc) continue;
             auto obj = doc->getObject(info.obj.c_str());
-            auto vpc = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
+            auto vpc = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
             if (!vpc) {
                 FC_WARN("Cannot find dragging object " << info.obj);
                 continue;
@@ -2240,7 +2258,7 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
                     continue;
                 }
                 auto parent = parentDoc->getObject(info.parent.c_str());
-                auto vpp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(parent));
+                auto vpp = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(parent));
                 if (!vpp) {
                     FC_WARN("Cannot find dragging object's parent " << info.parent);
                     continue;
@@ -2312,7 +2330,7 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         errMsg = e.what();
     }
     catch (std::exception& e) {
@@ -2476,7 +2494,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         for (auto& info : infos) {
             auto& subname = info.subname;
             targetObj = targetDoc->getObject(target.c_str());
-            vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>( Application::Instance->getViewProvider(targetObj));
+            vp = freecad_cast<ViewProviderDocumentObject*>( Application::Instance->getViewProvider(targetObj));
             if (!vp) {
                 FC_ERR("Cannot find drop target object " << target);
                 break;
@@ -2488,7 +2506,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
                 continue;
             }
             auto obj = doc->getObject(info.obj.c_str());
-            auto vpc = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
+            auto vpc = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
             if (!vpc) {
                 FC_WARN("Cannot find dragging object " << info.obj);
                 continue;
@@ -2499,7 +2517,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
                 auto parentDoc = App::GetApplication().getDocument(info.parentDoc.c_str());
                 if (parentDoc) {
                     auto parent = parentDoc->getObject(info.parent.c_str());
-                    vpp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(parent));
+                    vpp = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(parent));
                 }
                 if (!vpp) {
                     FC_WARN("Cannot find dragging object's parent " << info.parent);
@@ -2565,7 +2583,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
                 }
             }
 
-            if (inList.count(obj)) {
+            if (inList.contains(obj)) {
                 FC_THROWM(Base::RuntimeError, "Dependency loop detected for " << obj->getFullName());
             }
 
@@ -2644,7 +2662,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
                     (!info.dragging && sobj->getLinkedObject(false) == obj))
                 {
                     if (!info.dragging)
-                        propPlacement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
+                        propPlacement = freecad_cast<App::PropertyPlacement*>(
                             sobj->getPropertyByName("Placement"));
                     if (propPlacement) {
                         newMat *= propPlacement->getValue().inverse().toMatrix();
@@ -2674,7 +2692,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         errMsg = e.what();
     }
     catch (std::exception& e) {
@@ -2771,7 +2789,7 @@ void TreeWidget::sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App:
                 }
             }
             else {
-                if (std::find(draggedObjects.begin(), draggedObjects.end(), obj) == draggedObjects.end()) {
+                if (std::ranges::find(draggedObjects, obj) == draggedObjects.end()) {
                     sortedObjList.push_back(obj);
                 }
             }
@@ -2783,7 +2801,7 @@ void TreeWidget::sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App:
         auto targetItemObj = static_cast<DocumentObjectItem*>(targetInfo.targetItem);
         App::DocumentObject* targetObj = targetItemObj->object()->getObject();
 
-        auto propGroup = Base::freecad_dynamic_cast<App::PropertyLinkList>(targetObj->getPropertyByName("Group"));
+        auto propGroup = freecad_cast<App::PropertyLinkList*>(targetObj->getPropertyByName("Group"));
         if (!propGroup) {
             return;
         }
@@ -2811,7 +2829,7 @@ void TreeWidget::sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App:
 
         // Then we set the tree rank
         for (size_t i = 0; i < sortedObjList.size(); ++i) {
-            auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(sortedObjList[i]));
+            auto vp = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(sortedObjList[i]));
             vp->setTreeRank(i);
         }
 
@@ -2866,13 +2884,46 @@ void TreeWidget::onCloseDoc()
             Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", doc->getName());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (std::exception& e) {
         FC_ERR("C++ exception: " << e.what());
     }
     catch (...) {
         FC_ERR("Unknown exception");
+    }
+}
+
+void TreeWidget::onOpenFileLocation()
+{
+    auto docitem = static_cast<DocumentItem*>(this->contextItem);
+    App::Document* doc = docitem->document()->getDocument();
+    std::string name = doc->FileName.getValue();
+
+    const QFileInfo fileInfo(QString::fromStdString(name));
+    if (!fileInfo.exists()) {
+        QMessageBox::warning(this, tr("Error"), tr("File does not exist."));
+        return;
+    }
+
+    const QString filePath = fileInfo.canonicalPath();
+    bool success = false;
+
+#if defined(Q_OS_MAC)
+    success = QProcess::startDetached(QStringLiteral("open"), {filePath});
+#elif defined(Q_OS_WIN)
+    QStringList param;
+    if (!fileInfo.isDir()) {
+        param += QStringLiteral("/select,");
+    }
+    param += QDir::toNativeSeparators(filePath);
+    success = QProcess::startDetached(QStringLiteral("explorer.exe"), param);
+#else
+    success = QProcess::startDetached(QStringLiteral("xdg-open"), {filePath});
+#endif
+
+    if (!success) {
+        QMessageBox::warning(this, tr("Error"), tr("Failed to open directory."));
     }
 }
 
@@ -3018,9 +3069,9 @@ void TreeWidget::onUpdateStatus()
                 continue;
             if (obj->isError())
                 errors.push_back(obj);
-            if (docItem->ObjectMap.count(obj))
+            if (docItem->ObjectMap.contains(obj))
                 continue;
-            auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(gdoc->getViewProvider(obj));
+            auto vpd = freecad_cast<ViewProviderDocumentObject*>(gdoc->getViewProvider(obj));
             if (vpd)
                 docItem->createNewItem(*vpd);
         }
@@ -3159,7 +3210,6 @@ void TreeWidget::onUpdateStatus()
 
 void TreeWidget::onItemEntered(QTreeWidgetItem* item)
 {
-    // object item selected
     if (item && item->type() == TreeWidget::ObjectType) {
         auto objItem = static_cast<DocumentObjectItem*>(item);
         objItem->displayStatusInfo();
@@ -3309,43 +3359,51 @@ void TreeWidget::setupText()
     this->headerItem()->setText(1, tr("Description"));
     this->headerItem()->setText(2, tr("Internal name"));
 
-    this->showHiddenAction->setText(tr("Show items hidden in tree view"));
-    this->showHiddenAction->setStatusTip(tr("Show items that are marked as 'hidden' in the tree view"));
+    this->showHiddenAction->setText(tr("Show Items Hidden in Tree View"));
+    this->showHiddenAction->setStatusTip(tr("Shows items that are marked as 'hidden' in the tree view"));
 
-    this->toggleVisibilityInTreeAction->setText(tr("Toggle visibility in tree view"));
+    this->toggleVisibilityInTreeAction->setText(tr("Toggle Visibility in Tree View"));
     this->toggleVisibilityInTreeAction->setStatusTip(tr("Toggles the visibility of selected items in the tree view"));
 
-    this->createGroupAction->setText(tr("Create group"));
-    this->createGroupAction->setStatusTip(tr("Create a group"));
+    this->createGroupAction->setText(tr("Create Group"));
+    this->createGroupAction->setStatusTip(tr("Creates a group"));
 
     this->relabelObjectAction->setText(tr("Rename"));
-    this->relabelObjectAction->setStatusTip(tr("Rename object"));
+    this->relabelObjectAction->setStatusTip(tr("Renames object"));
 
-    this->finishEditingAction->setText(tr("Finish editing"));
-    this->finishEditingAction->setStatusTip(tr("Finish editing object"));
+    this->finishEditingAction->setText(tr("Finish Editing"));
+    this->finishEditingAction->setStatusTip(tr("Finishes editing object"));
 
-    this->selectDependentsAction->setText(tr("Add dependent objects to selection"));
+    this->selectDependentsAction->setText(tr("Add Dependent Objects to Selection"));
     this->selectDependentsAction->setStatusTip(tr("Adds all dependent objects to the selection"));
 
-    this->closeDocAction->setText(tr("Close document"));
-    this->closeDocAction->setStatusTip(tr("Close the document"));
+    this->closeDocAction->setText(tr("Close Document"));
+    this->closeDocAction->setStatusTip(tr("Closes the document"));
 
-    this->reloadDocAction->setText(tr("Reload document"));
-    this->reloadDocAction->setStatusTip(tr("Reload a partially loaded document"));
+#ifdef Q_OS_MAC
+    this->openFileLocationAction->setText(tr("Reveal in Finder"));
+    this->openFileLocationAction->setStatusTip(tr("Reveals the current file location in Finder"));
+#else
+    this->openFileLocationAction->setText(tr("Open File Location"));
+    this->openFileLocationAction->setStatusTip(tr("Opens the current file location"));
+#endif
 
-    this->skipRecomputeAction->setText(tr("Skip recomputes"));
-    this->skipRecomputeAction->setStatusTip(tr("Enable or disable recomputations of document"));
+    this->reloadDocAction->setText(tr("Reload Document"));
+    this->reloadDocAction->setStatusTip(tr("Reloads a partially loaded document"));
 
-    this->allowPartialRecomputeAction->setText(tr("Allow partial recomputes"));
+    this->skipRecomputeAction->setText(tr("Skip Recomputes"));
+    this->skipRecomputeAction->setStatusTip(tr("Enables or disables the recomputations of document"));
+
+    this->allowPartialRecomputeAction->setText(tr("Allow Partial Recomputes"));
     this->allowPartialRecomputeAction->setStatusTip(
-        tr("Enable or disable recomputating editing object when 'skip recomputation' is enabled"));
+        tr("Enables or disables the recomputating editing object when 'skip recomputation' is enabled"));
 
-    this->markRecomputeAction->setText(tr("Mark to recompute"));
-    this->markRecomputeAction->setStatusTip(tr("Mark this object to be recomputed"));
+    this->markRecomputeAction->setText(tr("Mark to Recompute"));
+    this->markRecomputeAction->setStatusTip(tr("Marks this object to be recomputed"));
     this->markRecomputeAction->setIcon(BitmapFactory().iconFromTheme("Std_MarkToRecompute"));
 
-    this->recomputeObjectAction->setText(tr("Recompute object"));
-    this->recomputeObjectAction->setStatusTip(tr("Recompute the selected object"));
+    this->recomputeObjectAction->setText(tr("Recompute Object"));
+    this->recomputeObjectAction->setStatusTip(tr("Recomputes the selected object"));
     this->recomputeObjectAction->setIcon(BitmapFactory().iconFromTheme("view-refresh"));
 }
 
@@ -3416,6 +3474,11 @@ void TreeWidget::onItemSelectionChanged()
 
     // block tmp. the connection to avoid to notify us ourself
     bool lock = this->blockSelection(true);
+
+    if (preselectTimer->isActive()) {
+        // block preselect after selecting
+        preselectTimer->stop();
+    }
 
     if (selectTimer->isActive())
         onSelectTimer();
@@ -3683,7 +3746,7 @@ void TreePanel::itemSearch(const QString& text)
 TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument, QWidget* parent)
     : DockWindow(pcDocument, parent)
 {
-    setWindowTitle(tr("Tree view"));
+    setWindowTitle(tr("Tree View"));
     auto panel = new TreePanel("TreeView", this);
     auto pLayout = new QGridLayout(this);
     pLayout->setSpacing(0);
@@ -3697,7 +3760,7 @@ void TreeWidget::selectLinkedObject(App::DocumentObject* linked) {
     if (!isSelectionAttached() || isSelectionBlocked())
         return;
 
-    auto linkedVp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+    auto linkedVp = freecad_cast<ViewProviderDocumentObject*>(
         Application::Instance->getViewProvider(linked));
     if (!linkedVp) {
         TREE_ERR("invalid linked view provider");
@@ -3812,7 +3875,7 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/TreeView");
     unsigned long col = hGrp->GetUnsigned("TreeEditColor", 563609599);
-    QColor color(App::Color::fromPackedRGB<QColor>(col));
+    QColor color(Base::Color::fromPackedRGB<QColor>(col));
 
     if (!getTree()->editingItem) {
         auto doc = Application::Instance->editDocument();
@@ -3822,7 +3885,7 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
         std::string subname;
         auto vp = doc->getInEdit(&parentVp, &subname);
         if (!parentVp)
-            parentVp = dynamic_cast<ViewProviderDocumentObject*>(vp);
+            parentVp = freecad_cast<ViewProviderDocumentObject*>(vp);
         if (parentVp)
             getTree()->editingItem = findItemByObject(true, parentVp->getObject(), subname.c_str());
     }
@@ -3882,7 +3945,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
             entry.insert(pdata);
         }
         else if (pdata->rootItem && !parent) {
-            Base::Console().Warning("DocumentItem::slotNewObject: Cannot add view provider twice.\n");
+            Base::Console().warning("DocumentItem::slotNewObject: Cannot add view provider twice.\n");
             return false;
         }
         data = pdata;
@@ -3913,7 +3976,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
 }
 
 ViewProviderDocumentObject* DocumentItem::getViewProvider(App::DocumentObject* obj) {
-    return Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+    return freecad_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(obj));
 }
 
@@ -3961,6 +4024,9 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
 
     TREE_LOG("delete object " << obj->getFullName());
 
+    // Block all selection signals during deletion to prevent cascading selection change events
+    // during item creation or deletion
+    bool lock = blockSelection(true);
     bool needUpdate = false;
 
     for (const auto& data : itEntry->second) {
@@ -3974,13 +4040,11 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
         if (obj->getDocument() == doc)
             docItem->_ParentMap.erase(obj);
 
-        bool lock = blockSelection(true);
         for (auto cit = items.begin(), citNext = cit; cit != items.end(); cit = citNext) {
             ++citNext;
             (*cit)->myOwner = nullptr;
             delete* cit;
         }
-        blockSelection(lock);
 
         // Check for any child of the deleted object that is not in the tree, and put it
         // under document item.
@@ -4006,6 +4070,9 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
         docItem->ObjectMap.erase(obj);
     }
     ObjectTable.erase(itEntry);
+
+    // Restore signal state
+    blockSelection(lock);
 
     if (needUpdate)
         _updateStatus();
@@ -4211,7 +4278,7 @@ int DocumentItem::findRootIndex(App::DocumentObject* childObj) {
         return vp->getTreeRank();
     };
 
-    auto vpc = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(childObj));
+    auto vpc = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(childObj));
     int childTreeRank = getTreeRank(vpc);
 
     // find the last item
@@ -4398,7 +4465,7 @@ void TreeWidget::updateChildren(App::DocumentObject* obj,
         // and thus, its property change will not be propagated through
         // recomputation. So we have to manually check for each links here.
         for (auto link : App::GetApplication().getLinksTo(obj, App::GetLinkRecursive)) {
-            if (ChangedObjects.count(link))
+            if (ChangedObjects.contains(link))
                 continue;
             std::vector<App::DocumentObject*> linkedChildren;
             DocumentObjectDataPtr found;
@@ -4426,7 +4493,7 @@ void TreeWidget::updateChildren(App::DocumentObject* obj,
         //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children
         //of the geofeaturegroup depends on what the childs claim
         auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
-        if (grp && !ChangedObjects.count(grp)) {
+        if (grp && !ChangedObjects.contains(grp)) {
             auto iter = ObjectTable.find(grp);
             if (iter != ObjectTable.end())
                 updateChildren(grp, iter->second, true, false);
@@ -4943,8 +5010,9 @@ DocumentObjectItem* DocumentItem::findItem(
     else {
         if (select) {
             item->selected += 2;
-            if (std::find(item->mySubs.begin(), item->mySubs.end(), subname) == item->mySubs.end())
+            if (std::ranges::find(item->mySubs, subname) == item->mySubs.end()) {
                 item->mySubs.emplace_back(subname);
+            }
         }
         return item;
     }
@@ -4957,7 +5025,7 @@ DocumentObjectItem* DocumentItem::findItem(
             TREE_LOG("sub object not found " << item->getName() << '.' << name.c_str());
         if (select) {
             item->selected += 2;
-            if (std::find(item->mySubs.begin(), item->mySubs.end(), subname) == item->mySubs.end())
+            if (std::ranges::find(item->mySubs, subname) == item->mySubs.end())
                 item->mySubs.emplace_back(subname);
         }
         return item;
@@ -5002,7 +5070,7 @@ DocumentObjectItem* DocumentItem::findItem(
         // Select the current object instead.
         TREE_TRACE("element " << subname << " not found");
         item->selected += 2;
-        if (std::find(item->mySubs.begin(), item->mySubs.end(), subname) == item->mySubs.end())
+        if (std::ranges::find(item->mySubs, subname) == item->mySubs.end())
             item->mySubs.emplace_back(subname);
     }
     return res;
@@ -5255,7 +5323,7 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
             f.setOverline(overlined);
 
             unsigned long col = hGrp->GetUnsigned("TreeActiveColor", 1538528255);
-            color = App::Color::fromPackedRGB<QColor>(col);
+            color = Base::Color::fromPackedRGB<QColor>(col);
         }
         else {
             f.setBold(false);
@@ -5300,6 +5368,11 @@ enum Status {
 
 void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2)
 {
+    // guard against calling this during destruction when tree widget may be nullptr
+    if (!treeWidget()) {
+        return;
+    }
+
     App::DocumentObject* pObject = object()->getObject();
 
     int visible = -1;
@@ -5438,7 +5511,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
 
         if (currentStatus & Status::External) {
             static QPixmap pxExternal;
-            int px = 12 * getMainWindow()->devicePixelRatioF();
+            constexpr int px = 12;
             if (pxExternal.isNull()) {
                 pxExternal = Gui::BitmapFactory().pixmapFromSvg("LinkOverlay",
                                                               QSize(px, px));
@@ -5484,7 +5557,9 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
                 QPainter pt;
                 pt.begin(&px);
                 pt.setPen(Qt::NoPen);
-                pt.drawPixmap(0, 0, px_org.width(), px_org.height(), (currentStatus & Status::Visible) ? pxVisible : pxInvisible);
+                if (object()->canToggleVisibility()) {
+                    pt.drawPixmap(0, 0, px_org.width(), px_org.height(), (currentStatus & Status::Visible) ? pxVisible : pxInvisible);
+                }
                 pt.drawPixmap(px_org.width() + spacing, 0, px_org.width(), px_org.height(), px_org);
                 pt.end();
 

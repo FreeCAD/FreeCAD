@@ -81,11 +81,7 @@ short Groove::mustExecute() const
 
 App::DocumentObjectExecReturn *Groove::execute()
 {
-    if (onlyHasToRefine()){
-        TopoShape result = refineShapeIfActive(rawShape);
-        Shape.setValue(result);
-        return App::DocumentObject::StdReturn;
-    }
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
 
     // Validate parameters
     double angle = Angle.getValue();
@@ -189,17 +185,17 @@ App::DocumentObjectExecReturn *Groove::execute()
         }catch(Standard_Failure &) {
             return new App::DocumentObjectExecReturn("Failed to cut base feature");
         }
-        boolOp = this->getSolid(boolOp);
-        if (boolOp.isNull())
+        TopoShape solid = this->getSolid(boolOp);
+        if (solid.isNull())
             return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
         // store shape before refinement
         this->rawShape = boolOp;
         boolOp = refineShapeIfActive(boolOp);
-        boolOp = getSolid(boolOp);
         if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
         }
+        boolOp = getSolid(boolOp);
         Shape.setValue(boolOp);
         return App::DocumentObject::StdReturn;
     }
@@ -274,7 +270,7 @@ void Groove::generateRevolution(TopoDS_Shape& revol,
             angleOffset = angle2 * -1.0;
         }
         else if (method == RevolMethod::ThroughAll) {
-            angleTotal = 2 * M_PI;
+            angleTotal = 2 * std::numbers::pi;
         }
         else if (midplane) {
             // Rotate the face by half the angle to get Groove symmetric to sketch plane
@@ -388,3 +384,5 @@ void Groove::updateProperties(RevolMethod method)
 
 
 }
+
+

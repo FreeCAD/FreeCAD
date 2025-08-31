@@ -30,7 +30,7 @@
 #endif
 
 #include <Base/Builder3D.h>
-#include <App/Color.h>
+#include <Base/Color.h>
 
 #include "NaviCube.h"
 #include "Navigation/NavigationStyle.h"
@@ -38,27 +38,34 @@
 #include "View3DSettings.h"
 #include "View3DInventorViewer.h"
 
+#include <Base/Tools.h>
+
 using namespace Gui;
 
 View3DSettings::View3DSettings(ParameterGrp::handle hGrp,
                                View3DInventorViewer* view)
     : hGrp(hGrp)
+    , hLightSourcesGrp(hGrp->GetGroup("LightSources"))
     , _viewers{view}
 {
     hGrp->Attach(this);
+    hLightSourcesGrp->Attach(this);
 }
 
 View3DSettings::View3DSettings(ParameterGrp::handle hGrp,
                                const std::vector<View3DInventorViewer *>& view)
     : hGrp(hGrp)
+    , hLightSourcesGrp(hGrp->GetGroup("LightSources"))
     , _viewers(view)
 {
     hGrp->Attach(this);
+    hLightSourcesGrp->Attach(this);
 }
 
 View3DSettings::~View3DSettings()
 {
     hGrp->Detach(this);
+    hLightSourcesGrp->Detach(this);
 }
 
 int View3DSettings::stopAnimatingIfDeactivated() const
@@ -92,14 +99,46 @@ void View3DSettings::applySettings()
     OnChange(*hGrp,"UseVBO");
     OnChange(*hGrp,"RenderCache");
     OnChange(*hGrp,"Orthographic");
-    OnChange(*hGrp,"EnableHeadlight");
-    OnChange(*hGrp,"HeadlightColor");
-    OnChange(*hGrp,"HeadlightDirection");
-    OnChange(*hGrp,"HeadlightIntensity");
-    OnChange(*hGrp,"EnableBacklight");
-    OnChange(*hGrp,"BacklightColor");
-    OnChange(*hGrp,"BacklightDirection");
-    OnChange(*hGrp,"BacklightIntensity");
+
+    auto lightSourcesGrp = hGrp->GetGroup("LightSources");
+    OnChange(*lightSourcesGrp,"EnableHeadlight");
+    OnChange(*lightSourcesGrp,"HeadlightColor");
+    OnChange(*lightSourcesGrp,"HeadlightDirection");
+    OnChange(*lightSourcesGrp,"HeadlightIntensity");
+    OnChange(*lightSourcesGrp,"EnableBacklight");
+    OnChange(*lightSourcesGrp,"BacklightColor");
+    OnChange(*lightSourcesGrp,"BacklightDirection");
+    OnChange(*lightSourcesGrp,"BacklightIntensity");
+    OnChange(*lightSourcesGrp,"EnableFillLight");
+    OnChange(*lightSourcesGrp,"FillLightColor");
+    OnChange(*lightSourcesGrp,"FillLightDirection");
+    OnChange(*lightSourcesGrp,"FillLightIntensity");
+    OnChange(*lightSourcesGrp,"AmbientLightColor");
+    OnChange(*lightSourcesGrp,"AmbientLightIntensity");
+
+    // Workaround
+    // Clear old settings that was used for a while in 1.1dev
+    // By clearing these settings, 1.0 will be able to run with same config file again
+    // For more info: https://github.com/FreeCAD/FreeCAD/issues/19880
+    // TODO: Remove when 1.1.0 is about to be released
+    if (hGrp->GetASCII("FillLightDirection").empty()) {
+        hGrp->RemoveBool("EnableHeadlight");
+        hGrp->RemoveUnsigned("HeadlightColor");
+        hGrp->RemoveASCII("HeadlightDirection");
+        hGrp->RemoveInt("HeadlightIntensity");
+        hGrp->RemoveBool("EnableBacklight");
+        hGrp->RemoveUnsigned("BacklightColor");
+        hGrp->RemoveASCII("BacklightDirection");
+        hGrp->RemoveInt("BacklightIntensity");
+        hGrp->RemoveBool("EnableFillLight");
+        hGrp->RemoveUnsigned("FillLightColor");
+        hGrp->RemoveASCII("FillLightDirection");
+        hGrp->RemoveInt("FillLightIntensity");
+        hGrp->RemoveUnsigned("AmbientLightColor");
+        hGrp->RemoveInt("AmbientLightIntensity");
+    }
+    // End of workaround
+
     OnChange(*hGrp,"NavigationStyle");
     OnChange(*hGrp,"OrbitStyle");
     OnChange(*hGrp,"Sensitivity");
@@ -121,7 +160,7 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         }
     }
     else if (strcmp(Reason,"HeadlightColor") == 0) {
-        unsigned long headlight = rGrp.GetUnsigned("HeadlightColor",ULONG_MAX); // default color (white)
+        unsigned long headlight = rGrp.GetUnsigned("HeadlightColor", 0xFFFFFFFF); // default color (white)
         float transparency;
         SbColor headlightColor;
         headlightColor.setPackedValue((uint32_t)headlight, transparency);
@@ -131,9 +170,9 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"HeadlightDirection") == 0) {
         try {
-            std::string pos = rGrp.GetASCII("HeadlightDirection");
+            std::string pos = rGrp.GetASCII("HeadlightDirection", defaultHeadLightDirection);
             if (!pos.empty()) {
-                Base::Vector3f dir = Base::to_vector(pos);
+                Base::Vector3f dir = Base::stringToVector(pos);
                 for (auto _viewer : _viewers) {
                     _viewer->getHeadlight()->direction.setValue(dir.x, dir.y, dir.z);
                 }
@@ -144,18 +183,18 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         }
     }
     else if (strcmp(Reason,"HeadlightIntensity") == 0) {
-        long value = rGrp.GetInt("HeadlightIntensity", 100);
+        long value = rGrp.GetInt("HeadlightIntensity", 90);
         for (auto _viewer : _viewers) {
-            _viewer->getHeadlight()->intensity.setValue((float)value/100.0f);
+            _viewer->getHeadlight()->intensity.setValue(Base::fromPercent(value));
         }
     }
     else if (strcmp(Reason,"EnableBacklight") == 0) {
         for (auto _viewer : _viewers) {
-            _viewer->setBacklightEnabled(rGrp.GetBool("EnableBacklight", false));
+            _viewer->setBacklightEnabled(rGrp.GetBool("EnableBacklight", true));
         }
     }
     else if (strcmp(Reason,"BacklightColor") == 0) {
-        unsigned long backlight = rGrp.GetUnsigned("BacklightColor",ULONG_MAX); // default color (white)
+        unsigned long backlight = rGrp.GetUnsigned("BacklightColor", 0xF5F5EEFF);
         float transparency;
         SbColor backlightColor;
         backlightColor.setPackedValue((uint32_t)backlight, transparency);
@@ -165,9 +204,9 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"BacklightDirection") == 0) {
         try {
-            std::string pos = rGrp.GetASCII("BacklightDirection");
+            std::string pos = rGrp.GetASCII("BacklightDirection", defaultBackLightDirection);
             if (!pos.empty()) {
-                Base::Vector3f dir = Base::to_vector(pos);
+                Base::Vector3f dir = Base::stringToVector(pos);
                 for (auto _viewer : _viewers) {
                     _viewer->getBacklight()->direction.setValue(dir.x, dir.y, dir.z);
                 }
@@ -178,14 +217,63 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         }
     }
     else if (strcmp(Reason,"BacklightIntensity") == 0) {
-        long value = rGrp.GetInt("BacklightIntensity", 100);
+        long value = rGrp.GetInt("BacklightIntensity", 60);
         for (auto _viewer : _viewers) {
-            _viewer->getBacklight()->intensity.setValue((float)value/100.0f);
+            _viewer->getBacklight()->intensity.setValue(Base::fromPercent(value));
+        }
+    }
+    else if (strcmp(Reason,"EnableFillLight") == 0) {
+        for (auto _viewer : _viewers) {
+            _viewer->setFillLightEnabled(rGrp.GetBool("EnableFillLight", true));
+        }
+    }
+    else if (strcmp(Reason,"FillLightColor") == 0) {
+        unsigned long backlight = rGrp.GetUnsigned("FillLightColor", 0xE6FAFFFF); // default color (white)
+        float transparency;
+        SbColor backlightColor;
+        backlightColor.setPackedValue((uint32_t)backlight, transparency);
+        for (auto _viewer : _viewers) {
+            _viewer->getFillLight()->color.setValue(backlightColor);
+        }
+    }
+    else if (strcmp(Reason,"FillLightDirection") == 0) {
+        try {
+            std::string pos = rGrp.GetASCII("FillLightDirection", defaultFillLightDirection);
+            if (!pos.empty()) {
+                Base::Vector3f dir = Base::stringToVector(pos);
+                for (auto _viewer : _viewers) {
+                    _viewer->getFillLight()->direction.setValue(dir.x, dir.y, dir.z);
+                }
+            }
+        }
+        catch (const std::exception&) {
+            // ignore exception
+        }
+    }
+    else if (strcmp(Reason,"FillLightIntensity") == 0) {
+        long value = rGrp.GetInt("FillLightIntensity", 40);
+        for (auto _viewer : _viewers) {
+            _viewer->getFillLight()->intensity.setValue(Base::fromPercent(value));
+        }
+    }
+    else if (strcmp(Reason,"AmbientLightColor") == 0) {
+        unsigned long color = rGrp.GetUnsigned("AmbientLightColor", 0xFFFFFFFF);
+        float transparency;
+        SbColor backlightColor;
+        backlightColor.setPackedValue((uint32_t)color, transparency);
+        for (auto _viewer : _viewers) {
+            _viewer->getEnvironment()->ambientColor.setValue(backlightColor);
+        }
+    }
+    else if (strcmp(Reason,"AmbientLightIntensity") == 0) {
+        long value = rGrp.GetInt("AmbientLightIntensity", 20);
+        for (auto _viewer : _viewers) {
+            _viewer->getEnvironment()->ambientIntensity.setValue(Base::fromPercent(value));
         }
     }
     else if (strcmp(Reason,"EnablePreselection") == 0) {
         const ParameterGrp& rclGrp = ((ParameterGrp&)rCaller);
-        SoFCEnableHighlightAction cAct(rclGrp.GetBool("EnablePreselection", true));
+        SoFCEnablePreselectionAction cAct(rclGrp.GetBool("EnablePreselection", true));
         for (auto _viewer : _viewers) {
             cAct.apply(_viewer->getSceneGraph());
         }
@@ -232,7 +320,7 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         }
     }
     else if (strcmp(Reason,"OrbitStyle") == 0) {
-        int style = rGrp.GetInt("OrbitStyle",1);
+        int style = rGrp.GetInt("OrbitStyle",4);
         for (auto _viewer : _viewers) {
             _viewer->navigationStyle()->setOrbitStyle(NavigationStyle::OrbitStyle(style));
         }
@@ -542,19 +630,19 @@ void NaviCubeSettings::parameterChanged(const char* Name)
     }
     else if (strcmp(Name, "BaseColor") == 0) {
         unsigned long col = hGrp->GetUnsigned("BaseColor", 3806916544);
-        nc->setBaseColor(App::Color::fromPackedRGBA<QColor>(col));
+        nc->setBaseColor(Base::Color::fromPackedRGBA<QColor>(col));
         // update default contrast colors
         parameterChanged("EmphaseColor");
     }
     else if (strcmp(Name, "EmphaseColor") == 0) {
-        App::Color bc((uint32_t)hGrp->GetUnsigned("BaseColor", 3806916544));
+        Base::Color bc((uint32_t)hGrp->GetUnsigned("BaseColor", 3806916544));
         unsigned long d = bc.r + bc.g + bc.b >= 1.5f ? 255 : 4294967295;
         unsigned long col = hGrp->GetUnsigned("EmphaseColor", d);
-        nc->setEmphaseColor(App::Color::fromPackedRGBA<QColor>(col));
+        nc->setEmphaseColor(Base::Color::fromPackedRGBA<QColor>(col));
     }
     else if (strcmp(Name, "HiliteColor") == 0) {
         unsigned long col = hGrp->GetUnsigned("HiliteColor", 2867003391);
-        nc->setHiliteColor(App::Color::fromPackedRGBA<QColor>(col));
+        nc->setHiliteColor(Base::Color::fromPackedRGBA<QColor>(col));
     }
     else if (strcmp(Name, "BorderWidth") == 0) {
         nc->setBorderWidth(hGrp->GetFloat("BorderWidth", 1.1));

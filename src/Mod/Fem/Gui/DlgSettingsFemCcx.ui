@@ -69,7 +69,7 @@
            </size>
           </property>
           <property name="text">
-           <string>ccx binary path</string>
+           <string>CCX binary path</string>
           </property>
          </widget>
         </item>
@@ -116,7 +116,7 @@
         <item row="4" column="0">
          <widget class="QLabel" name="l_editor">
           <property name="text">
-           <string>Input file Editor</string>
+           <string>Input file editor</string>
           </property>
          </widget>
         </item>
@@ -148,7 +148,7 @@
            </size>
           </property>
           <property name="text">
-           <string>External editor:</string>
+           <string>External editor</string>
           </property>
          </widget>
         </item>
@@ -199,7 +199,7 @@
    <item>
     <widget class="QGroupBox" name="gb_02_analysis_param">
      <property name="title">
-      <string>Analysis defaults</string>
+      <string>Analysis Defaults</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
@@ -283,7 +283,7 @@
    <item>
     <widget class="QGroupBox" name="gb_03_solver_param">
      <property name="title">
-      <string>Solver defaults</string>
+      <string>Solver Defaults</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_1">
       <item>
@@ -304,14 +304,14 @@
         <item row="5" column="0">
          <widget class="QLabel" name="l_ccx_initial_time_step">
           <property name="text">
-           <string>Time Initial Step</string>
+           <string>Initial time step</string>
           </property>
          </widget>
         </item>
         <item row="6" column="0">
          <widget class="QLabel" name="l_ccx_analysis_time">
           <property name="text">
-           <string>Time End</string>
+           <string>End time</string>
           </property>
          </widget>
         </item>
@@ -334,7 +334,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="l_ccx_numcpu">
           <property name="text">
-           <string>Number of CPU's to use</string>
+           <string>Number of CPUs to use</string>
           </property>
          </widget>
         </item>
@@ -525,7 +525,7 @@
         <item row="7" column="0">
          <widget class="QLabel" name="l_ccx_minimum_time_step">
           <property name="text">
-           <string>Time Minimum Step</string>
+           <string>Minimum time step</string>
           </property>
          </widget>
         </item>
@@ -655,7 +655,61 @@
         <item row="8" column="0">
          <widget class="QLabel" name="l_ccx_maximum_time_step">
           <property name="text">
-           <string>Time Maximum Step</string>
+           <string>Maximum time step</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0">
+         <widget class="QLabel" name="l_pipeline_result">
+          <property name="text">
+           <string>Result object</string>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="2">
+         <widget class="Gui::PrefCheckBox" name="ckb_pipeline_result">
+          <property name="text">
+           <string>Pipeline only</string>
+          </property>
+          <property name="toolTip">
+           <string>Load results as pipeline instead of CCX_Results objects.
+After unchecking this option, the CalculiX command behaves like SolverCalculiXCcxTools</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ResultAsPipeline</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Ccx</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="0">
+         <widget class="QLabel" name="l_result_format">
+          <property name="text">
+           <string>Result format</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="2">
+         <widget class="Gui::PrefCheckBox" name="ckb_result_format">
+          <property name="toolTip">
+           <string>Save result in binary format.
+Only takes effect if 'Pipeline only' is enabled</string>
+          </property>
+          <property name="text">
+           <string>Use binary format</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BinaryOutput</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Ccx</cstring>
           </property>
          </widget>
         </item>
@@ -667,7 +721,7 @@
    <item>
     <widget class="QGroupBox" name="gb_04_thermomech_params">
      <property name="title">
-      <string>Thermo mechanical defaults</string>
+      <string>Thermo-Mechanical Defaults</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
@@ -703,7 +757,7 @@
    <item>
     <widget class="QGroupBox" name="gb_05_frequercy_params">
      <property name="title">
-      <string>Frequency defaults</string>
+      <string>Frequency Defaults</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>

@@ -33,6 +33,28 @@
 
 namespace PartDesignGui {
 
+class Ui_TaskPreviewParameters;
+
+class TaskPreviewParameters : public Gui::TaskView::TaskBox
+{
+    Q_OBJECT
+
+public:
+    explicit TaskPreviewParameters(ViewProvider* vp, QWidget* parent = nullptr);
+    ~TaskPreviewParameters() override;
+
+public Q_SLOTS:
+    void onShowPreviewChanged(bool show);
+    void onShowFinalChanged(bool show);
+
+private:
+    ViewProvider* vp;
+    std::unique_ptr<Ui_TaskPreviewParameters> ui;
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/PartDesign/Preview");
+};
+
 /// Convenience class to collect common methods for all SketchBased features
 class TaskFeatureParameters : public Gui::TaskView::TaskBox,
                               public Gui::DocumentObserver
@@ -69,7 +91,7 @@ protected:
     {
         static_assert(std::is_base_of<PartDesignGui::ViewProvider, T>::value,
                 "Wrong template argument");
-        return dynamic_cast<T*>(vp);
+        return freecad_cast<T*>(vp);
     }
 
     template<typename T = App::DocumentObject> T* getObject() const
@@ -104,8 +126,10 @@ protected:
         blockUpdate = value;
     }
 
-private:
+protected:
     PartDesignGui::ViewProvider *vp;
+
+private:
     bool blockUpdate;
 };
 
@@ -128,7 +152,7 @@ public:
     {
         static_assert(std::is_base_of<PartDesignGui::ViewProvider, T>::value,
                 "Wrong template argument");
-        return dynamic_cast<T*>(vp);
+        return freecad_cast<T*>(vp);
     }
 
     template<typename T = App::DocumentObject> T* getObject() const
@@ -140,6 +164,9 @@ public:
 
         return nullptr;
     }
+
+protected:
+    PartDesignGui::TaskPreviewParameters* preview;
 
 private:
     PartDesignGui::ViewProvider* vp;

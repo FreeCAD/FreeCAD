@@ -170,7 +170,7 @@ void ViewProviderMeshTransformDemolding::DragEndCallback()
     SbRotation rot = pcTrackballDragger->rotation.getValue();
     calcMaterialIndex(rot);
 
-    Base::Console().Log("View: Finish dragging\n");
+    Base::Console().log("View: Finish dragging\n");
 }
 
 void ViewProviderMeshTransformDemolding::valueChangedCallback()

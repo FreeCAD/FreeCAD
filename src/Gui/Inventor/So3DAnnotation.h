@@ -25,6 +25,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/elements/SoElement.h>
+#include <Inventor/elements/SoSubElement.h>
 #include <FCGlobal.h>
 
 namespace Gui

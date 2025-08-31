@@ -1,16 +1,16 @@
 {
-  "problemMatcher": [
-    {
-      "owner": "codespell-matcher",
-      "severity": "warning",
-      "pattern": [
+    "problemMatcher": [
         {
-          "regexp": "^(.+):(\\d+):\\s+(.+)$",
-          "file": 1,
-          "line": 2,
-          "message": 3
+            "owner": "codespell-matcher",
+            "severity": "warning",
+            "pattern": [
+                {
+                    "regexp": "^(.+):(\\d+):\\s+(.+)$",
+                    "file": 1,
+                    "line": 2,
+                    "message": 3
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

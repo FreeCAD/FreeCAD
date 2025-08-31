@@ -54,8 +54,7 @@ int StringHasherPy::PyInit(PyObject* args, PyObject* kwds)
     return 0;
 }
 
-
-PyObject* StringHasherPy::isSame(PyObject* args)
+PyObject* StringHasherPy::isSame(PyObject* args) const
 {
     PyObject* other;
     if (!PyArg_ParseTuple(args, "O!", &StringHasherPy::Type, &other)) {

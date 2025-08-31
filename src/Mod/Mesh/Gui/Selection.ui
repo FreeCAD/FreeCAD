@@ -60,7 +60,7 @@
       <item row="2" column="0" colspan="3">
        <widget class="QCheckBox" name="screenTriangles">
         <property name="text">
-         <string>Respect only triangles with normals facing screen</string>
+         <string>Respect only triangles with screen-facing normals</string>
         </property>
         <property name="checked">
          <bool>true</bool>

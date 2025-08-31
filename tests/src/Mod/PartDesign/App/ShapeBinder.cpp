@@ -23,8 +23,8 @@ protected:
     {
         _docName = App::GetApplication().getUniqueDocumentName("test");
         _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
-        _body = dynamic_cast<PartDesign::Body*>(_doc->addObject("PartDesign::Body"));  // NOLINT
-        _box = dynamic_cast<Part::Box*>(_doc->addObject("Part::Box"));                 // NOLINT
+        _body = _doc->addObject<PartDesign::Body>();
+        _box = _doc->addObject<Part::Box>();
         _box->Length.setValue(1);
         _box->Width.setValue(2);
         _box->Height.setValue(3);
@@ -32,10 +32,8 @@ protected:
             Base::Placement(Base::Vector3d(), Base::Rotation(), Base::Vector3d()));  // NOLINT
         //        _body->addObject(_box); // Invalid, Part::Features can't go in a PartDesign::Body,
         //        but we can bind them.
-        _binder = dynamic_cast<PartDesign::ShapeBinder*>(
-            _doc->addObject("PartDesign::ShapeBinder", "ShapeBinderFoo"));  // NOLINT
-        _subbinder = dynamic_cast<PartDesign::SubShapeBinder*>(
-            _doc->addObject("PartDesign::SubShapeBinder", "SubShapeBinderBar"));  // NOLINT
+        _binder = _doc->addObject<PartDesign::ShapeBinder>("ShapeBinderFoo");
+        _subbinder = _doc->addObject<PartDesign::SubShapeBinder>("SubShapeBinderBar");
         _binder->Shape.setValue(_box->Shape.getShape());
         _subbinder->setLinks({{_box, {"Face1", "Face2"}}}, false);
         _body->addObject(_binder);

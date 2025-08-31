@@ -341,7 +341,7 @@ public:
             if (idx >= 0 && idx < objSize) {
                 obj = objs[idx / 2];
                 // if they are in the ignore list skip
-                if (inList.count(obj)) {
+                if (inList.contains(obj)) {
                     return;
                 }
             }
@@ -430,7 +430,7 @@ public:
             const auto& objs = doc->getObjects();
             objSize = (int)objs.size() * 2;
             // if invalid index, or in the ignore list bail out
-            if (idx < 0 || idx >= objSize || inList.count(obj)) {
+            if (idx < 0 || idx >= objSize || inList.contains(obj)) {
                 return;
             }
             obj = objs[idx / 2];
@@ -890,6 +890,27 @@ void ExpressionCompleter::slotUpdate(const QString& prefix, int pos)
     }
 }
 
+ExpressionValidator::ExpressionValidator(QObject* parent)
+    : QValidator(parent)
+{}
+
+void ExpressionValidator::fixup(QString &input) const
+{
+    if (input.startsWith(QLatin1String("="))) {
+        input = input.mid(1);
+    }
+}
+
+QValidator::State ExpressionValidator::validate(QString &input, int &pos) const
+{
+    if (input.startsWith(QLatin1String("="))) {
+        pos = 0;
+        return QValidator::Invalid;
+    }
+
+    return QValidator::Acceptable;
+}
+
 ExpressionLineEdit::ExpressionLineEdit(QWidget* parent,
                                        bool noProperty,
                                        char checkPrefix,
@@ -900,14 +921,15 @@ ExpressionLineEdit::ExpressionLineEdit(QWidget* parent,
     , noProperty(noProperty)
     , exactMatch(false)
     , checkInList(checkInList)
-    , checkPrefix(checkPrefix)
 {
+    setPrefix(checkPrefix);
     connect(this, &QLineEdit::textEdited, this, &ExpressionLineEdit::slotTextChanged);
 }
 
 void ExpressionLineEdit::setPrefix(char prefix)
 {
     checkPrefix = prefix;
+    setValidator(checkPrefix == '=' ? nullptr : new ExpressionValidator(this));
 }
 
 void ExpressionLineEdit::setDocumentObject(const App::DocumentObject* currentDocObj,
@@ -954,6 +976,11 @@ void ExpressionLineEdit::setExactMatch(bool enabled)
     if (completer) {
         completer->setFilterMode(exactMatch ? Qt::MatchStartsWith : Qt::MatchContains);
     }
+}
+
+ExpressionCompleter *ExpressionLineEdit::getCompleter(void)
+{
+    return this->completer;
 }
 
 bool ExpressionLineEdit::completerActive() const
@@ -1028,7 +1055,7 @@ void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent* event)
 
     if (completer) {
         menu->addSeparator();
-        QAction* match = menu->addAction(tr("Exact match"));
+        QAction* match = menu->addAction(tr("Exact Match"));
         match->setCheckable(true);
         match->setChecked(completer->filterMode() == Qt::MatchStartsWith);
         QObject::connect(match, &QAction::toggled, this, &Gui::ExpressionLineEdit::setExactMatch);
@@ -1132,7 +1159,7 @@ void ExpressionTextEdit::contextMenuEvent(QContextMenuEvent* event)
 {
     QMenu* menu = createStandardContextMenu();
     menu->addSeparator();
-    QAction* match = menu->addAction(tr("Exact match"));
+    QAction* match = menu->addAction(tr("Exact Match"));
 
     if (completer) {
         match->setCheckable(true);

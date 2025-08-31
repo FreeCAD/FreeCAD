@@ -114,11 +114,11 @@ parser.add_argument(
 )
 parser.add_argument(
     "--preamble",
-    help="set commands to be issued before the first command",
+    help='set commands to be issued before the first command, default=""',
 )
 parser.add_argument(
     "--postamble",
-    help="set commands to be issued after the last command",
+    help='set commands to be issued after the last command, default="M5\\n"',
 )
 parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument("--inches", action="store_true", help="convert output for US imperial mode")
@@ -179,9 +179,9 @@ def processArguments(argstring):
             SHOW_EDITOR = False
         PRECISION = args.precision
         if args.preamble is not None:
-            PREAMBLE = args.preamble
+            PREAMBLE = args.preamble.replace("\\n", "\n")
         if args.postamble is not None:
-            POSTAMBLE = args.postamble
+            POSTAMBLE = args.postamble.replace("\\n", "\n")
         if args.inches:
             UNITS = "G20"
             UNIT_SPEED_FORMAT = "in/min"
@@ -235,8 +235,8 @@ def export(objectslist, filename, argstring):
     # Write the preamble
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(Begin preamble)\n"
-    for line in PREAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in PREAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
     # verify if PREAMBLE have changed UNITS
     if "G21" in PREAMBLE:
         UNITS = "G21"
@@ -263,7 +263,7 @@ def export(objectslist, filename, argstring):
             continue
 
         # Skip inactive operations
-        if PathUtil.opProperty(obj, "Active") is False:
+        if not PathUtil.activeForOp(obj):
             continue
 
         # do the pre_op
@@ -273,12 +273,7 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + line
 
         # get coolant mode
-        coolantMode = "None"
-        if hasattr(obj, "CoolantMode") or hasattr(obj, "Base") and hasattr(obj.Base, "CoolantMode"):
-            if hasattr(obj, "CoolantMode"):
-                coolantMode = obj.CoolantMode
-            else:
-                coolantMode = obj.Base.CoolantMode
+        coolantMode = PathUtil.coolantModeForOp(obj)
 
         # turn coolant on if required
         if OUTPUT_COMMENTS:
@@ -310,8 +305,8 @@ def export(objectslist, filename, argstring):
     # do the post_amble
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(Begin postamble)\n"
-    for line in POSTAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in POSTAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
 
     # show the gCode result dialog
     if FreeCAD.GuiUp and SHOW_EDITOR:
@@ -327,10 +322,11 @@ def export(objectslist, filename, argstring):
 
     print("Done postprocessing.")
 
-    # write the file
-    gfile = pyopen(filename, "w")
-    gfile.write(final)
-    gfile.close()
+    if filename != "-":
+        with pyopen(filename, "w") as gfile:
+            gfile.write(final)
+
+    return final
 
 
 def linenumber():

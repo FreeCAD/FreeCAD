@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <limits>
 # include <QApplication>
 # include <QKeyEvent>
 # include <QLabel>
@@ -391,7 +392,7 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
 
             Py::Object attr = getAttrWorkaround(obj, attrname);
             if (!attr.ptr()) {
-                Base::Console().Log("Python attribute '%s' returns null!\n", name.c_str());
+                Base::Console().log("Python attribute '%s' returns null!\n", name.c_str());
                 continue;
             }
 
@@ -748,7 +749,7 @@ QString CallTipsList::stripWhiteSpace(const QString& str) const
 {
     QString stripped = str;
     QStringList lines = str.split(QLatin1String("\n"));
-    int minspace=INT_MAX;
+    int minspace=std::numeric_limits<int>::max();
     int line=0;
     for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it, ++line) {
         if (it->size() > 0 && line > 0) {
@@ -766,7 +767,7 @@ QString CallTipsList::stripWhiteSpace(const QString& str) const
     }
 
     // remove all leading tabs from each line
-    if (minspace > 0 && minspace < INT_MAX) {
+    if (minspace > 0 && minspace < std::numeric_limits<int>::max()) {
         int line=0;
         QStringList strippedlines;
         for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it, ++line) {

@@ -99,7 +99,7 @@ bool FeaturePythonImp::execute()
             PyErr_Clear();
             return false;
         }
-        Base::PyException::ThrowException();  // extract the Python error text
+        Base::PyException::throwException();  // extract the Python error text
     }
 
     return false;
@@ -123,7 +123,7 @@ bool FeaturePythonImp::mustExecute() const
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
     return false;
 }
@@ -156,7 +156,7 @@ void FeaturePythonImp::onBeforeChange(const Property* prop)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -183,7 +183,7 @@ bool FeaturePythonImp::onBeforeChangeLabel(std::string& newLabel)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
     return false;
 }
@@ -214,7 +214,7 @@ void FeaturePythonImp::onChanged(const Property* prop)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -236,7 +236,7 @@ void FeaturePythonImp::onDocumentRestored()
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -258,7 +258,7 @@ void FeaturePythonImp::unsetupObject()
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -278,14 +278,14 @@ bool FeaturePythonImp::getSubObject(DocumentObject*& ret,
             subname = "";
         }
         args.setItem(1, Py::String(subname));
-        args.setItem(2, Py::Int(pyObj ? 2 : 1));
+        args.setItem(2, Py::Long(pyObj ? 2 : 1));
         Base::MatrixPy* pyMat = new Base::MatrixPy(new Base::Matrix4D);
         if (_mat) {
             *pyMat->getMatrixPtr() = *_mat;
         }
         args.setItem(3, Py::asObject(pyMat));
         args.setItem(4, Py::Boolean(transform));
-        args.setItem(5, Py::Int(depth));
+        args.setItem(5, Py::Long(depth));
 
         Py::Object res(Base::pyCall(py_getSubObject.ptr(), args.ptr()));
         if (res.isNone()) {
@@ -330,7 +330,7 @@ bool FeaturePythonImp::getSubObject(DocumentObject*& ret,
             return false;
         }
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         ret = nullptr;
         return true;
     }
@@ -343,7 +343,7 @@ bool FeaturePythonImp::getSubObjects(std::vector<std::string>& ret, int reason) 
     try {
         Py::Tuple args(2);
         args.setItem(0, Py::Object(object->getPyObject(), true));
-        args.setItem(1, Py::Int(reason));
+        args.setItem(1, Py::Long(reason));
         Py::Object res(Base::pyCall(py_getSubObjects.ptr(), args.ptr()));
         if (!res.isTrue()) {
             return true;
@@ -367,7 +367,7 @@ bool FeaturePythonImp::getSubObjects(std::vector<std::string>& ret, int reason) 
             return false;
         }
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return true;
     }
 }
@@ -390,7 +390,7 @@ bool FeaturePythonImp::getLinkedObject(DocumentObject*& ret,
         }
         args.setItem(2, Py::asObject(pyMat));
         args.setItem(3, Py::Boolean(transform));
-        args.setItem(4, Py::Int(depth));
+        args.setItem(4, Py::Long(depth));
 
         Py::Object res(Base::pyCall(py_getLinkedObject.ptr(), args.ptr()));
         if (!res.isTrue()) {
@@ -424,7 +424,7 @@ bool FeaturePythonImp::getLinkedObject(DocumentObject*& ret,
             return false;
         }
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         ret = nullptr;
         return true;
     }
@@ -453,7 +453,7 @@ FeaturePythonImp::ValueT FeaturePythonImp::hasChildElement() const
         }
 
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return Rejected;
     }
 }
@@ -466,7 +466,7 @@ int FeaturePythonImp::isElementVisible(const char* element) const
         Py::Tuple args(2);
         args.setItem(0, Py::Object(object->getPyObject(), true));
         args.setItem(1, Py::String(element ? element : ""));
-        return Py::Int(Base::pyCall(py_isElementVisible.ptr(), args.ptr()));
+        return Py::Long(Base::pyCall(py_isElementVisible.ptr(), args.ptr()));
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
@@ -474,7 +474,7 @@ int FeaturePythonImp::isElementVisible(const char* element) const
             return -2;
         }
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return -1;
     }
 }
@@ -488,7 +488,7 @@ int FeaturePythonImp::setElementVisible(const char* element, bool visible)
         args.setItem(0, Py::Object(object->getPyObject(), true));
         args.setItem(1, Py::String(element ? element : ""));
         args.setItem(2, Py::Boolean(visible));
-        return Py::Int(Base::pyCall(py_setElementVisible.ptr(), args.ptr()));
+        return Py::Long(Base::pyCall(py_setElementVisible.ptr(), args.ptr()));
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
@@ -496,7 +496,7 @@ int FeaturePythonImp::setElementVisible(const char* element, bool visible)
             return -2;
         }
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return -1;
     }
 }
@@ -512,7 +512,7 @@ std::string FeaturePythonImp::getViewProviderName()
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return {};
@@ -534,7 +534,7 @@ FeaturePythonImp::ValueT FeaturePythonImp::canLinkProperties() const
             return NotImplemented;
         }
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return Rejected;
     }
 }
@@ -556,7 +556,7 @@ FeaturePythonImp::ValueT FeaturePythonImp::allowDuplicateLabel() const
         }
 
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return Rejected;
     }
 }
@@ -568,7 +568,7 @@ int FeaturePythonImp::canLoadPartial() const
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::Object(object->getPyObject(), true));
-        Py::Int ret(Base::pyCall(py_canLoadPartial.ptr(), args.ptr()));
+        Py::Long ret(Base::pyCall(py_canLoadPartial.ptr(), args.ptr()));
         return ret;
     }
     catch (Py::Exception&) {
@@ -577,7 +577,7 @@ int FeaturePythonImp::canLoadPartial() const
             return -1;
         }
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return 0;
     }
 }
@@ -609,7 +609,7 @@ FeaturePythonImp::ValueT FeaturePythonImp::redirectSubName(std::ostringstream& s
         }
 
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
         return Rejected;
     }
 }
@@ -631,7 +631,7 @@ bool FeaturePythonImp::editProperty(const char* name)
         }
 
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
     return false;
 }

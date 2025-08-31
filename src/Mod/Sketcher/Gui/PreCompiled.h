@@ -32,7 +32,6 @@
 #ifdef _PreComp_
 
 // standard
-#include <cfloat>
 #include <cmath>
 #include <cstdlib>
 
@@ -40,6 +39,7 @@
 #include <algorithm>
 #include <bitset>
 #include <functional>
+#include <limits>
 #include <map>
 #include <memory>
 #include <vector>
@@ -71,16 +71,12 @@
 #include <gp_Pnt.hxx>
 
 // Qt
-#ifndef __QtAll__
 #include <Gui/QtAll.h>
-#endif
 
 #include <QWidgetAction>
 
 // all of Inventor
-#ifndef __InventorAll__
 #include <Gui/InventorAll.h>
-#endif
 
 #endif  //_PreComp_
 

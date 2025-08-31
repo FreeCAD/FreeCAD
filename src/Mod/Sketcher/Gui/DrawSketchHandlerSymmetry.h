@@ -145,7 +145,7 @@ private:
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to create symmetry"));
@@ -171,7 +171,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Create_Symmetry");
+        return QStringLiteral("Sketcher_Pointer_Create_Symmetry");
     }
 
     std::unique_ptr<QWidget> createWidget() const override
@@ -191,7 +191,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Symmetry parameters"));
+        return QString(tr("Symmetry parameters"));
     }
 
     void activated() override
@@ -215,6 +215,16 @@ private:
     Sketcher::PointPos refPosId;
     bool deleteOriginal, createSymConstraints;
 
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using enum Gui::InputHint::UserInput;
+
+        return {
+            {tr("%1 pick axis, edge, or point", "Sketcher Symmetry: hint"), {MouseLeft}},
+        };
+    }
+
     void deleteOriginalGeos()
     {
         std::stringstream stream;
@@ -228,7 +238,7 @@ private:
                                   stream.str().c_str());
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().error("%s\n", e.what());
         }
     }
 

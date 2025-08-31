@@ -34,18 +34,23 @@ template<class T>
 class FolderTreeNode
 {
 public:
-    enum NodeType
+    enum class NodeType
     {
+        UnknownNode,
         DataNode,
         FolderNode
     };
 
     FolderTreeNode()
+        : _type(NodeType::UnknownNode)
+        , _oldFormat(false)
+        , _readOnly(false)
     {}
     virtual ~FolderTreeNode() = default;
 
     NodeType getType() const
     {
+        // assert(_type == NodeType::DataNode || _type == NodeType::FolderNode);
         return _type;
     }
     void setType(NodeType type)
@@ -53,34 +58,66 @@ public:
         _type = type;
     }
 
-    const std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> getFolder() const
+    std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> getFolder() const
     {
+        assert(_type == NodeType::FolderNode);
         return _folder;
     }
     std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> getFolder()
     {
+        assert(_type == NodeType::FolderNode);
         return _folder;
     }
     std::shared_ptr<T> getData() const
     {
+        assert(_type == NodeType::DataNode);
         return _data;
+    }
+    QString getUUID() const
+    {
+        assert(_type == NodeType::DataNode);
+        return _uuid;
+    }
+    bool isOldFormat() const
+    {
+        return _oldFormat;
+    }
+    bool isReadOnly() const
+    {
+        return _readOnly;
     }
 
     void setFolder(std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> folder)
     {
-        setType(FolderNode);
+        setType(NodeType::FolderNode);
         _folder = folder;
     }
     void setData(std::shared_ptr<T> data)
     {
-        setType(DataNode);
+        setType(NodeType::DataNode);
         _data = data;
+    }
+    void setUUID(const QString& uuid)
+    {
+        setType(NodeType::DataNode);
+        _uuid = uuid;
+    }
+    void setOldFormat(bool oldFormat)
+    {
+        _oldFormat = oldFormat;
+    }
+    void setReadOnly(bool readOnly)
+    {
+        _readOnly = readOnly;
     }
 
 private:
     NodeType _type;
     std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> _folder;
+    QString _uuid;
     std::shared_ptr<T> _data;
+    bool _oldFormat;
+    bool _readOnly;
 };
 
 }  // namespace Materials

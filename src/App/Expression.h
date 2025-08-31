@@ -84,7 +84,7 @@ template<class P> class ExpressionModifier : public ExpressionVisitor {
 public:
     explicit ExpressionModifier(P & _prop)
         : prop(_prop)
-        , propLink(Base::freecad_dynamic_cast<App::PropertyLinkBase>(&prop))
+        , propLink(freecad_cast<App::PropertyLinkBase*>(&prop))
         , signaller(_prop,false)
     {}
 
@@ -108,11 +108,14 @@ protected:
     int _changed{0};
 };
 
-/**
-  * Base class for expressions.
-  *
-  */
 
+/**
+  * @brief %Base class for expressions.
+  * @ingroup ExpressionFramework
+  *
+  * @details For a high-level overview of the %Expression framework see topic
+  * @ref ExpressionFramework "Expression Framework".
+  */
 class AppExport Expression : public Base::BaseClass {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 

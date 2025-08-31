@@ -36,10 +36,6 @@
 #define __LONG_MAX__ 2147483647
 #endif
 
-#ifndef M_PI
-#define M_PI 3.141592653589793238
-#endif
-
 // #define DEV_MODE
 
 #define NTOL 1.0e-7  // numeric tolerance

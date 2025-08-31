@@ -52,7 +52,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(Part::GeometryPersistenceExtension,Part::GeometryExte
 void GeometryPersistenceExtension::restoreAttributes(Base::XMLReader &reader)
 {
     if(reader.hasAttribute("name")) {
-        std::string name = reader.getAttribute("name");
+        std::string name = reader.getAttribute<const char*>("name");
         setName(name);
     }
 }

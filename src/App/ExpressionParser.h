@@ -365,6 +365,9 @@ public:
         HIDDENREF,  // hidden reference that has no dependency check
         HREF,       // deprecated alias of HIDDENREF
 
+        // Non aggregated logical
+        NOT,   // logical NOT
+
         // Aggregates
         AGGREGATES,
 
@@ -374,6 +377,10 @@ public:
         MIN,
         STDDEV,
         SUM,
+
+        // Logical aggregates, evaluates to {0,1}
+        AND,  // logical AND
+        OR,  // logical OR
 
         // Last one
         LAST,
@@ -594,6 +601,12 @@ protected:
     std::string end;
 };
 
+/**
+ * @brief Namespace for parsing expressions.
+ *
+ * Contains functionality for parsing expressions, the units of
+ * expressions, whether a token is an identifier, unit, or constant.
+ */
 namespace ExpressionParser
 {
 AppExport Expression* parse(const App::DocumentObject* owner, const char* buffer);
@@ -649,7 +662,7 @@ public:
 };
 
 #define YYSTYPE semantic_type
-#include "ExpressionParser.tab.h"
+#include "Expression.tab.h"
 #undef YYTOKENTYPE
 #undef YYSTYPE
 #undef YYSTYPE_ISDECLARED

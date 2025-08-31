@@ -28,7 +28,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <Base/Type.h>
 #include <Gui/Application.h>
@@ -181,7 +181,7 @@
     if(__obj && __obj->isAttachedToDocument()) {\
         Gui::Command::doCommand(Gui::Command::Gui,\
             "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'), %i)",\
-            __obj->getDocument()->getName(), __obj->getNameInDocument(), Gui::Application::Instance->getUserEditMode());\
+            __obj->getDocument()->getName(), __obj->getNameInDocument(), 0);\
     }\
 }while(0)
 
@@ -379,6 +379,8 @@ public:
     static Application*  getGuiApplication();
     /// Get a reference to the selection
     static Gui::SelectionSingleton&  getSelection();
+    /// Get pointer to the active app document
+    App::Document*  getActiveDocument() const;
     /// Get pointer to the active gui document
     Gui::Document*  getActiveGuiDocument() const;
     /** Get pointer to the named or active App document
@@ -418,8 +420,6 @@ public:
     static bool hasPendingCommand();
     /// Updates the (active) document (propagate changes)
     static void updateActive();
-    /// Updates the (all or listed) documents (propagate changes)
-    static void updateAll(std::list<Gui::Document*> cList);
     /// Checks if the active object of the active document is valid
     static bool isActiveObjectValid();
     /// Translate command
@@ -576,11 +576,6 @@ public:
     virtual void setShortcut (const QString &);
     /// Obtain the current shortcut of this command
     virtual QString getShortcut() const;
-
-    /** @name arbitrary helper methods */
-    //@{
-    void adjustCameraPosition();
-    //@}
 
     /// Helper class to disable python console log
     class LogDisabler {

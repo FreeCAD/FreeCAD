@@ -30,6 +30,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
+#include <Gui/MainWindow.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
 
@@ -45,109 +46,53 @@ ViewProviderPrimitive::ViewProviderPrimitive() = default;
 
 ViewProviderPrimitive::~ViewProviderPrimitive() = default;
 
-void ViewProviderPrimitive::attach(App::DocumentObject* obj) {
-    ViewProviderAddSub::attach(obj);
-}
-
 void ViewProviderPrimitive::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit primitive"));
+    addDefaultAction(menu, QObject::tr("Edit Primitive"));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderPrimitive::setEdit(int ModNum)
+TaskDlgFeatureParameters* ViewProviderPrimitive::getEditDialog()
 {
-    if (ModNum == ViewProvider::Default ) {
-        // When double-clicking on the item for this fillet the
-        // object unsets and sets its edit mode without closing
-        // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskPrimitiveParameters *primitiveDlg = qobject_cast<TaskPrimitiveParameters *>(dlg);
-        if (dlg && !primitiveDlg) {
-            QMessageBox msgBox;
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes)
-                Gui::Control().closeDialog();
-            else
-                return false;
-        }
-
-        // clear the selection (convenience)
-        Gui::Selection().clearSelection();
-
-        // always change to PartDesign WB, remember where we come from
-        oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
-
-        // start the edit dialog
-        // another pad left open its task panel
-        if (primitiveDlg)
-            Gui::Control().showDialog(primitiveDlg);
-        else
-            Gui::Control().showDialog(new TaskPrimitiveParameters(this));
-
-        setPreviewDisplayMode(true);
-
-        return true;
-    }
-    else {
-        return ViewProviderAddSub::setEdit(ModNum);
-    }
-}
-
-void ViewProviderPrimitive::unsetEdit(int ModNum)
-{
-    setPreviewDisplayMode(false);
-
-    // Rely on parent class to:
-    // restitute old workbench (set setEdit above) and close the dialog if exiting editing
-    PartDesignGui::ViewProvider::unsetEdit(ModNum);
-
-}
-
-void ViewProviderPrimitive::updateData(const App::Property* p) {
-    PartDesignGui::ViewProviderAddSub::updateData(p);
+    return new TaskDlgPrimitiveParameters(this);
 }
 
 QIcon ViewProviderPrimitive::getIcon() const {
 
-    QString str = QString::fromLatin1("PartDesign_");
+    QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::FeaturePrimitive>();
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive");
+        str += QStringLiteral("Additive");
     else
-        str += QString::fromLatin1("Subtractive");
+        str += QStringLiteral("Subtractive");
 
     switch(prim->getPrimitiveType()) {
     case PartDesign::FeaturePrimitive::Box:
-        str += QString::fromLatin1("Box");
+        str += QStringLiteral("Box");
         break;
     case PartDesign::FeaturePrimitive::Cylinder:
-        str += QString::fromLatin1("Cylinder");
+        str += QStringLiteral("Cylinder");
         break;
     case PartDesign::FeaturePrimitive::Sphere:
-        str += QString::fromLatin1("Sphere");
+        str += QStringLiteral("Sphere");
         break;
     case PartDesign::FeaturePrimitive::Cone:
-        str += QString::fromLatin1("Cone");
+        str += QStringLiteral("Cone");
         break;
     case PartDesign::FeaturePrimitive::Ellipsoid:
-        str += QString::fromLatin1("Ellipsoid");
+        str += QStringLiteral("Ellipsoid");
         break;
     case PartDesign::FeaturePrimitive::Torus:
-        str += QString::fromLatin1("Torus");
+        str += QStringLiteral("Torus");
         break;
     case PartDesign::FeaturePrimitive::Prism:
-        str += QString::fromLatin1("Prism");
+        str += QStringLiteral("Prism");
         break;
     case PartDesign::FeaturePrimitive::Wedge:
-        str += QString::fromLatin1("Wedge");
+        str += QStringLiteral("Wedge");
         break;
     }
 
-    str += QString::fromLatin1(".svg");
+    str += QStringLiteral(".svg");
     return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }

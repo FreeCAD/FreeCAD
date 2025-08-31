@@ -36,31 +36,26 @@ void TaskGroup::setScheme(ActionPanelScheme *scheme)
 {
   if (scheme) {
     myScheme = scheme;
-
-    setStyleSheet(myScheme->actionStyle);
-
     update();
   }
 }
 
 bool TaskGroup::addActionLabel(ActionLabel *label, bool addToLayout, bool addStretch)
 {
-  if (!label)
+  if (!label) {
       return false;
-
-  label->setStyleSheet("");
-
+  }
   return addWidget(label, addToLayout, addStretch);
 }
 
 bool TaskGroup::addWidget(QWidget *widget, bool addToLayout, bool addStretch)
 {
-  if (!widget)
+  if (!widget) {
       return false;
-
-  if (!addToLayout)
+  }
+  if (!addToLayout) {
       return true;
-
+  }
   if (addStretch) {
     QHBoxLayout *hbl = new QHBoxLayout();
     hbl->setContentsMargins(0, 0, 0, 0);
@@ -85,18 +80,6 @@ QPixmap TaskGroup::transparentRender()
   render(&pm, QPoint(0,0), rect(), DrawChildren | IgnoreMask);
 
   return pm;
-}
-
-void TaskGroup::paintEvent ( QPaintEvent * event )
-{
-//  QPainter p(this);
-
-//  p.setBrush(myScheme->groupBackground);
-
-//  p.setPen(myScheme->groupBorder);
-//  p.drawRect(rect().adjusted(0,-(int)myHasHeader,-1,-1));
-
-    BaseClass::paintEvent(event);
 }
 
 void TaskGroup::keyPressEvent ( QKeyEvent * event )

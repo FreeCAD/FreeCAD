@@ -65,7 +65,7 @@ public:
         , alignment(Qt::AlignBottom | Qt::AlignLeft)
         , textColor(Qt::black)
     {
-        Base::Console().AttachObserver(this);
+        Base::Console().attachObserver(this);
 
         // allow to customize text position and color
         const std::map<std::string, std::string>& cfg = App::Application::Config();
@@ -107,13 +107,13 @@ public:
     }
     ~SplashObserver() override
     {
-        Base::Console().DetachObserver(this);
+        Base::Console().detachObserver(this);
     }
-    const char* Name() override
+    const char* name() override
     {
         return "SplashObserver";
     }
-    void SendLog(const std::string& notifiername,
+    void sendLog(const std::string& notifiername,
                  const std::string& msg,
                  Base::LogStyle level,
                  Base::IntendedRecipient recipient,
@@ -187,7 +187,7 @@ static void renderDevBuildWarning(QPainter& painter,
 
     // Construct the lines of text and figure out how much space they need
     const auto devWarningLine1 = QObject::tr("WARNING: This is a development version.");
-    const auto devWarningLine2 = QObject::tr("Please do not use it in a production environment.");
+    const auto devWarningLine2 = QObject::tr("Do not use it in a production environment.");
     QFontMetrics fontMetrics(painter.font());  // Try to use the existing font
     int padding = QtTools::horizontalAdvance(fontMetrics, QLatin1String("M"));  // Arbitrary
     int line1Width = QtTools::horizontalAdvance(fontMetrics, devWarningLine1);
@@ -260,7 +260,7 @@ QPixmap SplashScreen::splashImage()
 {
     // search in the UserAppData dir as very first
     QPixmap splash_image;
-    QFileInfo fi(QString::fromLatin1("images:splash_image.png"));
+    QFileInfo fi(QStringLiteral("images:splash_image.png"));
     if (fi.isFile() && fi.exists()) {
         splash_image.load(fi.filePath(), "PNG");
     }
@@ -316,7 +316,7 @@ QPixmap SplashScreen::splashImage()
         QString minor = QString::fromStdString(App::Application::Config()["BuildVersionMinor"]);
         QString point = QString::fromStdString(App::Application::Config()["BuildVersionPoint"]);
         QString suffix = QString::fromStdString(App::Application::Config()["BuildVersionSuffix"]);
-        QString version = QString::fromLatin1("%1.%2.%3%4").arg(major, minor, point, suffix);
+        QString version = QStringLiteral("%1.%2.%3%4").arg(major, minor, point, suffix);
         QString position, fontFamily;
 
         std::map<std::string, std::string>::const_iterator te =

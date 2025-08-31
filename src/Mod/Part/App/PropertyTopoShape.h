@@ -126,7 +126,7 @@ struct PartExport ShapeHistory {
     using MapList = std::map<int, std::vector<int> >;
     using List = std::vector<int>;
 
-    TopAbs_ShapeEnum type;
+    TopAbs_ShapeEnum type {TopAbs_SHAPE};
     MapList shapeMap;
     ShapeHistory() {}
     /**

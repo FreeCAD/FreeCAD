@@ -122,13 +122,13 @@ public:
             return;
         }
 
-        auto transformColors = [](const std::vector<App::Color>& input) {
+        auto transformColors = [](const std::vector<Base::Color>& input) {
             std::vector<Base::ColorRGB> output;
             output.reserve(input.size());
             std::transform(input.cbegin(),
                            input.cend(),
                            std::back_inserter(output),
-                           [](const App::Color& col) {
+                           [](const Base::Color& col) {
                                return Base::ColorRGB {col.r, col.g, col.b};
                            });
 

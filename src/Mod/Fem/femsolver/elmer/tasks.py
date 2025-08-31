@@ -279,64 +279,35 @@ class Results(run.Results):
         # a line has the form like this:
         # <DataSet timestep="   5.000E-02" group="" part="0" file="FreeCAD_t0001.vtu"/>
         # so .split("\"") gives as 2nd the time and as 7th the filename
+        files = []
+        values = []
         for i in range(0, len(pvdContent) - 2):
             # get time
             lineArray = pvdContent[i + 1].split('"')
             time = float(lineArray[1])
             filename = os.path.join(self.directory, lineArray[7])
             if os.path.isfile(filename):
-                self._createTimeResults(time, i + 1)
-                self.solver.ElmerTimeResults[i].read(filename)
-
-                # for eigen analyses the resulting values are by a factor 1000 to high
-                # therefore scale all *EigenMode results
-                self.solver.ElmerTimeResults[i].ViewObject.transformField(
-                    "displacement EigenMode1", 0.001
-                )
-
-                self.solver.ElmerTimeResults[i].recomputeChildren()
-                # recompute() will update the result mesh data
-                # but not the shape and bar coloring
-                self.solver.ElmerTimeResults[i].ViewObject.updateColorBars()
+                values.append(time)
+                files.append(filename)
             else:
                 self.pushStatus(f"\nResult file for time {time} is missing.\n")
                 self.fail()
                 return
+
+        if self.solver.ElmerResult is None:
+            self._createResults()
+
+        self.solver.ElmerResult.read(files, values, FreeCAD.Units.TimeSpan, "Time")
+
+        # for eigen analyses the resulting values are by a factor 1000 to high
+        # therefore scale all *EigenMode results
+        self.solver.ElmerResult.ViewObject.transformField("displacement EigenMode1", 0.001)
+
+        self.solver.ElmerResult.recomputeChildren()
         self.solver.Document.recompute()
-
-    def _createTimeResults(self, time, counter):
-        # if self.solver.ElmerTimeResults[counter] exists, but time is different
-        # recreate, other wise append
-        # FreeCAD would replaces dots in object names with underscores, thus do the same
-        newName = self.solver.Name + "_" + str(time).replace(".", "_") + "_" + "Result"
-        if counter > len(self.solver.ElmerTimeResults):
-            pipeline = self.analysis.Document.addObject("Fem::FemPostPipeline", newName)
-            # App::PropertyLinkList does not support append
-            # thus we have to use a temporary list to append
-            tmplist = self.solver.ElmerTimeResults
-            tmplist.append(pipeline)
-            self.solver.ElmerTimeResults = tmplist
-            self._finishTimeResults(time, counter - 1)
-        else:
-            # recreate if time is not equal
-            if self.solver.ElmerTimeResults[counter - 1].Name != newName:
-                # store current list before removing object since object removal will automatically
-                # remove entry from self.solver.ElmerTimeResults
-                tmplist = self.solver.ElmerTimeResults
-                self.analysis.Document.removeObject(self.solver.ElmerTimeResults[counter - 1].Name)
-                tmplist[counter - 1] = self.analysis.Document.addObject(
-                    "Fem::FemPostPipeline", newName
-                )
-                self.solver.ElmerTimeResults = tmplist
-                self._finishTimeResults(time, counter - 1)
-
-    def _finishTimeResults(self, time, counter):
-        # we purposely use the decimal dot in the label
-        self.solver.ElmerTimeResults[counter].Label = f"{self.solver.Name}_{time}_Result"
-        self.solver.ElmerTimeResults[counter].ViewObject.OnTopWhenSelected = True
-        self.analysis.addObject(self.solver.ElmerTimeResults[counter])
-        # to assure the user sees something, set the default to Surface
-        self.solver.ElmerTimeResults[counter].ViewObject.DisplayMode = "Surface"
+        # recompute() updated the result mesh data
+        # but not the shape and bar coloring
+        self.solver.ElmerResult.ViewObject.updateColorBars()
 
     def _getResultFile(self):
         postPath = None

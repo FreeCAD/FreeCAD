@@ -35,7 +35,7 @@
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/ordered_index.hpp>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include "DAGRectItem.h"
 
@@ -87,7 +87,6 @@ namespace Gui
       int topoSortIndex = 0;
       VisibilityState lastVisibleState = VisibilityState::None; //!< visibility test.
       FeatureState lastFeatureState = FeatureState::None; //!< feature state test.
-      bool dagVisible = true; //!< should entry be visible in the DAG view.
     };
     /*! @brief boost data for each vertex.
      *

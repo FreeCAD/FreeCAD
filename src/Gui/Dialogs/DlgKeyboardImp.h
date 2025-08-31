@@ -108,7 +108,7 @@ protected:
     void onButtonClearClicked();
     void onButtonResetClicked();
     void onButtonResetAllClicked();
-    void onEditShortcutTextChanged(const QString&);
+    void onEditShortcutTextChanged(const QKeySequence&);
 
 protected Q_SLOTS:
     void onAddMacroAction(const QByteArray&) override;

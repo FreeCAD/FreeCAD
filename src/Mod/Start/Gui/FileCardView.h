@@ -39,6 +39,9 @@ public:
     int heightForWidth(int width) const override;
 
     QSize sizeHint() const override;
+
+private:
+    int m_cardSpacing;
 };
 
 }  // namespace StartGui

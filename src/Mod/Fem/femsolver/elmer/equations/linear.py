@@ -53,18 +53,30 @@ class Proxy(equation.Proxy):
             "BiCGstablDegree",
             "Linear System",
             "Polynom degree for iterative method 'BiCGstabl'",
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyIntegerConstraint",
             "IdrsParameter",
             "Linear System",
             "Parameter for iterative method 'Idrs'",
+            locked=True,
         )
-        obj.addProperty("App::PropertyEnumeration", "LinearDirectMethod", "Linear System", "")
-        obj.addProperty("App::PropertyIntegerConstraint", "LinearIterations", "Linear System", "")
-        obj.addProperty("App::PropertyEnumeration", "LinearIterativeMethod", "Linear System", "")
-        obj.addProperty("App::PropertyEnumeration", "LinearPreconditioning", "Linear System", "")
-        obj.addProperty("App::PropertyEnumeration", "LinearSolverType", "Linear System", "")
+        obj.addProperty(
+            "App::PropertyEnumeration", "LinearDirectMethod", "Linear System", "", locked=True
+        )
+        obj.addProperty(
+            "App::PropertyIntegerConstraint", "LinearIterations", "Linear System", "", locked=True
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration", "LinearIterativeMethod", "Linear System", "", locked=True
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration", "LinearPreconditioning", "Linear System", "", locked=True
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration", "LinearSolverType", "Linear System", "", locked=True
+        )
         obj.addProperty(
             "App::PropertyBool",
             "LinearSystemSolverDisabled",
@@ -74,15 +86,19 @@ class Proxy(equation.Proxy):
                 "Only use for special cases\n"
                 "and consult the Elmer docs."
             ),
+            locked=True,
         )
         obj.addProperty(
             "App::PropertyFloat",
             "LinearTolerance",
             "Linear System",
             "Linear preconditioning method",
+            locked=True,
         )
-        obj.addProperty("App::PropertyBool", "Stabilize", "Base", "")
-        obj.addProperty("App::PropertyFloat", "SteadyStateTolerance", "Steady State", "")
+        obj.addProperty("App::PropertyBool", "Stabilize", "Base", "", locked=True)
+        obj.addProperty(
+            "App::PropertyFloat", "SteadyStateTolerance", "Steady State", "", locked=True
+        )
 
         obj.BiCGstablDegree = (2, 2, 10, 1)
         obj.IdrsParameter = (2, 1, 10, 1)

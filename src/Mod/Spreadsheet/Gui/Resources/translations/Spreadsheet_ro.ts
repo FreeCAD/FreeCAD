@@ -4,145 +4,145 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="947"/>
+      <location filename="../../Command.cpp" line="946"/>
       <source>Spreadsheet</source>
       <translation>Foaie de calcul</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="948"/>
-      <source>&amp;Create spreadsheet</source>
-      <translation type="unfinished">&amp;Create spreadsheet</translation>
+      <location filename="../../Command.cpp" line="947"/>
+      <source>&amp;New Spreadsheet</source>
+      <translation type="unfinished">&amp;New Spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="949"/>
-      <source>Create a new spreadsheet</source>
-      <translation>Creaţi o nouă foaie de calcul</translation>
+      <location filename="../../Command.cpp" line="948"/>
+      <source>Creates a new spreadsheet</source>
+      <translation type="unfinished">Creates a new spreadsheet</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="510"/>
+      <location filename="../../Command.cpp" line="509"/>
       <source>Spreadsheet</source>
       <translation>Foaie de calcul</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
-      <source>Align &amp;bottom</source>
-      <translation type="unfinished">Align &amp;bottom</translation>
+      <location filename="../../Command.cpp" line="510"/>
+      <source>Align &amp;Bottom</source>
+      <translation type="unfinished">Align &amp;Bottom</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="512"/>
-      <source>Bottom-align contents of selected cells</source>
-      <translation>Aliniere în jos a conţinutului celulelor selectate</translation>
+      <location filename="../../Command.cpp" line="511"/>
+      <source>Aligns cell contents to the bottom</source>
+      <translation type="unfinished">Aligns cell contents to the bottom</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
+      <location filename="../../Command.cpp" line="338"/>
       <source>Spreadsheet</source>
       <translation>Foaie de calcul</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="340"/>
-      <source>Align &amp;center</source>
-      <translation type="unfinished">Align &amp;center</translation>
+      <location filename="../../Command.cpp" line="339"/>
+      <source>Align Horizontal &amp;Center</source>
+      <translation type="unfinished">Align Horizontal &amp;Center</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
-      <source>Center-align contents of selected cells</source>
-      <translation>Aliniere în centru a conținutului celulelor selectate</translation>
+      <location filename="../../Command.cpp" line="340"/>
+      <source>Aligns cell contents to the horizontal center</source>
+      <translation type="unfinished">Aligns cell contents to the horizontal center</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="281"/>
       <source>Spreadsheet</source>
       <translation>Foaie de calcul</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="283"/>
-      <source>Align &amp;left</source>
-      <translation type="unfinished">Align &amp;left</translation>
+      <location filename="../../Command.cpp" line="282"/>
+      <source>Align &amp;Left</source>
+      <translation type="unfinished">Align &amp;Left</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="284"/>
-      <source>Left-align contents of selected cells</source>
-      <translation>Aliniere la stânga a conținutului celulelor selectate</translation>
+      <location filename="../../Command.cpp" line="283"/>
+      <source>Aligns cell contents to the left</source>
+      <translation type="unfinished">Aligns cell contents to the left</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="396"/>
+      <location filename="../../Command.cpp" line="395"/>
       <source>Spreadsheet</source>
       <translation>Foaie de calcul</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="397"/>
-      <source>Align &amp;right</source>
-      <translation type="unfinished">Align &amp;right</translation>
+      <location filename="../../Command.cpp" line="396"/>
+      <source>Align &amp;Right</source>
+      <translation type="unfinished">Align &amp;Right</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="398"/>
-      <source>Right-align contents of selected cells</source>
-      <translation>Aliniere la dreapta a conținutului celulelor selectate</translation>
+      <location filename="../../Command.cpp" line="397"/>
+      <source>Aligns cell contents to the right</source>
+      <translation type="unfinished">Aligns cell contents to the right</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="452"/>
       <source>Spreadsheet</source>
       <translation>Foaie de calcul</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
-      <source>Align &amp;top</source>
-      <translation type="unfinished">Align &amp;top</translation>
+      <location filename="../../Command.cpp" line="453"/>
+      <source>Align &amp;Top</source>
+      <translation type="unfinished">Align &amp;Top</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
-      <source>Top-align contents of selected cells</source>
-      <translation>Aliniere în sus a conţinutului celulelor selectate</translation>
+      <location filename="../../Command.cpp" line="454"/>
+      <source>Aligns cell contents to the top</source>
+      <translation type="unfinished">Aligns cell contents to the top</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="567"/>
+      <location filename="../../Command.cpp" line="566"/>
       <source>Spreadsheet</source>
       <translation>Foaie de calcul</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="568"/>
-      <source>&amp;Vertically center-align</source>
-      <translation type="unfinished">&amp;Vertically center-align</translation>
+      <location filename="../../Command.cpp" line="567"/>
+      <source>Align &amp;Vertical Center</source>
+      <translation type="unfinished">Align &amp;Vertical Center</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="569"/>
-      <source>Vertically center-align contents of selected cells</source>
-      <translation>Aliniere verticală centrată a conținutului celulelor selectate</translation>
+      <location filename="../../Command.cpp" line="568"/>
+      <source>Aligns cell contents to the vertical center</source>
+      <translation type="unfinished">Aligns cell contents to the vertical center</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../Command.cpp" line="235"/>
       <source>Spreadsheet</source>
       <translation>Foaie de calcul</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="237"/>
-      <source>&amp;Export spreadsheet</source>
-      <translation type="unfinished">&amp;Export spreadsheet</translation>
+      <location filename="../../Command.cpp" line="236"/>
+      <source>&amp;Export Spreadsheet</source>
+      <translation type="unfinished">&amp;Export Spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
-      <source>Export spreadsheet to CSV file</source>
-      <translation>Exportă foaie de calcul ca fișier CSV</translation>
+      <location filename="../../Command.cpp" line="237"/>
+      <source>Exports the spreadsheet to a CSV file</source>
+      <translation type="unfinished">Exports the spreadsheet to a CSV file</translation>
     </message>
   </context>
   <context>
@@ -154,13 +154,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="184"/>
-      <source>&amp;Import spreadsheet</source>
-      <translation type="unfinished">&amp;Import spreadsheet</translation>
+      <source>&amp;Import Spreadsheet</source>
+      <translation type="unfinished">&amp;Import Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="185"/>
-      <source>Import CSV file into spreadsheet</source>
-      <translation>Importă fișier CSV în foaia de calcul</translation>
+      <source>Imports a CSV file into a new spreadsheet</source>
+      <translation type="unfinished">Imports a CSV file into a new spreadsheet</translation>
     </message>
   </context>
   <context>
@@ -172,31 +172,31 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
-      <source>&amp;Merge cells</source>
-      <translation type="unfinished">&amp;Merge cells</translation>
+      <source>&amp;Merge Cells</source>
+      <translation type="unfinished">&amp;Merge Cells</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="62"/>
-      <source>Merge selected cells</source>
-      <translation>Îmbinare celule selectate</translation>
+      <source>Merges the selected cells</source>
+      <translation type="unfinished">Merges the selected cells</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="876"/>
+      <location filename="../../Command.cpp" line="875"/>
       <source>Spreadsheet</source>
       <translation>Foaie de calcul</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="877"/>
-      <source>Set alias</source>
-      <translation>Definiți alias</translation>
+      <location filename="../../Command.cpp" line="876"/>
+      <source>Set Alias</source>
+      <translation type="unfinished">Set Alias</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="878"/>
-      <source>Set alias for selected cell</source>
-      <translation>Definiți alias pentru celula selectată</translation>
+      <location filename="../../Command.cpp" line="877"/>
+      <source>Sets an alias for the selected cell</source>
+      <translation type="unfinished">Sets an alias for the selected cell</translation>
     </message>
   </context>
   <context>
@@ -208,67 +208,67 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="122"/>
-      <source>Sp&amp;lit cell</source>
-      <translation type="unfinished">Sp&amp;lit cell</translation>
+      <source>Sp&amp;lit Cell</source>
+      <translation type="unfinished">Sp&amp;lit Cell</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
-      <source>Split previously merged cells</source>
-      <translation>Împarte celulele îmbinate anterior</translation>
+      <source>Splits a previously merged cell</source>
+      <translation type="unfinished">Splits a previously merged cell</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="624"/>
+      <location filename="../../Command.cpp" line="623"/>
       <source>Spreadsheet</source>
       <translation>Foaie de calcul</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="625"/>
-      <source>&amp;Bold text</source>
-      <translation type="unfinished">&amp;Bold text</translation>
+      <location filename="../../Command.cpp" line="624"/>
+      <source>&amp;Bold Text</source>
+      <translation type="unfinished">&amp;Bold Text</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="626"/>
-      <source>Set text in selected cells bold</source>
-      <translation>Setează textul în celulele selectate îngroșat</translation>
+      <location filename="../../Command.cpp" line="625"/>
+      <source>Sets the text in the selected cells bold</source>
+      <translation type="unfinished">Sets the text in the selected cells bold</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="708"/>
+      <location filename="../../Command.cpp" line="707"/>
       <source>Spreadsheet</source>
       <translation>Foaie de calcul</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="709"/>
-      <source>&amp;Italic text</source>
-      <translation type="unfinished">&amp;Italic text</translation>
+      <location filename="../../Command.cpp" line="708"/>
+      <source>&amp;Italic Text</source>
+      <translation type="unfinished">&amp;Italic Text</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="710"/>
-      <source>Set text in selected cells italic</source>
-      <translation>Setează textul în celulele selectate cursiv</translation>
+      <location filename="../../Command.cpp" line="709"/>
+      <source>Sets the text in the selected cells italic</source>
+      <translation type="unfinished">Sets the text in the selected cells italic</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="792"/>
+      <location filename="../../Command.cpp" line="791"/>
       <source>Spreadsheet</source>
       <translation>Foaie de calcul</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="793"/>
-      <source>&amp;Underline text</source>
-      <translation type="unfinished">&amp;Underline text</translation>
+      <location filename="../../Command.cpp" line="792"/>
+      <source>&amp;Underline Text</source>
+      <translation type="unfinished">&amp;Underline Text</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="794"/>
-      <source>Underline text in selected cells</source>
-      <translation>Subliniază textul în celulele selectate</translation>
+      <location filename="../../Command.cpp" line="793"/>
+      <source>Underlines the text in the selected cells</source>
+      <translation type="unfinished">Underlines the text in the selected cells</translation>
     </message>
   </context>
   <context>
@@ -289,101 +289,101 @@
     <message>
       <location filename="../../Command.cpp" line="143"/>
       <source>Sp&amp;lit cell</source>
-      <translation type="unfinished">Sp&amp;lit cell</translation>
+      <translation>Scindare celule</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="304"/>
       <source>Left-align cell</source>
       <translation>Aliniere la stânga</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="362"/>
+      <location filename="../../Command.cpp" line="361"/>
       <source>Center cell</source>
       <translation>Celulă centrală</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="419"/>
+      <location filename="../../Command.cpp" line="418"/>
       <source>Right-align cell</source>
       <translation>Aliniere la dreapta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="476"/>
+      <location filename="../../Command.cpp" line="475"/>
       <source>Top-align cell</source>
       <translation>Aliniere sus</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="533"/>
+      <location filename="../../Command.cpp" line="532"/>
       <source>Bottom-align cell</source>
       <translation>Aliniere jos</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="590"/>
+      <location filename="../../Command.cpp" line="589"/>
       <source>Vertically center cells</source>
       <translation>Aliniere verticală centrată</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="665"/>
+      <location filename="../../Command.cpp" line="664"/>
       <source>Set bold text</source>
       <translation>Setează text îngroșat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="749"/>
+      <location filename="../../Command.cpp" line="748"/>
       <source>Set italic text</source>
       <translation>Setare text italic</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="833"/>
+      <location filename="../../Command.cpp" line="832"/>
       <source>Set underline text</source>
       <translation>Setare text subliniere</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="960"/>
+      <location filename="../../Command.cpp" line="959"/>
       <source>Create Spreadsheet</source>
       <translation>Creare foaie de calcul</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="260"/>
+      <location filename="../../PropertiesDialog.cpp" line="267"/>
       <source>Set cell properties</source>
       <translation>Setați proprietățile celulei</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="546"/>
+      <location filename="../../SheetModel.cpp" line="556"/>
       <source>Edit cell</source>
       <translation>Editare celulă</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="342"/>
-      <location filename="../../SheetTableView.cpp" line="375"/>
-      <source>Insert rows</source>
-      <translation>Inserare rânduri</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="395"/>
-      <location filename="../../SheetTableView.cpp" line="473"/>
-      <source>Remove rows</source>
-      <translation>Elimina rânduri</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="417"/>
-      <location filename="../../SheetTableView.cpp" line="450"/>
-      <source>Insert columns</source>
-      <translation>Inserare coloane</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="677"/>
-      <location filename="../../SpreadsheetView.cpp" line="188"/>
-      <source>Clear cell(s)</source>
-      <translation>Golește celula(ele)</translation>
-    </message>
-    <message>
       <location filename="../../Workbench.cpp" line="142"/>
       <source>Set text color</source>
-      <translation type="unfinished">Set text color</translation>
+      <translation>Culoarea textului</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="176"/>
       <source>Set background color</source>
       <translation>Setează culoarea de fundal</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="348"/>
+      <location filename="../../SheetTableView.cpp" line="381"/>
+      <source>Insert Rows</source>
+      <translation type="unfinished">Insert Rows</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="401"/>
+      <location filename="../../SheetTableView.cpp" line="479"/>
+      <source>Remove Rows</source>
+      <translation type="unfinished">Remove Rows</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="423"/>
+      <location filename="../../SheetTableView.cpp" line="456"/>
+      <source>Insert Columns</source>
+      <translation type="unfinished">Insert Columns</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="683"/>
+      <location filename="../../SpreadsheetView.cpp" line="192"/>
+      <source>Clear Cells</source>
+      <translation type="unfinished">Clear Cells</translation>
     </message>
   </context>
   <context>
@@ -394,16 +394,6 @@
       <translation>Legare celule de foaie</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.ui" line="69"/>
-      <source>To cells:</source>
-      <translation>Pentru celule:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="117"/>
-      <source>Sheet:</source>
-      <translation>Foaie:</translation>
-    </message>
-    <message>
       <location filename="../../DlgBindSheet.ui" line="22"/>
       <source>First cell in range</source>
       <translation>Prima celulă în intervalul</translation>
@@ -412,11 +402,6 @@
       <location filename="../../DlgBindSheet.ui" line="29"/>
       <source>Last cell in range</source>
       <translation>Ultima celulă în gamă</translation>
-    </message>
-    <message>
-      <location filename="../../DlgBindSheet.ui" line="36"/>
-      <source>Bind cells:</source>
-      <translation>Legare celule:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
@@ -438,18 +423,33 @@ Tastează '=' dacă vrei să folosești o expresie.
 Expresia trebuie să evalueze la un șir de adrese celulare.</translation>
     </message>
     <message>
+      <location filename="../../DlgBindSheet.ui" line="36"/>
+      <source>Bind cells</source>
+      <translation>Legă celulele</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="69"/>
+      <source>To cells</source>
+      <translation type="unfinished">To cells</translation>
+    </message>
+    <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
-Type '=' if you want to use an expression.
+Type '=' to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation>Adresa celulei de sfârșit pentru a se lega.
-Tastați '=' dacă doriți să utilizați o expresie.
-Expresia trebuie să evalueze la un șir de adrese celulare.</translation>
+      <translation type="unfinished">End cell address to bind to.
+Type '=' to use an expression.
+The expression must evaluate to a string of some cell address.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
       <source>Which spread sheet to bind to</source>
       <translation>Ce harti pentru a se lega de</translation>
+    </message>
+    <message>
+      <location filename="../../DlgBindSheet.ui" line="117"/>
+      <source>Sheet</source>
+      <translation type="unfinished">Sheet</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
@@ -487,11 +487,6 @@ Utilă pentru a evita dependențele ciclice, dar utilizați cu prudență!</tran
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
       <translation>Configurarea tabelului de configurare</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.ui" line="20"/>
-      <source>Cell range:</source>
-      <translation>Interval celulă:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -534,11 +529,6 @@ de acea proprietate.
 </translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.ui" line="57"/>
-      <source>Property:</source>
-      <translation>Proprietate:</translation>
-    </message>
-    <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
@@ -546,14 +536,24 @@ switch the design configuration. The property will be created if not exist.</sou
 schimba configurația proiectului. Proprietatea va fi creată dacă nu există.</translation>
     </message>
     <message>
+      <location filename="../../DlgSheetConf.ui" line="20"/>
+      <source>Cell range</source>
+      <translation type="unfinished">Cell range</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.ui" line="57"/>
+      <source>Property</source>
+      <translation>Proprietate</translation>
+    </message>
+    <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
-      <source>Group:</source>
-      <translation>Grupă:</translation>
+      <source>Group</source>
+      <translation>Grup</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
-      <source>Optional property group name.</source>
-      <translation>Nume grup de proprietăți opțional.</translation>
+      <source>Optional property group name</source>
+      <translation type="unfinished">Optional property group name</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
@@ -575,8 +575,8 @@ schimba configurația proiectului. Proprietatea va fi creată dacă nu există.<
     <name>PropertiesDialog</name>
     <message>
       <location filename="../../PropertiesDialog.ui" line="14"/>
-      <source>Cell properties</source>
-      <translation>Proprietăţile celulei</translation>
+      <source>Cell Properties</source>
+      <translation type="unfinished">Cell Properties</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="27"/>
@@ -662,7 +662,7 @@ schimba configurația proiectului. Proprietatea va fi creată dacă nu există.<
     <message>
       <location filename="../../PropertiesDialog.ui" line="239"/>
       <source>Text for the unit</source>
-      <translation type="unfinished">Text for the unit</translation>
+      <translation>Text pentru unitate</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="263"/>
@@ -678,8 +678,8 @@ schimba configurația proiectului. Proprietatea va fi creată dacă nu există.<
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="116"/>
       <location filename="../../Command.cpp" line="195"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Toate (*)</translation>
     </message>
@@ -689,49 +689,17 @@ schimba configurația proiectului. Proprietatea va fi creată dacă nu există.<
       <translation>Importă fişier</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="118"/>
-      <source>Export file</source>
-      <translation>Exportă fişier</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="143"/>
-      <source>Show spreadsheet</source>
-      <translation>Arată foaie de calcul</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="94"/>
-      <location filename="../../Workbench.cpp" line="96"/>
-      <source>Set cell(s) text color</source>
-      <translation type="unfinished">Set cell(s) text color</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="95"/>
-      <source>Sets the Spreadsheet cell(s) text color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) text color</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="114"/>
-      <location filename="../../Workbench.cpp" line="117"/>
-      <source>Set cell(s) background color</source>
-      <translation>Setează culoarea de fundal a celulei(lor)</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="116"/>
-      <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>Définiți culoarea de fundal a celulei(lor) foii de calcul</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="806"/>
+      <location filename="../../SheetTableView.cpp" line="816"/>
       <source>Copy &amp; Paste failed</source>
       <translation>Copiere &amp; Lipire eșuată</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="489"/>
+      <location filename="../../SpreadsheetView.cpp" line="495"/>
       <source>Alias contains invalid characters!</source>
       <translation>Aliasul conține caractere invalide!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="495"/>
+      <location filename="../../SpreadsheetView.cpp" line="501"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Consultați celula prin alias, de exemplu
@@ -741,6 +709,38 @@ Spreadsheet.my_alias_name în loc de Spreadsheet.B1</translation>
       <location filename="../../AppSpreadsheetGui.cpp" line="149"/>
       <source>Spreadsheet</source>
       <translation>Foaie de calcul</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
+      <source>Export File</source>
+      <translation type="unfinished">Export File</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="134"/>
+      <source>Show Spreadsheet</source>
+      <translation type="unfinished">Show Spreadsheet</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="94"/>
+      <source>Sets the text color of cells</source>
+      <translation type="unfinished">Sets the text color of cells</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="95"/>
+      <location filename="../../Workbench.cpp" line="96"/>
+      <source>Sets the text color of spreadsheet cells</source>
+      <translation type="unfinished">Sets the text color of spreadsheet cells</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="114"/>
+      <location filename="../../Workbench.cpp" line="117"/>
+      <source>Sets the background color of cells</source>
+      <translation type="unfinished">Sets the background color of cells</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="116"/>
+      <source>Sets the spreadsheet cells background color</source>
+      <translation type="unfinished">Sets the spreadsheet cells background color</translation>
     </message>
   </context>
   <context>
@@ -858,13 +858,13 @@ Spreadsheet.my_alias_name în loc de Spreadsheet.B1</translation>
     <name>Sheet</name>
     <message>
       <location filename="../../Sheet.ui" line="22"/>
-      <source>&amp;Content:</source>
-      <translation>&amp;Conținut:</translation>
+      <source>&amp;Content</source>
+      <translation type="unfinished">&amp;Content</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="39"/>
-      <source>&amp;Alias:</source>
-      <translation>&amp;Alias:</translation>
+      <source>&amp;Alias</source>
+      <translation type="unfinished">&amp;Alias</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="52"/>
@@ -881,44 +881,44 @@ Spreadsheet.my_alias_name în loc de Spreadsheet.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="147"/>
       <source>-</source>
-      <translation type="unfinished">-</translation>
+      <translation>-</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="197"/>
       <source>+</source>
-      <translation type="unfinished">+</translation>
+      <translation>+</translation>
     </message>
   </context>
   <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="226"/>
+      <location filename="../../DlgBindSheet.cpp" line="223"/>
       <source>Bind cells</source>
       <translation>Legă celulele</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="227"/>
+      <location filename="../../DlgBindSheet.cpp" line="224"/>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
-Do you want to continue?</source>
-      <translation>Neconcordanța numărului de celule țintă și sursă. Legarea parțială poate funcționa în continuare.
+Continue?</source>
+      <translation type="unfinished">Source and target cell count mismatch. Partial binding may still work.
 
-Doriți să continuați?</translation>
+Continue?</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="275"/>
+      <location filename="../../DlgBindSheet.cpp" line="272"/>
       <source>Bind Spreadsheet Cells</source>
       <translation>Legare celule de foaie</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="276"/>
+      <location filename="../../DlgBindSheet.cpp" line="273"/>
       <source>Error:
 </source>
       <translation>Eroare:
 </translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="303"/>
+      <location filename="../../DlgBindSheet.cpp" line="300"/>
       <source>Unbind cells</source>
       <translation>Desprinde celulele</translation>
     </message>
@@ -936,29 +936,14 @@ Doriți să continuați?</translation>
       <translation>Setări de afișare</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="32"/>
-      <source>If checked, use the custom presentation to display cell string.</source>
-      <translation>Dacă este bifat, utilizaţi prezentarea personalizată pentru a afişa şirul de celule.</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="35"/>
       <source>Show alias in cell with format</source>
       <translation>Arată alias în celulă cu format</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings.ui" line="48"/>
-      <source>Set a zoom level for table view from 60% to 160%.</source>
-      <translation type="unfinished">Set a zoom level for table view from 60% to 160%.</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettings.ui" line="51"/>
       <source>%</source>
-      <translation type="unfinished">%</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="76"/>
-      <source>Default zoom level:</source>
-      <translation type="unfinished">Default zoom level:</translation>
+      <translation>%</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="83"/>
@@ -979,19 +964,24 @@ Implicit la: %V = %A
       <translation>Importă/Exportă Setările</translation>
     </message>
     <message>
+      <location filename="../../DlgSettings.ui" line="32"/>
+      <source>Uses the custom presentation to display cell string</source>
+      <translation type="unfinished">Uses the custom presentation to display cell string</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="48"/>
+      <source>Defines a default zoom level for table view from 60% to 160%</source>
+      <translation type="unfinished">Defines a default zoom level for table view from 60% to 160%</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="76"/>
+      <source>Default zoom level</source>
+      <translation type="unfinished">Default zoom level</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettings.ui" line="131"/>
-      <source>Delimiter Character:</source>
-      <translation>Caracterul Delimitator:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="191"/>
-      <source>Quote Character:</source>
-      <translation>Caracterul Ofertei:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettings.ui" line="223"/>
-      <source>Escape Character:</source>
-      <translation>Caracterul de scăpare:</translation>
+      <source>Delimiter character</source>
+      <translation type="unfinished">Delimiter character</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="151"/>
@@ -1004,9 +994,19 @@ Implicit la: %V = %A
       <translation>tab</translation>
     </message>
     <message>
+      <location filename="../../DlgSettings.ui" line="191"/>
+      <source>Quote character</source>
+      <translation type="unfinished">Quote character</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettings.ui" line="198"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Caracter folosit pentru delimitarea șirurilor, de obicei este o ofertă unică (') sau o ofertă dublă (&amp;quot;). Trebuie să fie un singur caracter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettings.ui" line="223"/>
+      <source>Escape character</source>
+      <translation type="unfinished">Escape character</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="230"/>
@@ -1017,147 +1017,147 @@ Implicit la: %V = %A
   <context>
     <name>SpreadsheetGui::DlgSheetConf</name>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="283"/>
+      <location filename="../../DlgSheetConf.cpp" line="280"/>
       <source>Setup configuration table</source>
       <translation>Tabel de configurare</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="341"/>
+      <location filename="../../DlgSheetConf.cpp" line="338"/>
       <source>Unsetup configuration table</source>
       <translation>Dezinstalează tabelul de configurare</translation>
     </message>
   </context>
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="202"/>
+      <location filename="../../SheetTableView.cpp" line="665"/>
+      <source>Recompute</source>
+      <translation>Recomandare</translation>
+    </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="130"/>
-      <source>Insert %n row(s) above</source>
-      <translation>
-        <numerusform>Introduceți %n rânduri mai sus</numerusform>
-        <numerusform>Introduceți %n rânduri mai sus</numerusform>
-        <numerusform>Introduceți %n rânduri mai sus</numerusform>
+      <location filename="../../SheetTableView.cpp" line="142"/>
+      <source>Insert %n Row(s) Above</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n Row(s) Above</numerusform>
+        <numerusform>Insert %n Row(s) Above</numerusform>
+        <numerusform>Insert %n Row(s) Above</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="135"/>
-      <source>Insert %n row(s) below</source>
-      <translation>
-        <numerusform>Introduceți %n rânduri mai sus</numerusform>
-        <numerusform>Introduceți %n rânduri mai jos</numerusform>
-        <numerusform>Introduceți %n rânduri(s) mai jos</numerusform>
+      <location filename="../../SheetTableView.cpp" line="147"/>
+      <source>Insert %n Row(s) Below</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n Row(s) Below</numerusform>
+        <numerusform>Insert %n Row(s) Below</numerusform>
+        <numerusform>Insert %n Row(s) Below</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="140"/>
-      <source>Insert %n non-contiguous rows</source>
-      <translation>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert in non-contiguous rows</numerusform>
-        <numerusform>Insert i%n non-contiguous rows</numerusform>
+      <location filename="../../SheetTableView.cpp" line="152"/>
+      <source>Insert %n Non-Contiguous Rows</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n Non-Contiguous Rows</numerusform>
+        <numerusform>Insert %n Non-Contiguous Rows</numerusform>
+        <numerusform>Insert %n Non-Contiguous Rows</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="143"/>
-      <source>Remove row(s)</source>
-      <translation>
-        <numerusform>Eliminați rândul(s)</numerusform>
-        <numerusform>Elimină rând(e)</numerusform>
-        <numerusform>Elimină rânduri(s)</numerusform>
+      <location filename="../../SheetTableView.cpp" line="155"/>
+      <source>Remove Rows</source>
+      <translation type="unfinished">
+        <numerusform>Remove Rows</numerusform>
+        <numerusform>Remove Rows</numerusform>
+        <numerusform>Remove Rows</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="157"/>
-      <source>Insert %n column(s) left</source>
-      <translation>
-        <numerusform>Inserare %n coloană(s) la stânga</numerusform>
-        <numerusform>Inserare%n coloană(s) la stânga</numerusform>
-        <numerusform>Inserare%n coloană(s) la stânga</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="162"/>
-      <source>Insert %n column(s) right</source>
-      <translation>
-        <numerusform>Inserare%n coloană(s) la dreapta</numerusform>
-        <numerusform>Inserare%n coloană(s) la dreapta</numerusform>
-        <numerusform>Inserare%n coloană(s) la stânga</numerusform>
-      </translation>
-    </message>
-    <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="171"/>
-      <source>Insert %n non-contiguous columns</source>
-      <translation>
-        <numerusform>Inserați %n coloane necontigue</numerusform>
-        <numerusform>Inserați %n coloane necontigue</numerusform>
-        <numerusform>Inserați %n coloane necontigue</numerusform>
+      <location filename="../../SheetTableView.cpp" line="169"/>
+      <source>Insert %n Column(s) Left</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n Column(s) Left</numerusform>
+        <numerusform>Insert %n Column(s) Left</numerusform>
+        <numerusform>Insert %n Column(s) Left</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="174"/>
-      <source>Remove column(s)</source>
-      <translation>
-        <numerusform>Elimină coloanele(s)</numerusform>
-        <numerusform>Elimină coloanele(s)</numerusform>
-        <numerusform>Elimină coloanele(s)</numerusform>
+      <source>Insert %n Column(s) Right</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n Column(s) Right</numerusform>
+        <numerusform>Insert %n Column(s) Right</numerusform>
+        <numerusform>Insert %n Column(s) Right</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="183"/>
+      <source>Insert %n Non-Contiguous Columns</source>
+      <translation type="unfinished">
+        <numerusform>Insert %n Non-Contiguous Columns</numerusform>
+        <numerusform>Insert %n Non-Contiguous Columns</numerusform>
+        <numerusform>Insert %n Non-Contiguous Columns</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../SheetTableView.cpp" line="186"/>
+      <source>Remove Column(s)</source>
+      <translation type="unfinished">
+        <numerusform>Remove Column(s)</numerusform>
+        <numerusform>Remove Column(s)</numerusform>
+        <numerusform>Remove Column(s)</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="179"/>
-      <location filename="../../SheetTableView.cpp" line="658"/>
-      <source>Properties...</source>
-      <translation>Proprietăți...</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="191"/>
-      <location filename="../../SheetTableView.cpp" line="659"/>
-      <source>Recompute</source>
-      <translation>Recomandare</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="195"/>
-      <location filename="../../SheetTableView.cpp" line="667"/>
-      <source>Bind...</source>
-      <translation>Bind...</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="199"/>
-      <location filename="../../SheetTableView.cpp" line="660"/>
-      <source>Configuration table...</source>
-      <translation>Tabel de configurare...</translation>
+      <location filename="../../SheetTableView.cpp" line="664"/>
+      <source>Properties…</source>
+      <translation type="unfinished">Properties…</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="203"/>
+      <location filename="../../SheetTableView.cpp" line="673"/>
+      <source>Bind…</source>
+      <translation type="unfinished">Bind…</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="204"/>
+      <location filename="../../SheetTableView.cpp" line="666"/>
+      <source>Configuration Table…</source>
+      <translation type="unfinished">Configuration Table…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="207"/>
-      <location filename="../../SheetTableView.cpp" line="661"/>
-      <source>Merge cells</source>
-      <translation>Îmbinare celule</translation>
+      <location filename="../../SheetTableView.cpp" line="667"/>
+      <source>Merge Cells</source>
+      <translation type="unfinished">Merge Cells</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="209"/>
-      <location filename="../../SheetTableView.cpp" line="662"/>
-      <source>Split cells</source>
-      <translation>Divizarea celulelor</translation>
+      <location filename="../../SheetTableView.cpp" line="210"/>
+      <location filename="../../SheetTableView.cpp" line="668"/>
+      <source>Split Cells</source>
+      <translation type="unfinished">Split Cells</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="213"/>
-      <location filename="../../SheetTableView.cpp" line="665"/>
+      <location filename="../../SheetTableView.cpp" line="671"/>
       <source>Cut</source>
       <translation>Scădere</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="215"/>
-      <location filename="../../SheetTableView.cpp" line="663"/>
+      <location filename="../../SheetTableView.cpp" line="214"/>
+      <location filename="../../SheetTableView.cpp" line="669"/>
       <source>Copy</source>
       <translation>Copiere</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="217"/>
-      <location filename="../../SheetTableView.cpp" line="664"/>
+      <location filename="../../SheetTableView.cpp" line="216"/>
+      <location filename="../../SheetTableView.cpp" line="670"/>
       <source>Paste</source>
       <translation>Lipește</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="219"/>
-      <location filename="../../SheetTableView.cpp" line="666"/>
+      <location filename="../../SheetTableView.cpp" line="218"/>
+      <location filename="../../SheetTableView.cpp" line="672"/>
       <source>Delete</source>
       <translation>Ştergeţi</translation>
     </message>
@@ -1165,12 +1165,12 @@ Implicit la: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="299"/>
+      <location filename="../../SpreadsheetView.cpp" line="303"/>
       <source>Export PDF</source>
       <translation>Exportă PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="301"/>
+      <location filename="../../SpreadsheetView.cpp" line="305"/>
       <source>PDF file</source>
       <translation>Fișier PDF</translation>
     </message>
@@ -1211,13 +1211,13 @@ Implicit la: %V = %A
     <name>ZoomableView</name>
     <message>
       <location filename="../../ZoomableView.cpp" line="112"/>
-      <source>Zoom level</source>
-      <translation type="unfinished">Zoom level</translation>
+      <source>New zoom level:</source>
+      <translation>Nivel de zoom nou:</translation>
     </message>
     <message>
       <location filename="../../ZoomableView.cpp" line="112"/>
-      <source>New zoom level:</source>
-      <translation type="unfinished">New zoom level:</translation>
+      <source>Zoom Level</source>
+      <translation type="unfinished">Zoom Level</translation>
     </message>
   </context>
 </TS>

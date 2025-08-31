@@ -42,10 +42,6 @@ public:
 
     App::PropertyLink FemMesh;
 
-    /// returns the type name of the ViewProvider
-    // virtual const char* getViewProviderName(void) const {
-    //     return "FemGui::ViewProviderFemSet";
-    // }
     App::DocumentObjectExecReturn* execute() override
     {
         return App::DocumentObject::StdReturn;

@@ -49,6 +49,7 @@ using DocumentObjectDataPtr = std::shared_ptr<DocumentObjectData>;
 class TreeWidgetItemDelegate;
 
 class DocumentItem;
+class Command;
 
 GuiExport bool isTreeViewDragging();
 
@@ -190,6 +191,7 @@ protected Q_SLOTS:
     void onShowHidden();
     void onToggleVisibilityInTree();
     void onSearchObjects();
+    void onOpenFileLocation();
 
 private Q_SLOTS:
     void onItemSelectionChanged();
@@ -240,6 +242,8 @@ private:
     QAction* reloadDocAction;
     QAction* closeDocAction;
     QAction* searchObjectsAction;
+    QAction* openFileLocationAction;
+    Command* skipRecomputeCommand;
     QTreeWidgetItem *contextItem;
     App::DocumentObject *searchObject;
     Gui::Document *searchDoc;

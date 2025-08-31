@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <Base/Tools3D.h>
+#include <Base/Vector3D.h>
 
 class Line3D: public ::testing::Test
 {

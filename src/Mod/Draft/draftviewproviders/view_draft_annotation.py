@@ -85,7 +85,8 @@ class ViewProviderDraftAnnotation(object):
             vobj.addProperty("App::PropertyFloat",
                              "ScaleMultiplier",
                              "Annotation",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.ScaleMultiplier = params.get_param("DefaultAnnoScaleMultiplier")
 
         if "AnnotationStyle" not in properties:
@@ -101,7 +102,8 @@ class ViewProviderDraftAnnotation(object):
             vobj.addProperty("App::PropertyEnumeration",
                              "AnnotationStyle",
                              "Annotation",
-                             _tip)
+                             _tip,
+                             locked=True)
             styles = []
             for key in vobj.Object.Document.Meta.keys():
                 if key.startswith("Draft_Style_"):
@@ -117,7 +119,8 @@ class ViewProviderDraftAnnotation(object):
             vobj.addProperty("App::PropertyFont",
                              "FontName",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.FontName = params.get_param("textfont")
 
         if "FontSize" not in properties:
@@ -126,7 +129,8 @@ class ViewProviderDraftAnnotation(object):
             vobj.addProperty("App::PropertyLength",
                              "FontSize",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.FontSize = params.get_param("textheight")
 
         if "TextColor" not in properties:
@@ -135,7 +139,8 @@ class ViewProviderDraftAnnotation(object):
             vobj.addProperty("App::PropertyColor",
                              "TextColor",
                              "Text",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.TextColor = params.get_param("DefaultTextColor") | 0x000000FF
 
     def set_units_properties(self, vobj, properties):
@@ -143,12 +148,60 @@ class ViewProviderDraftAnnotation(object):
 
     def set_graphics_properties(self, vobj, properties):
         """Set graphics properties only if they don't already exist."""
+        if vobj.Object.Proxy.Type == "Text":
+            return
+
+        if "ArrowSizeStart" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Arrow size")
+            vobj.addProperty("App::PropertyLength",
+                             "ArrowSizeStart",
+                             "Graphics",
+                             _tip,
+                             locked=True)
+            vobj.ArrowSizeStart = params.get_param("arrowsizestart")
+
+        if "ArrowTypeStart" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Arrow type")
+            vobj.addProperty("App::PropertyEnumeration",
+                             "ArrowTypeStart",
+                             "Graphics",
+                             _tip,
+                             locked=True)
+            vobj.ArrowTypeStart = utils.ARROW_TYPES
+            vobj.ArrowTypeStart = "None"
+
+        if vobj.Object.Proxy.Type != "Label":
+
+            if "ArrowSizeEnd" not in properties:
+                _tip = QT_TRANSLATE_NOOP("App::Property",
+                                         "Arrow size")
+                vobj.addProperty("App::PropertyLength",
+                                 "ArrowSizeEnd",
+                                 "Graphics",
+                                 _tip,
+                                 locked=True)
+                vobj.ArrowSizeEnd = params.get_param("arrowsizeend")
+
+            if "ArrowTypeEnd" not in properties:
+                _tip = QT_TRANSLATE_NOOP("App::Property",
+                                         "Arrow type")
+                vobj.addProperty("App::PropertyEnumeration",
+                                 "ArrowTypeEnd",
+                                 "Graphics",
+                                 _tip,
+                                 locked=True)
+                vobj.ArrowTypeEnd = utils.ARROW_TYPES
+                vobj.ArrowTypeEnd = "None"
+
         if "LineWidth" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Line width")
             vobj.addProperty("App::PropertyFloat",
                              "LineWidth",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.LineWidth = params.get_param("DefaultAnnoLineWidth")
 
         if "LineColor" not in properties:
@@ -156,7 +209,8 @@ class ViewProviderDraftAnnotation(object):
             vobj.addProperty("App::PropertyColor",
                              "LineColor",
                              "Graphics",
-                             _tip)
+                             _tip,
+                             locked=True)
             vobj.LineColor = params.get_param("DefaultAnnoLineColor") | 0x000000FF
 
     def dumps(self):
@@ -201,24 +255,21 @@ class ViewProviderDraftAnnotation(object):
                         vobj.setPropertyStatus(visprop, '-ReadOnly')
             else:
                 # set style
-                styles = {}
                 for key, value in meta.items():
-                    if key.startswith("Draft_Style_"):
-                        styles[key[12:]] = json.loads(value)
-
-                if vobj.AnnotationStyle in styles:
-                    style = styles[vobj.AnnotationStyle]
-                    for visprop in style.keys():
-                        if visprop in properties:
-                            # make property read-only
-                            vobj.setPropertyStatus(visprop, "ReadOnly")
-                            value = style[visprop]
-                            try:
-                                if vobj.getTypeIdOfProperty(visprop) == "App::PropertyColor":
-                                    value = value | 0x000000FF
-                                setattr(vobj, visprop, value)
-                            except:
-                                pass
+                    if key.startswith("Draft_Style_") and key[12:] == vobj.AnnotationStyle:
+                        style = utils.repair_annotation_style(json.loads(value))
+                        for visprop in style.keys():
+                            if visprop in properties:
+                                # make property read-only
+                                vobj.setPropertyStatus(visprop, "ReadOnly")
+                                value = style[visprop]
+                                try:
+                                    if vobj.getTypeIdOfProperty(visprop) == "App::PropertyColor":
+                                        value = value | 0x000000FF
+                                    setattr(vobj, visprop, value)
+                                except TypeError:
+                                    pass
+                    break
 
     def execute(self, vobj):
         """Execute when the object is created or recomputed."""
@@ -232,7 +283,7 @@ class ViewProviderDraftAnnotation(object):
         if mode != 0:
             return None
 
-        if utils.get_type(vobj.Object) in ("AngularDimension", "Label"):
+        if utils.get_type(vobj.Object) == "AngularDimension":
             return False # Required, else edit mode is entered.
 
         if not "Draft_Edit" in Gui.listCommands():

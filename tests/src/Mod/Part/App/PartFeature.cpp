@@ -24,7 +24,7 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _common = dynamic_cast<Common*>(_doc->addObject("Part::Common"));
+        _common = _doc->addObject<Common>();
     }
 
     void TearDown() override
@@ -111,7 +111,7 @@ TEST_F(FeaturePartTest, create)
     // without modifications
     EXPECT_STREQ(_doc->getObjectName(featureNoDoc), "Vertex");
 
-    // The feature is created in otherDoc, which doesn't have other features and thertherefor the
+    // The feature is created in otherDoc, which doesn't have other features and thertherefore the
     // feature's name will be assigned without modifications
     EXPECT_STREQ(otherDoc->getObjectName(feature), "Vertex");
 

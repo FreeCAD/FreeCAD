@@ -43,6 +43,8 @@
 #include <Gui/Workbench.h>
 #include <Gui/WorkbenchManager.h>
 
+#include <gsl/pointers>
+
 constexpr uint8_t LCD_ICON_SIZE = 24u;
 
 NavlibInterface::ParsedData NavlibInterface::parseCommandId(const std::string& commandId) const
@@ -131,8 +133,11 @@ TDxCommand NavlibInterface::getCCommand(const Gui::Command& command,
     if (commandName.empty() || commandId.empty())
         return TDxCommand();
 
+    gsl::not_null<const char*> commandToolTip =
+        command.getToolTipText() ? command.getToolTipText() : "";
+
     std::string commandDescription =
-        parameter == -1 ? command.getToolTipText() : qAction.toolTip().toStdString();
+        parameter == -1 ? std::string(commandToolTip) : qAction.toolTip().toStdString();
 
     auto newEnd = std::remove(commandName.begin(), commandName.end(), '&');
     commandName.erase(newEnd, commandName.end());
@@ -153,7 +158,9 @@ long NavlibInterface::SetActiveCommand(std::string commandId)
             if (!std::string(command->getName()).compare(parsedData.commandName)) {
                 if (parsedData.actionIndex == -1) {
                     Gui::Action* pAction = command->getAction();
-                    pAction->action()->trigger();
+                    if (pAction != nullptr) {
+                        pAction->action()->trigger();
+                    }
                 }
                 else
                     command->invoke(parsedData.actionIndex);

@@ -98,7 +98,7 @@ int PointPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-PyObject* PointPy::toShape(PyObject *args)
+PyObject* PointPy::toShape(PyObject *args) const
 {
     Handle(Geom_CartesianPoint) this_point = Handle(Geom_CartesianPoint)::DownCast
         (this->getGeomPointPtr()->handle());

@@ -33,6 +33,7 @@
 #include <QWidgetAction>
 #include <boost/core/ignore_unused.hpp>
 #include <cmath>
+#include <limits>
 #endif
 
 #include <App/Application.h>
@@ -157,7 +158,7 @@ public:
                 case Sketcher::Weight:
                 case Sketcher::Diameter:
                 case Sketcher::Angle:
-                    name = QString::fromLatin1("%1 (%2)").arg(
+                    name = QStringLiteral("%1 (%2)").arg(
                         name,
                         QString::fromStdString(constraint->getPresentationValue().getUserString()));
                     break;
@@ -171,7 +172,7 @@ public:
                     else {
                         n1 = 1 / v;
                     }
-                    name = QString::fromLatin1("%1 (%2/%3)").arg(name).arg(n2).arg(n1);
+                    name = QStringLiteral("%1 (%2/%3)").arg(name).arg(n2).arg(n1);
                     break;
                 }
                 case Sketcher::InternalAlignment:
@@ -186,13 +187,13 @@ public:
 
             if (extended) {
                 if (constraint->Second == Sketcher::GeoEnum::GeoUndef) {
-                    name = QString::fromLatin1("%1 [(%2,%3)]")
+                    name = QStringLiteral("%1 [(%2,%3)]")
                                .arg(name)
                                .arg(constraint->First)
                                .arg(static_cast<int>(constraint->FirstPos));
                 }
                 else if (constraint->Third == Sketcher::GeoEnum::GeoUndef) {
-                    name = QString::fromLatin1("%1 [(%2,%3),(%4,%5)]")
+                    name = QStringLiteral("%1 [(%2,%3),(%4,%5)]")
                                .arg(name)
                                .arg(constraint->First)
                                .arg(static_cast<int>(constraint->FirstPos))
@@ -200,7 +201,7 @@ public:
                                .arg(static_cast<int>(constraint->SecondPos));
                 }
                 else {
-                    name = QString::fromLatin1("%1 [(%2,%3),(%4,%5),(%6,%7)]")
+                    name = QStringLiteral("%1 [(%2,%3),(%4,%5),(%6,%7)]")
                                .arg(name)
                                .arg(constraint->First)
                                .arg(static_cast<int>(constraint->FirstPos))
@@ -447,7 +448,7 @@ public:
 protected:
     QPixmap getIcon(const char* name, const QSize& size) const
     {
-        QString key = QString::fromLatin1("%1_%2x%3")
+        QString key = QStringLiteral("%1_%2x%3")
                           .arg(QString::fromLatin1(name))
                           .arg(size.width())
                           .arg(size.height());
@@ -559,12 +560,12 @@ void ConstraintView::contextMenuEvent(QContextMenuEvent* event)
 
     // This does the same as a double-click and thus it should be the first action and with bold
     // text
-    QAction* change = menu.addAction(tr("Change value"), this, &ConstraintView::modifyCurrentItem);
+    QAction* change = menu.addAction(tr("Change Value"), this, &ConstraintView::modifyCurrentItem);
     change->setEnabled(isQuantity);
     menu.setDefaultAction(change);
 
     QAction* driven =
-        menu.addAction(tr("Toggle to/from reference"), this, &ConstraintView::updateDrivingStatus);
+        menu.addAction(tr("Toggle Driving/Reference"), this, &ConstraintView::updateDrivingStatus);
     driven->setEnabled(isToggleDriving);
 
     QAction* activate = menu.addAction(
@@ -572,9 +573,9 @@ void ConstraintView::contextMenuEvent(QContextMenuEvent* event)
     activate->setEnabled(!items.isEmpty());
 
     menu.addSeparator();
-    QAction* show = menu.addAction(tr("Show constraints"), this, &ConstraintView::showConstraints);
+    QAction* show = menu.addAction(tr("Show Constraints"), this, &ConstraintView::showConstraints);
     show->setEnabled(!items.isEmpty());
-    QAction* hide = menu.addAction(tr("Hide constraints"), this, &ConstraintView::hideConstraints);
+    QAction* hide = menu.addAction(tr("Hide Constraints"), this, &ConstraintView::hideConstraints);
     hide->setEnabled(!items.isEmpty());
 
     menu.addSeparator();
@@ -591,7 +592,7 @@ void ConstraintView::contextMenuEvent(QContextMenuEvent* event)
     rename->setEnabled(item != nullptr);
 
     QAction* center =
-        menu.addAction(tr("Center sketch"), this, &ConstraintView::centerSelectedItems);
+        menu.addAction(tr("Center Sketch"), this, &ConstraintView::centerSelectedItems);
     center->setEnabled(item != nullptr);
 
     QAction* remove = menu.addAction(tr("Delete"), this, &ConstraintView::deleteSelectedItems);
@@ -599,7 +600,7 @@ void ConstraintView::contextMenuEvent(QContextMenuEvent* event)
     remove->setEnabled(!items.isEmpty());
 
     QAction* swap = menu.addAction(
-        tr("Swap constraint names"), this, &ConstraintView::swapNamedOfSelectedItems);
+        tr("Swap Constraint Names"), this, &ConstraintView::swapNamedOfSelectedItems);
     swap->setEnabled(items.size() == 2);
 
     menu.exec(event->globalPos());
@@ -718,14 +719,19 @@ void ConstraintView::swapNamedOfSelectedItems()
 ConstraintFilterList::ConstraintFilterList(QWidget* parent)
     : QListWidget(parent)
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    int filterState = hGrp->GetInt("ConstraintFilterState",
-                                   INT_MAX);// INT_MAX = 1111111111111111111111111111111 in binary.
-
     normalFilterCount = filterItems.size() - 2;// All filter but selected and associated
     selectedFilterIndex = normalFilterCount;
     associatedFilterIndex = normalFilterCount + 1;
+
+    // default filters are all except for special filters
+    int defaultFilter = 0;
+    for (int i = 0; i < normalFilterCount; i++) {
+        defaultFilter |= 1 << i;
+    }
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    int filterState = hGrp->GetInt("SelectedConstraintFilters", defaultFilter);
 
     for (auto const& filterItem : filterItems) {
         Q_UNUSED(filterItem);
@@ -841,8 +847,8 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
     // FIXME there is probably a smarter way to handle this menu
     // FIXME translations aren't updated automatically at language change
     QAction* action1 = new QAction(tr("Auto constraints"), this);
-    QAction* action2 = new QAction(tr("Auto remove redundants"), this);
-    QAction* action3 = new QAction(tr("Show only filtered Constraints"), this);
+    QAction* action2 = new QAction(tr("Auto remove redundant constraints"), this);
+    QAction* action3 = new QAction(tr("Display only filtered constraints"), this);
     QAction* action4 = new QAction(tr("Extended information (in widget)"), this);
     QAction* action5 = new QAction(tr("Hide internal alignment (in widget)"), this);
 
@@ -908,10 +914,17 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
         &ConstraintView::emitShowSelection3DVisibility,
         this,
         &TaskSketcherConstraints::onListWidgetConstraintsEmitShowSelection3DVisibility);
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    QObject::connect(ui->filterBox,
+                     &QCheckBox::checkStateChanged,
+                     this,
+                     &TaskSketcherConstraints::onFilterBoxStateChanged);
+#else
     QObject::connect(ui->filterBox,
                      &QCheckBox::stateChanged,
                      this,
                      &TaskSketcherConstraints::onFilterBoxStateChanged);
+#endif
     QObject::connect(
         ui->filterButton, &QToolButton::clicked, ui->filterButton, &QToolButton::showMenu);
     QObject::connect(ui->showHideButton,
@@ -953,9 +966,15 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
 
     this->groupLayout()->addWidget(proxy);
 
+    // Initialize special filters
+    for (int i = filterList->normalFilterCount; i < filterList->count(); i++) {
+        if (filterList->item(i)->checkState() == Qt::Checked) {
+            onFilterListItemChanged(filterList->item(i));
+        }
+    }
     multiFilterStatus = filterList->getMultiFilter();
 
-    ui->listWidgetConstraints->setStyleSheet(QString::fromLatin1("margin-top: 0px"));
+    ui->listWidgetConstraints->setStyleSheet(QStringLiteral("margin-top: 0px"));
 
     //NOLINTBEGIN
     Gui::Application* app = Gui::Application::Instance;
@@ -963,11 +982,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
         std::bind(&TaskSketcherConstraints::onChangedSketchView, this, sp::_1, sp::_2));
     //NOLINTEND
 
-    slotConstraintsChanged();// Populate constraints list
-    // Initialize special filters
-    for (int i = filterList->normalFilterCount; i < filterList->count(); i++) {
-        onFilterListItemChanged(filterList->item(i));
-    }
+    updateList();
 }
 
 TaskSketcherConstraints::~TaskSketcherConstraints()
@@ -1013,9 +1028,7 @@ void TaskSketcherConstraints::onSettingsRestrictVisibilityChanged(bool value)
         hGrp->SetBool("VisualisationTrackingFilter", value);
     }
 
-    // Act
-    if (value)
-        change3DViewVisibilityToTrackFilter();
+    change3DViewVisibilityToTrackFilter(value);
 }
 
 void TaskSketcherConstraints::onSettingsAutoConstraintsChanged(bool value)
@@ -1088,7 +1101,6 @@ void TaskSketcherConstraints::onListWidgetConstraintsEmitShowSelection3DVisibili
 void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget target)
 {
     assert(sketchView);
-    const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
 
     auto selecteditems = ui->listWidgetConstraints->selectedItems();
 
@@ -1103,7 +1115,7 @@ void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget t
             processItem = !item->isHidden();
         }
         else if (target == ActionTarget::Selected) {
-            if (std::find(selecteditems.begin(), selecteditems.end(), item) != selecteditems.end())
+            if (selecteditems.contains(item))
                 processItem = true;
         }
 
@@ -1124,35 +1136,7 @@ void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget t
     }
 
     if (!constrIds.empty()) {
-
-        Gui::Command::openCommand(
-            QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
-
-        std::stringstream stream;
-
-        stream << '[';
-
-        for (size_t i = 0; i < constrIds.size() - 1; i++) {
-            stream << constrIds[i] << ",";
-        }
-        stream << constrIds[constrIds.size() - 1] << ']';
-
-        std::string constrIdList = stream.str();
-
-        try {
-            Gui::cmdAppObjectArgs(
-                sketch, "setVirtualSpace(%s, %s)", constrIdList, show ? "False" : "True");
-        }
-        catch (const Base::Exception&) {
-            Gui::Command::abortCommand();
-
-            Gui::TranslatedUserError(
-                sketch, tr("Error"), tr("Impossible to update visibility tracking"));
-
-            return;
-        }
-
-        Gui::Command::commitCommand();
+        doSetVirtualSpace(constrIds, !show);
     }
 }
 
@@ -1222,12 +1206,14 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
     // otherwise a checkbox change will trigger a rename on the first execution, bloating the
     // constraint icons with the default constraint name "constraint1, constraint2"
     if (newName != currConstraintName && !basename.empty()) {
-        std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(newName.c_str());
+        if (!SketcherGui::checkConstraintName(sketch, newName)) {
+            newName = currConstraintName;
+        }
 
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Rename sketch constraint"));
         try {
             Gui::cmdAppObjectArgs(
-                sketch, "renameConstraint(%d, u'%s')", it->ConstraintNbr, escapedstr.c_str());
+                sketch, "renameConstraint(%d, u'%s')", it->ConstraintNbr, newName.c_str());
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
@@ -1238,22 +1224,8 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
         }
     }
 
-    // update constraint virtual space status
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
-    try {
-        Gui::cmdAppObjectArgs(
-            sketch,
-            "setVirtualSpace(%d, %s)",
-            it->ConstraintNbr,
-            ((item->checkState() == Qt::Checked) != sketchView->getIsShownVirtualSpace()) ? "False"
-                                                                                          : "True");
-        Gui::Command::commitCommand();
-    }
-    catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
-
-        Gui::NotifyUserError(sketch, QT_TRANSLATE_NOOP("Notifications", "Value Error"), e.what());
-    }
+    std::vector<int> constraintNum = {it->ConstraintNbr};
+    doSetVirtualSpace(constraintNum, (item->checkState() == Qt::Checked) == sketchView->getIsShownVirtualSpace());
 
     inEditMode = false;
 }
@@ -1314,16 +1286,14 @@ void TaskSketcherConstraints::updateList()
     multiFilterStatus =
         filterList->getMultiFilter();// moved here in case the filter is changed programmatically.
 
+    // new constraints have to be added first
+    slotConstraintsChanged();
+
     // enforce constraint visibility
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
     bool visibilityTracksFilter = hGrp->GetBool("VisualisationTrackingFilter", false);
-
-    if (visibilityTracksFilter)
-        change3DViewVisibilityToTrackFilter();// it will call slotConstraintChanged via update
-                                              // mechanism
-    else
-        slotConstraintsChanged();
+    change3DViewVisibilityToTrackFilter(visibilityTracksFilter);
 }
 
 void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -1355,7 +1325,7 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
         if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) == 0
             && strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) == 0) {
             if (msg.pSubName) {
-                QRegularExpression rx(QString::fromLatin1("^Constraint(\\d+)$"));
+                QRegularExpression rx(QStringLiteral("^Constraint(\\d+)$"));
                 QRegularExpressionMatch match;
                 QString expr = QString::fromLatin1(msg.pSubName);
                 boost::ignore_unused(expr.indexOf(rx, 0, &match));
@@ -1371,10 +1341,7 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
                                 auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
                                 item->setSelected(select);
                                 ui->listWidgetConstraints->blockSignals(tmpBlock);
-                                if (select && ui->listWidgetConstraints->model()) { // scrollTo only on select, not de-select
-                                    QModelIndex index = ui->listWidgetConstraints->model()->index(i, 0);
-                                    ui->listWidgetConstraints->scrollTo(index, QAbstractItemView::PositionAtCenter);
-                                }
+                                SketcherGui::scrollTo(ui->listWidgetConstraints, i, select);
                                 break;
                             }
                         }
@@ -1438,7 +1405,7 @@ void TaskSketcherConstraints::OnChange(Base::Subject<const char*>& rCaller, cons
 void TaskSketcherConstraints::getSelectionGeoId(QString expr, int& geoid,
                                                 Sketcher::PointPos& pointpos)
 {
-    QRegularExpression rxEdge(QString::fromLatin1("^Edge(\\d+)$"));
+    QRegularExpression rxEdge(QStringLiteral("^Edge(\\d+)$"));
     QRegularExpressionMatch match;
     boost::ignore_unused(expr.indexOf(rxEdge, 0, &match));
     geoid = Sketcher::GeoEnum::GeoUndef;
@@ -1452,7 +1419,7 @@ void TaskSketcherConstraints::getSelectionGeoId(QString expr, int& geoid,
         }
     }
     else {
-        QRegularExpression rxVertex(QString::fromLatin1("^Vertex(\\d+)$"));
+        QRegularExpression rxVertex(QStringLiteral("^Vertex(\\d+)$"));
         boost::ignore_unused(expr.indexOf(rxVertex, 0, &match));
 
         if (match.hasMatch()) {
@@ -1493,7 +1460,7 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemSelectionChanged()
     this->blockSelection(block);
 }
 
-void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter()
+void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter(bool filterEnabled)
 {
     assert(sketchView);
     // Build up ListView with the constraints
@@ -1505,8 +1472,7 @@ void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter()
 
     for (std::size_t i = 0; i < vals.size(); ++i) {
         ConstraintItem* it = static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
-
-        bool visible = !isConstraintFiltered(it);
+        bool visible = !filterEnabled || !isConstraintFiltered(it);
 
         // If the constraint is filteredout and it was previously shown in 3D view
         if (!visible && it->isInVirtualSpace() == sketchView->getIsShownVirtualSpace()) {
@@ -1516,58 +1482,58 @@ void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter()
             constrIdsToCurrentSpace.push_back(it->ConstraintNbr);
         }
     }
+    if (!constrIdsToVirtualSpace.empty()) {
+        bool ret = doSetVirtualSpace(constrIdsToVirtualSpace, true);
+        if (!ret) {
+            return;
+        }
+    }
 
-    if (!constrIdsToVirtualSpace.empty() || !constrIdsToCurrentSpace.empty()) {
+    if (!constrIdsToCurrentSpace.empty()) {
+        bool ret = doSetVirtualSpace(constrIdsToCurrentSpace, false);
 
-        Gui::Command::openCommand(
+        if (!ret) {
+            return;
+        }
+    }
+
+    if (constrIdsToVirtualSpace.empty() && constrIdsToCurrentSpace.empty()) {
+        slotConstraintsChanged();
+    }
+}
+
+bool TaskSketcherConstraints::doSetVirtualSpace(const std::vector<int>& constrIds, bool isvirtualspace) {
+    assert(sketchView);
+    const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
+
+    std::stringstream stream;
+
+    stream << '[';
+
+    for (size_t i = 0; i < constrIds.size() - 1; i++) {
+        stream << constrIds[i] << ",";
+    }
+    stream << constrIds[constrIds.size() - 1] << ']';
+
+    std::string constrIdList = stream.str();
+
+    Gui::Command::openCommand(
             QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
-
-        auto doSetVirtualSpace = [&sketch](const std::vector<int>& constrIds, bool isvirtualspace) {
-            std::stringstream stream;
-
-            stream << '[';
-
-            for (size_t i = 0; i < constrIds.size() - 1; i++) {
-                stream << constrIds[i] << ",";
-            }
-            stream << constrIds[constrIds.size() - 1] << ']';
-
-            std::string constrIdList = stream.str();
-
-            try {
-                Gui::cmdAppObjectArgs(sketch,
-                                      "setVirtualSpace(%s, %s)",
-                                      constrIdList,
-                                      isvirtualspace ? "True" : "False");
-            }
-            catch (const Base::Exception&) {
-                Gui::Command::abortCommand();
-
-                Gui::TranslatedUserError(
-                    sketch, tr("Error"), tr("Impossible to update visibility tracking:") + QLatin1String(" "));
-
-                return false;
-            }
-
-            return true;
-        };
-
-
-        if (!constrIdsToVirtualSpace.empty()) {
-            bool ret = doSetVirtualSpace(constrIdsToVirtualSpace, true);
-            if (!ret)
-                return;
-        }
-
-        if (!constrIdsToCurrentSpace.empty()) {
-            bool ret = doSetVirtualSpace(constrIdsToCurrentSpace, false);
-
-            if (!ret)
-                return;
-        }
-
+    try {
+        Gui::cmdAppObjectArgs(sketch,
+            "setVirtualSpace(%s, %s)",
+            constrIdList,
+            isvirtualspace ? "True" : "False");
         Gui::Command::commitCommand();
     }
+    catch (const Base::Exception& e) {
+        Gui::Command::abortCommand();
+
+        Gui::TranslatedUserError(
+            sketch, tr("Error"), tr("Impossible to update visibility tracking:") + QLatin1String(" ") + QLatin1String(e.what()));
+        return false;
+    }
+    return true;
 }
 
 bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
@@ -1649,15 +1615,14 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
                 break;
         }
 
+        visible |= !constraint->Name.empty() && checkFilterBitset(multiFilterStatus, FilterValue::Named);
+
         // Then we re-filter based on selected/associated if such mode selected.
         if (visible && specialFilterMode == SpecialFilterType::Selected) {
-            visible = (std::find(selectionFilter.begin(), selectionFilter.end(), it->ConstraintNbr)
-                       != selectionFilter.end());
+            visible = (std::ranges::find(selectionFilter, it->ConstraintNbr) != selectionFilter.end());
         }
         else if (visible && specialFilterMode == SpecialFilterType::Associated) {
-            visible = (std::find(associatedConstraintsFilter.begin(),
-                                 associatedConstraintsFilter.end(),
-                                 it->ConstraintNbr)
+            visible = (std::ranges::find(associatedConstraintsFilter, it->ConstraintNbr)
                        != associatedConstraintsFilter.end());
         }
     }
@@ -1753,22 +1718,24 @@ void TaskSketcherConstraints::onFilterListItemChanged(QListWidgetItem* item)
     else if (filterindex == filterList->selectedFilterIndex) {// Selected constraints
         if (item->checkState() == Qt::Checked) {
             specialFilterMode = SpecialFilterType::Selected;
-            filterList->item(filterList->associatedFilterIndex)
-                ->setCheckState(Qt::Unchecked);// Disable 'associated'
             updateSelectionFilter();
         }
-        else
+        else {
             specialFilterMode = SpecialFilterType::None;
+        }
+        filterList->item(filterList->associatedFilterIndex)
+                ->setCheckState(Qt::Unchecked); // Disable 'associated'
     }
     else {// Associated constraints
         if (item->checkState() == Qt::Checked) {
             specialFilterMode = SpecialFilterType::Associated;
-            filterList->item(filterList->selectedFilterIndex)
-                ->setCheckState(Qt::Unchecked);// Disable 'selected'
             updateAssociatedConstraintsFilter();
         }
-        else
+        else {
             specialFilterMode = SpecialFilterType::None;
+        }
+        filterList->item(filterList->selectedFilterIndex)
+                ->setCheckState(Qt::Unchecked); // Disable 'selected'
     }
 
     filterList->blockSignals(tmpBlock);
@@ -1782,7 +1749,7 @@ void TaskSketcherConstraints::onFilterListItemChanged(QListWidgetItem* item)
     }
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    hGrp->SetInt("ConstraintFilterState", filterState);
+    hGrp->SetInt("SelectedConstraintFilters", filterState);
 
     // if tracking, it will call slotConstraintChanged via update mechanism as Multi Filter affects
     // not only visibility, but also filtered list content, if not tracking will still update the
