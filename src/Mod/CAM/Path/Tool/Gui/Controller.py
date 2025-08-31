@@ -252,9 +252,16 @@ class ToolControllerEditor(object):
     def updateUi(self):
         tc = self.obj
 
-        b = lambda x: QtCore.QSignalBlocker(x)
-        c = self.controller
-        with b(c.tcName), b(c.tcNumber), b(c.spindleSpeed), b(c.spindleDirection):
+        with (
+            QtCore.QSignalBlocker(self.controller.tcName),
+            QtCore.QSignalBlocker(self.controller.tcNumber),
+            QtCore.QSignalBlocker(self.horizFeed.widget),
+            QtCore.QSignalBlocker(self.horizRapid.widget),
+            QtCore.QSignalBlocker(self.vertFeed.widget),
+            QtCore.QSignalBlocker(self.vertRapid.widget),
+            QtCore.QSignalBlocker(self.controller.spindleSpeed),
+            QtCore.QSignalBlocker(self.controller.spindleDirection),
+        ):
             self.controller.tcName.setText(tc.Label)
             self.controller.tcNumber.setValue(tc.ToolNumber)
             self.horizFeed.updateWidget()
