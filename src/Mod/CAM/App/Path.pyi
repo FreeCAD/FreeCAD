@@ -8,7 +8,6 @@ from Base.Persistence import Persistence
     Twin="Toolpath",
     TwinPointer="Toolpath",
     Namespace="Path",
-    ReadOnly=["Length", "Size", "BoundBox"],
     Delete=True,
     Constructor=True,
 )

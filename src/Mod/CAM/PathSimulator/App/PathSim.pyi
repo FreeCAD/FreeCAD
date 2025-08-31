@@ -7,7 +7,6 @@ from Base.Metadata import export
     FatherInclude="Base/BaseClassPy.h",
     Include="Mod/CAM/PathSimulator/App/PathSim.h",
     Namespace="PathSimulator",
-    ReadOnly=["Tool"],
     Constructor=True,
     Delete=True,
 )
