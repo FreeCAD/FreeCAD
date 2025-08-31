@@ -25,6 +25,7 @@
 # include <cmath>
 # include <limits>
 # include <QMessageBox>
+# include <regex>
 #endif // #ifndef _PreComp_
 
 #include <App/Document.h>
@@ -54,6 +55,27 @@ TaskDimension::TaskDimension(QGIViewDimension *parent, ViewProviderDimension *di
     m_dimensionVP(dimensionVP)
 {
     ui->setupUi(this);
+
+    // Number of Decimals
+    std::string currentFormat = parent->getDimFeat()->FormatSpec.getStrValue();
+    std::smatch match;
+    std::regex specRegex("%\\.([0-9]+)([fFrRgGwWeE])");
+
+    if (std::regex_search(currentFormat, match, specRegex) && match.size() > 2) {
+        int numDecimals = std::stoi(match[1].str());
+        m_originalFormatChar = match[2].str();
+        m_formatPrefix = match.prefix().str();
+        m_formatSuffix = match.suffix().str();
+        ui->sbNumDecimals->setValue(numDecimals);
+    } else {
+        // Handle the case where no format specifier is found
+        ui->sbNumDecimals->setValue(2);
+        m_originalFormatChar = "w";
+        // If no specifier, the whole string is the prefix
+        m_formatPrefix = currentFormat;
+        m_formatSuffix = "";
+    }
+    connect(ui->sbNumDecimals, qOverload<int>(&QSpinBox::valueChanged), this, &TaskDimension::onNumDecChanged);
 
     // Tolerancing
     ui->cbTheoreticallyExact->setChecked(parent->getDimFeat()->TheoreticalExact.getValue());
@@ -203,6 +225,39 @@ void TaskDimension::recomputeFeature()
     App::DocumentObject* objVP = m_dimensionVP->getObject();
     assert(objVP);
     objVP->recomputeFeature();
+}
+
+void TaskDimension::onNumDecChanged(int decimals)
+{
+    std::string currentFormat = ui->leFormatSpecifier->text().toUtf8().constData();
+    
+    std::smatch match;
+    std::regex specRegex("%\\.([0-9]+)([fFrRgGwWeE])");
+
+    // Re-parse the current string
+    if (std::regex_search(currentFormat, match, specRegex) && match.size() > 2) {
+        m_originalFormatChar = match[2].str();
+        m_formatPrefix = match.prefix().str();
+        m_formatSuffix = match.suffix().str();
+    } else {
+        // if the user deleted the specifier, assume the whole string
+        // is a prefix and insert the specifier.
+        m_formatPrefix = currentFormat;
+        m_formatSuffix = "";
+        m_originalFormatChar = "w"; // Default fallback format char
+    }
+
+    // Rebuild the string
+    std::string newFormatSpec = m_formatPrefix
+                              + "%." + std::to_string(decimals) + m_originalFormatChar
+                              + m_formatSuffix;
+
+    // Update the UI
+    ui->leFormatSpecifier->blockSignals(true);
+    ui->leFormatSpecifier->setText(QString::fromStdString(newFormatSpec));
+    ui->leFormatSpecifier->blockSignals(false);
+
+    onFormatSpecifierChanged();
 }
 
 void TaskDimension::onTheoreticallyExactChanged()
