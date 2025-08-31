@@ -4,16 +4,10 @@ from Base.Metadata import export
 from App.DocumentObject import DocumentObject
 
 @export(
-    Father="DocumentObjectPy",
-    Name="DrawGeomHatchPy",
-    Twin="DrawGeomHatch",
-    TwinPointer="DrawGeomHatch",
     Include="Mod/TechDraw/App/DrawGeomHatch.h",
     Namespace="TechDraw",
-    FatherInclude="App/DocumentObjectPy.h",
-    FatherNamespace="App",
 )
-class DrawGeomHatchPy(DocumentObject):
+class DrawGeomHatch(DocumentObject):
     """
     Feature for creating and manipulating Technical Drawing GeomHatch areas
     """

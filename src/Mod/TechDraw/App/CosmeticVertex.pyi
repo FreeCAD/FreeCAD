@@ -4,18 +4,12 @@ from Base.PyObjectBase import PyObjectBase
 from Base.Metadata import constmethod, export
 
 @export(
-    Father="PyObjectBase",
-    Name="CosmeticVertexPy",
-    Twin="CosmeticVertex",
-    TwinPointer="CosmeticVertex",
     Include="Mod/TechDraw/App/Cosmetic.h",
     Namespace="TechDraw",
-    FatherInclude="Base/PyObjectBase.h",
-    FatherNamespace="Base",
     Constructor=True,
     Delete=True,
 )
-class CosmeticVertexPy(PyObjectBase):
+class CosmeticVertex(PyObjectBase):
     """
     CosmeticVertex specifies an extra (cosmetic) vertex in Views
     """

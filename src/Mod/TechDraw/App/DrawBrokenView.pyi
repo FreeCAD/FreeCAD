@@ -4,16 +4,11 @@ from Base.Metadata import export
 from TechDraw.DrawViewPart import DrawViewPart
 
 @export(
-    Father="DrawViewPartPy",
-    Name="DrawBrokenViewPy",
-    Twin="DrawBrokenView",
-    TwinPointer="DrawBrokenView",
     Include="Mod/TechDraw/App/DrawBrokenView.h",
     Namespace="TechDraw",
     FatherInclude="Mod/TechDraw/App/DrawViewPartPy.h",
-    FatherNamespace="TechDraw",
 )
-class DrawBrokenViewPy(DrawViewPart):
+class DrawBrokenView(DrawViewPart):
     """
     Feature for creating and manipulating Technical Drawing broken views
     """

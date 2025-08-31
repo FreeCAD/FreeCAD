@@ -4,16 +4,11 @@ from Base.Metadata import export
 from TechDraw.DrawViewCollection import DrawViewCollection
 
 @export(
-    Father="DrawViewCollectionPy",
-    Name="DrawProjGroupPy",
-    Twin="DrawProjGroup",
-    TwinPointer="DrawProjGroup",
     Include="Mod/TechDraw/App/DrawProjGroup.h",
     Namespace="TechDraw",
     FatherInclude="Mod/TechDraw/App/DrawViewCollectionPy.h",
-    FatherNamespace="TechDraw",
 )
-class DrawProjGroupPy(DrawViewCollection):
+class DrawProjGroup(DrawViewCollection):
     """
     Feature for creating and manipulating Technical Drawing Projection Groups
     """

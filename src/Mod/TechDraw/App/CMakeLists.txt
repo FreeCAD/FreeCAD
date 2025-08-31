@@ -32,33 +32,33 @@ list(APPEND TechDrawLIBS
     ${QtWidgets_LIBRARIES}
 )
 
-generate_from_py(DrawHatchPy)
-generate_from_py(DrawViewPy)
-generate_from_py(DrawPagePy)
-generate_from_py(DrawViewPartPy)
-generate_from_py(DrawViewSymbolPy)
-generate_from_py(DrawTemplatePy)
-generate_from_py(DrawParametricTemplatePy)
-generate_from_py(DrawSVGTemplatePy)
-generate_from_py(DrawViewClipPy)
-generate_from_py(DrawViewDimensionPy)
-generate_from_py(DrawViewDimExtentPy)
-generate_from_py(DrawGeomHatchPy)
-generate_from_py(DrawViewCollectionPy)
-generate_from_py(DrawProjGroupPy)
-generate_from_py(DrawProjGroupItemPy)
-generate_from_py(DrawViewAnnotationPy)
-generate_from_py(DrawLeaderLinePy)
-generate_from_py(DrawRichAnnoPy)
-generate_from_py(GeomFormatPy)
-generate_from_py(CenterLinePy)
-generate_from_py(CosmeticEdgePy)
-generate_from_py(CosmeticVertexPy)
-generate_from_py(DrawTilePy)
-generate_from_py(DrawTileWeldPy)
-generate_from_py(DrawWeldSymbolPy)
-generate_from_py(CosmeticExtensionPy)
-generate_from_py(DrawBrokenViewPy)
+generate_from_py(DrawHatch)
+generate_from_py(DrawView)
+generate_from_py(DrawPage)
+generate_from_py(DrawViewPart)
+generate_from_py(DrawViewSymbol)
+generate_from_py(DrawTemplate)
+generate_from_py(DrawParametricTemplate)
+generate_from_py(DrawSVGTemplate)
+generate_from_py(DrawViewClip)
+generate_from_py(DrawViewDimension)
+generate_from_py(DrawViewDimExtent)
+generate_from_py(DrawGeomHatch)
+generate_from_py(DrawViewCollection)
+generate_from_py(DrawProjGroup)
+generate_from_py(DrawProjGroupItem)
+generate_from_py(DrawViewAnnotation)
+generate_from_py(DrawLeaderLine)
+generate_from_py(DrawRichAnno)
+generate_from_py(GeomFormat)
+generate_from_py(CenterLine)
+generate_from_py(CosmeticEdge)
+generate_from_py(CosmeticVertex)
+generate_from_py(DrawTile)
+generate_from_py(DrawTileWeld)
+generate_from_py(DrawWeldSymbol)
+generate_from_py(CosmeticExtension)
+generate_from_py(DrawBrokenView)
 
 SET(Draw_SRCS
     DrawPage.cpp
@@ -208,59 +208,59 @@ SET(Geometry_SRCS
 )
 
 SET(Python_SRCS
-    DrawPagePy.pyi
+    DrawPage.pyi
     DrawPagePyImp.cpp
-    DrawViewPy.pyi
+    DrawView.pyi
     DrawViewPyImp.cpp
-    DrawViewPartPy.pyi
+    DrawViewPart.pyi
     DrawViewPartPyImp.cpp
-    DrawViewSymbolPy.pyi
+    DrawViewSymbol.pyi
     DrawViewSymbolPyImp.cpp
-    DrawTemplatePy.pyi
+    DrawTemplate.pyi
     DrawTemplatePyImp.cpp
-    DrawParametricTemplatePy.pyi
+    DrawParametricTemplate.pyi
     DrawParametricTemplatePyImp.cpp
-    DrawSVGTemplatePy.pyi
+    DrawSVGTemplate.pyi
     DrawSVGTemplatePyImp.cpp
-    DrawViewClipPy.pyi
+    DrawViewClip.pyi
     DrawViewClipPyImp.cpp
-    DrawViewDimensionPy.pyi
+    DrawViewDimension.pyi
     DrawViewDimensionPyImp.cpp
-    DrawViewDimExtentPy.pyi
+    DrawViewDimExtent.pyi
     DrawViewDimExtentPyImp.cpp
-    DrawHatchPy.pyi
+    DrawHatch.pyi
     DrawHatchPyImp.cpp
-    DrawGeomHatchPy.pyi
+    DrawGeomHatch.pyi
     DrawGeomHatchPyImp.cpp
-    DrawViewCollectionPy.pyi
+    DrawViewCollection.pyi
     DrawViewCollectionPyImp.cpp
-    DrawProjGroupPy.pyi
+    DrawProjGroup.pyi
     DrawProjGroupPyImp.cpp
-    DrawProjGroupItemPy.pyi
+    DrawProjGroupItem.pyi
     DrawProjGroupItemPyImp.cpp
-    DrawViewAnnotationPy.pyi
+    DrawViewAnnotation.pyi
     DrawViewAnnotationPyImp.cpp
-    DrawLeaderLinePy.pyi
+    DrawLeaderLine.pyi
     DrawLeaderLinePyImp.cpp
-    DrawRichAnnoPy.pyi
+    DrawRichAnno.pyi
     DrawRichAnnoPyImp.cpp
-    GeomFormatPy.pyi
+    GeomFormat.pyi
     GeomFormatPyImp.cpp
-    CenterLinePy.pyi
+    CenterLine.pyi
     CenterLinePyImp.cpp
-    CosmeticEdgePy.pyi
+    CosmeticEdge.pyi
     CosmeticEdgePyImp.cpp
-    CosmeticVertexPy.pyi
+    CosmeticVertex.pyi
     CosmeticVertexPyImp.cpp
-    DrawTilePy.pyi
+    DrawTile.pyi
     DrawTilePyImp.cpp
-    DrawTileWeldPy.pyi
+    DrawTileWeld.pyi
     DrawTileWeldPyImp.cpp
-    DrawWeldSymbolPy.pyi
+    DrawWeldSymbol.pyi
     DrawWeldSymbolPyImp.cpp
-    CosmeticExtensionPy.pyi
+    CosmeticExtension.pyi
     CosmeticExtensionPyImp.cpp
-    DrawBrokenViewPy.pyi
+    DrawBrokenView.pyi
     DrawBrokenViewPyImp.cpp
 )
 

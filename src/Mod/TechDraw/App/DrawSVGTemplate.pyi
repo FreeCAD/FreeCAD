@@ -4,16 +4,11 @@ from Base.Metadata import export
 from DrawTemplate import DrawTemplate
 
 @export(
-    Father="DrawTemplatePy",
-    Name="DrawSVGTemplatePy",
-    Twin="DrawSVGTemplate",
-    TwinPointer="DrawSVGTemplate",
     Include="Mod/TechDraw/App/DrawSVGTemplate.h",
     Namespace="TechDraw",
     FatherInclude="DrawTemplatePy.h",
-    FatherNamespace="TechDraw",
 )
-class DrawSVGTemplatePy(DrawTemplate):
+class DrawSVGTemplate(DrawTemplate):
     """
     Feature for creating and manipulating Technical Drawing SVG Templates
     """

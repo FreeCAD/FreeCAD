@@ -5,16 +5,10 @@ from Base.Metadata import export
 from App.DocumentObject import DocumentObject
 
 @export(
-    Father="DocumentObjectPy",
-    Name="DrawViewPy",
-    Twin="DrawView",
-    TwinPointer="DrawView",
     Include="Mod/TechDraw/App/DrawView.h",
     Namespace="TechDraw",
-    FatherInclude="App/DocumentObjectPy.h",
-    FatherNamespace="App",
 )
-class DrawViewPy(DocumentObject):
+class DrawView(DocumentObject):
     """
     Feature for creating and manipulating Technical Drawing Views
     """

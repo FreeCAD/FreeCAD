@@ -4,18 +4,13 @@ from Base.PyObjectBase import PyObjectBase
 from Base.Metadata import export
 
 @export(
-    Father="PyObjectBase",
-    Name="CosmeticEdgePy",
-    Twin="CosmeticEdge",
-    TwinPointer="CosmeticEdge",
     Include="Mod/TechDraw/App/Cosmetic.h",
     Namespace="TechDraw",
     FatherInclude="Base/GeometryPyCXX.h",
-    FatherNamespace="Base",
     Constructor=True,
     Delete=True,
 )
-class CosmeticEdgePy(PyObjectBase):
+class CosmeticEdge(PyObjectBase):
     """
     CosmeticEdge specifies an extra (cosmetic) edge in Views
     """

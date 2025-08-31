@@ -4,16 +4,11 @@ from Base.Metadata import export
 from TechDraw.DrawViewDimension import DrawViewDimension
 
 @export(
-    Father="DrawViewDimensionPy",
-    Name="DrawViewDimExtentPy",
-    Twin="DrawViewDimExtent",
-    TwinPointer="DrawViewDimExtent",
     Include="Mod/TechDraw/App/DrawViewDimExtent.h",
     Namespace="TechDraw",
     FatherInclude="Mod/TechDraw/App/DrawViewDimensionPy.h",
-    FatherNamespace="TechDraw",
 )
-class DrawViewDimExtentPy(DrawViewDimension):
+class DrawViewDimExtent(DrawViewDimension):
     """
     Feature for creating and manipulating Technical Drawing DimExtents
     """

@@ -4,18 +4,12 @@ from Base.PyObjectBase import PyObjectBase
 from Base.Metadata import constmethod, export
 
 @export(
-    Father="PyObjectBase",
-    Name="CenterLinePy",
-    Twin="CenterLine",
-    TwinPointer="CenterLine",
     Include="Mod/TechDraw/App/CenterLine.h",
     Namespace="TechDraw",
-    FatherInclude="Base/PyObjectBase.h",
-    FatherNamespace="Base",
     Constructor=True,
     Delete=True,
 )
-class CenterLinePy(PyObjectBase):
+class CenterLine(PyObjectBase):
     """
     CenterLine specifies additional mark up edges in a View
     """

@@ -4,16 +4,11 @@ from Base.Metadata import export
 from DrawTemplate import DrawTemplate
 
 @export(
-    Father="DrawTemplatePy",
-    Name="DrawParametricTemplatePy",
-    Twin="DrawParametricTemplate",
-    TwinPointer="DrawParametricTemplate",
     Include="Mod/TechDraw/App/DrawParametricTemplate.h",
     Namespace="TechDraw",
     FatherInclude="DrawTemplatePy.h",
-    FatherNamespace="TechDraw",
 )
-class DrawParametricTemplatePy(DrawTemplate):
+class DrawParametricTemplate(DrawTemplate):
     """
     Feature for creating and manipulating Technical Drawing Templates
     """

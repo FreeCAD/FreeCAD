@@ -4,16 +4,11 @@ from Base.Metadata import export
 from TechDraw.DrawView import DrawView
 
 @export(
-    Father="DrawViewPy",
-    Name="DrawViewCollectionPy",
-    Twin="DrawViewCollection",
-    TwinPointer="DrawViewCollection",
     Include="Mod/TechDraw/App/DrawViewCollection.h",
     Namespace="TechDraw",
     FatherInclude="Mod/TechDraw/App/DrawViewPy.h",
-    FatherNamespace="TechDraw",
 )
-class DrawViewCollectionPy(DrawView):
+class DrawViewCollection(DrawView):
     """
     Feature for creating and manipulating Technical Drawing View Collections
     """

@@ -4,16 +4,10 @@ from Base.Metadata import export
 from App.DocumentObject import DocumentObject
 
 @export(
-    Father="DocumentObjectPy",
-    Name="DrawPagePy",
-    Twin="DrawPage",
-    TwinPointer="DrawPage",
     Include="Mod/TechDraw/App/DrawPage.h",
     Namespace="TechDraw",
-    FatherInclude="App/DocumentObjectPy.h",
-    FatherNamespace="App",
 )
-class DrawPagePy(DocumentObject):
+class DrawPage(DocumentObject):
     """
     Feature for creating and manipulating Technical Drawing Pages
     """

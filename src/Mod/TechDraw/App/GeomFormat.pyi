@@ -4,18 +4,12 @@ from Base.PyObjectBase import PyObjectBase
 from Base.Metadata import constmethod, export
 
 @export(
-    Father="PyObjectBase",
-    Name="GeomFormatPy",
-    Twin="GeomFormat",
-    TwinPointer="GeomFormat",
     Include="Mod/TechDraw/App/Cosmetic.h",
     Namespace="TechDraw",
-    FatherInclude="Base/PyObjectBase.h",
-    FatherNamespace="Base",
     Constructor=True,
     Delete=True,
 )
-class GeomFormatPy(PyObjectBase):
+class GeomFormat(PyObjectBase):
     """
     GeomFormat specifies appearance parameters for TechDraw Geometry objects
     """
