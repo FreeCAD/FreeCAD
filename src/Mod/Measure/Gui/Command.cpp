@@ -115,6 +115,9 @@ protected:
         }
 
         if (iMsg == 0) {
+            if (quickMeasure) {
+                quickMeasure->print(QString());
+            }
             quickMeasure.reset();
         }
         else {
@@ -125,7 +128,7 @@ protected:
     {
         Gui::Action* action = Gui::Command::createAction();
         action->setCheckable(true);
-        action->setChecked(parameter->GetBool("EnableQuickMeasure", false));
+        action->setChecked(parameter->GetBool("EnableQuickMeasure", true));
         return action;
     }
     void accessParameter()
