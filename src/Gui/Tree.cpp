@@ -3905,12 +3905,12 @@ void DocumentItem::slotResetEdit(const Gui::ViewProviderDocumentObject& v)
     FOREACH_ITEM_ALL(item)
         if (tree->editingItem) {
             if (item == tree->editingItem) {
-                item->restoreBackground(); // Restore debug pink or previous background
+                item->restoreBackground(); // Restore default background
                 break;
             }
         }
         else if (item->object() == &v)
-            item->restoreBackground(); // Restore debug pink or previous background
+            item->restoreBackground(); // Restore default background
     END_FOREACH_ITEM
     tree->editingItem = nullptr;
 }
