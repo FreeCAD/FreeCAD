@@ -26,6 +26,8 @@
 #include "Gizmo.h"
 
 #ifndef _PreComp_
+#include <cmath>
+
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/nodes/SoPickStyle.h>
@@ -168,6 +170,7 @@ void LinearGizmo::setDragLength(double dragLength)
 void LinearGizmo::setGeometryScale(float scale)
 {
     dragger->geometryScale = SbVec3f(scale, scale, scale);
+    dragger->translationIncrement = std::pow(10.0f, std::floor(std::log10(scale)));
 }
 
 SoLinearDraggerContainer* LinearGizmo::getDraggerContainer()
