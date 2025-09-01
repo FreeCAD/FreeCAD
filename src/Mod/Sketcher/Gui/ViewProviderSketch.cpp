@@ -543,6 +543,7 @@ ViewProviderSketch::ViewProviderSketch()
     , pObserver(std::make_unique<ViewProviderSketch::ParameterObserver>(*this))
     , sketchHandler(nullptr)
     , viewOrientationFactor(1)
+    , blockContextMenu(false)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
     PartGui::ViewProviderGridExtension::initExtension(this);
@@ -1141,6 +1142,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                 case STATUS_SKETCH_UseRubberBand:
                     doBoxSelection(DoubleClick::prvCursorPos, cursorPos, viewer);
                     rubberband->setWorking(false);
+                    blockContextMenu = true;
 
                     // use draw(false, false) to avoid solver geometry with outdated construction flags
                     draw(false, false);
@@ -1162,6 +1164,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     // Right mouse button ****************************************************
     else if (Button == 2) {
         if (pressed) {
+            blockContextMenu = false;
+
             // Do things depending on the mode of the user interaction
             switch (Mode) {
                 case STATUS_NONE: {
@@ -1181,7 +1185,18 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         // Base::Console().log("start dragging, point:%d\n",this->DragPoint);
                         setSketchMode(STATUS_SELECT_Constraint);
                     }
+                    break;
                 }
+                case STATUS_SKETCH_UseRubberBand:
+                    // Cancel rubberband
+                    rubberband->setWorking(false);
+                    blockContextMenu = true;
+
+                    // a redraw is required in order to clear the rubberband
+                    draw(true, false);
+                    const_cast<Gui::View3DInventorViewer*>(viewer)->redraw();
+                    setSketchMode(STATUS_NONE);
+                    return true;
                 default:
                     break;
             }
@@ -3714,6 +3729,8 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     cameraSensor.setData(camSensorData);
     cameraSensor.setDeleteCallback(&ViewProviderSketch::camSensDeleteCB, camSensorData);
     cameraSensor.attach(viewer->getCamera());
+
+    blockContextMenu = false;
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
@@ -3727,6 +3744,8 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
     viewer->removeGraphicsItem(rubberband.get());
     viewer->setEditing(false);
     viewer->setSelectionEnabled(true);
+
+    blockContextMenu = false;
 }
 
 void ViewProviderSketch::camSensDeleteCB(void* data, SoSensor *s)
@@ -4365,6 +4384,8 @@ bool ViewProviderSketch::isInEditMode() const
 }
 void ViewProviderSketch::generateContextMenu()
 {
+    if (blockContextMenu) return;
+
     int selectedEdges = 0;
     int selectedLines = 0;
     int selectedConics = 0;
