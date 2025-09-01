@@ -237,7 +237,7 @@ class _Stairs(ArchComponent.Component):
 
 
     def loads(self,state):
-        super().loads(state)  # do nothing as of 2024.11.28
+        self.Type = "Stairs"
         if state == None:
             return
         elif state[0] == 'S':  # state[1] == 't', behaviour before 2024.11.28
@@ -248,7 +248,6 @@ class _Stairs(ArchComponent.Component):
         elif state[0] != 'Stairs':  # model before merging super.dumps/loads()
             self.ArchSkPropSetPickedUuid = state[0]
             self.ArchSkPropSetListPrev = state[1]
-        self.Type = "Stairs"
 
 
     def onDocumentRestored(self,obj):

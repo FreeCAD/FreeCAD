@@ -737,7 +737,7 @@ class _Structure(ArchComponent.Component):
 
 
     def loads(self,state):
-        super().loads(state)  # do nothing as of 2024.11.28
+        self.Type = "Structure"
         if state == None:
             return
         elif state[0] == 'S':  # state[1] == 't', behaviour before 2024.11.28
@@ -748,7 +748,6 @@ class _Structure(ArchComponent.Component):
         elif state[0] != 'Structure':  # model before merging super.dumps/loads()
             self.ArchSkPropSetPickedUuid = state[0]
             self.ArchSkPropSetListPrev = state[1]
-        self.Type = "Structure"
 
 
     def onDocumentRestored(self,obj):
