@@ -320,6 +320,7 @@ void ViewProviderAssembly::unsetEdit(int mode)
 
         Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
         if (taskView) {
+            // Waiting for the solver to support reporting information.
             // taskView->removeContextualPanel(taskSolver);
         }
 
@@ -1312,9 +1313,8 @@ inline QString intListHelper(const std::vector<int>& ints)
         for (int i = 0; i < numToShow; ++i) {
             results.append(QStringLiteral("%1, ").arg(ints[i]));
         }
-        results.append(QCoreApplication::translate("ViewProviderSketch", "and %1 more").arg(more));
+        results.append(ViewProviderAssembly::tr("ViewProviderAssembly", "and %1 more").arg(more));
     }
-    std::string testString = results.toStdString();
     return results;
 }
 
