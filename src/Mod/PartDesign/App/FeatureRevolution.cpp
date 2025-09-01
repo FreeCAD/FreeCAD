@@ -207,7 +207,7 @@ App::DocumentObjectExecReturn* Revolution::execute()
             bool midplane = Midplane.getValue();
             bool reversed = Reversed.getValue();
             generateRevolution(result,
-                               sketchshape.getShape(),
+                               sketchshape,
                                gp_Ax1(pnt, dir),
                                angle,
                                angle2,
