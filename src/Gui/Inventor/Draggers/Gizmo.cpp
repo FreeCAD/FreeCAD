@@ -26,6 +26,8 @@
 #include "Gizmo.h"
 
 #ifndef _PreComp_
+#include <cmath>
+
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/nodes/SoPickStyle.h>
@@ -168,6 +170,7 @@ void LinearGizmo::setDragLength(double dragLength)
 void LinearGizmo::setGeometryScale(float scale)
 {
     dragger->geometryScale = SbVec3f(scale, scale, scale);
+    dragger->translationIncrement = std::pow(10.0f, std::floor(std::log10(scale)));
 }
 
 SoLinearDraggerContainer* LinearGizmo::getDraggerContainer()
@@ -178,9 +181,8 @@ SoLinearDraggerContainer* LinearGizmo::getDraggerContainer()
 
 void LinearGizmo::setProperty(QuantitySpinBox* property)
 {
-    if (quantityChangedConnection) {
-        QuantitySpinBox::disconnect(quantityChangedConnection);
-    }
+    QuantitySpinBox::disconnect(quantityChangedConnection);
+    QuantitySpinBox::disconnect(formulaDialogConnection);
 
     this->property = property;
     quantityChangedConnection = QuantitySpinBox::connect(
@@ -189,7 +191,7 @@ void LinearGizmo::setProperty(QuantitySpinBox* property)
             setDragLength(value);
         }
     );
-    quantityChangedConnection = QuantitySpinBox::connect(
+    formulaDialogConnection = QuantitySpinBox::connect(
         property, &Gui::QuantitySpinBox::showFormulaDialog,
         [this] (bool) {
             // This will set the visibility of the actual geometry to true or false
@@ -452,9 +454,8 @@ void RotationGizmo::orientAlongCamera(SoCamera* camera)
 
 void RotationGizmo::setProperty(QuantitySpinBox* property)
 {
-    if (quantityChangedConnection) {
-        QuantitySpinBox::disconnect(quantityChangedConnection);
-    }
+    QuantitySpinBox::disconnect(quantityChangedConnection);
+    QuantitySpinBox::disconnect(formulaDialogConnection);
 
     this->property = property;
     quantityChangedConnection = QuantitySpinBox::connect(
@@ -463,7 +464,7 @@ void RotationGizmo::setProperty(QuantitySpinBox* property)
             setRotAngle(value);
         }
     );
-    quantityChangedConnection = QuantitySpinBox::connect(
+    formulaDialogConnection = QuantitySpinBox::connect(
         property, &Gui::QuantitySpinBox::showFormulaDialog,
         [this] (bool) {
             // This will set the visibility of the actual geometry to true or false
