@@ -30,258 +30,151 @@ to enable unit testing without requiring the full FreeCAD environment.
 
 # pylint: disable=too-few-public-methods
 
-import builtins
 from unittest.mock import MagicMock
 
 
-class MockQIcon:
-    """Mock QIcon class."""
-
-    def __init__(self, *_args, **_kwargs):
-        pass
-
-    @staticmethod
-    def fromTheme(_theme_name, _fallback=None):
-        """Mock fromTheme method."""
-        return MockQIcon()
+def create_mock_qicon():
+    """Create a mock QIcon with fromTheme static method."""
+    mock_qicon = MagicMock()
+    mock_qicon.fromTheme = MagicMock(return_value=mock_qicon)
+    return mock_qicon
 
 
-class MockQTreeWidgetItem:
-    """Mock QTreeWidgetItem class."""
+def create_mock_qtreewidgetitem():
+    """Create a mock QTreeWidgetItem with required methods and state tracking."""
+    mock_item = MagicMock()
 
-    def __init__(self, *_args, **_kwargs):
-        self.text_values = {}
-        self.data_values = {}
-        self._children = []
+    # Add state tracking for setText/text functionality
+    mock_item.text_values = {}
+    mock_item.data_values = {}
+    mock_item.children = []
 
-    def setText(self, column, text):
-        """Mock setText method."""
-        self.text_values[column] = text
+    def mock_set_text(column, text):
+        mock_item.text_values[column] = text
 
-    def text(self, column):
-        """Mock text method."""
-        return self.text_values.get(column, "")
+    def mock_get_text(column):
+        return mock_item.text_values.get(column, "")
 
-    def setData(self, column, role, data):
-        """Mock setData method."""
-        self.data_values[(column, role)] = data
+    def mock_set_data(column, role, data):
+        mock_item.data_values[(column, role)] = data
 
-    def data(self, column, role):
-        """Mock data method."""
-        return self.data_values.get((column, role))
+    def mock_get_data(column, role):
+        return mock_item.data_values.get((column, role))
 
-    def setIcon(self, _column, _icon):
-        """Mock setIcon method."""
+    def mock_child_count():
+        return len(mock_item.children)
 
-    def childCount(self):
-        """Mock method for getting child count."""
-        return len(self._children)
-
-    def child(self, index):
-        """Mock method for getting child by index."""
-        if 0 <= index < len(self._children):
-            return self._children[index]
+    def mock_child(index):
+        if 0 <= index < len(mock_item.children):
+            return mock_item.children[index]
         return None
 
-    def addChild(self, child):
-        """Mock method for adding a child item."""
-        self._children.append(child)
+    def mock_add_child(child):
+        mock_item.children.append(child)
+
+    # Configure the mock with specific behaviors
+    mock_item.setText = mock_set_text
+    mock_item.text = mock_get_text
+    mock_item.setData = mock_set_data
+    mock_item.data = mock_get_data
+    mock_item.childCount = mock_child_count
+    mock_item.child = mock_child
+    mock_item.addChild = mock_add_child
+
+    return mock_item
 
 
-class MockSignal:
-    """Mock Signal class."""
+def create_mock_checkbox():
+    """Create a mock CheckBox with state tracking."""
+    mock_checkbox = MagicMock()
+    mock_checkbox.checked = False
 
-    def connect(self, _slot):
-        """Mock connect method."""
+    def mock_set_checked(checked):
+        mock_checkbox.checked = checked
 
+    def mock_is_checked():
+        return mock_checkbox.checked
 
-class MockCheckBox:
-    """Mock CheckBox class."""
+    mock_checkbox.setChecked = mock_set_checked
+    mock_checkbox.isChecked = mock_is_checked
+    mock_checkbox.stateChanged = MagicMock()
 
-    def __init__(self):
-        self.checked = False
-        self.stateChanged = MockSignal()
-
-    def setChecked(self, checked):
-        """Mock setChecked method."""
-        self.checked = checked
-
-    def isChecked(self):
-        """Mock isChecked method."""
-        return self.checked
+    return mock_checkbox
 
 
-class MockButton:
-    """Mock Button class."""
-
-    def __init__(self):
-        pass
-
-    @property
-    def clicked(self):
-        """Mock clicked method."""
-        return MockSignal()
+def create_mock_line_edit():
+    """Create a mock LineEdit."""
+    mock_line_edit = MagicMock()
+    mock_line_edit.text.return_value = ""
+    mock_line_edit.textChanged = MagicMock()
+    return mock_line_edit
 
 
-class MockLineEdit:
-    """Mock LineEdit class."""
+def create_mock_part_list():
+    """Create a mock PartList with required functionality."""
+    mock_part_list = MagicMock()
+    mock_part_list.items = []
 
-    def __init__(self):
-        self.textChanged = MockSignal()
+    def mock_clear():
+        mock_part_list.items = []
 
-    def text(self):
-        """Mock text method."""
-        return ""
+    def mock_add_top_level_item(item):
+        mock_part_list.items.append(item)
 
-    def setText(self, _text):
-        """Mock setText method."""
+    def mock_top_level_item_count():
+        return len(mock_part_list.items)
 
-
-class MockHeader:
-    """Mock Header class."""
-
-    def hide(self):
-        """Mock hide method."""
-
-
-class MockPartList:
-    """Mock PartList class."""
-
-    def __init__(self):
-        self.itemClicked = MockSignal()
-        self.itemDoubleClicked = MockSignal()
-        self._items = []
-
-    def header(self):
-        """Mock header method."""
-        return MockHeader()
-
-    def clear(self):
-        """Mock clear method."""
-        self._items = []
-
-    def addTopLevelItem(self, item):
-        """Mock addTopLevelItem method."""
-        self._items.append(item)
-
-    def installEventFilter(self, _filter_obj):
-        """Mock installEventFilter method."""
-
-    def expandAll(self):
-        """Mock expandAll method."""
-
-    def topLevelItemCount(self):
-        """Mock topLevelItemCount method."""
-        return len(self._items)
-
-    def topLevelItem(self, index):
-        """Mock topLevelItem method."""
-        if 0 <= index < len(self._items):
-            return self._items[index]
+    def mock_top_level_item(index):
+        if 0 <= index < len(mock_part_list.items):
+            return mock_part_list.items[index]
         return None
 
-    def sizeHintForRow(self, _row):
-        """Mock sizeHintForRow method."""
-        return 20
+    mock_part_list.clear = mock_clear
+    mock_part_list.addTopLevelItem = mock_add_top_level_item
+    mock_part_list.topLevelItemCount = mock_top_level_item_count
+    mock_part_list.topLevelItem = mock_top_level_item
+    mock_part_list.sizeHintForRow.return_value = 20
 
-    def setMinimumHeight(self, _height):
-        """Mock setMinimumHeight method."""
+    # Add other required attributes/methods
+    mock_part_list.itemClicked = MagicMock()
+    mock_part_list.itemDoubleClicked = MagicMock()
+    mock_part_list.header.return_value = MagicMock()
 
-
-class MockForm:
-    """Mock Form class."""
-
-    def __init__(self):
-        self.partList = MockPartList()
-        self.CheckBox_ShowOnlyParts = MockCheckBox()
-        self.CheckBox_RigidSubAsm = MockCheckBox()
-        self.openFileButton = MockButton()
-        self.filterPartList = MockLineEdit()
-
-    def installEventFilter(self, _filter_obj):
-        """Mock installEventFilter method."""
-
-    def setWindowTitle(self, _title):
-        """Mock setWindowTitle method."""
-
-    def show(self):
-        """Mock show method."""
-
-    def hide(self):
-        """Mock hide method."""
+    return mock_part_list
 
 
-class MockPySideUic:
-    """Mock PySideUic class."""
-
-    @staticmethod
-    def loadUi(_ui_file):
-        """Mock loadUi method."""
-        return MockForm()
-
-
-def MockGetDocument(doc_name):
-    """Mock getDocument function."""
-    return type(
-        "MockGuiDocument",
-        (),
-        {
-            "Name": doc_name,
-            "getObject": lambda _obj_name: None,
-            "TreeRootObjects": [],
-        },
-    )()
+def create_mock_form():
+    """Create a mock Form with all required components."""
+    mock_form = MagicMock()
+    mock_form.partList = create_mock_part_list()
+    mock_form.CheckBox_ShowOnlyParts = create_mock_checkbox()
+    mock_form.CheckBox_RigidSubAsm = create_mock_checkbox()
+    mock_form.openFileButton = MagicMock()
+    mock_form.openFileButton.clicked = MagicMock()
+    mock_form.filterPartList = create_mock_line_edit()
+    return mock_form
 
 
-def MockAddModule(_module_name):
-    """Mock addModule function."""
+def create_mock_pyside_uic():
+    """Create a mock PySideUic with loadUi method."""
+    mock_uic = MagicMock()
+    mock_uic.loadUi.return_value = create_mock_form()
+    return mock_uic
 
 
-def MockDoCommandSkip(_commands):
-    """Mock doCommandSkip function."""
+def create_mock_gui_document(doc_name):
+    """Create a mock GUI document."""
+    mock_doc = MagicMock()
+    mock_doc.Name = doc_name
+    mock_doc.getObject.return_value = None
+    mock_doc.TreeRootObjects = []
+    return mock_doc
 
 
-def SetupGuiMocks():
-    """Set up all FreeCAD GUI mocks for testing."""
-    import FreeCADGui as Gui  # pylint: disable=import-error,import-outside-toplevel
-    from PySide import QtCore, QtGui  # pylint: disable=import-error,import-outside-toplevel
-
-    # Patch QtGui with our mock classes
-    QtGui.QIcon = MockQIcon
-    QtGui.QTreeWidgetItem = MockQTreeWidgetItem
-
-    # Mock the PySideUic if it doesn't exist
-    if not hasattr(Gui, "PySideUic"):
-        Gui.PySideUic = MockPySideUic
-
-    # Mock additional Gui methods that might be missing
-    if not hasattr(Gui, "getDocument"):
-        Gui.getDocument = MockGetDocument
-
-    # Mock Selection module
-    if not hasattr(Gui, "Selection"):
-        Gui.Selection = type(
-            "MockSelection",
-            (),
-            {
-                "clearSelection": lambda *args: None,
-                "addSelection": lambda *args: None,
-                "getSelection": lambda *args: [],
-            },
-        )()
-
-    # Mock addModule method
-    if not hasattr(Gui, "addModule"):
-        Gui.addModule = MockAddModule
-
-    # Mock doCommandSkip method
-    if not hasattr(Gui, "doCommandSkip"):
-        Gui.doCommandSkip = MockDoCommandSkip
-
-    # Make QtCore, QtGui and Gui available in the global namespace
-    builtins.QtCore = QtCore
-    builtins.QtGui = QtGui
-    builtins.Gui = Gui
-    builtins.QIcon = MockQIcon
-
-    return True
+# Factory functions for creating specific mock instances
+MockQIcon = create_mock_qicon
+MockQTreeWidgetItem = create_mock_qtreewidgetitem
+MockPySideUic = create_mock_pyside_uic
+MockGetDocument = create_mock_gui_document
+MockAddModule = MagicMock()
+MockDoCommandSkip = MagicMock()
