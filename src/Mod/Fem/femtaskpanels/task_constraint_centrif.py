@@ -62,10 +62,13 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.axis_selection_widget = selection_widgets.GeometryElementsSelection(
             obj.RotationAxis, ["Edge"], False, False
         )
+        self.axis_selection_widget.setWindowTitle(
+            self.axis_selection_widget.tr("Axis Reference Selector")
+        )
 
         # loaded body selection widget
         self.body_selection_widget = selection_widgets.GeometryElementsSelection(
-            obj.References, ["Solid"], False, False
+            obj.References, ["Solid", "Face"], False, False
         )
 
         # form made from param and selection widget
