@@ -71,6 +71,7 @@ void TaskAssemblyMessages::updateToolTip(const QString& link)
 
 void TaskAssemblyMessages::onLabelStatusLinkClicked(const QString& str)
 {
+    // The commands are not implemented yet since App is not reporting yet the solver's status
     /* if (str == QStringLiteral("#conflicting")) {
         Gui::Application::Instance->commandManager().runCommandByName(
             "Assembly_SelectConflictingConstraints");
