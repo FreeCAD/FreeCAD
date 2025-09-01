@@ -38,6 +38,7 @@
 #include "QGCustomClip.h"
 #include "QGCustomRect.h"
 #include "Rez.h"
+#include "ViewProviderViewClip.h"
 
 
 using namespace TechDrawGui;
@@ -155,6 +156,13 @@ void QGIViewClip::drawClip()
             }
         }
     }
+
+    auto* vpClip = freecad_cast<ViewProviderViewClip*>(getViewProvider(viewClip));
+    if (!vpClip) {
+        return;
+    }
+
+    m_cliparea->setFlag(QGraphicsItem::ItemClipsChildrenToShape, vpClip->ClipChildren.getValue());
 }
 
 
