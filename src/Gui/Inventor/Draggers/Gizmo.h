@@ -85,7 +85,6 @@ protected:
     double initialValue;
 
     bool visible = true;
-    bool hasExpression = false;
 };
 
 class GuiExport LinearGizmo: public Gizmo
@@ -115,6 +114,7 @@ private:
     SoLinearDragger* dragger = nullptr;
     SoLinearDraggerContainer* draggerContainer = nullptr;
     QMetaObject::Connection quantityChangedConnection;
+    QMetaObject::Connection formulaDialogConnection;
 
     void draggingStarted();
     void draggingFinished();
@@ -160,6 +160,7 @@ private:
     LinearGizmo* linearGizmo = nullptr;
     bool automaticOrientation = false;
     QMetaObject::Connection quantityChangedConnection;
+    QMetaObject::Connection formulaDialogConnection;
 
     void draggingStarted();
     void draggingFinished();

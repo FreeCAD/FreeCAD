@@ -178,9 +178,8 @@ SoLinearDraggerContainer* LinearGizmo::getDraggerContainer()
 
 void LinearGizmo::setProperty(QuantitySpinBox* property)
 {
-    if (quantityChangedConnection) {
-        QuantitySpinBox::disconnect(quantityChangedConnection);
-    }
+    QuantitySpinBox::disconnect(quantityChangedConnection);
+    QuantitySpinBox::disconnect(formulaDialogConnection);
 
     this->property = property;
     quantityChangedConnection = QuantitySpinBox::connect(
@@ -189,7 +188,7 @@ void LinearGizmo::setProperty(QuantitySpinBox* property)
             setDragLength(value);
         }
     );
-    quantityChangedConnection = QuantitySpinBox::connect(
+    formulaDialogConnection = QuantitySpinBox::connect(
         property, &Gui::QuantitySpinBox::showFormulaDialog,
         [this] (bool) {
             // This will set the visibility of the actual geometry to true or false
@@ -452,9 +451,8 @@ void RotationGizmo::orientAlongCamera(SoCamera* camera)
 
 void RotationGizmo::setProperty(QuantitySpinBox* property)
 {
-    if (quantityChangedConnection) {
-        QuantitySpinBox::disconnect(quantityChangedConnection);
-    }
+    QuantitySpinBox::disconnect(quantityChangedConnection);
+    QuantitySpinBox::disconnect(formulaDialogConnection);
 
     this->property = property;
     quantityChangedConnection = QuantitySpinBox::connect(
@@ -463,7 +461,7 @@ void RotationGizmo::setProperty(QuantitySpinBox* property)
             setRotAngle(value);
         }
     );
-    quantityChangedConnection = QuantitySpinBox::connect(
+    formulaDialogConnection = QuantitySpinBox::connect(
         property, &Gui::QuantitySpinBox::showFormulaDialog,
         [this] (bool) {
             // This will set the visibility of the actual geometry to true or false
