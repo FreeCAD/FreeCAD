@@ -65,6 +65,7 @@ public:
 
     /** @name methods override Feature */
     //@{
+    App::DocumentObjectExecReturn* recompute() override;
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute() override;
     void onDocumentRestored() override;
