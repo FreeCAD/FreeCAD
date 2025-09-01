@@ -2226,14 +2226,16 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
                     float scaleFactor = translation->getScaleFactor();
 
                     // If this is the second icon in a pair, add its relative translation.
-                    SoNode* secondIconNode =
-                        sep->getChild(static_cast<int>(ConstraintNodePosition::SecondIconIndex));
-                    if (tail == secondIconNode) {
-                        auto translation2 = static_cast<SoZoomTranslation*>(sep->getChild(
-                            static_cast<int>(ConstraintNodePosition::SecondTranslationIndex)));
-                        absPos += translation2->abPos.getValue();
-                        trans += translation2->translation.getValue();
-                        scaleFactor = translation2->getScaleFactor();
+                    if (int secondIndex = static_cast<int>(ConstraintNodePosition::SecondIconIndex);
+                        secondIndex < sep->getNumChildren()) {
+                        SoNode* secondIconNode = sep->getChild(secondIndex);
+                        if (tail == secondIconNode) {
+                            auto translation2 = static_cast<SoZoomTranslation*>(sep->getChild(
+                                static_cast<int>(ConstraintNodePosition::SecondTranslationIndex)));
+                            absPos += translation2->abPos.getValue();
+                            trans += translation2->translation.getValue();
+                            scaleFactor = translation2->getScaleFactor();
+                        }
                     }
 
                     // 3. Calculate the icon's center in world coordinates.
