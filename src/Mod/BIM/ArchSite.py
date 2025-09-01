@@ -609,6 +609,12 @@ class _Site(ArchIFC.IfcProduct):
         """Method run when the document is restored. Re-adds the properties."""
 
         self.setProperties(obj)
+        # The UI is built before constraints are applied during a file load.
+        # We must defer the constraint restoration until after the entire
+        # loading process is complete.
+        if FreeCAD.GuiUp and hasattr(obj, "ViewObject"):
+            from PySide import QtCore
+            QtCore.QTimer.singleShot(0, lambda: obj.ViewObject.Proxy.restoreConstraints(obj.ViewObject))
 
     def execute(self,obj):
         """Method run when the object is recomputed.
@@ -841,18 +847,36 @@ class _ViewProviderSite:
             vobj.addProperty("App::PropertyBool", "ShowSunPosition", "Sun", QT_TRANSLATE_NOOP("App::Property", "Show the sun position for a specific date and time"), locked=True)
         if not "SunDateMonth" in pl:
             vobj.addProperty("App::PropertyIntegerConstraint", "SunDateMonth", "Sun", QT_TRANSLATE_NOOP("App::Property", "The month of the year to show the sun position"), locked=True)
-            vobj.SunDateMonth = (6, 1, 12, 1) # Default to June
         if not "SunDateDay" in pl:
             vobj.addProperty("App::PropertyIntegerConstraint", "SunDateDay", "Sun", QT_TRANSLATE_NOOP("App::Property", "The day of the month to show the sun position"), locked=True)
-            # 31 is a safe maximum; the datetime object will handle invalid dates like Feb 31.
-            vobj.SunDateDay =  (21, 1, 31, 1) # Default to the 21st (solstice)
         if not "SunTimeHour" in pl:
             vobj.addProperty("App::PropertyFloatConstraint", "SunTimeHour", "Sun", QT_TRANSLATE_NOOP("App::Property", "The hour of the day to show the sun position"), locked=True)
-            # Use 23.99 to avoid issues with hour 24
-            vobj.SunTimeHour = (12.0, 0.0, 23.5, 0.5) # Default to noon
         if not "ShowHourLabels" in pl:
             vobj.addProperty("App::PropertyBool", "ShowHourLabels", "Sun", QT_TRANSLATE_NOOP("App::Property", "Show text labels for key hours on the sun path"), locked=True)
             vobj.ShowHourLabels = True # Show hour labels by default
+
+    def restoreConstraints(self, vobj):
+        """Re-apply non-persistent property constraints after a file load."""
+        pl = vobj.PropertiesList
+        if "SunDateMonth" in pl:
+            saved_month = vobj.SunDateMonth
+            vobj.SunDateMonth = (saved_month, 1, 12, 1)
+        else:
+            vobj.SunDateMonth = (6, 1, 12, 1) # Default to June
+
+        if "SunDateDay" in pl:
+            saved_day = vobj.SunDateDay
+            vobj.SunDateDay = (saved_day, 1, 31, 1)
+        else:
+            # 31 is a safe maximum; the datetime object will handle invalid dates like Feb 31.
+            vobj.SunDateDay = (21, 1, 31, 1) # Default to the 21st (solstice)
+
+        if "SunTimeHour" in pl:
+            saved_hour = vobj.SunTimeHour
+            vobj.SunTimeHour = (saved_hour, 0.0, 23.5, 0.5)
+        else:
+            # Use 23.5 to avoid issues with hour 24
+            vobj.SunTimeHour = (12.0, 0.0, 23.5, 0.5) # Default to noon
 
     def getIcon(self):
         """Return the path to the appropriate icon.
