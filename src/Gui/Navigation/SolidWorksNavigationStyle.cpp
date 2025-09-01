@@ -51,7 +51,7 @@ const char* SolidWorksNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::SELECTION:
         return QT_TR_NOOP("Press left mouse button");
     case NavigationStyle::PANNING:
-        return QT_TR_NOOP("Press CTRL and middle mouse button");
+        return QT_TR_NOOP("Press Ctrl and middle mouse button");
     case NavigationStyle::DRAGGING:
         return QT_TR_NOOP("Press middle mouse button");
     case NavigationStyle::ZOOMING:
@@ -295,6 +295,13 @@ SbBool SolidWorksNavigationStyle::processSoEvent(const SoEvent * const ev)
         processed = false;
     }
 
+    // Reset flags when newmode is IDLE and the buttons are released
+    if (newmode == IDLE && !button1down && !button2down && !button3down) {
+        hasPanned = false;
+        hasDragged = false;
+        hasZoomed = false;
+    }
+    
     if (newmode != curmode) {
         this->setViewingMode(newmode);
     }

@@ -18602,6 +18602,8 @@ Evolumes
 *MATERIAL, NAME=MechanicalMaterial
 *ELASTIC
 210000,0.3
+*EXPANSION, ZERO=0
+0
 
 ***********************************************************
 ** Sections
@@ -18630,8 +18632,8 @@ ConstraintFixed,3
 
 ***********************************************************
 ** constraints force node loads
-*CLOAD
 ** ConstraintForce
+*CLOAD
 ** node loads on shape: BooleanFragments:Edge2
 2,2,1666.666666667
 8,2,1666.666666667

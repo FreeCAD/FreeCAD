@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Grid and snapping</string>
+   <string>Grid and Snapping</string>
   </property>
   <layout class="QVBoxLayout">
    <item>
@@ -217,7 +217,7 @@ Major grid lines are thicker than minor grid lines.</string>
       <item row="7" column="1">
        <widget class="Gui::PrefSpinBox" name="spinBox_gridSize">
         <property name="toolTip">
-         <string>The number of squares in the X and Y direction of the grid</string>
+         <string>The number of squares in the X- and Y-direction of the grid</string>
         </property>
         <property name="suffix">
          <string> squares</string>
@@ -295,7 +295,7 @@ Major grid lines are thicker than minor grid lines.</string>
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Snapping and modifier keys</string>
+      <string>Snapping and Modifier Keys</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
@@ -447,7 +447,7 @@ Major grid lines are thicker than minor grid lines.</string>
       <item row="4" column="1">
        <widget class="Gui::PrefComboBox" name="comboBox_modconstrain">
         <property name="toolTip">
-         <string>The Constrain modifier key</string>
+         <string>The constrain modifier key</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>modconstrain</cstring>

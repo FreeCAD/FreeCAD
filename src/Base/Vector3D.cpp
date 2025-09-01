@@ -438,6 +438,15 @@ Vector3<float_type>& Vector3<float_type>::Normalize()
 }
 
 template<class float_type>
+Vector3<float_type> Vector3<float_type>::Normalized() const
+{
+    Vector3<float_type> copy = *this;
+    copy.Normalize();
+
+    return copy;
+}
+
+template<class float_type>
 bool Vector3<float_type>::IsNull() const
 {
     float_type n {0.0};

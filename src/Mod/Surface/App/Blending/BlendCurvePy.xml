@@ -17,23 +17,23 @@
 		<Documentation>
 			<Author Licence="LGPL" Name="Mattéo Grellier" EMail="matteogrellier@gmail.com" />
 			<UserDocu>
-				Create a BlendCurve that interpolate 2 BlendPoints.
-				curve = BlendCurve(BlendPoint1, BlendPoint2)
+Create a BlendCurve that interpolate 2 BlendPoints.
+    curve = BlendCurve(BlendPoint1, BlendPoint2)
 			</UserDocu>
 		</Documentation>
 		<Methode Name="compute">
 			<Documentation>
 				<UserDocu>
-					Return the BezierCurve that interpolate the input BlendPoints.
+Return the BezierCurve that interpolate the input BlendPoints.
 				</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="setSize">
 			<Documentation>
 				<UserDocu>
-					Set the tangent size of the blendpoint at given index.
-					If relative is true, the size is considered relative to the distance between the two blendpoints.
-					myBlendCurve.setSize(idx, size, relative)
+Set the tangent size of the blendpoint at given index.
+If relative is true, the size is considered relative to the distance between the two blendpoints.
+myBlendCurve.setSize(idx, size, relative)
 				</UserDocu>
 			</Documentation>
 		</Methode>

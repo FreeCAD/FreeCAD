@@ -10,13 +10,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
-      <source>Inspection...</source>
-      <translation>Vizsgálat...</translation>
+      <source>Inspection…</source>
+      <translation type="unfinished">Inspection…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
-      <source>Get distance information</source>
-      <translation>Távolság információk lekérése</translation>
+      <source>Inspects distance information</source>
+      <translation type="unfinished">Inspects distance information</translation>
     </message>
   </context>
   <context>
@@ -28,14 +28,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
-      <source>Visual inspection...</source>
-      <translation>Szemrevételezés...</translation>
+      <source>Visual Inspection…</source>
+      <translation type="unfinished">Visual Inspection…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
-      <location filename="../../Command.cpp" line="51"/>
-      <source>Visual inspection</source>
-      <translation>Szemrevételezés</translation>
+      <source>Inspects the objects visually</source>
+      <translation type="unfinished">Inspects the objects visually</translation>
     </message>
   </context>
   <context>
@@ -110,8 +109,8 @@
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="564"/>
-      <source>Leave info mode</source>
-      <translation>Hagyja az info módot</translation>
+      <source>Leave Info Mode</source>
+      <translation type="unfinished">Leave Info Mode</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="695"/>

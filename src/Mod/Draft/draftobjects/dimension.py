@@ -144,8 +144,7 @@ class DimensionBase(DraftAnnotation):
         # but it is not used.
         if "Support" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "The object measured by this dimension "
-                                     "object")
+                                     "The object measured by this dimension")
             obj.addProperty("App::PropertyLink",
                             "Support",
                             "Dimension",
@@ -157,7 +156,7 @@ class DimensionBase(DraftAnnotation):
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The object, and specific subelements "
                                      "of it,\n"
-                                     "that this dimension object "
+                                     "that this dimension "
                                      "is measuring.\n"
                                      "\n"
                                      "There are various possibilities:\n"
@@ -307,12 +306,12 @@ class LinearDimension(DimensionBase):
             obj, vp_module="view_dimension", vp_class="ViewProviderLinearDimension"
         )
 
-        if not getattr(obj, "ViewObject", None):
+        vobj = getattr(obj, "ViewObject", None)
+        if vobj is None:
             return
-        vobj = obj.ViewObject
-        if hasattr(vobj, "TextColor"):
-            return
-        super().update_properties_0v21(obj, vobj)
+
+        if not hasattr(vobj, "TextColor"):
+            self.update_properties_0v21(obj, vobj)
 
     def loads(self, state):
         self.Type = "LinearDimension"
@@ -586,12 +585,12 @@ class AngularDimension(DimensionBase):
             obj, vp_module="view_dimension", vp_class="ViewProviderAngularDimension"
         )
 
-        if not getattr(obj, "ViewObject", None):
+        vobj = getattr(obj, "ViewObject", None)
+        if vobj is None:
             return
-        vobj = obj.ViewObject
-        if hasattr(vobj, "TextColor"):
-            return
-        super().update_properties_0v21(obj, vobj)
+
+        if not hasattr(vobj, "TextColor"):
+            self.update_properties_0v21(obj, vobj)
 
     def loads(self, state):
         self.Type = "AngularDimension"

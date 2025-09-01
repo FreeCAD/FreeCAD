@@ -36,7 +36,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="48"/>
       <source>Metric small parts &amp; CNC (mm, mm/min)</source>
-      <translation>公制小零件 &amp; 数控 (mm, mm/min)</translation>
+      <translation>公制小零件与数控 (mm, mm/min)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="628"/>

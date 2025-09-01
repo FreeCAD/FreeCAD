@@ -53,21 +53,68 @@ const App::PropertyIntegerConstraint::Constraints PolarPattern::intOccurrences =
     1, std::numeric_limits<int>::max(), 1 };
 const App::PropertyAngle::Constraints PolarPattern::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360.0, 1.0 };
 
-const char* PolarPattern::ModeEnums[] = {"angle", "offset", nullptr};
+const char* PolarPattern::ModeEnums[] = { "Extent", "Spacing", nullptr};
 
 PolarPattern::PolarPattern()
 {
-    auto initialMode = PolarPatternMode::angle;
+    auto initialMode = PolarPatternMode::Extent;
 
-    ADD_PROPERTY_TYPE(Axis, (nullptr), "PolarPattern", (App::PropertyType)(App::Prop_None), "Direction");
-    ADD_PROPERTY(Reversed, (0));
-    ADD_PROPERTY(Mode, (long(initialMode)));
+    ADD_PROPERTY_TYPE(Axis,
+                      (nullptr),
+                      "PolarPattern",
+                      App::Prop_None,
+                      "The axis of rotation for the pattern. This can be a datum axis, a sketch "
+                      "axis, a circular edge, or the normal of a planar face.");
+    ADD_PROPERTY_TYPE(
+        Reversed,
+        (0),
+        "PolarPattern",
+        App::Prop_None,
+        "Reverses the pattern direction from counter-clockwise (default) to clockwise.");
+    ADD_PROPERTY_TYPE(
+        Mode,
+        (long(initialMode)),
+        "PolarPattern",
+        App::Prop_None,
+        "Selects how the pattern is dimensioned.\n'Extent': Uses the total angle to contain all "
+        "instances.\n'Spacing': Uses the angle between consecutive instances.");
     Mode.setEnums(PolarPattern::ModeEnums);
-    ADD_PROPERTY(Angle, (360.0));
-    ADD_PROPERTY(Offset, (120.0));
+    ADD_PROPERTY_TYPE(Angle,
+                      (360.0),
+                      "PolarPattern",
+                      App::Prop_None,
+                      "The total angle of the pattern, measured from the first to the last "
+                      "instance. This is only used when the Mode is set to 'Extent'.");
     Angle.setConstraints(&floatAngle);
+    ADD_PROPERTY_TYPE(Offset,
+                      (120.0),
+                      "PolarPattern",
+                      App::Prop_None,
+                      "The angular distance between each instance of the pattern. This is only "
+                      "used when the Mode is set to 'Spacing'.");
     Offset.setConstraints(&floatAngle);
-    ADD_PROPERTY(Occurrences, (3));
+    ADD_PROPERTY_TYPE(Spacings,
+                      ({-1.0, -1.0, -1.0}),
+                      "PolarPattern",
+                      App::Prop_None,
+                      "A list of custom angular spacings between instances. If a value is -1, the "
+                      "global 'Offset' is used for that spacing. The list should have one less "
+                      "item than the number of occurrences.");
+    ADD_PROPERTY_TYPE(
+        SpacingPattern,
+        ({}),
+        "PolarPattern",
+        App::Prop_None,
+        "(Experimental and subject to change. To enable "
+        "this in the UI you can add a boolean parameter 'ExperiementalFeature' in "
+        "Preferences/Mod/Part)\nDefines a repeating pattern of spacings for the second direction. "
+        "For example, a list of [10, 20] will create alternating spacings of 10mm and 20mm.");
+    ADD_PROPERTY_TYPE(
+        Occurrences,
+        (3),
+        "PolarPattern",
+        App::Prop_None,
+        "The total number of instances in the pattern, including the original feature.");
     Occurrences.setConstraints(&intOccurrences);
 
     setReadWriteStatusForMode(initialMode);
@@ -80,7 +127,9 @@ short PolarPattern::mustExecute() const
         Mode.isTouched() ||
         // Angle and Offset are mutually exclusive, only one could be updated at once
         Angle.isTouched() || 
-        Offset.isTouched() || 
+        Offset.isTouched() ||
+        Spacings.isTouched() ||
+        SpacingPattern.isTouched() ||
         Occurrences.isTouched())
         return 1;
     return Transformed::mustExecute();
@@ -173,38 +222,54 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
 
     double angle;
 
-    switch (static_cast<PolarPatternMode>(Mode.getValue())) {
-        case PolarPatternMode::angle:
-            angle = Angle.getValue();
+    if (Mode.getValue() == (int)PolarPatternMode::Extent) {
+        angle = Angle.getValue();
 
-            if (std::fabs(angle - 360.0) < Precision::Confusion())
-                angle /= occurrences; // Because e.g. two occurrences in 360 degrees need to be 180 degrees apart
-            else
-                angle /= occurrences - 1;
+        if (std::fabs(angle - 360.0) < Precision::Confusion())
+            angle /= occurrences; // Because e.g. two occurrences in 360 degrees need to be 180 degrees apart
+        else
+            angle /= occurrences - 1;
 
-            break;
-
-        case PolarPatternMode::offset:
-            angle = Offset.getValue();
-            break;
-
-        default:
-            throw Base::ValueError("Invalid mode");
+        angle = Base::toRadians(angle);
+        if (angle < Precision::Angular()){
+            throw Base::ValueError("Pattern angle too small");
+        }
     }
 
-    double offset = Base::toRadians<double>(angle);
+    // make sure spacings are correct size :
+    updateSpacings();
 
-    if (offset < Precision::Angular())
-        throw Base::ValueError("Pattern angle too small");
+    const std::vector<double> spacings = Spacings.getValues();
+    const std::vector<double> pattern = SpacingPattern.getValues();
+    bool usePattern = pattern.size() > 1;
+
+    double cumulativeSpacings = 0.0;
 
     std::list<gp_Trsf> transformations;
     gp_Trsf trans;
     transformations.push_back(trans);
 
+
     // Note: The original feature is already included in the list of transformations!
     // Therefore we start with occurrence number 1
     for (int i = 1; i < occurrences; i++) {
-        trans.SetRotation(axis.Axis(), i * offset);
+        if (Mode.getValue() == (int)PolarPatternMode::Spacing) {
+            double spacing;
+            if (spacings[i] != -1.0) {
+                spacing = spacings[i];
+            }
+            else if (usePattern) {
+                spacing = pattern[(size_t)fmod(i, pattern.size())];
+            }
+            else {
+                spacing = Offset.getValue();
+            }
+            cumulativeSpacings += Base::toRadians(spacing);
+            trans.SetRotation(axis.Axis(), cumulativeSpacings);
+        }
+        else {
+            trans.SetRotation(axis.Axis(), angle * i);
+        }
         transformations.push_back(trans);
     }
 
@@ -239,8 +304,36 @@ void PolarPattern::onChanged(const App::Property* prop)
 
 void PolarPattern::setReadWriteStatusForMode(PolarPatternMode mode)
 {
-    Offset.setReadOnly(mode != PolarPatternMode::offset);
-    Angle.setReadOnly(mode != PolarPatternMode::angle);
+    Offset.setReadOnly(mode != PolarPatternMode::Spacing);
+    Angle.setReadOnly(mode != PolarPatternMode::Extent);
+}
+
+
+void PolarPattern::updateSpacings()
+{
+    std::vector<double> spacings = Spacings.getValues();
+    size_t targetCount = Occurrences.getValue();
+
+    for (auto& spacing : spacings) {
+        if (spacing == Offset.getValue()) {
+            spacing = -1.0;
+        }
+    }
+
+    if (spacings.size() == targetCount) {
+        return;
+    }
+    else if (spacings.size() < targetCount) {
+        spacings.reserve(targetCount);
+        while (spacings.size() < targetCount) {
+            spacings.push_back(-1.0);
+        }
+    }
+    else if ((int)spacings.size() > targetCount) {
+        spacings.resize(targetCount);
+    }
+
+    Spacings.setValues(spacings);
 }
 
 }

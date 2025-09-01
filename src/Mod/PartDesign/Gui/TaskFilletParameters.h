@@ -24,10 +24,17 @@
 #ifndef GUI_TASKVIEW_TaskFilletParameters_H
 #define GUI_TASKVIEW_TaskFilletParameters_H
 
+#include <Gui/Inventor/Draggers/Gizmo.h>
+
 #include "TaskDressUpParameters.h"
 #include "ViewProviderFillet.h"
 
 class Ui_TaskFilletParameters;
+
+namespace Gui {
+class LinearGizmo;
+class GizmoContainer;
+}
 
 namespace PartDesignGui {
 
@@ -55,6 +62,12 @@ protected:
 
 private:
     std::unique_ptr<Ui_TaskFilletParameters> ui;
+
+    std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    Gui::LinearGizmo* radiusGizmo = nullptr;
+    Gui::LinearGizmo* radiusGizmo2 = nullptr;
+    void setupGizmos(ViewProviderDressUp* vp);
+    void setGizmoPositions();
 };
 
 /// simulation dialog for the TaskView

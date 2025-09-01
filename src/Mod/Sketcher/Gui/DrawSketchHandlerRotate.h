@@ -33,6 +33,7 @@
 
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
+#include "SketcherTransformationExpressionHelper.h"
 
 #include "GeometryCreationMode.h"
 #include "Utils.h"
@@ -143,9 +144,17 @@ private:
         try {
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Rotate geometries"));
 
+            expressionHelper.storeOriginalExpressions(sketchgui->getSketchObject(), listOfGeoIds);
+
             createShape(false);
 
             commandAddShapeGeometryAndConstraints();
+
+            expressionHelper.copyExpressionsToNewConstraints(sketchgui->getSketchObject(),
+                                                             listOfGeoIds,
+                                                             ShapeGeometry.size(),
+                                                             numberOfCopies,
+                                                             1);
 
             if (deleteOriginal) {
                 deleteOriginalGeos();
@@ -236,6 +245,8 @@ private:
     bool deleteOriginal, cloneConstraints;
     double length, startAngle, endAngle, totalAngle, individualAngle;
     int numberOfCopies;
+
+    SketcherTransformationExpressionHelper expressionHelper;
 
     void deleteOriginalGeos()
     {
@@ -614,8 +625,10 @@ void DSHRotateControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
                     return;
                 }
 
-                onSketchPos.x = handler->centerPoint.x + cos((handler->startAngle + arcAngle));
-                onSketchPos.y = handler->centerPoint.y + sin((handler->startAngle + arcAngle));
+                handler->totalAngle = arcAngle;
+
+                onSketchPos.x = handler->centerPoint.x + cos(handler->startAngle + arcAngle);
+                onSketchPos.y = handler->centerPoint.y + sin(handler->startAngle + arcAngle);
             }
         } break;
         default:

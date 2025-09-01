@@ -36,12 +36,12 @@ class TopoShapeSolid(TopoShape):
     Returns the matrix of inertia. It is a symmetrical matrix.
     The coefficients of the matrix are the quadratic moments of
     inertia.
-    
+
      | Ixx Ixy Ixz 0 |
      | Ixy Iyy Iyz 0 |
      | Ixz Iyz Izz 0 |
      | 0   0   0   1 |
-    
+
     The moments of inertia are denoted by Ixx, Iyy, Izz.
     The products of inertia are denoted by Ixy, Ixz, Iyz.
     The matrix of inertia is returned in the central coordinate
@@ -104,7 +104,7 @@ class TopoShapeSolid(TopoShape):
     def offsetFaces(self, facesDict: Dict[TopoShape, float]) -> TopoShape: ...
 
     @constmethod
-    def offsetFaces(self, *args, **kwargs) -> TopoShape: 
+    def offsetFaces(self, *args, **kwargs) -> TopoShape:
         """
         Extrude single faces of the solid.
         offsetFaces(facesTuple, offset) -> Solid
@@ -114,6 +114,6 @@ class TopoShapeSolid(TopoShape):
         Example:
         solid.offsetFaces((solid.Faces[0],solid.Faces[1]), 1.5)
 
-        solid.offsetFaces({solid.Faces[0]:1.0,solid.Faces[1]:2.0}) 
+        solid.offsetFaces({solid.Faces[0]:1.0,solid.Faces[1]:2.0})
         """
         ...

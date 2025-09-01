@@ -56,17 +56,20 @@ if App.GuiUp:
     True if Draft_rc else False
 
 
-ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"]
+ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2", "None"]
 DISPLAY_MODES = ["Flat Lines", "Shaded", "Wireframe", "Points"]
 DRAW_STYLES = ["Solid", "Dashed", "Dotted", "Dashdot"]
 arrowtypes = ARROW_TYPES
 
 
 def get_default_annotation_style():
-    arrow_type_index = params.get_param("dimsymbol")
+    arrow_start_type_index = params.get_param("dimsymbolstart")
+    arrow_end_type_index = params.get_param("dimsymbolend")
     return {
-        "ArrowSize":       ("float", params.get_param("arrowsize")),
-        "ArrowType":       ("index", arrow_type_index, ARROW_TYPES[arrow_type_index]),
+        "ArrowSizeStart":  ("float", params.get_param("arrowsizestart")),
+        "ArrowSizeEnd":    ("float", params.get_param("arrowsizeend")),
+        "ArrowTypeStart":  ("index", arrow_start_type_index, ARROW_TYPES[arrow_start_type_index]),
+        "ArrowTypeEnd":    ("index", arrow_end_type_index, ARROW_TYPES[arrow_end_type_index]),
         "Decimals":        ("int",   params.get_param("dimPrecision")),
         "DimOvershoot":    ("float", params.get_param("dimovershoot")),
         "ExtLines":        ("float", params.get_param("extlines")),
@@ -83,6 +86,37 @@ def get_default_annotation_style():
         "TextSpacing":     ("float", params.get_param("dimspacing")),
         "UnitOverride":    ("str",   params.get_param("overrideUnit"))
     }
+
+
+def repair_annotation_style(style):
+    """Repair a V0.19, V0.20 or < V1.1 style.
+
+    V0.19 and V0.20:
+    Some properties were missing or misspelled.
+    Some float values were wrongly stored as strings.
+
+    V1.0 -> V1.1:
+    ArrowSize has been replaced by ArrowSizeStart and ArrowSizeEnd.
+    ArrowType has been replaced by ArrowTypeStart and ArrowTypeEnd.
+    """
+    for key in ("ArrowSize", "ArrowType"):
+        if style.get(key) is not None \
+                and style.get(key + "Start") is None \
+                and style.get(key + "End") is None:
+            style[key + "Start"] = style[key]
+            style[key + "End"] = style[key]
+    default = get_default_annotation_style()
+    new = {}
+    for key, val in default.items():
+        if style.get(key) is None:
+            new[key] = val[1]
+        elif type(style[key]) == type(val[1]):
+            new[key] = style[key]
+        elif isinstance(style[key], str):
+            new[key] = float(style[key].replace(",", "."))
+        else:
+            new[key] = val[1]
+    return new
 
 
 def get_default_shape_style():
@@ -1095,13 +1129,13 @@ def toggle_working_plane(obj, action=None, restore=False, dialog=None):
     """
     import FreeCADGui
     import Draft
-    
+
     # Determine the appropriate context based on object type
     context = "Arch"
     obj_type = get_type(obj)
     if obj_type == "IfcBuildingStorey":
         context = "NativeIFC"
-    
+
     # Check if the object is already active in its context
     is_active_arch = (FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == obj)
     is_active_ifc = (FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") == obj)

@@ -286,7 +286,7 @@ void MillSim::GuiDisplay::SetupTooltips()
                                                                    "Toggle turn table animation",
                                                                    nullptr);
     guiItems[eGuiItemAmbientOclusion].toolTip =
-        QCoreApplication::translate("CAM:Simulator:Tooltips", "Toggle ambient oclusion", nullptr);
+        QCoreApplication::translate("CAM:Simulator:Tooltips", "Toggle ambient occlusion", nullptr);
     guiItems[eGuiItemView].toolTip = QCoreApplication::translate("CAM:Simulator:Tooltips",
                                                                  "Toggle view simulation/model",
                                                                  nullptr);

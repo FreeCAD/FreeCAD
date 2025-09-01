@@ -85,7 +85,7 @@ class BIM_Library:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Library",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Library", "Objects library"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Library", "Objects Library"),
             "ToolTip": QT_TRANSLATE_NOOP("BIM_Library", "Opens the objects library"),
         }
 
@@ -308,7 +308,7 @@ class BIM_Library_TaskPanel:
         try:
             # check if the working document is saved
             if FreeCAD.getDocument(self.mainDocName).FileName == "":
-                FreeCAD.Console.PrintWarning(translate("BIM","Please save the working file before linking.")+"\n")
+                FreeCAD.Console.PrintWarning(translate("BIM","Save the working file before linking.")+"\n")
             else:
                 self.previewOn = PARAMS.GetBool("3DPreview", False)
                 self.linked = True
@@ -501,7 +501,7 @@ class BIM_Library_TaskPanel:
         templibfile = os.path.join(TEMPLIBPATH, LIBINDEXFILE)
         if not os.path.exists(templibfile):
             FreeCAD.Console.PrintError(
-                translate("BIM", "No structure in cache. Please refresh.") + "\n"
+                translate("BIM", "No structure in cache. Refresh required.") + "\n"
             )
             return {}
         import sys
@@ -794,7 +794,7 @@ class BIM_Library_TaskPanel:
             j = json.loads(r.content)
             if j["truncated"]:
                 print(
-                    "WARNING: The fetched content exceeds maximum Github allowance and is truncated"
+                    "WARNING: The fetched content exceeds maximum GitHub allowance and is truncated"
                 )
             t = j["tree"]
             for f in t:
@@ -1029,7 +1029,7 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
 
     class LibraryModel(QtGui.QFileSystemModel):
-        "a custom QFileSystemModel that displays freecad file icons"
+        "a custom QFileSystemModel that displays FreeCAD file icons"
 
         def __init__(self):
 

@@ -77,6 +77,7 @@
 #include <sstream>
 #include <stack>
 #include <string>
+#include <ranges>
 #include <tuple>
 #include <unordered_map>
 #include <unordered_set>

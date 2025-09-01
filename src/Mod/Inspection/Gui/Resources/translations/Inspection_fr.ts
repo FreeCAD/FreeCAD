@@ -10,13 +10,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
-      <source>Inspection...</source>
-      <translation>Inspecter...</translation>
+      <source>Inspection…</source>
+      <translation>Inspecter…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
-      <source>Get distance information</source>
-      <translation>Obtenir des informations sur la distance</translation>
+      <source>Inspects distance information</source>
+      <translation>Inspecter les informations sur les distances</translation>
     </message>
   </context>
   <context>
@@ -28,14 +28,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
-      <source>Visual inspection...</source>
-      <translation>Inspection visuelle...</translation>
+      <source>Visual Inspection…</source>
+      <translation>Inspecter visuellement…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
-      <location filename="../../Command.cpp" line="51"/>
-      <source>Visual inspection</source>
-      <translation>Inspection visuelle</translation>
+      <source>Inspects the objects visually</source>
+      <translation>Inspecter les objets visuellement</translation>
     </message>
   </context>
   <context>
@@ -110,13 +109,13 @@
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="564"/>
-      <source>Leave info mode</source>
-      <translation>Quitter le mode information</translation>
+      <source>Leave Info Mode</source>
+      <translation>Quitter le mode Inspection</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="695"/>
       <source>Distance: &gt; %1</source>
-      <translation>Distance : &gt; %1</translation>
+      <translation>Distance : > %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="699"/>

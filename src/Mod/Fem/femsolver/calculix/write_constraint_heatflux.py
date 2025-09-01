@@ -76,11 +76,13 @@ def write_meshdata_constraint(f, femobj, heatflux_obj, ccxwriter):
     else:
         return
 
-    f.write(f"*{heatflux_key_word}\n")
-    for ref_shape in femobj["HeatFluxFaceTable"]:
-        elem_string = ref_shape[0]
-        face_table = ref_shape[1]
-        f.write(f"** Heat flux on face {elem_string}\n")
-        for i in face_table:
-            # OvG: Only write out the VolumeIDs linked to a particular face
-            f.write(f"{i[0]},{heatflux_facetype}{i[1]}{heatflux_facesubtype},{heatflux_values}\n")
+    if heatflux_obj.EnableAmplitude:
+        heatflux_amplitude = f", AMPLITUDE={heatflux_obj.Name}"
+    else:
+        heatflux_amplitude = ""
+
+    f.write(f"*{heatflux_key_word}{heatflux_amplitude}\n")
+    for feat, surf, is_sub_el in femobj["HeatFluxFaces"]:
+        f.write("** {0.Name}.{1[0]}\n".format(*feat))
+        for face, fno in surf:
+            f.write(f"{face},{heatflux_facetype}{fno}{heatflux_facesubtype},{heatflux_values}\n")

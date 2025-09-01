@@ -62,6 +62,7 @@ Revolution::Revolution()
     ADD_PROPERTY_TYPE(Angle2, (60.0), "Revolution", App::Prop_None, "Revolution length in 2nd direction");
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Revolution", App::Prop_None, "Face where revolution will end");
     Angle.setConstraints(&floatAngle);
+    Angle2.setConstraints(&floatAngle);
     ADD_PROPERTY_TYPE(ReferenceAxis,(nullptr),"Revolution",(App::Prop_None),"Reference axis of revolution");
 }
 
@@ -229,7 +230,7 @@ App::DocumentObjectExecReturn* Revolution::execute()
                 result = refineShapeIfActive(result);
             }
             if (!isSingleSolidRuleSatisfied(result.getShape())) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
             }
             result = getSolid(result);
             this->Shape.setValue(result);
@@ -415,3 +416,5 @@ void Revolution::updateProperties(RevolMethod method)
 }
 
 }
+
+

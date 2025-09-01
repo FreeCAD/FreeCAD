@@ -106,6 +106,7 @@ class NetgenTools:
             "brep_file": self.brep_file,
             "threads": self.param_grp.GetInt("NumOfThreads", QThread.idealThreadCount()),
             "heal": self.obj.HealShape,
+            "glue": self.obj.Glue,
             "params": self.get_meshing_parameters(),
             "second_order": self.obj.SecondOrder,
             "second_order_linear": self.obj.SecondOrderLinear,
@@ -143,6 +144,7 @@ def run_netgen(
     brep_file,
     threads,
     heal,
+    glue,
     params,
     second_order,
     second_order_linear,
@@ -179,6 +181,8 @@ def run_netgen(
         geom = occ.OCCGeometry(shape)
         if heal:
             geom.Heal()
+        if glue:
+            geom.Glue()
         mesh = geom.GenerateMesh(mp=meshing.MeshingParameters(**params))
 
         if zrefine == "Regular":

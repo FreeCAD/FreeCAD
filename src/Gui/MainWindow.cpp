@@ -417,7 +417,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         NotificationArea* notificationArea = new NotificationArea(statusBar());
         notificationArea->setObjectName(QStringLiteral("notificationArea"));
         //: A context menu action used to show or hide the 'notificationArea' toolbar widget
-        notificationArea->setWindowTitle(tr("Notification area"));
+        notificationArea->setWindowTitle(tr("Notification Area"));
         notificationArea->setStyleSheet(QStringLiteral("text-align:center;"));
         statusBar()->addPermanentWidget(notificationArea);
     }
@@ -555,7 +555,8 @@ bool MainWindow::setupTaskView()
         auto taskView = new Gui::TaskView::TaskView(this);
         bool restore = group->GetBool("RestoreWidth", taskView->shouldRestoreWidth());
         taskView->setRestoreWidth(restore);
-        taskView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tasks")));
+        taskView->setObjectName(QStringLiteral("Tasks"));
+        taskView->setWindowTitle(QDockWidget::tr("Tasks"));
         taskView->setMinimumWidth(210);
 
         DockWindowManager* pDockMgr = DockWindowManager::instance();
@@ -571,8 +572,8 @@ bool MainWindow::setupSelectionView()
     // Selection view
     if (d->hiddenDockWindows.find("Std_SelectionView") == std::string::npos) {
         auto pcSelectionView = new SelectionView(nullptr, this);
-        pcSelectionView->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Selection view")));
+        pcSelectionView->setObjectName(QStringLiteral("Selection view"));
+        pcSelectionView->setWindowTitle(QDockWidget::tr("Selection View"));
         pcSelectionView->setMinimumWidth(210);
 
         DockWindowManager* pDockMgr = DockWindowManager::instance();
@@ -589,8 +590,8 @@ bool MainWindow::setupReportView()
     if (d->hiddenDockWindows.find("Std_ReportView") == std::string::npos) {
         auto pcReport = new ReportOutput(this);
         pcReport->setWindowIcon(BitmapFactory().pixmap("MacroEditor"));
-        pcReport->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Report view")));
+        pcReport->setObjectName(QStringLiteral("Report view"));
+        pcReport->setWindowTitle(QDockWidget::tr("Report View"));
 
         DockWindowManager* pDockMgr = DockWindowManager::instance();
         pDockMgr->registerDockWindow("Std_ReportView", pcReport);
@@ -609,8 +610,8 @@ bool MainWindow::setupPythonConsole()
     if (d->hiddenDockWindows.find("Std_PythonView") == std::string::npos) {
         auto pcPython = new PythonConsole(this);
         pcPython->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
-        pcPython->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Python console")));
+        pcPython->setObjectName(QStringLiteral("Python console"));
+        pcPython->setWindowTitle(QDockWidget::tr("Python Console"));
 
         DockWindowManager* pDockMgr = DockWindowManager::instance();
         pDockMgr->registerDockWindow("Std_PythonView", pcPython);
@@ -633,7 +634,8 @@ bool MainWindow::updateTreeView(bool show)
                 }
 
                 auto tree = new TreeDockWidget(0,getMainWindow());
-                tree->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget","Tree view")));
+                tree->setObjectName(QStringLiteral("Tree view"));
+                tree->setWindowTitle(QDockWidget::tr("Tree View"));
                 tree->setMinimumWidth(210);
                 widget = tree;
                 return widget;
@@ -659,7 +661,8 @@ bool MainWindow::updatePropertyView(bool show)
                 }
 
                 auto pcPropView = new PropertyDockView(0, getMainWindow());
-                pcPropView->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget","Property view")));
+                pcPropView->setObjectName(QStringLiteral("Property view"));
+                pcPropView->setWindowTitle(QDockWidget::tr("Property View"));
                 pcPropView->setMinimumWidth(210);
                 widget = pcPropView;
                 return widget;
@@ -687,7 +690,8 @@ bool MainWindow::updateTaskView(bool show)
                 }
 
                 widget = new TaskView::TaskView(getMainWindow());
-                widget->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget","Task List")));
+                widget->setObjectName(QStringLiteral("Task List"));
+                widget->setWindowTitle(QDockWidget::tr("Task List"));
                 return widget;
             });
 
@@ -712,7 +716,8 @@ bool MainWindow::updateComboView(bool show)
                 }
 
                 pcComboView = new ComboView(nullptr, getMainWindow());
-                pcComboView->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget", "Model")));
+                pcComboView->setObjectName(QStringLiteral("Model"));
+                pcComboView->setWindowTitle(QDockWidget::tr("Model"));
                 pcComboView->setMinimumWidth(150);
                 widget = pcComboView;
                 return widget;
@@ -738,7 +743,8 @@ bool MainWindow::updateDAGView(bool show)
                 }
 
                 auto dagDockWindow = new DAG::DockWindow(nullptr, getMainWindow());
-                dagDockWindow->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget","DAG View")));
+                dagDockWindow->setObjectName(QStringLiteral("DAG View"));
+                dagDockWindow->setWindowTitle(QDockWidget::tr("DAG View"));
                 widget = dagDockWindow;
                 return widget;
             });
@@ -798,15 +804,15 @@ int MainWindow::confirmSave(App::Document *doc, QWidget *parent, bool addCheckbo
     box.setObjectName(QStringLiteral("confirmSave"));
     box.setIcon(QMessageBox::Question);
     box.setWindowFlags(box.windowFlags() | Qt::WindowStaysOnTopHint);
-    box.setWindowTitle(QObject::tr("Unsaved document"));
+    box.setWindowTitle(QObject::tr("Unsaved Document"));
     const QString docName = QString::fromStdString(doc->Label.getStrValue());
     const QString text = (!docName.isEmpty()
-                          ? QObject::tr("Do you want to save your changes to document '%1' before closing?").arg(docName)
-                          : QObject::tr("Do you want to save your changes to document before closing?"));
+                          ? QObject::tr("Save all changes to document '%1' before closing?").arg(docName)
+                          : QObject::tr("Save all changes to document before closing?"));
     box.setText(text);
 
 
-    box.setInformativeText(QObject::tr("If you don't save, your changes will be lost."));
+    box.setInformativeText(QObject::tr("Otherwise, all changes will be lost."));
     box.setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel | QMessageBox::Save);
     box.setDefaultButton(QMessageBox::Save);
     box.setEscapeButton(QMessageBox::Cancel);
@@ -925,7 +931,7 @@ bool MainWindow::closeAllDocuments (bool close)
         int ret = QMessageBox::question(
             getMainWindow(),
             QObject::tr("%1 Document(s) not saved").arg(QString::number(failedSaves)),
-            QObject::tr("Some documents could not be saved. Do you want to cancel closing?"),
+            QObject::tr("Some documents could not be saved. Cancel closing?"),
             QMessageBox::Discard | QMessageBox::Cancel,
             QMessageBox::Discard);
         if (ret == QMessageBox::Cancel)
@@ -1987,7 +1993,7 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
     bool hasXLink = App::PropertyXLink::hasXLink(sel,&unsaved);
     if(!unsaved.empty()) {
         QMessageBox::critical(getMainWindow(), tr("Unsaved document"),
-            tr("The exported object contains external link. Please save the document"
+            tr("The exported object contains external link. Save the document"
                 "at least once before exporting."));
         return nullptr;
     }
@@ -2080,7 +2086,7 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
     if(hasXLink && !doc->isSaved()) {
         int ret = QMessageBox::question(getMainWindow(), tr("Unsaved document"),
             tr("To link to external objects, the document must be saved at least once.\n"
-               "Do you want to save the document now?"),
+               "Save the document now?"),
             QMessageBox::Yes,QMessageBox::No);
         if(ret != QMessageBox::Yes || !Application::Instance->getDocument(doc)->saveAs())
             return;

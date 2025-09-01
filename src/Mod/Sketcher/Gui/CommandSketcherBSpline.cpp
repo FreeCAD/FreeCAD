@@ -112,7 +112,7 @@ CmdSketcherConvertToNURBS::CmdSketcherConvertToNURBS()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Geometry to B-Spline");
-    sToolTipText = QT_TR_NOOP("Converts the selected geometry to a B-spline");
+    sToolTipText = QT_TR_NOOP("Converts the selected geometry to B-splines");
     sWhatsThis = "Sketcher_BSplineConvertToNURBS";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_BSplineConvertToNURBS";

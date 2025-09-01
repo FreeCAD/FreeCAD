@@ -70,11 +70,11 @@ MD_RENDERED_URL = "https://github.com/FreeCAD/FreeCAD-documentation/blob/main/wi
 MD_TRANSLATIONS_FOLDER = "translations"
 ERRORTXT = translate(
     "Help",
-    "Contents for this page could not be retrieved. Please check settings under menu Edit -> Preferences -> General -> Help",
+    "Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help",
 )
 LOCTXT = translate(
     "Help",
-    "Help files location could not be determined. Please check settings under menu Edit -> Preferences -> General -> Help",
+    "Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help",
 )
 LOGTXT = translate(
     "Help",

@@ -163,6 +163,11 @@ inline bool isEdge(int GeoId, Sketcher::PointPos PosId)
 
 extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
+inline GeometryCreationMode currentGeometryCreationMode()
+{
+    return geometryCreationMode;
+}
+
 inline bool isConstructionMode()
 {
     return geometryCreationMode == GeometryCreationMode::Construction;

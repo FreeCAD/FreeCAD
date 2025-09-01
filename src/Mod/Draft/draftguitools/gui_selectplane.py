@@ -39,7 +39,7 @@ from drafttaskpanels import task_selectplane
 from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
-from draftutils.messages import _msg
+from draftutils.messages import _toolmsg
 from draftutils.todo import todo
 from draftutils.translate import translate
 
@@ -56,8 +56,8 @@ class Draft_SelectPlane:
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_SelectPlane",
                 "Accel": "W, P",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select working plane"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select 3 vertices, one or more shapes or an object to define a working plane.")}
+                "MenuText": QT_TRANSLATE_NOOP("Draft_SelectPlane", "Working Plane"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_SelectPlane", "Defines the working plane from 3 vertices, 1 or more shapes, or an object")}
 
     def IsActive(self):
         """Return True when this command should be available."""
@@ -150,7 +150,7 @@ class Draft_SelectPlane:
         # Execute the actual task panel delayed to catch possible active Draft command
         todo.delay(Gui.Control.showDialog, self.taskd)
         todo.delay(form.setFocus, None)
-        _msg(translate(
+        _toolmsg(translate(
                 "draft",
                 "Select 3 vertices, one or more shapes or an object to define a working plane"))
         self.call = self.view.addEventCallback("SoEvent", self.action)
@@ -179,7 +179,7 @@ class Draft_SelectPlane:
         if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
             self.reject()
         if arg["Type"] == "SoMouseButtonEvent" \
-                and (arg["State"] == "DOWN") \
+                and (arg["State"] == "UP") \
                 and (arg["Button"] == "BUTTON1"):
             self.check_selection()
 

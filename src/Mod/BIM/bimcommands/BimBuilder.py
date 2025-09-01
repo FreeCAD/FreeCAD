@@ -35,7 +35,7 @@ class BIM_Builder:
     def GetResources(self):
         return {
             "Pixmap": "Part_Shapebuilder",
-            "MenuText": QT_TRANSLATE_NOOP("Part_Builder", "Shape builder..."),
+            "MenuText": QT_TRANSLATE_NOOP("Part_Builder", "Shape Builder"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Part_Builder", "Advanced utility to create shapes"
             ),

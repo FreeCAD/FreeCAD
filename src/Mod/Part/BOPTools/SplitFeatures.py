@@ -154,7 +154,7 @@ def cmdCreateBooleanFragmentsFeature(name, mode):
         error_text1 = translate("Part_SplitFeatures", "Computing the result failed with an error:")
         error_text2 = translate("Part_SplitFeatures", "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.")
         mb.setText(error_text1 + "\n\n" + str(err) + "\n\n" + error_text2)
-        mb.setWindowTitle(translate("Part_SplitFeatures","Bad selection", None))
+        mb.setWindowTitle(translate("Part_SplitFeatures","Bad Selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
         btnOK = mb.addButton(translate("Part_SplitFeatures","Continue",None),
                              QtGui.QMessageBox.ButtonRole.ActionRole)
@@ -177,14 +177,10 @@ class CommandBooleanFragments:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_BooleanFragments.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_BooleanFragments","Boolean fragments"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_BooleanFragments","Boolean Fragments"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_BooleanFragments",
-                                                    "Create a 'Boolean Fragments' object from two or more selected objects,\n"
-                                                    "or from the shapes inside a compound.\n"
-                                                    "This is a boolean union which is then sliced at the intersections\n"
-                                                    "of the original shapes.\n"
-                                                    "A 'Compound Filter' can be used to extract the individual slices.")}
+                                                    "Creates a boolean union which is sliced at the intersections of the selected shapes")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1:
@@ -196,7 +192,7 @@ class CommandBooleanFragments:
                                  "Select at least two objects, or one or more compounds. "
                                  "If only one compound is selected, the compounded shapes will be intersected between each other "
                                  "(otherwise, compounds with self-intersections are invalid).", None))
-            mb.setWindowTitle(translate("Part_SplitFeatures","Bad selection", None))
+            mb.setWindowTitle(translate("Part_SplitFeatures","Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):
@@ -297,7 +293,7 @@ def cmdCreateSliceFeature(name, mode, transaction=True):
         error_text1 = translate("Part_SplitFeatures", "Computing the result failed with an error:")
         error_text2 = translate("Part_SplitFeatures", "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.")
         mb.setText(error_text1 + "\n\n" + str(err) + "\n\n" + error_text2)
-        mb.setWindowTitle(translate("Part_SplitFeatures","Bad selection", None))
+        mb.setWindowTitle(translate("Part_SplitFeatures","Bad Selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
         btnOK = mb.addButton(translate("Part_SplitFeatures","Continue",None),
                              QtGui.QMessageBox.ButtonRole.ActionRole)
@@ -334,12 +330,10 @@ class CommandSlice:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_Slice.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_Slice","Slice to compound"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_Slice","Slice to Compound"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_Slice",
-                                                    "Slice a selected object by using other objects as cutting tools.\n"
-                                                    "The resulting pieces will be stored in a compound.\n"
-                                                    "A 'Compound Filter' can be used to extract the individual slices.")}
+                                                    "Slices the selected object by using other objects as cutting tools and storing the results in one compound")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) > 1:
@@ -351,7 +345,7 @@ class CommandSlice:
                                  "Select at least two objects. "
                                  "The first one is the object to be sliced; "
                                  "the rest are objects to slice with.", None))
-            mb.setWindowTitle(translate("Part_SplitFeatures","Bad selection", None))
+            mb.setWindowTitle(translate("Part_SplitFeatures","Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):
@@ -366,11 +360,10 @@ class CommandSliceApart:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_SliceApart.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SliceApart","Slice apart"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SliceApart","Slice Apart"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SliceApart",
-                                                    "Slice a selected object by other objects, and split it apart.\n"
-                                                    "It will create a 'Compound Filter' for each slice.")}
+                                                    "Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) > 1:
@@ -382,7 +375,7 @@ class CommandSliceApart:
                                  "Select at least two objects. "
                                  "The first one is the object to be sliced; "
                                  "the rest are objects to slice with.", None))
-            mb.setWindowTitle(translate("Part_SplitFeatures","Bad selection", None))
+            mb.setWindowTitle(translate("Part_SplitFeatures","Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):
@@ -491,7 +484,7 @@ def cmdCreateXORFeature(name):
         error_text1 = translate("Part_SplitFeatures", "Computing the result failed with an error:")
         error_text2 = translate("Part_SplitFeatures", "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.")
         mb.setText(error_text1 + "\n\n" + str(err) + "\n\n" + error_text2)
-        mb.setWindowTitle(translate("Part_SplitFeatures","Bad selection", None))
+        mb.setWindowTitle(translate("Part_SplitFeatures","Bad Selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
         btnOK = mb.addButton(translate("Part_SplitFeatures","Continue",None),
                              QtGui.QMessageBox.ButtonRole.ActionRole)
@@ -517,10 +510,9 @@ class CommandXOR:
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_XOR","Boolean XOR"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_XOR",
-                                                    "Perform an 'exclusive OR' boolean operation with two or more selected objects,\n"
+                                                    "Performs an 'exclusive OR' boolean operation with two or more selected objects,\n"
                                                     "or with the shapes inside a compound.\n"
-                                                    "This means the overlapping volumes of the shapes will be removed.\n"
-                                                    "A 'Compound Filter' can be used to extract the remaining pieces.")}
+                                                    "Overlapping volumes of the shapes will be removed.")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1:
@@ -532,7 +524,7 @@ class CommandXOR:
                                  "Select at least two objects, or one or more compounds. "
                                  "If only one compound is selected, the compounded shapes will be intersected between each other "
                                  "(otherwise, compounds with self-intersections are invalid).", None))
-            mb.setWindowTitle(translate("Part_SplitFeatures","Bad selection", None))
+            mb.setWindowTitle(translate("Part_SplitFeatures","Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):

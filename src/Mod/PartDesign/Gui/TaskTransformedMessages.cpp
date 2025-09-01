@@ -34,7 +34,7 @@ using namespace Gui::TaskView;
 namespace sp = std::placeholders;
 
 TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transformedView_)
-    : TaskBox(Gui::BitmapFactory().pixmap("Part_Transformed_Copy"), tr("Transformed feature messages"), true, nullptr)
+    : TaskBox(Gui::BitmapFactory().pixmap("Part_Transformed_Copy"), tr("Transformed Feature Messages"), true, nullptr)
     , transformedView(transformedView_)
     , ui(new Ui_TaskTransformedMessages)
 {

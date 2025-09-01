@@ -35,9 +35,8 @@ PROPERTY_SOURCE(Fem::ConstraintInitialTemperature, Fem::Constraint)
 ConstraintInitialTemperature::ConstraintInitialTemperature()
 {
     ADD_PROPERTY(initialTemperature, (300.0));
-
-    References.setStatus(App::Property::ReadOnly, true);
-    References.setStatus(App::Property::Hidden, true);
+    ADD_PROPERTY(EnableFinalTemperature, (false));
+    ADD_PROPERTY(FinalTemperature, (300.0));
 }
 
 App::DocumentObjectExecReturn* ConstraintInitialTemperature::execute()

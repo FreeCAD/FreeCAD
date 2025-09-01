@@ -99,7 +99,7 @@
            <string>If this is checked, Features will claim their children in the tree view</string>
           </property>
           <property name="text">
-           <string>Use ViewProvider in Tree View</string>
+           <string>Use ViewProviders in Tree View</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>useViewProviderTree</cstring>

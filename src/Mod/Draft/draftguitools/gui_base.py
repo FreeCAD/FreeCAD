@@ -29,6 +29,8 @@
 
 ## \addtogroup draftguitools
 # @{
+from PySide import QtCore
+
 import FreeCAD as App
 import FreeCADGui as Gui
 from draftguitools import gui_trackers as trackers
@@ -171,6 +173,12 @@ class GuiCommandBase:
         _toolmsg("{}".format(16*"-"))
         _toolmsg("GuiCommand: {}".format(self.featureName))
 
+    def update_hints(self):
+        Gui.HintManager.show(*self.get_hints())
+
+    def get_hints(self):
+        return []
+
     def finish(self):
         """Terminate the active command by committing the list of commands.
 
@@ -193,6 +201,8 @@ class GuiCommandBase:
         if self.commit_list:
             todo.ToDo.delayCommit(self.commit_list)
         self.commit_list = []
+
+        QtCore.QTimer.singleShot(0, Gui.HintManager.hide)
 
     def commit(self, name, func):
         """Store actions to be committed to the document.

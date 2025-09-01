@@ -16,158 +16,158 @@
     <Methode Name="solve" Const="true">
       <Documentation>
         <UserDocu>
-          Solve the assembly and update part placements.
+Solve the assembly and update part placements.
 
-          solve(enableRedo=False) -> int
+solve(enableRedo=False) -> int
 
-          Args:
-          enableRedo: Whether the solve save the initial position of parts
-          to enable undoing it even without a transaction.
-          Defaults to `False` ie the solve cannot be undone if called
-          outside of a transaction.
+Args:
+enableRedo: Whether the solve save the initial position of parts
+to enable undoing it even without a transaction.
+Defaults to `False` ie the solve cannot be undone if called
+outside of a transaction.
 
-          Returns:
-          0 in case of success, otherwise the following codes in this order of
-          priority:
-          -6 if no parts are fixed.
-          -4 if over-constrained,
-          -3 if conflicting constraints,
-          -5 if malformed constraints
-          -1 if solver error,
-          -2 if redundant constraints.
+Returns:
+0 in case of success, otherwise the following codes in this order of
+priority:
+-6 if no parts are fixed.
+-4 if over-constrained,
+-3 if conflicting constraints,
+-5 if malformed constraints
+-1 if solver error,
+-2 if redundant constraints.
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="generateSimulation" Const="true">
       <Documentation>
         <UserDocu>
-          Generate the simulation.
+Generate the simulation.
 
-          solve(simulationObject) -> int
+solve(simulationObject) -> int
 
-          Args:
-          simulationObject: The simulation Object.
+Args:
+simulationObject: The simulation Object.
 
-          Returns:
-          0 in case of success, otherwise the following codes in this order of
-          priority:
-          -6 if no parts are fixed.
-          -4 if over-constrained,
-          -3 if conflicting constraints,
-          -5 if malformed constraints
-          -1 if solver error,
-          -2 if redundant constraints.
+Returns:
+0 in case of success, otherwise the following codes in this order of
+priority:
+-6 if no parts are fixed.
+-4 if over-constrained,
+-3 if conflicting constraints,
+-5 if malformed constraints
+-1 if solver error,
+-2 if redundant constraints.
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="updateForFrame" Const="true">
       <Documentation>
         <UserDocu>
-          Update entire assembly to frame number specified.
+Update entire assembly to frame number specified.
 
-          updateForFrame(index)
+updateForFrame(index)
 
-          Args: index of frame.
+Args: index of frame.
 
-          Returns: None
+Returns: None
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="numberOfFrames" Const="true">
       <Documentation>
         <UserDocu>
-          numberOfFrames()
+numberOfFrames()
 
-          Args: None
+Args: None
 
-          Returns: Number of frames
+Returns: Number of frames
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="undoSolve" Const="true">
       <Documentation>
         <UserDocu>
-          Undo the last solve of the assembly and return part placements to their initial position.
+Undo the last solve of the assembly and return part placements to their initial position.
 
-          undoSolve()
+undoSolve()
 
-          Returns: None
+Returns: None
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="ensureIdentityPlacements" Const="true">
       <Documentation>
         <UserDocu>
-          Makes sure that LinkGroups or sub-assemblies have identity placements.
+Makes sure that LinkGroups or sub-assemblies have identity placements.
 
-          ensureIdentityPlacements()
+ensureIdentityPlacements()
 
-          Returns: None
+Returns: None
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="clearUndo" Const="true">
       <Documentation>
         <UserDocu>
-          Clear the registered undo positions.
+Clear the registered undo positions.
 
-          clearUndo()
+clearUndo()
 
-          Returns: None
+Returns: None
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="isPartConnected" Const="true">
       <Documentation>
         <UserDocu>
-          Check if a part is connected to the ground through joints.
+Check if a part is connected to the ground through joints.
 
-          isPartConnected(obj) -> bool
+isPartConnected(obj) -> bool
 
-          Args: document object to check.
+Args: document object to check.
 
-          Returns: True if part is connected to ground
+Returns: True if part is connected to ground
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="isJointConnectingPartToGround" Const="true">
       <Documentation>
         <UserDocu>
-          Check if a joint is connecting a part to the ground.
+Check if a joint is connecting a part to the ground.
 
-          isJointConnectingPartToGround(joint, propName) -> bool
+isJointConnectingPartToGround(joint, propName) -> bool
 
-          Args:
-          - joint: document object of the joint to check.
-          - propName: string 'Part1' or 'Part2' of the joint.
+Args:
+- joint: document object of the joint to check.
+- propName: string 'Part1' or 'Part2' of the joint.
 
-          Returns: True if part is connected to ground
+Returns: True if part is connected to ground
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="isPartGrounded" Const="true">
       <Documentation>
         <UserDocu>
-          Check if a part has a grounded joint.
+Check if a part has a grounded joint.
 
-          isPartGrounded(obj) -> bool
+isPartGrounded(obj) -> bool
 
-          Args:
-          - obj: document object of the part to check.
+Args:
+- obj: document object of the part to check.
 
-          Returns: True if part has grounded joint
+Returns: True if part has grounded joint
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="exportAsASMT" Const="true">
       <Documentation>
         <UserDocu>
-          Export the assembly in a text format called ASMT.
+Export the assembly in a text format called ASMT.
 
-          exportAsASMT(fileName:str)
+exportAsASMT(fileName:str)
 
-          Args:
-          fileName: The name of the file where the ASMT will be exported.
+Args:
+fileName: The name of the file where the ASMT will be exported.
         </UserDocu>
       </Documentation>
     </Methode>

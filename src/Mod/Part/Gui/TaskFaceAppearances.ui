@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Set appearance per face</string>
+   <string>Appearance per Face</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Click on the faces in the 3D view to select them</string>
+      <string>Select the faces in the 3D view</string>
      </property>
     </widget>
    </item>
@@ -38,7 +38,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Faces:</string>
+           <string>Faces</string>
           </property>
          </widget>
         </item>
@@ -63,14 +63,15 @@
         <item row="0" column="1">
          <widget class="QPushButton" name="buttonCustomAppearance">
           <property name="text">
-           <string>...</string>
+           <string>Appearance</string>
+
           </property>
          </widget>
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="labelCustomAppearance">
           <property name="text">
-           <string>Custom appearance:</string>
+           <string>Custom appearance</string>
           </property>
          </widget>
         </item>
@@ -87,18 +88,17 @@
         <string>Resets color for all faces of the part</string>
        </property>
        <property name="text">
-        <string>Set to default</string>
+        <string>Set to Default</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
       <widget class="QPushButton" name="boxSelection">
        <property name="toolTip">
-        <string>When checked, you can select multiple faces
-by dragging a selection rectangle in the 3D view</string>
+        <string>Allows the selection of multiple faces by dragging a rectangle in the 3D view</string>
        </property>
        <property name="text">
-        <string>Box selection</string>
+        <string>Box Selection</string>
        </property>
        <property name="checkable">
         <bool>true</bool>

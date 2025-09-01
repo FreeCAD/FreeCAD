@@ -54,8 +54,8 @@ class Draft2Sketch(gui_base_original.Modifier):
         """Set icon, menu and tooltip."""
 
         return {'Pixmap': 'Draft_Draft2Sketch',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Draft to sketch"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Convert bidirectionally between Draft objects and Sketches.\nMany Draft objects will be converted into a single non-constrained Sketch.\nHowever, a single sketch with disconnected traces will be converted into several individual Draft objects.")}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Draft to Sketch"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Converts bidirectionally between Draft objects and sketches.\nMultiple selected Draft objects are converted into a single sketch.\nHowever, a single sketch with disconnected traces is converted into several individual Draft objects.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -64,7 +64,7 @@ class Draft2Sketch(gui_base_original.Modifier):
             return
         if not Gui.Selection.getSelection():
             self.ui.selectUi(on_close_call=self.finish)
-            _msg(translate("draft", "Select an object to convert."))
+            _msg(translate("draft", "Select an object to convert"))
             self.call = self.view.addEventCallback("SoEvent", gui_tool_utils.selectObject)
         else:
             self.proceed()

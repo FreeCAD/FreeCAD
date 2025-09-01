@@ -104,10 +104,12 @@ class ShapeStringTaskPanel:
             if not self.pointPicked:
                 self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg, noTracker=True)
                 self.display_point(self.point)
+                self.update_hints()
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 self.display_point(self.point)
                 self.pointPicked = True
+                self.update_hints()
 
     def change_coord_labels(self):
         if self.global_mode:
@@ -153,6 +155,7 @@ class ShapeStringTaskPanel:
             self.point = self.wp.position
         self.pointPicked = False
         self.display_point(self.point)
+        self.update_hints()
 
     def set_file(self, val):
         """Assign the selected font file."""
@@ -198,6 +201,17 @@ class ShapeStringTaskPanel:
     def set_text(self, val):
         self.text = val
         params.set_param("ShapeStringText", self.text)
+
+    def update_hints(self):
+        if self.pointPicked:
+            Gui.HintManager.hide()
+        else:
+            Gui.HintManager.show(
+                Gui.InputHint(
+                  translate("draft", "%1 pick point"), 
+                  Gui.UserInput.MouseLeft
+                )
+            )
 
 
 class ShapeStringTaskPanelCmd(ShapeStringTaskPanel):

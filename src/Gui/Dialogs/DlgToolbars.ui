@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>576</width>
+    <width>736</width>
     <height>352</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Toolbars</string>
@@ -54,12 +60,18 @@
           </sizepolicy>
          </property>
          <property name="text">
-          <string>Category:</string>
+          <string>Category</string>
          </property>
         </widget>
        </item>
        <item row="2" column="0" colspan="2">
         <widget class="QTreeWidget" name="commandTreeWidget">
+         <property name="minimumSize">
+          <size>
+           <width>400</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="rootIsDecorated">
           <bool>false</bool>
          </property>
@@ -72,7 +84,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -104,10 +116,10 @@
             </size>
            </property>
            <property name="toolTip">
-            <string>Move right</string>
+            <string>Move Right</string>
            </property>
            <property name="whatsThis">
-            <string>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</string>
+            <string>&lt;b&gt;Moves the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</string>
            </property>
            <property name="text">
             <string/>
@@ -130,10 +142,10 @@
             </size>
            </property>
            <property name="toolTip">
-            <string>Move left</string>
+            <string>Move Left</string>
            </property>
            <property name="whatsThis">
-            <string>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</string>
+            <string>&lt;b&gt;Moves the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</string>
            </property>
            <property name="text">
             <string/>
@@ -162,10 +174,10 @@
             </size>
            </property>
            <property name="toolTip">
-            <string>Move up</string>
+            <string>Move Up</string>
            </property>
            <property name="whatsThis">
-            <string>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</string>
+            <string>&lt;b&gt;Moves the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</string>
            </property>
            <property name="text">
             <string/>
@@ -188,10 +200,10 @@
             </size>
            </property>
            <property name="toolTip">
-            <string>Move down</string>
+            <string>Move Down</string>
            </property>
            <property name="whatsThis">
-            <string>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</string>
+            <string>&lt;b&gt;Moves the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</string>
            </property>
            <property name="text">
             <string/>
@@ -208,10 +220,10 @@
          <item>
           <spacer>
            <property name="orientation">
-            <enum>Qt::Vertical</enum>
+            <enum>Qt::Orientation::Vertical</enum>
            </property>
            <property name="sizeType">
-            <enum>QSizePolicy::Expanding</enum>
+            <enum>QSizePolicy::Policy::Expanding</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
@@ -285,14 +297,14 @@
          <item>
           <widget class="QPushButton" name="newButton">
            <property name="text">
-            <string>New...</string>
+            <string>New</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="renameButton">
            <property name="text">
-            <string>Rename...</string>
+            <string>Rename</string>
            </property>
           </widget>
          </item>

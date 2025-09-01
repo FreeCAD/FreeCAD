@@ -149,7 +149,7 @@ def _set_scale(action):
     scale_widget = sb.findChild(QtWidgets.QToolBar,"draft_scale_widget")
 
     if action.text() == translate("draft", "Custom"):
-        title_text = translate("draft", "Set custom scale")
+        title_text = translate("draft", "Set Custom Scale")
         dialog_text = translate("draft",
                                 "Set custom annotation scale in format x:x, x=x")
         custom_scale = QtWidgets.QInputDialog.getText(None, title_text, dialog_text)
@@ -184,7 +184,7 @@ def init_draft_statusbar_scale():
     # prevent the widget from showing up in the toolbar area context menu:
     scale_widget.toggleViewAction().setVisible(False)
     scale_widget.setObjectName("draft_scale_widget")
-    text = translate("draft", "Draft scale widget",
+    text = translate("draft", "Draft Scale Widget",
     "A context menu action used to show or hide this toolbar widget")
     scale_widget.setWindowTitle(text)
 
@@ -211,7 +211,7 @@ def init_draft_statusbar_scale():
     scale_label = scale_to_label(annotation_scale)
     scaleLabel.setText(scale_label)
     scaleLabel.setToolTip(translate("draft",
-                                    "Set the scale used by draft annotation tools"))
+                                    "Set the scale used by Draft annotation tools"))
     scale_widget.addWidget(scaleLabel)
     scale_widget.scaleLabel = scaleLabel
 
@@ -238,7 +238,7 @@ def init_draft_statusbar_snap():
 
     # check if the toolbar is available, without it the required actions
     # may be missing:
-    if mw.findChild(QtWidgets.QToolBar, "Draft snap") is None:
+    if mw.findChild(QtWidgets.QToolBar, "Draft Snap") is None:
         return
 
     # snap widget:
@@ -246,7 +246,7 @@ def init_draft_statusbar_snap():
     # prevent the widget from showing up in the toolbar area context menu:
     snap_widget.toggleViewAction().setVisible(False)
     snap_widget.setObjectName("draft_snap_widget")
-    text = translate("draft", "Draft snap widget",
+    text = translate("draft", "Draft Snap Widget",
     "A context menu action used to show or hide this toolbar widget")
     snap_widget.setWindowTitle(text)
     snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)

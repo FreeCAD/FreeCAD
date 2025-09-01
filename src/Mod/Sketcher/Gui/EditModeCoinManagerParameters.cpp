@@ -52,7 +52,6 @@ int GeometryLayerParameters::getSubLayerIndex(const int geoId,
 }
 
 SbColor DrawingParameters::InformationColor(0.0f, 1.0f, 0.0f);  // #00FF00 -> (  0,255,  0)
-SbColor DrawingParameters::CreateCurveColor(0.5f, 0.5f, 0.5f);  // ##7f7f7f -> (127,127,127)
 
 namespace
 {  // Anonymous namespace to avoid making those variables global

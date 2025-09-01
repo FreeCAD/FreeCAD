@@ -61,7 +61,7 @@ class BIM_Preflight:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Preflight",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Preflight", "Preflight checks..."),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Preflight", "Preflight Checks"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Preflight",
                 "Checks several characteristics of this model before exporting to IFC",
@@ -315,7 +315,7 @@ class BIM_Preflight_TaskPanel:
                 msg = (
                     translate(
                         "BIM",
-                        "ifcopenshell is not installed on your system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check %1 to obtain more information.",
+                        "ifcopenshell is not installed on the system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check %1 to obtain more information.",
                     ).replace("%1", "https://www.freecadweb.org/wiki/Extra_python_modules#IfcOpenShell")
                     + " "
                 )
@@ -342,7 +342,7 @@ class BIM_Preflight_TaskPanel:
                             msg = (
                                 translate(
                                     "BIM",
-                                    "The version of Ifcopenshell installed on your system could not be parsed",
+                                    "The version of Ifcopenshell installed on the system could not be parsed",
                                 )
                                 + " "
                             )
@@ -354,7 +354,7 @@ class BIM_Preflight_TaskPanel:
                     msg += (
                         translate(
                             "BIM",
-                            "The version of Ifcopenshell installed on your system will produce files with this schema version:",
+                            "The version of Ifcopenshell installed on the system will produce files with this schema version:",
                         )
                         + "\n\n"
                     )
@@ -466,7 +466,7 @@ class BIM_Preflight_TaskPanel:
                             msg += (
                                 translate(
                                     "BIM",
-                                    "The following Building objects have been found to not be included in any Site. You can resolve the situation by creating a Site object, if none is present in your model, and drag and drop the Building objects into it in the tree view:",
+                                    "The following building objects have been found to not be included in any Site. You can resolve the situation by creating a Site object, if none is present in your model, and drag and drop the building objects into it in the tree view:",
                                 )
                                 + "\n\n"
                             )
@@ -516,7 +516,7 @@ class BIM_Preflight_TaskPanel:
                             msg += (
                                 translate(
                                     "BIM",
-                                    'The following Building Storey (BuildingParts with their IFC role set as "Building Storey") objects have been found to not be included in any Building. You can resolve the situation by creating a Building object, if none is present in your model, and drag and drop the Building Storey objects into it in the tree view:',
+                                    'The following building storey (building parts with their IFC role set as "building storey") objects have been found to not be included in any building. Resolve the situation by creating a building object, if none is present in the model, and drag and drop the building storey objects into it in the tree view:',
                                 )
                                 + "\n\n"
                             )
@@ -577,7 +577,7 @@ class BIM_Preflight_TaskPanel:
                             msg += (
                                 translate(
                                     "BIM",
-                                    'The following BIM objects have been found to not be included in any Building Storey (BuildingParts with their IFC role set as "Building Storey"). You can resolve the situation by creating a Building Storey object, if none is present in your model, and drag and drop these objects into it in the tree view:',
+                                    'The following BIM objects have been found to not be included in any building storey (building parts with their IFC role set as "building storey"). Resolve the situation by creating a building storey object, if none is present in the model, and drag and drop these objects into it in the tree view:',
                                 )
                                 + "\n\n"
                             )
@@ -719,7 +719,7 @@ class BIM_Preflight_TaskPanel:
                 msg += (
                     translate(
                         "BIM",
-                        "The objects below have Length, Width or Height properties, but these properties won't be explicitly exported to IFC. This is not necessarily an issue, unless you specifically want these quantities to be exported:",
+                        "The objects below have length, width or height properties, but these properties won't be explicitly exported to IFC. This is not necessarily an issue, unless these quantities are desired to be exported:",
                     )
                     + "\n\n"
                 )
@@ -727,7 +727,7 @@ class BIM_Preflight_TaskPanel:
                     msg += o.Label + "\n"
                 msg += "\n" + translate(
                     "BIM",
-                    "To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -> Manage IFC Quantities...",
+                    "To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -> Manage IFC Quantities",
                 )
             if msg:
                 self.failed(test)
@@ -803,7 +803,7 @@ class BIM_Preflight_TaskPanel:
                     msg += o.Label + "\n"
                 msg += "\n" + translate(
                     "BIM",
-                    "To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -> Manage IFC Properties...",
+                    "To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -> Manage IFC Properties",
                 )
             if msg:
                 self.failed(test)
@@ -895,7 +895,7 @@ class BIM_Preflight_TaskPanel:
                 )
                 msg += translate(
                     "BIM",
-                    "To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -> Manage IFC Properties...",
+                    "To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -> Manage IFC Properties",
                 )
             if msg:
                 self.failed(test)
@@ -1121,7 +1121,7 @@ class BIM_Preflight_TaskPanel:
                     "\n"
                     + translate(
                         "BIM",
-                        'An additional object, called "TinyLinesResult" has been added to this model, and selected. It contains all the tiny lines found, so you can inspect them and fix the needed objects. Be sure to delete the TinyLinesResult object when you are done!',
+                        'An additional object, called "TinyLinesResult" has been added to this model, and selected. It contains all the tiny lines found, for inspection. Be sure to delete the TinyLinesResult object when done!',
                     )
                     + "\n\n"
                 )

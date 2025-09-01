@@ -63,8 +63,8 @@ class Draft_Snap_Lock(Draft_Snap_Base):
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Lock",
                 "Accel":     "Shift+S",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Lock", "Snap lock"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Lock", "Enables or disables snapping globally."),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Lock", "Snap Lock"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Lock", "Enables or disables snapping globally"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 
@@ -79,8 +79,8 @@ class Draft_Snap_Midpoint(Draft_Snap_Base):
 
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Midpoint",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Midpoint", "Snap midpoint"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Midpoint", "Snaps to the midpoint of edges."),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Midpoint", "Snap Midpoint"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Midpoint", "Snaps to the midpoint of edges"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 
@@ -93,8 +93,8 @@ class Draft_Snap_Perpendicular(Draft_Snap_Base):
 
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Perpendicular",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Perpendicular", "Snap perpendicular"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Perpendicular", "Snaps to the perpendicular points on faces and edges."),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Perpendicular", "Snap Perpendicular"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Perpendicular", "Snaps to the perpendicular points on faces and edges"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 
@@ -107,8 +107,8 @@ class Draft_Snap_Grid(Draft_Snap_Base):
 
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Grid",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Grid", "Snap grid"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Grid", "Snaps to the intersections of grid lines."),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Grid", "Snap Grid"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Grid", "Snaps to the intersections of grid lines"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 
@@ -121,8 +121,8 @@ class Draft_Snap_Intersection(Draft_Snap_Base):
 
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Intersection",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Intersection", "Snap intersection"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Intersection", "Snaps to the intersection of two edges."),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Intersection", "Snap Intersection"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Intersection", "Snaps to the intersection of 2 edges, and the intersection of a face and an edge"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 
@@ -135,8 +135,8 @@ class Draft_Snap_Parallel(Draft_Snap_Base):
 
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Parallel",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Parallel", "Snap parallel"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Parallel", "Snaps to an imaginary line parallel to straight edges."),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Parallel", "Snap Parallel"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Parallel", "Snaps to an imaginary line parallel to straight edges"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 
@@ -149,8 +149,8 @@ class Draft_Snap_Endpoint(Draft_Snap_Base):
 
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Endpoint",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Endpoint", "Snap endpoint"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Endpoint", "Snaps to the endpoints of edges."),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Endpoint", "Snap Endpoint"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Endpoint", "Snaps to the endpoints of edges"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 
@@ -163,8 +163,8 @@ class Draft_Snap_Angle(Draft_Snap_Base):
 
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Angle",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Angle", "Snap angle"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Angle", "Snaps to the special cardinal points on circular edges, at multiples of 30° and 45°."),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Angle", "Snap Angle"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Angle", "Snaps to the special cardinal points on circular edges, at multiples of 30° and 45°"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 
@@ -177,8 +177,8 @@ class Draft_Snap_Center(Draft_Snap_Base):
 
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Center",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Center", "Snap center"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Center", "Snaps to the center point of faces and circular edges, and to the Placement point of Working Plane Proxies and Building Parts."),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Center", "Snap Center"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Center", "Snaps to the center point of faces and circular edges, and to the placement point of working plane proxies and building parts"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 
@@ -191,8 +191,8 @@ class Draft_Snap_Extension(Draft_Snap_Base):
 
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Extension",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Extension", "Snap extension"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Extension", "Snaps to an imaginary line that extends beyond the endpoints of straight edges."),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Extension", "Snap Extension"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Extension", "Snaps to an imaginary line that extends beyond the endpoints of straight edges"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 
@@ -205,8 +205,8 @@ class Draft_Snap_Near(Draft_Snap_Base):
 
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Near",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Near", "Snap near"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Near", "Snaps to the nearest point on faces and edges."),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Near", "Snap Near"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Near", "Snaps to the nearest point on faces and edges"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 
@@ -219,8 +219,8 @@ class Draft_Snap_Ortho(Draft_Snap_Base):
 
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Ortho",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Ortho", "Snap ortho"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Ortho", "Snaps to imaginary lines that cross the previous point at multiples of 45°."),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Ortho", "Snap Ortho"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Ortho", "Snaps to imaginary lines that cross the previous point at multiples of 45°"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 
@@ -233,8 +233,8 @@ class Draft_Snap_Special(Draft_Snap_Base):
 
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Special",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Special", "Snap special"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Special", "Snaps to special points defined by the object."),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Special", "Snap Special"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Special", "Snaps to special points defined by the object"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 
@@ -247,8 +247,8 @@ class Draft_Snap_Dimensions(Draft_Snap_Base):
 
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Dimensions",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Dimensions", "Snap dimensions"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Dimensions", "Shows temporary X and Y dimensions."),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Dimensions", "Snap Dimensions"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Dimensions", "Shows temporary X and Y dimensions"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 
@@ -261,8 +261,8 @@ class Draft_Snap_WorkingPlane(Draft_Snap_Base):
 
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_WorkingPlane",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_WorkingPlane", "Snap working plane"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_WorkingPlane", "Projects snap points onto the current working plane."),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_WorkingPlane", "Snap Working Plane"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_WorkingPlane", "Projects snap points onto the current working plane"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 
@@ -275,8 +275,8 @@ class ShowSnapBar(Draft_Snap_Base):
 
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap",
-                "MenuText":  QT_TRANSLATE_NOOP("Draft_ShowSnapBar", "Show snap toolbar"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_ShowSnapBar", "Shows the snap toolbar if it is hidden."),
+                "MenuText":  QT_TRANSLATE_NOOP("Draft_ShowSnapBar", "Show Snap Toolbar"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_ShowSnapBar", "Shows the snap toolbar if it is hidden"),
                 "CmdType":   "NoTransaction"}
 
     def Activated(self):

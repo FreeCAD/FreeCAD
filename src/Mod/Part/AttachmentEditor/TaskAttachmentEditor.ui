@@ -98,7 +98,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Attachment mode:</string>
+      <string>Attachment mode</string>
      </property>
     </widget>
    </item>
@@ -121,7 +121,7 @@
       <string/>
      </property>
      <property name="title">
-      <string>Attachment Offset (in local coordinates):</string>
+      <string>Attachment Offset in its Local Coordinate System</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0">
@@ -133,7 +133,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>In x-direction:</string>
+         <string>In X-direction</string>
         </property>
         <property name="buddy">
          <cstring>labelOffset</cstring>
@@ -168,7 +168,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>In y-direction:</string>
+         <string>In Y-direction</string>
         </property>
        </widget>
       </item>
@@ -200,7 +200,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>In z-direction:</string>
+         <string>In Z-direction</string>
         </property>
        </widget>
       </item>
@@ -232,7 +232,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Around x-axis:</string>
+         <string>Around X-axis</string>
         </property>
        </widget>
       </item>
@@ -251,7 +251,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Rotation around the x-axis
+         <string>Rotation around the X-axis
 Note: The placement is expressed in local space of object being attached.</string>
         </property>
         <property name="unit" stdset="0">
@@ -277,7 +277,7 @@ Note: The placement is expressed in local space of object being attached.</strin
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Around y-axis:</string>
+         <string>Around Y-axis</string>
         </property>
        </widget>
       </item>
@@ -296,7 +296,7 @@ Note: The placement is expressed in local space of object being attached.</strin
          </size>
         </property>
         <property name="toolTip">
-         <string>Rotation around the y-axis
+         <string>Rotation around the Y-axis
 Note: The placement is expressed in local space of object being attached.</string>
         </property>
         <property name="unit" stdset="0">
@@ -322,7 +322,7 @@ Note: The placement is expressed in local space of object being attached.</strin
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Around z-axis:</string>
+         <string>Around Z-axis</string>
         </property>
        </widget>
       </item>
@@ -341,7 +341,7 @@ Note: The placement is expressed in local space of object being attached.</strin
          </size>
         </property>
         <property name="toolTip">
-         <string>Rotation around the z-axis
+         <string>Rotation around the Z-axis
 Note: The placement is expressed in local space of object being attached.</string>
         </property>
         <property name="unit" stdset="0">

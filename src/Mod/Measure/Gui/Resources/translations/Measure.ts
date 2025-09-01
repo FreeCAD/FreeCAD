@@ -9,6 +9,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="51"/>
+        <source>Default Property Values</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="142"/>
         <source>Text color</source>
         <translation type="unfinished"></translation>
@@ -16,11 +21,6 @@
     <message>
         <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="59"/>
         <source>Text size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="51"/>
-        <source>Default property values</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -52,74 +52,6 @@
     <message>
         <location filename="../../../MeasureCOM.py" line="67"/>
         <source>The result location</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Gui::TaskMeasure</name>
-    <message>
-        <location filename="../../TaskMeasure.cpp" line="69"/>
-        <source>Measurement</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskMeasure.cpp" line="87"/>
-        <source>Show Delta:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskMeasure.cpp" line="90"/>
-        <source>Auto Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskMeasure.cpp" line="93"/>
-        <source>Auto saving of the last measurement when starting a new measurement. Use SHIFT to temporarily invert the behaviour.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskMeasure.cpp" line="97"/>
-        <source>Additive Selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskMeasure.cpp" line="102"/>
-        <source>If checked, new selection will be added to the measurement. If unchecked, CTRL must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskMeasure.cpp" line="111"/>
-        <source>Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskMeasure.cpp" line="152"/>
-        <source>Mode:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskMeasure.cpp" line="154"/>
-        <source>Result:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskMeasure.cpp" line="183"/>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskMeasure.cpp" line="184"/>
-        <source>Save the measurement in the active document.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskMeasure.cpp" line="190"/>
-        <source>Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskMeasure.cpp" line="191"/>
-        <source>Close the measurement task.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -180,7 +112,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../AppMeasureGui.cpp" line="113"/>
+        <location filename="../../AppMeasureGui.cpp" line="108"/>
         <source>Measure</source>
         <translation type="unfinished"></translation>
     </message>
@@ -188,14 +120,99 @@
 <context>
     <name>StdCmdMeasure</name>
     <message>
-        <location filename="../../Command.cpp" line="48"/>
+        <location filename="../../Command.cpp" line="54"/>
         <source>&amp;Measure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="49"/>
-        <location filename="../../Command.cpp" line="51"/>
+        <location filename="../../Command.cpp" line="55"/>
+        <location filename="../../Command.cpp" line="57"/>
         <source>Measure a feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdQuickMeasure</name>
+    <message>
+        <location filename="../../Command.cpp" line="93"/>
+        <source>&amp;Quick measure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="94"/>
+        <location filename="../../Command.cpp" line="96"/>
+        <source>Toggle quick measure</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MeasureGui::TaskMeasure</name>
+    <message>
+        <location filename="../../TaskMeasure.cpp" line="68"/>
+        <source>Measurement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskMeasure.cpp" line="88"/>
+        <source>Show Delta:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskMeasure.cpp" line="94"/>
+        <source>Auto Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskMeasure.cpp" line="98"/>
+        <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskMeasure.cpp" line="102"/>
+        <source>Additive Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskMeasure.cpp" line="107"/>
+        <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskMeasure.cpp" line="117"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskMeasure.cpp" line="158"/>
+        <source>Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskMeasure.cpp" line="160"/>
+        <source>Result:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskMeasure.cpp" line="188"/>
+        <source>Saves the measurement in the active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskMeasure.cpp" line="194"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskMeasure.cpp" line="195"/>
+        <source>Close the measurement task.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QPlatformTheme</name>
+    <message>
+        <location filename="../../TaskMeasure.cpp" line="187"/>
+        <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

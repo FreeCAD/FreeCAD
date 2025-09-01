@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#include <cstdio>
 #ifndef _PreComp_
 
 #include <QPainterPath>
@@ -101,23 +102,33 @@ QGIViewPart::~QGIViewPart()
 QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& value)
 {
     if (change == ItemSelectedHasChanged && scene()) {
-        //There's nothing special for QGIVP to do when selection changes!
+        bool selectState = value.toBool();
+        if (!selectState && !isUnderMouse()) {
+            // hide everything
+            for (auto& child : childItems()) {
+                if (child->type() == UserType::QGIVertex) {
+                    child->hide();
+                }
+            }
+            return QGIView::itemChange(change, value);
+        }
+        // we are selected
     }
     else if (change == ItemSceneChange && scene()) {
+        // this is means we are finished?
         tidy();
     }
+
     return QGIView::itemChange(change, value);
 }
 
 bool QGIViewPart::sceneEventFilter(QGraphicsItem *watched, QEvent *event)
 {
-    // Base::Console().message("QGIVP::sceneEventFilter - event: %d watchedtype: %d\n",
-    //                         event->type(), watched->type() - QGraphicsItem::UserType);
     if (event->type() == QEvent::ShortcutOverride) {
         // if we accept this event, we should get a regular keystroke event next
         // which will be processed by QGVPage/QGVNavStyle keypress logic, but not forwarded to
         // Std_Delete
-        QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+        auto *keyEvent = static_cast<QKeyEvent*>(event);
         if (keyEvent->matches(QKeySequence::Delete))  {
             bool success = removeSelectedCosmetic();
             if (success) {
@@ -183,7 +194,6 @@ QPainterPath QGIViewPart::drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const
     double rot = getViewObject()->Rotation.getValue();
     return m_pathBuilder->geomToPainterPath(baseGeom, rot);
 }
-
 void QGIViewPart::updateView(bool update)
 {
     // Base::Console().message("QGIVP::updateView() - %s\n", getViewObject()->getNameInDocument());
@@ -432,7 +442,6 @@ void QGIViewPart::drawAllVertexes()
     // dvp and vp already validated
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
     auto vp(static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject())));
-
     QColor vertexColor = PreferencesGui::getAccessibleQColor(PreferencesGui::vertexQColor());
 
     const std::vector<TechDraw::VertexPtr>& verts = dvp->getVertexGeometry();
@@ -440,18 +449,19 @@ void QGIViewPart::drawAllVertexes()
     for (int i = 0; vert != verts.end(); ++vert, i++) {
         if ((*vert)->isCenter()) {
             if (showCenterMarks()) {
-                QGICMark* cmItem = new QGICMark(i);
+                auto* cmItem = new QGICMark(i);
                 addToGroup(cmItem);
                 cmItem->setPos(Rez::guiX((*vert)->x()), Rez::guiX((*vert)->y()));
                 cmItem->setThick(0.5F * getLineWidth());//need minimum?
                 cmItem->setSize(getVertexSize() * vp->CenterScale.getValue());
                 cmItem->setPrettyNormal();
                 cmItem->setZValue(ZVALUE::VERTEX);
+                cmItem->setVisible(false);
             }
         } else {
             //regular Vertex
             if (showVertices()) {
-                QGIVertex* item = new QGIVertex(i);
+                auto* item = new QGIVertex(i);
                 addToGroup(item);
                 item->setPos(Rez::guiX((*vert)->x()), Rez::guiX((*vert)->y()));
                 item->setNormalColor(vertexColor);
@@ -459,6 +469,7 @@ void QGIViewPart::drawAllVertexes()
                 item->setRadius(getVertexSize());
                 item->setPrettyNormal();
                 item->setZValue(ZVALUE::VERTEX);
+                item->setVisible(false);
             }
         }
     }
@@ -499,11 +510,6 @@ bool QGIViewPart::showVertices()
         // never show vertices in CoarseView
         return false;
     }
-    if (!getFrameState()) {
-        // frames are off, don't show vertices
-        return false;
-    }
-
     return true;
 }
 
@@ -519,18 +525,12 @@ bool QGIViewPart::showCenterMarks()
         // no center marks if view property is false
         return false;
     }
-
-    if (getFrameState()) {
-        // frames are on and view property is true
-        return true;
-    }
-
     if (prefPrintCenters()) {
         // frames are off, view property is true and Print Center Marks is true
         return true;
     }
 
-    return false;
+    return true;
 }
 
 
@@ -827,16 +827,9 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     else {
         sectionLine->clearChangePoints();
     }
-    if (dcs->ProjectionStrategy.isValue("Offset")) {
-        Base::Vector3d arrowDirOffset = viewSection->SectionNormal.getValue();
-        arrowDirOffset =
-            -viewPart->projectPoint(arrowDirOffset);//arrows are opposite section normal
-        sectionLine->setDirection(arrowDirOffset.x, -arrowDirOffset.y);//invert y for Qt
-    }
-    else {
-        std::pair<Base::Vector3d, Base::Vector3d> dirsAligned = dcs->sectionArrowDirs();
-        sectionLine->setArrowDirections(dirsAligned.first, dirsAligned.second);
-    }
+
+    std::pair<Base::Vector3d, Base::Vector3d> dirsDCS = dcs->sectionLineArrowDirsMapped();
+    sectionLine->setArrowDirections(dirsDCS.first, dirsDCS.second);
 
     //set the general parameters
     sectionLine->setPos(0.0, 0.0);
@@ -1305,4 +1298,30 @@ double QGIViewPart::getLineWidth() {
 
 double QGIViewPart::getVertexSize() {
     return getLineWidth() * Preferences::vertexScale();
+}
+
+void QGIViewPart::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    QGIView::hoverEnterEvent(event);
+
+    for (auto& child : childItems()) {
+        if (child->type() == UserType::QGIVertex) {
+            child->show();
+        }
+    }
+
+    update();
+}
+
+void QGIViewPart::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    QGIView::hoverLeaveEvent(event);
+
+    for (auto& child : childItems()) {
+        if (child->type() == UserType::QGIVertex &&
+            !child->isSelected()) {
+            child->hide();
+        }
+    }
+    update();
 }

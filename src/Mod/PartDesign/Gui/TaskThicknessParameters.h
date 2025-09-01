@@ -24,10 +24,17 @@
 #ifndef GUI_TASKVIEW_TaskThicknessParameters_H
 #define GUI_TASKVIEW_TaskThicknessParameters_H
 
+#include <Gui/Inventor/Draggers/Gizmo.h>
+
 #include "TaskDressUpParameters.h"
 #include "ViewProviderThickness.h"
 
 class Ui_TaskThicknessParameters;
+
+namespace Gui {
+class LinearGizmo;
+class GizmoContainer;
+}
 
 namespace PartDesign
 {
@@ -75,6 +82,11 @@ private:
 
 private:
     std::unique_ptr<Ui_TaskThicknessParameters> ui;
+
+    std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    Gui::LinearGizmo* linearGizmo = nullptr;
+    void setupGizmos(ViewProviderDressUp* vp);
+    void setGizmoPositions();
 };
 
 /// simulation dialog for the TaskView

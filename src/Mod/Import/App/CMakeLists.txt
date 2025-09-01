@@ -77,6 +77,7 @@ SET(SCL_Resources
 SOURCE_GROUP("SCL" FILES ${SCL_Resources})
 
 generate_from_xml(StepShapePy)
+generate_from_py_(StepShapePy)
 
 add_library(Import SHARED ${Import_SRCS})
 target_link_libraries(Import ${Import_LIBS})

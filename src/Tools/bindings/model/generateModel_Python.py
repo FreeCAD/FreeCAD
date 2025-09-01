@@ -138,6 +138,8 @@ def _python_type_to_parameter_type(py_type: str) -> ParameterType:
             return ParameterType.SEQUENCE
         case _ if py_type.startswith(("tuple", "typing.tuple")):
             return ParameterType.TUPLE
+        case _ if py_type.startswith(("pycxxvector")):
+            return ParameterType.VECTOR
         case _:
             return ParameterType.OBJECT
 

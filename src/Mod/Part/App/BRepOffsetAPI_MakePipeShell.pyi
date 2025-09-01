@@ -72,10 +72,10 @@ class BRepOffsetAPI_MakePipeShell(PyObjectBase):
 
     @overload
     def add(self, Profile: TopoShape, *, WithContact: bool = False, WithCorrection: bool = False) -> None: ...
-    
+
     @overload
     def add(self, Profile: TopoShape, Location: TopoShape, *, WithContact: bool = False, WithCorrection: bool = False) -> None: ...
-    
+
     def add(self, **kwargs) -> None:
         """
         add(shape Profile, bool WithContact=False, bool WithCorrection=False)

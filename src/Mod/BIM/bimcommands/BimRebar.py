@@ -42,7 +42,7 @@ class Arch_Rebar:
         return {'Pixmap'  : 'Arch_Rebar',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Rebar","Custom Rebar"),
                 'Accel': "R, B",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Rebar","Creates a Reinforcement bar from the selected face of solid object and/or a sketch")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Rebar","Creates a reinforcement bar from the selected face of solid object and/or a sketch")}
 
     def IsActive(self):
 
@@ -90,7 +90,7 @@ class Arch_Rebar:
                     FreeCAD.ActiveDocument.recompute()
                     return
 
-        FreeCAD.Console.PrintMessage(translate("Arch","Please select a base face on a structural object")+"\n")
+        FreeCAD.Console.PrintMessage(translate("Arch","Select a base face on a structural object")+"\n")
         FreeCADGui.Control.closeDialog()
         FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
         FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(nextCommand="Arch_Rebar")

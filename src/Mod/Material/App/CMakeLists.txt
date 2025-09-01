@@ -77,7 +77,7 @@ SET(MaterialsAPI_Files
 )
 
 SET(Python_SRCS
-    Exceptions.h
+    Exceptions.cpp
     Array2D.pyi
     Array2DPyImp.cpp
     Array3D.pyi

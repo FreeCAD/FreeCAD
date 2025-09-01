@@ -35,9 +35,9 @@ class BIM_Reextrude:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Reextrude",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Reextrude", "Reextrude"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Reextrude", "Re-Extrude"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Reextrude", "Recreates an extruded Structure from a selected face"
+                "BIM_Reextrude", "Recreates an extruded structure from a selected face"
             ),
         }
 
@@ -159,7 +159,7 @@ class BIM_Reextrude:
 
         else:
             FreeCAD.Console.PrintError(
-                translate("BIM", "Error: Please select exactly one base face") + "\n"
+                translate("BIM", "Error: Select exactly one base face") + "\n"
             )
 
 

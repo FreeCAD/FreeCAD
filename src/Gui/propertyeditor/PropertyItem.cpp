@@ -221,6 +221,14 @@ bool PropertyItem::removeProperty(const App::Property* prop)
     return propertyItems.empty();
 }
 
+bool PropertyItem::renameProperty(const App::Property* prop)
+{
+    setPropertyData({const_cast<App::Property*>(prop)});
+    QString name = QString::fromLatin1(prop->getName());
+    setPropertyName(name, name);
+    return true;
+}
+
 App::Property* PropertyItem::getFirstProperty()
 {
     if (propertyItems.empty()) {
@@ -1580,7 +1588,7 @@ PropertyEditorWidget::PropertyEditorWidget(QWidget* parent)
     lineEdit->setReadOnly(true);
     layout->addWidget(lineEdit);
 
-    button = new QPushButton(QLatin1String("..."), this);
+    button = new QPushButton(QStringLiteral("…"), this);
 #if defined(Q_OS_MACOS)
     button->setAttribute(
         Qt::WA_LayoutUsesWidgetRect);  // layout size from QMacStyle was not correct
@@ -1645,6 +1653,7 @@ void VectorListWidget::buttonClicked()
         setValue(data);
     });
 
+    Gui::adjustDialogPosition(dlg);
     dlg->exec();
 }
 
@@ -4543,12 +4552,12 @@ LinkLabel::LinkLabel(QWidget* parent, const App::Property* prop)
     label->setTextInteractionFlags(Qt::TextBrowserInteraction);
     layout->addWidget(label);
 
-    editButton = new QPushButton(QLatin1String("..."), this);
+    editButton = new QPushButton(QStringLiteral("…"), this);
 #if defined(Q_OS_MACOS)
     editButton->setAttribute(
         Qt::WA_LayoutUsesWidgetRect);  // layout size from QMacStyle was not correct
 #endif
-    editButton->setToolTip(tr("Change the linked object"));
+    editButton->setToolTip(tr("Changes the linked object"));
     layout->addWidget(editButton);
 
     this->setFocusPolicy(Qt::StrongFocus);

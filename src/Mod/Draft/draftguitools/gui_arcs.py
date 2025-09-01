@@ -61,7 +61,7 @@ class Arc(gui_base_original.Creator):
         return {"Pixmap": "Draft_Arc",
                 "Accel": "A, R",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Arc", "Arc"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc", "Creates a circular arc by a center point and a radius.\nSHIFT to constrain.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc", "Creates a circular arc from a center point and a radius")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -143,6 +143,8 @@ class Arc(gui_base_original.Creator):
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
+        elif not self.ui.mouse:
+            pass
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
             self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
             # this is to make sure radius is what you see on screen
@@ -290,36 +292,7 @@ class Arc(gui_base_original.Creator):
                     else:  # choose second angle
                         self.step = 4
                         self.drawArc()
-
-        self.updateHints()
-
-    def getHints(self):
-        hint_global = Gui.InputHint(translate("draft", "%1 toggle global"), Gui.UserInput.KeyG)
-        hint_continue = Gui.InputHint(translate("draft", "%1 toggle continue"), Gui.UserInput.KeyN)
-
-        if self.step == 0:
-            return [
-                Gui.InputHint(translate("draft", "%1 pick center"), Gui.UserInput.MouseLeft),
-                hint_global,
-                hint_continue,
-            ]
-        elif self.step == 1:
-            return [
-                Gui.InputHint(translate("draft", "%1 pick radius"), Gui.UserInput.MouseLeft),
-                hint_continue,
-            ]
-        elif self.step == 2:
-            return [
-                Gui.InputHint(translate("draft", "%1 pick starting angle"), Gui.UserInput.MouseLeft),
-                hint_continue,
-            ]
-        elif self.step == 3:
-            return [
-                Gui.InputHint(translate("draft", "%1 pick aperture"), Gui.UserInput.MouseLeft),
-                hint_continue,
-            ]
-        else:
-            return []
+                    self.update_hints()
 
     def drawArc(self):
         """Actually draw the arc object."""
@@ -434,6 +407,7 @@ class Arc(gui_base_original.Creator):
         self.step = 1
         self.ui.setNextFocus()
         _toolmsg(translate("draft", "Pick radius"))
+        self.update_hints()
 
     def numericRadius(self, rad):
         """Validate the entry radius in the user interface.
@@ -492,6 +466,29 @@ class Arc(gui_base_original.Creator):
             self.angle = math.radians(rad)
             self.step = 4
             self.drawArc()
+        self.update_hints()
+
+    def get_hints(self):
+        if self.step == 0:
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick center"), Gui.UserInput.MouseLeft)
+            ]
+        elif self.step == 1:
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick radius"), Gui.UserInput.MouseLeft)
+            ]
+        elif self.step == 2:
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick start angle"), Gui.UserInput.MouseLeft)
+            ]
+        else:
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick aperture"), Gui.UserInput.MouseLeft)
+            ]
+        return hints \
+            + gui_tool_utils._get_hint_xyz_constrain() \
+            + gui_tool_utils._get_hint_mod_constrain() \
+            + gui_tool_utils._get_hint_mod_snap()
 
 
 Gui.addCommand('Draft_Arc', Arc())
@@ -507,8 +504,8 @@ class Arc_3Points(gui_base.GuiCommandBase):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_Arc_3Points",
                 "Accel": "A, T",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Arc by 3 points"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Creates a circular arc by 3 points.\nSHIFT to constrain.")}
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Arc From 3 Points"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Creates a circular arc from 3 points")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -529,9 +526,10 @@ class Arc_3Points(gui_base.GuiCommandBase):
         Gui.Snapper.getPoint(callback=self.getPoint,
                              movecallback=self.drawArc)
         Gui.Snapper.ui.sourceCmd = self
-        Gui.Snapper.ui.setTitle(title=translate("draft", "Arc by 3 points"),
+        Gui.Snapper.ui.setTitle(title=translate("draft", "Arc From 3 Points"),
                                 icon="Draft_Arc_3Points")
         Gui.Snapper.ui.continueCmd.show()
+        self.update_hints()
 
     def getPoint(self, point, info):
         """Get the point by clicking on the 3D view.
@@ -573,26 +571,32 @@ class Arc_3Points(gui_base.GuiCommandBase):
                                  callback=self.getPoint,
                                  movecallback=self.drawArc)
             Gui.Snapper.ui.sourceCmd = self
-            Gui.Snapper.ui.setTitle(title=translate("draft", "Arc by 3 points"),
+            Gui.Snapper.ui.setTitle(title=translate("draft", "Arc From 3 Points"),
                                     icon="Draft_Arc_3Points")
             Gui.Snapper.ui.continueCmd.show()
+            self.update_hints()
 
         else:
             # If three points were already picked in the 3D view
             # proceed with creating the final object.
             # Draw a simple `Part::Feature` if the parameter is `True`.
             Gui.addModule("Draft")
+            Gui.addModule("WorkingPlane")
             _cmd = "Draft.make_arc_3points(["
             _cmd += "FreeCAD." + str(self.points[0])
             _cmd += ", FreeCAD." + str(self.points[1])
             _cmd += ", FreeCAD." + str(self.points[2])
-            _cmd += "], primitive=" + str(params.get_param("UsePartPrimitives")) + ")"
-            _cmd_list = ["circle = " + _cmd,
+            _cmd += "]"
+            _cmd += ", placement=pl"
+            _cmd += ", primitive=" + str(params.get_param("UsePartPrimitives"))
+            _cmd += ")"
+            _cmd_list = ["pl = WorkingPlane.get_working_plane().get_placement()",
+                         "circle = " + _cmd,
                          "Draft.autogroup(circle)"]
             if params.get_param("UsePartPrimitives"):
                 _cmd_list.append("Draft.select(circle)")
             _cmd_list.append("FreeCAD.ActiveDocument.recompute()")
-            self.commit(translate("draft", "Create Arc by 3 points"), _cmd_list)
+            self.commit(translate("draft", "Create Arc From 3 Points"), _cmd_list)
             self.finish(cont=None)
 
     def drawArc(self, point, info):
@@ -629,6 +633,24 @@ class Arc_3Points(gui_base.GuiCommandBase):
         if cont or (cont is None and Gui.Snapper.ui and Gui.Snapper.ui.continueMode):
             self.Activated()
 
+    def get_hints(self):
+        if len(self.points) == 0:
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick first point"), Gui.UserInput.MouseLeft)
+            ]
+        elif len(self.points) == 1:
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick second point"), Gui.UserInput.MouseLeft)
+            ]
+        else:
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick third point"), Gui.UserInput.MouseLeft)
+            ]
+        return hints \
+            + gui_tool_utils._get_hint_xyz_constrain() \
+            + gui_tool_utils._get_hint_mod_constrain() \
+            + gui_tool_utils._get_hint_mod_snap()
+
 
 Draft_Arc_3Points = Arc_3Points
 Gui.addCommand('Draft_Arc_3Points', Arc_3Points())
@@ -639,8 +661,8 @@ class ArcGroup:
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {"MenuText": QT_TRANSLATE_NOOP("Draft_ArcTools", "Arc tools"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_ArcTools", "Create various types of circular arcs.")}
+        return {"MenuText": QT_TRANSLATE_NOOP("Draft_ArcTools", "Arc Tools"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_ArcTools", "Tools to create various types of circular arcs")}
 
     def GetCommands(self):
         """Return a tuple of commands in the group."""

@@ -291,7 +291,9 @@ def get_ccxelement_faces_elements_from_binary_search(bit_pattern_dict):
     return faces
 
 
-def get_ccxelement_edges_from_binary_search(bit_pattern_dict):
+def get_ccxelement_edges_from_binary_search(bit_pattern_dict, sets_getter):
+    shell_mode = sets_getter.solver_obj.ModelSpace == "3D"
+    offset = 2 if shell_mode else 0
     tria3_mask = {0b011: 1, 0b110: 2, 0b101: 3}
     tria6_mask = {0b001011: 1, 0b010110: 2, 0b100101: 3}
     quad4_mask = {0b0011: 1, 0b0110: 2, 0b1100: 3, 0b1001: 4}
@@ -307,7 +309,7 @@ def get_ccxelement_edges_from_binary_search(bit_pattern_dict):
         mask_dict = vol_dict[bit_pattern_dict[ele][0]]
         for key in mask_dict:
             if (key & bit_pattern_dict[ele][1]) == key:
-                faces.append([ele, mask_dict[key]])
+                faces.append([ele, mask_dict[key] + offset])
     # print("EDGES:", faces)
     FreeCAD.Console.PrintMessage(f"found Edges: {len(faces)}\n")
 
@@ -1502,9 +1504,66 @@ def get_ref_shape_node_sum_geom_table(node_geom_table):
 # ************************************************************************************************
 # ***** methods for retrieving element face sets *************************************************
 # ***** charged faces ****************************************************************************
-def get_charge_density_obj_elements(femmesh, femelement_table, femnodes_ele_table, femobj):
+def pair_obj_reference(obj_ref):
+    pairs = []
+    for feat, ref in obj_ref:
+        for sub_ref in ref:
+            sub = (feat, sub_ref)
+            pairs.append(sub)
+
+    return pairs
+
+
+def get_ccx_elements(sets_getter, ref_pair):
+    ref_obj, sub_ref = ref_pair
+    geom_type = ref_obj.getSubObject(sub_ref).ShapeType
+    elem = []
+    is_sub_element = False
+    model_dim = 0
+    if is_solid_femmesh(sets_getter.femmesh):
+        model_dim = 3
+    elif is_face_femmesh(sets_getter.femmesh):
+        model_dim = 2
+    elif is_edge_femmesh(sets_getter.femmesh):
+        model_dim = 1
+
+    match model_dim:
+        case 3:
+            match geom_type:
+                case "Solid":
+                    elem = get_ccx_elements_by_references(sets_getter, ref_pair)
+                    is_sub_element = False
+                case "Face" | "Edge" | "Vertex":
+                    elem = get_ccx_subelements_by_references(sets_getter, ref_pair)
+                    is_sub_element = True
+        case 2:
+            match geom_type:
+                case "Face":
+                    elem = get_ccx_elements_by_references(sets_getter, ref_pair)
+                    is_sub_element = False
+                case "Edge" | "Vertex":
+                    elem = get_ccx_subelements_by_references(sets_getter, ref_pair)
+                    is_sub_element = True
+        case 1:
+            match geom_type:
+                case "Edge":
+                    is_sub_element = False
+                    elem = get_ccx_elements_by_references(sets_getter, ref_pair)
+                case "Vertex":
+                    elem = get_ccx_subelements_by_references(sets_getter, ref_pair)
+                    is_sub_element = True
+        case 0:
+            match geom_type:
+                case "Vertex":
+                    elem = get_ccx_elements_by_references(sets_getter, ref_pair)
+                    is_sub_element = False
+
+    return (*elem, is_sub_element)
+
+
+def get_ccx_elements_by_references(sets_getter, femobj_ref):
     node_set = []
-    res = []
+    result = []
     # TODO get elements from mesh groups
     # if femmesh.GroupCount:
     #     node_set = get_femmesh_groupdata_sets_by_name(femmesh, femobj, "Node")
@@ -1515,36 +1574,33 @@ def get_charge_density_obj_elements(femmesh, femelement_table, femnodes_ele_tabl
     #             "from existent finite element mesh group data.\n"
     #         )
     if not node_set:
+        elem = []
         FreeCAD.Console.PrintLog(
             "    Finite element mesh nodes will be retrieved "
             "by searching the appropriate nodes in the finite element mesh.\n"
         )
-        for feat, ref in femobj["Object"].References:
-            for sub_ref in ref:
-                sub = (feat, (sub_ref,))
-                node_set = get_femnodes_by_references(femmesh, [sub])
-                charged_volume_node_set = sorted(set(node_set))
+        feat, sub_ref = femobj_ref
+        sub = (feat, (sub_ref,))
+        node_set = get_femnodes_by_references(sets_getter.femmesh, [sub])
+        charged_volume_node_set = sorted(set(node_set))
 
-                bit_pattern_dict = get_bit_pattern_dict(
-                    femelement_table, femnodes_ele_table, charged_volume_node_set
-                )
-                sh = feat.getSubObject(sub_ref)
-                if sh.ShapeType == "Solid":
-                    charged_elem = get_ccxelement_volumes_elements_from_binary_search(
-                        bit_pattern_dict
-                    )
-                elif sh.ShapeType == "Face":
-                    charged_elem = get_ccxelement_faces_elements_from_binary_search(
-                        bit_pattern_dict
-                    )
-                res.append((sub, charged_elem))
+        bit_pattern_dict = get_bit_pattern_dict(
+            sets_getter.femelement_table, sets_getter.femnodes_ele_table, charged_volume_node_set
+        )
+        sh = feat.getSubObject(sub_ref)
+        if sh.ShapeType == "Solid":
+            elem = get_ccxelement_volumes_elements_from_binary_search(bit_pattern_dict)
+        elif sh.ShapeType == "Face":
+            elem = get_ccxelement_faces_elements_from_binary_search(bit_pattern_dict)
 
-    return res
+        result = (sub, elem)
+
+    return result
 
 
-def get_charge_density_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
+def get_ccx_subelements_by_references(sets_getter, femobj_ref):
     node_set = []
-    res = []
+    result = []
     # TODO get elements from mesh groups
     # if femmesh.GroupCount:
     #     node_set = get_femmesh_groupdata_sets_by_name(femmesh, femobj, "Node")
@@ -1555,28 +1611,28 @@ def get_charge_density_obj_faces(femmesh, femelement_table, femnodes_ele_table, 
     #             "from existent finite element mesh group data.\n"
     #         )
     if not node_set:
+        sub_elem = []
         FreeCAD.Console.PrintLog(
             "    Finite element mesh nodes will be retrieved "
             "by searching the appropriate nodes in the finite element mesh.\n"
         )
-        for feat, ref in femobj["Object"].References:
-            for sub_ref in ref:
-                sub = (feat, (sub_ref,))
-                node_set = get_femnodes_by_references(femmesh, [sub])
-                charged_face_node_set = sorted(set(node_set))
+        feat, sub_ref = femobj_ref
+        sub = (feat, (sub_ref,))
+        node_set = get_femnodes_by_references(sets_getter.femmesh, [sub])
+        charged_face_node_set = sorted(set(node_set))
 
-                bit_pattern_dict = get_bit_pattern_dict(
-                    femelement_table, femnodes_ele_table, charged_face_node_set
-                )
-                sh = feat.getSubObject(sub_ref)
-                if sh.ShapeType == "Face":
-                    charged_faces = get_ccxelement_faces_from_binary_search(bit_pattern_dict)
-                elif sh.ShapeType == "Edge":
-                    charged_faces = get_ccxelement_edges_from_binary_search(bit_pattern_dict)
+        bit_pattern_dict = get_bit_pattern_dict(
+            sets_getter.femelement_table, sets_getter.femnodes_ele_table, charged_face_node_set
+        )
+        sh = feat.getSubObject(sub_ref)
+        if sh.ShapeType == "Face":
+            sub_elem = get_ccxelement_faces_from_binary_search(bit_pattern_dict)
+        elif sh.ShapeType == "Edge":
+            sub_elem = get_ccxelement_edges_from_binary_search(bit_pattern_dict, sets_getter)
 
-                res.append((sub, charged_faces))
+        result = (sub, sub_elem)
 
-    return res
+    return result
 
 
 # ***** pressure faces ***************************************************************************

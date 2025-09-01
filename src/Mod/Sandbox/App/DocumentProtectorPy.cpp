@@ -63,12 +63,10 @@ DocumentProtectorPy::~DocumentProtectorPy()
 
 Py::Object DocumentProtectorPy::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
     if (!_dp)
         throw Py::RuntimeError("Cannot print representation of deleted object");
-    s_out << "Document protector";
-    return Py::String(s_out.str());
+
+    return Py::String("Document protector");
 }
 
 DocumentProtectorPy::method_varargs_handler DocumentProtectorPy::pycxx_handler = 0;
@@ -190,12 +188,10 @@ Py::Object DocumentObjectProtectorPy::getObject() const
 
 Py::Object DocumentObjectProtectorPy::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
     if (!_dp)
         throw Py::RuntimeError("Cannot print representation of deleted object");
-    s_out << "Document object protector";
-    return Py::String(s_out.str());
+
+    return Py::String("Document object protector");
 }
 
 Py::Object DocumentObjectProtectorPy::getattr(const char * attr)

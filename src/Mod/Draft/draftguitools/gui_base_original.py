@@ -33,7 +33,6 @@ of the DraftToolBar, the Snapper, and the working plane.
 
 ## \addtogroup draftguitools
 # @{
-
 from PySide import QtCore
 
 import FreeCAD as App
@@ -137,15 +136,13 @@ class DraftTool:
         _toolmsg("GuiCommand: {}".format(self.featureName))
 
         # update hints after the tool is fully initialized
-        QtCore.QTimer.singleShot(0, self.updateHints)
+        QtCore.QTimer.singleShot(0, self.update_hints)
 
-    def updateHints(self):
-        Gui.HintManager.show(*self.getHints())
+    def update_hints(self):
+        Gui.HintManager.show(*self.get_hints())
 
-    def getHints(self):
-        return [
-            Gui.InputHint("%1 constrain", Gui.UserInput.KeyShift)
-        ]
+    def get_hints(self):
+        return []
 
     def end_callbacks(self, call):
         try:
@@ -195,7 +192,7 @@ class DraftTool:
                 todo.ToDo.delayCommit(self.commitList)
         self.commitList = []
 
-        Gui.HintManager.hide()
+        QtCore.QTimer.singleShot(0, Gui.HintManager.hide)
 
     def commit(self, name, func):
         """Store actions in the commit list to be run later.

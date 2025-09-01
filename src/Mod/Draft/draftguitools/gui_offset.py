@@ -61,7 +61,7 @@ class Offset(gui_base_original.Modifier):
         return {'Pixmap': 'Draft_Offset',
                 'Accel': "O, S",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Offset", "Offset"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Offset", "Offsets of the selected object.\nIt can also create an offset copy of the original object.\nSHIFT to constrain. Hold ALT and click to create a copy with each click.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Offset", "Offsets the selected object.\nIt can also create an offset copy of the original object.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -79,7 +79,7 @@ class Offset(gui_base_original.Modifier):
                     gui_tool_utils.selectObject)
             elif len(Gui.Selection.getSelection()) > 1:
                 _wrn(translate("draft", "Offset only works "
-                                        "on one object at a time."))
+                                        "on one object at a time"))
             else:
                 self.proceed()
 
@@ -119,7 +119,7 @@ class Offset(gui_base_original.Modifier):
                 self.ghost = trackers.bsplineTracker(points=self.sel.Points)
                 self.mode = "BSpline"
             elif utils.getType(self.sel) == "BezCurve":
-                _wrn(translate("draft", "Offset of Bezier curves "
+                _wrn(translate("draft", "Offset of Bézier curves "
                                         "is currently not supported"))
                 self.finish()
                 return
@@ -161,6 +161,8 @@ class Offset(gui_base_original.Modifier):
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.finish()
+        elif not self.ui.mouse:
+            pass
         elif arg["Type"] == "SoLocation2Event":
             self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
             if (gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_constrain_key())
@@ -324,7 +326,7 @@ class Offset(gui_base_original.Modifier):
             self.finish()
         else:
             _err(translate("Draft",
-                           "Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction"))
+                           "Offset direction is not defined. Move the mouse on either side of the object first to indicate a direction."))
 
 
 Gui.addCommand('Draft_Offset', Offset())

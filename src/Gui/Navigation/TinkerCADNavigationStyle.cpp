@@ -52,7 +52,7 @@ const char* TinkerCADNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::DRAGGING:
         return QT_TR_NOOP("Press right mouse button");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Scroll middle mouse button");
+        return QT_TR_NOOP("Scroll mouse wheel");
     default:
         return "No description";
     }
@@ -245,6 +245,13 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent * const ev)
         processed = false;
     }
 
+    // Reset flags when newmode is IDLE and the buttons are released
+    if (newmode == IDLE && !button1down && !button2down && !button3down) {
+        hasPanned = false;
+        hasDragged = false;
+        hasZoomed = false;
+    }
+    
     if (newmode != curmode) {
         this->setViewingMode(newmode);
     }

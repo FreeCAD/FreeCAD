@@ -1920,7 +1920,7 @@ std::vector<shared_ptr<Area>> Area::makeSections(PARAM_ARGS(PARAM_FARG, AREA_PAR
                 builder.MakeCompound(comp);
 
                 for (TopExp_Explorer xp(s.shape.Moved(loc), TopAbs_SOLID); xp.More(); xp.Next()) {
-                    showShape(xp.Current(), nullptr, "section_%ul_shape", i);
+                    showShape(xp.Current(), nullptr, "section_%zu_shape", i);
                     std::list<TopoDS_Wire> wires;
                     Part::CrossSection section(a, b, c, xp.Current());
                     Part::FuzzyHelper::withBooleanFuzzy(.0, [&]() {
@@ -1930,7 +1930,7 @@ std::vector<shared_ptr<Area>> Area::makeSections(PARAM_ARGS(PARAM_FARG, AREA_PAR
                         // here for now to be on the safe side.
                         wires = section.slice(-d);
                     });
-                    showShapes(wires, nullptr, "section_%ul_wire", i);
+                    showShapes(wires, nullptr, "section_%zu_wire", i);
                     if (wires.empty()) {
                         AREA_LOG("Section returns no wires");
                         continue;
@@ -1951,7 +1951,7 @@ std::vector<shared_ptr<Area>> Area::makeSections(PARAM_ARGS(PARAM_FARG, AREA_PAR
                             AREA_WARN("FaceMakerBullseye return null shape on section");
                         }
                         else {
-                            showShape(shape, nullptr, "section_%ul_face", i);
+                            showShape(shape, nullptr, "section_%zu_face", i);
                             for (auto it = wires.begin(), itNext = it; it != wires.end();
                                  it = itNext) {
                                 ++itNext;
@@ -1979,7 +1979,7 @@ std::vector<shared_ptr<Area>> Area::makeSections(PARAM_ARGS(PARAM_FARG, AREA_PAR
                 // Make sure the compound has at least one edge
                 if (TopExp_Explorer(comp, TopAbs_EDGE).More()) {
                     const TopoDS_Shape& shape = comp.Moved(locInverse);
-                    showShape(shape, nullptr, "section_%ul_result", i);
+                    showShape(shape, nullptr, "section_%zu_result", i);
                     area->add(shape, s.op);
                 }
                 else if (area->myShapes.empty()) {
@@ -1994,7 +1994,7 @@ std::vector<shared_ptr<Area>> Area::makeSections(PARAM_ARGS(PARAM_FARG, AREA_PAR
             if (!area->myShapes.empty()) {
                 sections.push_back(area);
                 FC_TIME_LOG(t1, "makeSection " << z);
-                showShape(area->getShape(), nullptr, "section_%ul_final", i);
+                showShape(area->getShape(), nullptr, "section_%zu_final", i);
                 break;
             }
             if (retried) {

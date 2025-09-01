@@ -115,9 +115,7 @@ def searchforopenscadexe():
 
 def getopenscadversion(osfilename=None):
     if not osfilename:
-        osfilename = FreeCAD.ParamGet(\
-            "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
-            GetString('openscadexecutable')
+        osfilename = getopenscadexe()
     if osfilename and os.path.isfile(osfilename):
         with subprocess.Popen([osfilename, '-v'],\
             stdout = subprocess.PIPE,stderr=subprocess.PIPE, universal_newlines=True) as p:
@@ -158,7 +156,7 @@ def callopenscad(inputfilename,outputfilename=None, outputext='csg', keepname=Fa
             return stdoutd
 
     preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
-    osfilename = preferences.GetString('openscadexecutable')
+    osfilename = getopenscadexe()
     transferMechanism = preferences.GetInt('transfermechanism',0)
     if transferMechanism == 0: # Use the Python temp-directory creation function
         transferDirectory = tempfile.gettempdir()
@@ -200,9 +198,7 @@ def call_openscad_with_pipes(input_filename, output_filename, output_extension, 
         openscad_data = datafile.read()
         # On the command line this looks like:
         #   $ cat myfile.scad | openscad --export-format csg -o - -
-        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
-        openscad_executable = preferences.GetString('openscadexecutable')
-        p = subprocess.Popen([openscad_executable,"--export-format","csg", "-o", "-", "-"],
+        p = subprocess.Popen([getopenscadexe(), "--export-format", "csg", "-o", "-", "-"],
                              stdin=subprocess.PIPE,
                              stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE)

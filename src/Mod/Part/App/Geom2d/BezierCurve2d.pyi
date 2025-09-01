@@ -15,7 +15,7 @@ class BezierCurve2d(Curve2d):
     Describes a rational or non-rational Bezier curve in 2d space:
         -- a non-rational Bezier curve is defined by a table of poles (also called control points)
         -- a rational Bezier curve is defined by a table of poles with varying weights
-    
+
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """

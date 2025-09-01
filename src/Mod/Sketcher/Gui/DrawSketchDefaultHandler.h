@@ -889,7 +889,7 @@ protected:
         try {
             // add auto-constraints
             if (owncommand) {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add auto constraints"));
+                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Auto-Constraints"));
             }
 
             tryAddAutoConstraints();

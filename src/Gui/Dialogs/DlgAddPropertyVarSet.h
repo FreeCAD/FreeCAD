@@ -86,9 +86,12 @@ public:
     void changeEvent(QEvent* e) override;
     void accept() override;
     void reject() override;
+    static void populateGroup(EditFinishedComboBox& comboBox, const App::DocumentObject* varSet);
+    static void setWidgetForLabel(const char* labelName, QWidget* widget, QLayout* layout);
 
 public Q_SLOTS:
     void valueChanged();
+    void valueChangedEnum();
 
 private:
     enum class TransactionOption : bool {
@@ -96,14 +99,22 @@ private:
         Abort = true
     };
 
-    int findLabelRow(const char* labelName, QFormLayout* layout);
-    void setWidgetForLabel(const char* labelName, QWidget* widget);
+    enum class FieldChange : std::uint8_t {
+        Name,
+        Type
+    };
+
     void initializeGroup();
 
     std::vector<Base::Type> getSupportedTypes();
     void initializeTypes();
 
     void removeSelectionEditor();
+    QVariant getEditorData() const;
+    void setEditorData(const QVariant& data);
+    bool isEnumPropertyItem() const;
+    void addEnumEditor(PropertyEditor::PropertyItem* propertyItem);
+    void addNormalEditor(PropertyEditor::PropertyItem* propertyItem);
     void addEditor(PropertyEditor::PropertyItem* propertyItem);
     bool isTypeWithEditor(const Base::Type& type);
     bool isTypeWithEditor(const std::string& type);
@@ -120,17 +131,29 @@ private:
     bool isTypeValid();
     bool areFieldsValid();
 
-    void onTextFieldChanged(const QString& text);
+    void setEditor(bool valueNeedsReset);
+    void buildForUnbound(bool valueNeedsReset);
+    void setPropertyItem(App::Property* prop);
+    void buildForBound(bool valueNeedsReset);
+    bool clearBoundProperty();
+    bool clear(FieldChange fieldChange);
+    void onNameChanged(const QString& text);
+    void onGroupFinished();
+    void onTypeChanged(const QString& text);
+
     void showStatusMessage();
 
     void removeEditor();
-    void onTypeChanged(const QString& text);
 
     void openTransaction();
     void critical(const QString& title, const QString& text);
-    bool createProperty();
+    App::Property* createProperty();
     void closeTransaction(TransactionOption option);
     void clearFields();
+    void addDocumentation();
+
+    static void removeExistingWidget(QFormLayout* layout, int labelRow);
+    static int findLabelRow(const char* labelName, QFormLayout* layout);
 
 private:
     App::VarSet* varSet;

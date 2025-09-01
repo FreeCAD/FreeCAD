@@ -23,6 +23,8 @@
 #ifndef GUI_TASKVIEW_TaskHelixParameters_H
 #define GUI_TASKVIEW_TaskHelixParameters_H
 
+#include <Gui/Inventor/Draggers/Gizmo.h>
+
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHelix.h"
 
@@ -32,6 +34,8 @@ class Property;
 }
 
 namespace Gui {
+class LinearGizmo;
+class GizmoContainer;
 class ViewProvider;
 }
 
@@ -125,6 +129,11 @@ private:
      * when adding stuff, and delete when removing stuff.
      */
     std::vector<std::unique_ptr<App::PropertyLinkSub>> axesInList;
+
+    std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    Gui::LinearGizmo* heightGizmo = nullptr;
+    void setupGizmos(ViewProviderHelix* vp);
+    void setGizmoPositions();
 };
 
 /// simulation dialog for the TaskView

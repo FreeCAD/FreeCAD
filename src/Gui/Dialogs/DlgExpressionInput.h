@@ -25,10 +25,13 @@
 
 #include <QDialog>
 #include <QTreeWidget>
+#include <QStandardItemModel>
 #include <App/ObjectIdentifier.h>
 #include <Base/Type.h>
 #include <Base/Unit.h>
 #include <memory>
+
+#include "Dialogs/DlgAddPropertyVarSet.h"
 
 namespace Ui {
 class DlgExpressionInput;
@@ -44,9 +47,7 @@ class Expression;
 class DocumentObject;
 }
 
-namespace Gui {
-
-namespace Dialog {
+namespace Gui::Dialog {
 
 class GuiExport NumberRange
 {
@@ -83,30 +84,40 @@ public Q_SLOTS:
     void accept() override;
 
 protected:
-    void mouseReleaseEvent(QMouseEvent*) override;
-    void mousePressEvent(QMouseEvent*) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
 
 private:
     Base::Type getTypePath();
     Base::Type determineTypeVarSet();
     bool typeOkForVarSet();
+    void initializeErrorFrame();
     void initializeVarSets();
     void checkExpression(const QString& text);
+    int getVarSetIndex(const App::Document* doc) const;
+    void preselectGroup();
+    void preselectVarSet();
+    QStandardItemModel* createVarSetModel();
     void setupVarSets();
     std::string getType();
-    void reportVarSetInfo(const char* message);
-    bool reportName(QTreeWidgetItem* item);
-    bool reportGroup(QString& nameGroup);
+    void reportVarSetInfo(const QString& message);
+    bool reportName();
+    bool reportGroup(const QString& nameGroup);
     void updateVarSetInfo(bool checkExpr = true);
     void acceptWithVarSet();
+    bool isPropertyNameValid(const QString& nameProp,
+                             const App::DocumentObject* obj, QString& message) const;
+    bool isGroupNameValid(const QString& nameGroup,
+                          QString& message) const;
 
 private Q_SLOTS:
     void textChanged(const QString & text);
     void setDiscarded();
     void onCheckVarSets(int state);
-    void onVarSetSelected(int);
+    void onVarSetSelected(int index);
     void onTextChangedGroup(const QString&);
     void namePropChanged(const QString&);
+    bool needReportOnVarSet();
 
 private:
     ::Ui::DlgExpressionInput *ui;
@@ -118,13 +129,14 @@ private:
 
     int minimumWidth;
 
-    static bool varSetsVisible;
-    std::unique_ptr<QTreeWidget> treeWidget;
+    bool varSetsVisible;
     QPushButton* okBtn = nullptr;
     QPushButton* discardBtn = nullptr;
+
+    EditFinishedComboBox comboBoxGroup;
 };
 
 }
-}
+
 
 #endif // GUI_DIALOG_EXPRESSIONINPUT_H

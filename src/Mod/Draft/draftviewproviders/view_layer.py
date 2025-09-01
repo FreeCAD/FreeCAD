@@ -509,19 +509,19 @@ class ViewProviderLayer:
     def setupContextMenu(self, vobj, menu):
         """Set up actions to perform in the context menu."""
         action_activate = QtGui.QAction(QtGui.QIcon(":/icons/button_right.svg"),
-                                        translate("draft", "Activate this layer"),
+                                        translate("draft", "Activate Layer"),
                                         menu)
         action_activate.triggered.connect(self.activate)
         menu.addAction(action_activate)
 
         action_reassign = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Apply.svg"),
-                                        translate("draft", "Reassign properties of layer"),
+                                        translate("draft", "Reassign Properties of Layer"),
                                         menu)
         action_reassign.triggered.connect(self.reassign_props)
         menu.addAction(action_reassign)
 
         action_select = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectGroup.svg"),
-                                      translate("draft", "Select layer contents"),
+                                      translate("draft", "Select Layer Contents"),
                                       menu)
         action_select.triggered.connect(self.select_contents)
         menu.addAction(action_select)
@@ -563,19 +563,19 @@ class ViewProviderLayerContainer:
     def setupContextMenu(self, vobj, menu):
         """Set up actions to perform in the context menu."""
         action_add = QtGui.QAction(QtGui.QIcon(":/icons/Draft_NewLayer.svg"),
-                                   translate("draft", "Add new layer"),
+                                   translate("draft", "Add New Layer"),
                                    menu)
         action_add.triggered.connect(self.add_layer)
         menu.addAction(action_add)
 
         action_reassign = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Apply.svg"),
-                                        translate("draft", "Reassign properties of all layers"),
+                                        translate("draft", "Reassign Properties of All Layers"),
                                         menu)
         action_reassign.triggered.connect(self.reassign_props)
         menu.addAction(action_reassign)
 
         action_merge = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Layers.svg"),
-                                     translate("draft", "Merge layer duplicates"),
+                                     translate("draft", "Merge Layer Duplicates"),
                                      menu)
         action_merge.triggered.connect(self.merge_by_name)
         menu.addAction(action_merge)
@@ -585,7 +585,7 @@ class ViewProviderLayerContainer:
         import Draft
 
         doc = App.ActiveDocument
-        doc.openTransaction(translate("draft", "Add new layer"))
+        doc.openTransaction(translate("draft", "Add New Layer"))
 
         Draft.make_layer(name=None, line_color=None, shape_color=None,
                          line_width=None, draw_style=None, transparency=None)
@@ -601,7 +601,7 @@ class ViewProviderLayerContainer:
     def merge_by_name(self):
         """Merge the layers that have the same base label."""
         doc = App.ActiveDocument
-        doc.openTransaction(translate("draft", "Merge layer duplicates"))
+        doc.openTransaction(translate("draft", "Merge Layer Duplicates"))
 
         layer_container = self.Object
         layers = []

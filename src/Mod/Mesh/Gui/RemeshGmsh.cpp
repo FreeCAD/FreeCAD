@@ -101,9 +101,9 @@ GmshWidget::GmshWidget(QWidget* parent, Qt::WindowFlags fl)
     d->ui.method->addItem(QStringLiteral("Delaunay"), static_cast<int>(Delaunay));
     d->ui.method->addItem(tr("Frontal"), static_cast<int>(FrontalDelaunay));
     d->ui.method->addItem(QStringLiteral("BAMG"), static_cast<int>(BAMG));
-    d->ui.method->addItem(tr("Frontal Quad"), static_cast<int>(FrontalDelaunayForQuads));
+    d->ui.method->addItem(tr("Frontal quad"), static_cast<int>(FrontalDelaunayForQuads));
     d->ui.method->addItem(tr("Parallelograms"), static_cast<int>(PackingOfParallelograms));
-    d->ui.method->addItem(tr("Quasi-structured Quad"), static_cast<int>(QuasiStructuredQuad));
+    d->ui.method->addItem(tr("Quasi-structured quad"), static_cast<int>(QuasiStructuredQuad));
 }
 
 GmshWidget::~GmshWidget()

@@ -41,11 +41,11 @@ class BIM_Classification:
         return {
             "Pixmap": "BIM_Classification",
             "MenuText": QT_TRANSLATE_NOOP(
-                "BIM_Classification", "Manage classification..."
+                "BIM_Classification", "Manage Classification"
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Classification",
-                "Manage classification systems and apply classification to objects",
+                "Manages classification systems and apply classification to objects",
             ),
         }
 

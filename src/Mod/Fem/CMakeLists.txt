@@ -261,6 +261,7 @@ SET(FemSolverCalculix_SRCS
     femsolver/calculix/write_constraint_force.py
     femsolver/calculix/write_constraint_heatflux.py
     femsolver/calculix/write_constraint_initialtemperature.py
+    femsolver/calculix/write_constraint_finaltemperature.py
     femsolver/calculix/write_constraint_planerotation.py
     femsolver/calculix/write_constraint_pressure.py
     femsolver/calculix/write_constraint_rigidbody.py
@@ -273,6 +274,7 @@ SET(FemSolverCalculix_SRCS
     femsolver/calculix/write_femelement_geometry.py
     femsolver/calculix/write_femelement_material.py
     femsolver/calculix/write_femelement_matgeosets.py
+    femsolver/calculix/write_amplitude.py
     femsolver/calculix/write_footer.py
     femsolver/calculix/write_mesh.py
     femsolver/calculix/write_step_equation.py

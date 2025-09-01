@@ -104,7 +104,7 @@ Branding::XmlConfig Branding::getUserDefines() const
 bool Branding::evaluateXML(QIODevice* device, QDomDocument& xmlDocument)
 {
 #if QT_VERSION >= QT_VERSION_CHECK(6,5,0)
-    if (!xmlDocument.setContent(device)) {
+    if (!xmlDocument.setContent(device, QDomDocument::ParseOption::UseNamespaceProcessing)) {
         return false;
     }
 #else

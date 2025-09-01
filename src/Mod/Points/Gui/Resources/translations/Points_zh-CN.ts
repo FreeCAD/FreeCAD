@@ -10,13 +10,12 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="240"/>
-      <source>Convert to points...</source>
-      <translation>转换为点…</translation>
+      <source>Convert to Points</source>
+      <translation>转换为点</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="241"/>
-      <location filename="../../Command.cpp" line="243"/>
-      <source>Convert to points</source>
+      <source>Converts to points</source>
       <translation>转换为点</translation>
     </message>
   </context>
@@ -29,8 +28,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="154"/>
-      <source>Export points...</source>
-      <translation>导出点...</translation>
+      <source>Export Points…</source>
+      <translation>导出点…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="155"/>
@@ -48,12 +47,11 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="69"/>
-      <source>Import points...</source>
-      <translation>导入点...</translation>
+      <source>Import Points…</source>
+      <translation>导入点…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="70"/>
-      <location filename="../../Command.cpp" line="72"/>
       <source>Imports a point cloud</source>
       <translation>导入点云</translation>
     </message>
@@ -67,14 +65,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="376"/>
-      <source>Merge point clouds</source>
+      <source>Merge Point Clouds</source>
       <translation>合并点云</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="377"/>
-      <location filename="../../Command.cpp" line="379"/>
-      <source>Merge several point clouds into one</source>
-      <translation>将几个点云合并为一个</translation>
+      <source>Merges several point clouds into one</source>
+      <translation>将多个点云合并为一个</translation>
     </message>
   </context>
   <context>
@@ -86,14 +83,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="328"/>
-      <source>Cut point cloud</source>
-      <translation>剪切点云</translation>
+      <source>Cut Point Cloud</source>
+      <translation>切割点云</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="329"/>
-      <location filename="../../Command.cpp" line="331"/>
-      <source>Cuts a point cloud with a picked polygon</source>
-      <translation>剪切多边形选择框中的点云</translation>
+      <source>Cuts a point cloud with a selected polygon</source>
+      <translation>使用选定的多边形切割点云</translation>
     </message>
   </context>
   <context>
@@ -105,13 +101,12 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="438"/>
-      <source>Structured point cloud</source>
+      <source>Structured Point Cloud</source>
       <translation>结构化点云</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="439"/>
-      <location filename="../../Command.cpp" line="441"/>
-      <source>Convert points to structured point cloud</source>
+      <source>Converts points to a structured point cloud</source>
       <translation>将点转换为结构化点云</translation>
     </message>
   </context>
@@ -125,13 +120,12 @@
     <message>
       <location filename="../../Command.cpp" line="201"/>
       <source>Transform Points</source>
-      <translation>变换点群</translation>
+      <translation>变换点</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="202"/>
-      <location filename="../../Command.cpp" line="204"/>
-      <source>Test to transform a point cloud</source>
-      <translation>变换点云测试</translation>
+      <source>Performs tests to transform a point cloud</source>
+      <translation>执行测试以变换点云</translation>
     </message>
   </context>
   <context>
@@ -161,26 +155,6 @@
   <context>
     <name>PointsGui::DlgPointsRead</name>
     <message>
-      <location filename="../../DlgPointsRead.ui" line="14"/>
-      <source>ASCII points import</source>
-      <translation>导入 ASCII 点</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="34"/>
-      <source>Template:</source>
-      <translation>模板:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="46"/>
-      <source>Special lines</source>
-      <translation>特殊行</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="58"/>
-      <source>First line:</source>
-      <translation>第一行：</translation>
-    </message>
-    <message>
       <location filename="../../DlgPointsRead.ui" line="70"/>
       <source>Ignore</source>
       <translation>忽略</translation>
@@ -189,26 +163,6 @@
       <location filename="../../DlgPointsRead.ui" line="80"/>
       <source>Number of points</source>
       <translation>点的数量</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="101"/>
-      <source>Cluster by lines starting with:</source>
-      <translation>按行开始集群:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="111"/>
-      <source>Ignore lines starting with:</source>
-      <translation>忽略以此开头的行:</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="126"/>
-      <source>Point format</source>
-      <translation>点格式</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="146"/>
-      <source>Number separator:</source>
-      <translation>数分隔符:</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="167"/>
@@ -221,11 +175,6 @@
       <translation>\w</translation>
     </message>
     <message>
-      <location filename="../../DlgPointsRead.ui" line="180"/>
-      <source>Points format:</source>
-      <translation>点的格式:</translation>
-    </message>
-    <message>
       <location filename="../../DlgPointsRead.ui" line="188"/>
       <source>X,Y,Z</source>
       <translation>X,Y,Z</translation>
@@ -236,17 +185,62 @@
       <translation>X,Y</translation>
     </message>
     <message>
+      <location filename="../../DlgPointsRead.ui" line="14"/>
+      <source>ASCII Points Import</source>
+      <translation>ASCII 点导入</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="34"/>
+      <source>Template</source>
+      <translation>模板</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="46"/>
+      <source>Special Lines</source>
+      <translation>特殊行</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="58"/>
+      <source>First Line</source>
+      <translation>首行</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="101"/>
+      <source>Cluster by lines starting with</source>
+      <translation>按以下列开头的行进行聚类</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="111"/>
+      <source>Ignore lines starting with</source>
+      <translation>忽略以下列开头的行</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="126"/>
+      <source>Point Format</source>
+      <translation>点格式</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="146"/>
+      <source>Number separator</source>
+      <translation>数字分隔符</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="180"/>
+      <source>Points format</source>
+      <translation>点格式</translation>
+    </message>
+    <message>
       <location filename="../../DlgPointsRead.ui" line="201"/>
       <location filename="../../DlgPointsRead.ui" line="237"/>
       <location filename="../../DlgPointsRead.ui" line="273"/>
-      <source>Next block:</source>
-      <translation>下一区块:</translation>
+      <source>Next block</source>
+      <translation>下一个块</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="209"/>
       <location filename="../../DlgPointsRead.ui" line="245"/>
       <location filename="../../DlgPointsRead.ui" line="281"/>
-      <source>none</source>
+      <source>None</source>
       <translation>无</translation>
     </message>
     <message>
@@ -274,18 +268,18 @@
       <location filename="../../DlgPointsRead.ui" line="229"/>
       <location filename="../../DlgPointsRead.ui" line="265"/>
       <location filename="../../DlgPointsRead.ui" line="301"/>
-      <source>I (Gray value)</source>
-      <translation>I(灰度值)</translation>
+      <source>I (gray value)</source>
+      <translation>I (灰度值)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPointsRead.ui" line="341"/>
+      <source>Number of previewed lines</source>
+      <translation>预览行数</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="314"/>
       <source>Preview</source>
       <translation>预览</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPointsRead.ui" line="341"/>
-      <source>Number of previewed lines:</source>
-      <translation>预览行数:</translation>
     </message>
   </context>
   <context>
@@ -309,7 +303,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="118"/>
-      <source>The Bounding Box of the imported points does not contain the origin.  Do you want to translate it to the origin?</source>
+      <source>The bounding box of the imported points does not contain the origin. Translate it to the origin?</source>
       <translation>导入点的边界框不包含原点。是否要将其平移至原点？</translation>
     </message>
     <message>
@@ -327,13 +321,13 @@
     <name>Workbench</name>
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
-      <source>Points tools</source>
+      <source>Points Tools</source>
       <translation>点工具</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="35"/>
       <source>&amp;Points</source>
-      <translation>点 (&amp;P)</translation>
+      <translation>点(&amp;P)</translation>
     </message>
   </context>
 </TS>

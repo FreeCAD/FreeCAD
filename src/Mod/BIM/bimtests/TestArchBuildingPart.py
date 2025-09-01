@@ -89,7 +89,7 @@ class TestArchBuildingPart(TestArchBase.TestArchBase):
         building = Arch.makeBuilding(name="TestBuilding")
         self.assertIsNotNone(building, "makeBuilding failed to create a building object.")
         self.assertEqual(building.Label, "TestBuilding", "Building label is incorrect.")
-    
+
     def test_convertFloors(self):
         """Test the convertFloors function."""
         operation = "Testing convertFloors..."
@@ -108,4 +108,3 @@ class TestArchBuildingPart(TestArchBase.TestArchBase):
         obj = Arch.make2DDrawing()
         self.assertIsNotNone(obj, "make2DDrawing failed to create an object")
         self.assertEqual(obj.Label, "Drawing", "Incorrect default label for 2D Drawing")
-    

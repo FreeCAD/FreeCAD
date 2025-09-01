@@ -52,7 +52,7 @@ class ShapeFix_FixSmallFace(ShapeFix_Root):
         Fixing case of strip face, if tol = -1 used local tolerance
         """
         ...
-        
+
     def removeFacesInCaseOfStrip(self) -> None:
         """
         Remove strip face from compound

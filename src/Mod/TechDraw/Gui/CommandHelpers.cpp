@@ -87,8 +87,8 @@ std::vector<std::string> CommandHelpers::getSelectedSubElements(Gui::Command* cm
         }
     }
     if (!dvp) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr("No Part View in Selection"));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("No part view in selection"));
         return selectedSubs;
     }
 
@@ -100,8 +100,8 @@ std::vector<std::string> CommandHelpers::getSelectedSubElements(Gui::Command* cm
 
     if (selectedSubs.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong Selection"),
-                             QObject::tr("No %1 in Selection")
+                             QObject::tr("Wrong selection"),
+                             QObject::tr("No %1 in selection")
                                  .arg(QString::fromStdString(subType)));
         return selectedSubs;
     }

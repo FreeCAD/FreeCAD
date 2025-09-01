@@ -57,6 +57,7 @@
 #include <QImageReader>
 #include <QLabel>
 #include <QListView>
+#include <QMdiSubWindow>
 #include <QMessageBox>
 #include <QModelIndex>
 #include <QPainter>

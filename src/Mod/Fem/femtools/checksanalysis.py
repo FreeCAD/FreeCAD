@@ -226,8 +226,6 @@ def check_member_for_solver_calculix(analysis, solver, mesh, member):
         if not member.cons_initialtemperature:
             if not member.geos_fluidsection:
                 message += "Thermomechanical analysis: No initial temperature defined.\n"
-        if len(member.cons_initialtemperature) > 1:
-            message += "Thermomechanical analysis: Only one initial temperature is allowed.\n"
 
     # constraints
     # fixed

@@ -55,8 +55,8 @@ class Draft_Hyperlink:
     def GetResources(self):
         d = {'Pixmap': '',
              'Accel': "",
-             'MenuText': QT_TRANSLATE_NOOP("Draft_Hyperlink", "Open hyperlinks"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_Hyperlink", "Open linked documents")}
+             'MenuText': QT_TRANSLATE_NOOP("Draft_Hyperlink", "Open Links"),
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_Hyperlink", "Opens linked documents")}
         return d
 
     def Activated(self):
@@ -65,11 +65,11 @@ class Draft_Hyperlink:
         ret = None
         if len(self.hyperlinks_list) > 1:
             m = QtWidgets.QMessageBox()
-            m.setWindowTitle(translate("draft", "Opening multiple hyperlinks"))
+            m.setWindowTitle(translate("draft", "Opening Multiple Links"))
             m.setText(
                 translate(
                     "draft",
-                    "Multiple hyperlinks found."
+                    "Multiple links found"
                 )
             )
             m.setInformativeText(

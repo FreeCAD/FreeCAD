@@ -259,7 +259,7 @@ class CommandPathDressupPathBoundary:
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupPathBoundary", "Boundary"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_DressupPathBoundary",
-                "Creates a Boundary Dress-up from a selected toolpath",
+                "Creates a boundary dress-up from a selected toolpath",
             ),
         }
 

@@ -37,7 +37,7 @@ class BIM_TDPage:
     def GetResources(self):
         return {
             "Pixmap": "BIM_PageDefault",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_TDPage", "Page"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_TDPage", "New Page"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_TDPage", "Creates a new TechDraw page from a template"
             ),

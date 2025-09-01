@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Project shapes</string>
+   <string>Project Shapes</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -97,7 +97,7 @@
      <item>
       <widget class="QCheckBox" name="cbHidIso">
        <property name="text">
-        <string>Hidden isoparameters</string>
+        <string>Hidden iso-parameters</string>
        </property>
       </widget>
      </item>

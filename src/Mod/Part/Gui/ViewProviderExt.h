@@ -23,6 +23,9 @@
 #ifndef PARTGUI_VIEWPROVIDERPARTEXT_H
 #define PARTGUI_VIEWPROVIDERPARTEXT_H
 
+#include "SoFCShapeObject.h"
+
+
 #include <map>
 
 #include <App/PropertyUnits.h>
@@ -123,6 +126,10 @@ public:
     std::vector<Base::Vector3d> getSelectionShape(const char* Element) const override;
     //@}
 
+    virtual Part::TopoShape getRenderedShape() const {
+        return Part::Feature::getTopoShape(getObject(), Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+    }
+
     /** @name Highlight handling
     * This group of methods do the highlighting of elements.
     */
@@ -155,6 +162,23 @@ public:
 
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject() override;
+
+    /// configures Coin nodes so they render given toposhape
+    static void setupCoinGeometry(TopoDS_Shape shape,
+                                  SoCoordinate3* coords,
+                                  SoBrepFaceSet* faceset,
+                                  SoNormal* norm,
+                                  SoBrepEdgeSet* lineset,
+                                  SoBrepPointSet* nodeset,
+                                  double deviation,
+                                  double angularDeflection,
+                                  bool normalsFromUV = false);
+
+    static void setupCoinGeometry(TopoDS_Shape shape,
+                                  SoFCShape* node,
+                                  double deviation,
+                                  double angularDeflection,
+                                  bool normalsFromUV = false);
 
 protected:
     bool setEdit(int ModNum) override;

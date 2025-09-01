@@ -192,7 +192,7 @@ PyObject* AssemblyObjectPy::exportAsASMT(PyObject* args) const
 Py::List AssemblyObjectPy::getJoints() const
 {
     Py::List ret;
-    std::vector<App::DocumentObject*> list = getAssemblyObjectPtr()->getJoints();
+    std::vector<App::DocumentObject*> list = getAssemblyObjectPtr()->getJoints(false);
 
     for (auto It : list) {
         ret.append(Py::Object(It->getPyObject(), true));

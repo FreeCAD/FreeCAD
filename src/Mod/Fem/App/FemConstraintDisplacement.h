@@ -40,6 +40,9 @@ public:
     /// Constructor
     ConstraintDisplacement();
 
+    App::PropertyBool EnableAmplitude;
+    App::PropertyStringList AmplitudeValues;
+
     // Displacement parameters
     App::PropertyDistance xDisplacement;
     App::PropertyDistance yDisplacement;

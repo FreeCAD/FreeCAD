@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>IGES input file</string>
+   <string>IGES Input File</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
@@ -51,7 +51,7 @@
          </size>
         </property>
         <property name="text">
-         <string notr="true">...</string>
+         <string>Search File</string>
         </property>
        </widget>
       </item>

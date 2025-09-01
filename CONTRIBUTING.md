@@ -86,9 +86,11 @@ The FreeCAD Contribution Process is expressed here with the following specific g
     2. capture toxic contributions in the historical record
     3. engage with the Contributor on improving their contribution quality.
 14. Maintainers SHALL NOT make value judgments on correct contributions.
-15. Any Contributor who has value judgments on a PR SHOULD express these via their own PR.
-16. The User who created an issue SHOULD close the issue after checking the PR is successful.
-17. Maintainers SHOULD close issues that are left open without action or update for an unreasonable period.
+15. If a PR requires significant further work before merging, the PR SHOULD be moved to draft status.
+16. If a PR is complete, but should not be merged yet (for example, because it depends on another in-process PR), the "On hold" label SHOULD be applied.
+17. Any Contributor who has value judgments on a PR SHOULD express these via their own PR.
+18. The User who created an issue SHOULD close the issue after checking the PR is successful.
+19. Maintainers SHOULD close issues that are left open without action or update for an unreasonable period.
 
 ## 7. Branches and Releases
 

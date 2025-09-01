@@ -96,7 +96,7 @@
      <item row="4" column="2">
       <widget class="QComboBox" name="cb_Style">
        <property name="toolTip">
-        <string>The use of the Qt line style is being phased out. Please use a standard line style instead.</string>
+        <string>The use of the Qt line style is being phased out. Use a standard line style instead.</string>
        </property>
        <property name="currentIndex">
         <number>-1</number>
@@ -142,7 +142,7 @@
      <item row="6" column="2">
       <widget class="Gui::QuantitySpinBox" name="dsb_Weight">
        <property name="toolTip">
-        <string>Thickness of pattern lines.</string>
+        <string>Thickness of pattern lines</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

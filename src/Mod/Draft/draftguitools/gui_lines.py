@@ -61,7 +61,7 @@ class Line(gui_base_original.Creator):
         return {'Pixmap': 'Draft_Line',
                 'Accel': "L,I",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Line", "Line"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Line", "Creates a 2-point line.\nSHIFT to constrain.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Line", "Creates a 2-point line")}
 
     def Activated(self, name=QT_TRANSLATE_NOOP("draft", "Line"), icon="Draft_Line", task_title=None):
         """Execute when the command is called."""
@@ -123,7 +123,7 @@ class Line(gui_base_original.Creator):
                 self.ui.redraw()
                 self.pos = arg["Position"]
                 self.node.append(self.point)
-                self.drawSegment(self.point)
+                self.drawUpdate(self.point)
                 if self.mode == "line" and len(self.node) == 2:
                     self.finish(cont=None, closed=False)
                 if len(self.node) > 2:
@@ -227,8 +227,9 @@ class Line(gui_base_original.Creator):
                 # DNC: report on removal
                 # _toolmsg(translate("draft", "Removing last point"))
                 _toolmsg(translate("draft", "Pick next point"))
+            self.update_hints()
 
-    def drawSegment(self, point):
+    def drawUpdate(self, point):
         """Draws new line segment."""
         import Part
         if self.planetrack and self.node:
@@ -250,6 +251,7 @@ class Line(gui_base_original.Creator):
                 newshape = currentshape.fuse(newseg)
                 self.obj.Shape = newshape
             _toolmsg(translate("draft", "Pick next point"))
+        self.update_hints()
 
     def wipe(self):
         """Remove all previous segments and starts from last point."""
@@ -260,6 +262,7 @@ class Line(gui_base_original.Creator):
             if self.planetrack:
                 self.planetrack.set(self.node[0])
             _toolmsg(translate("draft", "Pick next point"))
+            self.update_hints()
 
     def orientWP(self):
         """Orient the working plane."""
@@ -282,10 +285,35 @@ class Line(gui_base_original.Creator):
         """
         self.point = App.Vector(numx, numy, numz)
         self.node.append(self.point)
-        self.drawSegment(self.point)
+        self.drawUpdate(self.point)
         if self.mode == "line" and len(self.node) == 2:
             self.finish(cont=None, closed=False)
         self.ui.setNextFocus()
+
+    def get_hints(self):
+        if len(self.node) == 0:
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick first point"), Gui.UserInput.MouseLeft)
+            ]
+        elif self.mode == "line":
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick second point"), Gui.UserInput.MouseLeft)
+            ]
+        elif len(self.node) > 2:
+            hints = [
+                Gui.InputHint(
+                    translate("draft", "%1 pick next point, snap to first point to close"),
+                    Gui.UserInput.MouseLeft
+                )
+            ]
+        else:
+            hints = [
+                Gui.InputHint(translate("draft", "%1 pick next point"), Gui.UserInput.MouseLeft)
+            ]
+        return hints \
+            + gui_tool_utils._get_hint_xyz_constrain() \
+            + gui_tool_utils._get_hint_mod_constrain() \
+            + gui_tool_utils._get_hint_mod_snap()
 
 
 Gui.addCommand('Draft_Line', Line())
@@ -308,7 +336,7 @@ class Wire(Line):
         return {'Pixmap': 'Draft_Wire',
                 'Accel': "P, L",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Wire", "Polyline"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Wire", "Creates a multiple-points line (polyline).\nSHIFT to constrain.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Wire", "Creates a polyline")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -330,8 +358,8 @@ class Wire(Line):
                     w = Part.Wire(Part.__sortEdges__(edges))
                 except Exception:
                     _err(translate("draft",
-                                   "Unable to create a Wire "
-                                   "from selected objects"))
+                                   "Unable to create a wire "
+                                   "from the selected objects"))
                 else:
                     # Points of the new fused Wire in string form
                     # 'FreeCAD.Vector(x,y,z), FreeCAD.Vector(x1,y1,z1), ...'

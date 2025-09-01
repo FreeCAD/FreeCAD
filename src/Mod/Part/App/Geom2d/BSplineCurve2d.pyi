@@ -85,11 +85,11 @@ class BSplineCurve2d(Curve2d):
     @overload
     def increaseMultiplicity(self, index: int, mult: int) -> None:
         ...
-    
+
     @overload
     def increaseMultiplicity(self, start: int, end: int, mult: int) -> None:
         ...
-    
+
     def increaseMultiplicity(self, *args, **kwargs) -> None:
         """
         increaseMultiplicity(int index, int mult)
@@ -370,11 +370,11 @@ class BSplineCurve2d(Curve2d):
     @overload
     def buildFromPolesMultsKnots(self, poles: list[Vector], mults: tuple[int, ...], knots: tuple[float, ...], periodic: bool, degree: int) -> None:
         ...
-    
+
     @overload
     def buildFromPolesMultsKnots(self, poles: list[Vector], mults: tuple[int, ...], knots: tuple[float, ...], periodic: bool, degree: int, weights: tuple[float, ...], CheckRational: bool) -> None:
         ...
-    
+
     def buildFromPolesMultsKnots(self, **kwargs) -> None:
         """
         Builds a B-Spline by a lists of Poles, Mults, Knots.
