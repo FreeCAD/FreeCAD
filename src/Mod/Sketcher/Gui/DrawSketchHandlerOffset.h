@@ -386,6 +386,15 @@ private:
         getOffsetGeos(geometriesToAdd, listOfOffsetGeoIds);
 
         SketchObject* Obj = sketchgui->getSketchObject();
+
+        if (listOfOffsetGeoIds.empty()) {
+            Gui::NotifyUserError(
+                Obj,
+                QT_TRANSLATE_NOOP("Notifications", "Offset Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Offset could not be created."));
+            return;
+        }
+
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Offset"));
 
         // Create geos
