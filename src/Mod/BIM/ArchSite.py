@@ -1165,7 +1165,11 @@ class _ViewProviderSite:
         elif prop in [
             "ShowSunPosition", "SunDateMonth", "SunDateDay", "SunTimeHour",
             "SolarDiagramScale", "SolarDiagramPosition", "ShowHourLabels"]:
-            self.updateSunPosition(vobj)
+            # During file load or property creation, this method can be triggered
+            # before all necessary properties are available. This guard ensures
+            # that the sun position is only updated when the object is in a consistent state.
+            if all(hasattr(vobj, p) for p in ["ShowSunPosition", "SunDateMonth", "SunDateDay", "SunTimeHour"]):
+                 self.updateSunPosition(vobj)
         elif prop == "WindRose":
             if hasattr(self,"windrosenode"):
                 del self.windrosenode
