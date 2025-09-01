@@ -751,6 +751,10 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         if (index.column() > 0) {
             continue;
         }
+    }
+
+    // copy value to clipboard
+    if (props.size() == 1) {
         const QVariant valueToCopy = contextIndex.data(Qt::DisplayRole);
         if (valueToCopy.isValid()) {
             QAction* copyAction = menu.addAction(tr("Copy"));
