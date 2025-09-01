@@ -433,6 +433,15 @@ class _BaseSolverCalculix:
             )
             obj.ExcludeBendingStiffness = False
 
+        if not hasattr(obj, "DisablePastixMixedPrecision"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "DisablePastixMixedPrecision",
+                "Fem",
+                "Disable mixed precision for PaStiX matrix solver",
+                locked=True,
+            )
+            obj.DisablePastixMixedPrecision = True
 
 class Proxy(solverbase.Proxy, _BaseSolverCalculix):
     """The Fem::FemSolver's Proxy python type, add solver specific properties"""
