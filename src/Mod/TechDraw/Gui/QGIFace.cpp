@@ -228,12 +228,6 @@ void QGIFace::setOutline(const QPainterPath & path)
     setPath(path);
 }
 
-/// remove the PAT hatch lines
-void QGIFace::clearLineSets()
-{
-    return;
-}
-
 /// add PAT hatch line set
 void QGIFace::addLineSet(LineSet& ls)
 {
