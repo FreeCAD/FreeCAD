@@ -232,7 +232,6 @@ class _Window(ArchComponent.Component):
         if prop == "Sill":
             self.setSillProperties(obj)  # Can't wait until onDocumentRestored
             self.onSillChanged(obj)
-            
         elif not "Restore" in obj.State:
             if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts","Shape"]:
                 # anti-recursive loops, bc the base sketch will touch the Placement all the time
