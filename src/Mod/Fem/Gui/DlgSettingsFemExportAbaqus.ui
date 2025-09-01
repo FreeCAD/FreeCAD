@@ -32,18 +32,18 @@
         <item row="0" column="1">
          <widget class="Gui::PrefComboBox" name="comboBoxElemChoiceParam">
           <property name="toolTip">
-           <string>All: All elements will be exported.
+           <string>FEM: Only FEM elements will be exported. This means only edges
+not belonging to faces and faces not belonging to volumes.
 
 Highest: Only the highest elements will be exported. This means volumes for a volume mesh and faces for a shell mesh.
 
-FEM: Only FEM elements will be exported. This means only edges
-not belonging to faces and faces not belonging to volumes.</string>
+All: All elements will be exported.</string>
           </property>
           <property name="statusTip">
            <string/>
           </property>
           <property name="whatsThis">
-           <string>element parameter: All: all elements, highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</string>
+           <string>element parameter: FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes), Highest: highest elements only, All: all elements</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>AbaqusElementChoice</cstring>
@@ -53,7 +53,7 @@ not belonging to faces and faces not belonging to volumes.</string>
           </property>
           <item>
            <property name="text">
-            <string>All</string>
+            <string>FEM</string>
            </property>
           </item>
           <item>
@@ -63,7 +63,7 @@ not belonging to faces and faces not belonging to volumes.</string>
           </item>
           <item>
            <property name="text">
-            <string>FEM</string>
+            <string>All</string>
            </property>
           </item>
          </widget>
@@ -80,14 +80,14 @@ not belonging to faces and faces not belonging to volumes.</string>
           <property name="toolTip">
            <string>Mesh groups are exported too.
 Every analysis feature and, if there are different materials,
-material consists of two mesh groups, faces and nodes where
+material consists of two mesh groups - faces and nodes where
 the constraint or material is applied.</string>
           </property>
           <property name="text">
            <string/>
           </property>
           <property name="checked">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>AbaqusWriteGroups</cstring>
