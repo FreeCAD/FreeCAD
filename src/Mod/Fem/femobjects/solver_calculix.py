@@ -330,6 +330,15 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
                 value=False,
             )
         )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="DisablePastixMixedPrecision",
+                group="Solver",
+                doc="Disable mixed precision for PaStiX matrix solver",
+                value=True,
+            )
+        )
         return prop
 
     def onDocumentRestored(self, obj):
