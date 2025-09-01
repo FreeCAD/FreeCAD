@@ -45,6 +45,9 @@ public:
     App::PropertyBool EnableFinalTemperature;
     App::PropertyTemperature FinalTemperature;
 
+    App::PropertyBool EnableAmplitude;
+    App::PropertyStringList AmplitudeValues;
+
     /// recalculate the object
     App::DocumentObjectExecReturn* execute() override;
 
