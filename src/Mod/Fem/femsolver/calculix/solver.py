@@ -428,7 +428,7 @@ class _BaseSolverCalculix:
                 "App::PropertyBool",
                 "ExcludeBendingStiffness",
                 "Fem",
-                "Exclude bending stiffness to replace shells with membranes",
+                "Exclude bending stiffness to replace shells with membranes or beams with trusses",
                 locked=True,
             )
             obj.ExcludeBendingStiffness = False
