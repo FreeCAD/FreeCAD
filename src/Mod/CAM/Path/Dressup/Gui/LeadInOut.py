@@ -499,12 +499,18 @@ class ObjectDressup:
         return command
 
     # Get optimal step angle for iteration ArcZ
-    def getStepAngleArcZ(self, radius):
-        stepAngle = math.pi / 60  # less angle give more iterations
+    def getStepAngleArcZ(self, obj, radius):
+        job = PathUtils.findParentJob(obj)
+        minArcLength = job.GeometryTolerance.Value * 2
+        maxArcLength = 1
+        stepAngle = math.pi / 60
         stepArcLength = stepAngle * radius
-        if stepArcLength > 1:
-            # limit arc length by 1 mm
-            stepAngle = 1 / radius
+        if stepArcLength > maxArcLength:
+            # limit max arc length by 1 mm
+            stepAngle = maxArcLength / radius
+        elif stepArcLength < minArcLength:
+            # limit min arc length by geometry tolerance
+            stepAngle = minArcLength / radius
 
         return stepAngle
 
@@ -513,7 +519,7 @@ class ObjectDressup:
         commands = []
         horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value
         angle = math.acos((radius - begin.z + end.z) / radius)  # start angle
-        stepAngle = self.getStepAngleArcZ(radius)
+        stepAngle = self.getStepAngleArcZ(obj, radius)
         iters = math.ceil(angle / stepAngle)
         iterBegin = copy.copy(begin)  # start point of short segment
         iter = 1
@@ -541,7 +547,7 @@ class ObjectDressup:
         commands = []
         horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value
         angleMax = math.acos((radius - end.z + begin.z) / radius)  # finish angle
-        stepAngle = self.getStepAngleArcZ(radius)
+        stepAngle = self.getStepAngleArcZ(obj, radius)
         iters = math.ceil(angleMax / stepAngle)
         iterBegin = copy.copy(begin)  # start point of short segment
         iter = 1
