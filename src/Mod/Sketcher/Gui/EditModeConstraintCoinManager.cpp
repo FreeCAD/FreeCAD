@@ -2226,8 +2226,8 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
                     float scaleFactor = translation->getScaleFactor();
 
                     // If this is the second icon in a pair, add its relative translation.
-                    int secondIndex = static_cast<int>(ConstraintNodePosition::SecondIconIndex);
-                    if (sep->getNumChildren() > secondIndex) {
+                    if (int secondIndex = static_cast<int>(ConstraintNodePosition::SecondIconIndex);
+                        secondIndex < sep->getNumChildren()) {
                         SoNode* secondIconNode = sep->getChild(secondIndex);
                         if (tail == secondIconNode) {
                             auto translation2 = static_cast<SoZoomTranslation*>(sep->getChild(
