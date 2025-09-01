@@ -443,6 +443,7 @@ class _BaseSolverCalculix:
             )
             obj.DisablePastixMixedPrecision = True
 
+
 class Proxy(solverbase.Proxy, _BaseSolverCalculix):
     """The Fem::FemSolver's Proxy python type, add solver specific properties"""
 
