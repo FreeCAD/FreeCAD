@@ -949,8 +949,8 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             bool ok = false;
             const QString currentTooltip = QString::fromUtf8(prop->getDocumentation());
             QString newTooltip = QInputDialog::getMultiLineText(Gui::getMainWindow(),
-                                                         tr("Edit property tooltip"),
-                                                         tr("Tooltip:"),
+                                                         tr("Edit Property Tooltip"),
+                                                         tr("Tooltip"),
                                                          currentTooltip,
                                                          &ok);
             if (!ok || newTooltip == currentTooltip) {
