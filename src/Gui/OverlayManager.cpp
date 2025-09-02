@@ -71,6 +71,8 @@ FC_LOG_LEVEL_INIT("Dock", true, true);
 
 using namespace Gui;
 
+// Use project's FC_MSG logging macro directly.
+
 static std::array<OverlayTabWidget*, 4> _Overlays;
 
 // Forward-declare free helper so member functions and lambdas can call it.
@@ -1528,18 +1530,13 @@ void OverlayManager::initializeDockForOverlay(QDockWidget *dw)
             if (auto ot = qobject_cast<OverlayTitleBar*>(tb))
                 ot->setMinimal(true);
 
-            // Make the floating dock frameless and translucent so our custom
-            // titlebar is visible instead of the OS frame.
-            dw->setWindowFlags(dw->windowFlags() | Qt::FramelessWindowHint);
-            dw->setAttribute(Qt::WA_TranslucentBackground, true);
+            // Use native window decorations to avoid compositor/translucency bugs.
+            // Do not set FramelessWindowHint or WA_TranslucentBackground here.
             dw->show();
         } else {
-            // Remove frameless flag and restore overlay titlebar for docked state
+            // Restore native decorations and ensure titlebar is present for docked state
             dw->setWindowFlags(dw->windowFlags() & ~Qt::FramelessWindowHint);
             dw->setAttribute(Qt::WA_TranslucentBackground, false);
-            // Replace any existing title bar with a fresh overlay titlebar to
-            // avoid cases where an invisible or stale widget prevents it from
-            // being shown after docking.
             if (dw->titleBarWidget())
                 dw->titleBarWidget()->deleteLater();
             QWidget *tb = ::createTitleBar(dw);
@@ -1573,8 +1570,7 @@ void OverlayManager::initializeDockForOverlay(QDockWidget *dw)
             dw->setTitleBarWidget(tb);
             if (auto ot = qobject_cast<OverlayTitleBar*>(tb))
                 ot->setMinimal(true);
-            dw->setWindowFlags(dw->windowFlags() | Qt::FramelessWindowHint);
-            dw->setAttribute(Qt::WA_TranslucentBackground, true);
+            // Keep native decorations for floating docks for stability
             dw->show();
         } else {
             // For docked state, always recreate the overlay titlebar to ensure
