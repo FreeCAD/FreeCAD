@@ -592,8 +592,6 @@ bool ViewProviderDocumentObject::showInTree() const {
 
 bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::string &subname) const
 {
-    if(!isSelectable())
-        return false;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector)
         if(ext->extensionGetElementPicked(pp,subname))
@@ -703,3 +701,4 @@ std::string ViewProviderDocumentObject::getFullName() const {
         return pcObject->getFullName() + ".ViewObject";
     return std::string("?");
 }
+
