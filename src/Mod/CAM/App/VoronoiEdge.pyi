@@ -12,8 +12,6 @@ from Base.Metadata import constmethod, export
 )
 class VoronoiEdge(BaseClass):
     """
-    Author: sliptonic (shopinthewoods@gmail.com)
-    License: LGPL-2.1-or-later
     Edge of a Voronoi diagram
     """
 

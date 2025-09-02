@@ -12,8 +12,6 @@ from Fem.FemPostFilter import FemPostFilter
 )
 class FemPostBranchFilter(FemPostFilter):
     """
-    Author: Stefan Tröger (stefantroeger@gmx.net)
-    License: LGPL-2.1-or-later
     The FemPostBranch class.
     """
 

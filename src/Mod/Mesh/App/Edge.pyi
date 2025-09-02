@@ -11,8 +11,6 @@ from Base.PyObjectBase import PyObjectBase
 )
 class Edge(PyObjectBase):
     """
-    Author: Werner Mayer (wmayer[at]users.sourceforge.net)
-    License: LGPL-2.1-or-later
     Edge in mesh
     This is an edge of a facet in a MeshObject. You can get it by e.g. iterating over the facets of a
     mesh and calling getEdge(index).

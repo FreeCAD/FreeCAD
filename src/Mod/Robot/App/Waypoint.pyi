@@ -11,8 +11,6 @@ from Base.Persistence import Persistence
 )
 class Waypoint(Persistence):
     """
-    Author: Juergen Riegel (Juergen.Riegel@web.de)
-    License: LGPL-2.1-or-later
     Waypoint class
     """
 

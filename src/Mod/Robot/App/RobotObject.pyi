@@ -10,8 +10,6 @@ from App.DocumentObject import DocumentObject
 )
 class RobotObject(DocumentObject):
     """
-    Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
-    License: LGPL-2.1-or-later
     Robot document object
     """
 

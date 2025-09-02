@@ -13,8 +13,6 @@ from App.ComplexGeoData import ComplexGeoData
 )
 class FemMesh(ComplexGeoData):
     """
-    Author: Juergen Riegel (Juergen.Riegel@web.de)
-    License: LGPL-2.1-or-later
     FemMesh class
     """
 

@@ -11,8 +11,6 @@ from Base.Metadata import constmethod, export
 )
 class BlendPoint(PyObjectBase):
     """
-    Author: Mattéo Grellier (matteogrellier@gmail.com)
-    License: LGPL-2.1-or-later
     Create BlendPoint from a point and some derivatives.
     myBlendPoint = BlendPoint([Point, D1, D2, ..., DN])
     BlendPoint can also be constructed from an edge

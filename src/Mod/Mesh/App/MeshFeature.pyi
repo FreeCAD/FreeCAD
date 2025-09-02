@@ -13,8 +13,6 @@ from App.GeoFeature import GeoFeature
 )
 class MeshFeature(GeoFeature):
     """
-    Author: Werner Mayer (wmayer@users.sourceforge.net)
-    License: LGPL-2.1-or-later
     The Mesh::Feature class handles meshes.
     The Mesh.MeshFeature() function is for internal use only and cannot be used to create instances of this class.
     Therefore you must have a reference to a document, e.g. 'd' then you can create an instance with

@@ -12,8 +12,6 @@ from Base.Metadata import export
 )
 class CosmeticEdge(PyObjectBase):
     """
-    Author: WandererFan (wandererfan@gmail.com)
-    License: LGPL-2.1-or-later
     CosmeticEdge specifies an extra (cosmetic) edge in Views
     """
 

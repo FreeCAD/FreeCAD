@@ -13,8 +13,6 @@ from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
 )
 class ViewProviderFemPostFilter(ViewProviderDocumentObject):
     """
-    Author: Stefan Tröger (stefantroeger@gmx.net)
-    License: LGPL-2.1-or-later
     ViewProviderFemPostPipeline class
     """
 

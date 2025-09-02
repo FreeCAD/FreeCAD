@@ -10,8 +10,6 @@ from Base.Metadata import export
 )
 class Measurement(BaseClass):
     """
-    Author: Luke Parry (l.parry@warwick.ac.uk)
-    License: LGPL-2.1-or-later
     Make a measurement
     """
 

@@ -11,8 +11,6 @@ from Base.Persistence import Persistence
 )
 class Trajectory(Persistence):
     """
-    Author: Juergen Riegel (Juergen.Riegel@web.de)
-    License: LGPL-2.1-or-later
     Trajectory class
     """
 

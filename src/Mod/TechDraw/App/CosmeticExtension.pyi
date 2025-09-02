@@ -8,7 +8,5 @@ from App.DocumentObjectExtension import DocumentObjectExtension
 )
 class CosmeticExtension(DocumentObjectExtension):
     """
-    Author: WandererFan (wandererfan@gmail.com)
-    License: LGPL-2.1-or-later
     This object represents cosmetic features for a DrawViewPart.
     """
