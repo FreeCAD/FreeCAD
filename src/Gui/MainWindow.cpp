@@ -2315,6 +2315,11 @@ void MainWindow::setRightSideMessage(const QString& message)
     d->rightSideLabel->setText(message.simplified());
 }
 
+bool MainWindow::isRightSideMessageVisible() const
+{
+    return d->rightSideLabel->isVisible();
+}
+
 void MainWindow::showStatus(int type, const QString& message)
 {
     if(QApplication::instance()->thread() != QThread::currentThread()) {
