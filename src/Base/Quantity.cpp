@@ -60,16 +60,26 @@ using Base::UnitsSchema;
 QuantityFormat::QuantityFormat()
     : option(OmitGroupSeparator | RejectGroupSeparator)
     , format(Fixed)
-    , precision(UnitsApi::getDecimals())
-    , denominator(UnitsApi::getDenominator())
+    , _precision(-1)
+    , _denominator(-1)
 {}
 
 QuantityFormat::QuantityFormat(QuantityFormat::NumberFormat format, int decimals)
     : option(OmitGroupSeparator | RejectGroupSeparator)
     , format(format)
-    , precision(decimals < 0 ? UnitsApi::getDecimals() : decimals)
-    , denominator(UnitsApi::getDenominator())
+    , _precision(decimals)
+    , _denominator(-1)
 {}
+
+int QuantityFormat::getPrecision() const
+{
+    return _precision < 0 ? UnitsApi::getDecimals() : _precision;
+}
+
+int QuantityFormat::getDenominator() const
+{
+    return _denominator < 0 ? UnitsApi::getDenominator() : _denominator;
+}
 
 // ----------------------------------------------------------------------------
 
@@ -255,7 +265,7 @@ std::string Quantity::toNumber(const QuantityFormat& format) const
         default:
             break;
     }
-    ss << std::setprecision(format.precision) << myValue;
+    ss << std::setprecision(format.getPrecision()) << myValue;
 
     return ss.str();
 }

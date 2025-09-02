@@ -742,14 +742,14 @@ bool QuantitySpinBox::isCheckedRangeInExpresion() const
 int QuantitySpinBox::decimals() const
 {
     Q_D(const QuantitySpinBox);
-    return d->quantity.getFormat().precision;
+    return d->quantity.getFormat().getPrecision();
 }
 
 void QuantitySpinBox::setDecimals(int v)
 {
     Q_D(QuantitySpinBox);
     Base::QuantityFormat f = d->quantity.getFormat();
-    f.precision = v;
+    f.setPrecision(v);
     d->quantity.setFormat(f);
     updateText(d->quantity);
 }
