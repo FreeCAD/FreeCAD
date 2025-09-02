@@ -49,7 +49,7 @@ DlgPreferencePackManagementImp::DlgPreferencePackManagementImp(QWidget* parent)
         connect(ui->pushButtonOpenAddonManager, &QPushButton::clicked, this, &DlgPreferencePackManagementImp::showAddonManager);
     }
     else {
-        ui->pushButtonOpenAddonManager->hide();
+        ui->pushButtonOpenAddonManager->setDisabled(true);
     }
     connect(this, &DlgPreferencePackManagementImp::packVisibilityChanged, this, &DlgPreferencePackManagementImp::updateTree);
     updateTree();

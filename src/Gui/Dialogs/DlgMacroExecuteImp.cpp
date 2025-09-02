@@ -127,7 +127,7 @@ DlgMacroExecuteImp::DlgMacroExecuteImp(QWidget* parent, Qt::WindowFlags fl)
     }
     fillUpList();
     ui->LineEditFind->setFocus();
-    ui->addonsButton->setVisible(
+    ui->addonsButton->setEnabled(
         Application::Instance->commandManager().getCommandByName("Std_AddonMgr") != nullptr);
 }
 
