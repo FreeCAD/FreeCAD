@@ -859,4 +859,3 @@ private:
 
 
 #endif  // SKETCHERGUI_DrawSketchController_H
-
