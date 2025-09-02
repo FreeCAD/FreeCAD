@@ -1532,16 +1532,15 @@ void OverlayManager::initializeDockForOverlay(QDockWidget *dw)
     // Listen to this dock widget's own location changes so we can recreate
     // or show the overlay titlebar when it is re-docked elsewhere.
     QObject::connect(dw, &QDockWidget::dockLocationChanged, this,
-        [this, dw](Qt::DockWidgetArea) {
-            // Only adjust titlebar for docked state
+        [this, dw](Qt::DockWidgetArea area) {
+            // Always recreate the titlebar for docked state to ensure it is present
             if (!dw->isFloating()) {
-                // If no titlebar widget exists, create one; otherwise ensure it's visible
-                if (!dw->titleBarWidget()) {
-                    QWidget *tb = ::createTitleBar(dw);
-                    dw->setTitleBarWidget(tb);
-                } else {
-                    dw->titleBarWidget()->show();
+                if (dw->titleBarWidget()) {
+                    dw->titleBarWidget()->deleteLater();
                 }
+                QWidget *tb = ::createTitleBar(dw);
+                dw->setTitleBarWidget(tb);
+                dw->show();
             }
         });
 
@@ -1629,22 +1628,43 @@ void OverlayManager::setupDockWidget(QDockWidget *dw, int dockArea)
 
 void OverlayManager::cleanupDockWidget(QDockWidget *dw)
 {
+    FC_LOG("cleanupDockWidget called for dock: " << (dw ? dw->objectName().toStdString() : std::string("nullptr")));
     d->toggleOverlay(dw, ToggleMode::Unset);
+    if (dw) {
+        if (dw->titleBarWidget()) {
+            FC_LOG("Deleting custom title bar for dock: " << dw->objectName().toStdString());
+            dw->titleBarWidget()->deleteLater();
+            dw->setTitleBarWidget(nullptr); // This restores the default native title bar
+            FC_LOG("Restored native title bar for dock: " << dw->objectName().toStdString());
+        } else {
+            FC_LOG("No custom title bar to delete for dock: " << dw->objectName().toStdString());
+        }
+    } else {
+        FC_LOG("cleanupDockWidget called with nullptr");
+    }
 }
 
 void OverlayManager::onToggleDockWidget(bool checked)
 {
     auto action = qobject_cast<QAction*>(sender());
-    if(!action)
+    FC_LOG("onToggleDockWidget called. checked: " << checked << ", sender: " << (action ? action->objectName().toStdString() : std::string("nullptr")));
+    if(!action) {
+        FC_LOG("onToggleDockWidget: sender is not a QAction");
         return;
-    d->onToggleDockWidget(qobject_cast<QDockWidget*>(action->parent()), checked);
+    }
+    QDockWidget* dock = qobject_cast<QDockWidget*>(action->parent());
+    FC_LOG("onToggleDockWidget: dock: " << (dock ? dock->objectName().toStdString() : std::string("nullptr")));
+    d->onToggleDockWidget(dock, checked);
 }
 
 void OverlayManager::onDockVisibleChange(bool visible)
 {
     auto dock = qobject_cast<QDockWidget*>(sender());
-    if(!dock)
+    FC_LOG("onDockVisibleChange called. visible: " << visible << ", sender: " << (dock ? dock->objectName().toStdString() : std::string("nullptr")));
+    if(!dock) {
+    FC_LOG("onDockVisibleChange: sender is not a QDockWidget");
         return;
+    }
     FC_TRACE("dock " << dock->objectName().toUtf8().constData()
             << " visible change " << visible << ", " << dock->isVisible());
 }
@@ -1654,14 +1674,16 @@ void OverlayManager::onDockFeaturesChange(QDockWidget::DockWidgetFeatures featur
     Q_UNUSED(features);
 
     auto dw = qobject_cast<QDockWidget*>(sender());
-
+    FC_LOG("onDockFeaturesChange called. features: " << (int)features << ", sender: " << (dw ? dw->objectName().toStdString() : std::string("nullptr")));
     if (!dw) {
+    FC_LOG("onDockFeaturesChange: sender is not a QDockWidget");
         return;
     }
 
     // Rebuild the title widget contents in-place to avoid destroying the
     // widget (which causes layout relayout and visible movement).
     if (auto *titleBarWidget = qobject_cast<OverlayTitleBar*>(dw->titleBarWidget())) {
+    FC_LOG("onDockFeaturesChange: rebuilding title bar for dock: " << dw->objectName().toStdString());
         dw->setUpdatesEnabled(false);
         // Clear old layout and child widgets
         if (auto oldLayout = titleBarWidget->layout()) {
@@ -1688,47 +1710,68 @@ void OverlayManager::onDockFeaturesChange(QDockWidget::DockWidgetFeatures featur
         titleBarWidget->setTitleItem(titleItem);
         dw->setUpdatesEnabled(true);
         titleBarWidget->update();
+    } else {
+    FC_LOG("onDockFeaturesChange: no OverlayTitleBar present for dock: " << dw->objectName().toStdString());
     }
 }
 
 void OverlayManager::onTaskViewUpdate()
 {
     auto taskview = qobject_cast<TaskView::TaskView*>(sender());
-    if (!taskview)
+    FC_LOG("onTaskViewUpdate called. sender: " << (taskview ? taskview->objectName().toStdString() : std::string("nullptr")));
+    if (!taskview) {
+    FC_LOG("onTaskViewUpdate: sender is not a TaskView::TaskView");
         return;
+    }
     QDockWidget *dock = nullptr;
     for (QWidget *w=taskview; w; w=w->parentWidget()) {
         if ((dock = qobject_cast<QDockWidget*>(w)))
             break;
     }
+    FC_LOG("onTaskViewUpdate: found dock: " << (dock ? dock->objectName().toStdString() : std::string("nullptr")));
     if (dock) {
         auto it = d->_overlayMap.find(dock);
         if (it == d->_overlayMap.end()
                 || it->second->tabWidget->count() < 2
-                || it->second->tabWidget->getAutoMode() != OverlayTabWidget::AutoMode::TaskShow)
+                || it->second->tabWidget->getAutoMode() != OverlayTabWidget::AutoMode::TaskShow) {
+            FC_LOG("onTaskViewUpdate: dock not in overlay map or not in TaskShow mode");
             return;
+        }
+    FC_LOG("onTaskViewUpdate: toggling dock overlay for dock: " << dock->objectName().toStdString() << ", isEmpty: " << taskview->isEmpty());
         d->onToggleDockWidget(dock, taskview->isEmpty() ? -2 : 2);
     }
 }
 
 void OverlayManager::onDockWidgetTitleChange(const QString &title)
 {
-    if (title.isEmpty())
+    FC_LOG("onDockWidgetTitleChange called. title: " << title.toStdString());
+    if (title.isEmpty()) {
+    FC_LOG("onDockWidgetTitleChange: title is empty");
         return;
+    }
     auto widget = qobject_cast<QWidget*>(sender());
     QDockWidget *dock = nullptr;
     for (QWidget *w=widget; w; w=w->parentWidget()) {
         if ((dock = qobject_cast<QDockWidget*>(w)))
             break;
     }
-    if(!dock)
+    FC_LOG("onDockWidgetTitleChange: found dock: " << (dock ? dock->objectName().toStdString() : std::string("nullptr")));
+    if(!dock) {
+    FC_LOG("onDockWidgetTitleChange: no QDockWidget found in parent chain");
         return;
+    }
     auto tabWidget = findTabWidget(dock);
-    if (!tabWidget)
+    if (!tabWidget) {
+    FC_LOG("onDockWidgetTitleChange: no OverlayTabWidget found for dock: " << dock->objectName().toStdString());
         return;
+    }
     int index = tabWidget->dockWidgetIndex(dock);
-    if (index >= 0)
+    if (index >= 0) {
+    FC_LOG("onDockWidgetTitleChange: setting tab text for dock: " << dock->objectName().toStdString() << ", index: " << index << ", title: " << title.toStdString());
         tabWidget->setTabText(index, title);
+    } else {
+    FC_LOG("onDockWidgetTitleChange: dock index not found in tabWidget for dock: " << dock->objectName().toStdString());
+    }
 }
 
 void OverlayManager::retranslate()
