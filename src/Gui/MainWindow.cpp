@@ -308,6 +308,62 @@ struct MainWindowP
     void restoreWindowState(const QByteArray &);
 };
 
+/**
+ * @brief Label for displaying information in the status bar
+ *
+ * A QLabel subclass that provides a context menu with additional actions
+ * similar to the standard status bar widgets.
+ */
+class StatusBarInfoLabel : public QLabel
+{
+    Q_OBJECT
+public:
+    explicit StatusBarInfoLabel(QWidget *parent = nullptr)
+        : QLabel(parent)
+    {
+    }
+protected:
+    void contextMenuEvent(QContextMenuEvent *event) override
+    {
+        QMenu menu(this);
+
+        // Reproduce standard status bar widget menu
+        if (auto *bar = qobject_cast<QStatusBar*>(parentWidget())) {
+            for (QObject *child : bar->children()) {
+                QWidget *w = qobject_cast<QWidget*>(child);
+                if (!w) {
+                    continue;
+                }
+                auto title = w->windowTitle();
+                if (title.isEmpty()) {
+                    continue;
+                }
+
+                QAction *action = menu.addAction(title);
+                action->setCheckable(true);
+                action->setChecked(w->isVisible());
+                QObject::connect(action, &QAction::toggled, w, &QWidget::setVisible);
+            }
+        }
+
+        menu.addSeparator(); // ----------
+
+        // Copy + Select All
+        menu.addAction(tr("Copy"), [this]() {
+            QApplication::clipboard()->setText(this->selectedText());
+        });
+        menu.addAction(tr("Select All"), [this]() {
+            this->setSelection(0, this->text().length());
+        });
+
+        menu.exec(event->globalPos());
+    }
+    void hideEvent(QHideEvent *event) override {
+        clear();  // Clear text
+        QLabel::hideEvent(event);
+    }
+};
+
 } // namespace Gui
 
 /* TRANSLATOR Gui::MainWindow */
@@ -390,7 +446,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // labels and progressbar
     d->status = new StatusBarObserver();
-    d->actionLabel = new QLabel(statusBar());
+    d->actionLabel = new StatusBarInfoLabel(statusBar());
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     d->sizeLabel = new DimensionWidget(statusBar());
 
@@ -401,12 +457,19 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // hint label
     d->hintLabel = new InputHintWidget(statusBar());
+    d->hintLabel->setObjectName(QStringLiteral("hintLabel"));
+    //: A context menu action used to show or hide the input hints in the status bar
+    d->hintLabel->setWindowTitle(tr("Input hints"));
+
     statusBar()->addWidget(d->hintLabel);
 
     // right side label
-    d->rightSideLabel = new QLabel(statusBar());
+    d->rightSideLabel = new StatusBarInfoLabel(statusBar());
     d->rightSideLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     statusBar()->addPermanentWidget(d->rightSideLabel);
+    d->rightSideLabel->setObjectName(QStringLiteral("rightSideLabel"));
+    //: A context menu action used to enable or disable quick measure in the status bar
+    d->rightSideLabel->setWindowTitle(tr("Quick measure"));
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NotificationArea");
 
