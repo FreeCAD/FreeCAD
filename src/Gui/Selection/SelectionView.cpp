@@ -711,7 +711,7 @@ void SelectionView::onEnablePickList()
 
 // SelectionMenu implementation
 SelectionMenu::SelectionMenu(QWidget *parent)
-    : QMenu(parent), currentSelections(nullptr)
+    : QMenu(parent)
 {
     connect(this, &QMenu::hovered, this, &SelectionMenu::onHover);
 }
@@ -733,15 +733,14 @@ PickData SelectionMenu::doPick(const std::vector<PickData> &sels)
     clear();
     Gui::Selection().setClarifySelectionActive(true);
 
-    std::vector<PickData> selsCopy = sels;
-    currentSelections = &selsCopy;
+    currentSelections = sels;
 
     std::map<std::string, SubMenuInfo> menus;
-    processSelections(selsCopy, menus);
-    buildMenuStructure(menus, selsCopy);
+    processSelections(currentSelections, menus);
+    buildMenuStructure(menus, currentSelections);
 
     QAction* picked = this->exec(QCursor::pos());
-    return onPicked(picked, selsCopy);
+    return onPicked(picked, currentSelections);
 }
 
 void SelectionMenu::processSelections(std::vector<PickData> &selections, std::map<std::string, SubMenuInfo> &menus)
@@ -844,7 +843,7 @@ PickData SelectionMenu::onPicked(QAction *picked, const std::vector<PickData> &s
 
 void SelectionMenu::onHover(QAction *action)
 {
-    if (!action || !currentSelections)
+    if (!action || currentSelections.empty())
         return;
     
     // Clear previous preselection
@@ -853,10 +852,10 @@ void SelectionMenu::onHover(QAction *action)
     // Get the selection index from the action data
     bool ok;
     int index = action->data().toInt(&ok);
-    if (!ok || index < 0 || index >= (int)currentSelections->size())
+    if (!ok || index < 0 || index >= (int)currentSelections.size())
         return;
 
-    const auto &sel = (*currentSelections)[index];
+    const auto &sel = currentSelections[index];
     if (!sel.obj)
         return;
 

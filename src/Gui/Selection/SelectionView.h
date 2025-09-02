@@ -173,7 +173,7 @@ private:
 
     QPointer<QMenu> activeMenu;
     QPointer<QAction> activeAction;
-    const std::vector<PickData>* currentSelections;
+    std::vector<PickData> currentSelections;
 };
 
 } // namespace Gui
