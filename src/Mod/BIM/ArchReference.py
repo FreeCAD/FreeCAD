@@ -36,6 +36,7 @@ __url__    = "https://www.freecad.org"
 
 import os
 import re
+import struct
 import zipfile
 
 import FreeCAD
@@ -147,6 +148,7 @@ class ArchReference:
                 if filename.lower().endswith(".fcstd"):
                     zdoc = zipfile.ZipFile(filename)
                     if zdoc:
+                        self.shapes = []
                         if obj.Part:
                             if obj.Part in self.parts:
                                 if self.parts[obj.Part][1] in zdoc.namelist():
@@ -155,6 +157,7 @@ class ArchReference:
                                     f.close()
                                     shapedata = shapedata.decode("utf8")
                                     shape = self.cleanShape(shapedata,obj,self.parts[obj.Part][2])
+                                    self.shapes.append(shape)
                                     obj.Shape = shape
                                     if not pl.isIdentity():
                                         obj.Placement = pl
@@ -162,16 +165,15 @@ class ArchReference:
                                     t = translate("Arch","Part not found in file")
                                     FreeCAD.Console.PrintError(t+"\n")
                         else:
-                            shapes = []
                             for part in self.parts.values():
                                 f = zdoc.open(part[1])
                                 shapedata = f.read()
                                 f.close()
                                 shapedata = shapedata.decode("utf8")
                                 shape = self.cleanShape(shapedata,obj)
-                                shapes.append(shape)
-                            if shapes:
-                                obj.Shape = Part.makeCompound(shapes)
+                                self.shapes.append(shape)
+                            if self.shapes:
+                                obj.Shape = Part.makeCompound(self.shapes)
                 elif filename.lower().endswith(".ifc"):
                     ifcfile = self.getIfcFile(filename)
                     if not ifcfile:
@@ -447,46 +449,121 @@ class ArchReference:
 
     def getColors(self, obj):
 
-        """returns the DiffuseColor of the referenced object"""
+        """returns the Shape Appearance of the referenced object(s)"""
 
         filename = self.getFile(obj)
         if not filename:
-            return None
-        part = obj.Part
-        if not obj.Part:
-            return None
-        colors = None
-        if filename.lower().endswith(".fcstd"):
-            zdoc = zipfile.ZipFile(filename)
-            if not "GuiDocument.xml" in zdoc.namelist():
-                return None
-            colorfile = None
-            with zdoc.open("GuiDocument.xml") as docf:
-                writemode1 = False
-                writemode2 = False
-                for line in docf:
-                    line = line.decode("utf8")
-                    if ("<ViewProvider name=" in line) and (part in line):
-                        writemode1 = True
-                    elif writemode1 and ("<Property name=\"DiffuseColor\"" in line):
-                        writemode1 = False
-                        writemode2 = True
-                    elif writemode2 and ("<ColorList file=" in line):
-                        n = re.findall(r'file=\"(.*?)\"',line)
-                        if n:
-                            colorfile = n[0]
-                            break
-            if not colorfile:
-                return None
-            if not colorfile in zdoc.namelist():
-                return None
-            colors = []
-            cf = zdoc.open(colorfile)
-            buf = cf.read()
-            cf.close()
-            for i in range(1,int(len(buf)/4)):
-                colors.append((buf[i*4+3]/255.0,buf[i*4+2]/255.0,buf[i*4+1]/255.0,buf[i*4]/255.0))
+            return []
+        if not filename.lower().endswith(".fcstd"):
+            return []
+        if not getattr(self, "parts", {}):
+            return []
+        if not getattr(self, "shapes", []):
+            return []
+
+        totalcolors = []
+        parts = [obj.Part] if obj.Part else self.parts.keys()
+        lenparts = len(parts)
+        for i, part in enumerate(parts):
+            lenfaces = len(self.shapes[i].Faces)
+            if lenfaces:
+                colors = self._getColorsPart(filename, part)
+                if len(colors) == lenfaces:
+                    totalcolors.extend(colors)
+                elif lenparts == 1:
+                    totalcolors.append(colors[0])
+                else:
+                    totalcolors.extend([colors[0]] * lenfaces)
+
+        return totalcolors
+
+
+    def _getColorsPart(self, filename, part):
+        zdoc = zipfile.ZipFile(filename)
+        if not "GuiDocument.xml" in zdoc.namelist():
+            return []
+        colors = []
+        colorfile = None
+        with zdoc.open("GuiDocument.xml") as docf:
+            writemode1 = False
+            writemode2 = False
+            writemode3 = False
+            for line in docf:
+                line = line.decode("utf8")
+                if ("<ViewProvider name=\"" + part + "\"") in line:
+                    writemode1 = True
+                elif writemode1 and ("<Property name=\"DiffuseColor\"" in line):
+                    writemode1 = False
+                    writemode2 = True
+                elif writemode1 and ("<Property name=\"ShapeAppearance\"" in line):
+                    writemode1 = False
+                    writemode3 = True
+                elif writemode2 and ("<ColorList file=" in line):
+                    n = re.findall(r'file=\"(.*?)\"',line)
+                    if n:
+                        colorfile = n[0]
+                        break
+                elif writemode3 and ("<MaterialList file=" in line):
+                    n = re.findall(r'file=\"(.*?)\"',line)
+                    if n:
+                        colorfile = n[0]
+                        break
+
+        if not colorfile:
+            return []
+        if not colorfile in zdoc.namelist():
+            return []
+
+        cf = zdoc.open(colorfile)
+        buf = cf.read()
+        cf.close()
+        colors = []
+
+        if writemode2:
+            # Old DiffuseColor support:
+            for i in range(1, int(len(buf)/4)):
+                # ShapeAppearance material with default v0.21 properties:
+                material = FreeCAD.Material()
+                color = self._processColor(buf, i*4)
+                material.DiffuseColor = color[:3] + (255, )
+                material.Transparency = color[3] / 255.0
+                colors.append(material)
+
+        if writemode3:
+            # File format ShapeAppearance files in FCStd file:
+            # - 1st byte: number of faces
+            # - Next 3 bytes: zero
+            # - For each face: 6 fields with 4 bytes in this order:
+            #   - ambient color
+            #   - diffuse color
+            #   - specular color
+            #   - emissive color
+            #   - shininess
+            #   - transparency
+            # - Tail of file: unknown repetition of bytes
+            for face_idx in range(buf[0]):
+                face_buf = buf[face_idx*24+4:face_idx*24+28]
+                # ShapeAppearance material with default v0.21 properties:
+                material = FreeCAD.Material()
+                material.AmbientColor = self._processColor(face_buf, 0)
+                material.DiffuseColor = self._processColor(face_buf, 4)
+                material.SpecularColor = self._processColor(face_buf, 8)
+                material.EmissiveColor = self._processColor(face_buf, 12)
+                material.Shininess = self._processNumber(face_buf, 16)
+                material.Transparency = self._processNumber(face_buf, 20)
+                colors.append(material)
+
         return colors
+
+
+    def _processColor(self, buf, i):
+        """returns a tuple with 4 ints (0-255)"""
+        return (buf[i+3], buf[i+2], buf[i+1], buf[i])
+
+
+    def _processNumber(self, buf, i):
+        """returns a float"""
+        return struct.unpack("f", buf[i:i+4])[0]
 
 
     def splitall(self,path):
@@ -560,21 +637,12 @@ class ViewProviderArchReference:
 
 
     def updateData(self,obj,prop):
-
         if (prop == "Shape"):
             if hasattr(obj.ViewObject,"UpdateColors") and obj.ViewObject.UpdateColors:
                 if obj.Shape and not obj.Shape.isNull():
                     colors = obj.Proxy.getColors(obj)
                     if colors:
-                        obj.ViewObject.DiffuseColor = colors
-                    from draftutils import todo
-                    todo.ToDo.delay(self.recolorize,obj.ViewObject)
-
-
-    def recolorize(self,vobj):
-
-        if hasattr(vobj,"DiffuseColor") and hasattr(vobj,"UpdateColors") and vobj.UpdateColors:
-            vobj.DiffuseColor = vobj.DiffuseColor
+                        obj.ViewObject.ShapeAppearance = colors
 
 
     def checkChanges(self):
@@ -645,8 +713,6 @@ class ViewProviderArchReference:
             return None
 
         FreeCADGui.Control.closeDialog()
-        from draftutils import todo
-        todo.ToDo.delay(vobj.Proxy.recolorize,vobj)
         return True
 
 
@@ -899,7 +965,7 @@ class ArchReferenceTaskPanel:
                 self.partCombo.addItem(parts[k][0],k)
             if self.obj.Part:
                 if self.obj.Part in sortedkeys:
-                    self.partCombo.setCurrentIndex(sortedkeys.index(self.obj.Part))
+                    self.partCombo.setCurrentIndex(sortedkeys.index(self.obj.Part) + 1)
         else:
             self.partCombo.setEnabled(False)
         QtCore.QObject.connect(self.fileButton, QtCore.SIGNAL("clicked()"), self.chooseFile)
@@ -963,7 +1029,7 @@ class ArchReferenceTaskPanel:
                     self.partCombo.addItem(parts[k][0],k)
                 if self.obj.Part:
                     if self.obj.Part in sortedkeys:
-                        self.partCombo.setCurrentIndex(sortedkeys.index(self.obj.Part))
+                        self.partCombo.setCurrentIndex(sortedkeys.index(self.obj.Part) + 1)
             else:
                 self.partCombo.setEnabled(False)
 
