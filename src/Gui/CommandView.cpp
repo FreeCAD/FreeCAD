@@ -3999,9 +3999,8 @@ void StdCmdClarifySelection::activated(int iMsg)
     }
 
     QPoint local = widget->mapFromGlobal(pos);
-    SbVec2s point;
-    point[0] = local.x();
-    point[1] = widget->height() - local.y() - 1;
+    SbVec2s point(static_cast<short>(local.x()),
+                  static_cast<short>(widget->height() - local.y() - 1));
     
     // Use ray picking to get all objects under cursor
     SoRayPickAction pickAction(viewer->getSoRenderManager()->getViewportRegion());
