@@ -20,7 +20,10 @@ from App.ComplexGeoData import ComplexGeoData
     class PropertyMeshKernel* parentProperty = nullptr;"""
 )
 class Mesh(ComplexGeoData):
-    """Mesh() -- Create an empty mesh object.
+    """
+    Author: Juergen Riegel (Juergen.Riegel@web.de)
+    License: LGPL-2.1-or-later
+    Mesh() -- Create an empty mesh object.
 
     This class allows one to manipulate the mesh object by adding new facets, deleting facets, importing from an STL file,
     transforming the mesh and much more.

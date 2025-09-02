@@ -10,6 +10,8 @@ from Gui.ViewProviderGeometryObject import ViewProviderGeometryObject
 )
 class ViewProviderFemMesh(ViewProviderGeometryObject):
     """
+    Author: Juergen Riegel (Juergen.Riegel@web.de)
+    License: LGPL-2.1-or-later
     ViewProviderFemMesh class
     """
 

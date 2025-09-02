@@ -11,6 +11,8 @@ from Base.PyObjectBase import PyObjectBase
 )
 class MeshPoint(PyObjectBase):
     """
+    Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
+    License: LGPL-2.1-or-later
     Point in mesh
     This is a point in a MeshObject. You can get it by e.g. iterating a
     mesh. The point has a connection to its mesh and allows therefore

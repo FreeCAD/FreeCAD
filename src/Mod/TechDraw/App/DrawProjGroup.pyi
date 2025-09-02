@@ -10,6 +10,8 @@ from TechDraw.DrawViewCollection import DrawViewCollection
 )
 class DrawProjGroup(DrawViewCollection):
     """
+    Author: WandererFan (wandererfan@gmail.com)
+    License: LGPL-2.1-or-later
     Feature for creating and manipulating Technical Drawing Projection Groups
     """
 

@@ -12,6 +12,8 @@ from Fem.FemPostObject import FemPostObject
 )
 class FemPostPipeline(FemPostObject):
     """
+    Author: Stefan Tröger (stefantroeger@gmx.net)
+    License: LGPL-2.1-or-later
     The FemPostPipeline class.
     """
 

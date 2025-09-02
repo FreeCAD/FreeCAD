@@ -11,6 +11,8 @@ from Base.Metadata import constmethod, export
 )
 class CenterLine(PyObjectBase):
     """
+    Author: WandererFan (wandererfan@gmail.com)
+    License: LGPL-2.1-or-later
     CenterLine specifies additional mark up edges in a View
     """
 

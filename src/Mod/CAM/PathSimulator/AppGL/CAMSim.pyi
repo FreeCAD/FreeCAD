@@ -13,6 +13,8 @@ from Metadata import no_args
 )
 class CAMSim(BaseClass):
     """
+    Author: Shai Seger (shaise_at_g-mail)
+    License: LGPL-2.1-or-later
     FreeCAD python wrapper of CAMSimulator
 
           CAMSimulator.CAMSim():

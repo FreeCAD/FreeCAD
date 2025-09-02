@@ -11,6 +11,8 @@ from Base.Metadata import export
 )
 class Area(BaseClass):
     """
+    Author: Zheng, Lei (realthunder.dev@gmail.com)
+    License: LGPL-2.1-or-later
     FreeCAD python wrapper of libarea
 
     Path.Area(key=value ...)

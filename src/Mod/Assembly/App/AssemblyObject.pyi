@@ -7,6 +7,8 @@ from App.Part import Part
 @export(Include="Mod/Assembly/App/AssemblyObject.h", Namespace="Assembly")
 class AssemblyObject(Part):
     """
+    Author: Ondsel (development@ondsel.com)
+    License: LGPL-2.1-or-later
     This class handles document objects in Assembly
     """
 

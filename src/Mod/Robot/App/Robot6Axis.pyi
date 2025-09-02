@@ -11,6 +11,8 @@ from Base.Persistence import Persistence
 )
 class Robot6Axis(Persistence):
     """
+    Author: Juergen Riegel (Juergen.Riegel@web.de)
+    License: LGPL-2.1-or-later
     Robot6Axis class
     """
 
