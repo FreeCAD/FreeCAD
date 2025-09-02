@@ -723,6 +723,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Separator";
 #endif
     *tool << "Std_Measure"
+          << "Std_QuickMeasure"
           << "Std_UnitsCalculator"
           << "Separator"
           << "Std_ViewLoadImage"

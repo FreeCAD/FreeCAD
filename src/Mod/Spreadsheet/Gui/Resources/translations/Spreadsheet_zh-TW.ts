@@ -342,7 +342,7 @@
       <translation>建立試算表</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="260"/>
+      <location filename="../../PropertiesDialog.cpp" line="267"/>
       <source>Set cell properties</source>
       <translation>設定儲存格屬性</translation>
     </message>

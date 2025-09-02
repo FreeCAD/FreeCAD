@@ -985,11 +985,6 @@ Larger values (further to the right) will calculate faster; smaller values (furt
 Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="129"/>
-      <source>How much material to leave in the XY plane (i.e. for finishing operation)</source>
-      <translation type="unfinished">How much material to leave in the XY plane (i.e. for finishing operation)</translation>
-    </message>
-    <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="108"/>
       <source>Cut inside or outside of the selected shapes</source>
       <translation>A kijelölt alakzatokon belüli vagy kívüli vágás</translation>
@@ -1051,6 +1046,11 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="122"/>
       <source>Finishing profile</source>
       <translation type="unfinished">Finishing profile</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="129"/>
+      <source>How much material to leave in the XY-plane (i.e. for finishing operation)</source>
+      <translation type="unfinished">How much material to leave in the XY-plane (i.e. for finishing operation)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="139"/>
@@ -3692,7 +3692,7 @@ A FreeCAD nem tudja, hogy egy adott koordináta-rendszer hol található a gépi
     <message>
       <location filename="../panels/PathEdit.ui" line="235"/>
       <source>Order by</source>
-      <translation type="unfinished">Order by</translation>
+      <translation>Rendezési feltétel</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="397"/>
@@ -4160,34 +4160,34 @@ Default: 3 mm</source>
       <translation>CAMotics terv (*.camotics)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="726"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="746"/>
       <source>H</source>
       <comment>H is horizontal feed rate. Must be as short as possible</comment>
       <translation>H</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="729"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="749"/>
       <source>V</source>
       <comment>V is vertical feed rate. Must be as short as possible</comment>
       <translation>V</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="732"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="752"/>
       <source>Tool number</source>
       <translation>Eszköz szám</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="735"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="755"/>
       <source>Horizontal feedrate</source>
       <translation>Vízszintes adagolási sebesség</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="738"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="758"/>
       <source>Vertical feedrate</source>
       <translation>Függőleges adagolási sebesség</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="741"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="761"/>
       <source>Spindle RPM</source>
       <translation>Orsó fordulatszáma</translation>
     </message>
@@ -4608,19 +4608,19 @@ Default: 3 mm</source>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="198"/>
-      <location filename="../../../Path/Main/Job.py" line="506"/>
+      <location filename="../../../Path/Main/Job.py" line="509"/>
       <source>Split output into multiple G-code files</source>
       <translation>Kimenet felosztása több G-kód fájlra</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="204"/>
-      <location filename="../../../Path/Main/Job.py" line="497"/>
+      <location filename="../../../Path/Main/Job.py" line="500"/>
       <source>If multiple WCS, order the output this way</source>
       <translation>Ha több WCS van, rendezze el a kimenetet ilyen módon</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="210"/>
-      <location filename="../../../Path/Main/Job.py" line="488"/>
+      <location filename="../../../Path/Main/Job.py" line="491"/>
       <source>The Work Coordinate Systems for the Job</source>
       <translation>A feladat munkakoordináta rendszerei</translation>
     </message>
@@ -4640,14 +4640,14 @@ Default: 3 mm</source>
       <translation>A feladathoz szükséges összes vezérlőeszköz gyűjteménye</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="479"/>
+      <location filename="../../../Path/Main/Job.py" line="482"/>
       <location filename="../../../Path/Op/Base.py" line="186"/>
       <location filename="../../../Path/Op/Base.py" line="440"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>Műveleti ciklus időbecslése</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Job.py" line="515"/>
+      <location filename="../../../Path/Main/Job.py" line="518"/>
       <source>Select the type of Job</source>
       <translation>Válassza ki a Feladat típusát</translation>
     </message>
@@ -4658,33 +4658,33 @@ Default: 3 mm</source>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="124"/>
-      <source>Extra allowance from part bound box in negative X direction</source>
-      <translation>Extra távtartás az alkatrészé határolókeretétől negatív X irányban</translation>
+      <source>Extra allowance from part bound box in negative X-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in negative X-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="133"/>
-      <source>Extra allowance from part bound box in positive X direction</source>
-      <translation>Extra távtartás az alkatrészé határolókeretétől pozitív X irányban</translation>
+      <source>Extra allowance from part bound box in positive X-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in positive X-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="142"/>
-      <source>Extra allowance from part bound box in negative Y direction</source>
-      <translation>Extra távtartás az alkatrészé határolókeretétől negatív Y irányban</translation>
+      <source>Extra allowance from part bound box in negative Y-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in negative Y-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="151"/>
-      <source>Extra allowance from part bound box in positive Y direction</source>
-      <translation>Extra távtartás az alkatrészé határolókeretétől pozitív Y irányban</translation>
+      <source>Extra allowance from part bound box in positive Y-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in positive Y-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="160"/>
-      <source>Extra allowance from part bound box in negative Z direction</source>
-      <translation>Extra távtartás az alkatrészé határolókeretétől negatív Z irányban</translation>
+      <source>Extra allowance from part bound box in negative Z-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in negative Z-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="169"/>
-      <source>Extra allowance from part bound box in positive Z direction</source>
-      <translation>Extra távtartás az alkatrészé határolókeretétől pozitív Z irányban</translation>
+      <source>Extra allowance from part bound box in positive Z-direction</source>
+      <translation type="unfinished">Extra allowance from part bound box in positive Z-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="235"/>
@@ -5214,13 +5214,13 @@ Use property KeepToolDown to change this</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="67"/>
-      <source>Number of points to probe in X direction</source>
-      <translation>Letapogató pontok száma X irányban</translation>
+      <source>Number of points to probe in X-direction</source>
+      <translation type="unfinished">Number of points to probe in X-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="73"/>
-      <source>Number of points to probe in Y direction</source>
-      <translation>Letapogató pontok száma Y irányban</translation>
+      <source>Number of points to probe in Y-direction</source>
+      <translation type="unfinished">Number of points to probe in Y-direction</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="81"/>
@@ -5654,40 +5654,26 @@ Use property KeepToolDown to change this</translation>
       <translation>Mintázó mód</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Array.py" line="57"/>
-      <source>The spacing between the array copies in Linear pattern</source>
-      <translation>Az elrendezés másolatok közötti távolság lineáris mintában</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="65"/>
-      <source>The number of copies in X direction in Linear pattern</source>
-      <translation>A másolatok száma X irányban lineáris mintában</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="73"/>
-      <source>The number of copies in Y direction in Linear pattern</source>
-      <translation>A másolatok száma Y irányban Lineáris mintában</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="79"/>
-      <source>Total angle in Polar pattern</source>
-      <translation>Teljes szög sugárirányú mintázatban</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="87"/>
-      <source>The number of copies in Linear 1D and Polar pattern</source>
-      <translation>A másolatok száma Lineáris 1D és Sugárirányú mintában</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="93"/>
-      <source>The centre of rotation in Polar pattern</source>
-      <translation>A forgás középpontja sugárirányú mintázatban</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Array.py" line="102"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="107"/>
       <source>Make copies in X direction before Y in Linear 2D pattern</source>
       <translation>Másolatok készítése X irányban Y előtt Lineáris 2D mintában</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="65"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="70"/>
+      <source>The number of copies in X-direction in linear pattern</source>
+      <translation type="unfinished">The number of copies in X-direction in linear pattern</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="73"/>
+      <location filename="../../../Path/Op/Gui/Array.py" line="78"/>
+      <source>The number of copies in Y-direction in linear pattern</source>
+      <translation type="unfinished">The number of copies in Y-direction in linear pattern</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="102"/>
+      <source>Make copies in X-direction before Y in linear 2D pattern</source>
+      <translation type="unfinished">Make copies in X-direction before Y in linear 2D pattern</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="108"/>
@@ -5714,31 +5700,25 @@ Use property KeepToolDown to change this</translation>
       <translation type="unfinished">The toolpaths to array</translation>
     </message>
     <message>
+      <location filename="../../../Path/Dressup/Array.py" line="57"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="62"/>
       <source>The spacing between the array copies in linear pattern</source>
       <translation type="unfinished">The spacing between the array copies in linear pattern</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="70"/>
-      <source>The number of copies in X direction in linear pattern</source>
-      <translation type="unfinished">The number of copies in X direction in linear pattern</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Gui/Array.py" line="78"/>
-      <source>The number of copies in Y direction in linear pattern</source>
-      <translation type="unfinished">The number of copies in Y direction in linear pattern</translation>
-    </message>
-    <message>
+      <location filename="../../../Path/Dressup/Array.py" line="79"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="84"/>
       <source>Total angle in polar pattern</source>
       <translation type="unfinished">Total angle in polar pattern</translation>
     </message>
     <message>
+      <location filename="../../../Path/Dressup/Array.py" line="87"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="92"/>
       <source>The number of copies in linear 1D and polar pattern</source>
       <translation type="unfinished">The number of copies in linear 1D and polar pattern</translation>
     </message>
     <message>
+      <location filename="../../../Path/Dressup/Array.py" line="93"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="98"/>
       <source>The centre of rotation in polar pattern</source>
       <translation type="unfinished">The centre of rotation in polar pattern</translation>
@@ -6545,12 +6525,12 @@ Az op-létrehozás megszakítása</translation>
       <translation type="unfinished">Completes the selection of edges that form a loop</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="116"/>
+      <location filename="../../../PathCommands.py" line="131"/>
       <source>Feature Completion</source>
       <translation>A pozíció vége</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="117"/>
+      <location filename="../../../PathCommands.py" line="132"/>
       <source>Closed loop detection failed.</source>
       <translation>A zárt hurok észlelése sikertelen volt.</translation>
     </message>
@@ -7016,58 +6996,58 @@ Az op-létrehozás megszakítása</translation>
       <translation>Alaptest nem egy henger!</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1032"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1052"/>
       <source>Select Output File</source>
       <translation>Válassza ki a kimeneti fájlt</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1034"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1054"/>
       <source>All Files (*.*)</source>
       <translation>Összes fájl (*.*)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1375"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1395"/>
       <source>Unsupported stock object %s</source>
       <translation>Nem támogatott nyersanyag objektum %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1391"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1411"/>
       <source>Unsupported stock type %s (%d)</source>
       <translation>Nem támogatott alaptest típus %s (%d)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1482"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1502"/>
       <source>Model Selection</source>
       <translation>Modell kijelölés</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1637"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1657"/>
       <source>Warning</source>
       <translation>Figyelmeztetés</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1638"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1658"/>
       <source>Please add one.</source>
       <translation>Kérlek add hozzá egyet.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1639"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1659"/>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="116"/>
       <source>Ok</source>
       <translation>Ok</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1641"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1661"/>
       <source>Add</source>
       <translation>Hozzáad</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1652"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1672"/>
       <source>This job has no base model.</source>
       <translation>Ennek a munkának nincs alap modellje.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1659"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1679"/>
       <source>This job has no tool.</source>
       <translation>Ennek a munkának nincs eszköze.</translation>
     </message>
@@ -7092,32 +7072,32 @@ Az op-létrehozás megszakítása</translation>
       <translation type="unfinished">Don&apos;t show this warning again</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="214"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="216"/>
       <source>Model</source>
       <translation>Modell</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="215"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="217"/>
       <source>Count</source>
       <translation>Számol</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="297"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="299"/>
       <source>&lt;none&gt;</source>
       <translation>&lt;none&gt;</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="379"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="381"/>
       <source>Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</source>
       <translation>Kiindulás -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="389"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="391"/>
       <source>Box: %.2f x %.2f x %.2f</source>
       <translation>Négyzet: %.2f x %.2f x %.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="404"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="406"/>
       <source>Unsupported stock type</source>
       <translation>Nem támogatott alaptest típus</translation>
     </message>
@@ -7187,7 +7167,7 @@ Az op-létrehozás megszakítása</translation>
   <context>
     <name>CAM_Job:</name>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="395"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="397"/>
       <source>Cylinder: %.2f x %.2f</source>
       <translation>Henger: %.2f x %.2f</translation>
     </message>
@@ -7600,62 +7580,62 @@ Az op-létrehozás megszakítása</translation>
   <context>
     <name>CAM</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="611"/>
+      <location filename="../../../Path/Op/Base.py" line="613"/>
       <source>No parent job found for operation.</source>
       <translation>Nincs szülő munka a feladathoz.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="616"/>
+      <location filename="../../../Path/Op/Base.py" line="618"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
       <translation>A %s forrásobjektumnak nincs forrásobjektuma</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="758"/>
+      <location filename="../../../Path/Op/Base.py" line="760"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
       <translation>Nincs kijelölve szerszámvezérlő. A pálya kiszámításához szükség van egyre.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="772"/>
+      <location filename="../../../Path/Op/Base.py" line="774"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
       <translation>Nincs szerszám vagy a munka átmérő nulla. Az egyikre szükség van a pálya kiszámításához.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="842"/>
+      <location filename="../../../Path/Op/Base.py" line="844"/>
       <source>No Tool Controller selected.</source>
       <translation>Nincs kijelölve szerszámvezérlő.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="845"/>
+      <location filename="../../../Path/Op/Base.py" line="847"/>
       <source>Tool Error</source>
       <translation>Szerszám hiba</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="857"/>
+      <location filename="../../../Path/Op/Base.py" line="859"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
       <translation>Az eszközvezérlőnek előtolási sebességre van szüksége a feldolgozási idő kiszámításához.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="860"/>
+      <location filename="../../../Path/Op/Base.py" line="862"/>
       <source>Tool Feedrate Error</source>
       <translation type="unfinished">Tool Feedrate Error</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="866"/>
+      <location filename="../../../Path/Op/Base.py" line="868"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
       <translation>Gyors sebesség hozzáadása a szerszámvezérlőhöz a beállítási lapon a megmunkálási idő nagyobb pontossága érdekében.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="875"/>
+      <location filename="../../../Path/Op/Base.py" line="877"/>
       <source>Cycletime Error</source>
       <translation>Hiba a feldolgozási idő kiszámításakor</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="817"/>
+      <location filename="../../../Path/Op/Base.py" line="819"/>
       <source>Base object %s.%s already in the list</source>
       <translation>Forrásobjektum %s.%s már szerepel a listában</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="827"/>
+      <location filename="../../../Path/Op/Base.py" line="829"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation>Forrásobjektum: %s.%s művelet elutasította</translation>
     </message>
@@ -8962,8 +8942,8 @@ Az op-létrehozás megszakítása</translation>
     </message>
     <message>
       <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="289"/>
-      <source>Toggle ambient oclusion</source>
-      <translation type="unfinished">Toggle ambient oclusion</translation>
+      <source>Toggle ambient occlusion</source>
+      <translation type="unfinished">Toggle ambient occlusion</translation>
     </message>
     <message>
       <location filename="../../../PathSimulator/AppGL/GuiDisplay.cpp" line="290"/>
@@ -8987,12 +8967,12 @@ Az op-létrehozás megszakítása</translation>
   <context>
     <name>CAM_OpActiveToggle</name>
     <message>
-      <location filename="../../../PathCommands.py" line="145"/>
+      <location filename="../../../PathCommands.py" line="160"/>
       <source>Toggle Operation</source>
       <translation type="unfinished">Toggle Operation</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="149"/>
+      <location filename="../../../PathCommands.py" line="164"/>
       <source>Toggles the active state of the operation</source>
       <translation type="unfinished">Toggles the active state of the operation</translation>
     </message>
@@ -9000,12 +8980,12 @@ Az op-létrehozás megszakítása</translation>
   <context>
     <name>CAM_OperationCopy</name>
     <message>
-      <location filename="../../../PathCommands.py" line="186"/>
+      <location filename="../../../PathCommands.py" line="201"/>
       <source>Copy Operation</source>
       <translation type="unfinished">Copy Operation</translation>
     </message>
     <message>
-      <location filename="../../../PathCommands.py" line="187"/>
+      <location filename="../../../PathCommands.py" line="202"/>
       <source>Copies the operation in the job</source>
       <translation type="unfinished">Copies the operation in the job</translation>
     </message>

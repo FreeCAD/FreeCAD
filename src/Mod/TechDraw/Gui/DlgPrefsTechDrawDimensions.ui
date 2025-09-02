@@ -563,7 +563,7 @@ This affects only the toolbar; all tools remain available via the menu and short
       <item row="1" column="0">
        <widget class="QLabel" name="radiusDiameterLabel">
         <property name="text">
-         <string>Dimension tool diameter/radius mode:</string>
+         <string>Dimension tool diameter/radius mode</string>
         </property>
        </widget>
       </item>

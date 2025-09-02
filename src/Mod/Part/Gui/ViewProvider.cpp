@@ -30,6 +30,8 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Gui/CommandT.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include "ViewProvider.h"
 
@@ -107,6 +109,25 @@ void ViewProviderPart::applyTransparency(float transparency, std::vector<App::Ma
             }
         }
     }
+}
+
+void ViewProviderPart::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
+{
+    ViewProviderPartExt::setEditViewer(viewer, ModNum);
+
+    if (gizmoContainer) {
+        gizmoContainer->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
+
+        auto originPlacement = App::GeoFeature::getGlobalPlacement(getObject())
+            * getObjectPlacement().inverse();
+        gizmoContainer->attachViewer(viewer, originPlacement);
+    }
+}
+
+void ViewProviderPart::setGizmoContainer(Gui::GizmoContainer* gizmoContainer)
+{
+    assert(gizmoContainer);
+    this->gizmoContainer = gizmoContainer;
 }
 
 // ----------------------------------------------------------------------------

@@ -103,7 +103,7 @@
           <item>
            <widget class="QLineEdit" name="LineEditFindInFiles">
             <property name="toolTip">
-             <string>Filter by case-insensitive file content, regular expressions supported</string>
+             <string>Filter by file content, case-insensitive. Regular expressions are supported.</string>
             </property>
            </widget>
           </item>

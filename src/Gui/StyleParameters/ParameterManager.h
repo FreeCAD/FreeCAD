@@ -306,6 +306,11 @@ public:
      * @param[in] name The name of the parameter to remove.
      */
     virtual void remove([[maybe_unused]] const std::string& name) {}
+
+    /**
+     * @brief Flushes buffered changes into more persistent storage.
+     */
+    virtual void flush() {}
 };
 
 /**
@@ -374,6 +379,43 @@ public:
     std::optional<Parameter> get(const std::string& name) const override;
     void define(const Parameter& parameter) override;
     void remove(const std::string& name) override;
+};
+
+/**
+ * @class YamlParameterSource
+ * @brief A ParameterSource implementation that loads and saves parameters
+ *        from a YAML file using yaml-cpp.
+ *
+ * This class maintains an in-memory map of parameters loaded from a YAML file.
+ * Any changes through define() or remove() will also update the file.
+ */
+class GuiExport YamlParameterSource : public ParameterSource
+{
+public:
+    /**
+     * @brief Constructs a YamlParameterSource that reads parameters from the given YAML file.
+     *
+     * If the file exists, all key-value pairs are loaded into memory.
+     * If the file does not exist, an empty parameter set is initialized.
+     *
+     * @param filePath Path to the YAML file used for persistence.
+     * @param metadata Optional metadata describing this source.
+     */
+    explicit YamlParameterSource(const std::string& filePath, const Metadata& metadata = {});
+
+    void changeFilePath(const std::string& path);
+    void reload();
+
+    std::list<Parameter> all() const override;
+    std::optional<Parameter> get(const std::string& name) const override;
+    void define(const Parameter& param) override;
+    void remove(const std::string& name) override;
+
+    void flush() override;
+
+private:
+    std::string filePath;
+    std::map<std::string, Parameter> parameters;
 };
 
 /**

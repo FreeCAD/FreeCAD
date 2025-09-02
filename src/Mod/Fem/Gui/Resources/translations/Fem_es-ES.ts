@@ -313,18 +313,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1131"/>
-      <source>Node Set by Poly</source>
-      <translation type="unfinished">Node Set by Poly</translation>
+      <source>Node Set by Polygon</source>
+      <translation type="unfinished">Node Set by Polygon</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1132"/>
-      <source>Creates a node set by poly</source>
-      <translation type="unfinished">Creates a node set by poly</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1134"/>
-      <source>Create node set by Poly</source>
-      <translation>Crear conjunto de nodos por Polígonos</translation>
+      <source>Creates a node set by polygon selection</source>
+      <translation type="unfinished">Creates a node set by polygon selection</translation>
     </message>
   </context>
   <context>
@@ -520,13 +515,9 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="2219"/>
-      <source>Select a Clip filter which clips a STRESS field along a line.</source>
-      <translation type="unfinished">Select a Clip filter which clips a STRESS field along a line.</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="2227"/>
-      <source>Select a clip filter which clips a stress field along a line.</source>
-      <translation type="unfinished">Select a clip filter which clips a stress field along a line.</translation>
+      <source>Select a clip filter which clips a stress field along a line</source>
+      <translation type="unfinished">Select a clip filter which clips a stress field along a line</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2218"/>
@@ -663,8 +654,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="902"/>
-      <source>Make spring on face</source>
-      <translation>Crear resorte en cara</translation>
+      <source>Make Spring Constraint</source>
+      <translation type="unfinished">Make Spring Constraint</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="957"/>
@@ -842,11 +833,6 @@
       <translation>Buscar en directorios binarios conocidos</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="72"/>
-      <source>ccx binary path</source>
-      <translation>ruta ccx binaria</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="106"/>
       <source>Leave blank to use default CalculiX ccx binary file</source>
       <translation>Dejar en blanco para utilizar por defecto el archivo binario ccx de CalculiX</translation>
@@ -930,6 +916,11 @@
       <location filename="../../DlgSettingsFemCcx.ui" line="392"/>
       <source>Default</source>
       <translation>Por defecto</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="72"/>
+      <source>CCX binary path</source>
+      <translation type="unfinished">CCX binary path</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="119"/>
@@ -1280,46 +1271,44 @@ Por lo tanto se requiere un ejecutable con el sufijo '_mpi'.</translation>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="35"/>
       <source>All: All elements will be exported.
 
-Highest: Only the highest elements will be exported. This means
-for means volumes for a volume mesh and faces for a shell mesh.
+Highest: Only the highest elements will be exported. This means volumes for a volume mesh and faces for a shell mesh.
 
 FEM: Only FEM elements will be exported. This means only edges
 not belonging to faces and faces not belonging to volumes.</source>
-      <translation>Todos: Todos los elementos serán exportados.
+      <translation type="unfinished">All: All elements will be exported.
 
-Más alto: solo serán exportados los elementos más altos. Esto significa
-para los volúmenes de una malla de volumen y caras para una malla shell.
+Highest: Only the highest elements will be exported. This means volumes for a volume mesh and faces for a shell mesh.
 
-FEM: Sólo serán exportados elementos FEM. Esto significa que solo los bordes
-que no pertenecen a caras y caras que no pertenecen a volúmenes.</translation>
+FEM: Only FEM elements will be exported. This means only edges
+not belonging to faces and faces not belonging to volumes.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="47"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="46"/>
       <source>element parameter: All: all elements, highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
       <translation>parámetro de elemento: Todos: todos los elementos, más alto: elementos más altos solamente, FEM: sólo elementos FEM (solo bordes que no pertenecen a caras y caras que no pertenecen a volúmenes)</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="57"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="56"/>
       <source>All</source>
       <translation>Todo</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="62"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="61"/>
       <source>Highest</source>
       <translation>El más alto</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="67"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="66"/>
       <source>FEM</source>
       <translation>FEM</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="75"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="74"/>
       <source>Export group data</source>
       <translation>Exportar datos de grupo</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="82"/>
+      <location filename="../../DlgSettingsFemExportAbaqus.ui" line="81"/>
       <source>Mesh groups are exported too.
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups, faces and nodes where
@@ -1955,8 +1944,8 @@ Specify another file.</translation>
     <name>FemGui::TaskFemConstraint</name>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="57"/>
-      <source>Analysis feature parameters</source>
-      <translation>Parámetros de funcionalidad de análisis</translation>
+      <source>Analysis Feature Properties</source>
+      <translation type="unfinished">Analysis Feature Properties</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="184"/>
@@ -2574,14 +2563,6 @@ Specify another file.</translation>
       <location filename="../../TaskFemConstraintTransform.cpp" line="349"/>
       <source>Only cylindrical faces can be picked</source>
       <translation>Se pueden seleccionar únicamente caras cilíndricas</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskObjectName</name>
-    <message>
-      <location filename="../../TaskObjectName.cpp" line="41"/>
-      <source>TaskObjectName</source>
-      <translation>TaskObjectName</translation>
     </message>
   </context>
   <context>
@@ -3912,38 +3893,43 @@ Para posibles variables, vea el cuadro de descripción a continuación.</transla
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="178"/>
-      <source>max shear stress: MS</source>
-      <translation>estrés máximo de corte: MS</translation>
+      <source>maximum shear stress: MS</source>
+      <translation type="unfinished">maximum shear stress: MS</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="188"/>
-      <source>max princ. stress vector: s3x, s3y, s3z</source>
-      <translation>vector de estrés máx. princ: s3x, s3y, s3z</translation>
+      <source>maximum princ. stress vector: s3x, s3y, s3z</source>
+      <translation type="unfinished">maximum princ. stress vector: s3x, s3y, s3z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="198"/>
-      <source>max principal stress: P1</source>
-      <translation>máximo estrés principal: P1</translation>
+      <source>maximum principal stress: P1</source>
+      <translation type="unfinished">maximum principal stress: P1</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="208"/>
-      <source>med princ. stress vector: s2x, s2y, s2z</source>
-      <translation>vector de esfuerzo principal med: s2x, s2y, s2z</translation>
+      <source>medium princ. stress vector: s2x, s2y, s2z</source>
+      <translation type="unfinished">medium princ. stress vector: s2x, s2y, s2z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="218"/>
-      <source>med principal stress: P2</source>
-      <translation>esfuerzo principal med: P2</translation>
+      <source>medium principal stress: P2</source>
+      <translation type="unfinished">medium principal stress: P2</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="228"/>
-      <source>min princ. stress vector: s1x, s1y, s1z</source>
-      <translation>vector de esfuerzo principal mín: s1x, s1y, s1z</translation>
+      <source>minimum princ. stress vector: s1x, s1y, s1z</source>
+      <translation type="unfinished">minimum princ. stress vector: s1x, s1y, s1z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="238"/>
-      <source>min principal stress: P3</source>
-      <translation>esfuerzo principal mínimo: P3</translation>
+      <source>minimum principal stress: P3</source>
+      <translation type="unfinished">minimum principal stress: P3</translation>
+    </message>
+    <message>
+      <location filename="../ui/ResultHints.ui" line="248"/>
+      <source>Mohr-Coulomb: mc</source>
+      <translation type="unfinished">Mohr-Coulomb: mc</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="148"/>
@@ -3959,11 +3945,6 @@ Para posibles variables, vea el cuadro de descripción a continuación.</transla
       <location filename="../ui/ResultHints.ui" line="20"/>
       <source>Available Result Types</source>
       <translation type="unfinished">Available Result Types</translation>
-    </message>
-    <message>
-      <location filename="../ui/ResultHints.ui" line="248"/>
-      <source>Mohr Coulomb: mc</source>
-      <translation>Mohr Coulomb: mc</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="168"/>
@@ -5494,12 +5475,12 @@ normal de la cara se utiliza como dirección</translation>
   <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1034"/>
+      <location filename="../../../femcommands/commands.py" line="1036"/>
       <source>Solver CalculiX Standard</source>
       <translation>Solver CalculiX estándar</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1039"/>
+      <location filename="../../../femcommands/commands.py" line="1041"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation>Crea un solver FEM estándar CalculiX con herramientas de ccx</translation>
     </message>
@@ -5507,12 +5488,12 @@ normal de la cara se utiliza como dirección</translation>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1091"/>
+      <location filename="../../../femcommands/commands.py" line="1092"/>
       <source>Solver Job Control</source>
       <translation type="unfinished">Solver Job Control</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1096"/>
+      <location filename="../../../femcommands/commands.py" line="1097"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Cambia atributos del solucionador y ejecuta los cálculos</translation>
     </message>
@@ -5520,12 +5501,12 @@ normal de la cara se utiliza como dirección</translation>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1108"/>
+      <location filename="../../../femcommands/commands.py" line="1109"/>
       <source>Solver Elmer</source>
       <translation>Solver Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1110"/>
+      <location filename="../../../femcommands/commands.py" line="1111"/>
       <source>Creates a FEM solver Elmer</source>
       <translation>Crea un solver FEM Elmer</translation>
     </message>
@@ -5533,12 +5514,12 @@ normal de la cara se utiliza como dirección</translation>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1147"/>
+      <location filename="../../../femcommands/commands.py" line="1148"/>
       <source>Solver Mystran</source>
       <translation>Solver Mystran</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1149"/>
+      <location filename="../../../femcommands/commands.py" line="1150"/>
       <source>Creates a FEM solver Mystran</source>
       <translation>Crea un solver FEM Mystran</translation>
     </message>
@@ -5546,12 +5527,12 @@ normal de la cara se utiliza como dirección</translation>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1159"/>
+      <location filename="../../../femcommands/commands.py" line="1160"/>
       <source>Run Solver</source>
       <translation type="unfinished">Run Solver</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1163"/>
+      <location filename="../../../femcommands/commands.py" line="1164"/>
       <source>Runs the calculations for the selected solver</source>
       <translation>Ejecuta los cálculos del solver seleccionado</translation>
     </message>
@@ -5559,12 +5540,12 @@ normal de la cara se utiliza como dirección</translation>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1210"/>
+      <location filename="../../../femcommands/commands.py" line="1211"/>
       <source>Solver Z88</source>
       <translation>Solver Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1212"/>
+      <location filename="../../../femcommands/commands.py" line="1213"/>
       <source>Creates a FEM solver Z88</source>
       <translation>Crea un solver FEM Z88</translation>
     </message>
@@ -5785,13 +5766,13 @@ Por favor, primero seleccione un tipo de resultado.</translation>
       <translation>Nodos</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="739"/>
-      <source>Empty result mesh</source>
-      <translation>Malla resultante vacía</translation>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="740"/>
+      <source>Result mesh is empty</source>
+      <translation type="unfinished">Result mesh is empty</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="752"/>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="761"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="754"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="763"/>
       <source>No result object</source>
       <translation>Ningún objeto resultante</translation>
     </message>
@@ -5819,21 +5800,25 @@ Should this module be loaded instead?</translation>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="223"/>
       <source>
 
-No matching module was found in the current python path.</source>
+No matching module was found in the current Python path.</source>
       <translation type="unfinished">
 
-No matching module was found in the current python path.</translation>
+No matching module was found in the current Python path.</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="227"/>
+      <source>VTK Python module conflict</source>
+      <translation type="unfinished">VTK Python module conflict</translation>
+    </message>
+    <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="253"/>
-      <source>VTK module conflict</source>
-      <translation type="unfinished">VTK module conflict</translation>
+      <source>VTK Python Module Conflict</source>
+      <translation type="unfinished">VTK Python Module Conflict</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="256"/>
-      <source>This functionality is not available due to VTK python module conflict</source>
-      <translation type="unfinished">This functionality is not available due to VTK python module conflict</translation>
+      <source>This functionality is not available due to VTK Python module conflict</source>
+      <translation type="unfinished">This functionality is not available due to VTK Python module conflict</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="56"/>
@@ -6663,13 +6648,13 @@ No matching module was found in the current python path.</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="232"/>
-      <source>Can't copy ResultMesh to ResultMesh</source>
-      <translation>No se puede copiar una malla de resultados a una malla de resultados</translation>
+      <source>Cannot copy ResultMesh to ResultMesh</source>
+      <translation type="unfinished">Cannot copy ResultMesh to ResultMesh</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="242"/>
-      <source>Mesh must be a Results mesh</source>
-      <translation>La malla debe ser una malla de resultados</translation>
+      <source>Mesh must be a ResultMesh</source>
+      <translation type="unfinished">Mesh must be a ResultMesh</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="564"/>
@@ -6716,18 +6701,13 @@ No matching module was found in the current python path.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1283"/>
-      <source>Element Set by Poly</source>
-      <translation type="unfinished">Element Set by Poly</translation>
+      <source>Element Set From Polygon</source>
+      <translation type="unfinished">Element Set From Polygon</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1284"/>
-      <source>Create element set by poly</source>
-      <translation type="unfinished">Create element set by poly</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1286"/>
-      <source>Create Element set by Poly</source>
-      <translation>Crear un conjunto de elementos definido por polígonos</translation>
+      <source>Creates a collection of elements selected by a polygon</source>
+      <translation type="unfinished">Creates a collection of elements selected by a polygon</translation>
     </message>
   </context>
   <context>
@@ -6840,12 +6820,12 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1060"/>
+      <location filename="../../../femcommands/commands.py" line="1062"/>
       <source>Solver CalculiX</source>
       <translation type="unfinished">Solver CalculiX</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1065"/>
+      <location filename="../../../femcommands/commands.py" line="1067"/>
       <source>Creates a FEM solver CalculiX</source>
       <translation type="unfinished">Creates a FEM solver CalculiX</translation>
     </message>
@@ -7697,12 +7677,12 @@ No matching module was found in the current python path.</translation>
   <context>
     <name>FEM_PostFilterGlyph</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1222"/>
+      <location filename="../../../femcommands/commands.py" line="1223"/>
       <source>Glyph Filter</source>
       <translation type="unfinished">Glyph Filter</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1227"/>
+      <location filename="../../../femcommands/commands.py" line="1228"/>
       <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
       <translation type="unfinished">Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</translation>
     </message>
@@ -7896,6 +7876,14 @@ No matching module was found in the current python path.</translation>
       <location filename="../../ViewProviderAnalysis.cpp" line="164"/>
       <source>Activate Analysis</source>
       <translation type="unfinished">Activate Analysis</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskObjectName</name>
+    <message>
+      <location filename="../../TaskObjectName.cpp" line="42"/>
+      <source>Name of the object</source>
+      <translation type="unfinished">Name of the object</translation>
     </message>
   </context>
 </TS>

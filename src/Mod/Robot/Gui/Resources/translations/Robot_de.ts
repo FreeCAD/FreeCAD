@@ -190,8 +190,8 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="90"/>
-      <source>Insert in trajectory</source>
-      <translation>In Bewegungsbahn einfügen</translation>
+      <source>Insert in Trajectory</source>
+      <translation type="unfinished">Insert in Trajectory</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="91"/>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="159"/>
       <source>Insert in Trajectory</source>
-      <translation type="unfinished">Insert in Trajectory</translation>
+      <translation>In Bewegungsbahn einfügen</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="160"/>

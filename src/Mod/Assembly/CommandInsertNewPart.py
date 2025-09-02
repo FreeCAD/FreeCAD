@@ -67,7 +67,10 @@ class CommandInsertNewPart:
 
     def Activated(self):
         panel = TaskAssemblyNewPart()
-        Gui.Control.showDialog(panel)
+        dialog = Gui.Control.showDialog(panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
 
 class TaskAssemblyNewPart(JointObject.TaskAssemblyCreateJoint):
@@ -130,14 +133,17 @@ class TaskAssemblyNewPart(JointObject.TaskAssemblyCreateJoint):
                 msgBox = QtWidgets.QMessageBox()
                 msgBox.setIcon(QtWidgets.QMessageBox.Warning)
                 msgBox.setText(
-                    "If the new document is not saved the new part cannot be linked in the assembly."
+                    translate(
+                        "Assembly",
+                        "If the new document is not saved the new part cannot be linked in the assembly.",
+                    )
                 )
                 msgBox.setWindowTitle(translate("Assembly", "Save Document"))
                 saveButton = msgBox.addButton(
                     translate("Assembly", "Save"), QtWidgets.QMessageBox.AcceptRole
                 )
                 cancelButton = msgBox.addButton(
-                    translate("Assembly", "Do not link"), QtWidgets.QMessageBox.RejectRole
+                    translate("Assembly", "Do not Link"), QtWidgets.QMessageBox.RejectRole
                 )
 
                 msgBox.exec_()

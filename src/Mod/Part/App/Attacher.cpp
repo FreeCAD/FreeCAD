@@ -842,9 +842,19 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*>& objs,
 
         auto shape = extractSubShape(objs[i], subs[i]);
         if (shape.isNull()) {
-            FC_THROWM(AttachEngineException,
-                      "AttachEngine3D: null subshape " << objs[i]->getNameInDocument() << '.'
-                                                       << subs[i]);
+            if (subs[i].length() == 0) {
+                storage.emplace_back(TopoShape());
+                shapes[i] = &storage.back();
+                types[i] = eRefType(rtPart | rtFlagHasPlacement);
+                continue;
+            }
+            else {
+                // This case should now be unreachable because extractSubShape would have thrown
+                // for a missing subname. But it's good defensive programming.
+                FC_THROWM(AttachEngineException,
+                          "AttachEngine3D: null subshape " << objs[i]->getNameInDocument() << '.'
+                                                           << subs[i]);
+            }
         }
 
         storage.emplace_back(shape);
@@ -889,9 +899,22 @@ TopoShape AttachEngine::extractSubShape(App::DocumentObject* obj, const std::str
 
         for (;;) {
             if (shape.isNull()) {
-                FC_THROWM(AttachEngineException,
-                          "AttachEngine3D: subshape not found " << obj->getNameInDocument() << '.'
-                                                                << subname);
+                // Shape is null. Let's see if this is an acceptable null.
+                // (i.e., an empty object was selected, not a broken link to a sub-element).
+                if (subname.empty()) {
+                    // The user selected the whole object, and it has no shape.
+                    // This is the empty sketch or empty body case.
+                    // Instead of throwing an error, we return a null TopoShape.
+                    // The caller (readLinks) will then handle this null shape.
+                    return TopoShape();  // Return a default-constructed (null) shape
+                }
+                else {
+                    // The user specified a subname (e.g., "Edge1"), but it couldn't be found.
+                    // This is a genuine error.
+                    FC_THROWM(AttachEngineException,
+                              "AttachEngine3D: subshape not found " << obj->getNameInDocument()
+                                                                    << '.' << subname);
+                }
             }
 
             if (shape.shapeType() != TopAbs_COMPOUND || shape.countSubShapes(TopAbs_SHAPE) != 1) {
@@ -1377,7 +1400,7 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                 else {
                     TopLoc_Location loc;
                     Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
-                    GeomLib_IsPlanarSurface check(surf);
+                    GeomLib_IsPlanarSurface check(surf, precision);
                     if (check.IsPlanar()) {
                         plane = check.Plan();
                     }
@@ -1596,7 +1619,7 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                 else {
                     Base::Console().warning(
                         "AttachEngine3D::calculateAttachedPlacement: path curve second derivative "
-                        "is below 1e-14, can't align x axis.\n");
+                        "is below 1e-14, cannot align X-axis.\n");
                     N = gp_Vec(0., 0., 0.);
                     B = gp_Vec(0., 0., 0.);  // redundant, just for consistency
                 }
@@ -2095,9 +2118,15 @@ Base::Placement AttachEnginePlane::_calculateAttachedPlacement(
     //reuse Attacher3d
     Base::Placement plm;
     AttachEngine3D attacher3D;
+    attacher3D.precision = precision;
     attacher3D.setUp(*this);
     plm = attacher3D._calculateAttachedPlacement(objs,subs,origPlacement);
     return plm;
+}
+
+double AttachEnginePlane::planarPrecision()
+{
+    return 2.0e-7;  // NOLINT
 }
 
 //=================================================================================

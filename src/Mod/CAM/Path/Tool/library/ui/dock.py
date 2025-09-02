@@ -28,7 +28,7 @@ import FreeCADGui
 import Path
 import Path.Tool.Gui.Controller as PathToolControllerGui
 import PathScripts.PathUtilsGui as PathUtilsGui
-from PySide import QtGui, QtCore
+from PySide import QtGui, QtCore, QtWidgets
 from functools import partial
 from typing import List, Tuple
 from ...camassets import cam_assets, ensure_assets_initialized
@@ -50,12 +50,20 @@ translate = FreeCAD.Qt.translate
 class ToolBitLibraryDock(object):
     """Controller for displaying a library and creating ToolControllers"""
 
-    def __init__(self):
+    def __init__(self, defaultJob=None, autoClose=False):
         ensure_assets_initialized(cam_assets)
         # Create the main form widget directly
-        self.form = QtGui.QDockWidget()
+        self.defaultJob = defaultJob
+        self.autoClose = autoClose
+        self.form = QtWidgets.QDialog()
         self.form.setObjectName("ToolSelector")
         self.form.setWindowTitle(translate("CAM_ToolBit", "Tool Selector"))
+        self.form.setMinimumSize(600, 400)
+        self.form.resize(800, 600)
+        self.form.adjustSize()
+        self.form_layout = QtGui.QVBoxLayout(self.form)
+        self.form_layout.setContentsMargins(4, 4, 4, 4)
+        self.form_layout.setSpacing(4)
 
         # Create the browser widget
         self.browser_widget = LibraryBrowserWidget(asset_manager=cam_assets)
@@ -69,6 +77,8 @@ class ToolBitLibraryDock(object):
         # Create a main widget and layout for the dock
         main_widget = QtGui.QWidget()
         main_layout = QtGui.QVBoxLayout(main_widget)
+        main_layout.setContentsMargins(4, 4, 4, 4)
+        main_layout.setSpacing(4)
 
         # Add the browser widget to the layout
         main_layout.addWidget(self.browser_widget)
@@ -88,7 +98,7 @@ class ToolBitLibraryDock(object):
         main_layout.addLayout(button_layout)
 
         # Set the main widget as the dock's widget
-        self.form.setWidget(main_widget)
+        self.form.layout().addWidget(main_widget)
 
         # Connect signals from the browser widget and buttons
         self.browser_widget.toolSelected.connect(self._update_state)
@@ -152,11 +162,12 @@ class ToolBitLibraryDock(object):
                 translate("CAM_ToolBit", "Please create a Job first."),
             )
             return
-        elif len(jobs) == 1:
-            job = jobs[0]
+        elif self.defaultJob or len(jobs) == 1:
+            job = self.defaultJob or jobs[0]
         else:
             userinput = PathUtilsGui.PathUtilsUserInput()
             job = userinput.chooseJob(jobs)
+            self.defaultJob = job
 
         if job is None:  # user may have canceled
             return
@@ -169,21 +180,9 @@ class ToolBitLibraryDock(object):
             job.Proxy.addToolController(tc)
             FreeCAD.ActiveDocument.recompute()
 
+        if self.autoClose:
+            self.form.accept()
+
     def open(self, path=None):
         """load library stored in path and bring up ui"""
-        docs = FreeCADGui.getMainWindow().findChildren(QtGui.QDockWidget)
-        for doc in docs:
-            if doc.objectName() == "ToolSelector":
-                if doc.isVisible():
-                    doc.deleteLater()
-                    return
-                else:
-                    doc.setVisible(True)
-                    return
-
-        mw = FreeCADGui.getMainWindow()
-        mw.addDockWidget(
-            QtCore.Qt.RightDockWidgetArea,
-            self.form,
-            QtCore.Qt.Orientation.Vertical,
-        )
+        self.form.exec_()

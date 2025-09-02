@@ -30,8 +30,9 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Part/App/Attacher.h>
-#include <functional>
+#include <App/PropertyOverrides.h>
 
+#include <functional>
 
 class Ui_TaskAttacher;
 class QLineEdit;
@@ -47,6 +48,7 @@ class ViewProvider;
 namespace PartGui {
 
 class Ui_TaskAttacher;
+
 
 class PartGuiExport TaskAttacher : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
@@ -94,6 +96,7 @@ private Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e) override;
+
 private:
     void objectDeleted(const Gui::ViewProviderDocumentObject&);
     void documentDeleted(const Gui::Document&);
@@ -133,6 +136,8 @@ private:
      */
     void selectMapMode(Attacher::eMapMode mmode);
 
+    void showPlacementUtilities();
+
 protected:
     Gui::ViewProviderDocumentObject *ViewProvider;
     std::string ObjectName;
@@ -152,6 +157,8 @@ private:
     using Connection = boost::signals2::connection;
     Connection connectDelObject;
     Connection connectDelDocument;
+
+    App::PropertyOverrideContext overrides;
 };
 
 /// simulation dialog for the TaskView

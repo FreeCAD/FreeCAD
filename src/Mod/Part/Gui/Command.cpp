@@ -1067,7 +1067,7 @@ void CmdPartImportCurveNet::activated(int iMsg)
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
     if (!fn.isEmpty()) {
         QFileInfo fi; fi.setFile(fn);
-        openCommand(QT_TRANSLATE_NOOP("Command", "Part Import Curve Net"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Import Curve Net"));
         doCommand(Doc,"f = App.activeDocument().addObject(\"Part::CurveNet\",\"%s\")", (const char*)fi.baseName().toLatin1());
         doCommand(Doc,"f.FileName = \"%s\"",(const char*)fn.toLatin1());
         commitCommand();

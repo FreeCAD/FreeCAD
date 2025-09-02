@@ -101,8 +101,8 @@ void CmdMeshPartTrimByPlane::activated(int)
 
     QMessageBox msgBox(Gui::getMainWindow());
     msgBox.setIcon(QMessageBox::Question);
-    msgBox.setWindowTitle(qApp->translate("MeshPart_TrimByPlane", "Trim by plane"));
-    msgBox.setText(qApp->translate("MeshPart_TrimByPlane", "Select the side to keep."));
+    msgBox.setWindowTitle(qApp->translate("MeshPart_TrimByPlane", "Trim With Plane"));
+    msgBox.setText(qApp->translate("MeshPart_TrimByPlane", "Select the side to keep"));
     QPushButton* inner =
         msgBox.addButton(qApp->translate("MeshPart_TrimByPlane", "Below"), QMessageBox::ActionRole);
     QPushButton* outer =

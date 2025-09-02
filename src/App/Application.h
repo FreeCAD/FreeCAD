@@ -53,6 +53,7 @@ namespace App
 
 class Document;
 class DocumentObject;
+class ApplicationDirectories;
 class ApplicationObserver;
 class Property;
 class AutoTransaction;
@@ -423,6 +424,10 @@ public:
     static std::string getExecutableName();
     static std::string getNameWithVersion();
     static bool isDevelopmentVersion();
+
+    /// Access to the various directories for the program a replacement for the get*Path methods below
+    static const std::unique_ptr<ApplicationDirectories>& directories();
+
     /*!
      Returns the temporary directory. By default, this is set to the
      system's temporary directory but can be customized by the user.
@@ -626,6 +631,8 @@ private:
     static void SaveEnv(const char *);
     /// startup configuration container
     static std::map<std::string,std::string> mConfig;
+    /// Management of and access to applications directories
+    static std::unique_ptr<ApplicationDirectories> _appDirs;
     static int _argc;
     static char ** _argv;
     //@}

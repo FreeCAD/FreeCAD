@@ -175,7 +175,7 @@
         <item row="4" column="1">
          <widget class="QLabel" name="user_def_head_19">
           <property name="text">
-           <string>max shear stress: MS</string>
+           <string>maximum shear stress: MS</string>
           </property>
           <property name="textInteractionFlags">
            <set>Qt::TextSelectableByMouse</set>
@@ -185,7 +185,7 @@
        <item row="5" column="0">
          <widget class="QLabel" name="user_def_head_11">
           <property name="text">
-           <string>max princ. stress vector: s3x, s3y, s3z</string>
+           <string>maximum princ. stress vector: s3x, s3y, s3z</string>
           </property>
           <property name="textInteractionFlags">
            <set>Qt::TextSelectableByMouse</set>
@@ -195,7 +195,7 @@
         <item row="5" column="1">
          <widget class="QLabel" name="user_def_head_16">
           <property name="text">
-           <string>max principal stress: P1</string>
+           <string>maximum principal stress: P1</string>
           </property>
           <property name="textInteractionFlags">
            <set>Qt::TextSelectableByMouse</set>
@@ -205,7 +205,7 @@
         <item row="6" column="0">
          <widget class="QLabel" name="user_def_head_10">
           <property name="text">
-           <string>med princ. stress vector: s2x, s2y, s2z</string>
+           <string>medium princ. stress vector: s2x, s2y, s2z</string>
           </property>
           <property name="textInteractionFlags">
            <set>Qt::TextSelectableByMouse</set>
@@ -215,7 +215,7 @@
         <item row="6" column="1">
          <widget class="QLabel" name="user_def_head_17">
           <property name="text">
-           <string>med principal stress: P2</string>
+           <string>medium principal stress: P2</string>
           </property>
           <property name="textInteractionFlags">
            <set>Qt::TextSelectableByMouse</set>
@@ -225,7 +225,7 @@
         <item row="7" column="0">
          <widget class="QLabel" name="user_def_head_9">
           <property name="text">
-           <string>min princ. stress vector: s1x, s1y, s1z</string>
+           <string>minimum princ. stress vector: s1x, s1y, s1z</string>
           </property>
           <property name="textInteractionFlags">
            <set>Qt::TextSelectableByMouse</set>
@@ -235,7 +235,7 @@
         <item row="7" column="1">
          <widget class="QLabel" name="user_def_head_18">
           <property name="text">
-           <string>min principal stress: P3</string>
+           <string>minimum principal stress: P3</string>
           </property>
           <property name="textInteractionFlags">
            <set>Qt::TextSelectableByMouse</set>
@@ -245,7 +245,7 @@
         <item row="8" column="0">
          <widget class="QLabel" name="user_def_head_8">
           <property name="text">
-           <string>Mohr Coulomb: mc</string>
+           <string>Mohr-Coulomb: mc</string>
           </property>
           <property name="textInteractionFlags">
            <set>Qt::TextSelectableByMouse</set>

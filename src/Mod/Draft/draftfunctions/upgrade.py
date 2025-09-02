@@ -568,7 +568,7 @@ def upgrade(objects, delete=False, force=None):
                     and not utils.get_type(objects[0]) in ["BezCurve", "BSpline", "Wire"]:
                 result = _draftify(objects[0])
                 if result:
-                    _msg(translate("draft", "Found 1 non-parametric object: draftifying it"))
+                    _msg(translate("draft", "Found 1 non-parametric object: replacing it with a Draft object"))
 
         # in the following cases there are no faces
         elif not faces:
@@ -612,7 +612,7 @@ def upgrade(objects, delete=False, force=None):
                 if edge_type in ("Line", "Circle"):
                     result = _draftify(objects[0])
                     if result:
-                        _msg(translate("draft", "Found 1 non-parametric object: draftifying it"))
+                        _msg(translate("draft", "Found 1 non-parametric object: replacing it with a Draft object"))
 
             # only points, no edges
             elif not edges and len(objects) > 1:

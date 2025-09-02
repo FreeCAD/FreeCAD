@@ -50,7 +50,7 @@ private:
     void tryCreateSketch();
     std::tuple<bool, PartDesign::Body*> shouldCreateBody();
     bool shouldAbort(bool) const;
-    std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> getFaceAndPlaneFilter() const;
+    std::tuple<Gui::SelectionFilter, Gui::SelectionFilter, Gui::SelectionFilter> getFilters() const;
 
 private:
     Gui::Document* guidocument;

@@ -234,6 +234,22 @@ Requires to re-enter edit mode to take effect.</string>
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxMakeInternals">
+        <property name="toolTip">
+         <string>Closed loops will automatically generate internal faces which are selectable to be used with other tools</string>
+        </property>
+        <property name="text">
+         <string>Generate internal faces</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>MakeInternals</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

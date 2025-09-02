@@ -47,17 +47,17 @@
       <widget class="QComboBox" name="axis">
        <item>
         <property name="text">
-         <string>Base x-axis</string>
+         <string>Base X-axis</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Base y-axis</string>
+         <string>Base Y-axis</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Base z-xis</string>
+         <string>Base Z-axis</string>
         </property>
        </item>
        <item>

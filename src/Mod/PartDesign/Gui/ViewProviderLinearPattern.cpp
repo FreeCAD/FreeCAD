@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #include "ViewProviderLinearPattern.h"
-#include "TaskLinearPatternParameters.h"
+#include "TaskPatternParameters.h"
 
 using namespace PartDesignGui;
 

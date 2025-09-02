@@ -26,74 +26,19 @@
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFDouble.h>
-#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFRotation.h>
-#include <Inventor/fields/SoSFString.h>
-#include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
-#include <Inventor/nodes/SoBaseColor.h>
-#include <Base/Vector3D.h>
+
+#include <FCGlobal.h>
 
 class SoTransform;
-class SoCalculator;
 class SoCoordinate3;
+class SoBaseColor;
+class SoSensor;
 
 namespace Gui
 {
-class SoRotatorGeometryKit: public SoBaseKit
-{
-    SO_KIT_HEADER(SoLinearGeometryKit);
-
-public:
-    static void initClass();
-
-    SoSFVec3f pivotPosition;
-
-protected:
-    SoRotatorGeometryKit();
-    ~SoRotatorGeometryKit() override = default;
-
-private:
-    using inherited = SoBaseKit;
-};
-
-/*!
- * @brief Rotator geometry
- * 
- * A class to contain the geometry for SoRotationDragger
- */
-class SoRotatorGeometry: public SoRotatorGeometryKit
-{
-    SO_KIT_HEADER(SoArrowGeometry);
-    SO_KIT_CATALOG_ENTRY_HEADER(lightModel);
-    SO_KIT_CATALOG_ENTRY_HEADER(drawStyle);
-    SO_KIT_CATALOG_ENTRY_HEADER(arcCoords);
-    SO_KIT_CATALOG_ENTRY_HEADER(arc);
-    SO_KIT_CATALOG_ENTRY_HEADER(rotorPivot);
-
-    SO_KIT_CATALOG_ENTRY_HEADER(_rotorPivotTranslation);
-
-public:
-    static void initClass();
-    SoRotatorGeometry();
-
-    SoSFFloat arcAngle; //!< in radians
-    SoSFFloat arcRadius;
-    SoSFFloat sphereRadius;
-    SoSFFloat arcThickness;
-
-protected:
-    ~SoRotatorGeometry() override = default;
-
-    void notify(SoNotList* notList) override;
-
-private:
-    constexpr static int segments = 10; //!< segments of the arc per arcAngle
-
-    using inherited = SoRotatorGeometryKit;
-};
-
 /*! @brief Rotation Dragger.
  *
  * used for rotating around an axis. Set the rotation
@@ -101,9 +46,12 @@ private:
  * multiplied with rotationIncrement for full double
  * precision vector scalar.
  */
-class SoRotationDragger : public SoDragger
+class GuiExport SoRotationDragger : public SoDragger
 {
     SO_KIT_HEADER(SoRotationDragger);
+    SO_KIT_CATALOG_ENTRY_HEADER(baseGeomSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(baseGeom);
+    SO_KIT_CATALOG_ENTRY_HEADER(baseColor);
     SO_KIT_CATALOG_ENTRY_HEADER(activeSwitch);
     SO_KIT_CATALOG_ENTRY_HEADER(secondaryColor);
     SO_KIT_CATALOG_ENTRY_HEADER(scale);
@@ -116,8 +64,13 @@ public:
     SoSFRotation rotation; //!< set from outside and used from outside for single precision.
     SoSFDouble rotationIncrement; //!< set from outside and used for rounding.
     SoSFInt32 rotationIncrementCount; //!< number of steps. used from outside.
+    SoSFColor color; //!< colour of the dragger
     SoSFColor activeColor; //!< colour of the dragger while being dragged.
     SoSFVec3f geometryScale; //!< the scale of the dragger geometry
+    SoSFBool active; //!< set when the dragger is being dragged
+    SoSFBool baseGeomVisible; //!< toggles if the dragger has a base geometry or not
+
+    void instantiateBaseGeometry();
 
 protected:
     ~SoRotationDragger() override;
@@ -139,15 +92,15 @@ protected:
 private:
     int roundIncrement(const float &radiansIn);
     SoBaseColor* buildActiveColor();
+    SoBaseColor* buildColor();
 
     using inherited = SoDragger;
 };
 
-class SoRotationDraggerContainer: public SoInteractionKit
+class GuiExport SoRotationDraggerContainer: public SoInteractionKit
 {
     SO_KIT_HEADER(SoRotationDraggerContainer);
     SO_KIT_CATALOG_ENTRY_HEADER(draggerSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(baseColor);
     SO_KIT_CATALOG_ENTRY_HEADER(transform);
     SO_KIT_CATALOG_ENTRY_HEADER(dragger);
 
@@ -160,12 +113,13 @@ public:
     SoSFVec3f translation;
     SoSFBool visible;
 
-    void setPointerDirection(const Base::Vector3d& dir);
+    SbVec3f getPointerDirection();
+    void setPointerDirection(const SbVec3f& dir);
+    void setArcNormalDirection(const SbVec3f& dir);
 
     SoRotationDragger* getDragger();
 
 private:
-    SoBaseColor* buildColor();
     SoTransform* buildTransform();
 
     using inherited = SoInteractionKit;
