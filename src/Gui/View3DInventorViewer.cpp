@@ -22,6 +22,8 @@
 
 #include "PreCompiled.h"
 
+#include <Inventor/SoFCPlacementIndicatorKit.h>
+
 #ifndef _PreComp_
 # ifdef FC_OS_WIN32
 #  include <windows.h>
@@ -1425,15 +1427,18 @@ void View3DInventorViewer::setAxisCross(bool on)
 
     if (on) {
         if (!axisGroup) {
-            axisCross = new Gui::SoShapeScale;
-            auto axisKit = new Gui::SoAxisCrossKit();
-            axisKit->set("xAxis.appearance.drawStyle", "lineWidth 2");
-            axisKit->set("yAxis.appearance.drawStyle", "lineWidth 2");
-            axisKit->set("zAxis.appearance.drawStyle", "lineWidth 2");
-            axisCross->setPart("shape", axisKit);
-            axisCross->scaleFactor = 1.0F;
+            using enum SoFCPlacementIndicatorKit::Part;
+
+            constexpr float axisCrossLength = 2.0F;
+
+            auto axisCrossKit = new Gui::SoFCPlacementIndicatorKit();
+            axisCrossKit->axisLength = axisCrossLength;
+
+            auto annotation = new So3DAnnotation();
+            annotation->addChild(axisCrossKit);
+
             axisGroup = new SoSkipBoundingGroup;
-            axisGroup->addChild(axisCross);
+            axisGroup->addChild(annotation);
 
             sep->addChild(axisGroup);
         }
