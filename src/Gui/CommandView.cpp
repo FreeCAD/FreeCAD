@@ -4046,12 +4046,11 @@ void StdCmdClarifySelection::activated(int iMsg)
         }
         
         // Create PickData with selection information
-        PickData pickData;
-        pickData.obj = obj;
-        pickData.element = elementName;
-        pickData.docName = obj->getDocument()->getName();
-        pickData.objName = obj->getNameInDocument();
-        pickData.subName = hasSubObject ? subName : elementName;
+        PickData pickData {.obj = obj,
+                           .element = elementName,
+                           .docName = obj->getDocument()->getName(),
+                           .objName = obj->getNameInDocument(),
+                           .subName = hasSubObject ? subName : elementName};
         
         selections.push_back(pickData);
     }
