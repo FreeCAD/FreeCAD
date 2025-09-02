@@ -3980,12 +3980,11 @@ void StdCmdClarifySelection::activated(int iMsg)
     Q_UNUSED(iMsg);
     
     // Get the active view 
-    auto view = Application::Instance->activeView();
-    if (!view || !view->isDerivedFrom(View3DInventor::getClassTypeId())) {
+    auto view3d = freecad_cast<View3DInventor*>(Application::Instance->activeView());
+    if (!view3d) {
         return;
     }
 
-    auto view3d = static_cast<View3DInventor*>(view);
     auto viewer = view3d->getViewer();
     if (!viewer) {
         return;
@@ -4027,7 +4026,7 @@ void StdCmdClarifySelection::activated(int iMsg)
             continue;
             
         // Cast to ViewProviderDocumentObject to get the object
-        auto vpDoc = dynamic_cast<Gui::ViewProviderDocumentObject*>(vp);
+        auto vpDoc = freecad_cast<Gui::ViewProviderDocumentObject*>(vp);
         if (!vpDoc)
             continue;
             
