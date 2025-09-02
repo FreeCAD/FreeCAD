@@ -725,7 +725,7 @@ struct ElementInfo {
 struct SubMenuInfo {
     QMenu *menu = nullptr;
     // Map from sub-object label to map from object path to element info
-    std::map<std::string, std::map<std::string, ElementInfo> > items;
+    std::map<std::string, std::map<std::string, ElementInfo>> items;
 };
 
 PickData SelectionMenu::doPick(const std::vector<PickData> &sels)
