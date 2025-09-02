@@ -117,8 +117,6 @@ def setStatusIcons(show=True):
         if show:
             if statuswidget:
                 statuswidget.show()
-                if hasattr(statuswidget, "propertybuttons"):
-                    statuswidget.propertybuttons.show()
             else:
                 statuswidget = FreeCADGui.UiLoader().createWidget("Gui::ToolBar")
                 statuswidget.setObjectName("BIMStatusWidget")
@@ -185,10 +183,15 @@ def setStatusIcons(show=True):
                 # ifc widgets
                 try:
                     from nativeifc import ifc_status
-                except:
-                    pass
+                except Exception as e:
+                    FreeCAD.Console.PrintError(f"BIM: Failed to import ifc_status: {e}\n")
                 else:
                     ifc_status.set_status_widget(statuswidget)
+
+                    # Update buttons on properties editor visibility on workbench switch
+                    mw.workbenchActivated.connect(
+                        lambda: ifc_status.set_prop_buttons_visibility(statuswidget)
+                    )
 
                 # nudge button
                 nudge = QtGui.QPushButton(nudgeLabelsM[-1])
