@@ -803,9 +803,11 @@ public:
 
     void setOverlayMode(OverlayMode mode)
     {
+        FC_MSG("setOverlayMode called with mode: %d", static_cast<int>(mode));
         switch(mode) {
         case OverlayManager::OverlayMode::DisableAll:
         case OverlayManager::OverlayMode::EnableAll: {
+            FC_MSG("setOverlayMode: %s all overlays", mode == OverlayManager::OverlayMode::DisableAll ? "Disabling" : "Enabling");
             auto docks = getMainWindow()->findChildren<QDockWidget*>();
             // put visible dock widget first
             std::sort(docks.begin(),docks.end(),
@@ -813,14 +815,17 @@ public:
                     return !a->visibleRegion().isEmpty() && b->visibleRegion().isEmpty();
                 });
             for(auto dock : docks) {
+                FC_MSG("setOverlayMode: processing dock '%s'", dock->objectName().toUtf8().constData());
                 if(mode == OverlayManager::OverlayMode::DisableAll)
                     toggleOverlay(dock, ToggleMode::Unset);
                 else
                     toggleOverlay(dock, ToggleMode::Set);
             }
+            FC_MSG("setOverlayMode: finished processing all docks");
             return;
         }
         case OverlayManager::OverlayMode::ToggleAll:
+            FC_MSG("setOverlayMode: ToggleAll");
             for(auto o : _overlayInfos) {
                 if(o->tabWidget->count()) {
                     setOverlayMode(OverlayManager::OverlayMode::DisableAll);
@@ -830,6 +835,7 @@ public:
             setOverlayMode(OverlayManager::OverlayMode::EnableAll);
             return;
         case OverlayManager::OverlayMode::TransparentAll: {
+            FC_MSG("setOverlayMode: TransparentAll");
             bool found = false;
             for(auto o : _overlayInfos) {
                 if(o->tabWidget->count())
@@ -840,11 +846,13 @@ public:
         }
         // fall through
         case OverlayManager::OverlayMode::TransparentNone:
+            FC_MSG("setOverlayMode: TransparentNone or TransparentAll");
             for(auto o : _overlayInfos)
                 o->tabWidget->setTransparent(mode == OverlayManager::OverlayMode::TransparentAll);
             refresh();
             return;
         case OverlayManager::OverlayMode::ToggleTransparentAll:
+            FC_MSG("setOverlayMode: ToggleTransparentAll");
             for(auto o : _overlayInfos) {
                 if(o->tabWidget->count() && o->tabWidget->isTransparent()) {
                     setOverlayMode(OverlayManager::OverlayMode::TransparentNone);
@@ -854,30 +862,35 @@ public:
             setOverlayMode(OverlayManager::OverlayMode::TransparentAll);
             return;
         case OverlayManager::OverlayMode::ToggleLeft:
+            FC_MSG("setOverlayMode: ToggleLeft");
             if (OverlayTabWidget::_LeftOverlay->isVisible())
                 OverlayTabWidget::_LeftOverlay->setState(OverlayTabWidget::State::Hidden);
             else
                 OverlayTabWidget::_LeftOverlay->setState(OverlayTabWidget::State::Showing);
             break;
         case OverlayManager::OverlayMode::ToggleRight:
+            FC_MSG("setOverlayMode: ToggleRight");
             if (OverlayTabWidget::_RightOverlay->isVisible())
                 OverlayTabWidget::_RightOverlay->setState(OverlayTabWidget::State::Hidden);
             else
                 OverlayTabWidget::_RightOverlay->setState(OverlayTabWidget::State::Showing);
             break;
         case OverlayManager::OverlayMode::ToggleTop:
+            FC_MSG("setOverlayMode: ToggleTop");
             if (OverlayTabWidget::_TopOverlay->isVisible())
                 OverlayTabWidget::_TopOverlay->setState(OverlayTabWidget::State::Hidden);
             else
                 OverlayTabWidget::_TopOverlay->setState(OverlayTabWidget::State::Showing);
             break;
         case OverlayManager::OverlayMode::ToggleBottom:
+            FC_MSG("setOverlayMode: ToggleBottom");
             if (OverlayTabWidget::_BottomOverlay->isVisible())
                 OverlayTabWidget::_BottomOverlay->setState(OverlayTabWidget::State::Hidden);
             else
                 OverlayTabWidget::_BottomOverlay->setState(OverlayTabWidget::State::Showing);
             break;
         default:
+            FC_MSG("setOverlayMode: default case");
             break;
         }
 
@@ -905,24 +918,31 @@ public:
 
         switch (mode) {
         case OverlayManager::OverlayMode::ToggleActive:
+            FC_MSG("setOverlayMode: ToggleActive");
             m = ToggleMode::Toggle;
             break;
         case OverlayManager::OverlayMode::ToggleTransparent:
+            FC_MSG("setOverlayMode: ToggleTransparent");
             m = ToggleMode::Transparent;
             break;
         case OverlayManager::OverlayMode::EnableActive:
+            FC_MSG("setOverlayMode: EnableActive");
             m = ToggleMode::Set;
             break;
         case OverlayManager::OverlayMode::DisableActive:
+            FC_MSG("setOverlayMode: DisableActive");
             m = ToggleMode::Unset;
             break;
         default:
+            FC_MSG("setOverlayMode: default case (active)");
             return;
         }
 
         if (!dock)
+            FC_MSG("setOverlayMode: no dock found for active operation");
             return;
 
+        FC_MSG("setOverlayMode: toggling overlay for dock '%s' with mode %d", dock->objectName().toUtf8().constData(), static_cast<int>(m));
         toggleOverlay(dock, m);
     }
 
@@ -1628,19 +1648,19 @@ void OverlayManager::setupDockWidget(QDockWidget *dw, int dockArea)
 
 void OverlayManager::cleanupDockWidget(QDockWidget *dw)
 {
-    FC_LOG("cleanupDockWidget called for dock: " << (dw ? dw->objectName().toStdString() : std::string("nullptr")));
+    FC_MSG("cleanupDockWidget called for dock: " << (dw ? dw->objectName().toStdString() : std::string("nullptr")));
     d->toggleOverlay(dw, ToggleMode::Unset);
     if (dw) {
         if (dw->titleBarWidget()) {
-            FC_LOG("Deleting custom title bar for dock: " << dw->objectName().toStdString());
+            FC_MSG("Deleting custom title bar for dock: " << dw->objectName().toStdString());
             dw->titleBarWidget()->deleteLater();
             dw->setTitleBarWidget(nullptr); // This restores the default native title bar
-            FC_LOG("Restored native title bar for dock: " << dw->objectName().toStdString());
+            FC_MSG("Restored native title bar for dock: " << dw->objectName().toStdString());
         } else {
-            FC_LOG("No custom title bar to delete for dock: " << dw->objectName().toStdString());
+            FC_MSG("No custom title bar to delete for dock: " << dw->objectName().toStdString());
         }
     } else {
-        FC_LOG("cleanupDockWidget called with nullptr");
+        FC_MSG("cleanupDockWidget called with nullptr");
     }
 }
 
