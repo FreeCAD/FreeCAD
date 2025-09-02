@@ -2018,8 +2018,8 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     
     if (pplist.getLength() > 0) {
         separator = true;
-        auto cmd = Application::Instance->commandManager().getCommandByName("Std_ClarifySelection");
-        if (cmd) {
+        if (auto cmd =
+                Application::Instance->commandManager().getCommandByName("Std_ClarifySelection")) {
             pickAction = new QAction(cmd->getAction()->text(), contextMenu);
             pickAction->setShortcut(cmd->getAction()->shortcut());
         } else {
