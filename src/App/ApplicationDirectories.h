@@ -56,6 +56,10 @@ namespace App {
         /// `App::ApplicationDirectories` class.
         const std::filesystem::path& getHomePath() const;
 
+        /// Get the user's home directory. This should not be used for many things, use caution when
+        /// deciding to use it for anything, there are usually better places.
+        const std::filesystem::path& getUserHomePath() const;
+
         /// Temp path is the location of all temporary files: it is not guaranteed to preserve
         /// information between runs of the program, but *is* guaranteed to exist for the duration
         /// of a single program execution (that is, files are not deleted from it *during* the run).
@@ -174,6 +178,10 @@ namespace App {
 
     protected:
 
+        /// Override all application directories with temp directories. Returns true on success and
+        /// false if the temp directory creation failed.
+        bool startSafeMode(std::map<std::string,std::string>& mConfig);
+
         /// Take a path and add a version to it, if it's possible to do so. A version can be
         /// appended only if a) the versioned subdirectory already exists, or b) pathToCheck/subdirs
         /// does NOT yet exist. This does not actually create any directories, just determines
@@ -228,6 +236,7 @@ namespace App {
         std::filesystem::path _userConfig;
         std::filesystem::path _userAppData;
         std::filesystem::path _userMacro;
+        std::filesystem::path _userHome;
         std::filesystem::path _resource;
         std::filesystem::path _library;
         std::filesystem::path _help;
