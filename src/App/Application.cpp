@@ -3781,6 +3781,9 @@ void Application::getVerboseAddOnsInfo(QTextStream& str, const std::map<std::str
     bool firstMod = true;
     if (fs::exists(modDir) && fs::is_directory(modDir)) {
         for (const auto& mod : fs::directory_iterator(modDir)) {
+            if (!fs::is_directory(mod)) {
+                continue; // Ignore files, only show directories
+            }
             auto dirName = mod.path().string();
             addModuleInfo(str, QString::fromStdString(dirName), firstMod);
         }
