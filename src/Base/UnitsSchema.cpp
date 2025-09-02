@@ -98,7 +98,8 @@ UnitsSchema::toLocale(const Quantity& quant, const double factor, const std::str
     }
 
     auto valueString =
-        Lc.toString(quant.getValue() / factor, format.toFormat(), format.precision).toStdString();
+        Lc.toString(quant.getValue() / factor, format.toFormat(), format.getPrecision())
+            .toStdString();
 
     auto notUnit = [](auto s) {
         return s.empty() || s == "°" || s == "″" || s == "′" || s == "\"" || s == "'";

@@ -208,9 +208,7 @@ PyObject* UnitsApi::sToNumber(PyObject* /*self*/, PyObject* args)
     }
 
     bool ok {};
-    QuantityFormat qf;
-    qf.format = QuantityFormat::toFormat(format[0], &ok);
-    qf.precision = decimals;
+    QuantityFormat qf {QuantityFormat::toFormat(format[0], &ok), decimals};
 
     if (!ok) {
         PyErr_SetString(PyExc_ValueError, "Invalid format string");

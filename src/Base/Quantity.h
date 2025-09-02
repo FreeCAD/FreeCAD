@@ -49,18 +49,19 @@ struct BaseExport QuantityFormat
     using NumberOptions = int;
     NumberOptions option;
     NumberFormat format;
-    int precision;
-    int denominator;
 
-    inline int getDenominator() const
+    int getPrecision() const;
+    inline void setPrecision(int precision)
     {
-        return denominator;
+        _precision = precision;
     }
 
-    inline void setDenominator(int denom)
+    int getDenominator() const;
+    inline void setDenominator(int denominator)
     {
-        denominator = denom;
+        _denominator = denominator;
     }
+
     QuantityFormat();
     explicit QuantityFormat(NumberFormat format, int decimals = -1);
     inline char toFormat() const
@@ -93,6 +94,9 @@ struct BaseExport QuantityFormat
                 return Default;
         }
     }
+
+private:
+    int _precision, _denominator;
 };
 
 /**

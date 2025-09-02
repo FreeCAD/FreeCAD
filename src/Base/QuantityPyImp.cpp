@@ -57,7 +57,7 @@ std::string QuantityPy::representation() const
 
 PyObject* QuantityPy::toStr(PyObject* args) const
 {
-    int prec = getQuantityPtr()->getFormat().precision;
+    int prec = getQuantityPtr()->getFormat().getPrecision();
     if (!PyArg_ParseTuple(args, "|i", &prec)) {
         return nullptr;
     }
@@ -669,9 +669,9 @@ Py::Dict QuantityPy::getFormat() const
     QuantityFormat fmt = getQuantityPtr()->getFormat();
 
     Py::Dict dict;
-    dict.setItem("Precision", Py::Long(fmt.precision));
+    dict.setItem("Precision", Py::Long(fmt.getPrecision()));
     dict.setItem("NumberFormat", Py::Char(fmt.toFormat()));
-    dict.setItem("Denominator", Py::Long(fmt.denominator));
+    dict.setItem("Denominator", Py::Long(fmt.getDenominator()));
     return dict;
 }
 
@@ -681,7 +681,7 @@ void QuantityPy::setFormat(Py::Dict arg)
 
     if (arg.hasKey("Precision")) {
         Py::Long prec(arg.getItem("Precision"));
-        fmt.precision = static_cast<int>(prec);
+        fmt.setPrecision(static_cast<int>(prec));
     }
 
     if (arg.hasKey("NumberFormat")) {
@@ -719,7 +719,7 @@ void QuantityPy::setFormat(Py::Dict arg)
         if (fracInch & (fracInch - 1)) {
             throw Py::ValueError("Denominator must be a power of two");
         }
-        fmt.denominator = fracInch;
+        fmt.setDenominator(fracInch);
     }
 
     getQuantityPtr()->setFormat(fmt);
