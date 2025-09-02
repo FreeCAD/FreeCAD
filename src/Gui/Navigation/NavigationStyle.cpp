@@ -1934,6 +1934,34 @@ SbBool NavigationStyle::isPopupMenuEnabled() const
     return this->menuenabled;
 }
 
+bool NavigationStyle::isNavigationStyleAction(QAction* action, QActionGroup* navMenuGroup) const
+{
+    return action && navMenuGroup->actions().indexOf(action) >= 0 && action->isChecked();
+}
+
+QWidget* NavigationStyle::findView3DInventorWidget() const
+{
+    QWidget* widget = viewer->getWidget();
+    while (widget && !widget->inherits("Gui::View3DInventor")) {
+        widget = widget->parentWidget();
+    }
+    return widget;
+}
+
+void NavigationStyle::applyNavigationStyleChange(QAction* selectedAction)
+{
+    QByteArray navigationStyleTypeName = selectedAction->data().toByteArray();
+    QWidget* view3DWidget = findView3DInventorWidget();
+    
+    if (view3DWidget) {
+        Base::Type newNavigationStyle = Base::Type::fromName(navigationStyleTypeName.constData());
+        if (newNavigationStyle != this->getTypeId()) {
+            QEvent* navigationChangeEvent = new NavigationStyleEvent(newNavigationStyle);
+            QApplication::postEvent(view3DWidget, navigationChangeEvent);
+        }
+    }
+}
+
 void NavigationStyle::openPopupMenu(const SbVec2s& position)
 {
     Q_UNUSED(position);
@@ -2008,24 +2036,15 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     if (separator && posAction)
         contextMenu->insertSeparator(posAction);
 
-    QAction* used = contextMenu->exec(QCursor::pos());
-    if (used && navMenuGroup->actions().indexOf(used) >= 0 && used->isChecked()) {
-        QByteArray type = used->data().toByteArray();
-        QWidget* widget = viewer->getWidget();
-        while (widget && !widget->inherits("Gui::View3DInventor"))
-            widget = widget->parentWidget();
-        if (widget) {
-            // this is the widget where the viewer is embedded
-            Base::Type style = Base::Type::fromName((const char*)type);
-            if (style != this->getTypeId()) {
-                QEvent* event = new NavigationStyleEvent(style);
-                QApplication::postEvent(widget, event);
-            }
-        }
+    QAction* selectedAction = contextMenu->exec(QCursor::pos());
+    
+    // handle navigation style change if user selected a navigation style option
+    if (selectedAction && isNavigationStyleAction(selectedAction, navMenuGroup)) {
+        applyNavigationStyleChange(selectedAction);
         return;
     }
 
-    if (pickAction && used == pickAction) {
+    if (pickAction && selectedAction == pickAction) {
         // Execute the Clarify Selection command at this position
         auto cmd = Application::Instance->commandManager().getCommandByName("Std_ClarifySelection");
         if (cmd && cmd->isActive()) {

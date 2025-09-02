@@ -36,6 +36,7 @@
 #include <Inventor/events/SoEvents.h>
 
 #include <QEvent>
+#include <QAction>
 #include <Base/BaseClass.h>
 #include <Base/SmartPtrPy.h>
 #include <Gui/Namespace.h>
@@ -238,6 +239,13 @@ protected:
     virtual SbBool processSoEvent(const SoEvent * const ev);
     void syncWithEvent(const SoEvent * const ev);
     virtual void openPopupMenu(const SbVec2s& position);
+
+private:
+    bool isNavigationStyleAction(QAction* action, QActionGroup* navMenuGroup) const;
+    QWidget* findView3DInventorWidget() const;
+    void applyNavigationStyleChange(QAction* selectedAction);
+
+protected:
 
     void clearLog();
     void addToLog(const SbVec2s pos, const SbTime time);
