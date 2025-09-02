@@ -47,7 +47,7 @@ def write_step_equation(f, ccxwriter):
             )
 
     if ccxwriter.solver_obj.IncrementsMaximum:
-        if ccxwriter.analysis_type in ["static", "thermomech", "electrostatic"]:
+        if ccxwriter.analysis_type in ["static", "thermomech", "electromagnetic"]:
             step += f", INC={ccxwriter.solver_obj.IncrementsMaximum}"
 
     # write STEP line
@@ -81,7 +81,8 @@ def write_step_equation(f, ccxwriter):
     elif ccxwriter.analysis_type == "buckling":
         analysis_type = "*BUCKLE"
     elif ccxwriter.analysis_type == "electromagnetic":
-        analysis_type = "*HEAT TRANSFER, STEADY STATE"
+        if ccxwriter.solver_obj.ElectromagneticMode == "electrostatic":
+            analysis_type = "*HEAT TRANSFER, STEADY STATE"
 
     # analysis line --> solver type
     # https://forum.freecad.org/viewtopic.php?f=18&t=43178
