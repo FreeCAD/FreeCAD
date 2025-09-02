@@ -237,15 +237,15 @@ public:
         longPressTimer->setInterval(1000); // after 1s of LMB press on viewport it gets toggled
         connect(longPressTimer, &QTimer::timeout, [this]() {
             if (currentViewer) {
-                triggerPickGeometry();
+                triggerClarifySelection();
             }
         });
     }
     ~ViewerEventFilter() override = default;
 
 private:
-    void triggerPickGeometry() {
-        Gui::Command::runCommand(Gui::Command::Gui, "Gui.runCommand('Std_PickGeometry')");
+    void triggerClarifySelection() {
+        Gui::Command::runCommand(Gui::Command::Gui, "Gui.runCommand('Std_ClarifySelection')");
     }
 
     QTimer* longPressTimer;
@@ -2520,7 +2520,7 @@ void View3DInventorViewer::renderScene()
         glClear(GL_DEPTH_BUFFER_BIT);
         
         // process delayed paths with priority support
-        if (Gui::Selection().isPickGeometryActive()) {
+        if (Gui::Selection().isClarifySelectionActive()) {
             Gui::SoDelayedAnnotationsElement::processDelayedPathsWithPriority(state, glra);
         } else {
             // standard processing for normal delayed annotations

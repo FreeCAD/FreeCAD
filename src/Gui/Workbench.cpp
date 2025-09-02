@@ -738,7 +738,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ProjectUtil"
           << "Std_DlgParameter"
           << "Std_DlgCustomize"
-          << "Std_PickGeometry";
+          << "Std_ClarifySelection";
 
     // Macro
     auto macro = new MenuItem( menuBar );

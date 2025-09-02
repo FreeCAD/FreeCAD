@@ -731,7 +731,7 @@ struct SubMenuInfo {
 PickData SelectionMenu::doPick(const std::vector<PickData> &sels)
 {
     clear();
-    Gui::Selection().setPickGeometryActive(true);
+    Gui::Selection().setClarifySelectionActive(true);
 
     std::vector<PickData> selsCopy = sels;
     currentSelections = &selsCopy;
@@ -822,8 +822,8 @@ void SelectionMenu::buildMenuStructure(std::map<std::string, SubMenuInfo> &menus
 
 PickData SelectionMenu::onPicked(QAction *picked, const std::vector<PickData> &sels)
 {
-    // Clear the PickGeometry active flag when menu is done
-    Gui::Selection().setPickGeometryActive(false);
+    // Clear the ClarifySelection active flag when menu is done
+    Gui::Selection().setClarifySelectionActive(false);
     
     Gui::Selection().rmvPreselect();
     if (!picked)

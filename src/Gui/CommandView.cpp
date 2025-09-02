@@ -3957,25 +3957,25 @@ bool StdCmdAlignToSelection::isActive()
 }
 
 //===========================================================================
-// Std_PickGeometry
+// Std_ClarifySelection
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdPickGeometry)
+DEF_STD_CMD_A(StdCmdClarifySelection)
 
-StdCmdPickGeometry::StdCmdPickGeometry()
-  : Command("Std_PickGeometry")
+StdCmdClarifySelection::StdCmdClarifySelection()
+  : Command("Std_ClarifySelection")
 {
     sGroup        = "View";
-    sMenuText     = QT_TR_NOOP("Pick geometry");
-    sToolTipText  = QT_TR_NOOP("Pick hidden geometries under the mouse cursor in 3D view.\n"
-                               "This command is supposed to be activated by keyboard shortcut.");
-    sWhatsThis    = "Std_PickGeometry";
+    sMenuText     = QT_TR_NOOP("Clarify Selection");
+    sToolTipText = QT_TR_NOOP("Displays a context menu at the mouse cursor to select overlapping "
+                              "or obstructed geometry in the 3D view.\n");
+    sWhatsThis    = "Std_ClarifySelection";
     sStatusTip    = sToolTipText;
     sAccel        = "G, G";
     eType         = NoTransaction | AlterSelection;
 }
 
-void StdCmdPickGeometry::activated(int iMsg)
+void StdCmdClarifySelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     
@@ -4066,7 +4066,7 @@ void StdCmdPickGeometry::activated(int iMsg)
     contextMenu.doPick(selections);
 }
 
-bool StdCmdPickGeometry::isActive()
+bool StdCmdClarifySelection::isActive()
 {
     auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     return view != nullptr;
@@ -4104,7 +4104,7 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdRecallWorkingView());
     rcCmdMgr.addCommand(new StdCmdViewGroup());
     rcCmdMgr.addCommand(new StdCmdAlignToSelection());
-    rcCmdMgr.addCommand(new StdCmdPickGeometry());
+    rcCmdMgr.addCommand(new StdCmdClarifySelection());
 
     rcCmdMgr.addCommand(new StdCmdViewExample1());
     rcCmdMgr.addCommand(new StdCmdViewExample2());

@@ -533,7 +533,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     selCounter.checkRenderCache(state);
     
     // for the tool add this node to delayed paths as we want to render it on top of the scene
-    if (Gui::Selection().isPickGeometryActive() && ctx && ctx->isHighlighted()
+    if (Gui::Selection().isClarifySelectionActive() && ctx && ctx->isHighlighted()
         && !ctx->isHighlightAll() && ctx->highlightIndex >= 0
         && ctx->highlightIndex < partIndex.getNum()) {
         

@@ -90,9 +90,9 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
 
 
     if (Gui::Selection()
-            .isPickGeometryActive() && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths 
+            .isClarifySelectionActive() && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths 
         && ((ctx && !ctx->hl.empty()) || viewProvider->isFaceHighlightActive())) {
-            // if we are using pickgeometry - add this to delayed paths with priority
+            // if we are using clarifyselection - add this to delayed paths with priority
             // as we want to get this rendered on top of everything
             viewProvider->setFaceHighlightActive(true);
             Gui::SoDelayedAnnotationsElement::addDelayedPath(action->getState(),
@@ -154,7 +154,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
     }
     if(ctx2 && !ctx2->selectionIndex.empty())
         renderSelection(action,ctx2,false);
-    else if (Gui::Selection().isPickGeometryActive()
+    else if (Gui::Selection().isClarifySelectionActive()
              && ((ctx && !ctx->hl.empty()) || viewProvider->isFaceHighlightActive())
              && Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
         state->push();

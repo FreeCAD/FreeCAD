@@ -1974,7 +1974,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
             item->setChecked(true);
     }
 
-    // Add Pick Geometry option if there are objects under cursor
+    // Add Clarify Selection option if there are objects under cursor
     bool separator = false;
     auto posAction = !contextMenu->actions().empty() ? contextMenu->actions().front() : nullptr;
 
@@ -1990,12 +1990,12 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     
     if (pplist.getLength() > 0) {
         separator = true;
-        auto cmd = Application::Instance->commandManager().getCommandByName("Std_PickGeometry");
+        auto cmd = Application::Instance->commandManager().getCommandByName("Std_ClarifySelection");
         if (cmd) {
             pickAction = new QAction(cmd->getAction()->text(), contextMenu);
             pickAction->setShortcut(cmd->getAction()->shortcut());
         } else {
-            pickAction = new QAction(QObject::tr("Pick geometry"), contextMenu);
+            pickAction = new QAction(QObject::tr("Clarify Selection"), contextMenu);
         }
         if (posAction) {
             contextMenu->insertAction(posAction, pickAction);
@@ -2026,8 +2026,8 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     }
 
     if (pickAction && used == pickAction) {
-        // Execute the Pick Geometry command at this position
-        auto cmd = Application::Instance->commandManager().getCommandByName("Std_PickGeometry");
+        // Execute the Clarify Selection command at this position
+        auto cmd = Application::Instance->commandManager().getCommandByName("Std_ClarifySelection");
         if (cmd && cmd->isActive()) {
             cmd->invoke(0);
         }
