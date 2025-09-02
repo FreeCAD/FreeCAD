@@ -13,6 +13,9 @@ from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
 class ViewProviderSpreadsheet(ViewProviderDocumentObject):
     """
     ViewProviderSheet class
+
+    Author: Jose Luis Cercos Pita (jlcercos@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     def getView(self) -> Any:

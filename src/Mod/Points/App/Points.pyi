@@ -19,6 +19,9 @@ class Points(object):
 
     This class allows one to manipulate the Points object by adding new points, deleting facets, importing from an STL file,
     transforming and much more.
+
+    Author: Juergen Riegel (Juergen.Riegel@web.de)
+    License: LGPL-2.1-or-later
     """
 
     @constmethod

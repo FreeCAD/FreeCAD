@@ -14,6 +14,9 @@ from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
 class ViewProviderFemPostFilter(ViewProviderDocumentObject):
     """
     ViewProviderFemPostPipeline class
+
+    Author: Stefan Tröger (stefantroeger@gmx.net)
+    License: LGPL-2.1-or-later
     """
 
     def createDisplayTaskWidget(self) -> Any:

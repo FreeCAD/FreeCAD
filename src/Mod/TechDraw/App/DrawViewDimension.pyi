@@ -11,6 +11,9 @@ from TechDraw.DrawView import DrawView
 class DrawViewDimension(DrawView):
     """
     Feature for creating and manipulating Technical Drawing Dimensions
+    
+    Author: WandererFan (wandererfan@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     def getRawValue(self) -> Any:

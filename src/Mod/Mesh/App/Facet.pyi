@@ -17,6 +17,9 @@ class Facet(PyObjectBase):
     topological operations. It is also possible to create an unbounded facet e.g. to create
     a mesh. In this case the topological operations will fail. The same is
     when you cut the bound to the mesh by calling unbound().
+
+    Author: Juergen Riegel (Juergen.Riegel@web.de)
+    License: LGPL-2.1-or-later
     """
 
     def unbound(self) -> Any:

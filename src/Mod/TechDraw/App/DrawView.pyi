@@ -11,6 +11,9 @@ from App.DocumentObject import DocumentObject
 class DrawView(DocumentObject):
     """
     Feature for creating and manipulating Technical Drawing Views
+    
+    Author: WandererFan (wandererfan@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     def translateLabel(self) -> Any:

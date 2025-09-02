@@ -9,6 +9,9 @@ from App.DocumentObject import DocumentObject
 class DrawHatch(DocumentObject):
     """
     Feature for creating and manipulating Technical Drawing Hatch areas
+    
+    Author: WandererFan (wandererfan@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     def translateLabel(self) -> Any:

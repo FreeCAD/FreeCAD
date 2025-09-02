@@ -11,6 +11,9 @@ from TechDraw.DrawViewPart import DrawViewPart
 class DrawProjGroupItem(DrawViewPart):
     """
     Feature for creating and manipulating component Views Technical Drawing Projection Groups
+    
+    Author: WandererFan (wandererfan@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     def autoPosition(self) -> Any:

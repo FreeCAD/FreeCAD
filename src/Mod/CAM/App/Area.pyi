@@ -17,6 +17,9 @@ class Area(BaseClass):
 
     The constructor accepts the same parameters as setParams(...) to configure the object
     All arguments are optional.
+
+    Author: Zheng, Lei (realthunder.dev@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     def add(self, **kwargs) -> Any:

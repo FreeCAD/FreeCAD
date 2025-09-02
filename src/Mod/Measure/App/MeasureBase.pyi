@@ -10,4 +10,7 @@ from App.DocumentObject import DocumentObject
 class MeasureBase(DocumentObject):
     """
     User documentation here
+
+    Author: David Friedli(hlorus) (david@friedli-be.ch)
+    License: LGPL-2.1-or-later
     """

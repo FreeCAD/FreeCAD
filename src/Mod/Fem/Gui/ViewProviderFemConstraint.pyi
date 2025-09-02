@@ -11,6 +11,9 @@ from Gui.ViewProviderGeometryObject import ViewProviderGeometryObject
 class ViewProviderFemConstraint(ViewProviderGeometryObject):
     """
     This is the ViewProviderFemConstraint class
+
+    Author: Mario Passaglia (mpassaglia@cbc.uba.ar)
+    License: LGPL-2.1-or-later
     """
 
     def loadSymbol(self) -> Any:

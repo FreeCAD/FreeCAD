@@ -11,6 +11,9 @@ from TechDraw.DrawView import DrawView
 class DrawViewCollection(DrawView):
     """
     Feature for creating and manipulating Technical Drawing View Collections
+    
+    Author: WandererFan (wandererfan@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     def addView(self) -> Any:

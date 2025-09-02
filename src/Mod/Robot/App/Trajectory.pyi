@@ -12,6 +12,9 @@ from Base.Persistence import Persistence
 class Trajectory(Persistence):
     """
     Trajectory class
+
+    Author: Juergen Riegel (Juergen.Riegel@web.de)
+    License: LGPL-2.1-or-later
     """
 
     def insertWaypoints(self) -> Any:

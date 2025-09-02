@@ -11,6 +11,9 @@ from DrawTemplate import DrawTemplate
 class DrawSVGTemplate(DrawTemplate):
     """
     Feature for creating and manipulating Technical Drawing SVG Templates
+    
+    Author: Luke Parry (l.parry@warwick.ac.uk)
+    License: LGPL-2.1-or-later
     """
 
     def getEditFieldContent(self) -> Any:

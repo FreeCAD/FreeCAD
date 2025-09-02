@@ -8,6 +8,9 @@ from Gui.ViewProvider import ViewProvider
 class ViewProviderAssembly(ViewProvider):
     """
     This is the ViewProviderAssembly class
+
+    Author: Ondsel (development@ondsel.com)
+    License: LGPL-2.1-or-later
     """
 
     def isInEditMode(self) -> Any:

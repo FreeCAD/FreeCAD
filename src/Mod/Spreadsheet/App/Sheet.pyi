@@ -12,6 +12,9 @@ from App.DocumentObject import DocumentObject
 class Sheet(DocumentObject):
     """
     With this object you can manipulate spreadsheets
+
+    Author: Eivind Kvedalen (eivind@kvedalen.name)
+    License: LGPL-2.1-or-later
     """
 
     def set(self) -> Any:

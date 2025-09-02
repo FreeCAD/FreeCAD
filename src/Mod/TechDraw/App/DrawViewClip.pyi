@@ -11,6 +11,9 @@ from TechDraw.DrawView import DrawView
 class DrawViewClip(DrawView):
     """
     Feature for creating and manipulating Technical Drawing Clip Views
+    
+    Author: WandererFan (wandererfan@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     def addView(self) -> Any:

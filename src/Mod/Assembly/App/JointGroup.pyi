@@ -6,4 +6,7 @@ from App.DocumentObjectGroup import DocumentObjectGroup
 class JointGroup(DocumentObjectGroup):
     """
     This class is a group subclass for joints.
+
+    Author: Ondsel (development@ondsel.com)
+    License: LGPL-2.1-or-later
     """

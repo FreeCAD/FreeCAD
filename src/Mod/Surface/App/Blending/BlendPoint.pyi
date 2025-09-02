@@ -15,6 +15,9 @@ class BlendPoint(PyObjectBase):
     myBlendPoint = BlendPoint([Point, D1, D2, ..., DN])
     BlendPoint can also be constructed from an edge
     myBlendPoint = BlendPoint(Edge, parameter = float, continuity = int)
+
+    Author: Mattéo Grellier (matteogrellier@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     @constmethod

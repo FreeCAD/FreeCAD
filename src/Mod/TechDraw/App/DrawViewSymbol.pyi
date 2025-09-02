@@ -11,6 +11,9 @@ from TechDraw.DrawView import DrawView
 class DrawViewSymbol(DrawView):
     """
     Feature for creating and manipulating Drawing SVG Symbol Views
+    
+    Author: WandererFan (wandererfan@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     def dumpSymbol(self) -> Any:

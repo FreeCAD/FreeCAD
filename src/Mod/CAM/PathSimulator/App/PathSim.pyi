@@ -17,6 +17,9 @@ class PathSim(BaseClass):
     PathSimulator.PathSim():
 
     Create a path simulator object
+
+    Author: Shai Seger (shaise_at_g-mail)
+    License: LGPL-2.1-or-later
     """
 
     def BeginSimulation(self, **kwargs) -> Any:

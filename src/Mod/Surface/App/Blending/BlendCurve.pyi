@@ -13,6 +13,9 @@ class BlendCurve(PyObjectBase):
     """
     Create a BlendCurve that interpolate 2 BlendPoints.
         curve = BlendCurve(BlendPoint1, BlendPoint2)
+
+    Author: Mattéo Grellier (matteogrellier@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     def compute(self) -> Any:

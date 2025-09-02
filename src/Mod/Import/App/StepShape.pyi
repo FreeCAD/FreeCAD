@@ -13,6 +13,9 @@ class StepShape(PyObjectBase):
     """
     StepShape in Import
     This class gives a interface to retrieve TopoShapes out of an loaded STEP file of any kind.
+
+    Author: Juergen Riegel (Juergen.Riegel@web.de)
+    License: LGPL-2.1-or-later
     """
 
     def read(self) -> Any:
