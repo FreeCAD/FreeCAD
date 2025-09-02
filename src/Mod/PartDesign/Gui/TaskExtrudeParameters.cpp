@@ -334,11 +334,13 @@ void TaskExtrudeParameters::connectSlots()
 void TaskExtrudeParameters::onModeChanged_Side1(int index)
 {
     onModeChanged(index, Side::First);
+    setGizmoPositions();
 }
 
 void TaskExtrudeParameters::onModeChanged_Side2(int index)
 {
     onModeChanged(index, Side::Second);
+    setGizmoPositions();
 }
 
 void TaskExtrudeParameters::onSelectShapeFacesToggle(bool checked, Side side)
@@ -1391,17 +1393,21 @@ void TaskExtrudeParameters::setGizmoPositions()
     PartDesign::TopoShape shape = extrude->getProfileShape();
     Base::Vector3d center = getMidPointFromProfile(shape);
     std::string sideType = std::string(extrude->SideType.getValueAsString());
+    std::string extrudeType = std::string(extrude->Type.getValueAsString());
+    std::string extrudeType2 = std::string(extrude->Type2.getValueAsString());
     double dir = extrude->Reversed.getValue()? -1 : 1;
 
     lengthGizmo1->Gizmo::setDraggerPlacement(center, extrude->Direction.getValue() * dir);
+    lengthGizmo1->setVisibility(extrudeType == "Length");
     taperAngleGizmo1->placeOverLinearGizmo(lengthGizmo1);
+    taperAngleGizmo1->setVisibility(extrudeType == "Length");
     lengthGizmo2->Gizmo::setDraggerPlacement(center, -extrude->Direction.getValue() * dir);
     lengthGizmo2->setVisibility(
-        sideType == "Two sides"
+        sideType == "Two sides" && extrudeType2 == "Length"
     );
     taperAngleGizmo2->placeOverLinearGizmo(lengthGizmo2);
     taperAngleGizmo2->setVisibility(
-        sideType == "Two sides"
+        sideType == "Two sides" && extrudeType2 == "Length"
     );
 
     Base::Vector3d padDir = extrude->Direction.getValue().Normalized();

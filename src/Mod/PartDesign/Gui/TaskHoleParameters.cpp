@@ -1250,6 +1250,8 @@ void TaskHoleParameters::setGizmoPositions()
     holeDepthGizmo->setVisibility(
         std::string(hole->DepthType.getValueAsString()) == "Dimension"
     );
+
+    holeDepthGizmo->setDragLength(ui->Depth->rawValue());
 }
 
 
