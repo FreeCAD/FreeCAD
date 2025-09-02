@@ -56,7 +56,8 @@ SoPreviewShape::SoPreviewShape()
     SO_NODE_ADD_FIELD(lineWidth, (defaultLineWidth));
     SO_NODE_ADD_FIELD(transform, (SbMatrix::identity()));
 
-    pcTransform = new SoTransform;
+    pcTransform = new SoMatrixTransform;
+    pcTransform->matrix.connectFrom(&transform);
 
     auto pickStyle = new SoPickStyle;
     pickStyle->style = SoPickStyle::UNPICKABLE;
@@ -122,14 +123,6 @@ SoPreviewShape::SoPreviewShape()
 void SoPreviewShape::initClass()
 {
     SO_NODE_INIT_CLASS(SoPreviewShape, SoSeparator, "Separator");
-}
-
-void SoPreviewShape::notify(SoNotList* nl)
-{
-    SoField* field = nl->getLastField();
-    if (field == &transform) {
-        pcTransform->setMatrix(transform.getValue());
-    }
 }
 
 EXTENSION_PROPERTY_SOURCE(PartGui::ViewProviderPreviewExtension, Gui::ViewProviderExtension)
