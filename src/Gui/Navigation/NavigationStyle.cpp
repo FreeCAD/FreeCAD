@@ -1983,8 +1983,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
         QAction *item = navMenuGroup->addAction(name);
         navMenu->addAction(item);
         item->setCheckable(true);
-        QByteArray data(style.first.getName());
-        item->setData(data);
+        item->setData(QByteArray(style.first.getName()));
 
         if (const Base::Type item_style = style.first; item_style != this->getTypeId()) {
             auto triggeredFun = [this, item_style](){
