@@ -725,7 +725,6 @@ MenuItem* StdWorkbench::setupMenuBar() const
 #endif
     *tool << "Std_Measure"
           << "Std_ClarifySelection"
-          << "Std_QuickMeasure"
           << "Std_UnitsCalculator"
           << "Separator"
           << "Std_ViewLoadImage"
