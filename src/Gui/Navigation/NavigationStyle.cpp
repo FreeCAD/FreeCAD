@@ -2048,7 +2048,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
         // Execute the Clarify Selection command at this position
         auto cmd = Application::Instance->commandManager().getCommandByName("Std_ClarifySelection");
         if (cmd && cmd->isActive()) {
-            cmd->invoke(0);
+            cmd->invoke(0); // required placeholder value - we don't use group command
         }
     }
 }
