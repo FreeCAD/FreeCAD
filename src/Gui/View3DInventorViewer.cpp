@@ -106,6 +106,7 @@
 
 #include "View3DInventorViewer.h"
 #include "Application.h"
+#include "Command.h"
 #include "Document.h"
 #include "GLPainter.h"
 #include "Inventor/SoAxisCrossKit.h"
@@ -231,9 +232,27 @@ while the progress bar is running.
 class Gui::ViewerEventFilter : public QObject
 {
 public:
-    ViewerEventFilter() = default;
+    ViewerEventFilter() : longPressTimer(new QTimer(this)) {
+        longPressTimer->setSingleShot(true);
+        longPressTimer->setInterval(1000); // after 1s of LMB press on viewport it gets toggled
+        connect(longPressTimer, &QTimer::timeout, [this]() {
+            if (currentViewer) {
+                triggerPickGeometry();
+            }
+        });
+    }
     ~ViewerEventFilter() override = default;
 
+private:
+    void triggerPickGeometry() {
+        Gui::Command::runCommand(Gui::Command::Gui, "Gui.runCommand('Std_PickGeometry')");
+    }
+
+    QTimer* longPressTimer;
+    QPoint pressPosition;
+    View3DInventorViewer* currentViewer = nullptr;
+
+public:
     bool eventFilter(QObject* obj, QEvent* event) override {
         // Bug #0000607: Some mice also support horizontal scrolling which however might
         // lead to some unwanted zooming when pressing the MMB for panning.
@@ -273,6 +292,32 @@ public:
             if (!motionEvent) {
                 Base::Console().log("invalid spaceball motion event\n");
                 return true;
+            }
+        }
+
+        if (event->type() == QEvent::MouseButtonPress) {
+            auto mouseEvent = static_cast<QMouseEvent*>(event);
+            if (mouseEvent->button() == Qt::LeftButton) {
+                currentViewer = static_cast<View3DInventorViewer*>(obj);
+                pressPosition = mouseEvent->pos();
+                longPressTimer->start();
+            }
+        }
+        else if (event->type() == QEvent::MouseButtonRelease) {
+            auto mouseEvent = static_cast<QMouseEvent*>(event);
+            if (mouseEvent->button() == Qt::LeftButton) {
+                longPressTimer->stop();
+                currentViewer = nullptr;
+            }
+        }
+        else if (event->type() == QEvent::MouseMove) {
+            if (longPressTimer->isActive()) {
+                auto mouseEvent = static_cast<QMouseEvent*>(event);
+                // cancel long press if mouse moved too far (more than 5 pixels)
+                if ((mouseEvent->pos() - pressPosition).manhattanLength() > 5) {
+                    longPressTimer->stop();
+                    currentViewer = nullptr;
+                }
             }
         }
 
