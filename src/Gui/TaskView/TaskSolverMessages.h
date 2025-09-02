@@ -24,12 +24,12 @@
 #ifndef GUI_TASKVIEW_TaskSolverMessages_H
 #define GUI_TASKVIEW_TaskSolverMessages_H
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <Gui/TaskView/TaskView.h>
 
 class Ui_TaskSolverMessages;
-using Connection = boost::signals2::connection;
+using Connection = fastsignals::connection;
 
 namespace App
 {

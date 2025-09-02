@@ -551,6 +551,7 @@ static void finishFeature(const Gui::Command* cmd, App::DocumentObject *feature,
     auto base = dynamic_cast<PartDesign::Feature*>(feature);
     if (base)
         base = dynamic_cast<PartDesign::Feature*>(base->getBaseObject(true));
+
     App::DocumentObject *obj = base;
     if (!obj)
         obj = activeBody;

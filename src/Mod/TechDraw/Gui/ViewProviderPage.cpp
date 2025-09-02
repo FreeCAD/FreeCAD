@@ -30,8 +30,8 @@
 # include <QPointer>
 # include <QTextStream>
 
-# include <boost/signals2.hpp>
-# include <boost/signals2/connection.hpp>
+# include <fastsignals/signal.h>
+# include <fastsignals/connection.h>
 #endif
 
 #include <App/Document.h>
@@ -490,12 +490,14 @@ void ViewProviderPage::dropObject(App::DocumentObject* docObj)
 //! Redo the whole visual page
 void ViewProviderPage::onGuiRepaint(const TechDraw::DrawPage* dp)
 {
-    if (dp == getDrawPage()) {
-        //this signal is for us
-        if (!getDrawPage()->isUnsetting()) {
-            m_graphicsScene->fixOrphans();
+    QMetaObject::invokeMethod(qApp, [this, dp]() {
+        if (dp == getDrawPage()) {
+            //this signal is for us
+            if (!getDrawPage()->isUnsetting()) {
+                m_graphicsScene->fixOrphans();
+            }
         }
-    }
+    }, Qt::QueuedConnection);
 }
 
 TechDraw::DrawPage* ViewProviderPage::getDrawPage() const

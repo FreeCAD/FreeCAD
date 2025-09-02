@@ -249,7 +249,7 @@ private:
 
     static ManualAlignment* _instance;
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectApplicationDeletedDocument;
     Connection connectDocumentDeletedObject;
 
