@@ -10,13 +10,14 @@ it difficult for users to generate adaptive tool paths effectively.
 
 # Scope
 
-This epic is about improving the functionality and usability of the adaptive operation.
+
 
 | In  | Out |
 | --- | --- |
-| Algorithm fixes to reliably generate toolpaths with small stepover                                                     | Refactoring operation code to turn adaptive into an area operation (this is organizational, not functional) |
+| Algorithm fixes to reliably generate toolpaths with small stepover                                                     | Rewrite the adaptive algorithm based on new princples to produces arcs instead of lines (too much of a research project; not ready) |
 | Improved automatic diameter selection for entry helix, to never fail if it is possible to enter at the chosen point    |  |
 | Implement rest machining for adaptive                                                                                  |  |
 | Fix adaptive "profile" mode regression                                                                                 |  |
+| Refactor operation code to convert adaptive into a pocket/profile fill strategy                                        |  |
 
 # Related Epics
