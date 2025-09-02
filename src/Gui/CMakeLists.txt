@@ -1386,6 +1386,7 @@ SET(FreeCADGui_CPP_SRCS
     StartupProcess.cpp
     TransactionObject.cpp
     ToolHandler.cpp
+    VersionMigrator.cpp
     StyleParameters/Parser.cpp
     StyleParameters/ParameterManager.cpp
 )
@@ -1429,6 +1430,7 @@ SET(FreeCADGui_SRCS
     StartupProcess.h
     TransactionObject.h
     ToolHandler.h
+    VersionMigrator.h
     StyleParameters/Parser.h
     StyleParameters/ParameterManager.h
 )

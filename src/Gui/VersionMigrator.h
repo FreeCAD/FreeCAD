@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
- *   Copyright (c) 2024 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2025 The FreeCAD project association AISBL              *
  *                                                                         *
  *   This file is part of FreeCAD.                                         *
  *                                                                         *
@@ -21,71 +21,38 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_STARTUPPROCESS_H
-#define GUI_STARTUPPROCESS_H
+#ifndef GUI_VERSIONMIGRATOR_H
+#define GUI_VERSIONMIGRATOR_H
 
 #include <FCGlobal.h>
-#include <QStringList>
-
-class QApplication;
-class QMessageBox;
+#include <cstdint>
+#include <QObject>
 
 namespace Gui {
 
-class Application;
-class MainWindow;
+    class MainWindow;
 
-class GuiExport StartupProcess
+
+class GuiExport VersionMigrator : public QObject
 {
+    Q_OBJECT
+
 public:
-    StartupProcess();
-    static void setupApplication();
+    explicit VersionMigrator(MainWindow *mw);
     void execute();
 
-private:
-    void setLibraryPath();
-    void setStyleSheetPaths();
-    void setImagePaths();
-    void registerEventType();
-    void setThemePaths();
-    void setupFileDialog();
-};
+protected Q_SLOTS:
 
-class GuiExport StartupPostProcess
-{
-public:
-    StartupPostProcess(MainWindow* mw, Application& guiApp, QApplication* app);
-    void setLoadFromPythonModule(bool value);
-    void execute();
+    void confirmMigration();
+    void migrationCancelled() const;
+    void showSizeOfMigration(uintmax_t size);
+    void migrateToCurrentVersion();
 
 private:
-    void setWindowTitle();
-    void setProcessMessages();
-    void setAutoSaving();
-    void setToolBarIconSize();
-    void setWheelEventFilter();
-    void setLocale();
-    void setCursorFlashing();
-    void setQtStyle();
-    void checkOpenGL();
-    void loadOpenInventor();
-    void setBranding();
-    void setStyleSheet();
-    void autoloadModules(const QStringList& wb);
-    void setImportImageFormats();
-    void showMainWindow();
-    void activateWorkbench();
-    void checkParameters();
-    void checkVersionMigration() const;
-
-private:
-    bool loadFromPythonModule = false;
     MainWindow* mainWindow;
-    Application& guiApp;
-    QApplication* qtApp;
 };
 
 
 }
 
-#endif // GUI_STARTUPPROCESS_H
+#endif // GUI_VERSIONMIGRATOR_H
