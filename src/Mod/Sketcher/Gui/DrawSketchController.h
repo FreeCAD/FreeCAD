@@ -145,8 +145,9 @@ protected:
     };
     //@}
 
-private:
     Base::Vector2d prevCursorPosition;
+
+private:
     Base::Vector2d lastControlEnforcedPosition;
 
     int nOnViewParameter = OnViewParametersT::defaultMethodSize();
@@ -864,3 +865,4 @@ private:
 
 
 #endif  // SKETCHERGUI_DrawSketchController_H
+
