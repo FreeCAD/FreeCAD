@@ -106,10 +106,11 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
         prop.append(
             _PropHelper(
                 type="App::PropertyIntegerConstraint",
-                name="IterationsMaximum",
-                group="Solver",
-                doc="Maximum Number of iterations in each time step before stopping jobs",
-                value=2000,
+                name="IncrementsMaximum",
+                group="TimeIncrement",
+                doc="Maximum Number of increments in each CalculiX step.\n"
+                + "Set to 0 to use CalculiX default value",
+                value={"value": 2000, "min": 0},
             )
         )
         prop.append(
@@ -124,36 +125,36 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
         prop.append(
             _PropHelper(
                 type="App::PropertyTime",
-                name="TimeInitialStep",
+                name="TimeInitialIncrement",
                 group="TimeIncrement",
-                doc="Initial time steps",
-                value=0.01,
-            )
-        )
-        prop.append(
-            _PropHelper(
-                type="App::PropertyTime",
-                name="TimeEnd",
-                group="TimeIncrement",
-                doc="End time analysis",
+                doc="Initial time increment",
                 value=1.0,
             )
         )
         prop.append(
             _PropHelper(
                 type="App::PropertyTime",
-                name="TimeMinimumStep",
+                name="TimePeriod",
                 group="TimeIncrement",
-                doc="Minimum time step",
+                doc="Time period of the CalculiX step",
+                value=1.0,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyTime",
+                name="TimeMinimumIncrement",
+                group="TimeIncrement",
+                doc="Minimum time increment",
                 value=0.00001,
             )
         )
         prop.append(
             _PropHelper(
                 type="App::PropertyTime",
-                name="TimeMaximumStep",
+                name="TimeMaximumIncrement",
                 group="TimeIncrement",
-                doc="Maximum time step",
+                doc="Maximum time increment",
                 value=1.0,
             )
         )
@@ -227,8 +228,8 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
                 type="App::PropertyBool",
                 name="AutomaticIncrementation",
                 group="TimeIncrement",
-                doc="If False, switch off automatic incrementation via CalculiX\n"
-                + "`DIRECT` parameter and ignore minimum and maximum time increments.\n"
+                doc="If False, switch off automatic incrementation via `DIRECT`\n"
+                + "parameter and ignore minimum and maximum time increments.\n"
                 + "Analysis may not converge!",
                 value=True,
             )
@@ -341,5 +342,26 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
             obj.setPropertyStatus("IterationsUserDefinedTimeStepLength", "-LockDynamic")
             obj.removeProperty("IterationsUserDefinedTimeStepLength")
 
+            obj.TimeInitialIncrement = obj.getPropertyByName("TimeInitialStep")
+            obj.setPropertyStatus("TimeInitialStep", "-LockDynamic")
+            obj.removeProperty("TimeInitialStep")
+
+            obj.TimePeriod = obj.getPropertyByName("TimeEnd")
+            obj.setPropertyStatus("TimeEnd", "-LockDynamic")
+            obj.removeProperty("TimeEnd")
+
+            obj.TimeMaximumIncrement = obj.getPropertyByName("TimeMaximumStep")
+            obj.setPropertyStatus("TimeMaximumStep", "-LockDynamic")
+            obj.removeProperty("TimeMaximumStep")
+
+            obj.TimeMinimumIncrement = obj.getPropertyByName("TimeMinimumStep")
+            obj.setPropertyStatus("TimeMinimumStep", "-LockDynamic")
+            obj.removeProperty("TimeMinimumStep")
+
+            obj.IncrementsMaximum = obj.getPropertyByName("IterationsMaximum")
+            obj.setPropertyStatus("IterationsMaximum", "-LockDynamic")
+            obj.removeProperty("IterationsMaximum")
+
         except Base.PropertyError:
+            # do nothing
             pass

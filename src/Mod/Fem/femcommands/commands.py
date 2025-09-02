@@ -962,26 +962,26 @@ class _SolverCalculixContextManager:
             )
         )
         FreeCADGui.doCommand(
-            "{}.IterationsMaximum = {}".format(
-                self.cli_name, ccx_prefs.GetInt("AnalysisMaxIterations", 2000)
+            "{}.IncrementsMaximum = {}".format(
+                self.cli_name, ccx_prefs.GetInt("StepMaxIncrements", 2000)
             )
         )
         FreeCADGui.doCommand(
-            "{}.TimeInitialStep = {}".format(
-                self.cli_name, ccx_prefs.GetFloat("AnalysisTimeInitialStep", 1.0)
+            "{}.TimeInitialIncrement = {}".format(
+                self.cli_name, ccx_prefs.GetFloat("TimeInitialIncrement", 1.0)
             )
         )
         FreeCADGui.doCommand(
-            "{}.TimeEnd = {}".format(self.cli_name, ccx_prefs.GetFloat("AnalysisTime", 1.0))
+            "{}.TimePeriod = {}".format(self.cli_name, ccx_prefs.GetFloat("TimePeriod", 1.0))
         )
         FreeCADGui.doCommand(
-            "{}.TimeMinimumStep = {}".format(
-                self.cli_name, ccx_prefs.GetFloat("AnalysisTimeMinimumStep", 0.00001)
+            "{}.TimeMinimumIncrement = {}".format(
+                self.cli_name, ccx_prefs.GetFloat("TimeMinimumIncrement", 0.00001)
             )
         )
         FreeCADGui.doCommand(
-            "{}.TimeMaximumStep = {}".format(
-                self.cli_name, ccx_prefs.GetFloat("AnalysisTimeMaximumStep", 1.0)
+            "{}.TimeMaximumIncrement = {}".format(
+                self.cli_name, ccx_prefs.GetFloat("TimeMaximumIncrement", 1.0)
             )
         )
         FreeCADGui.doCommand(
