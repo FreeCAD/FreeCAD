@@ -10,6 +10,8 @@ from App.DocumentObject import DocumentObject
 )
 class FeatureArea(DocumentObject):
     """
+    Author: Zheng, Lei (realthunder.dev@gmail.com)
+    License: LGPL-2.1-or-later
     This class handles Path Area features
     """
 

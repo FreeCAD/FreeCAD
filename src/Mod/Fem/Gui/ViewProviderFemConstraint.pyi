@@ -10,6 +10,8 @@ from Gui.ViewProviderGeometryObject import ViewProviderGeometryObject
 )
 class ViewProviderFemConstraint(ViewProviderGeometryObject):
     """
+    Author: Mario Passaglia (mpassaglia@cbc.uba.ar)
+    License: LGPL-2.1-or-later
     This is the ViewProviderFemConstraint class
     """
 

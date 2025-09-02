@@ -11,6 +11,8 @@ from App.DocumentObject import DocumentObject
 )
 class Sheet(DocumentObject):
     """
+    Author: Eivind Kvedalen (eivind@kvedalen.name)
+    License: LGPL-2.1-or-later
     With this object you can manipulate spreadsheets
     """
 

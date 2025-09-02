@@ -11,6 +11,8 @@ from Base.PyObjectBase import PyObjectBase
 )
 class Facet(PyObjectBase):
     """
+    Author: Juergen Riegel (Juergen.Riegel@web.de)
+    License: LGPL-2.1-or-later
     Facet in mesh
     This is a facet in a MeshObject. You can get it by e.g. iterating a
     mesh. The facet has a connection to its mesh and allows therefore

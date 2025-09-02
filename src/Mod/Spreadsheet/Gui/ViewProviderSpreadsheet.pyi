@@ -12,6 +12,8 @@ from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
 )
 class ViewProviderSpreadsheet(ViewProviderDocumentObject):
     """
+    Author: Jose Luis Cercos Pita (jlcercos@gmail.com)
+    License: LGPL-2.1-or-later
     ViewProviderSheet class
     """
 

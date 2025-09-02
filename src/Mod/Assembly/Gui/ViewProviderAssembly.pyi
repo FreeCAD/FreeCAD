@@ -7,6 +7,8 @@ from Gui.ViewProvider import ViewProvider
 @export(Include="Mod/Assembly/Gui/ViewProviderAssembly.h", Namespace="AssemblyGui")
 class ViewProviderAssembly(ViewProvider):
     """
+    Author: Ondsel (development@ondsel.com)
+    License: LGPL-2.1-or-later
     This is the ViewProviderAssembly class
     """
 

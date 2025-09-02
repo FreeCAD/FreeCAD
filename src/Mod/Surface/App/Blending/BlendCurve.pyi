@@ -11,6 +11,8 @@ from Base.Metadata import export
 )
 class BlendCurve(PyObjectBase):
     """
+    Author: Mattéo Grellier (matteogrellier@gmail.com)
+    License: LGPL-2.1-or-later
     Create a BlendCurve that interpolate 2 BlendPoints.
         curve = BlendCurve(BlendPoint1, BlendPoint2)
     """

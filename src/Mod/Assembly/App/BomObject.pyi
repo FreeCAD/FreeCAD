@@ -8,5 +8,7 @@ from Spreadsheet.Sheet import Sheet
 )
 class BomObject(Sheet):
     """
+    Author: Ondsel (development@ondsel.com)
+    License: LGPL-2.1-or-later
     This class is the BOM object of assemblies, it derives from Spreadsheet::Sheet.
     """

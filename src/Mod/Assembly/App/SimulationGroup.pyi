@@ -5,5 +5,7 @@ from App.DocumentObjectGroup import DocumentObjectGroup
 @export(Include="Mod/Assembly/App/SimulationGroup.h", Namespace="Assembly")
 class SimulationGroup(DocumentObjectGroup):
     """
+    Author: Ondsel (development@ondsel.com)
+    License: LGPL-2.1-or-later
     This class is a group subclass for joints.
     """

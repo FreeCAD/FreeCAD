@@ -12,6 +12,8 @@ from Base.Metadata import export
 )
 class PathSim(BaseClass):
     """
+    Author: Shai Seger (shaise_at_g-mail)
+    License: LGPL-2.1-or-later
     FreeCAD python wrapper of PathSimulator
 
     PathSimulator.PathSim():

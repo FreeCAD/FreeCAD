@@ -10,6 +10,8 @@ from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
 )
 class ViewProviderFemPostPipeline(ViewProviderDocumentObject):
     """
+    Author: Uwe Stöhr (uwestoehr@lyx.org)
+    License: LGPL-2.1-or-later
     ViewProviderFemPostPipeline class
     """
 

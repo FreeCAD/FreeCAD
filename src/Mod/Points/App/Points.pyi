@@ -15,6 +15,8 @@ from Data import object
 )
 class Points(object):
     """
+    Author: Juergen Riegel (Juergen.Riegel@web.de)
+    License: LGPL-2.1-or-later
     Points() -- Create an empty points object.
 
     This class allows one to manipulate the Points object by adding new points, deleting facets, importing from an STL file,

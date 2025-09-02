@@ -12,6 +12,8 @@ from Base.Metadata import constmethod, export
 )
 class VoronoiVertex(BaseClass):
     """
+    Author: sliptonic (shopinthewoods@gmail.com)
+    License: LGPL-2.1-or-later
     Vertex of a Voronoi diagram
     """
 

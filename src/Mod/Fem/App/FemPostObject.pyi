@@ -12,6 +12,8 @@ from App.GeoFeature import GeoFeature
 )
 class FemPostObject(GeoFeature):
     """
+    Author: Mario Passaglia (mpassaglia@cbc.uba.ar)
+    License: LGPL-2.1-or-later
     The FemPostObject class.
     """
 
