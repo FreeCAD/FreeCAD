@@ -10,8 +10,6 @@ from TechDraw.DrawView import DrawView
 )
 class DrawViewSymbol(DrawView):
     """
-    Author: WandererFan (wandererfan@gmail.com)
-    License: LGPL-2.1-or-later
     Feature for creating and manipulating Drawing SVG Symbol Views
     """
 

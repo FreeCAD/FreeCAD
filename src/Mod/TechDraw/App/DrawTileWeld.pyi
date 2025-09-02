@@ -8,7 +8,5 @@ from TechDraw.DrawTile import DrawTile
 )
 class DrawTileWeld(DrawTile):
     """
-    Author: WandererFan (wandererfan@gmail.com)
-    License: LGPL-2.1-or-later
     Feature for adding welding tiles to leader lines
     """

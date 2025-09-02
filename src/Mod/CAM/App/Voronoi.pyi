@@ -11,8 +11,6 @@ from Base.Metadata import constmethod, export
 )
 class Voronoi(BaseClass):
     """
-    Author: sliptonic (shopinthewoods@gmail.com)
-    License: LGPL-2.1-or-later
     Voronoi([segments]): Create voronoi for given collection of line segments
     """
 

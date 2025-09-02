@@ -10,8 +10,6 @@ from TechDraw.DrawViewPart import DrawViewPart
 )
 class DrawBrokenView(DrawViewPart):
     """
-    Author: WandererFan (wandererfan@gmail.com)
-    License: LGPL-2.1-or-later
     Feature for creating and manipulating Technical Drawing broken views
     """
 

@@ -13,8 +13,6 @@ from Base.Persistence import Persistence
 )
 class Path(Persistence):
     """
-    Author: Yorik van Havre (yorik@uncreated.net)
-    License: LGPL-2.1-or-later
     Path([commands]): Represents a basic Gcode path
     commands (optional) is a list of Path commands
     """

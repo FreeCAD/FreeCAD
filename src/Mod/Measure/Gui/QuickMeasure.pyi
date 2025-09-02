@@ -9,7 +9,5 @@ from Base.PyObjectBase import PyObjectBase
 )
 class QuickMeasure(PyObjectBase):
     """
-    Author: Ondsel (development@ondsel.com)
-    License: LGPL-2.1-or-later
     Selection Observer for the QuickMeasure label.
     """

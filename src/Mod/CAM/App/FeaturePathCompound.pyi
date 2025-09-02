@@ -11,8 +11,6 @@ from App.DocumentObject import DocumentObject
 )
 class FeaturePathCompound(DocumentObject):
     """
-    Author: Yorik van Havre (yorik@uncreated.net)
-    License: LGPL-2.1-or-later
     This class handles Path Compound features
     """
 

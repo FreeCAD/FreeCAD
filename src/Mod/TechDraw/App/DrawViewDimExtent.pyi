@@ -10,8 +10,6 @@ from TechDraw.DrawViewDimension import DrawViewDimension
 )
 class DrawViewDimExtent(DrawViewDimension):
     """
-    Author: WandererFan (wandererfan@gmail.com)
-    License: LGPL-2.1-or-later
     Feature for creating and manipulating Technical Drawing DimExtents
     """
 

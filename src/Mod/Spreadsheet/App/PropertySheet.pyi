@@ -11,7 +11,5 @@ from Base.Persistence import Persistence
 )
 class PropertySheet(Persistence):
     """
-    Author: Eivind Kvedalen (eivind@kvedalen.name)
-    License: LGPL-2.1-or-later
     Internal spreadsheet object
     """
