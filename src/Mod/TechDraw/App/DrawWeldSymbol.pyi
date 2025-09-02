@@ -9,4 +9,7 @@ from TechDraw.DrawView import DrawView
 class DrawWeldSymbol(DrawView):
     """
     Feature for adding welding tiles to leader lines
+    
+    Author: WandererFan (wandererfan@gmail.com)
+    License: LGPL-2.1-or-later
     """

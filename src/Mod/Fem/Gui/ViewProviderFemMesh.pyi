@@ -11,6 +11,9 @@ from Gui.ViewProviderGeometryObject import ViewProviderGeometryObject
 class ViewProviderFemMesh(ViewProviderGeometryObject):
     """
     ViewProviderFemMesh class
+
+    Author: Juergen Riegel (Juergen.Riegel@web.de)
+    License: LGPL-2.1-or-later
     """
 
     def applyDisplacement(self) -> Any:

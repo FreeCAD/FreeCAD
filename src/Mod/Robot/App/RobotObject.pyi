@@ -11,6 +11,9 @@ from App.DocumentObject import DocumentObject
 class RobotObject(DocumentObject):
     """
     Robot document object
+
+    Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
+    License: LGPL-2.1-or-later
     """
 
     def getRobot(self) -> Any:

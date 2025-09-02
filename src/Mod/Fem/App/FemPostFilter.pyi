@@ -13,6 +13,9 @@ from Fem.FemPostObject import FemPostObject
 class FemPostFilter(FemPostObject):
     """
     The FemPostFilter class.
+
+    Author: Stefan Tröger (stefantroeger@gmx.net)
+    License: LGPL-2.1-or-later
     """
 
     def addFilterPipeline(self) -> Any:

@@ -12,6 +12,9 @@ from Base.Metadata import constmethod, export
 class GeomFormat(PyObjectBase):
     """
     GeomFormat specifies appearance parameters for TechDraw Geometry objects
+    
+    Author: WandererFan (wandererfan@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     @constmethod

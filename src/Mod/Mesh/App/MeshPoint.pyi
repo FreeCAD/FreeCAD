@@ -17,6 +17,9 @@ class MeshPoint(PyObjectBase):
     topological operations. It is also possible to create an unbounded mesh point e.g. to create
     a mesh. In this case the topological operations will fail. The same is
     when you cut the bound to the mesh by calling unbound().
+
+    Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
+    License: LGPL-2.1-or-later
     """
 
     def unbound(self) -> Any:

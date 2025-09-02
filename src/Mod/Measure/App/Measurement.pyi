@@ -11,6 +11,9 @@ from Base.Metadata import export
 class Measurement(BaseClass):
     """
     Make a measurement
+
+    Author: Luke Parry (l.parry@warwick.ac.uk)
+    License: LGPL-2.1-or-later
     """
 
     def addReference3D(self) -> Any:

@@ -13,6 +13,9 @@ from App.GeoFeature import GeoFeature
 class FemPostObject(GeoFeature):
     """
     The FemPostObject class.
+
+    Author: Mario Passaglia (mpassaglia@cbc.uba.ar)
+    License: LGPL-2.1-or-later
     """
 
     def writeVTK(self) -> Any:

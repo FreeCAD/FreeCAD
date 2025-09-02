@@ -9,4 +9,7 @@ from TechDraw.Drawview import DrawView
 class DrawViewAnnotation(DrawView):
     """
     Feature for creating and manipulating Technical Drawing Annotation Views
+    
+    Author: WandererFan (wandererfan@gmail.com)
+    License: LGPL-2.1-or-later
     """

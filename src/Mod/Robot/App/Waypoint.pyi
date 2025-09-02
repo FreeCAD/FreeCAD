@@ -12,6 +12,9 @@ from Base.Persistence import Persistence
 class Waypoint(Persistence):
     """
     Waypoint class
+
+    Author: Juergen Riegel (Juergen.Riegel@web.de)
+    License: LGPL-2.1-or-later
     """
 
     Name: str

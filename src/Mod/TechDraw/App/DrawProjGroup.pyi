@@ -11,6 +11,9 @@ from TechDraw.DrawViewCollection import DrawViewCollection
 class DrawProjGroup(DrawViewCollection):
     """
     Feature for creating and manipulating Technical Drawing Projection Groups
+    
+    Author: WandererFan (wandererfan@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     def addProjection(self) -> Any:

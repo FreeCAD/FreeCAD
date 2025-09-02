@@ -11,6 +11,9 @@ from App.DocumentObject import DocumentObject
 class FeatureArea(DocumentObject):
     """
     This class handles Path Area features
+
+    Author: Zheng, Lei (realthunder.dev@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     def getArea(self) -> Any:

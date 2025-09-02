@@ -15,6 +15,9 @@ class Path(Persistence):
     """
     Path([commands]): Represents a basic Gcode path
     commands (optional) is a list of Path commands
+
+    Author: Yorik van Havre (yorik@uncreated.net)
+    License: LGPL-2.1-or-later
     """
 
     def addCommands(self) -> Any:

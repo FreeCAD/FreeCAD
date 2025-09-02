@@ -9,6 +9,9 @@ from Base.Metadata import export
 class ViewProviderMesh(ViewProviderGeometryObject):
     """
     This is the ViewProvider base class
+
+    Author: Werner Mayer (wmayer@users.sourceforge.net)
+    License: LGPL-2.1-or-later
     """
 
     def setSelection(self) -> Any:

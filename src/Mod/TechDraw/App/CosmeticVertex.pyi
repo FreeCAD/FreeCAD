@@ -12,6 +12,9 @@ from Base.Metadata import constmethod, export
 class CosmeticVertex(PyObjectBase):
     """
     CosmeticVertex specifies an extra (cosmetic) vertex in Views
+    
+    Author: WandererFan (wandererfan@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     @constmethod

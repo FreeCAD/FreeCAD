@@ -10,6 +10,9 @@ from App.DocumentObject import DocumentObject
 class DrawPage(DocumentObject):
     """
     Feature for creating and manipulating Technical Drawing Pages
+    
+    Author: WandererFan (wandererfan@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     def addView(self) -> Any:

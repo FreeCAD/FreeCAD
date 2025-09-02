@@ -13,6 +13,9 @@ from Base.Metadata import constmethod, export
 class VoronoiCell(BaseClass):
     """
     Cell of a Voronoi diagram
+
+    Author: sliptonic (shopinthewoods@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     @constmethod

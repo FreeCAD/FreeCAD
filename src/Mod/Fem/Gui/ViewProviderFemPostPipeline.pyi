@@ -11,6 +11,9 @@ from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
 class ViewProviderFemPostPipeline(ViewProviderDocumentObject):
     """
     ViewProviderFemPostPipeline class
+
+    Author: Uwe Stöhr (uwestoehr@lyx.org)
+    License: LGPL-2.1-or-later
     """
 
     def transformField(self) -> Any:

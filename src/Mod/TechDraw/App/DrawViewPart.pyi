@@ -11,6 +11,9 @@ from TechDraw.rawView import DrawView
 class DrawViewPart(DrawView):
     """
     Feature for creating and manipulating Technical Drawing Part Views
+    
+    Author: WandererFan (wandererfan@gmail.com)
+    License: LGPL-2.1-or-later
     """
 
     def getVisibleEdges(self) -> Any:

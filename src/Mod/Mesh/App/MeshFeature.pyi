@@ -17,6 +17,9 @@ class MeshFeature(GeoFeature):
     The Mesh.MeshFeature() function is for internal use only and cannot be used to create instances of this class.
     Therefore you must have a reference to a document, e.g. 'd' then you can create an instance with
     d.addObject("Mesh::Feature").
+
+    Author: Werner Mayer (wmayer@users.sourceforge.net)
+    License: LGPL-2.1-or-later
     """
 
     def countPoints(self) -> Any:

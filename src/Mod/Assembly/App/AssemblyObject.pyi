@@ -8,6 +8,9 @@ from App.Part import Part
 class AssemblyObject(Part):
     """
     This class handles document objects in Assembly
+
+    Author: Ondsel (development@ondsel.com)
+    License: LGPL-2.1-or-later
     """
 
     @constmethod
