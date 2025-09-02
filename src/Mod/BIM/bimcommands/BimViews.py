@@ -111,10 +111,10 @@ class BIM_Views:
             self.dialog.buttonAddProxy.setIcon(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"))
             self.dialog.buttonDelete.setIcon(QtGui.QIcon(":/icons/delete.svg"))
             self.dialog.buttonToggle.setIcon(QtGui.QIcon(":/icons/dagViewVisible.svg"))
-            self.dialog.buttonIsolate.setIcon(QtGui.QIcon(":/icons/view-refresh.svg"))
-            self.dialog.buttonSaveView.setIcon(QtGui.QIcon(":/icons/view-perspective.svg"))
+            self.dialog.buttonIsolate.setIcon(QtGui.QIcon(":/icons/Std_ShowSelection.svg"))
+            self.dialog.buttonSaveView.setIcon(QtGui.QIcon(":/icons/Std_ViewScreenShot.svg"))
             self.dialog.buttonRename.setIcon(
-                QtGui.QIcon(":/icons/accessories-text-editor.svg")
+                QtGui.QIcon(":/icons/edit-edit.svg")
             )
 
             # set tooltips
