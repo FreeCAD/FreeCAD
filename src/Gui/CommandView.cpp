@@ -4065,8 +4065,7 @@ void StdCmdClarifySelection::activated(int iMsg)
 
 bool StdCmdClarifySelection::isActive()
 {
-    auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    return view != nullptr;
+    return qobject_cast<View3DInventor*>(getMainWindow()->activeWindow()) != nullptr;
 }
 
 //===========================================================================
