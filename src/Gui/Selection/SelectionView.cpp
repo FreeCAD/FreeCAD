@@ -1048,7 +1048,7 @@ void SelectionMenu::createFlatMenu(ElementInfo &elementInfo, QMenu *parentMenu, 
         const auto &sel = selections[idx];
         QString text = QString::fromUtf8(label.c_str());
         if (!sel.element.empty()) {
-            text += QString::fromLatin1(" (") + QString::fromUtf8(sel.element.c_str()) + QString::fromLatin1(")");
+            text += QStringLiteral(" (%1)").arg(QString::fromUtf8(sel.element.c_str()));
         } else if (elementType == "Object" && !sel.subName.empty() && sel.subName.back() == '.') {
             text += QString::fromLatin1(" (Whole Object)");
         }
