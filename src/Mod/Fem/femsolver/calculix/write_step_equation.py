@@ -46,9 +46,9 @@ def write_step_equation(f, ccxwriter):
                 "analysis are not allowed together, linear is used instead!\n"
             )
 
-    if ccxwriter.solver_obj.IterationsMaximum:
+    if ccxwriter.solver_obj.IncrementsMaximum:
         if ccxwriter.analysis_type in ["static", "thermomech", "electrostatic"]:
-            step += f", INC={ccxwriter.solver_obj.IterationsMaximum}"
+            step += f", INC={ccxwriter.solver_obj.IncrementsMaximum}"
 
     # write STEP line
     f.write(step + "\n")
@@ -108,10 +108,10 @@ def write_step_equation(f, ccxwriter):
     analysis_parameter = ""
     if ccxwriter.analysis_type in ["static", "thermomech", "electromagnetic"]:
         analysis_parameter = "{},{},{},{}".format(
-            ccxwriter.solver_obj.TimeInitialStep.getValueAs("s").Value,
-            ccxwriter.solver_obj.TimeEnd.getValueAs("s").Value,
-            ccxwriter.solver_obj.TimeMinimumStep.getValueAs("s").Value,
-            ccxwriter.solver_obj.TimeMaximumStep.getValueAs("s").Value,
+            ccxwriter.solver_obj.TimeInitialIncrement.getValueAs("s").Value,
+            ccxwriter.solver_obj.TimePeriod.getValueAs("s").Value,
+            ccxwriter.solver_obj.TimeMinimumIncrement.getValueAs("s").Value,
+            ccxwriter.solver_obj.TimeMaximumIncrement.getValueAs("s").Value,
         )
     elif ccxwriter.analysis_type == "frequency":
         if (
