@@ -373,7 +373,7 @@ void DlgAddProperty::addEditor(PropertyItem* propertyItem)
     setWidgetForLabel("labelValue", editor.get(), layout());
 
     QWidget::setTabOrder(ui->comboBoxType, editor.get());
-    QWidget::setTabOrder(editor.get(), ui->checkBoxAdd);
+    QWidget::setTabOrder(editor.get(), ui->lineEditToolTip);
 
     removeSelectionEditor();
 }
@@ -477,10 +477,19 @@ void DlgAddProperty::setTitle()
     setWindowTitle(tr("Add Property"));
 }
 
-void DlgAddProperty::setOkEnabled(bool enabled)
+void DlgAddProperty::setAddEnabled(bool enabled)
 {
-    QPushButton *okButton = ui->buttonBox->button(QDialogButtonBox::Ok);
-    okButton->setEnabled(enabled);
+    QPushButton *addButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton *cancelButton = ui->buttonBox->button(QDialogButtonBox::Cancel);
+    if (enabled) {
+        cancelButton->setDefault(false);
+        addButton->setDefault(true);
+    }
+    else {
+        cancelButton->setDefault(true);
+        addButton->setDefault(false);
+    }
+    addButton->setEnabled(enabled);
 }
 
 void DlgAddProperty::initializeWidgets(ViewProviderVarSet* viewProvider)
@@ -497,7 +506,9 @@ void DlgAddProperty::initializeWidgets(ViewProviderVarSet* viewProvider)
             this, &DlgAddProperty::onNameChanged);
 
     setTitle();
-    setOkEnabled(false);
+    QPushButton *addButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    addButton->setText(tr("Add"));
+    setAddEnabled(false);
 
     ui->lineEditName->setFocus();
 
@@ -593,7 +604,7 @@ void DlgAddProperty::removeEditor()
     placeholder->setMinimumHeight(comboBoxGroup.height());
     setWidgetForLabel("labelValue", placeholder, layout());
 
-    QWidget::setTabOrder(ui->comboBoxType, ui->checkBoxAdd);
+    QWidget::setTabOrder(ui->comboBoxType, ui->lineEditToolTip);
     editor = nullptr;
 }
 
@@ -735,7 +746,7 @@ void DlgAddProperty::onNameChanged([[maybe_unused]]const QString& text)
         propertyItem = nullptr;
     }
 
-    setOkEnabled(areFieldsValid());
+    setAddEnabled(areFieldsValid());
     showStatusMessage();
 }
 
@@ -750,7 +761,7 @@ void DlgAddProperty::onGroupFinished()
         }
     }
 
-    setOkEnabled(areFieldsValid());
+    setAddEnabled(areFieldsValid());
     showStatusMessage();
 }
 
@@ -765,7 +776,7 @@ void DlgAddProperty::onTypeChanged([[maybe_unused]] const QString& text)
     }
     // nothing if both name and type are invalid
 
-    setOkEnabled(areFieldsValid());
+    setAddEnabled(areFieldsValid());
     showStatusMessage();
 }
 
@@ -862,7 +873,7 @@ void DlgAddProperty::clearFields()
     }
     ui->lineEditToolTip->clear();
     initializeValue();
-    setOkEnabled(false);
+    setAddEnabled(false);
 }
 
 void DlgAddProperty::addDocumentation() {
@@ -903,14 +914,11 @@ void DlgAddProperty::accept()
     paramGroup->SetASCII("NewPropertyType", type.c_str());
     paramGroup->SetASCII("NewPropertyGroup", group.c_str());
 
-    if (ui->checkBoxAdd->isChecked()) {
-        clearFields();
-        ui->lineEditName->setFocus();
-    }
-    else {
-        // we are done, close the dialog
-        QDialog::accept();
-    }
+    clearFields();
+    ui->lineEditName->setFocus();
+
+    // Note that we don't call QDialog::accept() here to keep the dialog
+    // open for adding more properties.
 }
 
 void DlgAddProperty::reject()
