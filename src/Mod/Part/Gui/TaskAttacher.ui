@@ -133,7 +133,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>In x-direction</string>
+         <string>In X-direction</string>
         </property>
        </widget>
       </item>
@@ -169,7 +169,7 @@ of the object being attached</string>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>In y-direction</string>
+         <string>In Y-direction</string>
         </property>
        </widget>
       </item>
@@ -205,7 +205,7 @@ of the object being attached</string>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>In z-direction</string>
+         <string>In Z-direction</string>
         </property>
        </widget>
       </item>
