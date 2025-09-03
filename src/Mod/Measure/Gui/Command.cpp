@@ -153,4 +153,3 @@ void CreateMeasureCommands()
     rcCmdMgr.addCommand(cmd);
     rcCmdMgr.addCommand(new StdCmdQuickMeasure);
 }
-
