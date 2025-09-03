@@ -122,10 +122,7 @@ App::OriginGroupExtension* ReferenceSelection::getOriginGroupExtension(PartDesig
 {
     App::DocumentObject* originGroupObject = nullptr;
 
-    if (body) { // Search for Part of the body
-        originGroupObject = App::OriginGroupExtension::getGroupOfObject(body);
-    }
-    else if (support) { // if no body search part for support
+    if (support) { // if no body search part for support
         originGroupObject = App::OriginGroupExtension::getGroupOfObject(support);
     }
     else { // fallback to active part
@@ -319,6 +316,7 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
                 return false;
             }
 
+/*
             if (!dlg.radioXRef->isChecked()) {
                 App::Document* document = thisObj->getDocument();
                 document->openTransaction("Make copy");
@@ -329,6 +327,7 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
                 subname.erase(std::remove_if(subname.begin(), subname.end(), &isdigit), subname.end());
                 subname.append("1");
             }
+*/
         }
     }
 

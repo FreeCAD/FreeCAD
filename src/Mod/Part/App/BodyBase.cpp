@@ -39,7 +39,8 @@ BodyBase::BodyBase()
 
     ADD_PROPERTY(BaseFeature , (nullptr) );
 
-    App::OriginGroupExtension::initExtension(this);
+    App::GeoFeatureGroupExtension::initExtension(this);
+
 }
 
 BodyBase* BodyBase::findBodyOf(const App::DocumentObject* f)
@@ -116,5 +117,7 @@ PyObject* BodyBase::getPyObject()
     }
     return Py::new_reference_to(PythonObject);
 }
+
+
 
 } /* Part */

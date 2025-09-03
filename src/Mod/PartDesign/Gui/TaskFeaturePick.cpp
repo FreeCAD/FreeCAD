@@ -72,7 +72,7 @@ const QString TaskFeaturePick::getFeatureStatusString(const featureStatus st)
         case isUsed:
             return tr("Sketch already used by other feature");
         case otherBody:
-            return tr("Belongs to another body");
+            return tr("Valid");
         case otherPart:
             return tr("Belongs to another part");
         case notInBody:
@@ -100,7 +100,6 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
 
     // clang-format off
     connect(ui->checkUsed, &QCheckBox::toggled, this, &TaskFeaturePick::onUpdate);
-    connect(ui->checkOtherBody, &QCheckBox::toggled, this, &TaskFeaturePick::onUpdate);
     connect(ui->checkOtherPart, &QCheckBox::toggled, this, &TaskFeaturePick::onUpdate);
     connect(ui->radioIndependent, &QRadioButton::toggled, this, &TaskFeaturePick::onUpdate);
     connect(ui->radioDependent, &QRadioButton::toggled, this, &TaskFeaturePick::onUpdate);
@@ -202,7 +201,7 @@ void TaskFeaturePick::updateList()
                 item->setHidden(true);
                 break;
             case otherBody:
-                item->setHidden(!ui->checkOtherBody->isChecked());
+                item->setHidden(false);
                 break;
             case otherPart:
                 item->setHidden(!ui->checkOtherPart->isChecked());
@@ -225,7 +224,7 @@ void TaskFeaturePick::updateList()
 void TaskFeaturePick::onUpdate(bool)
 {
     bool enable = false;
-    if (ui->checkOtherBody->isChecked() || ui->checkOtherPart->isChecked()) {
+    if (ui->checkOtherPart->isChecked()) {
         enable = true;
     }
 
@@ -284,7 +283,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
                                ->getObject(t.toLatin1().data());
 
                 // build the dependent copy or reference if wanted by the user
-                if (status == otherBody || status == otherPart || status == notInBody) {
+                if (status == otherPart) {
                     if (!ui->radioXRef->isChecked()) {
                         auto copy = makeCopy(obj, "", ui->radioIndependent->isChecked());
 
@@ -577,7 +576,6 @@ void TaskFeaturePick::slotDeleteDocument(const Gui::Document&)
 
 void TaskFeaturePick::showExternal(bool val)
 {
-    ui->checkOtherBody->setChecked(val);
     ui->checkOtherPart->setChecked(val);
     updateList();
 }

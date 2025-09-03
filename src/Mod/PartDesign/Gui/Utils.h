@@ -100,7 +100,7 @@ bool isFeatureMovable(App::DocumentObject* feature);
 /// Collect dependencies of the features during the move. Dependencies should only be dependent on origin
 std::vector<App::DocumentObject*> collectMovableDependencies(std::vector<App::DocumentObject*>& features);
 /// Relink sketches and datums to target body's origin
-void relinkToOrigin(App::DocumentObject* feature, PartDesign::Body* body);
+//void relinkToOrigin(App::DocumentObject* feature, PartDesign::Body* body);
 
 } /* PartDesignGui */
 

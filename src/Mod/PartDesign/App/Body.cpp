@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #include <App/Document.h>
+#include <App/Part.h>
 #include <App/VarSet.h>
 #include <App/Origin.h>
 #include <Base/Placement.h>
@@ -44,6 +45,8 @@ PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 Body::Body()
 {
     ADD_PROPERTY_TYPE(AllowCompound, (false), "Experimental", App::Prop_None, "Allow multiple solids in Body (experimental)");
+    Placement.setStatus(App::Property::Hidden, true);
+    Placement.setStatus(App::Property::ReadOnly, true);
 
     _GroupTouched.setStatus(App::Property::Output, true);
 }
@@ -279,7 +282,6 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
     }
 
     //ensure that all origin links are ok
-    relinkToOrigin(feature);
 
     std::vector<App::DocumentObject*> model = Group.getValues();
     std::vector<App::DocumentObject*>::iterator insertInto;
@@ -485,13 +487,6 @@ void Body::onChanged(const App::Property* prop) {
     Part::BodyBase::onChanged(prop);
 }
 
-void Body::setupObject () {
-    Part::BodyBase::setupObject ();
-}
-
-void Body::unsetupObject () {
-    Part::BodyBase::unsetupObject ();
-}
 
 PyObject *Body::getPyObject()
 {
@@ -580,6 +575,9 @@ void Body::onDocumentRestored()
     if (Tip.getValue())
         Tip.touch();
 
+    Placement.setStatus(App::Property::Hidden, true);
+    Placement.setStatus(App::Property::ReadOnly, true);
+
     DocumentObject::onDocumentRestored();
 }
 
@@ -593,3 +591,12 @@ bool Body::isSolid()
     }
     return false;
 }
+
+
+App::Origin* Body::getOrigin() const
+{
+ App::Part* part =App::Part::getPartOfObject(this);
+ if(part) return part->getOrigin();
+ else return nullptr;
+}
+

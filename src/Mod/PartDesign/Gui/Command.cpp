@@ -1003,9 +1003,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
     //pick task dialog to decide how those are handled
     bool extReference = std::find_if( status.begin(), status.end(),
             [] (const PartDesignGui::TaskFeaturePick::featureStatus& s) {
-                return s == PartDesignGui::TaskFeaturePick::otherBody ||
-                    s == PartDesignGui::TaskFeaturePick::otherPart ||
-                    s == PartDesignGui::TaskFeaturePick::notInBody;
+                return s == PartDesignGui::TaskFeaturePick::otherPart;
             }
         ) != status.end();
 

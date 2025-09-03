@@ -138,16 +138,15 @@ public:
     // a body is solid if it has features that are solid according to member isSolidFeature.
     bool isSolid();
 
+    App::Origin* getOrigin() const;
+
+
 protected:
     void onSettingDocument() override;
 
     /// Adjusts the first solid's feature's base on BaseFeature getting set
     void onChanged (const App::Property* prop) override;
 
-    /// Creates the corresponding Origin object
-    void setupObject () override;
-    /// Removes all planes and axis if they are still linked to the document
-    void unsetupObject () override;
 
     void onDocumentRestored() override;
 
