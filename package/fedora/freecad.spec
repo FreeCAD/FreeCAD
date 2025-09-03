@@ -44,7 +44,7 @@ Source0:        freecad-sources.tar.gz
 # Utilities
 BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils tbb-devel
 %if %{with tests}
-BuildRequires:  xorg-x11-server-Xvfb
+BuildRequires:  xorg-x11-server-Xvfb IfcOpenShell-python3
 %if %{without bundled_gtest}
 BuildRequires: gtest-devel gmock-devel
 %endif
@@ -202,15 +202,6 @@ Development file for OndselSolver
 
 %if %{with tests}
     mkdir -p %{buildroot}%tests_resultdir
-    pushd %_vpath_builddir
-    if (timeout 30m ./tests/Tests_run) &> %{buildroot}%tests_resultdir/Tests_run.result ;then
-        echo "Test_run OK"
-    else
-        echo "**** Failed Test_run ****"
-        touch %{buildroot}%tests_resultdir/Tests_run.failed
-        cat %{buildroot}%tests_resultdir/Tests_run.result
-    fi
-    popd
     if %ctest &> %{buildroot}%tests_resultdir/ctest.result ; then
         echo "ctest OK"
     else
