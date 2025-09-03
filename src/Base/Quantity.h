@@ -195,7 +195,6 @@ public:
     /// sets the quantity invalid
     void setInvalid();
 
-
     /** Predefined Unit types. */
     //@{
     static const Quantity NanoMetre;
@@ -243,14 +242,15 @@ public:
     static const Quantity Foot;
     static const Quantity Thou;
     static const Quantity Yard;
+    static const Quantity Mile;
+
+    static const Quantity MilePerHour;
 
     static const Quantity Pound;
     static const Quantity Ounce;
     static const Quantity Stone;
     static const Quantity Hundredweights;
-    static const Quantity Mile;
 
-    static const Quantity MilePerHour;
     static const Quantity SquareFoot;
     static const Quantity CubicFoot;
 
@@ -308,8 +308,6 @@ public:
 
     static const Quantity Weber;
 
-    // static const Quantity Oersted;
-
     static const Quantity Farad;
     static const Quantity MilliFarad;
     static const Quantity MicroFarad;
@@ -343,7 +341,6 @@ public:
     static const Quantity AngMinute;
     static const Quantity AngSecond;
     //@}
-
 
 private:
     double myValue;
