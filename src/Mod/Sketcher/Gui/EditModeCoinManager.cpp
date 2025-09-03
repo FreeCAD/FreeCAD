@@ -389,11 +389,7 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
         std::lround(sketcherfontSize * devicePixelRatio);  // in pixels (Coin uses pixels)
     Client.drawingParameters.labelFontSize = std::lround(
         sketcherfontSize * devicePixelRatio * 72.0f / dpi);  // in points (SoDatumLabel uses points)
-
-    // Constraint icon size: legacy derives 0.8 * font (when override disabled); if override
-    // enabled we use the stored absolute pixel size (defaulting to full font size initially).
-    int symbolSizeToUse = Client.drawingParameters.constraintIconSize =
-        std::lround(symbolSizeToUse);
+    Client.drawingParameters.constraintIconSize = constraintSymbolSizePref;
 
     auto supportedsizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes("CIRCLE_LINE");
     auto scaledMarkerSize = std::lround(markerSize * devicePixelRatio);
@@ -1237,3 +1233,4 @@ SoSeparator* EditModeCoinManager::getRootEditNode()
 {
     return editModeScenegraphNodes.EditRoot;
 }
+
