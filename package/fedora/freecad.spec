@@ -55,6 +55,7 @@ BuildRequires:  python3-pivy
 BuildRequires:  python3-pybind11
 BuildRequires:  python3-pyside6-devel
 BuildRequires:  python3-shiboken6-devel
+BuildRequires:  python3-typing-extensions
 BuildRequires:  qt6-qtbase-devel
 BuildRequires:  qt6-qtsvg-devel
 BuildRequires:  qt6-qttools-devel
