@@ -295,17 +295,22 @@ Gui::MDIView *ViewProviderDrawingView::getMDIView() const
 
 void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv)
 {
-//    Base::Console().message("VPDV::onGuiRepaint(%s) - this: %x\n", dv->getNameInDocument(), this);
-    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
-    if (!guiDoc)
-        return;
+    auto document = dv->getDocument();
+    QMetaObject::invokeMethod(qApp, [this, dv, document]() {
+        //Base::Console().message("VPDV::onGuiRepaint(%s) - this: %x\n", dv->getNameInDocument(), this);
 
-    std::vector<TechDraw::DrawPage*> pages = getViewObject()->findAllParentPages();
-    if (pages.size() > 1) {
-        multiParentPaint(pages);
-    } else if (dv == getViewObject()) {
-        singleParentPaint(dv);
-    }
+        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(document);
+        if (!guiDoc) {
+            return;
+        }
+
+        std::vector<TechDraw::DrawPage*> pages = getViewObject()->findAllParentPages();
+        if (pages.size() > 1) {
+            multiParentPaint(pages);
+        } else if (dv == getViewObject()) {
+            singleParentPaint(dv);
+        }
+    }, Qt::QueuedConnection);
 }
 
 void ViewProviderDrawingView::multiParentPaint(std::vector<TechDraw::DrawPage*>& pages)
