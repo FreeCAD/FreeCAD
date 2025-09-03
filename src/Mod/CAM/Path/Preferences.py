@@ -115,7 +115,7 @@ def getBuiltinToolBitPath() -> pathlib.Path:
 
 
 def getDefaultAssetPath() -> Path:
-    data_dir = Path(FreeCAD.getUserAppDataDir())
+    data_dir = pathlib.Path(FreeCAD.getUserAppDataDir())
     asset_path = data_dir / "CamAssets"
     asset_path.mkdir(parents=True, exist_ok=True)
     return asset_path
