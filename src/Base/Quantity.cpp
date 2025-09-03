@@ -36,6 +36,7 @@
 #include "Quantity.h"
 #include "Tools.h"
 #include "UnitsApi.h"
+#include "UnitsConvData.h"
 #include "UnitsSchema.h"
 
 /** \defgroup Units Units system
@@ -324,6 +325,8 @@ void Quantity::setInvalid()
 
 // === Predefined types =====================================================
 // clang-format off
+using namespace Base::UnitsConvData;
+
 const Quantity Quantity::NanoMetre              ( 1.0e-6                , Unit::Length                  );
 const Quantity Quantity::MicroMetre             ( 1.0e-3                , Unit::Length                  );
 const Quantity Quantity::MilliMetre             ( 1.0                   , Unit::Length                  );
@@ -365,22 +368,23 @@ const Quantity Quantity::Mole                   ( 1.0                   , Unit::
 
 const Quantity Quantity::Candela                ( 1.0                   , Unit::LuminousIntensity       );
 
-const Quantity Quantity::Inch                   ( 25.4                  , Unit::Length                  );
-const Quantity Quantity::Foot                   ( 304.8                 , Unit::Length                  );
-const Quantity Quantity::Thou                   ( 0.0254                , Unit::Length                  );
-const Quantity Quantity::Yard                   ( 914.4                 , Unit::Length                  );
-const Quantity Quantity::Mile                   ( 1609344.0             , Unit::Length                  );
+const Quantity Quantity::Inch                   ( in                    , Unit::Length                  );
+const Quantity Quantity::Foot                   ( ft                    , Unit::Length                  );
+const Quantity Quantity::Thou                   ( in / 1000             , Unit::Length                  );
+const Quantity Quantity::Yard                   ( yd                    , Unit::Length                  );
+const Quantity Quantity::Mile                   ( mi                    , Unit::Length                  );
 
-const Quantity Quantity::MilePerHour            ( 447.04                , Unit::Velocity                );
-const Quantity Quantity::SquareFoot             ( 92903.04              , Unit::Area                    );
-const Quantity Quantity::CubicFoot              ( 28316846.592          , Unit::Volume                  );
+const Quantity Quantity::MilePerHour            ( mi / 3600             , Unit::Velocity                );
 
-const Quantity Quantity::Pound                  ( 0.45359237            , Unit::Mass                    );
-const Quantity Quantity::Ounce                  ( 0.0283495231          , Unit::Mass                    );
-const Quantity Quantity::Stone                  ( 6.35029318            , Unit::Mass                    );
-const Quantity Quantity::Hundredweights         ( 50.80234544           , Unit::Mass                    );
+const Quantity Quantity::SquareFoot             ( ft * ft               , Unit::Area                    );
+const Quantity Quantity::CubicFoot              ( ft * ft * ft          , Unit::Volume                  );
 
-const Quantity Quantity::PoundForce             ( 4448.22               , Unit::Force                   );  // lbf are ~= 4.44822 Newton
+const Quantity Quantity::Pound                  ( lb                    , Unit::Mass                    );
+const Quantity Quantity::Ounce                  ( lb / 16               , Unit::Mass                    );
+const Quantity Quantity::Stone                  ( lb * 14               , Unit::Mass                    );
+const Quantity Quantity::Hundredweights         ( lb * 112              , Unit::Mass                    );
+
+const Quantity Quantity::PoundForce             ( 1000 * lbf            , Unit::Force                   );
 
 const Quantity Quantity::Newton                 ( 1000.0                , Unit::Force                   );  // Newton (kg*m/s^2)
 const Quantity Quantity::MilliNewton            ( 1.0                   , Unit::Force                   );
@@ -401,12 +405,12 @@ const Quantity Quantity::MilliBar               ( 0.1                   , Unit::
 const Quantity Quantity::Bar                    ( 100.0                 , Unit::Pressure                );  // 1 bar = 100 kPa
 
 const Quantity Quantity::Torr                   ( 101.325 / 760.0       , Unit::Pressure                );  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
-const Quantity Quantity::mTorr                  ( 0.101325 / 760.0      , Unit::Pressure                );  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
-const Quantity Quantity::yTorr                  ( 0.000101325 / 760.0   , Unit::Pressure                );  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
+const Quantity Quantity::mTorr                  ( 101.325 / 760.0 / 1e3 , Unit::Pressure                );  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
+const Quantity Quantity::yTorr                  ( 101.325 / 760.0 / 1e6 , Unit::Pressure                );  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
 
-const Quantity Quantity::PSI                    ( 6.894744825494        , Unit::Pressure                );  // pounds/in^2
-const Quantity Quantity::KSI                    ( 6894.744825494        , Unit::Pressure                );  // 1000 x pounds/in^2
-const Quantity Quantity::MPSI                   ( 6894744.825494        , Unit::Pressure                );  // 1000 ksi
+const Quantity Quantity::PSI                    ( psi                   , Unit::Pressure                );
+const Quantity Quantity::KSI                    ( psi * 1000            , Unit::Pressure                );
+const Quantity Quantity::MPSI                   ( psi * 1000000         , Unit::Pressure                );
 
 const Quantity Quantity::Watt                   ( 1e+6                  , Unit::Power                   );  // Watt (kg*m^2/s^3)
 const Quantity Quantity::MilliWatt              ( 1e+3                  , Unit::Power                   );
@@ -458,8 +462,8 @@ const Quantity Quantity::Calorie                ( 4.1868e+6             , Unit::
 const Quantity Quantity::KiloCalorie            ( 4.1868e+9             , Unit::Work                    );
 const Quantity Quantity::NewtonMeter            ( 1e+6                  , Unit::Moment                  );  // Joule (kg*m^2/s^2)
 
-const Quantity Quantity::KMH                    ( 277.778               , Unit::Velocity                );  // km/h
-const Quantity Quantity::MPH                    ( 447.04                , Unit::Velocity                );  // Mile/h
+const Quantity Quantity::KMH                    ( 1e+6 / 3600           , Unit::Velocity                );  // km/h
+const Quantity Quantity::MPH                    ( mi / 3600             , Unit::Velocity                );  // Mile/h
 
 const Quantity Quantity::AngMinute              ( 1.0 / 60.0            , Unit::Angle                   );  // angular minute
 const Quantity Quantity::AngSecond              ( 1.0 / 3600.0          , Unit::Angle                   );  // angular second
