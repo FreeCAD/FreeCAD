@@ -264,7 +264,7 @@ class CubicBezCurve(gui_lines.Line):
 
         super().Activated(name="CubicBezCurve",
                           icon="Draft_CubicBezCurve",
-                          task_title=translate("draft", "Cubic Bézier curve"))
+                          task_title=translate("draft", "Cubic Bézier Curve"))
         if self.doc:
             self.bezcurvetrack = trackers.bezcurveTracker()
 
