@@ -214,7 +214,7 @@ const char* Measure::MeasurePython::getViewProviderName(void) const
     // check object's name, this is brute-forceish way to determine
     // VP name for COM, but at this point python assignments haven't
     // been run, so we have no way to determine that easily
-    if (objName == "Center_of_mass" || objName.starts_with("Center_of_mass")
+    if (objName.starts_with("Center_of_mass")
 
         || objName.find("CenterOfMass") != std::string::npos
         || objName.find("centerofmass") != std::string::npos) {
