@@ -27,7 +27,6 @@
 #include <QKeyEvent>
 #include <cstdio>
 #include <qmath.h>
-#include <cstdio>
 #endif// #ifndef _PreComp_
 
 #include <App/Application.h>
