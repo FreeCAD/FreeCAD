@@ -77,6 +77,26 @@ class CallableComboBox:
             if (cbox is not None):
                 QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT('accept()'))
 
+
+class CallableCheckExemptionDialog:
+    def __init__(self, test):
+        self.test = test
+    def __call__(self):
+        dialog = QApplication.activeModalWidget()
+        if (dialog is not None):
+            dialogcheck = CallableCheckExemptionDialogWasClosed(self.test)
+            QtCore.QTimer.singleShot(100, dialogcheck)
+            QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT('accept()'))
+
+class CallableCheckExemptionDialogWasClosed:
+    def __init__(self, test):
+        self.test = test
+    def __call__(self):
+        dialog = QApplication.activeModalWidget()
+        self.test.assertIsNone(dialog, "Dialog box was not closed by accept()")
+
+
+
 App = FreeCAD
 Gui = FreeCADGui
 #---------------------------------------------------------------------------
@@ -233,6 +253,27 @@ class PartDesignTransformed(unittest.TestCase):
         Gui.runCommand("PartDesign_MultiTransform")
 
         App.closeDocument("PartDesignTransformed")
+
+    def testPDCreateSketch(self):
+        App.Console.PrintMessage("Testing the creation of a sketch\n")
+        App.newDocument()
+        App.activeDocument().addObject("PartDesign::Body", "Body")
+        App.ActiveDocument.getObject("Body").Label = "Body"
+        App.ActiveDocument.getObject("Body").AllowCompound = True
+        FreeCADGui.activateView("Gui::View3DInventor", True)
+        FreeCADGui.activeView().setActiveObject("pdbody", App.activeDocument().Body)
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.addSelection(App.ActiveDocument.Body)
+        FreeCADGui.runCommand("Std_OrthographicCamera", 1)
+        mw = FreeCADGui.getMainWindow()
+        workflowcheck = CallableCheckExemptionDialog(self)
+        QtCore.QTimer.singleShot(100, workflowcheck)
+        createsketch = FreeCADGui.runCommand("PartDesign_CompSketches", 0)
+        taskspanel = mw.findChild(QtGui.QWidget,"PartDesignGui__TaskFeaturePick")
+        self.assertTrue(taskspanel is not None)
+        if (taskspanel is not None):
+            QtCore.QTimer.singleShot(0, taskspanel, QtCore.SLOT("hide()"))
+        App.closeDocument(App.ActiveDocument.Name)
 
     def tearDown(self):
         #closing doc
