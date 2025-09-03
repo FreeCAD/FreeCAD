@@ -140,6 +140,7 @@ bool QGSPage::itemClearsSelection(int itemTypeIn)
     const std::vector<int> ClearingTypes {
         13,  // MysteryType
         UserType::QGITemplate,
+        UserType::QGIProjGroup,
         UserType::QGIDrawingTemplate,
         UserType::QGISVGTemplate
     };
