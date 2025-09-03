@@ -88,7 +88,7 @@ class BIM_Views:
             self.dialog.menu = QtGui.QMenu()
             for button in [("Active", translate("BIM","Active")),
                             ("AddLevel", translate("BIM","Add Level")),
-                            ("AddProxy", translate("BIM","Add Proxy WP")),
+                            ("AddProxy", translate("BIM","Add Working Plane Proxy")),
                             ("Delete", translate("BIM","Delete")),
                             ("Toggle", translate("BIM","Toggle Visibility")),
                             ("Isolate", translate("BIM","Isolate")),
@@ -108,7 +108,7 @@ class BIM_Views:
 
             # # set button icons
             self.dialog.buttonAddLevel.setIcon(QtGui.QIcon(":/icons/Arch_Floor_Tree.svg"))
-            self.dialog.buttonAddProxy.setIcon(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"))
+            self.dialog.buttonAddProxy.setIcon(QtGui.QIcon(":/icons/Draft_PlaneProxy.svg"))
             self.dialog.buttonDelete.setIcon(QtGui.QIcon(":/icons/delete.svg"))
             self.dialog.buttonToggle.setIcon(QtGui.QIcon(":/icons/dagViewVisible.svg"))
             self.dialog.buttonIsolate.setIcon(QtGui.QIcon(":/icons/Std_ShowSelection.svg"))
