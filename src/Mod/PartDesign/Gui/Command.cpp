@@ -365,8 +365,9 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         if (sel.SubName && sel.SubName[0]) {
             subs.emplace_back(sel.SubName);
             valueSet.insert(sel.pObject->getSubObject(sel.SubName));
-        } else
+        } else {
             valueSet.insert(sel.pObject);
+        }
     }
 
     auto checkContainer = [&](App::DocumentObject *container) {
