@@ -17,6 +17,20 @@
    <item row="0" column="0" colspan="2">
     <widget class="QComboBox" name="jointType"/>
    </item>
+   <item row="15" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="hLayoutIsolate">
+     <item>
+      <widget class="QLabel" name="isolateLabel2">
+       <property name="text">
+        <string>Isolate</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="isolateType"/>
+     </item>
+    </layout>
+   </item>
    <item row="1" column="0" colspan="2">
     <widget class="QListWidget" name="featureList">
      <property name="maximumSize">
