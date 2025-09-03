@@ -47,7 +47,6 @@ else:
 
 lead_styles = [
     # common options first
-    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "No Change"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line"),
     # additional options, alphabetical order
@@ -69,6 +68,18 @@ class ObjectDressup:
             "Base",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The base toolpath to modify"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "LeadIn",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Modify lead in to toolpath"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "LeadOut",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Modify lead out from toolpath"),
         )
         obj.addProperty(
             "App::PropertyLength",
@@ -155,6 +166,8 @@ class ObjectDressup:
         return None
 
     def setup(self, obj):
+        obj.LeadIn = True
+        obj.LeadOut = True
         obj.AngleIn = 45
         obj.AngleOut = 45
         obj.InvertIn = False
@@ -194,10 +207,10 @@ class ObjectDressup:
             obj.AngleOut = limit_angle_out
 
         hideModes = {
-            "Angle": ["No Change", "Suppress Retraction", "Vertical"],
-            "Invert": ["No Change", "Suppress Retraction", "ArcZ", "LineZ", "Vertical"],
-            "Offset": ["No Change", "Suppress Retraction"],
-            "PercentageRadius": ["No Change", "Suppress Retraction", "Vertical"],
+            "Angle": ["Suppress Retraction", "Vertical"],
+            "Invert": ["Suppress Retraction", "ArcZ", "LineZ", "Vertical"],
+            "Offset": ["Suppress Retraction"],
+            "PercentageRadius": ["Suppress Retraction", "Vertical"],
         }
         for k, v in hideModes.items():
             obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
@@ -207,14 +220,6 @@ class ObjectDressup:
 
     def onDocumentRestored(self, obj):
         """onDocumentRestored(obj) ... Called automatically when document is restored."""
-        leadIn = leadOut = None
-        if hasattr(obj, "LeadIn"):
-            leadIn = obj.LeadIn
-            obj.removeProperty("LeadIn")
-        if hasattr(obj, "LeadOut"):
-            leadOut = obj.LeadOut
-            obj.removeProperty("LeadOut")
-
         styleOn = styleOff = None
         if hasattr(obj, "StyleOn"):
             # Replace StyleOn by StyleIn
@@ -258,18 +263,15 @@ class ObjectDressup:
             )
             obj.AngleOut = 45
 
-        if leadIn is not None and not leadIn:
-            obj.StyleIn = "No Change"
-        elif styleOn:
+        if styleOn:
             if styleOn == "Arc":
                 obj.StyleIn = "Arc"
                 obj.AngleIn = 90
             elif styleOn in ["Perpendicular", "Tangent"]:
                 obj.StyleIn = "Line"
                 obj.AngleIn = 90 if styleOn == "Perpendicular" else 0
-        if leadOut is not None and not leadOut:
-            obj.StyleOut = "No Change"
-        elif styleOff:
+
+        if styleOff:
             if styleOff == "Arc":
                 obj.StyleOut = "Arc"
                 obj.AngleOut = 90
@@ -803,7 +805,7 @@ class ObjectDressup:
             return None
 
     # Get last index of mill command in whole Path
-    def findLastCuttingMoveIndex(self, obj, source):
+    def findLastCuttingMoveIndex(self, source):
         for i in range(len(source) - 1, -1, -1):
             if self.isCuttingMove(source[i]):
                 return i
@@ -811,7 +813,7 @@ class ObjectDressup:
         return None
 
     # Get finish index of mill command for one profile
-    def findLastCutMultiProfileIndex(self, obj, source, startIndex):
+    def findLastCutMultiProfileIndex(self, source, startIndex):
         for i in range(startIndex, len(source), +1):
             if not self.isCuttingMove(source[i]):
                 return i - 1
@@ -987,7 +989,7 @@ class ObjectDressup:
 
         first = True  # prepare first move at cleareance height
         firstMillIndex = None  # Index start mill instruction for one profile
-        lastCuttingMoveIndex = self.findLastCuttingMoveIndex(obj, source)
+        lastCuttingMoveIndex = self.findLastCuttingMoveIndex(source)
         inInstrPrev = None
         outInstrPrev = None
         measuredLength = 0  # for negative OffsetIn
@@ -1005,10 +1007,10 @@ class ObjectDressup:
                     commands.append(instr)
                 else:
                     moveDir = self.getMoveDir(instr)
-                    if obj.StyleIn == "No Change" and (moveDir in ["Down", "Hor"] or first):
+                    if not obj.LeadIn and (moveDir in ["Down", "Hor"] or first):
                         # keep original Lead-in movements
                         commands.append(instr)
-                    elif obj.StyleOut == "No Change" and moveDir in ["Up"] and not first:
+                    elif not obj.LeadOut and moveDir in ["Up"] and not first:
                         # keep original Lead-out movements
                         commands.append(instr)
                 # skip travel and plunge moves if LeadInOut will be process
@@ -1021,7 +1023,7 @@ class ObjectDressup:
 
             # Process Lead-In
             if first or not self.isCuttingMove(source[i - 1 - skipCounter]):
-                if obj.StyleIn != "No Change":
+                if obj.LeadIn:
                     # Process negative Offset Lead-In (cut travel from begin)
                     if obj.OffsetIn.Value < 0 and obj.StyleIn != "Suppress Retraction":
                         if measuredLength <= abs(obj.OffsetIn.Value):
@@ -1036,7 +1038,7 @@ class ObjectDressup:
 
                     # Process positive offset Lead-In (overtravel)
                     firstMillIndex = i
-                    lastMillIndex = self.findLastCutMultiProfileIndex(obj, source, i + 1)
+                    lastMillIndex = self.findLastCutMultiProfileIndex(source, i + 1)
                     overtravelIn = None
                     if obj.OffsetIn.Value > 0 and obj.StyleIn != "Suppress Retraction":
                         overtravelIn = self.getOvertravelIn(
@@ -1066,7 +1068,7 @@ class ObjectDressup:
 
             # Process Lead-Out
             last = bool(i == lastCuttingMoveIndex)
-            if (last or not self.isCuttingMove(source[i + 1])) and obj.StyleOut != "No Change":
+            if (last or not self.isCuttingMove(source[i + 1])) and obj.LeadOut:
                 measuredLength = 0  # reset measured length for last profile
                 lastMillIndex = i  # index last mill instruction for last profile
 
@@ -1121,36 +1123,14 @@ class TaskDressupLeadInOut(SimpleEditPanel):
 
         styleEnum = self.obj.getEnumerationsOfProperty("StyleIn")
 
-        def updateStyleFromCheckbox():
-            if self.form.groupBoxIn.isChecked():
-                if styleEnum[self.form.cboStyleIn.currentIndex()] == "No Change":
-                    self.form.cboStyleIn.setCurrentIndex(styleEnum.index("Arc"))
-            else:
-                self.form.cboStyleIn.setCurrentIndex(styleEnum.index("No Change"))
+        def handleGroupBoxCheck():
+            self.obj.LeadIn = self.form.groupBoxIn.isChecked()
+            self.obj.LeadOut = self.form.groupBoxOut.isChecked()
 
-            if self.form.groupBoxOut.isChecked():
-                if styleEnum[self.form.cboStyleOut.currentIndex()] == "No Change":
-                    self.form.cboStyleOut.setCurrentIndex(styleEnum.index("Arc"))
-            else:
-                self.form.cboStyleOut.setCurrentIndex(styleEnum.index("No Change"))
-
-        def updateCheckboxFromStyle():
-            if styleEnum[self.form.cboStyleIn.currentIndex()] == "No Change":
-                self.form.groupBoxIn.setChecked(False)
-            else:
-                self.form.groupBoxIn.setChecked(True)
-
-            if styleEnum[self.form.cboStyleOut.currentIndex()] == "No Change":
-                self.form.groupBoxOut.setChecked(False)
-            else:
-                self.form.groupBoxOut.setChecked(True)
-
-        updateCheckboxFromStyle()
-
-        self.form.groupBoxIn.clicked.connect(updateStyleFromCheckbox)
-        self.form.cboStyleIn.currentIndexChanged.connect(updateCheckboxFromStyle)
-        self.form.groupBoxOut.clicked.connect(updateStyleFromCheckbox)
-        self.form.cboStyleOut.currentIndexChanged.connect(updateCheckboxFromStyle)
+        self.form.groupBoxIn.setChecked(self.obj.LeadIn)
+        self.form.groupBoxOut.setChecked(self.obj.LeadOut)
+        self.form.groupBoxIn.clicked.connect(handleGroupBoxCheck)
+        self.form.groupBoxOut.clicked.connect(handleGroupBoxCheck)
 
 
 class ViewProviderDressup:
