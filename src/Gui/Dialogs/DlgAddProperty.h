@@ -129,7 +129,7 @@ private:
     void initializeValue();
 
     void setTitle();
-    void setOkEnabled(bool enabled);
+    void setAddEnabled(bool enabled);
     void initializeWidgets(ViewProviderVarSet* viewProvider);
 
     bool isDocument() const;
