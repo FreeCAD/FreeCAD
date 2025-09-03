@@ -9,7 +9,11 @@ notifications:
 jobs:
 - job: copr_build
   trigger: pull_request
+  additional_repos:
+    - copr://bpostle/IfcOpenShell
   targets:
   - fedora-rawhide-aarch64
-  - fedora-rawhide-ppc64le
   - fedora-rawhide-x86_64
+
+# IfcOpenShell copr not built for ppc64le
+#  - fedora-rawhide-ppc64le
