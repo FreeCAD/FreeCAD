@@ -39,7 +39,9 @@ BuildRequires:  gtest-devel
 BuildRequires:  hdf5-devel
 # Not yet packaged
 # Taken from copr
-BuildRequires:  IfcOpenShell-devel
+#BuildRequires:  IfcOpenShell-devel
+# Taken from copr, slightly different name
+BuildRequires:  IfcOpenShell-python3
 
 BuildRequires:  libspnav-devel
 BuildRequires:  lz4-devel
@@ -50,9 +52,8 @@ BuildRequires:  opencascade-devel
 BuildRequires:  pyside6-tools
 BuildRequires:  python3-devel
 # Not yet packaged
-# Taken from copr
-BuildRequires:  python3-IfcOpenShell
-
+# Taken from copr as IfcOpenShell-python3 above
+#BuildRequires:  python3-IfcOpenShell
 BuildRequires:  python3-matplotlib
 BuildRequires:  python3-netgen-mesher
 BuildRequires:  python3-pivy
