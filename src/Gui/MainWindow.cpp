@@ -103,6 +103,7 @@
 #include "ReportView.h"
 #include "SelectionView.h"
 #include "SplashScreen.h"
+#include "StatusBarLabel.h"
 #include "ToolBarManager.h"
 #include "ToolBoxManager.h"
 #include "Tree.h"
@@ -308,62 +309,6 @@ struct MainWindowP
     void restoreWindowState(const QByteArray &);
 };
 
-/**
- * @brief Label for displaying information in the status bar
- *
- * A QLabel subclass that provides a context menu with additional actions
- * similar to the standard status bar widgets.
- */
-class StatusBarInfoLabel : public QLabel
-{
-    Q_OBJECT
-public:
-    explicit StatusBarInfoLabel(QWidget *parent = nullptr)
-        : QLabel(parent)
-    {
-    }
-protected:
-    void contextMenuEvent(QContextMenuEvent *event) override
-    {
-        QMenu menu(this);
-
-        // Reproduce standard status bar widget menu
-        if (auto *bar = qobject_cast<QStatusBar*>(parentWidget())) {
-            for (QObject *child : bar->children()) {
-                QWidget *w = qobject_cast<QWidget*>(child);
-                if (!w) {
-                    continue;
-                }
-                auto title = w->windowTitle();
-                if (title.isEmpty()) {
-                    continue;
-                }
-
-                QAction *action = menu.addAction(title);
-                action->setCheckable(true);
-                action->setChecked(w->isVisible());
-                QObject::connect(action, &QAction::toggled, w, &QWidget::setVisible);
-            }
-        }
-
-        menu.addSeparator(); // ----------
-
-        // Copy + Select All
-        menu.addAction(tr("Copy"), [this]() {
-            QApplication::clipboard()->setText(this->selectedText());
-        });
-        menu.addAction(tr("Select All"), [this]() {
-            this->setSelection(0, this->text().length());
-        });
-
-        menu.exec(event->globalPos());
-    }
-    void hideEvent(QHideEvent *event) override {
-        clear();  // Clear text
-        QLabel::hideEvent(event);
-    }
-};
-
 } // namespace Gui
 
 /* TRANSLATOR Gui::MainWindow */
@@ -446,7 +391,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // labels and progressbar
     d->status = new StatusBarObserver();
-    d->actionLabel = new StatusBarInfoLabel(statusBar());
+    d->actionLabel = new StatusBarLabel(statusBar());
     d->actionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     d->sizeLabel = new DimensionWidget(statusBar());
 
@@ -464,7 +409,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     statusBar()->addWidget(d->hintLabel);
 
     // right side label
-    d->rightSideLabel = new StatusBarInfoLabel(statusBar());
+    d->rightSideLabel = new StatusBarLabel(statusBar(), "QuickMeasureEnabled");
     d->rightSideLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     statusBar()->addPermanentWidget(d->rightSideLabel);
     d->rightSideLabel->setObjectName(QStringLiteral("rightSideLabel"));
