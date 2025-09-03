@@ -25,27 +25,41 @@ __title__ = "Netgen preference page class"
 __author__ = "Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
-from PySide.QtCore import QThread
+from PySide import QtCore
+from PySide import QtGui
 
 import FreeCAD
 import FreeCADGui
 
 
-class DlgSettingsNetgen:
+class DlgSettingsNetgen(QtGui.QWidget):
 
     def __init__(self):
         self.form = FreeCADGui.PySideUic.loadUi(":ui/DlgSettingsNetgen.ui")
         self.grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Netgen")
 
+        QtCore.QObject.connect(
+            self.form.fc_netgen_python_path,
+            QtCore.SIGNAL("fileNameSelected(QString)"),
+            self.netgen_python_path_selected,
+        )
+
     def loadSettings(self):
         self.form.ckb_legacy.setChecked(self.grp.GetBool("UseLegacyNetgen", True))
-        self.form.sb_threads.setValue(self.grp.GetInt("NumOfThreads", QThread.idealThreadCount()))
+        self.form.sb_threads.setValue(
+            self.grp.GetInt("NumOfThreads", QtCore.QThread.idealThreadCount())
+        )
+        self.form.fc_netgen_python_path.setProperty(
+            "fileName", self.grp.GetString("NetgenPythonPath", "")
+        )
+
         self.populate_log_verbosity()
 
     def saveSettings(self):
         self.grp.SetBool("UseLegacyNetgen", self.form.ckb_legacy.isChecked())
         self.grp.SetInt("LogVerbosity", self.form.cb_log_verbosity.currentData())
         self.grp.SetInt("NumOfThreads", self.form.sb_threads.value())
+        self.grp.SetString("NetgenPythonPath", self.form.fc_netgen_python_path.property("fileName"))
 
     def populate_log_verbosity(self):
         values = {
@@ -63,3 +77,9 @@ class DlgSettingsNetgen:
         current = self.grp.GetInt("LogVerbosity", 2)
         index = self.form.cb_log_verbosity.findData(current)
         self.form.cb_log_verbosity.setCurrentIndex(index)
+
+    def netgen_python_path_selected(self, path):
+        if path and not QtCore.QStandardPaths.findExecutable(path):
+            QtGui.QMessageBox.critical(
+                None, "Netgen", self.tr("Executable '{}' not found").format(path)
+            )
