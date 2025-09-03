@@ -23,6 +23,9 @@ jobs:
     pull_request:
       successful_build: True
   branch: main
+  additional_repos:
+    - copr://bpostle/IfcOpenShell
+
   targets:
     fedora-stable:
       without_opts:
@@ -44,6 +47,8 @@ jobs:
   trigger: commit
   manual_trigger: true
   branch: main
+  additional_repos:
+    - copr://bpostle/IfcOpenShell
   owner: freecad
   project: nightly
 
@@ -52,6 +57,8 @@ jobs:
   trigger: release
   owner: freecad
   project: freecad
+  additional_repos:
+    - copr://bpostle/IfcOpenShell
   targets:
     fedora-all:
       without_opts:
