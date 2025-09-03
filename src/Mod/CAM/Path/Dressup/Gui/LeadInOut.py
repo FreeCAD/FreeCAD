@@ -162,24 +162,6 @@ class ObjectDressup:
             "Path Lead-out",
             QT_TRANSLATE_NOOP("App::Property", "Move end point"),
         )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "FeedRatePercentIn",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Percentage modifier to apply to feed rate while entering the cut",
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "FeedRatePercentOut",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Percentage modifier to apply to feed rate while exiting the cut",
-            ),
-        )
         obj.Proxy = self
 
     def dumps(self):
@@ -197,8 +179,6 @@ class ObjectDressup:
         obj.LeadOut = True
         obj.AngleIn = 90
         obj.AngleOut = 90
-        obj.FeedRatePercentIn = 100
-        obj.FeedRatePercentOut = 100
         obj.InvertIn = False
         obj.InvertOut = False
         obj.RapidPlunge = False
@@ -273,8 +253,8 @@ class ObjectDressup:
 
         self.horizFeed = self.toolController.HorizFeed.Value
         self.vertFeed = self.toolController.VertFeed.Value
-        self.entranceFeed = self.horizFeed * obj.FeedRatePercentIn / 100
-        self.exitFeed = self.horizFeed * obj.FeedRatePercentOut / 100
+        self.entranceFeed = self.toolController.LeadInFeed.Value
+        self.exitFeed = self.toolController.LeadOutFeed.Value
 
         obj.Path = self.generateLeadInOutCurve(obj)
 
@@ -440,29 +420,6 @@ class ObjectDressup:
         for k, v in TaskDressupLeadInOut.hideModes.items():
             obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
             obj.setEditorMode(k + "Out", 2 if obj.StyleOut in v else 0)
-
-        if not hasattr(obj, "FeedRatePercentIn"):
-            obj.addProperty(
-                "App::PropertyInteger",
-                "FeedRatePercentIn",
-                "Path",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Percentage modifier to apply to feed rate while entering the cut",
-                ),
-            )
-            obj.FeedRatePercentIn = 100
-        if not hasattr(obj, "FeedRatePercentOut"):
-            obj.addProperty(
-                "App::PropertyInteger",
-                "FeedRatePercentOut",
-                "Path",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Percentage modifier to apply to feed rate while exiting the cut",
-                ),
-            )
-            obj.FeedRatePercentOut = 100
 
     # Get direction for lead-in/lead-out in XY plane
     def getLeadDir(self, obj, invert=False):
@@ -1245,8 +1202,6 @@ class TaskDressupLeadInOut(SimpleEditPanel):
     def setupSpinBoxes(self):
         self.connectWidget("InvertIn", self.form.chkInvertDirectionIn)
         self.connectWidget("InvertOut", self.form.chkInvertDirectionOut)
-        self.connectWidget("FeedRatePercentIn", self.form.dspFeedRatePercentIn)
-        self.connectWidget("FeedRatePercentOut", self.form.dspFeedRatePercentOut)
         self.connectWidget("PercentageRadiusIn", self.form.dspPercentageRadiusIn)
         self.connectWidget("PercentageRadiusOut", self.form.dspPercentageRadiusOut)
         self.connectWidget("StyleIn", self.form.cboStyleIn)

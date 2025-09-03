@@ -106,6 +106,31 @@ class ToolController:
             "Rapid",
             QT_TRANSLATE_NOOP("App::Property", "Rapid rate for horizontal moves"),
         )
+
+        obj.addProperty(
+            "App::PropertySpeed",
+            "RampFeed",
+            "Feed",
+            QT_TRANSLATE_NOOP("App::Property", "Feed rate for ramp moves"),
+        )
+        obj.setExpression("RampFeed", "HorizFeed")
+
+        obj.addProperty(
+            "App::PropertySpeed",
+            "LeadInFeed",
+            "Feed",
+            QT_TRANSLATE_NOOP("App::Property", "Feed rate for lead-in moves"),
+        )
+        obj.setExpression("LeadInFeed", "HorizFeed")
+
+        obj.addProperty(
+            "App::PropertySpeed",
+            "LeadOutFeed",
+            "Feed",
+            QT_TRANSLATE_NOOP("App::Property", "Feed rate for lead-out moves"),
+        )
+        obj.setExpression("LeadOutFeed", "HorizFeed")
+
         obj.setEditorMode("Placement", 2)
 
         for n in self.propertyEnumerations():
@@ -165,6 +190,40 @@ class ToolController:
                 toolbit_instance.onDocumentRestored(obj.Tool)
 
         obj.setEditorMode("Placement", 2)
+
+        needsRecompute = False
+        if not hasattr(obj, "RampFeed"):
+            obj.addProperty(
+                "App::PropertySpeed",
+                "RampFeed",
+                "Feed",
+                QT_TRANSLATE_NOOP("App::Property", "Feed rate for ramp moves"),
+            )
+            obj.setExpression("RampFeed", "HorizFeed")
+            needsRecompute = True
+
+        if not hasattr(obj, "LeadInFeed"):
+            obj.addProperty(
+                "App::PropertySpeed",
+                "LeadInFeed",
+                "Feed",
+                QT_TRANSLATE_NOOP("App::Property", "Feed rate for lead-in moves"),
+            )
+            obj.setExpression("LeadInFeed", "HorizFeed")
+            needsRecompute = True
+
+        if not hasattr(obj, "LeadOutFeed"):
+            obj.addProperty(
+                "App::PropertySpeed",
+                "LeadOutFeed",
+                "Feed",
+                QT_TRANSLATE_NOOP("App::Property", "Feed rate for lead-out moves"),
+            )
+            obj.setExpression("LeadOutFeed", "HorizFeed")
+            needsRecompute = True
+
+        if needsRecompute:
+            obj.recompute()
 
     def onDelete(self, obj, arg2=None):
         if hasattr(obj.Tool, "InList") and len(obj.Tool.InList) == 1:
