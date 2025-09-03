@@ -83,7 +83,7 @@ class CallableCheckExemptionDialog:
         self.test = test
     def __call__(self):
         dialog = QApplication.activeModalWidget()
-        if (dialog is not None):
+        if dialog is not None:
             dialogcheck = CallableCheckExemptionDialogWasClosed(self.test)
             QtCore.QTimer.singleShot(100, dialogcheck)
             QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT('accept()'))
@@ -268,10 +268,10 @@ class PartDesignTransformed(unittest.TestCase):
         mw = FreeCADGui.getMainWindow()
         workflowcheck = CallableCheckExemptionDialog(self)
         QtCore.QTimer.singleShot(100, workflowcheck)
-        createsketch = FreeCADGui.runCommand("PartDesign_CompSketches", 0)
+        FreeCADGui.runCommand("PartDesign_CompSketches", 0)
         taskspanel = mw.findChild(QtGui.QWidget,"PartDesignGui__TaskFeaturePick")
         self.assertTrue(taskspanel is not None)
-        if (taskspanel is not None):
+        if taskspanel is not None:
             QtCore.QTimer.singleShot(0, taskspanel, QtCore.SLOT("hide()"))
         App.closeDocument(App.ActiveDocument.Name)
 
@@ -379,3 +379,4 @@ class TestDatumPlane(unittest.TestCase):
         color = int(r * 255.0 + 0.5) << 24 | int(g * 255.0 + 0.5) << 16 | int(b * 255.0 + 0.5) << 8 | int(a * 255.0 + 0.5)
 
         self.assertEqual(packed_color, color)
+
