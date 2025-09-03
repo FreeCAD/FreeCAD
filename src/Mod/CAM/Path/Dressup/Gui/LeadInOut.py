@@ -157,24 +157,6 @@ class ObjectDressup:
             "Path Lead-out",
             QT_TRANSLATE_NOOP("App::Property", "Move end point"),
         )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "FeedRatePercentIn",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Percentage modifier to apply to feed rate while entering the cut",
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "FeedRatePercentOut",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Percentage modifier to apply to feed rate while exiting the cut",
-            ),
-        )
         obj.Proxy = self
 
     def dumps(self):
@@ -188,8 +170,6 @@ class ObjectDressup:
         obj.LeadOut = True
         obj.AngleIn = 45
         obj.AngleOut = 45
-        obj.FeedRatePercentIn = 100
-        obj.FeedRatePercentOut = 100
         obj.InvertIn = False
         obj.InvertOut = False
         obj.PercentageRadiusIn = 150
@@ -378,29 +358,6 @@ class ObjectDressup:
                 obj.RetractThreshold = 999999
             obj.removeProperty("KeepToolDown")
 
-        if not hasattr(obj, "FeedRatePercentIn"):
-            obj.addProperty(
-                "App::PropertyInteger",
-                "FeedRatePercentIn",
-                "Path",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Percentage modifier to apply to feed rate while entering the cut",
-                ),
-            )
-            obj.FeedRatePercentIn = 100
-        if not hasattr(obj, "FeedRatePercentOut"):
-            obj.addProperty(
-                "App::PropertyInteger",
-                "FeedRatePercentOut",
-                "Path",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Percentage modifier to apply to feed rate while exiting the cut",
-                ),
-            )
-            obj.FeedRatePercentOut = 100
-
     # Get direction for lead-in/lead-out in XY plane
     def getLeadDir(self, obj, invert=False):
         output = math.pi / 2
@@ -513,9 +470,8 @@ class ObjectDressup:
         return App.Vector(math.cos(angle), math.sin(angle), 0)
 
     # Create arc in XY plane with automatic detection G2|G3
-    def createArcMove(self, obj, begin, end, offset, invert, feedRatePercent):
-        horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value * feedRatePercent / 100
-        param = {"X": end.x, "Y": end.y, "Z": end.z, "I": offset.x, "J": offset.y, "F": horizfeed}
+    def createArcMove(self, obj, begin, end, offset, invert, feedRate):
+        param = {"X": end.x, "Y": end.y, "Z": end.z, "I": offset.x, "J": offset.y, "F": feedRate}
         if self.getLeadDir(obj, invert) > 0:
             command = PathLanguage.MoveArcCCW(begin, "G3", param)
         else:
@@ -524,9 +480,8 @@ class ObjectDressup:
         return command
 
     # Create arc in XY plane with manually set G2|G3
-    def createArcMoveN(self, obj, begin, end, offset, cmdName, feedRatePercent):
-        horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value * feedRatePercent / 100
-        param = {"X": end.x, "Y": end.y, "I": offset.x, "J": offset.y, "F": horizfeed}
+    def createArcMoveN(self, obj, begin, end, offset, cmdName, feedRate):
+        param = {"X": end.x, "Y": end.y, "I": offset.x, "J": offset.y, "F": feedRate}
         if cmdName == "G2":
             command = PathLanguage.MoveArcCW(begin, cmdName, param)
         else:
@@ -535,9 +490,8 @@ class ObjectDressup:
         return command
 
     # Create line movement G1
-    def createStraightMove(self, obj, begin, end, feedRatePercent):
-        horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value * feedRatePercent / 100
-        param = {"X": end.x, "Y": end.y, "Z": end.z, "F": horizfeed}
+    def createStraightMove(self, obj, begin, end, feedRate):
+        param = {"X": end.x, "Y": end.y, "Z": end.z, "F": feedRate}
         command = PathLanguage.MoveStraight(begin, "G1", param)
 
         return command
@@ -559,9 +513,8 @@ class ObjectDressup:
         return stepAngle
 
     # Create vertical arc with move Down by line segments
-    def createArcZMoveDown(self, obj, begin, end, radius, feedRatePercent):
+    def createArcZMoveDown(self, obj, begin, end, radius, feedRate):
         commands = []
-        horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value * feedRatePercent / 100
         angle = math.acos((radius - begin.z + end.z) / radius)  # start angle
         stepAngle = self.getStepAngleArcZ(obj, radius)
         iters = math.ceil(angle / stepAngle)
@@ -579,7 +532,7 @@ class ObjectDressup:
             else:
                 # exclude error of calculations for the last iteration
                 iterEnd = copy.copy(end)
-            param = {"X": iterEnd.x, "Y": iterEnd.y, "Z": iterEnd.z, "F": horizfeed}
+            param = {"X": iterEnd.x, "Y": iterEnd.y, "Z": iterEnd.z, "F": feedRate}
             commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
             iterBegin = copy.copy(iterEnd)
             iter += 1
@@ -587,9 +540,8 @@ class ObjectDressup:
         return commands
 
     # Create vertical arc with move Up by line segments
-    def createArcZMoveUp(self, obj, begin, end, radius, feedRatePercent):
+    def createArcZMoveUp(self, obj, begin, end, radius, feedRate):
         commands = []
-        horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value * feedRatePercent / 100
         angleMax = math.acos((radius - end.z + begin.z) / radius)  # finish angle
         stepAngle = self.getStepAngleArcZ(obj, radius)
         iters = math.ceil(angleMax / stepAngle)
@@ -608,7 +560,7 @@ class ObjectDressup:
             else:
                 # exclude the error of calculations of the last point
                 iterEnd = copy.copy(end)
-            param = {"X": iterEnd.x, "Y": iterEnd.y, "Z": iterEnd.z, "F": horizfeed}
+            param = {"X": iterEnd.x, "Y": iterEnd.y, "Z": iterEnd.z, "F": feedRate}
             commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
             iterBegin = copy.copy(iterEnd)
             iter += 1
@@ -656,7 +608,7 @@ class ObjectDressup:
                 arcOffset = arcCenter - arcBegin
                 lead.append(
                     self.createArcMove(
-                        obj, arcBegin, begin, arcOffset, obj.InvertIn, obj.FeedRatePercentIn
+                        obj, arcBegin, begin, arcOffset, obj.InvertIn, obj.LeadInFeed.Value
                     )
                 )
 
@@ -672,7 +624,7 @@ class ObjectDressup:
                     * normalLength
                 )
                 lineBegin = begin + tangent + normal
-                lead.append(self.createStraightMove(obj, lineBegin, begin, obj.FeedRatePercentIn))
+                lead.append(self.createStraightMove(obj, lineBegin, begin, obj.LeadInFeed.Value))
 
             # prepend "LineZ" style lead-in - vertical inclined line
             # Should be apply only on straight Path segment
@@ -688,7 +640,7 @@ class ObjectDressup:
                 tangent = -self.angleToVector(angleTangent) * tangentLength
                 normal = App.Vector(0, 0, normalLength)
                 lineBegin = begin + tangent + normal
-                lead.append(self.createStraightMove(obj, lineBegin, begin, obj.FeedRatePercentIn))
+                lead.append(self.createStraightMove(obj, lineBegin, begin, obj.LeadInFeed.Value))
 
             # prepend "ArcZ" style lead-in - vertical Arc
             # Should be apply only on straight Path segment
@@ -709,7 +661,7 @@ class ObjectDressup:
                 normal = App.Vector(0, 0, normalLength)
                 arcBegin = begin + tangent + normal
                 lead.extend(
-                    self.createArcZMoveDown(obj, arcBegin, begin, arcRadius, obj.FeedRatePercentIn)
+                    self.createArcZMoveDown(obj, arcBegin, begin, arcRadius, obj.LeadInFeed.Value)
                 )
 
             # replace 'begin' position by first lead-in command
@@ -729,10 +681,8 @@ class ObjectDressup:
             travelToStart = self.getTravelStart(obj, begin, first, inInstrPrev, outInstrPrev)
         else:
             # exclude any lead-in commands
-            horizfeed = (
-                PathDressup.toolController(obj.Base).HorizFeed.Value * obj.FeedRatePercentIn / 100
-            )
-            param = {"X": begin.x, "Y": begin.y, "Z": begin.z, "F": horizfeed}
+            feedRate = PathDressup.toolController(obj.Base).LeadInFeed.Value
+            param = {"X": begin.x, "Y": begin.y, "Z": begin.z, "F": feedRate}
             travelToStart = [PathLanguage.MoveStraight(None, "G01", param)]
 
         lead = travelToStart + lead
@@ -778,7 +728,7 @@ class ObjectDressup:
                 arcEnd = end + tangent + normal
                 lead.append(
                     self.createArcMove(
-                        obj, end, arcEnd, normalMax, obj.InvertOut, obj.FeedRatePercentOut
+                        obj, end, arcEnd, normalMax, obj.InvertOut, obj.LeadOutFeed.Value
                     )
                 )
 
@@ -794,7 +744,7 @@ class ObjectDressup:
                     * normalLength
                 )
                 lineEnd = end + tangent + normal
-                lead.append(self.createStraightMove(obj, end, lineEnd, obj.FeedRatePercentOut))
+                lead.append(self.createStraightMove(obj, end, lineEnd, obj.LeadOutFeed.Value))
 
             # append "LineZ" style lead-out - vertical inclined line
             # Should be apply only on straight Path segment
@@ -810,7 +760,7 @@ class ObjectDressup:
                 tangent = self.angleToVector(angleTangent) * tangentLength
                 normal = App.Vector(0, 0, normalLength)
                 lineEnd = end + tangent + normal
-                lead.append(self.createStraightMove(obj, end, lineEnd, obj.FeedRatePercentOut))
+                lead.append(self.createStraightMove(obj, end, lineEnd, obj.LeadOutFeed.Value))
 
             # prepend "ArcZ" style lead-out - vertical Arc
             # Should be apply only on straight Path segment
@@ -831,7 +781,7 @@ class ObjectDressup:
                 normal = App.Vector(0, 0, normalLength)
                 arcEnd = end + tangent + normal
                 lead.extend(
-                    self.createArcZMoveUp(obj, end, arcEnd, arcRadius, obj.FeedRatePercentOut)
+                    self.createArcZMoveUp(obj, end, arcEnd, arcRadius, obj.LeadOutFeed.Value)
                 )
 
         if obj.StyleOut in ["Arc3d", "Line3d"]:
@@ -1171,8 +1121,6 @@ class TaskDressupLeadInOut(SimpleEditPanel):
     def setupUi(self):
         self.connectWidget("InvertIn", self.form.chkInvertDirectionIn)
         self.connectWidget("InvertOut", self.form.chkInvertDirectionOut)
-        self.connectWidget("FeedRatePercentIn", self.form.dspFeedRatePercentIn)
-        self.connectWidget("FeedRatePercentOut", self.form.dspFeedRatePercentOut)
         self.connectWidget("PercentageRadiusIn", self.form.dspPercentageRadiusIn)
         self.connectWidget("PercentageRadiusOut", self.form.dspPercentageRadiusOut)
         self.connectWidget("StyleIn", self.form.cboStyleIn)
