@@ -514,6 +514,8 @@ void DlgAddProperty::initializeWidgets(ViewProviderVarSet* viewProvider)
 
     QWidget::setTabOrder(ui->lineEditName, &comboBoxGroup);
     QWidget::setTabOrder(&comboBoxGroup, ui->comboBoxType);
+
+    adjustSize();
 }
 
 bool DlgAddProperty::propertyExists(const std::string& name)
