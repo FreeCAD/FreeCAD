@@ -35,12 +35,6 @@ import FreeCAD
 import Fem
 from freecad import utils
 
-try:
-    from netgen import occ, meshing, config as ng_config
-    import pyngcore as ngcore
-except ModuleNotFoundError:
-    FreeCAD.Console.PrintError("To use FemMesh Netgen objects, install the Netgen Python bindings")
-
 
 class NetgenTools:
 
@@ -76,6 +70,7 @@ class NetgenTools:
     }
 
     name = "Netgen"
+    __param_grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Netgen")
 
     def __init__(self, obj):
         self.obj = obj
@@ -84,7 +79,6 @@ class NetgenTools:
         self.tmpdir = ""
         self.process = QProcess()
         self.mesh_params = {}
-        self.param_grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Netgen")
 
     def write_geom(self):
         if not self.tmpdir:
@@ -104,7 +98,7 @@ class NetgenTools:
         self.write_geom()
         self.mesh_params = {
             "brep_file": self.brep_file,
-            "threads": self.param_grp.GetInt("NumOfThreads", QThread.idealThreadCount()),
+            "threads": self.__param_grp.GetInt("NumOfThreads", QThread.idealThreadCount()),
             "heal": self.obj.HealShape,
             "glue": self.obj.Glue,
             "params": self.get_meshing_parameters(),
@@ -112,7 +106,7 @@ class NetgenTools:
             "second_order_linear": self.obj.SecondOrderLinear,
             "result_file": self.result_file,
             "mesh_region": self.get_mesh_region(),
-            "verbosity": self.param_grp.GetInt("LogVerbosity", 2),
+            "verbosity": self.__param_grp.GetInt("LogVerbosity", 2),
             "zrefine": self.obj.ZRefine,
             "zrefine_size": self.obj.ZRefineSize,
             "zrefine_direction": tuple(self.obj.ZRefineDirection),
@@ -128,14 +122,23 @@ class NetgenTools:
             )
 
     def compute(self):
-        self.process.start(utils.get_python_exe(), [self.script_file])
+        self.process.start(self._get_python_exe(), [self.script_file])
 
         return self.process
 
     code = """
-from netgen import occ, meshing
-import pyngcore as ngcore
-import numpy as np
+# report Python executable and meshing script
+import sys
+print("Python interpreter:", sys.executable, flush=True)
+print("Meshing script:", *sys.argv, flush=True)
+
+try:
+    import pyngcore as ngcore
+    from netgen import occ, meshing
+    import numpy as np
+except ModuleNotFoundError:
+    sys.exit("To use FemMesh Netgen, install numpy and Netgen Python bindings")
+
 
 order_face = {order_face}
 order_volume = {order_volume}
@@ -339,7 +342,7 @@ run_netgen(**{kwds})
             "inverttets": self.obj.InvertTets,
             "inverttrigs": self.obj.InvertTrigs,
             "parallel_meshing": self.obj.ParallelMeshing,
-            "nthreads": self.param_grp.GetInt("NumOfThreads", QThread.idealThreadCount()),
+            "nthreads": self.__param_grp.GetInt("NumOfThreads", QThread.idealThreadCount()),
             "closeedgefac": self.obj.CloseEdgeFactor,
         }
 
@@ -400,18 +403,28 @@ run_netgen(**{kwds})
         return result
 
     @staticmethod
+    def _get_python_exe():
+        path = NetgenTools.__param_grp.GetString("NetgenPythonPath", "")
+        if not path:
+            path = utils.get_python_exe()
+
+        return path
+
+    @staticmethod
     def version():
-        result = "{}: {}\n" + "{}: {}\n" + "{}: {}\n" + "{}: {}"
-        return result.format(
-            "Netgen",
-            ng_config.version,
-            "Python",
-            ng_config.PYTHON_VERSION,
-            "OpenCASCADE",
-            occ.occ_version,
-            "Use MPI",
-            ng_config.USE_MPI,
-        )
+        script = """
+try:
+    from netgen import config
+    print("Netgen:", config.version, flush=True)
+except:
+    pass
+"""
+        p = QProcess()
+        p.start(NetgenTools._get_python_exe(), ["-c", script])
+        p.waitForFinished()
+        info = p.readAll().data().decode()
+
+        return info
 
     def __del__(self):
         if self.tmpdir:
