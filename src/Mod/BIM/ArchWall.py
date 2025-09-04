@@ -239,7 +239,7 @@ class _Wall(ArchComponent.Component):
         return dump
 
     def loads(self,state):
-        super().loads(state)  # do nothing as of 2024.11.28
+        self.Type = "Wall"
         if state == None:
             return
         elif state[0] == 'W':  # state[1] == 'a', behaviour before 2024.11.28
@@ -250,7 +250,6 @@ class _Wall(ArchComponent.Component):
         elif state[0] != 'Wall':  # model before merging super.dumps/loads()
             self.ArchSkPropSetPickedUuid = state[0]
             self.ArchSkPropSetListPrev = state[1]
-        self.Type = "Wall"
 
     def onDocumentRestored(self,obj):
         """Method run when the document is restored. Re-adds the Arch component, and Arch wall properties."""

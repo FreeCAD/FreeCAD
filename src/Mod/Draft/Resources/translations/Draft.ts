@@ -514,22 +514,8 @@ The number must be at least 1 in each direction.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskPanel_OrthoArray.ui" line="168"/>
-        <source>Distance between the elements in the X direction.
-Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/TaskPanel_OrthoArray.ui" line="249"/>
         <source>Reset X</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/TaskPanel_OrthoArray.ui" line="259"/>
-        <source>Distance between the elements in the Y direction.
-Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -585,6 +571,13 @@ Negative values will result in copies produced in the negative direction.</sourc
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/TaskPanel_OrthoArray.ui" line="168"/>
+        <source>Distance between the elements in the X-direction.
+Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../ui/TaskPanel_OrthoArray.ui" line="173"/>
         <source>X Intervals</source>
         <translation type="unfinished"></translation>
@@ -594,6 +587,13 @@ Negative values will result in copies produced in the negative direction.</sourc
         <location filename="../ui/TaskPanel_OrthoArray.ui" line="337"/>
         <location filename="../ui/TaskPanel_OrthoArray.ui" line="428"/>
         <source>Resets the distances</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/TaskPanel_OrthoArray.ui" line="259"/>
+        <source>Distance between the elements in the Y-direction.
+Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -951,12 +951,6 @@ will be moved to the center of the view.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="214"/>
-        <location filename="../ui/TaskSelectPlane.ui" line="224"/>
-        <source>The number of squares in the X and Y direction of the grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/TaskSelectPlane.ui" line="217"/>
         <source>Grid size</source>
         <translation type="unfinished"></translation>
@@ -985,6 +979,12 @@ will be moved to the center of the view.</source>
     <message>
         <location filename="../ui/TaskSelectPlane.ui" line="177"/>
         <source>Grid spacing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/TaskSelectPlane.ui" line="214"/>
+        <location filename="../ui/TaskSelectPlane.ui" line="224"/>
+        <source>The number of squares in the X- and Y-direction of the grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1471,16 +1471,6 @@ Objects can then automatically be added to groups as well.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-draft.ui" line="155"/>
-        <source>If checked, instructions are displayed in the Report view when using Draft commands</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/preferences-draft.ui" line="158"/>
-        <source>Show prompts in the Report view</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/preferences-draft.ui" line="188"/>
         <source>If checked, base objects, instead of created copies, are selected after copying</source>
         <translation type="unfinished"></translation>
@@ -1576,6 +1566,16 @@ accidentally and modifying the entered value.</source>
     <message>
         <location filename="../ui/preferences-draft.ui" line="149"/>
         <source>Command Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-draft.ui" line="155"/>
+        <source>If checked, instructions are displayed in the Report View when using Draft commands</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-draft.ui" line="158"/>
+        <source>Show prompts in the Report View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1771,6 +1771,12 @@ pattern definitions to be added to the standard patterns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/preferences-drafttexts.ui" line="39"/>
+        <source>The default annotation scale multiplier. This is the inverse of the scale set
+in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../ui/preferences-drafttexts.ui" line="72"/>
         <source>Texts</source>
         <translation type="unfinished"></translation>
@@ -1803,12 +1809,6 @@ pattern definitions to be added to the standard patterns</source>
     <message>
         <location filename="../ui/preferences-drafttexts.ui" line="20"/>
         <source>Annotations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/preferences-drafttexts.ui" line="39"/>
-        <source>The default annotation scale multiplier. This is the inverse of the scale set
-in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2452,11 +2452,6 @@ Major grid lines are thicker than minor grid lines.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-draftsnap.ui" line="220"/>
-        <source>The number of squares in the X and Y direction of the grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/preferences-draftsnap.ui" line="298"/>
         <source>Snapping and Modifier Keys</source>
         <translation type="unfinished"></translation>
@@ -2517,11 +2512,6 @@ Use Draft ToggleGrid to change this for the active view.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-draftinterface.ui" line="790"/>
-        <source>Only show the Draft snap toolbar during commands</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/preferences-draftsnap.ui" line="20"/>
         <source>Grid</source>
         <translation type="unfinished"></translation>
@@ -2577,6 +2567,11 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
         <location filename="../ui/preferences-draftsnap.ui" line="213"/>
         <source>Grid size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-draftsnap.ui" line="220"/>
+        <source>The number of squares in the X- and Y-direction of the grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2786,16 +2781,6 @@ if they match the X, Y or Z axis of the global coordinate system</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/preferences-draftinterface.ui" line="787"/>
-        <source>If checked, the Draft snap toolbar will only be visible during commands</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/preferences-draftinterface.ui" line="809"/>
-        <source>Show the Snap widget in the Draft Workbench</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/preferences-draftinterface.ui" line="215"/>
         <source>E</source>
         <translation type="unfinished"></translation>
@@ -2926,18 +2911,33 @@ if they match the X, Y or Z axis of the global coordinate system</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/preferences-draftinterface.ui" line="787"/>
+        <source>If checked, the Draft Snap toolbar will only be visible during commands</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-draftinterface.ui" line="790"/>
+        <source>Only show the Draft Snap toolbar during commands</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../ui/preferences-draftinterface.ui" line="806"/>
-        <source>If checked, the Snap widget is displayed in the Draft status bar</source>
+        <source>If checked, the Draft Snap Widget is displayed in the Draft Status Bar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/preferences-draftinterface.ui" line="809"/>
+        <source>Show the Draft Snap Widget in the Draft Workbench</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/preferences-draftinterface.ui" line="825"/>
-        <source>If checked, the annotation scale widget is displayed in the Draft status bar</source>
+        <source>If checked, the Draft Scale Widget is displayed in the Draft Status Bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/preferences-draftinterface.ui" line="828"/>
-        <source>Show the Annotation Scale Widget in the Draft Workbench</source>
+        <source>Show the Draft Scale Widget in the Draft Workbench</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3537,44 +3537,44 @@ or try saving to a lower DWG version.</source>
         <location filename="../../draftmake/make_text.py" line="92"/>
         <location filename="../../draftmake/make_text.py" line="178"/>
         <location filename="../../draftutils/groups.py" line="95"/>
-        <location filename="../../draftutils/gui_utils.py" line="890"/>
+        <location filename="../../draftutils/gui_utils.py" line="894"/>
         <location filename="../../draftutils/utils.py" line="1055"/>
         <source>No active document. Aborting.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftutils/groups.py" line="131"/>
-        <location filename="../../draftutils/gui_utils.py" line="898"/>
+        <location filename="../../draftutils/gui_utils.py" line="902"/>
         <source>Wrong input: object {} not in document.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftutils/gui_utils.py" line="160"/>
+        <location filename="../../draftutils/gui_utils.py" line="164"/>
         <source>Unable to insert new object into a scaled part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftutils/gui_utils.py" line="269"/>
+        <location filename="../../draftutils/gui_utils.py" line="273"/>
         <source>Symbol not implemented. Using a default symbol.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftutils/gui_utils.py" line="774"/>
+        <location filename="../../draftutils/gui_utils.py" line="778"/>
         <source>image is Null</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftutils/gui_utils.py" line="780"/>
+        <location filename="../../draftutils/gui_utils.py" line="784"/>
         <source>filename does not exist on the system or in the resource file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftutils/gui_utils.py" line="839"/>
+        <location filename="../../draftutils/gui_utils.py" line="843"/>
         <source>unable to load texture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftutils/gui_utils.py" line="904"/>
+        <location filename="../../draftutils/gui_utils.py" line="908"/>
         <source>Does not have &apos;ViewObject.RootNode&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3948,12 +3948,12 @@ or try saving to a lower DWG version.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_arcs.py" line="594"/>
+        <location filename="../../draftguitools/gui_arcs.py" line="599"/>
         <source>Create Arc From 3 Points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_arcs.py" line="634"/>
+        <location filename="../../draftguitools/gui_arcs.py" line="639"/>
         <location filename="../../draftguitools/gui_ellipses.py" line="214"/>
         <location filename="../../draftguitools/gui_lines.py" line="296"/>
         <location filename="../../draftguitools/gui_rectangles.py" line="210"/>
@@ -3961,13 +3961,13 @@ or try saving to a lower DWG version.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_arcs.py" line="638"/>
+        <location filename="../../draftguitools/gui_arcs.py" line="643"/>
         <location filename="../../draftguitools/gui_lines.py" line="300"/>
         <source>%1 pick second point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_arcs.py" line="642"/>
+        <location filename="../../draftguitools/gui_arcs.py" line="647"/>
         <source>%1 pick third point</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4476,7 +4476,7 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
         <location filename="../../draftguitools/gui_beziers.py" line="267"/>
-        <source>Cubic Bézier curve</source>
+        <source>Cubic Bézier Curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4861,7 +4861,7 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftutils/params.py" line="477"/>
+        <location filename="../../draftutils/params.py" line="478"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5093,38 +5093,38 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftmake/make_arc_3points.py" line="124"/>
-        <location filename="../../draftmake/make_arc_3points.py" line="129"/>
+        <location filename="../../draftmake/make_arc_3points.py" line="87"/>
+        <location filename="../../draftmake/make_arc_3points.py" line="92"/>
         <source>Points:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftmake/make_arc_3points.py" line="125"/>
+        <location filename="../../draftmake/make_arc_3points.py" line="88"/>
         <source>Wrong input: must be a list or tuple of 3 points exactly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftmake/make_arc_3points.py" line="130"/>
+        <location filename="../../draftmake/make_arc_3points.py" line="93"/>
         <source>Wrong input: must be list or tuple of 3 points exactly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftmake/make_arc_3points.py" line="137"/>
+        <location filename="../../draftmake/make_arc_3points.py" line="110"/>
         <source>Placement:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftmake/make_arc_3points.py" line="138"/>
+        <location filename="../../draftmake/make_arc_3points.py" line="111"/>
         <source>Wrong input: incorrect type of placement.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftmake/make_arc_3points.py" line="148"/>
+        <location filename="../../draftmake/make_arc_3points.py" line="103"/>
         <source>Wrong input: incorrect type of points.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftmake/make_arc_3points.py" line="154"/>
+        <location filename="../../draftmake/make_arc_3points.py" line="117"/>
         <source>Cannot generate shape:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7004,6 +7004,11 @@ Leave this property empty to create copies along the entire &apos;Path Object&ap
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../draftobjects/patharray.py" line="303"/>
+        <source>Force use of &apos;Vertical Vector&apos; as local Z-direction when using &apos;Original&apos; or &apos;Tangent&apos; alignment mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../draftobjects/patharray.py" line="353"/>
         <source>Number of copies to create</source>
         <translation type="unfinished"></translation>
@@ -7017,11 +7022,6 @@ This is useful to adjust for the difference between shape centre and shape refer
     <message>
         <location filename="../../draftobjects/patharray.py" line="294"/>
         <source>Alignment vector for &apos;Tangent&apos; mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/patharray.py" line="303"/>
-        <source>Force use of &apos;Vertical Vector&apos; as local Z direction when using &apos;Original&apos; or &apos;Tangent&apos; alignment mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7101,32 +7101,32 @@ Otherwise the copies will have the same orientation as the original Base object.
     </message>
     <message>
         <location filename="../../draftobjects/array.py" line="168"/>
-        <source>Number of copies in X direction</source>
+        <source>Number of copies in X-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftobjects/array.py" line="178"/>
-        <source>Number of copies in Y direction</source>
+        <source>Number of copies in Y-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftobjects/array.py" line="188"/>
-        <source>Number of copies in Z direction</source>
+        <source>Number of copies in Z-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftobjects/array.py" line="199"/>
-        <source>Distance and orientation of intervals in X direction</source>
+        <source>Distance and orientation of intervals in X-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftobjects/array.py" line="210"/>
-        <source>Distance and orientation of intervals in Y direction</source>
+        <source>Distance and orientation of intervals in Y-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftobjects/array.py" line="221"/>
-        <source>Distance and orientation of intervals in Z direction</source>
+        <source>Distance and orientation of intervals in Z-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7884,12 +7884,12 @@ beyond the dimension line</source>
 <context>
     <name>Draft_ArcTools</name>
     <message>
-        <location filename="../../draftguitools/gui_arcs.py" line="659"/>
+        <location filename="../../draftguitools/gui_arcs.py" line="664"/>
         <source>Arc Tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_arcs.py" line="662"/>
+        <location filename="../../draftguitools/gui_arcs.py" line="667"/>
         <source>Tools to create various types of circular arcs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8343,7 +8343,7 @@ The initial projection direction is the opposite of the current active view dire
     </message>
     <message>
         <location filename="../../draftguitools/gui_snaps.py" line="125"/>
-        <source>Snaps to the intersection of 2 edges</source>
+        <source>Snaps to the intersection of 2 edges, and the intersection of a face and an edge</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

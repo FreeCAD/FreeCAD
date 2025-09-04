@@ -634,8 +634,14 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
                 pPath = detailPath;
                 det = detNext;
                 FC_TRACE("select next " << objectName << ", " << subName);
-                if (ok)
+                if (ok) {
                     type = hasNext ? SoSelectionElementAction::All : SoSelectionElementAction::Append;
+                } else {
+                    // don't apply any visual action when selection fails -
+                    // in a case when we press ctrl and select a geometry that should be
+                    // filtered out, we don't want to apply any visual action
+                    pPath = nullptr;
+                }
             }
         }
     }

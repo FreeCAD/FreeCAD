@@ -206,9 +206,9 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Maximal places in stiffnes matrix.
+           <string>Maximum places in the stiffness matrix.
 You might need to increase this when using the
-Cholesky solver and you get the error message
+Cholesky solver and getting the error message
 that &quot;MAXGS&quot; needs to be increased.</string>
           </property>
           <property name="alignment">

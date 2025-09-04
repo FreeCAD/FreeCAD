@@ -113,4 +113,47 @@ TEST(BaseToolsSuite, TestEscapeQuotesFromString)
     EXPECT_EQ(Base::Tools::escapeQuotesFromString("\""), "\\\"");
     EXPECT_EQ(Base::Tools::escapeQuotesFromString("\\"), "\\");
 }
+TEST(BaseToolsSuite, TestGetIdentifier)
+{
+    // ASCII and edge cases
+    EXPECT_EQ(Base::Tools::getIdentifier("valid"), "valid");
+    EXPECT_EQ(Base::Tools::getIdentifier("_valid"), "_valid");
+    EXPECT_EQ(Base::Tools::getIdentifier("1invalid"), "_1invalid");
+    EXPECT_EQ(Base::Tools::getIdentifier(""), "_");
+
+    // Unicode letters (valid start and continue)
+    EXPECT_EQ(Base::Tools::getIdentifier("πValue"), "πValue");  // Greek lowercase
+    EXPECT_EQ(Base::Tools::getIdentifier("Δx"), "Δx");          // Greek uppercase
+    EXPECT_EQ(Base::Tools::getIdentifier("ǅz"), "ǅz");          // Titlecase letter
+    EXPECT_EQ(Base::Tools::getIdentifier("ʰindex"), "ʰindex");  // Modifier letter
+    EXPECT_EQ(Base::Tools::getIdentifier("名字"), "名字");      // CJK characters (Lo)
+    EXPECT_EQ(Base::Tools::getIdentifier("ⅨCount"), "ⅨCount");  // Letter number (Nl)
+
+    // Digits not valid as first char
+    EXPECT_EQ(Base::Tools::getIdentifier("٢ndPlace"), "_٢ndPlace");  // Arabic-Indic digit (Nd)
+
+    // Connector punctuation
+    EXPECT_EQ(Base::Tools::getIdentifier("valid_name"), "valid_name");
+    EXPECT_EQ(Base::Tools::getIdentifier("valid‿name"), "valid‿name");
+    EXPECT_EQ(Base::Tools::getIdentifier("valid﹍name"), "valid﹍name");
+
+    // Combining marks (Mn, Mc)
+    EXPECT_EQ(Base::Tools::getIdentifier("éclair"), "éclair");  // 'e' + combining acute accent (Mn)
+    EXPECT_EQ(Base::Tools::getIdentifier("devा"), "devा");      // Devanagari vowel sign (Mc)
+
+    // Invalid symbols
+    EXPECT_EQ(Base::Tools::getIdentifier("hello!"), "hello_");
+    EXPECT_EQ(Base::Tools::getIdentifier("foo-bar"), "foo_bar");
+    EXPECT_EQ(Base::Tools::getIdentifier("a🙂b"), "a_b");  // Emoji replaced
+    EXPECT_EQ(Base::Tools::getIdentifier("a*b&c"), "a_b_c");
+
+    // Edge: starts with underscore, includes mixed types
+    EXPECT_EQ(Base::Tools::getIdentifier("_नमस्ते123"), "_नमस्ते123");
+
+    // Starts with invalid character
+    EXPECT_EQ(Base::Tools::getIdentifier("💡idea"), "_idea");
+
+    // Full-width digit (U+FF11, looks like '1')
+    EXPECT_EQ(Base::Tools::getIdentifier("１start"), "_１start");
+}
 // NOLINTEND(cppcoreguidelines-*,readability-*)

@@ -116,6 +116,8 @@ class CalculiXTools:
             "AnalysisNumCPUs", QThread.idealThreadCount()
         )
         env.insert("OMP_NUM_THREADS", str(num_cpu))
+        pastix_prec = "1" if self.obj.PastixMixedPrecision else "0"
+        env.insert("PASTIX_MIXED_PRECISION", pastix_prec)
         self.process.setProcessEnvironment(env)
         self.process.setWorkingDirectory(self.obj.WorkingDirectory)
 

@@ -35,6 +35,8 @@ class Property;
 }
 
 namespace Gui {
+class RadialGizmo;
+class Gizmo;
 class ViewProvider;
 class ViewProviderCoordinateSystem;
 }
@@ -122,6 +124,14 @@ private:
      * when adding stuff, and delete when removing stuff.
      */
     std::vector<std::unique_ptr<App::PropertyLinkSub>> axesInList;
+
+    std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    Gui::RadialGizmo* rotationGizmo = nullptr;
+    Gui::RadialGizmo* rotationGizmo2 = nullptr;
+    void setupGizmos(ViewProvider* vp);
+    void setGizmoPositions();
+    void reverseGizmoDir();
+    void setGizmoVisibility();
 };
 
 class TaskDlgRevolutionParameters : public TaskDlgSketchBasedParameters

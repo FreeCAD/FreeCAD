@@ -213,7 +213,7 @@ class Arch_Window:
                     # Historically, this normal was deduced by the orientation of the Base Sketch and hardcoded in the Normal property.
                     # Now with the new AutoNormalReversed property/flag, set True as default, the auto Normal previously in opposite direction to is now consistent with that previously hardcoded.
                     # With the normal set to 'auto', window object would not suffer weird shape if the Base Sketch is rotated by some reason.
-                    # Keep the property be 'auto' (0,0,0) here.  
+                    # Keep the property be 'auto' (0,0,0) here.
                     #FreeCADGui.doCommand("win.Normal = pl.Rotation.multVec(FreeCAD.Vector(0, 0, -1))")
                     FreeCADGui.doCommand("win.Width = " + str(self.Width))
                     FreeCADGui.doCommand("win.Height = " + str(self.Height))
@@ -234,13 +234,13 @@ class Arch_Window:
             import ArchSketchObject
 
             if (host and Draft.getType(host.Base) == "ArchSketch" and
-                hasattr(ArchSketchObject, 'attachToHost') and 
-                hasattr(FreeCAD, 'ArchSketchLock') and 
+                hasattr(ArchSketchObject, 'attachToHost') and
+                hasattr(FreeCAD, 'ArchSketchLock') and
                 FreeCAD.ArchSketchLock):
                 if self.Include:
                     # Window base sketch's placement stay at origin is good if addon exists and self.Include
                     # Window object triggers onChanged() upon setting/changing Window.Sill to move Window's z position
-                    # For Window with SketchArch add-on, attachToHost() is to be run below below to set the 'initial' Window's placement first before triggering onChanged() below,
+                    # For Window with SketchArch add-on, attachToHost() is to be run below to set the 'initial' Window's placement prior to triggering onChanged() below,
                     # so window_sill parameter is not used here at the moment, see 'if self.Include' below.
                     #FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ", window_sill=" + str(self.Sill.Value) + ")")
                     FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ")")

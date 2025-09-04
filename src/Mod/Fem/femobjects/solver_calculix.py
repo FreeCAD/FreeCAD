@@ -326,7 +326,16 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
                 type="App::PropertyBool",
                 name="ExcludeBendingStiffness",
                 group="Solver",
-                doc="Exclude bending stiffness to replace shells with membranes",
+                doc="Exclude bending stiffness to replace shells with membranes or beams with trusses",
+                value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="PastixMixedPrecision",
+                group="Solver",
+                doc="Mixed precision for the PaStiX matrix solver",
                 value=False,
             )
         )

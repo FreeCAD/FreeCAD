@@ -1591,6 +1591,14 @@ void NavigationStyle::syncModifierKeys(const SoEvent * const ev)
 void NavigationStyle::setViewingMode(const ViewerMode newmode)
 {
     const ViewerMode oldmode = this->currentmode;
+
+    // Reset flags when changing from IDLE to another mode or if the mode is IDLE and the buttons are released
+    if ((oldmode == IDLE && newmode != IDLE) || (newmode == IDLE && !button1down && !button2down && !button3down)) {
+        hasPanned = false;
+        hasDragged = false;
+        hasZoomed = false;
+    }
+    
     if (newmode == oldmode) {
 
         // The rotation center could have been changed even if the mode has not changed
@@ -1599,12 +1607,6 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
         }
 
         return;
-    }
-
-    if (newmode == NavigationStyle::IDLE) {
-        hasPanned = false;
-        hasDragged = false;
-        hasZoomed = false;
     }
 
     switch (newmode) {

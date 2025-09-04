@@ -313,8 +313,10 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
     std::string method2(Type2.getValueAsString());
 
     // Validate parameters
-    double L = Length.getValue();
-    double L2 = (Sidemethod == "Two sides" && method2 == "Length") ? Length2.getValue() : 0;
+    double L = method == "ThroughAll" ? getThroughAllLength() : Length.getValue();
+    double L2 = Sidemethod == "Two sides"
+        ? method2 == "ThroughAll" ? getThroughAllLength() : Length2.getValue()
+        : 0;
 
     if ((Sidemethod == "One side" && method == "Length")
         || (Sidemethod == "Two sides" && method == "Length" && method2 == "Length")) {
@@ -447,21 +449,19 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         sketchshape.move(invObjLoc);
 
         std::vector<TopoShape> prisms;  // Stores prisms, all in global CS
-        std::string sideTypeStr = SideType.getValueAsString();
-        std::string method1 = Type.getValueAsString();
-        double len1 = method1 == "ThroughAll" ? getThroughAllLength() : Length.getValue();
         double taper1 = TaperAngle.getValue();
         double offset1 = Offset.getValue();
 
-        if (sideTypeStr == "One side") {
+        if (Sidemethod == "One side") {
             TopoShape prism1 = generateSingleExtrusionSide(sketchshape,
-                method1, len1, taper1, UpToFace, UpToShape,
+                method, L, taper1, UpToFace, UpToShape,
                 dir, offset1, makeface, base);
             prisms.push_back(prism1);
         }
-        else if (sideTypeStr == "Symmetric") {
+        else if (Sidemethod == "Symmetric") {
+            L /= 2.0;
             TopoShape prism1 = generateSingleExtrusionSide(sketchshape,
-                method1, len1, taper1, UpToFace, UpToShape,
+                method, L, taper1, UpToFace, UpToShape,
                 dir, offset1, makeface, base);
             prisms.push_back(prism1);
 
@@ -472,10 +472,10 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             prisms.push_back(prism2);
 
         }
-        else if (sideTypeStr == "Two sides") {
+        else if (Sidemethod == "Two sides") {
             TopoShape prism1 = generateSingleExtrusionSide(sketchshape.makeElementCopy(),
-                                                            method1,
-                                                            len1,
+                                                            method,
+                                                            L,
                                                             taper1,
                                                             UpToFace,
                                                             UpToShape,
@@ -488,8 +488,6 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
 
             // Side 2
-            std::string method2 = Type2.getValueAsString();
-            double len2 = method2 == "ThroughAll" ? getThroughAllLength() : Length2.getValue();
             double taper2 = TaperAngle2.getValue();
             double offset2 = Offset2.getValue();
             gp_Dir dir2 = dir;
@@ -497,7 +495,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
             TopoShape prism2 = generateSingleExtrusionSide(sketchshape.makeElementCopy(),
                                                             method2,
-                                                            len2,
+                                                            L2,
                                                             taper2,
                                                             UpToFace2,
                                                             UpToShape2,
@@ -707,7 +705,7 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(const TopoShape& sketchsha
             params.dir = dir;
             params.solid = makeFace;
             params.lengthFwd = length;
-        
+
             std::vector<TopoShape> drafts;
             Part::ExtrusionHelper::makeElementDraft(params,
                                                     sketchshape,
@@ -739,18 +737,18 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(const TopoShape& sketchsha
     return prism;
 }
 
-
-void FeatureExtrude::handleChangedPropertyType(Base::XMLReader& reader,
-                                              const char* TypeName,
-                                              App::Property* prop)
+void FeatureExtrude::onDocumentRestored()
 {
     // property Type no longer has TwoLengths.
-    if (prop == &Type && strcmp(Type.getValueAsString(), "TwoLengths") == 0) {
+    if (strcmp(Type.getValueAsString(), "TwoLengths") == 0) {
         Type.setValue("Length");
         Type2.setValue("Length");
         SideType.setValue("Two sides");
     }
-    else {
-        ProfileBased::handleChangedPropertyType(reader, TypeName, prop);
+    else if (Midplane.getValue()) {
+        Midplane.setValue(false);
+        SideType.setValue("Symmetric");
     }
+
+    ProfileBased::onDocumentRestored();
 }

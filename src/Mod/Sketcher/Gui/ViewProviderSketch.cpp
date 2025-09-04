@@ -42,7 +42,10 @@
 #include <limits>
 #endif
 
+#include <fmt/format.h>
+
 #include <Base/Console.h>
+#include <Base/ServiceProvider.h>
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -68,6 +71,7 @@
 #include "EditDatumDialog.h"
 #include "EditModeCoinManager.h"
 #include "SnapManager.h"
+#include "StyleParameters.h"
 #include "TaskDlgEditSketch.h"
 #include "TaskSketcherValidation.h"
 #include "Utils.h"
@@ -539,6 +543,7 @@ ViewProviderSketch::ViewProviderSketch()
     , pObserver(std::make_unique<ViewProviderSketch::ParameterObserver>(*this))
     , sketchHandler(nullptr)
     , viewOrientationFactor(1)
+    , blockContextMenu(false)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
     PartGui::ViewProviderGridExtension::initExtension(this);
@@ -1137,6 +1142,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                 case STATUS_SKETCH_UseRubberBand:
                     doBoxSelection(DoubleClick::prvCursorPos, cursorPos, viewer);
                     rubberband->setWorking(false);
+                    blockContextMenu = true;
 
                     // use draw(false, false) to avoid solver geometry with outdated construction flags
                     draw(false, false);
@@ -1158,6 +1164,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
     // Right mouse button ****************************************************
     else if (Button == 2) {
         if (pressed) {
+            blockContextMenu = false;
+
             // Do things depending on the mode of the user interaction
             switch (Mode) {
                 case STATUS_NONE: {
@@ -1177,7 +1185,18 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         // Base::Console().log("start dragging, point:%d\n",this->DragPoint);
                         setSketchMode(STATUS_SELECT_Constraint);
                     }
+                    break;
                 }
+                case STATUS_SKETCH_UseRubberBand:
+                    // Cancel rubberband
+                    rubberband->setWorking(false);
+                    blockContextMenu = true;
+
+                    // a redraw is required in order to clear the rubberband
+                    draw(true, false);
+                    const_cast<Gui::View3DInventorViewer*>(viewer)->redraw();
+                    setSketchMode(STATUS_NONE);
+                    return true;
                 default:
                     break;
             }
@@ -1507,6 +1526,22 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
             // (#0003130)
             qreal dpr = viewer->getGLWidget()->devicePixelRatioF();
             DoubleClick::newCursorPos = cursorPos;
+
+            // depending on selection direction (touch selection (right to left) or window selection (left to right))
+            // set the appropriate color and line style using theme design tokens
+            bool isRightToLeft = DoubleClick::prvCursorPos.getValue()[0] > DoubleClick::newCursorPos.getValue()[0];
+
+            auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
+
+            // try to get colors from theme tokens
+            auto touchColorValue = styleParameterManager->resolve(StyleParameters::SketcherRubberbandTouchSelectionColor).asValue<Base::Color>();
+            auto windowColorValue = styleParameterManager->resolve(StyleParameters::SketcherRubberbandWindowSelectionColor).asValue<Base::Color>();
+
+            auto color = isRightToLeft ? touchColorValue : windowColorValue;
+
+            rubberband->setColor(color.r, color.g, color.b, color.a);
+            rubberband->setLineStipple(isRightToLeft);  // dashed for touch, solid for window
+
             rubberband->setCoords(
                 DoubleClick::prvCursorPos.getValue()[0],
                 viewer->getGLWidget()->height() * dpr - DoubleClick::prvCursorPos.getValue()[1],
@@ -2689,7 +2724,94 @@ void ViewProviderSketch::updateColor()
 
 bool ViewProviderSketch::selectAll()
 {
-    // TODO: eventually implement "select all" logic
+    // logic of this func has been stolen partly from doBoxSelection()
+    if (!isInEditMode()) {
+        return false;
+    }
+
+    Sketcher::SketchObject* sketchObject = getSketchObject();
+    if (!sketchObject) {
+        return false;
+    }
+
+    Gui::Selection().clearSelection();
+
+    int intGeoCount = sketchObject->getHighestCurveIndex() + 1;
+    int extGeoCount = sketchObject->getExternalGeometryCount();
+
+    const std::vector<Part::Geometry*> geomlist = sketchObject->getCompleteGeometry();
+
+    int VertexId = -1;
+    int GeoId = 0;
+
+    for (std::vector<Part::Geometry*>::const_iterator it = geomlist.begin();
+         it != geomlist.end() - 2; // -2 to exclude H_Axis and V_Axis
+         ++it, ++GeoId) {
+
+        if (GeoId >= intGeoCount) {
+            GeoId = -extGeoCount;
+        }
+
+        if ((*it)->is<Part::GeomPoint>()) {
+            VertexId++;
+            addSelection2(fmt::format("Vertex{}", VertexId + 1));
+        }
+        else if ((*it)->is<Part::GeomLineSegment>()) {
+            VertexId++; // start
+            addSelection2(fmt::format("Vertex{}", VertexId + 1));
+
+            VertexId++; // end
+            addSelection2(fmt::format("Vertex{}", VertexId + 1));
+
+            if (GeoId >= 0) {
+                addSelection2(fmt::format("Edge{}", GeoId + 1));
+            } else {
+                addSelection2(fmt::format("ExternalEdge{}", -GeoId - 1));
+            }
+        }
+        else if ((*it)->isDerivedFrom<Part::GeomConic>()) {
+            VertexId++;
+            addSelection2(fmt::format("Vertex{}", VertexId + 1));
+
+            if (GeoId >= 0) {
+                addSelection2(fmt::format("Edge{}", GeoId + 1));
+            } else {
+                addSelection2(fmt::format("ExternalEdge{}", -GeoId - 1));
+            }
+        }
+        else if ((*it)->isDerivedFrom<Part::GeomCurve>()) {
+            if (auto arc = dynamic_cast<const Part::GeomArcOfCircle*>(*it)) {
+                VertexId++; // start
+                addSelection2(fmt::format("Vertex{}", VertexId + 1));
+
+                VertexId++; // end
+                addSelection2(fmt::format("Vertex{}", VertexId + 1));
+
+                VertexId++; // center
+                addSelection2(fmt::format("Vertex{}", VertexId + 1));
+            } else {
+                // for other curves, select available vertices
+                VertexId++;
+                addSelection2(fmt::format("Vertex{}", VertexId + 1));
+            }
+
+            if (GeoId >= 0) {
+                addSelection2(fmt::format("Edge{}", GeoId + 1));
+            } else {
+                addSelection2(fmt::format("ExternalEdge{}", -GeoId - 1));
+            }
+        }
+    }
+
+    // select constraints too
+    const std::vector<Sketcher::Constraint*>& constraints = sketchObject->Constraints.getValues();
+    for (size_t i = 0; i < constraints.size(); ++i) {
+        addSelection2(fmt::format("Constraint{}", i + 1));
+    }
+
+    // get root point if they exist
+    addSelection2("RootPoint");
+
     return true;
 }
 
@@ -3607,6 +3729,8 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     cameraSensor.setData(camSensorData);
     cameraSensor.setDeleteCallback(&ViewProviderSketch::camSensDeleteCB, camSensorData);
     cameraSensor.attach(viewer->getCamera());
+
+    blockContextMenu = false;
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
@@ -3620,6 +3744,8 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
     viewer->removeGraphicsItem(rubberband.get());
     viewer->setEditing(false);
     viewer->setSelectionEnabled(true);
+
+    blockContextMenu = false;
 }
 
 void ViewProviderSketch::camSensDeleteCB(void* data, SoSensor *s)
@@ -4258,6 +4384,8 @@ bool ViewProviderSketch::isInEditMode() const
 }
 void ViewProviderSketch::generateContextMenu()
 {
+    if (blockContextMenu) return;
+
     int selectedEdges = 0;
     int selectedLines = 0;
     int selectedConics = 0;

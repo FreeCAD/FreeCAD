@@ -112,6 +112,8 @@ SET(SketcherGui_SRCS
     TaskSketcherValidation.h
     ShortcutListener.cpp
     ShortcutListener.h
+    SketcherTransformationExpressionHelper.cpp
+    SketcherTransformationExpressionHelper.h
     EditModeInformationOverlayCoinConverter.cpp
     EditModeInformationOverlayCoinConverter.h
     EditModeGeometryCoinConverter.cpp
@@ -154,6 +156,7 @@ SET(SketcherGui_SRCS
     SketcherRegularPolygonDialog.cpp
     SnapManager.cpp
     SnapManager.h
+    StyleParameters.h
     TaskDlgEditSketch.cpp
     TaskDlgEditSketch.h
     ViewProviderPython.cpp

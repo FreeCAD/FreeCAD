@@ -124,6 +124,7 @@
         <file>panels/SetupOp.ui</file>
         <file>panels/ToolBitEditor.ui</file>
         <file>panels/ToolBitLibraryEdit.ui</file>
+        <file>panels/ToolControllerEdit.ui</file>
         <file>panels/TaskPathCamoticsSim.ui</file>
         <file>panels/TaskPathSimulator.ui</file>
         <file>panels/TaskCAMSimulator.ui</file>

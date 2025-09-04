@@ -105,7 +105,7 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
 
     Part::TopoShape shape = Part::Feature::getTopoShape(
         obj,
-          Part::ShapeOption::ResolveLink 
+          Part::ShapeOption::ResolveLink
         | Part::ShapeOption::Transform,
         subject.getElementName(),
         mat);

@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Seccions transversals</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Applies cross-sections to the mesh</source>
-      <translation type="unfinished">Applies cross-sections to the mesh</translation>
+      <translation>Aplica seccions transversals a la malla</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="310"/>
       <source>Curve on Mesh</source>
-      <translation type="unfinished">Curve on Mesh</translation>
+      <translation>Corba en malla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
       <source>Creates an approximated curve on top of a mesh object</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh object</translation>
+      <translation>Crea una corba aproximada sobre un objecte de malla</translation>
     </message>
   </context>
   <context>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Mesh From Shape</source>
-      <translation type="unfinished">Mesh From Shape</translation>
+      <translation>Malla a partir de forma</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="191"/>
       <source>Creates a section from a mesh and plane</source>
-      <translation type="unfinished">Creates a section from a mesh and plane</translation>
+      <translation>Crea una secció a partir d'una malla i un pla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="190"/>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <source>Trim Mesh</source>
-      <translation type="unfinished">Trim Mesh</translation>
+      <translation>Retalla la malla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="86"/>
@@ -109,12 +109,12 @@
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross Sections</source>
-      <translation type="unfinished">Cross Sections</translation>
+      <translation>Seccions transversals</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding Plane</source>
-      <translation type="unfinished">Guiding Plane</translation>
+      <translation>Pla guia</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Posició</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
@@ -197,12 +197,12 @@
     <message>
       <location filename="../../CurveOnMesh.cpp" line="623"/>
       <source>Wrong mesh selected</source>
-      <translation type="unfinished">Wrong mesh selected</translation>
+      <translation>S'ha seleccionat una malla incorrecta</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="662"/>
       <source>No point was selected</source>
-      <translation type="unfinished">No point was selected</translation>
+      <translation>No s'ha seleccionat cap punt</translation>
     </message>
   </context>
   <context>
@@ -210,16 +210,16 @@
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="14"/>
       <source>Curve on Mesh</source>
-      <translation type="unfinished">Curve on Mesh</translation>
+      <translation>Corba en malla</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="23"/>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
-      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+      <translation>Premeu 'Inicia', després trieu punts de la malla. Quan hagueu triat prou punts, cliqueu amb el botó dret i escolliu 'Crea'. Repetiu aquest procés per crear més splines. Tanqueu aquest panell de tasques per completar l'operació.
 
-This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</translation>
+Aquesta ordre només funciona amb objectes 'malla', no amb cares o superfícies normals. Per convertir un objecte en malla, feu servir les eines del banc de treball Malla.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -334,29 +334,28 @@ this feature (e.g. the format OBJ).</source>
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
       <source>Meshing Options</source>
-      <translation type="unfinished">Meshing Options</translation>
+      <translation>Opcions de mallat</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
       <source>Surface deviation</source>
-      <translation type="unfinished">Surface deviation</translation>
+      <translation>Desviació de superfície</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
       <source>Angular deviation</source>
-      <translation type="unfinished">Angular deviation</translation>
+      <translation>Desviació angular</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
-surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+      <translation>La desviació lineal màxima d'un segment de malla serà la desviació de les superfícies especificada multiplicada per la longitud del segment de malla actual (aresta)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
       <source>Maximum edge length</source>
-      <translation type="unfinished">Maximum edge length</translation>
+      <translation>Longitud màxima de l'aresta</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="162"/>
@@ -417,17 +416,17 @@ The smallest value is 0.</source>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
       <source>Mesh size grading</source>
-      <translation type="unfinished">Mesh size grading</translation>
+      <translation>Talla de la malla</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
       <source>Elements per edge</source>
-      <translation type="unfinished">Elements per edge</translation>
+      <translation>Elements per aresta</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
       <source>Elements per curvature radius</source>
-      <translation type="unfinished">Elements per curvature radius</translation>
+      <translation>Elements per radi de curvatura</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="279"/>
@@ -492,15 +491,15 @@ A value in the range of 0.2-10.</source>
       <location filename="../../Tessellation.cpp" line="279"/>
       <source>Error: body without a tip selected.
 Either set the tip of the body or select a different shapee.</source>
-      <translation type="unfinished">Error: body without a tip selected.
-Either set the tip of the body or select a different shapee.</translation>
+      <translation>Error: s'ha seleccionat un cos sense punta.
+Estableix la punta del cos o seleccioni una forma diferent.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="285"/>
       <source>Error: shape without faces selected.
 Select a different shape.</source>
-      <translation type="unfinished">Error: shape without faces selected.
-Select a different shape.</translation>
+      <translation>Error: s'ha seleccionat una forma sense cares.
+Seleccioni una forma diferent.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="289"/>
@@ -518,7 +517,7 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="204"/>
       <source>Select a plane to section the mesh with.</source>
-      <translation type="unfinished">Select a plane to section the mesh with.</translation>
+      <translation>Seleccioni un pla amb el qual es farà la secció de malla.</translation>
     </message>
   </context>
   <context>
@@ -531,17 +530,17 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="98"/>
       <source>Select a plane to trim the mesh with.</source>
-      <translation type="unfinished">Select a plane to trim the mesh with.</translation>
+      <translation>Seleccioni un pla amb el qual es retallarà la malla.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Trim With Plane</source>
-      <translation type="unfinished">Trim With Plane</translation>
+      <translation>Retalla amb el pla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Select the side to keep</source>
-      <translation type="unfinished">Select the side to keep</translation>
+      <translation>Seleccioneu la cara a conservar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>
@@ -572,12 +571,12 @@ Select a different shape.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Desembolica la malla</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
       <source>Finds a flat representation of a mesh</source>
-      <translation type="unfinished">Finds a flat representation of a mesh</translation>
+      <translation>Troba una representació plana d'una malla</translation>
     </message>
   </context>
   <context>
@@ -585,12 +584,12 @@ Select a different shape.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Desembolica la cara</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>
       <source>Finds a flat representation of a face</source>
-      <translation type="unfinished">Finds a flat representation of a face</translation>
+      <translation>Troba una representació plana d'una cara</translation>
     </message>
   </context>
 </TS>

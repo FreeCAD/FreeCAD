@@ -24,7 +24,7 @@ if(FC_FLATPAK)
 endif(FC_FLATPAK)
 
 if(WIN32)
-add_definitions(-DFCGui -DQSINT_MAKEDLL -DOVR_OS_WIN32 -DQUARTER_INTERNAL -DQUARTER_MAKE_DLL -DCOIN_DLL)
+    add_definitions(-DFCGui -DQSINT_MAKEDLL -DOVR_OS_WIN32 -DQUARTER_INTERNAL -DQUARTER_MAKE_DLL -DCOIN_DLL)
 endif(WIN32)
 
 IF(CMAKE_BUILD_TYPE)
@@ -774,7 +774,6 @@ SET(Dock_Windows_CPP_SRCS
     DAGView/DAGModel.cpp
     DAGView/DAGRectItem.cpp
     DAGView/DAGModelGraph.cpp
-    DAGView/DAGFilter.cpp
 )
 SET(Dock_Windows_HPP_SRCS
     ComboView.h
@@ -789,7 +788,6 @@ SET(Dock_Windows_HPP_SRCS
     DAGView/DAGModel.h
     DAGView/DAGRectItem.h
     DAGView/DAGModelGraph.h
-    DAGView/DAGFilter.h
 )
 SET(Dock_Windows_SRCS
     ${Dock_Windows_CPP_SRCS}
@@ -1117,8 +1115,11 @@ SET(Inventor_CPP_SRCS
     Inventor/SoToggleSwitch.cpp
     Inventor/Draggers/SoTransformDragger.cpp
     Inventor/Draggers/SoLinearDragger.cpp
+    Inventor/Draggers/SoLinearDraggerGeometry.cpp
     Inventor/Draggers/SoPlanarDragger.cpp
     Inventor/Draggers/SoRotationDragger.cpp
+    Inventor/Draggers/SoRotationDraggerGeometry.cpp
+    Inventor/Draggers/Gizmo.cpp
     SoFCColorBar.cpp
     SoFCColorBarNotifier.cpp
     SoFCColorGradient.cpp
@@ -1154,8 +1155,12 @@ SET(Inventor_SRCS
     Inventor/SoToggleSwitch.h
     Inventor/Draggers/SoTransformDragger.h
     Inventor/Draggers/SoLinearDragger.h
+    Inventor/Draggers/SoLinearDraggerGeometry.h
     Inventor/Draggers/SoPlanarDragger.h
     Inventor/Draggers/SoRotationDragger.h
+    Inventor/Draggers/SoRotationDraggerGeometry.h
+    Inventor/Draggers/Gizmo.h
+    Inventor/Draggers/GizmoHelper.h
     SoFCColorBar.h
     SoFCColorBarNotifier.h
     SoFCColorGradient.h
@@ -1493,8 +1498,11 @@ if (EIGEN3_NO_DEPRECATED_COPY)
         Inventor/SoAutoZoomTranslation.cpp
         Inventor/Draggers/SoTransformDragger.cpp
         Inventor/Draggers/SoLinearDragger.cpp
+        Inventor/Draggers/SoLinearDraggerGeometry.cpp
         Inventor/Draggers/SoPlanarDragger.cpp
         Inventor/Draggers/SoRotationDragger.cpp
+        Inventor/Draggers/SoRotationDraggerGeometry.cpp
+        Inventor/Draggers/Gizmo.cpp
         SoFCOffscreenRenderer.cpp
         Selection/SoFCSelectionAction.cpp
         Quarter/QuarterWidget.cpp

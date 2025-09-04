@@ -1066,7 +1066,7 @@ Se non selezionato, saranno ordinate per il loro nome.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="70"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>Apri…</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>

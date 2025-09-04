@@ -191,6 +191,9 @@ inline const UnitsSchemaSpec s3
             { 3.6e+15         , "kWh"        , 3.6e+12         },
             { 0               , "J"          , 1e6             }}
         },
+        { "Moment", {
+            { 0               , "Nm"         , 1e6             }}
+        },
         { "SpecificEnergy", {
             { 0               , "m^2/s^2"    , 1e6             }}
         },

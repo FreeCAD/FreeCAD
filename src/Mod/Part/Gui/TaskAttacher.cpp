@@ -51,6 +51,8 @@
 #include <Mod/Part/Gui/TaskAttacher.h>
 
 #include "TaskAttacher.h"
+
+#include "ViewProvider2DObject.h"
 #include "ui_TaskAttacher.h"
 
 
@@ -222,6 +224,7 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject* ViewProvider, QWidge
     updateListOfModes();
     selectMapMode(eMapMode(pcAttach->MapMode.getValue()));
     updatePreview();
+    showPlacementUtilities();
 
     //NOLINTBEGIN
     // connect object deletion with slot
@@ -1049,6 +1052,17 @@ void TaskAttacher::selectMapMode(eMapMode mmode) {
     }
 
     ui->listOfModes->blockSignals(false);
+}
+
+void TaskAttacher::showPlacementUtilities()
+{
+    if (auto planarViewProvider = freecad_cast<PartGui::ViewProvider2DObject*>(ViewProvider)) {
+        overrides.override(planarViewProvider->ShowPlane, true);
+    }
+
+    if (auto partViewProvider = freecad_cast<PartGui::ViewProviderPartExt*>(ViewProvider)) {
+        overrides.override(partViewProvider->ShowPlacement, true);
+    }
 }
 
 Attacher::eMapMode TaskAttacher::getActiveMapMode()

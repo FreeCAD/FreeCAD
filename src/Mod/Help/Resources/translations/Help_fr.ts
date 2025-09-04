@@ -152,12 +152,14 @@ Cela ne s'applique que si Markdown est sélectionné ci-dessus.</translation>
     <message>
       <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
-      <translation type="unfinished">Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</translation>
+      <translation>Le contenu de cette page n'a pas pu être récupéré.
+Vérifier les paramètres dans le menu Édition → Préférences → Général → Aide.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
-      <translation type="unfinished">Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</translation>
+      <translation>L'emplacement des fichiers d'aide n'a pas pu être déterminé.
+Vérifier les paramètres dans le menu Édition → Préférences → Général → Aide.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="83"/>

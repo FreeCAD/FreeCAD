@@ -991,6 +991,8 @@ private:
 
     SoNodeSensor cameraSensor;
     int viewOrientationFactor;  // stores if sketch viewed from front or back
+
+    bool blockContextMenu;
 };
 
 }  // namespace SketcherGui

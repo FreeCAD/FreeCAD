@@ -14,7 +14,7 @@ na sve veze koje referenciraju isti konfigurabilni objekt</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="456"/>
+      <location filename="../../Application.cpp" line="458"/>
       <source>Unnamed</source>
       <translation>Neimenovano</translation>
     </message>
@@ -44,37 +44,37 @@ The user should then click the Refresh button in the main toolbar.
   <context>
     <name>App::LocalCoordinateSystem</name>
     <message>
-      <location filename="../../Datums.cpp" line="250"/>
+      <location filename="../../Datums.cpp" line="263"/>
       <source>X-axis</source>
       <translation type="unfinished">X-axis</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="251"/>
+      <location filename="../../Datums.cpp" line="264"/>
       <source>Y-axis</source>
       <translation type="unfinished">Y-axis</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="252"/>
+      <location filename="../../Datums.cpp" line="265"/>
       <source>Z-axis</source>
       <translation type="unfinished">Z-axis</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="253"/>
+      <location filename="../../Datums.cpp" line="266"/>
       <source>XY-plane</source>
       <translation type="unfinished">XY-plane</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="254"/>
+      <location filename="../../Datums.cpp" line="267"/>
       <source>XZ-plane</source>
       <translation type="unfinished">XZ-plane</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="255"/>
+      <location filename="../../Datums.cpp" line="268"/>
       <source>YZ-plane</source>
       <translation type="unfinished">YZ-plane</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="256"/>
+      <location filename="../../Datums.cpp" line="269"/>
       <source>Origin</source>
       <translation>Ishodište</translation>
     </message>

@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <algorithm>
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
 #include <QClipboard>
@@ -220,6 +221,54 @@ bool PropertyEditor::event(QEvent* event)
         }
     }
     return QTreeView::event(event);
+}
+
+bool PropertyEditor::removeSelectedDynamicProperties()
+{
+    std::unordered_set<App::Property*> props = acquireSelectedProperties();
+    if (props.empty()) {
+        return false;
+    }
+
+    bool canRemove = std::ranges::all_of(props, [](auto prop) {
+        return prop->testStatus(App::Property::PropDynamic)
+            && !prop->testStatus(App::Property::LockDynamic);
+    });
+    if (!canRemove) {
+        return false;
+    }
+
+    removeProperties(props);
+    return true;
+}
+
+void PropertyEditor::keyPressEvent(QKeyEvent* event)
+{
+    if (state() == QAbstractItemView::EditingState) {
+        QTreeView::keyPressEvent(event);
+        return;
+    }
+
+    const auto key = event->key();
+    const auto mods = event->modifiers();
+    const bool allowedModifiers =
+        mods == Qt::NoModifier ||
+        mods == Qt::KeypadModifier;
+
+#if defined(Q_OS_MACOS) || defined(Q_OS_MAC)
+    const bool isDeleteKey = key == Qt::Key_Backspace || key == Qt::Key_Delete;
+#else
+    const bool isDeleteKey = key == Qt::Key_Delete;
+#endif
+
+    if (allowedModifiers && isDeleteKey) {
+        if (removeSelectedDynamicProperties()) {
+            event->accept();
+            return;
+        }
+    }
+
+    QTreeView::keyPressEvent(event);
 }
 
 void PropertyEditor::commitData(QWidget* editor)
@@ -726,14 +775,8 @@ enum MenuAction
     MA_Copy,
 };
 
-void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
+std::unordered_set<App::Property*> PropertyEditor::acquireSelectedProperties() const
 {
-    QMenu menu;
-    QAction* autoExpand = nullptr;
-
-    auto contextIndex = currentIndex();
-
-    // acquiring the selected properties
     std::unordered_set<App::Property*> props;
     const auto indexes = selectedIndexes();
     for (const auto& index : indexes) {
@@ -751,6 +794,34 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         if (index.column() > 0) {
             continue;
         }
+    }
+    return props;
+}
+
+void PropertyEditor::removeProperties(const std::unordered_set<App::Property*>& props)
+{
+    App::AutoTransaction committer("Remove property");
+    for (auto prop : props) {
+        try {
+            prop->getContainer()->removeDynamicProperty(prop->getName());
+        }
+        catch (Base::Exception& e) {
+            e.reportException();
+        }
+    }
+}
+
+void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
+{
+    QMenu menu;
+    QAction* autoExpand = nullptr;
+
+    auto contextIndex = currentIndex();
+
+    std::unordered_set<App::Property*> props = acquireSelectedProperties();
+
+    // copy value to clipboard
+    if (props.size() == 1) {
         const QVariant valueToCopy = contextIndex.data(Qt::DisplayRole);
         if (valueToCopy.isValid()) {
             QAction* copyAction = menu.addAction(tr("Copy"));
@@ -986,15 +1057,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             return;
         }
         case MA_RemoveProp: {
-            App::AutoTransaction committer("Remove property");
-            for (auto prop : props) {
-                try {
-                    prop->getContainer()->removeDynamicProperty(prop->getName());
-                }
-                catch (Base::Exception& e) {
-                    e.reportException();
-                }
-            }
+            removeProperties(props);
             break;
         }
         default:

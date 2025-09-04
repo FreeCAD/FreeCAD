@@ -255,11 +255,11 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
     for (int i = 1; i < occurrences; i++) {
         if (Mode.getValue() == (int)PolarPatternMode::Spacing) {
             double spacing;
-            if (spacings[i] != -1.0) {
-                spacing = spacings[i];
+            if (spacings[i - 1] != -1.0) {
+                spacing = spacings[i - 1];
             }
             else if (usePattern) {
-                spacing = pattern[(size_t)fmod(i, pattern.size())];
+                spacing = pattern[(size_t)fmod(i - 1, pattern.size())];
             }
             else {
                 spacing = Offset.getValue();
@@ -312,7 +312,7 @@ void PolarPattern::setReadWriteStatusForMode(PolarPatternMode mode)
 void PolarPattern::updateSpacings()
 {
     std::vector<double> spacings = Spacings.getValues();
-    size_t targetCount = Occurrences.getValue();
+    size_t targetCount = Occurrences.getValue() - 1;
 
     for (auto& spacing : spacings) {
         if (spacing == Offset.getValue()) {
@@ -337,3 +337,4 @@ void PolarPattern::updateSpacings()
 }
 
 }
+
