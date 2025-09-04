@@ -791,18 +791,20 @@ bool DrawGuiUtil::isStyleSheetDark()
             ->GetASCII("StyleSheet", "None");
 
     if (!curStyleSheet.empty() && curStyleSheet != "None") {
-        auto pg = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Spreadsheet");
-        if (pg) {
-            std::string tc = pg->GetASCII("TextColor", "");
-            if (!tc.empty()) {
-                QColor textColor(QString::fromUtf8(tc.c_str()));
-                if (textColor.isValid()) {
-                    const double lumText = 0.299 * textColor.red() + 0.587 * textColor.green() + 0.114 * textColor.blue();
-                    return lumText > 128.0; // light text => dark theme
-                }
+    // Use StylesheetIconsColor in themes prefs when stylesheet is present.
+    // It should be either "white" (icons are white => dark theme)
+        // or "black" (icons are black => light theme). Case-insensitive.
+    auto mw = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/themes");
+        if (mw) {
+            std::string sc = mw->GetASCII("StylesheetIconsColor", "");
+            if (!sc.empty()) {
+                for (auto &c : sc) c = static_cast<char>(::tolower(c));
+                if (sc == "white") return true;
+                if (sc == "black") return false;
             }
         }
-        return false; // stylesheet present but no Spreadsheet.TextColor -> default light
+        // Default to light theme when unknown
+        return false;
     }
 
 #if defined(Q_OS_WIN)

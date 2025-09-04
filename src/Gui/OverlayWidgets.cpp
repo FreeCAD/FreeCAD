@@ -42,6 +42,7 @@
 # include <QToolTip>
 # include <QTreeView>
 # include <QScrollBar>
+# include <cctype>
 #endif
 
 #include <QPainterPath>
@@ -1956,18 +1957,21 @@ bool OverlayTabWidget::isStyleSheetDark(std::string curStyleSheet)
     // If a stylesheet is set, prefer the Spreadsheet.TextColor preference
     // and do NOT consult OS settings.
     if (!curStyleSheet.empty() && curStyleSheet != "None") {
-        auto pg = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Spreadsheet");
-        if (pg) {
-            std::string tc = pg->GetASCII("TextColor", "");
-            if (!tc.empty()) {
-                QColor textColor(QString::fromUtf8(tc.c_str()));
-                if (textColor.isValid()) {
-                    const double lumText = 0.299 * textColor.red() + 0.587 * textColor.green() + 0.114 * textColor.blue();
-                    return lumText > 128.0; // light text => dark theme
-                }
+    // Use StylesheetIconsColor in themes prefs when stylesheet is present.
+        // This preference is either "white" (icons are white -> dark theme)
+        // or "black" (icons are black -> light theme). Case-insensitive.
+    auto mw = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/themes");
+        if (mw) {
+            std::string sc = mw->GetASCII("StylesheetIconsColor", "");
+            if (!sc.empty()) {
+                // normalize to lower-case for comparison
+                for (auto &c : sc) c = static_cast<char>(::tolower(c));
+                if (sc == "white") return true;  // white icons => dark theme
+                if (sc == "black") return false; // black icons => light theme
             }
         }
-        return false; // stylesheet present but no Spreadsheet.TextColor -> default light
+        // If not present or unrecognized, default to light theme (false)
+        return false;
     }
 
 #if defined(Q_OS_WIN)
