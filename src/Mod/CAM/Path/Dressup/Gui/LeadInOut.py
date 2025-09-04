@@ -1191,7 +1191,7 @@ class CommandPathDressupLeadInOut:
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Lead In/Out"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_DressupLeadInOut",
-                "Creates a cutter radius compensation G41/G42 entry dressup object from a selected path",
+                "Creates entry and exit motions for a selected path",
             ),
         }
 
