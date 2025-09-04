@@ -221,5 +221,3 @@ void Boolean::handleChangedPropertyName(Base::XMLReader &reader, const char * Ty
 }
 
 
-
-
