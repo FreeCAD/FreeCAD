@@ -780,8 +780,7 @@ void SelectionMenu::buildMenuStructure(std::map<std::string, SubMenuInfo> &menus
     menuArray.reserve(menus.size());
     
     for (const auto& category : preferredOrder) {
-        auto it = menus.find(category);
-        if (it != menus.end()) {
+        if (auto it = menus.find(category); it != menus.end()) {
             menuArray.push_back(it);
         }
     }
