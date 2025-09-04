@@ -32,18 +32,18 @@
         <item row="0" column="1">
          <widget class="Gui::PrefComboBox" name="comboBoxElemChoiceParam">
           <property name="toolTip">
-           <string>FEM: Only FEM elements will be exported. This means only edges
-not belonging to faces and faces not belonging to volumes.
+           <string>All: All elements will be exported.
 
 Highest: Only the highest elements will be exported. This means volumes for a volume mesh and faces for a shell mesh.
 
-All: All elements will be exported.</string>
+FEM: Only FEM elements will be exported. This means only edges
+not belonging to faces and faces not belonging to volumes.</string>
           </property>
           <property name="statusTip">
            <string/>
           </property>
           <property name="whatsThis">
-           <string>element parameter: FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes), Highest: highest elements only, All: all elements</string>
+           <string>element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>AbaqusElementChoice</cstring>
@@ -53,7 +53,7 @@ All: All elements will be exported.</string>
           </property>
           <item>
            <property name="text">
-            <string>FEM</string>
+            <string>All</string>
            </property>
           </item>
           <item>
@@ -63,7 +63,7 @@ All: All elements will be exported.</string>
           </item>
           <item>
            <property name="text">
-            <string>All</string>
+            <string>FEM</string>
            </property>
           </item>
          </widget>
