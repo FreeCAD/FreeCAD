@@ -330,6 +330,15 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
                 value=False,
             )
         )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="PastixMixedPrecision",
+                group="Solver",
+                doc="Mixed precision for the PaStiX matrix solver",
+                value=False,
+            )
+        )
         return prop
 
     def onDocumentRestored(self, obj):
