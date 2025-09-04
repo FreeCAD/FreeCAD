@@ -173,7 +173,7 @@ SketchObject::SketchObject() : geoLastId(0)
                       (false),
                       "Internal Geometry",
                       App::Prop_None,
-                      "Make internal geometry, e.g. split intersecting edges, face of closed wires.");
+                      "Enable a sketch's internal geometry (e.g. closed wires defining faces) to be used for feature creation.");
 
     Geometry.setOrderRelevant(true);
 
@@ -11716,3 +11716,4 @@ template class SketcherExport FeaturePythonT<Sketcher::SketchObject>;
 }// namespace App
 
 // clang-format on
+
