@@ -38,8 +38,10 @@
 #include <Base/Converter.h>
 #include <Base/Parameter.h>
 #include <Base/Precision.h>
+#include "Base/ServiceProvider.h"
 #include <Base/Tools.h>
 #include <Document.h>
+#include <Gui/Inventor/Draggers/GizmoStyleParameters.h>
 #include <Gui/Inventor/So3DAnnotation.h>
 #include <Gui/Inventor/SoToggleSwitch.h>
 #include <Gui/QuantitySpinBox.h>
@@ -125,6 +127,8 @@ SoInteractionKit* LinearGizmo::initDragger()
     arrow->cylinderHeight = 3.5;
     arrow->cylinderRadius = 0.2;
 
+    updateColorTheme();
+
     return draggerContainer;
 }
 
@@ -132,6 +136,20 @@ void LinearGizmo::uninitDragger()
 {
     dragger = nullptr;
     draggerContainer = nullptr;
+}
+
+void LinearGizmo::updateColorTheme()
+{
+    auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
+    Base::Color baseColor = styleParameterManager->resolve(StyleParameters::LinearGizmoBaseColor);
+    Base::Color activeColor = styleParameterManager->resolve(StyleParameters::LinearGizmoActiveColor);
+
+    dragger->color = baseColor.asValue<SbColor>();
+    dragger->activeColor = activeColor.asValue<SbColor>();
+
+    auto baseGeom = SO_GET_PART(dragger, "baseGeom", SoArrowBase);
+    Base::Color baseGeomColor = styleParameterManager->resolve(StyleParameters::DimensionVisualizerColor);
+    baseGeom->color = baseGeomColor.asValue<SbColor>();
 }
 
 GizmoPlacement LinearGizmo::getDraggerPlacement()
@@ -296,6 +314,8 @@ SoInteractionKit* RotationGizmo::initDragger()
 
     setRotAngle(property->value().getValue());
 
+    updateColorTheme();
+
     return draggerContainer;
 }
 
@@ -307,6 +327,16 @@ void RotationGizmo::uninitDragger()
     translationSensor.detach();
     translationSensor.setData(nullptr);
     translationSensor.setFunction(nullptr);
+}
+
+void RotationGizmo::updateColorTheme()
+{
+    auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
+    Base::Color baseColor = styleParameterManager->resolve(StyleParameters::RotationGizmoBaseColor);
+    Base::Color activeColor = styleParameterManager->resolve(StyleParameters::RotationGizmoActiveColor);
+
+    dragger->color = baseColor.asValue<SbColor>();
+    dragger->activeColor = activeColor.asValue<SbColor>();
 }
 
 GizmoPlacement RotationGizmo::getDraggerPlacement()
@@ -506,6 +536,8 @@ SoInteractionKit* DirectedRotationGizmo::initDragger()
     rotator->rightArrowVisible = false;
     dragger->setPart("rotator", rotator);
 
+    updateColorTheme();
+
     return ret;
 }
 
@@ -532,6 +564,8 @@ SoInteractionKit* RadialGizmo::initDragger()
 
     dragger->instantiateBaseGeometry();
 
+    updateColorTheme();
+
     return ret;
 }
 
@@ -550,6 +584,22 @@ void RadialGizmo::flipArrow()
     auto rotator = SO_GET_PART(dragger, "rotator", SoRotatorArrow);
 
     rotator->flipArrow();
+}
+
+void RadialGizmo::updateColorTheme()
+{
+    auto dragger = getDraggerContainer()->getDragger();
+
+    auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
+    Base::Color baseColor = styleParameterManager->resolve(StyleParameters::RotationGizmoBaseColor);
+    Base::Color activeColor = styleParameterManager->resolve(StyleParameters::RotationGizmoActiveColor);
+
+    dragger->color = baseColor.asValue<SbColor>();
+    dragger->activeColor = activeColor.asValue<SbColor>();
+
+    auto baseGeom = SO_GET_PART(dragger, "baseGeom", SoRotatorBase);
+    Base::Color baseGeomColor = styleParameterManager->resolve(StyleParameters::DimensionVisualizerColor);
+    baseGeom->color = baseGeomColor.asValue<SbColor>();
 }
 
 SO_KIT_SOURCE(GizmoContainer)
