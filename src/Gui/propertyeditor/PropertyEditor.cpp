@@ -73,6 +73,8 @@ PropertyEditor::PropertyEditor(QWidget* parent)
     delegate = new PropertyItemDelegate(this);
     delegate->setItemEditorFactory(new PropertyItemEditorFactory);
     setItemDelegate(delegate);
+    // prevent a non-persistent editor when pressing F2
+    setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     setAlternatingRowColors(true);
     setRootIsDecorated(false);
@@ -251,21 +253,30 @@ void PropertyEditor::keyPressEvent(QKeyEvent* event)
 
     const auto key = event->key();
     const auto mods = event->modifiers();
-    const bool allowedModifiers =
+
+    const bool allowedDeleteModifiers =
         mods == Qt::NoModifier ||
         mods == Qt::KeypadModifier;
-
 #if defined(Q_OS_MACOS) || defined(Q_OS_MAC)
     const bool isDeleteKey = key == Qt::Key_Backspace || key == Qt::Key_Delete;
 #else
     const bool isDeleteKey = key == Qt::Key_Delete;
 #endif
 
-    if (allowedModifiers && isDeleteKey) {
+    if (allowedDeleteModifiers && isDeleteKey) {
         if (removeSelectedDynamicProperties()) {
             event->accept();
             return;
         }
+    }
+    else if (mods == Qt::NoModifier && key == Qt::Key_F2) {
+        // open a persistent editor on F2
+        event->accept();
+        auto index = model() ? model()->buddy(currentIndex()) : QModelIndex();
+        if (index.isValid()) {
+            openEditor(index);
+        }
+        return;
     }
 
     QTreeView::keyPressEvent(event);
