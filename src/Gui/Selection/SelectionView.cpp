@@ -1051,7 +1051,7 @@ void SelectionMenu::createFlatMenu(ElementInfo &elementInfo, QMenu *parentMenu, 
         if (!sel.element.empty()) {
             text += QStringLiteral(" (%1)").arg(QString::fromUtf8(sel.element.c_str()));
         } else if (elementType == "Object" && !sel.subName.empty() && sel.subName.back() == '.') {
-            text += QString::fromLatin1(" (Whole Object)");
+            text += QStringLiteral(" (%1)").arg(tr("Whole Object"));
         }
         QAction *action = parentMenu->addAction(elementInfo.icon, text);
         action->setData(idx);
@@ -1074,7 +1074,7 @@ void SelectionMenu::createGroupedMenu(ElementInfo &elementInfo, QMenu *parentMen
         if (!sel.element.empty()) {
             text = QString::fromUtf8(sel.element.c_str());
         } else if (elementType == "Object" && !sel.subName.empty() && sel.subName.back() == '.') {
-            text = QString::fromLatin1("Whole Object");
+            text = tr("Whole Object");
         } else {
             text = QString::fromUtf8(sel.subName.c_str());
         }
