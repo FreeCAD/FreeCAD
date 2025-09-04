@@ -647,8 +647,33 @@ class DraftToolBar:
         """utility function that is performed after each clicked point"""
         self.checkLocal()
 
-    def setFocus(self,f=None):
-        if f == "x":
+    def setFocus(self, f=None):
+
+        # Do not set focus on Length if length+angle input is problematic:
+        force_xyz = False
+        if f in ("x", "y", "z"):
+            if not self.globalMode:
+                if f == "z":
+                    force_xyz = True
+            else:
+                axis = WorkingPlane.get_working_plane(update=False).axis
+                constraint_dir = FreeCAD.Vector(
+                    1 if f == "x" else 0,
+                    1 if f == "y" else 0,
+                    1 if f == "z" else 0
+                )
+                # Using a high tolerance:
+                if axis.isEqual(constraint_dir, 0.1) \
+                        or axis.isEqual(-constraint_dir, 0.1):
+                    force_xyz = True
+
+        if not force_xyz and params.get_param("focusOnLength") and self.lengthValue.isVisible():
+            self.lengthValue.setFocus()
+            self.lengthValue.setSelection(0,self.number_length(self.lengthValue.text()))
+        elif not force_xyz and self.angleLock.isVisible() and self.angleLock.isChecked():
+            self.lengthValue.setFocus()
+            self.lengthValue.setSelection(0,self.number_length(self.lengthValue.text()))
+        elif f == "x":
             self.xValue.setFocus()
             self.xValue.setSelection(0,self.number_length(self.xValue.text()))
         elif f == "y":
@@ -660,12 +685,6 @@ class DraftToolBar:
         elif f == "radius":
             self.radiusValue.setFocus()
             self.radiusValue.setSelection(0,self.number_length(self.radiusValue.text()))
-        elif params.get_param("focusOnLength") and self.lengthValue.isVisible():
-            self.lengthValue.setFocus()
-            self.lengthValue.setSelection(0,self.number_length(self.lengthValue.text()))
-        elif self.angleLock.isVisible() and self.angleLock.isChecked():
-            self.lengthValue.setFocus()
-            self.lengthValue.setSelection(0,self.number_length(self.lengthValue.text()))
         else:
             # f is None
             self.xValue.setFocus()
