@@ -291,8 +291,6 @@ private:
 class GuiExport SelectionSingleton : public Base::Subject<const SelectionChanges&>
 {
 public:
-    static bool clarifySelectionActive;
-
     struct SelObj {
         const char* DocName;
         const char* FeatName;
@@ -411,8 +409,8 @@ public:
      */
     void setVisible(VisibleState visible);
 
-    static bool isClarifySelectionActive();
-    static void setClarifySelectionActive(bool active);
+    bool isClarifySelectionActive();
+    void setClarifySelectionActive(bool active);
 
     /// signal on new object
     boost::signals2::signal<void (const SelectionChanges& msg)> signalSelectionChanged;
@@ -713,6 +711,7 @@ protected:
 
     int logDisabled = 0;
     bool logHasSelection = false;
+    bool clarifySelectionActive = false;
 
     SelectionStyle selectionStyle;
 };
