@@ -433,15 +433,15 @@ class _BaseSolverCalculix:
             )
             obj.ExcludeBendingStiffness = False
 
-        if not hasattr(obj, "DisablePastixMixedPrecision"):
+        if not hasattr(obj, "PastixMixedPrecision"):
             obj.addProperty(
                 "App::PropertyBool",
-                "DisablePastixMixedPrecision",
+                "PastixMixedPrecision",
                 "Fem",
-                "Disable mixed precision for PaStiX matrix solver",
+                "Mixed precision for the PaStiX matrix solver",
                 locked=True,
             )
-            obj.DisablePastixMixedPrecision = True
+            obj.PastixMixedPrecision = False
 
 
 class Proxy(solverbase.Proxy, _BaseSolverCalculix):
