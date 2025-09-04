@@ -71,19 +71,28 @@ class _Analysis(CommandManager):
         FreeCADGui.doCommand("ObjectsFem.makeAnalysis(FreeCAD.ActiveDocument, 'Analysis')")
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.ActiveObject)")
         FreeCAD.ActiveDocument.commitTransaction()
-        if get_default_solver() != "None":
+        def_solver = get_default_solver()
+        if def_solver:
             FreeCAD.ActiveDocument.openTransaction("Create default solver")
+            cmd = ""
+            match def_solver:
+                case "CalculiX":
+                    cmd = "FEM_SolverCalculiX"
+                case "Elmer":
+                    cmd = "FEM_SolverElmer"
+                case "Mystran":
+                    cmd = "FEM_SolverMystran"
+                case "Z88":
+                    cmd = "FEM_SolverZ88"
+
+            if cmd:
+                FreeCADGui.doCommand(f'FreeCADGui.runCommand("{cmd}")')
+
             FreeCADGui.doCommand(
-                f"ObjectsFem.makeSolver{get_default_solver()}(FreeCAD.ActiveDocument)"
-            )
-            FreeCADGui.doCommand(
-                "FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)"
+                "FreeCADGui.ActiveDocument.toggleTreeItem(FemGui.getActiveAnalysis(), 2)"
             )
             FreeCAD.ActiveDocument.commitTransaction()
-            self.do_activated = "add_obj_on_gui_expand_noset_edit"
-            # Fixme: expand analysis object in tree view to make added solver visible
-            # expandParentObject() does not work because the Analysis is not yet a tree
-            # in the tree view
+
         FreeCAD.ActiveDocument.recompute()
 
 
