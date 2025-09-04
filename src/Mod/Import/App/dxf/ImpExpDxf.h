@@ -26,6 +26,7 @@
 #include <set>
 #include <gp_Pnt.hxx>
 
+#include <Base/PyObjectBase.h>
 #include <App/Document.h>
 #include <App/Link.h>
 #include <TopoDS_Shape.hxx>
@@ -501,6 +502,20 @@ public:
     }
     void setOptions();
 
+    const Base::Vector3d& getProjectionDir() const
+    {
+        return m_projectionDir;
+    }
+    // To accept the projection direction from the Gui module
+    void setProjectionDir(const Base::Vector3d& dir)
+    {
+        m_projectionDir = dir;
+        optionProject = true;  // Enable projection if a direction is set
+    }
+    void writePolyFaceMesh(const TopoDS_Shape& shape);
+    bool optionProject;
+    bool optionMesh;
+
     void exportText(const char* text,
                     Base::Vector3d position1,
                     Base::Vector3d position2,
@@ -511,7 +526,8 @@ public:
                          Base::Vector3d extLine1Start,
                          Base::Vector3d extLine2Start,
                          char* dimText,
-                         int type);
+                         int type,
+                         double fontSize);
     void exportAngularDim(Base::Vector3d textLocn,
                           Base::Vector3d lineLocn,
                           Base::Vector3d extLine1End,
@@ -526,7 +542,6 @@ public:
                             Base::Vector3d arcPoint1,
                             Base::Vector3d arcPoint2,
                             char* dimText);
-
 
     static bool gp_PntEqual(gp_Pnt p1, gp_Pnt p2);
     static bool gp_PntCompare(gp_Pnt p1, gp_Pnt p2);
@@ -546,7 +561,16 @@ protected:
     double optionMaxLength;
     bool optionPolyLine;
     bool optionExpPoints;
+
+    Base::Vector3d m_projectionDir;
 };
+
+/**
+ * The core, non-GUI DXF export logic. This function is exported from the
+ * App module to be shared with the Gui module.
+ */
+ImportExport void
+executeDxfExport(PyObject* objectList, ImpExpDxfWrite& writer, PyObject* helperModule);
 
 }  // namespace Import
 
