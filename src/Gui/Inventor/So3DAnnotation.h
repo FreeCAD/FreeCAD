@@ -80,10 +80,7 @@ public:
     }
 
 private:
-    // priority-aware paths
-    std::vector<PriorityPath> priorityPaths;
-    
-    SoPathList paths;
+    std::vector<PriorityPath> paths;
 };
 
 /*! @brief 3D Annotation Node - Annotation with depth buffer

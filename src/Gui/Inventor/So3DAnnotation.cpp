@@ -44,8 +44,7 @@ bool SoDelayedAnnotationsElement::isProcessingDelayedPaths = false;
 void SoDelayedAnnotationsElement::init(SoState* state)
 {
     SoElement::init(state);
-    priorityPaths.clear();
-    paths.truncate(0);
+    paths.clear();
 }
 
 void SoDelayedAnnotationsElement::initClass()
@@ -58,41 +57,32 @@ void SoDelayedAnnotationsElement::initClass()
 void SoDelayedAnnotationsElement::addDelayedPath(SoState* state, SoPath* path, int priority)
 {
     auto elt = static_cast<SoDelayedAnnotationsElement*>(state->getElementNoPush(classStackIndex));
-
-    // add to priority-aware storage if priority has been specified
-    if (priority > 0) {
-        elt->priorityPaths.emplace_back(path, priority);
-        return;
-    }
     
-    elt->paths.append(path);
+    // add to unified storage with specified priority (default = 0)
+    elt->paths.emplace_back(path, priority);
 }
 
 SoPathList SoDelayedAnnotationsElement::getDelayedPaths(SoState* state)
 {
     auto elt = static_cast<SoDelayedAnnotationsElement*>(state->getElementNoPush(classStackIndex));
     
-    // if we don't have priority paths, just return normal delayed paths
-    if (elt->priorityPaths.empty()) {
-        auto copy = elt->paths;
-        elt->paths.truncate(0);
-        return copy;
+    if (elt->paths.empty()) {
+        return SoPathList();
     }
     
     // sort by priority (lower numbers render first)
-    std::stable_sort(elt->priorityPaths.begin(), elt->priorityPaths.end(),
+    std::stable_sort(elt->paths.begin(), elt->paths.end(),
         [](const PriorityPath& a, const PriorityPath& b) {
             return a.priority < b.priority;
         });
     
     SoPathList sortedPaths;
-    for (const auto& priorityPath : elt->priorityPaths) {
+    for (const auto& priorityPath : elt->paths) {
         sortedPaths.append(priorityPath.path);
     }
     
     // Clear storage
-    elt->priorityPaths.clear();
-    elt->paths.truncate(0);
+    elt->paths.clear();
     
     return sortedPaths;
 }
@@ -101,16 +91,16 @@ void SoDelayedAnnotationsElement::processDelayedPathsWithPriority(SoState* state
 {
     auto elt = static_cast<SoDelayedAnnotationsElement*>(state->getElementNoPush(classStackIndex));
     
-    if (elt->priorityPaths.empty()) return;
+    if (elt->paths.empty()) return;
     
-    std::stable_sort(elt->priorityPaths.begin(), elt->priorityPaths.end(),
+    std::stable_sort(elt->paths.begin(), elt->paths.end(),
         [](const PriorityPath& a, const PriorityPath& b) {
             return a.priority < b.priority;
         });
     
     isProcessingDelayedPaths = true;
     
-    for (const auto& priorityPath : elt->priorityPaths) {
+    for (const auto& priorityPath : elt->paths) {
         SoPathList singlePath;
         singlePath.append(priorityPath.path);
         
@@ -119,8 +109,7 @@ void SoDelayedAnnotationsElement::processDelayedPathsWithPriority(SoState* state
     
     isProcessingDelayedPaths = false;
     
-    elt->priorityPaths.clear();
-    elt->paths.truncate(0);
+    elt->paths.clear();
 }
 
 SO_NODE_SOURCE(So3DAnnotation);
