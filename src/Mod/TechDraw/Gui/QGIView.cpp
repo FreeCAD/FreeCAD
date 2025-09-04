@@ -255,7 +255,7 @@ void QGIView::dragFinished()
     }
 
     bool ownTransaction = (viewObj->getDocument()->getTransactionID(true) == 0);
-
+    
     if (ownTransaction) {
         viewObj->getDocument()->openTransaction("Drag view");
     }
