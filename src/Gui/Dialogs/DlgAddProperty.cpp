@@ -268,8 +268,8 @@ std::vector<Base::Type> DlgAddProperty::getSupportedTypes()
     Base::Type::getAllDerivedFrom(Base::Type::fromName("App::Property"), allTypes);
 
     std::ranges::copy_if(allTypes, std::back_inserter(supportedTypes),
-                         [](const Base::Type& type) {
-                             return type.canInstantiate();
+                         [&](const Base::Type& type) {
+                             return type.canInstantiate() && isTypeWithEditor(type);
                          });
 
     std::ranges::sort(supportedTypes, [](Base::Type a, Base::Type b) {
