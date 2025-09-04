@@ -59,6 +59,80 @@ class ToolControllerTemplate:
     VertRapid = "vrapid"
 
 
+def _migrateRampDressups(tc):
+    # Enumerate ramp dressups using this TC and their feed rates
+    ramps = set()
+    job_ramp_feeds = []
+    print("search tc", tc.Name)
+    for job in tc.Document.Objects:
+        if hasattr(job, "Operations") and hasattr(job.Operations, "Group"):
+            print("job", job.Name)
+            for op in job.Operations.Group:
+                for ramp in [op] + op.OutListRecursive:
+                    try:
+                        if ramp not in ramps and (
+                            hasattr(ramp, "RampFeedRate") or hasattr(ramp.Proxy, "RampFeedRate")
+                        ):
+                            rampFeedRate = (
+                                ramp.RampFeedRate
+                                if hasattr(ramp, "RampFeedRate")
+                                else ramp.Proxy.RampFeedRate
+                            )
+                            if hasattr(ramp, "CustomFeedRate"):
+                                customFeedRate = ramp.CustomFeedRate.Value
+                                for prop, exp in ramp.ExpressionEngine:
+                                    if prop == "CustomFeedRate":
+                                        customFeedRate = exp
+                            else:
+                                ramp.Proxy.CustomFeedRate
+
+                            if op.Base.ToolController == tc:
+                                ramps.add(ramp)
+                                feed = "HorizFeed"
+                                if rampFeedRate == "Horizontal Feed Rate":
+                                    feed = "HorizFeed"
+                                elif rampFeedRate == "Vertical Feed Rate":
+                                    feed = "VertFeed"
+                                elif rampFeedRate == "Ramp Feed Rate":
+                                    feed = "sqrt(HorizFeed * HorizFeed + VertFeed * VertFeed)"
+                                else:
+                                    feed = customFeedRate
+                                job_ramp_feeds.append((job, ramp, feed))
+                                print("add", ramp.Label)
+                    except:
+                        pass
+
+    # Ensure there is a TC for each required feed, starting with this one
+    print("job_ramp_feeds", job_ramp_feeds)
+    feed_to_tc = {}
+    for i, (job, ramp, feed) in enumerate(job_ramp_feeds):
+        if feed in feed_to_tc:
+            continue
+
+        if len(feed_to_tc) == 0:
+            opTc = tc
+        else:
+            opTc = copyTC(tc, job)
+            # Note: C++ doesn't make an effort to deduplicate the Labels of
+            # objects created during document restore, so here we will reuse the
+            # (deduplicated) name as the label
+            opTc.Label = opTc.Name
+
+        feed_to_tc[feed] = opTc
+
+        if isinstance(feed, str):
+            opTc.setExpression("RampFeed", feed)
+        else:
+            opTc.setExpression("RampFeed", None)
+            opTc.RampFeed = feed
+        opTc.recompute()
+
+    # Loop over ramps and assign each one the appropriate TC
+    for _, ramp, feed in job_ramp_feeds:
+        print("assign", ramp.Name, feed_to_tc[feed].Name)
+        ramp.Base.ToolController = feed_to_tc[feed]
+
+
 class ToolController:
     def __init__(self, obj, createTool=True):
         Path.Log.track("tool: ")
@@ -199,7 +273,7 @@ class ToolController:
                 "Feed",
                 QT_TRANSLATE_NOOP("App::Property", "Feed rate for ramp moves"),
             )
-            obj.setExpression("RampFeed", "HorizFeed")
+            _migrateRampDressups(obj)
             needsRecompute = True
 
         if not hasattr(obj, "LeadInFeed"):
@@ -384,6 +458,23 @@ def Create(
 
     obj.ToolNumber = toolNumber
     return obj
+
+
+def copyTC(tc, job):
+    newtc = Create(name=tc.Label, tool=tc.Tool, toolNumber=tc.ToolNumber)
+    job.Proxy.addToolController(newtc)
+
+    for prop in tc.PropertiesList:
+        try:
+            if prop not in ["Label", "Label2"]:
+                print("set prop", prop, getattr(tc, prop))
+                setattr(newtc, prop, getattr(tc, prop))
+        except:
+            pass
+    for attr, expr in tc.ExpressionEngine:
+        newtc.setExpression(attr, expr)
+
+    return newtc
 
 
 def FromTemplate(template, assignViewProvider=True):
