@@ -55,7 +55,7 @@ lead_styles = [
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Helix"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line3d"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LineZ"),
-    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Suppress Retraction"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "No Retract"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Vertical"),
 ]
 
@@ -207,10 +207,10 @@ class ObjectDressup:
             obj.AngleOut = limit_angle_out
 
         hideModes = {
-            "Angle": ["Suppress Retraction", "Vertical"],
-            "Invert": ["Suppress Retraction", "ArcZ", "LineZ", "Vertical"],
-            "Offset": ["Suppress Retraction"],
-            "PercentageRadius": ["Suppress Retraction", "Vertical"],
+            "Angle": ["No Retract", "Vertical"],
+            "Invert": ["No Retract", "ArcZ", "LineZ", "Vertical"],
+            "Offset": ["No Retract"],
+            "PercentageRadius": ["No Retract", "Vertical"],
         }
         for k, v in hideModes.items():
             obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
@@ -580,7 +580,7 @@ class ObjectDressup:
         lead = []
         begin = move.positionBegin()
 
-        if obj.StyleIn not in ["Suppress Retraction", "Vertical"]:
+        if obj.StyleIn not in ["No Retract", "Vertical"]:
             toolRadius = PathDressup.toolController(obj.Base).Tool.Diameter.Value / 2
             angleIn = math.radians(obj.AngleIn.Value)
             length = obj.PercentageRadiusIn * toolRadius / 100
@@ -672,7 +672,7 @@ class ObjectDressup:
                 lead[0].setPositionBegin(begin)
 
         # get complete start travel moves
-        if obj.StyleIn != "Suppress Retraction":
+        if obj.StyleIn != "No Retract":
             travelToStart = self.getTravelStart(obj, begin, first, inInstrPrev, outInstrPrev)
         else:
             # exclude any lead-in commands
@@ -696,7 +696,7 @@ class ObjectDressup:
         lead = []
         end = move.positionEnd()
 
-        if obj.StyleOut not in ["Suppress Retraction", "Vertical"]:
+        if obj.StyleOut not in ["No Retract", "Vertical"]:
             toolRadius = PathDressup.toolController(obj.Base).Tool.Diameter.Value / 2
             angleOut = math.radians(obj.AngleOut.Value)
             length = obj.PercentageRadiusOut * toolRadius / 100
@@ -782,7 +782,7 @@ class ObjectDressup:
                 lead[-1].param["Z"] = op.StartDepth.Value
 
         # append travel moves to cleareance height after finish all profiles
-        if last and obj.StyleOut != "Suppress Retraction":
+        if last and obj.StyleOut != "No Retract":
             lead += self.getTravelEnd(obj)
 
         return lead
@@ -1025,7 +1025,7 @@ class ObjectDressup:
             if first or not self.isCuttingMove(source[i - 1 - skipCounter]):
                 if obj.LeadIn:
                     # Process negative Offset Lead-In (cut travel from begin)
-                    if obj.OffsetIn.Value < 0 and obj.StyleIn != "Suppress Retraction":
+                    if obj.OffsetIn.Value < 0 and obj.StyleIn != "No Retract":
                         if measuredLength <= abs(obj.OffsetIn.Value):
                             # skip mill instruction
                             skipCounter += 1  # count skipped instructions
@@ -1040,7 +1040,7 @@ class ObjectDressup:
                     firstMillIndex = i
                     lastMillIndex = self.findLastCutMultiProfileIndex(source, i + 1)
                     overtravelIn = None
-                    if obj.OffsetIn.Value > 0 and obj.StyleIn != "Suppress Retraction":
+                    if obj.OffsetIn.Value > 0 and obj.StyleIn != "No Retract":
                         overtravelIn = self.getOvertravelIn(
                             obj,
                             source,
@@ -1073,11 +1073,11 @@ class ObjectDressup:
                 lastMillIndex = i  # index last mill instruction for last profile
 
                 # Process negative Offset Lead-Out (cut travel from end)
-                if obj.OffsetOut.Value < 0 and obj.StyleOut != "Suppress Retraction":
+                if obj.OffsetOut.Value < 0 and obj.StyleOut != "No Retract":
                     commands = self.cutTravelEnd(obj, commands, abs(obj.OffsetOut.Value))
 
                 # Process positive Offset Lead-Out (overtravel)
-                if obj.OffsetOut.Value > 0 and obj.StyleOut != "Suppress Retraction":
+                if obj.OffsetOut.Value > 0 and obj.StyleOut != "No Retract":
                     overtravelOut = self.getOvertravelOut(
                         obj,
                         source,
