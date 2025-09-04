@@ -35,6 +35,11 @@
 #include <QPointF>
 #include <QRectF>
 #include <QString>
+#include <QSettings>
+#include <QProcess>
+#include <QDir>
+#include <QFile>
+#include <QRegularExpression>
 
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepLProp_SLProps.hxx>
@@ -83,6 +88,8 @@
 #include "ViewProviderPage.h"
 #include "Rez.h"
 
+FC_LOG_LEVEL_INIT("DrawGui", true, true);
+
 using namespace TechDrawGui;
 using namespace TechDraw;
 using DU = DrawUtil;
@@ -91,17 +98,14 @@ void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
 {
     qcb->clear();
 
-    auto curStyleSheet =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("StyleSheet", "None");
+    // stylesheet name not needed; color detection uses QPalette now
 
     int i = 0;
     for (; i < ArrowPropEnum::ArrowCount; i++) {
         qcb->addItem(
             QCoreApplication::translate("ArrowPropEnum", ArrowPropEnum::ArrowTypeEnums[i]));
         QIcon itemIcon(QString::fromUtf8(ArrowPropEnum::ArrowTypeIcons[i].c_str()));
-        if (isStyleSheetDark(curStyleSheet)) {
+    if (isStyleSheetDark()) {
             QColor textColor = Preferences::lightTextColor().asValue<QColor>();
             QSize iconSize(48, 48);
             QIcon itemUpdatedIcon(maskBlackPixels(itemIcon, iconSize, textColor));
@@ -117,17 +121,14 @@ void DrawGuiUtil::loadBalloonShapeBox(QComboBox* qballooncb)
 {
     qballooncb->clear();
 
-    auto curStyleSheet =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("StyleSheet", "None");
+    // stylesheet name not needed; color detection uses QPalette now
 
     int i = 0;
     for (; i < BalloonPropEnum::BalloonCount; i++) {
         qballooncb->addItem(
             QCoreApplication::translate("BalloonPropEnum", BalloonPropEnum::BalloonTypeEnums[i]));
         QIcon itemIcon(QString::fromUtf8(BalloonPropEnum::BalloonTypeIcons[i].c_str()));
-        if (isStyleSheetDark(curStyleSheet)) {
+    if (isStyleSheetDark()) {
             QColor textColor = Preferences::lightTextColor().asValue<QColor>();
             QSize iconSize(48, 48);
             QIcon itemUpdatedIcon(maskBlackPixels(itemIcon, iconSize, textColor));
@@ -142,17 +143,14 @@ void DrawGuiUtil::loadBalloonShapeBox(QComboBox* qballooncb)
 void DrawGuiUtil::loadMattingStyleBox(QComboBox* qmattingcb)
 {
     qmattingcb->clear();
-    auto curStyleSheet =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("StyleSheet", "None");
+    // stylesheet name not needed; color detection uses QPalette now
 
     int i = 0;
     for (; i < MattingPropEnum::MattingCount; i++) {
         qmattingcb->addItem(
             QCoreApplication::translate("MattingPropEnum", MattingPropEnum::MattingTypeEnums[i]));
         QIcon itemIcon(QString::fromUtf8(MattingPropEnum::MattingTypeIcons[i].c_str()));
-        if (isStyleSheetDark(curStyleSheet)) {
+    if (isStyleSheetDark()) {
             QColor textColor = Preferences::lightTextColor().asValue<QColor>();
             QSize iconSize(48, 48);
             QIcon itemUpdatedIcon(maskBlackPixels(itemIcon, iconSize, textColor));
@@ -241,7 +239,7 @@ QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
             ->GetASCII("StyleSheet", "None");
     QColor textColor{Qt::black};
-    if (isStyleSheetDark(curStyleSheet)) {
+    if (isStyleSheetDark()) {
         textColor = Preferences::lightTextColor().asValue<QColor>();
     }
 
@@ -250,7 +248,7 @@ QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
         linePen.setWidthF(iconLineWeight * lineCount);
         painter.setPen(linePen);
         painter.drawLine(borderSize, iconSize / 2, iconSize - borderSize, iconSize / 2);
-        if (isStyleSheetDark(curStyleSheet)) {
+    if (isStyleSheetDark()) {
             QIcon lineItemIcon(bitmap);
             return QIcon(maskBlackPixels(lineItemIcon, lineIconSize, textColor));
         }
@@ -270,7 +268,7 @@ QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
         painter.drawLine(borderSize, yHeight, maxLineLength, yHeight);
         yHeight += iconLineWeight;
     }
-    if (isStyleSheetDark(curStyleSheet)) {
+    if (isStyleSheetDark()) {
         QIcon lineItemIcon(bitmap);
         return QIcon(maskBlackPixels(lineItemIcon, lineIconSize, textColor));
     }
@@ -650,7 +648,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawGuiUtil::getProjDirFromFace(App::D
                                       | Part::ShapeOption::ResolveLink
                                       | Part::ShapeOption::Transform,
                                       faceName.c_str());
-                                          
+
     if (ts.IsNull() || ts.ShapeType() != TopAbs_FACE) {
         Base::Console().warning("getProjDirFromFace(%s) is not a Face\n", faceName.c_str());
         return dirs;
@@ -783,15 +781,90 @@ std::vector<std::string>  DrawGuiUtil::getSubsForSelectedObject(const std::vecto
     return {};
 }
 
-bool DrawGuiUtil::isStyleSheetDark(std::string curStyleSheet)
+bool DrawGuiUtil::isStyleSheetDark()
 {
-    if (curStyleSheet.find("dark") != std::string::npos ||
-        curStyleSheet.find("Dark") != std::string::npos) {
-        return true;
-    }
-    return false;
-}
+    // If a stylesheet is set, prefer the Spreadsheet.TextColor preference
+    // and do NOT consult OS settings.
+    auto curStyleSheet =
+        App::GetApplication()
+            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
+            ->GetASCII("StyleSheet", "None");
 
+    if (!curStyleSheet.empty() && curStyleSheet != "None") {
+        auto pg = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Spreadsheet");
+        if (pg) {
+            std::string tc = pg->GetASCII("TextColor", "");
+            if (!tc.empty()) {
+                QColor textColor(QString::fromUtf8(tc.c_str()));
+                if (textColor.isValid()) {
+                    const double lumText = 0.299 * textColor.red() + 0.587 * textColor.green() + 0.114 * textColor.blue();
+                    return lumText > 128.0; // light text => dark theme
+                }
+            }
+        }
+        return false; // stylesheet present but no Spreadsheet.TextColor -> default light
+    }
+
+#if defined(Q_OS_WIN)
+    // On Windows, check registry for dark mode
+    #include <windows.h>
+    bool isDark = false;
+    HKEY hKey;
+    DWORD value = 0, size = sizeof(DWORD);
+    std::ostringstream os;
+    os << "isStyleSheetDark: Windows: querying registry...";
+    FC_MSG(os.str().c_str());
+
+    if (RegOpenKeyExA(HKEY_CURRENT_USER,
+        "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+        0, KEY_READ, &hKey) == ERROR_SUCCESS)
+    {
+        if (RegQueryValueExA(hKey, "AppsUseLightTheme", nullptr, nullptr, (LPBYTE)&value, &size) == ERROR_SUCCESS) {
+            isDark = (value == 0);
+            std::ostringstream os2;
+            os2 << "isStyleSheetDark: Windows: AppsUseLightTheme=" << value
+                << ", interpreted isDark=" << (isDark ? "true" : "false");
+            FC_MSG(os2.str().c_str());
+        } else {
+            FC_MSG("isStyleSheetDark: Windows: RegQueryValueExA failed for AppsUseLightTheme");
+        }
+        RegCloseKey(hKey);
+    } else {
+        FC_MSG("isStyleSheetDark: Windows: RegOpenKeyExA failed for Personalize key");
+    }
+    return isDark;
+#elif defined(Q_OS_MAC)
+    // On macOS, check AppleInterfaceStyle environment variable
+    QByteArray style = qgetenv("AppleInterfaceStyle");
+    std::ostringstream os;
+    os << "isStyleSheetDark: macOS: AppleInterfaceStyle='" << style.constData() << "'";
+    FC_MSG(os.str().c_str());
+    return style == "Dark";
+#elif defined(Q_OS_LINUX)
+    // On Linux, check GTK theme or KDE color scheme environment variables
+    QByteArray gtkTheme = qgetenv("GTK_THEME");
+    QByteArray kdeColorScheme = qgetenv("KDE_COLOR_SCHEME");
+    {
+        std::ostringstream os;
+        os << "isStyleSheetDark: Linux: GTK_THEME='" << gtkTheme.constData()
+           << "' KDE_COLOR_SCHEME='" << kdeColorScheme.constData() << "'";
+        FC_MSG(os.str().c_str());
+    }
+    if (gtkTheme.contains("dark", Qt::CaseInsensitive) || kdeColorScheme.contains("dark", Qt::CaseInsensitive)) {
+        FC_MSG("isStyleSheetDark: Linux: detected 'dark' in GTK_THEME or KDE_COLOR_SCHEME -> true");
+        return true;
+    } else {
+        FC_MSG("isStyleSheetDark: Linux: no 'dark' in GTK_THEME/KDE_COLOR_SCHEME -> falling back to GNOME_THEME check");
+    }
+    QByteArray gnomeTheme = qgetenv("GNOME_THEME");
+    if (gnomeTheme.contains("dark", Qt::CaseInsensitive))
+        return true;
+    return false;
+#else
+    // Fallback: assume light theme
+    return false;
+#endif
+}
 
 QIcon DrawGuiUtil::maskBlackPixels(QIcon itemIcon, QSize iconSize, QColor textColor)
 {

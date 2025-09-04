@@ -805,11 +805,17 @@ public:
 
     void setOverlayMode(OverlayMode mode)
     {
-        FC_MSG("setOverlayMode called with mode: %d", static_cast<int>(mode));
+        {
+            std::ostringstream os; os << "setOverlayMode called with mode: " << static_cast<int>(mode);
+            FC_MSG(os.str().c_str());
+        }
         switch(mode) {
         case OverlayManager::OverlayMode::DisableAll:
         case OverlayManager::OverlayMode::EnableAll: {
-            FC_MSG("setOverlayMode: %s all overlays", mode == OverlayManager::OverlayMode::DisableAll ? "Disabling" : "Enabling");
+            {
+                std::ostringstream os; os << "setOverlayMode: " << (mode == OverlayManager::OverlayMode::DisableAll ? "Disabling" : "Enabling") << " all overlays";
+                FC_MSG(os.str().c_str());
+            }
             auto docks = getMainWindow()->findChildren<QDockWidget*>();
             // put visible dock widget first
             std::sort(docks.begin(),docks.end(),
@@ -817,7 +823,10 @@ public:
                     return !a->visibleRegion().isEmpty() && b->visibleRegion().isEmpty();
                 });
             for(auto dock : docks) {
-                FC_MSG("setOverlayMode: processing dock '%s'", dock->objectName().toUtf8().constData());
+                {
+                    std::ostringstream os; os << "setOverlayMode: processing dock '" << dock->objectName().toUtf8().constData() << "'";
+                    FC_MSG(os.str().c_str());
+                }
                 if(mode == OverlayManager::OverlayMode::DisableAll)
                     toggleOverlay(dock, ToggleMode::Unset);
                 else
@@ -944,7 +953,10 @@ public:
             FC_MSG("setOverlayMode: no dock found for active operation");
             return;
 
-        FC_MSG("setOverlayMode: toggling overlay for dock '%s' with mode %d", dock->objectName().toUtf8().constData(), static_cast<int>(m));
+        {
+            std::ostringstream os; os << "setOverlayMode: toggling overlay for dock '" << dock->objectName().toUtf8().constData() << "' with mode " << static_cast<int>(m);
+            FC_MSG(os.str().c_str());
+        }
         toggleOverlay(dock, m);
     }
 
@@ -1644,19 +1656,31 @@ void OverlayManager::setupDockWidget(QDockWidget *dw, int dockArea)
 
 void OverlayManager::cleanupDockWidget(QDockWidget *dw)
 {
-    FC_MSG("cleanupDockWidget called for dock: " << (dw ? dw->objectName().toStdString() : std::string("nullptr")));
+    {
+        std::ostringstream os; os << "cleanupDockWidget called for dock: " << (dw ? dw->objectName().toStdString() : std::string("nullptr"));
+        FC_MSG(os.str().c_str());
+    }
     d->toggleOverlay(dw, ToggleMode::Unset);
     if (dw) {
         if (dw->titleBarWidget()) {
-            FC_MSG("Deleting custom title bar for dock: " << dw->objectName().toStdString());
+            {
+                std::ostringstream os; os << "Deleting custom title bar for dock: " << dw->objectName().toStdString();
+                FC_MSG(os.str().c_str());
+            }
             dw->titleBarWidget()->deleteLater();
             dw->setTitleBarWidget(nullptr); // This restores the default native title bar
-            FC_MSG("Restored native title bar for dock: " << dw->objectName().toStdString());
+            {
+                std::ostringstream os; os << "Restored native title bar for dock: " << dw->objectName().toStdString();
+                FC_MSG(os.str().c_str());
+            }
         } else {
-            FC_MSG("No custom title bar to delete for dock: " << dw->objectName().toStdString());
+            {
+                std::ostringstream os; os << "No custom title bar to delete for dock: " << dw->objectName().toStdString();
+                FC_MSG(os.str().c_str());
+            }
         }
     } else {
-        FC_MSG("cleanupDockWidget called with nullptr");
+    FC_MSG("cleanupDockWidget called with nullptr");
     }
 }
 

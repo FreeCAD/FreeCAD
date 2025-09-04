@@ -446,14 +446,9 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
 
 void OverlayTabWidget::refreshIcons()
 {
-    auto curStyleSheet =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("StyleSheet", "None");
-
     QPixmap pxAutoHide;
 
-    if (isStyleSheetDark(curStyleSheet)) {
+    if (isStyleSheetDark()) {
         actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/icons/overlay_light.svg"));
         actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode_light.svg"));
         actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow_light.svg"));
@@ -888,16 +883,11 @@ void OverlayTabWidget::retranslate()
 
 void OverlayTabWidget::syncAutoMode()
 {
-    auto curStyleSheet =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("StyleSheet", "None");
-
     QAction* action = nullptr;
     switch (autoMode) {
         case AutoMode::AutoHide:
             action = &actAutoHide;
-            if (isStyleSheetDark(curStyleSheet)) {
+            if (isStyleSheetDark()) {
                 QPixmap pxAutoHideMode =
                     BitmapFactory().pixmap("qss:overlay/icons/autohide_lighter.svg");
                 pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
@@ -923,7 +913,7 @@ void OverlayTabWidget::syncAutoMode()
             break;
         case AutoMode::EditShow:
             action = &actEditShow;
-            if (isStyleSheetDark(curStyleSheet)) {
+            if (isStyleSheetDark()) {
                 QPixmap pxEditShowMode =
                     BitmapFactory().pixmap("qss:overlay/icons/editshow_lighter.svg");
                 action->setIcon(pxEditShowMode);
@@ -952,7 +942,7 @@ void OverlayTabWidget::syncAutoMode()
             break;
         case AutoMode::TaskShow:
             action = &actTaskShow;
-            if (isStyleSheetDark(curStyleSheet)) {
+            if (isStyleSheetDark()) {
                 QPixmap pxTaskShowMode =
                     BitmapFactory().pixmap("qss:overlay/icons/taskshow_lighter.svg");
                 action->setIcon(pxTaskShowMode);
@@ -981,7 +971,7 @@ void OverlayTabWidget::syncAutoMode()
             break;
         case AutoMode::EditHide:
             action = &actEditHide;
-            if (isStyleSheetDark(curStyleSheet)) {
+            if (isStyleSheetDark()) {
                 QPixmap pxEditHideMode =
                     BitmapFactory().pixmap("qss:overlay/icons/edithide_lighter.svg");
                 action->setIcon(pxEditHideMode);
@@ -1010,7 +1000,7 @@ void OverlayTabWidget::syncAutoMode()
             break;
         default:
             action = &actNoAutoMode;
-            if (isStyleSheetDark(curStyleSheet)) {
+            if (isStyleSheetDark()) {
                 QPixmap pxNoAutoMode = BitmapFactory().pixmap("qss:overlay/icons/mode_lighter.svg");
                 action->setIcon(pxNoAutoMode);
                 QPixmap pxAutoHideMode =
@@ -2039,6 +2029,15 @@ bool OverlayTabWidget::isStyleSheetDark(std::string curStyleSheet)
     // Fallback: assume light theme
     return false;
 #endif
+}
+
+bool OverlayTabWidget::isStyleSheetDark()
+{
+    auto curStyleSheet =
+        App::GetApplication()
+            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
+            ->GetASCII("StyleSheet", "None");
+    return OverlayTabWidget::isStyleSheetDark(curStyleSheet);
 }
 
 QPixmap OverlayTabWidget::rotateAutoHideIcon(QPixmap pxAutoHide, Qt::DockWidgetArea dockArea)
