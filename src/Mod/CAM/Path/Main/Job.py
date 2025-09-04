@@ -700,7 +700,7 @@ class ObjectJob:
                 "VertRapid",
                 "%s.%s"
                 % (
-                    self.setupSheet.expressionReference(),
+                    self.obj.SetupSheet.Proxy.expressionReference(),
                     PathSetupSheet.Template.VertRapid,
                 ),
             )
@@ -708,7 +708,7 @@ class ObjectJob:
                 "HorizRapid",
                 "%s.%s"
                 % (
-                    self.setupSheet.expressionReference(),
+                    self.obj.SetupSheet.Proxy.expressionReference(),
                     PathSetupSheet.Template.HorizRapid,
                 ),
             )
