@@ -147,4 +147,3 @@ void Fillet::handleChangedPropertyType(Base::XMLReader &reader, const char * Typ
 }
 
 
-
