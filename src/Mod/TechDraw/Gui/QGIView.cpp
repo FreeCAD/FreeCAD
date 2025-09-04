@@ -726,8 +726,9 @@ void QGIView::layoutDecorations(const QRectF& contentArea,
                           outFrameRect.bottom() - labelRect.height());
 
     double view_width = getViewObject()->getRect().x();
+    double bottomOfViewBox = customChildrenBoundingRect().bottom();
     outCaptionPos = QPointF(view_width - (captionRect.width() / 2),
-                            outLabelPos.y() - captionRect.height() + padding * 2);
+                            bottomOfViewBox);
 
     outLockPos = QPointF(outFrameRect.left(), outFrameRect.bottom() - m_lockHeight);
 }
