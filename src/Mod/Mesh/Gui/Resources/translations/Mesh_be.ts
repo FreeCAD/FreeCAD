@@ -1552,38 +1552,38 @@ to a smoother appearance.
       <translation>Пярэдні</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
-      <source>Frontal Quad</source>
-      <translation>Пярэдні чатырохкутнік</translation>
-    </message>
-    <message>
       <location filename="../../RemeshGmsh.cpp" line="105"/>
       <source>Parallelograms</source>
       <translation>Паралелаграмы</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="106"/>
-      <source>Quasi-structured Quad</source>
-      <translation>Квазіструктураваны квадрант</translation>
+      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <source>Frontal quad</source>
+      <translation type="unfinished">Frontal quad</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="197"/>
-      <location filename="../../RemeshGmsh.cpp" line="255"/>
+      <location filename="../../RemeshGmsh.cpp" line="106"/>
+      <source>Quasi-structured quad</source>
+      <translation type="unfinished">Quasi-structured quad</translation>
+    </message>
+    <message>
+      <location filename="../../RemeshGmsh.cpp" line="200"/>
+      <location filename="../../RemeshGmsh.cpp" line="258"/>
       <source>Time:</source>
       <translation>Час:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="243"/>
+      <location filename="../../RemeshGmsh.cpp" line="246"/>
       <source>Running Gmsh…</source>
       <translation>Запуск Gmsh…</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="266"/>
+      <location filename="../../RemeshGmsh.cpp" line="269"/>
       <source>Failed to start</source>
       <translation>Не атрымалася запусціць</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="273"/>
+      <location filename="../../RemeshGmsh.cpp" line="276"/>
       <source>Error</source>
       <translation>Памылка</translation>
     </message>
@@ -1710,17 +1710,22 @@ to a smoother appearance.
       <translation>Траекторыя</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.ui" line="154"/>
+      <location filename="../../RemeshGmsh.ui" line="141"/>
+      <source>Leave empty to use default gmsh executable</source>
+      <translation type="unfinished">Leave empty to use default gmsh executable</translation>
+    </message>
+    <message>
+      <location filename="../../RemeshGmsh.ui" line="157"/>
       <source>Kill</source>
       <translation>Забіць</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.ui" line="181"/>
+      <location filename="../../RemeshGmsh.ui" line="184"/>
       <source>Time</source>
       <translation>Час</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.ui" line="188"/>
+      <location filename="../../RemeshGmsh.ui" line="191"/>
       <source>Clear</source>
       <translation>Ачысціць</translation>
     </message>
@@ -2229,7 +2234,7 @@ Visit https://openscad.org/ to install it.</source>
     <message>
       <location filename="../../Command.cpp" line="1531"/>
       <source>Fill holes with maximum number of edges</source>
-      <translation type="unfinished">Fill holes with maximum number of edges</translation>
+      <translation>Запаўняе адтуліны з найбольшай колькасцю рэбраў</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1795"/>

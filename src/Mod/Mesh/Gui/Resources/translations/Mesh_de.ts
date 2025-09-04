@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="373"/>
       <source>Export Mesh…</source>
-      <translation type="unfinished">Export Mesh…</translation>
+      <translation>Netz exportieren…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="374"/>
       <source>Exports a mesh to a file</source>
-      <translation type="unfinished">Exports a mesh to a file</translation>
+      <translation>Exportiert ein Netz in eine Datei</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="1567"/>
       <source>Close Hole</source>
-      <translation type="unfinished">Close Hole</translation>
+      <translation>Loch schließen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1568"/>
       <source>Closes a hole interactively in the mesh</source>
-      <translation type="unfinished">Closes a hole interactively in the mesh</translation>
+      <translation>Schließt ein Loch im Netz interaktiv</translation>
     </message>
   </context>
   <context>
@@ -299,12 +299,12 @@
     <message>
       <location filename="../../Command.cpp" line="320"/>
       <source>Import Mesh…</source>
-      <translation type="unfinished">Import Mesh…</translation>
+      <translation>Netz importieren…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="321"/>
       <source>Imports a mesh from a file</source>
-      <translation type="unfinished">Imports a mesh from a file</translation>
+      <translation>Importiert ein Netz aus einer Datei</translation>
     </message>
   </context>
   <context>
@@ -592,7 +592,7 @@
     <message>
       <location filename="../../Command.cpp" line="894"/>
       <source>Trim With Plane</source>
-      <translation type="unfinished">Trim With Plane</translation>
+      <translation>An Ebene trimmen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="895"/>
@@ -1555,38 +1555,38 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
       <translation>Frontal</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
-      <source>Frontal Quad</source>
-      <translation>Frontales Quad</translation>
-    </message>
-    <message>
       <location filename="../../RemeshGmsh.cpp" line="105"/>
       <source>Parallelograms</source>
       <translation>Parallelogramme</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="106"/>
-      <source>Quasi-structured Quad</source>
-      <translation>Quasi-strukturierter Quad</translation>
+      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <source>Frontal quad</source>
+      <translation type="unfinished">Frontal quad</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="197"/>
-      <location filename="../../RemeshGmsh.cpp" line="255"/>
+      <location filename="../../RemeshGmsh.cpp" line="106"/>
+      <source>Quasi-structured quad</source>
+      <translation type="unfinished">Quasi-structured quad</translation>
+    </message>
+    <message>
+      <location filename="../../RemeshGmsh.cpp" line="200"/>
+      <location filename="../../RemeshGmsh.cpp" line="258"/>
       <source>Time:</source>
       <translation>Zeit:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="243"/>
+      <location filename="../../RemeshGmsh.cpp" line="246"/>
       <source>Running Gmsh…</source>
       <translation type="unfinished">Running Gmsh…</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="266"/>
+      <location filename="../../RemeshGmsh.cpp" line="269"/>
       <source>Failed to start</source>
       <translation>Start fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="273"/>
+      <location filename="../../RemeshGmsh.cpp" line="276"/>
       <source>Error</source>
       <translation>Fehler</translation>
     </message>
@@ -1713,17 +1713,22 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
       <translation>Gmsh-Pfad</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.ui" line="154"/>
+      <location filename="../../RemeshGmsh.ui" line="141"/>
+      <source>Leave empty to use default gmsh executable</source>
+      <translation type="unfinished">Leave empty to use default gmsh executable</translation>
+    </message>
+    <message>
+      <location filename="../../RemeshGmsh.ui" line="157"/>
       <source>Kill</source>
       <translation>Abbruch (erzwingen)</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.ui" line="181"/>
+      <location filename="../../RemeshGmsh.ui" line="184"/>
       <source>Time</source>
       <translation>Zeit</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.ui" line="188"/>
+      <location filename="../../RemeshGmsh.ui" line="191"/>
       <source>Clear</source>
       <translation>Leeren</translation>
     </message>
@@ -2047,8 +2052,8 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
       <location filename="../../Command.cpp" line="299"/>
       <source>OpenSCAD cannot be found on the system.
 Visit https://openscad.org/ to install it.</source>
-      <translation type="unfinished">OpenSCAD cannot be found on the system.
-Visit https://openscad.org/ to install it.</translation>
+      <translation>OpenSCAD kann auf dem System nicht gefunden werden.
+Siehe https://openscad.org/, um es zu installieren.</translation>
     </message>
   </context>
   <context>
@@ -2192,7 +2197,7 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="420"/>
       <source>Export Mesh</source>
-      <translation type="unfinished">Export Mesh</translation>
+      <translation>Netz exportieren</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="466"/>

@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>&amp;New Spreadsheet</source>
-      <translation type="unfinished">&amp;New Spreadsheet</translation>
+      <translation>&amp;Nuovo Foglio di calcolo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
       <source>Creates a new spreadsheet</source>
-      <translation type="unfinished">Creates a new spreadsheet</translation>
+      <translation>Crea un nuovo foglio di calcolo</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="510"/>
       <source>Align &amp;Bottom</source>
-      <translation type="unfinished">Align &amp;Bottom</translation>
+      <translation>Allinea in &amp;Basso</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Aligns cell contents to the bottom</source>
-      <translation type="unfinished">Aligns cell contents to the bottom</translation>
+      <translation>Allinea il contenuto delle celle in basso</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="282"/>
       <source>Align &amp;Left</source>
-      <translation type="unfinished">Align &amp;Left</translation>
+      <translation>Allinea a &amp;Sinistra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="283"/>
       <source>Aligns cell contents to the left</source>
-      <translation type="unfinished">Aligns cell contents to the left</translation>
+      <translation>Allinea il contenuto delle celle a sinistra</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="396"/>
       <source>Align &amp;Right</source>
-      <translation type="unfinished">Align &amp;Right</translation>
+      <translation>Allinea a &amp;Destra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="397"/>
       <source>Aligns cell contents to the right</source>
-      <translation type="unfinished">Aligns cell contents to the right</translation>
+      <translation>Allinea il contenuto delle celle a destra</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Align &amp;Top</source>
-      <translation type="unfinished">Align &amp;Top</translation>
+      <translation>Allinea in &amp;Alto</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="454"/>
       <source>Aligns cell contents to the top</source>
-      <translation type="unfinished">Aligns cell contents to the top</translation>
+      <translation>Allinea il contenuto delle celle in alto</translation>
     </message>
   </context>
   <context>
@@ -449,7 +449,7 @@ The expression must evaluate to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet</source>
-      <translation type="unfinished">Sheet</translation>
+      <translation>Foglio</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
@@ -713,7 +713,7 @@ Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
       <source>Export File</source>
-      <translation type="unfinished">Export File</translation>
+      <translation>Esporta File</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="134"/>
@@ -881,12 +881,12 @@ Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="147"/>
       <source>-</source>
-      <translation type="unfinished">-</translation>
+      <translation>-</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="197"/>
       <source>+</source>
-      <translation type="unfinished">+</translation>
+      <translation>+</translation>
     </message>
   </context>
   <context>
@@ -1006,7 +1006,7 @@ Predefinito a: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="223"/>
       <source>Escape character</source>
-      <translation type="unfinished">Escape character</translation>
+      <translation>Carattere di escape</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="230"/>
@@ -1063,7 +1063,7 @@ Predefinito a: %V = %A
       <location filename="../../SheetTableView.cpp" line="155"/>
       <source>Remove Rows</source>
       <translation type="unfinished">
-        <numerusform>Remove Rows</numerusform>
+        <numerusform>Rimuovi Righe</numerusform>
         <numerusform>Remove Rows</numerusform>
       </translation>
     </message>
@@ -1095,7 +1095,7 @@ Predefinito a: %V = %A
       <location filename="../../SheetTableView.cpp" line="186"/>
       <source>Remove Column(s)</source>
       <translation type="unfinished">
-        <numerusform>Remove Column(s)</numerusform>
+        <numerusform>Rimuovi Colonne</numerusform>
         <numerusform>Remove Column(s)</numerusform>
       </translation>
     </message>
@@ -1103,7 +1103,7 @@ Predefinito a: %V = %A
       <location filename="../../SheetTableView.cpp" line="199"/>
       <location filename="../../SheetTableView.cpp" line="664"/>
       <source>Properties…</source>
-      <translation type="unfinished">Properties…</translation>
+      <translation>Proprietà…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="203"/>

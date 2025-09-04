@@ -1275,7 +1275,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="65"/>
       <source>Cache</source>
-      <translation>Кэш</translation>
+      <translation>Временные файлы</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="91"/>
