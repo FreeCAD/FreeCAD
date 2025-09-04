@@ -791,27 +791,28 @@ void SelectionMenu::buildMenuStructure(std::map<std::string, SubMenuInfo> &menus
         }
     }
         
-    for (auto it : menuArray) {
-        auto &v = *it;
-        auto &info = v.second;
+    for (auto elementTypeIterator : menuArray) {
+        auto &elementTypeEntry = *elementTypeIterator;
+        auto &subMenuInfo = elementTypeEntry.second;
+        const std::string &elementType = elementTypeEntry.first;
         
-        if (info.items.empty()) {
+        if (subMenuInfo.items.empty()) {
             continue;
         }
 
-        info.menu = addMenu(QString::fromUtf8(v.first.c_str()));
-        bool groupMenu = shouldGroupMenu(info);
+        subMenuInfo.menu = addMenu(QString::fromUtf8(elementType.c_str()));
+        bool groupMenu = shouldGroupMenu(subMenuInfo);
 
-        for (auto &vv : info.items) {
-            const std::string &label = vv.first;
+        for (auto &objectLabelEntry : subMenuInfo.items) {
+            const std::string &objectLabel = objectLabelEntry.first;
 
-            for (auto &vvv : vv.second) {
-                auto &elementInfo = vvv.second;
+            for (auto &objectPathEntry : objectLabelEntry.second) {
+                auto &elementInfo = objectPathEntry.second;
                 
                 if (!groupMenu) {
-                    createFlatMenu(elementInfo, info.menu, label, v.first, selections);
+                    createFlatMenu(elementInfo, subMenuInfo.menu, objectLabel, elementType, selections);
                 } else {
-                    createGroupedMenu(elementInfo, info.menu, label, v.first, selections);
+                    createGroupedMenu(elementInfo, subMenuInfo.menu, objectLabel, elementType, selections);
                 }
             }
         }
@@ -1028,10 +1029,10 @@ bool SelectionMenu::shouldGroupMenu(const SubMenuInfo &info)
     
     std::size_t objCount = 0;
     std::size_t count = 0;
-    for (auto &vv : info.items) {
-        objCount += vv.second.size();
-        for (auto &vvv : vv.second) 
-            count += vvv.second.indices.size();
+    for (auto &objectLabelEntry : info.items) {
+        objCount += objectLabelEntry.second.size();
+        for (auto &objectPathEntry : objectLabelEntry.second) 
+            count += objectPathEntry.second.indices.size();
         if (count > 5 && objCount > 1) {
             return true;
         }
