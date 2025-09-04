@@ -2135,8 +2135,11 @@ void OverlayTitleBar::paintEvent(QPaintEvent *)
         QPainter painter(this);
         // Minimal mode: fill background using the current palette so the
         // titlebar area remains visually distinct in floating (frameless)
-        // docks; then draw the window title.
-        painter.fillRect(this->rect(), palette().color(QPalette::Window));
+        // docks; then draw the window title. If the palette's Window color
+        // is transparent (stylesheets sometimes don't apply to floating
+        // widgets), fall back to a sensible light/dark color.
+    // No background fill: draw only the title text so floating titlebar
+    // remains unobtrusive and avoids drawing a solid rectangle.
         QDockWidget *dock = qobject_cast<QDockWidget*>(parentWidget());
         QString title;
         if (!dock) {
