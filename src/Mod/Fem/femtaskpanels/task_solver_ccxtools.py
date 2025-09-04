@@ -383,7 +383,7 @@ class _TaskPanel:
             env = QtCore.QProcessEnvironment.systemEnvironment()
             num_cpu_pref = ccx_prefs.GetInt("AnalysisNumCPUs", QtCore.QThread.idealThreadCount())
             env.insert("OMP_NUM_THREADS", str(num_cpu_pref))
-            pastix_prec = "0" if self.fea.solver.DisablePastixMixedPrecision else "1"
+            pastix_prec = "1" if self.fea.solver.PastixMixedPrecision else "0"
             env.insert("PASTIX_MIXED_PRECISION", pastix_prec)
             self.Calculix.setProcessEnvironment(env)
 
