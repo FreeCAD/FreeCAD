@@ -1961,8 +1961,25 @@ QLayoutItem *OverlayTabWidget::prepareTitleWidget(QWidget *widget, const QList<Q
 }
 
 // This requires <windows.h> and linking to Advapi32.lib
-bool OverlayTabWidget::isStyleSheetDark(std::string /*curStyleSheet*/)
+bool OverlayTabWidget::isStyleSheetDark(std::string curStyleSheet)
 {
+    // If a stylesheet is set, prefer the Spreadsheet.TextColor preference
+    // and do NOT consult OS settings.
+    if (!curStyleSheet.empty() && curStyleSheet != "None") {
+        auto pg = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Spreadsheet");
+        if (pg) {
+            std::string tc = pg->GetASCII("TextColor", "");
+            if (!tc.empty()) {
+                QColor textColor(QString::fromUtf8(tc.c_str()));
+                if (textColor.isValid()) {
+                    const double lumText = 0.299 * textColor.red() + 0.587 * textColor.green() + 0.114 * textColor.blue();
+                    return lumText > 128.0; // light text => dark theme
+                }
+            }
+        }
+        return false; // stylesheet present but no Spreadsheet.TextColor -> default light
+    }
+
 #if defined(Q_OS_WIN)
     // On Windows, check registry for dark mode
     #include <windows.h>
