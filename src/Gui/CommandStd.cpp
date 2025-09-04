@@ -960,4 +960,3 @@ void CreateStdCommands()
 }
 
 } // namespace Gui
-
