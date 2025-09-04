@@ -1023,17 +1023,19 @@ void SelectionMenu::addWholeObjectSelection(const PickData &sel, App::DocumentOb
 
 bool SelectionMenu::shouldGroupMenu(const SubMenuInfo &info)
 {
-    if (info.items.size() > 20) {
+    constexpr std::size_t MAX_MENU_ITEMS_BEFORE_GROUPING = 20;
+    if (info.items.size() > MAX_MENU_ITEMS_BEFORE_GROUPING) {
         return true;
     }
     
     std::size_t objCount = 0;
     std::size_t count = 0;
+    constexpr std::size_t MAX_SELECTION_COUNT_BEFORE_GROUPING = 5;
     for (auto &objectLabelEntry : info.items) {
         objCount += objectLabelEntry.second.size();
         for (auto &objectPathEntry : objectLabelEntry.second) 
             count += objectPathEntry.second.indices.size();
-        if (count > 5 && objCount > 1) {
+        if (count > MAX_SELECTION_COUNT_BEFORE_GROUPING && objCount > 1) {
             return true;
         }
     }
