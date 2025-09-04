@@ -387,21 +387,21 @@ const Quantity Quantity::MilliNewtonPerMeter    ( 1e-3                  , Unit::
 const Quantity Quantity::KiloNewtonPerMeter     ( 1e3                   , Unit::Stiffness               );
 const Quantity Quantity::MegaNewtonPerMeter     ( 1e6                   , Unit::Stiffness               );
 
-const Quantity Quantity::Pascal                 ( 0.001                 , Unit::CompressiveStrength     );  // Pascal (kg/m/s^2 or N/m^2)
-const Quantity Quantity::KiloPascal             ( 1.00                  , Unit::CompressiveStrength     );
-const Quantity Quantity::MegaPascal             ( 1000.0                , Unit::CompressiveStrength     );
-const Quantity Quantity::GigaPascal             ( 1e+6                  , Unit::CompressiveStrength     );
+const Quantity Quantity::Pascal                 ( 0.001                 , Unit::Pressure                );  // Pascal (kg/m/s^2 or N/m^2)
+const Quantity Quantity::KiloPascal             ( 1.00                  , Unit::Pressure                );
+const Quantity Quantity::MegaPascal             ( 1000.0                , Unit::Pressure                );
+const Quantity Quantity::GigaPascal             ( 1e+6                  , Unit::Pressure                );
 
-const Quantity Quantity::MilliBar               ( 0.1                   , Unit::CompressiveStrength     );
-const Quantity Quantity::Bar                    ( 100.0                 , Unit::CompressiveStrength     );  // 1 bar = 100 kPa
+const Quantity Quantity::MilliBar               ( 0.1                   , Unit::Pressure                );
+const Quantity Quantity::Bar                    ( 100.0                 , Unit::Pressure                );  // 1 bar = 100 kPa
 
-const Quantity Quantity::Torr                   ( 101.325 / 760.0       , Unit::CompressiveStrength     );  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
-const Quantity Quantity::mTorr                  ( 0.101325 / 760.0      , Unit::CompressiveStrength     );  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
-const Quantity Quantity::yTorr                  ( 0.000101325 / 760.0   , Unit::CompressiveStrength     );  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
+const Quantity Quantity::Torr                   ( 101.325 / 760.0       , Unit::Pressure                );  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
+const Quantity Quantity::mTorr                  ( 0.101325 / 760.0      , Unit::Pressure                );  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
+const Quantity Quantity::yTorr                  ( 0.000101325 / 760.0   , Unit::Pressure                );  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
 
-const Quantity Quantity::PSI                    ( 6.894744825494        , Unit::CompressiveStrength     );  // pounds/in^2
-const Quantity Quantity::KSI                    ( 6894.744825494        , Unit::CompressiveStrength     );  // 1000 x pounds/in^2
-const Quantity Quantity::MPSI                   ( 6894744.825494        , Unit::CompressiveStrength     );  // 1000 ksi
+const Quantity Quantity::PSI                    ( 6.894744825494        , Unit::Pressure                );  // pounds/in^2
+const Quantity Quantity::KSI                    ( 6894.744825494        , Unit::Pressure                );  // 1000 x pounds/in^2
+const Quantity Quantity::MPSI                   ( 6894744.825494        , Unit::Pressure                );  // 1000 ksi
 
 const Quantity Quantity::Watt                   ( 1e+6                  , Unit::Power                   );  // Watt (kg*m^2/s^3)
 const Quantity Quantity::MilliWatt              ( 1e+3                  , Unit::Power                   );
