@@ -2252,7 +2252,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
       <translation>Convertir le maillage</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1253"/>
+      <location filename="../../TaskAttacher.cpp" line="1267"/>
       <source>Edit attachment</source>
       <translation>Modifier l'ancrage</translation>
     </message>
@@ -2391,17 +2391,17 @@ Remarque : le placement est exprimé dans l'espace local de l'objet auquel il es
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
       <source>In X-direction</source>
-      <translation type="unfinished">In X-direction</translation>
+      <translation>Dans la direction X</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="171"/>
       <source>In Y-direction</source>
-      <translation type="unfinished">In Y-direction</translation>
+      <translation>Dans la direction Y</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="203"/>
       <source>In Z-direction</source>
-      <translation type="unfinished">In Z-direction</translation>
+      <translation>Dans la direction Z</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="367"/>
@@ -3897,17 +3897,17 @@ Vérifier d'abord une ou plusieurs arrête(s).</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="149"/>
       <source>X-Direction</source>
-      <translation type="unfinished">X-Direction</translation>
+      <translation>Direction X</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="190"/>
       <source>Y-Direction</source>
-      <translation type="unfinished">Y-Direction</translation>
+      <translation>Direction Y</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="228"/>
       <source>Z-Direction</source>
-      <translation type="unfinished">Z-Direction</translation>
+      <translation>Direction Z</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="250"/>
@@ -4116,24 +4116,39 @@ Vérifier d'abord une ou plusieurs arrête(s).</translation>
       <translation>Passer au panneau des tâches lors de l'accès à l'atelier PartDesign</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="241"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="206"/>
+      <source>Show final result by default when editing features</source>
+      <translation type="unfinished">Show final result by default when editing features</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="219"/>
+      <source>Show transparent preview overlay by default when editing features</source>
+      <translation type="unfinished">Show transparent preview overlay by default when editing features</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="235"/>
+      <source>Highlight the profile used to create features</source>
+      <translation type="unfinished">Highlight the profile used to create features</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="257"/>
       <source>Experimental</source>
       <translation>Expérimental</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="250"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="266"/>
       <source>These settings are experimental and may result in decreased stability, problems and undefined behaviors</source>
-      <translation type="unfinished">These settings are experimental and may result in decreased stability, problems and undefined behaviors</translation>
+      <translation>Ces paramètres sont expérimentaux et peuvent entraîner une diminution de la stabilité, des problèmes et des comportements inconnus.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="273"/>
-      <source>Show interactive draggers during Part Design tasks</source>
-      <translation type="unfinished">Show interactive draggers during Part Design tasks</translation>
+      <location filename="../../DlgSettingsGeneral.ui" line="276"/>
+      <source>Show interactive draggers when editing features</source>
+      <translation type="unfinished">Show interactive draggers when editing features</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="289"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="292"/>
       <source>Disable recompute while dragging</source>
-      <translation type="unfinished">Disable recompute while dragging</translation>
+      <translation>Désactiver le recalcul lors des glissements</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="172"/>
@@ -4146,18 +4161,7 @@ Vérifier d'abord une ou plusieurs arrête(s).</translation>
       <translation>Aperçu</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="206"/>
-      <source>Show final result by default when editing feature</source>
-      <translation>Afficher par défaut le résultat final lors de la modification d'une fonction</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="219"/>
-      <source>Show transparent preview overlay by default when editing feature</source>
-      <translation>Afficher par défaut un aperçu transparent lors de la modification d'une fonction</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsGeneral.ui" line="74"/>
-      <location filename="../../DlgSettingsGeneral.ui" line="260"/>
       <source>Allow multiple solids in Part Design bodies by default</source>
       <translation>Permettre par défaut que plusieurs solides soient dans des corps de PartDesign</translation>
     </message>
@@ -4875,11 +4879,6 @@ only created cuts will be visible</source>
       <translation>Décalage de l'ancrage dans son système de coordonnées locales.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="136"/>
-      <source>In x-direction</source>
-      <translation>Dans la direction X</translation>
-    </message>
-    <message>
       <location filename="../../TaskAttacher.ui" line="155"/>
       <location filename="../../TaskAttacher.ui" line="191"/>
       <location filename="../../TaskAttacher.ui" line="227"/>
@@ -4888,13 +4887,18 @@ of the object being attached</source>
       <translation>Le décalage est exprimé dans le système de coordonnées local de l'objet auquel il est ancré.</translation>
     </message>
     <message>
+      <location filename="../../TaskAttacher.ui" line="136"/>
+      <source>In X-direction</source>
+      <translation>Dans la direction X</translation>
+    </message>
+    <message>
       <location filename="../../TaskAttacher.ui" line="172"/>
-      <source>In y-direction</source>
+      <source>In Y-direction</source>
       <translation>Dans la direction Y</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="208"/>
-      <source>In z-direction</source>
+      <source>In Z-direction</source>
       <translation>Dans la direction Z</translation>
     </message>
     <message>
@@ -4944,82 +4948,82 @@ Remarque : le décalage est exprimé dans le système de coordonnées local de l
       <translation>Inverser les côtés</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="324"/>
+      <location filename="../../TaskAttacher.cpp" line="327"/>
       <source>OCC error: %1</source>
       <translation>Erreur OCC : %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="327"/>
+      <location filename="../../TaskAttacher.cpp" line="330"/>
       <source>unknown error</source>
       <translation>erreur inconnue</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="330"/>
+      <location filename="../../TaskAttacher.cpp" line="333"/>
       <source>Attachment mode failed: %1</source>
       <translation>Le mode d'ancrage a échoué : %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="335"/>
+      <location filename="../../TaskAttacher.cpp" line="338"/>
       <source>Not attached</source>
       <translation>Non ancré</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="340"/>
+      <location filename="../../TaskAttacher.cpp" line="343"/>
       <source>Attached with mode %1</source>
       <translation>Ancré par le mode %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="344"/>
+      <location filename="../../TaskAttacher.cpp" line="347"/>
       <source>Attachment offset (in its local coordinate system):</source>
       <translation>Décalage de l'ancrage (dans son système de coordonnées locales) :</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="344"/>
+      <location filename="../../TaskAttacher.cpp" line="347"/>
       <source>Attachment offset (inactive - not attached):</source>
       <translation>Décalage de l'ancrage (inactif et non ancré) :</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="879"/>
+      <location filename="../../TaskAttacher.cpp" line="882"/>
       <source>Selecting…</source>
       <translation>Sélectionner…</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="799"/>
+      <location filename="../../TaskAttacher.cpp" line="802"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="806"/>
+      <location filename="../../TaskAttacher.cpp" line="809"/>
       <source>Edge</source>
       <translation>Arête</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="813"/>
+      <location filename="../../TaskAttacher.cpp" line="816"/>
       <source>Vertex</source>
       <translation>Sommet</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="885"/>
+      <location filename="../../TaskAttacher.cpp" line="888"/>
       <source>Reference%1</source>
       <translation>Référence%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="932"/>
+      <location filename="../../TaskAttacher.cpp" line="935"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>Non modifiable parce que la rotation du décalage de l'ancrage est définie par des expressions.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="999"/>
+      <location filename="../../TaskAttacher.cpp" line="1002"/>
       <source>Reference combinations:</source>
       <translation>Combinaisons de référence :</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1016"/>
+      <location filename="../../TaskAttacher.cpp" line="1019"/>
       <source>%1 (add %2)</source>
       <translation>%1 (ajouter %2)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1022"/>
+      <location filename="../../TaskAttacher.cpp" line="1025"/>
       <source>%1 (add more references)</source>
       <translation>%1 (ajouter plus de références)</translation>
     </message>
@@ -5333,12 +5337,12 @@ Valeur par défaut : true</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1235"/>
+      <location filename="../../TaskAttacher.cpp" line="1249"/>
       <source>Attachment</source>
       <translation>Ancrage</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1296"/>
+      <location filename="../../TaskAttacher.cpp" line="1310"/>
       <source>Datum dialog: input error</source>
       <translation>Boîte de dialogue de la référence : erreur de saisie</translation>
     </message>
@@ -5561,23 +5565,23 @@ in the 3D view for the sweep path.</source>
     <name>PartGui::ThicknessWidget</name>
     <message>
       <location filename="../../TaskThickness.cpp" line="94"/>
-      <location filename="../../TaskThickness.cpp" line="307"/>
-      <location filename="../../TaskThickness.cpp" line="367"/>
+      <location filename="../../TaskThickness.cpp" line="310"/>
+      <location filename="../../TaskThickness.cpp" line="370"/>
       <source>Thickness</source>
       <translation>Paramètres de l'évidemment</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="195"/>
+      <location filename="../../TaskThickness.cpp" line="198"/>
       <source>Select faces of the source object and press 'Done'</source>
       <translation>Sélectionner des faces de l'objet source et cliquer sur "Valider"</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="198"/>
+      <location filename="../../TaskThickness.cpp" line="201"/>
       <source>Done</source>
       <translation>Valider</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="272"/>
+      <location filename="../../TaskThickness.cpp" line="275"/>
       <source>Input error</source>
       <translation>Erreur de saisie</translation>
     </message>
@@ -5673,8 +5677,8 @@ Voulez-vous continuer ?</translation>
       <translation>Sélectionner 2 arêtes ou 2 polylignes</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="68"/>
-      <location filename="../../TaskAttacher.cpp" line="98"/>
+      <location filename="../../TaskAttacher.cpp" line="70"/>
+      <location filename="../../TaskAttacher.cpp" line="100"/>
       <source>No reference selected</source>
       <translation>Aucune référence sélectionnée</translation>
     </message>
@@ -7117,7 +7121,7 @@ Ancrage</translation>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="43"/>
       <source>Reverse the direction of the pattern.</source>
-      <translation type="unfinished">Reverse the direction of the pattern.</translation>
+      <translation>Inverser la direction du motif</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="61"/>
@@ -7143,7 +7147,7 @@ Ancrage</translation>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="134"/>
       <source>Add spacing to create spacing patterns.</source>
-      <translation type="unfinished">Add spacing to create spacing patterns.</translation>
+      <translation>Ajouter des espaces pour créer des motifs d'espacement</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="151"/>
@@ -7159,18 +7163,18 @@ Ancrage</translation>
       <location filename="../../PatternParametersWidget.cpp" line="320"/>
       <location filename="../../PatternParametersWidget.cpp" line="411"/>
       <source>Spacing %1</source>
-      <translation type="unfinished">Spacing %1</translation>
+      <translation>Espacement %1</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="336"/>
       <source>Remove this spacing definition.</source>
-      <translation type="unfinished">Remove this spacing definition.</translation>
+      <translation>Supprimer cette définition d'espacement</translation>
     </message>
   </context>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="229"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="243"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>L'affichage de l'aperçu a échoué : %1. Cela indique généralement une erreur au niveau du modèle.</translation>
     </message>

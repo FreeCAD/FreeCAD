@@ -328,7 +328,7 @@
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="181"/>
       <source>Store in VarSet...</source>
-      <translation type="unfinished">Store in VarSet...</translation>
+      <translation>Emmagatzemar a VarSet...</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="254"/>
@@ -338,7 +338,7 @@
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="278"/>
       <source>Variable Set</source>
-      <translation type="unfinished">Variable Set</translation>
+      <translation>Conjunt de Variables</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="295"/>
@@ -557,22 +557,22 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::DAG::Model</name>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="127"/>
+      <location filename="../DAGView/DAGModel.cpp" line="126"/>
       <source>Rename</source>
       <translation>Reanomena</translation>
     </message>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="128"/>
+      <location filename="../DAGView/DAGModel.cpp" line="127"/>
       <source>Renames the object</source>
       <translation>Reanomena l'objecte</translation>
     </message>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="135"/>
+      <location filename="../DAGView/DAGModel.cpp" line="134"/>
       <source>Finish Editing</source>
       <translation>Finalitza l'edició</translation>
     </message>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="136"/>
+      <location filename="../DAGView/DAGModel.cpp" line="135"/>
       <source>Finishes editing the object</source>
       <translation>Finalitza l'edició de l'objecte</translation>
     </message>
@@ -1345,72 +1345,72 @@ same time. The one with the highest priority will be triggered.</source>
   <context>
     <name>Gui::Dialog::DlgCustomToolbars</name>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="14"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="20"/>
       <source>Toolbars</source>
       <translation>Barres d'eines</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="57"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="63"/>
       <source>Category</source>
       <translation>Categoria</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="107"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="119"/>
       <source>Move Right</source>
       <translation>Mou a la dreta</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="110"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="122"/>
       <source>&lt;b&gt;Moves the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
       <translation>&lt;b&gt;Mou l'element seleccionat un nivell cap avall.&lt;/b&gt;&lt;p&gt;Això també canvia el nivell de l'element pare.&lt;/p&gt;</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="133"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="145"/>
       <source>Move Left</source>
       <translation>Moure a l'Esquerra</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="136"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="148"/>
       <source>&lt;b&gt;Moves the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
       <translation>&lt;b&gt;Mou l'element seleccionat un nivell cap amunt.&lt;/b&gt;&lt;p&gt;Això també canvia el nivell de l'element pare.&lt;/p&gt;</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="165"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="177"/>
       <source>Move Up</source>
       <translation>Mou amunt</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="168"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="180"/>
       <source>&lt;b&gt;Moves the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
       <translation>&lt;b&gt;Mou l'element seleccionat cap amunt.&lt;/b&gt;&lt;p&gt;L'element es mourà dins del nivell de jerarquia.&lt;/p&gt;</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="191"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="203"/>
       <source>Move Down</source>
       <translation>Mou avall</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="194"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="206"/>
       <source>&lt;b&gt;Moves the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
       <translation>&lt;b&gt;Mou l'element seleccionat cap avall.&lt;/b&gt;&lt;p&gt;L'element es mourà dins del nivell de jerarquia.&lt;/p&gt;</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="288"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="300"/>
       <source>New</source>
       <translation>Nou</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="295"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="307"/>
       <source>Rename</source>
       <translation>Reanomena</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="302"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="314"/>
       <source>Delete</source>
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="334"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="346"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Nota:&lt;/span&gt; Els canvis s'activaran la propera vegada que carregueu el banc de treball apropiat&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -6052,12 +6052,12 @@ Voleu desar tots els canvis?</translation>
       <translation>Macros</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1132"/>
+      <location filename="../Command.cpp" line="1130"/>
       <source>Macro file doesn't exist</source>
       <translation>El fitxer de macro no existeix.</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1133"/>
+      <location filename="../Command.cpp" line="1131"/>
       <source>No such macro file: '%1'</source>
       <translation>No existeix aquest fitxer de macro: '%1'</translation>
     </message>
@@ -6408,72 +6408,72 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="339"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="388"/>
       <source>Edit</source>
       <translation>Edita</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="350"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="399"/>
       <source>property</source>
       <translation>propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="756"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="827"/>
       <source>Copy</source>
       <translation>Copia</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="763"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="834"/>
       <source>Add Property</source>
       <translation>Afegir Propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="768"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="839"/>
       <source>Rename Property Group</source>
       <translation>Reanomena el nom del grup de propietats</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="776"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="847"/>
       <source>Rename Property</source>
       <translation>Reanomena la propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="793"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="864"/>
       <source>Delete Property</source>
       <translation>Eliminar Propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="950"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1021"/>
       <source>Rename property</source>
       <translation>Reanomena la propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="800"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="871"/>
       <source>Show Hidden</source>
       <translation>Mostrar ocults</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="806"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="877"/>
       <source>Auto-Expand</source>
       <translation>Auto expandir</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="821"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="892"/>
       <source>Expression</source>
       <translation>Expressió</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="951"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1022"/>
       <source>Property name</source>
       <translation>Nom de la propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="975"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1046"/>
       <source>Rename property group</source>
       <translation>Canvia el nom del grup de propietats</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="976"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1047"/>
       <source>Group name:</source>
       <translation>Nom del grup:</translation>
     </message>
@@ -7817,17 +7817,66 @@ Comproveu la vista d'informes per a veure més detalls.</translation>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="333"/>
+      <location filename="../StartupProcess.cpp" line="342"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation>Aquest sistema està executant OpenGL %1.%2. FreeCAD requereix OpenGL 2.0 o superior. Actualitzeu el controlador de gràfics i/o la targeta segons calgui.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="342"/>
+      <location filename="../StartupProcess.cpp" line="351"/>
       <source>Invalid OpenGL Version</source>
       <translation>Versió d'OpenGL invàlida</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="488"/>
+      <location filename="../StartupProcess.cpp" line="608"/>
+      <source>Welcome to %1 v%2.%3</source>
+      <translation type="unfinished">Welcome to %1 v%2.%3</translation>
+    </message>
+    <message>
+      <location filename="../StartupProcess.cpp" line="609"/>
+      <source>Welcome to %1 v%2.%3
+
+</source>
+      <translation type="unfinished">Welcome to %1 v%2.%3
+
+</translation>
+    </message>
+    <message>
+      <location filename="../StartupProcess.cpp" line="610"/>
+      <source>Configuration data and addons from previous program version found. Migrate the old configuration to this version?</source>
+      <translation type="unfinished">Configuration data and addons from previous program version found. Migrate the old configuration to this version?</translation>
+    </message>
+    <message>
+      <location filename="../StartupProcess.cpp" line="657"/>
+      <source>Migrating</source>
+      <translation type="unfinished">Migrating</translation>
+    </message>
+    <message>
+      <location filename="../StartupProcess.cpp" line="658"/>
+      <source>Migrating configuration data and addons...</source>
+      <translation type="unfinished">Migrating configuration data and addons...</translation>
+    </message>
+    <message>
+      <location filename="../StartupProcess.cpp" line="669"/>
+      <source>Migration complete. Restarting...</source>
+      <translation type="unfinished">Migration complete. Restarting...</translation>
+    </message>
+    <message>
+      <location filename="../StartupProcess.cpp" line="670"/>
+      <source>Restarting</source>
+      <translation type="unfinished">Restarting</translation>
+    </message>
+    <message>
+      <location filename="../StartupProcess.cpp" line="694"/>
+      <source>Migration failed</source>
+      <translation type="unfinished">Migration failed</translation>
+    </message>
+    <message>
+      <location filename="../StartupProcess.cpp" line="694"/>
+      <source>Migration failed. See the Report View for details.</source>
+      <translation type="unfinished">Migration failed. See the Report View for details.</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="486"/>
       <source>Exception</source>
       <translation>Excepció</translation>
     </message>
@@ -8414,12 +8463,12 @@ Trieu «Interromp» per a interrompre</translation>
       <translation>No es pot obrir el navegador del sistema.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2482"/>
+      <location filename="../View3DInventorViewer.cpp" line="2487"/>
       <source>Out of memory</source>
       <translation>No hi ha prou memòria.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2483"/>
+      <location filename="../View3DInventorViewer.cpp" line="2488"/>
       <source>Not enough memory available to display the data.</source>
       <translation>No hi ha prou memòria disponible per a mostrar les dades.</translation>
     </message>
@@ -8435,7 +8484,7 @@ Trieu «Interromp» per a interrompre</translation>
       <translation>No s'ha trobat el fitxer %1 ni en %2 ni en %3</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="1944"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="1946"/>
       <source>Navigation styles</source>
       <translation>Estils de navegació</translation>
     </message>
@@ -8484,11 +8533,6 @@ Trieu «Interromp» per a interrompre</translation>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="533"/>
       <source>Not allowed to delete system-wide macros</source>
       <translation>No es permet eliminar les macros del sistema</translation>
-    </message>
-    <message>
-      <location filename="../DAGView/DAGFilter.cpp" line="41"/>
-      <source>Origin</source>
-      <translation>Origen</translation>
     </message>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="180"/>
@@ -9595,7 +9639,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="2461"/>
       <source>Switches stereo viewing to interleaved columns</source>
-      <translation type="unfinished">Switches stereo viewing to interleaved columns</translation>
+      <translation>Canvia la vista estèreo a columnes intercalades</translation>
     </message>
   </context>
   <context>
@@ -9608,7 +9652,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="2433"/>
       <source>Switches stereo viewing to interleaved rows</source>
-      <translation type="unfinished">Switches stereo viewing to interleaved rows</translation>
+      <translation>Canvia la vista estèreo a files intercalades</translation>
     </message>
   </context>
   <context>
@@ -9621,7 +9665,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="2348"/>
       <source>Switches stereo viewing off</source>
-      <translation type="unfinished">Switches stereo viewing off</translation>
+      <translation>Canvia la vista estèreo a desactivada</translation>
     </message>
   </context>
   <context>
@@ -9634,7 +9678,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="1352"/>
       <source>Sets the camera to the left view</source>
-      <translation type="unfinished">Sets the camera to the left view</translation>
+      <translation>Estableix la càmera a la vista esquerra</translation>
     </message>
   </context>
   <context>
@@ -9647,7 +9691,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="1376"/>
       <source>Sets the camera to the rear view</source>
-      <translation type="unfinished">Sets the camera to the rear view</translation>
+      <translation>Estableix la càmera a la vista posterior</translation>
     </message>
   </context>
   <context>
@@ -9660,7 +9704,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="1400"/>
       <source>Sets the camera to the right view</source>
-      <translation type="unfinished">Sets the camera to the right view</translation>
+      <translation>Estableix la càmera a la vista dreta</translation>
     </message>
   </context>
   <context>
@@ -9673,7 +9717,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="1519"/>
       <source>Rotates the view by 90° counter-clockwise</source>
-      <translation type="unfinished">Rotates the view by 90° counter-clockwise</translation>
+      <translation>Gira la vista 90° en sentit antihorari</translation>
     </message>
   </context>
   <context>
@@ -9686,7 +9730,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="1424"/>
       <source>Sets the camera to the top view</source>
-      <translation type="unfinished">Sets the camera to the top view</translation>
+      <translation>Estableix la càmera a la vista superior</translation>
     </message>
   </context>
   <context>
@@ -9699,7 +9743,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="1496"/>
       <source>Sets the camera to the trimetric view</source>
-      <translation type="unfinished">Sets the camera to the trimetric view</translation>
+      <translation>Estableix la càmera a la vista trimètrica</translation>
     </message>
   </context>
   <context>
@@ -9712,7 +9756,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandStd.cpp" line="311"/>
       <source>Opens the documentation for the selected command</source>
-      <translation type="unfinished">Opens the documentation for the selected command</translation>
+      <translation>Obre la documentació de l'ordre seleccionada</translation>
     </message>
   </context>
   <context>
@@ -9720,7 +9764,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandWindow.cpp" line="459"/>
       <source>Activate Window</source>
-      <translation type="unfinished">Activate Window</translation>
+      <translation>Activa finestra</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="460"/>
@@ -9738,7 +9782,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandStd.cpp" line="76"/>
       <source>Switches between workbenches</source>
-      <translation type="unfinished">Switches between workbenches</translation>
+      <translation>Canvia entre bancs de treball</translation>
     </message>
   </context>
   <context>
@@ -9751,7 +9795,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="1727"/>
       <source>Displays the main window in fullscreen mode</source>
-      <translation type="unfinished">Displays the main window in fullscreen mode</translation>
+      <translation>Mostrar la finestra principal en mode de pantalla completa</translation>
     </message>
   </context>
   <context>
@@ -9759,7 +9803,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="132"/>
       <source>Orthographic View</source>
-      <translation type="unfinished">Orthographic View</translation>
+      <translation>Vista ortogràfica</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="133"/>
@@ -9772,7 +9816,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="182"/>
       <source>Perspective View</source>
-      <translation type="unfinished">Perspective View</translation>
+      <translation>Vista en perspectiva</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="183"/>
@@ -9790,7 +9834,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="3356"/>
       <source>Expands the active document and collapses all others</source>
-      <translation type="unfinished">Expands the active document and collapses all others</translation>
+      <translation>Expandeix el document actiu i contrau tots els altres</translation>
     </message>
   </context>
   <context>
@@ -9803,7 +9847,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="3449"/>
       <source>Preselects the object in 3D view when hovering the cursor over the tree item</source>
-      <translation type="unfinished">Preselects the object in 3D view when hovering the cursor over the tree item</translation>
+      <translation>Preselecciona l'objecte a la vista 3D quan passa el cursor per sobre de l'element de l'arbre</translation>
     </message>
   </context>
   <context>
@@ -9816,7 +9860,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="1669"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
-      <translation type="unfinished">Displays the active view either in fullscreen, undocked, or docked mode</translation>
+      <translation>Mostra la vista activa en pantalla completa, en mode desacoblat o acoblat</translation>
     </message>
   </context>
   <context>
@@ -9829,7 +9873,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="1759"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
-      <translation type="unfinished">Displays the active view either in fullscreen, undocked, or docked mode</translation>
+      <translation>Mostra la vista activa en pantalla completa, en mode desacoblat o acoblat</translation>
     </message>
   </context>
   <context>
@@ -9837,7 +9881,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="1924"/>
       <source>Save &amp;Image…</source>
-      <translation type="unfinished">Save &amp;Image…</translation>
+      <translation>Desa la &amp;imatge…</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1925"/>
@@ -9855,7 +9899,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="1698"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
-      <translation type="unfinished">Displays the active view either in fullscreen, undocked, or docked mode</translation>
+      <translation>Mostra la vista activa en pantalla completa, en mode desacoblat o acoblat</translation>
     </message>
   </context>
   <context>
@@ -9868,7 +9912,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="2540"/>
       <source>Increases the zoom factor by a fixed amount</source>
-      <translation type="unfinished">Increases the zoom factor by a fixed amount</translation>
+      <translation>Augmenta el factor de zoom en una quantitat fixa</translation>
     </message>
   </context>
   <context>
@@ -9881,7 +9925,7 @@ la còpia actual es perdrà.
     <message>
       <location filename="../CommandView.cpp" line="2569"/>
       <source>Decreases the zoom factor by a fixed amount</source>
-      <translation type="unfinished">Decreases the zoom factor by a fixed amount</translation>
+      <translation>Disminueix el factor de zoom en una quantitat fixa</translation>
     </message>
   </context>
   <context>
@@ -9892,9 +9936,7 @@ la còpia actual es perdrà.
 
 Continue?
 </source>
-      <translation type="unfinished">The following referencing objects might break.
-
-Continue?
+      <translation>Els següents objectes de referència es podrien trencar. Continuar?
 </translation>
     </message>
     <message>
@@ -10039,7 +10081,7 @@ Voleu desar el document ara?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1472"/>
       <source>Displays an eye icon in front of the tree view items, showing the items visibility status. When clicked the visibility is toggled</source>
-      <translation type="unfinished">Displays an eye icon in front of the tree view items, showing the items visibility status. When clicked the visibility is toggled</translation>
+      <translation>Mostra una icona d'un ull davant dels elements de la vista d'arbre, mostrant l'estat de visibilitat dels elements. Quan es fa clic, la visibilitat canvia</translation>
     </message>
   </context>
   <context>
@@ -10077,22 +10119,22 @@ Voleu desar el document ara?</translation>
     <message>
       <location filename="../Workbench.cpp" line="547"/>
       <source>Standard &amp;Views</source>
-      <translation type="unfinished">Standard &amp;Views</translation>
+      <translation>&amp;Vistes estàndard</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="548"/>
       <source>Individual Views</source>
-      <translation type="unfinished">Individual Views</translation>
+      <translation>Vistes individuals</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="557"/>
       <source>&amp;Online Help</source>
-      <translation type="unfinished">&amp;Online Help</translation>
+      <translation>&amp;Ajuda en línia</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="565"/>
       <source>Link Actions</source>
-      <translation type="unfinished">Link Actions</translation>
+      <translation>Enllaça accions</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="550"/>
@@ -10214,41 +10256,41 @@ Voleu desar el document ara?</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="23"/>
       <source>Enable Notification Area</source>
-      <translation type="unfinished">Enable Notification Area</translation>
+      <translation>Activa l'àrea de notificació</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="32"/>
       <source>Enables non-intrusive pop-up notifications above the status bar notification area. Pop-up notifications can be manually dismissed by clicking on them, and also automatically dismissed by specifying a maximum and minimum duration for them to be displayed.
 
 Additionally, pop-up notifications can be disabled. In this case the user can still use the notification area as a quick-access location to view notifications, without the distracton of an additional pop-up.</source>
-      <translation type="unfinished">Enables non-intrusive pop-up notifications above the status bar notification area. Pop-up notifications can be manually dismissed by clicking on them, and also automatically dismissed by specifying a maximum and minimum duration for them to be displayed.
+      <translation>Habilita notificacions emergents no intrusives a sobre de l'àrea de notificacions de la barra d'estat. Les notificacions emergents es poden tancar manualment fent-hi clic i també es poden tancar automàticament especificant una durada màxima i mínima per a la seva visualització.
 
-Additionally, pop-up notifications can be disabled. In this case the user can still use the notification area as a quick-access location to view notifications, without the distracton of an additional pop-up.</translation>
+A més, les notificacions emergents es poden desactivar. En aquest cas, l'usuari encara pot utilitzar l'àrea de notificacions com a ubicació d'accés ràpid per veure les notificacions, sense la distracció d'una finestra emergent addicional.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="37"/>
       <source>Enable Pop-Up Notifications</source>
-      <translation type="unfinished">Enable Pop-Up Notifications</translation>
+      <translation>Activar notificacions emergents</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="49"/>
       <source>Minimum duration</source>
-      <translation type="unfinished">Minimum duration</translation>
+      <translation>Durada mínima</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="59"/>
       <source>Maximum duration</source>
-      <translation type="unfinished">Maximum duration</translation>
+      <translation>Durada màxima</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="110"/>
       <source>Maximum concurrent notification count</source>
-      <translation type="unfinished">Maximum concurrent notification count</translation>
+      <translation>Nombre màxim de notificacions simultànies</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="133"/>
       <source>Notification bubble width</source>
-      <translation type="unfinished">Notification bubble width</translation>
+      <translation>Ample de la pantalla de notificació</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="140"/>
@@ -10283,7 +10325,7 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="212"/>
       <source>Additional Data Sources</source>
-      <translation type="unfinished">Additional Data Sources</translation>
+      <translation>Orígens de dades addicionals</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="218"/>
@@ -10303,12 +10345,12 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="262"/>
       <source>Notifications List</source>
-      <translation type="unfinished">Notifications List</translation>
+      <translation>Llista de notificacions</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="287"/>
       <source>Maximum notification count</source>
-      <translation type="unfinished">Maximum notification count</translation>
+      <translation>Nombre màxim de notificacions</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="268"/>
@@ -10357,55 +10399,54 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="38"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop or sort them by right-clicking on any workbench and select &lt;span style="  font-weight:600; font-style:italic;"&gt;Sort alphabetically&lt;/span&gt;. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
 Currently installed workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop or sort them by right-clicking on any workbench and select &lt;span style="  font-weight:600; font-style:italic;"&gt;Sort alphabetically&lt;/span&gt;. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
-Currently installed workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Podeu reorganitzar els bancs de treball arrossegant-los i deixant-los anar o ordenant-los fent clic dret sobre qualsevol banc de treball i seleccionar &lt;span style="  font-weight:600; font-style:italic;"&gt;Ordenar Alfabèticament&lt;/span&gt;. Es poden afegir bancs addicionals mitjançant el manegador de complements (Addon).&lt;/p&gt;&lt;p&gt;
+Actualment, es disposa dels bancs de treball següents:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="55"/>
       <source>Selectors</source>
-      <translation type="unfinished">Selectors</translation>
+      <translation>Selectors</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="78"/>
       <source>Workbench selector items style</source>
-      <translation type="unfinished">Workbench selector items style</translation>
+      <translation>Tipus del selector del banc de treball</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="85"/>
       <source>Customizes how the items are displayed</source>
-      <translation type="unfinished">Customizes how the items are displayed</translation>
+      <translation>Personalitza com es mostren els elements</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="111"/>
       <source>Workbench selector type</source>
-      <translation type="unfinished">Workbench selector type</translation>
+      <translation>Tipus del selector del banc de treball</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="118"/>
       <source>Choose the workbench selector widget type (restart required)</source>
-      <translation type="unfinished">Choose the workbench selector widget type (restart required)</translation>
+      <translation>Escull el tipus de giny del selector del banc de treball (cal reiniciar)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="130"/>
       <source>Startup</source>
-      <translation type="unfinished">Startup</translation>
+      <translation>Arrencar</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="153"/>
       <source>Default workbench</source>
-      <translation type="unfinished">Default workbench</translation>
+      <translation>Banc de treball per defecte</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="160"/>
       <source>Changes which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation type="unfinished">Changes which workbench will be activated and shown
-after FreeCAD launches</translation>
+      <translation>Canvia quin banc de treball s'activarà i es mostrarà després de l'inici de FreeCAD</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="170"/>
       <source>Remembers which workbench is active for each tab of the viewport</source>
-      <translation type="unfinished">Remembers which workbench is active for each tab of the viewport</translation>
+      <translation>Recorda quin banc de treball està actiu per a cada pestanya de l'àrea de visualització</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="173"/>
@@ -10418,7 +10459,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="14"/>
       <source>Choose Orientation</source>
-      <translation type="unfinished">Choose Orientation</translation>
+      <translation>Escollir orientació</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="20"/>
@@ -11492,22 +11533,22 @@ de la consola Python al tauler de Vista d'informes</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="250"/>
       <source>Vertical angle</source>
-      <translation type="unfinished">Vertical angle</translation>
+      <translation>Angle vertical</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="274"/>
       <source>Horizontal angle</source>
-      <translation type="unfinished">Horizontal angle</translation>
+      <translation>Angle horitzontal</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="339"/>
       <source>Fill light</source>
-      <translation type="unfinished">Fill light</translation>
+      <translation>Llum d'emplenament</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="438"/>
       <source>Ambient light</source>
-      <translation type="unfinished">Ambient light</translation>
+      <translation>Llum ambient</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="145"/>
@@ -11550,12 +11591,12 @@ Si està desactivat, es mostrarà fent clic al ratolí.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="317"/>
       <source>Overlay layout delay</source>
-      <translation type="unfinished">Overlay layout delay</translation>
+      <translation>Retard del disseny de superposició</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="457"/>
       <source>Automatically passes mouse wheel events through the transparent areas of an overlay panel</source>
-      <translation type="unfinished">Automatically passes mouse wheel events through the transparent areas of an overlay panel</translation>
+      <translation>Passa automàticament els esdeveniments de la roda del ratolí a través de les àrees transparents d'un panell superposat</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="486"/>
@@ -11744,7 +11785,7 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1769"/>
       <source>Shows the property view, which displays the properties of the selected object.</source>
-      <translation type="unfinished">Shows the property view, which displays the properties of the selected object.</translation>
+      <translation>Mostra la vista de propietats, que mostra les propietats de l'objecte seleccionat.</translation>
     </message>
   </context>
   <context>
@@ -11752,7 +11793,7 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../CommandFeat.cpp" line="162"/>
       <source>Toggle Freeze</source>
-      <translation type="unfinished">Toggle Freeze</translation>
+      <translation>Congela la commutació</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="164"/>
@@ -11773,7 +11814,7 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="914"/>
       <source>&amp;Reload Stylesheet</source>
-      <translation type="unfinished">&amp;Reload Stylesheet</translation>
+      <translation>&amp;Recarrega el full d'estils</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="915"/>
@@ -11786,7 +11827,7 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../Dialogs/DlgAddPropertyVarSet.ui" line="14"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>Afegir Propietat</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddPropertyVarSet.ui" line="20"/>
@@ -11821,27 +11862,27 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="450"/>
       <source>Add a Property to %1</source>
-      <translation type="unfinished">Add a Property to %1</translation>
+      <translation>Afegeix una propietat a %1</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="521"/>
       <source>Invalid group name</source>
-      <translation type="unfinished">Invalid group name</translation>
+      <translation>El nom de grup no és vàlid</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="524"/>
       <source>Invalid type name</source>
-      <translation type="unfinished">Invalid type name</translation>
+      <translation>El tipus de fitxer no és vàlid</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="530"/>
       <source>Invalid property name '%1'</source>
-      <translation type="unfinished">Invalid property name '%1'</translation>
+      <translation>El nom de propietat '%1' no és vàlid</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="533"/>
       <source>Property '%1' already exists</source>
-      <translation type="unfinished">Property '%1' already exists</translation>
+      <translation>La propietat '%1' ja existeix en</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="536"/>
@@ -12051,7 +12092,7 @@ la regió no són opacs.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="480"/>
       <source>Automatically passes mouse wheel events through the transparent areas of an overlay panel</source>
-      <translation type="unfinished">Automatically passes mouse wheel events through the transparent areas of an overlay panel</translation>
+      <translation>Passa automàticament els esdeveniments de la roda del ratolí a través de les àrees transparents d'un panell superposat</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="483"/>
@@ -13038,12 +13079,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="210"/>
       <source>Make Link</source>
-      <translation type="unfinished">Make Link</translation>
+      <translation>Crear enllaç</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="211"/>
       <source>A link is an object that references another object, either within the same or in another document. Unlike clones, links reference the original shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</source>
-      <translation type="unfinished">A link is an object that references another object, either within the same or in another document. Unlike clones, links reference the original shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</translation>
+      <translation>Un enllaç és un objecte que fa referència o enllaça a un altre objecte del mateix document o d'un altre document. A diferència dels clons, els enllaços fan referència directament a la forma original, fent-los més eficients en la memòria, cosa que ajuda a crear muntatges complexos.</translation>
     </message>
   </context>
   <context>
@@ -13051,12 +13092,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="275"/>
       <source>Make Sub-Link</source>
-      <translation type="unfinished">Make Sub-Link</translation>
+      <translation>Crear un subenllaç</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="276"/>
       <source>Creates a sub-object or sub-element link</source>
-      <translation type="unfinished">Creates a sub-object or sub-element link</translation>
+      <translation>Crea un enllaç d'un subobjecte o subelement</translation>
     </message>
   </context>
   <context>
@@ -13064,12 +13105,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="496"/>
       <source>Replace With Link</source>
-      <translation type="unfinished">Replace With Link</translation>
+      <translation>Substitueix amb un enllaç</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="497"/>
       <source>Replaces the selected objects with links</source>
-      <translation type="unfinished">Replaces the selected objects with links</translation>
+      <translation>Substitueix els objectes seleccionats amb enllaços</translation>
     </message>
   </context>
   <context>
@@ -13077,12 +13118,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="544"/>
       <source>Import Links</source>
-      <translation type="unfinished">Import Links</translation>
+      <translation>Importa enllaços</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="545"/>
       <source>Imports selected external links</source>
-      <translation type="unfinished">Imports selected external links</translation>
+      <translation>Importa els enllaços externs seleccionats</translation>
     </message>
   </context>
   <context>
@@ -13090,12 +13131,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="608"/>
       <source>Import All Links</source>
-      <translation type="unfinished">Import All Links</translation>
+      <translation>Importa tots els enllaços</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="609"/>
       <source>Imports all links of the active document</source>
-      <translation type="unfinished">Imports all links of the active document</translation>
+      <translation>Importa tots els enllaços del document actiu</translation>
     </message>
   </context>
   <context>
@@ -13103,12 +13144,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="649"/>
       <source>&amp;Go to Linked Object</source>
-      <translation type="unfinished">&amp;Go to Linked Object</translation>
+      <translation>&amp;Ves a l'objecte enllaçat</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="650"/>
       <source>Selects the linked object and switches to its original document</source>
-      <translation type="unfinished">Selects the linked object and switches to its original document</translation>
+      <translation>Selecciona l'objecte enllaçat i canvia al seu document original</translation>
     </message>
   </context>
   <context>
@@ -13116,12 +13157,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="777"/>
       <source>Go to &amp;Deepest Linked Object</source>
-      <translation type="unfinished">Go to &amp;Deepest Linked Object</translation>
+      <translation>Ves a l’objecte enllaçat més profun&amp;d</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="778"/>
       <source>Selects the deepest linked object and switches to its original document</source>
-      <translation type="unfinished">Selects the deepest linked object and switches to its original document</translation>
+      <translation>Selecciona l'objecte enllaçat més profund i canvia al seu document original</translation>
     </message>
   </context>
   <context>
@@ -13129,12 +13170,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="812"/>
       <source>Select &amp;All Links</source>
-      <translation type="unfinished">Select &amp;All Links</translation>
+      <translation>Seleccion&amp;a tots els enllaços</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="813"/>
       <source>Selects all links to the current selected object</source>
-      <translation type="unfinished">Selects all links to the current selected object</translation>
+      <translation>Selecciona tots els enllaços a l'objecte seleccionat actualment</translation>
     </message>
   </context>
   <context>
@@ -13142,12 +13183,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="878"/>
       <source>Link Actions</source>
-      <translation type="unfinished">Link Actions</translation>
+      <translation>Enllaça accions</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="879"/>
       <source>Commands that operate on link objects</source>
-      <translation type="unfinished">Commands that operate on link objects</translation>
+      <translation>Ordres que operen sobre objectes d'enllaç</translation>
     </message>
   </context>
   <context>
@@ -13155,12 +13196,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="97"/>
       <source>Ma&amp;cros</source>
-      <translation type="unfinished">Ma&amp;cros</translation>
+      <translation>Ma&amp;cros</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="99"/>
       <source>Opens a dialog to execute a recorded macro</source>
-      <translation type="unfinished">Opens a dialog to execute a recorded macro</translation>
+      <translation>Obri un quadre de diàleg per a executar una macro gravada</translation>
     </message>
   </context>
   <context>
@@ -13168,12 +13209,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="127"/>
       <source>&amp;Execute Macro</source>
-      <translation type="unfinished">&amp;Execute Macro</translation>
+      <translation>&amp;Executa la macro</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="128"/>
       <source>Executes the macro in the editor</source>
-      <translation type="unfinished">Executes the macro in the editor</translation>
+      <translation>Executa la macro en l'editor</translation>
     </message>
   </context>
   <context>
@@ -13181,12 +13222,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="153"/>
       <source>&amp;Attach to Remote Debugger</source>
-      <translation type="unfinished">&amp;Attach to Remote Debugger</translation>
+      <translation>&amp;Adjunta al depurador remot</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="155"/>
       <source>Attaches to a remotely running debugger</source>
-      <translation type="unfinished">Attaches to a remotely running debugger</translation>
+      <translation>Adjunta a un depurador en execució de forma remota</translation>
     </message>
   </context>
   <context>
@@ -13194,12 +13235,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="179"/>
       <source>&amp;Debug Macro</source>
-      <translation type="unfinished">&amp;Debug Macro</translation>
+      <translation>&amp;Depura la macro</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="180"/>
       <source>Starts the debugging of macros</source>
-      <translation type="unfinished">Starts the debugging of macros</translation>
+      <translation>Inicia la depuració de macros</translation>
     </message>
   </context>
   <context>
@@ -13207,12 +13248,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="209"/>
       <source>&amp;Stop Debugging</source>
-      <translation type="unfinished">&amp;Stop Debugging</translation>
+      <translation>&amp;Atura la depuració</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="210"/>
       <source>Stops the debugging of macros</source>
-      <translation type="unfinished">Stops the debugging of macros</translation>
+      <translation>Atura la depuració de macros</translation>
     </message>
   </context>
   <context>
@@ -13220,12 +13261,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="236"/>
       <source>Step &amp;Over</source>
-      <translation type="unfinished">Step &amp;Over</translation>
+      <translation>Pas per s&amp;obre</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="237"/>
       <source>Steps to the next line in this file</source>
-      <translation type="unfinished">Steps to the next line in this file</translation>
+      <translation>Salta a la següent línia d'aquest fitxer</translation>
     </message>
   </context>
   <context>
@@ -13233,12 +13274,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="263"/>
       <source>Step &amp;Into</source>
-      <translation type="unfinished">Step &amp;Into</translation>
+      <translation>Passa d&amp;ins</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="264"/>
       <source>Steps to the next line executed</source>
-      <translation type="unfinished">Steps to the next line executed</translation>
+      <translation>Salta a la següent línia executada</translation>
     </message>
   </context>
   <context>
@@ -13246,12 +13287,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="290"/>
       <source>Toggle &amp;Breakpoint</source>
-      <translation type="unfinished">Toggle &amp;Breakpoint</translation>
+      <translation>Co&amp;mmuta el punt d'interrupció</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="291"/>
       <source>Adds or removes a breakpoint at this position</source>
-      <translation type="unfinished">Adds or removes a breakpoint at this position</translation>
+      <translation>Afegeix o elimina un punt d'interrupció (breakpoint) en aquesta posició</translation>
     </message>
   </context>
   <context>
@@ -13259,7 +13300,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="316"/>
       <source>Open Macro Folder</source>
-      <translation type="unfinished">Open Macro Folder</translation>
+      <translation>Obre la carpeta de macros</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="317"/>
@@ -13303,7 +13344,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="409"/>
       <source>Opens a dialog to edit the preferences</source>
-      <translation type="unfinished">Opens a dialog to edit the preferences</translation>
+      <translation>Obri un quadre de diàleg per a editar les preferències</translation>
     </message>
   </context>
   <context>
@@ -13311,12 +13352,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="452"/>
       <source>Cu&amp;stomize…</source>
-      <translation type="unfinished">Cu&amp;stomize…</translation>
+      <translation>Per&amp;sonalitza…</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="453"/>
       <source>Opens a dialog to edit toolbars, shortcuts, and macros</source>
-      <translation type="unfinished">Opens a dialog to edit toolbars, shortcuts, and macros</translation>
+      <translation>Obre un diàleg per editar barres d'eines, dreceres i macros</translation>
     </message>
   </context>
   <context>
@@ -13324,12 +13365,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="479"/>
       <source>Command &amp;Line</source>
-      <translation type="unfinished">Command &amp;Line</translation>
+      <translation>&amp;Línia d’ordres</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="481"/>
       <source>Opens a command line interface in the console</source>
-      <translation type="unfinished">Opens a command line interface in the console</translation>
+      <translation>Obre una interfície de línia d'ordres a la consola</translation>
     </message>
   </context>
   <context>
@@ -13337,12 +13378,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="580"/>
       <source>Donate to FreeCA&amp;D</source>
-      <translation type="unfinished">Donate to FreeCA&amp;D</translation>
+      <translation>Dona a FreeCA&amp;D</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="581"/>
       <source>Support the FreeCAD development</source>
-      <translation type="unfinished">Support the FreeCAD development</translation>
+      <translation>Contribueix al desenvolupament de FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -13350,12 +13391,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="609"/>
       <source>Developers Handbook</source>
-      <translation type="unfinished">Developers Handbook</translation>
+      <translation>Manual per a desenvolupadors</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="611"/>
       <source>Handbook about FreeCAD development</source>
-      <translation type="unfinished">Handbook about FreeCAD development</translation>
+      <translation>Manual sobre el desenvolupament de FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -13363,12 +13404,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="752"/>
       <source>Te&amp;xt Document</source>
-      <translation type="unfinished">Te&amp;xt Document</translation>
+      <translation>Document de te&amp;xt</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="753"/>
       <source>Adds a text document to the active document</source>
-      <translation type="unfinished">Adds a text document to the active document</translation>
+      <translation>Afegeix un document de text al document actiu</translation>
     </message>
   </context>
   <context>
@@ -13376,12 +13417,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="785"/>
       <source>&amp;Units Converter</source>
-      <translation type="unfinished">&amp;Units Converter</translation>
+      <translation>&amp;Convertidor d'unitats</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="787"/>
       <source>Starts the units converter</source>
-      <translation type="unfinished">Starts the units converter</translation>
+      <translation>Inicia el convertidor d'unitats</translation>
     </message>
   </context>
   <context>
@@ -13389,12 +13430,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="822"/>
       <source>Edit &amp;Mode</source>
-      <translation type="unfinished">Edit &amp;Mode</translation>
+      <translation>&amp;Mode d'edició</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="823"/>
       <source>Defines behavior when editing an object from the tree view</source>
-      <translation type="unfinished">Defines behavior when editing an object from the tree view</translation>
+      <translation>Defineix el comportament en editar un objecte de l'arbre</translation>
     </message>
   </context>
   <context>
@@ -13407,7 +13448,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="53"/>
       <source>Creates a part, which is a general-purpose container to group objects so they act as a unit in the 3D view. It is intended to arrange objects that have a part TopoShape, like part primitives, Part Design bodies, and other parts.</source>
-      <translation type="unfinished">Creates a part, which is a general-purpose container to group objects so they act as a unit in the 3D view. It is intended to arrange objects that have a part TopoShape, like part primitives, Part Design bodies, and other parts.</translation>
+      <translation>Crea una peça, que és un contenidor d'ús general per agrupar objectes perquè actuïn com una unitat a la vista 3D. Està pensat per organitzar objectes que tenen una peça TopoShape, com ara primitives de peça, cossos de Part Design i altres peces.</translation>
     </message>
   </context>
   <context>
@@ -13428,7 +13469,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="169"/>
       <source>Variable Set</source>
-      <translation type="unfinished">Variable Set</translation>
+      <translation>Conjunt de Variables</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="170"/>
@@ -13649,7 +13690,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="1629"/>
       <source>Standard &amp;Views</source>
-      <translation type="unfinished">Standard &amp;Views</translation>
+      <translation>&amp;Vistes estàndard</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1630"/>
@@ -13667,7 +13708,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="1789"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
-      <translation type="unfinished">Displays the active view either in fullscreen, undocked, or docked mode</translation>
+      <translation>Mostra la vista activa en pantalla completa, en mode desacoblat o acoblat</translation>
     </message>
   </context>
   <context>
@@ -13766,12 +13807,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2489"/>
       <source>Issue Camera &amp;Position</source>
-      <translation type="unfinished">Issue Camera &amp;Position</translation>
+      <translation>&amp;Publica la posició de la càmera</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2490"/>
       <source>Issues the camera position to the console and to a macro, to easily recall this position</source>
-      <translation type="unfinished">Issues the camera position to the console and to a macro, to easily recall this position</translation>
+      <translation>Publica la posició de la càmera en la consola i en una macro per tornar a cridar fàcilment aquesta posició</translation>
     </message>
   </context>
   <context>
@@ -13779,12 +13820,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2711"/>
       <source>&amp;Box Zoom</source>
-      <translation type="unfinished">&amp;Box Zoom</translation>
+      <translation>&amp;Caixa de zoom</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2712"/>
       <source>Activates the box zoom tool</source>
-      <translation type="unfinished">Activates the box zoom tool</translation>
+      <translation>Activa l'eina de la caixa de zoom</translation>
     </message>
   </context>
   <context>
@@ -13792,12 +13833,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2745"/>
       <source>&amp;Box Selection</source>
-      <translation type="unfinished">&amp;Box Selection</translation>
+      <translation>&amp;Quadre de selecció</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2746"/>
       <source>Activates the box selection tool</source>
-      <translation type="unfinished">Activates the box selection tool</translation>
+      <translation>Activa l'eina de selecció de quadres</translation>
     </message>
   </context>
   <context>
@@ -13805,12 +13846,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2971"/>
       <source>Bo&amp;x Element Selection</source>
-      <translation type="unfinished">Bo&amp;x Element Selection</translation>
+      <translation>Selecció d'elements de cai&amp;xa</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2972"/>
       <source>Activates box element selection</source>
-      <translation type="unfinished">Activates box element selection</translation>
+      <translation>Activa la selecció d'elements de la caixa</translation>
     </message>
   </context>
   <context>
@@ -13818,12 +13859,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3016"/>
       <source>&amp;Go to Selection</source>
-      <translation type="unfinished">&amp;Go to Selection</translation>
+      <translation>&amp;Anar a la selecció</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3017"/>
       <source>Scrolls to the first selected item</source>
-      <translation type="unfinished">Scrolls to the first selected item</translation>
+      <translation>Desplaça fins al primer element seleccionat</translation>
     </message>
   </context>
   <context>
@@ -13831,12 +13872,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3041"/>
       <source>Collapse Selected Items</source>
-      <translation type="unfinished">Collapse Selected Items</translation>
+      <translation>Contrau els elements seleccionats</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3042"/>
       <source>Collapses the currently selected tree items</source>
-      <translation type="unfinished">Collapses the currently selected tree items</translation>
+      <translation>Contrau els elements d'arbre seleccionats actualment</translation>
     </message>
   </context>
   <context>
@@ -13844,12 +13885,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3066"/>
       <source>Expand Selected Items</source>
-      <translation type="unfinished">Expand Selected Items</translation>
+      <translation>Expandeix els elements seleccionats</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3067"/>
       <source>Expands the currently selected tree items</source>
-      <translation type="unfinished">Expands the currently selected tree items</translation>
+      <translation>Expandeix els elements d'arbre seleccionats actualment</translation>
     </message>
   </context>
   <context>
@@ -13857,12 +13898,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3091"/>
       <source>Select All Instances</source>
-      <translation type="unfinished">Select All Instances</translation>
+      <translation>Selecciona totes les instàncies</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3092"/>
       <source>Selects all instances of the currently selected object</source>
-      <translation type="unfinished">Selects all instances of the currently selected object</translation>
+      <translation>Selecciona totes les instàncies de l'objecte seleccionat actualment</translation>
     </message>
   </context>
   <context>
@@ -13870,12 +13911,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3144"/>
       <source>Scene I&amp;nspector</source>
-      <translation type="unfinished">Scene I&amp;nspector</translation>
+      <translation>I&amp;nspector d'escena</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3145"/>
       <source>Opens the scene inspector</source>
-      <translation type="unfinished">Opens the scene inspector</translation>
+      <translation>Obre l'inspector d'escenes</translation>
     </message>
   </context>
   <context>
@@ -13883,12 +13924,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3177"/>
       <source>Text&amp;ure Mapping</source>
-      <translation type="unfinished">Text&amp;ure Mapping</translation>
+      <translation>Mapatge de text&amp;ura</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3178"/>
       <source>Maps textures to shapes</source>
-      <translation type="unfinished">Maps textures to shapes</translation>
+      <translation>Mapa textures a formes</translation>
     </message>
   </context>
   <context>
@@ -13896,12 +13937,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3204"/>
       <source>View &amp;Turntable</source>
-      <translation type="unfinished">View &amp;Turntable</translation>
+      <translation>Visualitza la plataforma gira&amp;tòria</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3205"/>
       <source>Opens a turntable view</source>
-      <translation type="unfinished">Opens a turntable view</translation>
+      <translation>Obre una vista de plataforma giratòria</translation>
     </message>
   </context>
   <context>
@@ -13909,12 +13950,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3233"/>
       <source>Selection &amp;Back</source>
-      <translation type="unfinished">Selection &amp;Back</translation>
+      <translation>Selecció prèvia</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3235"/>
       <source>Restores the previous tree view selection. Only works if tree RecordSelection mode is switched on.</source>
-      <translation type="unfinished">Restores the previous tree view selection. Only works if tree RecordSelection mode is switched on.</translation>
+      <translation>Restaura la selecció anterior de vista d'arbre. Només funciona si el mode Tree RecordSelection està activat.</translation>
     </message>
   </context>
   <context>
@@ -13922,7 +13963,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3267"/>
       <source>Selection &amp;Forward</source>
-      <translation type="unfinished">Selection &amp;Forward</translation>
+      <translation>Selecció e&amp;ndavant</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3269"/>

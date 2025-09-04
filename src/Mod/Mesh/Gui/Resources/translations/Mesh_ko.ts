@@ -1555,38 +1555,38 @@ to a smoother appearance.
       <translation>정면</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
-      <source>Frontal Quad</source>
-      <translation>정면 사각형</translation>
-    </message>
-    <message>
       <location filename="../../RemeshGmsh.cpp" line="105"/>
       <source>Parallelograms</source>
       <translation>평행사변형</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="106"/>
-      <source>Quasi-structured Quad</source>
-      <translation type="unfinished">Quasi-structured Quad</translation>
+      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <source>Frontal quad</source>
+      <translation type="unfinished">Frontal quad</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="197"/>
-      <location filename="../../RemeshGmsh.cpp" line="255"/>
+      <location filename="../../RemeshGmsh.cpp" line="106"/>
+      <source>Quasi-structured quad</source>
+      <translation type="unfinished">Quasi-structured quad</translation>
+    </message>
+    <message>
+      <location filename="../../RemeshGmsh.cpp" line="200"/>
+      <location filename="../../RemeshGmsh.cpp" line="258"/>
       <source>Time:</source>
       <translation>시간:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="243"/>
+      <location filename="../../RemeshGmsh.cpp" line="246"/>
       <source>Running Gmsh…</source>
       <translation type="unfinished">Running Gmsh…</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="266"/>
+      <location filename="../../RemeshGmsh.cpp" line="269"/>
       <source>Failed to start</source>
       <translation>시작에 실패함</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="273"/>
+      <location filename="../../RemeshGmsh.cpp" line="276"/>
       <source>Error</source>
       <translation>오류</translation>
     </message>
@@ -1713,17 +1713,22 @@ to a smoother appearance.
       <translation>경로</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.ui" line="154"/>
+      <location filename="../../RemeshGmsh.ui" line="141"/>
+      <source>Leave empty to use default gmsh executable</source>
+      <translation type="unfinished">Leave empty to use default gmsh executable</translation>
+    </message>
+    <message>
+      <location filename="../../RemeshGmsh.ui" line="157"/>
       <source>Kill</source>
       <translation>종료</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.ui" line="181"/>
+      <location filename="../../RemeshGmsh.ui" line="184"/>
       <source>Time</source>
       <translation type="unfinished">Time</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.ui" line="188"/>
+      <location filename="../../RemeshGmsh.ui" line="191"/>
       <source>Clear</source>
       <translation>지우기</translation>
     </message>

@@ -14,7 +14,7 @@ które odnoszą się do tego samego obiektu konfigurowalnego</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="456"/>
+      <location filename="../../Application.cpp" line="458"/>
       <source>Unnamed</source>
       <translation>Nienazwany</translation>
     </message>
@@ -44,37 +44,37 @@ Użytkownik powinien następnie kliknąć przycisk Odśwież na głównym pasku 
   <context>
     <name>App::LocalCoordinateSystem</name>
     <message>
-      <location filename="../../Datums.cpp" line="250"/>
+      <location filename="../../Datums.cpp" line="263"/>
       <source>X-axis</source>
       <translation>Oś X</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="251"/>
+      <location filename="../../Datums.cpp" line="264"/>
       <source>Y-axis</source>
       <translation>Oś Y</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="252"/>
+      <location filename="../../Datums.cpp" line="265"/>
       <source>Z-axis</source>
       <translation>Oś Z</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="253"/>
+      <location filename="../../Datums.cpp" line="266"/>
       <source>XY-plane</source>
       <translation>Płaszczyzna XY</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="254"/>
+      <location filename="../../Datums.cpp" line="267"/>
       <source>XZ-plane</source>
       <translation>Płaszczyzna XZ</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="255"/>
+      <location filename="../../Datums.cpp" line="268"/>
       <source>YZ-plane</source>
       <translation>Płaszczyzna YZ</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="256"/>
+      <location filename="../../Datums.cpp" line="269"/>
       <source>Origin</source>
       <translation>Odniesienie położenia</translation>
     </message>

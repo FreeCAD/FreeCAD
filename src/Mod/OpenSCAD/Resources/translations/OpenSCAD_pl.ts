@@ -109,7 +109,7 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="74"/>
       <source>OpenSCAD Import</source>
-      <translation type="unfinished">OpenSCAD Import</translation>
+      <translation>Import z OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
@@ -119,12 +119,12 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
       <source>Send to OpenSCAD via</source>
-      <translation type="unfinished">Send to OpenSCAD via</translation>
+      <translation>Wyślij do OpenSCAD przez</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="261"/>
       <source>OpenSCAD Export</source>
-      <translation type="unfinished">OpenSCAD Export</translation>
+      <translation>Eksport do OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="331"/>
@@ -228,32 +228,32 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../../OpenSCADCommands.py" line="139"/>
       <source>Converts edges to faces</source>
-      <translation type="unfinished">Converts edges to faces</translation>
+      <translation>Przekształca krawędzie na ściany</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="301"/>
       <source>Select 3 objects first</source>
-      <translation type="unfinished">Select 3 objects first</translation>
+      <translation>Najpierw wybierz 3 obiekty</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="335"/>
       <source>Clear Code</source>
-      <translation type="unfinished">Clear Code</translation>
+      <translation>Czyść kod</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="336"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>Otwórz…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Save…</source>
-      <translation type="unfinished">Save…</translation>
+      <translation>Zapisz…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>
       <source>as mesh</source>
-      <translation type="unfinished">as mesh</translation>
+      <translation>jako siatka</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="427"/>
@@ -335,7 +335,7 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../../OpenSCADCommands.py" line="119"/>
       <source>Colors shapes by validity and type</source>
-      <translation type="unfinished">Colors shapes by validity and type</translation>
+      <translation>Koloruje kształty według prawidłowości i typu</translation>
     </message>
   </context>
   <context>
@@ -348,7 +348,7 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../../OpenSCADCommands.py" line="159"/>
       <source>Creates a refined shape</source>
-      <translation type="unfinished">Creates a refined shape</translation>
+      <translation>Tworzy udoskonalony kształt</translation>
     </message>
   </context>
   <context>
@@ -387,7 +387,7 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>
       <source>Replaces an object in the Tree View</source>
-      <translation type="unfinished">Replaces an object in the Tree View</translation>
+      <translation>Zastępuje obiekt w widoku drzewa</translation>
     </message>
   </context>
   <context>
@@ -395,12 +395,12 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../../OpenSCADCommands.py" line="317"/>
       <source>Remove Objects and Children</source>
-      <translation type="unfinished">Remove Objects and Children</translation>
+      <translation>Usuń obiekty i podrzędne</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="320"/>
       <source>Removes the selected objects and all children that are not referenced by other objects</source>
-      <translation type="unfinished">Removes the selected objects and all children that are not referenced by other objects</translation>
+      <translation>Usuwa wybrane obiekty wraz ze wszystkimi obiektami podrzędnymi, do których nie odnoszą się inne obiekty</translation>
     </message>
   </context>
   <context>
@@ -413,7 +413,7 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../../OpenSCADCommands.py" line="568"/>
       <source>Creates a hull</source>
-      <translation type="unfinished">Creates a hull</translation>
+      <translation>Tworzy kadłub</translation>
     </message>
   </context>
   <context>
@@ -434,7 +434,7 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../../OpenSCADCommands.py" line="136"/>
       <source>Convert Edges to Faces</source>
-      <translation type="unfinished">Convert Edges to Faces</translation>
+      <translation>Przekształć krawędzie na ściany</translation>
     </message>
   </context>
   <context>
@@ -447,7 +447,7 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../../OpenSCADCommands.py" line="189"/>
       <source>Mirrors the mesh</source>
-      <translation type="unfinished">Mirrors the mesh</translation>
+      <translation>Odbija siatkę</translation>
     </message>
   </context>
   <context>
@@ -455,12 +455,12 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../../OpenSCADCommands.py" line="215"/>
       <source>Scale Mesh Feature</source>
-      <translation type="unfinished">Scale Mesh Feature</translation>
+      <translation>Funkcja skalowania siatki</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="219"/>
       <source>Scales the mesh</source>
-      <translation type="unfinished">Scales the mesh</translation>
+      <translation>Skaluje siatkę</translation>
     </message>
   </context>
   <context>
@@ -468,12 +468,12 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../../OpenSCADCommands.py" line="245"/>
       <source>Resize Mesh Feature</source>
-      <translation type="unfinished">Resize Mesh Feature</translation>
+      <translation>Funkcja zmiany rozmiaru siatki</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="249"/>
       <source>Resizes the mesh</source>
-      <translation type="unfinished">Resizes the mesh</translation>
+      <translation>Zmienia rozmiar siatki</translation>
     </message>
   </context>
   <context>
@@ -486,7 +486,7 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../../OpenSCADCommands.py" line="533"/>
       <source>Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</source>
-      <translation type="unfinished">Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</translation>
+      <translation>Dodaje element OpenSCAD na podstawie wprowadzonego kodu OpenSCAD za pomocą pliku binarnego OpenSCAD</translation>
     </message>
   </context>
   <context>
@@ -499,7 +499,7 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../../OpenSCADCommands.py" line="548"/>
       <source>Performs a boolean operation using the OpenSCAD binary</source>
-      <translation type="unfinished">Performs a boolean operation using the OpenSCAD binary</translation>
+      <translation>Wykonuje operację logiczną przy użyciu pliku binarnego OpenSCAD</translation>
     </message>
   </context>
   <context>
@@ -507,12 +507,12 @@ funkcje będą wymagać swoich elementów podrzędnych w widoku drzewa</translat
     <message>
       <location filename="../../OpenSCADCommands.py" line="585"/>
       <source>Minkowski Sum</source>
-      <translation type="unfinished">Minkowski Sum</translation>
+      <translation>Suma Minkowskiego</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="588"/>
       <source>Creates a Minkowski sum</source>
-      <translation type="unfinished">Creates a Minkowski sum</translation>
+      <translation>Tworzy sumę Minkowskiego</translation>
     </message>
   </context>
 </TS>

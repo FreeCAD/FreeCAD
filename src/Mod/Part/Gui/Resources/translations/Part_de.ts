@@ -1181,7 +1181,7 @@
     <message>
       <location filename="../../Command.cpp" line="2134"/>
       <source>Box Selection</source>
-      <translation type="unfinished">Box Selection</translation>
+      <translation>Rechteckauswahl</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2135"/>
@@ -1575,7 +1575,7 @@
     <message>
       <location filename="../../Command.cpp" line="1000"/>
       <source>Exports to a CAD file</source>
-      <translation>In CAD-Datei exportieren</translation>
+      <translation>Exportiert in eine CAD-Datei</translation>
     </message>
   </context>
   <context>
@@ -2221,7 +2221,7 @@ of the projection.</translation>
       <translation>Netz umwandeln</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1253"/>
+      <location filename="../../TaskAttacher.cpp" line="1267"/>
       <source>Edit attachment</source>
       <translation>Befestigung bearbeiten</translation>
     </message>
@@ -2323,8 +2323,8 @@ of the projection.</translation>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="254"/>
       <source>Rotation around the X-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Rotation around the X-axis
-Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>Drehung um die X-Achse
+Hinweis: Die Positionierung wird im lokalen Raum des befestigten Objekts dargestellt.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
@@ -2335,8 +2335,8 @@ Note: The placement is expressed in local space of object being attached.</trans
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="299"/>
       <source>Rotation around the Y-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Rotation around the Y-axis
-Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>Drehung um die Y-Achse
+Hinweis: Die Positionierung wird im lokalen Raum des befestigten Objekts dargestellt.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="325"/>
@@ -2347,8 +2347,8 @@ Note: The placement is expressed in local space of object being attached.</trans
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="344"/>
       <source>Rotation around the Z-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Rotation around the Z-axis
-Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>Drehung um die Z-Achse
+Hinweis: Die Positionierung wird im lokalen Raum des befestigten Objekts dargestellt.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="158"/>
@@ -2360,17 +2360,17 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
       <source>In X-direction</source>
-      <translation type="unfinished">In X-direction</translation>
+      <translation>In X-Richtung</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="171"/>
       <source>In Y-direction</source>
-      <translation type="unfinished">In Y-direction</translation>
+      <translation>In Y-Richtung</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="203"/>
       <source>In Z-direction</source>
-      <translation type="unfinished">In Z-direction</translation>
+      <translation>In Z-Richtung</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="367"/>
@@ -2433,7 +2433,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../CrossSections.cpp" line="308"/>
       <source>Cannot compute cross-sections</source>
-      <translation type="unfinished">Cannot compute cross-sections</translation>
+      <translation>Querschnitte können nicht berechnet werden</translation>
     </message>
   </context>
   <context>
@@ -3869,17 +3869,17 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="149"/>
       <source>X-Direction</source>
-      <translation type="unfinished">X-Direction</translation>
+      <translation>X-Richtung</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="190"/>
       <source>Y-Direction</source>
-      <translation type="unfinished">Y-Direction</translation>
+      <translation>Y-Richtung</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="228"/>
       <source>Z-Direction</source>
-      <translation type="unfinished">Z-Direction</translation>
+      <translation>Z-Richtung</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="250"/>
@@ -4086,22 +4086,37 @@ Check one or more edge entities first.</translation>
       <translation type="unfinished">Switch to task panel when entering Part Design workbench</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="241"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="206"/>
+      <source>Show final result by default when editing features</source>
+      <translation type="unfinished">Show final result by default when editing features</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="219"/>
+      <source>Show transparent preview overlay by default when editing features</source>
+      <translation type="unfinished">Show transparent preview overlay by default when editing features</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="235"/>
+      <source>Highlight the profile used to create features</source>
+      <translation type="unfinished">Highlight the profile used to create features</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="257"/>
       <source>Experimental</source>
       <translation>Experimentell</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="250"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="266"/>
       <source>These settings are experimental and may result in decreased stability, problems and undefined behaviors</source>
       <translation type="unfinished">These settings are experimental and may result in decreased stability, problems and undefined behaviors</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="273"/>
-      <source>Show interactive draggers during Part Design tasks</source>
-      <translation type="unfinished">Show interactive draggers during Part Design tasks</translation>
+      <location filename="../../DlgSettingsGeneral.ui" line="276"/>
+      <source>Show interactive draggers when editing features</source>
+      <translation type="unfinished">Show interactive draggers when editing features</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="289"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="292"/>
       <source>Disable recompute while dragging</source>
       <translation type="unfinished">Disable recompute while dragging</translation>
     </message>
@@ -4116,18 +4131,7 @@ Check one or more edge entities first.</translation>
       <translation>Vorschau</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="206"/>
-      <source>Show final result by default when editing feature</source>
-      <translation type="unfinished">Show final result by default when editing feature</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="219"/>
-      <source>Show transparent preview overlay by default when editing feature</source>
-      <translation type="unfinished">Show transparent preview overlay by default when editing feature</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsGeneral.ui" line="74"/>
-      <location filename="../../DlgSettingsGeneral.ui" line="260"/>
       <source>Allow multiple solids in Part Design bodies by default</source>
       <translation type="unfinished">Allow multiple solids in Part Design bodies by default</translation>
     </message>
@@ -4662,7 +4666,7 @@ nur die beschnittenen Objeke sichtbar</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="218"/>
       <source>Box selection for shells is not supported</source>
-      <translation>Boxauswahl für Hüllen wird nicht unterstützt</translation>
+      <translation>Rechteckauswahl wird für Hüllen nicht unterstützt</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="227"/>
@@ -4851,11 +4855,6 @@ nur die beschnittenen Objeke sichtbar</translation>
       <translation type="unfinished">Attachment Offset in its Local Coordinate System</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.ui" line="136"/>
-      <source>In x-direction</source>
-      <translation type="unfinished">In x-direction</translation>
-    </message>
-    <message>
       <location filename="../../TaskAttacher.ui" line="155"/>
       <location filename="../../TaskAttacher.ui" line="191"/>
       <location filename="../../TaskAttacher.ui" line="227"/>
@@ -4865,14 +4864,19 @@ of the object being attached</source>
 of the object being attached</translation>
     </message>
     <message>
+      <location filename="../../TaskAttacher.ui" line="136"/>
+      <source>In X-direction</source>
+      <translation>In X-Richtung</translation>
+    </message>
+    <message>
       <location filename="../../TaskAttacher.ui" line="172"/>
-      <source>In y-direction</source>
-      <translation type="unfinished">In y-direction</translation>
+      <source>In Y-direction</source>
+      <translation>In Y-Richtung</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="208"/>
-      <source>In z-direction</source>
-      <translation type="unfinished">In z-direction</translation>
+      <source>In Z-direction</source>
+      <translation>In Z-Richtung</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="244"/>
@@ -4883,8 +4887,8 @@ of the object being attached</translation>
       <location filename="../../TaskAttacher.ui" line="257"/>
       <source>Rotation around the local X-axis. The offset is expressed in the local coordinate system
 of the object being attached.</source>
-      <translation type="unfinished">Rotation around the local X-axis. The offset is expressed in the local coordinate system
-of the object being attached.</translation>
+      <translation>Drehung um die lokale X-Achse. Der Versatz wird im lokalen Koordinatensystem
+des befestigten Objekts dargestellt.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="283"/>
@@ -4895,8 +4899,8 @@ of the object being attached.</translation>
       <location filename="../../TaskAttacher.ui" line="296"/>
       <source>Rotation around the local Y-axis. The offset is expressed in the local coordinate system
 of the object being attached.</source>
-      <translation type="unfinished">Rotation around the local Y-axis. The offset is expressed in the local coordinate system
-of the object being attached.</translation>
+      <translation>Drehung um die lokale Y-Achse. Der Versatz wird im lokalen Koordinatensystem
+des befestigten Objekts dargestellt.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="322"/>
@@ -4907,8 +4911,8 @@ of the object being attached.</translation>
       <location filename="../../TaskAttacher.ui" line="335"/>
       <source>Rotation around the local Z-axis. The offset is expressed in the local coordinate system
 of the object being attached.</source>
-      <translation type="unfinished">Rotation around the local Z-axis. The offset is expressed in the local coordinate system
-of the object being attached.</translation>
+      <translation>Drehung um die lokale Z-Achse. Der Versatz wird im lokalen Koordinatensystem
+des befestigten Objekts dargestellt.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="358"/>
@@ -4921,82 +4925,82 @@ of the object being attached.</translation>
       <translation>Seiten spiegeln</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="324"/>
+      <location filename="../../TaskAttacher.cpp" line="327"/>
       <source>OCC error: %1</source>
       <translation>OCC-Fehler: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="327"/>
+      <location filename="../../TaskAttacher.cpp" line="330"/>
       <source>unknown error</source>
       <translation>unbekannter Fehler</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="330"/>
+      <location filename="../../TaskAttacher.cpp" line="333"/>
       <source>Attachment mode failed: %1</source>
       <translation>Bindungsmethode fehlgeschlagen: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="335"/>
+      <location filename="../../TaskAttacher.cpp" line="338"/>
       <source>Not attached</source>
       <translation>Nicht befestigt</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="340"/>
+      <location filename="../../TaskAttacher.cpp" line="343"/>
       <source>Attached with mode %1</source>
       <translation>Befestigungsverfahren: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="344"/>
+      <location filename="../../TaskAttacher.cpp" line="347"/>
       <source>Attachment offset (in its local coordinate system):</source>
       <translation type="unfinished">Attachment offset (in its local coordinate system):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="344"/>
+      <location filename="../../TaskAttacher.cpp" line="347"/>
       <source>Attachment offset (inactive - not attached):</source>
       <translation type="unfinished">Attachment offset (inactive - not attached):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="879"/>
+      <location filename="../../TaskAttacher.cpp" line="882"/>
       <source>Selecting…</source>
       <translation type="unfinished">Selecting…</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="799"/>
+      <location filename="../../TaskAttacher.cpp" line="802"/>
       <source>Face</source>
       <translation>Fläche</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="806"/>
+      <location filename="../../TaskAttacher.cpp" line="809"/>
       <source>Edge</source>
       <translation>Kante</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="813"/>
+      <location filename="../../TaskAttacher.cpp" line="816"/>
       <source>Vertex</source>
       <translation>Knoten</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="885"/>
+      <location filename="../../TaskAttacher.cpp" line="888"/>
       <source>Reference%1</source>
       <translation>Referenz%1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="932"/>
+      <location filename="../../TaskAttacher.cpp" line="935"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>Nicht editierbar, da der Rotationsteil des Befestigungsversatzes durch Ausdrücke gebunden ist.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="999"/>
+      <location filename="../../TaskAttacher.cpp" line="1002"/>
       <source>Reference combinations:</source>
       <translation>Referenz-Kombinationen:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1016"/>
+      <location filename="../../TaskAttacher.cpp" line="1019"/>
       <source>%1 (add %2)</source>
       <translation>%1 (%2 hinzufügen)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1022"/>
+      <location filename="../../TaskAttacher.cpp" line="1025"/>
       <source>%1 (add more references)</source>
       <translation>%1 (weitere Referenzen hinzufügen)</translation>
     </message>
@@ -5294,12 +5298,12 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1235"/>
+      <location filename="../../TaskAttacher.cpp" line="1249"/>
       <source>Attachment</source>
       <translation>Befestigen</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1296"/>
+      <location filename="../../TaskAttacher.cpp" line="1310"/>
       <source>Datum dialog: input error</source>
       <translation type="unfinished">Datum dialog: input error</translation>
     </message>
@@ -5453,7 +5457,7 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="101"/>
       <source>Box Selection</source>
-      <translation type="unfinished">Box Selection</translation>
+      <translation>Rechteckauswahl</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="122"/>
@@ -5523,23 +5527,23 @@ für die Spine-Kurve in der 3D-Ansicht auswählen.</translation>
     <name>PartGui::ThicknessWidget</name>
     <message>
       <location filename="../../TaskThickness.cpp" line="94"/>
-      <location filename="../../TaskThickness.cpp" line="307"/>
-      <location filename="../../TaskThickness.cpp" line="367"/>
+      <location filename="../../TaskThickness.cpp" line="310"/>
+      <location filename="../../TaskThickness.cpp" line="370"/>
       <source>Thickness</source>
       <translation>Dicke</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="195"/>
+      <location filename="../../TaskThickness.cpp" line="198"/>
       <source>Select faces of the source object and press 'Done'</source>
       <translation>Flächen des Ausgangsobjekts auswählen und 'Fertig' drücken</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="198"/>
+      <location filename="../../TaskThickness.cpp" line="201"/>
       <source>Done</source>
       <translation>Fertig</translation>
     </message>
     <message>
-      <location filename="../../TaskThickness.cpp" line="272"/>
+      <location filename="../../TaskThickness.cpp" line="275"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>
@@ -5635,8 +5639,8 @@ Continue?</translation>
       <translation type="unfinished">Select either 2 edges or 2 wires.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="68"/>
-      <location filename="../../TaskAttacher.cpp" line="98"/>
+      <location filename="../../TaskAttacher.cpp" line="70"/>
+      <location filename="../../TaskAttacher.cpp" line="100"/>
       <source>No reference selected</source>
       <translation>Keine ausgewählten Referenzen</translation>
     </message>
@@ -5978,7 +5982,7 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="891"/>
       <source>Appearance per Face</source>
-      <translation type="unfinished">Appearance per Face</translation>
+      <translation>Aussehen per Fläche</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjectOnSurface.cpp" line="54"/>
@@ -6016,7 +6020,7 @@ Continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>Part Tools</source>
-      <translation type="unfinished">Part Tools</translation>
+      <translation>Part-Werkzeuge</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
@@ -6579,7 +6583,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="67"/>
       <source>Supports making planar faces with holes with islands in them</source>
-      <translation type="unfinished">Supports making planar faces with holes with islands in them</translation>
+      <translation>Unterstützt das Erstellen ebener Flächen mit Löchern und Inseln darin</translation>
     </message>
   </context>
   <context>
@@ -6592,7 +6596,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="252"/>
       <source>Supports making planar faces with holes, but no islands inside holes</source>
-      <translation type="unfinished">Supports making planar faces with holes, but no islands inside holes</translation>
+      <translation>Unterstützt das Erstellen ebener Flächen mit Löchern, aber ohne Inseln darin</translation>
     </message>
   </context>
   <context>
@@ -6613,7 +6617,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="14"/>
       <source>Appearance per Face</source>
-      <translation type="unfinished">Appearance per Face</translation>
+      <translation>Aussehen flächenweise festlegen</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="20"/>
@@ -6653,7 +6657,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="101"/>
       <source>Box Selection</source>
-      <translation type="unfinished">Box Selection</translation>
+      <translation>Rechteckauswahl</translation>
     </message>
   </context>
   <context>
@@ -6972,7 +6976,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="374"/>
       <source>Supports making planar faces with holes and holes as faces</source>
-      <translation type="unfinished">Supports making planar faces with holes and holes as faces</translation>
+      <translation>Unterstützt das Erstellen ebener Flächen mit Löchern und Löchern als Flächen</translation>
     </message>
   </context>
   <context>
@@ -7132,7 +7136,7 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="229"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="243"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation type="unfinished">Failure while rendering preview: %1. That usually indicates an error with model.</translation>
     </message>

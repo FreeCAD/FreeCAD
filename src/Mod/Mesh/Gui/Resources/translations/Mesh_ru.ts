@@ -1247,14 +1247,14 @@
       <location filename="../../DlgRegularSolid.ui" line="588"/>
       <location filename="../../DlgRegularSolid.ui" line="692"/>
       <source>Radius 1</source>
-      <translation>Радиус 1</translation>
+      <translation>Радиус колеса 1</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="370"/>
       <location filename="../../DlgRegularSolid.ui" line="605"/>
       <location filename="../../DlgRegularSolid.ui" line="709"/>
       <source>Radius 2</source>
-      <translation>Радиус 2</translation>
+      <translation>Радиус колеса 2</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="307"/>
@@ -1553,38 +1553,38 @@ to a smoother appearance.
       <translation>Фронтальный</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
-      <source>Frontal Quad</source>
-      <translation>Передний квадрат</translation>
-    </message>
-    <message>
       <location filename="../../RemeshGmsh.cpp" line="105"/>
       <source>Parallelograms</source>
       <translation>Параллелограммы</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="106"/>
-      <source>Quasi-structured Quad</source>
-      <translation>Квазиструктурированный четырехугольник</translation>
+      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <source>Frontal quad</source>
+      <translation type="unfinished">Frontal quad</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="197"/>
-      <location filename="../../RemeshGmsh.cpp" line="255"/>
+      <location filename="../../RemeshGmsh.cpp" line="106"/>
+      <source>Quasi-structured quad</source>
+      <translation type="unfinished">Quasi-structured quad</translation>
+    </message>
+    <message>
+      <location filename="../../RemeshGmsh.cpp" line="200"/>
+      <location filename="../../RemeshGmsh.cpp" line="258"/>
       <source>Time:</source>
       <translation>Время:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="243"/>
+      <location filename="../../RemeshGmsh.cpp" line="246"/>
       <source>Running Gmsh…</source>
       <translation type="unfinished">Running Gmsh…</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="266"/>
+      <location filename="../../RemeshGmsh.cpp" line="269"/>
       <source>Failed to start</source>
       <translation>Не удалось запустить</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="273"/>
+      <location filename="../../RemeshGmsh.cpp" line="276"/>
       <source>Error</source>
       <translation>Ошибка</translation>
     </message>
@@ -1711,17 +1711,22 @@ to a smoother appearance.
       <translation>Траектория</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.ui" line="154"/>
+      <location filename="../../RemeshGmsh.ui" line="141"/>
+      <source>Leave empty to use default gmsh executable</source>
+      <translation type="unfinished">Leave empty to use default gmsh executable</translation>
+    </message>
+    <message>
+      <location filename="../../RemeshGmsh.ui" line="157"/>
       <source>Kill</source>
       <translation>Завершить принудительно</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.ui" line="181"/>
+      <location filename="../../RemeshGmsh.ui" line="184"/>
       <source>Time</source>
       <translation>Время</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.ui" line="188"/>
+      <location filename="../../RemeshGmsh.ui" line="191"/>
       <source>Clear</source>
       <translation>Очистить</translation>
     </message>

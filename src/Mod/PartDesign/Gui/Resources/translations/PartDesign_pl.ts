@@ -377,7 +377,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Datum Line</source>
-      <translation type="unfinished">Datum Line</translation>
+      <translation>Linia odniesienia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -557,7 +557,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="164"/>
       <source>Datum Plane</source>
-      <translation type="unfinished">Datum Plane</translation>
+      <translation>Płaszczyzna odniesienia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="165"/>
@@ -593,7 +593,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Command.cpp" line="220"/>
       <source>Datum Point</source>
-      <translation type="unfinished">Datum Point</translation>
+      <translation>Punkt odniesienia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
@@ -912,18 +912,18 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
       <translation type="unfinished">Convert to Multi-Transform feature</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="249"/>
+      <location filename="../../SketchWorkflow.cpp" line="256"/>
       <source>Sketch on Face</source>
       <translation type="unfinished">Sketch on Face</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="299"/>
+      <location filename="../../SketchWorkflow.cpp" line="315"/>
       <source>Make copy</source>
       <translation>Utwórz kopię</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="495"/>
-      <location filename="../../SketchWorkflow.cpp" line="701"/>
+      <location filename="../../SketchWorkflow.cpp" line="512"/>
+      <location filename="../../SketchWorkflow.cpp" line="718"/>
       <source>New Sketch</source>
       <translation type="unfinished">New Sketch</translation>
     </message>
@@ -1037,7 +1037,7 @@ wartość Fałsz = uzębienie wewnętrzne</translation>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>Boolean Tools</source>
-      <translation type="unfinished">Boolean Tools</translation>
+      <translation>Narzędzia operacji logicznych</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
@@ -1228,12 +1228,12 @@ Select a body from below, or create a new body.</translation>
       <location filename="../../TaskPrimitiveParameters.ui" line="896"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1091"/>
       <source>U parameter</source>
-      <translation type="unfinished">U parameter</translation>
+      <translation>Parametr U</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="694"/>
       <source>V parameters</source>
-      <translation type="unfinished">V parameters</translation>
+      <translation>Parametry V</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="804"/>
@@ -1243,25 +1243,25 @@ Select a body from below, or create a new body.</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="827"/>
       <source>Radius in local X-direction</source>
-      <translation type="unfinished">Radius in local X-direction</translation>
+      <translation>Promień w kierunku lokalnej osi X</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="843"/>
       <source>Radius 3</source>
-      <translation type="unfinished">Radius 3</translation>
+      <translation>Promień 3</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="850"/>
       <source>Radius in local Y-direction
 If zero, it is equal to Radius2</source>
-      <translation type="unfinished">Radius in local Y-direction
-If zero, it is equal to Radius2</translation>
+      <translation>Promień w kierunku lokalnej osi Y
+Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="916"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1111"/>
       <source>V parameter</source>
-      <translation type="unfinished">V parameter</translation>
+      <translation>Parametr V</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1023"/>
@@ -1283,32 +1283,32 @@ If zero, it is equal to Radius2</translation>
       <location filename="../../TaskPrimitiveParameters.ui" line="1234"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2313"/>
       <source>Circumradius</source>
-      <translation type="unfinished">Circumradius</translation>
+      <translation>Promień okręgu opisanego</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1353"/>
       <source>X min/max</source>
-      <translation type="unfinished">X min/max</translation>
+      <translation>X min / max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1383"/>
       <source>Y min/max</source>
-      <translation type="unfinished">Y min/max</translation>
+      <translation>Y min / max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1413"/>
       <source>Z min/max</source>
-      <translation type="unfinished">Z min/max</translation>
+      <translation>Z min / max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1443"/>
       <source>X2 min/max</source>
-      <translation type="unfinished">X2 min/max</translation>
+      <translation>X2 min / max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1476"/>
       <source>Z2 min/max</source>
-      <translation type="unfinished">Z2 min/max</translation>
+      <translation>Z2 min / max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1560"/>
@@ -1318,7 +1318,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1637"/>
       <source>Coordinate system</source>
-      <translation type="unfinished">Coordinate system</translation>
+      <translation>Układ współrzędnych</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1709"/>
@@ -1328,24 +1328,24 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1729"/>
       <source>Number of rotations</source>
-      <translation type="unfinished">Number of rotations</translation>
+      <translation>Liczba obrotów</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1825"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1947"/>
       <source>Angle 1</source>
-      <translation type="unfinished">Angle 1</translation>
+      <translation>Kąt 1</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1842"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1964"/>
       <source>Angle 2</source>
-      <translation type="unfinished">Angle 2</translation>
+      <translation>Kąt 2</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1879"/>
       <source>From 3 Points</source>
-      <translation type="unfinished">From 3 Points</translation>
+      <translation>Przez trzy punkty</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1907"/>
@@ -1583,17 +1583,17 @@ If zero, it is equal to Radius2</translation>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="387"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="388"/>
       <source>Empty body list</source>
       <translation>Lista zawartości jest pusta</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="388"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="389"/>
       <source>The body list cannot be empty</source>
       <translation>Lista zawartości nie może być pusta</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="402"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="403"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Funkcja logiczna: Akceptuj: Błąd danych wejściowych</translation>
     </message>
@@ -1706,13 +1706,13 @@ If zero, it is equal to Radius2</translation>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1359"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1360"/>
       <source>No face selected</source>
       <translation>Nie zaznaczono ściany</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="163"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1139"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1140"/>
       <source>Face</source>
       <translation>Powierzchnia</translation>
     </message>
@@ -1722,63 +1722,63 @@ If zero, it is equal to Radius2</translation>
       <translation>Usuń</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="349"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="351"/>
       <source>Preview</source>
       <translation>Podgląd</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="353"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="355"/>
       <source>Select Faces</source>
       <translation type="unfinished">Select Faces</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="688"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="690"/>
       <source>Select reference…</source>
       <translation type="unfinished">Select reference…</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="596"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="598"/>
       <source>No shape selected</source>
       <translation>Brak wybranych kształtów</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="681"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="683"/>
       <source>Sketch normal</source>
       <translation>Wektor normalny szkicu</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="684"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="686"/>
       <source>Face normal</source>
       <translation>Wektor normalny ściany</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="692"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="697"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="694"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="699"/>
       <source>Custom direction</source>
       <translation>Kierunek niestandardowy</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1085"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1086"/>
       <source>Click on a shape in the model</source>
       <translation>Kliknij kształt modelu</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1346"/>
-      <source>One sided</source>
-      <translation type="unfinished">One sided</translation>
-    </message>
-    <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1347"/>
-      <source>Two sided</source>
-      <translation type="unfinished">Two sided</translation>
+      <source>One sided</source>
+      <translation>W jednym kierunku</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1348"/>
+      <source>Two sided</source>
+      <translation>W dwóch kierunkach</translation>
+    </message>
+    <message>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1349"/>
       <source>Symmetric</source>
       <translation>Symetrycznie</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1354"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1355"/>
       <source>Click on a face in the model</source>
       <translation>Kliknij ścianę modelu</translation>
     </message>
@@ -2411,7 +2411,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="281"/>
       <source>Side 2</source>
-      <translation type="unfinished">Side 2</translation>
+      <translation>Strona 2</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="512"/>
@@ -2488,7 +2488,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="582"/>
       <source>X-component of direction vector</source>
-      <translation type="unfinished">X-component of direction vector</translation>
+      <translation>Składowa X wektora kierunku</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="604"/>
@@ -2498,7 +2498,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="611"/>
       <source>Y-component of direction vector</source>
-      <translation type="unfinished">Y-component of direction vector</translation>
+      <translation>Składowa Y wektora kierunku</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="633"/>
@@ -2508,7 +2508,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="640"/>
       <source>Z-component of direction vector</source>
-      <translation type="unfinished">Z-component of direction vector</translation>
+      <translation>Składowa Z wektora kierunku</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="118"/>
@@ -2524,7 +2524,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="46"/>
       <source>Side 1</source>
-      <translation type="unfinished">Side 1</translation>
+      <translation>Strona 1</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="121"/>
@@ -2536,7 +2536,7 @@ mierzona wzdłuż podanego kierunku</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="174"/>
       <location filename="../../TaskPadPocketParameters.ui" line="403"/>
       <source>Select Shape</source>
-      <translation type="unfinished">Select Shape</translation>
+      <translation>Wybierz kształt</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="189"/>
@@ -2816,13 +2816,13 @@ mierzona wzdłuż podanego kierunku</translation>
       <location filename="../../TaskRevolutionParameters.ui" line="50"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="240"/>
       <source>Base X-axis</source>
-      <translation type="unfinished">Base X-axis</translation>
+      <translation>Bazowa oś X</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="241"/>
       <source>Base Y-axis</source>
-      <translation type="unfinished">Base Y-axis</translation>
+      <translation>Bazowa oś Y</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="60"/>
@@ -3192,50 +3192,49 @@ mierzona wzdłuż podanego kierunku</translation>
       <translation>Błąd</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="734"/>
+      <location filename="../../SketchWorkflow.cpp" line="751"/>
       <source>Several sub-elements selected</source>
       <translation>Wybrano kilka podelementów</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="735"/>
+      <location filename="../../SketchWorkflow.cpp" line="752"/>
       <source>Select a single face as support for a sketch!</source>
       <translation type="unfinished">Select a single face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="739"/>
+      <location filename="../../SketchWorkflow.cpp" line="756"/>
       <source>Select a face as support for a sketch!</source>
       <translation type="unfinished">Select a face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="743"/>
+      <location filename="../../SketchWorkflow.cpp" line="760"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation type="unfinished">Need a planar face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="747"/>
+      <location filename="../../SketchWorkflow.cpp" line="764"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation type="unfinished">Create a plane first or select a face to sketch on</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="738"/>
+      <location filename="../../SketchWorkflow.cpp" line="755"/>
       <source>No support face selected</source>
       <translation>Nie wybrano ściany bazowej</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="742"/>
+      <location filename="../../SketchWorkflow.cpp" line="759"/>
       <source>No planar support</source>
       <translation>Brak płaskiej powierzchni</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="746"/>
+      <location filename="../../SketchWorkflow.cpp" line="763"/>
       <source>No valid planes in this document</source>
       <translation>Brak prawidłowej płaszczyzny w tym dokumencie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1014"/>
-      <location filename="../../SketchWorkflow.cpp" line="661"/>
+      <location filename="../../SketchWorkflow.cpp" line="678"/>
       <location filename="../../ViewProvider.cpp" line="139"/>
-      <location filename="../../ViewProviderBoolean.cpp" line="79"/>
       <location filename="../../ViewProviderDatum.cpp" line="250"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
       <source>A dialog is already open in the task panel</source>
@@ -3278,13 +3277,12 @@ mierzona wzdłuż podanego kierunku</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../SketchWorkflow.cpp" line="662"/>
+      <location filename="../../SketchWorkflow.cpp" line="679"/>
       <location filename="../../ViewProvider.cpp" line="140"/>
-      <location filename="../../ViewProviderBoolean.cpp" line="80"/>
       <location filename="../../ViewProviderDatum.cpp" line="251"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <source>Close this dialog?</source>
-      <translation type="unfinished">Close this dialog?</translation>
+      <translation>Zamknąć to okno dialogowe?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1633"/>
@@ -3679,14 +3677,14 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
       <translation type="unfinished">Migrate Manually</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBoolean.cpp" line="63"/>
+      <location filename="../../ViewProviderBoolean.cpp" line="72"/>
       <source>Edit Boolean</source>
       <translation type="unfinished">Edit Boolean</translation>
     </message>
     <message>
       <location filename="../../ViewProviderChamfer.cpp" line="41"/>
       <source>Edit Chamfer</source>
-      <translation type="unfinished">Edit Chamfer</translation>
+      <translation>Edycja funkcji sfazowania</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDraft.cpp" line="42"/>
@@ -3696,7 +3694,7 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../ViewProviderFillet.cpp" line="41"/>
       <source>Edit Fillet</source>
-      <translation type="unfinished">Edit Fillet</translation>
+      <translation>Edycja funkcji zaokrąglenia</translation>
     </message>
     <message>
       <location filename="../../ViewProviderGroove.cpp" line="46"/>
@@ -5475,17 +5473,18 @@ Przecinające się elementy szkicu lub wiele ścian w szkicu nie są dozwolone.<
     <message>
       <location filename="../../TaskPatternParameters.cpp" line="116"/>
       <source>Direction 2</source>
-      <translation type="unfinished">Direction 2</translation>
+      <translation>Kierunek 2</translation>
     </message>
     <message>
       <location filename="../../TaskPatternParameters.cpp" line="219"/>
       <source>Select a direction reference (edge, face, datum line)</source>
-      <translation type="unfinished">Select a direction reference (edge, face, datum line)</translation>
+      <translation>Wybierz odniesienie kierunku (krawędź, ścianę, linię odniesienia).</translation>
     </message>
     <message>
       <location filename="../../TaskPatternParameters.cpp" line="294"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
-      <translation type="unfinished">Invalid selection. Select an edge, planar face, or datum line.</translation>
+      <translation>Nieprawidłowy wybór. 
+Wybierz krawędź, płaszczyznę lub linię odniesienia.</translation>
     </message>
   </context>
 </TS>

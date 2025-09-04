@@ -80,7 +80,7 @@
     <message>
       <location filename="../../StartView.cpp" line="225"/>
       <source>Creates a 2D Draft document</source>
-      <translation>Erstellt ein 2D-Entwurfsdokument</translation>
+      <translation>Erstellt ein 2D-Draft-Dokument</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="228"/>

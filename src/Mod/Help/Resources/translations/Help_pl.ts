@@ -17,8 +17,8 @@
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
       <source>Fetches the documentation from pages rendered on GitHub.
 This is currently not available.</source>
-      <translation type="unfinished">Fetches the documentation from pages rendered on GitHub.
-This is currently not available.</translation>
+      <translation>Pobiera dokumentację ze stron renderowanych na GitHub.
+To nie jest obecnie dostępne.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>
@@ -60,16 +60,15 @@ Documentation can be downloaded for offline use via the Addon Manager and instal
 &quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
 automatically search for the help files at the default location
 ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-Documentation can be downloaded for offline use via the Addon Manager and installing the
-&quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
-automatically search for the help files at the default location
-($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>Ustaw to na niestandardowy adres URL lub folder, w którym znajdują się pliki pomocy.
+Dokumentację można pobrać do użytku offline, korzystając z Menedżera dodatków
+i instalując dodatek "offline-documentation". Jeśli to pole pozostanie puste, FreeCAD automatycznie wyszuka
+pliki pomocy w domyślnej lokalizacji ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="112"/>
       <source>Translation suffix</source>
-      <translation type="unfinished">Translation suffix</translation>
+      <translation>Przyrostek tłumaczenia</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="119"/>
@@ -98,41 +97,40 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</translation>
+      <translation>Uwaga: Jeśli komponenty Web PySide nie zostaną znalezione w systemie, strony pomocy zostaną otwarte w domyślnej przeglądarce internetowej niezależnie od poniższych opcji.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="180"/>
       <source>The documentation will open in the default web browser</source>
-      <translation type="unfinished">The documentation will open in the default web browser</translation>
+      <translation>Dokumentacja zostanie otwarta w domyślnej przeglądarce internetowej</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="183"/>
       <source>In the default web browser</source>
-      <translation type="unfinished">In the default web browser</translation>
+      <translation>W domyślnej przeglądarce internetowej</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="199"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</source>
-      <translation type="unfinished">The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</translation>
+      <translation>Dokumentacja zostanie otwarta w nowej karcie wewnątrz interfejsu FreeCAD. Wymaga to komponentu PySide QtWebengineWidgets.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
 Requires the PySide QtWebengineWidgets component.</source>
-      <translation type="unfinished">Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
-Requires the PySide QtWebengineWidgets component.</translation>
+      <translation>Dokumentacja otwiera się w oknie dialogowym w obrębie FreeCAD, umożliwiając jednoczesną pracę w widoku 3D. Wymaga komponentu PySide QtWebengineWidgets.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="249"/>
       <source>Custom stylesheet</source>
-      <translation type="unfinished">Custom stylesheet</translation>
+      <translation>Niestandardowy arkusz stylów</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="256"/>
       <source>Specify the path to an alternative CSS file for styling Markdown pages.
 This only applies if Markdown is selected above.</source>
-      <translation type="unfinished">Specify the path to an alternative CSS file for styling Markdown pages.
-This only applies if Markdown is selected above.</translation>
+      <translation>Określ ścieżkę do alternatywnego pliku CSS do stylizacji stron Markdown.
+Działa to tylko wtedy, gdy Markdown jest wybrany powyżej.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>

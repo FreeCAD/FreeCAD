@@ -227,12 +227,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="139"/>
       <source>Converts edges to faces</source>
-      <translation type="unfinished">Converts edges to faces</translation>
+      <translation>Converte i bordi in facce</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="301"/>
       <source>Select 3 objects first</source>
-      <translation type="unfinished">Select 3 objects first</translation>
+      <translation>Seleziona prima 3 oggetti</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="335"/>
@@ -242,17 +242,17 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="336"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>Apri…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Save…</source>
-      <translation type="unfinished">Save…</translation>
+      <translation>Salva…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>
       <source>as mesh</source>
-      <translation type="unfinished">as mesh</translation>
+      <translation>come mesh</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="427"/>

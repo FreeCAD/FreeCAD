@@ -1514,16 +1514,6 @@ possono essere aggiunti automaticamente anche ai gruppi.</translation>
       <translation>Includi gruppi nella lista dei layer</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="155"/>
-      <source>If checked, instructions are displayed in the Report view when using Draft commands</source>
-      <translation>Se selezionato, le istruzioni vengono visualizzate nella vista Report quando si usano i comandi Draft</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draft.ui" line="158"/>
-      <source>Show prompts in the Report view</source>
-      <translation>Mostra le richieste nella vista Report</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draft.ui" line="188"/>
       <source>If checked, base objects, instead of created copies, are selected after copying</source>
       <translation>Se selezionato, gli oggetti di base, anziché le copie create, vengono selezionati dopo la copia</translation>
@@ -1628,6 +1618,16 @@ accidentalmente e modificare il valore inserito.</translation>
       <location filename="../ui/preferences-draft.ui" line="149"/>
       <source>Command Options</source>
       <translation>Opzioni di comando</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="155"/>
+      <source>If checked, instructions are displayed in the Report View when using Draft commands</source>
+      <translation type="unfinished">If checked, instructions are displayed in the Report View when using Draft commands</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="158"/>
+      <source>Show prompts in the Report View</source>
+      <translation type="unfinished">Show prompts in the Report View</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="171"/>
@@ -1824,6 +1824,13 @@ da aggiungere ai motivi standard</translation>
       <translation>Estensione della linea di misura</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="39"/>
+      <source>The default annotation scale multiplier. This is the inverse of the scale set
+in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</source>
+      <translation type="unfinished">The default annotation scale multiplier. This is the inverse of the scale set
+in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</translation>
+    </message>
+    <message>
       <location filename="../ui/preferences-drafttexts.ui" line="72"/>
       <source>Texts</source>
       <translation>Testi</translation>
@@ -1857,13 +1864,6 @@ da aggiungere ai motivi standard</translation>
       <location filename="../ui/preferences-drafttexts.ui" line="20"/>
       <source>Annotations</source>
       <translation>Annotazioni</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="39"/>
-      <source>The default annotation scale multiplier. This is the inverse of the scale set
-in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
-      <translation>Il moltiplicatore di scala di annotazione predefinito. Questo è l'inverso della scala
-nel widget scala di annotazione. Se la scala è 1:100 il moltiplicatore è 100.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="78"/>
@@ -2603,11 +2603,6 @@ Usa Draft Attiva/disattiva griglia per cambiarla per la vista attiva.</translati
       <translation>Il numero massimo di oggetti che è consentito a Draft Modifica di elaborare allo stesso tempo</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="790"/>
-      <source>Only show the Draft snap toolbar during commands</source>
-      <translation>Mostra la barra Draft aggancio solo durante i comandi</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftsnap.ui" line="20"/>
       <source>Grid</source>
       <translation>Griglia</translation>
@@ -2879,16 +2874,6 @@ se corrispondono agli assi X, Y o Z del sistema di coordinate globali</translati
       <translation>Diminuisci raggio</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="787"/>
-      <source>If checked, the Draft snap toolbar will only be visible during commands</source>
-      <translation>Se selezionato, la barra degli strumenti di aggancio Draft sarà visibile solo durante i comandi</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-draftinterface.ui" line="809"/>
-      <source>Show the Snap widget in the Draft Workbench</source>
-      <translation>Mostra il widget di Aggancio nell'ambiente di lavoro Draft</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-draftinterface.ui" line="215"/>
       <source>E</source>
       <translation>E</translation>
@@ -3019,19 +3004,34 @@ se corrispondono agli assi X, Y o Z del sistema di coordinate globali</translati
       <translation type="unfinished">UI Options</translation>
     </message>
     <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="787"/>
+      <source>If checked, the Draft Snap toolbar will only be visible during commands</source>
+      <translation type="unfinished">If checked, the Draft Snap toolbar will only be visible during commands</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="790"/>
+      <source>Only show the Draft Snap toolbar during commands</source>
+      <translation type="unfinished">Only show the Draft Snap toolbar during commands</translation>
+    </message>
+    <message>
       <location filename="../ui/preferences-draftinterface.ui" line="806"/>
-      <source>If checked, the Snap widget is displayed in the Draft status bar</source>
-      <translation>Se selezionato, il widget di aggancio viene visualizzato nella barra di stato Draft</translation>
+      <source>If checked, the Draft Snap Widget is displayed in the Draft Status Bar</source>
+      <translation type="unfinished">If checked, the Draft Snap Widget is displayed in the Draft Status Bar</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftinterface.ui" line="809"/>
+      <source>Show the Draft Snap Widget in the Draft Workbench</source>
+      <translation type="unfinished">Show the Draft Snap Widget in the Draft Workbench</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="825"/>
-      <source>If checked, the annotation scale widget is displayed in the Draft status bar</source>
-      <translation type="unfinished">If checked, the annotation scale widget is displayed in the Draft status bar</translation>
+      <source>If checked, the Draft Scale Widget is displayed in the Draft Status Bar</source>
+      <translation type="unfinished">If checked, the Draft Scale Widget is displayed in the Draft Status Bar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="828"/>
-      <source>Show the Annotation Scale Widget in the Draft Workbench</source>
-      <translation type="unfinished">Show the Annotation Scale Widget in the Draft Workbench</translation>
+      <source>Show the Draft Scale Widget in the Draft Workbench</source>
+      <translation type="unfinished">Show the Draft Scale Widget in the Draft Workbench</translation>
     </message>
   </context>
   <context>
@@ -3185,7 +3185,7 @@ se corrispondono agli assi X, Y o Z del sistema di coordinate globali</translati
     <message>
       <location filename="../../DraftGui.py" line="530"/>
       <source>X coordinate of the point</source>
-      <translation type="unfinished">X coordinate of the point</translation>
+      <translation>Coordinata X del punto</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="531"/>
@@ -3636,44 +3636,44 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftmake/make_text.py" line="92"/>
       <location filename="../../draftmake/make_text.py" line="178"/>
       <location filename="../../draftutils/groups.py" line="95"/>
-      <location filename="../../draftutils/gui_utils.py" line="890"/>
+      <location filename="../../draftutils/gui_utils.py" line="894"/>
       <location filename="../../draftutils/utils.py" line="1055"/>
       <source>No active document. Aborting.</source>
       <translation>Nessun documento attivo, operazione fallita.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="131"/>
-      <location filename="../../draftutils/gui_utils.py" line="898"/>
+      <location filename="../../draftutils/gui_utils.py" line="902"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>Immissione errata: oggetto {} non nel documento.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="160"/>
+      <location filename="../../draftutils/gui_utils.py" line="164"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Impossibile inserire il nuovo oggetto in una parte scalata</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="269"/>
+      <location filename="../../draftutils/gui_utils.py" line="273"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>Simbolo non implementato. Usare un simbolo predefinito.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="774"/>
+      <location filename="../../draftutils/gui_utils.py" line="778"/>
       <source>image is Null</source>
       <translation>l'immagine è Null</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="780"/>
+      <location filename="../../draftutils/gui_utils.py" line="784"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>il nome file non esiste nel sistema o nei file risorsa</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="839"/>
+      <location filename="../../draftutils/gui_utils.py" line="843"/>
       <source>unable to load texture</source>
       <translation>impossibile caricare la texture</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="904"/>
+      <location filename="../../draftutils/gui_utils.py" line="908"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>Non ha 'ViewObject.RootNode'.</translation>
     </message>
@@ -4047,12 +4047,12 @@ or try saving to a lower DWG version.</source>
       <translation type="unfinished">Arc From 3 Points</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="594"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="599"/>
       <source>Create Arc From 3 Points</source>
       <translation type="unfinished">Create Arc From 3 Points</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="634"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="639"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="214"/>
       <location filename="../../draftguitools/gui_lines.py" line="296"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="210"/>
@@ -4060,13 +4060,13 @@ or try saving to a lower DWG version.</source>
       <translation type="unfinished">%1 pick first point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="638"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="643"/>
       <location filename="../../draftguitools/gui_lines.py" line="300"/>
       <source>%1 pick second point</source>
       <translation type="unfinished">%1 pick second point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="642"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="647"/>
       <source>%1 pick third point</source>
       <translation type="unfinished">%1 pick third point</translation>
     </message>
@@ -4576,8 +4576,8 @@ The final angle will be the base angle plus this amount.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="267"/>
-      <source>Cubic Bézier curve</source>
-      <translation>Curva di Bézier cubica</translation>
+      <source>Cubic Bézier Curve</source>
+      <translation type="unfinished">Cubic Bézier Curve</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="387"/>
@@ -5193,38 +5193,38 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">All shapes must be planar</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="124"/>
-      <location filename="../../draftmake/make_arc_3points.py" line="129"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="87"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="92"/>
       <source>Points:</source>
       <translation>Punti:</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="125"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="88"/>
       <source>Wrong input: must be a list or tuple of 3 points exactly.</source>
       <translation type="unfinished">Wrong input: must be a list or tuple of 3 points exactly.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="130"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="93"/>
       <source>Wrong input: must be list or tuple of 3 points exactly.</source>
       <translation type="unfinished">Wrong input: must be list or tuple of 3 points exactly.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="137"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="110"/>
       <source>Placement:</source>
       <translation>Posizionamento:</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="138"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="111"/>
       <source>Wrong input: incorrect type of placement.</source>
       <translation>Input errato: tipo di posizionamento errato.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="148"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="103"/>
       <source>Wrong input: incorrect type of points.</source>
       <translation>Input errato: tipo di punti non corretto.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_arc_3points.py" line="154"/>
+      <location filename="../../draftmake/make_arc_3points.py" line="117"/>
       <source>Cannot generate shape:</source>
       <translation>Impossibile generare la forma:</translation>
     </message>
@@ -6503,7 +6503,7 @@ If the "Copy" option is active, it creates displaced copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="268"/>
       <source>Edits the active object</source>
-      <translation type="unfinished">Edits the active object</translation>
+      <translation>Modifica l'oggetto attivo</translation>
     </message>
   </context>
   <context>
@@ -6609,7 +6609,7 @@ If the "Copy" option is active, it will create rotated copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="62"/>
       <source>Creates an ellipse</source>
-      <translation type="unfinished">Creates an ellipse</translation>
+      <translation>Crea un'ellisse</translation>
     </message>
   </context>
   <context>
@@ -7274,17 +7274,17 @@ Altrimenti le copie avranno lo stesso orientamento dell'oggetto Base originale.<
     <message>
       <location filename="../../draftobjects/array.py" line="168"/>
       <source>Number of copies in X-direction</source>
-      <translation type="unfinished">Number of copies in X-direction</translation>
+      <translation>Numero di copie in direzione X</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="178"/>
       <source>Number of copies in Y-direction</source>
-      <translation type="unfinished">Number of copies in Y-direction</translation>
+      <translation>Numero di copie in direzione Y</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="188"/>
       <source>Number of copies in Z-direction</source>
-      <translation type="unfinished">Number of copies in Z-direction</translation>
+      <translation>Numero di copie in direzione Z</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="199"/>
@@ -8097,12 +8097,12 @@ beyond the dimension line</source>
   <context>
     <name>Draft_ArcTools</name>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="659"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="664"/>
       <source>Arc Tools</source>
       <translation type="unfinished">Arc Tools</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="662"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="667"/>
       <source>Tools to create various types of circular arcs</source>
       <translation type="unfinished">Tools to create various types of circular arcs</translation>
     </message>
@@ -8567,8 +8567,8 @@ The initial projection direction is the opposite of the current active view dire
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="125"/>
-      <source>Snaps to the intersection of 2 edges</source>
-      <translation type="unfinished">Snaps to the intersection of 2 edges</translation>
+      <source>Snaps to the intersection of 2 edges, and the intersection of a face and an edge</source>
+      <translation type="unfinished">Snaps to the intersection of 2 edges, and the intersection of a face and an edge</translation>
     </message>
   </context>
   <context>

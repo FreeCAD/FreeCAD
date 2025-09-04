@@ -1071,7 +1071,7 @@ Ha le van tiltva, név szerint vannak rendezve.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>
       <source>Save As…</source>
-      <translation type="unfinished">Save As…</translation>
+      <translation>Mentés másként…</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="96"/>

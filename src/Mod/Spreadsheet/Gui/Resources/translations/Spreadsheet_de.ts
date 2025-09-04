@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="184"/>
       <source>&amp;Import Spreadsheet</source>
-      <translation type="unfinished">&amp;Import Spreadsheet</translation>
+      <translation>Tabelle &amp;importieren</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="185"/>
       <source>Imports a CSV file into a new spreadsheet</source>
-      <translation type="unfinished">Imports a CSV file into a new spreadsheet</translation>
+      <translation>Importiert eine CSV-Datei in eine neue Tabelle</translation>
     </message>
   </context>
   <context>
