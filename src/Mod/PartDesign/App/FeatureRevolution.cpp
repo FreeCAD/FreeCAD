@@ -418,4 +418,3 @@ void Revolution::updateProperties(RevolMethod method)
 }
 
 
-
