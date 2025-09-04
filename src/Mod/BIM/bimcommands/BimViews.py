@@ -87,7 +87,7 @@ class BIM_Views:
             # set button
             self.dialog.menu = QtGui.QMenu()
             for button in [("Active", translate("BIM","Active")),
-                            ("AddLevel", translate("BIM","Add Level")),
+                            ("AddLevel", translate("BIM","New Level")),
                             ("AddProxy", translate("BIM","Add Working Plane Proxy")),
                             ("Delete", translate("BIM","Delete")),
                             ("Toggle", translate("BIM","Toggle Visibility")),
