@@ -333,10 +333,10 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
         prop.append(
             _PropHelper(
                 type="App::PropertyBool",
-                name="DisablePastixMixedPrecision",
+                name="PastixMixedPrecision",
                 group="Solver",
-                doc="Disable mixed precision for PaStiX matrix solver",
-                value=True,
+                doc="Mixed precision for the PaStiX matrix solver",
+                value=False,
             )
         )
         return prop
