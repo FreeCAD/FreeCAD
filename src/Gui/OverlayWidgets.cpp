@@ -1960,13 +1960,68 @@ QLayoutItem *OverlayTabWidget::prepareTitleWidget(QWidget *widget, const QList<Q
     return spacer;
 }
 
-bool OverlayTabWidget::isStyleSheetDark(std::string curStyleSheet)
+// This requires <windows.h> and linking to Advapi32.lib
+bool OverlayTabWidget::isStyleSheetDark(std::string /*curStyleSheet*/)
 {
-    if (curStyleSheet.find("dark") != std::string::npos
-        || curStyleSheet.find("Dark") != std::string::npos) {
-        return true;
+#if defined(Q_OS_WIN)
+    // On Windows, check registry for dark mode
+    #include <windows.h>
+    bool isDark = false;
+    HKEY hKey;
+    DWORD value = 0, size = sizeof(DWORD);
+    std::ostringstream os;
+    os << "isStyleSheetDark: Windows: querying registry...";
+    FC_MSG(os.str().c_str());
+
+    if (RegOpenKeyExA(HKEY_CURRENT_USER,
+        "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+        0, KEY_READ, &hKey) == ERROR_SUCCESS)
+    {
+        if (RegQueryValueExA(hKey, "AppsUseLightTheme", nullptr, nullptr, (LPBYTE)&value, &size) == ERROR_SUCCESS) {
+            isDark = (value == 0);
+            std::ostringstream os2;
+            os2 << "isStyleSheetDark: Windows: AppsUseLightTheme=" << value
+                << ", interpreted isDark=" << (isDark ? "true" : "false");
+            FC_MSG(os2.str().c_str());
+        } else {
+            FC_MSG("isStyleSheetDark: Windows: RegQueryValueExA failed for AppsUseLightTheme");
+        }
+        RegCloseKey(hKey);
+    } else {
+        FC_MSG("isStyleSheetDark: Windows: RegOpenKeyExA failed for Personalize key");
     }
+    return isDark;
+#elif defined(Q_OS_MAC)
+    // On macOS, check AppleInterfaceStyle environment variable
+    QByteArray style = qgetenv("AppleInterfaceStyle");
+    std::ostringstream os;
+    os << "isStyleSheetDark: macOS: AppleInterfaceStyle='" << style.constData() << "'";
+    FC_MSG(os.str().c_str());
+    return style == "Dark";
+#elif defined(Q_OS_LINUX)
+    // On Linux, check GTK theme or KDE color scheme environment variables
+    QByteArray gtkTheme = qgetenv("GTK_THEME");
+    QByteArray kdeColorScheme = qgetenv("KDE_COLOR_SCHEME");
+    {
+        std::ostringstream os;
+        os << "isStyleSheetDark: Linux: GTK_THEME='" << gtkTheme.constData()
+           << "' KDE_COLOR_SCHEME='" << kdeColorScheme.constData() << "'";
+        FC_MSG(os.str().c_str());
+    }
+    if (gtkTheme.contains("dark", Qt::CaseInsensitive) || kdeColorScheme.contains("dark", Qt::CaseInsensitive)) {
+        FC_MSG("isStyleSheetDark: Linux: detected 'dark' in GTK_THEME or KDE_COLOR_SCHEME -> true");
+        return true;
+    } else {
+        FC_MSG("isStyleSheetDark: Linux: no 'dark' in GTK_THEME/KDE_COLOR_SCHEME -> falling back to GNOME_THEME check");
+    }
+    QByteArray gnomeTheme = qgetenv("GNOME_THEME");
+    if (gnomeTheme.contains("dark", Qt::CaseInsensitive))
+        return true;
     return false;
+#else
+    // Fallback: assume light theme
+    return false;
+#endif
 }
 
 QPixmap OverlayTabWidget::rotateAutoHideIcon(QPixmap pxAutoHide, Qt::DockWidgetArea dockArea)
