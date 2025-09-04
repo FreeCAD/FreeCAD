@@ -16,8 +16,8 @@
 
 Name:           freecad
 Epoch:          1
-Version:        1.1.0~dev
-Release:        %autorelease
+Version:        weekly.2025.09.10
+Release:        1%{?dist}
 
 Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
@@ -42,7 +42,7 @@ Source0:        freecad-sources.tar.gz
 %global bundled_ondsel_solver_version 1.0.1
 
 # Utilities
-BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils tbb-devel
+BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils tbb-devel ninja-build
 %if %{with tests}
 BuildRequires:  xorg-x11-server-Xvfb IfcOpenShell-python3
 %if %{without bundled_gtest}
@@ -134,18 +134,22 @@ Development file for OndselSolver
 %endif
 
 %prep
-    %setup -T -a 0 -q -c -n FreeCAD
+    %setup -T -a 0 -q -c -n FreeCAD-1.0.2
 
 %build
      # Deal with cmake projects that tend to link excessively.
     LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
 
+#         -DCMAKE_INSTALL_PREFIX=%{_libdir}/%{name} \
+#         -DCMAKE_INSTALL_DATADIR=%{_datadir}/%{name} \
+#         -DCMAKE_INSTALL_DOCDIR=%{_docdir}/%{name} \
+#         -DCMAKE_INSTALL_INCLUDEDIR=%{_includedir} \
+#         -DCMAKE_INSTALL_DATAROOTDIR=%{_datadir} \
+#         -DRESOURCEDIR=%{_datadir}/%{name} \
     %cmake \
         -DCMAKE_INSTALL_PREFIX=%{_libdir}/%{name} \
-        -DCMAKE_INSTALL_DATADIR=%{_datadir}/%{name} \
         -DCMAKE_INSTALL_DOCDIR=%{_docdir}/%{name} \
         -DCMAKE_INSTALL_INCLUDEDIR=%{_includedir} \
-        -DCMAKE_INSTALL_DATAROOTDIR=%{_datadir} \
         -DRESOURCEDIR=%{_datadir}/%{name} \
         -DFREECAD_USE_EXTERNAL_PIVY=TRUE \
         -DFREECAD_USE_EXTERNAL_FMT=TRUE \
@@ -175,7 +179,8 @@ Development file for OndselSolver
         -DENABLE_DEVELOPER_TESTS=FALSE \
     %endif
         -DONDSELSOLVER_BUILD_EXE=TRUE \
-        -DBUILD_GUI=TRUE
+        -DBUILD_GUI=TRUE \
+        -G Ninja
 
     %cmake_build
 
@@ -196,9 +201,20 @@ Development file for OndselSolver
     rm -rf %{buildroot}%{_libdir}/%{name}/%{_lib}/cmake
     rm -rf %{buildroot}%{_libdir}/%{name}/%{_lib}/pkgconfig
 
+    #Move files using `-DCMAKE_INSTALL_DATAROOTDIR=%%{_datadir}` breack ctest
+    mkdir -p %{buildroot}%{_datadir}
+    mv %{buildroot}%{_libdir}/freecad/share/applications %{buildroot}%{_datadir}/
+    mkdir -p %{buildroot}%{_metainfodir}
+    mv %{buildroot}%{_libdir}/freecad/share/metainfo/* %{buildroot}%{_metainfodir}/
+    mkdir -p %{buildroot}%{_datadir}
+    mv %{buildroot}%{_libdir}/freecad/share/icons %{buildroot}%{_datadir}/
+    mv %{buildroot}%{_libdir}/freecad/share/pixmaps %{buildroot}%{_datadir}/
+    mv %{buildroot}%{_libdir}/freecad/share/mime %{buildroot}%{_datadir}/
+    mv %{buildroot}%{_libdir}/freecad/share/thumbnailers %{buildroot}%{_datadir}/
+    mv %{buildroot}%{_libdir}/freecad/share/pkgconfig %{buildroot}%{_datadir}/
+
 %check
-    desktop-file-validate %{buildroot}%{_datadir}/applications/org.freecad.FreeCAD.desktop
-    %{?fedora:appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml}
+
 
 %if %{with tests}
     mkdir -p %{buildroot}%tests_resultdir
@@ -213,6 +229,9 @@ Development file for OndselSolver
         fi
     fi
 %endif
+
+    desktop-file-validate %{buildroot}%{_datadir}/applications/org.freecad.FreeCAD.desktop
+    %{?fedora:appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/*.metainfo.xml}
 
     # Bug maintainers to keep %%{plugins} macro up to date.
     #
@@ -282,6 +301,7 @@ Development file for OndselSolver
     %{_libdir}/%{name}/%{_lib}/
     %{_libdir}/%{name}/Ext/
     %{_libdir}/%{name}/Mod/
+    %{_libdir}/%{name}/share/
     %{_datadir}/applications/*
     %{_datadir}/icons/hicolor/*
     %{_datadir}/pixmaps/*
