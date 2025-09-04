@@ -2778,14 +2778,6 @@ Gui--NotificationLabel {
   border-radius: 2px;
 }
 /* overlay */
-Gui--OverlayToolButton{
-  image: url(qss:images_classic/close-lightgray.png);
-}
-
-Gui--OverlayToolButton:hover {
-  image: url(qss:images_classic/close-red.png);
-}
-
 Gui--OverlayToolButton[objectName="OBTN Float"] {
   image: url(qss:images_classic/float-lightgray.png);
 }
