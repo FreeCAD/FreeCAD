@@ -950,7 +950,7 @@ QIcon SelectionMenu::getOrCreateIcon(App::DocumentObject* sobj, std::map<App::Do
 
 void SelectionMenu::addGeoFeatureTypes(App::DocumentObject* sobj, std::map<std::string, SubMenuInfo> &menus, std::set<std::string> &createdTypes)
 {
-    auto geoFeature = dynamic_cast<App::GeoFeature*>(sobj->getLinkedObject(true));
+    auto geoFeature = freecad_cast<App::GeoFeature*>(sobj->getLinkedObject(true));
     if (geoFeature) {
         std::vector<const char*> types = geoFeature->getElementTypes(true);
         for (const char* type : types) {
@@ -980,7 +980,7 @@ void SelectionMenu::addWholeObjectSelection(const PickData &sel, App::DocumentOb
         if (typeName == "App::Part" || typeName == "PartDesign::Body") {
             shouldAdd = true;
         } else {
-            auto geoFeature = dynamic_cast<App::GeoFeature*>(sobj->getLinkedObject(true));
+            auto geoFeature = freecad_cast<App::GeoFeature*>(sobj->getLinkedObject(true));
             if (geoFeature) {
                 std::vector<const char*> types = geoFeature->getElementTypes(true);
                 if (types.size() > 1) {
