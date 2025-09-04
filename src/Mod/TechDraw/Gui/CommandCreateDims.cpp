@@ -2100,14 +2100,14 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
     } else if (dimType == "DistanceY") {
         commandString = QT_TRANSLATE_NOOP("Command", "Create Dimension DistanceY");
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", commandString));
+    cmd->openCommand(QT_TRANSLATE_NOOP("Command", commandString));
 
     bool result = _checkDrawViewPart(cmd);
     if (!result) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect selection"),
                              QObject::tr("No view of a part in selection."));
-        Gui::Command::abortCommand();
+        cmd->abortCommand();
         return;
     }
     ReferenceVector references2d;
@@ -2123,7 +2123,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
                 QMessageBox::warning(Gui::getMainWindow(),
                     QObject::tr("Incorrect selection"),
                     QObject::tr("Selection contains both 2D and 3D geometry"));
-                Gui::Command::abortCommand();
+                cmd->abortCommand();
                 return;
             }
         }
@@ -2149,7 +2149,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
                              QObject::tr("Cannot make 2D extent dimension from selection"));
-        Gui::Command::abortCommand();
+        cmd->abortCommand();
         return;
     }
 
@@ -2165,7 +2165,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
                                  QObject::tr("Cannot make 3D extent dimension from selection"));
-            Gui::Command::abortCommand();
+            cmd->abortCommand();
             return;
         }
     }
@@ -2176,7 +2176,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
     else {
         DrawDimHelper::makeExtentDim3d(partFeat, dimType, references3d);
     }
-    Gui::Command::commitCommand();
+    cmd->commitCommand();
 }
 
 //===========================================================================
