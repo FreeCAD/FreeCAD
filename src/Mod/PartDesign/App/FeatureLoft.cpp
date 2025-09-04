@@ -348,4 +348,3 @@ void Loft::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeNa
 }
 
 
-
