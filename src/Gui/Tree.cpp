@@ -3041,7 +3041,6 @@ void TreeWidget::onUpdateStatus()
     UpdateDisabler disabler(*this, updateBlocked);
 
     std::vector<App::DocumentObject*> errors;
-    App::DocumentObject* relabelCandidate;
 
     // Use a local copy in case of nested calls
     auto localNewObjects = NewObjects;
@@ -3058,7 +3057,10 @@ void TreeWidget::onUpdateStatus()
         auto docItem = getDocumentItem(gdoc);
         if (!docItem)
             continue;
-        for (auto id : v.second) {
+
+        std::vector<App::DocumentObject*> sels;
+        for (auto j = 0; j < v.second.size(); j++) {
+            auto id = v.second[j];
             auto obj = doc->getObjectByID(id);
             if (!obj)
                 continue;
@@ -3067,15 +3069,20 @@ void TreeWidget::onUpdateStatus()
             if (docItem->ObjectMap.contains(obj))
                 continue;
             auto vpd = freecad_cast<ViewProviderDocumentObject*>(gdoc->getViewProvider(obj));
-            if (vpd)
-                docItem->createNewItem(*vpd);
+            if (!vpd)
+                continue;
 
-            if (obj->getParents().empty() && obj->getOutList().empty()) {
-                relabelCandidate = obj;
-            }
-            else {
-                RelabelQueue.insert(obj);
-            }
+            docItem->createNewItem(*vpd);
+
+            if (j != v.second.size() - 1)
+                continue;
+
+            // Select the newest item
+            sels.push_back(obj);
+            Selection().clearSelection();
+            Selection().setSelection(gdoc->getDocument()->getName(), sels);
+
+            tryOfferRelabel(obj, docItem);
         }
     }
 
@@ -3086,10 +3093,6 @@ void TreeWidget::onUpdateStatus()
     // Update children of changed objects
     for (auto& v : localChangedObjects) {
         auto obj = v.first;
-
-        if (RelabelQueue.find(obj) != RelabelQueue.end()) {
-            relabelCandidate = obj;
-        }
 
         auto iter = ObjectTable.find(obj);
         if (iter == ObjectTable.end())
@@ -3210,28 +3213,39 @@ void TreeWidget::onUpdateStatus()
 
     updateGeometries();
 
-    tryOfferRelabel(relabelCandidate);
 
     statusTimer->stop();
 
     FC_LOG("done update status");
 }
 
-void TreeWidget::tryOfferRelabel(App::DocumentObject* object)
+void TreeWidget::tryOfferRelabel(App::DocumentObject* obj, DocumentItem* docItem)
 {
-    if (!isAutoRelabelNewEnabled() || !object) {
-        RelabelQueue.clear();
+    if (!isAutoRelabelNewEnabled()) {
         return;
     }
 
-    auto iter = ObjectTable.find(object);
-    if (iter != ObjectTable.end() && !iter->second.empty()) {
-        auto& data = *iter->second.begin();
-        if (data && data->rootItem) {
-            editItem(data->rootItem);
-            RelabelQueue.clear();
-        }
+    auto it = docItem->ObjectMap.find(obj);
+    if (it == docItem->ObjectMap.end()) {
+        return;
     }
+
+    auto data = it->second;
+    QTreeWidgetItem* item = data->rootItem 
+        ? data->rootItem 
+        : (!data->items.empty() ? *data->items.begin() : nullptr);
+
+    if (!item) {
+        return;        
+    }
+
+    // Make sure any labels already in edit are closed
+    closeEditor(viewport()->findChild<QLineEdit*>(), QAbstractItemDelegate::RevertModelCache);
+    
+    QTimer::singleShot(200, this, [this, item]() {
+        editItem(item);
+    });
+
 }
 
 void TreeWidget::onItemEntered(QTreeWidgetItem* item)
