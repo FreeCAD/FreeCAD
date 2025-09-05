@@ -116,6 +116,8 @@ QGIView::QGIView()
     m_lockHeight = (double) sizeLock.height();
 
     m_lock->hide();
+    m_border->hide();
+    m_label->hide();
 }
 
 void QGIView::isVisible(bool state)
@@ -611,8 +613,6 @@ void QGIView::updateView(bool forceUpdate)
     }
 
     drawBorder(); // Draw the border then hide it so the label knows where to position itself
-    m_border->hide();
-    m_label->hide();
 
     QGIView::draw();
 }
