@@ -321,8 +321,8 @@ class GeometryElementsSelection(QtGui.QWidget):
         subLayout.addWidget(self.pushButton_Remove)
         # main layout
         mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addLayout(subLayout)
         mainLayout.addWidget(self.lb_help)
+        mainLayout.addLayout(subLayout)
         mainLayout.addWidget(self.list_References)
 
         tip1 = self.tr(
