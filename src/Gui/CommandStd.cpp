@@ -973,10 +973,9 @@ void StdCmdAnnotationLabel::activated(int)
     const auto& picked = sel.getPickedPoints();
     if (!picked.empty()) {
         basePos = picked.front();
-    } else if (supportObj && supportObj->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            auto* gf = static_cast<App::GeoFeature*>(supportObj);
-            const Base::Placement& gp = gf->globalPlacement();
-            basePos = gp.getPosition();
+    } else if (auto* gf = freecad_cast<App::GeoFeature*>(supportObj); supportObj && gf) {
+        const Base::Placement& gp = gf->globalPlacement();
+        basePos = gp.getPosition();
     }
 
     // Create the label object
