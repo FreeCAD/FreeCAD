@@ -299,9 +299,9 @@ class GeometryElementsSelection(QtGui.QWidget):
         # label
         self.lb_help = QtGui.QLabel()
         self.lb_help.setWordWrap(True)
-        selectHelpText = self.tr(
-            "Select geometry of type: {}{}{}"
-        ).format("<b>", self.sel_elem_text, "</b>")
+        selectHelpText = self.tr("Select geometry of type: {}{}{}").format(
+            "<b>", self.sel_elem_text, "</b>"
+        )
         self.lb_help.setText(selectHelpText)
         # list
         self.list_References = QtGui.QListWidget()
