@@ -588,7 +588,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             unit = vobj.UnitOverride
 
         # Special representation if we use 'Building US' scheme
-        if (not unit and obj.Document.UnitSystem == "Building US (ft-in, sqft, cft)") \
+        doc = obj.Document
+        if (not unit and doc.UnitSystem == doc.getEnumerationsOfProperty("UnitSystem")[5]) \
                 or (unit == "arch"):
             self.string = App.Units.Quantity(length, App.Units.Length).UserString
             if self.string.count('"') > 1:
