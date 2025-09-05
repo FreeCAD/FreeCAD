@@ -51,6 +51,8 @@
 #include "WhatsThis.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
+#include "App/GeoFeature.h"
+#include "App/Annotation.h"
 
 
 using Base::Console;
@@ -965,6 +967,82 @@ void StdCmdReloadStyleSheet::activated(int)
     Application::Instance->reloadStyleSheet();
 }
 
+// ==================================================================
+// Std_AnnotationLabel
+// ==================================================================
+DEF_STD_CMD_A(StdCmdAnnotationLabel)
+
+StdCmdAnnotationLabel::StdCmdAnnotationLabel()
+    : Command("Std_AnnotationLabel")
+{
+    // Put it under Tools menu
+    sGroup = QT_TR_NOOP("Tools");
+    sMenuText = QT_TR_NOOP("Annotation Label");
+    sToolTipText = QT_TR_NOOP("Creates a new annotation label at the selected element in the 3D view");
+    sWhatsThis = "Std_AnnotationLabel";
+    sStatusTip = sToolTipText;
+    sPixmap = "Tree_Annotation";
+    eType = AlterDoc;
+}
+
+bool StdCmdAnnotationLabel::isActive()
+{
+    return (
+        App::GetApplication().getActiveDocument() != nullptr
+        && !Gui::Selection().getSelectionEx().empty()
+    );
+}
+
+void StdCmdAnnotationLabel::activated(int)
+{
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (!doc) {
+        return;
+    }
+
+    auto selEx = Gui::Selection().getSelectionEx();
+    if (selEx.empty()) {
+        return;
+    }
+
+    // Use first selected item in active 3D view
+    const Gui::SelectionObject& sel = selEx.front();
+
+    const App::DocumentObject* support = sel.getObject();
+    App::DocumentObject* supportObj = const_cast<App::DocumentObject*>(support);
+
+    // Compute base position. Fallback: object placement position, else origin
+    Base::Vector3d basePos;
+    const auto& picked = sel.getPickedPoints();
+    if (!picked.empty()) {
+        basePos = picked.front();
+    }
+    else if (supportObj && supportObj->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+        auto* gf = static_cast<App::GeoFeature*>(supportObj);
+        const Base::Placement& gp = gf->globalPlacement();
+        basePos = gp.getPosition();
+    }
+
+    // Create the label object
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Annotation Label"));
+    App::DocumentObject* obj = doc->addObject("App::AnnotationLabel", "Label");
+    if (!obj) {
+        abortCommand();
+        return;
+    }
+
+    // Set basic properties
+    auto* label = static_cast<App::AnnotationLabel*>(obj);
+    label->LabelText.setValue(std::vector<std::string> {"Annotation"});
+
+    // BasePosition at anchor, TextPosition slightly offset for visibility
+    label->BasePosition.setValue(basePos);
+    Base::Vector3d textPos = basePos + Base::Vector3d(10, 10, 10);
+    label->TextPosition.setValue(textPos);
+
+    commitCommand();
+}
+
 namespace Gui
 {
 
@@ -999,6 +1077,7 @@ void CreateStdCommands()
     rcCmdMgr.addCommand(new StdCmdDevHandbook());
     // rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     // rcCmdMgr.addCommand(new StdCmdDescription());
+    rcCmdMgr.addCommand(new StdCmdAnnotationLabel());
 }
 
 }  // namespace Gui
