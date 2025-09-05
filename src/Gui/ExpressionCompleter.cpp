@@ -1164,6 +1164,57 @@ void ExpressionTextEdit::slotCompleteText(const QString& completionPrefix)
 void ExpressionTextEdit::keyPressEvent(QKeyEvent* e)
 {
     Base::FlagToggler<bool> flag(block, true);
+
+    // Shift+Enter - insert a new line
+    if ((e->modifiers() & Qt::ShiftModifier) && (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return)) {
+        this->setPlainText(this->toPlainText() + QLatin1Char('\n'));
+        this->moveCursor(QTextCursor::End);
+        if (completer) {
+            completer->popup()->setVisible(false);
+        }
+        e->accept();
+        return;
+    }
+
+    // handling if completer is visible
+    if (completer && completer->popup()->isVisible()) {
+        switch (e->key()) {
+            case Qt::Key_Enter:
+            case Qt::Key_Return:
+            case Qt::Key_Escape:
+            case Qt::Key_Backtab:
+                // default action
+                e->ignore();
+                return; 
+
+            case Qt::Key_Tab: 
+                // if no completion is selected, take top one
+                if (!completer->popup()->currentIndex().isValid()) {
+                    completer->popup()->setCurrentIndex(completer->popup()->model()->index(0, 0));
+                }
+                // insert completion
+                completer->setCurrentRow(completer->popup()->currentIndex().row());
+                slotCompleteText(completer->currentCompletion());
+            
+                // refresh completion list
+                completer->setCompletionPrefix(completer->currentCompletion());
+                if (completer->completionCount() == 1) {
+                    completer->popup()->setVisible(false);
+                }
+                e->accept();
+                return;
+
+            default:
+                break;
+        }
+    }
+
+    // Enter, Return or Tab - request default action
+    if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return || e->key() == Qt::Key_Tab) {
+        e->ignore();
+        return;
+    }
+
     QPlainTextEdit::keyPressEvent(e);
 }
 
