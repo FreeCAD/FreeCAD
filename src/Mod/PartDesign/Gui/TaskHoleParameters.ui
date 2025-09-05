@@ -670,12 +670,17 @@ over 90: larger hole radius at the bottom</string>
        </item>
        <item>
         <property name="text">
-         <string>Tap drill (to be threaded)</string>
+         <string>Tap drill Only</string>
         </property>
        </item>
        <item>
         <property name="text">
          <string>Modeled thread</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Cosmetic thread / Tap drill</string>
         </property>
        </item>
       </widget>
