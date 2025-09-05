@@ -234,7 +234,6 @@ class Gui::ViewerEventFilter : public QObject
 public:
     ViewerEventFilter() : longPressTimer(new QTimer(this)) {
         longPressTimer->setSingleShot(true);
-        longPressTimer->setInterval(1000); // after 1s of LMB press on viewport it gets toggled
         connect(longPressTimer, &QTimer::timeout, [this]() {
             if (currentViewer) {
                 triggerClarifySelection();
@@ -300,6 +299,11 @@ public:
             if (mouseEvent->button() == Qt::LeftButton) {
                 currentViewer = static_cast<View3DInventorViewer*>(obj);
                 pressPosition = mouseEvent->pos();
+
+                int longPressTimeout = App::GetApplication()
+                                           .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                                           ->GetInt("LongPressTimeout", 1000);
+                longPressTimer->setInterval(longPressTimeout);
                 longPressTimer->start();
             }
         }
