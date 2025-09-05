@@ -23,6 +23,10 @@
 
 #include "PreCompiled.h"
 
+#include "PartDesignMigration.h"
+#include <App/Application.h>
+#include <unordered_set>
+
 #include <App/Document.h>
 #include <App/Part.h>
 #include <App/VarSet.h>
@@ -563,23 +567,41 @@ App::DocumentObject *Body::getSubObject(const char *subname,
 #endif
 }
 
+namespace {
+    static std::unordered_set<App::Document*> s_migrationHooked;
+}
+
 void Body::onDocumentRestored()
 {
-    for(auto obj : Group.getValues()) {
-        if(obj->isDerivedFrom<PartDesign::Feature>())
+    for (auto obj : Group.getValues()) {
+        if (obj->isDerivedFrom<PartDesign::Feature>())
             static_cast<PartDesign::Feature*>(obj)->_Body.setValue(this);
     }
-    _GroupTouched.setStatus(App::Property::Output,true);
+    _GroupTouched.setStatus(App::Property::Output, true);
 
     // trigger ViewProviderBody::copyColorsfromTip
     if (Tip.getValue())
         Tip.touch();
 
+    // Hide & lock Body.Placement in the UI
     Placement.setStatus(App::Property::Hidden, true);
     Placement.setStatus(App::Property::ReadOnly, true);
 
+    // --- NEW: defer migration until the *document* has fully finished restoring
+    App::Document* doc = getDocument();
+    if (doc && s_migrationHooked.insert(doc).second) {
+        App::GetApplication().signalFinishRestoreDocument.connect(
+            [doc](const App::Document& done) {
+                if (&done != doc) return; // only run for this document
+                PartDesign::migrateLegacyBodyPlacements(const_cast<App::Document*>(&done));
+            }
+        );
+    }
+    // --- END NEW
+
     DocumentObject::onDocumentRestored();
 }
+
 
 // a body is solid if it has features that are solid
 bool Body::isSolid()
