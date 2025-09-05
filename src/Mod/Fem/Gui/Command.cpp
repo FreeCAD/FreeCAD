@@ -1108,7 +1108,8 @@ static void DefineNodesCallback(void* ud, SoEventCallback* n)
 
     std::string str = getSelectedNodes(view);
     if (!str.empty()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
+        int tid =
+            Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.addObject('Fem::FemSetNodesObject','NodeSet')");
         Gui::Command::doCommand(Gui::Command::Doc,
@@ -1118,7 +1119,7 @@ static void DefineNodesCallback(void* ud, SoEventCallback* n)
                                 "App.activeDocument().%s.addObject(App.activeDocument().NodeSet)",
                                 Analysis->getNameInDocument());
 
-        Gui::Command::commitCommand();
+        Gui::Command::commitCommand(tid);
     }
 }
 
@@ -1259,7 +1260,8 @@ static void DefineElementsCallback(void* ud, SoEventCallback* n)
 
     std::string str = getSelectedNodes(view);
     if (!str.empty()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
+        int tid =
+            Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
         Gui::Command::doCommand(
             Gui::Command::Doc,
             "App.ActiveDocument.addObject('Fem::FemSetElementNodesObject','ElementSet')");
@@ -1271,7 +1273,7 @@ static void DefineElementsCallback(void* ud, SoEventCallback* n)
             "App.activeDocument().%s.addObject(App.activeDocument().ElementSet)",
             Analysis->getNameInDocument());
 
-        Gui::Command::commitCommand();
+        Gui::Command::commitCommand(tid);
     }
 }
 

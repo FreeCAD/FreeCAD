@@ -87,7 +87,7 @@ bool FitBSplineCurveWidget::accept()
         tryAccept();
     }
     catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
+        d->obj.getDocument()->abortTransaction();
         QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
@@ -136,9 +136,9 @@ void FitBSplineCurveWidget::exeCommand(const QString& cmd)
 {
     Gui::WaitCursor wc;
     Gui::Command::addModule(Gui::Command::App, "ReverseEngineering");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Fit B-spline"));
+    d->obj.getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Fit B-spline"));
     Gui::Command::runCommand(Gui::Command::Doc, cmd.toLatin1());
-    Gui::Command::commitCommand();
+    d->obj.getDocument()->commitTransaction();
     Gui::Command::updateActive();
 }
 
@@ -148,7 +148,7 @@ void FitBSplineCurveWidget::tryCommand(const QString& cmd)
         exeCommand(cmd);
     }
     catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
+        d->obj.getDocument()->abortTransaction();
         e.reportException();
     }
 }

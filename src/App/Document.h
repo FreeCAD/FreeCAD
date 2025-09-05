@@ -480,17 +480,28 @@ public:
      * to setup a potential transaction which will only be created if there is
      * actual changes.
      */
-    void openTransaction(const char* name = nullptr);
+    int openTransaction(const char* name = nullptr, bool tmpName = false, int tid = 0);
     /// Rename the current transaction if the id matches
     void renameTransaction(const char* name, int id) const;
     /// Commit the Command transaction. Do nothing If there is no Command transaction open.
     void commitTransaction();
     /// Abort the actually running transaction.
     void abortTransaction() const;
+
+    // If the tid != 0, it will take the transaction id if it exists
+    int setActiveTransaction(const std::string& name, bool tmpName = false, int tid = 0);
+
+    void lockTransaction();
+    void unlockTransaction();
+    bool isTransactionLocked() const;
+
+    bool transacting() const;
+
     /// Check if a transaction is open
     bool hasPendingTransaction() const;
     /// Return the undo/redo transaction ID starting from the back
     int getTransactionID(bool undo, unsigned pos = 0) const;
+    int getBookedTransactionID() const;
     /// Check if a transaction is open and its list is empty.
     /// If no transaction is open true is returned.
     bool isTransactionEmpty() const;
@@ -639,7 +650,11 @@ public:
 
     /// Indicate if there is any document restoring/importing
     static bool isAnyRestoring();
+                                                                           
+                                                                           
 
+                                                                           
+                                                                           
     void registerLabel(const std ::string& newLabel);
     void unregisterLabel(const std::string& oldLabel);
     bool containsLabel(const std::string& label);
@@ -697,9 +712,9 @@ protected:
      * This function creates an actual transaction regardless of Application
      * AutoTransaction setting.
      */
-    int _openTransaction(const char* name = nullptr, int id = 0);
+    int _openTransaction(std::string name = "", int id = 0);
     /// Internally called by Application to commit the Command transaction.
-    void _commitTransaction(bool notify = false);
+    bool _commitTransaction(bool notify = false);
     /// Internally called by Application to abort the running transaction.
     void _abortTransaction();
 

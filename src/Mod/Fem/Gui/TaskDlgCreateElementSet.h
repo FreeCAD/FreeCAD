@@ -65,6 +65,9 @@ public:
     /// is called by the framework if the user press the help button
     void helpRequested() override;
 
+    void activate() override;
+    void deactivate() override;
+
     /// returns for Close and Help button
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     {

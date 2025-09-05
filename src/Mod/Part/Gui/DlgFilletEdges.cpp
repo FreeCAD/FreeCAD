@@ -243,8 +243,7 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
     ui->filletEndRadius->setUnit(Base::Unit::Length);
 
     d->object = nullptr;
-    d->selection = new EdgeFaceSelection(d->object);
-    Gui::Selection().addSelectionGate(d->selection);
+    setSelectionGate();
 
     d->fillet = fillet;
     //NOLINTBEGIN
@@ -1038,6 +1037,11 @@ bool DlgFilletEdges::accept()
     Gui::Command::copyVisual(to, "PointColor", from);
     return true;
 }
+void DlgFilletEdges::setSelectionGate()
+{
+    d->selection = new EdgeFaceSelection(d->object);
+    Gui::Selection().addSelectionGate(d->selection);
+}
 
 // ---------------------------------------
 
@@ -1099,6 +1103,15 @@ bool TaskFilletEdges::reject()
 {
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     return true;
+}
+void TaskFilletEdges::activate()
+{
+    widget->setSelectionGate();
+    widget->attachSelection();
+}
+void TaskFilletEdges::deactivate()
+{
+    widget->detachSelection();
 }
 
 // --------------------------------------------------------------

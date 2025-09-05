@@ -94,11 +94,11 @@ bool ViewProvider::doubleClicked()
 {
     try {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-        Gui::Command::openCommand(text.toUtf8());
+        getDocument()->openCommand(text.toUtf8());
         Gui::cmdSetEdit(pcObject);
     }
     catch (const Base::Exception&) {
-        Gui::Command::abortCommand();
+        getDocument()->abortCommand();
     }
     return true;
 }
@@ -166,7 +166,10 @@ bool ViewProvider::setEdit(int ModNum)
             }
         }
 
-        Gui::Control().showDialog(featureDlg);
+        auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
+            return editdoc->getEditViewProvider() == this;
+        });
+        Gui::Control().showDialog(featureDlg, editDoc->getDocument());
         return true;
     } else {
         return PartGui::ViewProviderPart::setEdit(ModNum);

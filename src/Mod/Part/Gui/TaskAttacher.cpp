@@ -1191,7 +1191,9 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
         if (!ViewProvider->getObject()->isAttachedToDocument())
             return;
 
-        auto editDoc = Gui::Application::Instance->editDocument();
+        Gui::Document* editDoc = Gui::Application::Instance->isInEdit(ViewProvider->getDocument())
+            ? ViewProvider->getDocument()
+            : nullptr;
         App::DocumentObject* editObj = ViewProvider->getObject();
         std::string editSubName;
         auto sels = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve, true);
@@ -1240,7 +1242,13 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
 
 TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject* ViewProvider, bool createBox,
     std::function<void()> onAccept, std::function<void()> onReject)
-    : TaskDialog(), ViewProvider(ViewProvider), parameter(nullptr), onAccept(onAccept), onReject(onReject), accepted(false)
+    : TaskDialog()
+    , ViewProvider(ViewProvider)
+    , parameter(nullptr)
+    , onAccept(onAccept)
+    , onReject(onReject)
+    , accepted(false)
+    , tid(0)
 {
     assert(ViewProvider);
     setDocumentName(ViewProvider->getDocument()->getDocument()->getName());
@@ -1264,7 +1272,7 @@ TaskDlgAttacher::~TaskDlgAttacher()
 void TaskDlgAttacher::open()
 {
     if (!Gui::Command::hasPendingCommand()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+        tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
     }
 }
 
@@ -1278,8 +1286,9 @@ bool TaskDlgAttacher::accept()
     try {
         Gui::DocumentT doc(getDocumentName());
         Gui::Document* document = doc.getDocument();
-        if (!document || !ViewProvider)
+        if (!document || !ViewProvider) {
             return true;
+        }
 
         Part::AttachExtension* pcAttach = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
         auto obj = ViewProvider->getObject();
@@ -1304,7 +1313,7 @@ bool TaskDlgAttacher::accept()
 
         Gui::cmdGuiDocument(obj, "resetEdit()");
 
-        Gui::Command::commitCommand();
+        Gui::Command::commitCommand(tid);
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Datum dialog: input error"), QCoreApplication::translate("Exception", e.what()));
@@ -1326,7 +1335,7 @@ bool TaskDlgAttacher::reject()
     Gui::Document* document = doc.getDocument();
     if (document) {
         // roll back the done things
-        Gui::Command::abortCommand();
+        Gui::Command::abortCommand(tid);
         Gui::Command::doCommand(Gui::Command::Gui,"%s.resetEdit()", doc.getGuiDocumentPython().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"%s.recompute()", doc.getAppDocumentPython().c_str());
     }
@@ -1334,6 +1343,18 @@ bool TaskDlgAttacher::reject()
     accepted = false;
 
     return true;
+}
+void TaskDlgAttacher::activate()
+{
+    if (parameter) {
+        parameter->attachSelection();
+    }
+}
+void TaskDlgAttacher::deactivate()
+{
+    if (parameter) {
+        parameter->detachSelection();
+    }
 }
 
 #include "moc_TaskAttacher.cpp"

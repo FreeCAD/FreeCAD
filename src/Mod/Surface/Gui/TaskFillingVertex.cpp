@@ -49,15 +49,13 @@ namespace SurfaceGui
 class FillingVertexPanel::VertexSelection: public Gui::SelectionFilterGate
 {
 public:
-    VertexSelection(FillingVertexPanel::SelectionMode& mode, Surface::Filling* editedObject)
+    VertexSelection(FillingVertexPanel::SelectionMode mode, Surface::Filling* editedObject)
         : Gui::SelectionFilterGate(nullPointer())
         , mode(mode)
         , editedObject(editedObject)
     {}
     ~VertexSelection() override
-    {
-        mode = FillingVertexPanel::None;
-    }
+    {}
     /**
      * Allow the user to pick only edges.
      */
@@ -108,7 +106,7 @@ private:
     }
 
 private:
-    FillingVertexPanel::SelectionMode& mode;
+    FillingVertexPanel::SelectionMode mode;
     Surface::Filling* editedObject;
 };
 
@@ -160,6 +158,12 @@ void FillingVertexPanel::appendButtons(Gui::ButtonGroup* buttonGroup)
 {
     buttonGroup->addButton(ui->buttonVertexAdd, int(SelectionMode::AppendVertex));
     buttonGroup->addButton(ui->buttonVertexRemove, int(SelectionMode::RemoveVertex));
+}
+void FillingVertexPanel::setSelectionGate()
+{
+    if (selectionMode != None) {
+        Gui::Selection().addSelectionGate(new VertexSelection(selectionMode, editedObject));
+    }
 }
 
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
@@ -223,10 +227,10 @@ void FillingVertexPanel::clearSelection()
 
 void FillingVertexPanel::checkOpenCommand()
 {
-    if (checkCommand && !Gui::Command::hasPendingCommand()) {
+    if (checkCommand && !editedObject->getDocument()->hasPendingTransaction()) {
         std::string Msg("Edit ");
         Msg += editedObject->Label.getValue();
-        Gui::Command::openCommand(Msg.c_str());
+        editedObject->getDocument()->openTransaction(Msg.c_str());
         checkCommand = false;
     }
 }
@@ -255,9 +259,8 @@ void FillingVertexPanel::slotDeletedObject(const Gui::ViewProviderDocumentObject
 void FillingVertexPanel::onButtonVertexAddToggled(bool checked)
 {
     if (checked) {
-        // 'selectionMode' is passed by reference and changed when the filter is deleted
-        Gui::Selection().addSelectionGate(new VertexSelection(selectionMode, editedObject));
         selectionMode = AppendVertex;
+        setSelectionGate();
     }
     else if (selectionMode == AppendVertex) {
         exitSelectionMode();
@@ -267,9 +270,8 @@ void FillingVertexPanel::onButtonVertexAddToggled(bool checked)
 void FillingVertexPanel::onButtonVertexRemoveToggled(bool checked)
 {
     if (checked) {
-        // 'selectionMode' is passed by reference and changed when the filter is deleted
-        Gui::Selection().addSelectionGate(new VertexSelection(selectionMode, editedObject));
         selectionMode = RemoveVertex;
+        setSelectionGate();
     }
     else if (selectionMode == RemoveVertex) {
         exitSelectionMode();
@@ -393,6 +395,7 @@ void FillingVertexPanel::exitSelectionMode()
     // 'selectionMode' is passed by reference to the filter and changed when the filter is deleted
     Gui::Selection().clearSelection();
     Gui::Selection().rmvSelectionGate();
+    selectionMode = None;
 }
 
 }  // namespace SurfaceGui

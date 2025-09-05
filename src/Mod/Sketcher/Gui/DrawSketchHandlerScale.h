@@ -111,7 +111,7 @@ public:
         }
 
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scale geometries"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Scale geometries"));
 
             createShape(false);
 
@@ -122,7 +122,7 @@ public:
                 reassignFacadeIds();
             }
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception& e) {
             e.reportException();
@@ -131,7 +131,7 @@ public:
                              QT_TRANSLATE_NOOP("Notifications", "Failed to scale"));
 
             if (abortOnFail) {
-                Gui::Command::abortCommand();
+                abortCommand();
             }
             THROWM(Base::RuntimeError,
                    QT_TRANSLATE_NOOP(

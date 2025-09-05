@@ -1158,12 +1158,13 @@ bool OverlayTabWidget::checkAutoHide() const
         }
     }
 
+    bool activeDocInEdit = Application::Instance->isInEdit(Application::Instance->activeDocument());
     if (autoMode == AutoMode::EditShow) {
-        return !Application::Instance->editDocument()
+        return !activeDocInEdit
             && (!Control().taskPanel() || Control().taskPanel()->isEmpty(false));
     }
 
-    if (autoMode == AutoMode::EditHide && Application::Instance->editDocument()) {
+    if (autoMode == AutoMode::EditHide && activeDocInEdit) {
         return true;
     }
 
