@@ -31,6 +31,7 @@
 #include <QPointF>
 #include <QSvgRenderer>
 
+#include "QGIUserTypes.h"
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -46,7 +47,7 @@ public:
     explicit QGCustomSvg();
     ~QGCustomSvg() override;
 
-    enum {Type = QGraphicsItem::UserType + 131};
+    enum {Type = UserType::QGCustomSvg};
     int type() const override { return Type;}
 
     void paint( QPainter *painter,

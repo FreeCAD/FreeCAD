@@ -20,6 +20,7 @@ SET(Draft_SRCS_base
 SET(Draft_import
     importAirfoilDAT.py
     importDXF.py
+    DxfImportDialog.py
     importDWG.py
     importOCA.py
     importSVG.py
@@ -70,7 +71,6 @@ SET(Draft_tests
 
 SET(Draft_utilities
     draftutils/__init__.py
-    draftutils/doc_observer.py
     draftutils/grid_observer.py
     draftutils/groups.py
     draftutils/gui_utils.py

@@ -37,12 +37,27 @@
 #include <Mod/PartDesign/App/FeatureDressUp.h>
 
 #include "ViewProviderDressUp.h"
+
+#include "StyleParameters.h"
 #include "TaskDressUpParameters.h"
+
+#include <Base/ServiceProvider.h>
+#include <Gui/Utilities.h>
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderDressUp,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderDressUp, PartDesignGui::ViewProvider)
 
+
+void ViewProviderDressUp::attach(App::DocumentObject* pcObject)
+{
+    ViewProvider::attach(pcObject);
+
+    auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
+    PreviewColor.setValue(styleParameterManager->resolve(StyleParameters::PreviewDressUpColor));
+
+    setErrorState(false);
+}
 
 void ViewProviderDressUp::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
@@ -73,7 +88,7 @@ bool ViewProviderDressUp::setEdit(int ModNum) {
         } else {
             QMessageBox::warning ( nullptr, QObject::tr("Feature error"),
                     QObject::tr("%1 misses a base feature.\n"
-                           "This feature is broken and can't be edited.")
+                           "This feature is broken and cannot be edited.")
                         .arg( QString::fromLatin1(dressUp->getNameInDocument()) )
                 );
             return false;
@@ -121,3 +136,18 @@ void ViewProviderDressUp::highlightReferences(const bool on)
     }
 }
 
+void ViewProviderDressUp::setErrorState(bool error)
+{
+    auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
+
+    const float opacity =
+        static_cast<float>(styleParameterManager
+                               ->resolve(error ? StyleParameters::PreviewErrorOpacity
+                                               : StyleParameters::PreviewShapeOpacity)
+                               .value);
+
+    pcPreviewShape->transparency = 1.0F - opacity;
+    pcPreviewShape->color = error
+        ? styleParameterManager->resolve(StyleParameters::PreviewErrorColor).asValue<SbColor>()
+        : PreviewColor.getValue().asValue<SbColor>();
+}

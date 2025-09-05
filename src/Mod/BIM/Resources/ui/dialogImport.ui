@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>IFC import options</string>
+   <string>IFC Import Options</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -48,7 +48,7 @@
      <item row="3" column="1">
       <widget class="QComboBox" name="comboSingleDoc">
        <property name="toolTip">
-        <string>This defines how the IFC data is stored in the FreeCAD document. 'Single IFC document' means that the FreeCAD document is the IFC document, anything you create in it belongs to the IFC document too. 'Use IFC document object' means that an object will be created inside the FreeCAD document to represent the IFC document. You will be able to add non-IFC objects alongside.</string>
+        <string>Defines how IFC data is stored in the FreeCAD document. 'Single IFC document' treats the FreeCAD document itself as the IFC document, with all created content belonging to it. 'Use IFC document object' creates a separate object representing the IFC document, allowing both IFC and non-IFC content to coexist.</string>
        </property>
        <item>
         <property name="text">
@@ -96,7 +96,7 @@
        </item>
        <item>
         <property name="text">
-         <string>No 3D representation at all</string>
+         <string>No 3D representation</string>
         </property>
        </item>
       </widget>
@@ -110,6 +110,16 @@
      </property>
      <property name="text">
       <string>Switch workbench after import</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkLoadTypes">
+     <property name="toolTip">
+      <string>Preloads IFC types that are connected to the objects. It is also possible to leave this setting disabled and double click later on the object to load the types.</string>
+     </property>
+     <property name="text">
+      <string>Preload types</string>
      </property>
     </widget>
    </item>
@@ -146,10 +156,10 @@
    <item>
     <widget class="QCheckBox" name="checkAskAgain">
      <property name="toolTip">
-      <string>If this is unchecked, these settings will be applied automatically next time. You can change this later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</string>
+      <string>If this is unchecked, these settings will be applied automatically next time. This can be changed later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</string>
      </property>
      <property name="text">
-      <string>Ask me again next time</string>
+      <string>Ask again next time</string>
      </property>
      <property name="checked">
       <bool>false</bool>

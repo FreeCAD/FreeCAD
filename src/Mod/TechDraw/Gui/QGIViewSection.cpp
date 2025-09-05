@@ -48,7 +48,6 @@ void QGIViewSection::draw()
 
 void QGIViewSection::drawSectionFace()
 {
-    // Base::Console().message("QGIVS::drawSectionFace()\n");
     auto section( dynamic_cast<TechDraw::DrawViewSection *>(getViewObject()) );
     if (!section) {
         return;
@@ -112,7 +111,6 @@ void QGIViewSection::drawSectionFace()
             newFace->setLineWeight(sectionVp->WeightPattern.getValue());
             std::vector<TechDraw::LineSet> lineSets = section->getDrawableLines(i);
             if (!lineSets.empty()) {
-                newFace->clearLineSets();
                 for (auto& ls: lineSets) {
                     newFace->addLineSet(ls);
                 }

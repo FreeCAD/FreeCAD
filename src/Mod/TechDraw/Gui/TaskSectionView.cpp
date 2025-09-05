@@ -493,7 +493,7 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
 
     std::string baseName = m_base->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create SectionView"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Section View"));
     if (!m_section) {
         const std::string objectName("SectionView");
         m_sectionName = m_base->getDocument()->getUniqueObjectName(objectName.c_str());
@@ -757,10 +757,6 @@ TaskDlgSectionView::TaskDlgSectionView(TechDraw::DrawViewSection* section) : Tas
 }
 TaskDlgSectionView::~TaskDlgSectionView() {}
 
-void TaskDlgSectionView::update()
-{
-    //widget->updateTask();
-}
 
 //==== calls from the TaskView ===============================================================
 void TaskDlgSectionView::open() {}

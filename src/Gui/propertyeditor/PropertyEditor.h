@@ -78,6 +78,7 @@ public:
                  bool checkDocument = false);
     void updateProperty(const App::Property&);
     void removeProperty(const App::Property&);
+    void renameProperty(const App::Property&);
     void setAutomaticExpand(bool);
     bool isAutomaticExpand(bool) const;
     void setAutomaticDocumentUpdate(bool);
@@ -127,11 +128,15 @@ protected:
 #endif
     void contextMenuEvent(QContextMenuEvent* event) override;
     bool event(QEvent*) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
 private:
     void setEditorMode(const QModelIndex& parent, int start, int end);
     void closeTransaction();
     void recomputeDocument(App::Document*);
+    std::unordered_set<App::Property*> acquireSelectedProperties() const;
+    void removeProperties(const std::unordered_set<App::Property*>& props);
+    bool removeSelectedDynamicProperties();
 
     // check if mouse_pos is around right or bottom side of a cell
     // and return the index of that cell if found

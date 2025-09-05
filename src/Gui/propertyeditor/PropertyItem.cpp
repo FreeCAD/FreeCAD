@@ -29,6 +29,7 @@
 #include <limits>
 #include <QApplication>
 #include <QComboBox>
+#include <QCheckBox>
 #include <QFontDatabase>
 #include <QLocale>
 #include <QMessageBox>
@@ -218,6 +219,14 @@ bool PropertyItem::removeProperty(const App::Property* prop)
     }
 
     return propertyItems.empty();
+}
+
+bool PropertyItem::renameProperty(const App::Property* prop)
+{
+    setPropertyData({const_cast<App::Property*>(prop)});
+    QString name = QString::fromLatin1(prop->getName());
+    setPropertyName(name, name);
+    return true;
 }
 
 App::Property* PropertyItem::getFirstProperty()
@@ -846,7 +855,6 @@ QWidget* PropertyStringItem::createEditor(QWidget* parent,
 {
     auto le = new ExpLineEdit(parent);
     le->setFrame(static_cast<bool>(frameOption));
-    le->setReadOnly(isReadOnly());
     QObject::connect(le, &ExpLineEdit::textChanged, method);
     if (isBound()) {
         le->bind(getPath());
@@ -895,7 +903,6 @@ QWidget* PropertyFontItem::createEditor(QWidget* parent,
 {
     auto cb = new QComboBox(parent);
     cb->setFrame(static_cast<bool>(frameOption));
-    cb->setDisabled(isReadOnly());
     QObject::connect(cb, &QComboBox::textActivated, method);
     return cb;
 }
@@ -962,7 +969,6 @@ QWidget* PropertyIntegerItem::createEditor(QWidget* parent,
 {
     auto sb = new Gui::IntSpinBox(parent);
     sb->setFrame(static_cast<bool>(frameOption));
-    sb->setReadOnly(isReadOnly());
     QObject::connect(sb, qOverload<int>(&Gui::IntSpinBox::valueChanged), method);
 
     if (isBound()) {
@@ -1029,7 +1035,6 @@ QWidget* PropertyIntegerConstraintItem::createEditor(QWidget* parent,
 {
     auto sb = new Gui::IntSpinBox(parent);
     sb->setFrame(static_cast<bool>(frameOption));
-    sb->setReadOnly(isReadOnly());
     QObject::connect(sb, qOverload<int>(&Gui::IntSpinBox::valueChanged), method);
 
     if (isBound()) {
@@ -1126,7 +1131,6 @@ QWidget* PropertyFloatItem::createEditor(QWidget* parent,
     auto sb = new Gui::DoubleSpinBox(parent);
     sb->setFrame(static_cast<bool>(frameOption));
     sb->setDecimals(decimals());
-    sb->setReadOnly(isReadOnly());
     QObject::connect(sb, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), method);
 
     if (isBound()) {
@@ -1194,7 +1198,6 @@ QWidget* PropertyUnitItem::createEditor(QWidget* parent,
     auto infield = new Gui::QuantitySpinBox(parent);
     infield->setFrame(static_cast<bool>(frameOption));
     infield->setMinimumHeight(0);
-    infield->setReadOnly(isReadOnly());
 
     // if we are bound to an expression we need to bind it to the input field
     if (isBound()) {
@@ -1293,7 +1296,6 @@ QWidget* PropertyFloatConstraintItem::createEditor(QWidget* parent,
     auto sb = new Gui::DoubleSpinBox(parent);
     sb->setDecimals(decimals());
     sb->setFrame(static_cast<bool>(frameOption));
-    sb->setReadOnly(isReadOnly());
     QObject::connect(sb, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), method);
 
     if (isBound()) {
@@ -1382,28 +1384,28 @@ void PropertyBoolItem::setValue(const QVariant& value)
 }
 
 QWidget* PropertyBoolItem::createEditor(QWidget* parent,
-                                        const std::function<void()>& method,
-                                        FrameOption frameOption) const
+                                        const std::function<void()>& /*method*/,
+                                        FrameOption /*frameOption*/) const
 {
-    auto cb = new QComboBox(parent);
-    cb->setFrame(static_cast<bool>(frameOption));
-    cb->addItem(QLatin1String("false"));
-    cb->addItem(QLatin1String("true"));
-    cb->setDisabled(isReadOnly());
-    QObject::connect(cb, qOverload<int>(&QComboBox::activated), method);
-    return cb;
+    // The checkbox is basically artificial (it is not rendered). Other code handles the callback,
+    // etc.
+    auto checkbox = new QCheckBox(parent);
+    return checkbox;
 }
 
 void PropertyBoolItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    auto cb = qobject_cast<QComboBox*>(editor);
-    cb->setCurrentIndex(cb->findText(data.toString()));
+    if (auto checkbox = qobject_cast<QCheckBox*>(editor)) {
+        checkbox->setChecked(data.toBool());
+    }
 }
 
 QVariant PropertyBoolItem::editorData(QWidget* editor) const
 {
-    auto cb = qobject_cast<QComboBox*>(editor);
-    return {cb->currentText()};
+    if (auto checkbox = qobject_cast<QCheckBox*>(editor)) {
+        return checkbox->isChecked();
+    }
+    return false;
 }
 
 // ---------------------------------------------------------------
@@ -1586,7 +1588,7 @@ PropertyEditorWidget::PropertyEditorWidget(QWidget* parent)
     lineEdit->setReadOnly(true);
     layout->addWidget(lineEdit);
 
-    button = new QPushButton(QLatin1String("..."), this);
+    button = new QPushButton(QStringLiteral("…"), this);
 #if defined(Q_OS_MACOS)
     button->setAttribute(
         Qt::WA_LayoutUsesWidgetRect);  // layout size from QMacStyle was not correct
@@ -1651,6 +1653,7 @@ void VectorListWidget::buttonClicked()
         setValue(data);
     });
 
+    Gui::adjustDialogPosition(dlg);
     dlg->exec();
 }
 
@@ -1730,7 +1733,6 @@ QWidget* PropertyVectorListItem::createEditor(QWidget* parent,
 {
     auto pe = new VectorListWidget(decimals(), parent);
     QObject::connect(pe, &VectorListWidget::valueChanged, method);
-    pe->setDisabled(isReadOnly());
     return pe;
 }
 
@@ -1795,15 +1797,11 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
     }
     const Base::Vector3d& value = variant.value<Base::Vector3d>();
 
-    Base::Quantity x = Base::Quantity(value.x, Base::Unit::Length);
-    Base::Quantity y = Base::Quantity(value.y, Base::Unit::Length);
-    Base::Quantity z = Base::Quantity(value.z, Base::Unit::Length);
-
     Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
     std::string val = fmt::format("({}, {}, {})",
-                                  Base::UnitsApi::toNumber(x, format),
-                                  Base::UnitsApi::toNumber(y, format),
-                                  Base::UnitsApi::toNumber(z, format));
+                                  Base::UnitsApi::toNumber(value.x, format),
+                                  Base::UnitsApi::toNumber(value.y, format),
+                                  Base::UnitsApi::toNumber(value.z, format));
     setPropertyValue(val);
 }
 
@@ -3132,7 +3130,6 @@ QWidget* PropertyEnumItem::createEditor(QWidget* parent,
     if (!enumItems) {
         auto cb = new QComboBox(parent);
         cb->setFrame(static_cast<bool>(frameOption));
-        cb->setDisabled(isReadOnly());
         cb->addItems(commonModes);
         QObject::connect(cb, qOverload<int>(&QComboBox::activated), method);
         return cb;
@@ -3190,7 +3187,6 @@ QWidget* PropertyStringListItem::createEditor(QWidget* parent,
 {
     auto le = new Gui::LabelEditor(parent);
     le->setAutoFillBackground(true);
-    le->setDisabled(isReadOnly());
     QObject::connect(le, &Gui::LabelEditor::textChanged, method);
     return le;
 }
@@ -3266,7 +3262,6 @@ QWidget* PropertyFloatListItem::createEditor(QWidget* parent,
     auto le = new Gui::LabelEditor(parent);
     le->setAutoFillBackground(true);
     le->setInputType(Gui::LabelEditor::Float);
-    le->setDisabled(isReadOnly());
     QObject::connect(le, &Gui::LabelEditor::textChanged, method);
     return le;
 }
@@ -3344,7 +3339,6 @@ QWidget* PropertyIntegerListItem::createEditor(QWidget* parent,
     auto le = new Gui::LabelEditor(parent);
     le->setAutoFillBackground(true);
     le->setInputType(Gui::LabelEditor::Integer);
-    le->setDisabled(isReadOnly());
     QObject::connect(le, &Gui::LabelEditor::textChanged, method);
     return le;
 }
@@ -3459,7 +3453,6 @@ QWidget* PropertyColorItem::createEditor(QWidget* parent,
                                          FrameOption /*frameOption*/) const
 {
     auto cb = new Gui::ColorButton(parent);
-    cb->setDisabled(isReadOnly());
     QObject::connect(cb, &Gui::ColorButton::changed, method);
     return cb;
 }
@@ -3766,37 +3759,33 @@ void PropertyMaterialItem::setValue(const QVariant& value)
     auto mat = value.value<Material>();
     Base::Color dc;
     dc.setValue<QColor>(mat.diffuseColor);
+    uint32_t dcp = dc.getPackedValue();
     Base::Color ac;
     ac.setValue<QColor>(mat.ambientColor);
+    uint32_t acp = ac.getPackedValue();
     Base::Color sc;
     sc.setValue<QColor>(mat.specularColor);
+    uint32_t scp = sc.getPackedValue();
     Base::Color ec;
     ec.setValue<QColor>(mat.emissiveColor);
+    uint32_t ecp = ec.getPackedValue();
     float s = mat.shininess;
     float t = mat.transparency;
 
     QString data = QStringLiteral("App.Material("
-                                       "DiffuseColor=(%1,%2,%3),"
-                                       "AmbientColor=(%4,%5,%6),"
-                                       "SpecularColor=(%7,%8,%9),"
-                                       "EmissiveColor=(%10,%11,%12),"
-                                       "Shininess=(%13),"
-                                       "Transparency=(%14),"
-                                       ")")
-                       .arg(dc.r, 0, 'f', decimals())
-                       .arg(dc.g, 0, 'f', decimals())
-                       .arg(dc.b, 0, 'f', decimals())
-                       .arg(ac.r, 0, 'f', decimals())
-                       .arg(ac.g, 0, 'f', decimals())
-                       .arg(ac.b, 0, 'f', decimals())
-                       .arg(sc.r, 0, 'f', decimals())
-                       .arg(sc.g, 0, 'f', decimals())
-                       .arg(sc.b, 0, 'f', decimals())
-                       .arg(ec.r, 0, 'f', decimals())
-                       .arg(ec.g, 0, 'f', decimals())
-                       .arg(ec.b, 0, 'f', decimals())
-                       .arg(s, 0, 'f', decimals())
-                       .arg(t, 0, 'f', decimals());
+                                  "DiffuseColor = %1,"
+                                  "AmbientColor = %2,"
+                                  "SpecularColor = %3,"
+                                  "EmissiveColor = %4,"
+                                  "Shininess = %5,"
+                                  "Transparency = %6,"
+                                  ")")
+                       .arg(dcp)
+                       .arg(acp)
+                       .arg(scp)
+                       .arg(ecp)
+                       .arg(s, 0, 'f', 10)
+                       .arg(t, 0, 'f', 10);
 
     setPropertyValue(data);
 }
@@ -3806,7 +3795,6 @@ QWidget* PropertyMaterialItem::createEditor(QWidget* parent,
                                             FrameOption /*frameOption*/) const
 {
     auto cb = new Gui::ColorButton(parent);
-    cb->setDisabled(isReadOnly());
     QObject::connect(cb, &Gui::ColorButton::changed, method);
     return cb;
 }
@@ -4273,37 +4261,33 @@ void PropertyMaterialListItem::setValue(const QVariant& value)
     auto mat = list[0].value<Material>();
     Base::Color dc;
     dc.setValue<QColor>(mat.diffuseColor);
+    uint32_t dcp = dc.getPackedValue();
     Base::Color ac;
     ac.setValue<QColor>(mat.ambientColor);
+    uint32_t acp = ac.getPackedValue();
     Base::Color sc;
     sc.setValue<QColor>(mat.specularColor);
+    uint32_t scp = sc.getPackedValue();
     Base::Color ec;
     ec.setValue<QColor>(mat.emissiveColor);
+    uint32_t ecp = ec.getPackedValue();
     float s = mat.shininess;
     float t = mat.transparency;
 
     QString item = QStringLiteral("App.Material("
-                                       "DiffuseColor=(%1,%2,%3),"
-                                       "AmbientColor=(%4,%5,%6),"
-                                       "SpecularColor=(%7,%8,%9),"
-                                       "EmissiveColor=(%10,%11,%12),"
-                                       "Shininess=(%13),"
-                                       "Transparency=(%14),"
-                                       ")")
-                       .arg(dc.r, 0, 'f', decimals())
-                       .arg(dc.g, 0, 'f', decimals())
-                       .arg(dc.b, 0, 'f', decimals())
-                       .arg(ac.r, 0, 'f', decimals())
-                       .arg(ac.g, 0, 'f', decimals())
-                       .arg(ac.b, 0, 'f', decimals())
-                       .arg(sc.r, 0, 'f', decimals())
-                       .arg(sc.g, 0, 'f', decimals())
-                       .arg(sc.b, 0, 'f', decimals())
-                       .arg(ec.r, 0, 'f', decimals())
-                       .arg(ec.g, 0, 'f', decimals())
-                       .arg(ec.b, 0, 'f', decimals())
-                       .arg(s, 0, 'f', decimals())
-                       .arg(t, 0, 'f', decimals());
+                                  "DiffuseColor = %1,"
+                                  "AmbientColor = %2,"
+                                  "SpecularColor = %3,"
+                                  "EmissiveColor = %4,"
+                                  "Shininess = %5,"
+                                  "Transparency = %6,"
+                                  ")")
+                       .arg(dcp)
+                       .arg(acp)
+                       .arg(scp)
+                       .arg(ecp)
+                       .arg(s, 0, 'f', 10)
+                       .arg(t, 0, 'f', 10);
     str << item << ")";
 
     setPropertyValue(data);
@@ -4314,7 +4298,6 @@ QWidget* PropertyMaterialListItem::createEditor(QWidget* parent,
                                                 FrameOption /*frameOption*/) const
 {
     auto cb = new Gui::ColorButton(parent);
-    cb->setDisabled(isReadOnly());
     QObject::connect(cb, &Gui::ColorButton::changed, method);
     return cb;
 }
@@ -4399,7 +4382,6 @@ QWidget* PropertyFileItem::createEditor(QWidget* parent,
 {
     auto fc = new Gui::FileChooser(parent);
     fc->setAutoFillBackground(true);
-    fc->setDisabled(isReadOnly());
     QObject::connect(fc, &Gui::FileChooser::fileNameSelected, method);
     return fc;
 }
@@ -4456,7 +4438,6 @@ QWidget* PropertyPathItem::createEditor(QWidget* parent,
     auto fc = new Gui::FileChooser(parent);
     fc->setMode(FileChooser::Directory);
     fc->setAutoFillBackground(true);
-    fc->setDisabled(isReadOnly());
     QObject::connect(fc, &Gui::FileChooser::fileNameSelected, method);
     return fc;
 }
@@ -4505,7 +4486,6 @@ QWidget* PropertyTransientFileItem::createEditor(QWidget* parent,
 {
     auto fc = new Gui::FileChooser(parent);
     fc->setAutoFillBackground(true);
-    fc->setDisabled(isReadOnly());
     QObject::connect(fc, &Gui::FileChooser::fileNameSelected, method);
     return fc;
 }
@@ -4572,12 +4552,12 @@ LinkLabel::LinkLabel(QWidget* parent, const App::Property* prop)
     label->setTextInteractionFlags(Qt::TextBrowserInteraction);
     layout->addWidget(label);
 
-    editButton = new QPushButton(QLatin1String("..."), this);
+    editButton = new QPushButton(QStringLiteral("…"), this);
 #if defined(Q_OS_MACOS)
     editButton->setAttribute(
         Qt::WA_LayoutUsesWidgetRect);  // layout size from QMacStyle was not correct
 #endif
-    editButton->setToolTip(tr("Change the linked object"));
+    editButton->setToolTip(tr("Changes the linked object"));
     layout->addWidget(editButton);
 
     this->setFocusPolicy(Qt::StrongFocus);
@@ -4738,7 +4718,6 @@ QWidget* PropertyLinkItem::createEditor(QWidget* parent,
     }
     auto ll = new LinkLabel(parent, propertyItems.front());
     ll->setAutoFillBackground(true);
-    ll->setDisabled(isReadOnly());
     QObject::connect(ll, &LinkLabel::linkChanged, method);
     return ll;
 }

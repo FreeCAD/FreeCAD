@@ -103,8 +103,8 @@ public:
     // static UnlimitedUnsigned operator+(UnlimitedUnsigned&& left, const UnlimitedUnsigned&
     // right); static UnlimitedUnsigned operator+(const UnlimitedUnsigned& left,
     // UnlimitedUnsigned&& right); static UnlimitedUnsigned operator+(UnlimitedUnsigned&& left,
-    // UnlimitedUnsigned&& right); which would re-use left.parts or right.parts after possibly
-    // growing it. The last one would use the larger of the two buffers
+    // UnlimitedUnsigned&& right); which would reuse left.parts or right.parts after possibly
+    // growing it. The last one would use the larger of the two buffers.
     UnlimitedUnsigned operator+(const UnlimitedUnsigned& right) const
     {
         size_t resultSize = std::max(parts.size(), right.parts.size());

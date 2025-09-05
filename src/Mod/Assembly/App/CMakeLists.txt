@@ -22,6 +22,15 @@ generate_from_xml(JointGroupPy)
 generate_from_xml(ViewGroupPy)
 generate_from_xml(SimulationGroupPy)
 
+generate_from_py_(AssemblyObjectPy)
+generate_from_py_(AssemblyLinkPy)
+generate_from_py_(BomObjectPy)
+generate_from_py_(BomGroupPy)
+generate_from_py_(JointGroupPy)
+generate_from_py_(ViewGroupPy)
+generate_from_py_(SimulationGroupPy)
+
+
 SET(Python_SRCS
     AssemblyObjectPy.xml
     AssemblyObjectPyImp.cpp

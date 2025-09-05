@@ -524,9 +524,13 @@ int Preferences::BreakLineStyle()
     return getPreferenceGroup("Decorations")->GetInt("LineStyleBreak", 0) + 1;
 }
 
-int Preferences::LineSpacingISO()
+
+// LineSpacingISO is stored as a double in DlgPrefsTechDrawDimensionsImp.cpp but was being accessed
+// as an int here, so the default was always returned. If we make DlgPrefsTechDrawDimensionsImp handle
+// ints, then anybody who had set a custom spacing would need to update their preference.
+float Preferences::LineSpacingISO()
 {
-    return getPreferenceGroup("Dimensions")->GetInt("LineSpacingFactorISO", 2);
+    return getPreferenceGroup("Dimensions")->GetFloat("LineSpacingFactorISO", 2);
 }
 
 std::string Preferences::currentLineDefFile()
@@ -692,4 +696,16 @@ bool Preferences::showUnits()
     return Preferences::getPreferenceGroup("Dimensions")->GetBool("ShowUnits", false);
 }
 
+
+bool Preferences::snapDetailHighlights()
+{
+    return Preferences::getPreferenceGroup("General")->GetBool("SnapHighlights", true);
+}
+
+
+//! distance within which we should snap a highlight to a vertex
+double Preferences::detailSnapRadius()
+{
+    return getPreferenceGroup("General")->GetFloat("DetailSnapRadius", 0.6);
+}
 

@@ -149,6 +149,7 @@ class _Wall(ArchComponent.Component):
 
     def __init__(self, obj):
         ArchComponent.Component.__init__(self, obj)
+        self.Type = "Wall"
         self.setProperties(obj)
         obj.IfcType = "Wall"
 
@@ -229,7 +230,6 @@ class _Wall(ArchComponent.Component):
         if not hasattr(self,"ArchSkPropSetListPrev"):
             self.ArchSkPropSetListPrev = []
         self.connectEdges = []
-        self.Type = "Wall"
 
     def dumps(self):
         dump = super().dumps()
@@ -239,7 +239,7 @@ class _Wall(ArchComponent.Component):
         return dump
 
     def loads(self,state):
-        super().loads(state)  # do nothing as of 2024.11.28
+        self.Type = "Wall"
         if state == None:
             return
         elif state[0] == 'W':  # state[1] == 'a', behaviour before 2024.11.28
@@ -547,20 +547,16 @@ class _Wall(ArchComponent.Component):
                     obj.CountBroken = 0
 
         # set the length property
-        if obj.Base:
-            if hasattr(obj.Base,'Shape'):
-                if obj.Base.Shape.Edges:
-                    if not obj.Base.Shape.Faces:
-                        if hasattr(obj.Base.Shape,"Length"):
-                            l = float(0)
-                            for e in self.connectEdges:
-                                l += e.Length
-                            l = l / 2
-                            if self.layersNum:
-                                l = l / self.layersNum
-                            if obj.Length.Value != l:
-                                obj.Length = l
-                                self.oldLength = None # delete the stored value to prevent triggering base change below
+        if self.connectEdges:
+            l = float(0)
+            for e in self.connectEdges:
+                l += e.Length
+            l = l / 2
+            if self.layersNum:
+                l = l / self.layersNum
+            if obj.Length.Value != l:
+                obj.Length = l
+                self.oldLength = None # delete the stored value to prevent triggering base change below
 
         # set the Area property
         obj.Area = obj.Length.Value * obj.Height.Value
@@ -1433,7 +1429,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         super().contextMenuAddEdit(menu)
 
         actionFlipDirection = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Wall_Tree.svg"),
-                                            translate("Arch", "Flip direction"),
+                                            translate("Arch", "Flip Direction"),
                                             menu)
         QtCore.QObject.connect(actionFlipDirection,
                                QtCore.SIGNAL("triggered()"),

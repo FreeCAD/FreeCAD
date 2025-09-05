@@ -215,15 +215,17 @@ void GeneralSettingsWidget::retranslateUi()
 
     _unitSystemComboBox->clear();
 
+    const ParameterGrp::handle hGrpUnits =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
+    auto userSchema = hGrpUnits->GetInt("UserSchema", 0);
+
     auto addItem = [&, index {0}](const std::string& item) mutable {
         _unitSystemComboBox->addItem(QString::fromStdString(item), index++);
     };
     auto descriptions = Base::UnitsApi::getDescriptions();
     std::for_each(descriptions.begin(), descriptions.end(), addItem);
 
-    const ParameterGrp::handle hGrpUnits =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
-    _unitSystemComboBox->setCurrentIndex(static_cast<int>(hGrpUnits->GetInt("UserSchema", 0)));
+    _unitSystemComboBox->setCurrentIndex(userSchema);
 
     _navigationStyleLabel->setText(createLabelText(tr("Navigation Style")));
     _navigationStyleComboBox->clear();

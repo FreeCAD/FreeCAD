@@ -29,7 +29,7 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="0">
+      <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -50,18 +50,18 @@
          </size>
         </property>
         <property name="text">
-         <string>Tool Controller</string>
+         <string>Tool controller</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="0" column="1">
        <widget class="QComboBox" name="toolController">
         <property name="toolTip">
-         <string>The tool and its settings to be used for this operation.</string>
+         <string>The tool and its settings to be used for this operation</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="1" column="0">
        <widget class="QLabel" name="label_5">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -82,14 +82,21 @@
          </size>
         </property>
         <property name="text">
-         <string>Coolant Mode</string>
+         <string>Coolant mode</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="1" column="1">
        <widget class="QComboBox" name="coolantController">
         <property name="toolTip">
-         <string>The tool and its settings to be used for this operation.</string>
+         <string>The tool and its settings to be used for this operation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="editToolController">
+        <property name="text">
+         <string>Edit Tool Controller</string>
         </property>
        </widget>
       </item>
@@ -135,7 +142,7 @@
      <item>
       <widget class="QComboBox" name="direction">
        <property name="toolTip">
-        <string>The direction in which the profile is performed, clockwise or counterclockwise.</string>
+        <string>The direction in which the profile is performed, clockwise or counterclockwise</string>
        </property>
        <property name="currentText">
         <string>CW</string>
@@ -192,7 +199,7 @@
           <item>
            <widget class="Gui::InputField" name="value_W">
             <property name="toolTip">
-             <string>Width of chamfer cut.</string>
+             <string>Width of chamfer cut</string>
             </property>
             <property name="unit" stdset="0">
              <string>mm</string>
@@ -219,7 +226,7 @@
           <item>
            <widget class="Gui::InputField" name="value_h">
             <property name="toolTip">
-             <string>Extra depth of tool immersion.</string>
+             <string>Extra depth of tool immersion</string>
             </property>
             <property name="unit" stdset="0">
              <string>mm</string>

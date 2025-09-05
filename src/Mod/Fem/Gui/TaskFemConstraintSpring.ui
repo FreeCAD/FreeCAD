@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="lbl_info">
      <property name="text">
-      <string>Click Add or Remove and select face(s)</string>
+      <string>Click Add or Remove and select faces</string>
      </property>
     </widget>
    </item>
@@ -72,7 +72,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="lbl_norm">
        <property name="text">
-        <string>Normal Stiffness</string>
+        <string>Normal stiffness</string>
        </property>
       </widget>
      </item>
@@ -95,7 +95,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Tangential Stiffness</string>
+        <string>Tangential stiffness</string>
        </property>
       </widget>
      </item>
@@ -119,8 +119,7 @@
      <item row="2" column="1">
       <widget class="QComboBox" name="cb_elmer_stiffness">
        <property name="toolTip">
-        <string>What stiffness should be
-used for the Elmer solver</string>
+        <string>Stiffness used for the Elmer solver</string>
        </property>
       </widget>
      </item>

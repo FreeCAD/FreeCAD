@@ -39,7 +39,7 @@
     </rect>
    </property>
    <property name="toolTip">
-    <string>Select one of the post processors. FreeCAD comes with several post processors pre-installed, please make sure at least one of them is enabled in your preferences.</string>
+    <string>Displays available post processors. FreeCAD includes several pre-installed post processors. At least one post processor must be enabled in preferences.</string>
    </property>
   </widget>
  </widget>

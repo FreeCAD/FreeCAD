@@ -317,7 +317,7 @@ StringIDRef StringHasher::getID(const Data::MappedName& name, const QVector<Stri
             QByteArray::fromRawData(indexed.getType(), static_cast<int>(strlen(indexed.getType())));
     }
     else {
-        // Store the entire name in _data, but temporarily re-use the existing memory
+        // Store the entire name in _data, but temporarily reuse the existing memory
         tempID._data = name.dataBytes();
     }
 

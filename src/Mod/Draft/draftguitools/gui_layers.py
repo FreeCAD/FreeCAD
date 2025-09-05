@@ -67,7 +67,7 @@ class Layer(gui_base.GuiCommandSimplest):
     def GetResources(self):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_Layer",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_Layer", "New layer"),
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Layer", "New Layer"),
                 "ToolTip": QT_TRANSLATE_NOOP("Draft_Layer", "Adds a layer to the document.\nObjects added to this layer can share the same visual properties.")}
 
     def Activated(self):
@@ -93,8 +93,8 @@ class AddToLayer(gui_base.GuiCommandNeedsSelection):
     def GetResources(self):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_AddToLayer",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_AddToLayer", "Add to layer..."),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_AddToLayer", "Adds the selected objects to a layer, or removes them from any layer.")}
+                "MenuText": QT_TRANSLATE_NOOP("Draft_AddToLayer", "Add to Layer"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_AddToLayer", "Adds selected objects to a layer, or removes them from any layer")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -109,11 +109,11 @@ class AddToLayer(gui_base.GuiCommandNeedsSelection):
         self.objects = [None] \
                        + [None] \
                        + objs
-        self.labels  = [translate("draft", "Remove from layer")] \
+        self.labels  = [translate("draft", "Remove From Layer")] \
                        + ["---"] \
                        + [obj.Label for obj in objs] \
                        + ["---"] \
-                       + [translate("draft", "Add to new layer...")]
+                       + [translate("draft", "Add to New Layer")]
         self.icons   = [self.ui.getIcon(":/icons/list-remove.svg")] \
                        + [None] \
                        + [obj.ViewObject.Icon for obj in objs] \
@@ -145,8 +145,8 @@ class AddToLayer(gui_base.GuiCommandNeedsSelection):
             from PySide import QtWidgets
             txt, ok = QtWidgets.QInputDialog.getText(
                 None,
-                translate("draft", "Create new layer"),
-                translate("draft", "Layer name:"),
+                translate("draft", "New Layer"),
+                translate("draft", "Layer name"),
                 text=translate("draft", "Layer", "Object label")
             )
             if not ok:
@@ -179,8 +179,8 @@ class LayerManager:
     def GetResources(self):
 
         return {"Pixmap"  : "Draft_LayerManager",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_LayerManager", "Manage layers..."),
-                "ToolTip" : QT_TRANSLATE_NOOP("Draft_LayerManager", "Set/modify the different layers of this document")}
+                "MenuText": QT_TRANSLATE_NOOP("Draft_LayerManager", "Manage Layers"),
+                "ToolTip" : QT_TRANSLATE_NOOP("Draft_LayerManager", "Allows to modify the layers")}
 
     def IsActive(self):
         """Return True when this command should be available."""
@@ -202,7 +202,7 @@ class LayerManager:
         self.dialog.buttonDelete.setIcon(QtGui.QIcon(":/icons/delete.svg"))
         self.dialog.buttonSelectAll.setIcon(QtGui.QIcon(":/icons/edit-select-all.svg"))
         self.dialog.buttonToggle.setIcon(QtGui.QIcon(":/icons/dagViewVisible.svg"))
-        self.dialog.buttonIsolate.setIcon(QtGui.QIcon(":/icons/view-refresh.svg"))
+        self.dialog.buttonIsolate.setIcon(QtGui.QIcon(":/icons/Std_ShowSelection.svg"))
         self.dialog.buttonCancel.setIcon(QtGui.QIcon(":/icons/edit_Cancel.svg"))
         self.dialog.buttonOK.setIcon(QtGui.QIcon(":/icons/edit_OK.svg"))
 
@@ -364,12 +364,12 @@ class LayerManager:
         # set header
         self.model.setHorizontalHeaderLabels([translate("Draft","On"),
                                               translate("Draft","Name"),
-                                              translate("Draft","Line width"),
-                                              translate("Draft","Draw style"),
-                                              translate("Draft","Line color"),
-                                              translate("Draft","Face color"),
+                                              translate("Draft","Line Width"),
+                                              translate("Draft","Draw Style"),
+                                              translate("Draft","Line Color"),
+                                              translate("Draft","Face Color"),
                                               translate("Draft","Transparency"),
-                                              translate("Draft","Line print color")])
+                                              translate("Draft","Line Print Color")])
         self.dialog.tree.header().setDefaultSectionSize(72)
         self.dialog.tree.setColumnWidth(0,32) # on/off column
         self.dialog.tree.setColumnWidth(1,128) # name column

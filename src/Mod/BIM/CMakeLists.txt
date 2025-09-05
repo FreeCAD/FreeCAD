@@ -173,6 +173,10 @@ SET(bimcommands_SRCS
     bimcommands/__init__.py
 )
 
+SET(BIM_templates
+    Resources/templates/webgl_export_template.html
+)
+
 SET(nativeifc_SRCS
     nativeifc/ifc_commands.py
     nativeifc/ifc_diff.py
@@ -198,10 +202,33 @@ SET(nativeifc_SRCS
 )
 
 SET(bimtests_SRCS
+    bimtests/TestArch.py
+    bimtests/TestArchAxis.py
     bimtests/TestArchBase.py
+    bimtests/TestArchComponent.py
+    bimtests/TestArchBuildingPart.py
     bimtests/TestArchRoof.py
     bimtests/TestArchSpace.py
     bimtests/TestArchWall.py
+    bimtests/TestArchMaterial.py
+    bimtests/TestArchPanel.py
+    bimtests/TestArchWindow.py
+    bimtests/TestArchStairs.py
+    bimtests/TestArchPipe.py
+    bimtests/TestArchCurtainWall.py
+    bimtests/TestArchProfile.py
+    bimtests/TestArchProject.py
+    bimtests/TestArchSectionPlane.py
+    bimtests/TestArchRebar.py
+    bimtests/TestArchGrid.py
+    bimtests/TestArchFence.py
+    bimtests/TestArchEquipment.py
+    bimtests/TestArchFrame.py
+    bimtests/TestArchReference.py
+    bimtests/TestArchSchedule.py
+    bimtests/TestArchTruss.py
+    bimtests/TestWebGLExport.py
+    bimtests/TestWebGLExportGui.py
 )
 
 SOURCE_GROUP("" FILES ${Arch_SRCS})
@@ -225,6 +252,7 @@ ADD_CUSTOM_TARGET(BIM ALL
             ${bimtests_SRCS}
             ${nativeifc_SRCS}
             ${BIMGuiIcon_SVG}
+            ${BIM_templates}
 )
 
 ADD_CUSTOM_TARGET(ImporterPythonTestData ALL
@@ -243,6 +271,12 @@ fc_target_copy_resource(BIM
     ${CMAKE_SOURCE_DIR}/src/Mod/BIM
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM
     ${Arch_presets}
+)
+
+fc_target_copy_resource(BIM
+    ${CMAKE_SOURCE_DIR}/src/Mod/BIM
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM
+    ${BIM_templates}
 )
 
 fc_target_copy_resource(ImporterPythonTestData
@@ -309,3 +343,9 @@ INSTALL(
        "${CMAKE_INSTALL_DATADIR}/Mod/BIM/Resources/icons"
 )
 
+INSTALL(
+    FILES
+        ${BIM_templates}
+    DESTINATION
+        "${CMAKE_INSTALL_DATADIR}/Mod/BIM/Resources/templates"
+    )

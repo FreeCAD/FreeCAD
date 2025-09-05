@@ -92,7 +92,7 @@ TEST_F(ConstraintsTest, tangentBSplineAndArc)  // NOLINT
         weightsAsPtr.push_back(&weights[i]);
     }
     for (size_t i = 0; i < knots.size(); ++i) {
-        knots[i] = i;
+        knots[i] = static_cast<double>(i);
         knotsAsPtr.push_back(&knots[i]);
     }
     GCS::Arc arc;

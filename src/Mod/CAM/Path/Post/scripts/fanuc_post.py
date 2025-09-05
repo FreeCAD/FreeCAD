@@ -29,6 +29,7 @@ import argparse
 import datetime
 import shlex
 import os.path
+import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
 from builtins import open as pyopen
@@ -227,12 +228,8 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
 
         # Skip inactive operations
-        if hasattr(obj, "Active"):
-            if not obj.Active:
-                continue
-        if hasattr(obj, "Base") and hasattr(obj.Base, "Active"):
-            if not obj.Base.Active:
-                continue
+        if not PathUtil.activeForOp(obj):
+            continue
 
         # do the pre_op
         if OUTPUT_COMMENTS:
@@ -242,12 +239,7 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + line
 
         # get coolant mode
-        coolantMode = "None"
-        if hasattr(obj, "CoolantMode") or hasattr(obj, "Base") and hasattr(obj.Base, "CoolantMode"):
-            if hasattr(obj, "CoolantMode"):
-                coolantMode = obj.CoolantMode
-            else:
-                coolantMode = obj.Base.CoolantMode
+        coolantMode = PathUtil.coolantModeForOp(obj)
 
         # turn coolant on if required
         if OUTPUT_COMMENTS:
@@ -417,7 +409,7 @@ def parse(pathobj):
 
             # if it's a tap, we rigid tap, so don't start the spindle yet...
             if command == "M03" or command == "M3":
-                if pathobj.Tool.ToolType == "Tap":
+                if pathobj.Tool.ShapeID.lower() == "tap":
                     tapSpeed = int(pathobj.SpindleSpeed)
                     continue
 
@@ -425,7 +417,7 @@ def parse(pathobj):
             if command == "G81" or command == "G83":
                 if (
                     hasattr(pathobj, "ToolController")
-                    and pathobj.ToolController.Tool.ToolType == "Tap"
+                    and pathobj.ToolController.Tool.ShapeID.lower() == "tap"
                 ):
                     command = "G84"
                     out += linenumber() + "G95\n"
@@ -504,7 +496,7 @@ def parse(pathobj):
             if command == "G80" and lastcommand == nextcommand:
                 continue
 
-            if c.Name[0] == "(" and not OUTPUT_COMMENTS:  # command is a comment
+            if c.Name.startswith("(") and not OUTPUT_COMMENTS:  # command is a comment
                 continue
 
             # Now add the remaining parameters in order

@@ -61,8 +61,8 @@ class WireToBSpline(gui_base_original.Modifier):
         """Set icon, menu and tooltip."""
 
         return {'Pixmap': 'Draft_WireToBSpline',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Wire to B-spline"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Converts a selected polyline to a B-spline, or a B-spline to a polyline.")}
+                'MenuText': QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Convert Wire/B-Spline"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_WireToBSpline", "Converts the selected polyline to a B-spline, or the selected B-spline to a polyline")}
 
     def Activated(self):
         """Execute when the command is called."""

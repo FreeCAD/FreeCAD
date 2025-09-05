@@ -81,7 +81,7 @@ void ViewProviderMirror::setupContextMenu(QMenu* menu, QObject* receiver, const 
         enabled = false;
     }
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit mirror plane"), receiver, member);
+    act = menu->addAction(QObject::tr("Edit Mirror Plane"), receiver, member);
     act->setEnabled(enabled);
     act->setData(QVariant((int)ViewProvider::Default));
 
@@ -207,7 +207,7 @@ bool ViewProviderMirror::onDelete(const std::vector<std::string> &)
 void ViewProviderMirror::dragStartCallback(void *, SoDragger *)
 {
     // This is called when a manipulator is about to manipulating
-    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edit Mirror"));
+    Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edit mirror"));
 }
 
 void ViewProviderMirror::dragFinishCallback(void *, SoDragger *)
@@ -291,7 +291,7 @@ void ViewProviderFillet::updateData(const App::Property* prop)
 void ViewProviderFillet::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit fillet edges"), receiver, member);
+    act = menu->addAction(QObject::tr("Edit Fillet"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
@@ -401,7 +401,7 @@ void ViewProviderChamfer::updateData(const App::Property* prop)
 void ViewProviderChamfer::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit chamfer edges"), receiver, member);
+    act = menu->addAction(QObject::tr("Edit Chamfer"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }

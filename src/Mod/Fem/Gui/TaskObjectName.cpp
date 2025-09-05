@@ -38,7 +38,10 @@ using namespace FemGui;
 using namespace Gui;
 
 TaskObjectName::TaskObjectName(App::DocumentObject* pcObject, QWidget* parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("FEM_CreateNodesSet"), tr("TaskObjectName"), true, parent)
+    : TaskBox(Gui::BitmapFactory().pixmap("FEM_CreateNodesSet"),
+              tr("Name of the object"),
+              true,
+              parent)
     , pcObject(pcObject)
     , ui(new Ui_TaskObjectName)
 {

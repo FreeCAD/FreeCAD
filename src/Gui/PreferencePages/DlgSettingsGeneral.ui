@@ -17,7 +17,7 @@
     <item>
      <widget class="QGroupBox" name="GroupBox7">
       <property name="title">
-       <string>Language and number format</string>
+       <string>Language and Number Format</string>
       </property>
       <layout class="QGridLayout">
        <property name="leftMargin">
@@ -38,7 +38,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="TextLabel1_4">
          <property name="text">
-          <string>Language:</string>
+          <string>Language</string>
          </property>
         </widget>
        </item>
@@ -52,7 +52,7 @@
        <item row="1" column="0">
         <widget class="QLabel" name="unitSystemLabel">
          <property name="text">
-          <string>Default unit system:</string>
+          <string>Default unit system</string>
          </property>
         </widget>
        </item>
@@ -68,7 +68,7 @@
          <item>
           <widget class="QLabel" name="decimalsLabel">
            <property name="text">
-            <string>Number of decimals:</string>
+            <string>Number of decimals</string>
            </property>
           </widget>
          </item>
@@ -90,7 +90,7 @@
        <item row="2" column="0" colspan="3">
         <widget class="QCheckBox" name="checkBox_projectUnitSystemIgnore">
           <property name="toolTip">
-           <string>If enabled, document unit systems are ignored</string>
+           <string>Ignores document unit systems</string>
           </property>
           <property name="text">
            <string>Ignore project unit system and use default</string>
@@ -100,7 +100,7 @@
        <item row="3" column="0">
         <widget class="QLabel" name="fractionalInchLabel">
          <property name="text">
-          <string>Minimum fractional inch:</string>
+          <string>Minimum fractional inch</string>
          </property>
         </widget>
        </item>
@@ -149,7 +149,7 @@
        <item row="4" column="0">
         <widget class="QLabel" name="TextLabel1_5">
          <property name="text">
-          <string>Number format:</string>
+          <string>Number format</string>
          </property>
         </widget>
        </item>
@@ -161,30 +161,14 @@
          <property name="prefPath" stdset="0">
           <cstring>General</cstring>
          </property>
-         <item>
-          <property name="text">
-           <string>Operating system</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Selected language</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>C/POSIX</string>
-          </property>
-         </item>
         </widget>
        </item>
        <item row="4" column="2">
         <widget class="Gui::PrefCheckBox" name="SubstituteDecimal">
          <property name="toolTip">
-          <string>If enabled, numerical keypad decimal separator
-will be substituted with locale separator, except
-in Python Console and Macro Editor where a
-dot/period will always be printed.</string>
+          <string>Substitutes numerical keypad decimal separator with locale separator, except
+in the Python console and the macro editor where a
+dot/period will always be printed</string>
          </property>
          <property name="text">
           <string>Substitute decimal separator</string>
@@ -224,14 +208,14 @@ dot/period will always be printed.</string>
        <item row="0" column="0">
         <widget class="QLabel" name="themesLabel">
          <property name="text">
-          <string>Theme:</string>
+          <string>Theme</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
         <widget class="QComboBox" name="themesCombobox">
          <property name="toolTip">
-          <string>Customize how user interface will look like</string>
+          <string>Customize the appearance of the user interface</string>
          </property>
         </widget>
        </item>
@@ -243,7 +227,7 @@ dot/period will always be printed.</string>
           </font>
          </property>
          <property name="text">
-          <string>Looking for more themes? You can obtain them using &lt;a href=&quot;freecad:Std_AddonMgr&quot;&gt;Addon Manager&lt;/a&gt;.</string>
+          <string>Looking for more themes? You can obtain them using the &lt;a href=&quot;freecad:Std_AddonMgr&quot;&gt;Addon Manager&lt;/a&gt;.</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -253,39 +237,38 @@ dot/period will always be printed.</string>
        <item row="2" column="0">
         <widget class="QLabel" name="iconSizeLabel">
          <property name="text">
-          <string>Size of toolbar icons:</string>
+          <string>Size of toolbar icons</string>
          </property>
         </widget>
        </item>
        <item row="2" column="1">
         <widget class="QComboBox" name="toolbarIconSize">
          <property name="toolTip">
-          <string>Choose your preference for toolbar icon size. You can adjust
-this according to your screen size or personal taste</string>
+          <string>Icon size in the toolbar</string>
          </property>
         </widget>
        </item>
        <item row="3" column="0">
         <widget class="QLabel" name="treeModeLabel">
          <property name="text">
-          <string>Tree view and Property view mode:</string>
+          <string>Tree View and Property View mode</string>
          </property>
         </widget>
        </item>
        <item row="3" column="1">
         <widget class="QComboBox" name="treeMode">
          <property name="toolTip">
-          <string>Customize how tree view is shown in the panel (restart required).
+          <string>Customize how the tree view is shown in the panel (restart required).
 
-'Combined': combine Tree view and Property view into one panel.
-'Independent': split Tree view and Property view into separate panels.</string>
+'Combined': combine tree and property view into one panel.
+'Independent': split tree and property view into separate panels.</string>
          </property>
         </widget>
        </item>
        <item row="4" column="0">
         <widget class="QLabel" name="recentFileListLabel">
          <property name="text">
-          <string>Size of recent file list:</string>
+          <string>Size of recent file list</string>
          </property>
         </widget>
        </item>
@@ -308,8 +291,7 @@ this according to your screen size or personal taste</string>
        <item row="5" column="0">
         <widget class="QCheckBox" name="tiledBackground">
          <property name="toolTip">
-          <string>Background of the main window (when no document is opened) will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</string>
+          <string>Background of the main window (when no document is opened) will consist of tiles of an image.</string>
          </property>
          <property name="text">
           <string>Enable tiled background</string>
@@ -338,12 +320,12 @@ See the FreeCAD Wiki for details about the image.</string>
        <item row="6" column="0">
         <widget class="Gui::PrefCheckBox" name="SplashScreen">
          <property name="toolTip">
-          <string>A Splash screen is a small loading window that is shown
+          <string>A splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
-display the splash screen</string>
+display the splash screen.</string>
          </property>
          <property name="text">
-          <string>Enable splash screen at start up</string>
+          <string>Enable splash screen at start-up</string>
          </property>
          <property name="checked">
           <bool>true</bool>
@@ -359,10 +341,10 @@ display the splash screen</string>
        <item row="6" column="1">
         <widget class="Gui::PrefCheckBox" name="ActivateOverlay">
          <property name="toolTip">
-          <string>Activate overlay handling of dock windows</string>
+          <string>Activate overlay handling of docked panels</string>
          </property>
          <property name="text">
-          <string>Activate overlay handling</string>
+          <string>Activate overlay panels</string>
          </property>
          <property name="checked">
           <bool>true</bool>
@@ -381,7 +363,7 @@ display the splash screen</string>
     <item>
      <widget class="QGroupBox" name="groupBox">
       <property name="title">
-       <string>Preference packs</string>
+       <string>Preference Packs</string>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
@@ -492,14 +474,14 @@ display the splash screen</string>
            <item>
             <widget class="QPushButton" name="ImportConfig">
              <property name="text">
-              <string>Import config...</string>
+              <string>Import Configuration</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="SaveNewPreferencePack">
              <property name="text">
-              <string>Save new...</string>
+              <string>Save as New</string>
              </property>
             </widget>
            </item>
@@ -512,14 +494,14 @@ display the splash screen</string>
               </sizepolicy>
              </property>
              <property name="text">
-              <string>Manage...</string>
+              <string>Manage</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="RevertToSavedConfig">
              <property name="text">
-              <string>Revert...</string>
+              <string>Revert</string>
              </property>
             </widget>
            </item>

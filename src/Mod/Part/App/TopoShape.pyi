@@ -273,14 +273,6 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def oldFuse(self, tool: TopoShape) -> TopoShape:
-        """
-        Union of this and a given topo shape (old algorithm).
-        oldFuse(tool) -> Shape
-        """
-        ...
-
-    @constmethod
     def common(self, tools: Tuple[TopoShape, ...], tolerance: float = 0.0) -> TopoShape:
         """
         Intersection of this and a given (list of) topo shape.
@@ -966,7 +958,7 @@ class TopoShape(ComplexGeoData):
         """
         Returns a SubElement
         getElement(elementName, [silent = False]) -> Face | Edge | Vertex
-        elementName:  SubElement name - i.e. 'Edge1', 'Face3' etc. 
+        elementName:  SubElement name - i.e. 'Edge1', 'Face3' etc.
                       Accepts TNP mitigation mapped names as well
         silent:  True to suppress the exception throw if the shape isn't found.
         """

@@ -22,9 +22,6 @@
        <verstretch>2</verstretch>
       </sizepolicy>
      </property>
-     <property name="toolTip">
-      <string>Adjust the orientation of the directional light source by dragging the handle with the mouse or use the spin boxes for fine tuning.</string>
-     </property>
      <property name="title">
       <string>Preview</string>
      </property>
@@ -68,7 +65,7 @@
               <enum>Qt::FocusPolicy::NoFocus</enum>
              </property>
              <property name="toolTip">
-              <string>Push In</string>
+              <string>Pushes in</string>
              </property>
              <property name="icon">
               <iconset resource="../Icons/resource.qrc">
@@ -88,7 +85,7 @@
               <enum>Qt::FocusPolicy::NoFocus</enum>
              </property>
              <property name="toolTip">
-              <string>Pull Out</string>
+              <string>Pulls out</string>
              </property>
              <property name="icon">
               <iconset resource="../Icons/resource.qrc">
@@ -139,7 +136,7 @@
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Light sources</string>
+      <string>Light Sources</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="4">
@@ -188,7 +185,7 @@
       <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="mainLightEnable">
         <property name="text">
-         <string>Main Light</string>
+         <string>Main light</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -224,7 +221,7 @@
       <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="backLightEnable">
         <property name="text">
-         <string>Back Light</string>
+         <string>Backlight</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -250,7 +247,7 @@
       <item row="0" column="3">
        <widget class="QLabel" name="light1Label_2">
         <property name="text">
-         <string>Vertical Angle</string>
+         <string>Vertical angle</string>
         </property>
        </widget>
       </item>
@@ -274,7 +271,7 @@
       <item row="0" column="2">
        <widget class="QLabel" name="light1Label_3">
         <property name="text">
-         <string>Horizontal Angle</string>
+         <string>Horizontal angle</string>
         </property>
        </widget>
       </item>
@@ -339,7 +336,7 @@
       <item row="3" column="0">
        <widget class="Gui::PrefCheckBox" name="fillLightEnable">
         <property name="text">
-         <string>Fill Light</string>
+         <string>Fill light</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -438,7 +435,7 @@
       <item row="4" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Ambient Light</string>
+         <string>Ambient light</string>
         </property>
        </widget>
       </item>

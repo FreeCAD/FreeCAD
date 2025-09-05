@@ -42,7 +42,7 @@ def setStatusIcons(show=True):
     from PySide import QtCore, QtGui
 
     nudgeLabelsI = [
-        translate("BIM", "Custom..."),
+        translate("BIM", "Custom…"),
         '1/16"',
         '1/8"',
         '1/4"',
@@ -52,7 +52,7 @@ def setStatusIcons(show=True):
         translate("BIM", "Auto"),
     ]
     nudgeLabelsM = [
-        translate("BIM", "Custom..."),
+        translate("BIM", "Custom…"),
         "1 mm",
         "5 mm",
         "1 cm",

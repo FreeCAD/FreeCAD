@@ -102,10 +102,10 @@
       <item row="5" column="1">
        <widget class="QPushButton" name="applyAxial">
         <property name="toolTip">
-         <string>Shift click for opposite direction</string>
+         <string>Shift-click for opposite direction</string>
         </property>
         <property name="text">
-         <string>Apply axial</string>
+         <string>Apply Axial</string>
         </property>
        </widget>
       </item>
@@ -191,7 +191,7 @@
       <item row="4" column="0" colspan="2">
        <widget class="QPushButton" name="selectedVertex">
         <property name="text">
-         <string>Selected points</string>
+         <string>Selected Points</string>
         </property>
        </widget>
       </item>
@@ -228,7 +228,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Euler angles (zy'x'')</string>
+          <string>Euler angles (Z–Y′–X″)</string>
          </property>
         </item>
        </widget>
@@ -357,14 +357,14 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Yaw (around z-axis)</string>
+               <string>Yaw (around Z-axis)</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="yawAngle">
               <property name="toolTip">
-               <string>Yaw (around z-axis)</string>
+               <string>Yaw (around Z-axis)</string>
               </property>
              </widget>
             </item>
@@ -377,14 +377,14 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Pitch (around y-axis)</string>
+               <string>Pitch (around Y-axis)</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="pitchAngle">
               <property name="toolTip">
-               <string>Pitch (around y-axis)</string>
+               <string>Pitch (around Y-axis)</string>
               </property>
              </widget>
             </item>
@@ -397,14 +397,14 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Roll (around x-axis)</string>
+               <string>Roll (around X-axis)</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="rollAngle">
               <property name="toolTip">
-               <string>Roll (around the x-axis)</string>
+               <string>Roll (around the X-axis)</string>
               </property>
              </widget>
             </item>

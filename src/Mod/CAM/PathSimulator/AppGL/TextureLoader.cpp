@@ -42,6 +42,7 @@ TextureItem texItems[] = {
     {95, 50, 0, 0},
     {130, 50, 0, 0},
     {170, 50, 0, 0},
+    {210, 50, 0, 0},
 };
 
 
@@ -54,7 +55,8 @@ TextureLoader::TextureLoader(std::string imgFolder,
                              int textureSize)
     : mImageFolder(imgFolder)
 {
-    int buffsize = textureSize * textureSize * sizeof(unsigned int);
+    size_t buffsize =
+        static_cast<size_t>(textureSize) * static_cast<size_t>(textureSize) * sizeof(unsigned int);
     mRawData = (unsigned int*)malloc(buffsize);
     if (mRawData == nullptr) {
         return;

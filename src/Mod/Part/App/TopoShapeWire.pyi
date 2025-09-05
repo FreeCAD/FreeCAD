@@ -35,12 +35,12 @@ class TopoShapeWire(TopoShape):
     Returns the matrix of inertia. It is a symmetrical matrix.
     The coefficients of the matrix are the quadratic moments of
     inertia.
-    
+
      | Ixx Ixy Ixz 0 |
      | Ixy Iyy Iyz 0 |
      | Ixz Iyz Izz 0 |
      | 0   0   0   1 |
-    
+
     The moments of inertia are denoted by Ixx, Iyy, Izz.
     The products of inertia are denoted by Ixy, Ixz, Iyz.
     The matrix of inertia is returned in the central coordinate

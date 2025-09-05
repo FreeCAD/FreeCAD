@@ -67,6 +67,7 @@ class _Stairs(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Stairs"
         self.setProperties(obj)
         obj.IfcType = "Stair"
 
@@ -226,8 +227,6 @@ class _Stairs(ArchComponent.Component):
         if not hasattr(self,"ArchSkPropSetListPrev"):
             self.ArchSkPropSetListPrev = []
 
-        self.Type = "Stairs"
-
 
     def dumps(self):  # Supercede Arch.Component.dumps()
         dump = super().dumps()
@@ -238,7 +237,7 @@ class _Stairs(ArchComponent.Component):
 
 
     def loads(self,state):
-        super().loads(state)  # do nothing as of 2024.11.28
+        self.Type = "Stairs"
         if state == None:
             return
         elif state[0] == 'S':  # state[1] == 't', behaviour before 2024.11.28
@@ -337,7 +336,7 @@ class _Stairs(ArchComponent.Component):
 
         self.pseudosteps = []
         self.pseudorisers = []
-        
+
         self.structures = []
         pl = obj.Placement
         landings = 0 # TODO Any use? 2018.7.15
@@ -542,6 +541,8 @@ class _Stairs(ArchComponent.Component):
                     if railingLeftObject.Base:
                         doc.removeObject(railingLeftObject.Base.Name)
                     railingLeftWireObject = doc.addObject("Part::Feature","RailingWire")
+                    if FreeCAD.GuiUp:
+                        railingLeftWireObject.ViewObject.hide()
                     railingLeftObject.Base = railingLeftWireObject
                 # update the Base object shape
                 railingLeftObject.Base.Shape = railWireL
@@ -562,6 +563,8 @@ class _Stairs(ArchComponent.Component):
                     if railingRightObject.Base:
                         doc.removeObject(railingRightObject.Base.Name)
                     railingRightWireObject = doc.addObject("Part::Feature","RailingWire")
+                    if FreeCAD.GuiUp:
+                        railingRightWireObject.ViewObject.hide()
                     railingRightObject.Base = railingRightWireObject
                 # update the Base object shape
                 railingRightObject.Base.Shape = railWireR
@@ -1289,7 +1292,7 @@ class _Stairs(ArchComponent.Component):
 
         if structure == "Massive":
             if structureThickness:
-                # TODO Why 're-use' vBase?
+                # TODO Why 'reuse' vBase?
                 # '# Massive Structure to respect 'align' attribute'
                 vBase = vBasedAligned.add(vRiserThickness)
 
@@ -1306,7 +1309,7 @@ class _Stairs(ArchComponent.Component):
                 lProfile[-1] = lProfile[-1].add(-vRiserThickness)
                 resHeight1 = structureThickness/math.cos(ang)
                 dh = s2 - float(hgt)/numOfSteps
-                
+
                 resHeight2 = ((numOfSteps-1)*vHeight.Length) - dh
 
                 if endstairsup == "toFlightThickness":
@@ -1362,7 +1365,7 @@ class _Stairs(ArchComponent.Component):
                 struct = struct.extrude(evec)
 
         elif structure in ["One stringer","Two stringers"]:
-            # setup stringerWidth 
+            # setup stringerWidth
             if not stringerWidth:
                 stringerWidth = obj.StringerWidth.Value
 
@@ -1706,5 +1709,3 @@ class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
                 lst.extend(obj.Subtractions)
             return lst
         return []
-
-

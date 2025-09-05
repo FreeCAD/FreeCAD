@@ -30,11 +30,14 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QListView>
+#include <QMdiSubWindow>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QScrollArea>
+#include <QTimer>
 #include <QWidget>
 #include <QStackedWidget>
+#include <QShowEvent>
 #endif
 
 #include "StartView.h"
@@ -47,9 +50,11 @@
 #include <App/Application.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
+#include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/ModuleIO.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -184,34 +189,44 @@ StartView::StartView(QWidget* parent)
     configureExamplesListWidget(examplesListWidget);
     configureRecentFilesListWidget(recentFilesListWidget, _recentFilesLabel);
 
+    QTimer::singleShot(2000, [this, recentFilesListWidget]() {
+        auto updateFun = [this, recentFilesListWidget]() {
+            configureRecentFilesListWidget(recentFilesListWidget, _recentFilesLabel);
+        };
+        auto recentFiles = Gui::getMainWindow()->findChild<Gui::RecentFilesAction*>();
+        if (recentFiles != nullptr) {
+            connect(recentFiles, &Gui::RecentFilesAction::recentFilesListModified, this, updateFun);
+        }
+    });
+
     retranslateUi();
 }
 
 void StartView::configureNewFileButtons(QLayout* layout) const
 {
     auto newEmptyFile =
-        gsl::owner<NewFileButton*>(new NewFileButton({tr("Empty file"),
-                                                      tr("Create a new empty FreeCAD file"),
+        gsl::owner<NewFileButton*>(new NewFileButton({tr("Empty File"),
+                                                      tr("Creates a new empty FreeCAD file"),
                                                       QLatin1String(":/icons/document-new.svg")}));
     auto openFile =
         gsl::owner<NewFileButton*>(new NewFileButton({tr("Open File"),
-                                                      tr("Open an existing CAD file or 3D model"),
+                                                      tr("Opens an existing CAD file or 3D model"),
                                                       QLatin1String(":/icons/document-open.svg")}));
     auto partDesign = gsl::owner<NewFileButton*>(
-        new NewFileButton({tr("Parametric Part"),
-                           tr("Create a part with the Part Design workbench"),
+        new NewFileButton({tr("Parametric Body"),
+                           tr("Creates a body with the Part Design workbench"),
                            QLatin1String(":/icons/PartDesignWorkbench.svg")}));
     auto assembly = gsl::owner<NewFileButton*>(
         new NewFileButton({tr("Assembly"),
-                           tr("Create an assembly project"),
+                           tr("Creates an assembly project"),
                            QLatin1String(":/icons/AssemblyWorkbench.svg")}));
     auto draft = gsl::owner<NewFileButton*>(
         new NewFileButton({tr("2D Draft"),
-                           tr("Create a 2D Draft with the Draft workbench"),
+                           tr("Creates a 2D Draft document"),
                            QLatin1String(":/icons/DraftWorkbench.svg")}));
     auto arch =
         gsl::owner<NewFileButton*>(new NewFileButton({tr("BIM/Architecture"),
-                                                      tr("Create an architectural project"),
+                                                      tr("Creates an architectural project"),
                                                       QLatin1String(":/icons/BIMWorkbench.svg")}));
 
     // TODO: Ensure all of the required WBs are actually available
@@ -234,6 +249,7 @@ void StartView::configureFileCardWidget(QListView* fileCardWidget)
 {
     auto delegate = gsl::owner<FileCardDelegate*>(new FileCardDelegate(fileCardWidget));
     fileCardWidget->setItemDelegate(delegate);
+
     fileCardWidget->setMinimumWidth(fileCardWidget->parentWidget()->width());
     //    fileCardWidget->setGridSize(
     //        fileCardWidget->itemDelegate()->sizeHint(QStyleOptionViewItem(),
@@ -278,13 +294,13 @@ void StartView::configureCustomFolderListWidget(QListView* customFolderListWidge
 }
 
 
-void StartView::newEmptyFile() const
+void StartView::newEmptyFile()
 {
     Gui::Application::Instance->commandManager().runCommandByName("Std_New");
     postStart(PostStartBehavior::switchWorkbench);
 }
 
-void StartView::newPartDesignFile() const
+void StartView::newPartDesignFile()
 {
     Gui::Application::Instance->commandManager().runCommandByName("Std_New");
     Gui::Application::Instance->activateWorkbench("PartDesignWorkbench");
@@ -292,7 +308,7 @@ void StartView::newPartDesignFile() const
     postStart(PostStartBehavior::doNotSwitchWorkbench);
 }
 
-void StartView::openExistingFile() const
+void StartView::openExistingFile()
 {
     auto originalDocument = Gui::Application::Instance->activeDocument();
     Gui::Application::Instance->commandManager().runCommandByName("Std_Open");
@@ -304,7 +320,7 @@ void StartView::openExistingFile() const
     }
 }
 
-void StartView::newAssemblyFile() const
+void StartView::newAssemblyFile()
 {
     Gui::Application::Instance->commandManager().runCommandByName("Std_New");
     Gui::Application::Instance->activateWorkbench("AssemblyWorkbench");
@@ -313,7 +329,7 @@ void StartView::newAssemblyFile() const
     postStart(PostStartBehavior::doNotSwitchWorkbench);
 }
 
-void StartView::newDraftFile() const
+void StartView::newDraftFile()
 {
     Gui::Application::Instance->commandManager().runCommandByName("Std_New");
     Gui::Application::Instance->activateWorkbench("DraftWorkbench");
@@ -321,7 +337,7 @@ void StartView::newDraftFile() const
     postStart(PostStartBehavior::doNotSwitchWorkbench);
 }
 
-void StartView::newArchFile() const
+void StartView::newArchFile()
 {
     Gui::Application::Instance->commandManager().runCommandByName("Std_New");
     try {
@@ -347,7 +363,7 @@ bool StartView::onHasMsg(const char* pMsg) const
     return MDIView::onHasMsg(pMsg);
 }
 
-void StartView::postStart(PostStartBehavior behavior) const
+void StartView::postStart(PostStartBehavior behavior)
 {
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Start");
@@ -363,9 +379,13 @@ void StartView::postStart(PostStartBehavior behavior) const
             Gui::Application::Instance->activateWorkbench(wb.c_str());
         }
     }
-    auto closeStart = hGrp->GetBool("closeStart", false);
-    if (closeStart) {
-        this->window()->close();
+    if (auto closeStart = hGrp->GetBool("closeStart", false)) {
+        for (QWidget* w = this; w != nullptr; w = w->parentWidget()) {
+            if (auto mdiSub = qobject_cast<QMdiSubWindow*>(w)) {
+                mdiSub->close();
+                return;
+            }
+        }
     }
 }
 
@@ -417,18 +437,53 @@ void StartView::changeEvent(QEvent* event)
     _openFirstStart->setEnabled(true);
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc) {
-        Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
-        if (view) {
+        if (auto view = dynamic_cast<Gui::View3DInventor*>(doc->getActiveView())) {
             Gui::View3DInventorViewer* viewer = view->getViewer();
             if (viewer->isEditing()) {
                 _openFirstStart->setEnabled(false);
             }
         }
     }
+
     if (event->type() == QEvent::LanguageChange) {
         this->retranslateUi();
     }
+
     Gui::MDIView::changeEvent(event);
+}
+
+void StartView::showEvent(QShowEvent* event)
+{
+    if (auto mainWindow = Gui::getMainWindow()) {
+        if (auto mdiArea = mainWindow->findChild<QMdiArea*>()) {
+            connect(mdiArea,
+                    &QMdiArea::subWindowActivated,
+                    this,
+                    &StartView::onMdiSubWindowActivated,
+                    Qt::UniqueConnection);
+        }
+    }
+    Gui::MDIView::showEvent(event);
+}
+
+void StartView::onMdiSubWindowActivated(QMdiSubWindow* subWindow)
+{
+    // check if start view is activated subwindow if yes, then enable updates
+    // so we can once again receive paint events
+    bool isOurWindow = subWindow && subWindow->isAncestorOf(this);
+    setListViewUpdatesEnabled(isOurWindow);
+}
+
+void StartView::setListViewUpdatesEnabled(bool enabled)
+{
+    // disable updates on all QListView widgets when inactive to prevent unnecessary paint events
+    QList<QListView*> listViews = findChildren<QListView*>();
+    for (QListView* listView : listViews) {
+        listView->setUpdatesEnabled(enabled);
+        if (listView->viewport()) {
+            listView->viewport()->setUpdatesEnabled(enabled);
+        }
+    }
 }
 
 void StartView::retranslateUi()
@@ -442,10 +497,21 @@ void StartView::retranslateUi()
     _newFileLabel->setText(h1Start + tr("New File") + h1End);
     _examplesLabel->setText(h1Start + tr("Examples") + h1End);
     _recentFilesLabel->setText(h1Start + tr("Recent Files") + h1End);
-    _customFolderLabel->setText(h1Start + tr("Custom Folder") + h1End);
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Start");
+    std::string customFolder(hGrp->GetASCII("CustomFolder", ""));
+    bool shortCustomFolder = hGrp->GetBool("ShortCustomFolder", true);  // false shows full path
+    if (!customFolder.empty()) {
+        if (shortCustomFolder) {
+            _customFolderLabel->setToolTip(QString::fromUtf8(customFolder.c_str()));
+            customFolder = customFolder.substr(customFolder.find_last_of("/\\") + 1);
+        }
+        _customFolderLabel->setText(h1Start + QString::fromUtf8(customFolder.c_str()) + h1End);
+    }
 
     QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
-    _openFirstStart->setText(tr("Open first start setup"));
+    _openFirstStart->setText(tr("Open First Start Setup"));
     _showOnStartupCheckBox->setText(
-        tr("Don't show this Start page again (start with blank screen)"));
+        tr("Do not show this Start page again (start with blank screen)"));
 }

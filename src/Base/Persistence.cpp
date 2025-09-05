@@ -24,7 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <algorithm>
+#include <array>
 #include <cassert>
+#include <codecvt>
+#include <locale>
 #endif
 
 #include <zipios++/zipinputstream.h>
@@ -110,6 +114,41 @@ std::string Persistence::encodeAttribute(const std::string& str)
     }
 
     return tmp;
+}
+
+// clang-format off
+// https://www.w3.org/TR/xml/#charsets
+static constexpr std::array<std::pair<char32_t, char32_t>, 6> validRanges {{
+    {0x9, 0x9},
+    {0xA, 0xA},
+    {0xD, 0xD},
+    {0x20, 0xD7FF},
+    {0xE000, 0xFFFD},
+    {0x10000, 0x10FFFF},
+}};
+// clang-format on
+
+/*!
+ * In XML not all valid Unicode characters are allowed. Replace all
+ * disallowed characters with '_'
+ */
+std::string Persistence::validateXMLString(const std::string& str)
+{
+    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> cvt;
+    std::u32string cp_in = cvt.from_bytes(str);
+    std::u32string cp_out;
+    cp_out.reserve(cp_in.size());
+    for (auto cp : cp_in) {
+        if (std::any_of(validRanges.begin(), validRanges.end(), [cp](const auto& range) {
+                return cp >= range.first && cp <= range.second;
+            })) {
+            cp_out += cp;
+        }
+        else {
+            cp_out += '_';
+        }
+    }
+    return cvt.to_bytes(cp_out);
 }
 
 void Persistence::dumpToStream(std::ostream& stream, int compression)

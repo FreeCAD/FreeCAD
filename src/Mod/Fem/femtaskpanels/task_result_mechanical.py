@@ -736,7 +736,9 @@ class _TaskPanel:
             )
             error_message = translate("FEM", the_error_messagetext) + "\n"
             FreeCAD.Console.PrintError(error_message)
-            QtGui.QMessageBox.critical(None, translate("FEM", "Empty result mesh"), error_message)
+            QtGui.QMessageBox.critical(
+                None, translate("FEM", "Result mesh is empty"), error_message
+            )
         elif self.mesh_obj.FemMesh.NodeCount == len(self.result_obj.NodeNumbers):
             self.suitable_results = True
             hide_parts_constraints()

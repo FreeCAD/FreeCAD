@@ -64,14 +64,12 @@
 #include "ui_TaskPostFrames.h"
 #include "ui_TaskPostBranch.h"
 
-
 #include "FemSettings.h"
 #include "TaskPostBoxes.h"
 #include "ViewProviderFemPostFilter.h"
 #include "ViewProviderFemPostFunction.h"
 #include "ViewProviderFemPostObject.h"
 #include "ViewProviderFemPostBranchFilter.h"
-
 
 using namespace FemGui;
 using namespace Gui;
@@ -214,9 +212,18 @@ TaskPostWidget::TaskPostWidget(Gui::ViewProviderDocumentObject* view,
     setWindowTitle(title);
     setWindowIcon(icon);
     m_icon = icon;
+
+    m_connection =
+        m_object->signalChanged.connect(boost::bind(&TaskPostWidget::handlePropertyChange,
+                                                    this,
+                                                    boost::placeholders::_1,
+                                                    boost::placeholders::_2));
 }
 
-TaskPostWidget::~TaskPostWidget() = default;
+TaskPostWidget::~TaskPostWidget()
+{
+    m_connection.disconnect();
+};
 
 bool TaskPostWidget::autoApply()
 {
@@ -256,6 +263,14 @@ void TaskPostWidget::updateEnumerationList(App::PropertyEnumeration& prop, QComb
     box->setCurrentIndex(index);
 }
 
+void TaskPostWidget::handlePropertyChange(const App::DocumentObject& obj, const App::Property& prop)
+{
+    if (auto postobj = m_object.get<Fem::FemPostObject>()) {
+        if (&prop == &postobj->Data) {
+            this->onPostDataChanged(postobj);
+        }
+    }
+}
 
 // ***************************************************************************
 // simulation dialog for the TaskView
@@ -393,6 +408,24 @@ void TaskDlgPost::modifyStandardButtons(QDialogButtonBox* box)
     }
 }
 
+void TaskDlgPost::processCollapsedWidgets()
+{
+
+    for (auto& widget : Content) {
+        auto* task_box = dynamic_cast<Gui::TaskView::TaskBox*>(widget);
+        if (!task_box) {
+            continue;
+        }
+        // get the task widget and check if it is a post widget
+        auto* taskwidget = task_box->groupLayout()->itemAt(0)->widget();
+        auto* post_widget = dynamic_cast<TaskPostWidget*>(taskwidget);
+        if (!post_widget || !post_widget->initiallyCollapsed()) {
+            continue;
+        }
+        post_widget->setGeometry(QRect(QPoint(0, 0), post_widget->sizeHint()));
+        task_box->hideGroupBox();
+    }
+}
 
 // ***************************************************************************
 // box to set the coloring
@@ -403,7 +436,7 @@ TaskPostDisplay::TaskPostDisplay(ViewProviderFemPostObject* view, QWidget* paren
     // setup the ui
     ui->setupUi(this);
     setWindowTitle(
-        tr("Result display options"));  // set title here as setupUi overrides the constructor title
+        tr("Result Display Options"));  // set title here as setupUi overrides the constructor title
     setupConnections();
 
     // update all fields
@@ -474,7 +507,6 @@ void TaskPostDisplay::onTransparencyValueChanged(int i)
 
 void TaskPostDisplay::applyPythonCode()
 {}
-
 
 // ***************************************************************************
 // functions
@@ -557,6 +589,11 @@ void TaskPostFrames::applyPythonCode()
     // we apply the views widgets python code
 }
 
+bool TaskPostFrames::initiallyCollapsed()
+{
+
+    return (ui->FrameTable->rowCount() == 0);
+}
 
 // ***************************************************************************
 // in the following, the different filters sorted alphabetically
@@ -571,7 +608,7 @@ TaskPostBranch::TaskPostBranch(ViewProviderFemPostBranchFilter* view, QWidget* p
 {
     // setup the ui
     ui->setupUi(this);
-    setWindowTitle(tr("Branch behaviour"));
+    setWindowTitle(tr("Branch Behaviour"));
     setupConnections();
 
     // populate the data
@@ -626,7 +663,7 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderFemPostDataAlongLine* v
 {
     // setup the ui
     ui->setupUi(this);
-    setWindowTitle(tr("Data along a line options"));
+    setWindowTitle(tr("Data Along a Line Options"));
     setupConnectionsStep1();
 
     QSize size = ui->point1X->sizeForText(QStringLiteral("000000000000"));
@@ -1047,7 +1084,7 @@ TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderFemPostDataAtPoint* view, Q
 {
     // setup the ui
     ui->setupUi(this);
-    setWindowTitle(tr("Data at point options"));
+    setWindowTitle(tr("Data at Point Options"));
     setupConnections();
 
     QSize size = ui->centerX->sizeForText(QStringLiteral("000000000000"));
@@ -1405,7 +1442,7 @@ TaskPostClip::TaskPostClip(ViewProviderFemPostClip* view,
 
     // setup the ui
     ui->setupUi(this);
-    setWindowTitle(tr("Clip region, choose implicit function"));
+    setWindowTitle(tr("Clip Region, Choose Implicit Function"));
     setupConnections();
 
     // the layout for the container widget
@@ -1556,7 +1593,7 @@ TaskPostContours::TaskPostContours(ViewProviderFemPostContours* view, QWidget* p
 {
     // setup the ui
     ui->setupUi(this);
-    setWindowTitle(tr("Contours filter options"));
+    setWindowTitle(tr("Contours Filter Options"));
     QMetaObject::connectSlotsByName(this);
 
     auto obj = getObject<Fem::FemPostContoursFilter>();
@@ -1715,7 +1752,7 @@ TaskPostCut::TaskPostCut(ViewProviderFemPostCut* view, App::PropertyLink* functi
 
     // setup the ui
     ui->setupUi(this);
-    setWindowTitle(tr("Function cut, choose implicit function"));
+    setWindowTitle(tr("Function Cut, Choose Implicit Function"));
     setupConnections();
 
     // the layout for the container widget
@@ -1848,7 +1885,7 @@ TaskPostScalarClip::TaskPostScalarClip(ViewProviderFemPostScalarClip* view, QWid
 {
     // setup the ui
     ui->setupUi(this);
-    setWindowTitle(tr("Scalar clip options"));
+    setWindowTitle(tr("Scalar Clip Options"));
     setupConnections();
 
     // load the default values
@@ -1969,7 +2006,7 @@ TaskPostWarpVector::TaskPostWarpVector(ViewProviderFemPostWarpVector* view, QWid
 {
     // setup the ui
     ui->setupUi(this);
-    setWindowTitle(tr("Warp options"));
+    setWindowTitle(tr("Warp Options"));
     setupConnections();
 
     // load the default values for warp display

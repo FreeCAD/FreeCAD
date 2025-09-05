@@ -334,7 +334,7 @@ or try saving to a lower DWG version.""") + "\n"
             FCC.PrintError(translate("draft", "QCAD converter not found") + "\n")
 
     FCC.PrintError(translate("draft", """No suitable external DWG converter has been found.
-Please set one manually under menu Edit -> Preferences -> Import/Export -> DWG
+Please set one manually under menu Edit → Preferences → Import/Export → DWG
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences""") + "\n")
     return None
@@ -401,7 +401,7 @@ def convertToDwg(dxffilename, dwgfilename):
             FCC.PrintError(translate("draft", "QCAD converter not found") + "\n")
 
     FCC.PrintError(translate("draft", """No suitable external DWG converter has been found.
-Please set one manually under menu Edit -> Preferences -> Import/Export -> DWG
+Please set one manually under menu Edit → Preferences → Import/Export → DWG
 For more information see:
 https://wiki.freecad.org/Import_Export_Preferences""") + "\n")
     return None

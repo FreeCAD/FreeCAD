@@ -23,11 +23,21 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+# include <Inventor/nodes/SoAnnotation.h>
+#endif
+
+#include <App/Document.h>
+#include <Base/ServiceProvider.h>
 #include <Gui/Application.h>
+#include <Gui/Utilities.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 
 #include "ViewProviderSketchBased.h"
+#include "StyleParameters.h"
+
+#include <Gui/Inventor/So3DAnnotation.h>
 
 
 using namespace PartDesignGui;
@@ -35,7 +45,31 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE(PartDesignGui::ViewProviderSketchBased, PartDesignGui::ViewProvider)
 
 
-ViewProviderSketchBased::ViewProviderSketchBased() = default;
+ViewProviderSketchBased::ViewProviderSketchBased() :
+    pcProfileToggle(new SoToggleSwitch),
+    pcProfileShape(new PartGui::SoPreviewShape)
+{
+    auto annotation = new Gui::So3DAnnotation;
+    annotation->addChild(pcProfileShape);
+
+    pcProfileToggle->addChild(annotation);
+
+    const auto updateProfileVisibility = [this]() {
+        pcProfileToggle->on = hGrp->GetBool("ShowProfilePreview", true);
+    };
+
+    handlers.addHandler(hGrp, "ShowProfilePreview", [updateProfileVisibility](const Gui::ParamKey*) {
+        updateProfileVisibility();
+    });
+
+    updateProfileVisibility();
+
+    auto* styleParametersManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
+    pcProfileShape->transparency = 1.0F - static_cast<float>(
+        styleParametersManager->resolve(StyleParameters::PreviewProfileOpacity).value);
+    pcProfileShape->lineWidth = static_cast<float>(
+        styleParametersManager->resolve(StyleParameters::PreviewProfileLineWidth).value);
+}
 
 ViewProviderSketchBased::~ViewProviderSketchBased() = default;
 
@@ -49,19 +83,44 @@ std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren() const
     return temp;
 }
 
+void ViewProviderSketchBased::attach(App::DocumentObject* pcObject)
+{
+    ViewProvider::attach(pcObject);
 
-bool ViewProviderSketchBased::onDelete(const std::vector<std::string> &s) {
-    PartDesign::ProfileBased* feature = getObject<PartDesign::ProfileBased>();
+    pcPreviewRoot->addChild(pcProfileToggle);
 
-    // get the Sketch
-    Sketcher::SketchObject *pcSketch = nullptr;
-    if (feature->Profile.getValue())
-        pcSketch = static_cast<Sketcher::SketchObject*>(feature->Profile.getValue());
-
-    // if abort command deleted the object the sketch is visible again
-    if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-        Gui::Application::Instance->getViewProvider(pcSketch)->show();
-
-    return ViewProvider::onDelete(s);
+    // we want the profile to be the same color as the preview
+    pcProfileShape->color.connectFrom(&pcPreviewShape->color);
 }
 
+void ViewProviderSketchBased::updateProfileShape()
+{
+    auto document = pcObject->getDocument();
+    if (document->testStatus(App::Document::Restoring)) {
+        return;
+    }
+
+    auto profileBased = getObject<PartDesign::ProfileBased>();
+    updatePreviewShape(profileBased->getTopoShapeVerifiedFace(true), pcProfileShape);
+}
+
+void ViewProviderSketchBased::updateData(const App::Property* prop)
+{
+    ViewProvider::updateData(prop);
+
+    auto profileBased = getObject<PartDesign::ProfileBased>();
+    if (!profileBased) {
+        return;
+    }
+
+    if (prop == &profileBased->Profile) {
+        updateProfileShape();
+    }
+
+}
+void ViewProviderSketchBased::updatePreview()
+{
+    ViewProvider::updatePreview();
+
+    updateProfileShape();
+}

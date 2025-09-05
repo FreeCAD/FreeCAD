@@ -20,6 +20,7 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************/
+from dataclasses import dataclass
 
 # FreeCAD gui init module
 #
@@ -129,6 +130,63 @@ class NoneWorkbench ( Workbench ):
         """Return the name of the associated C++ class."""
         return "Gui::NoneWorkbench"
 
+
+@dataclass
+class InputHint:
+    """
+    Represents a single input hint (shortcut suggestion).
+
+    The message is a Qt formatting string with placeholders like %1, %2, ...
+    The placeholders are replaced with input representations - be it keys, mouse buttons etc.
+    Each placeholder corresponds to one input sequence. Sequence can either be:
+     - one input from Gui.UserInput enum
+     - tuple of mentioned enum values representing the input sequence
+
+    >>> InputHint("%1 change mode", Gui.UserInput.KeyM)
+    will result in a hint displaying `[M] change mode`
+
+    >>> InputHint("%1 new line", (Gui.UserInput.KeyControl, Gui.UserInput.KeyEnter))
+    will result in a hint displaying `[ctrl][enter] new line`
+
+    >>> InputHint("%1/%2 increase/decrease ...", Gui.UserInput.KeyU, Gui.UserInput.KeyJ)
+    will result in a hint displaying `[U]/[J] increase / decrease ...`
+    """
+
+    InputSequence = Gui.UserInput | tuple[Gui.UserInput, ...]
+
+    message: str
+    sequences: list[InputSequence]
+
+    def __init__(self, message: str, *sequences: InputSequence):
+        self.message = message
+        self.sequences = list(sequences)
+
+
+class HintManager:
+    """
+    A convenience class for managing input hints (shortcut suggestions) displayed to the user.
+    It is here mostly to provide well-defined and easy to reach API from python without developers needing
+    to call low-level functions on the main window directly.
+    """
+
+    def show(self, *hints: InputHint):
+        """
+        Displays the specified input hints to the user.
+
+        :param hints: List of hints to show.
+        """
+        Gui.getMainWindow().showHint(*hints)
+
+    def hide(self):
+        """
+        Hides all currently displayed input hints.
+        """
+        Gui.getMainWindow().hideHint()
+
+
+Gui.InputHint = InputHint
+Gui.HintManager = HintManager()
+
 def InitApplications():
     import sys,os,traceback
     import io as cStringIO
@@ -137,7 +195,7 @@ def InitApplications():
     # (additional module paths are already cached)
     ModDirs = FreeCAD.__ModDirs__
     #print ModDirs
-    Log('Init:   Searching modules...\n')
+    Log('Init:   Searching modules\n')
 
     def RunInitGuiPy(Dir) -> bool:
         InstallFile = os.path.join(Dir,"InitGui.py")
@@ -152,7 +210,18 @@ def InitApplications():
                 Log('-'*100+'\n')
                 Err('During initialization the error "' + str(inst) + '" occurred in '\
                     + InstallFile + '\n')
-                Err('Please look into the log file for further information\n')
+                Err('Look into the log file for further information\n')
+                mod_name = os.path.normpath(Dir).split(os.path.sep)[-1].lower()
+                if hasattr(FreeCAD,"__failed_mods__"):
+                    FreeCAD.__failed_mods__.append(mod_name)
+                else:
+                    FreeCAD.__failed_mods__ = [mod_name]
+                if mod_name not in FreeCAD.__fallback_mods__:
+                    Err("Could not evaluate module '" + mod_name + "' for fallbacks\n")
+                elif len(FreeCAD.__fallback_mods__[mod_name]) > 1:
+                    new_path = os.path.normpath(FreeCAD.__fallback_mods__[mod_name][-2])
+                    Err(f"A fallback module was found for module '{mod_name}': {new_path}\n")
+                    Err(f"Rename or remove {os.path.normpath(Dir)} to use the fallback module\n")
             else:
                 Log('Init:      Initializing ' + Dir + '... done\n')
                 return True

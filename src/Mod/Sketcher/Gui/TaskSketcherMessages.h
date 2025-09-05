@@ -23,25 +23,14 @@
 #ifndef GUI_TASKVIEW_TaskSketcherMessages_H
 #define GUI_TASKVIEW_TaskSketcherMessages_H
 
-#include <boost/signals2.hpp>
-
-#include <Gui/TaskView/TaskView.h>
-
-
-class Ui_TaskSketcherMessages;
-using Connection = boost::signals2::connection;
-
-namespace App
-{
-class Property;
-}
+#include <Gui/TaskView/TaskSolverMessages.h>
 
 namespace SketcherGui
 {
 
 class ViewProviderSketch;
 
-class TaskSketcherMessages: public Gui::TaskView::TaskBox
+class TaskSketcherMessages: public Gui::TaskSolverMessages
 {
     Q_OBJECT
 
@@ -49,26 +38,14 @@ public:
     explicit TaskSketcherMessages(ViewProviderSketch* sketchView);
     ~TaskSketcherMessages() override;
 
-    void slotSetUp(const QString& state,
-                   const QString& msg,
-                   const QString& link,
-                   const QString& linkText);
-
 private:
-    void setupConnections();
-    void onLabelConstrainStatusLinkClicked(const QString&);
-    void onAutoUpdateStateChanged();
-    void onManualUpdateClicked(bool checked);
+    void createSettingsButtonActions() override;
+    void onLabelStatusLinkClicked(const QString&) override;
 
-    void updateToolTip(const QString& link);
+    void updateToolTip(const QString& link) override;
 
 protected:
     ViewProviderSketch* sketchView;
-    Connection connectionSetUp;
-
-private:
-    QWidget* proxy;
-    std::unique_ptr<Ui_TaskSketcherMessages> ui;
 };
 
 }  // namespace SketcherGui

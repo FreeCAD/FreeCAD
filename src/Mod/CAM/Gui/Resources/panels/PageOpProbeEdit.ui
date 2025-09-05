@@ -32,7 +32,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Tool Controller</string>
+         <string>Tool controller</string>
         </property>
        </widget>
       </item>
@@ -43,13 +43,20 @@
         </property>
        </widget>
       </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="editToolController">
+        <property name="text">
+         <string>Edit Tool Controller</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Probe Grid Points</string>
+      <string>Probe grid points</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
@@ -98,7 +105,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>X Offset</string>
+         <string>X offset</string>
         </property>
        </widget>
       </item>
@@ -112,7 +119,7 @@
      <item row="2" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Y Offset</string>
+         <string>Y offset</string>
         </property>
        </widget>
       </item>
@@ -135,7 +142,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>File Name</string>
+         <string>File name</string>
         </property>
        </widget>
       </item>
@@ -152,7 +159,7 @@
       <item row="0" column="2">
        <widget class="QToolButton" name="SetOutputFileName">
         <property name="text">
-         <string notr="true">...</string>
+         <string notr="true">…</string>
         </property>
        </widget>
       </item>

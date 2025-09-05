@@ -20,19 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_RDRAGGER_H
-#define GUI_RDRAGGER_H
+#ifndef GUI_ROTATION_DRAGGER_H
+#define GUI_ROTATION_DRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFDouble.h>
-#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFRotation.h>
-#include <Inventor/fields/SoSFString.h>
-#include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
-#include <Inventor/nodes/SoBaseColor.h>
+
+#include <FCGlobal.h>
+
+class SoTransform;
+class SoCoordinate3;
+class SoBaseColor;
+class SoSensor;
 
 namespace Gui
 {
@@ -43,19 +46,31 @@ namespace Gui
  * multiplied with rotationIncrement for full double
  * precision vector scalar.
  */
-class SoRotationDragger : public SoDragger
+class GuiExport SoRotationDragger : public SoDragger
 {
     SO_KIT_HEADER(SoRotationDragger);
-    SO_KIT_CATALOG_ENTRY_HEADER(rotatorSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(baseGeomSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(baseGeom);
+    SO_KIT_CATALOG_ENTRY_HEADER(baseColor);
+    SO_KIT_CATALOG_ENTRY_HEADER(activeSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(secondaryColor);
+    SO_KIT_CATALOG_ENTRY_HEADER(scale);
     SO_KIT_CATALOG_ENTRY_HEADER(rotator);
-    SO_KIT_CATALOG_ENTRY_HEADER(rotatorActive);
+
 public:
     static void initClass();
     SoRotationDragger();
+
     SoSFRotation rotation; //!< set from outside and used from outside for single precision.
     SoSFDouble rotationIncrement; //!< set from outside and used for rounding.
     SoSFInt32 rotationIncrementCount; //!< number of steps. used from outside.
-    SoSFColor color; //!< set from outside. non-active color.
+    SoSFColor color; //!< colour of the dragger
+    SoSFColor activeColor; //!< colour of the dragger while being dragged.
+    SoSFVec3f geometryScale; //!< the scale of the dragger geometry
+    SoSFBool active; //!< set when the dragger is being dragged
+    SoSFBool baseGeomVisible; //!< toggles if the dragger has a base geometry or not
+
+    void instantiateBaseGeometry();
 
 protected:
     ~SoRotationDragger() override;
@@ -73,15 +88,43 @@ protected:
 
     SoFieldSensor fieldSensor;
     SbPlaneProjector projector;
-    float arcRadius;
 
 private:
-    void buildFirstInstance();
     int roundIncrement(const float &radiansIn);
-    SoGroup* buildGeometry();
+    SoBaseColor* buildActiveColor();
+    SoBaseColor* buildColor();
+
     using inherited = SoDragger;
+};
+
+class GuiExport SoRotationDraggerContainer: public SoInteractionKit
+{
+    SO_KIT_HEADER(SoRotationDraggerContainer);
+    SO_KIT_CATALOG_ENTRY_HEADER(draggerSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(transform);
+    SO_KIT_CATALOG_ENTRY_HEADER(dragger);
+
+public:
+    static void initClass();
+    SoRotationDraggerContainer();
+
+    SoSFRotation rotation;
+    SoSFColor color;
+    SoSFVec3f translation;
+    SoSFBool visible;
+
+    SbVec3f getPointerDirection();
+    void setPointerDirection(const SbVec3f& dir);
+    void setArcNormalDirection(const SbVec3f& dir);
+
+    SoRotationDragger* getDragger();
+
+private:
+    SoTransform* buildTransform();
+
+    using inherited = SoInteractionKit;
 };
 
 }
 
-#endif /* GUI_RDRAGGER_H */
+#endif /* GUI_ROTATION_DRAGGER_H */

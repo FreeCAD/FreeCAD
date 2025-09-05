@@ -210,6 +210,7 @@ class BuildingPart(ArchIFC.IfcProduct):
     def __init__(self,obj):
 
         obj.Proxy = self
+        self.Type = "BuildingPart"
         obj.addExtension('App::GroupExtensionPython')
         #obj.addExtension('App::OriginGroupExtensionPython')
         self.setProperties(obj)
@@ -242,8 +243,6 @@ class BuildingPart(ArchIFC.IfcProduct):
         if not "MaterialsTable" in pl:
             obj.addProperty("App::PropertyMap","MaterialsTable","BuildingPart",QT_TRANSLATE_NOOP("App::Property","A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files"), locked=True)
 
-        self.Type = "BuildingPart"
-
     def onDocumentRestored(self,obj):
 
         self.setProperties(obj)
@@ -254,7 +253,7 @@ class BuildingPart(ArchIFC.IfcProduct):
 
     def loads(self,state):
 
-        return None
+        self.Type = "BuildingPart"
 
     def onBeforeChange(self,obj,prop):
 
@@ -811,19 +810,18 @@ class ViewProviderBuildingPart:
         if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
             return
         if (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
+            menuTxt = translate("Arch", "Active")
+            actionActivate = QtGui.QAction(menuTxt, menu)
+            actionActivate.setCheckable(True)
             if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
-                menuTxt = translate("Arch", "Deactivate")
+                actionActivate.setChecked(True)
             else:
-                menuTxt = translate("Arch", "Activate")
-            actionActivate = QtGui.QAction(menuTxt,
-                                           menu)
-            QtCore.QObject.connect(actionActivate,
-                                   QtCore.SIGNAL("triggered()"),
-                                   self.activate)
+                actionActivate.setChecked(False)
+            actionActivate.triggered.connect(lambda _: self.activate(actionActivate))
             menu.addAction(actionActivate)
 
         actionSetWorkingPlane = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),
-                                              translate("Arch", "Set working plane"),
+                                              translate("Arch", "Set Working Plane"),
                                               menu)
         QtCore.QObject.connect(actionSetWorkingPlane,
                                QtCore.SIGNAL("triggered()"),
@@ -831,45 +829,43 @@ class ViewProviderBuildingPart:
         menu.addAction(actionSetWorkingPlane)
 
         actionWriteCamera = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),
-                                          translate("Arch", "Write camera position"),
+                                          translate("Arch", "Write Camera Position"),
                                           menu)
         QtCore.QObject.connect(actionWriteCamera,
                                QtCore.SIGNAL("triggered()"),
                                self.writeCamera)
         menu.addAction(actionWriteCamera)
 
-        actionCreateGroup = QtGui.QAction(translate("Arch", "Create group..."),
+        actionCreateGroup = QtGui.QAction(translate("Arch", "New Group"),
                                           menu)
         QtCore.QObject.connect(actionCreateGroup,
                                QtCore.SIGNAL("triggered()"),
                                self.createGroup)
         menu.addAction(actionCreateGroup)
 
-        actionReorder = QtGui.QAction(translate("Arch", "Reorder children alphabetically"),
+        actionReorder = QtGui.QAction(translate("Arch", "Reorder Children Alphabetically"),
                                       menu)
         QtCore.QObject.connect(actionReorder,
                                QtCore.SIGNAL("triggered()"),
                                self.reorder)
         menu.addAction(actionReorder)
 
-        actionCloneUp = QtGui.QAction(translate("Arch", "Clone level up"),
+        actionCloneUp = QtGui.QAction(translate("Arch", "Clone Level Up"),
                                       menu)
         QtCore.QObject.connect(actionCloneUp,
                                QtCore.SIGNAL("triggered()"),
                                self.cloneUp)
         menu.addAction(actionCloneUp)
 
-    def activate(self):
+    def activate(self, action=None):
+        from draftutils.utils import toggle_working_plane
         vobj = self.Object.ViewObject
 
-        if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
-            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
-            if vobj.SetWorkingPlane:
-                self.setWorkingPlane(restore=True)
-        elif (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
-            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", self.Object)
-            if vobj.SetWorkingPlane:
-                self.setWorkingPlane()
+        if (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
+            if toggle_working_plane(self.Object, action, restore=True):
+                print("Setting active working plane to: ", self.Object.Label)
+            else:
+                print("Deactivating working plane from: ", self.Object.Label)
 
         FreeCADGui.Selection.clearSelection()
 
@@ -883,7 +879,24 @@ class ViewProviderBuildingPart:
             autoclip = vobj.AutoCutView
         if restore:
             if wp.label.rstrip("*") == self.Object.Label:
-                wp._previous()
+                prev_data = wp._previous()
+                if prev_data:
+                    prev_label = prev_data.get("label", "").rstrip("*")
+                    prev_obj = None
+                    for obj in FreeCAD.ActiveDocument.Objects:
+                        if hasattr(obj, "Label") and obj.Label == prev_label:
+                            prev_obj = obj
+                            break
+
+                    if prev_obj:
+                        # check in which context we need to set the active object
+                        context = "Arch"
+                        obj_type = Draft.getType(prev_obj)
+                        if obj_type == "IfcBuildingStorey":
+                            context = "NativeIFC"
+                        FreeCADGui.ActiveDocument.ActiveView.setActiveObject(context, prev_obj)
+                        print(f"Set active object to: {prev_obj.Label} (context: {context})")
+
             if autoclip:
                 vobj.CutView = False
         else:
@@ -930,7 +943,7 @@ class ViewProviderBuildingPart:
 
         if hasattr(self,"Object"):
             if not self.Object.Height.Value:
-                FreeCAD.Console.PrintError("This level has no height value. Please define a height before using this function.\n")
+                FreeCAD.Console.PrintError("This level has no height value. Define a height before using this function.\n")
                 return
             height = self.Object.Height.Value
             ng = []

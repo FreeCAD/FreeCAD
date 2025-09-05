@@ -51,7 +51,7 @@ const char* BlenderNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::SELECTION:
         return QT_TR_NOOP("Press left mouse button");
     case NavigationStyle::PANNING:
-        return QT_TR_NOOP("Press SHIFT and middle mouse button");
+        return QT_TR_NOOP("Press Shift and middle mouse button");
     case NavigationStyle::DRAGGING:
         return QT_TR_NOOP("Press middle mouse button");
     case NavigationStyle::ZOOMING:
@@ -295,10 +295,19 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Prevent interrupting rubber-band selection in sketcher
     if (viewer->isEditing() && curmode == NavigationStyle::SELECTION && newmode != NavigationStyle::IDLE) {
-        newmode = NavigationStyle::SELECTION;
+        if (!button1down || !button2down) { // Allow canceling rubber-band in sketcher if both button 1 and button 2 are pressed
+            newmode = NavigationStyle::SELECTION;
+        }
         processed = false;
     }
 
+    // Reset flags when newmode is IDLE and the buttons are released
+    if (newmode == IDLE && !button1down && !button2down && !button3down) {
+        hasPanned = false;
+        hasDragged = false;
+        hasZoomed = false;
+    }
+    
     if (newmode != curmode) {
         this->setViewingMode(newmode);
     }

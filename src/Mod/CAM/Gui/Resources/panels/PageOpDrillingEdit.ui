@@ -39,31 +39,38 @@
       <item row="0" column="1">
        <widget class="QComboBox" name="toolController">
         <property name="toolTip">
-         <string>The tool and its settings to be used for this operation.</string>
+         <string>The tool and its settings to be used for this operation</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Coolant Mode</string>
+         <string>Coolant mode</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
        <widget class="QComboBox" name="coolantController">
         <property name="toolTip">
-         <string>The tool and its settings to be used for this operation.</string>
+         <string>The tool and its settings to be used for this operation</string>
         </property>
        </widget>
-     </item>
-     <item row="8" column="1">
+      </item>
+      <item row="2" column="1">
        <widget class="QCheckBox" name="KeepToolDownEnabled">
         <property name="toolTip">
-         <string>Don't retract after every hole</string>
+         <string>Do not retract after every hole</string>
         </property>
         <property name="text">
-         <string>Keep Tool Down</string>
+         <string>Keep tool down</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="editToolController">
+        <property name="text">
+         <string>Edit Tool Controller</string>
         </property>
        </widget>
       </item>
@@ -92,7 +99,7 @@
      <item row="8" column="4">
       <widget class="QLabel" name="Offsetlabel">
        <property name="text">
-        <string>Extend Depth</string>
+        <string>Extend depth</string>
        </property>
       </widget>
      </item>
@@ -112,12 +119,12 @@
        </item>
        <item>
         <property name="text">
-         <string>Drill Tip</string>
+         <string>Drill tip</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>2x Drill Tip</string>
+         <string>2x drill tip</string>
         </property>
        </item>
       </widget>
@@ -166,7 +173,7 @@
      <item row="2" column="1">
       <widget class="QCheckBox" name="chipBreakEnabled">
        <property name="text">
-        <string>Chip Break</string>
+        <string>Chip break</string>
        </property>
       </widget>
      </item>

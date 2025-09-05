@@ -148,7 +148,7 @@ void MaterialDelegate::setValue(QAbstractItemModel* model,
         try {
             property->setValue(value);
         }
-        catch (const Base::ValueError& e) {
+        catch (const Base::ValueError&) {
             // Units mismatch
             auto quantity = value.value<Base::Quantity>();
             Base::Console().log("Units mismatch '%s' = '%s', "
@@ -158,7 +158,7 @@ void MaterialDelegate::setValue(QAbstractItemModel* model,
                                 property->getUnits().toStdString().c_str());
 
             QMessageBox msgBox;
-            msgBox.setWindowTitle(QStringLiteral("Property units mismatch"));
+            msgBox.setWindowTitle(QStringLiteral("Property Units Mismatch"));
             msgBox.setText(QStringLiteral("Units mismatch '%1' = '%2', "
                            "setting to default property units '%3'\n")
                            .arg(propertyName)

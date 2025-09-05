@@ -137,16 +137,21 @@ void Action::setCheckable(bool check)
     }
 }
 
-void Action::setChecked(bool check, bool no_signal)
+void Action::setChecked(bool check)
 {
-    bool blocked = false;
-    if (no_signal) {
-        blocked = _action->blockSignals(true);
-    }
     _action->setChecked(check);
-    if (no_signal) {
-        _action->blockSignals(blocked);
-    }
+}
+
+/*!
+ * \brief Action::setBlockedChecked
+ * \param check
+ * Does the same as \ref setChecked but additionally blocks
+ * any signals.
+ */
+void Action::setBlockedChecked(bool check)
+{
+    QSignalBlocker block(_action);
+    _action->setChecked(check);
 }
 
 bool Action::isChecked() const
@@ -601,9 +606,37 @@ void ActionGroup::onActivated (QAction* act)
     }
 }
 
-void ActionGroup::onHovered (QAction *act)
+/**
+ * Shows tooltip at the right side when hovered.
+ */
+void ActionGroup::onHovered(QAction *act)
 {
-    QToolTip::showText(QCursor::pos(), act->toolTip());
+    const auto topLevelWidgets = QApplication::topLevelWidgets();
+    QMenu* foundMenu = nullptr;
+
+    for (QWidget* widget : topLevelWidgets) {
+        QList<QMenu*> menus = widget->findChildren<QMenu*>();
+
+        for (QMenu* menu : menus) {
+            if (menu->isVisible() && menu->actions().contains(act)) {
+                foundMenu = menu;
+                break;
+            }
+        }
+
+        if (foundMenu) {
+            break;
+        }
+
+    }
+
+    if (foundMenu) {
+        QRect actionRect = foundMenu->actionGeometry(act);
+        QPoint globalPos = foundMenu->mapToGlobal(actionRect.topRight());
+        QToolTip::showText(globalPos, act->toolTip(), foundMenu, actionRect);
+    } else {
+        QToolTip::showText(QCursor::pos(), act->toolTip());
+    }
 }
 
 
@@ -689,7 +722,7 @@ void WorkbenchGroup::refreshWorkbenchList()
         action->setObjectName(wbName);
         action->setIcon(px);
         action->setToolTip(tip);
-        action->setStatusTip(tr("Select the '%1' workbench").arg(name));
+        action->setStatusTip(tr("Selects the '%1' workbench").arg(name));
         if (index < 9) {
             action->setShortcut(QKeySequence(QStringLiteral("W,%1").arg(index + 1)));
         }
@@ -825,6 +858,32 @@ RecentFilesAction::RecentFilesAction ( Command* pcCmd, QObject * parent )
 {
     _pimpl = std::make_unique<Private>(this, "User parameter:BaseApp/Preferences/RecentFiles");
     restore();
+
+    sep.setSeparator(true);
+    sep.setToolTip({});
+    this->groupAction()->addAction(&sep);
+
+    //: Empties the list of recent files
+    clearRecentFilesListAction.setText(tr("Clear Recent Files"));
+    clearRecentFilesListAction.setToolTip({});
+    this->groupAction()->addAction(&clearRecentFilesListAction);
+
+    auto clearFun = [this, hGrp = _pimpl->handle](){
+        const size_t recentFilesListSize = hGrp->GetASCIIs("MRU").size();
+        for (size_t i = 0; i < recentFilesListSize; i++)
+        {
+            const QByteArray key = QStringLiteral("MRU%1").arg(i).toLocal8Bit();
+            hGrp->SetASCII(key.data(), "");
+        }
+        restore();
+        clearRecentFilesListAction.setEnabled(false);
+    };
+
+    connect(&clearRecentFilesListAction, &QAction::triggered,
+            this, clearFun);
+
+    connect(&clearRecentFilesListAction, &QAction::triggered,
+            this, &RecentFilesAction::recentFilesListModified);
 }
 
 RecentFilesAction::~RecentFilesAction()
@@ -845,6 +904,10 @@ void RecentFilesAction::appendFile(const QString& filename)
     save();
 
     _pimpl->trySaveUserParameter();
+
+    clearRecentFilesListAction.setEnabled(true);
+
+    Q_EMIT recentFilesListModified();
 }
 
 static QString numberToLabel(int number) {
@@ -888,6 +951,9 @@ void RecentFilesAction::setFiles(const QStringList& files)
     // if less file names than actions
     numRecentFiles = std::min<int>(numRecentFiles, this->visibleItems);
     for (int index = numRecentFiles; index < recentFiles.count(); index++) {
+        if (recentFiles[index] == &sep || recentFiles[index] == &clearRecentFilesListAction) {
+            continue;
+        }
         recentFiles[index]->setVisible(false);
         recentFiles[index]->setText(QString());
         recentFiles[index]->setToolTip(QString());
@@ -1071,7 +1137,7 @@ void RecentMacrosAction::setFiles(const QStringList& files)
     }
     // Raise a single warning no matter how many conflicts
     if (!existingCommands.isEmpty()) {
-        auto msgMain = QStringLiteral("Recent macros : keyboard shortcut(s)");
+        auto msgMain = QStringLiteral("Recent macros : keyboard shortcuts");
         for (int index = 0; index < accel_col.size(); index++) {
             msgMain += QStringLiteral(" %1").arg(accel_col[index]);
         }
@@ -1079,10 +1145,11 @@ void RecentMacrosAction::setFiles(const QStringList& files)
         for (int index = 0; index < existingCommands.count(); index++) {
             msgMain += QStringLiteral(" %1").arg(existingCommands[index]);
         }
-        msgMain += QStringLiteral(" respectively.\nHint: In Preferences -> Python -> Macro ->"
-                             " Recent Macros menu -> Keyboard Modifiers this should be Ctrl+Shift+"
-                             " by default, if this is now blank then you should revert it back to"
-                             " Ctrl+Shift+ by pressing both keys at the same time.");
+        msgMain +=
+            QStringLiteral(" respectively.\nHint: In Preferences → Python → Macro →"
+                           " Recent Macros menu → Keyboard Modifiers this should be Ctrl+Shift+"
+                           " by default, if this is now blank then you should revert it back to"
+                           " Ctrl+Shift+ by pressing both keys at the same time.");
         Base::Console().warning("%s\n", qPrintable(msgMain));
     }
 }

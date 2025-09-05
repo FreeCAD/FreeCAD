@@ -203,7 +203,7 @@ bool FitBSplineSurfaceWidget::accept()
                 QMessageBox::warning(
                     this,
                     tr("Wrong selection"),
-                    tr("Please select a single placement object to get local orientation."));
+                    tr("Select a single placement object to get the local orientation."));
                 return false;
             }
 

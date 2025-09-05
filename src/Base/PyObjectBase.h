@@ -446,12 +446,10 @@ BaseExport extern PyObject* PyExc_FC_AbortIOException;
 #define PY_TRY	try
 
 #define __PY_CATCH(R)                                               \
-    catch(Base::Exception &e)                                       \
+    catch(const Base::Exception &e)                                 \
     {                                                               \
-        auto pye = e.getPyExceptionType();                          \
-        if(!pye)                                                    \
-            pye = Base::PyExc_FC_GeneralError;                      \
-        _Py_ErrorObj(R,pye,e.getPyObject());                        \
+        e.setPyException();                                         \
+        R;                                                          \
     }                                                               \
     catch(const std::exception &e)                                  \
     {                                                               \
@@ -526,6 +524,44 @@ inline void PyTypeCheck(PyObject** ptr, int (*method)(PyObject*), const char* ms
     }
     if (!method(*ptr)) {
         throw Base::TypeError(msg);
+    }
+}
+
+/**
+ * @brief Registers a C++ enum as a Python IntEnum in the specified module.
+ *
+ * This function dynamically creates a Python `IntEnum` class using the provided
+ * C++ enum entries and registers it under the given name within the specified
+ * Python module. It allows seamless integration of C++ enums into Python, making
+ * them accessible and usable in Python scripts.
+ *
+ * @tparam T The type of the enum values.
+ * @param module The Python module where the enum will be registered.
+ * @param name The name to be given to the Python IntEnum.
+ * @param entries A map of string keys to enum values, representing the enum definition.
+ */
+template <typename T>
+void PyRegisterEnum(PyObject* module, const char* name, const std::map<const char*, T>& entries)
+{
+    PyObject* pyEnumModule = PyImport_ImportModule("enum");
+    if (!pyEnumModule) {
+        return;
+    }
+
+    PyObject* pyConstantsDict = PyDict_New();
+
+    // Populate dictionary
+    for (const auto& [key, value] : entries) {
+        PyDict_SetItemString(pyConstantsDict, key, PyLong_FromLong(static_cast<int>(value)));
+    }
+
+    PyObject* pyEnumClass = PyObject_CallMethod(pyEnumModule, "IntEnum", "sO", name, pyConstantsDict);
+
+    Py_CLEAR(pyConstantsDict);
+    Py_CLEAR(pyEnumModule);
+
+    if (pyEnumClass && PyModule_AddObject(module, name, pyEnumClass) < 0) {
+        Py_CLEAR(pyEnumClass);
     }
 }
 

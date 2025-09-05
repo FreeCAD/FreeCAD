@@ -179,7 +179,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Offset parameters"));
+        return QString(tr("Offset parameters"));
     }
 
     void activated() override
@@ -189,6 +189,16 @@ private:
         firstCurveCreated = getHighestCurveIndex() + 1;
 
         generateSourceWires();
+    }
+
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using enum Gui::InputHint::UserInput;
+
+        return {
+            {tr("%1 set offset direction and distance", "Sketcher Offset: hint"), {MouseLeft}},
+        };
     }
 
 private:
@@ -1180,11 +1190,13 @@ void DSHOffsetController::adaptParameters(Base::Vector2d onSketchPos)
 
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (!onViewParameters[OnViewParameter::First]->isSet) {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+
+            if (!firstParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::First, handler->offsetLength);
             }
 
-            onViewParameters[OnViewParameter::First]->setPoints(
+            firstParam->setPoints(
                 Base::Vector3d(handler->endpoint.x, handler->endpoint.y, 0.),
                 Base::Vector3d(handler->pointOnSourceWire.x, handler->pointOnSourceWire.y, 0.));
         } break;
@@ -1198,7 +1210,9 @@ void DSHOffsetController::doChangeDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->isSet) {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+
+            if (firstParam->hasFinishedEditing) {
                 handler->setState(SelectMode::End);
             }
         } break;

@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TDRAGGER_H
-#define GUI_TDRAGGER_H
+#ifndef GUI_LINEAR_DRAGGER_H
+#define GUI_LINEAR_DRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/fields/SoSFColor.h>
@@ -30,9 +30,13 @@
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/fields/SoSFString.h>
+#include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/projectors/SbLineProjector.h>
-#include <Inventor/projectors/SbPlaneProjector.h>
-#include <Inventor/nodes/SoBaseColor.h>
+
+#include <FCGlobal.h>
+
+class SoBaseColor;
+class SoTransform;
 
 namespace Gui
 {
@@ -44,21 +48,19 @@ namespace Gui
  * 'translationIncrement' for a full double
  * precision vector scalar.
  */
-class SoLinearDragger : public SoDragger
+class GuiExport SoLinearDragger : public SoDragger
 {
     SO_KIT_HEADER(SoLinearDragger);
+    SO_KIT_CATALOG_ENTRY_HEADER(baseGeomSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(baseGeom);
+    SO_KIT_CATALOG_ENTRY_HEADER(baseColor);
     SO_KIT_CATALOG_ENTRY_HEADER(activeSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(activeColor);
-    SO_KIT_CATALOG_ENTRY_HEADER(translator);
-    SO_KIT_CATALOG_ENTRY_HEADER(cylinderSeparator);
-    SO_KIT_CATALOG_ENTRY_HEADER(coneSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(secondaryColor);
+    SO_KIT_CATALOG_ENTRY_HEADER(labelSwitch);
     SO_KIT_CATALOG_ENTRY_HEADER(labelSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(scale);
+    SO_KIT_CATALOG_ENTRY_HEADER(arrow);
 
-    static constexpr float coneBottomRadius { 0.8f };
-    static constexpr float coneHeight { 2.5f };
-
-    static constexpr float cylinderHeight { 10.0f };
-    static constexpr float cylinderRadius { 0.1f };
 public:
     static void initClass();
     SoLinearDragger();
@@ -68,6 +70,14 @@ public:
     SoSFDouble translationIncrement; //!< set from outside and used for rounding.
     SoSFInt32 translationIncrementCount; //!< number of steps. used from outside.
     SoSFFloat autoScaleResult; //!< set from parent dragger.
+    SoSFColor color; //!< colour of the dragger
+    SoSFColor activeColor; //!< colour of the dragger while being dragged
+    SoSFBool labelVisible; //!< controls the visibility of the dragger label
+    SoSFVec3f geometryScale; //!< the scale of the dragger geometry
+    SoSFBool active; //!< set when the dragger is being dragged
+    SoSFBool baseGeomVisible; //!< toggles if the dragger has a base geometry or not
+
+    void instantiateBaseGeometry();
 
 protected:
     ~SoLinearDragger() override;
@@ -87,18 +97,42 @@ protected:
     SbLineProjector projector;
 
 private:
-    void buildFirstInstance();
     SbVec3f roundTranslation(const SbVec3f &vecIn, float incrementIn);
-    SoGroup* buildGeometry();
 
-    SoSeparator* buildCylinderGeometry() const;
-    SoSeparator* buildConeGeometry() const;
     SoSeparator* buildLabelGeometry();
     SoBaseColor* buildActiveColor();
+    SoBaseColor* buildColor();
 
     using inherited = SoDragger;
 };
 
+class GuiExport SoLinearDraggerContainer: public SoInteractionKit
+{
+    SO_KIT_HEADER(SoLinearDraggerContainer);
+    SO_KIT_CATALOG_ENTRY_HEADER(draggerSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(transform);
+    SO_KIT_CATALOG_ENTRY_HEADER(dragger);
+
+public:
+    static void initClass();
+    SoLinearDraggerContainer();
+
+    SoSFRotation rotation;
+    SoSFColor color;
+    SoSFVec3f translation;
+    SoSFBool visible;
+
+    SbVec3f getPointerDirection();
+    void setPointerDirection(const SbVec3f& dir);
+
+    SoLinearDragger* getDragger();
+
+private:
+    SoTransform* buildTransform();
+
+    using inherited = SoInteractionKit;
+};
+
 }
 
-#endif /* TDRAGGER_H */
+#endif /* GUI_LINEAR_DRAGGER_H */

@@ -26,7 +26,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Tool Controller</string>
+         <string>Tool controller</string>
         </property>
        </widget>
       </item>
@@ -40,7 +40,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Coolant Mode</string>
+         <string>Coolant mode</string>
         </property>
        </widget>
       </item>
@@ -48,6 +48,13 @@
        <widget class="QComboBox" name="coolantController">
         <property name="toolTip">
          <string>The tool and its settings to be used for this operation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="editToolController">
+        <property name="text">
+         <string>Edit Tool Controller</string>
         </property>
        </widget>
       </item>
@@ -60,14 +67,14 @@
       <item row="0" column="0">
        <widget class="QLabel" name="cutSideLabel">
         <property name="text">
-         <string>Cut Side</string>
+         <string>Cut side</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="cutSide">
         <property name="toolTip">
-         <string>Specify if the profile should be performed inside or outside the base geometry features. This only matters if Use Compensation is checked (the default)</string>
+         <string>Specify if the profile should be performed inside or outside the base geometry features. This only matters if 'Use compensation' is checked (the default).</string>
         </property>
         <item>
          <property name="text">
@@ -98,7 +105,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="extraOffsetLabel">
         <property name="text">
-         <string>Extra Offset</string>
+         <string>Extra offset</string>
         </property>
        </widget>
       </item>
@@ -118,7 +125,7 @@
       <item row="3" column="0">
        <widget class="QLabel" name="numPassesLabel">
         <property name="text">
-         <string>Number of Passes</string>
+         <string>Number of passes</string>
         </property>
        </widget>
       </item>
@@ -128,14 +135,14 @@
 		 <number>1</number>
         </property>
         <property name="toolTip">
-         <string>The number of passes to do. If more than one, requires a non-zero value for Pass Stepover.</string>
+         <string>The number of passes to do. If more than one, requires a non-zero value for 'Pass stepover'.</string>
         </property>
        </widget>
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="stepoverLabel">
         <property name="text">
-         <string>Pass Stepover</string>
+         <string>Pass stepover</string>
         </property>
        </widget>
       </item>
@@ -148,7 +155,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>If doing multiple passes, the extra offset of each additional pass.</string>
+         <string>If doing multiple passes, the extra offset of each additional pass</string>
         </property>
        </widget>
       </item>
@@ -174,14 +181,14 @@
          <string>Check if this profile operation should also process holes in the base geometry. Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters. Note that this does not include cylindrical holes, the assumption being that they will get drilled</string>
         </property>
         <property name="text">
-         <string>Process Holes</string>
+         <string>Process holes</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
        <widget class="QCheckBox" name="useCompensation">
         <property name="toolTip">
-         <string>If checked, the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side</string>
+         <string>If checked, the profile operation is offset by the tool radius. The offset direction is determined by 'Cut side'.</string>
         </property>
         <property name="text">
          <string>Use Compensation</string>
@@ -191,10 +198,10 @@
       <item row="1" column="1">
        <widget class="QCheckBox" name="processCircles">
         <property name="toolTip">
-         <string>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don't warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values</string>
+         <string>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don't warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values.</string>
         </property>
         <property name="text">
-         <string>Process Circles</string>
+         <string>Process circles</string>
         </property>
        </widget>
       </item>

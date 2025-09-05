@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Schedule definition</string>
+   <string>Schedule Definition</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Schedule name:</string>
+        <string>Schedule name</string>
        </property>
       </widget>
      </item>
@@ -82,7 +82,7 @@ retrieved.</string>
        <string>Unit</string>
       </property>
       <property name="toolTip">
-       <string>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</string>
+       <string>Optional unit for the result, e.g. m³, m^3, or m3</string>
       </property>
      </column>
      <column>
@@ -111,7 +111,7 @@ of that project, no matter if they are expanded or not.</string>
       <property name="toolTip">
        <string>An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched.
 
-Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
+Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DO NOT have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
 
 When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</string>
       </property>
@@ -146,7 +146,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
         <string>If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</string>
        </property>
        <property name="text">
-        <string>Auto update</string>
+        <string>Auto-update</string>
        </property>
       </widget>
      </item>
@@ -160,7 +160,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
         <string>Adds a line below the selected line/cell</string>
        </property>
        <property name="text">
-        <string>Add row</string>
+        <string>Add Row</string>
        </property>
        <property name="icon">
         <iconset theme="add">
@@ -174,7 +174,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
         <string>Deletes the selected line</string>
        </property>
        <property name="text">
-        <string>Del row</string>
+        <string>Delete Row</string>
        </property>
        <property name="icon">
         <iconset theme="remove">
@@ -202,7 +202,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
         <string>Put selected objects into the 'Objects' column of the selected row</string>
        </property>
        <property name="text">
-        <string>Add selection</string>
+        <string>Add Selection</string>
        </property>
       </widget>
      </item>
@@ -223,7 +223,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
      <item row="1" column="2">
       <widget class="QPushButton" name="buttonExport">
        <property name="toolTip">
-        <string>This exports the results to a CSV or Markdown file. Note for CSV export: In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar, New sheet, From file, Link (Note: as of LibreOffice v6.x the correct path now is: Sheet, Insert Sheet..., From file, Browse...)</string>
+        <string>Exports results to a CSV or Markdown file. For CSV export in LibreOffice: maintain a live link by right-clicking the Sheets tab bar → New Sheet → From File → Link. In LibreOffice v6.x and later: use Sheet → Insert Sheet… → From File → Browse…</string>
        </property>
        <property name="text">
         <string>Export</string>

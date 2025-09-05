@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Below are the phases currently configured for this model:</string>
+      <string>Below are the phases currently configured for this model</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -45,7 +45,7 @@
      <item>
       <widget class="QPushButton" name="pushButtonAdd">
        <property name="text">
-        <string>Add...</string>
+        <string>Add</string>
        </property>
       </widget>
      </item>

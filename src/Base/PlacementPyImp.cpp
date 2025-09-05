@@ -182,7 +182,7 @@ PyObject* PlacementPy::translate(PyObject* args)
 PyObject* PlacementPy::rotate(PyObject* args, PyObject* kwds)
 {
     double angle {};
-    static const std::array<const char*, 6> kwlist {"center", "axis", "angle", "comp", nullptr};
+    static const std::array<const char*, 5> kwlist {"center", "axis", "angle", "comp", nullptr};
     Vector3d center;
     Vector3d axis;
     PyObject* pyComp = Py_False;  // NOLINT

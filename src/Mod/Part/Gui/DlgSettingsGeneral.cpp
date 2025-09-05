@@ -62,7 +62,13 @@ void DlgSettingsGeneral::saveSettings()
     ui->checkSketchBaseRefine->onSave();
     ui->checkObjectNaming->onSave();
     ui->checkAllowCompoundBody->onSave();
+    ui->enableGizmos->onSave();
+    ui->delayedGizmoUpdate->onSave();
     ui->comboDefaultProfileTypeForHole->onSave();
+    ui->checkShowFinalPreview->onSave();
+    ui->checkShowTransparentPreview->onSave();
+    ui->checkShowProfilePreview->onSave();
+    ui->checkSwitchToTask->onSave();
 }
 
 void DlgSettingsGeneral::loadSettings()
@@ -72,7 +78,13 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkSketchBaseRefine->onRestore();
     ui->checkObjectNaming->onRestore();
     ui->checkAllowCompoundBody->onRestore();
+    ui->enableGizmos->onRestore();
+    ui->delayedGizmoUpdate->onRestore();
     ui->comboDefaultProfileTypeForHole->onRestore();
+    ui->checkShowFinalPreview->onRestore();
+    ui->checkShowTransparentPreview->onRestore();
+    ui->checkShowProfilePreview->onRestore();
+    ui->checkSwitchToTask->onRestore();
 }
 
 /**

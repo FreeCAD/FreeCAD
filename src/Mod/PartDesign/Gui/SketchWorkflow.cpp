@@ -141,7 +141,7 @@ public:
             throw WrongSupportException();
         }
 
-        if (!subshape.isPlanar()) {
+        if (!subshape.isPlanar(Attacher::AttachEnginePlane::planarPrecision())) {
             throw SupportNotPlanarException();
         }
     }
@@ -197,17 +197,18 @@ class SketchPreselection
 {
 public:
     SketchPreselection(Gui::Document* guidocument, PartDesign::Body* activeBody,
-                       std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> filter)
+                       std::tuple<Gui::SelectionFilter, Gui::SelectionFilter, Gui::SelectionFilter> filter)
         : guidocument(guidocument)
         , activeBody(activeBody)
         , faceFilter(std::get<0>(filter))
         , planeFilter(std::get<1>(filter))
+        , sketchFilter(std::get<2>(filter))
     {
     }
 
     bool matches()
     {
-        return faceFilter.match() || planeFilter.match();
+        return faceFilter.match() || planeFilter.match() || sketchFilter.match();
     }
 
     std::string getSupport() const
@@ -231,10 +232,16 @@ public:
             selectedObject = validator.getObject();
             supportString = validator.getSupport();
         }
-        else {
+        else if (planeFilter.match()) {
             SupportPlaneValidator validator(planeFilter.Result[0][0]);
             selectedObject = validator.getObject();
             supportString = validator.getSupport();
+        }
+        else {
+            // For a sketch, the support is the object itself with no sub-element.
+            Gui::SelectionObject sketchSelObject = sketchFilter.Result[0][0];
+            selectedObject = sketchSelObject.getObject();
+            supportString = sketchSelObject.getAsPropertyLinkSubString();
         }
 
         handleIfSupportOutOfBody(selectedObject);
@@ -246,11 +253,20 @@ public:
         App::Document* appdocument = guidocument->getDocument();
         std::string FeatName = appdocument->getUniqueObjectName("Sketch");
 
-        guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "Create a Sketch on Face"));
+        guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "Sketch on Face"));
         FCMD_OBJ_CMD(activeBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto Feat = activeBody->getDocument()->getObject(FeatName.c_str());
         FCMD_OBJ_CMD(Feat, "AttachmentSupport = " << supportString);
-        FCMD_OBJ_CMD(Feat, "MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)<<"'");
+        if (sketchFilter.match()) {
+            FCMD_OBJ_CMD(Feat,
+                         "MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmObjectXY)
+                                       << "'");
+        }
+        else {  // For Face or Plane
+            FCMD_OBJ_CMD(Feat,
+                         "MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)
+                                       << "'");
+        }
         Gui::Command::updateActive();
         PartDesignGui::setEdit(Feat, activeBody);
     }
@@ -346,6 +362,7 @@ private:
     PartDesign::Body* activeBody;
     Gui::SelectionFilter faceFilter;
     Gui::SelectionFilter planeFilter;
+    Gui::SelectionFilter sketchFilter;
     std::string supportString;
 };
 
@@ -492,7 +509,7 @@ public:
     {
         try {
             // Start command early, so undo will undo any Body creation
-            guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "Create a new Sketch"));
+            guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "New Sketch"));
             tryFindSupport();
         }
         catch (const RejectException&) {
@@ -659,7 +676,7 @@ private:
         if (dlg && !pickDlg) {
             QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
+            msgBox.setInformativeText(QObject::tr("Close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             msgBox.setDefaultButton(QMessageBox::Yes);
             int ret = msgBox.exec();
@@ -698,7 +715,7 @@ private:
 
         App::Document* doc = partDesignBody->getDocument();
         if (!doc->hasPendingTransaction()) {
-            doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Create a new Sketch"));
+            doc->openTransaction(QT_TRANSLATE_NOOP("Command", "New Sketch"));
         }
 
         FCMD_OBJ_CMD(partDesignBody,"newObject('Sketcher::SketchObject','" << FeatName << "')");
@@ -732,19 +749,19 @@ void SketchWorkflow::createSketch()
     }
     catch (const WrongSelectionException&) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Several sub-elements selected"),
-            QObject::tr("You have to select a single face as support for a sketch!"));
+            QObject::tr("Select a single face as support for a sketch!"));
     }
     catch (const WrongSupportException&) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No support face selected"),
-            QObject::tr("You have to select a face as support for a sketch!"));
+            QObject::tr("Select a face as support for a sketch!"));
     }
     catch (const SupportNotPlanarException&) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No planar support"),
-            QObject::tr("You need a planar face as support for a sketch!"));
+            QObject::tr("Need a planar face as support for a sketch!"));
     }
     catch (const MissingPlanesException&) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid planes in this document"),
-            QObject::tr("Please create a plane first or select a face to sketch on"));
+            QObject::tr("Create a plane first or select a face to sketch on"));
     }
 }
 
@@ -757,8 +774,8 @@ void SketchWorkflow::tryCreateSketch()
         return;
     }
 
-    auto faceOrPlaneFilter = getFaceAndPlaneFilter();
-    SketchPreselection sketchOnFace{ guidocument, activeBody, faceOrPlaneFilter };
+    auto filters = getFilters();
+    SketchPreselection sketchOnFace {guidocument, activeBody, filters};
 
     if (sketchOnFace.matches()) {
         // create Sketch on Face or Plane
@@ -804,7 +821,7 @@ bool SketchWorkflow::shouldAbort(bool shouldMakeBody) const
     return !shouldMakeBody && !activeBody;
 }
 
-std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> SketchWorkflow::getFaceAndPlaneFilter() const
+std::tuple<Gui::SelectionFilter, Gui::SelectionFilter, Gui::SelectionFilter> SketchWorkflow::getFilters() const
 {
     // Hint:
     // The behaviour of this command has changed with respect to a selected sketch:
@@ -815,9 +832,11 @@ std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> SketchWorkflow::getFaceAn
     Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1");
     Gui::SelectionFilter PlaneFilter ("SELECT App::Plane COUNT 1", activeBody);
     Gui::SelectionFilter PlaneFilter2("SELECT PartDesign::Plane COUNT 1", activeBody);
+    Gui::SelectionFilter SketchFilter("SELECT Part::Part2DObject COUNT 1", activeBody);
 
     if (PlaneFilter2.match()) {
         PlaneFilter = PlaneFilter2;
     }
-    return std::make_tuple(FaceFilter, PlaneFilter);
+
+    return std::make_tuple(FaceFilter, PlaneFilter, SketchFilter);
 }

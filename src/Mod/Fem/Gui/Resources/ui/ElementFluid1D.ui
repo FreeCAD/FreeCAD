@@ -42,7 +42,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Liquid Section Parameter</string>
+          <string>Liquid section parameter</string>
          </property>
         </widget>
        </item>
@@ -61,7 +61,7 @@
              <item>
               <widget class="QLabel" name="label_4">
                <property name="text">
-                <string>Pipe Area</string>
+                <string>Pipe area</string>
                </property>
               </widget>
              </item>
@@ -82,7 +82,7 @@
              <item>
               <widget class="QLabel" name="label_5">
                <property name="text">
-                <string>Hydraulic Radius</string>
+                <string>Hydraulic radius</string>
                </property>
               </widget>
              </item>
@@ -103,7 +103,7 @@
              <item>
               <widget class="QLabel" name="label_6">
                <property name="text">
-                <string>Manning Coefficient</string>
+                <string>Manning coefficient</string>
                </property>
               </widget>
              </item>
@@ -131,7 +131,7 @@
              <item>
               <widget class="QLabel" name="label_7">
                <property name="text">
-                <string>Initial Area</string>
+                <string>Initial area</string>
                </property>
               </widget>
              </item>
@@ -152,7 +152,7 @@
              <item>
               <widget class="QLabel" name="label_8">
                <property name="text">
-                <string>Enlarged Area</string>
+                <string>Enlarged area</string>
                </property>
               </widget>
              </item>
@@ -177,7 +177,7 @@
              <item>
               <widget class="QLabel" name="label_10">
                <property name="text">
-                <string>Initial Area</string>
+                <string>Initial area</string>
                </property>
               </widget>
              </item>
@@ -198,7 +198,7 @@
              <item>
               <widget class="QLabel" name="label_9">
                <property name="text">
-                <string>Contracted Area</string>
+                <string>Contracted area</string>
                </property>
               </widget>
              </item>
@@ -366,7 +366,7 @@
              <item>
               <widget class="QLabel" name="label_15">
                <property name="text">
-                <string>Pipe Area</string>
+                <string>Pipe area</string>
                </property>
               </widget>
              </item>
@@ -387,7 +387,7 @@
              <item>
               <widget class="QLabel" name="label_16">
                <property name="text">
-                <string>Entrance Area</string>
+                <string>Entrance area</string>
                </property>
               </widget>
              </item>
@@ -412,7 +412,7 @@
              <item>
               <widget class="QLabel" name="label_17">
                <property name="text">
-                <string>Pipe Area</string>
+                <string>Pipe area</string>
                </property>
               </widget>
              </item>
@@ -433,7 +433,7 @@
              <item>
               <widget class="QLabel" name="label_18">
                <property name="text">
-                <string>Diaphragm Area</string>
+                <string>Diaphragm area</string>
                </property>
               </widget>
              </item>
@@ -458,7 +458,7 @@
              <item>
               <widget class="QLabel" name="label_19">
                <property name="text">
-                <string>Pipe Area</string>
+                <string>Pipe area</string>
                </property>
               </widget>
              </item>
@@ -479,7 +479,7 @@
              <item>
               <widget class="QLabel" name="label_20">
                <property name="text">
-                <string>Bend Radius/Pipe Diameter</string>
+                <string>Bend radius / pipe diameter</string>
                </property>
               </widget>
              </item>
@@ -506,7 +506,7 @@
              <item>
               <widget class="QLabel" name="label_21">
                <property name="text">
-                <string>Bend Angle</string>
+                <string>Bend angle</string>
                </property>
               </widget>
              </item>
@@ -558,7 +558,7 @@
              <item>
               <widget class="QLabel" name="label_23">
                <property name="text">
-                <string>Pipe Area</string>
+                <string>Pipe area</string>
                </property>
               </widget>
              </item>
@@ -610,7 +610,7 @@
              <item>
               <widget class="QLabel" name="label_25">
                <property name="text">
-                <string>Pump Characteristic</string>
+                <string>Pump characteristic</string>
                </property>
               </widget>
              </item>
@@ -714,7 +714,7 @@
              <item>
               <widget class="QLabel" name="label_26">
                <property name="text">
-                <string>Pipe Area</string>
+                <string>Pipe area</string>
                </property>
               </widget>
              </item>
@@ -735,7 +735,7 @@
              <item>
               <widget class="QLabel" name="label_27">
                <property name="text">
-                <string>Hydraulic Radius</string>
+                <string>Hydraulic radius</string>
                </property>
               </widget>
              </item>
@@ -826,7 +826,7 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Gas Section Parameter</string>
+          <string>Gas section parameter</string>
          </property>
         </widget>
        </item>
@@ -840,7 +840,7 @@
        <item>
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Open Channel Section Parameter</string>
+          <string>Open channel section parameter</string>
          </property>
         </widget>
        </item>

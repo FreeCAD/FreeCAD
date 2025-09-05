@@ -27618,16 +27618,22 @@ Evolumes
 *MATERIAL, NAME=FemMaterial1
 *ELASTIC
 32000,0.17
+*EXPANSION, ZERO=0
+0
 ** FreeCAD material name: PLA
 ** FemMaterial2
 *MATERIAL, NAME=FemMaterial2
 *ELASTIC
 3640,0.36
+*EXPANSION, ZERO=0
+0
 ** FreeCAD material name: Steel-Generic
 ** FemMaterial3
 *MATERIAL, NAME=FemMaterial3
 *ELASTIC
 200000,0.3
+*EXPANSION, ZERO=0
+0
 
 ***********************************************************
 ** Sections
@@ -27652,8 +27658,8 @@ ConstraintFixed,3
 
 ***********************************************************
 ** constraints force node loads
-*CLOAD
 ** ConstraintForce
+*CLOAD
 ** node loads on shape: Box1:Face6
 17,3,-0
 19,3,-0

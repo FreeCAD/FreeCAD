@@ -42,12 +42,12 @@
        </item>
        <item>
         <property name="text">
-         <string>Tap Tip</string>
+         <string>Tap tip</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>2x Tap Tip</string>
+         <string>2x tap tip</string>
         </property>
        </item>
       </widget>
@@ -62,7 +62,7 @@
      <item row="5" column="4">
       <widget class="QLabel" name="Offsetlabel">
        <property name="text">
-        <string>Extend Depth</string>
+        <string>Extend depth</string>
        </property>
       </widget>
      </item>
@@ -93,7 +93,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Coolant Mode</string>
+         <string>Coolant mode</string>
         </property>
        </widget>
       </item>
@@ -108,6 +108,13 @@
        <widget class="QComboBox" name="toolController">
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="editToolController">
+        <property name="text">
+         <string>Edit Tool Controller</string>
         </property>
        </widget>
       </item>

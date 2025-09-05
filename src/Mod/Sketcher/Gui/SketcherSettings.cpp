@@ -113,6 +113,7 @@ void SketcherSettings::saveSettings()
     ui->checkBoxHorVerAuto->onSave();
     ui->checkBoxLineGroup->onSave();
     ui->checkBoxAddExtGeo->onSave();
+    ui->checkBoxMakeInternals->onSave();
 
     enum
     {
@@ -165,6 +166,9 @@ void SketcherSettings::saveSettings()
     hGrp->SetBool("DimensioningDiameter", Diameter);
     hGrp->SetBool("DimensioningRadius", Radius);
 
+    index = ui->autoScaleMode->currentIndex();
+    hGrp->SetInt("AutoScaleMode", index);
+
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
 
@@ -187,8 +191,7 @@ void SketcherSettings::loadSettings()
     ui->checkBoxHorVerAuto->onRestore();
     setProperty("checkBoxHorVerAuto", ui->checkBoxHorVerAuto->isChecked());
     ui->checkBoxAddExtGeo->onRestore();
-    setProperty("checkBoxLineGroup", ui->checkBoxLineGroup->isChecked());
-    ui->checkBoxAddExtGeo->onRestore();
+    ui->checkBoxMakeInternals->onRestore();
 
     // Dimensioning constraints mode
     ui->dimensioningMode->clear();
@@ -220,6 +223,16 @@ void SketcherSettings::loadSettings()
     bool Radius = hGrp->GetBool("DimensioningRadius", true);
     index = Diameter ? (Radius ? 0 : 1) : 2;
     ui->radiusDiameterMode->setCurrentIndex(index);
+
+
+    // The items have to be added in the same order
+    // as the AutoScaleMode enum
+    ui->autoScaleMode->clear();
+    ui->autoScaleMode->addItem(tr("Always"));
+    ui->autoScaleMode->addItem(tr("Never"));
+    ui->autoScaleMode->addItem(tr("When no scale feature is visible"));
+    index = hGrp->GetInt("AutoScaleMode", static_cast<int>(AutoScaleMode::Always));
+    ui->autoScaleMode->setCurrentIndex(index);
 
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
@@ -280,6 +293,8 @@ void SketcherSettings::resetSettingsToDefaults()
     // reset "radius/diameter mode for dimensioning" parameter
     hGrp->RemoveBool("DimensioningDiameter");
     hGrp->RemoveBool("DimensioningRadius");
+
+    hGrp->RemoveInt("AutoScaleMode");
 
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
@@ -417,6 +432,8 @@ SketcherSettingsDisplay::~SketcherSettingsDisplay()
 void SketcherSettingsDisplay::saveSettings()
 {
     ui->EditSketcherFontSize->onSave();
+    ui->checkBoxUseConstraintSymbolSize->onSave();
+    ui->ConstraintSymbolSize->onSave();
     ui->viewScalingFactor->onSave();
     ui->SegmentsPerGeometry->onSave();
     ui->dialogOnDistanceConstraint->onSave();
@@ -438,6 +455,8 @@ void SketcherSettingsDisplay::saveSettings()
 void SketcherSettingsDisplay::loadSettings()
 {
     ui->EditSketcherFontSize->onRestore();
+    ui->checkBoxUseConstraintSymbolSize->onRestore();
+    ui->ConstraintSymbolSize->onRestore();
     ui->viewScalingFactor->onRestore();
     ui->SegmentsPerGeometry->onRestore();
     ui->dialogOnDistanceConstraint->onRestore();
@@ -582,6 +601,8 @@ void SketcherSettingsAppearance::saveSettings()
     ui->ExternalWidth->onSave();
     ui->ExternalDefiningWidth->onSave();
 
+    ui->InternalFaceColor->onSave();
+
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/View");
     QVariant data = ui->EdgePattern->itemData(ui->EdgePattern->currentIndex());
@@ -636,6 +657,9 @@ void SketcherSettingsAppearance::loadSettings()
     ui->InternalWidth->onRestore();
     ui->ExternalWidth->onRestore();
     ui->ExternalDefiningWidth->onRestore();
+
+    ui->InternalFaceColor->setAllowTransparency(true);
+    ui->InternalFaceColor->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/View");

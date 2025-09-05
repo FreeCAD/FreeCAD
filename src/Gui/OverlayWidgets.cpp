@@ -114,7 +114,7 @@ OverlayProxyWidget::HitTest OverlayProxyWidget::hitTest(const QPoint &globalPt, 
 
     QTabBar *tabbar = owner->tabBar();
     if (tabbar->isVisible() && tabbar->tabAt(pt)>=0) {
-        ToolTip::showText(globalPt, QObject::tr("Press ESC to hide hint"), this);
+        ToolTip::showText(globalPt, QObject::tr("Press Esc to hide hint"), this);
         return HitTest::HitOuter;
     }
 
@@ -144,7 +144,7 @@ OverlayProxyWidget::HitTest OverlayProxyWidget::hitTest(const QPoint &globalPt, 
     }
     if (rect.contains(pt)) {
         hit = HitTest::HitInner;
-        ToolTip::showText(globalPt, QObject::tr("Press ESC to hide hint"), this);
+        ToolTip::showText(globalPt, QObject::tr("Press Esc to hide hint"), this);
     } else if (drawLine)
         ToolTip::hideText();
 
@@ -1273,7 +1273,6 @@ void OverlayTabWidget::setOverlayMode(QWidget *widget, OverlayOption option)
                         && !qobject_cast<Dialog::Clipping*>(widget))
                || qobject_cast<TaskView::TaskBox*>(widget))
         return;
-
     if(widget != tabBar()) {
         if(OverlayParams::getDockOverlayAutoMouseThrough()
                 && option == OverlayOption::ShowTab) {
@@ -2016,7 +2015,7 @@ void OverlayTitleBar::paintEvent(QPaintEvent *)
     if (OverlayManager::instance()->isMouseTransparent()) {
         if (timerId == 0)
             timerId = startTimer(500);
-        title = blink ? tr("Mouse pass through, ESC to stop") : dock->windowTitle();
+        title = blink ? tr("Mouse pass through, Esc to stop") : dock->windowTitle();
     } else {
         if (timerId != 0) {
             killTimer(timerId);

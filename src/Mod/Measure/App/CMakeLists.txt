@@ -13,6 +13,9 @@ set(Measure_LIBS
 generate_from_xml(MeasurementPy)
 generate_from_xml(MeasureBasePy)
 
+generate_from_py_(MeasurementPy)
+generate_from_py_(MeasureBasePy)
+
 SET(Python_SRCS
     MeasurementPy.xml
     MeasurementPyImp.cpp

@@ -309,7 +309,7 @@ bool ReferenceEntry::hasGeometry() const
 
     // 3d reference
     // TODO: shouldn't this be ShapeFinder.getLocatedShape?
-    auto shape = Part::Feature::getTopoShape(getObject());
+    auto shape = Part::Feature::getTopoShape(getObject(), Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
     auto subShape = shape.getSubShape(getSubName().c_str());
 
     return !subShape.IsNull();

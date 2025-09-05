@@ -52,7 +52,7 @@ class TechDrawExport DrawView : public App::DocumentObject
 public:
     /// Constructor
     DrawView();
-    ~DrawView() override;
+    ~DrawView() override = default;
 
     App::PropertyDistance X;
     App::PropertyDistance Y;
@@ -65,6 +65,7 @@ public:
 
     /** @name methods override Feature */
     //@{
+    App::DocumentObjectExecReturn* recompute() override;
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute() override;
     void onDocumentRestored() override;

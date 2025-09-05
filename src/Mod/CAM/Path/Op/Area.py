@@ -131,14 +131,25 @@ class ObjectOp(PathOp.ObjectOp):
         if prop in ["AreaParams", "PathParams", "removalshape"]:
             obj.setEditorMode(prop, 2)
 
-        if prop == "Base" and len(obj.Base) == 1:
-            (base, sub) = obj.Base[0]
+        if hasattr(obj, "Side") and prop == "Base" and len(obj.Base) == 1:
+            (base, subNames) = obj.Base[0]
             bb = base.Shape.BoundBox  # parent boundbox
-            subobj = base.Shape.getElement(sub[0])
-            fbb = subobj.BoundBox  # feature boundbox
 
-            if hasattr(obj, "Side"):
+            if "Face" in subNames[0]:
+                face = base.Shape.getElement(subNames[0])
+                fbb = face.BoundBox  # face boundbox
                 if bb.XLength == fbb.XLength and bb.YLength == fbb.YLength:
+                    obj.Side = "Outside"
+                else:
+                    obj.Side = "Inside"
+
+            elif "Edge" in subNames[0]:
+                edges = [
+                    base.Shape.getElement(sub).copy() for sub in subNames if sub.startswith("Edge")
+                ]
+                wire = Part.Wire(Part.__sortEdges__(edges))
+                wbb = wire.BoundBox  # wire boundbox
+                if not wire.isClosed() or (bb.XLength == wbb.XLength and bb.YLength == wbb.YLength):
                     obj.Side = "Outside"
                 else:
                     obj.Side = "Inside"
@@ -290,7 +301,8 @@ class ObjectOp(PathOp.ObjectOp):
             pathParams["threshold"] = 2.001 * self.radius
 
         if self.endVector is not None:
-            pathParams["start"] = self.endVector
+            if self.endVector[:2] != (0, 0):
+                pathParams["start"] = self.endVector
         elif PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
             pathParams["start"] = obj.StartPoint
 

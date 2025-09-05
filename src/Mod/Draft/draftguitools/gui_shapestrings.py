@@ -42,7 +42,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCADGui as Gui
 from draftguitools import gui_base
 from draftutils import gui_utils
-from draftutils import todo
 from draftutils.messages import _toolmsg
 from draftutils.translate import translate
 from drafttaskpanels import task_shapestring
@@ -58,8 +57,8 @@ class ShapeString(gui_base.GuiCommandBase):
         """Set icon, menu and tooltip."""
 
         return {"Pixmap": "Draft_ShapeString",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_ShapeString", "Shape from text"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates a shape from a text string by choosing a specific font and a placement.\nThe closed shapes can be used for extrusions and boolean operations.")}
+                "MenuText": QT_TRANSLATE_NOOP("Draft_ShapeString", "Shape From Text"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates a shape from a text string and a specified font")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -67,7 +66,10 @@ class ShapeString(gui_base.GuiCommandBase):
         self.ui = task_shapestring.ShapeStringTaskPanelCmd(self)
         self.call = self.view.addEventCallback("SoEvent", self.ui.action)
         _toolmsg(translate("draft", "Pick ShapeString location point"))
-        todo.ToDo.delay(Gui.Control.showDialog, self.ui)
+        task = Gui.Control.showDialog(self.ui)
+        task.setDocumentName(Gui.ActiveDocument.Document.Name)
+        task.setAutoCloseOnDeletedDocument(True)
+        self.ui.update_hints()
 
     def finish(self):
         try:

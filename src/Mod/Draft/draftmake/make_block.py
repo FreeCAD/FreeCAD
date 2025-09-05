@@ -50,7 +50,8 @@ def make_block(objectslist):
     if not App.ActiveDocument:
         App.Console.PrintError("No active document. Aborting\n")
         return
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython","Block")
+    obj = App.ActiveDocument.addObject("Part::FeaturePython", "Block")
+    obj.addExtension("Part::AttachExtensionPython")
     Block(obj)
     obj.Components = objectslist
     if App.GuiUp:

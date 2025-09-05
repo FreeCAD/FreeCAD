@@ -60,6 +60,7 @@
 #include "TaskProjGroup.h"
 #include "ViewProviderViewPart.h"
 #include "ViewProviderPage.h"
+#include "QGIViewPart.h"
 #include "QGIViewDimension.h"
 #include "QGIViewBalloon.h"
 #include "QGSPage.h"
@@ -213,8 +214,8 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
 void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
 {
 //    Base::Console().message("VPVP::attach(%s)\n", pcFeat->getNameInDocument());
-    TechDraw::DrawViewMulti* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
-    TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(pcFeat);
+    auto* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
+    auto* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(pcFeat);
     if (dvm) {
         sPixmap = "TechDraw_TreeMulti";
     } else if (dvd) {
@@ -269,7 +270,7 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren() const
       }
       return temp;
     } catch (...) {
-        return std::vector<App::DocumentObject*>();
+        return {};
     }
 }
 
@@ -287,24 +288,31 @@ bool ViewProviderViewPart::setEdit(int ModNum)
     Gui::Selection().clearSelection();
 
     TechDraw::DrawViewPart* dvp = getViewObject();
-    TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
+    auto* dvd = dynamic_cast<TechDraw::DrawViewDetail*>(dvp);
     if (dvd) {
         if (!dvd->BaseView.getValue()) {
             Base::Console().error("DrawViewDetail - %s - has no BaseView!\n", dvd->getNameInDocument());
             return false;
         }
-        Gui::Control().showDialog(new TaskDlgDetail(dvd));
-        Gui::Selection().clearSelection();
-        Gui::Selection().addSelection(dvd->getDocument()->getName(),
-                                        dvd->getNameInDocument());
+        return setDetailEdit(ModNum, dvd);
     }
-    else {
-        auto* view = getObject<TechDraw::DrawView>();
-        Gui::Control().showDialog(new TaskDlgProjGroup(view, false));
-    }
+    auto* view = getObject<TechDraw::DrawView>();
+    Gui::Control().showDialog(new TaskDlgProjGroup(view, false));
 
     return true;
 }
+
+bool ViewProviderViewPart::setDetailEdit(int ModNum, DrawViewDetail* dvd)
+{
+    Q_UNUSED(ModNum);
+
+    Gui::Control().showDialog(new TaskDlgDetail(dvd));
+    Gui::Selection().clearSelection();
+    Gui::Selection().addSelection(dvd->getDocument()->getName(),
+                                  dvd->getNameInDocument());
+    return true;
+}
+
 
 bool ViewProviderViewPart::doubleClicked()
 {
@@ -357,11 +365,27 @@ void ViewProviderViewPart::handleChangedPropertyType(Base::XMLReader &reader, co
 
 bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
 {
-    // Base::Console().message("VPVP::onDelete(%d subNames)\n", subNames.size());
     // we cannot delete if the view has a section or detail view
     (void) subNames;
     QString bodyMessage;
     QTextStream bodyMessageStream(&bodyMessage);
+
+    // this code should be in a ViewProviderDetail if we had one.  Since we do not, we have to deal
+    // with a derived class here in the parent
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    auto* dlgDetail = dynamic_cast<TaskDlgDetail*>(dlg);
+    if (dlgDetail) {
+        std::string dlgDetailTarget = dlgDetail->getDetailName();   //new method
+        if (getViewObject()->getNameInDocument() == dlgDetailTarget) {
+            bodyMessageStream << qApp->translate("Std_Delete",
+            "Close open dialog before deleting detail object");
+            bodyMessage = bodyMessageStream.readLine();
+            QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Ok);
+            return false;
+        }
+    }
 
     // get child views
     auto viewSection = getViewObject()->getSectionRefs();
@@ -370,6 +394,7 @@ bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
     if (!viewSection.empty() || !viewDetail.empty()) {
         bodyMessageStream << qApp->translate("Std_Delete",
             "You cannot delete this view because it has one or more dependent views that would become broken.");
+        bodyMessage = bodyMessageStream.readLine();
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
             QMessageBox::Ok);

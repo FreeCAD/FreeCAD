@@ -967,7 +967,7 @@ public:
     std::string toEscapedString() const;
 
     /**
-     * @brief Wether the property of the object identifier is touched.
+     * @brief Whether the property of the object identifier is touched.
      *
      * This method is used to determine if the property that this object
      * identifier represents is touched.

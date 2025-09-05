@@ -16,12 +16,12 @@ requirements:
   build:
     - ccache
     - cmake
-    - compilers
+    - compilers>=1.10,<1.11
     - doxygen
     - ninja
     - noqt5
     - python>=3.11,<3.12
-    - qt6-main>=6.7,<6.8
+    - qt6-main>=6.8,<6.9
     - swig
 
     - if: linux and x86_64
@@ -88,6 +88,10 @@ requirements:
         - xorg-x11-server-xvfb-cos7-aarch64
         - xorg-xproto
 
+    - if: osx and x86_64
+      then:
+        - __osx >=10.13
+
     - if: build_platform != target_platform
       then:
         - cross-python_${{ target_platform }}
@@ -101,15 +105,15 @@ requirements:
     - libboost-devel
     - matplotlib-base
     - noqt5
-    - numpy
-    - occt
+    - numpy>=1.26,<2
+    - occt>=7.8,<7.9
     - pcl
     - pivy
     - ply
     - pybind11
     - pyside6
     - python>=3.11,<3.12
-    - qt6-main>=6.7,<6.8
+    - qt6-main>=6.8,<6.9
     - six
     - smesh
     - vtk
@@ -131,12 +135,8 @@ requirements:
         - libspnav
         - xorg-xproto
 
-    - if: osx
-      then:
-        - blas * accelerate*
-
   run:
-    - blas
+    - blas * openblas*
     - blinker
     - calculix
     - debugpy
@@ -150,8 +150,8 @@ requirements:
     - matplotlib-base
     - nine
     - noqt5
-    - numpy
-    - occt
+    - numpy>=1.26,<2
+    - occt>=7.8,<7.9
     - olefile
     - opencamlib
     - opencv
@@ -164,10 +164,11 @@ requirements:
     - python>=3.11,<3.12
     - pythonocc-core
     - pyyaml
-    - qt6-main>=6.7,<6.8
+    - qt6-main>=6.8,<6.9
     - requests
     - scipy
     - sympy
+    - typing_extensions
     - vtk
     - xlutils
 

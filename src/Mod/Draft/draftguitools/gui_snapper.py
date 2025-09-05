@@ -49,6 +49,7 @@ import Part
 import Draft
 import DraftVecUtils
 import DraftGeomUtils
+import WorkingPlane
 from draftguitools import gui_trackers as trackers
 from draftutils import gui_utils
 from draftutils import params
@@ -93,7 +94,9 @@ class Snapper:
         self.affinity = None
         self.mask = None
         self.cursorMode = None
+        self.cursorQt = None
         self.maxEdges = params.get_param("maxSnapEdges")
+        self.maxFaces = params.get_param("maxSnapFaces")
 
         # we still have no 3D view when the draft module initializes
         self.tracker = None
@@ -159,7 +162,7 @@ class Snapper:
 
 
     def _get_wp(self):
-        return App.DraftWorkingPlane
+        return WorkingPlane.get_working_plane()
 
 
     def init_active_snaps(self):
@@ -405,6 +408,7 @@ class Snapper:
                         face = shape
                         snaps.extend(self.snapToNearFace(face, point))
                         snaps.extend(self.snapToPerpendicularFace(face, lastpoint))
+                        snaps.extend(self.snapToIntersection(face))
                         snaps.extend(self.snapToCenterFace(face))
                 elif "Vertex" in comp:
                     # we are snapping to a vertex
@@ -430,8 +434,7 @@ class Snapper:
             snaps.extend(self.snapToEndpoints(obj.Mesh))
 
         elif Draft.getType(obj).startswith("Points::"):
-            # for points we only snap to points
-            snaps.extend(self.snapToEndpoints(obj.Points))
+            snaps.extend(self.snapToEndpoints(obj.Points, point))
 
         elif (Draft.getType(obj) in ("WorkingPlaneProxy", "BuildingPart")
               and self.isEnabled("Center")):
@@ -739,23 +742,32 @@ class Snapper:
         return point
 
 
-    def snapToEndpoints(self, shape):
+    def snapToEndpoints(self, shape, point=None):
         """Return a list of endpoints snap locations."""
-        snaps = []
         if self.isEnabled("Endpoint"):
             if hasattr(shape, "Vertexes"):
+                snaps = []
                 for v in shape.Vertexes:
-                    snaps.append([v.Point, 'endpoint', self.toWP(v.Point)])
-            elif hasattr(shape, "Point"):
-                snaps.append([shape.Point, 'endpoint', self.toWP(shape.Point)])
-            elif hasattr(shape, "Points"):
-                if len(shape.Points) and hasattr(shape.Points[0], "Vector"):
-                    for v in shape.Points:
-                        snaps.append([v.Vector, 'endpoint', self.toWP(v.Vector)])
-                else:
-                    for v in shape.Points:
-                        snaps.append([v, 'endpoint', self.toWP(v)])
-        return snaps
+                    snaps.append([v.Point, "endpoint", self.toWP(v.Point)])
+                return snaps
+            if hasattr(shape, "Point"):
+                return [[shape.Point, "endpoint", self.toWP(shape.Point)]]
+            if hasattr(shape, "Points") and point is not None:
+                # point cloud
+                # Same as snapToNearUnprojected.
+                # Processing individual points in a large point cloud is way too slow:
+                # https://github.com/FreeCAD/FreeCAD/issues/22367
+                # Must come before handling of mesh as even accessing shape.Points is slow then.
+                return [[point, "endpoint", self.toWP(point)]]
+            if hasattr(shape, "Points"):
+                # mesh
+                pts = shape.Points
+                if pts and hasattr(pts[0], "Vector"):
+                    snaps = []
+                    for pt in pts:
+                        snaps.append([pt.Vector, "endpoint", self.toWP(pt.Vector)])
+                    return snaps
+        return []
 
 
     def snapToMidpoint(self, shape):
@@ -1011,30 +1023,39 @@ class Snapper:
         snaps = []
         if self.isEnabled("Intersection"):
             # get the stored objects to calculate intersections
-            for o in self.lastObj:
-                obj = App.ActiveDocument.getObject(o)
-                if obj:
-                    if obj.isDerivedFrom("Part::Feature") or (Draft.getType(obj) == "Axis"):
-                        if (not self.maxEdges) or (len(obj.Shape.Edges) <= self.maxEdges):
-                            for e in obj.Shape.Edges:
-                                # get the intersection points
-                                try:
-                                    if self.isEnabled("WorkingPlane") and hasattr(e,"Curve") and isinstance(e.Curve,(Part.Line,Part.LineSegment)) and hasattr(shape,"Curve") and isinstance(shape.Curve,(Part.Line,Part.LineSegment)):
-                                        # get apparent intersection (lines projected on WP)
-                                        p1 = self.toWP(e.Vertexes[0].Point)
-                                        p2 = self.toWP(e.Vertexes[-1].Point)
-                                        p3 = self.toWP(shape.Vertexes[0].Point)
-                                        p4 = self.toWP(shape.Vertexes[-1].Point)
-                                        pt = DraftGeomUtils.findIntersection(p1, p2, p3, p4, True, True)
-                                    else:
-                                        pt = DraftGeomUtils.findIntersection(e, shape)
-                                    if pt:
-                                        for p in pt:
-                                            snaps.append([p, 'intersection', self.toWP(p)])
-                                except Exception:
-                                    pass
-                                    # some curve types yield an error
-                                    # when trying to read their types
+            for obj_name in self.lastObj:
+                obj = App.ActiveDocument.getObject(obj_name)
+                if obj and (obj.isDerivedFrom("Part::Feature") or (Draft.getType(obj) == "Axis")):
+                    if (not self.maxFaces) or (len(obj.Shape.Faces) <= self.maxFaces):
+                        for face in obj.Shape.Faces:
+                            try:
+                                pts = DraftGeomUtils.findIntersection(face, shape)
+                                for pt in pts:
+                                    snaps.append([pt, "intersection", self.toWP(pt)])
+                            except Exception:
+                                pass
+                    if (not self.maxEdges) or (len(obj.Shape.Edges) <= self.maxEdges):
+                        for edge in obj.Shape.Edges:
+                            try:
+                                if self.isEnabled("WorkingPlane") \
+                                        and hasattr(edge, "Curve") \
+                                        and isinstance(edge.Curve,(Part.Line,Part.LineSegment)) \
+                                        and hasattr(shape, "Curve") \
+                                        and isinstance(shape.Curve,(Part.Line,Part.LineSegment)):
+                                    # get apparent intersection (lines projected on WP)
+                                    p1 = self.toWP(edge.Vertexes[0].Point)
+                                    p2 = self.toWP(edge.Vertexes[-1].Point)
+                                    p3 = self.toWP(shape.Vertexes[0].Point)
+                                    p4 = self.toWP(shape.Vertexes[-1].Point)
+                                    pts = DraftGeomUtils.findIntersection(p1, p2, p3, p4, True, True)
+                                else:
+                                    pts = DraftGeomUtils.findIntersection(edge, shape)
+                                for pt in pts:
+                                    snaps.append([pt, "intersection", self.toWP(pt)])
+                            except Exception:
+                                pass
+                                # some curve types yield an error
+                                # when trying to read their types
         return snaps
 
 
@@ -1165,25 +1186,24 @@ class Snapper:
         return QtGui.QCursor(new_icon, 8, 8)
 
     def setCursor(self, mode=None):
-        """Set or reset the cursor to the given mode or resets."""
-        if self.selectMode:
-            for w in self.get_quarter_widget(Gui.getMainWindow()):
-                w.unsetCursor()
+        """Set the cursor to the given mode or unset it."""
+        views = self.get_quarter_widget(Gui.getMainWindow())
+        if self.selectMode or mode is None:
             self.cursorMode = None
-        elif not mode:
-            for w in self.get_quarter_widget(Gui.getMainWindow()):
-                w.unsetCursor()
-            self.cursorMode = None
+            self.cursorQt = None
+            for view in views:
+                view.unsetCursor()
+        elif self.cursorMode == mode and self.cursorQt is not None:
+            for view in views:
+                view.setCursor(self.cursorQt)
         else:
-            if mode != self.cursorMode:
-                base_icon_name = ":/icons/Draft_Cursor.svg"
-                tail_icon_name = None
-                if not (mode == 'passive'):
-                    tail_icon_name = self.cursors[mode]
-                cur = self.get_cursor_with_tail(base_icon_name, tail_icon_name)
-                for w in self.get_quarter_widget(Gui.getMainWindow()):
-                    w.setCursor(cur)
-                self.cursorMode = mode
+            self.cursorMode = mode
+            self.cursorQt = self.get_cursor_with_tail(
+                ":/icons/Draft_Cursor.svg",
+                None if mode == "passive" else self.cursors[mode]
+            )
+            for view in views:
+                view.setCursor(self.cursorQt)
 
     def restack(self):
         """Lower the grid tracker so it doesn't obscure other objects."""
@@ -1386,6 +1406,8 @@ class Snapper:
         self.callbackMove = None
 
         def move(event_cb):
+            if not self.ui.mouse:
+                return
             event = event_cb.getEvent()
             mousepos = event.getPosition()
             ctrl = event.wasCtrlDown()
@@ -1412,6 +1434,8 @@ class Snapper:
             accept()
 
         def click(event_cb):
+            if not self.ui.mouse:
+                return
             event = event_cb.getEvent()
             if event.getButton() == 1:
                 if event.getState() == coin.SoMouseButtonEvent.DOWN:
@@ -1486,7 +1510,7 @@ class Snapper:
         """Get the snap toolbar."""
         if not (hasattr(self, "toolbar") and self.toolbar):
             mw = Gui.getMainWindow()
-            self.toolbar = mw.findChild(QtWidgets.QToolBar, "Draft snap")
+            self.toolbar = mw.findChild(QtWidgets.QToolBar, "Draft Snap")
         if self.toolbar:
             return self.toolbar
 
@@ -1648,5 +1672,11 @@ class Snapper:
                 self.holdTracker.setColor()
                 self.holdTracker.on()
             self.holdPoints.append(self.spoint)
+
+    def recenter_workingplane(self):
+        """Recenters the working plane on the current snap position"""
+        if self.spoint:
+            self._get_wp().set_to_position(self.toWP(self.spoint))
+
 
 ## @}

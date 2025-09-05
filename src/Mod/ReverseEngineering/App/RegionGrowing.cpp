@@ -105,7 +105,7 @@ void RegionGrowing::perform(int ksearch)
 void RegionGrowing::perform(const std::vector<Base::Vector3f>& myNormals)
 {
     if (myPoints.size() != myNormals.size()) {
-        throw Base::RuntimeError("Number of points doesn't match with number of normals");
+        throw Base::RuntimeError("Number of points does not match with number of normals");
     }
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);

@@ -150,8 +150,11 @@ def findIntersection(edge1, edge2,
             return []  # bound boxes don't intersect
 
     # First, try to use Shape.section if possible
-    if (dts and isinstance(edge1, Part.Edge) and isinstance(edge2, Part.Edge)
-            and (not infinite1) and (not infinite2)):
+    if dts \
+            and ((isinstance(edge1, Part.Edge) and isinstance(edge2, (Part.Edge, Part.Face)))
+                 or (isinstance(edge1, (Part.Edge, Part.Face)) and isinstance(edge2, Part.Edge))) \
+            and (not infinite1) \
+            and (not infinite2):
         return [v.Point for v in edge1.section((edge2), tol).Vertexes]
 
     pt1 = None

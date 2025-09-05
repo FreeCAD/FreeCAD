@@ -52,7 +52,8 @@ enum eGuiItems
     eGuiItemPath,
     eGuiItemAmbientOclusion,
     eGuiItemView,
-    eGuiItemMax
+    eGuiItemHome,
+    eGuiItemMax  // this element must be the last item always
 };
 
 struct GuiItem
@@ -65,7 +66,7 @@ struct GuiItem
     unsigned int flags {};
     bool mouseOver {};
     TextureItem texItem {};
-    QString toolTip;
+    QString toolTip {};
 
     int posx()
     {

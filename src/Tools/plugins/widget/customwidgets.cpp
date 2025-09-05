@@ -22,11 +22,13 @@
 
 #include <limits>
 
+#include <QAction>
 #include <QApplication>
 #include <QColorDialog>
 #include <QCursor>
 #include <QFileDialog>
 #include <QHeaderView>
+#include <QMenu>
 #include <QMessageBox>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
@@ -540,6 +542,66 @@ int InputField::historySize(void) const
 void InputField::setHistorySize(int i)
 {
     HistorySize = i;
+}
+
+// --------------------------------------------------------------------
+
+ExpressionLineEdit::ExpressionLineEdit(QWidget* parent)
+    : QLineEdit(parent)
+    , exactMatch {false}
+{
+    completer = new QCompleter(this);
+    connect(this, &QLineEdit::textEdited, this, &ExpressionLineEdit::slotTextChanged);
+}
+
+void ExpressionLineEdit::setExactMatch(bool enabled)
+{
+    exactMatch = enabled;
+    if (completer) {
+        completer->setFilterMode(exactMatch ? Qt::MatchStartsWith : Qt::MatchContains);
+    }
+}
+
+void ExpressionLineEdit::slotTextChanged(const QString& text)
+{
+    Q_EMIT textChanged2(text, cursorPosition());
+}
+
+void ExpressionLineEdit::slotCompleteText(const QString& completionPrefix, bool isActivated)
+{
+    Q_UNUSED(completionPrefix)
+    Q_UNUSED(isActivated)
+}
+
+void ExpressionLineEdit::slotCompleteTextHighlighted(const QString& completionPrefix)
+{
+    slotCompleteText(completionPrefix, false);
+}
+
+void ExpressionLineEdit::slotCompleteTextSelected(const QString& completionPrefix)
+{
+    slotCompleteText(completionPrefix, true);
+}
+
+void ExpressionLineEdit::keyPressEvent(QKeyEvent* e)
+{
+    QLineEdit::keyPressEvent(e);
+}
+
+void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent* event)
+{
+    QMenu* menu = createStandardContextMenu();
+
+    if (completer) {
+        menu->addSeparator();
+        QAction* match = menu->addAction(tr("Exact match"));
+        match->setCheckable(true);
+        match->setChecked(completer->filterMode() == Qt::MatchStartsWith);
+        QObject::connect(match, &QAction::toggled, this, &Gui::ExpressionLineEdit::setExactMatch);
+    }
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+
+    menu->popup(event->globalPos());
 }
 
 // --------------------------------------------------------------------

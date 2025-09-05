@@ -64,13 +64,13 @@ class ObjectProbing(PathOp.ObjectOp):
             "App::PropertyInteger",
             "PointCountX",
             "Probe",
-            QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in X direction"),
+            QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in X-direction"),
         )
         obj.addProperty(
             "App::PropertyInteger",
             "PointCountY",
             "Probe",
-            QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in Y direction"),
+            QT_TRANSLATE_NOOP("App::Property", "Number of points to probe in Y-direction"),
         )
         obj.addProperty(
             "App::PropertyFile",
@@ -134,7 +134,7 @@ class ObjectProbing(PathOp.ObjectOp):
 
     def isToolSupported(self, obj, tool):
         """Probe operation requires a probe tool"""
-        support = hasattr(tool, "ShapeName") and (tool.ShapeName == "probe")
+        support = PathUtils.getToolShapeName(tool) == "probe"
         Path.Log.track(tool.Label, support)
         return support
 

@@ -423,6 +423,26 @@ class _BaseSolverCalculix:
             )
             obj.BucklingAccuracy = 0.01
 
+        if not hasattr(obj, "ExcludeBendingStiffness"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "ExcludeBendingStiffness",
+                "Fem",
+                "Exclude bending stiffness to replace shells with membranes or beams with trusses",
+                locked=True,
+            )
+            obj.ExcludeBendingStiffness = False
+
+        if not hasattr(obj, "PastixMixedPrecision"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "PastixMixedPrecision",
+                "Fem",
+                "Mixed precision for the PaStiX matrix solver",
+                locked=True,
+            )
+            obj.PastixMixedPrecision = False
+
 
 class Proxy(solverbase.Proxy, _BaseSolverCalculix):
     """The Fem::FemSolver's Proxy python type, add solver specific properties"""

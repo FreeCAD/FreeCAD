@@ -50,6 +50,7 @@ class _Fence(ArchComponent.Component):
     def __init__(self, obj):
 
         ArchComponent.Component.__init__(self, obj)
+        self.Type = "Fence"
         self.setProperties(obj)
         # Does a IfcType exist?
         # obj.IfcType = "Fence"
@@ -82,19 +83,15 @@ class _Fence(ArchComponent.Component):
                 "App::Property", "The number of posts used to build the fence"), locked=True)
             obj.setEditorMode("NumberOfPosts", 1)
 
-        self.Type = "Fence"
-
     def dumps(self):
         if hasattr(self, 'sectionFaceNumbers'):
             return self.sectionFaceNumbers
-
         return None
 
     def loads(self, state):
         if state is not None and isinstance(state, tuple):
             self.sectionFaceNumbers = state[0]
-
-        return None
+        self.Type = "Fence"
 
     def execute(self, obj):
         import Part

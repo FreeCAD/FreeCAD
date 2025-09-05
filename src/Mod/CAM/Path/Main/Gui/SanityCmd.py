@@ -50,13 +50,16 @@ class CommandCAMSanity:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Sanity",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_Sanity", "Check the CAM job for common errors"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Sanity", "Sanity Check"),
             "Accel": "P, S",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Sanity", "Check the CAM job for common errors"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Sanity", "Checks the CAM job for common errors"),
         }
 
     def IsActive(self):
-        obj = FreeCADGui.Selection.getSelectionEx()[0].Object
+        selection = FreeCADGui.Selection.getSelectionEx()
+        if len(selection) == 0:
+            return False
+        obj = selection[0].Object
         return isinstance(obj.Proxy, Path.Main.Job.ObjectJob)
 
     def Activated(self):

@@ -35,6 +35,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Selection/Selection.h>
+#include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureBoolean.h>
@@ -50,7 +51,7 @@ using namespace Gui;
 
 TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean* BooleanView, QWidget* parent)
     : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Boolean"),
-              tr("Boolean parameters"),
+              tr("Boolean Parameters"),
               true,
               parent)
     , ui(new Ui_TaskBooleanParameters)
@@ -84,15 +85,11 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean* BooleanView, Q
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        action->setShortcut(QKeySequence(shortcut));
-    }
+    action->setShortcut(Gui::QtTools::deleteKeySequence());
 
     // display shortcut behind the context menu entry
     action->setShortcutVisibleInContextMenu(true);
-    
+
     ui->listWidgetBodies->addAction(action);
     connect(action, &QAction::triggered, this, &TaskBooleanParameters::onBodyDeleted);
     ui->listWidgetBodies->setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -355,13 +352,14 @@ void TaskBooleanParameters::exitSelectionMode()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgBooleanParameters::TaskDlgBooleanParameters(ViewProviderBoolean* BooleanView)
-    : TaskDialog()
+    : TaskDlgFeatureParameters(BooleanView)
     , BooleanView(BooleanView)
 {
     assert(BooleanView);
     parameter = new TaskBooleanParameters(BooleanView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 TaskDlgBooleanParameters::~TaskDlgBooleanParameters() = default;

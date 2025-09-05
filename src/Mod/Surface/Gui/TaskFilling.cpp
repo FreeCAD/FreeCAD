@@ -62,7 +62,7 @@ namespace SurfaceGui
 void ViewProviderFilling::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit filling"), receiver, member);
+    act = menu->addAction(QObject::tr("Edit Filling"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     PartGui::ViewProviderSpline::setupContextMenu(menu, receiver, member);
 }

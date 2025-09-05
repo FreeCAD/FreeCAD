@@ -31,25 +31,30 @@
 
 using namespace MillSim;
 
+// clang-format off
+// NOLINTBEGIN(*-magic-numbers)
 GuiItem guiItems[] = {
-    {eGuiItemSlider, 0, 0, 40, -80, 0},
-    {eGuiItemThumb, 0, 0, 328, -94, 1},
-    {eGuiItemPause, 0, 0, 40, -50, 'P', true},
-    {eGuiItemPlay, 0, 0, 40, -50, 'S', false},
-    {eGuiItemSingleStep, 0, 0, 80, -50, 'T'},
-    {eGuiItemSlower, 0, 0, 125, -50, ' '},
-    {eGuiItemFaster, 0, 0, 170, -50, 'F'},
-    {eGuiItemX, 0, 0, 220, -45, 0, false, 0},
-    {eGuiItem1, 0, 0, 242, -50, 0, false, 0},
-    {eGuiItem5, 0, 0, 242, -50, 0, true, 0},
-    {eGuiItem10, 0, 0, 242, -50, 0, true, 0},
-    {eGuiItem25, 0, 0, 242, -50, 0, true, 0},
-    {eGuiItem50, 0, 0, 242, -50, 0, true, 0},
-    {eGuiItemRotate, 0, 0, -140, -50, ' ', false, GUIITEM_CHECKABLE},
-    {eGuiItemPath, 0, 0, -100, -50, 'L', false, GUIITEM_CHECKABLE},
-    {eGuiItemAmbientOclusion, 0, 0, -60, -50, 'A', false, GUIITEM_CHECKABLE},
-    {eGuiItemView, 0, 0, -180, -50, 'V', false},
+    {.name=eGuiItemSlider, .vbo=0, .vao=0, .sx=28, .sy=-80, .actionKey=0, .hidden=false, .flags=0},
+    {.name=eGuiItemThumb, .vbo=0, .vao=0, .sx=328, .sy=-94, .actionKey=1, .hidden=false, .flags=0},
+    {.name=eGuiItemPause, .vbo=0, .vao=0, .sx=28, .sy=-50, .actionKey='P', .hidden=true, .flags=0},
+    {.name=eGuiItemPlay, .vbo=0, .vao=0, .sx=28, .sy=-50, .actionKey='S', .hidden=false, .flags=0},
+    {.name=eGuiItemSingleStep, .vbo=0, .vao=0, .sx=68, .sy=-50, .actionKey='T', .hidden=false, .flags=0},
+    {.name=eGuiItemSlower, .vbo=0, .vao=0, .sx=113, .sy=-50, .actionKey=' ', .hidden=false, .flags=0},
+    {.name=eGuiItemFaster, .vbo=0, .vao=0, .sx=158, .sy=-50, .actionKey='F', .hidden=false, .flags=0},
+    {.name=eGuiItemX, .vbo=0, .vao=0, .sx=208, .sy=-45, .actionKey=0, .hidden=false, .flags=0},
+    {.name=eGuiItem1, .vbo=0, .vao=0, .sx=230, .sy=-50, .actionKey=0, .hidden=false, .flags=0},
+    {.name=eGuiItem5, .vbo=0, .vao=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
+    {.name=eGuiItem10, .vbo=0, .vao=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
+    {.name=eGuiItem25, .vbo=0, .vao=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
+    {.name=eGuiItem50, .vbo=0, .vao=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
+    {.name=eGuiItemRotate, .vbo=0, .vao=0, .sx=-140, .sy=-50, .actionKey=' ', .hidden=false, .flags=GUIITEM_CHECKABLE},
+    {.name=eGuiItemPath, .vbo=0, .vao=0, .sx=-100, .sy=-50, .actionKey='L', .hidden=false, .flags=GUIITEM_CHECKABLE},
+    {.name=eGuiItemAmbientOclusion, .vbo=0, .vao=0, .sx=-60, .sy=-50, .actionKey='A', .hidden=false, .flags=GUIITEM_CHECKABLE},
+    {.name=eGuiItemView, .vbo=0, .vao=0, .sx=-180, .sy=-50, .actionKey='V', .hidden=false, .flags=0},
+    {.name=eGuiItemHome, .vbo=0, .vao=0, .sx=-220, .sy=-50, .actionKey='H', .hidden=false, .flags=0},
 };
+// NOLINTEND(*-magic-numbers)
+// clang-format on
 
 #define NUM_GUI_ITEMS (sizeof(guiItems) / sizeof(GuiItem))
 #define TEX_SIZE 256
@@ -70,7 +75,8 @@ std::vector<std::string> guiFileNames = {"Slider.png",
                                          "Rotate.png",
                                          "Path.png",
                                          "AmbientOclusion.png",
-                                         "View.png"};
+                                         "View.png",
+                                         "Home.png"};
 
 void GuiDisplay::UpdateProjection()
 {
@@ -280,10 +286,12 @@ void MillSim::GuiDisplay::SetupTooltips()
                                                                    "Toggle turn table animation",
                                                                    nullptr);
     guiItems[eGuiItemAmbientOclusion].toolTip =
-        QCoreApplication::translate("CAM:Simulator:Tooltips", "Toggle ambient oclusion", nullptr);
+        QCoreApplication::translate("CAM:Simulator:Tooltips", "Toggle ambient occlusion", nullptr);
     guiItems[eGuiItemView].toolTip = QCoreApplication::translate("CAM:Simulator:Tooltips",
                                                                  "Toggle view simulation/model",
                                                                  nullptr);
+    guiItems[eGuiItemHome].toolTip =
+        QCoreApplication::translate("CAM:Simulator:Tooltips", "Reset camera", nullptr);
 }
 
 void GuiDisplay::MouseCursorPos(int x, int y)

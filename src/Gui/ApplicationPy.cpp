@@ -430,6 +430,12 @@ PyMethodDef ApplicationPy::Methods[] = {
    "Remove all children from a group node.\n"
    "\n"
    "node : object"},
+  {"suspendWaitCursor", (PyCFunction) ApplicationPy::sSuspendWaitCursor, METH_VARARGS,
+   "suspendWaitCursor() -> None\n\n"
+   "Temporarily suspends the application's wait cursor and event filter."},
+  {"resumeWaitCursor",  (PyCFunction) ApplicationPy::sResumeWaitCursor, METH_VARARGS,
+   "resumeWaitCursor() -> None\n\n"
+   "Resumes the application's wait cursor and event filter."},
   {nullptr, nullptr, 0, nullptr}    /* Sentinel */
 };
 
@@ -1293,37 +1299,39 @@ PyObject* ApplicationPy::sAddCommand(PyObject * /*self*/, PyObject *args)
     std::string group;
     try {
         Base::PyGILStateLocker lock;
-        Py::Module mod(PyImport_ImportModule("inspect"), true);
-        if (mod.isNull()) {
-            PyErr_SetString(PyExc_ImportError, "Cannot load inspect module");
-            return nullptr;
-        }
-        Py::Callable inspect(mod.getAttr("stack"));
-        Py::List list(inspect.apply());
 
-        std::string file;
-        // usually this is the file name of the calling script
-        Py::Object info = list.getItem(0);
-        PyObject *pyfile = PyStructSequence_GET_ITEM(*info,1);
-        if(!pyfile) {
-            throw Py::Exception();
-        }
+        // Get the filename of the running code by using the low-level sys._getframe() method.
+        // We use this instead of the `inspect` module (which may actually cause imports to execute
+        // and can result in a circular import if sAddCommand is being called as part of an import
+        // statement itself), and the `traceback` module (which cannot access the filename of code
+        // that is being run through the C interface).
 
-        file = Py::Object(pyfile).as_string();
-        Base::FileInfo fi(file);
+        Py::Module sysMod(PyImport_ImportModule("sys"), /*owned=*/true);
+        Py::Callable getFrame(sysMod.getAttr("_getframe"));
+
+        Py::Object callerFrame;
+        Py::Tuple getFrameArgs(1);
+        getFrameArgs[0] = Py::Long(0);
+        callerFrame = getFrame.apply(getFrameArgs);
+
+        Py::Object codeObj (callerFrame.getAttr("f_code"));
+
+        Py::Object filenameObj (codeObj.getAttr("co_filename"));
+        std::string filename (Py::String(filenameObj).as_std_string());
+
+        Base::FileInfo fi(filename);
         // convert backslashes to slashes
-        file = fi.filePath();
+        filename = fi.filePath();
         module = fi.fileNamePure();
-
         // for the group name get the directory name after 'Mod'
         boost::regex rx("/Mod/(\\w+)/");
         boost::smatch what;
-        if (boost::regex_search(file, what, rx)) {
+        if (boost::regex_search(filename, what, rx)) {
             group = what[1];
         }
         else {
-            boost::regex rx("/Ext/freecad/(\\w+)/");
-            if (boost::regex_search(file, what, rx)) {
+            rx = "/Ext/freecad/(\\w+)/";
+            if (boost::regex_search(filename, what, rx)) {
                 group = what[1];
             } else {
                 group = module;
@@ -1800,4 +1808,24 @@ PyObject* ApplicationPy::sSetUserEditMode(PyObject * /*self*/, PyObject *args)
     bool ok = Application::Instance->setUserEditMode(std::string(mode));
 
     return Py::new_reference_to(Py::Boolean(ok));
+}
+
+PyObject* ApplicationPy::sSuspendWaitCursor(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    WaitCursor::suspend();
+    Py_RETURN_NONE;
+}
+
+PyObject* ApplicationPy::sResumeWaitCursor(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    WaitCursor::resume();
+    Py_RETURN_NONE;
 }

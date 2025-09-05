@@ -1,11 +1,20 @@
 
 SET(Stylesheets_Files
-    	"FreeCAD Dark.qss"
+	"FreeCAD.qss"
+	#remove below after testing new stylesheet system 8/6/2025
+	"FreeCAD Dark.qss"
 	"FreeCAD Light.qss"
 )
 
+SET(Parameters_Files
+    "parameters/FreeCAD Dark.yaml"
+    "parameters/FreeCAD Light.yaml"
+)
+
 SET(Overlay_Stylesheets_Files
-    "overlay/Dark Theme + Dark Background.qss"
+    "overlay/Freecad Overlay.qss"
+	#remove below after testing new stylesheet system 8/6/2025
+	"overlay/Dark Theme + Dark Background.qss"
     "overlay/Dark Theme + Light Background.qss"
     "overlay/Light Theme + Dark Background.qss"
     "overlay/Light Theme + Light Background.qss"
@@ -18,7 +27,9 @@ FILE(GLOB Images_Files RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
 SOURCE_GROUP("Images_dark-light" FILES ${Images_Files})
 
 FILE(GLOB Images_Files2 RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
-    "${CMAKE_CURRENT_SOURCE_DIR}/images_classic/*.png")
+    "${CMAKE_CURRENT_SOURCE_DIR}/images_classic/*.svg"
+    "${CMAKE_CURRENT_SOURCE_DIR}/images_classic/*.png"
+)
 
 SOURCE_GROUP("images_classic" FILES ${Images_Files2})
 
@@ -29,11 +40,12 @@ SOURCE_GROUP("overlay_icons" FILES ${Overlay_icons})
 
 
 ADD_CUSTOM_TARGET(Stylesheets_data ALL
-    SOURCES ${Stylesheets_Files} ${Images_Files} ${Images_Files2} ${Overlay_Stylesheets_Files} ${Overlay_icons}
+    SOURCES ${Stylesheets_Files} ${Parameters_Files} ${Images_Files} ${Images_Files2} ${Overlay_Stylesheets_Files} ${Overlay_icons}
 )
 
 fc_copy_sources(Stylesheets_data "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Gui/Stylesheets"
                                   ${Stylesheets_Files}
+                                  ${Parameters_Files}
                                   ${Images_Files}
                                   ${Images_Files2}
                                   ${Overlay_Stylesheets_Files}
@@ -44,6 +56,12 @@ INSTALL(
         ${Stylesheets_Files}
     DESTINATION
         ${CMAKE_INSTALL_DATADIR}/Gui/Stylesheets
+)
+INSTALL(
+        FILES
+        ${Parameters_Files}
+        DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Gui/Stylesheets/parameters
 )
 INSTALL(
     FILES

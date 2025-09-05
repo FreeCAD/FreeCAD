@@ -36,10 +36,10 @@ class BIM_IfcElements:
     def GetResources(self):
         return {
             "Pixmap": "BIM_IfcElements",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_IfcElements", "Manage IFC elements..."),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_IfcElements", "Manage IFC Elements"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_IfcElements",
-                "Manage how the different elements of of your BIM project will be exported to IFC",
+                "Manages how the different elements of the BIM project will be exported to IFC",
             ),
         }
 
@@ -95,7 +95,10 @@ class BIM_IfcElements:
                 )
         self.form.groupMode.currentIndexChanged.connect(self.update)
         self.form.tree.clicked.connect(self.onClickTree)
-        self.form.onlyVisible.stateChanged.connect(self.update)
+        if hasattr(self.form.onlyVisible, "checkStateChanged"): # Qt version >= 6.7.0
+            self.form.onlyVisible.checkStateChanged.connect(self.update)
+        else: # Qt version < 6.7.0
+            self.form.onlyVisible.stateChanged.connect(self.update)
         self.form.buttonBox.accepted.connect(self.accept)
         self.form.globalMode.currentIndexChanged.connect(self.onObjectTypeChanged)
         self.form.globalMaterial.currentIndexChanged.connect(self.onMaterialChanged)

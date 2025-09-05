@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="lbl_info">
      <property name="text">
-      <string>Click Add or Remove and select geometric element(s)</string>
+      <string>Click Add or Remove and select geometric elements</string>
      </property>
     </widget>
    </item>

@@ -81,7 +81,7 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(
     }
 
     // create a context menu for the listview of the references
-    createDeleteAction(ui->lw_references);
+    createActions(ui->lw_references);
     connect(deleteAction,
             &QAction::triggered,
             this,
@@ -146,8 +146,10 @@ void TaskFemConstraintPressure::addToSelection()
 
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
-            if (subName.substr(0, 4) != "Face") {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+            if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
+                QMessageBox::warning(this,
+                                     tr("Selection error"),
+                                     tr("Only faces (edges in 2D models) can be picked"));
                 return;
             }
             for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();

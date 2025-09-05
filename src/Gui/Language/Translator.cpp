@@ -115,6 +115,48 @@ public:
 };
 }
 
+class Translator::ParameterObserver : public ParameterGrp::ObserverType
+{
+public:
+    ParameterObserver(Translator* client) : client(client)
+    {
+        hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
+        hGrp->Attach(this);
+    }
+
+    void OnChange(Base::Subject<const char*>& caller, const char* creason) override
+    {
+        (void) caller;
+
+        std::string_view reason = creason;
+        if (reason == "UseLocaleFormatting") {
+            int format = hGrp->GetInt("UseLocaleFormatting");
+            if (format == 0) {
+                client->setLocale(); // Defaults to system locale
+            }
+            else if (format == 1) {
+                // Language must need to be set before locale. How do we ensure this?
+                std::string language = hGrp->GetASCII("Language");
+                client->setLocale(language);
+            }
+            else if (format == 2) {
+                client->setLocale("C");
+            }
+            else {
+                throw Base::ValueError("Parameter \"UseLocaleFormatting\" value out of bounds for Translator::formattingOptions");
+            }
+        }
+        else if (reason == "SubstituteDecimalSeparator") {
+            bool value = hGrp->GetBool("SubstituteDecimal");
+            client->enableDecimalPointConversion(value);
+        }
+    }
+
+    Translator* client;
+    static ParameterGrp::handle hGrp;
+};
+ParameterGrp::handle Translator::ParameterObserver::hGrp;  // definition for export
+
 Translator* Translator::instance()
 {
     if (!_pcSingleton)
@@ -131,53 +173,56 @@ void Translator::destruct ()
 
 Translator::Translator()
 {
+    observer = std::make_unique<Translator::ParameterObserver>(this);
+
     // This is needed for Qt's lupdate
     // clang-format off
     d = new TranslatorP;
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Afrikaans"            )] = "af";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Arabic"               )] = "ar";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Basque"               )] = "eu";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Belarusian"           )] = "be";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Bulgarian"            )] = "bg";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Catalan"              )] = "ca";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese Simplified"   )] = "zh-CN";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese Traditional"  )] = "zh-TW";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Croatian"             )] = "hr";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Czech"                )] = "cs";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Danish"               )] = "da";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Dutch"                )] = "nl";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("English"              )] = "en";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Filipino"             )] = "fil";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Finnish"              )] = "fi";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("French"               )] = "fr";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Galician"             )] = "gl";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Georgian"             )] = "ka";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("German"               )] = "de";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Greek"                )] = "el";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Hungarian"            )] = "hu";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Indonesian"           )] = "id";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Italian"              )] = "it";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Japanese"             )] = "ja";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Kabyle"               )] = "kab";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Korean"               )] = "ko";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Lithuanian"           )] = "lt";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Norwegian"            )] = "no";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Polish"               )] = "pl";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese, Brazilian")] = "pt-BR";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese"           )] = "pt-PT";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Romanian"             )] = "ro";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Russian"              )] = "ru";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Serbian"              )] = "sr";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Serbian, Latin"       )] = "sr-CS";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovak"               )] = "sk";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovenian"            )] = "sl";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish"              )] = "es-ES";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish, Argentina"   )] = "es-AR";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish"              )] = "sv-SE";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Turkish"              )] = "tr";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian"            )] = "uk";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"            )] = "val-ES";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Vietnamese"           )] = "vi";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Afrikaans"             )] = "af";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Arabic"                )] = "ar";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Basque"                )] = "eu";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Belarusian"            )] = "be";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Bulgarian"             )] = "bg";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Catalan"               )] = "ca";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese (Simplified)"  )] = "zh-CN";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Chinese (Traditional)" )] = "zh-TW";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Croatian"              )] = "hr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Czech"                 )] = "cs";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Danish"                )] = "da";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Dutch"                 )] = "nl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("English"               )] = "en";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Filipino"              )] = "fil";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Finnish"               )] = "fi";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("French"                )] = "fr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Galician"              )] = "gl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Georgian"              )] = "ka";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("German"                )] = "de";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Greek"                 )] = "el";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Hungarian"             )] = "hu";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Indonesian"            )] = "id";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Italian"               )] = "it";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Japanese"              )] = "ja";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Kabyle"                )] = "kab";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Korean"                )] = "ko";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Lithuanian"            )] = "lt";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Norwegian"             )] = "no";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Polish"                )] = "pl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese (Brazilian)")] = "pt-BR";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Portuguese"            )] = "pt-PT";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Romanian"              )] = "ro";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Russian"               )] = "ru";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Serbian"               )] = "sr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Serbian (Latin)"       )] = "sr-CS";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovak"                )] = "sk";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovenian"             )] = "sl";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish"               )] = "es-ES";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish (Argentina)"   )] = "es-AR";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish"               )] = "sv-SE";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Turkish"               )] = "tr";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian"             )] = "uk";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"             )] = "val-ES";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Vietnamese"            )] = "vi";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Malay")] = "ms";
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
     auto entries = hGrp->GetASCII("AdditionalLanguageDomainEntries", "");

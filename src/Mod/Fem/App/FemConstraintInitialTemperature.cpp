@@ -35,9 +35,18 @@ PROPERTY_SOURCE(Fem::ConstraintInitialTemperature, Fem::Constraint)
 ConstraintInitialTemperature::ConstraintInitialTemperature()
 {
     ADD_PROPERTY(initialTemperature, (300.0));
-
-    References.setStatus(App::Property::ReadOnly, true);
-    References.setStatus(App::Property::Hidden, true);
+    ADD_PROPERTY(EnableFinalTemperature, (false));
+    ADD_PROPERTY(FinalTemperature, (300.0));
+    ADD_PROPERTY_TYPE(EnableAmplitude,
+                      (false),
+                      "",
+                      (App::PropertyType)(App::Prop_None),
+                      "Amplitude of the final temperature field");
+    ADD_PROPERTY_TYPE(AmplitudeValues,
+                      (std::vector<std::string> {"0, 0", "1, 1"}),
+                      "",
+                      (App::PropertyType)(App::Prop_None),
+                      "Amplitude values");
 }
 
 App::DocumentObjectExecReturn* ConstraintInitialTemperature::execute()

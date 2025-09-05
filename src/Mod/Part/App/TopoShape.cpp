@@ -189,7 +189,7 @@
 #include "TopoShapeSolidPy.h"
 #include "TopoShapeVertexPy.h"
 #include "TopoShapeWirePy.h"
-
+#include "OCCTProgressIndicator.h"
 
 FC_LOG_LEVEL_INIT("TopoShape",true,true)
 
@@ -1361,6 +1361,11 @@ bool TopoShape::isValid() const
     return aChecker.IsValid() ? true : false;
 }
 
+bool TopoShape::isEmpty() const
+{
+    return Tools::isShapeEmpty(this->_Shape);
+}
+
 namespace Part {
 std::vector<std::string> buildShapeEnumVector()
 {
@@ -1695,7 +1700,11 @@ TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Re
     } else if (tolerance < 0.0) {
         mkCut.setAutoFuzzy();
     }
+#if OCC_VERSION_HEX >= 0x070600
+    mkCut.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
     mkCut.Build();
+#endif
     if (!mkCut.IsDone())
         throw Base::RuntimeError("Multi cut failed");
 
@@ -1734,7 +1743,11 @@ TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard
     } else if (tolerance < 0.0) {
         mkCommon.setAutoFuzzy();
     }
+#if OCC_VERSION_HEX >= 0x070600
+    mkCommon.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
     mkCommon.Build();
+#endif
     if (!mkCommon.IsDone())
         throw Base::RuntimeError("Multi common failed");
 
@@ -1773,7 +1786,11 @@ TopoDS_Shape TopoShape::fuse(const std::vector<TopoDS_Shape>& shapes, Standard_R
     } else if (tolerance < 0.0) {
         mkFuse.setAutoFuzzy();
     }
+#if OCC_VERSION_HEX >= 0x070600
+    mkFuse.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
     mkFuse.Build();
+#endif
     if (!mkFuse.IsDone())
         throw Base::RuntimeError("Multi fuse failed");
 
@@ -1781,15 +1798,6 @@ TopoDS_Shape TopoShape::fuse(const std::vector<TopoDS_Shape>& shapes, Standard_R
     return makeShell(resShape);
 }
 
-TopoDS_Shape TopoShape::oldFuse(TopoDS_Shape shape) const
-{
-    if (this->_Shape.IsNull())
-        Standard_Failure::Raise("Base shape is null");
-    if (shape.IsNull())
-        Standard_Failure::Raise("Tool shape is null");
-
-    throw Standard_Failure("BRepAlgo_Fuse is deprecated since OCCT 7.3");
-}
 
 TopoDS_Shape TopoShape::section(TopoDS_Shape shape, Standard_Boolean approximate) const
 {
@@ -1801,7 +1809,11 @@ TopoDS_Shape TopoShape::section(TopoDS_Shape shape, Standard_Boolean approximate
     mkSection.Init1(this->_Shape);
     mkSection.Init2(shape);
     mkSection.Approximation(approximate);
+#if OCC_VERSION_HEX >= 0x070600
+    mkSection.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
     mkSection.Build();
+#endif
     if (!mkSection.IsDone())
         throw Base::RuntimeError("Section failed");
     return mkSection.Shape();
@@ -1832,7 +1844,11 @@ TopoDS_Shape TopoShape::section(const std::vector<TopoDS_Shape>& shapes,
     } else if (tolerance < 0.0) {
         mkSection.setAutoFuzzy();
     }
+#if OCC_VERSION_HEX >= 0x070600
+    mkSection.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
     mkSection.Build();
+#endif
     if (!mkSection.IsDone())
         throw Base::RuntimeError("Multi section failed");
 
@@ -1895,7 +1911,11 @@ TopoDS_Shape TopoShape::generalFuse(const std::vector<TopoDS_Shape> &sOthers, St
         FCBRepAlgoAPIHelper::setAutoFuzzy(&mkGFA);
     }
     mkGFA.SetNonDestructive(Standard_True);
+#if OCC_VERSION_HEX >= 0x070600
+    mkGFA.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
     mkGFA.Build();
+#endif
     if (!mkGFA.IsDone())
         throw BooleanException("MultiFusion failed");
     TopoDS_Shape resShape = mkGFA.Shape();
@@ -1949,8 +1969,11 @@ TopoDS_Shape TopoShape::makePipeShell(const TopTools_ListOfShape& profiles,
     if (!mkPipeShell.IsReady())
         throw Standard_Failure("shape is not ready to build");
 
+#if OCC_VERSION_HEX >= 0x070600
+    mkPipeShell.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
     mkPipeShell.Build();
-
+#endif
     if (make_solid)
         mkPipeShell.MakeSolid();
 
@@ -2440,7 +2463,11 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
 
     Standard_Boolean anIsCheck = Standard_True;
     aGenerator.CheckCompatibility (anIsCheck);   // use BRepFill_CompatibleWires on profiles. force #edges, orientation, "origin" to match.
+#if OCC_VERSION_HEX >= 0x070600
+    aGenerator.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
     aGenerator.Build();
+#endif
     if (!aGenerator.IsDone())
         Standard_Failure::Raise("Failed to create loft face");
 
@@ -2582,7 +2609,11 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
         BRepOffsetAPI_ThruSections aGenerator;
         aGenerator.AddWire(originalWire);
         aGenerator.AddWire(offsetWire);
+#if OCC_VERSION_HEX >= 0x070600
+        aGenerator.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
         aGenerator.Build();
+#endif
         if (!aGenerator.IsDone())
         {
             Standard_Failure::Raise("ThruSections failed");
@@ -2889,8 +2920,11 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                 //add final joining edge
                 mkWire.Add(BRepBuilderAPI_MakeEdge(v3,v1).Edge());
 
+#if OCC_VERSION_HEX >= 0x070600
+                mkWire.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
                 mkWire.Build();
-
+#endif
                 wiresForMakingFaces.push_front(mkWire.Wire());
             }
         }
@@ -2902,7 +2936,11 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             for(TopoDS_Wire &w : wiresForMakingFaces){
                 mkFace.addWire(w);
             }
+#if OCC_VERSION_HEX >= 0x070600
+            mkFace.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
             mkFace.Build();
+#endif
             if (mkFace.Shape().IsNull())
                 throw Base::CADKernelError("makeOffset2D: making face failed (null shape returned).");
             TopoDS_Shape result = mkFace.Shape();
@@ -3642,7 +3680,11 @@ TopoDS_Shape TopoShape::defeaturing(const std::vector<TopoDS_Shape>& s) const
     defeat.SetShape(this->_Shape);
     for (const auto & it : s)
         defeat.AddFaceToRemove(it);
+#if OCC_VERSION_HEX >= 0x070600
+    defeat.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
     defeat.Build();
+#endif
     if (!defeat.IsDone()) {
         // error treatment
         Standard_SStream aSStream;
@@ -3863,7 +3905,11 @@ TopoShape &TopoShape::makeFace(const std::vector<TopoShape> &shapes, const char 
         else if (s.getShape().ShapeType() != TopAbs_VERTEX)
             mkFace->addShape(s.getShape());
     }
+#if OCC_VERSION_HEX >= 0x070600
+    mkFace->Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
     mkFace->Build();
+#endif
     _Shape = mkFace->Shape();
     return *this;
 }
@@ -3924,7 +3970,7 @@ bool TopoShape::findPlane(gp_Pln& pln, double tol, double atol) const
             else {
                 TopLoc_Location loc;
                 Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
-                GeomLib_IsPlanarSurface check(surf);
+                GeomLib_IsPlanarSurface check(surf, tol);
                 if (check.IsPlanar()) {
                     plane = check.Plan();
                 }

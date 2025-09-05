@@ -52,16 +52,16 @@ class Ellipse2d(Conic2d):
 
     @overload
     def __init__(self) -> None: ...
-    
+
     @overload
     def __init__(self, Ellipse: "Ellipse2d") -> None: ...
-    
+
     @overload
     def __init__(self, S1: object, S2: object, Center: object) -> None: ...
-    
+
     @overload
     def __init__(self, Center: object, MajorRadius: float, MinorRadius: float) -> None: ...
-    
+
     @overload
     def __init__(self, *args, **kwargs) -> None:
         ...

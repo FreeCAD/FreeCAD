@@ -63,8 +63,8 @@ class ArchReference:
     def __init__(self, obj):
 
         obj.Proxy = self
-        ArchReference.setProperties(self, obj)
         self.Type = "Reference"
+        ArchReference.setProperties(self, obj)
         self.reload = True
 
 
@@ -90,7 +90,6 @@ class ArchReference:
         if not "FuseArch" in pl:
             t = QT_TRANSLATE_NOOP("App::Property","Fuse objects of same material")
             obj.addProperty("App::PropertyBool","FuseArch", "Reference", t, locked=True)
-        self.Type = "Reference"
 
 
     def onDocumentRestored(self, obj):
@@ -109,7 +108,7 @@ class ArchReference:
 
     def loads(self, state):
 
-        return None
+        self.Type = "Reference"
 
 
     def onChanged(self, obj, prop):
@@ -884,7 +883,7 @@ class ArchReferenceTaskPanel:
         if self.obj.File:
             self.fileButton.setText(os.path.basename(self.obj.File))
         else:
-            self.fileButton.setText(translate("Arch","Choose file..."))
+            self.fileButton.setText(translate("Arch","Choose File"))
         self.partCombo = QtGui.QComboBox(self.form)
         self.partCombo.setEnabled(False)
         layout.addWidget(self.partCombo)

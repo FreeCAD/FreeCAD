@@ -104,48 +104,48 @@ class ifc_vp_object:
                 FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
                 == vobj.Object
             ):
-                t = translate("BIM", "Deactivate container")
+                t = translate("BIM", "Deactivate Container")
             else:
-                t = translate("BIM", "Make active container")
+                t = translate("BIM", "Make Active Container")
             action_activate = QtGui.QAction(icon, t, menu)
             action_activate.triggered.connect(self.activate)
             menu.addAction(action_activate)
         if self.hasChildren(vobj.Object):
-            action_expand = QtGui.QAction(icon, translate("BIM", "Expand children"), menu)
+            action_expand = QtGui.QAction(icon, translate("BIM", "Expand Children"), menu)
             action_expand.triggered.connect(self.expandChildren)
             actions.append(action_expand)
         if vobj.Object.Group:
-            action_shrink = QtGui.QAction(icon, translate("BIM", "Collapse children"), menu)
+            action_shrink = QtGui.QAction(icon, translate("BIM", "Collapse Children"), menu)
             action_shrink.triggered.connect(self.collapseChildren)
             actions.append(action_shrink)
         if vobj.Object.ShapeMode == "Shape":
-            t = translate("BIM", "Remove shape")
+            t = translate("BIM", "Remove Shape")
         else:
-            t = translate("BIM", "Load shape")
+            t = translate("BIM", "Load Shape")
         action_shape = QtGui.QAction(icon, t, menu)
         action_shape.triggered.connect(self.switchShape)
         actions.append(action_shape)
         if vobj.Object.ShapeMode == "None":
-            action_coin = QtGui.QAction(icon, translate("BIM", "Load representation"), menu)
+            action_coin = QtGui.QAction(icon, translate("BIM", "Load Representation"), menu)
             action_coin.triggered.connect(self.switchCoin)
             actions.append(action_coin)
         if element and ifc_tools.has_representation(element):
-            action_geom = QtGui.QAction(icon, translate("BIM", "Add geometry properties"), menu)
+            action_geom = QtGui.QAction(icon, translate("BIM", "Add Geometry Properties"), menu)
             action_geom.triggered.connect(self.addGeometryProperties)
             actions.append(action_geom)
-        action_tree = QtGui.QAction(icon, translate("BIM", "Show geometry tree"), menu)
+        action_tree = QtGui.QAction(icon, translate("BIM", "Show Geometry Tree"), menu)
         action_tree.triggered.connect(self.showTree)
         actions.append(action_tree)
         if ifc_psets.has_psets(self.Object):
-            action_props = QtGui.QAction(icon, translate("BIM", "Expand property sets"), menu)
+            action_props = QtGui.QAction(icon, translate("BIM", "Expand Property Sets"), menu)
             action_props.triggered.connect(self.showProps)
             actions.append(action_props)
         if ifc_materials.get_material(self.Object):
-            action_material = QtGui.QAction(icon, translate("BIM", "Load material"), menu)
+            action_material = QtGui.QAction(icon, translate("BIM", "Load Material"), menu)
             action_material.triggered.connect(self.addMaterial)
             actions.append(action_material)
         if ifc_types.is_typable(self.Object):
-            action_type = QtGui.QAction(icon, translate("BIM", "Convert to type"), menu)
+            action_type = QtGui.QAction(icon, translate("BIM", "Convert to Type"), menu)
             action_type.triggered.connect(self.convertToType)
             actions.append(action_type)
         if actions:
@@ -156,7 +156,7 @@ class ifc_vp_object:
 
         # generic actions
         ficon = QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
-        action_group = QtGui.QAction(ficon, translate("BIM", "Create group..."), menu)
+        action_group = QtGui.QAction(ficon, translate("BIM", "New Group"), menu)
         action_group.triggered.connect(self.createGroup)
         menu.addAction(action_group)
 
@@ -224,7 +224,7 @@ class ifc_vp_object:
         """Recursively gets the children only used by this object"""
         children = []
         for child in obj.OutList:
-            if len(child.InList) == 1 and child.InList[1] == obj:
+            if len(child.InList) == 1 and child.InList[0] == obj:
                 children.append(child)
                 children.extend(self.getOwnChildren(child))
         return children
@@ -432,14 +432,14 @@ class ifc_vp_document(ifc_vp_object):
 
         icon = QtGui.QIcon(":/icons/IFC.svg")
         if vobj.Object.Modified:
-            action_diff = QtGui.QAction(icon, translate("BIM", "View diff..."), menu)
+            action_diff = QtGui.QAction(icon, translate("BIM", "View Diff"), menu)
             action_diff.triggered.connect(self.diff)
             ifc_menu.addAction(action_diff)
             if vobj.Object.IfcFilePath:
-                action_save = QtGui.QAction(icon, translate("BIM", "Save IFC file"), menu)
+                action_save = QtGui.QAction(icon, translate("BIM", "Save IFC File"), menu)
                 action_save.triggered.connect(self.save)
                 ifc_menu.addAction(action_save)
-        action_saveas = QtGui.QAction(icon, translate("BIM", "Save IFC file as..."), menu)
+        action_saveas = QtGui.QAction(icon, translate("BIM", "Save IFC File As…"), menu)
         action_saveas.triggered.connect(self.saveas)
         ifc_menu.addAction(action_saveas)
 
@@ -491,7 +491,7 @@ class ifc_vp_document(ifc_vp_object):
         msg = "Warning: This operation will change the whole IFC file contents "
         msg += "and will not give versionable results. It is best to not do "
         msg += "this while you are in the middle of a project. "
-        msg += "Do you wish to continue anyway?"
+        msg += "Continue anyway?"
         dlg = QtGui.QMessageBox.question(
             None,
             "Replace IFC file schema?",
@@ -611,7 +611,7 @@ class ifc_vp_material:
 
         icon = QtGui.QIcon(":/icons/IFC.svg")
         if ifc_psets.has_psets(self.Object):
-            action_props = QtGui.QAction(icon, translate("BIM", "Expand property sets"), menu)
+            action_props = QtGui.QAction(icon, translate("BIM", "Expand Property Sets"), menu)
             action_props.triggered.connect(self.showProps)
             menu.addAction(action_props)
 

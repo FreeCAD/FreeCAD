@@ -36,6 +36,7 @@
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
+#include <Base/ProgressIndicator.h>
 
 // forward declarations
 using PyObject = struct _object;
@@ -52,6 +53,7 @@ namespace App
 
 class Document;
 class DocumentObject;
+class ApplicationDirectories;
 class ApplicationObserver;
 class Property;
 class AutoTransaction;
@@ -305,6 +307,8 @@ public:
     //@{
     /// signal on adding a dynamic property
     boost::signals2::signal<void (const App::Property&)> signalAppendDynamicProperty;
+    /// signal on renaming a dynamic property
+    boost::signals2::signal<void (const App::Property&, const char*)> signalRenameDynamicProperty;
     /// signal on about removing a dynamic property
     boost::signals2::signal<void (const App::Property&)> signalRemoveDynamicProperty;
     /// signal on about changing the editor mode of a property
@@ -419,6 +423,11 @@ public:
     static std::string getHomePath();
     static std::string getExecutableName();
     static std::string getNameWithVersion();
+    static bool isDevelopmentVersion();
+
+    /// Access to the various directories for the program a replacement for the get*Path methods below
+    static const std::unique_ptr<ApplicationDirectories>& directories();
+
     /*!
      Returns the temporary directory. By default, this is set to the
      system's temporary directory but can be customized by the user.
@@ -472,6 +481,9 @@ public:
     /// Check if there is any link to the given object
     bool hasLinksTo(const DocumentObject *obj) const;
     //@}
+
+    /// Gets the base progress indicator instance.
+    Base::ProgressIndicator& getProgressIndicator() { return _progressIndicator; }
 
     friend class App::Document;
 
@@ -619,6 +631,8 @@ private:
     static void SaveEnv(const char *);
     /// startup configuration container
     static std::map<std::string,std::string> mConfig;
+    /// Management of and access to applications directories
+    static std::unique_ptr<ApplicationDirectories> _appDirs;
     static int _argc;
     static char ** _argv;
     //@}
@@ -659,6 +673,8 @@ private:
     int _activeTransactionID{0};
     int _activeTransactionGuard{0};
     bool _activeTransactionTmpName{false};
+
+    Base::ProgressIndicator _progressIndicator;
 
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;

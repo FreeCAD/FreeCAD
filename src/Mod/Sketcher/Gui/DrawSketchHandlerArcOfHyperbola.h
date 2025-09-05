@@ -28,6 +28,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -210,6 +211,8 @@ public:
 
             Mode = STATUS_Close;
         }
+
+        updateHint();
         return true;
     }
 
@@ -391,6 +394,7 @@ public:
                                             // ViewProvider
             }
         }
+        updateHint();
         return true;
     }
 
@@ -400,6 +404,35 @@ private:
         return QStringLiteral("Sketcher_Pointer_Create_ArcOfHyperbola");
     }
 
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using enum Gui::InputHint::UserInput;
+
+        return Gui::lookupHints<SelectMode>(
+            Mode,
+            {
+                {.state = STATUS_SEEK_First,
+                 .hints =
+                     {
+                         {tr("%1 pick center point"), {MouseLeft}},
+                     }},
+                {.state = STATUS_SEEK_Second,
+                 .hints =
+                     {
+                         {tr("%1 pick axis point"), {MouseLeft}},
+                     }},
+                {.state = STATUS_SEEK_Third,
+                 .hints =
+                     {
+                         {tr("%1 pick arc start point"), {MouseLeft}},
+                     }},
+                {.state = STATUS_SEEK_Fourth,
+                 .hints =
+                     {
+                         {tr("%1 pick arc end point"), {MouseLeft}},
+                     }},
+            });
+    }
 
 protected:
     SelectMode Mode;
@@ -408,7 +441,6 @@ protected:
     double arcAngle, arcAngle_t;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
 };
-
 
 }  // namespace SketcherGui
 

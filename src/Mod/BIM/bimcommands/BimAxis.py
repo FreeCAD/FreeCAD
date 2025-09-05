@@ -87,7 +87,7 @@ class Arch_AxisSystem:
             FreeCADGui.doCommand("Arch.makeAxisSystem("+s+")")
             FreeCAD.ActiveDocument.commitTransaction()
         else:
-            FreeCAD.Console.PrintError(translate("Arch","Please select at least one axis")+"\n")
+            FreeCAD.Console.PrintError(translate("Arch","Select at least one axis")+"\n")
 
     def IsActive(self):
 
@@ -128,7 +128,7 @@ class Arch_AxisTools:
         return tuple(['Arch_Axis','Arch_AxisSystem','Arch_Grid'])
 
     def GetResources(self):
-        return { 'MenuText': QT_TRANSLATE_NOOP("Arch_AxisTools",'Axis tools'),
+        return { 'MenuText': QT_TRANSLATE_NOOP("Arch_AxisTools",'Axis Tools'),
                  'ToolTip': QT_TRANSLATE_NOOP("Arch_AxisTools",'Axis tools')
                }
 

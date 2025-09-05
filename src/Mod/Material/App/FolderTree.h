@@ -43,6 +43,8 @@ public:
 
     FolderTreeNode()
         : _type(NodeType::UnknownNode)
+        , _oldFormat(false)
+        , _readOnly(false)
     {}
     virtual ~FolderTreeNode() = default;
 
@@ -76,6 +78,14 @@ public:
         assert(_type == NodeType::DataNode);
         return _uuid;
     }
+    bool isOldFormat() const
+    {
+        return _oldFormat;
+    }
+    bool isReadOnly() const
+    {
+        return _readOnly;
+    }
 
     void setFolder(std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> folder)
     {
@@ -92,12 +102,22 @@ public:
         setType(NodeType::DataNode);
         _uuid = uuid;
     }
+    void setOldFormat(bool oldFormat)
+    {
+        _oldFormat = oldFormat;
+    }
+    void setReadOnly(bool readOnly)
+    {
+        _readOnly = readOnly;
+    }
 
 private:
     NodeType _type;
     std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> _folder;
     QString _uuid;
     std::shared_ptr<T> _data;
+    bool _oldFormat;
+    bool _readOnly;
 };
 
 }  // namespace Materials

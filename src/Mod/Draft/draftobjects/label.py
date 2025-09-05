@@ -45,8 +45,8 @@ class Label(DraftAnnotation):
 
     def __init__(self, obj):
         obj.Proxy = self
-        self.set_properties(obj)
         self.Type = "Label"
+        self.set_properties(obj)
 
     def set_properties(self, obj):
         """Set properties only if they don't exist."""
@@ -215,7 +215,7 @@ class Label(DraftAnnotation):
                                      "object defined in 'Target'.\n"
                                      "'Tag' and 'Material' only work "
                                      "for objects that have these properties, "
-                                     "like Arch objects.\n"
+                                     "like BIM objects.\n"
                                      "\n"
                                      "For 'Position', 'Length', and 'Area' "
                                      "these properties will be extracted "
@@ -234,14 +234,16 @@ class Label(DraftAnnotation):
         """Execute code when the document is restored."""
         super().onDocumentRestored(obj)
         gui_utils.restore_view_object(obj, vp_module="view_label", vp_class="ViewProviderLabel")
-        self.Type = "Label"
 
-        if not getattr(obj, "ViewObject", None):
+        vobj = getattr(obj, "ViewObject", None)
+        if vobj is None:
             return
-        vobj = obj.ViewObject
-        if hasattr(vobj, "FontName") and hasattr(vobj, "FontSize"):
-            return
-        self.update_properties_0v21(obj, vobj)
+
+        if not hasattr(vobj, "FontName") or not hasattr(vobj, "FontSize"):
+            self.update_properties_0v21(obj, vobj)
+
+    def loads(self, state):
+        self.Type = "Label"
 
     def update_properties_0v21(self, obj, vobj):
         """Update view properties."""

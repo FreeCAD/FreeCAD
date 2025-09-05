@@ -43,13 +43,13 @@
 #include <Mod/TechDraw/App/XMLQuery.h>
 
 #include "QGISVGTemplate.h"
+#include "QGIUserTypes.h"
 #include "PreferencesGui.h"
 #include "QGSPage.h"
 #include "Rez.h"
 #include "TemplateTextField.h"
 #include "ZVALUE.h"
 #include "DrawGuiUtil.h"
-
 
 
 namespace {
@@ -67,7 +67,7 @@ namespace {
         // No attribute and no parent nodes left? Defaulting:
         return QFont(QStringLiteral("sans"));
     }
-    
+
     std::vector<QDomElement> getFCElements(QDomDocument& doc) {
         QDomNodeList textElements = doc.elementsByTagName(QStringLiteral("text"));
         std::vector<QDomElement> filteredTextElements;
@@ -113,6 +113,31 @@ namespace {
 
             // Delete tspan, but keep tspan content
             textElement.replaceChild(tspan.firstChild(), tspan);
+        }
+
+        // All `text` elements must have an id for using QSvgRenderer::transformForElement later on
+        int counter = 0;
+        for(QDomElement& textElement : textElements) {
+            if (!textElement.hasAttribute(QStringLiteral("id")) ||
+                textElement.attribute(QStringLiteral("id")).isEmpty()) {
+                QString id = QStringLiteral("freecad_id_") + QString::number(counter);
+                textElement.setAttribute(QStringLiteral("id"), id);
+                counter++;
+            }
+        }
+
+        // QSvgRenderer::transformForElement only returns transform for parents, not for the element itself
+        // If the `text` element itself has transform, let's wrap it in a shallow group so it's taken into
+        // account by QSvgRenderer::transformForElement
+        for(QDomElement& textElement : textElements) {
+            if (textElement.hasAttribute(QStringLiteral("transform"))) {
+                QDomElement group = doc.createElement(QStringLiteral("g"));
+                QString transform = textElement.attribute(QStringLiteral("transform"));
+                textElement.removeAttribute(QStringLiteral("transform"));
+                group.setAttribute(QStringLiteral("transform"), transform);
+                textElement.parentNode().replaceChild(group, textElement);
+                group.appendChild(textElement);
+            }
         }
 
         svgCode = doc.toByteArray();
@@ -206,13 +231,12 @@ void QGISVGTemplate::updateView(bool update)
 
 std::vector<TemplateTextField*> QGISVGTemplate::getTextFields()
 {
-    constexpr int TemplateTextFieldType {QGraphicsItem::UserType + 160};
     std::vector<TemplateTextField*> result;
     result.reserve(childItems().size());
 
     QList<QGraphicsItem*> templateChildren = childItems();
     for (auto& child : templateChildren) {
-        if (child->type() == TemplateTextFieldType) {
+        if (child->type() == UserType::TemplateTextField) {
             result.push_back(static_cast<TemplateTextField*>(child));
         }
     }
@@ -223,7 +247,7 @@ std::vector<TemplateTextField*> QGISVGTemplate::getTextFields()
 void QGISVGTemplate::clearClickHandles()
 {
     prepareGeometryChange();
-    std::vector<TemplateTextField*> textFields = getTextFields(); 
+    std::vector<TemplateTextField*> textFields = getTextFields();
     for (auto& textField : textFields) {
         textField->hide();
         scene()->removeItem(textField);
@@ -240,26 +264,13 @@ void QGISVGTemplate::createClickHandles()
         return;
     }
 
-    QString templateFilename(QString::fromUtf8(svgTemplate->PageResult.getValue()));
-
-    if (templateFilename.isEmpty()) {
-        return;
-    }
-
-    QFile file(templateFilename);
-    if (!file.open(QIODevice::ReadOnly)) {
-        Base::Console().error(
-            "QGISVGTemplate::createClickHandles - error opening template file %s\n",
-            svgTemplate->PageResult.getValue());
-        return;
-    }
-
+    QByteArray svgCode = svgTemplate->processTemplate().toUtf8();
+    applyWorkaround(svgCode);
     QDomDocument templateDocument;
-    if (!templateDocument.setContent(&file)) {
+    if (!templateDocument.setContent(svgCode)) {
         Base::Console().message("QGISVGTemplate::createClickHandles - xml loading error\n");
         return;
     }
-    file.close();
 
     //TODO: Find location of special fields (first/third angle) and make graphics items for them
 
@@ -273,7 +284,7 @@ void QGISVGTemplate::createClickHandles()
         // Get elements bounding box of text
         QString id = textElement.attribute(QStringLiteral("id"));
         QRectF textRect = m_svgRender->boundsOnElement(id);
-        
+
         // Get tight bounding box of text
         QDomElement tspan = textElement.firstChildElement();
         QFont font = getFont(tspan);
@@ -289,7 +300,7 @@ void QGISVGTemplate::createClickHandles()
         // and both be in style attribute and native attribute
         font.setPointSizeF(1.5);
         fm = QFontMetricsF(font);
-        
+
         if (tightTextRect.height() < fm.capHeight()) {
             tightTextRect.setTop(tightTextRect.bottom() - fm.capHeight());
         }
@@ -311,12 +322,13 @@ void QGISVGTemplate::createClickHandles()
         auto item(new TemplateTextField(this, svgTemplate, name.toStdString()));
         auto autoValue = svgTemplate->getAutofillByEditableName(name);
         item->setAutofill(autoValue);
-
+        constexpr double TopPadFactor{0.15};
+        constexpr double BottomPadFactor{0.2};
         QMarginsF padding(
             0.0,
-            0.15 * tightTextRect.height(),
+            TopPadFactor * tightTextRect.height(),
             0.0,
-            0.2 * tightTextRect.height()
+            BottomPadFactor * tightTextRect.height()
         );
         QRectF clickrect = tightTextRect.marginsAdded(padding);
         QPolygonF clickpoly = SVGTransform.map(clickrect);
@@ -327,6 +339,7 @@ void QGISVGTemplate::createClickHandles()
         QPointF bottomRight = clickpoly.at(2);
         item->setLine(bottomLeft, bottomRight);
         item->setLineColor(PreferencesGui::templateClickBoxColor());
+        item->hideLine();
         item->setZValue(ZVALUE::SVGTEMPLATE + 1);
 
         addToGroup(item);

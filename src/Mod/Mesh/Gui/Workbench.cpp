@@ -45,12 +45,12 @@ using namespace MeshGui;
     qApp->translate("Workbench", "Boolean");
     qApp->translate("Workbench", "&Meshes");
     qApp->translate("Workbench", "Cutting");
-    qApp->translate("Workbench", "Mesh tools");
-    qApp->translate("Workbench", "Mesh modify");
-    qApp->translate("Workbench", "Mesh boolean");
-    qApp->translate("Workbench", "Mesh cutting");
-    qApp->translate("Workbench", "Mesh segmentation");
-    qApp->translate("Workbench", "Mesh analyze");
+    qApp->translate("Workbench", "Mesh Tools");
+    qApp->translate("Workbench", "Mesh Modify");
+    qApp->translate("Workbench", "Mesh Boolean");
+    qApp->translate("Workbench", "Mesh Cutting");
+    qApp->translate("Workbench", "Mesh Segmentation");
+    qApp->translate("Workbench", "Mesh Analyze");
 #endif
 
 /// @namespace MeshGui @class Workbench
@@ -66,27 +66,27 @@ public:
     {
         // NOLINTBEGIN
         labelPoints = new QLabel();
-        labelPoints->setText(QObject::tr("Number of points:"));
+        labelPoints->setText(QObject::tr("Number of points"));
 
         labelFacets = new QLabel();
-        labelFacets->setText(QObject::tr("Number of facets:"));
+        labelFacets->setText(QObject::tr("Number of facets"));
 
         numPoints = new QLabel();
         numFacets = new QLabel();
 
         labelMin = new QLabel();
-        labelMin->setText(QObject::tr("Minimum bound:"));
+        labelMin->setText(QObject::tr("Minimum bound"));
 
         labelMax = new QLabel();
-        labelMax->setText(QObject::tr("Maximum bound:"));
+        labelMax->setText(QObject::tr("Maximum bound"));
 
         numMin = new QLabel();
         numMax = new QLabel();
         // NOLINTEND
 
         QGroupBox* box = new QGroupBox();
-        box->setTitle(QObject::tr("Mesh info box"));
-        box->setWindowTitle(QObject::tr("Mesh info"));
+        box->setTitle(QObject::tr("Mesh Info Box"));
+        box->setWindowTitle(QObject::tr("Mesh Info"));
         // box->setAutoFillBackground(true);
         QGridLayout* grid = new QGridLayout(box);
         grid->addWidget(labelPoints, 0, 0);
@@ -241,14 +241,14 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
 
     Gui::ToolBarItem* mesh = new Gui::ToolBarItem(root);
-    mesh->setCommand("Mesh tools");
+    mesh->setCommand("Mesh Tools");
     *mesh << "Mesh_Import"
           << "Mesh_Export"
           << "Mesh_FromPartShape"
           << "Mesh_BuildRegularSolid";
 
     Gui::ToolBarItem* modifying = new Gui::ToolBarItem(root);
-    modifying->setCommand("Mesh modify");
+    modifying->setCommand("Mesh Modify");
     *modifying << "Mesh_HarmonizeNormals"
                << "Mesh_FlipNormals"
                << "Mesh_FillupHoles"
@@ -261,13 +261,13 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
                << "Mesh_Scale";
 
     Gui::ToolBarItem* boolean = new Gui::ToolBarItem(root);
-    boolean->setCommand("Mesh boolean");
+    boolean->setCommand("Mesh Boolean");
     *boolean << "Mesh_Union"
              << "Mesh_Intersection"
              << "Mesh_Difference";
 
     Gui::ToolBarItem* cutting = new Gui::ToolBarItem(root);
-    cutting->setCommand("Mesh cutting");
+    cutting->setCommand("Mesh Cutting");
     *cutting << "Mesh_PolyCut"
              << "Mesh_PolyTrim"
              << "Mesh_TrimByPlane"
@@ -275,14 +275,14 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
              << "Mesh_CrossSections";
 
     Gui::ToolBarItem* compseg = new Gui::ToolBarItem(root);
-    compseg->setCommand("Mesh segmentation");
+    compseg->setCommand("Mesh Segmentation");
     *compseg << "Mesh_Merge"
              << "Mesh_SplitComponents"
              << "Mesh_Segmentation"
              << "Mesh_SegmentationBestFit";
 
     Gui::ToolBarItem* analyze = new Gui::ToolBarItem(root);
-    analyze->setCommand("Mesh analyze");
+    analyze->setCommand("Mesh Analyze");
     *analyze << "Mesh_Evaluation"
              << "Mesh_EvaluateFacet"
              << "Mesh_VertexCurvature"
@@ -301,13 +301,13 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem* mesh;
 
     mesh = new Gui::ToolBarItem(root);
-    mesh->setCommand("Mesh tools");
+    mesh->setCommand("Mesh Tools");
     *mesh << "Mesh_Import"
           << "Mesh_Export"
           << "Mesh_PolyCut";
 
     mesh = new Gui::ToolBarItem(root);
-    mesh->setCommand("Mesh test suite");
+    mesh->setCommand("Mesh Test Suite");
     *mesh << "Mesh_Demolding"
           << "Mesh_Transform"
           << "Separator";

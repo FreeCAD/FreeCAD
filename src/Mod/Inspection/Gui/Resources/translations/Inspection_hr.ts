@@ -10,13 +10,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
-      <source>Inspection...</source>
-      <translation>Inspekcija...</translation>
+      <source>Inspection…</source>
+      <translation type="unfinished">Inspection…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
-      <source>Get distance information</source>
-      <translation>Dobiti podatke o udaljenosti</translation>
+      <source>Inspects distance information</source>
+      <translation type="unfinished">Inspects distance information</translation>
     </message>
   </context>
   <context>
@@ -28,14 +28,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
-      <source>Visual inspection...</source>
-      <translation>Vizualni pregled...</translation>
+      <source>Visual Inspection…</source>
+      <translation type="unfinished">Visual Inspection…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
-      <location filename="../../Command.cpp" line="51"/>
-      <source>Visual inspection</source>
-      <translation>Vizualni pregled</translation>
+      <source>Inspects the objects visually</source>
+      <translation type="unfinished">Inspects the objects visually</translation>
     </message>
   </context>
   <context>
@@ -94,39 +93,39 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="489"/>
+      <location filename="../../ViewProviderInspection.cpp" line="502"/>
       <source>Remove annotations</source>
       <translation>
 Ukloni napomene</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="490"/>
+      <location filename="../../ViewProviderInspection.cpp" line="503"/>
       <source>Do you want to remove all annotations?</source>
       <translation>Želite li ukloniti sve napomene?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="548"/>
+      <location filename="../../ViewProviderInspection.cpp" line="561"/>
       <source>Annotation</source>
       <translation>Anotacija</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="551"/>
-      <source>Leave info mode</source>
-      <translation>Zatvori info način rada</translation>
+      <location filename="../../ViewProviderInspection.cpp" line="564"/>
+      <source>Leave Info Mode</source>
+      <translation type="unfinished">Leave Info Mode</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="682"/>
+      <location filename="../../ViewProviderInspection.cpp" line="695"/>
       <source>Distance: &gt; %1</source>
       <translation>Udaljenost: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="686"/>
+      <location filename="../../ViewProviderInspection.cpp" line="699"/>
       <source>Distance: &lt; %1</source>
       <translation>Udaljenost: &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="706"/>
-      <location filename="../../ViewProviderInspection.cpp" line="723"/>
+      <location filename="../../ViewProviderInspection.cpp" line="719"/>
+      <location filename="../../ViewProviderInspection.cpp" line="736"/>
       <source>Distance: %1</source>
       <translation>Udaljenost: %1</translation>
     </message>

@@ -61,6 +61,13 @@ class GroupExtension(DocumentObjectExtension):
         """
         ...
 
+    def getObjectsOfType(self, typename: str) -> List[Any]:
+        """
+        Returns all object in the group of given type
+        @param typename     The Freecad type identifier
+        """
+        ...
+
     def hasObject(self, obj: Any, recursive: bool = False) -> bool:
         """
         hasObject(obj, recursive=false)
@@ -68,5 +75,11 @@ class GroupExtension(DocumentObjectExtension):
         Checks if the group has a given object
         @param obj        the object to check for.
         @param recursive  if true check also if the obj is child of some sub group (default is false).
+        """
+        ...
+
+    def allowObject(self, obj: Any) -> bool:
+        """
+        Returns true if obj is allowed in the group extension.
         """
         ...

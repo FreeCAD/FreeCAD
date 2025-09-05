@@ -121,7 +121,7 @@ PyMOD_INIT_FUNC(TechDrawGui)
     }
     PyObject* mod = TechDrawGui::initModule();
 
-    Base::Console().log("Loading TechDrawGui module... done\n");
+    Base::Console().log("Loading TechDrawGui module… done\n");
 
     // instantiating the commands
     CreateTechDrawCommands();
@@ -162,7 +162,6 @@ PyMOD_INIT_FUNC(TechDrawGui)
     TechDrawGui::ViewProviderWeld::init();
 
     TechDrawGui::ViewProviderPageExtension ::init();
-    //    TechDrawGui::ViewProviderPageExtensionPython::init();
     TechDrawGui::ViewProviderDrawingViewExtension::init();
     TechDrawGui::ViewProviderTemplateExtension::init();
 

@@ -34,10 +34,15 @@
 #include <Inventor/nodes/SoBaseColor.h>
 #include <FCGlobal.h>
 
+#include <string>
+
 class SoCamera;
 
 namespace Gui
 {
+
+class SoLinearDraggerContainer;
+
 /*! @brief Coordinate System Dragger
  *
  * used to transform objects in 3d space. Set initial:
@@ -57,18 +62,6 @@ class GuiExport SoTransformDragger : public SoDragger
     SO_KIT_CATALOG_ENTRY_HEADER(scaleNode);
     SO_KIT_CATALOG_ENTRY_HEADER(pickStyle);
     // Translator
-    SO_KIT_CATALOG_ENTRY_HEADER(xTranslatorSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(yTranslatorSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(zTranslatorSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(xTranslatorSeparator);
-    SO_KIT_CATALOG_ENTRY_HEADER(yTranslatorSeparator);
-    SO_KIT_CATALOG_ENTRY_HEADER(zTranslatorSeparator);
-    SO_KIT_CATALOG_ENTRY_HEADER(xTranslatorColor);
-    SO_KIT_CATALOG_ENTRY_HEADER(yTranslatorColor);
-    SO_KIT_CATALOG_ENTRY_HEADER(zTranslatorColor);
-    SO_KIT_CATALOG_ENTRY_HEADER(xTranslatorRotation);
-    SO_KIT_CATALOG_ENTRY_HEADER(yTranslatorRotation);
-    SO_KIT_CATALOG_ENTRY_HEADER(zTranslatorRotation);
     SO_KIT_CATALOG_ENTRY_HEADER(xTranslatorDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(yTranslatorDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(zTranslatorDragger);
@@ -89,18 +82,6 @@ class GuiExport SoTransformDragger : public SoDragger
     SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarTranslatorDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarTranslatorDragger);
     // Rotator
-    SO_KIT_CATALOG_ENTRY_HEADER(xRotatorSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(yRotatorSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(zRotatorSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(xRotatorSeparator);
-    SO_KIT_CATALOG_ENTRY_HEADER(yRotatorSeparator);
-    SO_KIT_CATALOG_ENTRY_HEADER(zRotatorSeparator);
-    SO_KIT_CATALOG_ENTRY_HEADER(xRotatorColor);
-    SO_KIT_CATALOG_ENTRY_HEADER(yRotatorColor);
-    SO_KIT_CATALOG_ENTRY_HEADER(zRotatorColor);
-    SO_KIT_CATALOG_ENTRY_HEADER(xRotatorRotation);
-    SO_KIT_CATALOG_ENTRY_HEADER(yRotatorRotation);
-    SO_KIT_CATALOG_ENTRY_HEADER(zRotatorRotation);
     SO_KIT_CATALOG_ENTRY_HEADER(xRotatorDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(yRotatorDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(zRotatorDragger);
@@ -152,9 +133,6 @@ public:
     bool isShownTranslationX(); //!< is x translation dragger shown.
     bool isShownTranslationY(); //!< is y translation dragger shown.
     bool isShownTranslationZ(); //!< is z translation dragger shown.
-    bool isHiddenTranslationX(); //!< is x translation dragger hidden.
-    bool isHiddenTranslationY(); //!< is y translation dragger hidden.
-    bool isHiddenTranslationZ(); //!< is z translation dragger hidden.
 
     void showPlanarTranslationXY(); //!< show the xy planar translation dragger.
     void showPlanarTranslationYZ(); //!< show the yz planar translation dragger.
@@ -178,9 +156,6 @@ public:
     bool isShownRotationX(); //!< is x rotation dragger shown.
     bool isShownRotationY(); //!< is x rotation dragger shown.
     bool isShownRotationZ(); //!< is x rotation dragger shown.
-    bool isHiddenRotationX(); //!< is x rotation dragger hidden.
-    bool isHiddenRotationY(); //!< is x rotation dragger hidden.
-    bool isHiddenRotationZ(); //!< is x rotation dragger hidden.
     //@}
 
     void GLRender(SoGLRenderAction * action) override;
@@ -209,6 +184,11 @@ private:
     bool scaleInited{false};
 
     void updateAxisScale();
+
+    void setupTranslationDraggers();
+    void setupTranslationDragger(const std::string& name, SoSFString* label, SoSFInt32& incrementCount, const SbVec3f& rotDir);
+    void setupRotationDraggers();
+    void setupRotationDragger(const std::string& name, SoSFInt32& incrementCount);
 
     using inherited = SoDragger;
 };

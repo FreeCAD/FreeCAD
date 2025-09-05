@@ -22,18 +22,18 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QFormLayout" name="formLayout">
+     <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="QLabel" name="toolController_label">
         <property name="text">
-         <string>Tool Controller</string>
+         <string>Tool controller</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="toolController">
         <property name="toolTip">
-         <string>The tool and its settings to be used for this operation.</string>
+         <string>The tool and its settings to be used for this operation</string>
         </property>
        </widget>
       </item>
@@ -43,7 +43,14 @@
       <item row="1" column="0">
        <widget class="QLabel" name="coolantController_label">
         <property name="text">
-         <string>Coolant Mode</string>
+         <string>Coolant mode</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="editToolController">
+        <property name="text">
+         <string>Edit Tool Controller</string>
         </property>
        </widget>
       </item>
@@ -63,7 +70,7 @@
       <item row="0" column="1">
        <widget class="QComboBox" name="algorithmSelect">
         <property name="toolTip">
-         <string>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</string>
+         <string>Select the algorithm to use: 'OCL Dropcutter*', or 'Experimental' (not OCL based).</string>
         </property>
        </widget>
       </item>
@@ -76,7 +83,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Bounding Box</string>
+         <string>Bounding box</string>
         </property>
        </widget>
       </item>
@@ -88,14 +95,14 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>Select the overall boundary for the operation.</string>
+         <string>Select the overall boundary for the operation</string>
         </property>
        </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="layerMode_label">
         <property name="text">
-         <string>Layer Mode</string>
+         <string>Layer mode</string>
         </property>
        </widget>
       </item>
@@ -107,14 +114,14 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>Complete the operation in a single pass at depth, or multiple passes to final depth.</string>
+         <string>Complete the operation in a single pass at depth, or multiple passes to final depth</string>
         </property>
        </widget>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="cutPattern_label">
         <property name="text">
-         <string>Cut Pattern</string>
+         <string>Cut pattern</string>
         </property>
        </widget>
       </item>
@@ -126,7 +133,7 @@
          </font>
         </property>
         <property name="toolTip">
-         <string>Set the geometric clearing pattern to use for the operation.</string>
+         <string>Set the geometric clearing pattern to use for the operation</string>
         </property>
        </widget>
       </item>
@@ -139,14 +146,14 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Boundary Adjustment</string>
+         <string>Boundary adjustment</string>
         </property>
        </widget>
       </item>
       <item row="4" column="1">
        <widget class="Gui::InputField" name="boundaryAdjustment">
         <property name="toolTip">
-         <string>Set the Z-axis depth offset from the target surface.</string>
+         <string>Set the Z-axis depth offset from the target surface</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
@@ -204,7 +211,7 @@ A step over of 100% results in no overlap between two different cycles.</string>
          <string>Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.</string>
         </property>
         <property name="text">
-         <string>Optimize Linear Paths</string>
+         <string>Optimize linear paths</string>
         </property>
        </widget>
       </item>

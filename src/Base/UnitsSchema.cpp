@@ -53,22 +53,20 @@ std::string UnitsSchema::translate(const Quantity& quant) const
 std::string
 UnitsSchema::translate(const Quantity& quant, double& factor, std::string& unitString) const
 {
+    // Use defaults without schema-level translation.
+    factor = 1.0;
+    unitString = quant.getUnit().getString();
+
     if (spec.translationSpecs.empty()) {
-        return toLocale(quant, 1.0, unitString);
+        return toLocale(quant, factor, unitString);
     }
 
     const auto unitName = quant.getUnit().getTypeString();
-
-    if (spec.translationSpecs.count(unitName) == 0) {
-        // no schema-level translation. Use defaults.
-        factor = 1.0;
-        unitString = quant.getUnit().getString();
-
+    if (!spec.translationSpecs.contains(unitName)) {
         return toLocale(quant, factor, unitString);
     }
 
     const auto value = quant.getValue();
-
     auto isSuitable = [&](const UnitTranslationSpec& row) {
         return row.threshold > value || row.threshold == 0;  // zero indicates default
     };
@@ -76,12 +74,12 @@ UnitsSchema::translate(const Quantity& quant, double& factor, std::string& unitS
     auto unitSpecs = spec.translationSpecs.at(unitName);
     const auto unitSpec = std::find_if(unitSpecs.begin(), unitSpecs.end(), isSuitable);
     if (unitSpec == unitSpecs.end()) {
-        throw RuntimeError("Suitable threshhold not found. Schema: " + spec.name
+        throw RuntimeError("Suitable threshold not found. Schema: " + spec.name
                            + " value: " + std::to_string(value));
     }
 
     if (unitSpec->factor == 0) {
-        return UnitsSchemasData::runSpecial(unitSpec->unitString, value);
+        return UnitsSchemasData::runSpecial(unitSpec->unitString, value, factor, unitString);
     }
 
     factor = unitSpec->factor;
@@ -96,19 +94,17 @@ UnitsSchema::toLocale(const Quantity& quant, const double factor, const std::str
     QLocale Lc;
     const QuantityFormat& format = quant.getFormat();
     if (format.option != QuantityFormat::None) {
-        int opt = format.option;
-        Lc.setNumberOptions(static_cast<QLocale::NumberOptions>(opt));
+        Lc.setNumberOptions(static_cast<QLocale::NumberOptions>(format.option));
     }
 
-    std::string valueString =
-        Lc.toString((quant.getValue() / factor), format.toFormat(), format.precision).toStdString();
+    auto valueString =
+        Lc.toString(quant.getValue() / factor, format.toFormat(), format.precision).toStdString();
 
-    return fmt::format(
-        "{}{}{}",
-        valueString,
-        unitString.empty() || unitString == "°" || unitString == "″" || unitString == "′" ? ""
-                                                                                          : " ",
-        unitString);
+    auto notUnit = [](auto s) {
+        return s.empty() || s == "°" || s == "″" || s == "′" || s == "\"" || s == "'";
+    };
+
+    return fmt::format("{}{}{}", valueString, notUnit(unitString) ? "" : " ", unitString);
 }
 
 bool UnitsSchema::isMultiUnitLength() const

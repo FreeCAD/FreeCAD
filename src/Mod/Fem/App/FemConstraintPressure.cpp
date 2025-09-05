@@ -34,6 +34,16 @@ ConstraintPressure::ConstraintPressure()
 {
     ADD_PROPERTY(Pressure, (0.0));
     ADD_PROPERTY(Reversed, (0));
+    ADD_PROPERTY_TYPE(EnableAmplitude,
+                      (false),
+                      "ConstraintPressure",
+                      (App::PropertyType)(App::Prop_None),
+                      "Amplitude of the pressure load");
+    ADD_PROPERTY_TYPE(AmplitudeValues,
+                      (std::vector<std::string> {"0, 0", "1, 1"}),
+                      "ConstraintPressure",
+                      (App::PropertyType)(App::Prop_None),
+                      "Amplitude values");
 }
 
 App::DocumentObjectExecReturn* ConstraintPressure::execute()

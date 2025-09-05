@@ -22,6 +22,8 @@
 
 #include "PreCompiled.h"
 
+#include <Inventor/SoFCPlacementIndicatorKit.h>
+
 #ifndef _PreComp_
 # ifdef FC_OS_WIN32
 #  include <windows.h>
@@ -1425,15 +1427,18 @@ void View3DInventorViewer::setAxisCross(bool on)
 
     if (on) {
         if (!axisGroup) {
-            axisCross = new Gui::SoShapeScale;
-            auto axisKit = new Gui::SoAxisCrossKit();
-            axisKit->set("xAxis.appearance.drawStyle", "lineWidth 2");
-            axisKit->set("yAxis.appearance.drawStyle", "lineWidth 2");
-            axisKit->set("zAxis.appearance.drawStyle", "lineWidth 2");
-            axisCross->setPart("shape", axisKit);
-            axisCross->scaleFactor = 1.0F;
+            using enum SoFCPlacementIndicatorKit::Part;
+
+            constexpr float axisCrossLength = 2.0F;
+
+            auto axisCrossKit = new Gui::SoFCPlacementIndicatorKit();
+            axisCrossKit->axisLength = axisCrossLength;
+
+            auto annotation = new So3DAnnotation();
+            annotation->addChild(axisCrossKit);
+
             axisGroup = new SoSkipBoundingGroup;
-            axisGroup->addChild(axisCross);
+            axisGroup->addChild(annotation);
 
             sep->addChild(axisGroup);
         }
@@ -3378,6 +3383,10 @@ void View3DInventorViewer::boxZoom(const SbBox2s& box)
 {
     navigation->boxZoom(box);
 }
+void View3DInventorViewer::scale(float factor)
+{
+    navigation->scale(factor);
+}
 
 SbBox3f View3DInventorViewer::getBoundingBox() const
 {
@@ -3389,18 +3398,6 @@ SbBox3f View3DInventorViewer::getBoundingBox() const
 
 void View3DInventorViewer::viewAll()
 {
-    SbBox3f box = getBoundingBox();
-
-    if (box.isEmpty()) {
-        return;
-    }
-
-    SbSphere sphere;
-    sphere.circumscribe(box);
-    if (sphere.getRadius() == 0) {
-        return;
-    }
-
     // in the scene graph we may have objects which we want to exclude
     // when doing a fit all. Such objects must be part of the group
     // SoSkipBoundingGroup.
@@ -3416,20 +3413,30 @@ void View3DInventorViewer::viewAll()
         group->mode = SoSkipBoundingGroup::EXCLUDE_BBOX;
     }
 
-    // Set the height angle to 45 deg
-    SoCamera* cam = this->getSoRenderManager()->getCamera();
+    SbBox3f box = getBoundingBox();
 
-    if (cam && cam->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
-        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(std::numbers::pi / 4.0);  // NOLINT
-    }
+    if (!box.isEmpty()) {
+        SbSphere sphere;
+        sphere.circumscribe(box);
+        if (sphere.getRadius() != 0) {
+            // Set the height angle to 45 deg
+            SoCamera* cam = this->getSoRenderManager()->getCamera();
 
-    if (isAnimationEnabled()) {
-        animatedViewAll(10, 20);  // NOLINT
-    }
+            if (cam && cam->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
+                static_cast<SoPerspectiveCamera*>(cam)->heightAngle =
+                    (float)(std::numbers::pi / 4.0);  // NOLINT
+            }
 
-    // make sure everything is visible
-    if (cam) {
-        cam->viewAll(getSoRenderManager()->getSceneGraph(), this->getSoRenderManager()->getViewportRegion());
+            if (isAnimationEnabled()) {
+                animatedViewAll(10, 20);  // NOLINT
+            }
+
+            // make sure everything is visible
+            if (cam) {
+                cam->viewAll(getSoRenderManager()->getSceneGraph(),
+                             this->getSoRenderManager()->getViewportRegion());
+            }
+        }
     }
 
     for (int i = 0; i < pathlist.getLength(); i++) {

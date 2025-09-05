@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <Base/Matrix.h>
 #include <Base/Rotation.h>
+#include <Base/Tools.h>
 
 // NOLINTBEGIN(cppcoreguidelines-*,readability-magic-numbers)
 // clang-format off
@@ -155,6 +156,18 @@ TEST(Matrix, TestMultVec)
     Base::Vector3d vec2 {1, 1, 1};
     mat.multVec(vec2, vec2);
     EXPECT_EQ(vec2, Base::Vector3d(6.0, 7.0, 8.0));
+
+    Base::Vector3f vec3{1.0F,1.0F,3.0F};
+    vec3 = mat * vec3;
+    EXPECT_EQ(vec3, Base::Vector3f(12.0F, 9.0F, 12.0F));
+
+    Base::Vector3f vec4 {1.0F, 1.0F, 1.0F};
+    mat.multVec(vec4, vec4);
+    EXPECT_EQ(vec4, Base::Vector3f(6.0F, 7.0F, 8.0F));
+
+    Base::Vector3f vec5 {1.0F, 1.0F, 1.0F};
+    vec5 *= mat;
+    EXPECT_EQ(vec5, Base::Vector3f(6.0F, 7.0F, 8.0F));
 }
 
 TEST(Matrix, TestMult)
@@ -173,6 +186,7 @@ TEST(Matrix, TestMult)
                         10.0, 13.0, 13.0, 7.0,
                         0.0, 0.0, 0.0, 1.0};
     EXPECT_EQ(mat3, mat4);
+    EXPECT_NE(mat3, Base::Matrix4D());
 }
 
 TEST(Matrix, TestMultAssign)
@@ -280,9 +294,39 @@ TEST(Matrix, TestHatOperator)
     EXPECT_EQ(mat1, mat2);
 }
 
+TEST(Matrix, TestHatOperatorFloat)
+{
+    Base::Vector3f vec{1.0, 2.0, 3.0};
+
+    Base::Matrix4D mat1;
+    mat1.Hat(vec);
+
+    Base::Matrix4D mat2{0.0F, -vec.z, vec.y, 0.0F,
+                        vec.z, 0.0F, -vec.x, 0.0F,
+                        -vec.y, vec.x, 0.0F, 0.0F,
+                        0.0F, 0.0F, 0.0F, 1.0F};
+
+    EXPECT_EQ(mat1, mat2);
+}
+
 TEST(Matrix, TestDyadic)
 {
     Base::Vector3d vec{1.0, 2.0, 3.0};
+
+    Base::Matrix4D mat1;
+    mat1.Outer(vec, vec);
+
+    Base::Matrix4D mat2{1.0, 2.0, 3.0, 0.0,
+                        2.0, 4.0, 6.0, 0.0,
+                        3.0, 6.0, 9.0, 0.0,
+                        0.0, 0.0, 0.0, 1.0};
+
+    EXPECT_EQ(mat1, mat2);
+}
+
+TEST(Matrix, TestDyadicFloat)
+{
+    Base::Vector3f vec{1.0F, 2.0F, 3.0F};
 
     Base::Matrix4D mat1;
     mat1.Outer(vec, vec);
@@ -325,6 +369,18 @@ TEST(Matrix, TestDecomposeMove)
 {
     Base::Matrix4D mat;
     mat.move(1.0, 2.0, 3.0);
+    auto res = mat.decompose();
+
+    EXPECT_TRUE(res[0].isUnity());
+    EXPECT_TRUE(res[1].isUnity());
+    EXPECT_TRUE(res[2].isUnity());
+    EXPECT_EQ(res[3], mat);
+}
+
+TEST(Matrix, TestDecomposeMoveFloat)
+{
+    Base::Matrix4D mat;
+    mat.move(Base::Vector3f(1.0F, 2.0F, 3.0F));
     auto res = mat.decompose();
 
     EXPECT_TRUE(res[0].isUnity());
@@ -400,6 +456,122 @@ TEST(Matrix, TestRotAxisFormula) //NOLINT
     EXPECT_DOUBLE_EQ(mat1[2][0], mat2[2][0]);
     EXPECT_DOUBLE_EQ(mat1[2][1], mat2[2][1]);
     EXPECT_DOUBLE_EQ(mat1[2][2], mat2[2][2]);
+}
+
+TEST(Matrix, TestTransform)
+{
+    Base::Matrix4D mat;
+    mat.rotZ(Base::toRadians(90.0));
+
+    Base::Matrix4D unity;
+    unity.transform(Base::Vector3d(10.0, 0.0, 0.0), mat);
+
+    Base::Matrix4D mov{0.0, -1.0, 0.0, 10.0,
+                       1.0, 0.0, 0.0, -10.0,
+                       0.0, 0.0, 1.0, 0.0,
+                       0.0, 0.0, 0.0, 1.0};
+    EXPECT_EQ(unity, mov);
+}
+
+TEST(Matrix, TestTransformFloat)
+{
+    Base::Matrix4D mat;
+    mat.rotZ(Base::toRadians(90.0));
+
+    Base::Matrix4D mat2;
+    mat2.transform(Base::Vector3f(10.0F, 0.0F, 0.0F), mat);
+
+    Base::Matrix4D mov{0.0, -1.0, 0.0, 10.0,
+                       1.0, 0.0, 0.0, -10.0,
+                       0.0, 0.0, 1.0, 0.0,
+                       0.0, 0.0, 0.0, 1.0};
+    EXPECT_EQ(mat2, mov);
+}
+
+TEST(Matrix, TestInverseOrthogonal)
+{
+    Base::Matrix4D mat;
+    mat.rotZ(Base::toRadians(90.0));
+
+    Base::Matrix4D mat2;
+    mat2.transform(Base::Vector3d(10.0, 0.0, 0.0), mat);
+    mat2.inverseOrthogonal();
+
+    Base::Matrix4D mov{0.0, 1.0, 0.0, 10.0,
+                       -1.0, 0.0, 0.0, 10.0,
+                       0.0, 0.0, 1.0, 0.0,
+                       0.0, 0.0, 0.0, 1.0};
+    EXPECT_EQ(mat2, mov);
+}
+
+TEST(Matrix, TestTranspose)
+{
+    Base::Matrix4D mat{1.0, 2.0, 3.0, 4.0,
+                       5.0, 6.0, 7.0, 8.0,
+                       9.0, 1.0, 2.0, 3.0,
+                       4.0, 5.0, 6.0, 7.0};
+
+    Base::Matrix4D trp{1.0, 5.0, 9.0, 4.0,
+                       2.0, 6.0, 1.0, 5.0,
+                       3.0, 7.0, 2.0, 6.0,
+                       4.0, 8.0, 3.0, 7.0};
+
+    mat.transpose();
+    EXPECT_EQ(mat, trp);
+}
+
+TEST(Matrix, TestTrace)
+{
+    Base::Matrix4D mat{1.0, 2.0, 3.0, 4.0,
+                       5.0, 6.0, 7.0, 8.0,
+                       9.0, 1.0, 2.0, 3.0,
+                       4.0, 5.0, 6.0, 7.0};
+    EXPECT_DOUBLE_EQ(mat.trace(), 16.0);
+    EXPECT_DOUBLE_EQ(mat.trace3(), 9.0);
+}
+
+TEST(Matrix, TestSetAndGetMatrix)
+{
+    Base::Matrix4D mat{1.0, 2.0, 3.0, 0.0,
+                       2.0, 4.0, 6.0, 0.0,
+                       3.0, 6.0, 9.0, 0.0,
+                       0.0, 0.0, 0.0, 1.0};
+
+    std::array<double, 16> values;
+    mat.getMatrix(values.data());
+    Base::Matrix4D inp;
+    inp.setMatrix(values.data());
+
+    EXPECT_EQ(mat, inp);
+}
+
+TEST(Matrix, TestSetAndGetGLMatrix)
+{
+    Base::Matrix4D mat{1.0, 2.0, 3.0, 0.0,
+                       2.0, 4.0, 6.0, 0.0,
+                       3.0, 6.0, 9.0, 0.0,
+                       0.0, 0.0, 0.0, 1.0};
+
+    std::array<double, 16> values;
+    mat.getGLMatrix(values.data());
+    Base::Matrix4D inp;
+    inp.setGLMatrix(values.data());
+
+    EXPECT_EQ(mat, inp);
+}
+
+TEST(Matrix, TestToAndFromString)
+{
+    Base::Matrix4D mat{1.0, 2.0, 3.0, 0.0,
+                       2.0, 4.0, 6.0, 0.0,
+                       3.0, 6.0, 9.0, 0.0,
+                       0.0, 0.0, 0.0, 1.0};
+
+    std::string str = mat.toString();
+    Base::Matrix4D inp;
+    inp.fromString(str);
+
+    EXPECT_EQ(mat, inp);
 }
 // clang-format on
 // NOLINTEND(cppcoreguidelines-*,readability-magic-numbers)

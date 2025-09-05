@@ -76,7 +76,7 @@ class MatGuiExport MaterialTreeWidget: public QWidget, public Base::BaseClass
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    explicit MaterialTreeWidget(const std::shared_ptr<Materials::MaterialFilter>& filter,
+    explicit MaterialTreeWidget(const Materials::MaterialFilter& filter,
                                 QWidget* parent = nullptr);
     explicit MaterialTreeWidget(
         const std::shared_ptr<std::list<std::shared_ptr<Materials::MaterialFilter>>>& filterList,
@@ -92,7 +92,7 @@ public:
     QString getMaterialUUID() const;
     /** Set the material filter
      */
-    void setFilter(const std::shared_ptr<Materials::MaterialFilter>& filter);
+    void setFilter(const Materials::MaterialFilter& filter);
     void setFilter(
         const std::shared_ptr<std::list<std::shared_ptr<Materials::MaterialFilter>>>& filterList);
     void setActiveFilter(const QString& name);
@@ -200,7 +200,7 @@ private:
 
     std::list<QString> _favorites;
     std::list<QString> _recents;
-    std::shared_ptr<Materials::MaterialFilter> _filter;
+    Materials::MaterialFilter _filter;
     Materials::MaterialFilterTreeWidgetOptions _filterOptions;
     std::shared_ptr<std::list<std::shared_ptr<Materials::MaterialFilter>>> _filterList;
     int _recentMax;

@@ -47,6 +47,7 @@
         <file>icons/CAM_SelectLoop.svg</file>
         <file>icons/CAM_SetupSheet.svg</file>
         <file>icons/CAM_Shape.svg</file>
+        <file>icons/CAM_ShapeTC.svg</file>
         <file>icons/CAM_SimpleCopy.svg</file>
         <file>icons/CAM_Simulator.svg</file>
         <file>icons/CAM_SimulatorGL.svg</file>
@@ -118,11 +119,12 @@
         <file>panels/PointEdit.ui</file>
         <file>panels/PropertyBag.ui</file>
         <file>panels/PropertyCreate.ui</file>
+        <file>panels/ShapeSelector.ui</file>
         <file>panels/SetupGlobal.ui</file>
         <file>panels/SetupOp.ui</file>
         <file>panels/ToolBitEditor.ui</file>
         <file>panels/ToolBitLibraryEdit.ui</file>
-        <file>panels/ToolBitSelector.ui</file>
+        <file>panels/ToolControllerEdit.ui</file>
         <file>panels/TaskPathCamoticsSim.ui</file>
         <file>panels/TaskPathSimulator.ui</file>
         <file>panels/TaskCAMSimulator.ui</file>
@@ -144,6 +146,7 @@
         <file>gl_simulator/Path.png</file>
         <file>gl_simulator/View.png</file>
         <file>gl_simulator/AmbientOclusion.png</file>
+        <file>gl_simulator/Home.png</file>
         <file>preferences/Advanced.ui</file>
         <file>preferences/PathDressupHoldingTags.ui</file>
         <file>preferences/PathJob.ui</file>

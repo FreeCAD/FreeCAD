@@ -301,7 +301,7 @@ public:
         return _properties.cend();
     }
 
-    void validate(const std::shared_ptr<Model>& other) const;
+    void validate(Model& other) const;
 
 private:
     std::shared_ptr<ModelLibrary> _library;

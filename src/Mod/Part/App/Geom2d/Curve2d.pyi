@@ -51,32 +51,32 @@ class Curve2d(Geometry2d):
     @constmethod
     def discretize(self, *, Number: int) -> List[Vector]:
         ...
-    
+
     @overload
     @constmethod
     def discretize(self, *, QuasiNumber: int) -> List[Vector]:
         ...
-    
+
     @overload
     @constmethod
     def discretize(self, *, Distance: float) -> List[Vector]:
         ...
-    
+
     @overload
     @constmethod
     def discretize(self, *, Deflection: float) -> List[Vector]:
         ...
-    
+
     @overload
     @constmethod
     def discretize(self, *, QuasiDeflection: float) -> List[Vector]:
         ...
-    
+
     @overload
     @constmethod
     def discretize(self, *, Angular: float, Curvature: float, Minimum: int = 2) -> List[Vector]:
         ...
-    
+
     @constmethod
     def discretize(self, **kwargs) -> List[Vector]:
         """
@@ -117,19 +117,19 @@ class Curve2d(Geometry2d):
     @overload
     def length(self) -> float:
         ...
-    
+
     @overload
     def length(self, uMin: float) -> float:
         ...
-    
+
     @overload
     def length(self, uMin: float, uMax: float) -> float:
         ...
-    
+
     @overload
     def length(self, uMin: float, uMax: float, Tol: float) -> float:
         ...
-    
+
     def length(self, *args: float) -> float:
         """
         Computes the length of a curve
@@ -140,11 +140,11 @@ class Curve2d(Geometry2d):
     @overload
     def parameterAtDistance(self, abscissa: float) -> float:
         ...
-    
+
     @overload
     def parameterAtDistance(self, abscissa: float, startingParameter: float) -> float:
         ...
-    
+
     def parameterAtDistance(self, *args: float) -> float:
         """
         Returns the parameter on the curve of a point at
@@ -203,11 +203,11 @@ class Curve2d(Geometry2d):
     @overload
     def toBSpline(self) -> BSplineCurve:
         ...
-    
+
     @overload
     def toBSpline(self, First: float, Last: float) -> BSplineCurve:
         ...
-    
+
     def toBSpline(self, *args: float) -> BSplineCurve:
         """
         Converts a curve of any type (only part from First to Last)

@@ -126,10 +126,7 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name=None):
                 obj.Width = w
                 obj.Length = h
 
-    if not height and not length:
-        obj.IfcType = "Building Element Proxy"
-        obj.Label = name if name else translate("Arch","Structure")
-    elif obj.Length > obj.Height:
+    if obj.Length > obj.Height:
         obj.IfcType = "Beam"
         obj.Label = name if name else translate("Arch","Beam")
     elif obj.Height > obj.Length:
@@ -203,7 +200,7 @@ class CommandStructuresFromSelection:
     def GetResources(self):
         return {'Pixmap': 'Arch_MultipleStructures',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Multiple Structures"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Create multiple BIM Structures from a selected base, using each selected edge as an extrusion path")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Creates multiple BIM Structures from a selected base, using each selected edge as an extrusion path")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -229,7 +226,7 @@ class CommandStructuresFromSelection:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         else:
-            FreeCAD.Console.PrintError(translate("Arch", "Please select the base object first and then the edges to use as extrusion paths") + "\n")
+            FreeCAD.Console.PrintError(translate("Arch", "Select the base object first and then the edges to use as extrusion paths") + "\n")
 
 
 class CommandStructuralSystem:
@@ -263,7 +260,7 @@ class CommandStructuralSystem:
                 FreeCAD.ActiveDocument.commitTransaction()
                 FreeCAD.ActiveDocument.recompute()
             else:
-                FreeCAD.Console.PrintError(translate("Arch", "Please select at least an axis object") + "\n")
+                FreeCAD.Console.PrintError(translate("Arch", "Select at least an axis object") + "\n")
 
 
 class _CommandStructure:
@@ -334,9 +331,9 @@ class _CommandStructure:
         self.dents = ArchPrecast._DentsTaskPanel()
         self.precast.Dents = self.dents
         if self.beammode:
-            title=translate("Arch","First point of the beam")+":"
+            title=translate("Arch","First point of the beam")
         else:
-            title=translate("Arch","Base point of column")+":"
+            title=translate("Arch","Base point of column")
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=title)
         FreeCADGui.draftToolBar.continueCmd.show()
 
@@ -424,7 +421,7 @@ class _CommandStructure:
         self.doc.recompute()
         # gui_utils.end_all_events()  # Causes a crash on Linux.
         self.tracker.finalize()
-        if FreeCADGui.draftToolBar.continueCmd.isChecked():
+        if FreeCADGui.draftToolBar.continueMode:
             self.Activated()
 
     def _createItemlist(self, baselist):
@@ -627,10 +624,9 @@ class _CommandStructure:
                     self.dents.form.hide()
                 params.set_param_arch("StructurePreset",self.Profile)
             else:
-                p=elt[0]-1 # Presets indexes are 1-based
-                self.vLength.setText(FreeCAD.Units.Quantity(float(Presets[p][4]),FreeCAD.Units.Length).UserString)
-                self.vWidth.setText(FreeCAD.Units.Quantity(float(Presets[p][5]),FreeCAD.Units.Length).UserString)
-                self.Profile = Presets[p]
+                self.vLength.setText(FreeCAD.Units.Quantity(float(elt[4]),FreeCAD.Units.Length).UserString)
+                self.vWidth.setText(FreeCAD.Units.Quantity(float(elt[5]),FreeCAD.Units.Length).UserString)
+                self.Profile = elt
                 params.set_param_arch("StructurePreset",";".join([str(i) for i in self.Profile]))
 
     def switchLH(self,bmode):
@@ -667,6 +663,7 @@ class _Structure(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Structure"
         self.setProperties(obj)
         obj.IfcType = "Beam"
 
@@ -730,8 +727,6 @@ class _Structure(ArchComponent.Component):
         if not hasattr(self,"ArchSkPropSetListPrev"):
             self.ArchSkPropSetListPrev = []
 
-        self.Type = "Structure"
-
 
     def dumps(self):  # Supercede Arch.Component.dumps()
         dump = super().dumps()
@@ -742,7 +737,7 @@ class _Structure(ArchComponent.Component):
 
 
     def loads(self,state):
-        super().loads(state)  # do nothing as of 2024.11.28
+        self.Type = "Structure"
         if state == None:
             return
         elif state[0] == 'S':  # state[1] == 't', behaviour before 2024.11.28
@@ -857,7 +852,7 @@ class _Structure(ArchComponent.Component):
                     try:
                         shi = evi.makePipe(shi)
                     except Part.OCCError:
-                        FreeCAD.Console.PrintError(translate("Arch","Error: The base shape couldn't be extruded along this tool object")+"\n")
+                        FreeCAD.Console.PrintError(translate("Arch","Error: The base shape could not be extruded along this tool object")+"\n")
                         return
                 base.append(shi)
                 extrusion_length += evi.Length
@@ -955,11 +950,11 @@ class _Structure(ArchComponent.Component):
                                 # needs to take out those in Construction before
                                 # using as parameters.
                                 if (not obj.ArchSketchEdges and not geom.Construction) or str(ig) in obj.ArchSketchEdges:
-                                    # support Line, Arc, Circle, Ellipse for Sketch
+                                    # support Line, Arc, Circle, Ellipse, BSplineCurve for Sketch
                                     # as Base at the moment
                                     if isinstance(geom.Geometry, (Part.LineSegment,
                                                   Part.Circle, Part.ArcOfCircle,
-                                                  Part.Ellipse)):
+                                                  Part.Ellipse, Part.BSplineCurve)):
                                         skGeomEdgesI = geom.Geometry.toShape()
                                         skGeomEdges.append(skGeomEdgesI)
                             clusterTransformed = []
@@ -971,7 +966,6 @@ class _Structure(ArchComponent.Component):
                                 clusterTransformed.append(edgesTransformed)
                             for clusterT in clusterTransformed:
                                 baseShapeWires.append(Part.Wire(clusterT))
-                            faceMaker = 'Bullseye'
 
                         if not baseShapeWires:
                             baseShapeWires = obj.Base.Shape.Wires
@@ -1086,7 +1080,7 @@ class _Structure(ArchComponent.Component):
     def onChanged(self,obj,prop):
 
         # check the flag indicating if we are currently in the process of
-        # restoring document; if not, no further code is run as getExtrusionData() 
+        # restoring document; if not, no further code is run as getExtrusionData()
         # below return error when some properties are not added by onDocumentRestored()
         if FreeCAD.ActiveDocument.Restoring:
             return
@@ -1327,34 +1321,34 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
 
         self.resetButton = QtGui.QPushButton(self.nodes_widget)
         self.resetButton.setIcon(QtGui.QIcon(":/icons/edit-undo.svg"))
-        self.resetButton.setText(QtGui.QApplication.translate("Arch", "Reset nodes", None))
+        self.resetButton.setText(QtGui.QApplication.translate("Arch", "Reset Nodes", None))
 
         lay.addWidget(self.resetButton)
         QtCore.QObject.connect(self.resetButton, QtCore.SIGNAL("clicked()"), self.resetNodes)
 
         self.editButton = QtGui.QPushButton(self.nodes_widget)
         self.editButton.setIcon(QtGui.QIcon(":/icons/Draft_Edit.svg"))
-        self.editButton.setText(QtGui.QApplication.translate("Arch", "Edit nodes", None))
+        self.editButton.setText(QtGui.QApplication.translate("Arch", "Edit Nodes", None))
         lay.addWidget(self.editButton)
         QtCore.QObject.connect(self.editButton, QtCore.SIGNAL("clicked()"), self.editNodes)
 
         self.extendButton = QtGui.QPushButton(self.nodes_widget)
         self.extendButton.setIcon(QtGui.QIcon(":/icons/Snap_Perpendicular.svg"))
-        self.extendButton.setText(QtGui.QApplication.translate("Arch", "Extend nodes", None))
+        self.extendButton.setText(QtGui.QApplication.translate("Arch", "Extend Nodes", None))
         self.extendButton.setToolTip(QtGui.QApplication.translate("Arch", "Extends the nodes of this element to reach the nodes of another element", None))
         lay.addWidget(self.extendButton)
         QtCore.QObject.connect(self.extendButton, QtCore.SIGNAL("clicked()"), self.extendNodes)
 
         self.connectButton = QtGui.QPushButton(self.nodes_widget)
         self.connectButton.setIcon(QtGui.QIcon(":/icons/Snap_Intersection.svg"))
-        self.connectButton.setText(QtGui.QApplication.translate("Arch", "Connect nodes", None))
+        self.connectButton.setText(QtGui.QApplication.translate("Arch", "Connect Nodes", None))
         self.connectButton.setToolTip(QtGui.QApplication.translate("Arch", "Connects nodes of this element with the nodes of another element", None))
         lay.addWidget(self.connectButton)
         QtCore.QObject.connect(self.connectButton, QtCore.SIGNAL("clicked()"), self.connectNodes)
 
         self.toggleButton = QtGui.QPushButton(self.nodes_widget)
         self.toggleButton.setIcon(QtGui.QIcon(":/icons/dagViewVisible.svg"))
-        self.toggleButton.setText(QtGui.QApplication.translate("Arch", "Toggle all nodes", None))
+        self.toggleButton.setText(QtGui.QApplication.translate("Arch", "Toggle All Nodes", None))
         self.toggleButton.setToolTip(QtGui.QApplication.translate("Arch", "Toggles all structural nodes of the document on/off", None))
         lay.addWidget(self.toggleButton)
         QtCore.QObject.connect(self.toggleButton, QtCore.SIGNAL("clicked()"), self.toggleNodes)
@@ -1365,8 +1359,8 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
 
         self.selectToolButton = QtGui.QPushButton(self.extrusion_widget)
         self.selectToolButton.setIcon(QtGui.QIcon())
-        self.selectToolButton.setText(QtGui.QApplication.translate("Arch", "Select tool...", None))
-        self.selectToolButton.setToolTip(QtGui.QApplication.translate("Arch", "Select object or edges to be used as a Tool (extrusion path)", None))
+        self.selectToolButton.setText(QtGui.QApplication.translate("Arch", "Select Tool", None))
+        self.selectToolButton.setToolTip(QtGui.QApplication.translate("Arch", "Selects object or edges to be used as a tool (extrusion path)", None))
         lay.addWidget(self.selectToolButton)
         QtCore.QObject.connect(self.selectToolButton, QtCore.SIGNAL("clicked()"), self.setSelectionFromTool)
 
@@ -1499,7 +1493,7 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
         self.Object.Tool = objectList
         QtCore.QObject.disconnect(self.selectToolButton, QtCore.SIGNAL("clicked()"), self.setToolFromSelection)
         QtCore.QObject.connect(self.selectToolButton, QtCore.SIGNAL("clicked()"), self.setSelectionFromTool)
-        self.selectToolButton.setText(QtGui.QApplication.translate("Arch", "Select tool...", None))
+        self.selectToolButton.setText(QtGui.QApplication.translate("Arch", "Select Tool", None))
 
     def accept(self):
 
@@ -1530,9 +1524,14 @@ class _StructuralSystem(ArchComponent.Component): # OBSOLETE - All Arch objects 
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "StructuralSystem"
+
         obj.addProperty("App::PropertyLinkList","Axes","Arch",QT_TRANSLATE_NOOP("App::Property","Axes systems this structure is built on"), locked=True)
         obj.addProperty("App::PropertyIntegerList","Exclude","Arch",QT_TRANSLATE_NOOP("App::Property","The element numbers to exclude when this structure is based on axes"), locked=True)
         obj.addProperty("App::PropertyBool","Align","Arch",QT_TRANSLATE_NOOP("App::Property","If true the element are aligned with axes"), locked=True).Align = False
+
+    def loads(self,state):
+
         self.Type = "StructuralSystem"
 
     def execute(self,obj):
@@ -1584,7 +1583,7 @@ class _StructuralSystem(ArchComponent.Component): # OBSOLETE - All Arch objects 
                             if base.Volume < 0:
                                 base.reverse()
                             if base.Volume < 0:
-                                FreeCAD.Console.PrintError(translate("Arch","Couldn't compute a shape"))
+                                FreeCAD.Console.PrintError(translate("Arch","Could not compute a shape"))
                                 return
                             base = base.removeSplitter()
                             obj.Shape = base
@@ -1644,7 +1643,7 @@ if FreeCAD.GuiUp:
         def GetCommands(self):
             return ("Arch_Structure", "Arch_StructuralSystem", "Arch_StructuresFromSelection")
         def GetResources(self):
-            return { "MenuText": QT_TRANSLATE_NOOP("Arch_StructureTools", "Structure tools"),
+            return { "MenuText": QT_TRANSLATE_NOOP("Arch_StructureTools", "Structure Tools"),
                      "ToolTip": QT_TRANSLATE_NOOP("Arch_StructureTools", "Structure tools")
                    }
         def IsActive(self):

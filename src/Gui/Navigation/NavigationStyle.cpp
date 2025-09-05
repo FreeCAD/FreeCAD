@@ -120,13 +120,13 @@ public:
             if (!tolPlane.intersect(projectLine, planeIntersection)) {
 #ifdef FC_DEBUG
                 SoDebugError::post("SbSphereSheetProjector::project",
-                                   "Couldn't intersect working line with plane");
+                                   "Could not intersect working line with plane");
 #endif
             }
         }
         else if (!tolPlane.intersect(workingLine, planeIntersection)) {
 #ifdef FC_DEBUG
-            SoDebugError::post("SbSphereSheetProjector::project", "Couldn't intersect with plane");
+            SoDebugError::post("SbSphereSheetProjector::project", "Could not intersect with plane");
 #endif
         }
 
@@ -319,10 +319,10 @@ NavigationStyle::~NavigationStyle()
     finalize();
     delete this->animator;
 
-    if (pythonObject) {
+    if (!pythonObject.is(nullptr)) {
         Base::PyGILStateLocker lock;
-        Py_DECREF(pythonObject);
-        pythonObject = nullptr;
+        Base::PyObjectBase* obj = static_cast<Base::PyObjectBase*>(pythonObject.ptr());
+        obj->setInvalid();
     }
 }
 
@@ -606,16 +606,30 @@ void NavigationStyle::boxZoom(const SbBox2s& box)
     // Set height or height angle of the camera
     float scaleX = (float)sizeX/(float)size[0];
     float scaleY = (float)sizeY/(float)size[1];
-    float scale = std::max<float>(scaleX, scaleY);
-    if (cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
-        float height = static_cast<SoOrthographicCamera*>(cam)->height.getValue() * scale;
-        static_cast<SoOrthographicCamera*>(cam)->height = height;
+    float scaleFactor = std::max<float>(scaleX, scaleY);
+
+    doScale(cam, scaleFactor);
+}
+void NavigationStyle::scale(float factor)
+{
+    SoCamera* cam = viewer->getSoRenderManager()->getCamera();
+    if (!cam) { // no camera
+        return;
     }
-    else if (cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
-        float height = static_cast<SoPerspectiveCamera*>(cam)->heightAngle.getValue() / 2.0f;
-        height = 2.0f * atan(tan(height) * scale);
-        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = height;
-    }
+
+    // Find the current center of the screen
+    SbVec3f direction;
+    cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+    SbVec3f initCenter = cam->position.getValue() + cam->focalDistance.getValue() * direction;
+
+    // Move the camera to the origin for scaling
+    cam->position = cam->position.getValue() - initCenter;
+
+    // Scale the view
+    doScale(cam, factor);
+    
+    // Move the camera back to it's initial position scaled
+    cam->position = cam->position.getValue() + initCenter * factor;
 }
 
 void NavigationStyle::viewAll()
@@ -700,6 +714,26 @@ void NavigationStyle::reorientCamera(SoCamera* camera, const SbRotation& rotatio
     // Reposition camera so the rotation center stays in the same place
     camera->position = rotationCenter + newRotationCenterDistance;
 
+    if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
+        // Adjust the camera position to keep the focal point in the same place while making sure
+        // the focal distance stays small. This increases rotation stability for small and large
+        // scenes
+
+        SbVec3f direction;
+        camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+        
+#if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 405)
+        // Large focal distance puts the camera far away which causes Coin's auto clipping
+        // calculations to add more slack (more space between near and far plane) and thus reduces
+        // chances or hidden geometry.
+        constexpr float orthographicFocalDistance = 250;
+#else
+        constexpr float orthographicFocalDistance = 1;
+#endif
+        camera->position = getFocalPoint() - orthographicFocalDistance * direction;
+        camera->focalDistance = orthographicFocalDistance;
+    }
+    
 #if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
     // Fix issue with near clipping in orthogonal view
     if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
@@ -941,7 +975,18 @@ void NavigationStyle::doZoom(SoCamera* camera, float logfactor, const SbVec2f& p
         }
     }
 }
-
+void NavigationStyle::doScale(SoCamera * cam, float factor)
+{
+    if (cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+        float height = static_cast<SoOrthographicCamera*>(cam)->height.getValue() * factor;
+        static_cast<SoOrthographicCamera*>(cam)->height = height;
+    }
+    else if (cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
+        float height = static_cast<SoPerspectiveCamera*>(cam)->heightAngle.getValue() / 2.0f;
+        height = 2.0f * atan(tan(height) * factor);
+        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = height;
+    }
+}
 void NavigationStyle::doRotate(SoCamera * camera, float angle, const SbVec2f& pos)
 {
     SbBool zoomAtCur = this->zoomAtCursor;
@@ -981,6 +1026,20 @@ void NavigationStyle::setRotationCenter(const SbVec3f& cnt)
 {
     this->rotationCenter = cnt;
     this->rotationCenterFound = true;
+
+    const auto camera = getCamera();
+    if (camera->isOfType(SoPerspectiveCamera::getClassTypeId())) {
+        SbVec3f direction;
+        camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+
+        // Calculate distance from camera to rotation center
+        const auto rotationCenterDistance = rotationCenter - camera->position.getValue();
+        const auto rotationCenterDepth = rotationCenterDistance.dot(direction);
+
+        // Set focal distance to match rotation center depth so we can zoom at the new rotation
+        // center with a perspective camera
+        camera->focalDistance.setValue(rotationCenterDepth);
+    }
 }
 
 SbVec3f NavigationStyle::getFocalPoint() const
@@ -1532,6 +1591,14 @@ void NavigationStyle::syncModifierKeys(const SoEvent * const ev)
 void NavigationStyle::setViewingMode(const ViewerMode newmode)
 {
     const ViewerMode oldmode = this->currentmode;
+
+    // Reset flags when changing from IDLE to another mode or if the mode is IDLE and the buttons are released
+    if ((oldmode == IDLE && newmode != IDLE) || (newmode == IDLE && !button1down && !button2down && !button3down)) {
+        hasPanned = false;
+        hasDragged = false;
+        hasZoomed = false;
+    }
+    
     if (newmode == oldmode) {
 
         // The rotation center could have been changed even if the mode has not changed
@@ -1540,12 +1607,6 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
         }
 
         return;
-    }
-
-    if (newmode == NavigationStyle::IDLE) {
-        hasPanned = false;
-        hasDragged = false;
-        hasZoomed = false;
     }
 
     switch (newmode) {
@@ -1914,11 +1975,11 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
 
 PyObject* NavigationStyle::getPyObject()
 {
-    if (!pythonObject)
-        pythonObject = new NavigationStylePy(this);
-
-    Py_INCREF(pythonObject);
-    return pythonObject;
+    if (pythonObject.is(nullptr)) {
+        // ref counter is set to 1
+        pythonObject = Py::asObject(new NavigationStylePy(this));
+    }
+    return Py::new_reference_to(pythonObject);
 }
 
 // ----------------------------------------------------------------------------------

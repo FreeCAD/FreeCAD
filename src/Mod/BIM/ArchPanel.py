@@ -67,6 +67,7 @@ class _Panel(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Panel"
         self.setProperties(obj)
         obj.IfcType = "Plate"
 
@@ -104,7 +105,6 @@ class _Panel(ArchComponent.Component):
             obj.FaceMaker = ["None","Simple","Cheese","Bullseye"]
         if not "Normal" in pl:
             obj.addProperty("App::PropertyVector","Normal","Panel",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"), locked=True)
-        self.Type = "Panel"
         obj.setEditorMode("VerticalArea",2)
         obj.setEditorMode("HorizontalArea",2)
 
@@ -112,6 +112,10 @@ class _Panel(ArchComponent.Component):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
+
+    def loads(self,state):
+
+        self.Type = "Panel"
 
     def execute(self,obj):
 
@@ -399,6 +403,9 @@ class _Panel(ArchComponent.Component):
 
                 baseface = Part.Face(basewire)
                 base = baseface.extrude(Vector(0,bb.YLength,0))
+                if normal.cross(FreeCAD.Vector(0,0,1)).Length > 1e-6:
+                    rot = FreeCAD.Rotation(FreeCAD.Vector(0,-1,0),FreeCAD.Vector(*normal[:2],0))
+                    base.rotate(bb.Center,rot.Axis,math.degrees(rot.Angle))
                 rot = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),normal)
                 base.rotate(bb.Center,rot.Axis,math.degrees(rot.Angle))
                 if obj.WaveDirection.Value:
@@ -438,7 +445,7 @@ class _Panel(ArchComponent.Component):
                         if base.Volume < 0:
                             base.reverse()
                         if base.Volume < 0:
-                            FreeCAD.Console.PrintError(translate("Arch","Couldn't compute a shape"))
+                            FreeCAD.Console.PrintError(translate("Arch","Could not compute a shape"))
                             return
                         base = base.removeSplitter()
                     obj.Shape = base
@@ -518,7 +525,7 @@ class PanelCut(Draft.DraftObject):
             obj.addProperty("App::PropertyAngle","TagRotation","PanelCut",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"), locked=True)
         if not "FontFile" in pl:
             obj.addProperty("App::PropertyFile","FontFile","PanelCut",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"), locked=True)
-            obj.FontFile = params.get_param("FontFile")
+            obj.FontFile = params.get_param("ShapeStringFontFile")
         if not "MakeFace" in pl:
             obj.addProperty("App::PropertyBool","MakeFace","PanelCut",QT_TRANSLATE_NOOP("App::Property","If True, the object is rendered as a face, if possible."), locked=True)
         if not "AllowedAngles" in pl:
@@ -798,7 +805,7 @@ class PanelSheet(Draft.DraftObject):
             obj.addProperty("App::PropertyAngle","TagRotation","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"), locked=True)
         if not "FontFile" in pl:
             obj.addProperty("App::PropertyFile","FontFile","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"), locked=True)
-            obj.FontFile = params.get_param("FontFile")
+            obj.FontFile = params.get_param("ShapeStringFontFile")
         if not "Width" in pl:
             obj.addProperty("App::PropertyLength","Width","PanelSheet",QT_TRANSLATE_NOOP("App::Property","The width of the sheet"), locked=True)
             obj.Width = params.get_param_arch("PanelLength")

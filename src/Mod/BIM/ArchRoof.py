@@ -46,7 +46,7 @@ from FreeCAD import Units
 from FreeCAD import Vector
 
 if FreeCAD.GuiUp:
-    from PySide import QtCore, QtGui
+    from PySide import QtCore, QtGui, QtWidgets
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
@@ -153,9 +153,9 @@ class _Roof(ArchComponent.Component):
     '''The Roof object'''
     def __init__(self, obj):
         ArchComponent.Component.__init__(self, obj)
+        self.Type = "Roof"
         self.setProperties(obj)
         obj.IfcType = "Roof"
-        obj.Proxy = self
 
     def setProperties(self, obj):
         pl = obj.PropertiesList
@@ -227,11 +227,13 @@ class _Roof(ArchComponent.Component):
                             "Roof",
                             QT_TRANSLATE_NOOP("App::Property", "An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume"),
                             locked=True)
-        self.Type = "Roof"
 
     def onDocumentRestored(self, obj):
         ArchComponent.Component.onDocumentRestored(self, obj)
         self.setProperties(obj)
+
+    def loads(self,state):
+        self.Type = "Roof"
 
     def flipEdges(self, edges):
         edges.reverse()
@@ -335,11 +337,11 @@ class _Roof(ArchComponent.Component):
         runs = []
         if ((not 0 <= profilNext2["idrel"] < numEdges)
             and 0.0 < profilNext2["angle"] < 90.0
-            and vecCurr.getAngle(vecNext2) == math.pi):
+            and math.isclose(vecCurr.getAngle(vecNext2), math.pi, abs_tol=1e-7)):
             runs.append((self.helperCalcApex(profilCurr, profilNext2)))
         if ((not 0 <= profilBack2["idrel"] < numEdges)
             and 0.0 < profilBack2["angle"] < 90.0
-            and vecCurr.getAngle(vecBack2) == math.pi):
+            and math.isclose(vecCurr.getAngle(vecBack2), math.pi, abs_tol=1e-7)):
             runs.append((self.helperCalcApex(profilCurr, profilBack2)))
         runs.sort()
         if len(runs) != 0 and runs[0] != profilCurr["run"]:
@@ -762,17 +764,29 @@ class _Roof(ArchComponent.Component):
             # a Wall, but all portion of the wall above the roof solid would be
             # subtracted as well.
             #
-            # FC forum discussion : Sketch based Arch_Roof and wall substraction
+
+            # FC forum discussion, 2024.1.15 :
+            # Sketch based Arch_Roof and wall substraction
             # - https://forum.freecad.org/viewtopic.php?t=84389
             #
+            # Github issue #21633, 2025.5.29 :
+            # BIM: Holes in roof are causing troubles
+            # - https://github.com/FreeCAD/FreeCAD/issues/21633#issuecomment-2969640142
+
+
             faces = []
             solids = []
             for f in obj.Base.Shape.Faces:  # obj.Base.Shape.Solids.Faces
                 p = f.findPlane()  # Curve face (surface) seems return no Plane
                 if p:
-                    if p.Axis[2] < -1e-7:  # i.e. normal pointing below horizon
-                        faces.append(f)
+                    # See github issue #21633, all planes are added for safety
+                    #if p.Axis[2] < -1e-7:  # i.e. normal pointing below horizon
+                    faces.append(f)
                 else:
+                    # TODO 2025.6.15: See github issue #21633: Find better way
+                    #      to test and maybe to split surface point up and down
+                    #      and extrude separately
+
                     # Not sure if it is pointing towards and/or above horizon
                     # (upward or downward), or it is curve surface, just add.
                     faces.append(f)
@@ -785,6 +799,11 @@ class _Roof(ArchComponent.Component):
                 solid = f.extrude(Vector(0.0, 0.0, 1000000.0))
                 if not solid.isNull() and solid.isValid() and solid.Volume > 1e-3:
                     solids.append(solid)
+
+            # See github issue #21633: Solids are added for safety
+            for s in obj.Base.Shape.Solids:
+                solids.append(s)
+
             compound = Part.Compound(solids)
             compound.Placement = obj.Placement
             return compound
@@ -883,15 +902,16 @@ class _RoofTaskPanel:
         # tree
         self.tree = QtGui.QTreeWidget(self.form)
         self.grid.addWidget(self.tree, 1, 0, 1, 1)
+        self.tree.setItemDelegate(_RoofTaskPanel_Delegate())
         self.tree.setRootIsDecorated(False) # remove 1st column's extra left margin
         self.tree.setColumnCount(7)
         self.tree.header().resizeSection(0, 37) # 37px seems to be the minimum size
         self.tree.header().resizeSection(1, 60)
-        self.tree.header().resizeSection(2, 70)
+        self.tree.header().resizeSection(2, 90)
         self.tree.header().resizeSection(3, 37)
-        self.tree.header().resizeSection(4, 70)
-        self.tree.header().resizeSection(5, 70)
-        self.tree.header().resizeSection(6, 70)
+        self.tree.header().resizeSection(4, 90)
+        self.tree.header().resizeSection(5, 90)
+        self.tree.header().resizeSection(6, 90)
 
         QtCore.QObject.connect(self.tree, QtCore.SIGNAL("itemChanged(QTreeWidgetItem *, int)"), self.edit)
         self.update()
@@ -940,9 +960,6 @@ class _RoofTaskPanel:
         if self.updating:
             return
         row = int(item.text(0))
-        if not (0 <= row < len(self.obj.Angles)):
-            # Users should not change the Id (index) column, but you never know:
-            return
         match column:
             case 1:
                 self._update_value(row, "Angles", item.text(1))
@@ -969,7 +986,7 @@ class _RoofTaskPanel:
 
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Roof", None))
-        self.title.setText(QtGui.QApplication.translate("Arch", "Parameters of the roof profiles :\n* Angle : slope in degrees relative to the horizontal.\n* Run : horizontal distance between the wall and the ridge.\n* Thickness : thickness of the roof.\n* Overhang : horizontal distance between the eave and the wall.\n* Height : height of the ridge above the base (calculated automatically).\n* IdRel : Id of the relative profile used for automatic calculations.\n---\nIf Angle = 0 and Run = 0 then the profile is identical to the relative profile.\nIf Angle = 0 then the angle is calculated so that the height is the same as the relative profile.\nIf Run = 0 then the run is calculated so that the height is the same as the relative profile.", None))
+        self.title.setText(QtGui.QApplication.translate("Arch", "Parameters of the roof profiles:\n* Angle: slope in degrees relative to the horizontal.\n* Run: horizontal distance between the wall and the ridge.\n* IdRel: Id of the relative profile used for automatic calculations.\n* Thickness: thickness of the roof.\n* Overhang: horizontal distance between the eave and the wall.\n* Height: height of the ridge above the base (calculated automatically).\n---\nIf Angle = 0 and Run = 0 then the profile is identical to the relative profile.\nIf Angle = 0 then the angle is calculated so that the height is the same as the relative profile.\nIf Run = 0 then the run is calculated so that the height is the same as the relative profile.", None))
         self.tree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Id", None),
                                    QtGui.QApplication.translate("Arch", "Angle", None),
                                    QtGui.QApplication.translate("Arch", "Run", None),
@@ -977,3 +994,35 @@ class _RoofTaskPanel:
                                    QtGui.QApplication.translate("Arch", "Thickness", None),
                                    QtGui.QApplication.translate("Arch", "Overhang", None),
                                    QtGui.QApplication.translate("Arch", "Height", None)])
+
+
+if FreeCAD.GuiUp:
+    class _RoofTaskPanel_Delegate(QtWidgets.QStyledItemDelegate):
+        '''Model delegate'''
+        def createEditor(self, parent, option, index):
+            if index.column() in (0, 6):
+                # Make these columns read-only.
+                return None
+            editor = QtWidgets.QLineEdit(parent)
+            if index.column() != 3:
+                editor.installEventFilter(self)
+            return editor
+
+        def setEditorData(self, editor, index):
+            editor.setText(index.data())
+
+        def setModelData(self, editor, model, index):
+            model.setData(index,editor.text())
+
+        def eventFilter(self, widget, event):
+            if event.type() == QtCore.QEvent.FocusIn:
+                widget.setSelection(0, self.number_length(widget.text()))
+            return super().eventFilter(widget, event)
+
+        def number_length(self, str):
+            # Code taken from DraftGui.py.
+            nl = 0
+            for char in str:
+                if char in "0123456789.,-":
+                    nl += 1
+            return nl

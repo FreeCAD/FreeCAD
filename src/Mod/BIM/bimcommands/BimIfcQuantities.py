@@ -60,7 +60,7 @@ QTO_TYPES = {
     "IfcQuantityNumber": "App::PropertyInteger",
     "IfcQuantityTime": "App::PropertyTime",
     "IfcQuantityVolume": "App::PropertyVolume",
-    "IfcQuantityWeight": "App::PropertyWeight",
+    "IfcQuantityWeight": "App::PropertyMass",
 }
 
 
@@ -70,11 +70,11 @@ class BIM_IfcQuantities:
         return {
             "Pixmap": "BIM_IfcQuantities",
             "MenuText": QT_TRANSLATE_NOOP(
-                "BIM_IfcQuantities", "Manage IFC quantities..."
+                "BIM_IfcQuantities", "Manage IFC Quantities"
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_IfcQuantities",
-                "Manage how the quantities of different elements of of your BIM project will be exported to IFC",
+                "Manages how the quantities of different elements of the BIM project will be exported to IFC",
             ),
         }
 
@@ -122,7 +122,10 @@ class BIM_IfcQuantities:
         self.qmodel.dataChanged.connect(self.setChecked)
         self.form.buttonBox.accepted.connect(self.accept)
         self.form.quantities.clicked.connect(self.onClickTree)
-        self.form.onlyVisible.stateChanged.connect(self.update)
+        if hasattr(self.form.onlyVisible, "checkStateChanged"): # Qt version >= 6.7.0
+            self.form.onlyVisible.checkStateChanged.connect(self.update)
+        else: # Qt version < 6.7.0
+            self.form.onlyVisible.stateChanged.connect(self.update)
         self.form.buttonRefresh.clicked.connect(self.update)
         self.form.buttonApply.clicked.connect(self.add_qto)
 

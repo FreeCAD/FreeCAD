@@ -357,6 +357,14 @@ def getToolControllers(obj, proxy=None):
     return []
 
 
+def getToolShapeName(tool):
+    if hasattr(tool, "ShapeName"):
+        return tool.ShapeName.lower()
+    if hasattr(tool, "ShapeType"):
+        return tool.ShapeType.lower()
+    return ""
+
+
 def findToolController(obj, proxy, name=None):
     """returns a tool controller with a given name.
     If no name is specified, returns the first controller.

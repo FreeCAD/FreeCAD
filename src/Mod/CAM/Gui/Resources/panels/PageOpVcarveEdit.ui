@@ -51,6 +51,13 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="editToolController">
+        <property name="text">
+         <string>Edit Tool Controller</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -94,14 +101,14 @@
         <string/>
        </property>
        <property name="text">
-        <string>Filter Colinear lines</string>
+        <string>Filter colinear lines</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
       <widget class="QSpinBox" name="colinearFilter">
        <property name="toolTip">
-        <string>Sets how aggressively colinear segments are filtered from the Voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</string>
+        <string>Sets how aggressively colinear segments are filtered from the voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</string>
        </property>
        <property name="maximum">
         <number>90</number>
@@ -150,7 +157,7 @@
      <item row="2" column="0">
       <widget class="QCheckBox" name="optimizeMovementsEnabled">
        <property name="toolTip">
-        <string>Optimize path to avoid raising endmill when moving to adjacent edges. May result in sub-millimeter inaccuracies. </string>
+        <string>Optimize path to avoid raising endmill when moving to adjacent edges. May result in sub-millimeter inaccuracies.</string>
        </property>
        <property name="text">
         <string>Optimize movements</string>

@@ -38,6 +38,7 @@ __url__    = "https://www.freecad.org"
 
 import FreeCAD
 import ArchCommands
+import ArchIFC
 import ArchComponent
 import Draft
 import DraftVecUtils
@@ -48,6 +49,11 @@ if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
+    # TODO: check if this import is still needed, and if so, whether
+    # it can be moved made conditional on the GUI being loaded
+    # for Rebar addon compatibility
+    from bimcommands import BimRebar
+    _CommandRebar = BimRebar.Arch_Rebar
 else:
     # \cond
     def translate(ctxt,txt):
@@ -55,10 +61,6 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-
-# for Rebar addon compatibility
-from bimcommands import BimRebar
-_CommandRebar = BimRebar.Arch_Rebar
 
 
 class _Rebar(ArchComponent.Component):
@@ -68,6 +70,7 @@ class _Rebar(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Rebar"
         self.setProperties(obj)
         obj.IfcType = "Reinforcing Bar"
 
@@ -111,12 +114,15 @@ class _Rebar(ArchComponent.Component):
                 QT_TRANSLATE_NOOP("App::Property", "The rebar mark"),
                 locked=True,
             )
-        self.Type = "Rebar"
 
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
+
+    def loads(self,state):
+
+        self.Type = "Rebar"
 
     def getBaseAndAxis(self,wire):
 
@@ -210,8 +216,11 @@ class _Rebar(ArchComponent.Component):
         return [wires,obj.Diameter.Value/2]
 
     def onChanged(self,obj,prop):
-
-        if prop == "Host":
+        if prop == "IfcType":
+            root = ArchIFC.IfcProduct()
+            root.setupIfcAttributes(obj)
+            root.setupIfcComplexAttributes(obj)
+        elif prop == "Host":
             if hasattr(obj,"Host"):
                 if obj.Host:
                     # mark host to recompute so it can detect this object

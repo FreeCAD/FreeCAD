@@ -283,8 +283,9 @@ class polygonTracker(Tracker):
         self.line.numVertices.setValue(num + 1)
         self.sides = num
 
-    def _drawPolygon(self, local_origin, radius):
+    def _drawPolygon(self, origin, radius):
         wp = self._get_wp()
+        local_origin = wp.get_local_coords(origin)
         for i in range(self.sides):
             angle = 2 * math.pi * i / self.sides
             px = local_origin.x + radius * math.cos(angle)
@@ -301,26 +302,13 @@ class polygonTracker(Tracker):
     def setOrigin(self, point, radius=1.0):
         """Set the origin of the polygon and initialize the shape."""
         self.origin = point
-        wp = self._get_wp()
-
-        # Convert the origin to working plane local space
-        local_origin = wp.get_local_coords(point)
-
-        self._drawPolygon(local_origin, radius)
+        self._drawPolygon(self.origin, radius)
 
     def update(self, point):
         """Update polygon size based on current mouse point."""
-        wp = self._get_wp()
-        
-        # Convert current point and origin to local working plane coordinates
-        local = wp.get_local_coords(point)
-        local_origin = wp.get_local_coords(self.origin)
-
-        dx = local.x - local_origin.x
-        dy = local.y - local_origin.y
-        radius = math.hypot(dx, dy)
-
-        self._drawPolygon(local_origin, radius)
+        local_vec = self._get_wp().get_local_coords(point - self.origin, as_vector=True)
+        radius = math.hypot(local_vec.x, local_vec.y)
+        self._drawPolygon(self.origin, radius)
 
 class rectangleTracker(Tracker):
     """A Rectangle tracker, used by the rectangle tool."""

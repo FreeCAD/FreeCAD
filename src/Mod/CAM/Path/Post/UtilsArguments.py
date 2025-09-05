@@ -5,7 +5,7 @@
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *   Copyright (c) 2018, 2019 Gauthier Briere                              *
 # *   Copyright (c) 2019, 2020 Schildkroet                                  *
-# *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
+# *   Copyright (c) 2022-2025 Larry Woestman <LarryWoestman2@gmail.com>     *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -74,11 +74,16 @@ def init_argument_defaults(argument_defaults: Dict[str, bool]) -> None:
     argument_defaults["axis-modal"] = False
     argument_defaults["bcnc"] = False
     argument_defaults["comments"] = True
+    argument_defaults["enable_coolant"] = False
+    argument_defaults["enable_machine_specific_commands"] = False
     argument_defaults["header"] = True
     argument_defaults["line-numbers"] = False
+    argument_defaults["list_tools_in_preamble"] = False
     argument_defaults["metric_inches"] = True
     argument_defaults["modal"] = False
     argument_defaults["output_all_arguments"] = False
+    argument_defaults["output_machine_name"] = False
+    argument_defaults["output_path_labels"] = False
     argument_defaults["output_visible_arguments"] = False
     argument_defaults["show-editor"] = True
     argument_defaults["tlo"] = True
@@ -95,14 +100,24 @@ def init_arguments_visible(arguments_visible: Dict[str, bool]) -> None:
     arguments_visible["command_space"] = False
     arguments_visible["comments"] = True
     arguments_visible["comment_symbol"] = False
+    arguments_visible["enable_coolant"] = False
+    arguments_visible["enable_machine_specific_commands"] = False
+    arguments_visible["end_of_line_characters"] = False
     arguments_visible["feed-precision"] = True
+    arguments_visible["finish_label"] = False
     arguments_visible["header"] = True
+    arguments_visible["line_number_increment"] = False
+    arguments_visible["line_number_start"] = False
     arguments_visible["line-numbers"] = True
+    arguments_visible["list_tools_in_preamble"] = False
     arguments_visible["metric_inches"] = True
     arguments_visible["modal"] = True
     arguments_visible["output_all_arguments"] = True
+    arguments_visible["output_machine_name"] = False
+    arguments_visible["output_path_labels"] = False
     arguments_visible["output_visible_arguments"] = True
     arguments_visible["postamble"] = True
+    arguments_visible["post_operation"] = False
     arguments_visible["preamble"] = True
     arguments_visible["precision"] = True
     arguments_visible["return-to"] = False
@@ -212,6 +227,35 @@ def init_shared_arguments(
         "--comment_symbol",
         help=help_message,
     )
+    add_flag_type_arguments(
+        shared,
+        argument_defaults["enable_coolant"],
+        "--enable_coolant",
+        "--disable_coolant",
+        "Enable coolant",
+        "Disable coolant",
+        arguments_visible["enable_coolant"],
+    )
+    add_flag_type_arguments(
+        shared,
+        argument_defaults["enable_machine_specific_commands"],
+        "--enable_machine_specific_commands",
+        "--disable_machine_specific_commands",
+        "Enable machine specific commands of the form (MC_RUN_COMMAND: blah)",
+        "Disable machine specific commands",
+        arguments_visible["enable_machine_specific_commands"],
+    )
+    if arguments_visible["end_of_line_characters"]:
+        help_message = (
+            "The character(s) to use at the end of each line in the output file, "
+            "default is whatever the system uses, may also use '\\n', '\\r', or '\\r\\n'"
+        )
+    else:
+        help_message = argparse.SUPPRESS
+    shared.add_argument(
+        "--end_of_line_characters",
+        help=help_message,
+    )
     if arguments_visible["feed-precision"]:
         help_message = (
             f"Number of digits of precision for feed rate, "
@@ -225,6 +269,17 @@ def init_shared_arguments(
         type=int,
         help=help_message,
     )
+    if arguments_visible["finish_label"]:
+        help_message = (
+            "The characters to use in the 'Finish operation' comment, "
+            f'default is "{values["FINISH_LABEL"]}"'
+        )
+    else:
+        help_message = argparse.SUPPRESS
+    shared.add_argument(
+        "--finish_label",
+        help=help_message,
+    )
     add_flag_type_arguments(
         shared,
         argument_defaults["header"],
@@ -234,6 +289,30 @@ def init_shared_arguments(
         "Suppress header output",
         arguments_visible["header"],
     )
+    if arguments_visible["line_number_increment"]:
+        help_message = (
+            f'Amount to increment the line numbers, default is {str(values["LINE_INCREMENT"])}'
+        )
+    else:
+        help_message = argparse.SUPPRESS
+    shared.add_argument(
+        "--line_number_increment",
+        default=-1,
+        type=int,
+        help=help_message,
+    )
+    if arguments_visible["line_number_start"]:
+        help_message = (
+            f'The number the line numbers start at, default is {str(values["line_number"])}'
+        )
+    else:
+        help_message = argparse.SUPPRESS
+    shared.add_argument(
+        "--line_number_start",
+        default=-1,
+        type=int,
+        help=help_message,
+    )
     add_flag_type_arguments(
         shared,
         argument_defaults["line-numbers"],
@@ -242,6 +321,15 @@ def init_shared_arguments(
         "Prefix with line numbers",
         "Don't prefix with line numbers",
         arguments_visible["line-numbers"],
+    )
+    add_flag_type_arguments(
+        shared,
+        argument_defaults["list_tools_in_preamble"],
+        "--list_tools_in_preamble",
+        "--no-list_tools_in_preamble",
+        "List the tools used in the operation in the preamble",
+        "Don't list the tools used in the operation",
+        arguments_visible["list_tools_in_preamble"],
     )
     add_flag_type_arguments(
         shared,
@@ -263,6 +351,24 @@ def init_shared_arguments(
     )
     add_flag_type_arguments(
         shared,
+        argument_defaults["output_machine_name"],
+        "--output_machine_name",
+        "--no-output_machine_name",
+        "Output the machine name in the pre-operation information",
+        "Don't output the machine name in the pre-operation information",
+        arguments_visible["output_machine_name"],
+    )
+    add_flag_type_arguments(
+        shared,
+        argument_defaults["output_path_labels"],
+        "--output_path_labels",
+        "--no-output_path_labels",
+        "Output Path labels at the beginning of each Path",
+        "Don't output Path labels at the beginning of each Path",
+        arguments_visible["output_path_labels"],
+    )
+    add_flag_type_arguments(
+        shared,
         argument_defaults["output_visible_arguments"],
         "--output_visible_arguments",
         "--no-output_visible_arguments",
@@ -278,6 +384,14 @@ def init_shared_arguments(
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument("--postamble", help=help_message)
+    if arguments_visible["post_operation"]:
+        help_message = (
+            f"Set commands to be issued after every operation, "
+            f'default is "{values["POST_OPERATION"]}"'
+        )
+    else:
+        help_message = argparse.SUPPRESS
+    shared.add_argument("--post_operation", help=help_message)
     if arguments_visible["preamble"]:
         help_message = (
             f"Set commands to be issued before the first command, "
@@ -412,10 +526,11 @@ def init_shared_values(values: Values) -> None:
     #
     # By default the line ending characters of the output file(s)
     # are written to match the system that the postprocessor runs on.
-    # If you need to force the line ending characters to a specific
-    # value, set this variable to "\n" or "\r\n" instead.
+    # This is indicated by a value of "\n".  If you need to force the line ending
+    # characters to a specific value, set this variable to "\n\n" (meaning "use \n"),
+    # "\r" or "\r\n" instead.
     #
-    values["END_OF_LINE_CHARACTERS"] = os.linesep
+    values["END_OF_LINE_CHARACTERS"] = "\n"
     #
     # The starting precision for feed is also set to 3 digits after the decimal point.
     #
@@ -477,6 +592,10 @@ def init_shared_values(values: Values) -> None:
     # If True output comments.  If False comments are suppressed.
     #
     values["OUTPUT_COMMENTS"] = True
+    #
+    # If True output blank lines.  If False blank lines are suppressed.
+    #
+    values["OUTPUT_BLANK_LINES"] = True
     #
     # if False duplicate axis values or feeds are suppressed
     # if they are the same as the previous line.
@@ -587,7 +706,8 @@ def init_shared_values(values: Values) -> None:
     #
     values["SHOW_MACHINE_UNITS"] = True
     #
-    # If True then the current operation label is output just before the PRE_OPERATION.
+    # If True then the current operation label is output just before the PRE_OPERATION
+    # and just before the POST_OPERATION.
     #
     values["SHOW_OPERATION_LABELS"] = True
     #
@@ -657,7 +777,6 @@ def process_shared_arguments(
                     filename,
                     "w",
                     encoding="utf-8",
-                    newline=values["END_OF_LINE_CHARACTERS"],
                 ) as f:
                     f.write(argument_text)
             return (False, argument_text)
@@ -668,7 +787,6 @@ def process_shared_arguments(
                     filename,
                     "w",
                     encoding="utf-8",
-                    newline=values["END_OF_LINE_CHARACTERS"],
                 ) as f:
                     f.write(argument_text)
             return (False, argument_text)
@@ -725,22 +843,59 @@ def process_shared_arguments(
             values["OUTPUT_COMMENTS"] = False
         if args.comment_symbol:
             values["COMMENT_SYMBOL"] = args.comment_symbol
+        if args.enable_coolant:
+            values["ENABLE_COOLANT"] = True
+        if args.disable_coolant:
+            values["ENABLE_COOLANT"] = False
+        if args.enable_machine_specific_commands:
+            values["ENABLE_MACHINE_SPECIFIC_COMMANDS"] = True
+        if args.disable_machine_specific_commands:
+            values["ENABLE_MACHINE_SPECIFIC_COMMANDS"] = False
+        if args.end_of_line_characters:
+            if args.end_of_line_characters == "\\n" or args.end_of_line_characters == "\n":
+                values["END_OF_LINE_CHARACTERS"] = "\n\n"
+            elif args.end_of_line_characters == "\\r" or args.end_of_line_characters == "\r":
+                values["END_OF_LINE_CHARACTERS"] = "\r"
+            elif args.end_of_line_characters == "\\r\\n" or args.end_of_line_characters == "\r\n":
+                values["END_OF_LINE_CHARACTERS"] = "\r\n"
+            else:
+                print("invalid end_of_line_characters, ignoring")
+        if args.finish_label:
+            values["FINISH_LABEL"] = args.finish_label
         if args.header:
             values["OUTPUT_HEADER"] = True
         if args.no_header:
             values["OUTPUT_HEADER"] = False
+        if args.line_number_increment != -1:
+            values["LINE_INCREMENT"] = args.line_number_increment
+        if args.line_number_start != -1:
+            values["line_number"] = args.line_number_start
         if args.line_numbers:
             values["OUTPUT_LINE_NUMBERS"] = True
         if args.no_line_numbers:
             values["OUTPUT_LINE_NUMBERS"] = False
+        if args.list_tools_in_preamble:
+            values["LIST_TOOLS_IN_PREAMBLE"] = True
+        if args.no_list_tools_in_preamble:
+            values["LIST_TOOLS_IN_PREAMBLE"] = False
         if args.modal:
             values["MODAL"] = True
         if args.no_modal:
             values["MODAL"] = False
+        if args.output_machine_name:
+            values["OUTPUT_MACHINE_NAME"] = True
+        if args.no_output_machine_name:
+            values["OUTPUT_MACHINE_NAME"] = False
+        if args.output_path_labels:
+            values["OUTPUT_PATH_LABELS"] = True
+        if args.no_output_path_labels:
+            values["OUTPUT_PATH_LABELS"] = False
         if args.postamble is not None:
-            values["POSTAMBLE"] = args.postamble
+            values["POSTAMBLE"] = args.postamble.replace("\\n", "\n")
+        if args.post_operation is not None:
+            values["POST_OPERATION"] = args.post_operation.replace("\\n", "\n")
         if args.preamble is not None:
-            values["PREAMBLE"] = args.preamble
+            values["PREAMBLE"] = args.preamble.replace("\\n", "\n")
         if args.return_to != "":
             values["RETURN_TO"] = [int(v) for v in args.return_to.split(",")]
             if len(values["RETURN_TO"]) != 3:

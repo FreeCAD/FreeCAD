@@ -26,12 +26,13 @@ import FreeCAD
 from draftobjects.hatch import Hatch
 if FreeCAD.GuiUp:
     from draftviewproviders.view_hatch import ViewProviderDraftHatch
+    import draftutils.gui_utils as gui_utils
 
-def make_hatch(baseobject, filename, pattern, scale, rotation):
+def make_hatch(baseobject, filename, pattern, scale, rotation, translate=True):
 
-    """make_hatch(baseobject, filename, pattern, scale, rotation): Creates and returns a
+    """make_hatch(baseobject, filename, pattern, scale, rotation, translate): Creates and returns a
     hatch object made by applying the given pattern of the given PAT file to the faces of
-    the given base object. Given scale and rotation factors are applied to the hatch object.
+    the given base object. Given scale, rotation and translate factors are applied to the hatch object.
     The result is a Part-based object created in the active document."""
 
     if not FreeCAD.ActiveDocument:
@@ -43,6 +44,9 @@ def make_hatch(baseobject, filename, pattern, scale, rotation):
     obj.Pattern = pattern
     obj.Scale = scale
     obj.Rotation = rotation
+    obj.Translate = translate
     if FreeCAD.GuiUp:
         ViewProviderDraftHatch(obj.ViewObject)
+        gui_utils.format_object(obj)
+        gui_utils.autogroup(obj)
     return obj

@@ -278,6 +278,22 @@ PyObject* GroupExtensionPy::getObject(PyObject* args)
     }
 }
 
+PyObject* GroupExtensionPy::getObjectsOfType(PyObject* args)
+{
+    char* pcName;
+    if (!PyArg_ParseTuple(args, "s", &pcName)) {
+        return nullptr;
+    }
+
+    std::vector<DocumentObject*> objs = getGroupExtensionPtr()->getObjectsOfType(Base::Type::fromName(pcName));
+    Py::List result;
+    for (App::DocumentObject* obj : objs) {
+        result.append(Py::asObject(obj->getPyObject()));
+    }
+
+    return Py::new_reference_to(result);
+}
+
 PyObject* GroupExtensionPy::hasObject(PyObject* args)
 {
     PyObject* object;
@@ -317,4 +333,31 @@ PyObject* GroupExtensionPy::getCustomAttributes(const char* /*attr*/) const
 int GroupExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
+}
+
+// def allowObject(self, obj: Any) -> bool:
+PyObject* GroupExtensionPy::allowObject(PyObject* args)
+{
+    PyObject* object;
+    if (!PyArg_ParseTuple(args, "O!", &(DocumentObjectPy::Type), &object)) {
+        return nullptr;
+    }
+
+    auto* docObj = static_cast<DocumentObjectPy*>(object);
+    if (!docObj->getDocumentObjectPtr()
+        || !docObj->getDocumentObjectPtr()->isAttachedToDocument()) {
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check an invalid object");
+        return nullptr;
+    }
+    if (docObj->getDocumentObjectPtr()->getDocument()
+        != getGroupExtensionPtr()->getExtendedObject()->getDocument()) {
+        PyErr_SetString(Base::PyExc_FC_GeneralError,
+                        "Cannot check an object from another document from this group");
+        return nullptr;
+    }
+
+    GroupExtension* grp = getGroupExtensionPtr();
+
+    bool allowed = grp->allowObject(docObj->getDocumentObjectPtr());
+    return PyBool_FromLong(allowed ? 1 : 0);
 }

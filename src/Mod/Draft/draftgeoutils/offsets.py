@@ -338,8 +338,6 @@ def offsetWire(wire, dvec, bind=False, occ=False,
 
     if not isinstance(basewireOffset, list):
         basewireOffset = [basewireOffset]
-    else:
-        basewireOffset = basewireOffset  # for backward compatibility
 
     for i in range(len(edges)):
         # make a copy so it do not reverse the self.baseWires edges

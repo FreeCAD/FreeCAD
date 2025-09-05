@@ -32,6 +32,7 @@ from . import ifc_psets
 from . import ifc_materials
 from . import ifc_layers
 from . import ifc_status
+from . import ifc_types
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -101,6 +102,8 @@ def insert(
         ifc_layers.load_layers(prj_obj)
     if PARAMS.GetBool("LoadPsets", False):
         ifc_psets.load_psets(prj_obj)
+    if PARAMS.GetBool("LoadTypes", False):
+        ifc_types.load_types(prj_obj)
     document.recompute()
     # print a reference to the IFC file on the console
     if FreeCAD.GuiUp and PARAMS.GetBool("IfcFileToConsole", False):
@@ -133,6 +136,7 @@ def get_options(strategy=None, shapemode=None, switchwb=None, silent=False):
     """
 
     psets = PARAMS.GetBool("LoadPsets", False)
+    types = PARAMS.GetBool("LoadTypes", False)
     materials = PARAMS.GetBool("LoadMaterials", False)
     layers = PARAMS.GetBool("LoadLayers", False)
     singledoc = PARAMS.GetBool("SingleDoc", False)
@@ -155,6 +159,7 @@ def get_options(strategy=None, shapemode=None, switchwb=None, silent=False):
         dlg.checkSwitchWB.setChecked(switchwb)
         dlg.checkAskAgain.setChecked(ask)
         dlg.checkLoadPsets.setChecked(psets)
+        dlg.checkLoadTypes.setChecked(types)
         dlg.checkLoadMaterials.setChecked(materials)
         dlg.checkLoadLayers.setChecked(layers)
         dlg.comboSingleDoc.setCurrentIndex(1 - int(singledoc))
@@ -166,6 +171,7 @@ def get_options(strategy=None, shapemode=None, switchwb=None, silent=False):
         switchwb = dlg.checkSwitchWB.isChecked()
         ask = dlg.checkAskAgain.isChecked()
         psets = dlg.checkLoadPsets.isChecked()
+        types = dlg.checkLoadTypes.isChecked()
         materials = dlg.checkLoadMaterials.isChecked()
         layers = dlg.checkLoadLayers.isChecked()
         singledoc = dlg.comboSingleDoc.currentIndex()
@@ -174,6 +180,7 @@ def get_options(strategy=None, shapemode=None, switchwb=None, silent=False):
         PARAMS.SetBool("SwitchWB", switchwb)
         PARAMS.SetBool("AskAgain", ask)
         PARAMS.SetBool("LoadPsets", psets)
+        PARAMS.SetBool("LoadTypes", types)
         PARAMS.SetBool("LoadMaterials", materials)
         PARAMS.SetBool("LoadLayers", layers)
         PARAMS.SetBool("SingleDoc", bool(1 - singledoc))

@@ -28,6 +28,7 @@ target_include_directories(
     ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${ZIPIOS_INCLUDES}
+    ${ICU_INCLUDE_DIRS}
 )
 
 if(MSVC)
@@ -35,6 +36,7 @@ if(MSVC)
         ${Boost_LIBRARIES}
         ${XercesC_LIBRARIES}
         ${ZLIB_LIBRARIES}
+        ${ICU_LIBRARIES}
         debug MSVCRTD.LIB
         debug MSVCPRTD.LIB
         optimized MSVCRT.LIB
@@ -59,6 +61,7 @@ elseif(MINGW)
         ${XercesC_LIBRARIES}
         ${Boost_LIBRARIES}
         ${ZLIB_LIBRARIES}
+        ${ICU_LIBRARIES}
         Rpcrt4.lib
     )
 else(MSVC)
@@ -66,6 +69,7 @@ else(MSVC)
         ${XercesC_LIBRARIES}
         ${Boost_LIBRARIES}
         ${ZLIB_LIBRARIES}
+        ${ICU_LIBRARIES}
     )
 endif(MSVC)
 
@@ -205,6 +209,7 @@ SET(FreeCADBase_CPP_SRCS
     Placement.cpp
     PlacementPyImp.cpp
     PrecisionPyImp.cpp
+    ProgressIndicator.cpp
     ProgressIndicatorPy.cpp
     PyExport.cpp
     PyObjectBase.cpp
@@ -271,6 +276,7 @@ SET(FreeCADBase_HPP_SRCS
     Placement.h
     Precision.h
     ProgressIndicatorPy.h
+    ProgressIndicator.h
     PyExport.h
     PyObjectBase.h
     PyWrapParseTupleAndKeywords.h

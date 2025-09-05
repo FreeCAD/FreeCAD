@@ -33,6 +33,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
+#include <Gui/Tools.h>
 #include <Mod/PartDesign/App/FeatureLoft.h>
 
 #include "ui_TaskLoftParameters.h"
@@ -47,7 +48,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskLoftParameters */
 
 TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(LoftView, parent, "PartDesign_AdditiveLoft", tr("Loft parameters"))
+    : TaskSketchBasedParameters(LoftView, parent, "PartDesign_AdditiveLoft", tr("Loft Parameters"))
     , ui(new Ui_TaskLoftParameters)
 {
     // we need a separate container widget to add all controls to
@@ -72,11 +73,8 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        remove->setShortcut(QKeySequence(shortcut));
-    }
+    remove->setShortcut(Gui::QtTools::deleteKeySequence());
+
     // display shortcut behind the context menu entry
     remove->setShortcutVisibleInContextMenu(true);
     ui->listWidgetReferences->addAction(remove);
@@ -383,6 +381,7 @@ TaskDlgLoftParameters::TaskDlgLoftParameters(ViewProviderLoft* LoftView, bool ne
     parameter = new TaskLoftParameters(LoftView, newObj);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 TaskDlgLoftParameters::~TaskDlgLoftParameters() = default;

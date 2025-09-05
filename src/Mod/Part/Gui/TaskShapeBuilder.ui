@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Create shape</string>
+   <string>Create Shape</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0" colspan="2">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Create shape</string>
+      <string>Create Shape</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
@@ -98,7 +98,8 @@
         <item>
          <widget class="QPushButton" name="selectButton">
           <property name="text">
-           <string>Box selection...</string>
+           <string>Box Selection</string>
+
           </property>
          </widget>
         </item>

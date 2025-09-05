@@ -116,7 +116,7 @@ def get_arrow(obj,
     _scale = 'scale({size},{size})'.format(size=arrowsize)
     _style = 'style="stroke-miterlimit:4;stroke-dasharray:none;stroke-linecap:square"'
 
-    if vobj.ArrowType == "Circle":
+    if arrowtype == "Circle":
         svg += '<circle '
         svg += _cx_cy_r + ' '
         svg += 'fill="{}" stroke="{}" '.format("none", color)
@@ -124,14 +124,14 @@ def get_arrow(obj,
         svg += 'stroke-miterlimit:4;stroke-dasharray:none;stroke-linecap:square" '
         svg += 'freecad:skip="1"'
         svg += '/>\n'
-    elif vobj.ArrowType == "Dot":
+    elif arrowtype == "Dot":
         svg += '<circle '
         svg += _cx_cy_r + ' '
         svg += 'fill="{}" stroke="{}" '.format(color, "none")
         svg += _style + ' '
         svg += 'freecad:skip="1"'
         svg += '/>\n'
-    elif vobj.ArrowType == "Arrow":
+    elif arrowtype == "Arrow":
         svg += '<path '
         svg += 'transform="'
         svg += _rotate + ' '
@@ -142,7 +142,7 @@ def get_arrow(obj,
         svg += _style + ' '
         svg += 'd="M 0 0 L 4 1 L 4 -1 Z"'
         svg += '/>\n'
-    elif vobj.ArrowType == "Tick":
+    elif arrowtype == "Tick":
         svg += '<path '
         svg += 'transform="'
         svg += _rotate + ' '
@@ -153,7 +153,7 @@ def get_arrow(obj,
         svg += _style + ' '
         svg += 'd="M -1 -2 L 0 2 L 1 2 L 0 -2 Z"'
         svg += '/>\n'
-    elif vobj.ArrowType == "Tick-2":
+    elif arrowtype == "Tick-2":
         svg += '<line '
         svg += 'transform="'
         svg += 'rotate({},{},{}) '.format(math.degrees(angle) + 45,
@@ -166,6 +166,8 @@ def get_arrow(obj,
         svg += 'x1="-{}" y1="0" '.format(2 * arrowsize)
         svg += 'x2="{}" y2="0"'.format(2 * arrowsize)
         svg += '/>\n'
+    elif arrowtype == "None":
+        svg += ""
     else:
         _wrn("getSVG: arrow type not implemented")
 
@@ -346,23 +348,29 @@ def _svg_dimension(obj, plane, scale, linewidth, fontsize,
                                  linewidth, shootangle)
 
         # drawing arrows
-        if hasattr(vobj, "ArrowType"):
-            arrowsize = vobj.ArrowSize.Value/pointratio
-            if hasattr(vobj, "FlipArrows"):
-                if vobj.FlipArrows:
-                    angle = angle + math.pi
-
-            if not hasattr(obj, "Diameter") \
-                    or obj.Diameter \
-                    or not prx.is_linked_to_circle():
-                svg += get_arrow(obj,
-                                 vobj.ArrowType,
-                                 p2, arrowsize, stroke, linewidth,
-                                 angle)
+        if hasattr(vobj, "ArrowTypeStart") \
+                and hasattr(vobj, "ArrowTypeEnd") \
+                and hasattr(vobj, "ArrowSizeStart") \
+                and hasattr(vobj, "ArrowSizeEnd"):
+            if getattr(vobj, "FlipArrows", False):
+                angle = angle + math.pi
+            if getattr(vobj, "FlipText", False):
+                angle = angle + math.pi
 
             svg += get_arrow(obj,
-                             vobj.ArrowType,
-                             p3, arrowsize, stroke, linewidth,
+                             vobj.ArrowTypeStart,
+                             p2,
+                             vobj.ArrowSizeStart.Value/pointratio,
+                             stroke,
+                             linewidth,
+                             angle)
+
+            svg += get_arrow(obj,
+                             vobj.ArrowTypeEnd,
+                             p3,
+                             vobj.ArrowSizeEnd.Value/pointratio,
+                             stroke,
+                             linewidth,
                              angle + math.pi)
 
     # drawing text
@@ -606,22 +614,29 @@ def get_svg(obj,
                                             edges=[prx.circle])
 
                     # drawing arrows
-                    if hasattr(vobj, "ArrowType"):
+                    if hasattr(vobj, "ArrowTypeStart") \
+                            and hasattr(vobj, "ArrowTypeEnd") \
+                            and hasattr(vobj, "ArrowSizeStart") \
+                            and hasattr(vobj, "ArrowSizeEnd"):
                         p2 = get_proj(prx.p2, plane)
                         p3 = get_proj(prx.p3, plane)
-                        arrowsize = vobj.ArrowSize.Value/pointratio
-                        halfarrowlength = 2 * arrowsize
-                        arrowangle = 2 * math.asin(halfarrowlength / prx.circle.Curve.Radius)
+                        arrowsizestart = vobj.ArrowSizeStart.Value/pointratio
+                        halfstartarrowlength = 2 * arrowsizestart
+                        startarrowangle = 2 * math.asin(halfstartarrowlength / prx.circle.Curve.Radius)
+                        arrowsizeend = vobj.ArrowSizeEnd.Value/pointratio
+                        halfendarrowlength = 2 * arrowsizeend
+                        endarrowangle = 2 * math.asin(halfendarrowlength / prx.circle.Curve.Radius)
                         if hasattr(vobj, "FlipArrows") \
                                 and vobj.FlipArrows:
-                            arrowangle = -arrowangle
+                            startarrowangle = -startarrowangle
+                            endarrowangle = -endarrowangle
 
                         _v1a = prx.circle.valueAt(prx.circle.FirstParameter
-                                                  + arrowangle)
+                                                  + startarrowangle)
                         _v1b = prx.circle.valueAt(prx.circle.FirstParameter)
 
                         _v2a = prx.circle.valueAt(prx.circle.LastParameter
-                                                  - arrowangle)
+                                                  - endarrowangle)
                         _v2b = prx.circle.valueAt(prx.circle.LastParameter)
 
                         u1 = get_proj(_v1a - _v1b, plane)
@@ -630,12 +645,18 @@ def get_svg(obj,
                         angle2 = -DraftVecUtils.angle(u2)
 
                         svg += get_arrow(obj,
-                                         vobj.ArrowType,
-                                         p2, arrowsize, stroke, linewidth,
+                                         vobj.ArrowTypeStart,
+                                         p2,
+                                         arrowsizestart,
+                                         stroke,
+                                         linewidth,
                                          angle1)
                         svg += get_arrow(obj,
-                                         vobj.ArrowType,
-                                         p3, arrowsize, stroke, linewidth,
+                                         vobj.ArrowTypeEnd,
+                                         p3,
+                                         arrowsizeend,
+                                         stroke,
+                                         linewidth,
                                          angle2)
 
                     # drawing text
@@ -668,41 +689,46 @@ def get_svg(obj,
                                             tangle, tbase, prx.string)
 
     elif utils.get_type(obj) == "Label":
-        if getattr(vobj, "Line", True):
-            # Some Labels may have no Line property
-            # Draw multisegment line
-            proj_points = list(map(lambda x: get_proj(x, plane), obj.Points))
-            path_dir_list = [format_point(proj_points[0], action='M')]
-            path_dir_list += map(format_point, proj_points[1:])
-            path_dir_str = " ".join(path_dir_list)
-
-            svg_path = '<path '
-            svg_path += 'fill="none" '
-            svg_path += 'stroke="{}" '.format(stroke)
-            svg_path += 'stroke-width="{}" '.format(linewidth)
-            svg_path += 'stroke-linecap="square" '
-            svg_path += 'd="{}"'.format(path_dir_str)
-            svg_path += '/>'
-            svg += svg_path
-
-            # Draw arrow.
-            # We are different here from 3D view
-            # if Line is set to 'off', no arrow is drawn
-            if hasattr(vobj, "ArrowType") and len(obj.Points) >= 2:
-                last_segment = App.Vector(obj.Points[-1] - obj.Points[-2])
-                _v = get_proj(last_segment, plane)
-                angle = -DraftVecUtils.angle(_v) + math.pi
-                svg += get_arrow(obj,
-                                 vobj.ArrowType,
-                                 proj_points[-1],
-                                 vobj.ArrowSize.Value/pointratio,
-                                 stroke, linewidth, angle)
 
         if not App.GuiUp:
             _wrn("Export of texts to SVG is only available in GUI mode")
 
-        # print text
         if App.GuiUp:
+
+            if getattr(vobj, "Line", True):
+                # Some Labels may have no Line property
+                # Draw multisegment line
+                proj_points = list(map(lambda x: get_proj(x, plane), obj.Points))
+                path_dir_list = [format_point(proj_points[0], action='M')]
+                path_dir_list += map(format_point, proj_points[1:])
+                path_dir_str = " ".join(path_dir_list)
+
+                svg_path = '<path '
+                svg_path += 'fill="none" '
+                svg_path += 'stroke="{}" '.format(stroke)
+                svg_path += 'stroke-width="{}" '.format(linewidth)
+                svg_path += 'stroke-linecap="square" '
+                svg_path += 'd="{}"'.format(path_dir_str)
+                svg_path += '/>'
+                svg += svg_path
+
+                # Draw arrow.
+                # We are different here from 3D view
+                # if Line is set to 'off', no arrow is drawn
+                if hasattr(vobj, "ArrowTypeStart") \
+                        and (hasattr(vobj, "ArrowSizeStart") \
+                        and len(obj.Points) > 1):
+                    last_segment = App.Vector(obj.Points[-1] - obj.Points[-2])
+                    _v = get_proj(last_segment, plane)
+                    angle = -DraftVecUtils.angle(_v) + math.pi
+                    svg += get_arrow(obj,
+                                     vobj.ArrowTypeStart,
+                                     proj_points[-1],
+                                     vobj.ArrowSizeStart.Value/pointratio,
+                                     stroke,
+                                     linewidth,
+                                     angle)
+
             fontname = vobj.FontName
             position = get_proj(obj.Placement.Base, plane)
             rotation = obj.Placement.Rotation
@@ -944,19 +970,31 @@ def get_svg(obj,
                                    fill_opacity=fill_opacity,
                                    edges=obj.Shape.Edges)
 
-        if (App.GuiUp
-                and hasattr(vobj, "EndArrow")
-                and vobj.EndArrow
-                and hasattr(vobj, "ArrowType")
-                and len(obj.Shape.Vertexes) > 1):
+        if App.GuiUp \
+                and hasattr(vobj, "ArrowTypeStart") \
+                and hasattr(vobj, "ArrowTypeEnd") \
+                and hasattr(vobj, "ArrowSizeStart") \
+                and hasattr(vobj, "ArrowSizeEnd") \
+                and len(obj.Shape.Vertexes) > 1:
+            # Draft_Wire
+            p1 = get_proj(obj.Shape.Vertexes[0].Point, plane)
+            p2 = get_proj(obj.Shape.Vertexes[1].Point, plane)
+            svg += get_arrow(obj,
+                             vobj.ArrowTypeStart,
+                             p1,
+                             vobj.ArrowSizeStart.Value/pointratio,
+                             stroke,
+                             linewidth,
+                             -DraftVecUtils.angle(p2 - p1))
             p1 = get_proj(obj.Shape.Vertexes[-1].Point, plane)
             p2 = get_proj(obj.Shape.Vertexes[-2].Point, plane)
-            angle = -DraftVecUtils.angle(p2 - p1)
-
-            arrowsize = vobj.ArrowSize.Value/pointratio
             svg += get_arrow(obj,
-                             vobj.ArrowType,
-                             p1, arrowsize, stroke, linewidth, angle)
+                             vobj.ArrowTypeEnd,
+                             p1,
+                             vobj.ArrowSizeEnd.Value/pointratio,
+                             stroke,
+                             linewidth,
+                             -DraftVecUtils.angle(p2 - p1))
 
     # techdraw expects bottom-to-top coordinates
     if techdraw:

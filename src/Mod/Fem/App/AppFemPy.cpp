@@ -350,7 +350,7 @@ private:
             throw Py::Exception();
         }
 
-        // if non is returned the VTK object was created by annother VTK library, and the
+        // if none is returned the VTK object was created by another VTK library, and the
         // python api used to create it cannot be used with FreeCAD
         vtkObjectBase* obj = vtkPythonUtil::GetPointerFromObject(pcObj, "vtkObject");
         if (!obj) {

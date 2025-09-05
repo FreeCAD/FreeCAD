@@ -27,6 +27,7 @@
 
 #include "Enums.h"
 #include "QGCustomText.h"
+#include "QGIUserTypes.h"
 #include "QGIViewDimension.h"
 
 
@@ -40,7 +41,7 @@ public:
     QGIDatumLabel();
     ~QGIDatumLabel() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 107};
+    enum {Type = UserType::QGIDatumLabel};
     int type() const override { return Type;}
 
     QRectF boundingRect() const override;
@@ -51,9 +52,9 @@ public:
                         QWidget *widget = nullptr ) override;
     void setLabelCenter();
     void setPosFromCenter(const double &xCenter, const double &yCenter);
-    double X() const { return posX; }
-    double Y() const { return posY; }              //minus posY?
-    Base::Vector2d getPosToCenterVec();
+    double X() const { return x() + getPosToCenterVec().x; }
+    double Y() const { return y() + getPosToCenterVec().y; }
+    Base::Vector2d getPosToCenterVec() const;
 
     void setFont(QFont font);
     QFont getFont() const { return m_dimText->font(); }
@@ -96,6 +97,8 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
     void updateFrameRect();
+    void updateChildren();
+    void boundingRectChanged();
 
     int getPrecision();
 
@@ -120,9 +123,6 @@ private:
     QGraphicsRectItem* m_frame;
     QColor m_colNormal;
     bool m_ctrl;
-
-    double posX;
-    double posY;
 
     DragState m_dragState;
 

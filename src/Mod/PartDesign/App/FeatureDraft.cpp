@@ -43,9 +43,11 @@
 #endif
 
 #include <App/Datums.h>
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
+#include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureDraft.h"
@@ -214,7 +216,7 @@ App::DocumentObjectExecReturn *Draft::execute()
             Base::Vector3d b = plane->getBasePoint();
             Base::Vector3d n = plane->getNormal();
             neutralPlane = gp_Pln(gp_Pnt(b.x, b.y, b.z), gp_Dir(n.x, n.y, n.z));
-        } else if (refPlane->isDerivedFrom<App::Plane>()) {
+        } else if (refPlane->isDerivedFrom<App::Plane>() || refPlane->isDerivedFrom<Part::Part2DObject>()) {
             neutralPlane = Feature::makePlnFromPlane(refPlane);
         } else if (refPlane->isDerivedFrom<Part::Feature>()) {
             std::vector<std::string> subStrings = NeutralPlane.getSubValues();
@@ -276,50 +278,17 @@ App::DocumentObjectExecReturn *Draft::execute()
     Part::TopoShape baseShape(TopShape);
     baseShape.setTransform(Base::Matrix4D());
     try {
-        BRepOffsetAPI_DraftAngle mkDraft;
-        // Note:
-        // LocOpe_SplitDrafts can split a face with a wire and apply draft to both parts
-        //       Not clear though whether the face must have free boundaries
-        // LocOpe_DPrism can create a stand-alone draft prism. The sketch can only have a single
-        //       wire, though.
-        // BRepFeat_MakeDPrism requires a support for the operation but will probably support multiple
-        //       wires in the sketch
+        std::vector<TopoShape> faces = getFaces(baseShape);
 
-        bool success;
+        TopoShape shape({}, getDocument()->getStringHasher());
+        shape.makeElementDraft(baseShape, faces, pullDirection, angle, neutralPlane, reversed);
 
-        do {
-            success = true;
-            mkDraft.Init(baseShape.getShape());
-
-            for (std::vector<std::string>::iterator it=SubVals.begin(); it != SubVals.end(); ++it) {
-                TopoDS_Face face = TopoDS::Face(baseShape.getSubShape(it->c_str()));
-                // TODO: What is the flag for?
-                mkDraft.Add(face, pullDirection, angle, neutralPlane);
-                if (!mkDraft.AddDone()) {
-                    // Note: the function ProblematicShape returns the face on which the error occurred
-                    // Note: mkDraft.Remove() stumbles on a bug in Draft_Modification::Remove() and is
-                    //       therefore unusable. See https://forum.freecad.org/viewtopic.php?f=10&t=3209&start=10#p25341
-                    //       The only solution is to discard mkDraft and start over without the current face
-                    // mkDraft.Remove(face);
-                    Base::Console().error("Adding face failed on %s. Omitted\n", it->c_str());
-                    success = false;
-                    SubVals.erase(it);
-                    break;
-                }
-            }
-        }
-        while (!success);
-
-        mkDraft.Build();
-        if (!mkDraft.IsDone())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Failed to create draft"));
-
-        TopoDS_Shape shape = mkDraft.Shape();
-        if (shape.IsNull())
+        if (shape.isNull()) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is null"));
+        }
 
-        if (!isSingleSolidRuleSatisfied(shape)) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+        if (!isSingleSolidRuleSatisfied(shape.getShape())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compound' in the active body."));
         }
 
         this->Shape.setValue(getSolid(shape));
@@ -330,3 +299,5 @@ App::DocumentObjectExecReturn *Draft::execute()
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }
+
+

@@ -135,7 +135,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
             }
         }
         else {
-            auto shape = Part::Feature::getShape(obj);
+            auto shape = Part::Feature::getShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
             // if source obj has a shape, we use that shape.
             if(!SU::isShapeReallyNull(shape)) {
                 if (checkShape(obj, shape)) {
@@ -166,25 +166,30 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
     for (auto& s:sourceShapes) {
         if (SU::isShapeReallyNull(s)) {
             continue;
-        } else if (s.ShapeType() < TopAbs_SOLID) {
-            //clean up composite shapes
-            TopoDS_Shape cleanShape = ShapeFinder::ShapeFinder::stripInfiniteShapes(s);
+        }
+
+        if (s.ShapeType() < TopAbs_SOLID) {
+            //clean up TopAbs_COMPOUND & TopAbs_COMPSOLID
+            TopoDS_Shape cleanShape = ShapeFinder::stripInfiniteShapes(s);
             if (!cleanShape.IsNull()) {
                 builder.Add(comp, cleanShape);
             }
         } else if (Part::TopoShape(s).isInfinite()) {
             continue;    //simple shape is infinite
-        } else {
-            //a simple shape - add to compound
-            builder.Add(comp, s);
         }
-    }
-    //it appears that an empty compound is !IsNull(), so we need to check a different way
-    if (!SU::isShapeReallyNull(comp)) {
-        return comp;
+
+        //a simple shape - add to compound
+        builder.Add(comp, s);
     }
 
-    return TopoDS_Shape();
+    //it appears that an empty compound is !IsNull(), so we need to check a different way
+    if (SU::isShapeReallyNull(comp)) {
+        return {};
+    }
+
+    // BRepTools::Write(comp, "SEgetShapesOut.brep");
+
+    return comp;
 }
 
 std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
@@ -225,7 +230,8 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
                     childNeedsTransform = true;
                 }
             }
-            auto shape = Part::Feature::getShape(l);    // TODO:  getTopoShape() ?
+            // TODO:  getTopoShape() ?
+            auto shape = Part::Feature::getShape(l, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
             Part::TopoShape ts(shape);
             if (ts.isInfinite()) {
                 shape = ShapeFinder::stripInfiniteShapes(shape);
@@ -280,7 +286,7 @@ TopoDS_Shape ShapeExtractor::getShapeFromXLink(const App::Link* xLink)
     App::DocumentObject* linkedObject = xLink->getLink(depth);
     if (linkedObject) {
         // have a linked object, get the shape
-        TopoDS_Shape shape = Part::Feature::getShape(linkedObject);
+        TopoDS_Shape shape = Part::Feature::getShape(linkedObject, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (shape.IsNull()) {
             // this is where we need to parse the target for objects with a shape??
             return TopoDS_Shape();
@@ -465,7 +471,7 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(const App::DocumentObject* 
 //! get the located and oriented version of docObj shape
 TopoDS_Shape ShapeExtractor::getLocatedShape(const App::DocumentObject* docObj)
 {
-        Part::TopoShape shape = Part::Feature::getTopoShape(docObj);
+        Part::TopoShape shape = Part::Feature::getTopoShape(docObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         const Part::Feature* pf = dynamic_cast<const Part::Feature*>(docObj);
         if (pf) {
             shape.setPlacement(pf->globalPlacement());

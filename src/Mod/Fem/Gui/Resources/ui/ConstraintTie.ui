@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Tie parameter</string>
+   <string>Tie Parameter</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -60,7 +60,7 @@
         <item row="2" column="0">
          <widget class="QCheckBox" name="ckb_adjust">
           <property name="text">
-           <string>Enable Adjust</string>
+           <string>Enable adjust</string>
           </property>
          </widget>
         </item>

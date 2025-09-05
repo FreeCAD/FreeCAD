@@ -17,9 +17,8 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-       <string>To create a new PartDesign object, there must be an active Body object in the document.
-
-Please select a body from below, or create a new body.</string>
+       <string>To create a new Part Design object, there must be an active body in the document.
+Select a body from below, or create a new body.</string>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -33,7 +32,7 @@ Please select a body from below, or create a new body.</string>
     <widget class="QListWidget" name="bodySelect">
      <item>
       <property name="text">
-       <string>Create new body</string>
+       <string>Create New Body</string>
       </property>
      </item>
     </widget>

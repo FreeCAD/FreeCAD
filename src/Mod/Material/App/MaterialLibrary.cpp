@@ -45,7 +45,6 @@ TYPESYSTEM_SOURCE(Materials::MaterialLibrary, Base::BaseClass)
 
 MaterialLibrary::MaterialLibrary(const QString& libraryName, const QString& icon, bool readOnly)
     : Library(libraryName, icon, readOnly)
-    , _local(false)
 {}
 
 MaterialLibrary::MaterialLibrary(const QString& libraryName,
@@ -53,36 +52,24 @@ MaterialLibrary::MaterialLibrary(const QString& libraryName,
                                  const QString& icon,
                                  bool readOnly)
     : Library(libraryName, dir, icon, readOnly)
-    , _local(false)
 {}
 
 MaterialLibrary::MaterialLibrary(const Library& library)
     : Library(library)
-    , _local(false)
 {}
 
-bool MaterialLibrary::isLocal() const
-{
-    return _local;
-}
-
-void MaterialLibrary::setLocal(bool local)
-{
-    _local = local;
-}
-
 std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
+MaterialLibrary::getMaterialTree(const Materials::MaterialFilter& filter,
                                  const Materials::MaterialFilterOptions& options) const
 {
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>> materialTree =
         std::make_shared<std::map<QString, std::shared_ptr<MaterialTreeNode>>>();
 
-    auto materials = MaterialManager::getManager().libraryMaterials(getName(), filter, options);
+    auto materials = MaterialManager::getManager().libraryMaterials(getName(), filter, options, isLocal());
     for (auto& it : *materials) {
-        auto uuid = std::get<0>(it);
-        auto path = std::get<1>(it);
-        auto filename = std::get<2>(it);
+        auto uuid = it.getUUID();
+        auto path = it.getPath();
+        auto filename = it.getName();
 
         QStringList list = path.split(QStringLiteral("/"));
 
@@ -98,6 +85,7 @@ MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter
                     std::shared_ptr<MaterialTreeNode> child =
                         std::make_shared<MaterialTreeNode>();
                     child->setFolder(mapPtr);
+                    child->setReadOnly(isReadOnly());
                     (*node)[itp] = child;
                     node = mapPtr;
                 }
@@ -108,6 +96,11 @@ MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter
         }
         std::shared_ptr<MaterialTreeNode> child = std::make_shared<MaterialTreeNode>();
         child->setUUID(uuid);
+        child->setReadOnly(isReadOnly());
+        if (isLocal()) {
+            auto material = MaterialManager::getManager().getMaterial(uuid);
+            child->setOldFormat(material->isOldFormat());
+        }
         (*node)[filename] = child;
     }
 
@@ -196,7 +189,7 @@ void MaterialLibraryLocal::deleteRecursive(const QString& path)
     }
 
     QString filePath = getLocalPath(path);
-    auto manager = MaterialManager::getManager();
+    auto& manager = MaterialManager::getManager();
 
     QFileInfo info(filePath);
     if (info.isDir()) {

@@ -58,17 +58,14 @@ Gui--PropertyEditor--PropertyEditor QLineEdit:read-only,
 Gui--PropertyEditor--PropertyEditor QLineEdit:disabled,
 Gui--PropertyEditor--PropertyEditor QAbstractSpinBox:read-only,
 Gui--PropertyEditor--PropertyEditor QAbstractSpinBox:disabled {
-    color: transparent;
     border-color: transparent;
     background-color: #444444;
-    selection-color: transparent;
     selection-background-color: transparent;
     border-radius: 2px;
 }
 
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel,
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel:disabled {
-    color: transparent;
     background-color: transparent;
     border: none;
     border-radius: 2px;
@@ -94,8 +91,8 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QFrame:focus {
 
 /* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel {
-	color: #ffffff;
-	background-color: #ACC8E5; /* same as focused background color */
+  color: #ffffff;
+  background-color: #ACC8E5; /* same as focused background color */
   border-radius: 2px;
 }
 
@@ -237,6 +234,12 @@ QStatusBar QToolTip {
 QStatusBar QLabel {
   /* Fixes Spyder #9120, #9121 */
   background-color: transparent;
+}
+
+QStatusBar QPushButton {
+    min-width: 0;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 /* QCheckBox --------------------------------------------------------------
@@ -1681,6 +1684,10 @@ color: white;
 background-color: #252525;
 }
 
+/* Fix for tables inside task panels, see https://github.com/FreeCAD/FreeCAD/issues/22957 */
+QSint--ActionGroup QFrame[class="content"] QTableView {
+  min-height: 300px;
+}
 
 /* found inside Part Design Workbench and "make a draft on a face" Task panel options */
 QSint--ActionGroup QFrame[class="content"] QToolButton {
@@ -1712,8 +1719,7 @@ QSint--ActionGroup QToolButton::menu-button {
 }
 
 QSint--ActionGroup QToolButton#settingsButton,
-QSint--ActionGroup QToolButton#filterButton,
-QSint--ActionGroup QToolButton#manualUpdate {
+QSint--ActionGroup QToolButton#filterButton {
     padding-right: 20px; /* make way for the popup button */
 }
 
@@ -2281,6 +2287,8 @@ QListView::indicator,
 QTableView::indicator,
 QColumnView::indicator {
   border: 1px solid #ffffff;
+  width: 12px;
+  height: 12px;
 }
 
 QTreeView::indicator:unchecked:disabled,
@@ -2731,7 +2739,7 @@ PlotWidget {
 SKETCHER
 ==================================================================================================*/
 
-Gui--StatefulLabel[state="empty_sketch"] {
+Gui--StatefulLabel[state="empty"] {
   color : #ffffff; /* 50% opacity white */
 }
 Gui--StatefulLabel[state="under_constrained"] {

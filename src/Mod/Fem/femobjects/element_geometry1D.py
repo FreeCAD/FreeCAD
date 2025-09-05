@@ -175,7 +175,16 @@ class ElementGeometry1D(base_femelement.BaseFemElement):
                 value=["Rectangular", "Circular", "Pipe", "Elliptical", "Box"],
             )
         )
-
+        prop.append(
+            _PropHelper(
+                type="App::PropertyArea",
+                name="TrussArea",
+                group="TrussSection",
+                doc="Set cross-sectional area of truss elements\n"
+                + "(used if bending stiffness is excluded in the solver)",
+                value=10.0,
+            )
+        )
         return prop
 
     def onDocumentRestored(self, obj):

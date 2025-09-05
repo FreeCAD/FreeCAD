@@ -25,6 +25,7 @@
 #ifndef ASSEMBLY_AssemblyObject_H
 #define ASSEMBLY_AssemblyObject_H
 
+#include <boost/signals2.hpp>
 
 #include <Mod/Assembly/AssemblyGlobal.h>
 
@@ -154,8 +155,10 @@ public:
     std::vector<App::DocumentObject*> getGroundedJoints();
     std::vector<App::DocumentObject*> getJointsOfObj(App::DocumentObject* obj);
     std::vector<App::DocumentObject*> getJointsOfPart(App::DocumentObject* part);
-    App::DocumentObject* getJointOfPartConnectingToGround(App::DocumentObject* part,
-                                                          std::string& name);
+    App::DocumentObject*
+    getJointOfPartConnectingToGround(App::DocumentObject* part,
+                                     std::string& name,
+                                     const std::vector<App::DocumentObject*>& excludeJoints = {});
     std::unordered_set<App::DocumentObject*> getGroundedParts();
     std::unordered_set<App::DocumentObject*> fixGroundedParts();
     void fixGroundedPart(App::DocumentObject* obj, Base::Placement& plc, std::string& jointName);
@@ -176,10 +179,11 @@ public:
 
     std::vector<ObjRef> getDownstreamParts(App::DocumentObject* part,
                                            App::DocumentObject* joint = nullptr);
-    std::vector<App::DocumentObject*> getUpstreamParts(App::DocumentObject* part, int limit = 0);
-    App::DocumentObject* getUpstreamMovingPart(App::DocumentObject* part,
-                                               App::DocumentObject*& joint,
-                                               std::string& name);
+    App::DocumentObject*
+    getUpstreamMovingPart(App::DocumentObject* part,
+                          App::DocumentObject*& joint,
+                          std::string& name,
+                          std::vector<App::DocumentObject*> excludeJoints = {});
 
     double getObjMass(App::DocumentObject* obj);
     void setObjMasses(std::vector<std::pair<App::DocumentObject*, double>> objectMasses);
@@ -187,6 +191,53 @@ public:
     std::vector<AssemblyLink*> getSubAssemblies();
 
     std::vector<App::DocumentObject*> getMotionsFromSimulation(App::DocumentObject* sim);
+
+    bool isMbDJointValid(App::DocumentObject* joint);
+
+    bool isEmpty() const;
+    int numberOfComponents() const;
+
+    inline int getLastDoF() const
+    {
+        return lastDoF;
+    }
+    inline bool getLastHasConflicts() const
+    {
+        return lastHasConflict;
+    }
+    inline bool getLastHasRedundancies() const
+    {
+        return lastHasRedundancies;
+    }
+    inline bool getLastHasPartialRedundancies() const
+    {
+        return lastHasPartialRedundancies;
+    }
+    inline bool getLastHasMalformedConstraints() const
+    {
+        return lastHasMalformedConstraints;
+    }
+    inline int getLastSolverStatus() const
+    {
+        return lastSolverStatus;
+    }
+    inline const std::vector<int>& getLastConflicting() const
+    {
+        return lastConflicting;
+    }
+    inline const std::vector<int>& getLastRedundant() const
+    {
+        return lastRedundant;
+    }
+    inline const std::vector<int>& getLastPartiallyRedundant() const
+    {
+        return lastPartiallyRedundant;
+    }
+    inline const std::vector<int>& getLastMalformedConstraints() const
+    {
+        return lastMalformedConstraints;
+    }
+    boost::signals2::signal<void()> signalSolverUpdate;
 
 private:
     std::shared_ptr<MbD::ASMTAssembly> mbdAssembly;
@@ -199,6 +250,18 @@ private:
     std::vector<std::pair<App::DocumentObject*, Base::Placement>> previousPositions;
 
     bool bundleFixed;
+
+    int lastDoF;
+    bool lastHasConflict;
+    bool lastHasRedundancies;
+    bool lastHasPartialRedundancies;
+    bool lastHasMalformedConstraints;
+    int lastSolverStatus;
+
+    std::vector<int> lastConflicting;
+    std::vector<int> lastRedundant;
+    std::vector<int> lastPartiallyRedundant;
+    std::vector<int> lastMalformedConstraints;
 };
 
 }  // namespace Assembly

@@ -482,7 +482,7 @@ void ProgressBar::aboutToHide()
 bool ProgressBar::canAbort() const
 {
     auto ret = QMessageBox::question(getMainWindow(),tr("Aborting"),
-    tr("Do you really want to abort the operation?"),  QMessageBox::Yes | QMessageBox::No,
+    tr("Abort the operation?"),  QMessageBox::Yes | QMessageBox::No,
     QMessageBox::No);
 
     return (ret == QMessageBox::Yes) ? true : false;

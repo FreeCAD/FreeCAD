@@ -32,7 +32,7 @@ namespace MillSim
 
 MillSimulation::MillSimulation()
 {
-    mCurMotion = {eNop, -1, 0, 0, 0, 0, 0, 0, 0};
+    mCurMotion = {eNop, -1, 0, 0, 0, 0, 0, 0, 0, '\0', 0.0};
     guiDisplay.SetMillSimulator(this);
 }
 
@@ -514,6 +514,10 @@ void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
                 mViewItems = VIEWITEM_SIMULATION;
             }
             simDisplay.updateDisplay = true;
+            break;
+
+        case eGuiItemHome:
+            simDisplay.MoveEyeCenter();
             break;
 
         default:

@@ -24,12 +24,20 @@
 #ifndef GUI_TASKVIEW_TaskChamferParameters_H
 #define GUI_TASKVIEW_TaskChamferParameters_H
 
+#include <Gui/Inventor/Draggers/Gizmo.h>
+
 #include "TaskDressUpParameters.h"
 #include "ViewProviderChamfer.h"
 
 class Ui_TaskChamferParameters;
 namespace PartDesign {
 class Chamfer;
+}
+
+namespace Gui {
+class LinearGizmo;
+class RotationalGizmo;
+class GizmoContainer;
 }
 
 namespace PartDesignGui {
@@ -66,9 +74,16 @@ protected:
     bool getFlipDirection() const;
 
 private:
+    std::unique_ptr<Ui_TaskChamferParameters> ui;
+
     void setUpUI(PartDesign::Chamfer* pcChamfer);
 
-    std::unique_ptr<Ui_TaskChamferParameters> ui;
+    std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    Gui::LinearGizmo* distanceGizmo = nullptr;
+    Gui::LinearGizmo* secondDistanceGizmo = nullptr;
+    Gui::RotationGizmo* angleGizmo = nullptr;
+    void setupGizmos(ViewProviderDressUp* vp);
+    void setGizmoPositions();
 };
 
 /// simulation dialog for the TaskView

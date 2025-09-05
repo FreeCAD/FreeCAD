@@ -57,7 +57,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals = []
         signals.append(self.form.Side.currentIndexChanged)
         signals.append(self.form.OperationType.currentIndexChanged)
-        signals.append(self.form.ToolController.currentIndexChanged)
+        signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.stepOverPercent.valueChanged)
         signals.append(self.form.Tolerance.valueChanged)
         signals.append(self.form.HelixAngle.valueChanged)
@@ -68,10 +68,16 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.StockToLeave.valueChanged)
         signals.append(self.form.ZStockToLeave.valueChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
-        signals.append(self.form.ForceInsideOut.stateChanged)
-        signals.append(self.form.FinishingProfile.stateChanged)
-        signals.append(self.form.useOutline.stateChanged)
-        signals.append(self.form.orderCutsByRegion.stateChanged)
+        if hasattr(self.form.ForceInsideOut, "checkStateChanged"):  # Qt version >= 6.7.0
+            signals.append(self.form.ForceInsideOut.checkStateChanged)
+            signals.append(self.form.FinishingProfile.checkStateChanged)
+            signals.append(self.form.useOutline.checkStateChanged)
+            signals.append(self.form.orderCutsByRegion.checkStateChanged)
+        else:  # Qt version < 6.7.0
+            signals.append(self.form.ForceInsideOut.stateChanged)
+            signals.append(self.form.FinishingProfile.stateChanged)
+            signals.append(self.form.useOutline.stateChanged)
+            signals.append(self.form.orderCutsByRegion.stateChanged)
         signals.append(self.form.StopButton.toggled)
         return signals
 
@@ -107,7 +113,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.FinishingProfile.setChecked(obj.FinishingProfile)
         self.form.useOutline.setChecked(obj.UseOutline)
         self.form.orderCutsByRegion.setChecked(obj.OrderCutsByRegion)
-        self.setupToolController(obj, self.form.ToolController)
+        self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
         self.form.StopButton.setChecked(obj.Stopped)
         obj.setEditorMode("AdaptiveInputState", 2)  # hide this property
@@ -149,7 +155,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.StopButton.setChecked(False)  # reset the button
             obj.StopProcessing = True
 
-        self.updateToolController(obj, self.form.ToolController)
+        self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
         obj.setEditorMode("AdaptiveInputState", 2)  # hide this property
         obj.setEditorMode("AdaptiveOutputState", 2)  # hide this property

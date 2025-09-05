@@ -75,7 +75,7 @@ struct DrawingParameters
     const float zMidLines = 0.006f;    // Height used for in-the-middle rendered lines
     const float zHighLines = 0.007f;   // Height used for on top rendered lines
     const float zHighLine = 0.008f;    // Height for highlighted lines (selected/preselected)
-    const float zConstr = 0.009f;      // Height for rendering constraints
+    const float zConstr = 0.004f;      // Height for rendering constraints
     const float zRootPoint = 0.010f;   // Height used for rendering the root point
     const float zLowPoints = 0.011f;   // Height used for bottom rendered points
     const float zMidPoints = 0.012f;   // Height used for mid rendered points
@@ -102,7 +102,6 @@ struct DrawingParameters
     /** @name Rendering Coin Colors **/
     //@{
     static SbColor InformationColor;                       // Information Overlay Color
-    static SbColor CreateCurveColor;                       // Color for Edit Curves during creation
     static SbColor CrossColorH;                            // Color for the Horizontal Axis
     static SbColor CrossColorV;                            // Color for the Vertical Axis
     static SbColor InvalidSketchColor;                     // Color for rendering an invalid sketch
@@ -411,6 +410,14 @@ struct EditModeScenegraphNodes
     std::vector<SoMarkerSet*> PointSet;
     //@}
 
+    /** @name Origin Point nodes*/
+    //@{
+    SoMaterial* OriginPointMaterial;
+    SoCoordinate3* OriginPointCoordinate;
+    SoMarkerSet* OriginPointSet;
+    SoDrawStyle* OriginPointDrawStyle;
+    //@}
+
     /** @name Curve nodes*/
     //@{
     SmSwitchboard* CurvesGroup;
@@ -426,7 +433,6 @@ struct EditModeScenegraphNodes
     //@}
 
     /** @name Axes nodes*/
-    /// @warning Root Point is added together with the Point nodes above
     //@{
     SoMaterial* RootCrossMaterials;
     SoCoordinate3* RootCrossCoordinate;
@@ -499,12 +505,31 @@ struct CoinMapping
     {
         return CurvIdToGeoId[layerindex][sublayerindex][curveindex];
     }
+
+    bool isValidCurveId(int curveindex, int layerindex, int sublayerindex = 0) const
+    {
+        // clang-format off
+        return static_cast<int>(CurvIdToGeoId.size()) > layerindex &&
+               static_cast<int>(CurvIdToGeoId[layerindex].size()) > sublayerindex &&
+               static_cast<int>(CurvIdToGeoId[layerindex][sublayerindex].size()) > curveindex;
+        // clang-format on
+    }
+
     /// given the MF index of a point and the coin layer in which it is drawn returns the GeoId of
     /// the point
     int getPointGeoId(int pointindex, int layerindex)
     {
         return PointIdToGeoId[layerindex][pointindex];
     }
+
+    bool isValidPointId(int pointindex, int layerindex) const
+    {
+        // clang-format off
+        return static_cast<int>(PointIdToGeoId.size()) > layerindex &&
+               static_cast<int>(PointIdToGeoId[layerindex].size()) > pointindex;
+        // clang-format on
+    }
+
     /// given the MF index of a point and the coin layer in which it is drawn returns the PosId of
     /// the point
     Sketcher::PointPos getPointPosId(int pointindex, int layerindex)
@@ -522,6 +547,10 @@ struct CoinMapping
     /// index and the coin layer of the curve or point
     MultiFieldId getIndexLayer(int geoid, Sketcher::PointPos pos)
     {
+        if (geoid == -1) {
+            return MultiFieldId(-1, 0, 0);
+        }
+
         auto indexit = GeoElementId2SetId.find(Sketcher::GeoElementId(geoid, pos));
 
         if (indexit != GeoElementId2SetId.end()) {
@@ -535,6 +564,9 @@ struct CoinMapping
     /// layer of the point
     MultiFieldId getIndexLayer(int vertexId)
     {
+        if (vertexId == -1) {
+            return MultiFieldId(-1, 0, 0);
+        }
 
         for (size_t l = 0; l < PointIdToVertexId.size(); l++) {
 

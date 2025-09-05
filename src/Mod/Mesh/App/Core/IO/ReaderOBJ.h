@@ -43,6 +43,11 @@ public:
      */
     explicit ReaderOBJ(MeshKernel& kernel, Material*);
     /*!
+     * \brief Load the mesh from the file
+     * \return true on success and false otherwise
+     */
+    bool Load(const std::string& file);
+    /*!
      * \brief Load the mesh from the input stream
      * \return true on success and false otherwise
      */

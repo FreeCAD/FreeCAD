@@ -32,6 +32,7 @@
 #include <vtkLineSource.h>
 #include <vtkPointSource.h>
 #include <vtkProbeFilter.h>
+#include <vtkAppendArcLength.h>
 #include <vtkSmartPointer.h>
 #include <vtkTableBasedClipDataSet.h>
 #include <vtkVectorNorm.h>
@@ -61,6 +62,7 @@ class FemExport FemPostFilter: public Fem::FemPostObject
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::FemPostFilter);
 
 protected:
+    bool dataIsAvailable();
     vtkSmartPointer<vtkDataSet> getInputData();
     std::vector<std::string> getInputVectorFields();
     std::vector<std::string> getInputScalarFields();
@@ -181,6 +183,7 @@ protected:
 
 private:
     vtkSmartPointer<vtkLineSource> m_line;
+    vtkSmartPointer<vtkAppendArcLength> m_arclength;
     vtkSmartPointer<vtkProbeFilter> m_probe;
 };
 

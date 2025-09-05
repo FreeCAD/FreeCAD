@@ -24,8 +24,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <algorithm>
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
+#include <QClipboard>
 #include <QInputDialog>
 #include <QHeaderView>
 #include <QMenu>
@@ -219,6 +221,54 @@ bool PropertyEditor::event(QEvent* event)
         }
     }
     return QTreeView::event(event);
+}
+
+bool PropertyEditor::removeSelectedDynamicProperties()
+{
+    std::unordered_set<App::Property*> props = acquireSelectedProperties();
+    if (props.empty()) {
+        return false;
+    }
+
+    bool canRemove = std::ranges::all_of(props, [](auto prop) {
+        return prop->testStatus(App::Property::PropDynamic)
+            && !prop->testStatus(App::Property::LockDynamic);
+    });
+    if (!canRemove) {
+        return false;
+    }
+
+    removeProperties(props);
+    return true;
+}
+
+void PropertyEditor::keyPressEvent(QKeyEvent* event)
+{
+    if (state() == QAbstractItemView::EditingState) {
+        QTreeView::keyPressEvent(event);
+        return;
+    }
+
+    const auto key = event->key();
+    const auto mods = event->modifiers();
+    const bool allowedModifiers =
+        mods == Qt::NoModifier ||
+        mods == Qt::KeypadModifier;
+
+#if defined(Q_OS_MACOS) || defined(Q_OS_MAC)
+    const bool isDeleteKey = key == Qt::Key_Backspace || key == Qt::Key_Delete;
+#else
+    const bool isDeleteKey = key == Qt::Key_Delete;
+#endif
+
+    if (allowedModifiers && isDeleteKey) {
+        if (removeSelectedDynamicProperties()) {
+            event->accept();
+            return;
+        }
+    }
+
+    QTreeView::keyPressEvent(event);
 }
 
 void PropertyEditor::commitData(QWidget* editor)
@@ -693,12 +743,25 @@ void PropertyEditor::removeProperty(const App::Property& prop)
     }
 }
 
+void PropertyEditor::renameProperty(const App::Property& prop)
+{
+    for (auto & it : propList) {
+        // find the given property in the list and rename it if it's there
+        auto pos = std::ranges::find(it.second, &prop);
+        if (pos != it.second.end()) {
+            propertyModel->renameProperty(prop);
+            break;
+        }
+    }
+}
+
 enum MenuAction
 {
     MA_AutoExpand,
     MA_ShowHidden,
     MA_Expression,
     MA_RemoveProp,
+    MA_RenameProp,
     MA_AddProp,
     MA_EditPropGroup,
     MA_Transient,
@@ -709,16 +772,11 @@ enum MenuAction
     MA_Touched,
     MA_EvalOnRestore,
     MA_CopyOnChange,
+    MA_Copy,
 };
 
-void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
+std::unordered_set<App::Property*> PropertyEditor::acquireSelectedProperties() const
 {
-    QMenu menu;
-    QAction* autoExpand = nullptr;
-
-    auto contextIndex = currentIndex();
-
-    // acquiring the selected properties
     std::unordered_set<App::Property*> props;
     const auto indexes = selectedIndexes();
     for (const auto& index : indexes) {
@@ -733,15 +791,61 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
                 break;
             }
         }
+        if (index.column() > 0) {
+            continue;
+        }
+    }
+    return props;
+}
+
+void PropertyEditor::removeProperties(const std::unordered_set<App::Property*>& props)
+{
+    App::AutoTransaction committer("Remove property");
+    for (auto prop : props) {
+        try {
+            prop->getContainer()->removeDynamicProperty(prop->getName());
+        }
+        catch (Base::Exception& e) {
+            e.reportException();
+        }
+    }
+}
+
+void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
+{
+    QMenu menu;
+    QAction* autoExpand = nullptr;
+
+    auto contextIndex = currentIndex();
+
+    std::unordered_set<App::Property*> props = acquireSelectedProperties();
+
+    // copy value to clipboard
+    if (props.size() == 1) {
+        const QVariant valueToCopy = contextIndex.data(Qt::DisplayRole);
+        if (valueToCopy.isValid()) {
+            QAction* copyAction = menu.addAction(tr("Copy"));
+            copyAction->setData(QVariant(MA_Copy));
+            menu.addSeparator();
+        }
     }
 
     // add property
-    menu.addAction(tr("Add property"))->setData(QVariant(MA_AddProp));
+    menu.addAction(tr("Add Property"))->setData(QVariant(MA_AddProp));
     if (!props.empty() && std::all_of(props.begin(), props.end(), [](auto prop) {
             return prop->testStatus(App::Property::PropDynamic)
                 && !boost::starts_with(prop->getName(), prop->getGroup());
         })) {
-        menu.addAction(tr("Rename property group"))->setData(QVariant(MA_EditPropGroup));
+        menu.addAction(tr("Rename Property Group"))->setData(QVariant(MA_EditPropGroup));
+    }
+
+    // rename property
+    if (props.size() == 1) {
+        auto prop = *props.begin();
+        if (prop->testStatus(App::Property::PropDynamic)
+            && !prop->testStatus(App::Property::LockDynamic)) {
+            menu.addAction(tr("Rename Property"))->setData(QVariant(MA_RenameProp));
+        }
     }
 
     // remove property
@@ -757,20 +861,20 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         }
     }
     if (canRemove) {
-        menu.addAction(tr("Remove property"))->setData(QVariant(MA_RemoveProp));
+        menu.addAction(tr("Delete Property"))->setData(QVariant(MA_RemoveProp));
     }
 
     // add a separator between adding/removing properties and the rest
     menu.addSeparator();
 
     // show all
-    QAction* showHidden = menu.addAction(tr("Show hidden"));
+    QAction* showHidden = menu.addAction(tr("Show Hidden"));
     showHidden->setCheckable(true);
     showHidden->setChecked(PropertyView::showAll());
     showHidden->setData(QVariant(MA_ShowHidden));
 
     // auto expand
-    autoExpand = menu.addAction(tr("Auto expand"));
+    autoExpand = menu.addAction(tr("Auto-Expand"));
     autoExpand->setCheckable(true);
     autoExpand->setChecked(autoexpand);
     autoExpand->setData(QVariant(MA_AutoExpand));
@@ -785,7 +889,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             contextIndex = propertyModel->buddy(contextIndex);
             setCurrentIndex(contextIndex);
             // menu.addSeparator();
-            menu.addAction(tr("Expression..."))->setData(QVariant(MA_Expression));
+            menu.addAction(tr("Expression"))->setData(QVariant(MA_Expression));
         }
     }
 
@@ -848,6 +952,14 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         case MA_ShowHidden:
             PropertyView::setShowAll(action->isChecked());
             return;
+        case MA_Copy: {
+            const QVariant valueToCopy = contextIndex.data(Qt::DisplayRole);
+            if (valueToCopy.isValid()) {
+                auto *clipboard = QApplication::clipboard();
+                clipboard->setText(valueToCopy.toString());
+            }
+            return;
+        }
 #define ACTION_CHECK(_name)                                                                        \
     case MA_##_name:                                                                               \
         for (auto prop : props)                                                                    \
@@ -892,6 +1004,38 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             dlg.exec();
             return;
         }
+        case MA_RenameProp: {
+            if (props.size() != 1) {
+                break;
+            }
+
+            App::Property* prop = *props.begin();
+            if (!prop->testStatus(App::Property::PropDynamic)
+                || prop->testStatus(App::Property::LockDynamic)) {
+                break;
+            }
+
+            App::AutoTransaction committer("Rename property");
+            const char* oldName = prop->getName();
+            QString res = QInputDialog::getText(Gui::getMainWindow(),
+                                                tr("Rename property"),
+                                                tr("Property name"),
+                                                QLineEdit::Normal,
+                                                QString::fromUtf8(oldName));
+            if (res.isEmpty()) {
+                break;
+            }
+
+            std::string newName = res.toUtf8().constData();
+            try {
+                prop->getContainer()->renameDynamicProperty(prop, newName.c_str());
+            }
+            catch (Base::Exception& e) {
+                e.reportException();
+                break;
+            }
+            break;
+        }
         case MA_EditPropGroup: {
             // This operation is not undoable yet.
             const char* groupName = (*props.begin())->getGroup();
@@ -913,15 +1057,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             return;
         }
         case MA_RemoveProp: {
-            App::AutoTransaction committer("Remove property");
-            for (auto prop : props) {
-                try {
-                    prop->getContainer()->removeDynamicProperty(prop->getName());
-                }
-                catch (Base::Exception& e) {
-                    e.reportException();
-                }
-            }
+            removeProperties(props);
             break;
         }
         default:

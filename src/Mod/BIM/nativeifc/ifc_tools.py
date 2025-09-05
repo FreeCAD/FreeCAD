@@ -48,6 +48,7 @@ try:
     import ifcopenshell.util.placement
     import ifcopenshell.util.schema
     import ifcopenshell.util.unit
+    import ifcopenshell.entity_instance
 except ImportError as e:
     import FreeCAD
     FreeCAD.Console.PrintError(
@@ -349,6 +350,7 @@ def create_children(
                 ]
                 for window in windows:
                     subresult.extend(create_child(child, window))
+
             if recursive:
                 subresult.extend(
                     create_children(
@@ -721,6 +723,37 @@ def add_properties(
                 obj.addProperty("App::PropertyString", attr, "IFC", locked=True)
             if value is not None:
                 setattr(obj, attr, str(value))
+
+            # We shortly go through the list of IFCRELASSOCIATESCLASSIFICATION members
+            # in the file to see if the newly added object should have a Classification added
+            # since we can run `add_properties`, when changing from IFC Object to IFC Type, or BIM Object (Standard Code)
+            # to BIM Type, and during the process of creation the only place where we save Classification is
+            # the file itself, so below code retrieves it and assigns it back to the newly created obj.
+            if not hasattr(obj, "Classification"):
+                assoc_classifications = ifcfile.by_type("IfcRelAssociatesClassification")
+                for assoc in assoc_classifications:
+                    related_objects = assoc.RelatedObjects
+                    if isinstance(related_objects, ifcopenshell.entity_instance):
+                        related_objects = [related_objects]
+                    if ifcentity in related_objects:
+                        cref = assoc.RelatingClassification
+                        if cref and cref.is_a("IfcClassificationReference"):
+                            classification_name = ""
+
+                            # Try to get the source classification name
+                            if hasattr(cref, "ReferencedSource") and cref.ReferencedSource:
+                                if hasattr(cref.ReferencedSource, "Name") and cref.ReferencedSource.Name:
+                                    classification_name += cref.ReferencedSource.Name + " "
+
+                            # Add the Identification if present
+                            if cref.Identification:
+                                classification_name += cref.Identification
+
+                            classification_name = classification_name.strip()
+                            if classification_name:
+                                obj.addProperty("App::PropertyString", "Classification", "IFC", locked=True)
+                                setattr(obj, "Classification", classification_name)
+                                break  # Found the relevant one, stop
     # annotation properties
     if ifcentity.is_a("IfcGridAxis"):
         axisdata = ifc_export.get_axis(ifcentity)
@@ -1566,7 +1599,7 @@ def get_orphan_elements(ifcfile):
 
     products = ifcfile.by_type("IfcProduct")
     products = [p for p in products if not p.Decomposes]
-    products = [p for p in products if not p.ContainedInStructure]
+    products = [p for p in products if not getattr(p, "ContainedInStructure", [])]
     products = [
         p for p in products if not hasattr(p, "VoidsElements") or not p.VoidsElements
     ]

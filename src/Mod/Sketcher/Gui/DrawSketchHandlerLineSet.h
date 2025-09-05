@@ -31,6 +31,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -95,6 +96,7 @@ public:
         SNAP_MODE_Free,
         SNAP_MODE_45Degree
     };
+
 
     void registerPressedKey(bool pressed, int key) override
     {
@@ -330,6 +332,7 @@ public:
 
     bool pressButton(Base::Vector2d onSketchPos) override
     {
+
         if (Mode == STATUS_SEEK_First) {
 
             EditCurve[0] = onSketchPos;  // this may be overwritten if previousCurve is found
@@ -436,6 +439,9 @@ public:
                 }
             }
         }
+
+        updateHint();
+
         return true;
     }
 
@@ -708,6 +714,9 @@ public:
                 mouseMove(onSketchPos);  // trigger an update of EditCurve
             }
         }
+
+        updateHint();
+
         return true;
     }
 
@@ -754,6 +763,30 @@ private:
     QString getCrosshairCursorSVGName() const override
     {
         return QStringLiteral("Sketcher_Pointer_Create_Lineset");
+    }
+
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using enum Gui::InputHint::UserInput;
+
+        // clang-format off
+        return Gui::lookupHints<SELECT_MODE>(
+            Mode,
+            {
+                {.state = STATUS_SEEK_First,
+                 .hints =
+                     {
+                         {tr("%1 pick first point"), {MouseLeft}},
+                     }},
+                {.state = STATUS_SEEK_Second,
+                 .hints =
+                     {
+                         {tr("%1 pick next point"), {MouseLeft}},
+                         {tr("%1 finish"), {MouseRight}},
+                         {tr("%1 switch mode"), {KeyM}},
+                     }},
+            });
+        // clang-format on
     }
 
 protected:
@@ -815,8 +848,6 @@ protected:
         dirVec.Normalize();
     }
 };
-
-
 }  // namespace SketcherGui
 
 

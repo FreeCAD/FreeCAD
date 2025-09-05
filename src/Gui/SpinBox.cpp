@@ -40,6 +40,7 @@
 #include "Command.h"
 #include "Dialogs/DlgExpressionInput.h"
 #include "QuantitySpinBox_p.h"
+#include "Widgets.h"
 
 
 using namespace Gui;
@@ -206,6 +207,7 @@ void ExpressionSpinBox::openFormulaDialog()
     QPoint pos = spinbox->mapToGlobal(QPoint(0,0));
     box->move(pos-box->expressionPosition());
     box->setExpressionInputSize(spinbox->width(), spinbox->height());
+    Gui::adjustDialogPosition(box);
 }
 
 bool ExpressionSpinBox::handleKeyEvent(const QString& text)
@@ -319,7 +321,7 @@ public:
             in = int_limits::max();
         } else if ( v == 0 ) {
             in = int_limits::min();
-        } else if ( v > int_limits::max() ) {
+        } else if ( v > static_cast<unsigned int>(int_limits::max()) ) {
             v += int_limits::min();
             in = static_cast<int>(v);
         } else {

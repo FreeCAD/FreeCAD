@@ -4,6 +4,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2010 Werner Mayer <wmayer@users.sourceforge.net>        *
+# *   Copyright (c) 2025 The FreeCAD project association AISBL              *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -23,17 +24,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-# Changelog:
-# 0.5 Add support for Qt 6 lupdate (which fixes MANY bugs and should be preferred)
-# 0.4 Refactor to always try both C++ and Python translations
-# 0.3 User-friendly output
-#     Corrections
-#     Added Changelog
-# 0.2 Add Qt5 support
-#     Add "no obsolete" flags in order to fix 'ghost strings' in Crowdin
-# 0.1 Initial Release
-
-
 Usage = """updatets - update all .ts files found in the source directories
 
 Usage:
@@ -41,11 +31,10 @@ Usage:
 
 Authors:
   (c) 2010 Werner Mayer
-  (c) 2019 FreeCAD Volunteers
-  Licence: LGPL
+  (c) 2019-2025 FreeCAD Volunteers
+  Licence: LGPL-2.0-or-later
 
-Version:
-  0.5
+Version: 2025.8.15
 """
 
 import os, sys
@@ -182,6 +171,7 @@ excluded_files = [
     ("CAM", "refactored_linuxcnc_post.py"),  # lupdate bug causes failure on line 178
     ("CAM", "refactored_mach3_mach4_post.py"),  # lupdate bug causes failure on line 186
     ("CAM", "refactored_test_post.py"),  # lupdate bug causes failure on lines 42 and 179
+    ("Arch", "ifc_selftest.py"),
 ]
 
 # HTML entities that lextract creates and we want to "un-create" (because CrowdIn just displays them as plain text,
@@ -201,10 +191,12 @@ PYLUPDATE = ""
 LCONVERT = ""
 QT_VERSION_MAJOR = ""
 
+failure_log = {}
+
 
 def find_tools(noobsolete=True):
 
-    print(Usage + "\nFirst, lets find all necessary tools on your system")
+    print(Usage + "\nFirst, let's find all necessary tools on your system")
     global QMAKE, LUPDATE, PYLUPDATE, LCONVERT, QT_VERSION_MAJOR
 
     p = subprocess.run(["lupdate", "-version"], check=True, stdout=subprocess.PIPE)
@@ -299,7 +291,7 @@ def update_translation(entry):
         execline.append(f"{QMAKE} -project -o {project_filename} -r")
         execline.append(f"{LUPDATE} {project_filename} -ts {tsBasename}.ts {log_redirect}")
         execline.append(
-            f"sed 's/<translation.*>.*<\/translation>/<translation type=\"unfinished\"><\/translation>/g' {tsBasename}.ts > {tsBasename}.ts.temp"
+            f"sed 's/<translation.*>.*</translation>/<translation type=\"unfinished\"></translation>/g' {tsBasename}.ts > {tsBasename}.ts.temp"
         )
         execline.append(f"mv {tsBasename}.ts.temp {tsBasename}.ts")
         execline.append(
@@ -346,8 +338,9 @@ def update_translation(entry):
             "qrc",
             "py",
         ]
+        starting_root = os.getcwd()
         with open("files_to_translate.txt", "w", encoding="utf-8") as file_list:
-            for root, dirs, files in os.walk("./"):
+            for root, dirs, files in os.walk(starting_root):
                 for f in files:
                     skip = False
                     for exclusion in excluded_files:
@@ -373,22 +366,20 @@ def update_translation(entry):
                     f"{tsBasename}.ts",
                 ],
                 capture_output=True,
-                timeout=60,
+                timeout=10,
                 encoding="utf-8",
             )
             if not p:
                 raise RuntimeError("No return result from lupdate")
             if not p.stdout:
-                raise RuntimeError("No stdout from lupdate")
+                raise RuntimeError(p.stderr if p.stderr else "No output from lupdate")
+        except subprocess.TimeoutExpired:
+            failure_log[entry["tsname"]] = "Subprocess timeout"
+            os.chdir(cur)
+            return
         except Exception as e:
-            print("*" * 80)
-            print("*" * 80)
-            print("*" * 80)
-            print(f"ERROR RUNNING lupdate -- TRANSLATIONS FOR {entry['tsname']} PROBABLY FAILED...")
-            print(str(e))
-            print("*" * 80)
-            print("*" * 80)
-            print("*" * 80)
+            failure_log[entry["tsname"]] = str(e)
+            diagnose_qt6_failure(entry)
             os.chdir(cur)
             return
 
@@ -420,6 +411,75 @@ def update_translation(entry):
     os.chdir(cur)
 
 
+def diagnose_qt6_failure(entry):
+
+    global LUPDATE
+
+    extensions = [
+        "java",
+        "jui",
+        "ui",
+        "c",
+        "c++",
+        "cc",
+        "cpp",
+        "cxx",
+        "ch",
+        "h",
+        "h++",
+        "hh",
+        "hpp",
+        "hxx",
+        "js",
+        "qs",
+        "qml",
+        "qrc",
+        "py",
+    ]
+    file_to_check = []
+    starting_root = os.getcwd()
+    print(f"Starting scan for failing files in {starting_root}...")
+    for root, dirs, files in os.walk(starting_root):
+        for f in files:
+            skip = False
+            for exclusion in excluded_files:
+                if entry["tsname"] == exclusion[0] and f == exclusion[1]:
+                    skip = True
+                    break
+            if not skip and pathlib.Path(f).suffix[1:] in extensions:
+                file_to_check.append(os.path.join(root, f))
+
+    for file in file_to_check:
+        try:
+            print(f"Checking {file}...", flush=True)
+            p = subprocess.run(
+                [
+                    LUPDATE,
+                    file,
+                    "-I",
+                    "./",
+                    "-recursive",
+                    "-no-sort",
+                    "-ts",
+                    f"{file}_check_for_failures.ts",
+                ],
+                capture_output=True,
+                timeout=5,
+                encoding="utf-8",
+            )
+            if not p:
+                raise RuntimeError(f"No return result from lupdate for {file}")
+            if not p.stdout:
+                raise RuntimeError(
+                    p.stderr if p.stderr else f"No output from lupdate for file {file}"
+                )
+        except subprocess.TimeoutExpired:
+            print(f"  ERROR: lupdate locked up processing {file}")
+        except Exception as e:
+            print(f"  ERROR processing {file}: {str(e)}")
+        os.remove(f"{file}_check_for_failures.ts")
+
+
 def main(mod=None):
 
     find_tools()
@@ -438,11 +498,19 @@ def main(mod=None):
     else:
         for i in directories:
             update_translation(i)
+
+    if failure_log:
+        for mod, reason in failure_log.items():
+            print(f"ERROR: Failed to update {mod}: {reason}")
+        print("Other extracted mods (if any) were updated successfully.")
+        print("stderr output from lupdate can be found in tsupdate_stderr.log")
+        print("stdout output from lupdate can be found in tsupdate_stdout.log")
+    else:
+        print("SUCCESS: All translations updated successfully")
+
     print(
         "\nIf updatets.py was run successfully, the next step is to run ./src/Tools/updatecrowdin.py"
     )
-    print("stderr output from lupdate can be found in tsupdate_stderr.log")
-    print("stdout output from lupdate can be found in tsupdate_stdout.log")
 
 
 if __name__ == "__main__":

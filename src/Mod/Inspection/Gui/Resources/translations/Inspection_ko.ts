@@ -10,13 +10,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
-      <source>Inspection...</source>
-      <translation>검사(비교)..</translation>
+      <source>Inspection…</source>
+      <translation type="unfinished">Inspection…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
-      <source>Get distance information</source>
-      <translation>범위 정보 얻기</translation>
+      <source>Inspects distance information</source>
+      <translation type="unfinished">Inspects distance information</translation>
     </message>
   </context>
   <context>
@@ -28,14 +28,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
-      <source>Visual inspection...</source>
-      <translation>시각적으로 검사(비교)..</translation>
+      <source>Visual Inspection…</source>
+      <translation type="unfinished">Visual Inspection…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
-      <location filename="../../Command.cpp" line="51"/>
-      <source>Visual inspection</source>
-      <translation>시각적으로 검사(비교)</translation>
+      <source>Inspects the objects visually</source>
+      <translation type="unfinished">Inspects the objects visually</translation>
     </message>
   </context>
   <context>
@@ -62,7 +61,7 @@
       <location filename="../../VisualInspection.ui" line="39"/>
       <location filename="../../VisualInspection.ui" line="66"/>
       <source>Objects</source>
-      <translation>오브젝트</translation>
+      <translation>대상체</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="50"/>
@@ -94,38 +93,38 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="489"/>
+      <location filename="../../ViewProviderInspection.cpp" line="502"/>
       <source>Remove annotations</source>
       <translation>주석 삭제</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="490"/>
+      <location filename="../../ViewProviderInspection.cpp" line="503"/>
       <source>Do you want to remove all annotations?</source>
       <translation>정말로 모든 주석을 삭제하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="548"/>
+      <location filename="../../ViewProviderInspection.cpp" line="561"/>
       <source>Annotation</source>
       <translation>주석</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="551"/>
-      <source>Leave info mode</source>
-      <translation>정보 모드 종료</translation>
+      <location filename="../../ViewProviderInspection.cpp" line="564"/>
+      <source>Leave Info Mode</source>
+      <translation type="unfinished">Leave Info Mode</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="682"/>
+      <location filename="../../ViewProviderInspection.cpp" line="695"/>
       <source>Distance: &gt; %1</source>
       <translation>거리: &gt;%1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="686"/>
+      <location filename="../../ViewProviderInspection.cpp" line="699"/>
       <source>Distance: &lt; %1</source>
       <translation>거리: &lt;%1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="706"/>
-      <location filename="../../ViewProviderInspection.cpp" line="723"/>
+      <location filename="../../ViewProviderInspection.cpp" line="719"/>
+      <location filename="../../ViewProviderInspection.cpp" line="736"/>
       <source>Distance: %1</source>
       <translation>거리: %1</translation>
     </message>

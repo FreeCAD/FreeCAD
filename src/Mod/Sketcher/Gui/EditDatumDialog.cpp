@@ -37,13 +37,19 @@
 #include <Gui/Notifications.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/Document.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <App/Datums.h>
 
 #include "EditDatumDialog.h"
+#include "CommandSketcherTools.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
+#include "SketcherSettings.h"
 #include "ui_InsertDatum.h"
+
+#include <numeric>
 
 
 using namespace SketcherGui;
@@ -112,41 +118,41 @@ int EditDatumDialog::exec(bool atCursor)
         ui_ins_datum->labelEdit->setEntryName(QByteArray("DatumValue"));
         if (Constr->Type == Sketcher::Angle) {
             datum = Base::toDegrees<double>(datum);
-            dlg.setWindowTitle(tr("Insert angle"));
+            dlg.setWindowTitle(tr("Insert Angle"));
             init_val.setUnit(Base::Unit::Angle);
             ui_ins_datum->label->setText(tr("Angle:"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherAngle"));
         }
         else if (Constr->Type == Sketcher::Radius) {
-            dlg.setWindowTitle(tr("Insert radius"));
+            dlg.setWindowTitle(tr("Insert Radius"));
             init_val.setUnit(Base::Unit::Length);
             ui_ins_datum->label->setText(tr("Radius:"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherLength"));
         }
         else if (Constr->Type == Sketcher::Diameter) {
-            dlg.setWindowTitle(tr("Insert diameter"));
+            dlg.setWindowTitle(tr("Insert Diameter"));
             init_val.setUnit(Base::Unit::Length);
             ui_ins_datum->label->setText(tr("Diameter:"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherLength"));
         }
         else if (Constr->Type == Sketcher::Weight) {
-            dlg.setWindowTitle(tr("Insert weight"));
+            dlg.setWindowTitle(tr("Insert Weight"));
             ui_ins_datum->label->setText(tr("Weight:"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherWeight"));
         }
         else if (Constr->Type == Sketcher::SnellsLaw) {
-            dlg.setWindowTitle(tr("Refractive index ratio", "Constraint_SnellsLaw"));
+            dlg.setWindowTitle(tr("Refractive Index Ratio", "Constraint_SnellsLaw"));
             ui_ins_datum->label->setText(tr("Ratio n2/n1:", "Constraint_SnellsLaw"));
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio"));
             ui_ins_datum->labelEdit->setSingleStep(0.05);
         }
         else {
-            dlg.setWindowTitle(tr("Insert length"));
+            dlg.setWindowTitle(tr("Insert Length"));
             init_val.setUnit(Base::Unit::Length);
             ui_ins_datum->label->setText(tr("Length:"));
             ui_ins_datum->labelEdit->setParamGrpPath(
@@ -201,8 +207,8 @@ int EditDatumDialog::exec(bool atCursor)
 void EditDatumDialog::accepted()
 {
     Base::Quantity newQuant = ui_ins_datum->labelEdit->value();
-    if (newQuant.isQuantity() || (Constr->Type == Sketcher::SnellsLaw && newQuant.isDimensionless())
-        || (Constr->Type == Sketcher::Weight && newQuant.isDimensionless())) {
+    if (Constr->Type == Sketcher::SnellsLaw || Constr->Type == Sketcher::Weight
+        || !newQuant.isDimensionless()) {
 
         // save the value for the history
         ui_ins_datum->labelEdit->pushToHistory();
@@ -222,6 +228,9 @@ void EditDatumDialog::accepted()
                 else {
                     auto unitString = newQuant.getUnit().getString();
                     unitString = Base::Tools::escapeQuotesFromString(unitString);
+
+                    performAutoScale(newDatum);
+
                     Gui::cmdAppObjectArgs(sketch,
                                           "setDatum(%i,App.Units.Quantity('%f %s'))",
                                           ConstrNbr,
@@ -315,6 +324,121 @@ void EditDatumDialog::formEditorOpened(bool state)
 {
     if (state) {
         ui_ins_datum->cbDriving->setChecked(false);
+    }
+}
+
+
+// This function checks an object's visible flag recursively in a Gui::Document
+// assuming that lastParent (if provided) is visible
+bool isVisibleUpTo(App::DocumentObject* obj, Gui::Document* doc, App::DocumentObject* lastParent)
+{
+    while (obj && obj != lastParent) {
+        auto parentviewprovider = doc->getViewProvider(obj);
+
+        if (!parentviewprovider || !parentviewprovider->isVisible()) {
+            return false;
+        }
+        obj = obj->getFirstParent();
+    }
+    return true;
+}
+bool hasVisualFeature(App::DocumentObject* obj, App::DocumentObject* rootObj, Gui::Document* doc)
+{
+    auto docObjects = doc->getDocument()->getObjects();
+    for (auto object : docObjects) {
+
+        // Presumably, the sketch that is being edited has visual features, but
+        // that's not interesting
+        if (object == obj) {
+            continue;
+        }
+
+        // No need to continue analysis if the object's visible flag is down
+        bool visible = isVisibleUpTo(object, doc, rootObj);
+        if (!visible) {
+            continue;
+        }
+
+        App::DocumentObject* link = object->getLinkedObject();
+        if (link->getDocument() != doc->getDocument()) {
+            Gui::Document* linkDoc = Gui::Application::Instance->getDocument(link->getDocument());
+            if (linkDoc && hasVisualFeature(link, link, linkDoc)) {
+                return true;
+            }
+            continue;
+        }
+
+        // Skip objects that are not of geometric nature
+        if (!object->isDerivedFrom<App::GeoFeature>()) {
+            continue;
+        }
+
+        // Skip datum objects
+        if (object->isDerivedFrom<App::DatumElement>()) {
+            continue;
+        }
+
+        // Skip container objects because getting their bounging box might
+        // return a valid bounding box around annotations or datums
+        if (object->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+            continue;
+        }
+
+        // Get the bounding box of the object
+        auto viewProvider = doc->getViewProvider(object);
+        if (viewProvider && viewProvider->getBoundingBox().IsValid()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void EditDatumDialog::performAutoScale(double newDatum)
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+    long autoScaleMode =
+        hGrp->GetInt("AutoScaleMode", static_cast<int>(SketcherGui::AutoScaleMode::Always));
+
+    // There is a single constraint in the sketch so it can
+    // be used as a reference to scale the geometries around the origin
+    // if there are external geometries, it is safe to assume that the sketch
+    // was drawn with these geometries as scale references (use <= 2 because
+    // the sketch axis are considered as external geometries)
+    if ((autoScaleMode == static_cast<int>(SketcherGui::AutoScaleMode::Always)
+         || (autoScaleMode
+                 == static_cast<int>(SketcherGui::AutoScaleMode::WhenNoScaleFeatureIsVisible)
+             && !hasVisualFeature(sketch, nullptr, Gui::Application::Instance->activeDocument())))
+        && sketch->getExternalGeometryCount() <= 2) {
+        try {
+            // Handle the case where multiple datum constraints are present but only one is scale
+            // defining e.g. a bunch of angle constraints and a single length constraint
+            int scaleDefiningConstraint = sketch->getSingleScaleDefiningConstraint();
+            if (scaleDefiningConstraint != ConstrNbr) {
+                return;
+            }
+
+            double oldDatum = sketch->getDatum(ConstrNbr);
+            double scaleFactor = newDatum / oldDatum;
+            float initLabelDistance = sketch->Constraints[ConstrNbr]->LabelDistance;
+            float initLabelPosition = sketch->Constraints[ConstrNbr]->LabelPosition;
+            centerScale(sketch, scaleFactor);
+            sketch->setLabelDistance(ConstrNbr, initLabelDistance * scaleFactor);
+
+            // Label position or radii and diameters represent an angle, so
+            // they should not be scaled
+            Sketcher::ConstraintType type = sketch->Constraints[ConstrNbr]->Type;
+            if (type == Sketcher::ConstraintType::Radius
+                || type == Sketcher::ConstraintType::Diameter) {
+                sketch->setLabelPosition(ConstrNbr, initLabelPosition);
+            }
+            else {
+                sketch->setLabelPosition(ConstrNbr, initLabelPosition * scaleFactor);
+            }
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().error("Exception performing autoscale: %s\n", e.what());
+        }
     }
 }
 

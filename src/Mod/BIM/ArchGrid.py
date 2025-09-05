@@ -58,6 +58,7 @@ class ArchGrid:
     def __init__(self,obj):
 
         obj.Proxy = self
+        self.Type = "Grid"
         self.setProperties(obj)
 
     def setProperties(self,obj):
@@ -88,7 +89,6 @@ class ArchGrid:
             obj.addProperty("App::PropertyBool","Reorient","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'When in edge midpoint mode, if this grid must reorient its children along edge normals or not'), locked=True)
         if not "HiddenFaces" in pl:
             obj.addProperty("App::PropertyIntegerList","HiddenFaces","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The indices of faces to hide'), locked=True)
-        self.Type = "Grid"
 
     def onDocumentRestored(self,obj):
 
@@ -251,7 +251,7 @@ class ArchGrid:
 
     def loads(self,state):
 
-        return None
+        self.Type = "Grid"
 
 
 class ViewProviderArchGrid:
@@ -391,12 +391,12 @@ class ArchGridTaskPanel:
         self.form.setWindowTitle(QtGui.QApplication.translate("Arch", "Grid", None))
         self.wLabel.setText(QtGui.QApplication.translate("Arch", "Total width", None))
         self.hLabel.setText(QtGui.QApplication.translate("Arch", "Total height", None))
-        self.addRowButton.setText(QtGui.QApplication.translate("Arch", "Add row", None))
-        self.delRowButton.setText(QtGui.QApplication.translate("Arch", "Del row", None))
-        self.addColumnButton.setText(QtGui.QApplication.translate("Arch", "Add column", None))
-        self.delColumnButton.setText(QtGui.QApplication.translate("Arch", "Del column", None))
-        self.spanButton.setText(QtGui.QApplication.translate("Arch", "Create span", None))
-        self.delSpanButton.setText(QtGui.QApplication.translate("Arch", "Remove span", None))
+        self.addRowButton.setText(QtGui.QApplication.translate("Arch", "Add Row", None))
+        self.delRowButton.setText(QtGui.QApplication.translate("Arch", "Delete Row", None))
+        self.addColumnButton.setText(QtGui.QApplication.translate("Arch", "Add Column", None))
+        self.delColumnButton.setText(QtGui.QApplication.translate("Arch", "Delete Column", None))
+        self.spanButton.setText(QtGui.QApplication.translate("Arch", "Create Span", None))
+        self.delSpanButton.setText(QtGui.QApplication.translate("Arch", "Remove Span", None))
         self.title.setText(QtGui.QApplication.translate("Arch", "Rows", None)+": "+str(self.table.rowCount())+" / "+QtGui.QApplication.translate("Arch", "Columns", None)+": "+str(self.table.columnCount()))
 
     def update(self):

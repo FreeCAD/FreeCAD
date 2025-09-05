@@ -30,9 +30,7 @@
 
 #include <App/Application.h>
 
-#if QT_VERSION >= QT_VERSION_CHECK(6,0,0) && QT_VERSION < QT_VERSION_CHECK(6,8,1)
-# define HAS_QTBUG_129596
-#endif
+#include "StyleParameters/ParameterManager.h"
 
 class QCloseEvent;
 class SoNode;
@@ -66,6 +64,9 @@ public:
     explicit Application(bool GUIenabled);
     /// destruction
     ~Application();
+
+    /// Initializes default configuration for Style Parameter Manager
+    void initStyleParameterManager();
 
     /** @name methods for support of files */
     //@{
@@ -225,7 +226,8 @@ public:
     //@{
     /// Activate a stylesheet
     void setStyleSheet(const QString& qssFile, bool tiledBackground);
-    QString replaceVariablesInQss(QString qssText);
+    void reloadStyleSheet();
+    QString replaceVariablesInQss(const QString& qssText);
     //@}
 
     /** @name User Commands */
@@ -239,6 +241,7 @@ public:
     //@}
 
     Gui::PreferencePackManager* prefPackManager();
+    Gui::StyleParameters::ParameterManager* styleParameterManager();
 
     /** @name Init, Destruct an Access methods */
     //@{
@@ -289,7 +292,7 @@ protected:
          std::make_pair(QT_TRANSLATE_NOOP("EditMode", "&Color"),
                         QT_TRANSLATE_NOOP("EditMode",
                                           "The object will have the color of its individual faces "
-                                          "editable with the Part FaceAppearances command"))},
+                                          "editable with the Appearance per Face command"))},
     };
     int userEditMode = userEditModes.begin()->first;
 

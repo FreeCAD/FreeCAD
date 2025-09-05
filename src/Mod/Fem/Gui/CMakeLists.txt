@@ -38,6 +38,11 @@ generate_from_xml(ViewProviderFemMeshPy)
 generate_from_xml(ViewProviderFemPostPipelinePy)
 generate_from_xml(ViewProviderFemPostFilterPy)
 
+generate_from_py_(ViewProviderFemConstraintPy)
+generate_from_py_(ViewProviderFemMeshPy)
+generate_from_py_(ViewProviderFemPostPipelinePy)
+generate_from_py_(ViewProviderFemPostFilterPy)
+
 SET(Python_SRCS
     ViewProviderFemConstraintPy.xml
     ViewProviderFemConstraintPyImp.cpp
@@ -291,6 +296,8 @@ if(BUILD_FEM_VTK)
         SphereWidget.ui
         TaskPostBoxes.h
         TaskPostBoxes.cpp
+        TaskPostExtraction.h
+        TaskPostExtraction.cpp
         TaskPostCalculator.ui
         TaskPostClip.ui
         TaskPostContours.ui
@@ -440,6 +447,16 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/SolverCalculiX.ui
     Resources/ui/SolverCcxTools.ui
     Resources/ui/TaskPostGlyph.ui
+    Resources/ui/TaskPostExtraction.ui
+    Resources/ui/TaskPostHistogram.ui
+    Resources/ui/TaskPostLineplot.ui
+    Resources/ui/PostHistogramFieldViewEdit.ui
+    Resources/ui/PostHistogramFieldAppEdit.ui
+    Resources/ui/PostHistogramIndexAppEdit.ui
+    Resources/ui/PostLineplotFieldViewEdit.ui
+    Resources/ui/PostLineplotFieldAppEdit.ui
+    Resources/ui/PostLineplotIndexAppEdit.ui
+    Resources/ui/PostTableFieldViewEdit.ui
 )
 
 ADD_CUSTOM_TARGET(FemPythonUi ALL

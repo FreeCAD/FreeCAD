@@ -180,12 +180,23 @@ void MaterialYamlEntry::addToTree(
     QString author = yamlValue(yamlModel["General"], "Author", "");
     QString license = yamlValue(yamlModel["General"], "License", "");
     QString description = yamlValue(yamlModel["General"], "Description", "");
+    QString sourceReference = yamlValue(yamlModel["General"], "ReferenceSource", "");
+    QString sourceURL = yamlValue(yamlModel["General"], "SourceURL", "");
 
     std::shared_ptr<Material> finalModel =
         std::make_shared<Material>(library, directory, uuid, name);
     finalModel->setAuthor(author);
     finalModel->setLicense(license);
     finalModel->setDescription(description);
+    finalModel->setReference(sourceReference);
+    finalModel->setURL(sourceURL);
+
+    if (yamlModel["General"]["Tags"]) {
+        auto tags = readList(yamlModel["General"]["Tags"]);
+        for (auto tag : *tags) {
+            finalModel->addTag(tag.toString());
+        }
+    }
 
     // Add inheritance list
     if (yamlModel["Inherits"]) {
@@ -250,7 +261,7 @@ void MaterialYamlEntry::addToTree(
                                 finalModel->setPhysicalValue(QString::fromStdString(propertyName),
                                                             propertyValue);
                             }
-                            catch (const Base::ValueError& e) {
+                            catch (const Base::ValueError&) {
                                 // Units mismatch
                                 Base::Console().log("Units mismatch in material '%s':'%s' = '%s', "
                                                     "setting to default property units '%s'\n",

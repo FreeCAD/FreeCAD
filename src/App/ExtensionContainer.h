@@ -38,111 +38,11 @@ class Extension;
 
 /**
  * @brief A container that can hold extensions.
+ * @ingroup ExtensionFramework
  *
- * The concept of extensions provides a way to extend the functionality of
- * objects in FreeCAD despite Python's limitations with multiple inheritance
- * (see below for an explanation).  Extensions are FreeCAD objects that act
- * like regular objects in the sense that they have properties and class
- * methods to define their functionality.  However, extensions are not exposed
- * as individual usable entities but are used to extend other objects.  An
- * extended object obtains all the properties and methods of the extension.
- *
- * As such, it is like C++ multiple inheritance, which is indeed used to
- * achieve this on C++ side, but it provides a few important additional
- * functionalities as well:
- *
- * - Property persistence is handled: save and restore work out of the box.
- * - The objects Python API gets extended too with the extension Python API.
- * - Extensions can be added from C++ and Python, even from both together.
- *
- * The interoperability with Python is highly important since in FreeCAD, all
- * functionality should be easily accessible from both Python and C++.  To
- * ensure this -- as already noted -- extensions can be added to an object from
- * Python.
- *
- * However, this means that it is not clear from the C++ object type whether an
- * extension was added or not:  If added from C++, it becomes clear in the type
- * due to the use of multiple inheritance.  If added from Python, it is a
- * runtime extension and not visible from the type.  Hence, querying existing
- * extensions of an object and accessing its methods works not by type casting
- * but by the interface provided in ExtensionContainer.  The default workflow
- * is to query whether an extension exists and then to get the extension
- * object.  This interface always works the same, no matter if added from
- * Python or C++.
- *
- * @code
- * if (object->hasExtension(GroupExtension::getClassTypeId())) {
- *     App::GroupExtension* group = object->getExtensionByType<GroupExtension>();
- *     group->hasObject(...);
- * }
- * @endcode
- *
- * To add a extension to an object, it must comply to a single restriction: it
- * must be derived from ExtensionContainer.  This is important to allow adding
- * extensions from Python and also to access the universal extension API. As
- * DocumentObject itself derives from ExtensionContainer, this should be the
- * case automatically in most circumstances.
- *
- * Note that two small boilerplate changes are needed in addition to the
- * multiple inheritance when adding extensions from C++.
- *
- * 1. It must be ensured that the property and type registration is aware of the extensions by using
- *    special macros.
- * 2. The extensions need to be initialised in the constructor.
- *
- * Here is a working example:
- * @code{.cpp}
- * class AppExport Part : public App::DocumentObject
- *                      , public App::FirstExtension
- *                      , public App::SecondExtension
- * {
- *     PROPERTY_HEADER_WITH_EXTENSIONS(App::Part);
- * };
- *
- * PROPERTY_SOURCE_WITH_EXTENSIONS(App::Part, App::DocumentObject)
- *
- * Part::Part(void)
- * {
- *   FirstExtension::initExtension(this);
- *   SecondExtension::initExtension(this);
- * }
- * @endcode
- *
- * From Python, adding an extension is easier: It must be simply registered to
- * a document object at object initialisation like done with properties.  Note
- * that the special Python extension objects need to be added, not the C++
- * objects.  Normally the only difference in name is the additional "Python" at
- * the end of the extension name.
- *
- * @code{.py}
- * class Test():
- *   __init(self)__:
- *     registerExtension("App::FirstExtensionPython", self)
- *     registerExtension("App::SecondExtensionPython", self)
- * @endcode
- *
- * Extensions can provide methods that should be overridden by the extended
- * object for customisation of the extension behaviour. In C++ this is as
- * simple as overriding the provided virtual functions. In Python a class
- * method must be provided which has the same name as the method to override.
- * This method must not necessarily be in the object that is extended, it must
- * be in the object which is provided to the "registerExtension" call as second
- * argument.  This second argument is used as a proxy and queried if the method
- * to override exists in this proxy before calling it.
- *
- * For information on how to create extension see the documentation of
- * Extension.
- *
- * @section Limitations of Python
- *
- * Without this extension system, it would be challenging to use extending
- * functionality in FreeCAD.  Although C++ supports multiple inheritance, it is
- * not possible to use it in FreeCAD because it should be possible to expose
- * all objects to Python.
- *
- * However, using multiple parent classes in Python is currently not possible
- * with the default object approach.  Moreover, it is basically impossible to
- * handle multiple inheritance in the C-API for Python extensions.
+ * This class provides a container for extensions.  It is used to hold
+ * extensions of a document object.  For a more high-level discussion of
+ * extensions see the topic @ref ExtensionFramework "Extension Framework".
  */
 class AppExport ExtensionContainer: public App::PropertyContainer
 {

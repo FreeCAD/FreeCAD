@@ -30,6 +30,7 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief solver CalculiX object
 
+from FreeCAD import Base
 from . import base_fempythonobject
 
 _PropHelper = base_fempythonobject._PropHelper
@@ -320,5 +321,30 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
                 value=["electrostatic"],
             )
         )
-
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="ExcludeBendingStiffness",
+                group="Solver",
+                doc="Exclude bending stiffness to replace shells with membranes or beams with trusses",
+                value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="PastixMixedPrecision",
+                group="Solver",
+                doc="Mixed precision for the PaStiX matrix solver",
+                value=False,
+            )
+        )
         return prop
+
+    def onDocumentRestored(self, obj):
+        # update old project with new properties
+        for prop in self._get_properties():
+            try:
+                obj.getPropertyByName(prop.name)
+            except Base.PropertyError:
+                prop.add_to_object(obj)

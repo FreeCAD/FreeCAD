@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>This screen allows you to create and configure a new BIM project in FreeCAD.</string>
+      <string>This dialog assists in creating and configuring a new BIM project in FreeCAD</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -39,7 +39,7 @@
        </property>
        <item>
         <property name="text">
-         <string>Use preset...</string>
+         <string>Use preset</string>
         </property>
        </item>
       </widget>
@@ -53,10 +53,10 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>The settings below can be saved as a preset. Presets are stored as .txt files in your FreeCAD user folder</string>
+        <string>The settings below can be saved as a preset. Presets are stored as .txt files in the local FreeCAD user folder</string>
        </property>
        <property name="text">
-        <string>Save preset</string>
+        <string>Save Preset</string>
        </property>
        <property name="icon">
         <iconset theme="gtk-save">
@@ -84,10 +84,10 @@
        <item>
         <widget class="QGroupBox" name="groupNewProject">
          <property name="toolTip">
-          <string>Create a new BIM project</string>
+          <string>Creates a new BIM project</string>
          </property>
          <property name="title">
-          <string>Create a new BIM project</string>
+          <string>Create a New BIM Project</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
@@ -111,10 +111,10 @@
             <item>
              <widget class="QRadioButton" name="radioNative1">
               <property name="toolTip">
-               <string>This will create a new FreeCAD document that allows you to build a BIM model, but with no specific IFC structure yet. This is the most flexible option when you start working ona BIM project. You can convert this project to IFC anytime later.</string>
+               <string>This will create a new FreeCAD document for the construction of a BIM model, but initially with no specific IFC structure. This is the most flexible option when starting working on a BIM project. This project can be converted to IFC anytime later.</string>
               </property>
               <property name="text">
-               <string>Create a new document without IFC support yet</string>
+               <string>Create a new document without IFC support</string>
               </property>
               <property name="checked">
                <bool>false</bool>
@@ -124,10 +124,10 @@
             <item>
              <widget class="QRadioButton" name="radioNative2">
               <property name="toolTip">
-               <string>This will create an IFC project. All the BIM objects you will add to that IFC project will immediately become IFC objects. This is less flexible, but allows you to stick more strictly to the IFC standard.</string>
+               <string>This will create an IFC project. All the BIM objects added to the IFC project will immediately become IFC objects. This is less flexible, but helps to strictly adhere to the IFC standard.</string>
               </property>
               <property name="text">
-               <string>Create a Native IFC project in the current document</string>
+               <string>Create a native IFC project in the current document</string>
               </property>
               <property name="checked">
                <bool>true</bool>
@@ -137,10 +137,10 @@
             <item>
              <widget class="QRadioButton" name="radioNative3">
               <property name="toolTip">
-               <string>The new IFC project will be created as a new FreeCAD document.  In that mode, the IFC project is the FreeCAD document, anything you create in that document becomes part of the IFC project. This is extremely restrictive as no non-IFC object can be added to the document.</string>
+               <string>The new IFC project will be created as a new FreeCAD document. In that mode, the IFC project is the FreeCAD document, anything created in that document becomes part of the IFC project. This is extremely restrictive as no non-IFC object can be added to the document.</string>
               </property>
               <property name="text">
-               <string>Create a locked Native IFC project as a new document</string>
+               <string>Create a locked native IFC project as a new document</string>
               </property>
              </widget>
             </item>
@@ -176,7 +176,7 @@
           <string>Create a new site</string>
          </property>
          <property name="title">
-          <string>Create site</string>
+          <string>Create Site</string>
          </property>
          <property name="flat">
           <bool>false</bool>
@@ -188,7 +188,7 @@
           <item>
            <widget class="QLabel" name="label_19">
             <property name="text">
-             <string>The site object contains all the data relative to the project location. Later on, you can attach a physical object representing the terrain.</string>
+             <string>The site object contains all the data relative to the project location. Later on, is it possible to attach a physical object representing the terrain.</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -200,7 +200,7 @@
             <item row="3" column="1">
              <widget class="QDoubleSpinBox" name="siteLongitude">
               <property name="toolTip">
-               <string>The East longitude of this site</string>
+               <string>The east longitude of this site</string>
               </property>
               <property name="suffix">
                <string> E</string>
@@ -250,7 +250,7 @@
             <item row="5" column="1">
              <widget class="QDoubleSpinBox" name="siteDeviation">
               <property name="toolTip">
-               <string>The difference between the up direction of this site and the true North direction</string>
+               <string>The difference between the up direction of this site and the true north direction</string>
               </property>
               <property name="suffix">
                <string> °</string>
@@ -301,7 +301,7 @@
             <item row="2" column="1">
              <widget class="QDoubleSpinBox" name="siteLatitude">
               <property name="toolTip">
-               <string>The North latitude of this site</string>
+               <string>The north latitude of this site</string>
               </property>
               <property name="suffix">
                <string> N</string>
@@ -325,10 +325,10 @@
        <item>
         <widget class="QGroupBox" name="groupBuilding">
          <property name="toolTip">
-          <string>Create a new building</string>
+          <string>Creates a new building</string>
          </property>
          <property name="title">
-          <string>Create building</string>
+          <string>Create Building</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
@@ -337,7 +337,7 @@
           <item>
            <widget class="QLabel" name="label_15">
             <property name="text">
-             <string>This will configure a single building for this project. If your project is made of several buildings, you can duplicate it after creation and update its properties.</string>
+             <string>This will configure a single building for this project. If the project is made of several buildings, it can be duplicated after creation and its properties updated.</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -370,7 +370,7 @@
             <item row="0" column="1">
              <widget class="QLineEdit" name="buildingName">
               <property name="text">
-               <string>Default Building</string>
+               <string>Default building</string>
               </property>
              </widget>
             </item>
@@ -404,10 +404,7 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>The main use of this building</string>
-              </property>
-              <property name="sizeAdjustPolicy">
-               <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+               <string>The primary function of this building</string>
               </property>
               <property name="minimumContentsLength">
                <number>0</number>
@@ -437,7 +434,7 @@
             <item row="3" column="0">
              <widget class="QLabel" name="label_29">
               <property name="text">
-               <string>Main use</string>
+               <string>Primary function</string>
               </property>
              </widget>
             </item>
@@ -454,7 +451,7 @@
             <item row="5" column="1">
              <widget class="Gui::InputField" name="buildingWidth">
               <property name="toolTip">
-               <string>An estimate building width. Keep 0 if you don't want to specify this now</string>
+               <string>An estimate building width. Keep the value as 0 to not specify this now.</string>
               </property>
               <property name="text">
                <string>0</string>
@@ -490,7 +487,7 @@
             <item row="4" column="1">
              <widget class="Gui::InputField" name="buildingLength">
               <property name="toolTip">
-               <string>An estimate building length. Keep 0 if you don't want to specify this now</string>
+               <string>An estimate building length. Keep the value as 0 to not specify this now.</string>
               </property>
               <property name="text">
                <string>0</string>
@@ -552,7 +549,7 @@
           <string>Add a human figure to the document</string>
          </property>
          <property name="title">
-          <string>Add a human figure</string>
+          <string>Add Human Figure</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
@@ -561,7 +558,7 @@
           <item>
            <widget class="QLabel" name="label_10">
             <property name="text">
-             <string>A human figure will be added to the document, which helps giving a sense of scale</string>
+             <string>A human figure will be added to the document, which helps give a sense of scale</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -580,7 +577,7 @@
           <item>
            <widget class="QLabel" name="label_9">
             <property name="text">
-             <string>BIM projects are typically organized into levels, that represents the different storeys of a building. Although it is not mandatory to work with levels in FreeCAD, you can set up default levels here</string>
+             <string>BIM projects are typically organized into levels that represent the different storeys of a building. Although it is not mandatory to work with levels in FreeCAD, the default levels can be set here.</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -634,7 +631,7 @@
           <item>
            <widget class="QLabel" name="label_34">
             <property name="text">
-             <string>Default groups to be added to each level. Default groups such as walls, windows,... are useful to organize the different building elements inside a level</string>
+             <string>Default groups to be added to each level. Default groups such as walls and windows are useful to organize the different building elements inside a level.</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -644,7 +641,7 @@
           <item>
            <widget class="QListWidget" name="groupsList">
             <property name="toolTip">
-             <string>A list of grouls to add under each level</string>
+             <string>A list of groups to add under each level</string>
             </property>
             <property name="dragEnabled">
              <bool>true</bool>
@@ -662,7 +659,7 @@
             <item>
              <widget class="QPushButton" name="buttonAdd">
               <property name="toolTip">
-               <string>Add a new group</string>
+               <string>Add New Group</string>
               </property>
               <property name="text">
                <string>Add</string>
@@ -679,7 +676,7 @@
                <string>Delete a selected group</string>
               </property>
               <property name="text">
-               <string>Del</string>
+               <string>Delete</string>
               </property>
               <property name="icon">
                <iconset theme="remove">

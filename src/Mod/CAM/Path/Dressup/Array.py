@@ -53,7 +53,7 @@ class DressupArray:
             "Path",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "The spacing between the array copies in Linear pattern",
+                "The spacing between the array copies in linear pattern",
             ),
         )
         obj.addProperty(
@@ -61,7 +61,7 @@ class DressupArray:
             "CopiesX",
             "Path",
             QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in X direction in Linear pattern"
+                "App::Property", "The number of copies in X-direction in linear pattern"
             ),
         )
         obj.addProperty(
@@ -69,28 +69,28 @@ class DressupArray:
             "CopiesY",
             "Path",
             QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in Y direction in Linear pattern"
+                "App::Property", "The number of copies in Y-direction in linear pattern"
             ),
         )
         obj.addProperty(
             "App::PropertyAngle",
             "Angle",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Total angle in Polar pattern"),
+            QT_TRANSLATE_NOOP("App::Property", "Total angle in polar pattern"),
         )
         obj.addProperty(
             "App::PropertyInteger",
             "Copies",
             "Path",
             QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in Linear 1D and Polar pattern"
+                "App::Property", "The number of copies in linear 1D and polar pattern"
             ),
         )
         obj.addProperty(
             "App::PropertyVector",
             "Centre",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The centre of rotation in Polar pattern"),
+            QT_TRANSLATE_NOOP("App::Property", "The centre of rotation in polar pattern"),
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -98,7 +98,7 @@ class DressupArray:
             "Path",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Make copies in X direction before Y in Linear 2D pattern",
+                "Make copies in X-direction before Y in linear 2D pattern",
             ),
         )
         obj.addProperty(
@@ -166,8 +166,35 @@ class DressupArray:
         if prop == "Type":
             self.setEditorModes(obj)
 
-    def dresupOnDocumentRestored(self, obj):
+    def onDocumentRestored(self, obj):
         """onDocumentRestored(obj) ... Called automatically when document is restored."""
+
+        # Before commit 24c32c9 array dressups did have their own CoolantMode
+        # and ToolController which they copied from the base operation. We need
+        # to remove those properties when loading a file that was created before
+        # that commit. Otherwise the wrong or no CoolantMode/ToolController will
+        # be used.
+
+        if hasattr(obj, "CoolantMode"):
+            obj.removeProperty("CoolantMode")
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "DressupArray",
+                    "Removing CoolantMode property from {} as base operation's CoolantMode is now used.",
+                ).format(obj.Name)
+                + "\n"
+            )
+
+        if hasattr(obj, "ToolController"):
+            obj.removeProperty("ToolController")
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "DressupArray",
+                    "Removing ToolController property from {} as base operation's ToolController is now used.",
+                ).format(obj.Name)
+                + "\n"
+            )
+
         self.obj = obj
         self.setEditorModes(obj)
 

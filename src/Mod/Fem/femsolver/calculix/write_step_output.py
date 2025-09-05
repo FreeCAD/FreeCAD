@@ -86,10 +86,14 @@ def write_step_output(f, ccxwriter):
                     f.write("*NODE PRINT, NSET={}, TOTALS=ONLY\n".format(femobj["Object"].Name))
                     f.write("RF\n")
         if ccxwriter.member.cons_rigidbody:
-            # reaction forces/moments for Constraint rigid body
-            f.write("** reaction forces/moments for Constraint rigid body\n")
+            # displacements and reaction forces/moments for Constraint rigid body
+            f.write("** displacements and reaction forces/moments for Constraint rigid body\n")
             for femobj in ccxwriter.member.cons_rigidbody:
                 # femobj --> dict, FreeCAD document object is femobj["Object"]
+                f.write("*NODE PRINT, NSET={}_RefNode\n".format(femobj["Object"].Name))
+                f.write("U\n")
+                f.write("*NODE PRINT, NSET={}_RotNode\n".format(femobj["Object"].Name))
+                f.write("U\n")
                 if (
                     femobj["Object"].TranslationalModeX != "Free"
                     or femobj["Object"].TranslationalModeY != "Free"

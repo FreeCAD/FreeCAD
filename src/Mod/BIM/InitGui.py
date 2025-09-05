@@ -56,7 +56,7 @@ class BIMWorkbench(Workbench):
         # Load Arch & Draft preference pages
         self.loadPreferences()
 
-        Log("Loading BIM module... done\n")
+        Log("Loading BIM module… done\n")
         FreeCADGui.updateLocale()
 
 
@@ -265,7 +265,7 @@ class BIMWorkbench(Workbench):
             def GetCommands(self):
                 return self.tools
             def GetResources(self):
-                t = QT_TRANSLATE_NOOP("BIM_GenericTools", "Generic 3D tools")
+                t = QT_TRANSLATE_NOOP("BIM_GenericTools", "Generic 3D Tools")
                 return { "MenuText": t, "ToolTip": t, "Icon": "BIM_Box"}
             def IsActive(self):
                 v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -280,7 +280,7 @@ class BIMWorkbench(Workbench):
             def GetCommands(self):
                 return self.tools
             def GetResources(self):
-                t = QT_TRANSLATE_NOOP("BIM_Create2DViews", "Create 2D views")
+                t = QT_TRANSLATE_NOOP("BIM_Create2DViews", "Create 2D Views")
                 return { "MenuText": t, "ToolTip": t, "Icon": "BIM_DrawingView"}
             def IsActive(self):
                 v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -288,7 +288,7 @@ class BIMWorkbench(Workbench):
         FreeCADGui.addCommand("BIM_Create2DViews", BIM_Create2DViews(self.create_2dviews))
         insert_at_index = self.annotationtools.index("BIM_TDPage")
         self.annotationtools.insert(insert_at_index, "BIM_Create2DViews")
-        
+
         # load rebar tools (Reinforcement addon)
 
         try:
@@ -304,7 +304,7 @@ class BIMWorkbench(Workbench):
                 def GetResources(self):
                     return {
                         "MenuText": QT_TRANSLATE_NOOP(
-                            "Arch_RebarTools", "Reinforcement tools"
+                            "Arch_RebarTools", "Reinforcement Tools"
                         ),
                         "ToolTip": QT_TRANSLATE_NOOP(
                             "Arch_RebarTools", "Reinforcement tools"
@@ -319,7 +319,7 @@ class BIMWorkbench(Workbench):
             FreeCADGui.addCommand("Arch_RebarTools", RebarGroupCommand())
             self.bimtools[self.bimtools.index("Arch_Rebar")] = "Arch_RebarTools"
             RebarTools.load_translations()
-            Log("Load Reinforcement Module...done\n")
+            Log("Load Reinforcement Module… done\n")
             if hasattr(RebarTools, "updateLocale"):
                 RebarTools.updateLocale()
             #self.rebar = RebarTools.RebarCommands + ["Arch_Rebar"]
@@ -412,15 +412,15 @@ class BIMWorkbench(Workbench):
 
         # create toolbars
 
-        t1 = QT_TRANSLATE_NOOP("Workbench", "Drafting tools")
-        t2 = QT_TRANSLATE_NOOP("Workbench", "Draft snap")
-        t3 = QT_TRANSLATE_NOOP("Workbench", "3D/BIM tools")
-        t4 = QT_TRANSLATE_NOOP("Workbench", "Annotation tools")
-        t5 = QT_TRANSLATE_NOOP("Workbench", "2D modification tools")
-        t6 = QT_TRANSLATE_NOOP("Workbench", "Manage tools")
-        t7 = QT_TRANSLATE_NOOP("Workbench", "General modification tools")
-        t8 = QT_TRANSLATE_NOOP("Workbench", "Object modification tools")
-        t9 = QT_TRANSLATE_NOOP("Workbench", "3D modification tools")
+        t1 = QT_TRANSLATE_NOOP("Workbench", "Drafting Tools")
+        t2 = QT_TRANSLATE_NOOP("Workbench", "Draft Snap")
+        t3 = QT_TRANSLATE_NOOP("Workbench", "3D/BIM Tools")
+        t4 = QT_TRANSLATE_NOOP("Workbench", "Annotation Tools")
+        t5 = QT_TRANSLATE_NOOP("Workbench", "2D Tools")
+        t6 = QT_TRANSLATE_NOOP("Workbench", "Manage Tools")
+        t7 = QT_TRANSLATE_NOOP("Workbench", "General Tools")
+        t8 = QT_TRANSLATE_NOOP("Workbench", "Object Tools")
+        t9 = QT_TRANSLATE_NOOP("Workbench", "3D Tools")
         self.appendToolbar(t1, self.draftingtools)
         self.appendToolbar(t2, self.snapbar)
         self.appendToolbar(t3, self.bimtools)
@@ -435,7 +435,7 @@ class BIMWorkbench(Workbench):
 
         t1 =  QT_TRANSLATE_NOOP("Workbench", "&2D Drafting")
         t2 =  QT_TRANSLATE_NOOP("Workbench", "&3D/BIM")
-        t3 =  QT_TRANSLATE_NOOP("Workbench", "Reinforcement tools")
+        t3 =  QT_TRANSLATE_NOOP("Workbench", "Reinforcement Tools")
         t4 =  QT_TRANSLATE_NOOP("Workbench", "&Annotation")
         t5 =  QT_TRANSLATE_NOOP("Workbench", "&Snapping")
         t6 =  QT_TRANSLATE_NOOP("Workbench", "&Modify")
@@ -507,7 +507,6 @@ class BIMWorkbench(Workbench):
         import BimStatus
         from nativeifc import ifc_observer
         from draftutils import grid_observer
-        from draftutils import doc_observer
 
         PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
@@ -517,7 +516,6 @@ class BIMWorkbench(Workbench):
             FreeCADGui.Snapper.show()
         WorkingPlane._view_observer_start()
         grid_observer._view_observer_setup()
-        doc_observer._doc_observer_start()
 
         if PARAMS.GetBool("FirstTime", True) and (not hasattr(FreeCAD, "TestEnvironment")):
             todo.ToDo.delay(FreeCADGui.runCommand, "BIM_Welcome")
@@ -574,9 +572,12 @@ class BIMWorkbench(Workbench):
                     {"insert": "BIM_Help", "menuItem": "Std_ReportBug", "after": ""},
                     {"insert": "BIM_Welcome", "menuItem": "Std_ReportBug", "after": ""},
                 ]
-        if not hasattr(Gui, "BIM_WBManipulator"):
+        reload = hasattr(Gui, "BIM_WBManipulator")  # BIM WB has previously been loaded.
+        if not getattr(Gui, "BIM_WBManipulator", None):
             Gui.BIM_WBManipulator = BIM_WBManipulator()
         Gui.addWorkbenchManipulator(Gui.BIM_WBManipulator)
+        if reload:
+            Gui.activeWorkbench().reloadActive()
 
         Log("BIM workbench activated\n")
 
@@ -588,7 +589,6 @@ class BIMWorkbench(Workbench):
         import WorkingPlane
         from nativeifc import ifc_observer
         from draftutils import grid_observer
-        from draftutils import doc_observer
 
         PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
@@ -602,7 +602,6 @@ class BIMWorkbench(Workbench):
             FreeCADGui.Snapper.hide()
         WorkingPlane._view_observer_stop()
         grid_observer._view_observer_setup()
-        doc_observer._doc_observer_stop()
 
         # print("Deactivating status icon")
         todo.ToDo.delay(BimStatus.setStatusIcons, False)
@@ -629,7 +628,7 @@ class BIMWorkbench(Workbench):
         # remove manipulator
         if hasattr(Gui, "BIM_WBManipulator"):
             Gui.removeWorkbenchManipulator(Gui.BIM_WBManipulator)
-            del Gui.BIM_WBManipulator
+            Gui.BIM_WBManipulator = None
             Gui.activeWorkbench().reloadActive()
 
         Log("BIM workbench deactivated\n")
@@ -708,6 +707,7 @@ FreeCADGui.addPreferencePage(":/ui/preferences-ifc.ui", t)
 FreeCADGui.addPreferencePage(":/ui/preferences-ifc-export.ui", t)
 FreeCADGui.addPreferencePage(":/ui/preferences-dae.ui", t)
 FreeCADGui.addPreferencePage(":/ui/preferences-sh3d-import.ui", t)
+FreeCADGui.addPreferencePage(":/ui/preferences-webgl.ui", t)
 
 # Add unit tests
 FreeCAD.__unit_test__ += ["TestArchGui"]

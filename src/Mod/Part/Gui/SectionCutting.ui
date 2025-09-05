@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Persistent Section Cutting</string>
+   <string>Persistent Section Cut</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_6">
    <item row="0" column="0" colspan="3">
@@ -239,7 +239,7 @@
    <item row="3" column="0" colspan="3">
     <widget class="QGroupBox" name="CutfaceGB">
      <property name="title">
-      <string>Cut face</string>
+      <string>Cut Face</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
@@ -251,7 +251,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Color of cut face</string>
+         <string>Color of the cut face</string>
         </property>
         <property name="text">
          <string>Color</string>
@@ -299,8 +299,8 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>If checked, the color and transparency
-will be taken from the cut objects.
+         <string>Takes the color and transparency
+from the cut objects.
 Works only properly if all objects
 have the same values.</string>
         </property>
@@ -327,7 +327,7 @@ have the same values.</string>
          </size>
         </property>
         <property name="toolTip">
-         <string>Transparency of cut face</string>
+         <string>Transparency of the cut face</string>
         </property>
         <property name="text">
          <string>Transparency</string>
@@ -373,7 +373,7 @@ for the price that all cut objects
 will get the same color</string>
      </property>
      <property name="title">
-      <string>Cut intersecting objects</string>
+      <string>Cut Intersecting Objects</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -391,7 +391,7 @@ will get the same color</string>
          </size>
         </property>
         <property name="toolTip">
-         <string>Color of cut face</string>
+         <string>Color of the cut face</string>
         </property>
         <property name="text">
          <string>Color</string>
@@ -442,8 +442,8 @@ will get the same color</string>
          </size>
         </property>
         <property name="toolTip">
-         <string>If checked, the color and transparency
-will be taken from the cut objects.
+         <string>Takes the color and transparency
+from the cut objects.
 Works only properly if all objects
 have the same values.</string>
         </property>
@@ -470,7 +470,7 @@ have the same values.</string>
          </size>
         </property>
         <property name="toolTip">
-         <string>Transparency of cut face</string>
+         <string>Transparency of the cut face</string>
         </property>
         <property name="text">
          <string>Transparency</string>
@@ -511,7 +511,7 @@ have the same values.</string>
       <string>Refreshes the list of visible objects</string>
      </property>
      <property name="text">
-      <string>Refresh view</string>
+      <string>Refresh View</string>
      </property>
     </widget>
    </item>

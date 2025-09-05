@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Report view</string>
+   <string>Report View</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
@@ -115,7 +115,7 @@ on-screen while displaying the error</string>
          <string>Show report view on error</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>checkShowReportViewOnError</cstring>
@@ -245,7 +245,7 @@ on-screen while displaying the log message</string>
         <item row="0" column="0">
          <widget class="QLabel" name="textLabel1">
           <property name="text">
-           <string>Normal messages:</string>
+           <string>Normal messages</string>
           </property>
          </widget>
         </item>
@@ -303,7 +303,7 @@ on-screen while displaying the log message</string>
         <item row="1" column="0">
          <widget class="QLabel" name="textLabel2">
           <property name="text">
-           <string>Log messages:</string>
+           <string>Log messages</string>
           </property>
          </widget>
         </item>
@@ -361,7 +361,7 @@ on-screen while displaying the log message</string>
         <item row="2" column="0">
          <widget class="QLabel" name="textLabel3">
           <property name="text">
-           <string>Warnings:</string>
+           <string>Warnings</string>
           </property>
          </widget>
         </item>
@@ -419,7 +419,7 @@ on-screen while displaying the log message</string>
         <item row="3" column="0">
          <widget class="QLabel" name="textLabel4">
           <property name="text">
-           <string>Errors:</string>
+           <string>Errors</string>
           </property>
          </widget>
         </item>
@@ -498,7 +498,7 @@ on-screen while displaying the log message</string>
    <item row="2" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Python interpreter</string>
+      <string>Python Interpreter</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">

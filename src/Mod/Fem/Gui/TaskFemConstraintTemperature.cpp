@@ -100,7 +100,7 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(
     }
 
     // create a context menu for the listview of the references
-    createDeleteAction(ui->lw_references);
+    createActions(ui->lw_references);
     connect(deleteAction,
             &QAction::triggered,
             this,

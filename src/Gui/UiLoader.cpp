@@ -561,10 +561,7 @@ UiLoaderPy::~UiLoaderPy() = default;
 
 Py::Object UiLoaderPy::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "Ui loader";
-    return Py::String(s_out.str());
+    return Py::String("Ui loader");
 }
 
 Py::Object UiLoaderPy::load(const Py::Tuple& args)

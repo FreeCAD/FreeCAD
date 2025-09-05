@@ -20,7 +20,6 @@
 # ***************************************************************************/
 
 import os
-import sys
 import math
 from math import sqrt
 import unittest
@@ -218,6 +217,97 @@ class SpreadsheetAggregates(unittest.TestCase):
                 "ERR: Quantity::operator +=(): Unit mismatch in plus operation"
             )
         )
+
+    def test_and(self):
+        self.sheet.set("C20", "4")
+        self.sheet.set("C21", "5")
+        self.sheet.set("C22", "6")
+        self.sheet.set("C23", "0")
+
+        self.sheet.set("A1", "=and(1)")
+        self.sheet.set("A2", "=and(1;2)")
+        self.sheet.set("A3", "=and(1;2;3)")
+        self.sheet.set("A4", "=and(1;2;3;C20)")
+        self.sheet.set("A5", "=and(1;2;3;C20:C22)")
+        self.sheet.set("A6", "=and(1;2;3;C20:C23)")
+
+        self.sheet.set("B1", "=and(0)")
+        self.sheet.set("B2", "=and(0;1;2)")
+        self.sheet.set("B3", "=and(0;1;2;3)")
+        self.sheet.set("B4", "=and(1;2;0)")
+        self.sheet.set("B5", "=and(1;2;3;0)")
+        self.sheet.set("B6", "=and(1;0;2)")
+        self.sheet.set("B6", "=and(1;0;2;0;3)")
+
+        self.doc.recompute()
+
+        self.assertEqual(self.sheet.A1, 1)
+        self.assertEqual(self.sheet.A2, 1)
+        self.assertEqual(self.sheet.A3, 1)
+        self.assertEqual(self.sheet.A4, 1)
+        self.assertEqual(self.sheet.A5, 1)
+        self.assertEqual(self.sheet.A6, 0)
+
+        self.assertEqual(self.sheet.B1, 0)
+        self.assertEqual(self.sheet.B2, 0)
+        self.assertEqual(self.sheet.B3, 0)
+        self.assertEqual(self.sheet.B4, 0)
+        self.assertEqual(self.sheet.B5, 0)
+        self.assertEqual(self.sheet.B6, 0)
+
+    def test_or(self):
+        self.sheet.set("C20", "4")
+        self.sheet.set("C21", "5")
+        self.sheet.set("C22", "6")
+        self.sheet.set("C23", "0")
+        self.sheet.set("C24", "0")
+
+        self.sheet.set("A1", "=or(1)")
+        self.sheet.set("A2", "=or(1;2)")
+        self.sheet.set("A3", "=or(1;2;3)")
+        self.sheet.set("A4", "=or(1;2;3;C20)")
+        self.sheet.set("A5", "=or(1;2;3;C20:C22)")
+        self.sheet.set("A6", "=or(1;2;3;C20:C23)")
+
+        self.sheet.set("B1", "=or(0)")
+        self.sheet.set("B2", "=or(0;1;2)")
+        self.sheet.set("B3", "=or(0;1;2;3)")
+        self.sheet.set("B4", "=or(1;2;0)")
+        self.sheet.set("B5", "=or(1;2;3;0)")
+        self.sheet.set("B6", "=or(1;0;2)")
+        self.sheet.set("B6", "=or(1;0;2;0;3)")
+
+        self.sheet.set("C1", "=or(0)")
+        self.sheet.set("C2", "=or(0;0)")
+        self.sheet.set("C3", "=or(0mm;0;0)")
+        self.sheet.set("C4", "=or(0;0;0;C23)")
+        self.sheet.set("C5", "=or(0;0;0;C23:C24)")
+        self.sheet.set("C6", "=or(C23:C24)")
+        self.sheet.set("C7", "=or(C22:C24)")
+
+        self.doc.recompute()
+
+        self.assertEqual(self.sheet.A1, 1)
+        self.assertEqual(self.sheet.A2, 1)
+        self.assertEqual(self.sheet.A3, 1)
+        self.assertEqual(self.sheet.A4, 1)
+        self.assertEqual(self.sheet.A5, 1)
+        self.assertEqual(self.sheet.A6, 1)
+
+        self.assertEqual(self.sheet.B1, 0)
+        self.assertEqual(self.sheet.B2, 1)
+        self.assertEqual(self.sheet.B3, 1)
+        self.assertEqual(self.sheet.B4, 1)
+        self.assertEqual(self.sheet.B5, 1)
+        self.assertEqual(self.sheet.B6, 1)
+
+        self.assertEqual(self.sheet.C1, 0)
+        self.assertEqual(self.sheet.C2, 0)
+        self.assertEqual(self.sheet.C3, 0)
+        self.assertEqual(self.sheet.C4, 0)
+        self.assertEqual(self.sheet.C5, 0)
+        self.assertEqual(self.sheet.C6, 0)
+        self.assertEqual(self.sheet.C7, 1)
 
 
 #############################################################################################
@@ -547,6 +637,35 @@ class SpreadsheetFunction(unittest.TestCase):
         self.assertTrue(self.sheet.C27.startswith("ERR: Units must be equal"))
         self.assertMostlyEqual(self.sheet.D27, Units.Quantity("3 mm"))
 
+    def test_not(self):
+        self.sheet.set("A20", "=not(3)")
+        self.sheet.set("B20", "=not(-3)")
+        self.sheet.set("C20", "=not(-3.5)")
+        self.sheet.set("D20", "=not(3mm)")
+        self.sheet.set("E20", "=not(3.5mm)")
+        self.sheet.set("F20", "=not(-3.5mm)")
+        self.sheet.set("G20", "=not(0)")
+        self.sheet.set("H20", "=not(0mm)")
+        self.sheet.set("I20", "=not(1)")
+
+        self.doc.recompute()
+
+        self.assertEqual(self.sheet.A20, 0)
+        self.assertEqual(self.sheet.B20, 0)
+        self.assertEqual(self.sheet.C20, 0)
+        self.assertEqual(self.sheet.D20, 0)
+        self.assertEqual(self.sheet.E20, 0)
+        self.assertEqual(self.sheet.F20, 0)
+        self.assertEqual(self.sheet.G20, 1)
+        self.assertEqual(self.sheet.H20, 1)
+        self.assertEqual(self.sheet.I20, 0)
+
+        self.sheet.set("J21", f"=not(not({1e-7}))")
+        self.sheet.set("J22", f"=not(not({1e-8}))")
+        self.doc.recompute()
+        self.assertEqual(self.sheet.J21, 1)
+        self.assertEqual(self.sheet.J22, 0)
+
 
 #############################################################################################
 class SpreadsheetCases(unittest.TestCase):
@@ -828,6 +947,48 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.getContents("A50"), "=+(1 - 1)")
         self.assertEqual(sheet.getContents("A51"), "=+(-1 + 1)")
         self.assertEqual(sheet.getContents("A52"), "=+(-1 + -1)")
+
+        # More ternary operator precedence tests
+        sheet.set("X1", "1")
+        sheet.set("X2", "10")
+        sheet.set("X3", "100")
+        sheet.set("X4", "1000")
+        sheet.set("Y1", "= X1 ? 0 : 1   ?   X2 ? 2 : 3   :   X3 ? 4 : 5")
+        sheet.set("Y2", "= X1 + X2 ? X3 - 2 : 3 + X4")
+
+        self.doc.recompute()
+        self.assertEqual(sheet.getContents("Y1"), "=X1 ? 0 : (1 ? (X2 ? 2 : 3) : (X3 ? 4 : 5))")
+        self.assertEqual(sheet.Y2, 98)
+
+    def testImplicitRelOpChains(self):
+        """Test implicit chains of relational operators"""
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+
+        def check(implicit: str, explicit: str):
+            sheet.set("Z1", implicit)
+            sheet.set("Z2", explicit)
+            self.doc.recompute()
+            self.assertEqual(sheet.getContents("Z2"), sheet.getContents("Z1"))
+
+        check("=1 < 2 < 3 ? 3 : 4", "=(1 < 2) < 3 ? 3 : 4")
+        check("=1 < 2 < 3 < 4 ? 3 : 4", "=((1 < 2) < 3) < 4 ? 3 : 4")
+        check("=A1 < B1 < 3 ? 3 : 4", "=(A1 < B1) < 3 ? 3 : 4")
+        check("=1 < C1 < D2 ? 3 : 4", "=(1 < C1) < D2 ? 3 : 4")
+        check("=X1 < B1 < D1 < 0 ? 3 : 4", "=((X1 < B1) < D1) < 0 ? 3 : 4")
+
+    def testExplicitRelOpChaining(self):
+        """Testing explicit relational operators chaining."""
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+
+        sheet.set("X1", "= (1 < 2) == (2 < 3)")
+        sheet.set("X2", "= (1 < 2) == (2 > 3)")
+        sheet.set("X3", "= (1 < 2) == 1")
+        sheet.set("X4", "= 0 == (1 > 2)")
+        self.doc.recompute()
+        self.assertTrue(sheet.get("X1"))
+        self.assertFalse(sheet.get("X2"))
+        self.assertTrue(sheet.get("X3"))
+        self.assertTrue(sheet.get("X4"))
 
     def testNumbers(self):
         """Test different numbers"""
@@ -1759,3 +1920,99 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertLess(sheet.F3.distanceToPoint(FreeCAD.Vector(0.28, 0.04, -0.2)), tolerance)
         self.assertLess(abs(sheet.F4.Value - -1.6971), 0.0001)
         self.assertEqual(sheet.F5, FreeCAD.Vector(1.72, 2.96, 4.2))
+
+    def testTernaryOperator(self):
+        """Testing ternary operator"""
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Spreadsheet")
+        sheet.set("A1", "= 1 ? 10 : 20")
+        sheet.set("A2", "= 0 ? 10 : 20")
+        sheet.set("A3", "= True ? 10 : 20")
+        sheet.set("A4", "= False ? 10 : 20")
+        sheet.set("B1", "= 1mm ? 10 : 20")
+        sheet.set("B2", "= 0mm ? 10 : 20")
+        sheet.set("C1", "= 2 == 2 ? 10 : 20")
+        sheet.set("C2", "= 2 != 2 ? 10 : 20")
+        sheet.set("C3", "= 2 > 1 ? 10 : 20")
+        sheet.set("C4", "= 1 > 2 ? 10 : 20")
+
+        sheet.set("D1", "= and(1 < 2, 3 < 4) ? 10 : 20")
+        sheet.set("D2", "= and(1 < 2, 3 > 4) ? 10 : 20")
+        sheet.set("D3", "= and(1 > 2, 3 < 4) ? 10 : 20")
+        sheet.set("D4", "= and(1 > 2, 3 > 4) ? 10 : 20")
+
+        sheet.set("E1", "= or(1 < 2, 3 < 4) ? 10 : 20")
+        sheet.set("E2", "= or(1 < 2, 3 > 4) ? 10 : 20")
+        sheet.set("E3", "= or(1 > 2, 3 < 4) ? 10 : 20")
+        sheet.set("E4", "= or(1 > 2, 3 > 4) ? 10 : 20")
+
+        sheet.set("F1", "= not(2 > 1) ? 10 : 20")
+        sheet.set("F2", "= not(2 < 1) ? 10 : 20")
+
+        sheet.addProperty("App::PropertyBool", "PropTrue", "", "")
+        sheet.PropTrue = True
+        sheet.addProperty("App::PropertyBool", "PropFalse", "", "")
+        sheet.PropFalse = False
+        sheet.addProperty("App::PropertyLength", "PropL", "", "")
+        sheet.PropL = "0 mm"
+        sheet.addProperty("App::PropertyLength", "PropH", "", "")
+        sheet.PropH = "5 mm"
+        sheet.addProperty("App::PropertyInteger", "PropI", "", "")
+        sheet.PropI = -5
+        sheet.addProperty("App::PropertyString", "PropS", "", "")
+        sheet.PropS = "This is a test"
+        sheet.addProperty("App::PropertyString", "PropSEmpty", "", "")
+
+        sheet.set("G1", "= Spreadsheet.PropTrue ? 10 : 20")
+        sheet.set("G2", "= Spreadsheet.PropFalse ? 10 : 20")
+        sheet.set("G3", "= Spreadsheet.PropL ? 10 : 20")
+        sheet.set("G4", "= Spreadsheet.PropH ? 10 : 20")
+        sheet.set("G5", "= Spreadsheet.PropI ? 10 : 20")
+        sheet.set("G6", "= Spreadsheet.PropS ? 10 : 20")
+        sheet.set("G7", "= Spreadsheet.PropSEmpty ? 10 : 20")
+        sheet.set("G8", "= <<Test>> ? 10 : 20")
+        sheet.set("G9", "= <<>> ? 10 : 20")
+        sheet.set("G10", "= <<Spreadsheet>> ? 10 : 20")
+
+        self.doc.recompute()
+
+        # Constants
+        self.assertEqual(sheet.get("A1"), 10)
+        self.assertEqual(sheet.get("A2"), 20)
+        self.assertEqual(sheet.get("A3"), 10)
+        self.assertEqual(sheet.get("A4"), 20)
+
+        # Constant Quantities
+        self.assertEqual(sheet.get("B1"), 10)
+        self.assertEqual(sheet.get("B2"), 20)
+
+        # Basic Comparisons
+        self.assertEqual(sheet.get("C1"), 10)
+        self.assertEqual(sheet.get("C2"), 20)
+        self.assertEqual(sheet.get("C3"), 10)
+        self.assertEqual(sheet.get("C4"), 20)
+
+        # Function calls
+        self.assertEqual(sheet.get("D1"), 10)
+        self.assertEqual(sheet.get("D2"), 20)
+        self.assertEqual(sheet.get("D3"), 20)
+        self.assertEqual(sheet.get("D4"), 20)
+        self.assertEqual(sheet.get("E1"), 10)
+        self.assertEqual(sheet.get("E2"), 10)
+        self.assertEqual(sheet.get("E3"), 10)
+        self.assertEqual(sheet.get("E4"), 20)
+        self.assertEqual(sheet.get("F1"), 20)
+        self.assertEqual(sheet.get("F2"), 10)
+
+        # Property lookup
+        self.assertEqual(sheet.get("G1"), 10)
+        self.assertEqual(sheet.get("G2"), 20)
+        self.assertEqual(sheet.get("G3"), 20)
+        self.assertEqual(sheet.get("G4"), 10)
+        self.assertEqual(sheet.get("G5"), 10)
+
+        # Non numeric conditions
+        self.assertEqual(sheet.get("G6"), 10)
+        self.assertEqual(sheet.get("G7"), 20)
+        self.assertEqual(sheet.get("G8"), 10)
+        self.assertEqual(sheet.get("G9"), 20)
+        self.assertEqual(sheet.get("G10"), 10)

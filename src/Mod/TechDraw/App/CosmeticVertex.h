@@ -54,8 +54,8 @@ public:
 
     std::string toString() const;
     void dump(const char* title) override;
-    Base::Vector3d scaled(const double factor);
-    Base::Vector3d rotatedAndScaled(const double scale, const double rotDegrees);
+    Base::Vector3d scaled(const double factor) const;
+    Base::Vector3d rotatedAndScaled(const double scale, const double rotDegrees) const;
 
     static Base::Vector3d makeCanonicalPoint(DrawViewPart* dvp, Base::Vector3d point, bool unscale = true);
     static Base::Vector3d makeCanonicalPointInverted(DrawViewPart* dvp, Base::Vector3d invertedPoint, bool unscale = true);

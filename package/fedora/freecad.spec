@@ -20,6 +20,7 @@
 # Prevent RPM from doing its magical 'build' directory for now
 %global __cmake_in_source_build 0
 
+
 # See FreeCAD-main/src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
 %global bundled_smesh_version 7.7.1.0
 
@@ -38,7 +39,11 @@ Group:          Applications/Engineering
 
 License:        LGPLv2+
 URL:            https://www.freecad.org/
-Source0:        https://github.com/%{github_name}/FreeCAD/archive/%{branch}.tar.gz
+Source0:        {{{ git_repo_pack }}}
+#add all submodule as source
+Source1:        {{{ git_pack path=$GIT_ROOT/src/3rdParty/OndselSolver/  dir_name="OndselSolver" }}}
+Source2:        {{{ git_pack path=$GIT_ROOT/src/3rdParty/GSL/ dir_name="GSL" }}}
+Source3:        {{{ git_pack path=$GIT_ROOT/src/Mod/AddonManager/ dir_name="AddonManager" }}}
 
 
 # Utilities
@@ -162,7 +167,15 @@ Data files for FreeCAD
 
 
 %prep
-%autosetup -p1 -n FreeCAD-%{branch}
+rm -rf %{github_name}
+# extract submodule archive and move in correct path
+%setup -T -a 1 -c -q -D -n %{github_name}/src/3rdParty/ #OndselSolver
+%setup -T -a 2 -c -q -D -n %{github_name}/src/3rdParty/ #GSL
+%setup -T -a 3 -c -q -D -n %{github_name}/src/Mod/ #AddonManager
+
+%setup -T -b 0 -q -D -n %{github_name}
+
+
 # Remove bundled pycxx if we're not using it
 %if ! %{bundled_pycxx}
 rm -rf src/CXX

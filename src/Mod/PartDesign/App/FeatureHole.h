@@ -116,13 +116,16 @@ public:
         double normal;
         double loose;
     };
-    static const UTSClearanceDefinition UTSHoleDiameters[22];
+    static const UTSClearanceDefinition UTSHoleDiameters[23];
 
     void Restore(Base::XMLReader & reader) override;
 
     virtual void updateProps();
     bool isDynamicCounterbore(const std::string &thread, const std::string &holeCutType);
     bool isDynamicCountersink(const std::string &thread, const std::string &holeCutType);
+
+    Base::Vector3d guessNormalDirection(const TopoShape& profileshape) const;
+    TopoShape findHoles(std::vector<TopoShape> &holes, const TopoShape& profileshape, const TopoDS_Shape& protohole) const;
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -239,6 +242,8 @@ private:
 
     void addCutType(const CutDimensionSet& dimensions);
     void updateHoleCutParams();
+    void calculateAndSetCounterbore();
+    void calculateAndSetCountersink();
     std::optional<double> determineDiameter() const;
     void updateDiameterParam();
     void updateThreadDepthParam();
@@ -253,7 +258,6 @@ private:
     void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;
     gp_Vec computePerpendicular(const gp_Vec&) const;
     TopoDS_Shape makeThread(const gp_Vec&, const gp_Vec&, double);
-    TopoShape findHoles(std::vector<TopoShape> &holes, const TopoShape& profileshape, const TopoDS_Shape& protohole) const;
 
     // helpers for nlohmann json
     friend void from_json(const nlohmann::json &j, CounterBoreDimension &t);

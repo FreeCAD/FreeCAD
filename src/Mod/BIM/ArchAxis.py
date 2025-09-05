@@ -66,6 +66,7 @@ class _Axis:
     def __init__(self,obj):
 
         obj.Proxy = self
+        self.Type = "Axis"
         self.setProperties(obj)
 
     def setProperties(self,obj):
@@ -89,7 +90,6 @@ class _Axis:
         if not "Limit" in pl:
             obj.addProperty("App::PropertyLength","Limit","Axis", QT_TRANSLATE_NOOP("App::Property","If not zero, the axes are not represented as one full line but as two lines of the given length"), locked=True)
             obj.Limit=0
-        self.Type = "Axis"
 
     def onDocumentRestored(self,obj):
 
@@ -109,25 +109,20 @@ class _Axis:
         if distances and obj.Length.Value:
             if angles and len(distances) == len(angles):
                 for i in range(len(distances)):
-                    if hasattr(obj.Length,"Value"):
-                        l = obj.Length.Value
-                    else:
-                        l = obj.Length
                     dist += distances[i]
                     ang = math.radians(angles[i])
-                    p1 = Vector(dist,0,0)
-                    p2 = Vector(dist+(l/math.cos(ang))*math.sin(ang),l,0)
+                    ln = obj.Length.Value
+                    ln = 100 * ln if abs(math.cos(ang)) < 0.01 else ln / math.cos(ang)
+                    unitvec = Vector(math.sin(ang), math.cos(ang), 0)
+                    p1 = Vector(dist, 0, 0)
+                    p2 = p1 + unitvec * ln
                     if hasattr(obj,"Limit") and obj.Limit.Value:
-                        p3 = p2.sub(p1)
-                        p3.normalize()
-                        p3.multiply(-obj.Limit.Value)
-                        p4 = p1.sub(p2)
-                        p4.normalize()
-                        p4.multiply(-obj.Limit.Value)
-                        geoms.append(Part.LineSegment(p1,p1.add(p4)).toShape())
-                        geoms.append(Part.LineSegment(p2,p2.add(p3)).toShape())
+                        p3 = unitvec * obj.Limit.Value
+                        p4 = unitvec * -obj.Limit.Value
+                        geoms.append(Part.LineSegment(p1, p1 + p3).toShape())
+                        geoms.append(Part.LineSegment(p2, p2 + p4).toShape())
                     else:
-                        geoms.append(Part.LineSegment(p1,p2).toShape())
+                        geoms.append(Part.LineSegment(p1, p2).toShape())
         if geoms:
             sh = Part.Compound(geoms)
             obj.Shape = sh
@@ -144,7 +139,7 @@ class _Axis:
 
     def loads(self,state):
 
-        return None
+        self.Type = "Axis"
 
     def getPoints(self,obj):
 

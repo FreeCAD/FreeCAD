@@ -88,6 +88,9 @@ public:
     App::PropertyInteger FontSize;
     // NOLINTEND
 
+    // Fields
+    SoSFFloat fieldFontSize;
+
     /**
      * Attaches the document object to this view provider.
      */
@@ -235,6 +238,17 @@ public:
     ViewProviderMeasureRadius()
     {
         sPixmap = "Measurement-Radius";
+    }
+};
+
+class ViewProviderMeasureCOM: public ViewProviderMeasure
+{
+    PROPERTY_HEADER(MeasureGui::ViewProviderMeasureCOM);
+
+public:
+    ViewProviderMeasureCOM()
+    {
+        sPixmap = "Measurement-CenterOfMass";
     }
 };
 

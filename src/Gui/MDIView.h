@@ -70,6 +70,8 @@ public:
      */
     ~MDIView() override;
 
+    virtual MDIView* clone();
+
     /// get called when the document is updated
     void onRelabel(Gui::Document *pDoc) override;
     virtual void viewAll();
@@ -147,6 +149,11 @@ public:
         return ActiveObjects.hasObject(o,n,subname);
     }
 
+    App::DocumentObject* getActiveObjectWithExtension(const Base::Type extensionTypeId) const
+    {
+        return ActiveObjects.getObjectWithExtension(extensionTypeId);
+    }
+
     /*!
      * \brief containsViewProvider
      * Checks if the given view provider is part of this view. The default implementation
@@ -172,9 +179,13 @@ protected Q_SLOTS:
     virtual void windowStateChanged(QWidget*);
 
 protected:
-    void closeEvent(QCloseEvent *e) override;
+    void closeEvent(QCloseEvent* e) override;
     /** \internal */
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
+
+    bool eventFilter(QObject* watched, QEvent* e) override;
+
+    void cloneFrom(const MDIView& from);
 
 protected:
     PyObject* pythonObject;

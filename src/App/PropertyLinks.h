@@ -385,6 +385,9 @@ public:
 
     /// Update all element references in all link properties of \a feature
     static void updateElementReferences(DocumentObject* feature, bool reverse = false);
+    
+    /// Update all element references in the _ElementRefMap
+    static void updateAllElementReferences(bool reverse = false);
 
     /// Obtain link properties that contain element references to a given object
     static const std::unordered_set<PropertyLinkBase*>& getElementReferences(DocumentObject*);

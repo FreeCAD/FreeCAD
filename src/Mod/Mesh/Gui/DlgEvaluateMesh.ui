@@ -20,7 +20,7 @@
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBoxInfo">
      <property name="title">
-      <string>Mesh information</string>
+      <string>Mesh Information</string>
      </property>
      <layout class="QGridLayout">
       <property name="margin">
@@ -43,7 +43,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="textLabel1">
           <property name="text">
-           <string>Number of faces:</string>
+           <string>Number of faces</string>
           </property>
          </widget>
         </item>
@@ -76,7 +76,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="textLabel2">
           <property name="text">
-           <string>Number of edges:</string>
+           <string>Number of edges</string>
           </property>
          </widget>
         </item>
@@ -109,7 +109,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="textLabel3">
           <property name="text">
-           <string>Number of points:</string>
+           <string>Number of points</string>
           </property>
          </widget>
         </item>

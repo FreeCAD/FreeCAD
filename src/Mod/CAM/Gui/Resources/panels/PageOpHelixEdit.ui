@@ -33,7 +33,7 @@
       <item row="0" column="1">
        <widget class="QComboBox" name="toolController">
         <property name="toolTip">
-         <string>The tool and its settings to be used for this operation.</string>
+         <string>The tool and its settings to be used for this operation</string>
         </property>
        </widget>
       </item>
@@ -47,7 +47,14 @@
       <item row="1" column="1">
        <widget class="QComboBox" name="coolantController">
         <property name="toolTip">
-         <string>The tool and its settings to be used for this operation.</string>
+         <string>The tool and its settings to be used for this operation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="editToolController">
+        <property name="text">
+         <string>Edit Tool Controller</string>
         </property>
        </widget>
       </item>
@@ -67,7 +74,7 @@
       <item row="0" column="1">
        <widget class="QComboBox" name="startSide">
         <property name="toolTip">
-         <string>Specify if the helix operation should start at the inside and work its way outwards, or start at the outside and work its way to the center.</string>
+         <string>Specify if the helix operation should start at the inside and work its way outwards, or start at the outside and work its way to the center</string>
         </property>
         <item>
          <property name="text">
@@ -91,7 +98,7 @@
       <item row="2" column="1">
        <widget class="QComboBox" name="cutMode">
         <property name="toolTip">
-         <string>The direction for the helix, clockwise or counterclockwise.</string>
+         <string>The direction for the helix, clockwise or counterclockwise</string>
         </property>
         <item>
          <property name="text">
@@ -134,7 +141,7 @@
       <item row="5" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Extra Offset</string>
+         <string>Extra offset</string>
         </property>
        </widget>
       </item>

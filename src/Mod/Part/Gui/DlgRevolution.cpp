@@ -74,7 +74,7 @@ public:
         std::string element(sSubName);
         if (element.substr(0,4) != "Edge")
             return false;
-        Part::TopoShape part = Part::Feature::getTopoShape(pObj);
+        Part::TopoShape part = Part::Feature::getTopoShape(pObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (part.isNull()) {
             return false;
         }
@@ -266,7 +266,7 @@ bool DlgRevolution::validate()
     //check source shapes
     if (ui->treeWidget->selectedItems().isEmpty()) {
         QMessageBox::critical(this, windowTitle(),
-            tr("Select a shape for revolution, first."));
+            tr("Select a shape for revolution."));
         return false;
     }
 
@@ -347,7 +347,7 @@ void DlgRevolution::findShapes()
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
     for (auto obj : objs) {
-        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj);
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (topoShape.isNull()) {
             continue;
         }
@@ -461,7 +461,7 @@ void DlgRevolution::onSelectLineClicked()
     if (!filter) {
         filter = new EdgeSelection();
         Gui::Selection().addSelectionGate(filter);
-        ui->selectLine->setText(tr("Selecting... (line or arc)"));
+        ui->selectLine->setText(tr("Selecting… (line or arc)"));
     } else {
         Gui::Selection().rmvSelectionGate();
         filter = nullptr;
@@ -542,7 +542,7 @@ void DlgRevolution::autoSolid()
 {
     try{
         App::DocumentObject &dobj = this->getShapeToRevolve();
-        Part::TopoShape topoShape = Part::Feature::getTopoShape(&dobj);
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(&dobj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (topoShape.isNull()) {
             return;
         } else {

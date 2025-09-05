@@ -51,12 +51,12 @@ class CommandCreateView:
     def GetResources(self):
         return {
             "Pixmap": "Assembly_ExplodedView",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateView", "Create Exploded View"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateView", "Exploded View"),
             "Accel": "E",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateView",
-                "Create an exploded view of the current assembly.",
+                "Creates an exploded view of the current assembly",
             )
             + "</p>",
             "CmdType": "ForEdit",
@@ -76,7 +76,11 @@ class CommandCreateView:
         Gui.addModule("CommandCreateView")  # NOLINT
         Gui.doCommand("panel = CommandCreateView.TaskAssemblyCreateView()")
         self.panel = Gui.doCommandEval("panel")
-        Gui.doCommandGui("Gui.Control.showDialog(panel)")
+        Gui.doCommandGui("dialog = Gui.Control.showDialog(panel)")
+        dialog = Gui.doCommandEval("dialog")
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
 
 ######### Exploded View Object ###########
@@ -214,7 +218,10 @@ class ViewProviderExplodedView:
             Gui.ActiveDocument.setEdit(assembly)
 
         panel = TaskAssemblyCreateView(vobj.Object)
-        Gui.Control.showDialog(panel)
+        dialog = Gui.Control.showDialog(panel)
+        if dialog is not None:
+            dialog.setAutoCloseOnDeletedDocument(True)
+            dialog.setDocumentName(App.ActiveDocument.Name)
 
         return True
 

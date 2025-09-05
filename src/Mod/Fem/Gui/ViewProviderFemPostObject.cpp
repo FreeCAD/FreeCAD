@@ -67,6 +67,9 @@
 #include <Mod/Fem/App/FemPostFilter.h>
 
 #include "TaskPostBoxes.h"
+#ifdef FC_USE_VTK_PYTHON
+#include "TaskPostExtraction.h"
+#endif
 #include "ViewProviderAnalysis.h"
 #include "ViewProviderFemPostObject.h"
 
@@ -1006,6 +1009,7 @@ bool ViewProviderFemPostObject::setEdit(int ModNum)
             postDlg = new TaskDlgPost(this);
             setupTaskDialog(postDlg);
             postDlg->connectSlots();
+            postDlg->processCollapsedWidgets();
             Gui::Control().showDialog(postDlg);
         }
 
@@ -1019,8 +1023,13 @@ bool ViewProviderFemPostObject::setEdit(int ModNum)
 void ViewProviderFemPostObject::setupTaskDialog(TaskDlgPost* dlg)
 {
     assert(dlg->getView() == this);
-    auto panel = new TaskPostDisplay(this);
-    dlg->addTaskBox(panel->windowIcon().pixmap(32), panel);
+    auto dispPanel = new TaskPostDisplay(this);
+    dlg->addTaskBox(dispPanel->windowIcon().pixmap(32), dispPanel);
+
+#ifdef FC_USE_VTK_PYTHON
+    auto extrPanel = new TaskPostExtraction(this);
+    dlg->addTaskBox(extrPanel->windowIcon().pixmap(32), extrPanel);
+#endif
 }
 
 void ViewProviderFemPostObject::unsetEdit(int ModNum)

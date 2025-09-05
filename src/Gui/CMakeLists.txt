@@ -1,5 +1,16 @@
 add_library(FreeCADGui SHARED)
 
+if ( EXISTS "${CMAKE_SOURCE_DIR}/src/3rdParty/GSL/include" )
+    include_directories( ${CMAKE_SOURCE_DIR}/src/3rdParty/GSL/include )
+else()
+    find_package(Microsoft.GSL)
+    if( Microsoft.GSL_FOUND )
+        message( STATUS "Found Microsoft.GSL: version ${Microsoft.GSL_VERSION}" )
+    else()
+        message( SEND_ERROR "The C++ Guidelines Support Library (GSL) submodule is not available. Please run git submodule update --init" )
+    endif()
+endif()
+
 add_subdirectory(Stylesheets)
 add_subdirectory(PreferencePacks)
 add_subdirectory(PreferencePackTemplates)
@@ -13,7 +24,7 @@ if(FC_FLATPAK)
 endif(FC_FLATPAK)
 
 if(WIN32)
-add_definitions(-DFCGui -DQSINT_MAKEDLL -DOVR_OS_WIN32 -DQUARTER_INTERNAL -DQUARTER_MAKE_DLL -DCOIN_DLL)
+    add_definitions(-DFCGui -DQSINT_MAKEDLL -DOVR_OS_WIN32 -DQUARTER_INTERNAL -DQUARTER_MAKE_DLL -DCOIN_DLL)
 endif(WIN32)
 
 IF(CMAKE_BUILD_TYPE)
@@ -55,6 +66,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/Quarter
     ${CMAKE_CURRENT_SOURCE_DIR}/PreferencePages
     ${CMAKE_CURRENT_SOURCE_DIR}/Selection
+    ${CMAKE_CURRENT_SOURCE_DIR}/StyleParameters
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_CURRENT_BINARY_DIR}/..
@@ -127,23 +139,39 @@ target_include_directories(
     ${QtCore_INCLUDE_DIRS}
     ${QtWidgets_INCLUDE_DIRS}
     ${QtOpenGL_INCLUDE_DIRS}
+    ${QtOpenGLWidgets_INCLUDE_DIRS}
     ${QtPrintSupport_INCLUDE_DIRS}
     ${QtSvg_INCLUDE_DIRS}
     ${QtSvgWidgets_INCLUDE_DIRS}
     ${QtNetwork_INCLUDE_DIRS}
     ${QtUiTools_INCLUDE_DIRS}
     ${QtXml_INCLUDE_DIRS}
+    ${YAML_CPP_INCLUDE_DIRS}
 )
+
 list(APPEND FreeCADGui_LIBS
     ${QtCore_LIBRARIES}
     ${QtWidgets_LIBRARIES}
     ${QtOpenGL_LIBRARIES}
+    ${QtOpenGLWidgets_LIBRARIES}
     ${QtPrintSupport_LIBRARIES}
     ${QtSvg_LIBRARIES}
     ${QtSvgWidgets_LIBRARIES}
     ${QtNetwork_LIBRARIES}
     ${QtUiTools_LIBRARIES}
 )
+
+link_directories(${YAML_CPP_LIBRARY_DIR})
+
+if(yaml-cpp_VERSION VERSION_LESS 0.8.0)
+    list(APPEND FreeCADGui_LIBS
+            ${YAML_CPP_LIBRARIES}
+    )
+else()
+    list(APPEND FreeCADGui_LIBS
+            yaml-cpp::yaml-cpp
+    )
+endif()
 
 if(${Qt5WinExtras_FOUND})
     target_include_directories(
@@ -401,6 +429,7 @@ SET(Gui_UIC_SRCS
     Dialogs/DlgProjectUtility.ui
     Dialogs/DlgPropertyLink.ui
     Dialogs/DlgRevertToBackupConfig.ui
+    Dialogs/DlgThemeEditor.ui
     PreferencePages/DlgSettings3DView.ui
     PreferencePages/DlgSettingsCacheDirectory.ui
     Dialogs/DlgSettingsColorGradient.ui
@@ -437,6 +466,7 @@ SET(Gui_UIC_SRCS
     TaskView/TaskAppearance.ui
     TaskView/TaskOrientation.ui
     TaskView/TaskImage.ui
+    TaskView/TaskSolverMessages.ui
     TaskView/TaskSelectLinkProperty.ui
     TaskElementColors.ui
     Dialogs/DlgObjectSelection.ui
@@ -516,6 +546,7 @@ SET(Dialog_CPP_SRCS
     Dialogs/DlgPropertyLink.cpp
     Dialogs/DlgRevertToBackupConfigImp.cpp
     Dialogs/DlgExpressionInput.cpp
+    Dialogs/DlgThemeEditor.cpp
     TaskDlgRelocation.cpp
     Dialogs/DlgCheckableMessageBox.cpp
     TaskTransform.cpp
@@ -558,6 +589,7 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgRevertToBackupConfigImp.h
     Dialogs/DlgCheckableMessageBox.h
     Dialogs/DlgExpressionInput.h
+    Dialogs/DlgThemeEditor.h
     TaskDlgRelocation.h
     TaskTransform.h
     Dialogs/DlgUndoRedo.h
@@ -742,7 +774,6 @@ SET(Dock_Windows_CPP_SRCS
     DAGView/DAGModel.cpp
     DAGView/DAGRectItem.cpp
     DAGView/DAGModelGraph.cpp
-    DAGView/DAGFilter.cpp
 )
 SET(Dock_Windows_HPP_SRCS
     ComboView.h
@@ -757,7 +788,6 @@ SET(Dock_Windows_HPP_SRCS
     DAGView/DAGModel.h
     DAGView/DAGRectItem.h
     DAGView/DAGModelGraph.h
-    DAGView/DAGFilter.h
 )
 SET(Dock_Windows_SRCS
     ${Dock_Windows_CPP_SRCS}
@@ -847,6 +877,9 @@ SET(Task_View_SRCS
     TaskView/TaskSelectLinkProperty.cpp
     TaskView/TaskSelectLinkProperty.h
     TaskView/TaskSelectLinkProperty.ui
+    TaskView/TaskSolverMessages.cpp
+    TaskView/TaskSolverMessages.h
+    TaskView/TaskSolverMessages.ui
     TaskView/TaskEditControl.cpp
     TaskView/TaskEditControl.h
     TaskView/TaskEditControl.ui
@@ -932,12 +965,14 @@ SET(View3D_SRCS
 SOURCE_GROUP("View3D" FILES ${View3D_SRCS})
 
 SET(Navigation_CPP_SRCS
+    Navigation/NavigationStateChart.cpp
     Navigation/NavigationStyle.cpp
     Navigation/NavigationStylePyImp.cpp
     Navigation/InventorNavigationStyle.cpp
     Navigation/CADNavigationStyle.cpp
     Navigation/RevitNavigationStyle.cpp
     Navigation/BlenderNavigationStyle.cpp
+    Navigation/SiemensNXNavigationStyle.cpp
     Navigation/SolidWorksNavigationStyle.cpp
     Navigation/MayaGestureNavigationStyle.cpp
     Navigation/OpenCascadeNavigationStyle.cpp
@@ -950,11 +985,13 @@ SET(Navigation_CPP_SRCS
 )
 SET(Navigation_SRCS
     ${Navigation_CPP_SRCS}
+    Navigation/NavigationStateChart.h
     Navigation/NavigationStyle.h
     Navigation/NavigationStyle.pyi
     Navigation/GestureNavigationStyle.h
     Navigation/NavigationAnimator.h
     Navigation/NavigationAnimation.h
+    Navigation/SiemensNXNavigationStyle.h
 )
 SOURCE_GROUP("Navigation" FILES ${Navigation_SRCS})
 
@@ -1075,10 +1112,14 @@ SET(Inventor_CPP_SRCS
     Inventor/SoFCBoundingBox.cpp
     Inventor/SoMouseWheelEvent.cpp
     Inventor/SoFCTransform.cpp
+    Inventor/SoToggleSwitch.cpp
     Inventor/Draggers/SoTransformDragger.cpp
     Inventor/Draggers/SoLinearDragger.cpp
+    Inventor/Draggers/SoLinearDraggerGeometry.cpp
     Inventor/Draggers/SoPlanarDragger.cpp
     Inventor/Draggers/SoRotationDragger.cpp
+    Inventor/Draggers/SoRotationDraggerGeometry.cpp
+    Inventor/Draggers/Gizmo.cpp
     SoFCColorBar.cpp
     SoFCColorBarNotifier.cpp
     SoFCColorGradient.cpp
@@ -1111,10 +1152,15 @@ SET(Inventor_SRCS
     Inventor/SoFCBoundingBox.h
     Inventor/SoMouseWheelEvent.h
     Inventor/SoFCTransform.h
+    Inventor/SoToggleSwitch.h
     Inventor/Draggers/SoTransformDragger.h
     Inventor/Draggers/SoLinearDragger.h
+    Inventor/Draggers/SoLinearDraggerGeometry.h
     Inventor/Draggers/SoPlanarDragger.h
     Inventor/Draggers/SoRotationDragger.h
+    Inventor/Draggers/SoRotationDraggerGeometry.h
+    Inventor/Draggers/Gizmo.h
+    Inventor/Draggers/GizmoHelper.h
     SoFCColorBar.h
     SoFCColorBarNotifier.h
     SoFCColorGradient.h
@@ -1139,6 +1185,7 @@ SOURCE_GROUP("View3D\\Inventor" FILES ${Inventor_SRCS})
 
 # The widget sources
 SET(Widget_CPP_SRCS
+    ComboLinks.cpp
     FileDialog.cpp
     MainWindow.cpp
     MainWindowPy.cpp
@@ -1162,6 +1209,7 @@ SET(Widget_CPP_SRCS
     FontScaledSVG.cpp
 )
 SET(Widget_HPP_SRCS
+    ComboLinks.h
     FileDialog.h
     MainWindow.h
     MainWindowPy.h
@@ -1305,6 +1353,8 @@ SET(FreeCADGui_CPP_SRCS
     GuiApplication.cpp
     GuiApplicationNativeEventAware.cpp
     GuiConsole.cpp
+    InputHintWidget.cpp
+    InputHintPy.cpp
     Macro.cpp
     MergeDocuments.cpp
     ModuleIO.cpp
@@ -1320,6 +1370,8 @@ SET(FreeCADGui_CPP_SRCS
     StartupProcess.cpp
     TransactionObject.cpp
     ToolHandler.cpp
+    StyleParameters/Parser.cpp
+    StyleParameters/ParameterManager.cpp
 )
 SET(FreeCADGui_SRCS
     Application.h
@@ -1340,6 +1392,9 @@ SET(FreeCADGui_SRCS
     3Dconnexion/GuiAbstractNativeEvent.h
     GuiConsole.h
     InventorAll.h
+    InputHint.h
+    InputHintPy.h
+    InputHintWidget.h
     Macro.h
     MergeDocuments.h
     MetaTypes.h
@@ -1359,6 +1414,8 @@ SET(FreeCADGui_SRCS
     StartupProcess.h
     TransactionObject.h
     ToolHandler.h
+    StyleParameters/Parser.h
+    StyleParameters/ParameterManager.h
 )
 
 SET(FreeCADGui_SRCS
@@ -1405,6 +1462,7 @@ if(MSVC)
         TaskView/TaskOrientation.cpp
         TaskView/TaskImage.cpp
         TaskView/TaskSelectLinkProperty.cpp
+        TaskView/TaskSolverMessages.ui
         TaskView/TaskEditControl.cpp
         TaskView/TaskView.cpp
         ${Command_CPP_SRCS}
@@ -1440,8 +1498,11 @@ if (EIGEN3_NO_DEPRECATED_COPY)
         Inventor/SoAutoZoomTranslation.cpp
         Inventor/Draggers/SoTransformDragger.cpp
         Inventor/Draggers/SoLinearDragger.cpp
+        Inventor/Draggers/SoLinearDraggerGeometry.cpp
         Inventor/Draggers/SoPlanarDragger.cpp
         Inventor/Draggers/SoRotationDragger.cpp
+        Inventor/Draggers/SoRotationDraggerGeometry.cpp
+        Inventor/Draggers/Gizmo.cpp
         SoFCOffscreenRenderer.cpp
         Selection/SoFCSelectionAction.cpp
         Quarter/QuarterWidget.cpp

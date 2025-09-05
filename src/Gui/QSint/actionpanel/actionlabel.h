@@ -56,6 +56,9 @@ public:
      */
     QSize minimumSizeHint() const override;
 
+private:
+    void paintEvent(QPaintEvent *event) override;
+
 protected:
     /**
      * @brief Initializes the ActionLabel.

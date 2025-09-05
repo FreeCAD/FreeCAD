@@ -41,7 +41,7 @@ class Arch_Space:
 
         return {'Pixmap'  : 'Arch_Space',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Space","Space"),
-                'Accel': "S, P",
+                'Accel': "S, A",
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_Space","Creates a space object from selected boundary objects")}
 
     def IsActive(self):

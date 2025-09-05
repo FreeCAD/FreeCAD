@@ -37,5 +37,6 @@
         <file>translations/Inspection_id.qm</file>
         <file>translations/Inspection_da.qm</file>
         <file>translations/Inspection_lt.qm</file>
+        <file>translations/Inspection_ms.qm</file>
     </qresource>
 </RCC>

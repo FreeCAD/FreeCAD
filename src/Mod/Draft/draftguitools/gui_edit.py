@@ -235,6 +235,7 @@ class Edit(gui_base_original.Modifier):
         self.gui_tools_repository.add('Ellipse', edit_draft.DraftEllipseGuiTools())
         self.gui_tools_repository.add('Dimension', edit_draft.DraftDimensionGuiTools()) # Backward compatibility
         self.gui_tools_repository.add('LinearDimension', edit_draft.DraftDimensionGuiTools())
+        self.gui_tools_repository.add('Label', edit_draft.DraftLabelGuiTools())
 
         self.gui_tools_repository.add('Wall', edit_arch.ArchWallGuiTools())
         self.gui_tools_repository.add('Window', edit_arch.ArchWindowGuiTools())
@@ -256,7 +257,7 @@ class Edit(gui_base_original.Modifier):
         return {'Pixmap': 'Draft_Edit',
                 'Accel': "D, E",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edit"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edits the active object.\nPress E or ALT + Left Click to display context menu\non supported nodes and on supported objects.")
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edits the active object")
                 }
 
 
@@ -481,7 +482,7 @@ class Edit(gui_base_original.Modifier):
                                  + ": editing node number "
                                  + str(node_idx) + "\n")
 
-        self.ui.lineUi(title=translate("draft", "Edit node"), icon="Draft_Edit")
+        self.ui.lineUi(title=translate("draft", "Edit Node"), icon="Draft_Edit")
         self.ui.continueCmd.hide()
         self.editing = node_idx
         self.trackers[obj.Name][node_idx].off()
@@ -798,7 +799,7 @@ class Edit(gui_base_original.Modifier):
         selection = Gui.Selection.getSelection()
         self.edited_objects = []
         if len(selection) > self.max_objects:
-            _err = translate("draft", "Too many objects selected, max number set to:")
+            _err = translate("draft", "Too many objects selected, maximum number set to:")
             App.Console.PrintMessage(_err + " " + str(self.max_objects) + "\n")
             return None
 

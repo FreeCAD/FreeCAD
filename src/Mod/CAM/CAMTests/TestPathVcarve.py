@@ -24,10 +24,8 @@ import FreeCAD
 import Part
 import Path.Main.Job as PathJob
 import Path.Op.Vcarve as PathVcarve
-import Path.Tool.Bit as PathToolBit
 import math
-
-from CAMTests.PathTestUtils import PathTestBase
+from CAMTests.PathTestUtils import PathTestWithAssets
 
 
 class VbitTool(object):
@@ -43,24 +41,32 @@ Scale45 = 2.414214
 Scale60 = math.sqrt(3)
 
 
-class TestPathVcarve(PathTestBase):
+class TestPathVcarve(PathTestWithAssets):
     """Test Vcarve milling basics."""
 
     def tearDown(self):
+        super().tearDown()
         if hasattr(self, "doc"):
             FreeCAD.closeDocument(self.doc.Name)
 
     def testFinishingPass(self):
         self.doc = FreeCAD.newDocument()
-        part = FreeCAD.ActiveDocument.addObject("Part::Feature", "TestShape")
-        rect = Part.makePolygon([(0, 0, 0), (5, 0, 0), (5, 10, 0), (0, 10, 0), (0, 0, 0)])
-        part.Shape = Part.makeFace(rect, "Part::FaceMakerSimple")
-        job = PathJob.Create("Job", [part])
-        tool_file = PathToolBit.findToolBit("60degree_Vbit.fctb")
-        job.Tools.Group[0].Tool = PathToolBit.Factory.CreateFrom(tool_file)
+        part1 = FreeCAD.ActiveDocument.addObject("Part::Feature", "TestShape")
+        part2 = FreeCAD.ActiveDocument.addObject("Part::Feature", "TestShape")
+        rect = Part.makePolygon(
+            [(20, 20, 10), (25, 20, 10), (25, 30, 10), (20, 30, 10), (20, 20, 10)]
+        )
+        box = Part.makeBox(100, 100, 10)
+        part1.Shape = box
+        part2.Shape = Part.makeFace(rect, "Part::FaceMakerSimple")
+        job = PathJob.Create("Job", [part1, part2])
+
+        toolbit = self.assets.get("toolbit://60degree_Vbit")
+        loaded_tool = toolbit.attach_to_doc(doc=job.Document)
+        job.Tools.Group[0].Tool = loaded_tool
 
         op = PathVcarve.Create("TestVCarve")
-        op.Base = job.Model.Group[0]
+        op.BaseShapes = job.Model.Group[1]
 
         op.FinishingPass = False
         op.Proxy.execute(op)
@@ -72,7 +78,7 @@ class TestPathVcarve(PathTestBase):
         op.Proxy.execute(op)
         min_z_with_finish = op.Path.BoundBox.ZMin
 
-        self.assertRoughly(min_z_with_finish - min_z_no_finish, finishing_offset)
+        self.assertRoughly(min_z_with_finish - min_z_no_finish, finishing_offset, 1.0)
 
     def test00(self):
         """Verify 90 deg depth calculation"""

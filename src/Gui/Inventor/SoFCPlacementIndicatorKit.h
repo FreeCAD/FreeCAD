@@ -26,6 +26,10 @@
 
 #include <Inventor/nodekits/SoBaseKit.h>
 
+#include <Inventor/fields/SoSFBool.h>
+#include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/fields/SoSFFloat.h>
+
 #include <FCGlobal.h>
 
 namespace Gui {

@@ -44,9 +44,9 @@ Scale::Scale()
     ADD_PROPERTY_TYPE(Base, (nullptr), "Scale", App::Prop_None, "Shape to scale");
     ADD_PROPERTY_TYPE(Uniform, (true), "Scale", App::Prop_None, "If true, scale equally in all directions");
     ADD_PROPERTY_TYPE(UniformScale, (1.0), "Scale", App::Prop_None, "Uniform scale factor - 1.0 means no scaling");
-    ADD_PROPERTY_TYPE(XScale, (1.0), "Scale", App::Prop_None, "Scale factor in X direction - 1.0 means no scaling");
-    ADD_PROPERTY_TYPE(YScale, (1.0), "Scale", App::Prop_None, "Scale factor in Y direction - 1.0 means no scaling");
-    ADD_PROPERTY_TYPE(ZScale, (1.0), "Scale", App::Prop_None, "Scale factor in Z direction - 1.0 means no scaling");
+    ADD_PROPERTY_TYPE(XScale, (1.0), "Scale", App::Prop_None, "Scale factor in X-direction - 1.0 means no scaling");
+    ADD_PROPERTY_TYPE(YScale, (1.0), "Scale", App::Prop_None, "Scale factor in Y-direction - 1.0 means no scaling");
+    ADD_PROPERTY_TYPE(ZScale, (1.0), "Scale", App::Prop_None, "Scale factor in Z-direction - 1.0 means no scaling");
 }
 
 short Scale::mustExecute() const
@@ -151,7 +151,7 @@ App::DocumentObjectExecReturn* Scale::execute()
 
     try {
         Scale::ScaleParameters params = computeFinalParameters();
-        TopoShape result = scaleShape(Feature::getTopoShape(link), params);
+        TopoShape result = scaleShape(Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform), params);
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }

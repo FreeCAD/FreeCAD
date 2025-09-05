@@ -47,6 +47,10 @@ __title__ = "FEM GUI vtk python module check"
 __author__ = "Stefan Tröger"
 __url__ = "https://www.freecad.org"
 
+
+# Note: This file is imported from FreeCAD App files. Do not import any FreeCADGui
+#       directly to support cmd line use.
+
 __user_input_received = False
 
 
@@ -108,7 +112,7 @@ def _find_compatible_module():
             # use a single folder as path and try to load vtk
             sys.path = [folder]
             if vtk_module_compatible():
-                # we do still unload, to let the user descide if he wants to use it
+                # we do still unload, to let the user decide if they want to use it
                 _unload_vtk_modules()
                 sys.path = path
                 return folder
@@ -161,7 +165,7 @@ def vtk_module_handling():
 
         if not FreeCAD.GuiUp:
             FreeCAD.Console.PrintError(
-                "FEM: vtk python module is not compatible with internal vtk library"
+                "FEM: VTK Python module is not compatible with internal VTK library"
             )
             return
 
@@ -178,8 +182,8 @@ def vtk_module_handling():
         message = translate(
             "FEM",
             (
-                "FreeCAD is linked to a different VTK library then the imported "
-                "VTK python module. This is incompatible and will lead to errors."
+                "FreeCAD is linked to a different VTK library than the imported "
+                "VTK Python module. This is incompatible and will lead to errors."
                 "\n\nWrong python module is imported from: \n{}"
             ),
         ).format(path)
@@ -212,7 +216,7 @@ def vtk_module_handling():
 
         else:
             message += translate(
-                "FEM", "\n\nNo matching module was found in the current python path."
+                "FEM", "\n\nNo matching module was found in the current Python path."
             )
 
         # raise a dialog to the user
@@ -220,7 +224,7 @@ def vtk_module_handling():
 
         button = QtGui.QMessageBox.critical(
             FreeCADGui.getMainWindow(),
-            translate("FEM", "VTK module conflict"),
+            translate("FEM", "VTK Python module conflict"),
             message,
             buttons=buttons,
         )
@@ -246,9 +250,9 @@ def vtk_compatibility_abort(inform=True):
 
             button = QtGui.QMessageBox.critical(
                 FreeCADGui.getMainWindow(),
-                translate("FEM", "VTK module conflict"),
+                translate("FEM", "VTK Python Module Conflict"),
                 translate(
-                    "FEM", "This functionality is not available due to VTK python module conflict"
+                    "FEM", "This functionality is not available due to VTK Python module conflict"
                 ),
                 buttons=QtGui.QMessageBox.Discard,
             )

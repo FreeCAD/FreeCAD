@@ -1372,3 +1372,15 @@ IS Tee,ISHT 75,T,150,75,8.4,9
 IS Tee,ISHT 100,T,200,100,7.8,9
 IS Tee,ISHT 125,T,250,125,8.8,9.7
 IS Tee,ISHT 150,T,250,150,7.6,10.6
+
+
+#T-slot
+
+#Category,Name,TSLOT,size,slot_size,wall_thickness,tnut_slot_width,tnut_slot_depth,core_size,hole_diameter,rd
+
+#square T-slot profile with four open T-slots
+
+T-slot,t-slot20x20,TSLOT,20,5.26,1.5,11.99,4.84,7.32,4.19,1.5
+T-slot,t-slot25x25,TSLOT,25,6.5,2.13,14.69,5.84,8.76,5,1.5
+T-slot,t-slot30x30,TSLOT,30,8.13,2.21,16.51,6.8,11.64,6.65,1.5
+T-slot,t-slot40x40,TSLOT,40,8.13,4.32,20.57,8,14.85,6.81,1.5

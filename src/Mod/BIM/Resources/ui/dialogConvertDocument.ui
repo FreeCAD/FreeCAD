@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Single IFC document</string>
+   <string>Single IFC Document</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Do you wish to convert this document to an IFC document? Replying 'Yes' will automatically turn all new objects to IFC, while 'No' will allow you to have both IFC and non-IFC elements in the file.</string>
+      <string>Convert this document to an IFC document? Selecting 'Yes' will enable automatic creation of IFC objects. Selecting 'No' will allow a mix of IFC and non-IFC elements within the file.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -27,7 +27,7 @@
    <item>
     <widget class="QCheckBox" name="checkStructure">
      <property name="toolTip">
-      <string>Add a default building structure (IfcSite, IfcBuilding and IfcBuildingStorey). You can also add the structure manually later.</string>
+      <string>Adds a default building structure consisting of IfcSite, IfcBuilding, and IfcBuildingStorey. The structure can also be added manually at a later stage.</string>
      </property>
      <property name="text">
       <string>Also create a default structure</string>
@@ -37,10 +37,7 @@
    <item>
     <widget class="QCheckBox" name="checkAskAgain">
      <property name="toolTip">
-      <string>If this is checked, you won't be asked again when creating a new FreeCAD document,
-and that document won't be turned into an IFC document automatically.
-You can still turn a FreeCAD document into an IFC document manually, using
-Utils -&gt; Make IFC project</string>
+      <string>Prevents further prompts when creating new FreeCAD documents. New documents will not be converted to IFC automatically, but conversion remains possible later via Utils → Create IFC Project.</string>
      </property>
      <property name="text">
       <string>Do not ask again</string>

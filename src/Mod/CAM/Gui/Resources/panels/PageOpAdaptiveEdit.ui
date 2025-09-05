@@ -20,12 +20,12 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Tool Controller</string>
+         <string>Tool controller</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QComboBox" name="ToolController"/>
+       <widget class="QComboBox" name="toolController"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_3">
@@ -36,6 +36,13 @@
       </item>
       <item row="1" column="1">
        <widget class="QComboBox" name="coolantController"/>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="editToolController">
+        <property name="text">
+         <string>Edit Tool Controller</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -61,7 +68,7 @@
          <item>
           <widget class="QLabel" name="threadFitLabel">
            <property name="text">
-            <string>Accuracy vs Performance</string>
+            <string>Accuracy vs performance</string>
            </property>
           </widget>
          </item>
@@ -98,7 +105,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="23" column="0">
        <widget class="QCheckBox" name="ForceInsideOut">
         <property name="text">
-         <string>Force Clearing Inside-out</string>
+         <string>Force clearing inside-out</string>
         </property>
        </widget>
       </item>
@@ -119,14 +126,14 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="24" column="0">
        <widget class="QCheckBox" name="FinishingProfile">
         <property name="text">
-         <string>Finishing Profile</string>
+         <string>Finishing profile</string>
         </property>
        </widget>
       </item>
       <item row="20" column="1">
        <widget class="Gui::QuantitySpinBox" name="StockToLeave" native="true">
         <property name="toolTip">
-         <string>How much material to leave in the XY plane (i.e. for finishing operation)</string>
+         <string>How much material to leave in the XY-plane (i.e. for finishing operation)</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
@@ -136,7 +143,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="20" column="0">
        <widget class="QLabel" name="label_12">
         <property name="text">
-         <string>XY Stock to Leave</string>
+         <string>XY stock to leave</string>
         </property>
        </widget>
       </item>
@@ -162,7 +169,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="4" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Step Over Percent</string>
+         <string>Step over percent</string>
         </property>
        </widget>
       </item>
@@ -179,21 +186,21 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="10" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>Helix Ramp Angle</string>
+         <string>Helix ramp angle</string>
         </property>
        </widget>
       </item>
       <item row="25" column="0">
        <widget class="QCheckBox" name="useOutline">
         <property name="text">
-         <string>Use Outline</string>
+         <string>Use outline</string>
         </property>
        </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Operation Type</string>
+         <string>Operation type</string>
         </property>
        </widget>
       </item>
@@ -210,7 +217,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="18" column="0">
        <widget class="QLabel" name="label_11">
         <property name="text">
-         <string>Keep Tool Down Ratio</string>
+         <string>Keep tool down ratio</string>
         </property>
        </widget>
       </item>
@@ -227,7 +234,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="12" column="0">
        <widget class="QLabel" name="label_8">
         <property name="text">
-         <string>Helix Cone Angle</string>
+         <string>Helix cone angle</string>
         </property>
        </widget>
       </item>
@@ -244,14 +251,14 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="16" column="0">
        <widget class="QLabel" name="label_10">
         <property name="text">
-         <string>Lift Distance</string>
+         <string>Lift distance</string>
         </property>
        </widget>
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Cut Region</string>
+         <string>Cut region</string>
         </property>
        </widget>
       </item>
@@ -268,7 +275,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="14" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
-         <string>Helix Max Diameter</string>
+         <string>Helix max diameter</string>
         </property>
        </widget>
       </item>
@@ -287,7 +294,7 @@ This option changes that behavior to cut each discrete area to its full depth be
       <item row="21" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Z Stock to Leave</string>
+         <string>Z stock to leave</string>
         </property>
        </widget>
       </item>

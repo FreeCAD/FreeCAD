@@ -34,9 +34,6 @@ import FreeCAD as App
 import FreeCADGui as Gui
 from draftguitools import gui_base
 from draftutils import gui_utils
-from draftutils import todo
-from draftutils.messages import _log
-from draftutils.translate import translate
 from drafttaskpanels import task_orthoarray
 
 
@@ -56,7 +53,7 @@ class OrthoArray(gui_base.GuiCommandBase):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_Array",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_OrthoArray", "Array"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_OrthoArray", "Creates copies of the selected object, and places the copies in an orthogonal pattern,\nmeaning the copies follow the specified direction in the X, Y, Z axes.\n\nThe array can be turned into a polar or a circular array by changing its type.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_OrthoArray", "Creates copies of the selected object in an orthogonal pattern")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -77,8 +74,9 @@ class OrthoArray(gui_base.GuiCommandBase):
         # The calling class (this one) is saved in the object
         # of the interface, to be able to call a function from within it.
         self.ui.source_command = self
-        # Gui.Control.showDialog(self.ui)
-        todo.ToDo.delay(Gui.Control.showDialog, self.ui)
+        task = Gui.Control.showDialog(self.ui)
+        task.setDocumentName(Gui.ActiveDocument.Document.Name)
+        task.setAutoCloseOnDeletedDocument(True)
 
     def click(self, event_cb=None):
         """Execute as a callback when the pointer clicks on the 3D view.

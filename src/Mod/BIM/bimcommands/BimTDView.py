@@ -35,12 +35,12 @@ class BIM_TDView:
     def GetResources(self):
         return {
             "Pixmap": "BIM_InsertView",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_TDView", "Insert view"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_TDView", "New View"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_TDView",
                 "Inserts a drawing view on a page.\n"
                 "To choose where to insert the view when multiple pages are available,\n"
-                "select both the view and the page before you execute the command.",
+                "select both the view and the page before executing the command.",
             ),
             'Accel': "V, I",
         }
@@ -70,7 +70,7 @@ class BIM_TDView:
             FreeCAD.Console.PrintError(
                 translate(
                     "BIM",
-                    "No section view or Draft objects selected, or no page selected, or no page found in document",
+                    "No section view, Draft object, or page found or selected in the document",
                 )
                 + "\n"
             )

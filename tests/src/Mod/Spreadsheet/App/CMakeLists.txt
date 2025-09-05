@@ -1,5 +1,6 @@
-target_sources(Spreadsheet_tests_run PRIVATE
+add_executable(Spreadsheet_tests_run
             PropertySheet.cpp
+            RenameProperty.cpp
 )
 
 target_include_directories(Spreadsheet_tests_run PUBLIC

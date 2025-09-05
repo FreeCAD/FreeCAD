@@ -23,6 +23,11 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+#include <xercesc/framework/MemoryManager.hpp>
+#include <xercesc/util/OutOfMemoryException.hpp>
+#endif
+
 #include "Exception.h"
 #include "XMLTools.h"
 
@@ -127,4 +132,20 @@ std::basic_string<XMLCh> XMLTools::toXMLString(const char* const fromTranscode)
 void XMLTools::terminate()
 {
     transcoder.reset();
+}
+
+void* XStrMemoryManager::allocate(XMLSize_t size)
+{
+    auto ptr = ::operator new(static_cast<size_t>(size),
+                              static_cast<std::align_val_t>(alignof(XMLCh)),
+                              std::nothrow);
+    if (ptr == nullptr && size != 0) {
+        throw XERCES_CPP_NAMESPACE::OutOfMemoryException();
+    }
+    return ptr;
+}
+
+void XStrMemoryManager::deallocate(void* p)
+{
+    ::operator delete(p);
 }

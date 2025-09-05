@@ -30,7 +30,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
-
+#include <Gui/InputHint.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "DrawSketchDefaultWidgetController.h"
@@ -107,6 +107,123 @@ public:
     {}
 
     ~DrawSketchHandlerRectangle() override = default;
+
+private:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using State = std::pair<ConstructionMethod, SelectMode>;
+        using enum Gui::InputHint::UserInput;
+
+        const Gui::InputHint switchHint {.message = tr("%1 switch mode"), .sequences = {KeyM}};
+
+        return Gui::lookupHints<State>(
+            {constructionMethod(), state()},
+            {
+                // Diagonal method
+                {.state = {ConstructionMethod::Diagonal, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {tr("%1 pick first corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::Diagonal, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {tr("%1 pick opposite corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::Diagonal, SelectMode::SeekThird},
+                 .hints =
+                     {
+                         {tr("%1 set corner radius or frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::Diagonal, SelectMode::SeekFourth},
+                 .hints =
+                     {
+                         {tr("%1 set frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+
+                // CenterAndCorner method
+                {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {tr("%1 pick center"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {tr("%1 pick corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekThird},
+                 .hints =
+                     {
+                         {tr("%1 set corner radius or frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekFourth},
+                 .hints =
+                     {
+                         {tr("%1 set frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+
+                // ThreePoints method
+                {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {tr("%1 pick first corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {tr("%1 pick second corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekThird},
+                 .hints =
+                     {
+                         {tr("%1 pick third corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekFourth},
+                 .hints =
+                     {
+                         {tr("%1 set corner radius or frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+
+                // CenterAnd3Points method
+                {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {tr("%1 pick center"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {tr("%1 pick first corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekThird},
+                 .hints =
+                     {
+                         {tr("%1 pick second corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekFourth},
+                 .hints =
+                     {
+                         {tr("%1 set corner radius or frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+            });
+    }
 
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
@@ -586,7 +703,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Rectangle parameters"));
+        return QString(tr("Rectangle parameters"));
     }
 
     void angleSnappingControl() override
@@ -658,6 +775,12 @@ private:
                 }
             }
         }
+    }
+
+    void onReset() override
+    {
+        thickness = 0.;
+        toolWidgetManager.resetControls();
     }
 
 private:
@@ -2320,15 +2443,15 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->isSet
-                && onViewParameters[OnViewParameter::Second]->isSet) {
+            if (onViewParameters[OnViewParameter::First]->hasFinishedEditing
+                && onViewParameters[OnViewParameter::Second]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::SeekSecond);
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->isSet
-                && onViewParameters[OnViewParameter::Fourth]->isSet) {
+            if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
+                && onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
 
                 if (handler->roundCorners || handler->makeFrame
                     || handler->constructionMethod() == ConstructionMethod::ThreePoints
@@ -2344,7 +2467,8 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
         case SelectMode::SeekThird: {
             if (handler->constructionMethod() == ConstructionMethod::Diagonal
                 || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                if (handler->roundCorners && onViewParameters[OnViewParameter::Fifth]->isSet) {
+                if (handler->roundCorners
+                    && onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing) {
 
                     if (handler->makeFrame) {
                         handler->setState(SelectMode::SeekFourth);
@@ -2353,14 +2477,15 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
                         handler->setState(SelectMode::End);
                     }
                 }
-                else if (handler->makeFrame && onViewParameters[OnViewParameter::Sixth]->isSet) {
+                else if (handler->makeFrame
+                         && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
 
                     handler->setState(SelectMode::End);
                 }
             }
             else {
-                if (onViewParameters[OnViewParameter::Fifth]->isSet
-                    && onViewParameters[OnViewParameter::Sixth]->isSet) {
+                if (onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing
+                    && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
                     if (handler->roundCorners || handler->makeFrame) {
                         handler->setState(SelectMode::SeekFourth);
                     }
@@ -2373,12 +2498,13 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
         case SelectMode::SeekFourth: {
             if (handler->constructionMethod() == ConstructionMethod::Diagonal
                 || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                if (onViewParameters[OnViewParameter::Sixth]->isSet) {
+                if (onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
                     handler->setState(SelectMode::End);
                 }
             }
             else {
-                if (handler->roundCorners && onViewParameters[OnViewParameter::Seventh]->isSet) {
+                if (handler->roundCorners
+                    && onViewParameters[OnViewParameter::Seventh]->hasFinishedEditing) {
 
                     if (handler->makeFrame) {
                         handler->setState(SelectMode::SeekFifth);
@@ -2387,13 +2513,15 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
                         handler->setState(SelectMode::End);
                     }
                 }
-                else if (handler->makeFrame && onViewParameters[OnViewParameter::Eighth]->isSet) {
+                else if (handler->makeFrame
+                         && onViewParameters[OnViewParameter::Eighth]->hasFinishedEditing) {
                     handler->setState(SelectMode::End);
                 }
             }
         } break;
         case SelectMode::SeekFifth: {
-            if (handler->makeFrame && onViewParameters[OnViewParameter::Eighth]->isSet) {
+            if (handler->makeFrame
+                && onViewParameters[OnViewParameter::Eighth]->hasFinishedEditing) {
                 handler->setState(SelectMode::End);
             }
         } break;
@@ -2577,26 +2705,7 @@ void DSHRectangleController::addConstraints()
 
     if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
         if (angleSet) {
-            if (fabs(angle - pi) < Precision::Confusion()
-                || fabs(angle + pi) < Precision::Confusion()
-                || fabs(angle) < Precision::Confusion()) {
-                Gui::cmdAppObjectArgs(obj,
-                                      "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
-                                      firstCurve);
-            }
-            else if (fabs(angle - pi / 2) < Precision::Confusion()
-                     || fabs(angle + pi / 2) < Precision::Confusion()) {
-                Gui::cmdAppObjectArgs(obj,
-                                      "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
-                                      firstCurve);
-            }
-            else {
-                Gui::cmdAppObjectArgs(obj,
-                                      "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
-                                      Sketcher::GeoEnum::HAxis,
-                                      firstCurve,
-                                      angle);
-            }
+            ConstraintLineByAngle(firstCurve, angle, obj);
         }
         if (innerAngleSet) {
             if (fabs(innerAngle - pi / 2) > Precision::Confusion()) {
@@ -2658,6 +2767,11 @@ void DSHRectangleController::addConstraints()
     }
 }
 
+template<>
+void DSHRectangleController::doConstructionMethodChanged()
+{
+    handler->updateHint();
+}
 
 }  // namespace SketcherGui
 

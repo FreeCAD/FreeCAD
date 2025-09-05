@@ -4,19 +4,19 @@
   <context>
     <name>TestGui::UnitTest</name>
     <message>
-      <location filename="../../UnitTest.ui" line="17"/>
-      <source>FreeCAD UnitTest</source>
-      <translation>Έλεγχος Μονάδων του FreeCAD</translation>
-    </message>
-    <message>
       <location filename="../../UnitTest.ui" line="32"/>
       <source>Test</source>
       <translation>Έλεγχος</translation>
     </message>
     <message>
+      <location filename="../../UnitTest.ui" line="17"/>
+      <source>FreeCAD Unit Test</source>
+      <translation type="unfinished">FreeCAD Unit Test</translation>
+    </message>
+    <message>
       <location filename="../../UnitTest.ui" line="44"/>
-      <source>Select test name:</source>
-      <translation>Επιλέξτε όνομα ελέγχου:</translation>
+      <source>Select test name</source>
+      <translation type="unfinished">Select test name</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="96"/>
@@ -65,28 +65,28 @@
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="188"/>
-      <source>Run:</source>
-      <translation>Εκτέλεση:</translation>
+      <source>Run</source>
+      <translation>Εκτέλεση</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="205"/>
-      <source>Failures:</source>
-      <translation>Αποτυχίες:</translation>
+      <source>Failures</source>
+      <translation type="unfinished">Failures</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="222"/>
-      <source>Errors:</source>
-      <translation>Σφάλματα:</translation>
+      <source>Errors</source>
+      <translation type="unfinished">Errors</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="239"/>
-      <source>Remaining:</source>
-      <translation>Απομένουν:</translation>
+      <source>Remaining</source>
+      <translation type="unfinished">Remaining</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="259"/>
-      <source>Failures and errors</source>
-      <translation>Αποτυχίες και σφάλματα</translation>
+      <source>Failures and Errors</source>
+      <translation type="unfinished">Failures and Errors</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="275"/>

@@ -33,6 +33,7 @@
 import FreeCAD
 from FreeCAD import Units
 import Path
+import Path.Base.Util as PathUtil
 import PathScripts.PathUtils as PathUtils
 import argparse
 import datetime
@@ -451,6 +452,10 @@ def export(objectslist, filename, argstring):
     # write the code body
     for obj in objectslist:
 
+        # Skip inactive operations
+        if not PathUtil.activeForOp(obj):
+            continue
+
         # pre_op
         if OUTPUT_COMMENTS:
             gcode += append("(operation initialise: %s)\n" % obj.Label)
@@ -458,18 +463,17 @@ def export(objectslist, filename, argstring):
             gcode += append(line)
 
         # turn coolant on if required
-        if hasattr(obj, "CoolantMode"):
-            coolantMode = obj.CoolantMode
-            if coolantMode == "Mist":
-                if OUTPUT_COMMENTS:
-                    gcode += append("M7 (coolant: mist on)\n")
-                else:
-                    gcode += append("M7\n")
-            if coolantMode == "Flood":
-                if OUTPUT_COMMENTS:
-                    gcode += append("M8 (coolant: flood on)\n")
-                else:
-                    gcode += append("M8\n")
+        coolantMode = PathUtil.coolantModeForOp(obj)
+        if coolantMode == "Mist":
+            if OUTPUT_COMMENTS:
+                gcode += append("M7 (coolant: mist on)\n")
+            else:
+                gcode += append("M7\n")
+        if coolantMode == "Flood":
+            if OUTPUT_COMMENTS:
+                gcode += append("M8 (coolant: flood on)\n")
+            else:
+                gcode += append("M8\n")
 
         # process the operation gcode
         if OUTPUT_COMMENTS:
@@ -483,13 +487,12 @@ def export(objectslist, filename, argstring):
             gcode += append(line)
 
         # turn coolant off if required
-        if hasattr(obj, "CoolantMode"):
-            coolantMode = obj.CoolantMode
-            if not coolantMode == "None":
-                if OUTPUT_COMMENTS:
-                    gcode += append("M9 (coolant: off)\n")
-                else:
-                    gcode += append("M9\n")
+        if not coolantMode == "None":
+            if OUTPUT_COMMENTS:
+                gcode += append("M9 (coolant: off)\n")
+            else:
+                gcode += append("M9\n")
+
         if OUTPUT_COMMENTS:
             gcode += append("(operation finalised: %s)\n" % obj.Label)
 
@@ -549,25 +552,17 @@ def parse(pathobj):
     precision_string = "." + str(PRECISION) + "f"
     currLocation = {}  # keep track for no doubles
 
+    # Command which can not skip parameters
+    mandatoryCmd = ("G81", "G82", "G83")
+
+    # Int parameters which can not be skipped
+    mandatoryParamInt = ("D", "H", "S", "T")
+
+    # Float parameters which can not be skipped
+    mandatoryParamFloat = ("I", "J", "K")
+
     # The params list control the order of parameters
-    params = [
-        "X",
-        "Y",
-        "Z",
-        "A",
-        "B",
-        "C",
-        "I",
-        "J",
-        "K",
-        "R",
-        "F",
-        "S",
-        "T",
-        "H",
-        "L",
-        "Q",
-    ]
+    params = ("X", "Y", "Z", "A", "B", "C", "I", "J", "K", "R", "F", "S", "T", "H", "L", "Q")
     firstmove = Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
     currLocation.update(firstmove.Parameters)  # set First location Parameters
 
@@ -599,7 +594,7 @@ def parse(pathobj):
                 if command == lastcommand:
                     commandlist.pop(0)
 
-            if c.Name[0] == "(" and not OUTPUT_COMMENTS:  # command is a comment
+            if c.Name.startswith("(") and not OUTPUT_COMMENTS:  # command is a comment
                 continue
 
             # Now add the remaining parameters in order
@@ -620,17 +615,15 @@ def parse(pathobj):
                                 )
                         else:
                             continue
-                    elif param == "T":
-                        commandlist.append(param + str(int(c.Parameters["T"])))
-                    elif param == "H":
-                        commandlist.append(param + str(int(c.Parameters["H"])))
-                    elif param == "D":
-                        commandlist.append(param + str(int(c.Parameters["D"])))
-                    elif param == "S":
-                        commandlist.append(param + str(int(c.Parameters["S"])))
+                    elif param in mandatoryParamInt:
+                        commandlist.append(param + str(int(c.Parameters[param])))
+                    elif param in mandatoryParamFloat:
+                        commandlist.append(
+                            param + format(float(c.Parameters[param]), precision_string)
+                        )
                     else:
                         if (
-                            (not REPEAT_ARGUMENTS and c.Name not in ["G81", "G82", "G83"])
+                            (not REPEAT_ARGUMENTS and c.Name not in mandatoryCmd)
                             and (param in currLocation)
                             and (currLocation[param] == c.Parameters[param])
                         ):

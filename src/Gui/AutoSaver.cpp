@@ -171,7 +171,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         bool save = hGrp->GetBool("SaveThumbnail",true);
         hGrp->SetBool("SaveThumbnail",false);
 
-        getMainWindow()->showMessage(tr("Please wait until the AutoRecovery file has been saved..."), 5000);
+        getMainWindow()->showMessage(tr("Wait until the auto-recovery file has been saved…"), 5000);
         //qApp->processEvents();
 
         Base::TimeElapsed startTime;
@@ -222,7 +222,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
             }
         }
 
-        Base::Console().log("Save AutoRecovery file in %fs\n", Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
+        Base::Console().log("Save auto-recovery file in %fs\n", Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
         hGrp->SetBool("SaveThumbnail",save);
     }
 }
@@ -344,17 +344,28 @@ public:
     }
     void run() override
     {
-        prop->SaveDocFile(writer);
-        writer.close();
+        try {
+            prop->SaveDocFile(writer);
+            writer.close();
 
-        // We could have renamed the file in this thread. However, there is
-        // still chance of crash when we deleted the original and before rename
-        // the new file. So we ask the main thread to do it. There is still
-        // possibility of crash caused by thread other than the main, but
-        // that's the best we can do for now.
-        QMetaObject::invokeMethod(AutoSaver::instance(), "renameFile",
-                Qt::QueuedConnection, Q_ARG(QString,dirName)
-                ,Q_ARG(QString,fileName),Q_ARG(QString,tmpName));
+            // We could have renamed the file in this thread. However, there is
+            // still chance of crash when we deleted the original and before rename
+            // the new file. So we ask the main thread to do it. There is still
+            // possibility of crash caused by thread other than the main, but
+            // that's the best we can do for now.
+            QMetaObject::invokeMethod(AutoSaver::instance(), "renameFile",
+                    Qt::QueuedConnection, Q_ARG(QString,dirName)
+                    ,Q_ARG(QString,fileName),Q_ARG(QString,tmpName));
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().warning("Exception in auto-saving: %s\n", e.what());
+        }
+        catch (const std::exception& e) {
+            Base::Console().warning("C++ exception in auto-saving: %s\n", e.what());
+        }
+        catch (...) {
+            Base::Console().warning("Unknown exception in auto-saving\n");
+        }
     }
 
 private:

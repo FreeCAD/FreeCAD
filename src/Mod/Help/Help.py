@@ -70,11 +70,11 @@ MD_RENDERED_URL = "https://github.com/FreeCAD/FreeCAD-documentation/blob/main/wi
 MD_TRANSLATIONS_FOLDER = "translations"
 ERRORTXT = translate(
     "Help",
-    "Contents for this page could not be retrieved. Please check settings under menu Edit -> Preferences -> General -> Help",
+    "Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help",
 )
 LOCTXT = translate(
     "Help",
-    "Help files location could not be determined. Please check settings under menu Edit -> Preferences -> General -> Help",
+    "Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help",
 )
 LOGTXT = translate(
     "Help",
@@ -169,7 +169,7 @@ def location_url(url_localized: str, url_english: str) -> tuple:
         req = urllib.request.Request(url_localized)
         with urllib.request.urlopen(req) as response:
             html = response.read().decode("utf-8")
-            if re.search(MD_RAW_URL, url_localized):
+            if url_localized.startswith(MD_RAW_URL):
                 pagename_match = re.search(r"Name/.*?:\s*(.+)", html)
             else:
                 # Pages from FreeCAD Wiki fall here
@@ -237,7 +237,10 @@ def get_location(page) -> tuple:
                 "FreeCAD-documentation-main",
                 "wiki",
             )
-        location = os.path.join(location, page + ".md")
+        for ext in (".md", ".html", ".htm"):
+            if os.path.exists(os.path.join(location, page + ext)):
+                location = os.path.join(location, page + ext)
+                break
     return (location, pagename)
 
 
@@ -460,7 +463,7 @@ def openBrowserHTML(html, baseurl, title, icon, dialog=False):
 
     # save dock widget size and location
     def onDockLocationChanged(area):
-        PREFS.SetInt("dockWidgetArea", int(area))
+        PREFS.SetInt("dockWidgetArea", int(area.value))
         mw = FreeCADGui.getMainWindow()
         dock = mw.findChild(QtWidgets.QDockWidget, "HelpWidget")
         if dock:

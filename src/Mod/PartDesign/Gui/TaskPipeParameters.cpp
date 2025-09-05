@@ -35,6 +35,7 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection/Selection.h>
+#include <Gui/Tools.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Widgets.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -65,7 +66,7 @@ using namespace Gui;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Pipe parameters"))
+    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Pipe Parameters"))
     , ui(new Ui_TaskPipeParameters)
     , stateHandler(nullptr)
 {
@@ -86,11 +87,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        remove->setShortcut(QKeySequence(shortcut));
-    }
+    remove->setShortcut(Gui::QtTools::deleteKeySequence());
     remove->setShortcutContext(Qt::WidgetShortcut);
 
     // display shortcut behind the context menu entry
@@ -580,7 +577,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView,
     : TaskSketchBasedParameters(PipeView,
                                 parent,
                                 "PartDesign_AdditivePipe",
-                                tr("Section orientation"))
+                                tr("Section Orientation"))
     , ui(new Ui_TaskPipeOrientation)
     , stateHandler(nullptr)
 {
@@ -609,11 +606,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView,
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        remove->setShortcut(QKeySequence(shortcut));
-    }
+    remove->setShortcut(Gui::QtTools::deleteKeySequence());
     remove->setShortcutContext(Qt::WidgetShortcut);
 
     // display shortcut behind the context menu entry
@@ -883,7 +876,7 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
     : TaskSketchBasedParameters(PipeView,
                                 parent,
                                 "PartDesign_AdditivePipe",
-                                tr("Section transformation"))
+                                tr("Section Transformation"))
     , ui(new Ui_TaskPipeScaling)
     , stateHandler(nullptr)
 {
@@ -901,11 +894,7 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        remove->setShortcut(QKeySequence(shortcut));
-    }
+    remove->setShortcut(Gui::QtTools::deleteKeySequence());
     remove->setShortcutContext(Qt::WidgetShortcut);
 
     // display shortcut behind the context menu entry
@@ -1143,6 +1132,7 @@ TaskDlgPipeParameters::TaskDlgPipeParameters(ViewProviderPipe* PipeView, bool ne
     Content.push_back(parameter);
     Content.push_back(orientation);
     Content.push_back(scaling);
+    Content.push_back(preview);
 
     parameter->stateHandler = stateHandler;
     orientation->stateHandler = stateHandler;

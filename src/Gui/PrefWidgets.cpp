@@ -724,8 +724,8 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
 
     // add the save value portion of the menu
     menu->addSeparator();
-    QAction *saveValueAction = menu->addAction(tr("Save value"));
-    QAction *clearListAction = menu->addAction(tr("Clear list"));
+    QAction *saveValueAction = menu->addAction(tr("Save Value"));
+    QAction *clearListAction = menu->addAction(tr("Clear List"));
     clearListAction->setDisabled(history.empty());
 
     // call the menu
@@ -862,6 +862,39 @@ void PrefFontBox::savePreferences()
   QFont currFont = currentFont();
   QString currName = currFont.family();
   getWindowParameter()->SetASCII(entryName(), currName.toUtf8());
+}
+
+// --------------------------------------------------------------------
+
+PrefCheckableGroupBox::PrefCheckableGroupBox(QWidget* parent)
+    : QGroupBox(parent), PrefWidget()
+{
+}
+
+PrefCheckableGroupBox::~PrefCheckableGroupBox() = default;
+
+void PrefCheckableGroupBox::restorePreferences()
+{
+    if (getWindowParameter().isNull() || entryName().isEmpty()) {
+        failedToRestore(objectName());
+        return;
+    }
+
+    // Default value is the current state of the checkbox (usually from .ui on first load)
+    bool defaultValueInUi = isChecked();
+    bool actualValue = getWindowParameter()->GetBool(entryName(), defaultValueInUi);
+    setChecked(actualValue);
+}
+
+void PrefCheckableGroupBox::savePreferences()
+{
+    if (getWindowParameter().isNull() || entryName().isEmpty())
+    {
+        failedToSave(objectName());
+        return;
+    }
+
+    getWindowParameter()->SetBool(entryName(), isChecked());
 }
 
 #include "moc_PrefWidgets.cpp"

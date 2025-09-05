@@ -26,6 +26,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -218,6 +219,8 @@ public:
             setAngleSnapping(false);
             Mode = STATUS_Close;
         }
+
+        updateHint();
         return true;
     }
 
@@ -382,6 +385,9 @@ public:
                                             // ViewProvider
             }
         }
+
+        updateHint();
+
         return true;
     }
 
@@ -397,6 +403,37 @@ protected:
     Base::Vector2d centerPoint, axisPoint, startingPoint, endPoint;
     double rx, ry, startAngle, endAngle, arcAngle, arcAngle_t;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
+
+private:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using enum Gui::InputHint::UserInput;
+
+        return Gui::lookupHints<SelectMode>(
+            Mode,
+            {
+                {.state = STATUS_SEEK_First,
+                 .hints =
+                     {
+                         {tr("%1 pick ellipse center"), {MouseLeft}},
+                     }},
+                {.state = STATUS_SEEK_Second,
+                 .hints =
+                     {
+                         {tr("%1 pick axis point"), {MouseLeft}},
+                     }},
+                {.state = STATUS_SEEK_Third,
+                 .hints =
+                     {
+                         {tr("%1 pick arc start point"), {MouseLeft}},
+                     }},
+                {.state = STATUS_SEEK_Fourth,
+                 .hints =
+                     {
+                         {tr("%1 pick arc end point"), {MouseLeft}},
+                     }},
+            });
+    }
 };
 
 }  // namespace SketcherGui

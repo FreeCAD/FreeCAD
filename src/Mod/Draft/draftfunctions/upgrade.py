@@ -563,10 +563,12 @@ def upgrade(objects, delete=False, force=None):
                     _msg(translate("draft", "Found object with several coplanar faces: refining them"))
 
             # only one object: if not parametric, we "draftify" it
-            elif len(objects) == 1 and not objects[0].isDerivedFrom("Part::Part2DObjectPython"):
+            elif len(objects) == 1 \
+                    and not objects[0].isDerivedFrom("Part::Part2DObjectPython") \
+                    and not utils.get_type(objects[0]) in ["BezCurve", "BSpline", "Wire"]:
                 result = _draftify(objects[0])
                 if result:
-                    _msg(translate("draft", "Found 1 non-parametric object: draftifying it"))
+                    _msg(translate("draft", "Found 1 non-parametric object: replacing it with a Draft object"))
 
         # in the following cases there are no faces
         elif not faces:
@@ -603,13 +605,14 @@ def upgrade(objects, delete=False, force=None):
             # only one object: if not parametric, we "draftify" it
             elif len(objects) == 1 \
                     and len(edges) == 1 \
-                    and not objects[0].isDerivedFrom("Part::Part2DObjectPython"):
+                    and not objects[0].isDerivedFrom("Part::Part2DObjectPython") \
+                    and not utils.get_type(objects[0]) in ["BezCurve", "BSpline", "Wire"]:
                 edge_type = DraftGeomUtils.geomType(objects[0].Shape.Edges[0])
                 # currently only support Line and Circle
                 if edge_type in ("Line", "Circle"):
                     result = _draftify(objects[0])
                     if result:
-                        _msg(translate("draft", "Found 1 non-parametric object: draftifying it"))
+                        _msg(translate("draft", "Found 1 non-parametric object: replacing it with a Draft object"))
 
             # only points, no edges
             elif not edges and len(objects) > 1:

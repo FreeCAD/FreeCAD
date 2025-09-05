@@ -72,19 +72,19 @@ MeasureDistance::MeasureDistance()
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in X direction");
+                      "Distance in X-direction");
     DistanceX.setUnit(Base::Unit::Length);
     ADD_PROPERTY_TYPE(DistanceY,
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in Y direction");
+                      "Distance in Y-direction");
     DistanceY.setUnit(Base::Unit::Length);
     ADD_PROPERTY_TYPE(DistanceZ,
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in Z direction");
+                      "Distance in Z-direction");
     DistanceZ.setUnit(Base::Unit::Length);
 
     ADD_PROPERTY_TYPE(Position1,
@@ -333,19 +333,19 @@ MeasureDistanceDetached::MeasureDistanceDetached()
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in X direction");
+                      "Distance in X-direction");
     DistanceX.setUnit(Base::Unit::Length);
     ADD_PROPERTY_TYPE(DistanceY,
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in Y direction");
+                      "Distance in Y-direction");
     DistanceY.setUnit(Base::Unit::Length);
     ADD_PROPERTY_TYPE(DistanceZ,
                       (0.0),
                       "Measurement",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-                      "Distance in Z direction");
+                      "Distance in Z-direction");
     DistanceZ.setUnit(Base::Unit::Length);
 
     ADD_PROPERTY_TYPE(Position1,

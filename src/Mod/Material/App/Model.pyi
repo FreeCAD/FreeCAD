@@ -22,8 +22,8 @@ class Model(BaseClass):
     LibraryRoot: Final[str] = ""
     """Model library path."""
     
-    LibraryIcon: Final[str] = ""
-    """Model icon path."""
+    LibraryIcon: Final[bytes] = ""
+    """Model icon."""
     
     Name: str = ""
     """Model name."""

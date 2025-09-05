@@ -106,6 +106,7 @@ public:
                    double Accuracy,
                    uint16_t flags = 0) const override;
     void transformGeometry(const Base::Matrix4D& rclMat) override;
+    void moveGeometry(const Base::Vector3d& vec);
     Base::BoundBox3d getBoundBox() const override;
 
     /** @name I/O */

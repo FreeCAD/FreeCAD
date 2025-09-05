@@ -368,9 +368,6 @@ public:
 // Every change you make here gets lost in the next full rebuild!
 // This File is normally built as an include in @self.export.Name@Imp.cpp! It's not intended to be in a project!
 
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/exception.hpp>
 #include <Base/PyObjectBase.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -669,15 +666,12 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
 -
         return ret;
     } // Please sync the following catch implementation with PY_CATCH
-    catch(Base::Exception &e)
+    catch(const Base::Exception& e)
     {
-        auto pye = e.getPyExceptionType();
-        if(!pye)
-            pye = Base::PyExc_FC_GeneralError;
-        PyErr_SetObject(pye, e.getPyObject());
+        e.setPyException();
         return nullptr;
     }
-    catch(const std::exception &e)
+    catch(const std::exception& e)
     {
         PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return nullptr;
@@ -832,15 +826,12 @@ PyObject *@self.export.Name@::_getattr(const char *attr)			// __getattr__ functi
         PyObject *r = getCustomAttributes(attr);
         if(r) return r;
     } // Please sync the following catch implementation with PY_CATCH
-    catch(Base::Exception &e)
+    catch(const Base::Exception& e)
     {
-        auto pye = e.getPyExceptionType();
-        if(!pye)
-            pye = Base::PyExc_FC_GeneralError;
-        PyErr_SetObject(pye, e.getPyObject());
+        e.setPyException();
         return nullptr;
     }
-    catch(const std::exception &e)
+    catch(const std::exception& e)
     {
         PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return nullptr;
@@ -882,15 +873,12 @@ int @self.export.Name@::_setattr(const char *attr, PyObject *value) // __setattr
         else if (r == -1)
             return -1;
     } // Please sync the following catch implementation with PY_CATCH
-    catch(Base::Exception &e)
+    catch(const Base::Exception& e)
     {
-        auto pye = e.getPyExceptionType();
-        if(!pye)
-            pye = Base::PyExc_FC_GeneralError;
-        PyErr_SetObject(pye, e.getPyObject());
+        e.setPyException();
         return -1;
     }
-    catch(const std::exception &e)
+    catch(const std::exception& e)
     {
         PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return -1;

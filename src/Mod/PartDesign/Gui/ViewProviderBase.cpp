@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #include <App/Document.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
 
 #include "ViewProviderBase.h"
@@ -54,7 +54,7 @@ bool ViewProviderBase::doubleClicked()
             std::string Msg("Edit ");
             Msg += base->Label.getValue();
             Gui::Command::openCommand(Msg.c_str());
-            FCMD_SET_EDIT(base);
+            Gui::cmdSetEdit(base);
         }
         catch (const Base::Exception&) {
             Gui::Command::abortCommand();
@@ -72,7 +72,7 @@ void ViewProviderBase::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     if (!base->Placement.testStatus(App::Property::Immutable) &&
         !base->Placement.testStatus(App::Property::ReadOnly) &&
         !base->Placement.testStatus(App::Property::Hidden)) {
-        PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
+        ViewProvider::setupContextMenu(menu, receiver, member);
     }
 }
 
@@ -82,13 +82,8 @@ bool ViewProviderBase::setEdit(int ModNum)
     if (!base->Placement.testStatus(App::Property::Immutable) &&
         !base->Placement.testStatus(App::Property::ReadOnly) &&
         !base->Placement.testStatus(App::Property::Hidden)) {
-        return PartGui::ViewProviderPart::setEdit(ModNum); // clazy:exclude=skipped-base-method
+        return ViewProvider::setEdit(ModNum);
     }
 
     return false;
-}
-
-void ViewProviderBase::unsetEdit(int ModNum)
-{
-    PartGui::ViewProviderPart::unsetEdit(ModNum); // clazy:exclude=skipped-base-method
 }

@@ -431,7 +431,7 @@ class DocumentBasicCases(unittest.TestCase):
 
         # test if the method override works
         class SpecialGroup:
-            def allowObject(self, obj):
+            def allowObject(self, ext, obj):
                 return False
 
         callback = SpecialGroup()
@@ -444,7 +444,7 @@ class DocumentBasicCases(unittest.TestCase):
             grp2.addObject(obj)
             self.assertTrue(len(grp2.Group) == 0)
         except Exception:
-            self.assertTrue(True)
+            self.assertTrue(False)
 
         self.Doc.removeObject(grp.Name)
         self.Doc.removeObject(grp2.Name)
@@ -666,6 +666,17 @@ class DocumentBasicCases(unittest.TestCase):
         root = ET.fromstring(test.Content)
         self.assertEqual(root.tag, "Properties")
 
+    def testValidateXml(self):
+        self.Doc.openTransaction("Add")
+        obj = self.Doc.addObject("App::FeatureTest", "Label")
+        obj.Label = "abc\x01ef"
+        TempPath = tempfile.gettempdir()
+        SaveName = TempPath + os.sep + "CreateTest.FCStd"
+        self.Doc.saveAs(SaveName)
+        FreeCAD.closeDocument(self.Doc.Name)
+        self.Doc = FreeCAD.open(SaveName)
+        self.assertEqual(self.Doc.ActiveObject.Label, "abc_ef")
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument("CreateTest")
@@ -721,7 +732,7 @@ class SaveRestoreSpecialGroup:
         obj.addExtension("App::GroupExtensionPython")
         obj.Proxy = self
 
-    def allowObject(self, obj):
+    def allowObject(self, ext, obj):
         return False
 
 

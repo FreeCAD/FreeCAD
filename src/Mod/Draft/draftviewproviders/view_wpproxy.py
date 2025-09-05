@@ -72,7 +72,7 @@ class ViewProviderWorkingPlaneProxy:
         vobj.ArrowSize = 5
         vobj.Transparency = 70
         vobj.LineWidth = 1
-        vobj.LineColor = params.get_param_arch("ColorHelpers") | 0x000000FF
+        vobj.LineColor = params.get_param("gridColor") | 0x000000FF
 
         vobj.Proxy = self
         vobj.RestoreView = True
@@ -89,10 +89,10 @@ class ViewProviderWorkingPlaneProxy:
         return True
 
     def setupContextMenu(self,vobj,menu):
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Write camera position",menu)
+        action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Save Camera Position",menu)
         QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.writeCamera)
         menu.addAction(action1)
-        action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Write objects state",menu)
+        action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Save Visibility of Objects",menu)
         QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),self.writeState)
         menu.addAction(action2)
 

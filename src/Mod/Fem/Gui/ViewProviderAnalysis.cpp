@@ -161,7 +161,7 @@ void ViewProviderFemAnalysis::show()
 void ViewProviderFemAnalysis::setupContextMenu(QMenu* menu, QObject*, const char*)
 {
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(tr("Activate analysis"));
+    QAction* act = menu->addAction(tr("Activate Analysis"));
     func->trigger(act, [this]() {
         this->doubleClicked();
     });

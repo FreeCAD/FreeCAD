@@ -42,6 +42,7 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
 #include <App/StringHasher.h>
+#include <App/ExportInfo.h>
 #include <Base/UniqueNameManager.h>
 
 // using VertexProperty = boost::property<boost::vertex_root_t, DocumentObject* >;
@@ -77,26 +78,29 @@ struct DocumentP
     std::unordered_map<long, DocumentObject*> objectIdMap;
     std::unordered_map<std::string, bool> partialLoadObjects;
     std::vector<DocumentObjectT> pendingRemove;
-    long lastObjectId;
-    DocumentObject* activeObject;
-    Transaction* activeUndoTransaction;
+    long lastObjectId {};
+    DocumentObject* activeObject {nullptr};
+    Transaction* activeUndoTransaction {nullptr};
     // pointer to the python class
     Py::Object DocumentPythonObject;
-    int iTransactionMode;
-    bool rollback;
-    bool undoing;  ///< document in the middle of undo or redo
-    bool committing;
-    bool opentransaction;
+    int iTransactionMode {0};
+    bool rollback {false};
+    bool undoing {false};  ///< document in the middle of undo or redo
+    bool committing {false};
+    bool opentransaction {false};
     std::bitset<32> StatusBits;
-    int iUndoMode;
-    unsigned int UndoMemSize;
-    unsigned int UndoMaxStackSize;
+    int iUndoMode {0};
+    unsigned int UndoMemSize {0};
+    unsigned int UndoMaxStackSize {20};
     std::string programVersion;
     mutable HasherMap hashers;
     std::multimap<const App::DocumentObject*, std::unique_ptr<App::DocumentObjectExecReturn>>
         _RecomputeLog;
+    ExportInfo exportInfo;
 
-    StringHasherRef Hasher;
+    StringHasherRef Hasher {new StringHasher};
+
+    Document::PreRecomputeHook _preRecomputeHook;
 
     DocumentP();
 

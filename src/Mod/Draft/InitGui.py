@@ -100,19 +100,19 @@ class DraftWorkbench(FreeCADGui.Workbench):
 
         # Set up toolbars
         it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Workbench", "Draft creation tools"),
+                        QT_TRANSLATE_NOOP("Workbench", "Draft Creation"),
                         self.drawing_commands)
         it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Workbench", "Draft annotation tools"),
+                        QT_TRANSLATE_NOOP("Workbench", "Draft Annotation"),
                         self.annotation_commands)
         it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Workbench", "Draft modification tools"),
+                        QT_TRANSLATE_NOOP("Workbench", "Draft Modification"),
                         self.modification_commands)
         it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Workbench", "Draft utility tools"),
+                        QT_TRANSLATE_NOOP("Workbench", "Draft Utility"),
                         self.utility_commands_toolbar)
         it.init_toolbar(self,
-                        QT_TRANSLATE_NOOP("Workbench", "Draft snap"),
+                        QT_TRANSLATE_NOOP("Workbench", "Draft Snap"),
                         it.get_draft_snap_commands())
 
         # Set up menus
@@ -157,8 +157,6 @@ class DraftWorkbench(FreeCADGui.Workbench):
         WorkingPlane._view_observer_start()  # Updates the draftToolBar when switching views.
         from draftutils import grid_observer
         grid_observer._view_observer_setup()
-        from draftutils import doc_observer
-        doc_observer._doc_observer_start()
         FreeCAD.Console.PrintLog("Draft workbench activated.\n")
 
     def Deactivated(self):
@@ -173,8 +171,6 @@ class DraftWorkbench(FreeCADGui.Workbench):
         WorkingPlane._view_observer_stop()
         from draftutils import grid_observer
         grid_observer._view_observer_setup()
-        from draftutils import doc_observer
-        doc_observer._doc_observer_stop()
         FreeCAD.Console.PrintLog("Draft workbench deactivated.\n")
 
     def ContextMenu(self, recipient):

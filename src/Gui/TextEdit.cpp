@@ -281,7 +281,8 @@ TextEditor::TextEditor(QWidget* parent)
     d = new TextEditorP();
     lineNumberArea = new LineMarker(this);
 
-    QFont serifFont(QLatin1String("Courier"), 10, QFont::Normal);
+    QFont serifFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    serifFont.setPointSize(10);
     setFont(serifFont);
 
     ParameterGrp::handle hPrefGrp = getWindowParameter();
@@ -447,9 +448,8 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
 #else
         int fontSize = hPrefGrp->GetInt("FontSize", 10);
 #endif
-        QString fontFamily = QString::fromLatin1(hPrefGrp->GetASCII( "Font", "Courier" ).c_str());
-
-        QFont font(fontFamily, fontSize);
+        QFont font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+        font.setPointSize(fontSize);
         setFont(font);
         lineNumberArea->setFont(font);
     }
@@ -519,6 +519,34 @@ void PythonTextEditor::prepend(const QString& str)
     cursor.endEditBlock();
 }
 
+void PythonTextEditor::remove(const QString& str)
+{
+    QTextCursor cursor = textCursor();
+    int selStart = cursor.selectionStart();
+    int selEnd = cursor.selectionEnd();
+    QTextBlock block;
+    cursor.beginEditBlock();
+    for (block = document()->begin(); block.isValid(); block = block.next()) {
+        int pos = block.position();
+        int off = block.length()-1;
+        // at least one char of the block is part of the selection
+        if ( pos >= selStart || pos+off >= selStart) {
+            if ( pos+1 > selEnd )
+                break; // end of selection reached
+            QString text = block.text();
+            if (text.startsWith(str)) {
+                cursor.setPosition(block.position());
+                for (int i = 0; i < str.length(); i++) {
+                    cursor.deleteChar();
+                    selEnd--;
+                }
+            }
+        }
+    }
+
+    cursor.endEditBlock();
+}
+
 void PythonTextEditor::keyPressEvent (QKeyEvent * e)
 {
     if ( e->key() == Qt::Key_Tab ) {
@@ -547,40 +575,13 @@ void PythonTextEditor::keyPressEvent (QKeyEvent * e)
         // If some text is selected we remove a leading tab or
         // spaces from each selected block
         ParameterGrp::handle hPrefGrp = getWindowParameter();
+        bool space = hPrefGrp->GetBool("Spaces", true);
         int indent = hPrefGrp->GetInt( "IndentSize", 4 );
+        QString ch = space ? QString(indent, QLatin1Char(' '))
+                           : QStringLiteral("\t");
 
-        int selStart = cursor.selectionStart();
-        int selEnd = cursor.selectionEnd();
-        QTextBlock block;
-        cursor.beginEditBlock();
-        for (block = document()->begin(); block.isValid(); block = block.next()) {
-            int pos = block.position();
-            int off = block.length()-1;
-            // at least one char of the block is part of the selection
-            if ( pos >= selStart || pos+off >= selStart) {
-                if ( pos+1 > selEnd )
-                    break; // end of selection reached
-                // if possible remove one tab or several spaces
-                QString text = block.text();
-                if (text.startsWith(QLatin1String("\t"))) {
-                    cursor.setPosition(block.position());
-                    cursor.deleteChar();
-                    selEnd--;
-                }
-                else {
-                    cursor.setPosition(block.position());
-                    for (int i=0; i<indent; i++) {
-                        if (!text.startsWith(QLatin1String(" ")))
-                            break;
-                        text = text.mid(1);
-                        cursor.deleteChar();
-                        selEnd--;
-                    }
-                }
-            }
-        }
-
-        cursor.endEditBlock();
+        // if possible remove one tab or several spaces
+        remove(ch);
         return;
     }
 

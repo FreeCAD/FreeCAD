@@ -232,8 +232,6 @@ public:
 
     boost::signals2::signal<void(int, int)> rowHeightChanged;
 
-    void observeDocument(App::Document* document);
-
     void renameObjectIdentifiers(
         const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths) override;
 
@@ -291,10 +289,6 @@ protected:
 
     /* Row heights */
     PropertyRowHeights rowHeights;
-
-    /* Document observers to track changes to external properties */
-    using ObserverMap = std::map<std::string, SheetObserver*>;
-    ObserverMap observers;
 
     int currentRow = -1;
     int currentCol = -1;

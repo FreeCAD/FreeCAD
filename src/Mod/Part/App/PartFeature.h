@@ -27,6 +27,7 @@
 #include <App/GeoFeature.h>
 #include <Mod/Material/App/PropertyMaterial.h>
 #include <Mod/Part/PartGlobal.h>
+#include <Base/Bitmask.h>
 
 #include <TopoDS_Face.hxx>
 
@@ -43,6 +44,18 @@ struct HistoryItem;
 
 namespace Part
 {
+
+enum class ShapeOption
+{
+    NoFlag = 0,
+    NeedSubElement = 1,
+    ResolveLink = 2,
+    Transform = 4,
+    NoElementMap = 8,
+    DontSimplifyCompound = 16
+};
+using ShapeOptions = Base::Flags<ShapeOption>;
+
 
 class PartFeaturePy;
 
@@ -130,15 +143,15 @@ public:
      * @param transform: if true, apply obj's transformation. Set to false
      * if pmat already include obj's transformation matrix.
      */
-    static TopoDS_Shape getShape(const App::DocumentObject *obj,
-            const char *subname=nullptr, bool needSubElement=false, Base::Matrix4D *pmat=nullptr,
-            App::DocumentObject **owner=nullptr, bool resolveLink=true, bool transform=true);
+    static TopoDS_Shape getShape(const App::DocumentObject *obj, ShapeOptions options,
+            const char *subname=nullptr, Base::Matrix4D *pmat=nullptr,
+            App::DocumentObject **owner=nullptr);
 
-    static TopoShape getTopoShape(const App::DocumentObject *obj,
-            const char *subname=nullptr, bool needSubElement=false, Base::Matrix4D *pmat=nullptr,
-            App::DocumentObject **owner=nullptr, bool resolveLink=true, bool transform=true,
-            bool noElementMap=false);
+    static TopoShape getTopoShape(const App::DocumentObject* obj, ShapeOptions options,
+                                    const char* subname=nullptr, Base::Matrix4D* pmat=nullptr, 
+                                    App::DocumentObject**owner=nullptr);
 
+    static TopoShape simplifyCompound(TopoShape compoundShape);
     static void clearShapeCache();
 
     static App::DocumentObject *getShapeOwner(const App::DocumentObject *obj, const char *subname=nullptr);
@@ -282,6 +295,7 @@ bool checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
 
 } //namespace Part
 
+ENABLE_BITMASK_OPERATORS(Part::ShapeOption)
 
 #endif // PART_FEATURE_H
 

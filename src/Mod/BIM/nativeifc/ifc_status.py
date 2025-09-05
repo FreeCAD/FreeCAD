@@ -345,6 +345,7 @@ def unlock_document():
         props = ["IfcFilePath", "Modified", "Proxy", "Schema"]
         props += [p for p in doc.PropertiesList if doc.getGroupOfProperty(p) == "IFC"]
         for prop in props:
+            doc.setPropertyStatus(prop, "-LockDynamic")
             doc.removeProperty(prop)
         if project:
             project.Modified = True
@@ -480,14 +481,12 @@ def filter_out(objs):
             nobjs.append(obj)
         elif obj.isDerivedFrom("Mesh::Feature"):
             nobjs.append(obj)
-        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
+        elif Draft.is_group(obj):
             if filter_out(obj.Group):
                 # only append groups that contain exportable objects
                 nobjs.append(obj)
             else:
                 print("DEBUG: Filtering out",obj.Label)
-        elif obj.isDerivedFrom("Mesh::Feature"):
-            nobjs.append(obj)
         elif obj.isDerivedFrom("App::Feature"):
             if Draft.get_type(obj) in ("Dimension","LinearDimension","Layer","Text","DraftText"):
                 nobjs.append(obj)

@@ -56,17 +56,20 @@ if App.GuiUp:
     True if Draft_rc else False
 
 
-ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"]
+ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2", "None"]
 DISPLAY_MODES = ["Flat Lines", "Shaded", "Wireframe", "Points"]
 DRAW_STYLES = ["Solid", "Dashed", "Dotted", "Dashdot"]
 arrowtypes = ARROW_TYPES
 
 
 def get_default_annotation_style():
-    arrow_type_index = params.get_param("dimsymbol")
+    arrow_start_type_index = params.get_param("dimsymbolstart")
+    arrow_end_type_index = params.get_param("dimsymbolend")
     return {
-        "ArrowSize":       ("float", params.get_param("arrowsize")),
-        "ArrowType":       ("index", arrow_type_index, ARROW_TYPES[arrow_type_index]),
+        "ArrowSizeStart":  ("float", params.get_param("arrowsizestart")),
+        "ArrowSizeEnd":    ("float", params.get_param("arrowsizeend")),
+        "ArrowTypeStart":  ("index", arrow_start_type_index, ARROW_TYPES[arrow_start_type_index]),
+        "ArrowTypeEnd":    ("index", arrow_end_type_index, ARROW_TYPES[arrow_end_type_index]),
         "Decimals":        ("int",   params.get_param("dimPrecision")),
         "DimOvershoot":    ("float", params.get_param("dimovershoot")),
         "ExtLines":        ("float", params.get_param("extlines")),
@@ -83,6 +86,37 @@ def get_default_annotation_style():
         "TextSpacing":     ("float", params.get_param("dimspacing")),
         "UnitOverride":    ("str",   params.get_param("overrideUnit"))
     }
+
+
+def repair_annotation_style(style):
+    """Repair a V0.19, V0.20 or < V1.1 style.
+
+    V0.19 and V0.20:
+    Some properties were missing or misspelled.
+    Some float values were wrongly stored as strings.
+
+    V1.0 -> V1.1:
+    ArrowSize has been replaced by ArrowSizeStart and ArrowSizeEnd.
+    ArrowType has been replaced by ArrowTypeStart and ArrowTypeEnd.
+    """
+    for key in ("ArrowSize", "ArrowType"):
+        if style.get(key) is not None \
+                and style.get(key + "Start") is None \
+                and style.get(key + "End") is None:
+            style[key + "Start"] = style[key]
+            style[key + "End"] = style[key]
+    default = get_default_annotation_style()
+    new = {}
+    for key, val in default.items():
+        if style.get(key) is None:
+            new[key] = val[1]
+        elif type(style[key]) == type(val[1]):
+            new[key] = style[key]
+        elif isinstance(style[key], str):
+            new[key] = float(style[key].replace(",", "."))
+        else:
+            new[key] = val[1]
+    return new
 
 
 def get_default_shape_style():
@@ -1067,5 +1101,70 @@ def pyopen(file, mode='r', buffering=-1, encoding=None, errors=None, newline=Non
     if encoding is None:
         encoding = 'utf-8'
     return open(file, mode, buffering, encoding, errors, newline, closefd, opener)
+
+def toggle_working_plane(obj, action=None, restore=False, dialog=None):
+    """Toggle the active state of a working plane object.
+
+    This function handles the common logic for activating and deactivating
+    working plane objects like BuildingParts and WorkingPlaneProxies.
+    It can be used by different modules that need to implement similar
+    working plane activation behavior.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        The object to activate or deactivate as a working plane.
+    action : QAction, optional
+        The action button that triggered this function, to update its checked state.
+    restore : bool, optional
+        If True, will restore the previous working plane when deactivating.
+        Defaults to False.
+    dialog : QDialog, optional
+        If provided, will update the checked state of the activate button in the dialog.
+
+    Returns
+    -------
+    bool
+        True if the object was activated, False if it was deactivated.
+    """
+    import FreeCADGui
+    import Draft
+
+    # Determine the appropriate context based on object type
+    context = "Arch"
+    obj_type = get_type(obj)
+    if obj_type == "IfcBuildingStorey":
+        context = "NativeIFC"
+
+    # Check if the object is already active in its context
+    is_active_arch = (FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == obj)
+    is_active_ifc = (FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") == obj)
+    is_active = is_active_arch or is_active_ifc
+    if is_active:
+        # Deactivate the object
+        if is_active_arch:
+            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
+        if is_active_ifc:
+            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", None)
+
+        if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "Proxy") and \
+           hasattr(obj.ViewObject.Proxy, "setWorkingPlane"):
+            obj.ViewObject.Proxy.setWorkingPlane(restore=True)
+        if action:
+            action.setChecked(False)
+        if dialog and hasattr(dialog, "buttonActive"):
+            dialog.buttonActive.setChecked(False)
+        return False
+    else:
+        # Activate the object
+        FreeCADGui.ActiveDocument.ActiveView.setActiveObject(context, obj)
+        if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "Proxy") and \
+           hasattr(obj.ViewObject.Proxy, "setWorkingPlane"):
+            obj.ViewObject.Proxy.setWorkingPlane()
+        if action:
+            action.setChecked(True)
+        if dialog and hasattr(dialog, "buttonActive"):
+            dialog.buttonActive.setChecked(True)
+        return True
 
 ## @}
