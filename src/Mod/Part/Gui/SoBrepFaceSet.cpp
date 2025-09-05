@@ -677,7 +677,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
     for(int i=0;i<trans_size;++i) {
         if(trans[i]!=0.0) {
             hasTransparency = true;
-            trans0 = trans[i]>0.5?0.5:trans[i];
+            trans0 = trans[i];
             break;
         }
     }
@@ -710,13 +710,14 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
 
         if(ctx && Gui::Selection().needPickedList()) {
             hasTransparency = true;
-            if(trans0 < 0.5)
-                trans0=0.5;
             trans_size = 1;
-            if(ctx2)
+            if(ctx2) {
                 ctx2->trans0 = trans0;
-        }else if(ctx2)
+            }
+        }
+        else if(ctx2) {
             ctx2->trans0 = 0.0;
+        }
 
         uint32_t diffuseColor = diffuse[0].getPackedValue(trans0);
         int singleColor = 0;
