@@ -532,10 +532,11 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     auto state = action->getState();
     selCounter.checkRenderCache(state);
     
+    bool hasContextHighlight = ctx && ctx->isHighlighted() && !ctx->isHighlightAll()
+        && ctx->highlightIndex >= 0 && ctx->highlightIndex < partIndex.getNum();
+
     // for the tool add this node to delayed paths as we want to render it on top of the scene
-    if (Gui::Selection().isClarifySelectionActive() && ctx && ctx->isHighlighted()
-        && !ctx->isHighlightAll() && ctx->highlightIndex >= 0
-        && ctx->highlightIndex < partIndex.getNum()) {
+    if (Gui::Selection().isClarifySelectionActive() && hasContextHighlight) {
         
         if (!Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
             if (viewProvider) {

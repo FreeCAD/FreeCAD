@@ -90,7 +90,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
 
 
     bool hasContextHighlight = ctx && !ctx->hl.empty();
-    bool hasFaceHighlight = viewProvider->isFaceHighlightActive();
+    bool hasFaceHighlight = viewProvider && viewProvider->isFaceHighlightActive();
     bool hasAnyHighlight = hasContextHighlight || hasFaceHighlight;
     
     if (Gui::Selection().isClarifySelectionActive()
@@ -98,7 +98,9 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
         && hasAnyHighlight) {
         // if we are using clarifyselection - add this to delayed paths with priority
         // as we want to get this rendered on top of everything
-        viewProvider->setFaceHighlightActive(true);
+        if (viewProvider) {
+            viewProvider->setFaceHighlightActive(true);
+        }
         Gui::SoDelayedAnnotationsElement::addDelayedPath(action->getState(),
                                                         action->getCurPath()->copy(),
                                                         200);
@@ -159,8 +161,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
     if(ctx2 && !ctx2->selectionIndex.empty())
         renderSelection(action,ctx2,false);
     else if (Gui::Selection().isClarifySelectionActive()
-             && ((ctx && !ctx->hl.empty()) || viewProvider->isFaceHighlightActive())
-             && Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
+             && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasAnyHighlight) {
         state->push();
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

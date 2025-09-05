@@ -83,13 +83,17 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
         return;
     if(selContext2->checkGlobal(ctx))
         ctx = selContext2;
-       
+    
+
+    bool hasContextHighlight =
+        ctx && ctx->isHighlighted() && !ctx->isHighlightAll() && ctx->highlightIndex >= 0;
     // for clarifyselection, add this node to delayed path if it is highlighted and render it on
     // top of everything else (highest priority)
-    if (Gui::Selection().isClarifySelectionActive() && ctx && ctx->isHighlighted()
-        && !ctx->isHighlightAll() && ctx->highlightIndex >= 0
+    if (Gui::Selection().isClarifySelectionActive() && hasContextHighlight
         && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
-        viewProvider->setFaceHighlightActive(true);
+        if (viewProvider) {
+            viewProvider->setFaceHighlightActive(true);
+        }
         Gui::SoDelayedAnnotationsElement::addDelayedPath(action->getState(),
                                                         action->getCurPath()->copy(),
                                                         300);
