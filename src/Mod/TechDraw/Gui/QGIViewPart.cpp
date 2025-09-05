@@ -115,8 +115,24 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
         // we are selected
     }
     else if (change == ItemSceneChange && scene()) {
-        // this is means we are finished?
+        // This means we are finished?
         tidy();
+    }
+    else if (change == QGraphicsItem::ItemSceneHasChanged) {
+        if (scene()) {
+            m_selectionChangedConnection = connect(scene(), &QGraphicsScene::selectionChanged, this, [this]() {
+                // When selection changes, if the mouse is not over the view,
+                // hide any non-selected vertices.
+                if (!isUnderMouse()) {
+                    for (auto* child : childItems()) {
+                        if (child->type() == UserType::QGIVertex && !child->isSelected()) {
+                            child->hide();
+                        }
+                    }
+                    update();
+                }
+            });
+        }
     }
 
     return QGIView::itemChange(change, value);
