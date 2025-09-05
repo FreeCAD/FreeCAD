@@ -33,8 +33,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 from draftutils import gui_utils
 from draftutils import utils
-from draftutils.messages import _wrn
-from draftutils.translate import translate
+from draftutils.messages import _log
 
 
 class Layer:
@@ -73,7 +72,7 @@ class Layer:
             self.set_properties(obj)
             if group_removed:
                 obj.Group = grp
-                _wrn("v1.0, " + obj.Label + ", " + translate("draft", "changed 'Group' property type"))
+                _log("v1.0, " + obj.Name + ", changed 'Group' property type")
 
         gui_utils.restore_view_object(
             obj, vp_module="view_layer", vp_class="ViewProviderLayer", format=False
@@ -99,7 +98,7 @@ class Layer:
             if hasattr(vobj, "OverrideShapeColorChildren"):  # v0.19 - v0.21
                 vobj.OverrideShapeAppearanceChildren = vobj.OverrideShapeColorChildren
                 vobj.removeProperty("OverrideShapeColorChildren")
-            _wrn("v1.0, " + obj.Label + ", " + translate("draft", "updated view properties"))
+            _log("v1.0, " + obj.Name + ", updated view properties")
 
     def dumps(self):
         """Return a tuple of objects to save or None."""

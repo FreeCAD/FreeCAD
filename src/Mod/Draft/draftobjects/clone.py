@@ -33,8 +33,7 @@ import FreeCAD as App
 import DraftVecUtils
 from draftobjects.base import DraftObject
 from draftutils import gui_utils
-from draftutils.messages import _wrn
-from draftutils.translate import translate
+from draftutils.messages import _log
 
 
 class Clone(DraftObject):
@@ -72,7 +71,7 @@ class Clone(DraftObject):
         if hasattr(obj, "ForceCompound"):
             return
         self.set_properties(obj)
-        _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added 'ForceCompound' property"))
+        _log("v1.1, " + obj.Name + ", added 'ForceCompound' property")
 
     def join(self, obj, shapes):
         fuse = getattr(obj, "Fuse", False)
