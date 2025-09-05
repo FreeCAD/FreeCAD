@@ -2109,7 +2109,7 @@ App::DocumentObjectExecReturn* Hole::execute()
             // fuse the thread to the hole
             FCBRepAlgoAPI_Fuse mkFuse(protoHole, protoThread);
             if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Adding the thread failed"));
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Adding the thread failed"));
 
             // we reuse the name protoHole (only now it is threaded)
             protoHole = mkFuse.Shape();
