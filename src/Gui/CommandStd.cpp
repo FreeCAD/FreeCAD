@@ -978,7 +978,7 @@ StdCmdAnnotationLabel::StdCmdAnnotationLabel()
     // Put it under Tools menu
     sGroup = QT_TR_NOOP("Tools");
     sMenuText = QT_TR_NOOP("Annotation Label");
-    sToolTipText = QT_TR_NOOP("Creates a new annotation label at the selected element in the 3D view");
+    sToolTipText = QT_TR_NOOP("Creates a new annotation label at the picked location in the 3D view");
     sWhatsThis = "Std_AnnotationLabel";
     sStatusTip = sToolTipText;
     sPixmap = "Tree_Annotation";
@@ -1017,8 +1017,7 @@ void StdCmdAnnotationLabel::activated(int)
     if (!picked.empty()) {
         basePos = picked.front();
     }
-    else if (supportObj && supportObj->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-        auto* gf = static_cast<App::GeoFeature*>(supportObj);
+    else if (auto* gf = freecad_cast<App::GeoFeature*>(supportObj); supportObj && gf) {
         const Base::Placement& gp = gf->globalPlacement();
         basePos = gp.getPosition();
     }
