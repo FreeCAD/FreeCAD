@@ -683,17 +683,19 @@ std::map<std::string,Base::Color> ViewProviderPartExt::getElementColors(const ch
             auto color = ShapeAppearance.getDiffuseColor();
             color.setTransparency(Base::fromPercent(Transparency.getValue()));
             bool singleColor = true;
-            for(int i=0;i<size;++i) {
-                if (ShapeAppearance.getDiffuseColor(i) != color) {
-                    ret[std::string(element, 4) + std::to_string(i + 1)] =
-                        ShapeAppearance.getDiffuseColor(i);
+            for (int i = 0; i < size; ++i) {
+                Base::Color face_color = ShapeAppearance.getDiffuseColor(i);
+                face_color.setTransparency(ShapeAppearance.getTransparency(i));
+                if (face_color != color) {
+                    ret[std::string(element, 4) + std::to_string(i + 1)] = face_color;
                 }
-                singleColor = singleColor
-                    && ShapeAppearance.getDiffuseColor(0) == ShapeAppearance.getDiffuseColor(i);
+                Base::Color first_face_color = ShapeAppearance.getDiffuseColor(0);
+                first_face_color.setTransparency(ShapeAppearance.getTransparency(0));
+                singleColor = singleColor && (face_color == first_face_color);
             }
-            if(size && singleColor) {
+            if (size > 0 && singleColor) {
                 color = ShapeAppearance.getDiffuseColor(0);
-                color.setTransparency(Base::fromPercent(0.0F));
+                color.setTransparency(ShapeAppearance.getTransparency(0));
                 ret.clear();
             }
             ret["Face"] = color;
@@ -1400,3 +1402,4 @@ void ViewProviderPartExt::handleChangedPropertyName(Base::XMLReader& reader,
         Gui::ViewProviderGeometryObject::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }
+
