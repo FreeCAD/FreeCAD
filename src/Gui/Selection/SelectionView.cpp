@@ -859,17 +859,12 @@ void SelectionMenu::onHover(QAction *action)
     if (!sel.obj)
         return;
 
-    // For hover preselection, use the whole object path like solids do
-    // This provides consistent behavior and better highlighting for assembly elements
-    if (!sel.subName.empty()) {
-        // Always use the full original path for consistent behavior
-        // This matches how solids behave and provides better highlighting
-        Gui::Selection().setPreselect(sel.docName.c_str(), 
-                                      sel.objName.c_str(), 
-                                      sel.subName.c_str(),
-                                      0, 0, 0, 
-                                      SelectionChanges::MsgSource::TreeView);
-    }
+    // set preselection for both sub-objects and whole objects
+    Gui::Selection().setPreselect(sel.docName.c_str(), 
+                                    sel.objName.c_str(), 
+                                    !sel.subName.empty() ? sel.subName.c_str() : "",
+                                    0, 0, 0, 
+                                    SelectionChanges::MsgSource::TreeView);
 }
 
 bool SelectionMenu::eventFilter(QObject *obj, QEvent *event)
@@ -975,47 +970,76 @@ void SelectionMenu::addWholeObjectSelection(const PickData &sel, App::DocumentOb
     if (actualElement.empty()) return;
     
     bool shouldAdd = false;
-    if (sobj && sobj != sel.obj) {
-        std::string typeName = sobj->getTypeId().getName();
-        if (typeName == "App::Part" || typeName == "PartDesign::Body") {
-            shouldAdd = true;
+    if (sobj) {
+        if (sobj != sel.obj) {
+            // sub-objects
+            std::string typeName = sobj->getTypeId().getName();
+            if (typeName == "App::Part" || typeName == "PartDesign::Body") {
+                shouldAdd = true;
+            } else {
+                auto geoFeature = freecad_cast<App::GeoFeature*>(sobj->getLinkedObject(true));
+                if (geoFeature) {
+                    std::vector<const char*> types = geoFeature->getElementTypes(true);
+                    if (types.size() > 1) {
+                        shouldAdd = true;
+                    }
+                }
+            }
         } else {
-            auto geoFeature = freecad_cast<App::GeoFeature*>(sobj->getLinkedObject(true));
-            if (geoFeature) {
-                std::vector<const char*> types = geoFeature->getElementTypes(true);
-                if (types.size() > 1) {
-                    shouldAdd = true;
+            // top-level objects (sobj == sel.obj)
+            // check if subName is just an element name
+            if (sel.subName.find('.') == std::string::npos) {
+                auto geoFeature = freecad_cast<App::GeoFeature*>(sobj->getLinkedObject(true));
+                if (geoFeature) {
+                    std::vector<const char*> types = geoFeature->getElementTypes(true);
+                    if (!types.empty()) {
+                        shouldAdd = true;
+                    }
                 }
             }
         }
     }
     
     if (shouldAdd) {
-        std::string subNameStr = sel.subName;
-        std::size_t lastDot = subNameStr.find_last_of('.');
-        if (lastDot != std::string::npos && lastDot > 0) {
-            std::size_t prevDot = subNameStr.find_last_of('.', lastDot - 1);
-            std::string subObjName;
-            if (prevDot != std::string::npos) {
-                subObjName = subNameStr.substr(prevDot + 1, lastDot - prevDot - 1);
-            } else {
-                subObjName = subNameStr.substr(0, lastDot);
-            }
-            
-            if (!subObjName.empty()) {
-                std::string wholeObjKey = std::string(sel.objName) + "." + subObjName + ".";
-                auto &objItems = menus["Object"].items[sobj->Label.getValue()];
-                if (objItems.find(wholeObjKey) == objItems.end()) {
-                    PickData wholeObjSel = sel;
-                    wholeObjSel.subName = subObjName + ".";
-                    wholeObjSel.element = "";
-                    
-                    selections.push_back(wholeObjSel);
-                    
-                    auto &wholeObjInfo = objItems[wholeObjKey];
-                    wholeObjInfo.icon = icon;
-                    wholeObjInfo.indices.push_back(selections.size() - 1);
+        std::string wholeObjKey;
+        std::string wholeObjSubName;
+
+        if (sobj != sel.obj) {
+            // sub-objects
+            std::string subNameStr = sel.subName;
+            std::size_t lastDot = subNameStr.find_last_of('.');
+            if (lastDot != std::string::npos && lastDot > 0) {
+                std::size_t prevDot = subNameStr.find_last_of('.', lastDot - 1);
+                std::string subObjName;
+                if (prevDot != std::string::npos) {
+                    subObjName = subNameStr.substr(prevDot + 1, lastDot - prevDot - 1);
+                } else {
+                    subObjName = subNameStr.substr(0, lastDot);
                 }
+
+                if (!subObjName.empty()) {
+                    wholeObjKey = std::string(sel.objName) + "." + subObjName + ".";
+                    wholeObjSubName = subObjName + ".";
+                }
+            }
+        } else {
+            // top-level objects (sobj == sel.obj)
+            wholeObjKey = std::string(sel.objName) + ".";
+            wholeObjSubName = "";  // empty subName for top-level whole object
+        }
+
+        if (!wholeObjKey.empty()) {
+            auto &objItems = menus["Object"].items[sobj->Label.getValue()];
+            if (objItems.find(wholeObjKey) == objItems.end()) {
+                PickData wholeObjSel = sel;
+                wholeObjSel.subName = wholeObjSubName;
+                wholeObjSel.element = "";
+
+                selections.push_back(wholeObjSel);
+
+                auto &wholeObjInfo = objItems[wholeObjKey];
+                wholeObjInfo.icon = icon;
+                wholeObjInfo.indices.push_back(selections.size() - 1);
             }
         }
     }
