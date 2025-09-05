@@ -89,8 +89,44 @@ static inline int widgetMinSize(const QWidget *widget, bool margin=false)
     return widget->fontMetrics().ascent()
         + widget->fontMetrics().descent() + (margin?4:0);
 }
-
+// Generic event filter for QToolButton hover icon swap
+class HoverIconEventFilter : public QObject {
+public:
+    HoverIconEventFilter(QObject* parent = nullptr) : QObject(parent) {}
+    bool eventFilter(QObject* obj, QEvent* event) override {
+        auto btn = qobject_cast<QToolButton*>(obj);
+        if (!btn)
+            return QObject::eventFilter(obj, event);
+        if (event->type() == QEvent::Enter) {
+            QPixmap hoverIcon = btn->property("hoverIcon").value<QPixmap>();
+            if (!hoverIcon.isNull())
+                btn->setIcon(QIcon(hoverIcon));
+        } else if (event->type() == QEvent::Leave) {
+            QAction* act = btn->defaultAction();
+            if (act)
+                btn->setIcon(act->icon());
+        }
+        return QObject::eventFilter(obj, event);
+    }
+};
 // -----------------------------------------------------------
+namespace {
+    // Helper for theme-aware auto-mode icon selection
+    static void setAutoModeIcon(QAction* action, const char* baseName, bool darkTheme) {
+        QPixmap normalIcon, hoverIcon;
+        QString normalPath = QString::asprintf("qss:images_classic/%s-lightgray.svg", baseName);
+        normalIcon = BitmapFactory().pixmap(normalPath.toUtf8().constData());
+        QString hoverPath;
+        if (darkTheme) {
+            hoverPath = QString::asprintf("qss:images_classic/%s-white.svg", baseName);
+        } else {
+            hoverPath = QString::asprintf("qss:images_classic/%s-black.svg", baseName);
+        }
+        hoverIcon = BitmapFactory().pixmap(hoverPath.toUtf8().constData());
+        action->setIcon(normalIcon);
+        action->setProperty("hoverIcon", QVariant::fromValue(hoverIcon));
+    }
+}
 
 OverlayProxyWidget::OverlayProxyWidget(OverlayTabWidget *tabOverlay)
     :QWidget(tabOverlay->parentWidget()), owner(tabOverlay), _hintColor(QColor(50,50,50,150))
@@ -426,7 +462,8 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
         cmdHide->addTo(this);
 
     retranslate();
-    refreshIcons();
+    // Use new setIcons() to ensure critical icons are present for testing.
+    setIcons();
 
     connect(tabBar(), &QTabBar::tabBarClicked, this, &OverlayTabWidget::onCurrentChanged);
     connect(tabBar(), &QTabBar::tabMoved, this, &OverlayTabWidget::onTabMoved);
@@ -445,32 +482,74 @@ OverlayTabWidget::OverlayTabWidget(QWidget *parent, Qt::DockWidgetArea pos)
             this, &OverlayTabWidget::onAnimationStateChanged);
 }
 
-void OverlayTabWidget::refreshIcons()
+
+void OverlayTabWidget::setIcons()
 {
-    QPixmap pxAutoHide;
+    // Helper that loads icons exclusively from images_classic.
+    auto pickIcon = [](const char *nameClassic){
+        QString classic = QString::fromUtf8("qss:images_classic/%1").arg(QString::fromUtf8(nameClassic));
+        QByteArray ba = classic.toUtf8();
+        return BitmapFactory().pixmap(ba.constData());
+    };
 
-    if (isStyleSheetDark()) {
-        actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/icons/overlay_light.svg"));
-        actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode_light.svg"));
-        actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow_light.svg"));
-        actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow_light.svg"));
-        actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide_light.svg"));
-        actTransparent.setIcon(BitmapFactory().pixmap("qss:overlay/icons/transparent_light.svg"));
-        pxAutoHide = BitmapFactory().pixmap("qss:overlay/icons/autohide_light.svg");
+    bool dark = isStyleSheetDark();
+
+
+    // Overlay toggle
+    QIcon iconOverlay;
+    actOverlay.setToolTip(tr("Toggle overlay"));
+    iconOverlay.addPixmap(BitmapFactory().pixmap("qss:images_classic/overlay-lightgray.svg"), QIcon::Normal, QIcon::Off);
+    if (dark) {
+        iconOverlay.addPixmap(BitmapFactory().pixmap("qss:images_classic/overlay-white.svg"), QIcon::Active, QIcon::Off);
+        // store hover pixmap for titlebar hover swapping
+        actOverlay.setProperty("hoverIcon", QVariant::fromValue(BitmapFactory().pixmap("qss:images_classic/overlay-white.svg")));
+    } else {
+        iconOverlay.addPixmap(BitmapFactory().pixmap("qss:images_classic/overlay-black.svg"), QIcon::Active, QIcon::Off);
+        actOverlay.setProperty("hoverIcon", QVariant::fromValue(BitmapFactory().pixmap("qss:images_classic/overlay-black.svg")));
     }
-    else {
-        actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/icons/overlay.svg"));
-        actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode.svg"));
-        actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow.svg"));
-        actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow.svg"));
-        actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide.svg"));
-        actTransparent.setIcon(BitmapFactory().pixmap("qss:overlay/icons/transparent.svg"));
-        pxAutoHide = BitmapFactory().pixmap("qss:overlay/icons/autohide.svg");
+    actOverlay.setIcon(iconOverlay);
+
+    // Transparent toggle - use hover pixmap as the ON (checked) state
+    QIcon iconTransparent;
+    actTransparent.setToolTip(tr("Toggle transparent mode"));
+    // Normal (unchecked) state is lightgray
+    iconTransparent.addPixmap(BitmapFactory().pixmap("qss:images_classic/transparent-lightgray.svg"), QIcon::Normal, QIcon::Off);
+    // Determine hover/checked pixmap and set as the Normal+On mapping so checked shows hover color
+    QPixmap hoverTransparent = dark
+        ? BitmapFactory().pixmap("qss:images_classic/transparent-white.svg")
+        : BitmapFactory().pixmap("qss:images_classic/transparent-black.svg");
+    iconTransparent.addPixmap(hoverTransparent, QIcon::Normal, QIcon::On);
+    // Also keep Active mapping for visual feedback when appropriate
+    if (dark) {
+        iconTransparent.addPixmap(BitmapFactory().pixmap("qss:images_classic/transparent-white.svg"), QIcon::Active, QIcon::Off);
+    } else {
+        iconTransparent.addPixmap(BitmapFactory().pixmap("qss:images_classic/transparent-black.svg"), QIcon::Active, QIcon::Off);
     }
+    // expose hover pixmap for the titlebar button event filter
+    actTransparent.setProperty("hoverIcon", QVariant::fromValue(hoverTransparent));
+    actTransparent.setIcon(iconTransparent);
 
-    actAutoHide.setIcon(rotateAutoHideIcon(pxAutoHide, dockArea));
 
-    syncAutoMode();
+    // Auto-mode icons (refactored)
+    actAutoHide.setToolTip(tr("Auto hide docked widgets on leave"));
+    setAutoModeIcon(&actAutoHide, "autohide", dark);
+
+    actNoAutoMode.setToolTip(tr("Turn off auto hide/show"));
+    setAutoModeIcon(&actNoAutoMode, "mode", dark);
+
+    actTaskShow.setToolTip(tr("Auto show task view for any current task, and hide the view when there is no task."));
+    setAutoModeIcon(&actTaskShow, "taskshow", dark);
+
+    actEditShow.setToolTip(tr("Auto show docked widgets on editing"));
+    setAutoModeIcon(&actEditShow, "editshow", dark);
+
+    actEditHide.setToolTip(tr("Auto hide docked widgets on editing"));
+    setAutoModeIcon(&actEditHide, "edithide", dark);
+
+    actOverlay.setToolTip(tr("Toggle overlay "));
+    actTransparent.setToolTip(tr("Toggle transparent mode "));
+
+    FC_LOG("setIcons: icons set from images_classic with precise mappings");
 }
 
 void OverlayTabWidget::onAnimationStateChanged()
@@ -885,150 +964,31 @@ void OverlayTabWidget::retranslate()
 void OverlayTabWidget::syncAutoMode()
 {
     QAction* action = nullptr;
+    bool darkTheme = isStyleSheetDark();
     switch (autoMode) {
         case AutoMode::AutoHide:
             action = &actAutoHide;
-            if (isStyleSheetDark()) {
-                QPixmap pxAutoHideMode =
-                    BitmapFactory().pixmap("qss:overlay/icons/autohide_lighter.svg");
-                pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
-                action->setIcon(pxAutoHideMode);
-                actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode_light.svg"));
-                actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow_light.svg"));
-                actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow_light.svg"));
-                actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide_light.svg"));
-            }
-            else {
-                QPixmap pxAutoHideMode = BitmapFactory().pixmap("qss:overlay/icons/autohide.svg");
-                pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
-                action->setIcon(pxAutoHideMode);
-                actNoAutoMode.setIcon(
-                    BitmapFactory().pixmap("qss:overlay/icons/mode_lightgray.svg"));
-                actTaskShow.setIcon(
-                    BitmapFactory().pixmap("qss:overlay/icons/taskshow_lightgray.svg"));
-                actEditShow.setIcon(
-                    BitmapFactory().pixmap("qss:overlay/icons/editshow_lightgray.svg"));
-                actEditHide.setIcon(
-                    BitmapFactory().pixmap("qss:overlay/icons/edithide_lightgray.svg"));
-            }
+            setAutoModeIcon(action, "autohide", darkTheme);
             break;
         case AutoMode::EditShow:
             action = &actEditShow;
-            if (isStyleSheetDark()) {
-                QPixmap pxEditShowMode =
-                    BitmapFactory().pixmap("qss:overlay/icons/editshow_lighter.svg");
-                action->setIcon(pxEditShowMode);
-                QPixmap pxAutoHideMode =
-                    BitmapFactory().pixmap("qss:overlay/icons/autohide_light.svg");
-                pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
-                actAutoHide.setIcon(pxAutoHideMode);
-                actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode_light.svg"));
-                actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow_light.svg"));
-                actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide_light.svg"));
-            }
-            else {
-                QPixmap pxEditShowMode = BitmapFactory().pixmap("qss:overlay/icons/editshow.svg");
-                action->setIcon(pxEditShowMode);
-                QPixmap pxAutoHideMode =
-                    BitmapFactory().pixmap("qss:overlay/icons/autohide_lightgray.svg");
-                pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
-                actAutoHide.setIcon(pxAutoHideMode);
-                actNoAutoMode.setIcon(
-                    BitmapFactory().pixmap("qss:overlay/icons/mode_lightgray.svg"));
-                actTaskShow.setIcon(
-                    BitmapFactory().pixmap("qss:overlay/icons/taskshow_lightgray.svg"));
-                actEditHide.setIcon(
-                    BitmapFactory().pixmap("qss:overlay/icons/edithide_lightgray.svg"));
-            }
+            setAutoModeIcon(action, "editshow", darkTheme);
             break;
         case AutoMode::TaskShow:
             action = &actTaskShow;
-            if (isStyleSheetDark()) {
-                QPixmap pxTaskShowMode =
-                    BitmapFactory().pixmap("qss:overlay/icons/taskshow_lighter.svg");
-                action->setIcon(pxTaskShowMode);
-                QPixmap pxAutoHideMode =
-                    BitmapFactory().pixmap("qss:overlay/icons/autohide_light.svg");
-                pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
-                actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode_light.svg"));
-                actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow_light.svg"));
-                actAutoHide.setIcon(pxAutoHideMode);
-                actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide_light.svg"));
-            }
-            else {
-                QPixmap pxTaskShowMode = BitmapFactory().pixmap("qss:overlay/icons/taskshow.svg");
-                action->setIcon(pxTaskShowMode);
-                QPixmap pxAutoHideMode =
-                    BitmapFactory().pixmap("qss:overlay/icons/autohide_lightgray.svg");
-                pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
-                actNoAutoMode.setIcon(
-                    BitmapFactory().pixmap("qss:overlay/icons/mode_lightgray.svg"));
-                actEditShow.setIcon(
-                    BitmapFactory().pixmap("qss:overlay/icons/editshow_lightgray.svg"));
-                actAutoHide.setIcon(pxAutoHideMode);
-                actEditHide.setIcon(
-                    BitmapFactory().pixmap("qss:overlay/icons/edithide_lightgray.svg"));
-            }
+            setAutoModeIcon(action, "taskshow", darkTheme);
             break;
         case AutoMode::EditHide:
             action = &actEditHide;
-            if (isStyleSheetDark()) {
-                QPixmap pxEditHideMode =
-                    BitmapFactory().pixmap("qss:overlay/icons/edithide_lighter.svg");
-                action->setIcon(pxEditHideMode);
-                QPixmap pxAutoHideMode =
-                    BitmapFactory().pixmap("qss:overlay/icons/autohide_light.svg");
-                pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
-                actNoAutoMode.setIcon(BitmapFactory().pixmap("qss:overlay/icons/mode_light.svg"));
-                actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow_light.svg"));
-                actAutoHide.setIcon(pxAutoHideMode);
-                actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow_light.svg"));
-            }
-            else {
-                QPixmap pxEditHideMode = BitmapFactory().pixmap("qss:overlay/icons/edithide.svg");
-                action->setIcon(pxEditHideMode);
-                QPixmap pxAutoHideMode =
-                    BitmapFactory().pixmap("qss:overlay/icons/autohide_lightgray.svg");
-                pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
-                actNoAutoMode.setIcon(
-                    BitmapFactory().pixmap("qss:overlay/icons/mode_lightgray.svg"));
-                actEditShow.setIcon(
-                    BitmapFactory().pixmap("qss:overlay/icons/editshow_lightgray.svg"));
-                actAutoHide.setIcon(pxAutoHideMode);
-                actTaskShow.setIcon(
-                    BitmapFactory().pixmap("qss:overlay/icons/taskshow_lightgray.svg"));
-            }
+            setAutoModeIcon(action, "edithide", darkTheme);
             break;
         default:
             action = &actNoAutoMode;
-            if (isStyleSheetDark()) {
-                QPixmap pxNoAutoMode = BitmapFactory().pixmap("qss:overlay/icons/mode_lighter.svg");
-                action->setIcon(pxNoAutoMode);
-                QPixmap pxAutoHideMode =
-                    BitmapFactory().pixmap("qss:overlay/icons/autohide_light.svg");
-                pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
-                actTaskShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/taskshow_light.svg"));
-                actEditShow.setIcon(BitmapFactory().pixmap("qss:overlay/icons/editshow_light.svg"));
-                actAutoHide.setIcon(pxAutoHideMode);
-                actEditHide.setIcon(BitmapFactory().pixmap("qss:overlay/icons/edithide_light.svg"));
-            }
-            else {
-                QPixmap pxNoAutoMode = BitmapFactory().pixmap("qss:overlay/icons/mode.svg");
-                action->setIcon(pxNoAutoMode);
-                QPixmap pxAutoHideMode =
-                    BitmapFactory().pixmap("qss:overlay/icons/autohide_lightgray.svg");
-                pxAutoHideMode = rotateAutoHideIcon(pxAutoHideMode, dockArea);
-                actTaskShow.setIcon(
-                    BitmapFactory().pixmap("qss:overlay/icons/taskshow_lightgray.svg"));
-                actEditShow.setIcon(
-                    BitmapFactory().pixmap("qss:overlay/icons/editshow_lightgray.svg"));
-                actAutoHide.setIcon(pxAutoHideMode);
-                actEditHide.setIcon(
-                    BitmapFactory().pixmap("qss:overlay/icons/edithide_lightgray.svg"));
-            }
+            setAutoModeIcon(action, "mode", darkTheme);
             break;
     }
     actAutoMode.setIcon(action->icon());
+    actAutoMode.setProperty("hoverIcon", action->property("hoverIcon"));
     if (action == &actNoAutoMode) {
         actAutoMode.setToolTip(tr("Select auto show/hide mode"));
     }
@@ -1937,11 +1897,31 @@ QLayoutItem *OverlayTabWidget::prepareTitleWidget(QWidget *widget, const QList<Q
             vertical?QSizePolicy::Expanding:QSizePolicy::Minimum);
     layout->addSpacerItem(spacer);
 
-    for(auto action : actions)
-        layout->addWidget(OverlayTabWidget::createTitleButton(action, buttonSize));
+    bool darkTheme = OverlayTabWidget::isStyleSheetDark();
+    // Shared event filter instance to handle hover swapping for tool buttons
+    static HoverIconEventFilter *hoverFilter = new HoverIconEventFilter(nullptr);
+    for(auto action : actions) {
+        QWidget* btn = OverlayTabWidget::createTitleButton(action, buttonSize);
+        // Set theme-aware icon for hover (if button supports it)
+        if (auto tb = qobject_cast<QToolButton*>(btn)) {
+            QPixmap hoverIcon = action->property("hoverIcon").value<QPixmap>();
+            // Ensure the button shows the action's icon initially
+            tb->setIcon(action->icon());
+            if (!hoverIcon.isNull()) {
+                tb->setProperty("hoverIcon", QVariant::fromValue(hoverIcon));
+                tb->installEventFilter(hoverFilter);
+            }
+        }
+        layout->addWidget(btn);
+    }
 
     if (tabWidget) {
         auto grip = new OverlaySizeGrip(tabWidget, vertical);
+        // Theme-aware splitter icon
+        if (darkTheme)
+            grip->setProperty("darkTheme", true);
+        else
+            grip->setProperty("darkTheme", false);
         QObject::connect(grip, &OverlaySizeGrip::dragMove,
                 tabWidget, &OverlayTabWidget::onSizeGripMove);
         layout->addWidget(grip);
@@ -1954,13 +1934,30 @@ QLayoutItem *OverlayTabWidget::prepareTitleWidget(QWidget *widget, const QList<Q
 // This requires <windows.h> and linking to Advapi32.lib
 bool OverlayTabWidget::isStyleSheetDark(std::string curStyleSheet)
 {
-    // If a stylesheet is set, prefer the Spreadsheet.TextColor preference
+    // Prefer the user-selected Theme name (MainWindow -> Theme) if available.
+    // The Theme entries in preference packs are like "FreeCAD Dark" or "FreeCAD Light".
+    // If the theme name contains "dark" (case-insensitive) we treat it as dark.
+    // If it contains "light" we treat it as light. If Theme is not set, fall back
+    // to the prior stylesheet-based preference logic.
+    auto mwMain = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+    if (mwMain) {
+        std::string theme = mwMain->GetASCII("Theme", "");
+        if (!theme.empty()) {
+            // normalize to lower-case for comparison
+            for (auto &c : theme) c = static_cast<char>(::tolower(c));
+            if (theme.find("dark") != std::string::npos) return true;
+            if (theme.find("light") != std::string::npos) return false;
+            // if theme exists but doesn't contain dark/light, continue to fallback logic
+        }
+    }
+
+    // If a stylesheet is set, prefer the StylesheetIconsColor preference
     // and do NOT consult OS settings.
     if (!curStyleSheet.empty() && curStyleSheet != "None") {
-    // Use StylesheetIconsColor in themes prefs when stylesheet is present.
+        // Use StylesheetIconsColor in themes prefs when stylesheet is present.
         // This preference is either "white" (icons are white -> dark theme)
         // or "black" (icons are black -> light theme). Case-insensitive.
-    auto mw = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/themes");
+        auto mw = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/themes");
         if (mw) {
             std::string sc = mw->GetASCII("StylesheetIconsColor", "");
             if (!sc.empty()) {
@@ -2133,13 +2130,6 @@ void OverlayTitleBar::paintEvent(QPaintEvent *)
 {
     if (m_minimal) {
         QPainter painter(this);
-        // Minimal mode: fill background using the current palette so the
-        // titlebar area remains visually distinct in floating (frameless)
-        // docks; then draw the window title. If the palette's Window color
-        // is transparent (stylesheets sometimes don't apply to floating
-        // widgets), fall back to a sensible light/dark color.
-    // No background fill: draw only the title text so floating titlebar
-    // remains unobtrusive and avoids drawing a solid rectangle.
         QDockWidget *dock = qobject_cast<QDockWidget*>(parentWidget());
         QString title;
         if (!dock) {
@@ -2582,15 +2572,25 @@ OverlaySplitterHandle::OverlaySplitterHandle(Qt::Orientation orientation, QSplit
     setMouseTracking(true);
     setFocusPolicy(Qt::ClickFocus);
     retranslate();
-    refreshIcons();
+    setIcons();
     QObject::connect(&actFloat, &QAction::triggered, this, &OverlaySplitterHandle::onAction);
     timer.setSingleShot(true);
     QObject::connect(&timer, &QTimer::timeout, this, &OverlaySplitterHandle::onTimer);
 }
 
-void OverlaySplitterHandle::refreshIcons()
+void Gui::OverlaySplitterHandle::setIcons()
 {
-    actFloat.setIcon(BitmapFactory().pixmap("qss:overlay/icons/float.svg"));
+    // Theme-aware splitter float icon with hover/active effect
+    QIcon iconFloat;
+    bool darkTheme = OverlayTabWidget::isStyleSheetDark();
+    if (darkTheme) {
+        iconFloat.addPixmap(BitmapFactory().pixmap("qss:images_classic/float-lightgray.svg"), QIcon::Normal, QIcon::Off);
+        iconFloat.addPixmap(BitmapFactory().pixmap("qss:images_classic/float-white.svg"), QIcon::Active, QIcon::Off);
+    } else {
+        iconFloat.addPixmap(BitmapFactory().pixmap("qss:images_classic/float-black.svg"), QIcon::Normal, QIcon::Off);
+        iconFloat.addPixmap(BitmapFactory().pixmap("qss:images_classic/float-darkgray.svg"), QIcon::Active, QIcon::Off);
+    }
+    actFloat.setIcon(iconFloat);
 }
 
 void OverlaySplitterHandle::onTimer()
@@ -2794,17 +2794,17 @@ void OverlaySplitterHandle::mouseMoveEvent(QMouseEvent *me)
     if (dragging == 1) {
         OverlayTabWidget *overlay = qobject_cast<OverlayTabWidget*>(
                 splitter()->parentWidget());
-        QPoint pos = me->pos();
+        QPoint p = me->pos();
         if (overlay) {
             switch(overlay->getDockArea()) {
             case Qt::LeftDockWidgetArea:
             case Qt::RightDockWidgetArea:
-                if (pos.x() < 0 || pos.x() > overlay->width())
+                if (p.x() < 0 || p.x() > overlay->width())
                     dragging = 2;
                 break;
             case Qt::TopDockWidgetArea:
             case Qt::BottomDockWidgetArea:
-                if (pos.y() < 0 || pos.y() > overlay->height())
+                if (p.y() < 0 || p.y() > overlay->height())
                     dragging = 2;
                 break;
             default:

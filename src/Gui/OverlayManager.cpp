@@ -411,13 +411,12 @@ public:
 
     void refreshIcons()
     {
-        _actFloat.setIcon(BitmapFactory().pixmap("qss:overlay/icons/float.svg"));
-        _actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/icons/overlay.svg"));
-        _actClose.setIcon(BitmapFactory().pixmap("qss:overlay/icons/close.svg"));
+    _actFloat.setIcon(BitmapFactory().pixmap("qss:images_classic/float-black.svg"));
+    _actOverlay.setIcon(BitmapFactory().pixmap("qss:images_classic/overlay-black.svg"));
+    _actClose.setIcon(BitmapFactory().pixmap("qss:images_classic/close-black.svg"));
         for (OverlayTabWidget *tabWidget : _Overlays) {
-            tabWidget->refreshIcons();
-            for (auto handle : tabWidget->findChildren<OverlaySplitterHandle*>())
-                handle->refreshIcons();
+            tabWidget->setIcons();
+            // No setIcons() for OverlaySplitterHandle
         }
     }
 

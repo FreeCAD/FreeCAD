@@ -324,7 +324,8 @@ protected:
     bool eventFilter(QObject* obj, QEvent* ev) override;
 
     void retranslate();
-    void refreshIcons();
+    // New: set icons explicitly from images_classic (with fallbacks)
+    void setIcons();
 
     /// Overlay mode options
     enum class OverlayOption {
@@ -517,7 +518,7 @@ public:
     OverlaySplitterHandle(Qt::Orientation, QSplitter *parent);
     void setTitleItem(QLayoutItem *);
     void retranslate();
-    void refreshIcons();
+    void setIcons();
     QDockWidget * dockWidget();
 
     void showTitle(bool enable);
