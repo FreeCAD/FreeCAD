@@ -205,13 +205,12 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         machine = PathMachineState.MachineState()
 
         self.commandlist.append(Path.Command("(Begin Drilling)"))
+        self.commandlist.append(Path.Command("G90"))  # Set absolute distance mode before any moves
 
         # rapid to clearance height
         command = Path.Command("G0", {"Z": obj.ClearanceHeight.Value})
         machine.addCommand(command)
         self.commandlist.append(command)
-
-        self.commandlist.append(Path.Command("G90"))  # Absolute distance mode
 
         # Calculate offsets to add to target edge
         endoffset = 0.0
@@ -265,6 +264,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             edgelist.append(Part.makeLine(v1, v2))
 
         # iterate the edgelist and generate gcode
+        safeHeight = True
         for edge in edgelist:
 
             Path.Log.debug(edge)
@@ -278,6 +278,13 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             command = Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y})
             self.commandlist.append(command)
             machine.addCommand(command)
+
+            # rapid to safe height for first edge only //Dimitrios
+            if safeHeight is True:
+                command = Path.Command("G0", {"Z": obj.SafeHeight.Value})
+                self.commandlist.append(command)
+                machine.addCommand(command)
+                safeHeight = False
 
             # Technical Debt:  We are assuming the edges are aligned.
             # This assumption should be corrected and the necessary rotations
