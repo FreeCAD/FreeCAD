@@ -995,7 +995,7 @@ class ViewProviderJoint:
         return None
 
     def doubleClicked(self, vobj):
-        App.closeActiveTransaction(True) # Close the auto-transaction
+        App.closeActiveTransaction(True)  # Close the auto-transaction
 
         task = Gui.Control.activeTaskDialog()
         if task:
@@ -1306,7 +1306,9 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         layout.addWidget(self.jForm)
 
         self.isolate_modes = ["Transparent", "Wireframe", "Hidden", "Disabled"]
-        self.jForm.isolateType.addItems([translate("Assembly", mode) for mode in self.isolate_modes])
+        self.jForm.isolateType.addItems(
+            [translate("Assembly", mode) for mode in self.isolate_modes]
+        )
         self.jForm.isolateType.currentIndexChanged.connect(self.updateIsolation)
 
         if self.activeType == "Part":
