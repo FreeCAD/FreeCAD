@@ -249,7 +249,10 @@ class CAMSimulation:
         self.activeOps = []
         for i in range(form.listOperations.count()):
             if form.listOperations.item(i).checkState() == QtCore.Qt.CheckState.Checked:
-                self.activeOps.append(self.operations[i])
+                if getattr(self.operations[i], "ArrayGroup", None):
+                    self.activeOps.extend(self.operations[i].ArrayGroup)
+                else:
+                    self.activeOps.append(self.operations[i])
 
         self.stock = self.job.Stock.Shape
 
