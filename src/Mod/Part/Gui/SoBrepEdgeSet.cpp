@@ -89,16 +89,20 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
         return;
 
 
-    if (Gui::Selection()
-            .isClarifySelectionActive() && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths 
-        && ((ctx && !ctx->hl.empty()) || viewProvider->isFaceHighlightActive())) {
-            // if we are using clarifyselection - add this to delayed paths with priority
-            // as we want to get this rendered on top of everything
-            viewProvider->setFaceHighlightActive(true);
-            Gui::SoDelayedAnnotationsElement::addDelayedPath(action->getState(),
-                                                            action->getCurPath()->copy(),
-                                                            200);
-            return;
+    bool hasContextHighlight = ctx && !ctx->hl.empty();
+    bool hasFaceHighlight = viewProvider->isFaceHighlightActive();
+    bool hasAnyHighlight = hasContextHighlight || hasFaceHighlight;
+    
+    if (Gui::Selection().isClarifySelectionActive()
+        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths
+        && hasAnyHighlight) {
+        // if we are using clarifyselection - add this to delayed paths with priority
+        // as we want to get this rendered on top of everything
+        viewProvider->setFaceHighlightActive(true);
+        Gui::SoDelayedAnnotationsElement::addDelayedPath(action->getState(),
+                                                        action->getCurPath()->copy(),
+                                                        200);
+        return;
     }
     
     if(selContext2->checkGlobal(ctx)) {
