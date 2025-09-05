@@ -27,12 +27,15 @@
 #include <App/Document.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
+#include <Gui/Utilities.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
 
@@ -367,6 +370,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             this, &TaskBoxPrimitives::onWedgeZ2maxChanged);
     connect(ui->wedgeZ2min, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskBoxPrimitives::onWedgeZ2minChanged);
+
+    setupGizmos();
 }
 // clang-format on
 
@@ -807,6 +812,11 @@ void TaskBoxPrimitives::onWedgeZmaxChanged(double v)
     }
 }
 
+void TaskBoxPrimitives::onPlacementChanged()
+{
+    setGizmoPositions();
+}
+
 
 bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
 {
@@ -971,6 +981,72 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject* obj)
     return true;
 }
 
+void TaskBoxPrimitives::setupGizmos()
+{
+    if (Gui::GizmoContainer::isEnabled() == false) {
+        return;
+    }
+
+    std::initializer_list<Gui::Gizmo*> list;
+    switch(getObject<PartDesign::FeaturePrimitive>()->getPrimitiveType()) {
+        case PartDesign::FeaturePrimitive::Box:
+            lengthGizmo = new Gui::LinearGizmo(ui->boxLength);
+            widthGizmo = new Gui::LinearGizmo(ui->boxWidth);
+            heightGizmo = new Gui::LinearGizmo(ui->boxHeight);
+
+            list = {widthGizmo, heightGizmo, lengthGizmo};
+            break;
+        case PartDesign::FeaturePrimitive::Cylinder:
+            heightGizmo = new Gui::LinearGizmo(ui->cylinderHeight);
+            radiusGizmo = new Gui::LinearGizmo(ui->cylinderRadius);
+
+            list = {heightGizmo, radiusGizmo};
+            break;
+        case PartDesign::FeaturePrimitive::Sphere:
+            radiusGizmo = new Gui::LinearGizmo(ui->sphereRadius);
+
+            list = {radiusGizmo};
+            break;
+    }
+
+    gizmoContainer = Gui::GizmoContainer::create(list, vp);
+
+    setGizmoPositions();
+}
+
+void TaskBoxPrimitives::setGizmoPositions()
+{
+    if (!gizmoContainer) {
+        return;
+    }
+
+    SbVec3f pos = Base::convertTo<SbVec3f>(
+        vp->getObjectPlacement().getPosition()
+    );
+    SbRotation rot = Base::convertTo<SbRotation>(
+        vp->getObjectPlacement().getRotation()
+    );
+    auto getVec = [rot](SbVec3f vec) {
+        rot.multVec(vec, vec);
+
+        return vec;
+    };
+    switch(getObject<PartDesign::FeaturePrimitive>()->getPrimitiveType()) {
+        case PartDesign::FeaturePrimitive::Box:
+            lengthGizmo->setDraggerPlacement(pos, getVec({1, 0, 0}));
+            widthGizmo->setDraggerPlacement(pos, getVec({0, 1, 0}));
+            heightGizmo->setDraggerPlacement(pos, getVec({0, 0, 1}));
+            break;
+        case PartDesign::FeaturePrimitive::Cylinder:
+            heightGizmo->setDraggerPlacement(pos, getVec({0, 0, 1}));
+            radiusGizmo->setDraggerPlacement(pos, getVec({1, 1, 0}));
+            break;
+        case PartDesign::FeaturePrimitive::Sphere:
+            radiusGizmo->setDraggerPlacement(pos, getVec({1, 1, 0}));
+            break;
+    }
+}
+
 TaskDlgPrimitiveParameters::TaskDlgPrimitiveParameters(ViewProviderPrimitive* PrimitiveView)
     : TaskDlgFeatureParameters(PrimitiveView)
     , vp_prm(PrimitiveView)
@@ -982,6 +1058,8 @@ TaskDlgPrimitiveParameters::TaskDlgPrimitiveParameters(ViewProviderPrimitive* Pr
     parameter = new PartGui::TaskAttacher(PrimitiveView, nullptr, QString(), tr("Attachment"));
     Content.push_back(parameter);
     Content.push_back(preview);
+
+    connect(parameter, &PartGui::TaskAttacher::placementUpdated, primitive, &TaskBoxPrimitives::onPlacementChanged);
 }
 
 TaskDlgPrimitiveParameters::~TaskDlgPrimitiveParameters() = default;
