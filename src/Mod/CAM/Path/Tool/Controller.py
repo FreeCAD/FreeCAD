@@ -49,7 +49,10 @@ class ToolControllerTemplate:
     HorizFeed = "hfeed"
     HorizRapid = "hrapid"
     Label = "label"
+    LeadInFeed = "leadinfeed"
+    LeadOutFeed = "leadoutfeed"
     Name = "name"
+    RampFeed = "rampfeed"
     SpindleDir = "dir"
     SpindleSpeed = "speed"
     ToolNumber = "nr"
@@ -314,12 +317,22 @@ class ToolController:
         if template.get(ToolControllerTemplate.Version):
             version = int(template.get(ToolControllerTemplate.Version))
             if version == 1 or version == 2:
+                # TODO figure out the meaning of this, and how to handle ramp/leadin/leadout feed rates
+                # or what else must be added to templates
                 if template.get(ToolControllerTemplate.Label):
                     obj.Label = template.get(ToolControllerTemplate.Label)
                 if template.get(ToolControllerTemplate.VertFeed):
                     obj.VertFeed = template.get(ToolControllerTemplate.VertFeed)
                 if template.get(ToolControllerTemplate.HorizFeed):
                     obj.HorizFeed = template.get(ToolControllerTemplate.HorizFeed)
+                if template.get(ToolControllerTemplate.LeadInFeed):
+                    obj.LeadInFeed = template.get(ToolControllerTemplate.LeadInFeed, obj.LeadInFeed)
+                if template.get(ToolControllerTemplate.LeadOutFeed):
+                    obj.LeadOutFeed = template.get(
+                        ToolControllerTemplate.LeadOutFeed, obj.LeadOutFeed
+                    )
+                if template.get(ToolControllerTemplate.RampFeed):
+                    obj.RampFeed = template.get(ToolControllerTemplate.RampFeed, obj.RampFeed)
                 if template.get(ToolControllerTemplate.VertRapid):
                     obj.VertRapid = template.get(ToolControllerTemplate.VertRapid)
                 if template.get(ToolControllerTemplate.HorizRapid):
@@ -374,6 +387,9 @@ class ToolController:
         attrs[ToolControllerTemplate.ToolNumber] = obj.ToolNumber
         attrs[ToolControllerTemplate.VertFeed] = "%s" % (obj.VertFeed)
         attrs[ToolControllerTemplate.HorizFeed] = "%s" % (obj.HorizFeed)
+        attrs[ToolControllerTemplate.LeadInFeed] = "%s" % (obj.LeadInFeed)
+        attrs[ToolControllerTemplate.LeadOutFeed] = "%s" % (obj.LeadOutFeed)
+        attrs[ToolControllerTemplate.RampFeed] = "%s" % (obj.RampFeed)
         attrs[ToolControllerTemplate.VertRapid] = "%s" % (obj.VertRapid)
         attrs[ToolControllerTemplate.HorizRapid] = "%s" % (obj.HorizRapid)
         attrs[ToolControllerTemplate.SpindleSpeed] = obj.SpindleSpeed
