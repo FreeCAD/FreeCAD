@@ -29,11 +29,19 @@
  ***************************************************************************/
 
 #include "SimDisplay.h"
-#include "linmath.h"
-#include "OpenGlWrapper.h"
+
 #include <cmath>
 
-namespace MillSim
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+
+#include "linmath.h"
+#include "OpenGlWrapper.h"
+
+constexpr auto pi = std::numbers::pi_v<float>;
+
+namespace CAMSimulator
 {
 
 void SimDisplay::InitShaders()
@@ -132,7 +140,6 @@ void SimDisplay::UniformCircle(vec3& randVec)
     randVec[2] = 0;
 }
 
-
 void SimDisplay::CreateDisplayFbos()
 {
     // setup frame buffer for simulation
@@ -178,7 +185,6 @@ void SimDisplay::CreateDisplayFbos()
 
 void SimDisplay::CreateSsaoFbos()
 {
-
     mSsaoValid = true;
 
     // setup framebuffer for SSAO processing
@@ -253,15 +259,12 @@ void SimDisplay::InitGL()
     // setup light object
     mlightObject.GenerateBoxStock(-0.5f, -0.5f, -0.5f, 1, 1, 1);
 
-    mWidth = gWindowSizeW;
-    mHeight = gWindowSizeH;
     InitShaders();
-    CreateDisplayFbos();
-    CreateSsaoFbos();
     CreateFboQuad();
 
-    UpdateProjection();
     displayInitiated = true;
+
+    UpdateWindowScale(800, 600);
 }
 
 void SimDisplay::CleanFbos()
@@ -302,15 +305,6 @@ void SimDisplay::CleanGL()
     displayInitiated = false;
 }
 
-void SimDisplay::PrepareDisplay(vec3 objCenter)
-{
-    mat4x4_look_at(mMatLookAt, eye, target, upvec);
-    mat4x4_translate_in_place(mMatLookAt, mEyeX * mEyeXZFactor, 0, mEyeZ * mEyeXZFactor);
-    mat4x4_rotate_X(mMatLookAt, mMatLookAt, mEyeInclination);
-    mat4x4_rotate_Z(mMatLookAt, mMatLookAt, mEyeRoration);
-    mat4x4_translate_in_place(mMatLookAt, -objCenter[0], -objCenter[1], -objCenter[2]);
-}
-
 void SimDisplay::PrepareFrameBuffer()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
@@ -330,7 +324,7 @@ void SimDisplay::StartDepthPass()
     shaderFlat.UpdateViewMat(mMatLookAt);
 }
 
-void SimDisplay::StartGeometryPass(vec3 objColor, bool invertNormals)
+void SimDisplay::StartGeometryPass(const vec3& objColor, bool invertNormals)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
     shaderGeom.Activate();
@@ -343,7 +337,7 @@ void SimDisplay::StartGeometryPass(vec3 objColor, bool invertNormals)
 
 // A 'closer' geometry pass is similar to std geometry pass, but render the objects
 // slightly closer to the camera. This mitigates overlapping faces artifacts.
-void SimDisplay::StartCloserGeometryPass(vec3 objColor)
+void SimDisplay::StartCloserGeometryPass(const vec3& objColor)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
     shaderGeomCloser.Activate();
@@ -363,18 +357,13 @@ void SimDisplay::RenderLightObject()
 
 void SimDisplay::ScaleViewToStock(StockObject* obj)
 {
-    mMaxStockDim = fmaxf(obj->size[0], obj->size[1]);
-    maxFar = mMaxStockDim * 16;
-    UpdateProjection();
-    vec3_set(eye, 0, 0, 0);
-    UpdateEyeFactor(0.1f);
-    vec3_set(lightPos, obj->position[0], obj->position[1], obj->position[2] + mMaxStockDim / 3);
-    mlightObject.SetPosition(lightPos);
+    mMaxStockDimension = std::max(std::max(obj->size[0], obj->size[1]), obj->size[2]);
+    UpdateProjectionMatrix();
 }
 
-void SimDisplay::RenderResult(bool recalculate)
+void SimDisplay::RenderResult(bool recalculate, bool ssao)
 {
-    if (mSsaoValid && applySSAO) {
+    if (mSsaoValid && ssao) {
         RenderResultSSAO(recalculate);
     }
     else {
@@ -466,6 +455,17 @@ void SimDisplay::RenderResultSSAO(bool recalculate)
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+void SimDisplay::SetPathColor(const vec3& normal, const vec3& rapid)
+{
+    pathLineColor[0] = normal[0];
+    pathLineColor[1] = normal[1];
+    pathLineColor[2] = normal[2];
+
+    // TODO: Different color for rapid moves is not supported for now.
+
+    (void)rapid;
+}
+
 void SimDisplay::SetupLinePathPass(int curSegment, bool isHidden)
 {
     glEnable(GL_DEPTH_TEST);
@@ -477,97 +477,136 @@ void SimDisplay::SetupLinePathPass(int curSegment, bool isHidden)
     shaderLinePath.Activate();
     pathLineColor[3] = isHidden ? 0.1f : 1.0f;
     shaderLinePath.UpdateObjColorAlpha(pathLineColor);
+    shaderLinePath.UpdateObjColor(pathLineColorPassed);
     shaderLinePath.UpdateCurSegment(curSegment);
     shaderLinePath.UpdateViewMat(mMatLookAt);
 }
 
-void SimDisplay::TiltEye(float tiltStep)
+void SimDisplay::UpdateWindowScale(int width, int height)
 {
-    mEyeInclination += tiltStep;
-    if (mEyeInclination > pi / 2) {
-        mEyeInclination = pi / 2;
-    }
-    else if (mEyeInclination < -pi / 2) {
-        mEyeInclination = -pi / 2;
-    }
-}
-
-void SimDisplay::RotateEye(float rotStep)
-{
-    mEyeRoration += rotStep;
-    if (mEyeRoration > pi * 2) {
-        mEyeRoration -= pi * 2;
-    }
-    else if (mEyeRoration < 0) {
-        mEyeRoration += pi * 2;
-    }
-    updateDisplay = true;
-}
-
-void SimDisplay::MoveEye(float x, float z)
-{
-    // Exponential calculate maxValue
-    // https://forum.freecad.org/viewtopic.php?t=96939
-    const float arg1 = 124.938F;
-    const float arg2 = 578.754F;
-    const float arg3 = -20.7993F;
-    float maxValueX = arg1 + arg2 * exp(arg3 * mEyeDistFactor);
-    float maxValueZ = maxValueX * 0.4F;
-
-    mEyeX += x;
-    if (mEyeX > maxValueX) {
-        mEyeX = maxValueX;
-    }
-    else if (mEyeX < -maxValueX) {
-        mEyeX = -maxValueX;
-    }
-    mEyeZ += z;
-
-    if (mEyeZ > maxValueZ) {
-        mEyeZ = maxValueZ;
-    }
-    else if (mEyeZ < -maxValueZ) {
-        mEyeZ = -maxValueZ;
-    }
-    updateDisplay = true;
-}
-
-void SimDisplay::MoveEyeCenter()
-{
-    mEyeRoration = 0;
-    mEyeInclination = pi / 6;
-    mEyeX = 0;
-    mEyeZ = 0;
-    UpdateEyeFactor(0.1f);
-}
-
-void SimDisplay::UpdateEyeFactor(float factor)
-{
-    if (mEyeDistFactor == factor) {
+    if (!displayInitiated || (width == mWidth && height == mHeight)) {
         return;
     }
-    updateDisplay = true;
-    mEyeDistFactor = factor;
-    mEyeXZFactor = factor * maxFar * 0.005f;
-    eye[1] = -factor * maxFar;
-}
 
-void SimDisplay::UpdateWindowScale()
-{
-    mWidth = gWindowSizeW;
-    mHeight = gWindowSizeH;
-    glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
-    CleanFbos();
+    mWidth = width;
+    mHeight = height;
+
+    if (mFbo != 0) {
+        glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
+        CleanFbos();
+    }
+
     CreateDisplayFbos();
     CreateSsaoFbos();
-    UpdateProjection();
+    UpdateProjectionMatrix();
 }
 
-void SimDisplay::UpdateProjection()
+void SimDisplay::UpdateCamera(const SoCamera& camera)
+{
+    if (!displayInitiated) {
+        return;
+    }
+
+    UpdateCameraView(camera);
+    UpdateCameraProjection(camera);
+}
+
+void SimDisplay::UpdateCameraView(const SoCamera& camera)
+{
+
+    const SbVec3f position = camera.position.getValue();
+    const SbRotation orientation = camera.orientation.getValue();
+
+    if (position == mCameraPosition && orientation == mCameraOrientation) {
+        return;
+    }
+
+    mCameraPosition = position;
+    mCameraOrientation = orientation;
+
+    UpdateViewMatrix();
+}
+
+void SimDisplay::UpdateCameraProjection(const SoCamera& camera)
+{
+    float heightAngle = std::numbers::pi / 4;
+    float height = 100.0f;
+
+    const auto perspective = dynamic_cast<const SoPerspectiveCamera*>(&camera);
+    const auto orthographic = dynamic_cast<const SoOrthographicCamera*>(&camera);
+
+    if (perspective) {
+        heightAngle = perspective->heightAngle.getValue();
+    }
+    else if (orthographic) {
+        height = orthographic->height.getValue();
+    }
+
+    const float nearDistance = camera.nearDistance.getValue();
+    const float farDistance = camera.farDistance.getValue();
+
+    if ((bool)perspective == mCameraPerspective && heightAngle == mCameraHeightAngle
+        && height == mCameraHeight && nearDistance == mCameraNearDistance
+        && farDistance == mCameraFarDistance) {
+        return;
+    }
+
+    mCameraPerspective = (bool)perspective;
+    mCameraHeightAngle = heightAngle;
+    mCameraHeight = height;
+    mCameraNearDistance = nearDistance;
+    mCameraFarDistance = farDistance;
+
+    UpdateProjectionMatrix();
+}
+
+void SimDisplay::UpdateViewMatrix()
+{
+    SbVec3f up(0, 1, 0);
+    mCameraOrientation.multVec(up, up);
+
+    SbVec3f dir(0, 0, -1);
+    mCameraOrientation.multVec(dir, dir);
+
+    const auto target = mCameraPosition + dir;
+    mat4x4_look_at(mMatLookAt, mCameraPosition.getValue(), target.getValue(), up.getValue());
+
+    updateDisplay = true;
+}
+
+void SimDisplay::UpdateProjectionMatrix()
 {
     // Setup projection
+
+    const float aspect = (float)mWidth / mHeight;
+
+    // TODO: We can't use the values from the camera here because the dummy viewer never actually
+    // renders the scene and therefore the nearDistance and farDistance of the camera are never
+    // updated. Figure out a way to update those values without rendering the scene.
+
+#if 0
+
+    const float near = mCameraNearDistance;
+    const float far = mCameraFarDistance;
+
+#else
+
+    const float near = mMaxStockDimension * 0.01f;
+    const float far = mMaxStockDimension * 10.0f;
+
+#endif
+
     mat4x4 projmat;
-    mat4x4_perspective(projmat, 0.7f, (float)gWindowSizeW / gWindowSizeH, 1.0f, maxFar);
+
+    if (mCameraPerspective) {
+        mat4x4_perspective(projmat, mCameraHeightAngle, aspect, near, far);
+    }
+    else {
+        const float h = mCameraHeight;
+        const float w = mCameraHeight * aspect;
+        mat4x4_ortho(projmat, -w / 2, w / 2, -h / 2, h / 2, near, far);
+    }
+
     shader3D.Activate();
     shader3D.UpdateProjectionMat(projmat);
     shaderInv3D.Activate();
@@ -580,12 +619,12 @@ void SimDisplay::UpdateProjection()
     shaderSSAO.UpdateProjectionMat(projmat);
     shaderLinePath.Activate();
     shaderLinePath.UpdateProjectionMat(projmat);
-    shaderLinePath.UpdateObjColor(pathLineColorPassed);
 
     projmat[2][2] *= 0.99999F;
     shaderGeomCloser.Activate();
     shaderGeomCloser.UpdateProjectionMat(projmat);
+
+    updateDisplay = true;
 }
 
-
-}  // namespace MillSim
+}  // namespace CAMSimulator
