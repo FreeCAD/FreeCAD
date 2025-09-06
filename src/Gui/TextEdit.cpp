@@ -280,9 +280,12 @@ TextEditor::TextEditor(QWidget* parent)
 {
     d = new TextEditorP();
     lineNumberArea = new LineMarker(this);
-
+#ifdef FC_OS_MACOSX
     QFont serifFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
     serifFont.setPointSize(10);
+#else
+    QFont serifFont(QLatin1String("Courier"), 10, QFont::Normal);
+#endif
     setFont(serifFont);
 
     ParameterGrp::handle hPrefGrp = getWindowParameter();
@@ -448,8 +451,13 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
 #else
         int fontSize = hPrefGrp->GetInt("FontSize", 10);
 #endif
+#ifdef FC_OS_MACOSX
         QFont font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
         font.setPointSize(fontSize);
+#else
+        QString fontFamily = QString::fromLatin1(hPrefGrp->GetASCII( "Font", "Courier" ).c_str());
+        QFont font(fontFamily, fontSize);
+#endif
         setFont(font);
         lineNumberArea->setFont(font);
     }
