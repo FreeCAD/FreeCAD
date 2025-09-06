@@ -236,8 +236,6 @@ void CmdSketcherNewSketch::activated(int iMsg)
     if (bAttach) {
 
         std::vector<Gui::SelectionObject> objects = Gui::Selection().getSelectionEx();
-        // assert (objects.size() == 1); //should have been filtered out by SuggestAutoMapMode
-        // Gui::SelectionObject &sel_support = objects[0];
         App::PropertyLinkSubList support;
         Gui::Selection().getAsPropertyLinkSubList(support);
         std::string supportString = support.getPyReprString();
@@ -982,7 +980,6 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
         mirrorsketch->addConstraints(mirrorconstr);
         delete tempsketch;
     }
-
     doCommand(Gui, "App.activeDocument().recompute()");
 }
 
@@ -1405,7 +1402,6 @@ bool CmdSketcherGrid::isActive()
 
         return true;
     }
-
     return false;
 }
 
