@@ -4011,12 +4011,13 @@ void StdCmdClarifySelection::activated(int iMsg)
     SoRayPickAction pickAction(viewer->getSoRenderManager()->getViewportRegion());
     pickAction.setPoint(point);
 
-    float clarifyRadiusMultiplier = App::GetApplication()
+    constexpr double defaultMultiplier = 5.0F;
+    double clarifyRadiusMultiplier = App::GetApplication()
                                         .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-                                        ->GetFloat("ClarifySelectionRadiusMultiplier", 5.0f);
+            ->GetFloat("ClarifySelectionRadiusMultiplier", defaultMultiplier);
 
     pickAction.setRadius(viewer->getPickRadius() * clarifyRadiusMultiplier);
-    pickAction.setPickAll(true);  // Get all objects under cursor
+    pickAction.setPickAll(static_cast<SbBool>(true));  // Get all objects under cursor
     pickAction.apply(viewer->getSoRenderManager()->getSceneGraph());
     
     const SoPickedPointList& pplist = pickAction.getPickedPointList();
@@ -4029,22 +4030,26 @@ void StdCmdClarifySelection::activated(int iMsg)
     
     for (int i = 0; i < pplist.getLength(); ++i) {
         SoPickedPoint* pp = pplist[i];
-        if (!pp || !pp->getPath())
+        if (!pp || !pp->getPath()) {
             continue;
+        }
             
         ViewProvider* vp = viewer->getViewProviderByPath(pp->getPath());
-        if (!vp)
+        if (!vp) {
             continue;
+        }
             
         // Cast to ViewProviderDocumentObject to get the object
         auto vpDoc = freecad_cast<Gui::ViewProviderDocumentObject*>(vp);
-        if (!vpDoc)
+        if (!vpDoc) {
             continue;
+        }
             
         App::DocumentObject* obj = vpDoc->getObject();
-        if (!obj)
+        if (!obj) {
             continue;
-            
+        }
+
         // Get element information - handle sub-objects like Assembly parts
         std::string elementName = vp->getElement(pp->getDetail());
         std::string subName;

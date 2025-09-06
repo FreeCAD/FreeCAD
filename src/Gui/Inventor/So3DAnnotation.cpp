@@ -67,7 +67,7 @@ SoPathList SoDelayedAnnotationsElement::getDelayedPaths(SoState* state)
     auto elt = static_cast<SoDelayedAnnotationsElement*>(state->getElementNoPush(classStackIndex));
     
     if (elt->paths.empty()) {
-        return SoPathList();
+        return {};
     }
     
     // sort by priority (lower numbers render first)
@@ -91,7 +91,9 @@ void SoDelayedAnnotationsElement::processDelayedPathsWithPriority(SoState* state
 {
     auto elt = static_cast<SoDelayedAnnotationsElement*>(state->getElementNoPush(classStackIndex));
     
-    if (elt->paths.empty()) return;
+    if (elt->paths.empty()) {
+        return;
+    }
     
     std::stable_sort(elt->paths.begin(), elt->paths.end(),
         [](const PriorityPath& a, const PriorityPath& b) {
