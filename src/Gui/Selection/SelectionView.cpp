@@ -902,6 +902,13 @@ std::string SelectionMenu::extractElementType(const PickData &sel)
         const char *elementName = Data::findElementName(sel.subName.c_str());
         if (elementName && elementName[0]) {
             actualElement = elementName;
+        } else {
+            // for link objects like "Bucket.Edge222", extract "Edge222"
+            std::string subName = sel.subName;
+            std::size_t lastDot = subName.find_last_of('.');
+            if (lastDot != std::string::npos && lastDot + 1 < subName.length()) {
+                actualElement = subName.substr(lastDot + 1);
+            }
         }
     }
     
@@ -1076,7 +1083,17 @@ void SelectionMenu::createFlatMenu(ElementInfo &elementInfo, QMenu *parentMenu, 
         QString text = QString::fromUtf8(label.c_str());
         if (!sel.element.empty()) {
             text += QStringLiteral(" (%1)").arg(QString::fromUtf8(sel.element.c_str()));
+        } else if (!sel.subName.empty() && elementType != "Object" && elementType != "Other") {
+            // For link objects, extract element name from subName
+            // For "Bucket.Face74", we want to show "Bucket001 (Face74)"
+            std::string subName = sel.subName;
+            std::size_t lastDot = subName.find_last_of('.');
+            if (lastDot != std::string::npos && lastDot + 1 < subName.length()) {
+                QString elementName = QString::fromUtf8(subName.substr(lastDot + 1).c_str());
+                text += QStringLiteral(" (%1)").arg(elementName);
+            }
         }
+
         QAction *action = parentMenu->addAction(elementInfo.icon, text);
         action->setData(idx);
         connect(action, &QAction::hovered, this, [this, action]() {
@@ -1099,9 +1116,20 @@ void SelectionMenu::createGroupedMenu(ElementInfo &elementInfo, QMenu *parentMen
             text = QString::fromUtf8(sel.element.c_str());
         } else if (elementType == "Object" && !sel.subName.empty() && sel.subName.back() == '.') {
             text = tr("Whole Object");
+        } else if (!sel.subName.empty()) {
+            // extract just the element name from subName for link objects
+            // for "Bucket.Edge222", we want just "Edge222"
+            std::string subName = sel.subName;
+            std::size_t lastDot = subName.find_last_of('.');
+            if (lastDot != std::string::npos && lastDot + 1 < subName.length()) {
+                text = QString::fromUtf8(subName.substr(lastDot + 1).c_str());
+            } else {
+                text = QString::fromUtf8(sel.subName.c_str());
+            }
         } else {
             text = QString::fromUtf8(sel.subName.c_str());
         }
+
         QAction *action = elementInfo.menu->addAction(text);
         action->setData(idx);
         connect(action, &QAction::hovered, this, [this, action]() {
