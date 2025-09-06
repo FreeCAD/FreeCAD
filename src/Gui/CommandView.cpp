@@ -4004,7 +4004,12 @@ void StdCmdClarifySelection::activated(int iMsg)
     // Use ray picking to get all objects under cursor
     SoRayPickAction pickAction(viewer->getSoRenderManager()->getViewportRegion());
     pickAction.setPoint(point);
-    pickAction.setRadius(viewer->getPickRadius());
+
+    float clarifyRadiusMultiplier = App::GetApplication()
+                                        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                                        ->GetFloat("ClarifySelectionRadiusMultiplier", 5.0f);
+
+    pickAction.setRadius(viewer->getPickRadius() * clarifyRadiusMultiplier);
     pickAction.setPickAll(true);  // Get all objects under cursor
     pickAction.apply(viewer->getSoRenderManager()->getSceneGraph());
     
