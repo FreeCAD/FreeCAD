@@ -1430,18 +1430,28 @@ void Hole::findClosestDesignation()
     if (oldSizeIndex >= 0 && oldSizeIndex < static_cast<int>(options.size())) {
         targetPitch = options[oldSizeIndex].pitch;
     }
-
-    // Scan all entries to find the minimal (Δdiameter, Δpitch) Euclidean distance
     size_t bestIndex = 0;
-    double bestMetric = std::numeric_limits<double>::infinity();
-
-    for (size_t i = 0; i < options.size(); ++i) {
-        double dDiff = options[i].diameter - diameter;
-        double pDiff = options[i].pitch - targetPitch;
-        double metric = std::hypot(dDiff, pDiff);
-        if (metric < bestMetric) {
-            bestMetric = metric;
-            bestIndex = i;
+    if (targetPitch == 0.0) {
+        // If pitch is unknown, prioritize the closest diameter
+        double bestDiameterDiff = std::numeric_limits<double>::infinity();
+        for (size_t i = 0; i < options.size(); ++i) {
+            double dDiff = std::abs(options[i].diameter - diameter);
+            if (dDiff < bestDiameterDiff) {
+                bestDiameterDiff = dDiff;
+                bestIndex = i;
+            }
+        }
+    } else {
+        // Scan all entries to find the minimal (Δdiameter, Δpitch) Euclidean distance
+        double bestMetric = std::numeric_limits<double>::infinity();
+        for (size_t i = 0; i < options.size(); ++i) {
+            double dDiff = options[i].diameter - diameter;
+            double pDiff = options[i].pitch - targetPitch;
+            double metric = std::hypot(dDiff, pDiff);
+            if (metric < bestMetric) {
+                bestMetric = metric;
+                bestIndex = i;
+            }
         }
     }
 
