@@ -13,11 +13,8 @@ include_directories(
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Blending)
 
-generate_from_xml(Blending/BlendPointPy)
-generate_from_xml(Blending/BlendCurvePy)
-
-generate_from_py_(Blending/BlendPointPy)
-generate_from_py_(Blending/BlendCurvePy)
+generate_from_py(Blending/BlendPoint)
+generate_from_py(Blending/BlendCurve)
 
 set(Surface_LIBS
   FreeCADApp
@@ -26,9 +23,9 @@ set(Surface_LIBS
 
 # BlendPoint Wrapper
 SET(BlendingPy_SRCS
-  Blending/BlendPointPy.xml
+  Blending/BlendPoint.pyi
   Blending/BlendPointPyImp.cpp
-  Blending/BlendCurvePy.xml
+  Blending/BlendCurve.pyi
   Blending/BlendCurvePyImp.cpp
 )
 SOURCE_GROUP("Blending" FILES ${BlendingPy_SRCS})
