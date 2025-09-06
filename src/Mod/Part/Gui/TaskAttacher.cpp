@@ -254,6 +254,8 @@ void TaskAttacher::objectDeleted(const Gui::ViewProviderDocumentObject& view)
 {
     if (ViewProvider == &view) {
         ViewProvider = nullptr;
+        // if the object gets deleted we need to clear all overrides so it does not segfault
+        overrides.clear();
         this->setDisabled(true);
     }
 }
