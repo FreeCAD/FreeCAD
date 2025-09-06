@@ -801,7 +801,9 @@ void SelectionMenu::buildMenuStructure(std::map<std::string, SubMenuInfo> &menus
         }
 
         subMenuInfo.menu = addMenu(QString::fromUtf8(elementType.c_str()));
-        bool groupMenu = shouldGroupMenu(subMenuInfo);
+
+        // for "Object" type, and "Other", always use flat menu (no submenus for individual objects)
+        bool groupMenu = (elementType != "Object" && elementType != "Other") && shouldGroupMenu(subMenuInfo);
 
         for (auto &objectLabelEntry : subMenuInfo.items) {
             const std::string &objectLabel = objectLabelEntry.first;
@@ -1074,8 +1076,6 @@ void SelectionMenu::createFlatMenu(ElementInfo &elementInfo, QMenu *parentMenu, 
         QString text = QString::fromUtf8(label.c_str());
         if (!sel.element.empty()) {
             text += QStringLiteral(" (%1)").arg(QString::fromUtf8(sel.element.c_str()));
-        } else if (elementType == "Object" && !sel.subName.empty() && sel.subName.back() == '.') {
-            text += QStringLiteral(" (%1)").arg(tr("Whole Object"));
         }
         QAction *action = parentMenu->addAction(elementInfo.icon, text);
         action->setData(idx);
