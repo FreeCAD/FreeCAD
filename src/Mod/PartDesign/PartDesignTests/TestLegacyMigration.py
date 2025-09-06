@@ -64,8 +64,7 @@ class TestLegacyMigration(unittest.TestCase):
 
         binder = doc.addObject("PartDesign::SubShapeBinder", "B2_ref_in_B1"); B1.addObject(binder)
         binder.Support = [(B2.Tip, [])]
-        try: binder.Relative = True
-        except Exception: pass
+        binder.Relative = True
 
         doc.recompute()
 

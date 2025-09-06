@@ -614,11 +614,26 @@ bool Body::isSolid()
     return false;
 }
 
+namespace {
+    // Use the official API to find the owning Part (or nullptr if top-level)
+    static const App::Origin* findGlobalOrigin(const App::Document* doc) {
+        if (!doc) return nullptr;
+        if (auto* obj = doc->getObject("Global_Origin"))
+            if (auto* og = dynamic_cast<App::Origin*>(obj)) return og;
+        return nullptr;
+    }
+}
 
 App::Origin* Body::getOrigin() const
 {
- App::Part* part =App::Part::getPartOfObject(this);
- if(part) return part->getOrigin();
- else return nullptr;
+    if (auto* part = App::Part::getPartOfObject(this))
+        return part->getOrigin();
+
+    if (auto* og = findGlobalOrigin(getDocument()))
+        return const_cast<App::Origin*>(og);
+
+    // New docs with top-level Body will prompt to pick a plane/face — that's intended.
+    return nullptr;
 }
+
 
