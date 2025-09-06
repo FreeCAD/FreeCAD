@@ -44,10 +44,18 @@
 # include <Inventor/elements/SoLineWidthElement.h>
 # include <Inventor/errors/SoDebugError.h>
 # include <Inventor/misc/SoState.h>
+# include <Inventor/nodes/SoGroup.h>
+# include <Inventor/actions/SoSearchAction.h>
 #endif
 
 #include <Gui/Selection/SoFCUnifiedSelection.h>
+#include <Gui/Selection/Selection.h>
+#include <Base/Console.h>
 #include "SoBrepEdgeSet.h"
+#include "SoBrepFaceSet.h"
+#include "ViewProviderExt.h"
+
+#include <Gui/Inventor/So3DAnnotation.h>
 
 
 using namespace PartGui;
@@ -79,6 +87,26 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,ctx2);
     if(ctx2 && ctx2->selectionIndex.empty())
         return;
+
+
+    bool hasContextHighlight = ctx && !ctx->hl.empty();
+    bool hasFaceHighlight = viewProvider && viewProvider->isFaceHighlightActive();
+    bool hasAnyHighlight = hasContextHighlight || hasFaceHighlight;
+    
+    if (Gui::Selection().isClarifySelectionActive()
+        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths
+        && hasAnyHighlight) {
+        // if we are using clarifyselection - add this to delayed paths with priority
+        // as we want to get this rendered on top of everything
+        if (viewProvider) {
+            viewProvider->setFaceHighlightActive(true);
+        }
+        Gui::SoDelayedAnnotationsElement::addDelayedPath(action->getState(),
+                                                        action->getCurPath()->copy(),
+                                                        200);
+        return;
+    }
+    
     if(selContext2->checkGlobal(ctx)) {
         if(selContext2->isSelectAll()) {
             selContext2->sl.clear();
@@ -132,8 +160,21 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
     }
     if(ctx2 && !ctx2->selectionIndex.empty())
         renderSelection(action,ctx2,false);
-    else
+    else if (Gui::Selection().isClarifySelectionActive()
+             && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths && hasAnyHighlight) {
+        state->push();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDepthMask(false);
+        glDisable(GL_DEPTH_TEST);
+
         inherited::GLRender(action);
+
+        state->pop();
+    }
+    else {
+       inherited::GLRender(action);
+    }
 
     // Workaround for #0000433
 //#if !defined(FC_OS_WIN32)
