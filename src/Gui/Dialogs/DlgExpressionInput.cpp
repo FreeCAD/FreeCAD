@@ -39,7 +39,6 @@
 #include <App/ExpressionParser.h>
 #include <App/VarSet.h>
 #include <Base/Console.h>
-#include <Base/Tools.h>
 
 #include "Dialogs/DlgExpressionInput.h"
 #include "ui_DlgExpressionInput.h"
@@ -459,7 +458,7 @@ public:
 };
 
 static constexpr const char* InvalidIdentifierMessage =
-    QT_TR_NOOP("must contain only alphanumeric characters, underscore, and must not start with a digit");
+    QT_TR_NOOP("must not be empty, must not be a reserved word, must contain only alphanumeric characters, underscore and must not start with a digit");
 
 bool DlgExpressionInput::isPropertyNameValid(const QString& nameProp,
                                              const App::DocumentObject* obj,
@@ -475,23 +474,8 @@ bool DlgExpressionInput::isPropertyNameValid(const QString& nameProp,
     }
 
     std::string name = nameProp.toStdString();
-    if (name.empty()) {
-        message = withPrefix(tr("the name cannot be empty"));
-        return false;
-    }
-
-    if (name != Base::Tools::getIdentifier(name)) {
+    if (!ExpressionParser::isValidFCIdentifier(name)) {
         message = withPrefix(tr(InvalidIdentifierMessage));
-        return false;
-    }
-
-    if (ExpressionParser::isTokenAUnit(name)) {
-        message = withPrefix(tr("%1 is a unit").arg(nameProp));
-        return false;
-    }
-
-    if (ExpressionParser::isTokenAConstant(name)) {
-        message = withPrefix(tr("%1 is a constant").arg(nameProp));
         return false;
     }
 
@@ -842,13 +826,9 @@ bool DlgExpressionInput::isGroupNameValid(const QString& nameGroup,
         return tr("Invalid group name: %1").arg(detail);
     };
 
-    if(nameGroup.isEmpty()) {
-        message = withPrefix(tr("the name cannot be empty"));
-        return false;
-    }
     std::string name = nameGroup.toStdString();
 
-    if (name != Base::Tools::getIdentifier(name)) {
+    if (!ExpressionParser::isValidFCIdentifier(name)) {
         message = withPrefix(tr(InvalidIdentifierMessage));
         return false;
     }
