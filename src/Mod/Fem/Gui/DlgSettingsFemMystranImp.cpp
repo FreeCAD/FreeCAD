@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QMessageBox>
+#include <QStandardPaths>
 #endif
 
 #include "DlgSettingsFemMystranImp.h"
@@ -40,23 +41,21 @@ DlgSettingsFemMystranImp::DlgSettingsFemMystranImp(QWidget* parent)
     ui->setupUi(this);
 
     connect(ui->fc_mystran_binary_path,
-            &Gui::PrefFileChooser::fileNameChanged,
+            &Gui::PrefFileChooser::fileNameSelected,
             this,
-            &DlgSettingsFemMystranImp::onfileNameChanged);
+            &DlgSettingsFemMystranImp::onfileNameSelected);
 }
 
 DlgSettingsFemMystranImp::~DlgSettingsFemMystranImp() = default;
 
 void DlgSettingsFemMystranImp::saveSettings()
 {
-    ui->cb_mystran_binary_std->onSave();
     ui->fc_mystran_binary_path->onSave();
     ui->cb_mystran_write_comments->onSave();
 }
 
 void DlgSettingsFemMystranImp::loadSettings()
 {
-    ui->cb_mystran_binary_std->onRestore();
     ui->fc_mystran_binary_path->onRestore();
     ui->cb_mystran_write_comments->onRestore();
 }
@@ -74,14 +73,10 @@ void DlgSettingsFemMystranImp::changeEvent(QEvent* e)
     }
 }
 
-void DlgSettingsFemMystranImp::onfileNameChanged(QString FileName)
+void DlgSettingsFemMystranImp::onfileNameSelected(const QString& fileName)
 {
-    if (!QFileInfo::exists(FileName)) {
-        QMessageBox::critical(this,
-                              tr("File does not exist"),
-                              tr("The specified executable\n'%1'\n does not exist!\n"
-                                 "Specify another file.")
-                                  .arg(FileName));
+    if (!fileName.isEmpty() && QStandardPaths::findExecutable(fileName).isEmpty()) {
+        QMessageBox::critical(this, tr("Mystran"), tr("Executable '%1' not found").arg(fileName));
     }
 }
 
