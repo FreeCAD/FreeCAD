@@ -232,8 +232,8 @@ private:
                     else if (file.hasExtension("inp")) {
                         // get Abaqus inp prefs
                         ParameterGrp::handle g = hGrp->GetGroup("Abaqus");
-                        int elemParam = g->GetInt("AbaqusElementChoice", 1);
-                        bool groupParam = g->GetBool("AbaqusWriteGroups", false);
+                        int elemParam = g->GetInt("AbaqusElementChoice", 2);
+                        bool groupParam = g->GetBool("AbaqusWriteGroups", true);
                         // write ABAQUS Output
                         femMesh.writeABAQUS(file.filePath(), elemParam, groupParam);
                     }
