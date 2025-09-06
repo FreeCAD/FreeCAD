@@ -140,15 +140,6 @@ Gui--OverlayToolButton:checked:hover {
   border: 0.5px solid @ThemeAccentColor1;
   background-color:  @3DViewBackgroundRefColor
 }
-
-Gui--OverlayToolButton{
-  image: url(qss:@IconsLocationFolderName/close-lightgray.svg);
-}
-
-Gui--OverlayToolButton:hover {
-  image: url(qss:@IconsLocationFolderName/close-red.svg);
-}
-
 Gui--OverlayToolButton[objectName="OBTN Transparent"] {
   image: url(qss:@IconsLocationFolderName/transparent-lightgray.svg);
   }
