@@ -69,12 +69,12 @@ public:
     bool suggestReversed();
 
     enum class RevolMethod {
-        Dimension,
+        Angle,
         ThroughAll,
         ToLast = ThroughAll,
         ToFirst,
         ToFace,
-        TwoDimensions
+        TwoAngles
     };
 
 protected:
