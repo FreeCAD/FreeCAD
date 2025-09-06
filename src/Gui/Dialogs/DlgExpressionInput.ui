@@ -177,6 +177,10 @@
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QCheckBox" name="checkBoxVarSets">
+       <property name="toolTip">
+        <string>Store the expression in a newly created property in the selected VarSet.
+The property of this object will refer to the property of the VarSet.</string>
+       </property>
        <property name="text">
         <string>Store in VarSet...</string>
        </property>
