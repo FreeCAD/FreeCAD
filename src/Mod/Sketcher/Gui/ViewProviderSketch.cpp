@@ -2744,6 +2744,23 @@ bool ViewProviderSketch::selectAll()
     int VertexId = -1;
     int GeoId = 0;
 
+    auto selectVertex = [this](int &vertexId, int numberOfVertices) {
+        for (int i = 0; i < numberOfVertices; i++) {
+            vertexId++;
+            addSelection2(fmt::format("Vertex{}", vertexId + 1));
+        }
+    };
+
+    auto selectEdge = [this](int GeoId) {
+        if (GeoId >= 0) {
+            addSelection2(fmt::format("Edge{}", GeoId + 1));
+        } else {
+            addSelection2(fmt::format("ExternalEdge{}", GeoEnum::RefExt - GeoId + 1));
+        }
+    };
+
+    bool hasUnselectedGeometry = false;
+
     for (std::vector<Part::Geometry*>::const_iterator it = geomlist.begin();
          it != geomlist.end() - 2; // -2 to exclude H_Axis and V_Axis
          ++it, ++GeoId) {
@@ -2753,53 +2770,22 @@ bool ViewProviderSketch::selectAll()
         }
 
         if ((*it)->is<Part::GeomPoint>()) {
-            VertexId++;
-            addSelection2(fmt::format("Vertex{}", VertexId + 1));
+            selectVertex(VertexId, 1);
         }
-        else if ((*it)->is<Part::GeomLineSegment>()) {
-            VertexId++; // start
-            addSelection2(fmt::format("Vertex{}", VertexId + 1));
-
-            VertexId++; // end
-            addSelection2(fmt::format("Vertex{}", VertexId + 1));
-
-            if (GeoId >= 0) {
-                addSelection2(fmt::format("Edge{}", GeoId + 1));
-            } else {
-                addSelection2(fmt::format("ExternalEdge{}", -GeoId - 1));
-            }
+        else if ((*it)->is<Part::GeomLineSegment>() || (*it)->is<Part::GeomBSplineCurve>()) {
+            selectVertex(VertexId, 2); // Start + End
+            selectEdge(GeoId);
         }
         else if ((*it)->isDerivedFrom<Part::GeomConic>()) {
-            VertexId++;
-            addSelection2(fmt::format("Vertex{}", VertexId + 1));
-
-            if (GeoId >= 0) {
-                addSelection2(fmt::format("Edge{}", GeoId + 1));
-            } else {
-                addSelection2(fmt::format("ExternalEdge{}", -GeoId - 1));
-            }
+            selectVertex(VertexId, 1); // Center
+            selectEdge(GeoId);
         }
-        else if ((*it)->isDerivedFrom<Part::GeomCurve>()) {
-            if (auto arc = dynamic_cast<const Part::GeomArcOfCircle*>(*it)) {
-                VertexId++; // start
-                addSelection2(fmt::format("Vertex{}", VertexId + 1));
-
-                VertexId++; // end
-                addSelection2(fmt::format("Vertex{}", VertexId + 1));
-
-                VertexId++; // center
-                addSelection2(fmt::format("Vertex{}", VertexId + 1));
-            } else {
-                // for other curves, select available vertices
-                VertexId++;
-                addSelection2(fmt::format("Vertex{}", VertexId + 1));
-            }
-
-            if (GeoId >= 0) {
-                addSelection2(fmt::format("Edge{}", GeoId + 1));
-            } else {
-                addSelection2(fmt::format("ExternalEdge{}", -GeoId - 1));
-            }
+        else if ((*it)->isDerivedFrom<Part::GeomArcOfConic>()) {
+            selectVertex(VertexId, 3); // Start + End + Center
+            selectEdge(GeoId);
+        }
+        else {
+            hasUnselectedGeometry = true;
         }
     }
 
@@ -2811,6 +2797,10 @@ bool ViewProviderSketch::selectAll()
 
     // get root point if they exist
     addSelection2("RootPoint");
+
+    if (hasUnselectedGeometry) {
+        Base::Console().error("Select All: Not all geometry was selected");
+    }
 
     return true;
 }
