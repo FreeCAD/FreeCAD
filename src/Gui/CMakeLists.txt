@@ -471,7 +471,6 @@ SET(Gui_UIC_SRCS
     TaskElementColors.ui
     Dialogs/DlgObjectSelection.ui
     Dialogs/DlgAddProperty.ui
-    Dialogs/DlgAddPropertyVarSet.ui
     VectorListEditor.ui
 )
 
@@ -563,7 +562,6 @@ SET(Dialog_CPP_SRCS
     TaskElementColors.cpp
     Dialogs/DlgObjectSelection.cpp
     Dialogs/DlgAddProperty.cpp
-    Dialogs/DlgAddPropertyVarSet.cpp
     VectorListEditor.cpp
 )
 
@@ -605,7 +603,6 @@ SET(Dialog_HPP_SRCS
     TaskElementColors.h
     Dialogs/DlgObjectSelection.h
     Dialogs/DlgAddProperty.h
-    Dialogs/DlgAddPropertyVarSet.h
     VectorListEditor.h
 )
 
