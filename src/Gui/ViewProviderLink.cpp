@@ -2715,10 +2715,7 @@ bool ViewProviderLink::initDraggingPlacement() {
     dragCtx = std::make_unique<DraggerContext>();
 
     dragCtx->preTransform = doc->getEditingTransform();
-    doc->setEditingTransform(dragCtx->preTransform);
-
-    const auto &pla = ext->getPlacementProperty()?
-        ext->getPlacementValue():ext->getLinkPlacementValue();
+    const auto &pla = getPlacementProperty()->getValue();
 
     // Cancel out our own transformation from the editing transform, because
     // the dragger is meant to change our transformation.
@@ -2732,38 +2729,16 @@ bool ViewProviderLink::initDraggingPlacement() {
     dragCtx->bbox.ScaleY(scale.y);
     dragCtx->bbox.ScaleZ(scale.z);
 
-    auto modifier = QApplication::queryKeyboardModifiers();
-    // Determine the dragger base position
-    // if CTRL key is down, force to use bound box center,
-    // if SHIFT key is down, force to use origine,
-    // if not a sub link, use origine,
-    // else (e.g. group, array, sub link), use bound box center
-    if(modifier != Qt::ShiftModifier
-            && ((ext->getLinkedObjectValue() && !linkView->hasSubs())
-                || modifier == Qt::ControlModifier))
-    {
-        App::PropertyPlacement *propPla = nullptr;
-        if(ext->getLinkTransformValue() && ext->getLinkedObjectValue()) {
-            propPla = freecad_cast<App::PropertyPlacement*>(
-                    ext->getLinkedObjectValue()->getPropertyByName("Placement"));
-        }
-        if(propPla) {
-            dragCtx->initialPlacement = pla * propPla->getValue();
-            dragCtx->mat *= propPla->getValue().inverse().toMatrix();
-        } else
-            dragCtx->initialPlacement = pla;
-
+    App::PropertyPlacement *propPla = nullptr;
+    if(ext->getLinkTransformValue() && ext->getLinkedObjectValue()) {
+        propPla = freecad_cast<App::PropertyPlacement*>(
+                ext->getLinkedObjectValue()->getPropertyByName("Placement"));
+    }
+    if(propPla) {
+        dragCtx->initialPlacement = pla * propPla->getValue();
+        dragCtx->mat *= propPla->getValue().inverse().toMatrix();
     } else {
-        auto offset = dragCtx->bbox.GetCenter();
-
-        // This determines the initial placement of the dragger. We place it at the
-        // center of our bounding box.
-        dragCtx->initialPlacement = pla * Base::Placement(offset, Base::Rotation());
-
-        // dragCtx->mat is to transform the dragger placement to our own placement.
-        // Since the dragger is placed at the center, we set the transformation by
-        // moving the same amount in reverse direction.
-        dragCtx->mat.move(Vector3d() - offset);
+        dragCtx->initialPlacement = pla;
     }
 
     return true;
@@ -2872,6 +2847,8 @@ void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModN
     }
 
     ViewProviderDragger::setEditViewer(viewer, ModNum);
+
+    viewer->setupEditingRoot(transformDragger, &dragCtx->preTransform);
 }
 
 void ViewProviderLink::unsetEditViewer(Gui::View3DInventorViewer* viewer)
