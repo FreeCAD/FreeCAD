@@ -402,13 +402,22 @@ void Application::initStyleParameterManager()
         {.name = QT_TR_NOOP("Theme Parameters"),
          .options = StyleParameters::ParameterSourceOption::UserEditable});
 
-    handlers.addDelayedHandler(
+    auto reloadStylesheetHandler = handlers.addDelayedHandler(
         "BaseApp/Preferences/MainWindow",
-        {"ThemeStyleParametersFiles", "Theme"},
-        [themeParametersSource, deduceParametersFilePath, this](ParameterGrp::handle) {
+        {"ThemeStyleParametersFiles", "Theme", "StyleSheet"},
+        [themeParametersSource, deduceParametersFilePath, this](ParameterGrp::handle hGrp) {
             themeParametersSource->changeFilePath(deduceParametersFilePath());
-            reloadStyleSheet();
+            styleParameterManager()->reload();
+
+            std::string sheet = hGrp->GetASCII("StyleSheet");
+            bool tiledBG = hGrp->GetBool("TiledBackground", false);
+
+            setStyleSheet(QString::fromStdString(sheet), tiledBG);
         });
+
+    handlers.addHandler("BaseApp/Preferences/Themes",
+                        {"ThemeAccentColor1", "ThemeAccentColor2", "ThemeAccentColor2"},
+                        reloadStylesheetHandler);
 
     Base::registerServiceImplementation<StyleParameters::ParameterSource>(
         new StyleParameters::BuiltInParameterSource({.name = QT_TR_NOOP("Built-in Parameters")}));
