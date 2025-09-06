@@ -51,8 +51,6 @@ public:
 
   void loadStyleSheet();
 
-  static void attachObserver();
-
 protected:
   void changeEvent(QEvent *e) override;
 
