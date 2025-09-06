@@ -40,6 +40,9 @@
 
 class QPropertyAnimation;
 class QLayoutItem;
+class QEnterEvent;
+class QLeaveEvent;
+class QChangeEvent;
 
 namespace Gui {
 
@@ -179,7 +182,9 @@ public:
     void onAction(QAction *);
     /// Sync relevant actions status with the current auto mode
     void syncAutoMode();
-    // Establish if stylesheet is dark
+    // Establish if stylesheet is dark (palette-based check; no parameter required)
+    static bool isStyleSheetDark();
+    // Overload that accepts the current stylesheet string
     static bool isStyleSheetDark(std::string curStyleSheet);
     // Rotate the AutoHide icon according to the dock area
     static QPixmap rotateAutoHideIcon(QPixmap pxAutoHide, Qt::DockWidgetArea dockArea);
@@ -300,6 +305,10 @@ public:
     static QWidget *createTitleButton(QAction *action, int size);
     /// Helper function to prepare a widget as a title widget
     static QLayoutItem *prepareTitleWidget(QWidget *widget, const QList<QAction*> &actions);
+    /// Add a small set of static QToolButtons to a dock widget's top-right corner
+    /// (works for both docked and floating). Buttons are static QToolButtons used
+    /// for styling; they are not backed by OverlayTabWidget actions.
+    static void addStaticTitleButtons(QDockWidget *dock);
 
 protected:
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
@@ -315,7 +324,8 @@ protected:
     bool eventFilter(QObject* obj, QEvent* ev) override;
 
     void retranslate();
-    void refreshIcons();
+    // New: set icons explicitly from images_classic (with fallbacks)
+    void setIcons();
 
     /// Overlay mode options
     enum class OverlayOption {
@@ -391,10 +401,11 @@ private:
 
     std::map<QDockWidget *, int> _sizemap;
     bool _saving = false;
+    // static popup toolbar is used instead of overlayMenuButton
 
     // NOLINTBEGIN
     static OverlayDragFrame *_DragFrame;
-    static QDockWidget *_DragFloating;
+    static OverlayDragFrame *_DragFloating;
     static QWidget *_Dragging;
     static OverlayTabWidget *_LeftOverlay;
     static OverlayTabWidget *_RightOverlay;
@@ -421,9 +432,15 @@ class OverlayTitleBar: public QWidget
 {
     Q_OBJECT
 public:
+    /// Minimal mode for floating state
+    void setMinimal(bool minimal);
+    bool isMinimal() const { return m_minimal; }
+
     explicit OverlayTitleBar(QWidget * parent);
     void setTitleItem(QLayoutItem *);
     void endDrag();
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 
 protected:
     void mouseMoveEvent(QMouseEvent* ev) override;
@@ -442,6 +459,19 @@ private:
     bool blink = false;
     bool mouseMovePending = false;
     bool ignoreMouse = false;
+    bool m_minimal = false;
+    // Resize support for floating docks: track which edge is being resized
+    enum ResizeEdge {
+        ResizeNone = 0,
+        ResizeLeft = 1,
+        ResizeRight = 2,
+        ResizeTop = 4,
+        ResizeBottom = 8
+    };
+    int resizeEdge = ResizeNone;
+    bool resizing = false;
+    QRect resizeStartGeom;
+    QPoint resizeStartPos;
 };
 
 /// Size grip for title bar and split handler of OverlayTabWidget
@@ -488,7 +518,7 @@ public:
     OverlaySplitterHandle(Qt::Orientation, QSplitter *parent);
     void setTitleItem(QLayoutItem *);
     void retranslate();
-    void refreshIcons();
+    void setIcons();
     QDockWidget * dockWidget();
 
     void showTitle(bool enable);
@@ -642,6 +672,7 @@ private:
     QColor _color;
     QPointF _offset;
 };
+
 
 } // namespace Gui
 

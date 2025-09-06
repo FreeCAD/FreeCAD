@@ -90,7 +90,7 @@ class TechDrawGuiExport DrawGuiUtil {
 
     static bool isSelectedInTree(QGraphicsItem* item);
     static void setSelectedTree(QGraphicsItem* item, bool selected);
-    static bool isStyleSheetDark(std::string curStyleSheet);
+    static bool isStyleSheetDark();
     static QIcon maskBlackPixels(QIcon itemIcon, QSize iconSize, QColor textColor);
 
     static Base::Vector3d fromSceneCoords(const Base::Vector3d& sceneCoord, bool invert = true);
