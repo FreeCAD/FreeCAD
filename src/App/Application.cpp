@@ -588,7 +588,7 @@ std::string Application::getUniqueDocumentName(const char* Name, bool tempDoc) c
     if (!Name || *Name == '\0') {
         return {};
     }
-    std::string CleanName = Base::Tools::getIdentifier(Name);
+    std::string CleanName = ExpressionParser::getFCIdentifier(Name);
 
     // name in use?
     auto pos = DocMap.find(CleanName);
@@ -3621,7 +3621,7 @@ void Application::getVerboseCommonInfo(QTextStream& str, const std::map<std::str
     const QString deskSess =
         QProcessEnvironment::systemEnvironment().value(QStringLiteral("DESKTOP_SESSION"),
                                                     QString());
-  
+
     const QString major = getValueOrEmpty(mConfig, "BuildVersionMajor");
     const QString minor = getValueOrEmpty(mConfig, "BuildVersionMinor");
     const QString point = getValueOrEmpty(mConfig, "BuildVersionPoint");

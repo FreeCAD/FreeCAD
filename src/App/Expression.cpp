@@ -3881,6 +3881,23 @@ bool ExpressionParser::isTokenAUnit(const std::string & str)
     return (status == 0 && token == UNIT);
 }
 
+std::string ExpressionParser::getFCIdentifier(const std::string& str)
+{
+    std::stringstream result;
+    std::string PyIdentifier = Base::Tools::getPyIdentifier(str);
+    if (ExpressionParser::isTokenAConstant(PyIdentifier)
+        || ExpressionParser::isTokenAUnit(PyIdentifier)) {
+        result << "_";
+    }
+    result << PyIdentifier;
+    return result.str();
+}
+
+bool ExpressionParser::isValidFCIdentifier(const std::string& str)
+{
+    return (str == ExpressionParser::getFCIdentifier(str));
+}
+
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #endif
