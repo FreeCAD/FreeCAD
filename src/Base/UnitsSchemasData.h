@@ -30,6 +30,7 @@
 #include "fmt/format.h"
 #include "fmt/ranges.h"
 
+#include "UnitsConvData.h"
 #include "UnitsSchemasSpecs.h"
 
 /**
@@ -41,6 +42,8 @@ namespace Base::UnitsSchemasData
 
 constexpr std::size_t defDecimals {2};
 constexpr std::size_t defDenominator {8};
+
+using namespace Base::UnitsConvData;
 
 // NOLINTBEGIN
 // clang-format off
@@ -69,15 +72,15 @@ inline const UnitsSchemaSpec s1
 inline const UnitsSchemaSpec s2
 { 3, "ImperialDecimal", "in", false, false, QT_TRANSLATE_NOOP("UnitsApi", "Imperial decimal (in, lb)"), false,
     {
-        { "Length",       {{ 0 , "in"      , 25.4              }}},
+        { "Length",       {{ 0 , "in"      , in                }}},
         { "Angle",        {{ 0 , "°"       , 1.0               }}},
-        { "Area",         {{ 0 , "in^2"    , 645.16            }}},
-        { "Volume",       {{ 0 , "in^3"    , 16387.064         }}},
-        { "Mass",         {{ 0 , "lb"      , 0.45359237        }}},
-        { "Pressure",     {{ 0 , "psi"     , 6.894744825494    }}},
-        { "Stiffness",    {{ 0 , "lbf/in"  , 4.448222 / 0.0254 }}},
-        { "Velocity",     {{ 0 , "in/min"  , 25.4 / 60         }}},
-        { "Acceleration", {{ 0 , "in/min^2", 25.4 / 3600       }}}
+        { "Area",         {{ 0 , "in^2"    , in * in           }}},
+        { "Volume",       {{ 0 , "in^3"    , in * in * in      }}},
+        { "Mass",         {{ 0 , "lb"      , lb                }}},
+        { "Pressure",     {{ 0 , "psi"     , psi               }}},
+        { "Stiffness",    {{ 0 , "lbf/in"  , lbf / in * 1000   }}},
+        { "Velocity",     {{ 0 , "in/min"  , in / 60           }}},
+        { "Acceleration", {{ 0 , "in/min^2", in / 3600         }}}
     }
 };
 
@@ -582,36 +585,36 @@ inline const UnitsSchemaSpec s7
 { 2, "Imperial", "in", false, false, QT_TRANSLATE_NOOP("UnitsApi", "US customary (in, lb)"), false,
     {
         { "Length", {
-            { 0.00000254      , "in"       , 25.4              },
-            { 2.54            , "thou"     , 0.0254            },
-            { 304.8           , "\""       , 25.4              },
-            { 914.4           , "'"        , 304.8             },
-            { 1'609'344.0     , "yd"       , 914.4             },
-            { 1'609'344'000.0 , "mi"       , 1'609'344.0       },
-            { 0               , "in"       , 25.4              }}
+            { 0.00000254      , "in"       , in                },
+            { 2.54            , "thou"     , in / 1000         },
+            { 304.8           , "\""       , in                },
+            { 914.4           , "'"        , ft                },
+            { 1'609'344.0     , "yd"       , yd                },
+            { 1'609'344'000.0 , "mi"       , mi                },
+            { 0               , "in"       , in                }}
         },
         { "Angle", {
             { 0               , "°"        , 1.0               }}
         },
         { "Area", {
-            { 0               , "in^2"     , 645.16            }}
+            { 0               , "in^2"     , in * in           }}
         },
         { "Volume", {
-            { 0               , "in^3"     , 16'387.064        }}
+            { 0               , "in^3"     , in * in * in      }}
         },
         { "Mass", {
-            { 0               , "lb"       , 0.45359237        }}
+            { 0               , "lb"       , lb                }}
         },
         { "Pressure", {
-            { 6'894.744       , "psi"      , 6.894744825494    },
-            { 6'894'744.825   , "ksi"      , 6'894.744825494   },
-            { 0               , "psi"      , 6.894744825494    }}
+            { 1000 * psi      , "psi"      , psi               },
+            { 1000000 * psi   , "ksi"      , 1000 * psi        },
+            { 0               , "psi"      , psi               }}
         },
         { "Stiffness", {
-            { 0               , "lbf/in"   , 4.448222 / 0.0254 }}
+            { 0               , "lbf/in"   , lbf / in * 1000   }}
         },
         { "Velocity", {
-            { 0               , "in/min"   , 25.4 / 60         }}
+            { 0               , "in/min"   , in / 60           }}
         }
     }
 };
@@ -621,16 +624,23 @@ inline const UnitsSchemaSpec s8
     {
         { "Length"   , {{ 0   , "toFractional"    , 0              }}},  // <== !
         { "Angle"    , {{ 0   , "°"               , 1.0            }}},
-        { "Area"     , {{ 0   , "sqft"            , 92'903.04      }}},
-        { "Volume"   , {{ 0   , "cft"             , 28'316'846.592 }}},
-        { "Velocity" , {{ 0   , "in/min"          , 25.4 / 60      }}}
+        { "Area"     , {{ 0   , "sqft"            , ft * ft        }}},
+        { "Volume"   , {{ 0   , "cft"             , ft * ft * ft   }}},
+        { "Velocity" , {{ 0   , "in/min"          , in / 60        }}}
     }
 };
 
 inline const UnitsSchemaSpec s9
-{ 7, "ImperialCivil", "ft", false, true, QT_TRANSLATE_NOOP("UnitsApi", "Imperial for Civil Eng (ft, ft/s)"), false,
+{ 7, "ImperialCivil", "ft", false, true, QT_TRANSLATE_NOOP("UnitsApi", "Imperial for Civil Eng (ft, lb, mph)"), false,
     {
-        { "Angle"    , {{ 0   , "toDMS"           , 0              }}}  // <== !
+        { "Length"   , {{ 0   , "ft"    , ft                       }}},
+        { "Area"     , {{ 0   , "ft^2"  , ft * ft                  }}},
+        { "Volume"   , {{ 0   , "ft^3"  , ft * ft * ft             }}},
+        { "Mass"     , {{ 0   , "lb"    , lb                       }}},
+        { "Pressure" , {{ 0   , "psi"   , psi                      }}},
+        { "Stiffness", {{ 0   , "lbf/in", lbf / in * 1000          }}},
+        { "Velocity" , {{ 0   , "mph"   , mi / 3600                }}},
+        { "Angle"    , {{ 0   , "toDMS" , 0                        }}}  // <== !
     }
 };
 
@@ -654,27 +664,27 @@ inline std::size_t greatestCommonDenominator(const std::size_t a, const std::siz
 /**
  * double -> [feet'] [inches" [+ fraction]"], e.g.: 3' 4" + 3/8"
  */
-inline std::string toFractional(const double value)
+inline std::string toFractional(const double value, std::size_t denominator)
 {
     constexpr auto inchPerFoot {12};
     constexpr auto mmPerInch {25.4};
 
     auto numFractUnits =
-        static_cast<std::size_t>(std::round(std::abs(value) / mmPerInch * defDenominator));
+        static_cast<std::size_t>(std::round(std::abs(value) / mmPerInch * denominator));
     if (numFractUnits == 0) {
         return "0";
     }
 
     const auto feet =
-        static_cast<std::size_t>(std::floor(numFractUnits / (inchPerFoot * defDenominator)));
-    numFractUnits -= inchPerFoot * defDenominator * feet;
+        static_cast<std::size_t>(std::floor(numFractUnits / (inchPerFoot * denominator)));
+    numFractUnits -= inchPerFoot * denominator * feet;
 
-    const auto inches = static_cast<std::size_t>(std::floor(numFractUnits / defDenominator));
-    const std::size_t fractNumerator = numFractUnits - (defDenominator * inches);
+    const auto inches = static_cast<std::size_t>(std::floor(numFractUnits / denominator));
+    std::size_t numerator = numFractUnits - (denominator * inches);
 
-    const std::size_t common_denom = greatestCommonDenominator(fractNumerator, defDenominator);
-    const std::size_t numerator = fractNumerator / common_denom;
-    const std::size_t denominator = defDenominator / common_denom;
+    const std::size_t common_denom = greatestCommonDenominator(numerator, denominator);
+    numerator /= common_denom;
+    denominator /= common_denom;
 
     bool addSpace {false};
     std::string result;
@@ -737,33 +747,40 @@ inline std::string toDms(const double value)
  */
 
 // clang-format off
-inline const std::map<std::string, std::function<std::string(double, double&, std::string&)>> specials
+inline const std::map<std::string, std::function<std::string(double, std::size_t, std::size_t, double&, std::string&)>> specials
 {
     {
-        { "toDMS"        , [](const double val, double& factor, std::string& unitString) {
+        { "toDMS"        , [](const double val, [[maybe_unused]] const std::size_t precision, [[maybe_unused]] const std::size_t denominator,
+                              double& factor, std::string& unitString) {
             factor = 1.0;
             unitString = "deg";
             return toDms(val);
         }},
-        { "toFractional" , [](const double val, double& factor, std::string& unitString) {
+        { "toFractional" , [](const double val, [[maybe_unused]] const std::size_t precision, const std::size_t denominator,
+                              double& factor, std::string& unitString) {
             factor = 25.4;
             unitString = "in";
-            return toFractional(val);
+            return toFractional(val, denominator);
         }}
     }
 };  // clang-format on
 
-inline std::string
-runSpecial(const std::string& name, const double value, double& factor, std::string& unitString)
+inline std::string runSpecial(const std::string& name,
+                              const double value,
+                              const std::size_t precision,
+                              const std::size_t denominator,
+                              double& factor,
+                              std::string& unitString)
 {
-    return specials.contains(name) ? specials.at(name)(value, factor, unitString) : "";
+    return specials.contains(name)
+        ? specials.at(name)(value, precision, denominator, factor, unitString)
+        : "";
 }
 
 
 /**
  * Build data pack
  */
-
 inline const UnitsSchemasDataPack unitSchemasDataPack {schemaSpecs, defDecimals, defDenominator};
 
 
