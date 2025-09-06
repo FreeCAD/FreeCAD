@@ -36,6 +36,7 @@
 # include <QString>
 # include <QSvgRenderer>
 # include <QStyleOption>
+# include <QDirIterator>
 #endif
 
 #include <string>
@@ -109,9 +110,20 @@ void BitmapFactoryInst::restoreCustomPaths()
 {
     Base::Reference<ParameterGrp> group = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Bitmaps");
-    std::vector<std::string> paths = group->GetASCIIs("CustomPath");
-    for (auto & path : paths) {
-        addPath(QString::fromUtf8(path.c_str()));
+    int index = 0;
+    while (true) {
+        std::stringstream key;
+        key << "CustomPath" << index;
+        std::string path = group->GetASCII(key.str().c_str());
+        if (path.empty())
+            break;
+        std::stringstream enabledKey;
+        enabledKey << "CustomPathEnabled" << index;
+        bool enabled = group->GetBool(enabledKey.str().c_str(), true);
+        if (enabled) {
+            addPath(QString::fromUtf8(path.c_str()));
+        }
+        ++index;
     }
 }
 
@@ -145,21 +157,16 @@ QStringList BitmapFactoryInst::getPaths() const
 
 QStringList BitmapFactoryInst::findIconFiles() const
 {
-    QStringList files, filters;
-    QList<QByteArray> formats = QImageReader::supportedImageFormats();
-    for (QList<QByteArray>::iterator it = formats.begin(); it != formats.end(); ++it)
-        filters << QStringLiteral("*.%1").arg(QString::fromLatin1(*it).toLower());
-
+    QStringList files;
     QStringList paths = QDir::searchPaths(QStringLiteral("icons"));
     paths.removeDuplicates();
-    for (QStringList::Iterator pt = paths.begin(); pt != paths.end(); ++pt) {
-        QDir d(*pt);
-        d.setNameFilters(filters);
-        QFileInfoList fi = d.entryInfoList();
-        for (QFileInfoList::iterator it = fi.begin(); it != fi.end(); ++it)
-            files << it->absoluteFilePath();
+    for (const QString& path : paths) {
+        QDir d(path);
+        QFileInfoList fi = d.entryInfoList(QDir::Files | QDir::NoSymLinks);
+        for (const QFileInfo& info : fi) {
+            files << info.absoluteFilePath();
+        }
     }
-
     files.removeDuplicates();
     return files;
 }
@@ -248,21 +255,25 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
     QString fn = QString::fromUtf8(name);
     loadPixmap(fn, icon);
 
-    // try to find it in the 'icons' search paths
+    // Extension-agnostic search in icon paths
     if (icon.isNull()) {
-        QList<QByteArray> formats = QImageReader::supportedImageFormats();
-        formats.prepend("SVG"); // check first for SVG to use special import mechanism
-
-        QString fileName = QStringLiteral("icons:") + fn;
-        if (!loadPixmap(fileName, icon)) {
-            // Go through supported file formats
-            for (QList<QByteArray>::iterator fm = formats.begin(); fm != formats.end(); ++fm) {
-                QString path = QStringLiteral("%1.%2").arg(fileName,
-                    QString::fromLatin1((*fm).toLower().constData()));
-                if (loadPixmap(path, icon)) {
-                    break;
+        QStringList paths = QDir::searchPaths(QStringLiteral("icons"));
+        paths.removeDuplicates();
+        bool found = false;
+        QString fnBase = QFileInfo(fn).completeBaseName();
+        for (const QString& path : paths) {
+            QDirIterator it(path, QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+            while (it.hasNext()) {
+                it.next();
+                const QFileInfo& info = it.fileInfo();
+                if (info.completeBaseName() == fn || info.completeBaseName() == fnBase) {
+                    if (loadPixmap(info.absoluteFilePath(), icon)) {
+                        found = true;
+                        break;
+                    }
                 }
             }
+            if (found) break;
         }
     }
 
@@ -279,7 +290,7 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSizeF& size,
                                          const ColorMap& colorMapping) const
 {
     static qreal dpr = getMaximumDPR();
-    
+
     // If an absolute path is given
     QPixmap icon;
     QString iconPath;
