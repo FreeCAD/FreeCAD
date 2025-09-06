@@ -21,25 +21,25 @@
 # ***************************************************************************
 import FreeCAD
 import Path
-from ...shape import ToolBitShapeFillet
+from ...shape import ToolBitShapeRadius
 from ..mixins import RotaryToolBitMixin, CuttingToolMixin
 from .base import ToolBit
 
 
-class ToolBitFillet(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
-    SHAPE_CLASS = ToolBitShapeFillet
+class ToolBitRadius(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
+    SHAPE_CLASS = ToolBitShapeRadius
 
-    def __init__(self, shape: ToolBitShapeFillet, id: str | None = None):
-        Path.Log.track(f"ToolBitFillet __init__ called with shape: {shape}, id: {id}")
+    def __init__(self, shape: ToolBitShapeRadius, id: str | None = None):
+        Path.Log.track(f"ToolBitRadius __init__ called with shape: {shape}, id: {id}")
         super().__init__(shape, id=id)
         CuttingToolMixin.__init__(self, self.obj)
 
     @property
     def summary(self) -> str:
-        radius = self.get_property_str("FilletRadius", "?")
+        radius = self.get_property_str("CuttingRadius", "?", precision=3)
         flutes = self.get_property("Flutes")
-        diameter = self.get_property_str("ShankDiameter", "?")
+        diameter = self.get_property_str("ShankDiameter", "?", precision=3)
 
         return FreeCAD.Qt.translate(
-            "CAM", f"R{radius} fillet bit, {diameter} shank, {flutes}-flute"
+            "CAM", f"R{radius} radius mill, {diameter} shank, {flutes}-flute"
         )

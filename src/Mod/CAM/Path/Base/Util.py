@@ -78,10 +78,10 @@ def setProperty(obj, prop, value):
     """setProperty(obj, prop, value) ... set the property value of obj's property defined by its canonical name."""
     o, attr, name = _getProperty(obj, prop)
     if attr is not None and isinstance(value, str):
-        if isinstance(attr, int):
-            value = int(value, 0)
-        elif isinstance(attr, bool):
+        if isinstance(attr, bool):
             value = value.lower() in ["true", "1", "yes", "ok"]
+        elif isinstance(attr, int):
+            value = int(value, 0)
     if o and name:
         setattr(o, name, value)
 

@@ -1,3 +1,4 @@
+import yaml
 import json
 from typing import Type, cast
 import FreeCAD
@@ -6,6 +7,7 @@ from Path.Tool.toolbit import ToolBit, ToolBitEndmill
 from Path.Tool.toolbit.serializers import (
     FCTBSerializer,
     CamoticsToolBitSerializer,
+    YamlToolBitSerializer,
 )
 from Path.Tool.assets.asset import Asset
 from Path.Tool.assets.serializer import AssetSerializer
@@ -132,3 +134,72 @@ class TestFCTBSerializer(_BaseToolBitSerializerTestCase):
         self.assertEqual(deserialized_bit.get_shape_name(), "Endmill")
         self.assertEqual(str(deserialized_bit.get_diameter()), "4.12 mm")
         self.assertEqual(str(deserialized_bit.get_length()), "15.0 mm")
+
+
+class TestYamlToolBitSerializer(_BaseToolBitSerializerTestCase):
+    serializer_class = YamlToolBitSerializer
+
+    def test_serialize(self):
+        super().test_serialize()
+        serialized_data = self.serializer_class.serialize(self.test_tool_bit)
+        # YAML specific assertions
+        data = yaml.safe_load(serialized_data.decode("utf-8"))
+        self.assertEqual(data.get("id"), "5mm_Endmill")
+        self.assertEqual(data.get("name"), "Test Tool")
+        self.assertEqual(data.get("shape"), "endmill.fcstd")
+        self.assertEqual(data.get("shape-type"), "Endmill")
+        self.assertEqual(data.get("parameter", {}).get("Diameter"), "4.12 mm")
+        self.assertEqual(data.get("parameter", {}).get("Length"), "15.00 mm")
+
+    def test_extract_dependencies(self):
+        """Test dependency extraction for YAML."""
+        yaml_data = (
+            b"name: Test Tool\n"
+            b"shape: endmill\n"
+            b"shape-type: Endmill\n"
+            b"parameter:\n"
+            b"  Diameter: 4.12 mm\n"
+            b"  Length: 15.0 mm\n"
+            b"attribute: {}\n"
+        )
+        dependencies = self.serializer_class.extract_dependencies(yaml_data)
+        self.assertIsInstance(dependencies, list)
+        self.assertEqual(len(dependencies), 1)
+        self.assertEqual(dependencies[0], AssetUri.build("toolbitshape", "endmill"))
+
+    def test_deserialize(self):
+        # Create a known serialized data string based on the YAML format
+        yaml_data = (
+            b"id: TestID\n"
+            b"name: Test Tool\n"
+            b"shape: endmill\n"
+            b"shape-type: Endmill\n"
+            b"parameter:\n"
+            b"  Diameter: 4.12 mm\n"
+            b"  Length: 15.0 mm\n"
+            b"attribute: {}\n"
+        )
+        # Create a ToolBitShapeEndmill instance for 'endmill'
+        shape = ToolBitShapeEndmill("endmill")
+
+        # Create the dependencies dictionary with the shape instance
+        dependencies: Mapping[AssetUri, Asset] = {AssetUri.build("toolbitshape", "endmill"): shape}
+
+        # Provide dummy id and dependencies for deserialization test
+        deserialized_bit = cast(
+            ToolBitEndmill,
+            self.serializer_class.deserialize(yaml_data, "TestID", dependencies=dependencies),
+        )
+        self.assertIsInstance(deserialized_bit, ToolBit)
+        self.assertEqual(deserialized_bit.id, "TestID")
+        self.assertEqual(deserialized_bit.label, "Test Tool")
+        self.assertEqual(deserialized_bit.get_shape_name(), "Endmill")
+        self.assertEqual(str(deserialized_bit.get_diameter()), "4.12 mm")
+        self.assertEqual(str(deserialized_bit.get_length()), "15.0 mm")
+
+        # Test with ID argument.
+        deserialized_bit = cast(
+            ToolBitEndmill,
+            self.serializer_class.deserialize(yaml_data, id="test_id", dependencies=dependencies),
+        )
+        self.assertEqual(deserialized_bit.id, "test_id")
