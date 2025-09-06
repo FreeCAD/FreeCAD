@@ -239,9 +239,10 @@ class ExtremaAction(argparse.Action):
 class Snapmaker(Path.Post.Processor.PostProcessor):
     """FreeCAD postprocessor targeting Snapmaker machines with CNC capabilities"""
 
-    def __init__(self, job) -> None:
+    def __init__(self, job, operations) -> None:
         super().__init__(
             job=job,
+            operations=operations,
             tooltip=translate("CAM", "Snapmaker post processor"),
             tooltipargs=[""],
             units="Metric",
@@ -851,4 +852,4 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
 
 if __name__ == "__main__":
-    Snapmaker(None).visible_parser.format_help()
+    Snapmaker(None, None).visible_parser.format_help()
