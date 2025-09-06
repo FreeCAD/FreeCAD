@@ -995,6 +995,8 @@ class ViewProviderJoint:
         return None
 
     def doubleClicked(self, vobj):
+        App.closeActiveTransaction(True)  # Close the auto-transaction
+
         task = Gui.Control.activeTaskDialog()
         if task:
             task.reject()
@@ -1303,9 +1305,16 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             layout.setSpacing(0)
         layout.addWidget(self.jForm)
 
+        self.isolate_modes = ["Transparent", "Wireframe", "Hidden", "Disabled"]
+        self.jForm.isolateType.addItems(
+            [translate("Assembly", mode) for mode in self.isolate_modes]
+        )
+        self.jForm.isolateType.currentIndexChanged.connect(self.updateIsolation)
+
         if self.activeType == "Part":
             self.jForm.setWindowTitle("Match parts")
             self.jForm.jointType.hide()
+            self.jForm.isolateType.hide()
 
         self.jForm.jointType.addItems(TranslatedJointTypes)
 
@@ -1667,6 +1676,35 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         UtilsAssembly.openEditingPlacementDialog(self.joint, "Offset2")
         self.updateOffsetWidgets()
 
+    def updateIsolation(self):
+        """Isolates the two selected components or clears isolation."""
+
+        if self.activeType != "Assembly":
+            return
+
+        isolate_mode = self.jForm.isolateType.currentIndex()
+
+        assembly_vobj = self.assembly.ViewObject
+
+        # If "Disabled" is selected, clear any active isolation and stop.
+        if isolate_mode == 3:
+            assembly_vobj.clearIsolate()
+            return
+
+        if len(self.refs) == 2:
+            try:
+                # Use a set to handle cases where both refs point to the same object
+                parts_to_isolate = {
+                    UtilsAssembly.getObject(self.refs[0]),
+                    UtilsAssembly.getObject(self.refs[1]),
+                }
+                assembly_vobj.isolateComponents(list(parts_to_isolate), isolate_mode)
+            except Exception as e:
+                App.Console.PrintWarning(f"Could not update isolation: {e}\n")
+                assembly_vobj.clearIsolate()
+        else:
+            assembly_vobj.clearIsolate()
+
     def updateTaskboxFromJoint(self):
         self.refs = []
         self.presel_ref = None
@@ -1698,6 +1736,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         self.jForm.jointType.setCurrentIndex(JointTypes.index(self.joint.JointType))
         self.updateJointList()
+        self.updateIsolation()
 
     def updateJoint(self):
         # First we build the listwidget
@@ -1705,6 +1744,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         # Then we pass the new list to the joint object
         self.joint.Proxy.setJointConnectors(self.joint, self.refs)
+
+        self.updateIsolation()
 
     def updateJointList(self):
         self.jForm.featureList.clear()
