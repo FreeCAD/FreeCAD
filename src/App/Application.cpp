@@ -649,8 +649,8 @@ struct DocTiming {
 class DocOpenGuard {
 public:
     bool &flag;
-    boost::signals2::signal<void ()> &signal;
-    DocOpenGuard(bool &f, boost::signals2::signal<void ()> &s)
+    fastsignals::signal<void ()> &signal;
+    DocOpenGuard(bool &f, fastsignals::signal<void ()> &s)
         :flag(f),signal(s)
     {
         flag = true;

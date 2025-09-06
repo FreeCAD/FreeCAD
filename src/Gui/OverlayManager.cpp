@@ -191,7 +191,7 @@ struct OverlayInfo {
     Qt::DockWidgetArea dockArea;
     std::unordered_map<QDockWidget*, OverlayInfo*> &overlayMap;
     ParameterGrp::handle hGrp;
-    boost::signals2::scoped_connection conn;
+    fastsignals::scoped_connection conn;
 
     OverlayInfo(QWidget *parent,
                 const char *name,
