@@ -723,6 +723,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Separator";
 #endif
     *tool << "Std_Measure"
+          << "Std_ClarifySelection"
           << "Std_QuickMeasure"
           << "Std_UnitsCalculator"
           << "Separator"
@@ -737,8 +738,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Separator"
           << "Std_ProjectUtil"
           << "Std_DlgParameter"
-          << "Std_DlgCustomize"
-          << "Std_ClarifySelection";
+          << "Std_DlgCustomize";
 
     // Macro
     auto macro = new MenuItem( menuBar );
