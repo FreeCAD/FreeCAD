@@ -1714,7 +1714,6 @@ void Hole::onChanged(const App::Property* prop)
             if (isNotDimension) {
                 // if through all, set the depth accordingly
                 Depth.setValue(getThroughAllLength());
-                ThreadDepth.setValue(getThroughAllLength());
             }
             updateThreadDepthParam();
         }
