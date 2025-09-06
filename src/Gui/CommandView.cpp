@@ -419,7 +419,8 @@ void StdCmdFreezeViews::onSaveViews()
 {
     // Save the views to an XML file
     QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save frozen views"),
-                                             QString(), QStringLiteral("%1 (*.cam)").arg(QObject::tr("Frozen views")));
+                                             QString(),
+                                             QStringList(QStringLiteral("%1 (*.cam)").arg(QObject::tr("Frozen views"))));
     if (fn.isEmpty())
         return;
     QFile file(fn);
@@ -469,7 +470,8 @@ void StdCmdFreezeViews::onRestoreViews()
 
     // Restore the views from an XML file
     QString fn = FileDialog::getOpenFileName(getMainWindow(), QObject::tr("Restore frozen views"),
-                                             QString(), QStringLiteral("%1 (*.cam)").arg(QObject::tr("Frozen views")));
+                                             QString(),
+                                             QStringList(QStringLiteral("%1 (*.cam)").arg(QObject::tr("Frozen views"))));
     if (fn.isEmpty())
         return;
     QFile file(fn);
