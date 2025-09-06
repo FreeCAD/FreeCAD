@@ -728,7 +728,7 @@ struct SubMenuInfo {
     std::map<std::string, std::map<std::string, ElementInfo>> items;
 };
 
-PickData SelectionMenu::doPick(const std::vector<PickData> &sels)
+PickData SelectionMenu::doPick(const std::vector<PickData> &sels, const QPoint& pos)
 {
     clear();
     Gui::Selection().setClarifySelectionActive(true);
@@ -739,7 +739,7 @@ PickData SelectionMenu::doPick(const std::vector<PickData> &sels)
     processSelections(currentSelections, menus);
     buildMenuStructure(menus, currentSelections);
 
-    QAction* picked = this->exec(QCursor::pos());
+    QAction* picked = this->exec(pos);
     return onPicked(picked, currentSelections);
 }
 

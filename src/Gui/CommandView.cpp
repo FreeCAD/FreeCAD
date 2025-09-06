@@ -3990,16 +3990,22 @@ void StdCmdClarifySelection::activated(int iMsg)
         return;
     }
 
-    // Get cursor position in the viewer
-    QPoint pos = QCursor::pos();
     QWidget* widget = viewer->getGLWidget();
     if (!widget) {
         return;
     }
 
-    QPoint local = widget->mapFromGlobal(pos);
-    SbVec2s point(static_cast<short>(local.x()),
-                  static_cast<short>(widget->height() - local.y() - 1));
+    // check if we have a stored right-click position (context menu) or should use current cursor position (keyboard shortcut)
+    SbVec2s point;
+    auto& storedPosition = viewer->navigationStyle()->getRightClickPosition();
+    if (storedPosition.has_value()) {
+        point = storedPosition.value();
+    } else {
+        QPoint pos = QCursor::pos();
+        QPoint local = widget->mapFromGlobal(pos);
+        point = SbVec2s(static_cast<short>(local.x()),
+                        static_cast<short>(widget->height() - local.y() - 1));
+    }
     
     // Use ray picking to get all objects under cursor
     SoRayPickAction pickAction(viewer->getSoRenderManager()->getViewportRegion());
@@ -4063,9 +4069,16 @@ void StdCmdClarifySelection::activated(int iMsg)
         return;
     }
     
+    QPoint globalPos;
+    if (storedPosition.has_value()) {
+        globalPos = widget->mapToGlobal(QPoint(point[0], widget->height() - point[1] - 1));
+    } else {
+        globalPos = QCursor::pos();
+    }
+
     // Use SelectionMenu to display and handle the pick menu
     SelectionMenu contextMenu(widget);
-    contextMenu.doPick(selections);
+    contextMenu.doPick(selections, globalPos);
 }
 
 bool StdCmdClarifySelection::isActive()

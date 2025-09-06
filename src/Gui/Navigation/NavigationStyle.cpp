@@ -1024,6 +1024,11 @@ SbVec3f NavigationStyle::getRotationCenter(SbBool& found) const
     return this->rotationCenter;
 }
 
+std::optional<SbVec2s>& NavigationStyle::getRightClickPosition()
+{
+    return rightClickPosition;
+}
+
 void NavigationStyle::setRotationCenter(const SbVec3f& cnt)
 {
     this->rotationCenter = cnt;
@@ -1964,7 +1969,9 @@ void NavigationStyle::applyNavigationStyleChange(QAction* selectedAction)
 
 void NavigationStyle::openPopupMenu(const SbVec2s& position)
 {
-    Q_UNUSED(position);
+    // store the right-click position for potential use by Clarify Selection
+    rightClickPosition = position;
+
     // ask workbenches and view provider, ...
     MenuItem view;
     Gui::Application::Instance->setupContextMenu("View", &view);
@@ -2040,6 +2047,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     // handle navigation style change if user selected a navigation style option
     if (selectedAction && isNavigationStyleAction(selectedAction, navMenuGroup)) {
         applyNavigationStyleChange(selectedAction);
+        rightClickPosition.reset();
         return;
     }
 
@@ -2050,6 +2058,8 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
             cmd->invoke(0); // required placeholder value - we don't use group command
         }
     }
+
+    rightClickPosition.reset();
 }
 
 PyObject* NavigationStyle::getPyObject()

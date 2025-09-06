@@ -42,6 +42,7 @@
 #include <Gui/Namespace.h>
 #include <FCGlobal.h>
 #include <memory>
+#include <optional>
 
 // forward declarations
 class SoEvent;
@@ -196,6 +197,8 @@ public:
 
     SbVec3f getRotationCenter(SbBool&) const;
 
+    std::optional<SbVec2s>& getRightClickPosition();
+
     PyObject *getPyObject() override;
 
 protected:
@@ -297,6 +300,10 @@ protected:
     //@}
 
     Py::SmartPtr pythonObject;
+
+    // store the position where right-click occurred just before
+    // the menu popped up
+    std::optional<SbVec2s> rightClickPosition;
 
 private:
     friend class NavigationAnimator;

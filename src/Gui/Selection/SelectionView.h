@@ -140,11 +140,12 @@ public:
     /** Populate and show the menu for picking geometry elements.
      *
      * @param sels: a list of geometry element references
+     * @param pos: optional position to show the menu (defaults to current cursor position)
      * @return Return the picked geometry reference
      *
      * The menu will be divided into submenus that are grouped by element type.
      */
-    PickData doPick(const std::vector<PickData> &sels);
+    PickData doPick(const std::vector<PickData> &sels, const QPoint& pos = QCursor::pos());
 
 public Q_SLOTS:
     void onHover(QAction *);
