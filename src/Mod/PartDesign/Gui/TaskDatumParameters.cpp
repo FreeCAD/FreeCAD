@@ -115,6 +115,8 @@ bool TaskDlgDatumParameters::accept() {
     //see what to do with external references
     //check the prerequisites for the selected objects
     //the user has to decide which option we should take if external references are used
+
+/*
     bool extReference = false;
     for (App::DocumentObject* obj : pcDatum->AttachmentSupport.getValues()) {
         if (pcActiveBody && !pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj))
@@ -155,6 +157,7 @@ bool TaskDlgDatumParameters::accept() {
             pcDatum->AttachmentSupport.setValues(copyObjects, copySubValues);
         }
     }
+*/
 
     if (!PartGui::TaskDlgAttacher::accept())
         return false;

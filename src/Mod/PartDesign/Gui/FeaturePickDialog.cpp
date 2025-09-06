@@ -43,7 +43,7 @@ const QString FeaturePickDialog::getFeatureStatusString(const featureStatus st)
         case invalidShape: return tr("Invalid shape");
         case noWire: return tr("No wire in sketch");
         case isUsed: return tr("Sketch already used by other feature");
-        case otherBody: return tr("Sketch belongs to another body feature");
+        case otherBody: return tr("Valid");
         case basePlane: return tr("Base plane");
         case afterTip: return tr("Feature is located after the tip of the body");
     }
@@ -58,15 +58,12 @@ FeaturePickDialog::FeaturePickDialog(std::vector<App::DocumentObject*>& objects,
     ui->setupUi(this);
 
     connect(ui->checkReverse, SIGNAL(toggled(bool)), this, SLOT(onCheckReverse(bool)));
-    connect(ui->checkOtherBody, SIGNAL(toggled(bool)), this, SLOT(onCheckOtherBody(bool)));
     connect(ui->checkOtherFeature, SIGNAL(toggled(bool)), this, SLOT(onCheckOtherFeature(bool)));
     connect(ui->radioIndependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->radioDependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->radioXRef, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
 
     ui->checkReverse->setChecked(false);
-    ui->checkOtherBody->setChecked(true);
-    ui->checkOtherBody->setEnabled(false); // TODO: implement
     ui->checkOtherFeature->setChecked(false);
     ui->checkOtherFeature->setEnabled(false); // TODO: implement
     ui->radioIndependent->setChecked(true);
@@ -104,7 +101,7 @@ void FeaturePickDialog::updateList()
             case invalidShape: item->setFlags(Qt::NoItemFlags); break;
             case noWire: item->setFlags(Qt::NoItemFlags); break;
             case isUsed: item->setFlags(ui->checkOtherFeature->isChecked() ? Qt::ItemIsSelectable | Qt::ItemIsEnabled : Qt::NoItemFlags); break;
-            case otherBody: item->setFlags(ui->checkOtherBody->isChecked() ? Qt::ItemIsSelectable | Qt::ItemIsEnabled : Qt::NoItemFlags); break;
+            case otherBody: item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled); break;
             case basePlane: item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled); break;
             case afterTip: item->setFlags(Qt::NoItemFlags); break;
         }
@@ -127,15 +124,6 @@ void FeaturePickDialog::onCheckOtherFeature(bool checked)
     updateList();
 }
 
-void FeaturePickDialog::onCheckOtherBody(bool checked)
-{
-    ui->radioIndependent->setEnabled(checked);
-    // TODO: Not implemented yet
-    //ui->radioDependent->setEnabled(checked);
-    //ui->radioXRef->setEnabled(checked);
-
-    updateList();
-}
 
 void FeaturePickDialog::onUpdate(bool)
 {

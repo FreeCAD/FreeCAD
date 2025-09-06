@@ -571,6 +571,7 @@ std::vector<App::DocumentObject*> collectMovableDependencies(std::vector<App::Do
     return result;
 }
 
+/*
 void relinkToOrigin(App::DocumentObject* feat, PartDesign::Body* targetbody)
 {
     if (feat->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
@@ -598,5 +599,6 @@ void relinkToOrigin(App::DocumentObject* feat, PartDesign::Body* targetbody)
         }
     }
 }
+*/
 
 } /* PartDesignGui */

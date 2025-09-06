@@ -23,7 +23,12 @@
 
 #include "PreCompiled.h"
 
+#include "PartDesignMigration.h"
+#include <App/Application.h>
+#include <unordered_set>
+
 #include <App/Document.h>
+#include <App/Part.h>
 #include <App/VarSet.h>
 #include <App/Origin.h>
 #include <Base/Placement.h>
@@ -44,6 +49,8 @@ PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 Body::Body()
 {
     ADD_PROPERTY_TYPE(AllowCompound, (false), "Experimental", App::Prop_None, "Allow multiple solids in Body (experimental)");
+    Placement.setStatus(App::Property::Hidden, true);
+    Placement.setStatus(App::Property::ReadOnly, true);
 
     _GroupTouched.setStatus(App::Property::Output, true);
 }
@@ -279,7 +286,6 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
     }
 
     //ensure that all origin links are ok
-    relinkToOrigin(feature);
 
     std::vector<App::DocumentObject*> model = Group.getValues();
     std::vector<App::DocumentObject*>::iterator insertInto;
@@ -485,13 +491,6 @@ void Body::onChanged(const App::Property* prop) {
     Part::BodyBase::onChanged(prop);
 }
 
-void Body::setupObject () {
-    Part::BodyBase::setupObject ();
-}
-
-void Body::unsetupObject () {
-    Part::BodyBase::unsetupObject ();
-}
 
 PyObject *Body::getPyObject()
 {
@@ -568,20 +567,41 @@ App::DocumentObject *Body::getSubObject(const char *subname,
 #endif
 }
 
+namespace {
+    static std::unordered_set<App::Document*> s_migrationHooked;
+}
+
 void Body::onDocumentRestored()
 {
-    for(auto obj : Group.getValues()) {
-        if(obj->isDerivedFrom<PartDesign::Feature>())
+    for (auto obj : Group.getValues()) {
+        if (obj->isDerivedFrom<PartDesign::Feature>())
             static_cast<PartDesign::Feature*>(obj)->_Body.setValue(this);
     }
-    _GroupTouched.setStatus(App::Property::Output,true);
+    _GroupTouched.setStatus(App::Property::Output, true);
 
     // trigger ViewProviderBody::copyColorsfromTip
     if (Tip.getValue())
         Tip.touch();
 
+    // Hide & lock Body.Placement in the UI
+    Placement.setStatus(App::Property::Hidden, true);
+    Placement.setStatus(App::Property::ReadOnly, true);
+
+    // --- NEW: defer migration until the *document* has fully finished restoring
+    App::Document* doc = getDocument();
+    if (doc && s_migrationHooked.insert(doc).second) {
+        App::GetApplication().signalFinishRestoreDocument.connect(
+            [doc](const App::Document& done) {
+                if (&done != doc) return; // only run for this document
+                PartDesign::migrateLegacyBodyPlacements(const_cast<App::Document*>(&done));
+            }
+        );
+    }
+    // --- END NEW
+
     DocumentObject::onDocumentRestored();
 }
+
 
 // a body is solid if it has features that are solid
 bool Body::isSolid()
@@ -593,3 +613,27 @@ bool Body::isSolid()
     }
     return false;
 }
+
+namespace {
+    // Use the official API to find the owning Part (or nullptr if top-level)
+    static const App::Origin* findGlobalOrigin(const App::Document* doc) {
+        if (!doc) return nullptr;
+        if (auto* obj = doc->getObject("Global_Origin"))
+            if (auto* og = dynamic_cast<App::Origin*>(obj)) return og;
+        return nullptr;
+    }
+}
+
+App::Origin* Body::getOrigin() const
+{
+    if (auto* part = App::Part::getPartOfObject(this))
+        return part->getOrigin();
+
+    if (auto* og = findGlobalOrigin(getDocument()))
+        return const_cast<App::Origin*>(og);
+
+    // New docs with top-level Body will prompt to pick a plane/face — that's intended.
+    return nullptr;
+}
+
+

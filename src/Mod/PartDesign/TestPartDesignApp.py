@@ -59,3 +59,6 @@ from PartDesignTests.TestSketch import TestSketch
 
 # Topological naming problem
 from PartDesignTests.TestTopologicalNamingProblem import TestTopologicalNamingProblem
+
+# Migration to Body without Origin
+from PartDesignTests.TestLegacyMigration import TestLegacyMigration

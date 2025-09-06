@@ -468,7 +468,7 @@ private:
     void tryFindBasePlanes()
     {
         auto* origin = activeBody->getOrigin();
-        for (auto plane : origin->planes()) {
+        if(origin) for (auto plane : origin->planes()) {
             planes.push_back (plane);
             status.push_back(PartDesignGui::TaskFeaturePick::basePlane);
             validPlaneCount++;

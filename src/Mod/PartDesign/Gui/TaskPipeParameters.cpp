@@ -451,6 +451,7 @@ bool TaskPipeParameters::accept()
     // auto pcActivePart = PartDesignGui::getPartFor (pcActiveBody, false);
     std::vector<App::DocumentObject*> copies;
 
+/*
     bool extReference = false;
     App::DocumentObject* spine = pipe->Spine.getValue();
     App::DocumentObject* auxSpine = pipe->AuxiliarySpine.getValue();
@@ -533,7 +534,7 @@ bool TaskPipeParameters::accept()
             pipe->Sections.setSubListValues(subSets);
         }
     }
-
+*/
     try {
         setVisibilityOfSpineAndProfile();
 
