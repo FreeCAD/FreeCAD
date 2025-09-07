@@ -282,10 +282,10 @@ class CommandPathPostSelected(CommandPathPost):
         FreeCAD.ActiveDocument.openTransaction("Post Process the Selected operations")
 
         selected = FreeCADGui.Selection.getSelection()
-        self.job = PathUtils.findParentJob(selected[0])
+        job = PathUtils.findParentJob(selected[0])
         opCandidates = [op for op in selected if hasattr(op, "Path") and "Job" not in op.Name]
         operations = []
-        if opCandidates and self.job.Operations.Group != opCandidates:
+        if opCandidates and job.Operations.Group != opCandidates:
             msgBox = QtGui.QMessageBox()
             msgBox.setText("<p align='center'>What needs to be exported?</p>")
             msgBox.setWindowTitle("Post Process")
@@ -301,7 +301,7 @@ class CommandPathPostSelected(CommandPathPost):
                 )
                 operations = opCandidates
 
-        postprocessor_name = _resolve_post_processor_name(self.job)
+        postprocessor_name = _resolve_post_processor_name(job)
         Path.Log.debug(f"Post Processor: {postprocessor_name}")
 
         if not postprocessor_name:
@@ -309,9 +309,7 @@ class CommandPathPostSelected(CommandPathPost):
             return
 
         # get a postprocessor
-        postprocessor = PostProcessorFactory.get_post_processor(
-            self.job, postprocessor_name, operations
-        )
+        postprocessor = PostProcessorFactory.get_post_processor(job, postprocessor_name, operations)
 
         post_data = postprocessor.export()
         # None is returned if there was an error during argument processing
@@ -321,7 +319,7 @@ class CommandPathPostSelected(CommandPathPost):
             return
 
         policy = Path.Preferences.defaultOutputPolicy()
-        generator = FilenameGenerator(job=self.job)
+        generator = FilenameGenerator(job=job)
         generated_filename = generator.generate_filenames()
 
         for item in post_data:
