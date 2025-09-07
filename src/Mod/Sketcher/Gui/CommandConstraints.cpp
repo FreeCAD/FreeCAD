@@ -1125,6 +1125,30 @@ public:
         }
     }
 
+    // Special case for Sketcher_ConstrainAngle to generate context-aware hints
+    if (commandName == "Sketcher_ConstrainAngle") {
+        if (selectionStep == 0) {
+            return {{QObject::tr("%1 pick edge or first point"), {Gui::InputHint::UserInput::MouseLeft}}};
+        } else if (selectionStep == 1 && !selSeq.empty()) {
+            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+                // Point + Edge + Edge workflow
+                return {{QObject::tr("%1 pick first edge"), {Gui::InputHint::UserInput::MouseLeft}}};
+            } else {
+                // Could be Line + Line or Edge + Point + Edge workflow
+                // Tell user what they can actually pick next
+                return {{QObject::tr("%1 pick second line or point"), {Gui::InputHint::UserInput::MouseLeft}}};
+            }
+        } else if (selectionStep == 2 && !selSeq.empty()) {
+            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+                // Point + Edge + Edge workflow
+                return {{QObject::tr("%1 pick second edge"), {Gui::InputHint::UserInput::MouseLeft}}};
+            } else if (isVertex(selSeq[1].GeoId, selSeq[1].PosId)) {
+                // Edge + Point + Edge workflow
+                return {{QObject::tr("%1 pick second edge"), {Gui::InputHint::UserInput::MouseLeft}}};
+            }
+        }
+    }
+
     // For everything else, use the static table
     return lookupConstraintHints(commandName, selectionStep);
 }
@@ -1237,11 +1261,15 @@ private:
             // Angle
             {.commandName = "Sketcher_ConstrainAngle",
             .selectionStep = 0,
-            .hints = {{QObject::tr("%1 pick line"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            .hints = {{QObject::tr("%1 pick edge or first point"), {Gui::InputHint::UserInput::MouseLeft}}}},
 
             {.commandName = "Sketcher_ConstrainAngle",
             .selectionStep = 1,
-            .hints = {{QObject::tr("%1 pick second line"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            .hints = {{QObject::tr("%1 pick second element"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            {.commandName = "Sketcher_ConstrainAngle",
+            .selectionStep = 2,
+            .hints = {{QObject::tr("%1 pick second edge"), {Gui::InputHint::UserInput::MouseLeft}}}},
 
             // Symmetry
             {.commandName = "Sketcher_ConstrainSymmetric",
