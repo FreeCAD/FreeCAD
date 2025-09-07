@@ -156,7 +156,7 @@ class TestArch(TestArchBase.TestArchBase):
         App.ActiveDocument.recompute()
 
         # Create a TD page
-        tpath = os.path.join(App.getResourceDir(),"Mod","TechDraw","Templates","A3_Landscape_blank.svg")
+        tpath = os.path.join(App.getResourceDir(),"Mod","TechDraw","Templates","ISO","A3_Landscape_blank.svg")
         page = App.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
         template = App.ActiveDocument.addObject("TechDraw::DrawSVGTemplate", "Template")
         template.Template = tpath
