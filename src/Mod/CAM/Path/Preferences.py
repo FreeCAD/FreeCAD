@@ -178,7 +178,7 @@ def allEnabledPostProcessors(include=None):
 
 def defaultPostProcessor():
     pref = preferences()
-    return pref.GetString(PostProcessorDefault, "")
+    return pref.GetString(PostProcessorDefault, "grbl")
 
 
 def defaultPostProcessorArgs():
