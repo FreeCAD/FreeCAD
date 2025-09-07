@@ -1149,6 +1149,72 @@ public:
         }
     }
 
+    // Special case for Sketcher_ConstrainPerpendicular to generate context-aware hints
+    if (commandName == "Sketcher_ConstrainPerpendicular") {
+        if (selectionStep == 0) {
+            return {{QObject::tr("%1 pick edge or first point"), {Gui::InputHint::UserInput::MouseLeft}}};
+        } else if (selectionStep == 1 && !selSeq.empty()) {
+            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+                // Point + Edge + Edge workflow
+                return {{QObject::tr("%1 pick first edge"), {Gui::InputHint::UserInput::MouseLeft}}};
+            } else {
+                // Edge + Edge workflow
+                return {{QObject::tr("%1 pick second edge"), {Gui::InputHint::UserInput::MouseLeft}}};
+            }
+        } else if (selectionStep == 2 && !selSeq.empty()) {
+            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+                // Point + Edge + Edge workflow
+                return {{QObject::tr("%1 pick second edge"), {Gui::InputHint::UserInput::MouseLeft}}};
+            }
+        }
+    }
+
+    // Special case for Sketcher_ConstrainTangent to generate context-aware hints
+    if (commandName == "Sketcher_ConstrainTangent") {
+        if (selectionStep == 0) {
+            return {{QObject::tr("%1 pick edge or first point"), {Gui::InputHint::UserInput::MouseLeft}}};
+        } else if (selectionStep == 1 && !selSeq.empty()) {
+            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+                // Point + Edge + Edge workflow
+                return {{QObject::tr("%1 pick first edge"), {Gui::InputHint::UserInput::MouseLeft}}};
+            } else {
+                // Could be Edge + Edge or Edge + Point + Edge workflow
+                return {{QObject::tr("%1 pick second edge or point"), {Gui::InputHint::UserInput::MouseLeft}}};
+            }
+        } else if (selectionStep == 2 && !selSeq.empty()) {
+            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+                // Point + Edge + Edge workflow
+                return {{QObject::tr("%1 pick second edge"), {Gui::InputHint::UserInput::MouseLeft}}};
+            } else if (isVertex(selSeq[1].GeoId, selSeq[1].PosId)) {
+                // Edge + Point + Edge workflow
+                return {{QObject::tr("%1 pick second edge"), {Gui::InputHint::UserInput::MouseLeft}}};
+            }
+        }
+    }
+
+    // Special case for Sketcher_ConstrainSymmetric to generate context-aware hints
+    if (commandName == "Sketcher_ConstrainSymmetric") {
+        if (selectionStep == 0) {
+            return {{QObject::tr("%1 pick edge or first point"), {Gui::InputHint::UserInput::MouseLeft}}};
+        } else if (selectionStep == 1 && !selSeq.empty()) {
+            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+                // Point + Edge + Point or Point + Point + Edge/Point workflow
+                return {{QObject::tr("%1 pick edge or second point"), {Gui::InputHint::UserInput::MouseLeft}}};
+            } else {
+                // Edge + Point workflow
+                return {{QObject::tr("%1 pick symmetry point"), {Gui::InputHint::UserInput::MouseLeft}}};
+            }
+        } else if (selectionStep == 2 && !selSeq.empty()) {
+            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId) && isVertex(selSeq[1].GeoId, selSeq[1].PosId)) {
+                // Point + Point + Edge/Point workflow
+                return {{QObject::tr("%1 pick symmetry line or point"), {Gui::InputHint::UserInput::MouseLeft}}};
+            } else if (isVertex(selSeq[0].GeoId, selSeq[0].PosId) && !isVertex(selSeq[1].GeoId, selSeq[1].PosId)) {
+                // Point + Edge + Point workflow
+                return {{QObject::tr("%1 pick symmetry point"), {Gui::InputHint::UserInput::MouseLeft}}};
+            }
+        }
+    }
+
     // For everything else, use the static table
     return lookupConstraintHints(commandName, selectionStep);
 }
