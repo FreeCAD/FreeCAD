@@ -106,7 +106,7 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
         if (!selectState && !isUnderMouse()) {
             // hide everything
             for (auto& child : childItems()) {
-                if (child->type() == UserType::QGIVertex) {
+                if (child->type() == UserType::QGIVertex || child->type() == UserType::QGICMark) {
                     child->hide();
                 }
             }
@@ -125,7 +125,8 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
                 // hide any non-selected vertices.
                 if (!isUnderMouse()) {
                     for (auto* child : childItems()) {
-                        if (child->type() == UserType::QGIVertex && !child->isSelected()) {
+                        if ((child->type() == UserType::QGIVertex || child->type() == UserType::QGICMark) &&
+                            !child->isSelected()) {
                             child->hide();
                         }
                     }
@@ -1321,7 +1322,7 @@ void QGIViewPart::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     QGIView::hoverEnterEvent(event);
 
     for (auto& child : childItems()) {
-        if (child->type() == UserType::QGIVertex) {
+        if (child->type() == UserType::QGIVertex || child->type() == UserType::QGICMark) {
             child->show();
         }
     }
@@ -1334,7 +1335,7 @@ void QGIViewPart::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     QGIView::hoverLeaveEvent(event);
 
     for (auto& child : childItems()) {
-        if (child->type() == UserType::QGIVertex &&
+        if ((child->type() == UserType::QGIVertex || child->type() == UserType::QGICMark) &&
             !child->isSelected()) {
             child->hide();
         }
