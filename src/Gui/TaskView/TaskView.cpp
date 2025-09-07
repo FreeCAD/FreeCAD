@@ -489,14 +489,14 @@ void TaskView::adjustMinimumSizeHint()
 
 QSize TaskView::minimumSizeHint() const
 {
-    QSize ms = QStackedWidget::minimumSizeHint();
+    QSize ms = currentWidget()->minimumSizeHint();
     int spacing = 0;
 
     if (QLayout* layout = currentWidget()->layout()) {
         spacing = 2 * layout->spacing();
     }
 
-    ms.setWidth(currentWidget()->minimumSizeHint().width() + spacing);
+    ms.setWidth(ms.width() + spacing);
     return ms;
 }
 
