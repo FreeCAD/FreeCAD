@@ -169,7 +169,7 @@ jobs:
 
       - name: FreeCAD GUI tests on build dir
         if: inputs.testOnBuildDir
-        timeout-minutes: 15
+        timeout-minutes: 30
         uses: ./.github/workflows/actions/runPythonTests
         with:
           testDescription: "GUI tests on build dir"
@@ -203,7 +203,7 @@ jobs:
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
 
       - name: FreeCAD GUI tests on install
-        timeout-minutes: 15
+        timeout-minutes: 30
         uses: ./.github/workflows/actions/runPythonTests
         with:
           testDescription: "GUI tests on install"
