@@ -131,18 +131,66 @@ class PostProcessor:
     """Base Class.  All non-legacy postprocessors should inherit from this class."""
 
     def __init__(self, job, operations, tooltip, tooltipargs, units, *args, **kwargs):
+        self._job = job
+        self._operations = []
         self._tooltip = tooltip
         self._tooltipargs = tooltipargs
         self._units = units
-        self._job = job
         self._args = args
         self._kwargs = kwargs
         self.reinitialize()
 
         if operations:
+            # process only selected operations
             self._operations = operations
         elif getattr(job, "Operations", None):
+            # get all operations from 'Operations' group
             self._operations = job.Operations.Group
+
+        self.processArrays()
+
+    # Process operations from arrays
+    def processArrays(self):
+        # prepare list for extend operations from all Arrays in Job
+        arraysOperations = []
+        if self._job.OrderOutputBy == "Tool":
+            # prepare order to minimize tool changes
+            for op in self._operations:
+                if (
+                    op.Name.startswith("Array")
+                    and op.Active
+                    and hasattr(op, "ArrayGroup")
+                    and len(op.ArrayGroup)
+                ):
+                    arraysOperations.append(op)
+
+            for arrayOp in reversed(arraysOperations):
+                self._operations.remove(arrayOp)
+                for opArray in reversed(arrayOp.ArrayGroup):
+                    for i, op in enumerate(self._operations):
+                        if op.Name == opArray.Base[-1]:
+                            self._operations.insert(i + 1, opArray)
+                            break
+        else:
+            # prepare order as is
+            for i, op in enumerate(self._operations):
+                if (
+                    op.Name.startswith("Array")
+                    and op.Active
+                    and hasattr(op, "ArrayGroup")
+                    and len(op.ArrayGroup)
+                ):
+                    arraysOperations.append({"index": i, "arrayGroup": op.ArrayGroup})
+
+            while arraysOperations:
+                for arrayOp in reversed(arraysOperations):
+                    # remove Array object from operations list
+                    self._operations.pop(arrayOp["index"])
+
+                    # insert all operations from Array group
+                    for op in reversed(arrayOp["arrayGroup"]):
+                        self._operations.insert(arrayOp["index"], op)
+                    arraysOperations.pop()
 
     @classmethod
     def exists(cls, processor):
