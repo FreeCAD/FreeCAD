@@ -2604,3 +2604,11 @@ PyObject *SelectionSingleton::sGetSelectionFromStack(PyObject * /*self*/, PyObje
     }
     PY_CATCH;
 }
+
+bool SelectionSingleton::isClarifySelectionActive() {
+    return clarifySelectionActive;
+}
+
+void SelectionSingleton::setClarifySelectionActive(bool active) {
+    clarifySelectionActive = active;
+}

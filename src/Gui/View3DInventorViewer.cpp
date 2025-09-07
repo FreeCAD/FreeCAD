@@ -106,6 +106,7 @@
 
 #include "View3DInventorViewer.h"
 #include "Application.h"
+#include "Command.h"
 #include "Document.h"
 #include "GLPainter.h"
 #include "Inventor/SoAxisCrossKit.h"
@@ -231,9 +232,26 @@ while the progress bar is running.
 class Gui::ViewerEventFilter : public QObject
 {
 public:
-    ViewerEventFilter() = default;
+    ViewerEventFilter() : longPressTimer(new QTimer(this)) {
+        longPressTimer->setSingleShot(true);
+        connect(longPressTimer, &QTimer::timeout, [this]() {
+            if (currentViewer) {
+                triggerClarifySelection();
+            }
+        });
+    }
     ~ViewerEventFilter() override = default;
 
+private:
+    void triggerClarifySelection() {
+        Gui::Command::runCommand(Gui::Command::Gui, "Gui.runCommand('Std_ClarifySelection')");
+    }
+
+    QTimer* longPressTimer;
+    QPoint pressPosition;
+    View3DInventorViewer* currentViewer = nullptr;
+
+public:
     bool eventFilter(QObject* obj, QEvent* event) override {
         // Bug #0000607: Some mice also support horizontal scrolling which however might
         // lead to some unwanted zooming when pressing the MMB for panning.
@@ -273,6 +291,37 @@ public:
             if (!motionEvent) {
                 Base::Console().log("invalid spaceball motion event\n");
                 return true;
+            }
+        }
+
+        if (event->type() == QEvent::MouseButtonPress) {
+            auto mouseEvent = static_cast<QMouseEvent*>(event);
+            if (mouseEvent->button() == Qt::LeftButton) {
+                currentViewer = static_cast<View3DInventorViewer*>(obj);
+                pressPosition = mouseEvent->pos();
+
+                int longPressTimeout = App::GetApplication()
+                                           .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                                           ->GetInt("LongPressTimeout", 1000);
+                longPressTimer->setInterval(longPressTimeout);
+                longPressTimer->start();
+            }
+        }
+        else if (event->type() == QEvent::MouseButtonRelease) {
+            auto mouseEvent = static_cast<QMouseEvent*>(event);
+            if (mouseEvent->button() == Qt::LeftButton) {
+                longPressTimer->stop();
+                currentViewer = nullptr;
+            }
+        }
+        else if (event->type() == QEvent::MouseMove) {
+            if (longPressTimer->isActive()) {
+                auto mouseEvent = static_cast<QMouseEvent*>(event);
+                // cancel long press if mouse moved too far (more than 5 pixels)
+                if ((mouseEvent->pos() - pressPosition).manhattanLength() > 5) {
+                    longPressTimer->stop();
+                    currentViewer = nullptr;
+                }
             }
         }
 
@@ -840,11 +889,10 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges & reason)
     }
 
     if(Reason.Type == SelectionChanges::RmvPreselect ||
-       Reason.Type == SelectionChanges::RmvPreselectSignal)
+       Reason.Type == SelectionChanges::RmvPreselectSignal ||
+       Reason.Type == SelectionChanges::SetPreselect)
     {
-        //Hint: do not create a tmp. instance of SelectionChanges
-        SelectionChanges selChanges(SelectionChanges::RmvPreselect);
-        SoFCPreselectionAction preselectionAction(selChanges);
+        SoFCPreselectionAction preselectionAction(Reason);
         preselectionAction.apply(pcViewProviderRoot);
     } else {
         SoFCSelectionAction selectionAction(Reason);
@@ -2474,7 +2522,15 @@ void View3DInventorViewer::renderScene()
 
         So3DAnnotation::render = true;
         glClear(GL_DEPTH_BUFFER_BIT);
-        glra->apply(SoDelayedAnnotationsElement::getDelayedPaths(state));
+        
+        // process delayed paths with priority support
+        if (Gui::Selection().isClarifySelectionActive()) {
+            Gui::SoDelayedAnnotationsElement::processDelayedPathsWithPriority(state, glra);
+        } else {
+            // standard processing for normal delayed annotations
+            glra->apply(Gui::SoDelayedAnnotationsElement::getDelayedPaths(state));
+        }
+        
         So3DAnnotation::render = false;
     }
     catch (const Base::MemoryException&) {
