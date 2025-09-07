@@ -1232,6 +1232,10 @@ private:
             .selectionStep = 0,
             .hints = {{QObject::tr("%1 pick circle or arc"), {Gui::InputHint::UserInput::MouseLeft}}}},
 
+            {.commandName = "Sketcher_ConstrainRadiam",
+            .selectionStep = 0,
+            .hints = {{QObject::tr("%1 pick circle or arc"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
             // Angle
             {.commandName = "Sketcher_ConstrainAngle",
             .selectionStep = 0,
