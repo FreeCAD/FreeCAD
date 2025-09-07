@@ -131,10 +131,11 @@ class PostProcessor:
     """Base Class.  All non-legacy postprocessors should inherit from this class."""
 
     def __init__(self, job, operations, tooltip, tooltipargs, units, *args, **kwargs):
+        self._job = job
+        self._operations = []
         self._tooltip = tooltip
         self._tooltipargs = tooltipargs
         self._units = units
-        self._job = job
         self._args = args
         self._kwargs = kwargs
         self.reinitialize()
@@ -143,6 +144,22 @@ class PostProcessor:
             self._operations = operations
         elif getattr(job, "Operations", None):
             self._operations = job.Operations.Group
+
+        # prepare list for extend operations from all Arrays in Job
+        arraysOperations = []
+        for i, op in enumerate(self._operations):
+            if op.Name.startswith("Array") and op.Active and hasattr(op, "Group") and len(op.Group):
+                arraysOperations.append({"index": i, "group": op.Group})
+
+        while arraysOperations:
+            for arrayOp in reversed(arraysOperations):
+                # remove Array object from operations list
+                self._operations.pop(arrayOp["index"])
+
+                # insert all operations from Array group
+                for op in reversed(arrayOp["group"]):
+                    self._operations.insert(arrayOp["index"], op)
+                arraysOperations.pop()
 
     @classmethod
     def exists(cls, processor):
