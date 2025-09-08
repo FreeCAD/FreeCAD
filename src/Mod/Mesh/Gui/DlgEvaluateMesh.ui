@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>371</width>
-    <height>702</height>
+    <height>715</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Evaluate &amp; Repair Mesh</string>
+   <string>Evaluate and Repair Mesh</string>
   </property>
   <property name="sizeGripEnabled">
    <bool>true</bool>
