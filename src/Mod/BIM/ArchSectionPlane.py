@@ -1209,12 +1209,20 @@ class SectionPlaneTaskPanel:
         # add / remove buttons
         self.addButton = QtGui.QPushButton(self.form)
         self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
-        self.grid.addWidget(self.addButton, 3, 0, 1, 1)
+        self.grid.addWidget(self.addButton, 2, 0, 1, 1)
 
         self.delButton = QtGui.QPushButton(self.form)
         self.delButton.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
-        self.grid.addWidget(self.delButton, 3, 1, 1, 1)
+        self.grid.addWidget(self.delButton, 2, 1, 1, 1)
         self.delButton.setEnabled(False)
+
+        # Cut View checkbox
+        self.cutViewCheckBox = QtGui.QCheckBox(self.form)
+        self.cutViewCheckBox.setObjectName("cutViewCheckBox")
+        self.grid.addWidget(self.cutViewCheckBox, 3, 0, 1, 2)
+        self.cutViewCheckBox.setText(QtGui.QApplication.translate("Arch", "Cut View", None))
+        self.cutViewCheckBox.setToolTip(QtGui.QApplication.translate("Arch", "Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model.", None))
+        QtCore.QObject.connect(self.cutViewCheckBox, QtCore.SIGNAL("stateChanged(int)"), self.toggleCutView)
 
         # rotate / resize buttons
         self.rlabel = QtGui.QLabel(self.form)
@@ -1269,6 +1277,8 @@ class SectionPlaneTaskPanel:
                 item.setText(0,o.Label)
                 item.setToolTip(0,o.Name)
                 item.setIcon(0,self.getIcon(o))
+            if self.obj.ViewObject and hasattr(self.obj.ViewObject, "CutView"):
+                self.cutViewCheckBox.setChecked(self.obj.ViewObject.CutView)
         self.retranslateUi(self.form)
 
     def addElement(self):
@@ -1346,6 +1356,10 @@ class SectionPlaneTaskPanel:
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
+
+    def toggleCutView(self, state):
+        if self.obj and self.obj.ViewObject and hasattr(self.obj.ViewObject, "CutView"):
+            self.obj.ViewObject.CutView = (state == QtCore.Qt.Checked)
 
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Section plane settings", None))
