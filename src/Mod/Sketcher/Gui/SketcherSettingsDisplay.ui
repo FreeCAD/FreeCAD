@@ -48,9 +48,6 @@
            <property name="value">
             <number>15</number>
            </property>
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
            <property name="prefEntry" stdset="0">
             <cstring>ConstraintSymbolSize</cstring>
            </property>
