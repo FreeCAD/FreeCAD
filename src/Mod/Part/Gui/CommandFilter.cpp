@@ -182,7 +182,7 @@ PartCmdVertexSelection::PartCmdVertexSelection()
 void PartCmdVertexSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui,"Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Vertex')");
+    doCommand(Command::Gui,"Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Vertex SELECT App::Link SUBELEMENT Vertex')");
 }
 
 
@@ -207,7 +207,7 @@ PartCmdEdgeSelection::PartCmdEdgeSelection()
 void PartCmdEdgeSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui,"Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Edge')");
+    doCommand(Command::Gui,"Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Edge SELECT App::Link SUBELEMENT Edge')");
 }
 
 
@@ -232,7 +232,7 @@ PartCmdFaceSelection::PartCmdFaceSelection()
 void PartCmdFaceSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui,"Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Face')");
+    doCommand(Command::Gui,"Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Face SELECT App::Link SUBELEMENT Face')");
 }
 
 
