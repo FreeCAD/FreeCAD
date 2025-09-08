@@ -149,11 +149,19 @@ bool SoFCSelectionContextEx::setColors(
     return true;
 }
 
-uint32_t SoFCSelectionContextEx::packColor(const Base::Color &c, bool &hasTransparency) {
-    float trans = std::max(trans0,c.a);
-    if(trans>0)
+uint32_t SoFCSelectionContextEx::packColor(const Base::Color& c, bool& hasTransparency)
+{
+    // Convert Base::Color's alpha (opacity) to transparency for Coin3D.
+    float transparency = 1.0f - c.a;
+
+    // Apply any external transparency override (e.g., from picking).
+    float final_transparency = std::max(trans0, transparency);
+
+    if (final_transparency > 0.0f) {
         hasTransparency = true;
-    return SbColor(c.r,c.g,c.b).getPackedValue(trans);
+    }
+
+    return SbColor(c.r, c.g, c.b).getPackedValue(final_transparency);
 }
 
 bool SoFCSelectionContextEx::applyColor(int idx, std::vector<uint32_t> &packedColors, bool &hasTransparency) {
