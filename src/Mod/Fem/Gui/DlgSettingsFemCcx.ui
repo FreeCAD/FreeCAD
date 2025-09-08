@@ -302,16 +302,16 @@
          </spacer>
         </item>
         <item row="5" column="0">
-         <widget class="QLabel" name="l_ccx_initial_time_step">
+         <widget class="QLabel" name="l_ccx_initial_time_increment">
           <property name="text">
-           <string>Initial time step</string>
+           <string>Initial time increment</string>
           </property>
          </widget>
         </item>
         <item row="6" column="0">
-         <widget class="QLabel" name="l_ccx_analysis_time">
+         <widget class="QLabel" name="l_ccx_time_period">
           <property name="text">
-           <string>End time</string>
+           <string>Time period</string>
           </property>
          </widget>
         </item>
@@ -427,38 +427,10 @@
          </widget>
         </item>
         <item row="8" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_maximum_time_step">
+         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_maximum_time_increment">
           <property name="contextMenuPolicy">
            <enum>Qt::DefaultContextMenu</enum>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="suffix">
-           <string notr="true"> s</string>
-          </property>
-          <property name="decimals">
-           <number>9</number>
-          </property>
-          <property name="minimum">
-           <double>0.000000001000000</double>
-          </property>
-          <property name="singleStep">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="value">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AnalysisTimeMaximumStep</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Ccx</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_analysis_time">
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
@@ -478,7 +450,35 @@
            <double>1.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>AnalysisTime</cstring>
+           <cstring>TimeMaximumIncrement</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Ccx</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_time_period">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="suffix">
+           <string notr="true"> s</string>
+          </property>
+          <property name="decimals">
+           <number>9</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000001000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>TimePeriod</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Fem/Ccx</cstring>
@@ -516,16 +516,16 @@
          </spacer>
         </item>
         <item row="4" column="0">
-         <widget class="QLabel" name="l_ccx_max_iterations">
+         <widget class="QLabel" name="l_ccx_max_increments">
           <property name="text">
-           <string>Maximum number of iterations</string>
+           <string>Maximum number of increments</string>
           </property>
          </widget>
         </item>
         <item row="7" column="0">
-         <widget class="QLabel" name="l_ccx_minimum_time_step">
+         <widget class="QLabel" name="l_ccx_minimum_time_increment">
           <property name="text">
-           <string>Minimum time step</string>
+           <string>Minimum time increment</string>
           </property>
          </widget>
         </item>
@@ -543,7 +543,7 @@
          </spacer>
         </item>
         <item row="7" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_minimum_time_step">
+         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_minimum_time_increment">
           <property name="contextMenuPolicy">
            <enum>Qt::DefaultContextMenu</enum>
           </property>
@@ -566,7 +566,7 @@
            <double>0.000010000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>AnalysisTimeMinimumStep</cstring>
+           <cstring>TimeMinimumIncrement</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Fem/Ccx</cstring>
@@ -590,7 +590,7 @@
          </widget>
         </item>
         <item row="5" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_initial_time_step">
+         <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_initial_time_increment">
           <property name="contextMenuPolicy">
            <enum>Qt::DefaultContextMenu</enum>
           </property>
@@ -610,10 +610,10 @@
            <double>0.010000000000000</double>
           </property>
           <property name="value">
-           <double>0.010000000000000</double>
+           <double>1.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>AnalysisTimeInitialStep</cstring>
+           <cstring>TimeInitialIncrement</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Fem/Ccx</cstring>
@@ -628,7 +628,7 @@
          </widget>
         </item>
         <item row="4" column="2">
-         <widget class="Gui::PrefSpinBox" name="sb_ccx_max_iterations">
+         <widget class="Gui::PrefSpinBox" name="sb_ccx_max_increments">
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
@@ -645,7 +645,7 @@
            <number>2000</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>AnalysisMaxIterations</cstring>
+           <cstring>StepMaxIncrements</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Fem/Ccx</cstring>
@@ -653,9 +653,9 @@
          </widget>
         </item>
         <item row="8" column="0">
-         <widget class="QLabel" name="l_ccx_maximum_time_step">
+         <widget class="QLabel" name="l_ccx_maximum_time_increment">
           <property name="text">
-           <string>Maximum time step</string>
+           <string>Maximum time increment</string>
           </property>
          </widget>
         </item>
