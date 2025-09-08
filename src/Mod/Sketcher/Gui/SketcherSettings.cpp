@@ -432,7 +432,6 @@ SketcherSettingsDisplay::~SketcherSettingsDisplay()
 void SketcherSettingsDisplay::saveSettings()
 {
     ui->EditSketcherFontSize->onSave();
-    ui->checkBoxUseConstraintSymbolSize->onSave();
     ui->ConstraintSymbolSize->onSave();
     ui->viewScalingFactor->onSave();
     ui->SegmentsPerGeometry->onSave();
@@ -455,7 +454,6 @@ void SketcherSettingsDisplay::saveSettings()
 void SketcherSettingsDisplay::loadSettings()
 {
     ui->EditSketcherFontSize->onRestore();
-    ui->checkBoxUseConstraintSymbolSize->onRestore();
     ui->ConstraintSymbolSize->onRestore();
     ui->viewScalingFactor->onRestore();
     ui->SegmentsPerGeometry->onRestore();
