@@ -535,15 +535,34 @@ void SimDisplay::UpdateCameraProjection(const SoCamera& camera)
     const auto perspective = dynamic_cast<const SoPerspectiveCamera*>(&camera);
     const auto orthographic = dynamic_cast<const SoOrthographicCamera*>(&camera);
 
-    if (perspective) {
-        heightAngle = perspective->heightAngle.getValue();
-    }
-    else if (orthographic) {
-        height = orthographic->height.getValue();
-    }
+    // TODO: We can't use the values from the camera here because the dummy viewer never actually
+    // renders the scene and therefore the nearDistance and farDistance of the camera are never
+    // updated. Figure out a way to update those values without rendering the scene.
+
+#if 0
 
     const float nearDistance = camera.nearDistance.getValue();
     const float farDistance = camera.farDistance.getValue();
+
+#else
+
+    float nearDistance;
+    float farDistance;
+
+#endif
+
+    if (perspective) {
+        heightAngle = perspective->heightAngle.getValue();
+
+        nearDistance = mMaxStockDimension * 0.001f;
+        farDistance = mMaxStockDimension * 10.0f;
+    }
+    else if (orthographic) {
+        height = orthographic->height.getValue();
+
+        nearDistance = -mMaxStockDimension * 10.0f;
+        farDistance = mMaxStockDimension * 10.0f;
+    }
 
     if ((bool)perspective == mCameraPerspective && heightAngle == mCameraHeightAngle
         && height == mCameraHeight && nearDistance == mCameraNearDistance
@@ -580,31 +599,25 @@ void SimDisplay::UpdateProjectionMatrix()
 
     const float aspect = (float)mWidth / mHeight;
 
-    // TODO: We can't use the values from the camera here because the dummy viewer never actually
-    // renders the scene and therefore the nearDistance and farDistance of the camera are never
-    // updated. Figure out a way to update those values without rendering the scene.
-
-#if 0
-
-    const float near = mCameraNearDistance;
-    const float far = mCameraFarDistance;
-
-#else
-
-    const float near = mMaxStockDimension * 0.001f;
-    const float far = mMaxStockDimension * 10.0f;
-
-#endif
-
     mat4x4 projmat;
 
     if (mCameraPerspective) {
-        mat4x4_perspective(projmat, mCameraHeightAngle, aspect, near, far);
+        mat4x4_perspective(projmat,
+                           mCameraHeightAngle,
+                           aspect,
+                           mCameraNearDistance,
+                           mCameraFarDistance);
     }
     else {
         const float h = mCameraHeight;
         const float w = mCameraHeight * aspect;
-        mat4x4_ortho(projmat, -w / 2, w / 2, -h / 2, h / 2, near, far);
+        mat4x4_ortho(projmat,
+                     -w / 2,
+                     w / 2,
+                     -h / 2,
+                     h / 2,
+                     mCameraNearDistance,
+                     mCameraFarDistance);
     }
 
     shader3D.Activate();
