@@ -50,7 +50,7 @@ enum class DeleteOption
     NoFlag = 0,
     IncludeInternalGeometry =
         1,  // Only makes sense when deleting a geometry - (default for deleting a single geometry)
-    UpdateGeometry = 2,  // Should the solver update the geomtries ? (default) - has no effect if
+    UpdateGeometry = 2,  // Should the solver update the geometries ? (default) - has no effect if
                          // noRecompute is false
     NoSolve = 4,         // Can be useful if the call will do many operations and a single solve
 };

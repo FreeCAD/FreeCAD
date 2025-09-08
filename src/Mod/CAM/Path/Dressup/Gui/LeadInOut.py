@@ -781,7 +781,7 @@ class ObjectDressup:
             else:
                 lead[-1].param["Z"] = op.StartDepth.Value
 
-        # append travel moves to cleareance height after finish all profiles
+        # append travel moves to clearance height after finish all profiles
         if last and obj.StyleOut != "No Retract":
             lead += self.getTravelEnd(obj)
 
@@ -857,7 +857,7 @@ class ObjectDressup:
 
         return None
 
-    # Increse travel length from end
+    # Increase travel length from end
     def getOvertravelOut(self, obj, source, length, start, end):
         startPoint = source[start].positionBegin()
         endPoint = source[end].positionEnd()
@@ -987,7 +987,7 @@ class ObjectDressup:
         # we just use a flag and set it to false afterwards. To find the last
         # cutting move we need to search the list in reverse order.
 
-        first = True  # prepare first move at cleareance height
+        first = True  # prepare first move at clearance height
         firstMillIndex = None  # Index start mill instruction for one profile
         lastCuttingMoveIndex = self.findLastCuttingMoveIndex(source)
         inInstrPrev = None
