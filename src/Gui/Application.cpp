@@ -38,6 +38,7 @@
 #include <QScreen>
 #include <QStatusBar>
 #include <QStyle>
+#include <QSurfaceFormat>
 #include <QTextStream>
 #include <QTimer>
 #include <QWindow>
@@ -2379,6 +2380,12 @@ void runEventLoop(GUISingleApplication& mainApp)
 void Application::runApplication()
 {
     StartupProcess::setupApplication();
+
+    QSurfaceFormat fmt;
+    fmt.setRenderableType(QSurfaceFormat::OpenGL);
+    fmt.setProfile(QSurfaceFormat::CompatibilityProfile);
+    fmt.setOption(QSurfaceFormat::DeprecatedFunctions, true);
+    QSurfaceFormat::setDefaultFormat(fmt);
 
     // A new QApplication
     Base::Console().log("Init: Creating Gui::Application and QApplication\n");
