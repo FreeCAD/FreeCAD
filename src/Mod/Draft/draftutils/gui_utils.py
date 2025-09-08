@@ -123,7 +123,7 @@ def autogroup(obj):
     if Gui.draftToolBar.autogroup is not None:
         active_group = App.ActiveDocument.getObject(Gui.draftToolBar.autogroup)
         if active_group is None:
-            # Layer/group does not exixt (anymore)
+            # Layer/group does not exist (anymore)
             Gui.draftToolBar.setAutoGroup()  # Change active layer/group in Tray to None.
             return
         if obj in active_group.InListRecursive:
