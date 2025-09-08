@@ -249,8 +249,7 @@ FaceAppearances::FaceAppearances(ViewProviderPartExt* vp, QWidget* parent)
     d->ui->groupBox->setTitle(QString::fromUtf8(vp->getObject()->Label.getValue()));
     d->ui->buttonCustomAppearance->setDisabled(true);
 
-    FaceSelection* gate = new FaceSelection(d->vp->getObject());
-    Gui::Selection().addSelectionGate(gate);
+    setSelectionGate();
 
     //NOLINTBEGIN
     d->connectDelDoc = Gui::Application::Instance->signalDeleteDocument.connect(std::bind
@@ -295,20 +294,22 @@ void FaceAppearances::slotUndoDocument(const Gui::Document& Doc)
 {
     if (d->doc == &Doc) {
         d->doc->resetEdit();
-        Gui::Control().closeDialog();
+        Gui::Control().closeDialog(d->doc->getDocument());
     }
 }
 
 void FaceAppearances::slotDeleteDocument(const Gui::Document& Doc)
 {
-    if (d->doc == &Doc)
-        Gui::Control().closeDialog();
+    if (d->doc == &Doc) {
+        Gui::Control().closeDialog(d->doc->getDocument());
+    }
 }
 
 void FaceAppearances::slotDeleteObject(const Gui::ViewProvider& obj)
 {
-    if (d->vp == &obj)
-        Gui::Control().closeDialog();
+    if (d->vp == &obj) {
+        Gui::Control().closeDialog(d->doc->getDocument());
+    }
 }
 
 void FaceAppearances::onBoxSelectionToggled(bool checked)
@@ -478,6 +479,11 @@ void FaceAppearances::changeEvent(QEvent* e)
         d->ui->retranslateUi(this);
     }
 }
+void FaceAppearances::setSelectionGate()
+{
+    FaceSelection* gate = new FaceSelection(d->vp->getObject());
+    Gui::Selection().addSelectionGate(gate);
+}
 
 
 /* TRANSLATOR PartGui::TaskFaceAppearances */
@@ -507,6 +513,15 @@ bool TaskFaceAppearances::accept()
 bool TaskFaceAppearances::reject()
 {
     return widget->reject();
+}
+void TaskFaceAppearances::activate()
+{
+    widget->setSelectionGate();
+    widget->attachSelection();
+}
+void TaskFaceAppearances::deactivate()
+{
+    widget->detachSelection();
 }
 
 #include "moc_TaskFaceAppearances.cpp"

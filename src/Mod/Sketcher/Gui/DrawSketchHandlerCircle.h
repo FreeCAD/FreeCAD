@@ -202,18 +202,18 @@ private:
         try {
             createShape(false);
 
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch circle"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch circle"));
 
             commandAddShapeGeometryAndConstraints();
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to add circle"));
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(Base::RuntimeError,
                    QT_TRANSLATE_NOOP(
                        "Notifications",

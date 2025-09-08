@@ -56,10 +56,10 @@ bool calculateAngle(Sketcher::SketchObject* Obj,
 /// geom2 => any of an ellipse, an arc of ellipse, a circle, or an arc (of circle)
 /// geoId1 => geoid of the ellipse
 /// geoId2 => geoid of geom2
-/// NOTE: A command must be opened before calling this function, which this function
-/// commits or aborts as appropriate. The reason is for compatibility reasons with
-/// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
-void makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
+/// Returns true on success and false on failure
+/// the call site is responsible to create, commit and abort commands
+/// and recompute if it needs to
+bool makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
                                      const Part::GeomEllipse* ellipse,
                                      const Part::Geometry* geom2,
                                      int geoId1,
@@ -69,10 +69,10 @@ void makeTangentToEllipseviaNewPoint(Sketcher::SketchObject* Obj,
 /// geom2 => any of an arc of ellipse, a circle, or an arc (of circle)
 /// geoId1 => geoid of the arc of ellipse
 /// geoId2 => geoid of geom2
-/// NOTE: A command must be opened before calling this function, which this function
-/// commits or aborts as appropriate. The reason is for compatibility reasons with
-/// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
-void makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* Obj,
+/// Returns true on success and false on failure
+/// the call site is responsible to create, commit and abort commands
+/// and recompute if it needs to
+bool makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* Obj,
                                           const Part::GeomArcOfEllipse* aoe,
                                           const Part::Geometry* geom2,
                                           int geoId1,
@@ -83,10 +83,10 @@ void makeTangentToArcOfEllipseviaNewPoint(Sketcher::SketchObject* Obj,
 /// geom2 => any of an arc of hyperbola, an arc of ellipse, a circle, or an arc (of circle)
 /// geoId1 => geoid of the arc of hyperbola
 /// geoId2 => geoid of geom2
-/// NOTE: A command must be opened before calling this function, which this function
-/// commits or aborts as appropriate. The reason is for compatibility reasons with
-/// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp
-void makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject* Obj,
+/// Returns true on success and false on failure
+/// the call site is responsible to create, commit and abort commands
+/// and recompute if it needs to
+bool makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject* Obj,
                                             const Part::GeomArcOfHyperbola* aoh,
                                             const Part::Geometry* geom2,
                                             int geoId1,
@@ -98,11 +98,10 @@ void makeTangentToArcOfHyperbolaviaNewPoint(Sketcher::SketchObject* Obj,
 /// (of circle)
 /// geoId1 => geoid of the arc of parabola
 /// geoId2 => geoid of geom2
-/// NOTE: A command must
-/// be opened before calling this function, which this function commits or aborts as appropriate.
-/// The reason is for compatibility reasons with other code e.g. "Autoconstraints" in
-/// DrawSketchHandler.cpp
-void makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* Obj,
+/// Returns true on success and false on failure
+/// the call site is responsible to create, commit and abort commands
+/// and recompute if it needs to
+bool makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* Obj,
                                            const Part::GeomArcOfParabola* aop,
                                            const Part::Geometry* geom2,
                                            int geoId1,

@@ -644,9 +644,9 @@ private:
         // Called by dialog for "Cancel", or "OK" if accepter returns false
         std::string docname = documentOfBody->getName();
         auto rejectFunction = [docname]() {
-            Gui::Document* document = Gui::Application::Instance->getDocument(docname.c_str());
-            if (document)
+            if (Gui::Document* document = Gui::Application::Instance->getDocument(docname.c_str())) {
                 document->abortCommand();
+            }
         };
 
         //
@@ -671,6 +671,7 @@ private:
 
     void checkForShownDialog()
     {
+        App::Document* appdocument = guidocument->getDocument();
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
         if (dlg && !pickDlg) {
