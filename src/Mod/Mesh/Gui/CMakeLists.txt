@@ -15,11 +15,10 @@ set(MeshGui_LIBS
     FreeCADGui
 )
 
-generate_from_xml(ViewProviderMeshPy)
-generate_from_py_(ViewProviderMeshPy)
+generate_from_py(ViewProviderMesh)
 
 SET(MeshGui_XML_SRCS
-    ViewProviderMeshPy.xml
+    ViewProviderMesh.pyi
 )
 SOURCE_GROUP("XML" FILES ${MeshGui_XML_SRCS})
 

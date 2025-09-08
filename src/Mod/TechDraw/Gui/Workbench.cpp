@@ -94,9 +94,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *dimensions << "TechDraw_AreaDimension";
     *dimensions << "TechDraw_HorizontalExtentDimension";
     *dimensions << "TechDraw_VerticalExtentDimension";
-    // TechDraw_LinkDimension is DEPRECATED.  Use TechDraw_DimensionRepair instead.
-    *dimensions << "TechDraw_LinkDimension";
-    *dimensions << "TechDraw_LandmarkDimension";
     *dimensions << "TechDraw_DimensionRepair";
 
     // extension: attributes and modifications
@@ -343,7 +340,6 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     // *dims << "TechDraw_LinkDimension";
     *dims << "TechDraw_Balloon";
     *dims << "TechDraw_AxoLengthDimension";
-    *dims << "TechDraw_LandmarkDimension";
     *dims << "TechDraw_DimensionRepair";
 
     Gui::ToolBarItem* extattribs = new Gui::ToolBarItem(root);
@@ -441,8 +437,6 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *dims << "TechDraw_AngleDimension";
     *dims << "TechDraw_3PtAngleDimension";
     *dims << "TechDraw_ExtentGroup";
-    // TechDraw_LinkDimension is DEPRECATED.  Use TechDraw_DimensionRepair instead.
-    *dims << "TechDraw_LinkDimension";
     *dims << "TechDraw_Balloon";
     *dims << "TechDraw_AxoLengthDimension";
     *dims << "TechDraw_LandmarkDimension";
