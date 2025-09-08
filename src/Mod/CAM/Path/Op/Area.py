@@ -133,15 +133,24 @@ class ObjectOp(PathOp.ObjectOp):
 
         if hasattr(obj, "Side") and prop == "Base" and len(obj.Base) == 1:
             (base, subNames) = obj.Base[0]
-            bb = base.Shape.BoundBox  # parent boundbox
+
+            # find parent boundbox
+            # shape can be compound, so use list
+            if isinstance(base.Shape, Part.Compound):
+                bbs = [Part.Shape(shape).BoundBox for shape in base.Shape.SubShapes]
+            else:
+                bbs = [base.Shape.BoundBox]
 
             if "Face" in subNames[0]:
                 face = base.Shape.getElement(subNames[0])
                 fbb = face.BoundBox  # face boundbox
-                if bb.XLength == fbb.XLength and bb.YLength == fbb.YLength:
-                    obj.Side = "Outside"
-                else:
-                    obj.Side = "Inside"
+                for bb in bbs:
+                    if bb.isInside(fbb):
+                        if bb.XLength == fbb.XLength and bb.YLength == fbb.YLength:
+                            obj.Side = "Outside"
+                        else:
+                            obj.Side = "Inside"
+                        break
 
             elif "Edge" in subNames[0]:
                 edges = [
@@ -149,10 +158,15 @@ class ObjectOp(PathOp.ObjectOp):
                 ]
                 wire = Part.Wire(Part.__sortEdges__(edges))
                 wbb = wire.BoundBox  # wire boundbox
-                if not wire.isClosed() or (bb.XLength == wbb.XLength and bb.YLength == wbb.YLength):
-                    obj.Side = "Outside"
-                else:
-                    obj.Side = "Inside"
+                for bb in bbs:
+                    if bb.isInside(wbb):
+                        if not wire.isClosed() or (
+                            bb.XLength == wbb.XLength and bb.YLength == wbb.YLength
+                        ):
+                            obj.Side = "Outside"
+                        else:
+                            obj.Side = "Inside"
+                        break
 
         self.areaOpOnChanged(obj, prop)
 
