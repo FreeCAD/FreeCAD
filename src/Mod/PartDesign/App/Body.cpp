@@ -573,6 +573,21 @@ namespace {
     static std::unordered_set<App::Document*> s_migrationHooked;
 }
 
+bool anyLegacyBodyPlacement(App::Document* doc)
+{
+    if (!doc) false;
+
+    // --- gather bodies
+    std::vector<PartDesign::Body*> bodies;
+    for (auto* o : doc->getObjectsOfType(PartDesign::Body::getClassTypeId()))
+        if (auto* b = dynamic_cast<PartDesign::Body*>(o))
+            bodies.push_back(b);
+    if (bodies.empty()) false;
+    for (auto* b : bodies) {
+        if (!b->Placement.getValue().isIdentity()) return true;
+    }
+    return false;
+}
 
 void Body::onDocumentRestored()
 {
@@ -598,7 +613,7 @@ void Body::onDocumentRestored()
                 if (&done != doc) return;
     
                 // One-shot: run migration only if restore marked this document
-                if (!App::ConsumeDocNeedsPDMigration(&done)) return;
+                if (!App::ConsumeDocNeedsPDMigration(&done) && !anyLegacyBodyPlacement(doc)) return;
     
                 PartDesign::migrateLegacyBodyPlacements(const_cast<App::Document*>(&done));
             }
