@@ -27,6 +27,7 @@
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/elements/SoSubElement.h>
 #include <FCGlobal.h>
+#include <vector>
 
 namespace Gui
 {
@@ -43,6 +44,15 @@ protected:
     SoDelayedAnnotationsElement& operator=(const SoDelayedAnnotationsElement& other) = default;
     SoDelayedAnnotationsElement& operator=(SoDelayedAnnotationsElement&& other) noexcept = default;
 
+    // internal structure to hold path with it's rendering
+    // priority (lower renders first)
+    struct PriorityPath {
+        SoPath* path;
+        int priority;
+        
+        PriorityPath(SoPath* p, int pr = 0) : path(p), priority(pr) {}
+    };
+
 public:
     SoDelayedAnnotationsElement(const SoDelayedAnnotationsElement& other) = delete;
     SoDelayedAnnotationsElement(SoDelayedAnnotationsElement&& other) noexcept = delete;
@@ -51,8 +61,13 @@ public:
 
     static void initClass();
 
-    static void addDelayedPath(SoState* state, SoPath* path);
+    static void addDelayedPath(SoState* state, SoPath* path, int priority = 0);
+    
     static SoPathList getDelayedPaths(SoState* state);
+    
+    static void processDelayedPathsWithPriority(SoState* state, SoGLRenderAction* action);
+    
+    static bool isProcessingDelayedPaths;
 
     SbBool matches([[maybe_unused]] const SoElement* element) const override
     {
@@ -64,7 +79,8 @@ public:
         return nullptr;
     }
 
-    SoPathList paths;
+private:
+    std::vector<PriorityPath> paths;
 };
 
 /*! @brief 3D Annotation Node - Annotation with depth buffer

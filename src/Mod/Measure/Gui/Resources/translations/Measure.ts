@@ -64,7 +64,7 @@
     </message>
     <message>
         <location filename="../../QuickMeasure.cpp" line="216"/>
-        <location filename="../../QuickMeasure.cpp" line="230"/>
+        <location filename="../../QuickMeasure.cpp" line="250"/>
         <source>Nominal distance: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -80,39 +80,95 @@
     </message>
     <message>
         <location filename="../../QuickMeasure.cpp" line="227"/>
-        <source>Total length: %1</source>
+        <source>Area: %1, Diameter: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../QuickMeasure.cpp" line="233"/>
-        <source>Angle: %1, Total length: %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../QuickMeasure.cpp" line="237"/>
-        <source>Length: %1</source>
+        <location filename="../../QuickMeasure.cpp" line="235"/>
+        <source>Total area: %1, Axis distance: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../QuickMeasure.cpp" line="240"/>
+        <source>Total area: %1, Axis distance: %2, Axis angle: %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../QuickMeasure.cpp" line="247"/>
+        <source>Total length: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../QuickMeasure.cpp" line="253"/>
+        <source>Angle: %1, Total length: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../QuickMeasure.cpp" line="257"/>
+        <source>Length: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../QuickMeasure.cpp" line="260"/>
         <source>Radius: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../QuickMeasure.cpp" line="243"/>
+        <location filename="../../QuickMeasure.cpp" line="263"/>
+        <source>Diameter: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../QuickMeasure.cpp" line="266"/>
         <source>Distance: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../QuickMeasure.cpp" line="246"/>
+        <location filename="../../QuickMeasure.cpp" line="269"/>
         <source>Minimum distance: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../QuickMeasure.cpp" line="272"/>
+        <source>Minimum distance: %1, Axis distance: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../QuickMeasure.cpp" line="277"/>
+        <source>Minimum distance: %1, Center distance: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../QuickMeasure.cpp" line="284"/>
+        <location filename="../../QuickMeasure.cpp" line="296"/>
+        <source>Total length: %1, Center distance: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../QuickMeasure.cpp" line="289"/>
+        <source>Total length: %1, Center distance: %2, Axis angle: %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../QuickMeasure.cpp" line="302"/>
+        <source>Center surface distance: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../QuickMeasure.cpp" line="308"/>
+        <source>Center axis distance: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../QuickMeasure.cpp" line="311"/>
+        <source>Center axis distance: %1, Axis angle: %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../AppMeasureGui.cpp" line="108"/>
+        <location filename="../../AppMeasureGui.cpp" line="109"/>
         <source>Measure</source>
         <translation type="unfinished"></translation>
     </message>

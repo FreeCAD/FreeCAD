@@ -60,7 +60,10 @@ def write_constraint(f, femobj, inittemp_obj, ccxwriter):
 
         finaltemp = inittemp_obj.FinalTemperature.getValueAs("K")
 
-        f.write("*TEMPERATURE\n")
+        if inittemp_obj.EnableAmplitude:
+            f.write(f"*TEMPERATURE, AMPLITUDE={inittemp_obj.Name}\n")
+        else:
+            f.write("*TEMPERATURE\n")
         if inittemp_obj.References:
             f.write(f"{inittemp_obj.Name},{finaltemp}\n")
         else:

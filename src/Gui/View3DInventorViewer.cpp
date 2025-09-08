@@ -103,9 +103,11 @@
 #include <Base/Tools2D.h>
 #include <Quarter/devices/InputDevice.h>
 #include <Quarter/eventhandlers/EventFilter.h>
+#include <Gui/BitmapFactory.h>
 
 #include "View3DInventorViewer.h"
 #include "Application.h"
+#include "Command.h"
 #include "Document.h"
 #include "GLPainter.h"
 #include "Inventor/SoAxisCrossKit.h"
@@ -148,81 +150,6 @@ FC_LOG_LEVEL_INIT("3DViewer", true, true)
 
 using namespace Gui;
 
-// NOLINTBEGIN
-// clang-format off
-/*** zoom-style cursor ******/
-
-#define ZOOM_WIDTH 16
-#define ZOOM_HEIGHT 16
-#define ZOOM_BYTES ((ZOOM_WIDTH + 7) / 8) * ZOOM_HEIGHT
-#define ZOOM_HOT_X 5
-#define ZOOM_HOT_Y 7
-
-static unsigned char zoom_bitmap[ZOOM_BYTES] =
-{
-    0x00, 0x0f, 0x80, 0x1c, 0x40, 0x38, 0x20, 0x70,
-    0x90, 0xe4, 0xc0, 0xcc, 0xf0, 0xfc, 0x00, 0x0c,
-    0x00, 0x0c, 0xf0, 0xfc, 0xc0, 0xcc, 0x90, 0xe4,
-    0x20, 0x70, 0x40, 0x38, 0x80, 0x1c, 0x00, 0x0f
-};
-
-static unsigned char zoom_mask_bitmap[ZOOM_BYTES] =
-{
-    0x00, 0x0f, 0x80, 0x1f, 0xc0, 0x3f, 0xe0, 0x7f,
-    0xf0, 0xff, 0xf0, 0xff, 0xf0, 0xff, 0x00, 0x0f,
-    0x00, 0x0f, 0xf0, 0xff, 0xf0, 0xff, 0xf0, 0xff,
-    0xe0, 0x7f, 0xc0, 0x3f, 0x80, 0x1f, 0x00, 0x0f
-};
-
-/*** pan-style cursor *******/
-
-#define PAN_WIDTH 16
-#define PAN_HEIGHT 16
-#define PAN_BYTES ((PAN_WIDTH + 7) / 8) * PAN_HEIGHT
-#define PAN_HOT_X 7
-#define PAN_HOT_Y 7
-
-static unsigned char pan_bitmap[PAN_BYTES] =
-{
-    0xc0, 0x03, 0x60, 0x02, 0x20, 0x04, 0x10, 0x08,
-    0x68, 0x16, 0x54, 0x2a, 0x73, 0xce, 0x01, 0x80,
-    0x01, 0x80, 0x73, 0xce, 0x54, 0x2a, 0x68, 0x16,
-    0x10, 0x08, 0x20, 0x04, 0x40, 0x02, 0xc0, 0x03
-};
-
-static unsigned char pan_mask_bitmap[PAN_BYTES] =
-{
-    0xc0, 0x03, 0xe0, 0x03, 0xe0, 0x07, 0xf0, 0x0f,
-    0xe8, 0x17, 0xdc, 0x3b, 0xff, 0xff, 0xff, 0xff,
-    0xff, 0xff, 0xff, 0xff, 0xdc, 0x3b, 0xe8, 0x17,
-    0xf0, 0x0f, 0xe0, 0x07, 0xc0, 0x03, 0xc0, 0x03
-};
-
-/*** rotate-style cursor ****/
-
-#define ROTATE_WIDTH 16
-#define ROTATE_HEIGHT 16
-#define ROTATE_BYTES ((ROTATE_WIDTH + 7) / 8) * ROTATE_HEIGHT
-#define ROTATE_HOT_X 6
-#define ROTATE_HOT_Y 8
-
-static unsigned char rotate_bitmap[ROTATE_BYTES] = {
-    0xf0, 0xef, 0x18, 0xb8, 0x0c, 0x90, 0xe4, 0x83,
-    0x34, 0x86, 0x1c, 0x83, 0x00, 0x81, 0x00, 0xff,
-    0xff, 0x00, 0x81, 0x00, 0xc1, 0x38, 0x61, 0x2c,
-    0xc1, 0x27, 0x09, 0x30, 0x1d, 0x18, 0xf7, 0x0f
-};
-
-static unsigned char rotate_mask_bitmap[ROTATE_BYTES] = {
-    0xf0, 0xef, 0xf8, 0xff, 0xfc, 0xff, 0xfc, 0xff,
-    0x3c, 0xfe, 0x1c, 0xff, 0x00, 0xff, 0x00, 0xff,
-    0xff, 0x00, 0xff, 0x00, 0xff, 0x38, 0x7f, 0x3c,
-    0xff, 0x3f, 0xff, 0x3f, 0xff, 0x1f, 0xf7, 0x0f
-};
-// clang-format on
-// NOLINTEND
-
-
 /*!
 As ProgressBar has no chance to control the incoming Qt events of Quarter so we need to stop
 the event handling to prevent the scenegraph from being selected or deselected
@@ -231,9 +158,26 @@ while the progress bar is running.
 class Gui::ViewerEventFilter : public QObject
 {
 public:
-    ViewerEventFilter() = default;
+    ViewerEventFilter() : longPressTimer(new QTimer(this)) {
+        longPressTimer->setSingleShot(true);
+        connect(longPressTimer, &QTimer::timeout, [this]() {
+            if (currentViewer) {
+                triggerClarifySelection();
+            }
+        });
+    }
     ~ViewerEventFilter() override = default;
 
+private:
+    void triggerClarifySelection() {
+        Gui::Command::runCommand(Gui::Command::Gui, "Gui.runCommand('Std_ClarifySelection')");
+    }
+
+    QTimer* longPressTimer;
+    QPoint pressPosition;
+    View3DInventorViewer* currentViewer = nullptr;
+
+public:
     bool eventFilter(QObject* obj, QEvent* event) override {
         // Bug #0000607: Some mice also support horizontal scrolling which however might
         // lead to some unwanted zooming when pressing the MMB for panning.
@@ -273,6 +217,37 @@ public:
             if (!motionEvent) {
                 Base::Console().log("invalid spaceball motion event\n");
                 return true;
+            }
+        }
+
+        if (event->type() == QEvent::MouseButtonPress) {
+            auto mouseEvent = static_cast<QMouseEvent*>(event);
+            if (mouseEvent->button() == Qt::LeftButton) {
+                currentViewer = static_cast<View3DInventorViewer*>(obj);
+                pressPosition = mouseEvent->pos();
+
+                int longPressTimeout = App::GetApplication()
+                                           .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                                           ->GetInt("LongPressTimeout", 1000);
+                longPressTimer->setInterval(longPressTimeout);
+                longPressTimer->start();
+            }
+        }
+        else if (event->type() == QEvent::MouseButtonRelease) {
+            auto mouseEvent = static_cast<QMouseEvent*>(event);
+            if (mouseEvent->button() == Qt::LeftButton) {
+                longPressTimer->stop();
+                currentViewer = nullptr;
+            }
+        }
+        else if (event->type() == QEvent::MouseMove) {
+            if (longPressTimer->isActive()) {
+                auto mouseEvent = static_cast<QMouseEvent*>(event);
+                // cancel long press if mouse moved too far (more than 5 pixels)
+                if ((mouseEvent->pos() - pressPosition).manhattanLength() > 5) {
+                    longPressTimer->stop();
+                    currentViewer = nullptr;
+                }
             }
         }
 
@@ -632,7 +607,7 @@ void View3DInventorViewer::init()
     }
 
     //create the cursors
-    createStandardCursors(devicePixelRatio());
+    createStandardCursors();
     connect(this, &View3DInventorViewer::devicePixelRatioChanged,
             this, &View3DInventorViewer::createStandardCursors);
 
@@ -717,40 +692,15 @@ View3DInventorViewer::~View3DInventorViewer()
     delete glAction;
 }
 
-static QCursor createCursor(QBitmap &bitmap, QBitmap &mask, int hotX, int hotY, double dpr)
+void View3DInventorViewer::createStandardCursors()
 {
-#if defined(Q_OS_WIN32)
-    bitmap.setDevicePixelRatio(dpr);
-    mask.setDevicePixelRatio(dpr);
-#else
-    Q_UNUSED(dpr)
-#endif
-#ifdef HAS_QTBUG_95434
-    if (qGuiApp->platformName() == QLatin1String("wayland")) {
-        QImage img = bitmap.toImage();
-        img.convertTo(QImage::Format_ARGB32);
-        QPixmap pixmap = QPixmap::fromImage(img);
-        pixmap.setMask(mask);
-        return QCursor(pixmap, hotX, hotY);
-    }
-#endif
+    QPixmap panPixmap = BitmapFactory().pixmapFromSvg("cursor-pan", QSize(16,16));
+    QPixmap spinPixmap = BitmapFactory().pixmapFromSvg("cursor-rotate", QSize(16,16));
+    QPixmap zoomPixmap = BitmapFactory().pixmapFromSvg("cursor-zoom", QSize(16,16));
 
-    return QCursor(bitmap, mask, hotX, hotY);
-}
-
-void View3DInventorViewer::createStandardCursors(double dpr)
-{
-    QBitmap cursor = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_bitmap);
-    QBitmap mask = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_mask_bitmap);
-    spinCursor = createCursor(cursor, mask, ROTATE_HOT_X, ROTATE_HOT_Y, dpr);
-
-    cursor = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_bitmap);
-    mask = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_mask_bitmap);
-    zoomCursor = createCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y, dpr);
-
-    cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
-    mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
-    panCursor = createCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y, dpr);
+    this->panCursor = QCursor(panPixmap, 8, 8);
+    this->spinCursor = QCursor(spinPixmap, 8, 8);
+    this->zoomCursor = QCursor(zoomPixmap, 8, 8);
 }
 
 void View3DInventorViewer::aboutToDestroyGLContext()
@@ -840,11 +790,10 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges & reason)
     }
 
     if(Reason.Type == SelectionChanges::RmvPreselect ||
-       Reason.Type == SelectionChanges::RmvPreselectSignal)
+       Reason.Type == SelectionChanges::RmvPreselectSignal ||
+       Reason.Type == SelectionChanges::SetPreselect)
     {
-        //Hint: do not create a tmp. instance of SelectionChanges
-        SelectionChanges selChanges(SelectionChanges::RmvPreselect);
-        SoFCPreselectionAction preselectionAction(selChanges);
+        SoFCPreselectionAction preselectionAction(Reason);
         preselectionAction.apply(pcViewProviderRoot);
     } else {
         SoFCSelectionAction selectionAction(Reason);
@@ -2474,7 +2423,15 @@ void View3DInventorViewer::renderScene()
 
         So3DAnnotation::render = true;
         glClear(GL_DEPTH_BUFFER_BIT);
-        glra->apply(SoDelayedAnnotationsElement::getDelayedPaths(state));
+        
+        // process delayed paths with priority support
+        if (Gui::Selection().isClarifySelectionActive()) {
+            Gui::SoDelayedAnnotationsElement::processDelayedPathsWithPriority(state, glra);
+        } else {
+            // standard processing for normal delayed annotations
+            glra->apply(Gui::SoDelayedAnnotationsElement::getDelayedPaths(state));
+        }
+        
         So3DAnnotation::render = false;
     }
     catch (const Base::MemoryException&) {

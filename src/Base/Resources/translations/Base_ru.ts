@@ -9,12 +9,12 @@
       <translation>Стандартная система мер (мм, кг, сек, угол)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="315"/>
+      <location filename="../../UnitsSchemasData.h" line="318"/>
       <source>MKS (m, kg, s, °)</source>
       <translation>МКС (м, кг, сек, градус)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="579"/>
+      <location filename="../../UnitsSchemasData.h" line="582"/>
       <source>US customary (in, lb)</source>
       <translation>Американская традиционная система мер (дюймы, фунты)</translation>
     </message>
@@ -24,12 +24,12 @@
       <translation>Английская десятичная (дюймы, фунты)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="540"/>
+      <location filename="../../UnitsSchemasData.h" line="543"/>
       <source>Building Euro (cm, m², m³)</source>
       <translation>Строительство Евро (см, м², м³)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="617"/>
+      <location filename="../../UnitsSchemasData.h" line="620"/>
       <source>Building US (ft-in, sqft, cft)</source>
       <translation>Строительство США (ft-in, sqft, cft)</translation>
     </message>
@@ -39,12 +39,12 @@
       <translation>Метрические мелкие детали &amp; ЧПУ (мм, мм/мин)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="628"/>
+      <location filename="../../UnitsSchemasData.h" line="631"/>
       <source>Imperial for Civil Eng (ft, ft/s)</source>
       <translation>Английская для гражданского строительства (фут, фут/с)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="567"/>
+      <location filename="../../UnitsSchemasData.h" line="570"/>
       <source>FEM (mm, N, s)</source>
       <translation>МКЭ (мм, Н, с)</translation>
     </message>

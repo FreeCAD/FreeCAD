@@ -63,6 +63,19 @@ else:
         return txt
     # \endcond
 
+import logging
+from contextlib import contextmanager
+
+@contextmanager
+def temp_logger_level(level):
+    """A context manager to temporarily set the root logger's level."""
+    root_logger = logging.getLogger()
+    original_level = root_logger.level
+    root_logger.setLevel(level)
+    try:
+        yield
+    finally:
+        root_logger.setLevel(original_level)
 
 def toNode(shape):
 
@@ -98,31 +111,33 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
 
     oldversion = False
     ladybug = False
-    try:
-        import ladybug
-        from ladybug import location
-        from ladybug import sunpath
-    except Exception:
-        # TODO - remove pysolar dependency
-        # FreeCAD.Console.PrintWarning("Ladybug module not found, using pysolar instead. Warning, this will be deprecated in the future\n")
-        ladybug = False
+    with temp_logger_level(logging.WARNING):
         try:
-            import pysolar
-        except Exception:
+            import ladybug
+            logging.getLogger('ladybug').propagate = False
+            from ladybug import location
+            from ladybug import sunpath
+        except ImportError:
+            # TODO - remove pysolar dependency
+            # FreeCAD.Console.PrintWarning("Ladybug module not found, using pysolar instead. Warning, this will be deprecated in the future\n")
+            ladybug = False
             try:
-                import Pysolar as pysolar
-            except Exception:
-                FreeCAD.Console.PrintError("The pysolar module was not found. Unable to generate solar diagrams\n")
-                return None
+                import pysolar
+            except ImportError:
+                try:
+                    import Pysolar as pysolar
+                except ImportError:
+                    FreeCAD.Console.PrintError("The pysolar module was not found. Unable to generate solar diagrams\n")
+                    return None
+                else:
+                    oldversion = True
+            if tz:
+                tz = datetime.timezone(datetime.timedelta(hours=tz))
             else:
-                oldversion = True
-        if tz:
-            tz = datetime.timezone(datetime.timedelta(hours=tz))
+                tz = datetime.timezone.utc
         else:
-            tz = datetime.timezone.utc
-    else:
-        loc = ladybug.location.Location(latitude=latitude,longitude=longitude,time_zone=tz)
-        sunpath = ladybug.sunpath.Sunpath.from_location(loc)
+            loc = ladybug.location.Location(latitude=latitude,longitude=longitude,time_zone=tz)
+            sunpath = ladybug.sunpath.Sunpath.from_location(loc)
 
     from pivy import coin
 
@@ -285,12 +300,15 @@ def makeWindRose(epwfile,scale=1,sectors=24):
     """makeWindRose(site,sectors):
     returns a wind rose diagram as a pivy node"""
 
-    try:
-        import ladybug
-        from ladybug import epw
-    except Exception:
-        FreeCAD.Console.PrintError("The ladybug module was not found. Unable to generate solar diagrams\n")
-        return None
+    with temp_logger_level(logging.WARNING):
+        try:
+            import ladybug
+            logging.getLogger('ladybug').propagate = False
+            from ladybug import epw
+        except ImportError:
+            FreeCAD.Console.PrintError("The ladybug module was not found. Unable to generate solar diagrams\n")
+            return None
+
     if not epwfile:
         FreeCAD.Console.PrintWarning("No EPW file, unable to generate wind rose.\n")
         return None
@@ -591,6 +609,12 @@ class _Site(ArchIFC.IfcProduct):
         """Method run when the document is restored. Re-adds the properties."""
 
         self.setProperties(obj)
+        # The UI is built before constraints are applied during a file load.
+        # We must defer the constraint restoration until after the entire
+        # loading process is complete.
+        if FreeCAD.GuiUp and hasattr(obj, "ViewObject"):
+            from PySide import QtCore
+            QtCore.QTimer.singleShot(0, lambda: obj.ViewObject.Proxy.restoreConstraints(obj.ViewObject))
 
     def execute(self,obj):
         """Method run when the object is recomputed.
@@ -823,18 +847,36 @@ class _ViewProviderSite:
             vobj.addProperty("App::PropertyBool", "ShowSunPosition", "Sun", QT_TRANSLATE_NOOP("App::Property", "Show the sun position for a specific date and time"), locked=True)
         if not "SunDateMonth" in pl:
             vobj.addProperty("App::PropertyIntegerConstraint", "SunDateMonth", "Sun", QT_TRANSLATE_NOOP("App::Property", "The month of the year to show the sun position"), locked=True)
-            vobj.SunDateMonth = (6, 1, 12, 1) # Default to June
         if not "SunDateDay" in pl:
             vobj.addProperty("App::PropertyIntegerConstraint", "SunDateDay", "Sun", QT_TRANSLATE_NOOP("App::Property", "The day of the month to show the sun position"), locked=True)
-            # 31 is a safe maximum; the datetime object will handle invalid dates like Feb 31.
-            vobj.SunDateDay =  (21, 1, 31, 1) # Default to the 21st (solstice)
         if not "SunTimeHour" in pl:
             vobj.addProperty("App::PropertyFloatConstraint", "SunTimeHour", "Sun", QT_TRANSLATE_NOOP("App::Property", "The hour of the day to show the sun position"), locked=True)
-            # Use 23.99 to avoid issues with hour 24
-            vobj.SunTimeHour = (12.0, 0.0, 23.5, 0.5) # Default to noon
         if not "ShowHourLabels" in pl:
             vobj.addProperty("App::PropertyBool", "ShowHourLabels", "Sun", QT_TRANSLATE_NOOP("App::Property", "Show text labels for key hours on the sun path"), locked=True)
             vobj.ShowHourLabels = True # Show hour labels by default
+
+    def restoreConstraints(self, vobj):
+        """Re-apply non-persistent property constraints after a file load."""
+        pl = vobj.PropertiesList
+        if "SunDateMonth" in pl:
+            saved_month = vobj.SunDateMonth
+            vobj.SunDateMonth = (saved_month, 1, 12, 1)
+        else:
+            vobj.SunDateMonth = (6, 1, 12, 1) # Default to June
+
+        if "SunDateDay" in pl:
+            saved_day = vobj.SunDateDay
+            vobj.SunDateDay = (saved_day, 1, 31, 1)
+        else:
+            # 31 is a safe maximum; the datetime object will handle invalid dates like Feb 31.
+            vobj.SunDateDay = (21, 1, 31, 1) # Default to the 21st (solstice)
+
+        if "SunTimeHour" in pl:
+            saved_hour = vobj.SunTimeHour
+            vobj.SunTimeHour = (saved_hour, 0.0, 23.5, 0.5)
+        else:
+            # Use 23.5 to avoid issues with hour 24
+            vobj.SunTimeHour = (12.0, 0.0, 23.5, 0.5) # Default to noon
 
     def getIcon(self):
         """Return the path to the appropriate icon.
@@ -1147,24 +1189,30 @@ class _ViewProviderSite:
         elif prop in [
             "ShowSunPosition", "SunDateMonth", "SunDateDay", "SunTimeHour",
             "SolarDiagramScale", "SolarDiagramPosition", "ShowHourLabels"]:
-            self.updateSunPosition(vobj)
+            # During file load or property creation, this method can be triggered
+            # before all necessary properties are available. This guard ensures
+            # that the sun position is only updated when the object is in a consistent state.
+            if all(hasattr(vobj, p) for p in ["ShowSunPosition", "SunDateMonth", "SunDateDay", "SunTimeHour"]):
+                 self.updateSunPosition(vobj)
         elif prop == "WindRose":
             if hasattr(self,"windrosenode"):
                 del self.windrosenode
             if hasattr(vobj,"WindRose"):
                 if vobj.WindRose:
                     if hasattr(vobj.Object,"EPWFile") and vobj.Object.EPWFile:
-                        try:
-                            import ladybug
-                        except Exception:
-                            pass
-                        else:
-                            self.windrosenode = makeWindRose(vobj.Object.EPWFile,vobj.SolarDiagramScale)
-                            if self.windrosenode:
-                                self.windrosesep.addChild(self.windrosenode)
-                                self.windroseswitch.whichChild = 0
+                        with temp_logger_level(logging.WARNING):
+                            try:
+                                import ladybug
+                                logging.getLogger('ladybug').propagate = False
+                            except ImportError:
+                                pass
                             else:
-                                del self.windrosenode
+                                self.windrosenode = makeWindRose(vobj.Object.EPWFile,vobj.SolarDiagramScale)
+                                if self.windrosenode:
+                                    self.windrosesep.addChild(self.windrosenode)
+                                    self.windroseswitch.whichChild = 0
+                                else:
+                                    del self.windrosenode
                 else:
                     self.windroseswitch.whichChild = -1
         elif prop == 'Visibility':
@@ -1310,18 +1358,20 @@ class _ViewProviderSite:
 
         dt_object_for_label = None
 
-        try:
-            from ladybug import location, sunpath
-            loc = location.Location(latitude=obj.Latitude, longitude=obj.Longitude, time_zone=obj.TimeZone)
-            sp = sunpath.Sunpath.from_location(loc)
-            is_ladybug = True
-        except ImportError:
+        with temp_logger_level(logging.WARNING):
             try:
-                import pysolar.solar as solar
-                is_ladybug = False
+                from ladybug import location, sunpath
+                logging.getLogger('ladybug').propagate = False
+                loc = location.Location(latitude=obj.Latitude, longitude=obj.Longitude, time_zone=obj.TimeZone)
+                sp = sunpath.Sunpath.from_location(loc)
+                is_ladybug = True
             except ImportError:
-                FreeCAD.Console.PrintError("Ladybug or Pysolar module not found. Cannot calculate sun position.\n")
-                return
+                try:
+                    import pysolar.solar as solar
+                    is_ladybug = False
+                except ImportError:
+                    FreeCAD.Console.PrintError("Ladybug or Pysolar module not found. Cannot calculate sun position.\n")
+                    return
 
         morning_points, midday_points, afternoon_points = [], [], []
         self.hourMarkerCoords.point.deleteValues(0) # Clear previous marker coordinates
@@ -1433,10 +1483,9 @@ class _ViewProviderSite:
             vo = ray_object.ViewObject
             vo.LineColor = (1.0, 1.0, 0.0)
             vo.DrawStyle = "Dashed"
-            vo.ArrowType = "Arrow"
+            vo.ArrowTypeEnd = "Arrow"
             vo.LineWidth = 2
-            vo.EndArrow = True
-            vo.ArrowSize = vobj.SolarDiagramScale * 0.015
+            vo.ArrowSizeEnd = vobj.SolarDiagramScale * 0.015
 
             if hasattr(obj, "addObject"):
                 obj.addObject(ray_object)

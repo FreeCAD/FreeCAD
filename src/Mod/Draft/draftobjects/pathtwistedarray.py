@@ -48,8 +48,7 @@ object in the Arch Workbench.
 # \brief Provides the object code for the TwistedArray object.
 
 import draftgeoutils.geo_arrays as geo
-from draftutils.messages import _wrn
-from draftutils.translate import translate
+from draftutils.messages import _log
 def QT_TRANSLATE_NOOP(ctx,txt): return txt
 from draftobjects.draftlink import DraftLink
 
@@ -157,9 +156,9 @@ class PathTwistedArray(DraftLink):
             return
 
         if not hasattr(obj, "Fuse"):
-            _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
+            _log("v1.0, " + obj.Name + ", added 'Fuse' property")
         if not hasattr(obj, "PlacementList"):
-            _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added hidden property 'PlacementList'"))
+            _log("v1.1, " + obj.Name + ", added hidden property 'PlacementList'")
 
         self.set_properties(obj)
         self.execute(obj) # Required to update PlacementList.

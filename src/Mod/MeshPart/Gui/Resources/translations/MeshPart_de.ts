@@ -539,12 +539,12 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Trim With Plane</source>
-      <translation type="unfinished">Trim With Plane</translation>
+      <translation>An Ebene trimmen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Select the side to keep</source>
-      <translation type="unfinished">Select the side to keep</translation>
+      <translation>Die Seite auswählen, die erhalten bleiben soll</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>

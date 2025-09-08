@@ -36,6 +36,8 @@ class SoTextureCoordinateBundle;
 
 namespace PartGui {
 
+class ViewProviderPartExt;
+
 class PartGuiExport SoBrepPointSet : public SoPointSet {
     using inherited = SoPointSet;
 
@@ -44,6 +46,8 @@ class PartGuiExport SoBrepPointSet : public SoPointSet {
 public:
     static void initClass();
     SoBrepPointSet();
+    
+    void setViewProvider(ViewProviderPartExt* vp) { viewProvider = vp; }
 
 protected:
     ~SoBrepPointSet() override = default;
@@ -64,6 +68,9 @@ private:
     SelContextPtr selContext2;
     Gui::SoFCSelectionCounter selCounter;
     uint32_t packedColor{0};
+    
+    // backreference to viewprovider that owns this node
+    ViewProviderPartExt* viewProvider = nullptr;
 };
 
 } // namespace PartGui

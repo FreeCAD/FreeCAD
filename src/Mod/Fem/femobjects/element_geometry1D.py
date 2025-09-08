@@ -189,6 +189,8 @@ class ElementGeometry1D(base_femelement.BaseFemElement):
 
     def onDocumentRestored(self, obj):
         # update old project with new properties
+        super().onDocumentRestored(obj)
+
         for prop in self._get_properties():
             try:
                 obj.getPropertyByName(prop.name)

@@ -133,7 +133,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="55"/>
       <source>Document window</source>
-      <translation type="unfinished">Document window</translation>
+      <translation>Dokumentfenster</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="87"/>
@@ -715,17 +715,17 @@ Wenn deaktiviert, werden sie nach ihrem Namen sortiert.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="245"/>
       <source>Confirm Save as Copy</source>
-      <translation type="unfinished">Confirm Save as Copy</translation>
+      <translation>Speichern als Kopie bestätigen</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="247"/>
       <source>Save as copy</source>
-      <translation type="unfinished">Save as copy</translation>
+      <translation>Speichern als Kopie</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="250"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
-      <translation type="unfinished">Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</translation>
+      <translation>Das Speichern einer Kopie wird nicht empfohlen, da dies andere Dokumente beschädigen kann. Es wird empfohlen, als neues Material zu speichern.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="253"/>

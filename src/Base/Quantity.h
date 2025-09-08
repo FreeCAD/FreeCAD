@@ -49,33 +49,19 @@ struct BaseExport QuantityFormat
     using NumberOptions = int;
     NumberOptions option;
     NumberFormat format;
-    int precision;
-    int denominator;
 
-    // Default denominator of minimum fractional inch. Only used in certain
-    // schemas.
-    // NOLINTNEXTLINE
-    static int defaultDenominator;  // i.e 8 for 1/8"
-
-    static inline int getDefaultDenominator()
+    int getPrecision() const;
+    inline void setPrecision(int precision)
     {
-        return defaultDenominator;
+        _precision = precision;
     }
 
-    static inline void setDefaultDenominator(int denom)
+    int getDenominator() const;
+    inline void setDenominator(int denominator)
     {
-        defaultDenominator = denom;
+        _denominator = denominator;
     }
 
-    inline int getDenominator() const
-    {
-        return denominator;
-    }
-
-    inline void setDenominator(int denom)
-    {
-        denominator = denom;
-    }
     QuantityFormat();
     explicit QuantityFormat(NumberFormat format, int decimals = -1);
     inline char toFormat() const
@@ -108,6 +94,9 @@ struct BaseExport QuantityFormat
                 return Default;
         }
     }
+
+private:
+    int _precision, _denominator;
 };
 
 /**
@@ -157,6 +146,12 @@ public:
         myFormat = fmt;
     }
 
+    std::string
+    toString(const QuantityFormat& format = QuantityFormat(QuantityFormat::Default)) const;
+
+    std::string
+    toNumber(const QuantityFormat& format = QuantityFormat(QuantityFormat::Default)) const;
+
     std::string getUserString() const;
     /// transfer to user preferred unit/potence
     std::string getUserString(double& factor, std::string& unitString) const;
@@ -199,7 +194,6 @@ public:
     bool isValid() const;
     /// sets the quantity invalid
     void setInvalid();
-
 
     /** Predefined Unit types. */
     //@{
@@ -248,14 +242,15 @@ public:
     static const Quantity Foot;
     static const Quantity Thou;
     static const Quantity Yard;
+    static const Quantity Mile;
+
+    static const Quantity MilePerHour;
 
     static const Quantity Pound;
     static const Quantity Ounce;
     static const Quantity Stone;
     static const Quantity Hundredweights;
-    static const Quantity Mile;
 
-    static const Quantity MilePerHour;
     static const Quantity SquareFoot;
     static const Quantity CubicFoot;
 
@@ -313,8 +308,6 @@ public:
 
     static const Quantity Weber;
 
-    // static const Quantity Oersted;
-
     static const Quantity Farad;
     static const Quantity MilliFarad;
     static const Quantity MicroFarad;
@@ -348,7 +341,6 @@ public:
     static const Quantity AngMinute;
     static const Quantity AngSecond;
     //@}
-
 
 private:
     double myValue;

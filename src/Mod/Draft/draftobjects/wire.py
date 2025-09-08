@@ -36,8 +36,7 @@ import DraftVecUtils
 from draftobjects.base import DraftObject
 from draftutils import gui_utils
 from draftutils import params
-from draftutils.messages import _wrn
-from draftutils.translate import translate
+from draftutils.messages import _log
 
 
 class Wire(DraftObject):
@@ -124,12 +123,7 @@ class Wire(DraftObject):
         if hasattr(vobj, "EndArrow"):
             vobj.setPropertyStatus("EndArrow", "-LockDynamic")
             vobj.removeProperty("EndArrow")
-        _wrn(
-            "v1.1, "
-            + obj.Label
-            + ", "
-            + translate("draft", "migrated view properties")
-        )
+        _log("v1.1, " + obj.Name + ", migrated view properties")
 
     def execute(self, obj):
         if self.props_changed_placement_only(obj): # Supplying obj is required because of `Base` and `Tool`.

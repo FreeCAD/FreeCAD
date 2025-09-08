@@ -9,12 +9,12 @@
       <translation>Standard (mm, kg, s, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="315"/>
+      <location filename="../../UnitsSchemasData.h" line="318"/>
       <source>MKS (m, kg, s, °)</source>
       <translation>MKS (m, kg, s, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="579"/>
+      <location filename="../../UnitsSchemasData.h" line="582"/>
       <source>US customary (in, lb)</source>
       <translation>US sistem jedinica (in, lb)</translation>
     </message>
@@ -24,12 +24,12 @@
       <translation>Imperijalni decimalni (in, lb)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="540"/>
+      <location filename="../../UnitsSchemasData.h" line="543"/>
       <source>Building Euro (cm, m², m³)</source>
       <translation>Građevinski Euro (cm, m², m³)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="617"/>
+      <location filename="../../UnitsSchemasData.h" line="620"/>
       <source>Building US (ft-in, sqft, cft)</source>
       <translation>Građevinski US (ft-in, sqft, cft)</translation>
     </message>
@@ -39,12 +39,12 @@
       <translation>Metrički mali delovi &amp; CNC(mm, mm/min)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="628"/>
+      <location filename="../../UnitsSchemasData.h" line="631"/>
       <source>Imperial for Civil Eng (ft, ft/s)</source>
       <translation>Imperijalni za građevinarstvo (ft, ft/s)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="567"/>
+      <location filename="../../UnitsSchemasData.h" line="570"/>
       <source>FEM (mm, N, s)</source>
       <translation>FEM (mm, N, s)</translation>
     </message>
