@@ -33,6 +33,10 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include "PDMigrationGate.h"
+
 #include "Extension.h"
 #include "ExtensionContainer.h"
 
@@ -419,6 +423,8 @@ void ExtensionContainer::saveExtensions(Base::Writer& writer) const
     writer.decInd();
 }
 
+
+
 void ExtensionContainer::restoreExtensions(Base::XMLReader& reader)
 {
 
@@ -437,6 +443,58 @@ void ExtensionContainer::restoreExtensions(Base::XMLReader& reader)
         reader.readElement("Extension");
         const char* Type = reader.getAttribute<const char*>("type");
         const char* Name = reader.getAttribute<const char*>("name");
+
+        // >>> compat skip: quietly ignore legacy origin-group extensions on PartDesign::Body
+        {
+            // Up-cast this container back to the owning object
+            App::DocumentObject* owner = dynamic_cast<App::DocumentObject*>(this);
+            // Resolve the Body type if PartDesign is registered; otherwise fall back to name compare
+            Base::Type bodyTid = Base::Type::fromName("PartDesign::Body");
+            const bool isBody =
+                owner &&
+                ( (!bodyTid.isBad() && owner->getTypeId().isDerivedFrom(bodyTid)) ||
+                  (std::strcmp(owner->getTypeId().getName(), "PartDesign::Body") == 0) );
+            const bool isLegacyOriginGroupExt =
+                (Type && (std::strcmp(Type, "App::OriginGroupExtension") == 0 ) );
+            if (isBody && isLegacyOriginGroupExt) {
+                Base::Console().log(
+                    "[Compat] Skipping legacy %s on Body %s (Body Origin removed)\n",
+                    Type ? Type : "<null>", owner ? owner->getNameInDocument() : "<null>");
+                // Consume element and continue with next extension
+                reader.readEndElement("Extension");
+
+                // Mark this document: a legacy Body-origin was detected
+                if (auto* owner = dynamic_cast<App::DocumentObject*>(this)) {
+                 if (auto* doc = owner->getDocument()) {
+		    App::MarkDocNeedsPDMigration(doc);
+                 }
+                }
+                continue;
+            }
+        }
+        // >>> compat: skip legacy *GUI* origin-group extension on Body view providers
+        {
+            const bool isLegacyVpExt =
+                (Type && std::strcmp(Type, "Gui::ViewProviderOriginGroupExtension") == 0);
+            // In the VP restore path, 'this' is a Gui::ViewProvider-derived ExtensionContainer.
+            // We can't resolve Gui Base::Type here (we're in App), so match by runtime name string.
+            const char* vpName = this->getTypeId().getName();
+            auto hasSubstr = [](const char* hay, const char* needle) -> bool {
+                return hay && needle && std::strstr(hay, needle) != nullptr;
+            };
+            // Heuristic: Body VPs typically contain "ViewProviderBody".
+            // Examples: "PartDesignGui::ViewProviderBody", "Gui::ViewProviderPartDesignBody".
+            const bool looksLikeBodyVP = hasSubstr(vpName, "ViewProviderBody");
+            if (isLegacyVpExt && looksLikeBodyVP) {
+                Base::Console().log(
+                    "[Compat] Skipping legacy %s on %s (Body Origin removed)\n",
+                    Type ? Type : "<null>", vpName ? vpName : "<null>");
+                // We are inside <Extension>; consume it and continue
+                reader.readEndElement("Extension");
+                continue;
+            }
+        }
+        // <<< compat skip
         try {
             App::Extension* ext = getExtension(Name);
             if (!ext) {

@@ -25,6 +25,7 @@
 #include "PartDesignMigration.h"
 
 #include <App/Origin.h>
+#include <App/Datums.h>  // for AxisRoles / PlaneRoles / PointRoles
 #include <App/Part.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -174,57 +175,6 @@ static const void* containerRoot(App::DocumentObject* o)
 }
 
 
-// Children of an Origin (planes/axes)
-static std::vector<App::DocumentObject*> originChildren(App::Origin* og) {
-    std::vector<App::DocumentObject*> res;
-    if (auto* grp = dynamic_cast<App::DocumentObjectGroup*>(og)) {
-        const auto& v = grp->getObjects();
-        res.insert(res.end(), v.begin(), v.end());
-    }
-    return res;
-}
-
-
-// Strip trailing digits: "XY_Plane001" -> "XY_Plane"
-static std::string baseLabel(const std::string& s) {
-    size_t i = s.size();
-    while (i > 0 && std::isdigit(static_cast<unsigned char>(s[i-1]))) --i;
-    return s.substr(0, i);
-}
-
-static std::string normPlaneKey(const std::string& s)
-{
-    // token before '.' (e.g. "XY_plane.Face1" -> "XY_plane")
-    std::string t = s;
-    auto dot = t.find('.');
-    if (dot != std::string::npos)
-        t = t.substr(0, dot);
-
-    // strip trailing digits ("XY_Plane001" -> "XY_Plane")
-    size_t i = t.size();
-    while (i > 0 && std::isdigit(static_cast<unsigned char>(t[i-1])))
-        --i;
-    t.resize(i);
-
-    // unify punctuation/case ("XY-plane" -> "xy_plane")
-    std::replace(t.begin(), t.end(), '-', '_');
-    for (auto& c : t) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
-
-    return t;
-}
-
-static std::unordered_map<std::string, App::DocumentObject*>
-buildOriginFeatureMap(App::Origin* origin)
-{
-    std::unordered_map<std::string, App::DocumentObject*> m;
-    for (auto* ch : originChildren(origin)) {
-        m.emplace(normPlaneKey(ch->getNameInDocument()), ch);
-    }
-    return m;
-}
-
-
-
 // Global placement of any GeoFeature: containerCS(gf) · gf->Placement
 static Base::Placement globalOf(App::DocumentObject* o,
                                 const std::function<Base::Placement(App::GeoFeature*)>& containerCS) {
@@ -311,6 +261,33 @@ static void migrateInterBodyBinders(App::Document* doc,
         binderGF->Placement.setValue(T * binderGF->Placement.getValue());
         binderGF->touch();
     }
+}
+
+
+// 1) Classify a legacy plane object to a *role* string ("XY_Plane"/"XZ_Plane"/"YZ_Plane")
+static const char* planeRoleOf(const App::DocumentObject* planeObj) {
+    if (!planeObj) return nullptr;
+    const char* n = planeObj->getNameInDocument();
+    if (!n) return nullptr;
+
+    // Strip trailing digits so "XY_Plane002" -> "XY_Plane"
+    std::string s(n);
+    while (!s.empty() && std::isdigit(static_cast<unsigned char>(s.back()))) s.pop_back();
+
+    // Match against native constant roles
+    using LCS = App::LocalCoordinateSystem;
+    for (const char* r : LCS::PlaneRoles) if (s == r) return r;
+    return nullptr; // not a known plane role
+}
+
+// 2) Get the *canonical* subobject under an Origin by *role*
+static App::DocumentObject* getPlaneByRole(App::Origin* org, const char* role) {
+    if (!org || !role) return nullptr;
+    using LCS = App::LocalCoordinateSystem;
+    if      (std::strcmp(role, LCS::PlaneRoles[0]) == 0) return org->getXY();
+    else if (std::strcmp(role, LCS::PlaneRoles[1]) == 0) return org->getXZ();
+    else if (std::strcmp(role, LCS::PlaneRoles[2]) == 0) return org->getYZ();
+    return nullptr;
 }
 
 // ---- Support helpers: handle Support/AttachmentSupport (Link/XLink, single/list) ----
@@ -418,6 +395,18 @@ static App::Origin* getOrCreateGlobalOrigin(App::Document* doc) {
 }
 
 
+static std::vector<App::Origin*> findTopLevelOrigins(App::Document* doc)
+{
+    std::vector<App::Origin*> out;
+    if (!doc) return out;
+    for (auto* o : doc->getObjectsOfType(App::Origin::getClassTypeId())) {
+        auto* og = static_cast<App::Origin*>(o);
+        if (!App::Part::getPartOfObject(og))  // no parent Part ⇒ top-level
+            out.push_back(og);
+    }
+    return out;
+}
+
 
 // Remove an origin's children and the origin itself if no external refs remain.
 // Returns true if removed (or nothing to remove), false if kept due to refs.
@@ -426,13 +415,13 @@ static bool removeOriginIfUnreferenced(App::Document* doc, App::Origin* og)
     if (!doc || !og) return true;
 
     // If any child is still referenced from outside the origin, keep everything.
-    for (auto* ch : originChildren(og)) {
+    for (auto* ch : og->baseObjects()) {
         if (hasExternalRefs(ch, og))
             return false;
     }
 
     // Remove children first
-    for (auto* ch : originChildren(og)) {
+    for (auto* ch : og->baseObjects()) {
         if (!hasExternalRefs(ch, og))
             doc->removeObject(ch->getNameInDocument());
     }
@@ -458,14 +447,21 @@ static void relinkInPartSketchesKeepWorld(
 
     // Index all origin features in the doc: feature -> owning Origin, and cache their globals
     std::unordered_map<App::DocumentObject*, App::Origin*> ownerOfFeature;
-    std::unordered_map<App::DocumentObject*, Base::Placement> Gfeat;
     for (auto* o : doc->getObjectsOfType(App::Origin::getClassTypeId())) {
         auto* og = static_cast<App::Origin*>(o);
-        for (auto* ch : originChildren(og)) {
+        for (auto* ch : og->baseObjects()) {
             ownerOfFeature[ch] = og;
-            Gfeat[ch] = globalOf(ch, containerCS);
         }
     }
+
+        // Helper to get global placement for any object we may target here
+    auto getGlobal = [&](App::DocumentObject* obj) -> Base::Placement {
+         if (auto* gf = dynamic_cast<App::GeoFeature*>(obj))
+             return globalOf(gf, containerCS);   // your existing helper
+         // Top-level canonical origin has identity in world; if not GeoFeature, fallback to identity
+         return Base::Placement();
+    };
+        
 
     // Walk all Parts present in the document
     auto parts = doc->getObjectsOfType(App::Part::getClassTypeId());
@@ -475,9 +471,8 @@ static void relinkInPartSketchesKeepWorld(
         if (!partOrigin) continue;
 
         // Map of the Part origin's planes by base label, and their globals
-        auto partMap = buildOriginFeatureMap(partOrigin);
-        std::unordered_map<App::DocumentObject*, Base::Placement> Gnew;
-        for (auto& kv : partMap) Gnew[kv.second] = globalOf(kv.second, containerCS);
+       std::set<std::string> partOriginFeatures;
+       for (auto* ch : partOrigin->baseObjects()) partOriginFeatures.insert(ch->getNameInDocument());
 
         // Relink each sketch whose *owner body* is under this Part
         auto sketchType = Base::Type::fromName("Sketcher::SketchObject");
@@ -496,45 +491,12 @@ static void relinkInPartSketchesKeepWorld(
 
             // Resolve actual old plane + base label for both forms
             App::DocumentObject* oldPlane = nullptr;
-            std::string oldBase;
             
-            // A) Support points directly to a plane object owned by some Origin
-            if (ownerOfFeature.count(tgt)) {
-                if (ownerOfFeature[tgt] == partOrigin)
-                    continue; // already on this Part origin
-                oldPlane = tgt;
-                oldBase  = normPlaneKey(oldPlane->getNameInDocument());
-            }
-            // B) Support points to an Origin object + sublist
-            else if (auto* tgtOrigin = dynamic_cast<App::Origin*>(tgt)) {
+            if (auto* tgtOrigin = dynamic_cast<App::Origin*>(tgt)) {
                 const std::vector<std::string>& subs = sv.subs;   // may be empty
                 if (!subs.empty() && tgtOrigin != partOrigin) {
-                    const std::string wantKey = normPlaneKey(subs.front());
-            
                     // 1) Fast path: try exact document object by subname
                     oldPlane = sk->getDocument()->getObject(subs.front().c_str());
-            
-                    // 2) Fallback: normalized map lookup
-                    if (!oldPlane) {
-                        auto mapOld = buildOriginFeatureMap(tgtOrigin);  // keyed by normPlaneKey(child->Name)
-                        auto itOld  = mapOld.find(wantKey);
-                        if (itOld != mapOld.end())
-                            oldPlane = itOld->second;
-                    }
-            
-                    // 3) Fallback: brute-force scan of origin’s children (names and labels)
-                    if (!oldPlane) {
-                        for (auto* ch : originChildren(tgtOrigin)) {
-                            if (normPlaneKey(ch->getNameInDocument()) == wantKey ||
-                                normPlaneKey(ch->Label.getStrValue()) == wantKey) {
-                                oldPlane = ch;
-                                break;
-                            }
-                        }
-                    }
-            
-                    if (oldPlane)
-                        oldBase = normPlaneKey(oldPlane->getNameInDocument());
                 }
             }
             
@@ -542,18 +504,26 @@ static void relinkInPartSketchesKeepWorld(
                 continue;
 
             // Counterpart plane under this Part's origin
-            auto itPlane = partMap.find(oldBase);
-            if (itPlane == partMap.end()) continue;
-            App::DocumentObject* newPlane = itPlane->second;
+            auto itPlane = partOriginFeatures.find(oldPlane->getNameInDocument());
+            if (itPlane == partOriginFeatures.end()) continue;
 
-            const Base::Placement& g_old = Gfeat.at(oldPlane);
-            const Base::Placement& g_new = Gnew.at(newPlane);
-
+            // using role of oldPlane
+            const char* role = planeRoleOf(oldPlane);
+            if (!role) continue;
+            App::DocumentObject* newTargetObj = partOrigin;   // your Part_Origin
+            std::vector<std::string> newSubs;
+            newSubs.emplace_back(role);                      // {"XY_Plane"} | {"XZ_Plane"} | {"YZ_Plane"}
+        
             auto* offProp = dynamic_cast<App::PropertyPlacement*>(sk->getPropertyByName("AttachmentOffset"));
             Base::Placement A = offProp ? offProp->getValue() : Base::Placement();
+            Base::Placement g_old = getGlobal(oldPlane);
+            Base::Placement g_new = newSubs.empty()
+               ? getGlobal(newTargetObj)
+               : getGlobal(getPlaneByRole(partOrigin, role));
+
             Base::Placement A_prime = g_new.inverse() * g_old * A;
 
-	    writeSketchSupportPlane(sk, newPlane, std::vector<std::string>{});
+            writeSketchSupportPlane(sk, newTargetObj, newSubs);
             if (offProp) offProp->setValue(A_prime);
             sk->touch();
         }
@@ -585,17 +555,6 @@ static void relinkInPartSketchesKeepWorld(
     }
 }
 
-static std::vector<App::Origin*> findTopLevelOrigins(App::Document* doc)
-{
-    std::vector<App::Origin*> out;
-    if (!doc) return out;
-    for (auto* o : doc->getObjectsOfType(App::Origin::getClassTypeId())) {
-        auto* og = static_cast<App::Origin*>(o);
-        if (!App::Part::getPartOfObject(og))  // no parent Part ⇒ top-level
-            out.push_back(og);
-    }
-    return out;
-}
 
 
 static void relinkTopLevelSketchesKeepWorld(
@@ -605,23 +564,7 @@ static void relinkTopLevelSketchesKeepWorld(
 {
     if (!doc || !canonical) return;
 
-    // 1) Canonical planes and their globals
-    auto canonMap = buildOriginFeatureMap(canonical);  // keys normalized (normPlaneKey)
-    std::unordered_map<App::DocumentObject*, Base::Placement> Gnew;
-    for (auto& kv : canonMap)
-        Gnew[kv.second] = globalOf(kv.second, containerCS);
-
-    // 2) Owner/global map for ALL *top-level* origin features (no "extras" set)
-    std::unordered_map<App::DocumentObject*, App::Origin*> ownerTopFeat;
-    std::unordered_map<App::DocumentObject*, Base::Placement> Gold;
-    for (auto* og : findTopLevelOrigins(doc)) {
-        for (auto* ch : originChildren(og)) {
-            ownerTopFeat[ch] = og;
-            Gold[ch] = globalOf(ch, containerCS);
-        }
-    }
-
-    // 3) Walk sketches in *top-level* Bodies and relink if owner != canonical
+    // 2) Walk sketches in *top-level* Bodies and relink if owner != canonical
     auto sketchType = Base::Type::fromName("Sketcher::SketchObject");
     std::vector<App::DocumentObject*> sketches = doc->getObjectsOfType(sketchType);
 
@@ -639,16 +582,8 @@ static void relinkTopLevelSketchesKeepWorld(
 
         App::DocumentObject* oldPlane = nullptr;
         App::Origin*         oldOwner = nullptr;
-        std::string          key;
         
-        // A) Support points directly to a plane object owned by a TOP-LEVEL origin
-        if (auto itOwn = ownerTopFeat.find(tgt); itOwn != ownerTopFeat.end()) {
-            oldPlane = tgt;
-            oldOwner = itOwn->second;                                  // the owning top-level Origin
-            key      = normPlaneKey(oldPlane->getNameInDocument());
-        }
-        // B) Support points to an Origin object + subname (TOP-LEVEL origin)
-        else if (auto* tgtOrigin = dynamic_cast<App::Origin*>(tgt)) {
+        if (auto* tgtOrigin = dynamic_cast<App::Origin*>(tgt)) {
             if (App::Part::getPartOfObject(tgtOrigin))                 // not a top-level origin
                 continue;
         
@@ -656,39 +591,13 @@ static void relinkTopLevelSketchesKeepWorld(
             if (subs.empty())
                 continue;
         
-            const std::string wantKey = normPlaneKey(subs.front());
-        
             // 1) Fast path: sub name is usually the child's document name
-            oldPlane = sk->getDocument()->getObject(subs.front().c_str());
-        
-            // 2) Fallback: normalized-name lookup among this origin's children
-            if (!oldPlane) {
-                auto mapOld = buildOriginFeatureMap(tgtOrigin);        // keyed by normPlaneKey(child->Name)
-                if (auto it = mapOld.find(wantKey); it != mapOld.end())
-                    oldPlane = it->second;
-            }
-        
-            // 3) Fallback: brute-force scan of the origin’s children (names and labels)
-            if (!oldPlane) {
-                for (auto* ch : originChildren(tgtOrigin)) {
-                    if (normPlaneKey(ch->getNameInDocument()) == wantKey ||
-                        normPlaneKey(ch->Label.getStrValue()) == wantKey) {
-                        oldPlane = ch;
-                        break;
-                    }
-                }
-            }
-        
+            oldPlane = sk->getDocument()->getObject(subs.front().c_str());        
             if (!oldPlane)
                 continue;
         
-            // Prefer the ownerTopFeat map if present; otherwise we know it's tgtOrigin
-            if (auto itOwn2 = ownerTopFeat.find(oldPlane); itOwn2 != ownerTopFeat.end())
-                oldOwner = itOwn2->second;
-            else
-                oldOwner = tgtOrigin;
+            oldOwner = tgtOrigin;
         
-            key = normPlaneKey(oldPlane->getNameInDocument());
         }
         // Not origin-based support
         else {
@@ -708,50 +617,30 @@ static void relinkTopLevelSketchesKeepWorld(
             return Base::Placement();
         };
         
-        // Rebuild the canonical map right before lookup (children may be created lazily)
-        auto canonMap = buildOriginFeatureMap(canonical);  // keys via normPlaneKey(child->Name)
         
-        App::DocumentObject* newTargetObj = nullptr;
+        // --- Always attach to Origin + subelement (no plane-object fast path) ---
+        
+        // using role of oldPlane
+        const char* role = planeRoleOf(oldPlane);
+        if (!role) continue;
+        App::DocumentObject* newTargetObj = canonical;   // your Global_Origin
         std::vector<std::string> newSubs;
-        
-        // Fast path: use matching PLANE under canonical
-        if (auto it = canonMap.find(key); it != canonMap.end()) {
-            newTargetObj = it->second;         // plane object
-            newSubs.clear();                   // empty = whole plane
-        } else {
-            // Fallback: attach to ORIGIN + subname (no plane children under canonical yet)
-            std::string sub;
-            if (!sv.subs.empty()) {
-                sub = sv.subs.front();
-            } else if (key.find("xy") != std::string::npos) {
-                sub = "XY_Plane";
-            } else if (key.find("xz") != std::string::npos) {
-                sub = "XZ_Plane";
-            } else if (key.find("yz") != std::string::npos) {
-                sub = "YZ_Plane";
-            } else {
-                sub = "XY_Plane"; // safe default
-            }
-            newTargetObj = canonical;          // origin object
-            newSubs = { sub };
-        }
+        newSubs.emplace_back(role);                      // {"XY_Plane"} | {"XZ_Plane"} | {"YZ_Plane"}
         
         // Preserve world: A' = G_new^{-1} · G_old · A
-        auto* offProp = dynamic_cast<App::PropertyPlacement*>(sk->getPropertyByName("AttachmentOffset"));
+        auto* offProp = dynamic_cast<App::PropertyPlacement*>(
+            sk->getPropertyByName("AttachmentOffset"));
         Base::Placement A = offProp ? offProp->getValue() : Base::Placement();
         
-        // Compute directly; avoid cached maps to prevent missing keys
-        Base::Placement g_old = getGlobal(oldPlane);       // oldPlane is a plane (GeoFeature) under legacy origin
-        Base::Placement g_new = getGlobal(newTargetObj);   // plane → its global; origin → identity (top-level)
+        Base::Placement g_old = getGlobal(oldPlane);
+        Base::Placement g_new = getGlobal(getPlaneByRole(canonical, role)); // frame of the subelement
         
         Base::Placement A_prime = g_new.inverse() * g_old * A;
         
-        // Write back to the actual property (AttachmentSupport or Support; Link/XLink; single/list)
+        // Write support + offset
         writeSketchSupportPlane(sk, newTargetObj, newSubs);
         if (offProp) offProp->setValue(A_prime);
         sk->touch();
-
-
     }
 
     // ---- Cleanup extra *top-level* origins and their children (not the canonical) ----
@@ -805,18 +694,18 @@ void migrateLegacyBodyPlacements(App::Document* doc)
     doc->openTransaction("PartDesign: migrate legacy origins / placements");
 
     // 1) Ensure ONE canonical top-level origin if there are top-level bodies
-    App::Origin* topCanonical = nullptr;
+    App::Origin* gGlobalOrigin = nullptr;
     if (haveTopLevel) {
-        topCanonical = getOrCreateGlobalOrigin(doc); // this should reuse existing or create "Global_Origin"
+        gGlobalOrigin = getOrCreateGlobalOrigin(doc); // this should reuse existing or create "Global_Origin"
         Base::Console().message("[PD-Migrate] canonical top-level origin: %s\n",
-            topCanonical ? topCanonical->getNameInDocument() : "<none>");
+            gGlobalOrigin ? gGlobalOrigin->getNameInDocument() : "<none>");
     }
 
     // 2) Relink SKETCH supports (world-preserving)
     // 2a) Top-level Bodies → canonical top-level origin planes
-    if (topCanonical) {
+    if (gGlobalOrigin) {
         Base::Console().message("[PD-Migrate] relink top-level sketches → top-level origin\n");
-        relinkTopLevelSketchesKeepWorld(doc, topCanonical,
+        relinkTopLevelSketchesKeepWorld(doc, gGlobalOrigin,
             [&](App::GeoFeature* gf){ return containerCS(gf); });
     }
 
@@ -830,12 +719,12 @@ void migrateLegacyBodyPlacements(App::Document* doc)
     for (auto* b : bodies)
         legacyP[b] = b->Placement.getValue();
 
-    bool anyLegacy = false;
+    bool anyLegacyBodyPlacement = false;
     for (const auto& kv : legacyP) {
-        if (!kv.second.isIdentity()) { anyLegacy = true; break; }
+        if (!kv.second.isIdentity()) { anyLegacyBodyPlacement = true; break; }
     }
 
-    if (anyLegacy) {
+    if (anyLegacyBodyPlacement) {
         Base::Console().message("[PD-Migrate] wrap tips (push Body.Placement to Tip)\n");
         migrateBodyTips(doc, bodies, legacyP);
 
@@ -852,6 +741,7 @@ void migrateLegacyBodyPlacements(App::Document* doc)
 
     Base::Console().message("[PD-Migrate] recompute\n");
     doc->recompute();
+
 }
 
 } // namespace PartDesign

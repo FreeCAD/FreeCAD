@@ -31,6 +31,8 @@
 #include <App/Part.h>
 #include <App/VarSet.h>
 #include <App/Origin.h>
+#include <App/PDMigrationGate.h>
+
 #include <Base/Placement.h>
 
 #include "Body.h"
@@ -571,6 +573,7 @@ namespace {
     static std::unordered_set<App::Document*> s_migrationHooked;
 }
 
+
 void Body::onDocumentRestored()
 {
     for (auto obj : Group.getValues()) {
@@ -587,17 +590,20 @@ void Body::onDocumentRestored()
     Placement.setStatus(App::Property::Hidden, true);
     Placement.setStatus(App::Property::ReadOnly, true);
 
-    // --- NEW: defer migration until the *document* has fully finished restoring
+    // Defer migration until the document has finished restoring
     App::Document* doc = getDocument();
     if (doc && s_migrationHooked.insert(doc).second) {
         App::GetApplication().signalFinishRestoreDocument.connect(
             [doc](const App::Document& done) {
-                if (&done != doc) return; // only run for this document
+                if (&done != doc) return;
+    
+                // One-shot: run migration only if restore marked this document
+                if (!App::ConsumeDocNeedsPDMigration(&done)) return;
+    
                 PartDesign::migrateLegacyBodyPlacements(const_cast<App::Document*>(&done));
             }
         );
     }
-    // --- END NEW
 
     DocumentObject::onDocumentRestored();
 }
