@@ -265,7 +265,7 @@ class SketchObject(Part2DObject):
 
             Args:
                 constraintIndices: The zero-based indices of the constraints to delete
-                updateGeometry: Wheter to update the geometry after solve
+                updateGeometry: Whether to update the geometry after solve
         """
         ...
 
