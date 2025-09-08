@@ -40,7 +40,7 @@ def get_information():
         "name": "Constraint Contact Shell Shell",
         "meshtype": "face",
         "meshelement": "Tria3",
-        "constraints": ["fixed", "force", "contact"],
+        "constraints": ["displacement", "force", "contact"],
         "solvers": ["ccxtools"],
         "material": "solid",
         "equations": ["mechanical"],
@@ -171,13 +171,16 @@ def setup(doc=None, solvertype="ccxtools"):
     material_obj.Material = mat
     analysis.addObject(material_obj)
 
-    # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
-    con_fixed.References = [
+    # constraint displacement
+    con_displacement = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacement")
+    con_displacement.References = [
         (lower_tube, "Edge2"),
         (upper_tube, "Edge3"),
     ]
-    analysis.addObject(con_fixed)
+    con_displacement.xFree = False
+    con_displacement.yFree = False
+    con_displacement.zFree = False
+    analysis.addObject(con_displacement)
 
     # constraint force
     con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
