@@ -26,6 +26,7 @@
 #include <cmath>
 #include <limits>
 #include <numbers>
+#include <sstream>
 #include <string>
 #endif
 
@@ -35,6 +36,7 @@
 #include "Quantity.h"
 #include "Tools.h"
 #include "UnitsApi.h"
+#include "UnitsConvData.h"
 #include "UnitsSchema.h"
 
 /** \defgroup Units Units system
@@ -56,24 +58,29 @@ using Base::Quantity;
 using Base::QuantityFormat;
 using Base::UnitsSchema;
 
-// ====== Static attributes =========================
-// NOLINTNEXTLINE
-int QuantityFormat::defaultDenominator = 8;  // for 1/8"
-
-
 QuantityFormat::QuantityFormat()
     : option(OmitGroupSeparator | RejectGroupSeparator)
     , format(Fixed)
-    , precision(static_cast<int>(UnitsApi::getDecimals()))
-    , denominator(defaultDenominator)
+    , _precision(-1)
+    , _denominator(-1)
 {}
 
 QuantityFormat::QuantityFormat(QuantityFormat::NumberFormat format, int decimals)
     : option(OmitGroupSeparator | RejectGroupSeparator)
     , format(format)
-    , precision(decimals < 0 ? UnitsApi::getDecimals() : decimals)
-    , denominator(defaultDenominator)
+    , _precision(decimals)
+    , _denominator(-1)
 {}
+
+int QuantityFormat::getPrecision() const
+{
+    return _precision < 0 ? UnitsApi::getDecimals() : _precision;
+}
+
+int QuantityFormat::getDenominator() const
+{
+    return _denominator < 0 ? UnitsApi::getDenominator() : _denominator;
+}
 
 // ----------------------------------------------------------------------------
 
@@ -87,22 +94,21 @@ Quantity::Quantity(double value, const Unit& unit)
 {}
 
 Quantity::Quantity(double value, const std::string& unit)
-    : myValue {0.0}
 {
     if (unit.empty()) {
-        this->myValue = value;
-        this->myUnit = Unit();
+        myValue = value;
+        myUnit = Unit();
         return;
     }
 
     try {
         auto tmpQty = parse(unit);
-        this->myUnit = tmpQty.getUnit();
-        this->myValue = value * tmpQty.getValue();
+        myValue = value * tmpQty.getValue();
+        myUnit = tmpQty.getUnit();
     }
     catch (const Base::ParserError&) {
-        this->myValue = 0.0;
-        this->myUnit = Unit();
+        myValue = 0.0;
+        myUnit = Unit();
     }
 }
 
@@ -113,7 +119,7 @@ double Quantity::getValueAs(const Quantity& other) const
 
 bool Quantity::operator==(const Quantity& that) const
 {
-    return (this->myValue == that.myValue) && (this->myUnit == that.myUnit);
+    return (myValue == that.myValue) && (myUnit == that.myUnit);
 }
 
 bool Quantity::operator!=(const Quantity& that) const
@@ -123,62 +129,62 @@ bool Quantity::operator!=(const Quantity& that) const
 
 bool Quantity::operator<(const Quantity& that) const
 {
-    if (this->myUnit != that.myUnit) {
+    if (myUnit != that.myUnit) {
         throw Base::UnitsMismatchError(
             "Quantity::operator <(): quantities need to have same unit to compare");
     }
 
-    return (this->myValue < that.myValue);
+    return (myValue < that.myValue);
 }
 
 bool Quantity::operator>(const Quantity& that) const
 {
-    if (this->myUnit != that.myUnit) {
+    if (myUnit != that.myUnit) {
         throw Base::UnitsMismatchError(
             "Quantity::operator >(): quantities need to have same unit to compare");
     }
 
-    return (this->myValue > that.myValue);
+    return (myValue > that.myValue);
 }
 
 bool Quantity::operator<=(const Quantity& that) const
 {
-    if (this->myUnit != that.myUnit) {
+    if (myUnit != that.myUnit) {
         throw Base::UnitsMismatchError(
             "Quantity::operator <=(): quantities need to have same unit to compare");
     }
 
-    return (this->myValue <= that.myValue);
+    return (myValue <= that.myValue);
 }
 
 bool Quantity::operator>=(const Quantity& that) const
 {
-    if (this->myUnit != that.myUnit) {
+    if (myUnit != that.myUnit) {
         throw Base::UnitsMismatchError(
             "Quantity::operator >=(): quantities need to have same unit to compare");
     }
 
-    return (this->myValue >= that.myValue);
+    return (myValue >= that.myValue);
 }
 
 Quantity Quantity::operator*(const Quantity& other) const
 {
-    return Quantity(this->myValue * other.myValue, this->myUnit * other.myUnit);
+    return Quantity(myValue * other.myValue, myUnit * other.myUnit);
 }
 
 Quantity Quantity::operator*(double factor) const
 {
-    return Quantity(this->myValue * factor, this->myUnit);
+    return Quantity(myValue * factor, myUnit);
 }
 
 Quantity Quantity::operator/(const Quantity& other) const
 {
-    return Quantity(this->myValue / other.myValue, this->myUnit / other.myUnit);
+    return Quantity(myValue / other.myValue, myUnit / other.myUnit);
 }
 
 Quantity Quantity::operator/(double factor) const
 {
-    return Quantity(this->myValue / factor, this->myUnit);
+    return Quantity(myValue / factor, myUnit);
 }
 
 Quantity Quantity::pow(const Quantity& other) const
@@ -187,27 +193,27 @@ Quantity Quantity::pow(const Quantity& other) const
         throw Base::UnitsMismatchError("Quantity::pow(): exponent must not have a unit");
     }
 
-    return Quantity(std::pow(this->myValue, other.myValue),
-                    this->myUnit.pow(static_cast<signed char>(other.myValue)));
+    return Quantity(std::pow(myValue, other.myValue),
+                    myUnit.pow(static_cast<signed char>(other.myValue)));
 }
 
 Quantity Quantity::pow(double exp) const
 {
-    return Quantity(std::pow(this->myValue, exp), this->myUnit.pow(exp));
+    return Quantity(std::pow(myValue, exp), myUnit.pow(exp));
 }
 
 Quantity Quantity::operator+(const Quantity& other) const
 {
-    if (this->myUnit != other.myUnit) {
+    if (myUnit != other.myUnit) {
         throw Base::UnitsMismatchError("Quantity::operator +(): Unit mismatch in plus operation");
     }
 
-    return Quantity(this->myValue + other.myValue, this->myUnit);
+    return Quantity(myValue + other.myValue, myUnit);
 }
 
 Quantity& Quantity::operator+=(const Quantity& other)
 {
-    if (this->myUnit != other.myUnit) {
+    if (myUnit != other.myUnit) {
         throw Base::UnitsMismatchError("Quantity::operator +=(): Unit mismatch in plus operation");
     }
 
@@ -218,16 +224,16 @@ Quantity& Quantity::operator+=(const Quantity& other)
 
 Quantity Quantity::operator-(const Quantity& other) const
 {
-    if (this->myUnit != other.myUnit) {
+    if (myUnit != other.myUnit) {
         throw Base::UnitsMismatchError("Quantity::operator -(): Unit mismatch in minus operation");
     }
 
-    return Quantity(this->myValue - other.myValue, this->myUnit);
+    return Quantity(myValue - other.myValue, myUnit);
 }
 
 Quantity& Quantity::operator-=(const Quantity& other)
 {
-    if (this->myUnit != other.myUnit) {
+    if (myUnit != other.myUnit) {
         throw Base::UnitsMismatchError("Quantity::operator -=(): Unit mismatch in minus operation");
     }
 
@@ -238,7 +244,31 @@ Quantity& Quantity::operator-=(const Quantity& other)
 
 Quantity Quantity::operator-() const
 {
-    return Quantity(-(this->myValue), this->myUnit);
+    return Quantity(-myValue, myUnit);
+}
+
+std::string Quantity::toString(const QuantityFormat& format) const
+{
+    return fmt::format("'{} {}'", toNumber(format), myUnit.getString());
+}
+
+std::string Quantity::toNumber(const QuantityFormat& format) const
+{
+    std::stringstream ss;
+
+    switch (format.format) {
+        case QuantityFormat::Fixed:
+            ss << std::fixed;
+            break;
+        case QuantityFormat::Scientific:
+            ss << std::scientific;
+            break;
+        default:
+            break;
+    }
+    ss << std::setprecision(format.getPrecision()) << myValue;
+
+    return ss.str();
 }
 
 std::string Quantity::getUserString() const
@@ -295,6 +325,8 @@ void Quantity::setInvalid()
 
 // === Predefined types =====================================================
 // clang-format off
+using namespace Base::UnitsConvData;
+
 const Quantity Quantity::NanoMetre              ( 1.0e-6                , Unit::Length                  );
 const Quantity Quantity::MicroMetre             ( 1.0e-3                , Unit::Length                  );
 const Quantity Quantity::MilliMetre             ( 1.0                   , Unit::Length                  );
@@ -336,22 +368,23 @@ const Quantity Quantity::Mole                   ( 1.0                   , Unit::
 
 const Quantity Quantity::Candela                ( 1.0                   , Unit::LuminousIntensity       );
 
-const Quantity Quantity::Inch                   ( 25.4                  , Unit::Length                  );
-const Quantity Quantity::Foot                   ( 304.8                 , Unit::Length                  );
-const Quantity Quantity::Thou                   ( 0.0254                , Unit::Length                  );
-const Quantity Quantity::Yard                   ( 914.4                 , Unit::Length                  );
-const Quantity Quantity::Mile                   ( 1609344.0             , Unit::Length                  );
+const Quantity Quantity::Inch                   ( in                    , Unit::Length                  );
+const Quantity Quantity::Foot                   ( ft                    , Unit::Length                  );
+const Quantity Quantity::Thou                   ( in / 1000             , Unit::Length                  );
+const Quantity Quantity::Yard                   ( yd                    , Unit::Length                  );
+const Quantity Quantity::Mile                   ( mi                    , Unit::Length                  );
 
-const Quantity Quantity::MilePerHour            ( 447.04                , Unit::Velocity                );
-const Quantity Quantity::SquareFoot             ( 92903.04              , Unit::Area                    );
-const Quantity Quantity::CubicFoot              ( 28316846.592          , Unit::Volume                  );
+const Quantity Quantity::MilePerHour            ( mi / 3600             , Unit::Velocity                );
 
-const Quantity Quantity::Pound                  ( 0.45359237            , Unit::Mass                    );
-const Quantity Quantity::Ounce                  ( 0.0283495231          , Unit::Mass                    );
-const Quantity Quantity::Stone                  ( 6.35029318            , Unit::Mass                    );
-const Quantity Quantity::Hundredweights         ( 50.80234544           , Unit::Mass                    );
+const Quantity Quantity::SquareFoot             ( ft * ft               , Unit::Area                    );
+const Quantity Quantity::CubicFoot              ( ft * ft * ft          , Unit::Volume                  );
 
-const Quantity Quantity::PoundForce             ( 4448.22               , Unit::Force                   );  // lbf are ~= 4.44822 Newton
+const Quantity Quantity::Pound                  ( lb                    , Unit::Mass                    );
+const Quantity Quantity::Ounce                  ( lb / 16               , Unit::Mass                    );
+const Quantity Quantity::Stone                  ( lb * 14               , Unit::Mass                    );
+const Quantity Quantity::Hundredweights         ( lb * 112              , Unit::Mass                    );
+
+const Quantity Quantity::PoundForce             ( 1000 * lbf            , Unit::Force                   );
 
 const Quantity Quantity::Newton                 ( 1000.0                , Unit::Force                   );  // Newton (kg*m/s^2)
 const Quantity Quantity::MilliNewton            ( 1.0                   , Unit::Force                   );
@@ -363,21 +396,21 @@ const Quantity Quantity::MilliNewtonPerMeter    ( 1e-3                  , Unit::
 const Quantity Quantity::KiloNewtonPerMeter     ( 1e3                   , Unit::Stiffness               );
 const Quantity Quantity::MegaNewtonPerMeter     ( 1e6                   , Unit::Stiffness               );
 
-const Quantity Quantity::Pascal                 ( 0.001                 , Unit::CompressiveStrength     );  // Pascal (kg/m/s^2 or N/m^2)
-const Quantity Quantity::KiloPascal             ( 1.00                  , Unit::CompressiveStrength     );
-const Quantity Quantity::MegaPascal             ( 1000.0                , Unit::CompressiveStrength     );
-const Quantity Quantity::GigaPascal             ( 1e+6                  , Unit::CompressiveStrength     );
+const Quantity Quantity::Pascal                 ( 0.001                 , Unit::Pressure                );  // Pascal (kg/m/s^2 or N/m^2)
+const Quantity Quantity::KiloPascal             ( 1.00                  , Unit::Pressure                );
+const Quantity Quantity::MegaPascal             ( 1000.0                , Unit::Pressure                );
+const Quantity Quantity::GigaPascal             ( 1e+6                  , Unit::Pressure                );
 
-const Quantity Quantity::MilliBar               ( 0.1                   , Unit::CompressiveStrength     );
-const Quantity Quantity::Bar                    ( 100.0                 , Unit::CompressiveStrength     );  // 1 bar = 100 kPa
+const Quantity Quantity::MilliBar               ( 0.1                   , Unit::Pressure                );
+const Quantity Quantity::Bar                    ( 100.0                 , Unit::Pressure                );  // 1 bar = 100 kPa
 
-const Quantity Quantity::Torr                   ( 101.325 / 760.0       , Unit::CompressiveStrength     );  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
-const Quantity Quantity::mTorr                  ( 0.101325 / 760.0      , Unit::CompressiveStrength     );  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
-const Quantity Quantity::yTorr                  ( 0.000101325 / 760.0   , Unit::CompressiveStrength     );  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
+const Quantity Quantity::Torr                   ( 101.325 / 760.0       , Unit::Pressure                );  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
+const Quantity Quantity::mTorr                  ( 101.325 / 760.0 / 1e3 , Unit::Pressure                );  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
+const Quantity Quantity::yTorr                  ( 101.325 / 760.0 / 1e6 , Unit::Pressure                );  // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
 
-const Quantity Quantity::PSI                    ( 6.894744825494        , Unit::CompressiveStrength     );  // pounds/in^2
-const Quantity Quantity::KSI                    ( 6894.744825494        , Unit::CompressiveStrength     );  // 1000 x pounds/in^2
-const Quantity Quantity::MPSI                   ( 6894744.825494        , Unit::CompressiveStrength     );  // 1000 ksi
+const Quantity Quantity::PSI                    ( psi                   , Unit::Pressure                );
+const Quantity Quantity::KSI                    ( psi * 1000            , Unit::Pressure                );
+const Quantity Quantity::MPSI                   ( psi * 1000000         , Unit::Pressure                );
 
 const Quantity Quantity::Watt                   ( 1e+6                  , Unit::Power                   );  // Watt (kg*m^2/s^3)
 const Quantity Quantity::MilliWatt              ( 1e+3                  , Unit::Power                   );
@@ -429,8 +462,8 @@ const Quantity Quantity::Calorie                ( 4.1868e+6             , Unit::
 const Quantity Quantity::KiloCalorie            ( 4.1868e+9             , Unit::Work                    );
 const Quantity Quantity::NewtonMeter            ( 1e+6                  , Unit::Moment                  );  // Joule (kg*m^2/s^2)
 
-const Quantity Quantity::KMH                    ( 277.778               , Unit::Velocity                );  // km/h
-const Quantity Quantity::MPH                    ( 447.04                , Unit::Velocity                );  // Mile/h
+const Quantity Quantity::KMH                    ( 1e+6 / 3600           , Unit::Velocity                );  // km/h
+const Quantity Quantity::MPH                    ( mi / 3600             , Unit::Velocity                );  // Mile/h
 
 const Quantity Quantity::AngMinute              ( 1.0 / 60.0            , Unit::Angle                   );  // angular minute
 const Quantity Quantity::AngSecond              ( 1.0 / 3600.0          , Unit::Angle                   );  // angular second
