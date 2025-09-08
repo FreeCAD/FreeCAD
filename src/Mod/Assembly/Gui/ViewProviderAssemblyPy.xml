@@ -34,6 +34,31 @@
             </UserDocu>
           </Documentation>
         </Methode>
+        <Methode Name="isolateComponents">
+          <Documentation>
+            <UserDocu>
+              Temporarily isolates a given set of components in the 3D view.
+              Other components are faded or hidden based on the specified mode.
+
+              isolateComponents(components, mode)
+
+              - components: A list or tuple of DocumentObjects to isolate.
+              - mode: An integer specifying the isolation mode:
+                - 0: Transparent
+                - 1: Wireframe
+                - 2: Hidden
+            </UserDocu>
+          </Documentation>
+        </Methode>
+        <Methode Name="clearIsolate">
+          <Documentation>
+            <UserDocu>
+              Restores the visual state of all components, clearing any active isolation.
+
+              clearIsolate()
+            </UserDocu>
+          </Documentation>
+        </Methode>
         <Attribute Name="EnableMovement">
             <Documentation>
                 <UserDocu>Enable moving the parts by clicking and dragging.</UserDocu>
