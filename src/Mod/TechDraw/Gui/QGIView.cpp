@@ -612,7 +612,7 @@ void QGIView::updateView(bool forceUpdate)
         rotateView();
     }
 
-    drawBorder(); // Draw the border then hide it so the label knows where to position itself
+    drawBorder();
 
     QGIView::draw();
 }
