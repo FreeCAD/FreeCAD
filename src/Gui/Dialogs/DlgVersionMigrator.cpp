@@ -23,8 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QApplication>
-#include <QLabel>
+#include <QDialog>
 #include <QLocale>
 #include <QMessageBox>
 #include <QOpenGLFunctions>
@@ -33,31 +32,25 @@
 #include <QTimer>
 #include <QWindow>
 
+#include <memory>
 #include <set>
 #include <string>
 #include <ranges>
 #endif
 
-#include "VersionMigrator.h"
+#include "DlgVersionMigrator.h"
+#include "ui_DlgVersionMigrator.h"
 
-#include "MainWindow.h"
+#include "../MainWindow.h"
 #include <App/Application.h>
 #include <App/ApplicationDirectories.h>
 
+#include "QTextBrowser"
 
-using namespace Gui;
+
+using namespace Gui::Dialog;
 namespace fs = std::filesystem;
 
-
-uintmax_t calculateDirectorySize(const fs::path &dir) {
-    uintmax_t size = 0;
-    for (auto &entry: fs::recursive_directory_iterator(dir)) {
-        if (fs::is_regular_file(entry.status())) {
-            size += fs::file_size(entry.path());
-        }
-    }
-    return size;
-}
 
 std::set<std::string> getKnownVersions() {
     auto splitCommas = [](const std::string &input) {
@@ -110,46 +103,63 @@ void markCurrentVersionAsKnown() {
     setKnownVersions(knownVersions);
 }
 
-VersionMigrator::VersionMigrator(MainWindow *mw) : QObject(mw), mainWindow(mw) {
-}
 
-void VersionMigrator::execute() {
-    // If the user is running a custom directory set, there is no migration to versioned directories
-    if (App::Application::directories()->usingCustomDirectories()) {
-        return;
-    }
+DlgVersionMigrator::DlgVersionMigrator(MainWindow *mw) :
+    QDialog(mw)
+    , mainWindow(mw)
+    , sizeCalculationWorkerThread(nullptr)
+    , ui(std::make_unique<Ui_DlgVersionMigrator>())
+{
+    ui->setupUi(this);
 
     auto prefGroup = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Migration");
 
-    // Split our comma-separated list of already-migrated-to version directories into a set for easy
-    // searching
-    std::string offeredToMigrateToVersionedConfig =
-            prefGroup->GetASCII("OfferedToMigrateToVersionedConfig", "");
-    std::set<std::string> knownVersions = getKnownVersions();
+    int major = std::stoi(App::Application::Config()["BuildVersionMajor"]);
+    int minor = std::stoi(App::Application::Config()["BuildVersionMinor"]);
 
+    auto programName = QString::fromStdString(App::Application::getExecutableName());
+
+    // NOTE: All rich-text strings are generated programmatically so that translators don't have to deal with the
+    // markup. The two strings in the middle of the dialog are set in the UI file.
+
+    auto welcomeString = QStringLiteral("<b>") + QObject::tr("Welcome to %1 %2.%3\n\n").arg(
+        programName, QString::number(major), QString::number(minor)) + QStringLiteral("</b>");
+
+    auto calculatingSizeString = QStringLiteral("<b>") + QObject::tr("Calculating size…") + QStringLiteral("</b>");
+
+    auto shareConfigurationString = QStringLiteral("<a href='#shareConfiguration'>") +
+        QObject::tr("Share configuration between versions") + QStringLiteral("</a>");
+
+    ui->welcomeLabel->setText(welcomeString);
+    ui->sizeLabel->setText(calculatingSizeString);
+    ui->shareLinkLabel->setText(shareConfigurationString);
+    ui->shareLinkLabel->setTextInteractionFlags(Qt::TextBrowserInteraction);
+
+    connect(ui->copyButton, &QPushButton::clicked, this, &DlgVersionMigrator::migrateToCurrentVersion);
+    connect(ui->shareLinkLabel, &QLabel::linkActivated, this, &DlgVersionMigrator::doNotMigrate);
+}
+
+DlgVersionMigrator::~DlgVersionMigrator() = default;
+
+int DlgVersionMigrator::exec() {
+    // If the user is running a custom directory set, there is no migration to versioned directories
+    if (App::Application::directories()->usingCustomDirectories()) {
+        return 0;
+    }
+    std::set<std::string> knownVersions = getKnownVersions();
     int major = std::stoi(App::Application::Config()["BuildVersionMajor"]);
     int minor = std::stoi(App::Application::Config()["BuildVersionMinor"]);
     std::string currentVersionedDirName = App::ApplicationDirectories::versionStringForPath(major, minor);
-    if (!knownVersions.contains(currentVersionedDirName)
-        && !App::Application::directories()->usingCurrentVersionConfig(
-            App::Application::directories()->getUserAppDataDir())) {
-        auto programName = QString::fromStdString(App::Application::getExecutableName());
-        auto result = QMessageBox::question(
-            mainWindow,
-            QObject::tr("Welcome to %1 v%2.%3").arg(programName, QString::number(major), QString::number(minor)),
-            QObject::tr("Welcome to %1 v%2.%3\n\n").arg(programName, QString::number(major), QString::number(minor))
-            + QObject::tr("Configuration data and addons from previous program version found. "
-                "Migrate the configuration to a new directory for this version? Answering 'No' will "
-                "continue to use the old directory. 'Yes' will copy it."),
-            QMessageBox::Yes | QMessageBox::No);
-        if (result == QMessageBox::Yes) {
-            confirmMigration();
-        } else {
-            // Don't ask again for this version
-            markCurrentVersionAsKnown();
+    if (!knownVersions.contains(currentVersionedDirName) && !App::Application::directories()->usingCurrentVersionConfig(
+        App::Application::directories()->getUserAppDataDir())) {
+        calculateMigrationSize();
+        auto result = QDialog::exec();
+        if (sizeCalculationWorkerThread && sizeCalculationWorkerThread->isRunning()) {
+            sizeCalculationWorkerThread->quit();
         }
     }
+    return 0;
 }
 
 class DirectorySizeCalculationWorker : public QObject {
@@ -216,58 +226,41 @@ Q_SIGNALS:
     void failed();
 };
 
-void VersionMigrator::confirmMigration() {
-    auto *workerThread = new QThread(mainWindow);
+void DlgVersionMigrator::calculateMigrationSize() {
+    sizeCalculationWorkerThread = new QThread(mainWindow);
     auto *worker = new DirectorySizeCalculationWorker();
-    worker->moveToThread(workerThread);
-    connect(workerThread, &QThread::started, worker, &DirectorySizeCalculationWorker::run);
+    worker->moveToThread(sizeCalculationWorkerThread);
+    connect(sizeCalculationWorkerThread, &QThread::started, worker, &DirectorySizeCalculationWorker::run);
 
-    connect(worker, &DirectorySizeCalculationWorker::sizeFound, this, &VersionMigrator::showSizeOfMigration);
-    connect(worker, &DirectorySizeCalculationWorker::finished, workerThread, &QThread::quit);
+    connect(worker, &DirectorySizeCalculationWorker::sizeFound, this, &DlgVersionMigrator::showSizeOfMigration);
+    connect(worker, &DirectorySizeCalculationWorker::finished, sizeCalculationWorkerThread, &QThread::quit);
     connect(worker, &DirectorySizeCalculationWorker::finished, worker, &QObject::deleteLater);
-    connect(workerThread, &QThread::finished, workerThread, &QObject::deleteLater);
+    connect(sizeCalculationWorkerThread, &QThread::finished, sizeCalculationWorkerThread, &QObject::deleteLater);
 
-    auto calculatingSize = new QMessageBox(mainWindow);
-    calculatingSize->setWindowTitle(QObject::tr("Calculating size"));
-    calculatingSize->setText(QObject::tr("Calculating directory size…"));
-    calculatingSize->setStandardButtons(QMessageBox::Cancel);
-    connect(worker, &DirectorySizeCalculationWorker::sizeFound, calculatingSize, &QMessageBox::accept);
-    connect(calculatingSize, &QMessageBox::rejected, workerThread, &QThread::requestInterruption);
-    connect(calculatingSize, &QMessageBox::rejected, this, &VersionMigrator::migrationCancelled);
-
-    workerThread->start();
-    calculatingSize->exec();
+    sizeCalculationWorkerThread->start();
 }
 
-void VersionMigrator::migrationCancelled() const {
-    auto message = QObject::tr(
-        "Migration cancelled. Ask again on next restart?");
-    auto result = QMessageBox::question(
-        mainWindow,
-        QObject::tr("Migration cancelled"),
-        message,
-        QMessageBox::Yes | QMessageBox::No);
-    if (result == QMessageBox::No) {
-        markCurrentVersionAsKnown();
+void DlgVersionMigrator::doNotMigrate(const QString &linkText)
+{
+    Q_UNUSED(linkText);
+    markCurrentVersionAsKnown();
+    if (sizeCalculationWorkerThread && sizeCalculationWorkerThread->isRunning()) {
+        sizeCalculationWorkerThread->quit();
     }
+    close();
 }
 
-void VersionMigrator::showSizeOfMigration(uintmax_t size) {
+void DlgVersionMigrator::showSizeOfMigration(uintmax_t size) {
     auto sizeString = QLocale().formattedDataSize(static_cast<qint64>(size));
-    auto result = QMessageBox::question(
-        mainWindow,
-        QObject::tr("Migration Size"),
-        QObject::tr("Migrating will copy %1 into a versioned subdirectory. Continue?").arg(sizeString),
-        QMessageBox::Yes | QMessageBox::No
-    );
-    if (result == QMessageBox::Yes) {
-        migrateToCurrentVersion();
-    } else {
-        migrationCancelled();
-    }
+    auto sizeMessage = QStringLiteral("<b>") +
+        QObject::tr("Estimated size of data to copy: %1").arg(sizeString) +
+        QStringLiteral("</b>");
+    ui->sizeLabel->setText(sizeMessage);
+    sizeCalculationWorkerThread = nullptr; // Deleted via a previously-configured deleteLater()
 }
 
-void VersionMigrator::migrateToCurrentVersion() {
+void DlgVersionMigrator::migrateToCurrentVersion() {
+    hide();
     auto oldKnownVersions = getKnownVersions();
     markCurrentVersionAsKnown();  // This MUST be done before the migration, or it won't get remembered
     auto *workerThread = new QThread(mainWindow);
@@ -278,9 +271,9 @@ void VersionMigrator::migrateToCurrentVersion() {
     connect(worker, &PathMigrationWorker::finished, worker, &QObject::deleteLater);
     connect(workerThread, &QThread::finished, workerThread, &QObject::deleteLater);
 
-    auto migrationRunning = new QMessageBox(mainWindow);
+    auto migrationRunning = new QMessageBox(this);
     migrationRunning->setWindowTitle(QObject::tr("Migrating"));
-    migrationRunning->setText(QObject::tr("Migrating configuration data and addons..."));
+    migrationRunning->setText(QObject::tr("Migrating configuration data and addons…"));
     migrationRunning->setStandardButtons(QMessageBox::NoButton);
     connect(worker, &PathMigrationWorker::complete, migrationRunning, &QMessageBox::accept);
     connect(worker, &PathMigrationWorker::failed, migrationRunning, &QMessageBox::reject);
@@ -290,16 +283,16 @@ void VersionMigrator::migrateToCurrentVersion() {
 
     if (migrationRunning->result() == QDialog::Accepted) {
         App::GetApplication().GetUserParameter().SaveDocument(); // Flush to disk before restarting
-        auto *restarting = new QMessageBox(mainWindow);
+        auto *restarting = new QMessageBox(this);
         restarting->setText(
-            QObject::tr("Migration complete. Restarting..."));
+            QObject::tr("Migration complete. Restarting…"));
         restarting->setWindowTitle(QObject::tr("Restarting"));
         restarting->setStandardButtons(QMessageBox::NoButton);
         auto closeNotice = [restarting]() {
             restarting->reject();
         };
 
-        // Insert a short delay before restart so the user can see the success message, and
+        // Insert a short delay before restart so the user can see the success message and
         // knows it's a restart and not a crash...
         constexpr int delayRestartMillis{2000};
         QTimer::singleShot(delayRestartMillis, closeNotice);
@@ -323,4 +316,4 @@ void VersionMigrator::migrateToCurrentVersion() {
     }
 }
 
-#include "VersionMigrator.moc"
+#include "DlgVersionMigrator.moc"
