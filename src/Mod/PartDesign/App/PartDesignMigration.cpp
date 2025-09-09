@@ -413,6 +413,8 @@ static std::vector<App::Origin*> findTopLevelOrigins(App::Document* doc)
 static bool removeOriginIfUnreferenced(App::Document* doc, App::Origin* og)
 {
     if (!doc || !og) return true;
+    
+    if (hasExternalRefs(og, nullptr)) return false;
 
     // If any child is still referenced from outside the origin, keep everything.
     for (auto* ch : og->baseObjects()) {
@@ -444,15 +446,6 @@ static void relinkInPartSketchesKeepWorld(
     const std::function<Base::Placement(App::GeoFeature*)>& containerCS)
 {
     if (!doc) return;
-
-    // Index all origin features in the doc: feature -> owning Origin, and cache their globals
-    std::unordered_map<App::DocumentObject*, App::Origin*> ownerOfFeature;
-    for (auto* o : doc->getObjectsOfType(App::Origin::getClassTypeId())) {
-        auto* og = static_cast<App::Origin*>(o);
-        for (auto* ch : og->baseObjects()) {
-            ownerOfFeature[ch] = og;
-        }
-    }
 
         // Helper to get global placement for any object we may target here
     auto getGlobal = [&](App::DocumentObject* obj) -> Base::Placement {
