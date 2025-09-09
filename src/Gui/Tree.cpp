@@ -491,15 +491,46 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
     bool trimColumnSize = isOnlyNameColumnDisplayed();
 
     if (index.column() == 0) {
-        if (tree->testAttribute(Qt::WA_NoSystemBackground)
-                && (trimColumnSize || (opt.backgroundBrush.style() == Qt::NoBrush
-                                && _TreeItemBackground.style() != Qt::NoBrush)))
-        {
+        // Only draw custom overlay backgrounds when the tree widget is running
+        // in overlay mode AND the overlay background is translucent. When
+        // overlay is disabled or the background is opaque we must not draw
+        // the extra background (it would clash with the normal widget
+        // rendering). The overlay system sets Qt::WA_NoSystemBackground and
+        // Qt::WA_TranslucentBackground when appropriate, so check both.
+        // Walk up the parent chain to find whether we're inside an overlay
+        // with a translucent background. In some layouts the overlay
+        // attributes/property are set on ancestor widgets (Dock/Overlay
+        // containers) so check parents too. Also consider the "transparent"
+        // property set on OverlayTabWidget.
+        auto isAncestorOverlay = [&](QWidget *w)->bool{
+            while (w) {
+                if (w->testAttribute(Qt::WA_NoSystemBackground)
+                        && w->testAttribute(Qt::WA_TranslucentBackground))
+                    return true;
+                // OverlayTabWidget sets a dynamic property "transparent";
+                // accept that as indication of overlay translucency too.
+                QVariant prop = w->property("transparent");
+                if (prop.isValid() && prop.toBool())
+                    return true;
+                w = w->parentWidget();
+            }
+            return false;
+        };
+
+        // Paint the custom overlay background whenever we're inside a
+        // translucent overlay and a tree item background is configured.
+        // Don't rely on the style's backgroundBrush (which may change on
+        // hover); only avoid painting over selected or focused items so the
+        // standard selection/active visuals remain visible.
+        if (isAncestorOverlay(tree) && _TreeItemBackground.style() != Qt::NoBrush) {
             QRect rect = calculateItemRect(option);
 
-            if (trimColumnSize && opt.backgroundBrush.style() == Qt::NoBrush) {
-                painter->fillRect(rect, _TreeItemBackground);
-            } else if (!opt.state.testFlag(QStyle::State_Selected)) {
+            bool hasFocus = opt.state.testFlag(QStyle::State_HasFocus);
+            bool isSelected = opt.state.testFlag(QStyle::State_Selected);
+
+            if (!isSelected && !hasFocus) {
+                // When only the name column is shown, respect the trimmed
+                // rect; otherwise paint the full calculated rect.
                 painter->fillRect(rect, _TreeItemBackground);
             }
         }
@@ -517,6 +548,60 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
 
     if (!item) {
         return;
+    }
+
+    // If the widget is not inside a translucent overlay, prevent the
+    // stylesheet from painting the tree item background by clearing the
+    // backgroundBrush for non-selected items. Some QSS rules paint the
+    // background via the style's CE_ItemViewItem; clearing backgroundBrush
+    // prevents that drawing when we don't want the overlay background.
+    auto isAncestorOverlay = [&](QWidget *w)->bool{
+        while (w) {
+            if (w->testAttribute(Qt::WA_NoSystemBackground)
+                    && w->testAttribute(Qt::WA_TranslucentBackground))
+                return true;
+            QVariant prop = w->property("transparent");
+            if (prop.isValid() && prop.toBool())
+                return true;
+            w = w->parentWidget();
+        }
+        return false;
+    };
+
+    bool overlayActive = isAncestorOverlay(tree);
+    // Preserve selection/highlight: only clear the backgroundBrush when the
+    // overlay is inactive and the item is not selected, not focused, and
+    // not hovered. This ensures active/selected items still show their
+    // highlight even when the overlay is disabled. Additionally, when an
+    // item has an explicit background (set by setHighlight or similar),
+    // restore that brush into option so the style will draw the edited/
+    // active background even if the style's own brush is transient.
+    bool isSelected = option->state.testFlag(QStyle::State_Selected);
+    bool hasFocus = option->state.testFlag(QStyle::State_HasFocus);
+    bool stateHovered = option->state.testFlag(QStyle::State_MouseOver);
+    QBrush itemBg = item->background(0);
+    if (!overlayActive && !isSelected && !hasFocus && !stateHovered) {
+        option->backgroundBrush = QBrush(Qt::NoBrush);
+    }
+    // Determine the default 3D view background so we can tell whether the
+    // item's brush is the default or a custom highlight. Only apply the
+    // item's background to the style option when it's a custom highlight
+    // (different from BackgroundColor2) and the item is selected or has
+    // focus. Do not apply on mere hover — that caused BackgroundColor2 to
+    // appear when hovering other items.
+    QColor defaultBg = Qt::white;
+    {
+        ParameterGrp::handle hView = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        unsigned long col = hView->GetUnsigned("BackgroundColor2", 0);
+        defaultBg = Base::Color::fromPackedRGB<QColor>(col);
+    }
+    if (itemBg.style() != Qt::NoBrush) {
+        QColor itemColor = itemBg.color();
+        if (itemColor.isValid() && itemColor != defaultBg) {
+            // Apply custom highlight/background regardless of hover or
+            // selection so edited/active items are visible at all times.
+            option->backgroundBrush = itemBg;
+        }
     }
 
     option->textElideMode = Qt::ElideMiddle;
@@ -5282,8 +5367,8 @@ void DocumentObjectItem::restoreBackground() {
     QColor defaultBg = Qt::white;
     // read the 3D view background from user preferences (always present)
     {
-        ParameterGrp::handle hView = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-        unsigned long col = hView->GetUnsigned("BackgroundColor", 0);
+    ParameterGrp::handle hView = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    unsigned long col = hView->GetUnsigned("BackgroundColor2", 0);
         defaultBg = Base::Color::fromPackedRGB<QColor>(col);
     }
     this->setBackground(0, defaultBg);
@@ -5296,8 +5381,8 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
     // Use the user 3D view background color for default (always present)
     QColor defaultBg = Qt::white;
     {
-        ParameterGrp::handle hView = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-        unsigned long col = hView->GetUnsigned("BackgroundColor", 0);
+    ParameterGrp::handle hView = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    unsigned long col = hView->GetUnsigned("BackgroundColor2", 0);
         defaultBg = Base::Color::fromPackedRGB<QColor>(col);
     }
 
