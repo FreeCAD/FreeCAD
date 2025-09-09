@@ -1256,7 +1256,7 @@ class SectionPlaneTaskPanel:
         return True
 
     def getStandardButtons(self):
-        return QtGui.QDialogButtonBox.Ok
+        return QtGui.QDialogButtonBox.Close
 
     def getIcon(self,obj):
         if hasattr(obj.ViewObject,"Proxy"):
@@ -1354,6 +1354,11 @@ class SectionPlaneTaskPanel:
             self.delButton.setEnabled(False)
 
     def accept(self):
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+    def reject(self):
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
