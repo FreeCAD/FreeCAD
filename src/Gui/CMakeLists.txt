@@ -81,6 +81,8 @@ target_include_directories(
     FreeCADGui
     SYSTEM
     PRIVATE
+    ${FastSignals_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
     ${3DCONNEXION_INCLUDE_DIR}
 )
@@ -94,6 +96,7 @@ endif(MSVC)
 if(MSVC)
     set(FreeCADGui_LIBS
          FreeCADApp
+         libfastsignals
          ${OPENGL_gl_LIBRARY}
     )
 
@@ -106,6 +109,7 @@ if(MSVC)
 else(MSVC)
     set(FreeCADGui_LIBS
         FreeCADApp
+        libfastsignals
         ${Boost_LIBRARIES}
         ${OPENGL_gl_LIBRARY}
         ${3DCONNEXION_LINKFLAGS}
@@ -565,6 +569,7 @@ SET(Dialog_CPP_SRCS
     Dialogs/DlgAddProperty.cpp
     Dialogs/DlgAddPropertyVarSet.cpp
     VectorListEditor.cpp
+    ComputationDialog.cpp
 )
 
 SET(Dialog_HPP_SRCS
@@ -607,6 +612,7 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgAddProperty.h
     Dialogs/DlgAddPropertyVarSet.h
     VectorListEditor.h
+    ComputationDialog.h
 )
 
 SET(Dialog_SRCS

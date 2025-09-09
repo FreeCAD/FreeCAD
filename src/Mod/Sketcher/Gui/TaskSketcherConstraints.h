@@ -197,7 +197,7 @@ public:
 protected:
     void changeEvent(QEvent* e) override;
     ViewProviderSketch* sketchView;
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectionConstraintsChanged;
 
 private:
@@ -215,7 +215,7 @@ private:
         associatedConstraintsFilter;  // holds the constraint ids of the constraints associated with
                                       // the selected geometry
     ConstraintFilterList* filterList;
-    boost::signals2::scoped_connection changedSketchView;
+    fastsignals::advanced_scoped_connection changedSketchView;
 };
 
 }  // namespace SketcherGui

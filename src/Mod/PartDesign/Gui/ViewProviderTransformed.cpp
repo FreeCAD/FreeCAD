@@ -21,6 +21,7 @@
  ******************************************************************************/
 
 
+#include "App/Application.h"
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -169,11 +170,31 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
 {
     auto* pcTransformed = getObject<PartDesign::Transformed>();
 
-    if (recompute || pcTransformed->isError() || pcTransformed->mustExecute()) {
-        pcTransformed->recomputeFeature(true);
+    bool shouldRecompute = recompute || (pcTransformed->isError() || pcTransformed->mustExecute());
+    if(!shouldRecompute) {
+        return;
     }
 
-    updatePreview();
+    auto& app = App::GetApplication();
+    if (app.isAsyncRecomputeEnabled()) {
+        App::RecomputeRequest request = {
+            .documentObject = pcTransformed,
+            .recursive = true,
+            .callback = [this, pcTransformed](App::RecomputeRequest&, App::RecomputeResult&) {
+                // Handle the result in the UI thread.
+                QMetaObject::invokeMethod(qApp, [this, pcTransformed]() {
+                    updatePreview();
 
-    handleTransformedResult(pcTransformed);
+                    handleTransformedResult(pcTransformed);
+                }, Qt::QueuedConnection);
+            }
+        };
+        app.queueRecomputeRequest(request);
+    } else {
+        pcTransformed->recomputeFeature(/*recursive=*/true);
+
+        updatePreview();
+
+        handleTransformedResult(pcTransformed);
+    }
 }

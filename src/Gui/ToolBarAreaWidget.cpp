@@ -35,7 +35,7 @@ using namespace Gui;
 ToolBarAreaWidget::ToolBarAreaWidget(QWidget* parent,
                                      ToolBarArea area,
                                      const ParameterGrp::handle& hParam,
-                                     boost::signals2::scoped_connection& conn,
+                                     fastsignals::advanced_scoped_connection& conn,
                                      QTimer* timer)
     : QWidget(parent)
     , _sizingTimer(timer)

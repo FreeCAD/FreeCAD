@@ -119,13 +119,14 @@ struct DocumentP
     std::map<SoSeparator *,ViewProviderDocumentObject*> _CoinMap;
     std::map<std::string,ViewProvider*> _ViewProviderMapAnnotation;
     std::list<ViewProviderDocumentObject*> _redoViewProviders;
-
-    using Connection = boost::signals2::connection;
+    
+    using Connection = fastsignals::connection;
+    using AdvancedConnection = fastsignals::advanced_connection;
     Connection connectNewObject;
     Connection connectDelObject;
     Connection connectCngObject;
     Connection connectRenObject;
-    Connection connectActObject;
+    AdvancedConnection connectActObject;
     Connection connectSaveDocument;
     Connection connectRestDocument;
     Connection connectStartLoadDocument;
@@ -144,9 +145,9 @@ struct DocumentP
     Connection connectTransactionRemove;
     Connection connectTouchedObject;
     Connection connectChangePropertyEditor;
-    Connection connectChangeDocument;
+    AdvancedConnection connectChangeDocument;
 
-    using ConnectionBlock = boost::signals2::shared_connection_block;
+    using ConnectionBlock = fastsignals::shared_connection_block;
     ConnectionBlock connectActObjectBlocker;
     ConnectionBlock connectChangeDocumentBlocker;
 
@@ -460,8 +461,8 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->connectRenObject = pcDocument->signalRelabelObject.connect
         (std::bind(&Gui::Document::slotRelabelObject, this, sp::_1));
     d->connectActObject = pcDocument->signalActivatedObject.connect
-        (std::bind(&Gui::Document::slotActivatedObject, this, sp::_1));
-    d->connectActObjectBlocker = boost::signals2::shared_connection_block
+        (std::bind(&Gui::Document::slotActivatedObject, this, sp::_1), fastsignals::advanced_tag());
+    d->connectActObjectBlocker = fastsignals::shared_connection_block
         (d->connectActObject, false);
     d->connectSaveDocument = pcDocument->signalSaveDocument.connect
         (std::bind(&Gui::Document::Save, this, sp::_1));
@@ -477,8 +478,8 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->connectChangePropertyEditor = pcDocument->signalChangePropertyEditor.connect
         (std::bind(&Gui::Document::slotChangePropertyEditor, this, sp::_1, sp::_2));
     d->connectChangeDocument = d->_pcDocument->signalChanged.connect // use the same slot function
-        (std::bind(&Gui::Document::slotChangePropertyEditor, this, sp::_1, sp::_2));
-    d->connectChangeDocumentBlocker = boost::signals2::shared_connection_block
+        (std::bind(&Gui::Document::slotChangePropertyEditor, this, sp::_1, sp::_2), fastsignals::advanced_tag());
+    d->connectChangeDocumentBlocker = fastsignals::shared_connection_block
         (d->connectChangeDocument, true);
     d->connectFinishRestoreObject = pcDocument->signalFinishRestoreObject.connect
         (std::bind(&Gui::Document::slotFinishRestoreObject, this, sp::_1));
@@ -505,8 +506,6 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->connectTransactionRemove = pcDocument->signalTransactionRemove.connect
         (std::bind(&Gui::Document::slotTransactionRemove, this, sp::_1, sp::_2));
     //NOLINTEND
-
-    pcDocument->setPreRecomputeHook([this] { callSignalBeforeRecompute(); });
 
     // pointer to the python class
     // NOTE: As this Python object doesn't get returned to the interpreter we
@@ -1040,54 +1039,57 @@ void Document::beforeDelete() {
 }
 
 void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
-{
-    ViewProvider* viewProvider = getViewProvider(&Obj);
-    if (viewProvider) {
-        try {
-            viewProvider->update(&Prop);
-            if(d->_editingViewer
-                    && d->_editingObject
-                    && d->_editViewProviderParent
-                    && (Prop.isDerivedFrom<App::PropertyPlacement>()
-                        // Issue ID 0004230 : getName() can return null in which case strstr() crashes
-                        || (Prop.getName() && strstr(Prop.getName(),"Scale")))
-                    && d->_editObjs.contains(&Obj))
-            {
-                Base::Matrix4D mat;
-                auto sobj = d->_editViewProviderParent->getObject()->getSubObject(
-                                                        d->_editSubname.c_str(),nullptr,&mat);
-                if(sobj == d->_editingObject && d->_editingTransform!=mat) {
-                    d->_editingTransform = mat;
-                    d->_editingViewer->setEditingTransform(d->_editingTransform);
+{    
+    // Handle view provider in the UI thread.
+    QMetaObject::invokeMethod(qApp, [this, &Obj, &Prop]() {
+        ViewProvider* viewProvider = getViewProvider(&Obj);
+        if (viewProvider) {
+            try {
+                viewProvider->update(&Prop);
+                if(d->_editingViewer
+                        && d->_editingObject
+                        && d->_editViewProviderParent
+                        && (Prop.isDerivedFrom<App::PropertyPlacement>()
+                            // Issue ID 0004230 : getName() can return null in which case strstr() crashes
+                            || (Prop.getName() && strstr(Prop.getName(),"Scale")))
+                        && d->_editObjs.contains(&Obj))
+                {
+                    Base::Matrix4D mat;
+                    auto sobj = d->_editViewProviderParent->getObject()->getSubObject(
+                                                            d->_editSubname.c_str(),nullptr,&mat);
+                    if(sobj == d->_editingObject && d->_editingTransform!=mat) {
+                        d->_editingTransform = mat;
+                        d->_editingViewer->setEditingTransform(d->_editingTransform);
+                    }
                 }
             }
-        }
-        catch(const Base::MemoryException& e) {
-            FC_ERR("Memory exception in " << Obj.getFullName() << " thrown: " << e.what());
-        }
-        catch(Base::Exception& e){
-            e.reportException();
-        }
-        catch(const std::exception& e){
-            FC_ERR("C++ exception in " << Obj.getFullName() << " thrown " << e.what());
-        }
-        catch (...) {
-            FC_ERR("Cannot update representation for " << Obj.getFullName());
+            catch(const Base::MemoryException& e) {
+                FC_ERR("Memory exception in " << Obj.getFullName() << " thrown: " << e.what());
+            }
+            catch(Base::Exception& e){
+                e.reportException();
+            }
+            catch(const std::exception& e){
+                FC_ERR("C++ exception in " << Obj.getFullName() << " thrown " << e.what());
+            }
+            catch (...) {
+                FC_ERR("Cannot update representation for " << Obj.getFullName());
+            }
+    
+            handleChildren3D(viewProvider);
+    
+            if (viewProvider->isDerivedFrom<ViewProviderDocumentObject>())
+                signalChangedObject(static_cast<ViewProviderDocumentObject&>(*viewProvider), Prop);
         }
 
-        handleChildren3D(viewProvider);
-
-        if (viewProvider->isDerivedFrom<ViewProviderDocumentObject>())
-            signalChangedObject(static_cast<ViewProviderDocumentObject&>(*viewProvider), Prop);
-    }
+        getMainWindow()->updateActions(true);
+    }, Qt::QueuedConnection);
 
     // a property of an object has changed
     if(!Prop.testStatus(App::Property::NoModify) && !isModified()) {
         FC_LOG(Prop.getFullName() << " modified");
         setModified(true);
     }
-
-    getMainWindow()->updateActions(true);
 }
 
 void Document::slotRelabelObject(const App::DocumentObject& Obj)
@@ -1194,25 +1196,6 @@ void Document::slotTouchedObject(const App::DocumentObject &Obj)
     if(!isModified()) {
         FC_LOG(Obj.getFullName() << " touched");
         setModified(true);
-    }
-}
-
-// helper that guarantees signalBeforeRecompute call is executed in the GUI thread and
-// that the worker waits until it finishes
-void Document::callSignalBeforeRecompute()
-{
-    auto invokeSignalBeforeRecompute = [this]{
-        // this runs in the GUI thread
-        this->getDocument()->signalBeforeRecompute(*this->getDocument());
-    };
-
-    if (QThread::currentThread() == qApp->thread()) {
-        // already on GUI thread – no hop, just call it
-        invokeSignalBeforeRecompute();
-    } else {
-        // hop to GUI and *block* until it returns
-        QMetaObject::invokeMethod(qApp, std::move(invokeSignalBeforeRecompute),
-                                  Qt::BlockingQueuedConnection);
     }
 }
 
