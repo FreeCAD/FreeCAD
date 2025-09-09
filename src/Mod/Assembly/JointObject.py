@@ -1842,7 +1842,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             delete_sequence = Gui.QtTools.deleteKeySequence()
         except AttributeError:
             # fallback to standard key if there is no sequence defined
-            delete_sequence = QtCore.Qt.Key_Delete
+            delete_sequence = QtGui.QKeySequence(QtCore.Qt.Key_Delete)
 
         self.deleteAction = QtGui.QAction("Remove", self.jForm)
         self.deleteAction.setShortcut(delete_sequence)
