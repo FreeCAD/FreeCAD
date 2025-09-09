@@ -41,6 +41,7 @@
 #include "FeatureGroove.h"
 #include "FeatureHelix.h"
 #include "FeatureHole.h"
+#include "FeatureLegacyTipAdapter.h"
 #include "FeatureLinearPattern.h"
 #include "FeatureLoft.h"
 #include "FeatureMirrored.h"
@@ -157,6 +158,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::AdditiveWedge               ::init();
     PartDesign::SubtractiveWedge            ::init();
     PartDesign::FeatureBase                 ::init();
+    PartDesign::LegacyTipAdapter::init();
 
     PartDesign::Measure ::initialize();
     // clang-format on

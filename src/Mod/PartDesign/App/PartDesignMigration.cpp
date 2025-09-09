@@ -39,6 +39,7 @@
 
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
+#include <Mod/PartDesign/App/FeatureLegacyTipAdapter.h>
 
 
 #include <set>
@@ -139,7 +140,6 @@ static bool wrapTipWithBinder(App::Document* doc, PartDesign::Body* body, const 
         doc->addObject("PartDesign::SubShapeBinder", objName.c_str()));
     if (!ssb) return false;
 
-    // Ensure it’s under the Body so it can be the Tip
     body->addObject(ssb);
 
     // Bind the whole 'tip' shape
@@ -158,11 +158,20 @@ static bool wrapTipWithBinder(App::Document* doc, PartDesign::Body* body, const 
     // Freeze relative behavior (if present) and assign the legacy transform
     if (auto* rel = dynamic_cast<App::PropertyBool*>(ssb->getPropertyByName("Relative")))
         rel->setValue(false);
-
     ssb->Placement.setValue(P);
-    ssb->Label.setValue(std::string(body->Label.getStrValue()) + " (Legacy Tip)");
+    doc->recompute(); // ensure body has a shape
 
-    body->Tip.setValue(ssb);
+    // after creating ssb (the SubShapeBinder)
+    auto* ada = static_cast<PartDesign::LegacyTipAdapter*>(
+        doc->addObject("PartDesign::LegacyTipAdapter",
+                       (std::string(body->getNameInDocument()) + "_LegacyTip").c_str()));
+
+    body->addObject(ada);
+    ada->Label.setValue(std::string(body->Label.getStrValue()) + " (Migrated Tip)");
+    ada->Binder.setValue(ssb);
+    doc->recompute(); // ensure adapter has a shape
+    body->Tip.setValue(ada);
+
     return true;
 }
 

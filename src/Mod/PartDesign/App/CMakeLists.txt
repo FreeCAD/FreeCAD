@@ -61,6 +61,8 @@ SET(FeaturesTransformed_SRCS
     FeatureScaled.cpp
     FeatureMultiTransform.h
     FeatureMultiTransform.cpp
+    FeatureLegacyTipAdapter.cpp
+    FeatureLegacyTipAdapter.h
 )
 SOURCE_GROUP("FeaturesTransformed" FILES ${FeaturesTransformed_SRCS})
 

@@ -46,6 +46,7 @@
 #include "ViewProviderGroove.h"
 #include "ViewProviderHelix.h"
 #include "ViewProviderHole.h"
+#include "ViewProviderLegacyTipAdapter.h"
 #include "ViewProviderLinearPattern.h"
 #include "ViewProviderLoft.h"
 #include "ViewProviderMirrored.h"
@@ -160,6 +161,7 @@ PyMOD_INIT_FUNC(PartDesignGui)
     PartDesignGui::ViewProviderLoft          ::init();
     PartDesignGui::ViewProviderHelix         ::init();
     PartDesignGui::ViewProviderBase          ::init();
+    PartDesignGui::ViewProviderLegacyTipAdapter::init();
     // clang-format on
 
     // add resources and reloads the translators
