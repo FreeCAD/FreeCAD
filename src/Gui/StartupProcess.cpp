@@ -30,8 +30,6 @@
 #include <QApplication>
 #include <QImageReader>
 #include <QLabel>
-#include <QLocale>
-#include <QMessageBox>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 #include <QProcess>
@@ -53,13 +51,12 @@
 #include "GuiApplication.h"
 #include "MainWindow.h"
 #include "Language/Translator.h"
-#include "VersionMigrator.h"
+#include "Dialogs/DlgVersionMigrator.h"
 #include <App/Application.h>
 #include <Base/Console.h>
 
 
 using namespace Gui;
-namespace fs = std::filesystem;
 
 
 StartupProcess::StartupProcess() = default;
@@ -560,6 +557,7 @@ void StartupPostProcess::checkParameters()
 }
 
 void StartupPostProcess::checkVersionMigration() const {
-    VersionMigrator migrator(mainWindow);
-    migrator.execute();
+    auto migrator = new Dialog::DlgVersionMigrator (mainWindow);
+    migrator->exec();
+    migrator->deleteLater();
 }
