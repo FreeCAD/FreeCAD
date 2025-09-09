@@ -628,9 +628,9 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
         disableOverlayBg = hTree->GetBool("DisableOverlayItemBackground", false);
     }
     // Read runtime pref for overlay active color feature. When overlay is
-    // active and this feature is enabled we want to paint the overlay
-    // ourselves in the delegate, so clear the style background to avoid
-    // QSS drawing BackgroundColor2 for idle items.
+    // active and enabled we paint the overlay in the delegate, so clear the
+    // style-provided tree background to prevent QSS from drawing a hard
+    // theme color for idle items.
     bool overlayColorEnabled = false;
     {
         ParameterGrp::handle hTree2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
@@ -647,15 +647,15 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
     bool hasFocus = option->state.testFlag(QStyle::State_HasFocus);
     bool stateHovered = option->state.testFlag(QStyle::State_MouseOver);
     QBrush itemBg = item->background(0);
-    // Clear the style background for idle items when either the overlay is
-    // inactive (original behavior) OR when the overlay is active but the
-    // user explicitly disabled the default overlay item background. Keep
-    // the brush for selected/hovered/focused items so highlights remain.
-    // Clear the style background for idle items when either:
-    // - the overlay is inactive (original behavior),
-    // - the user explicitly disabled the overlay background, OR
-    // - the overlay is active AND the overlay-color feature is enabled
-    // In the last case we will paint the overlay color in the delegate.
+    // When to clear the style background (option->backgroundBrush):
+    // - clear for idle items when overlay is inactive;
+    // - or when the user disabled overlay item backgrounds;
+    // - or when overlay is active and overlay-color feature is enabled.
+    //
+    // Why: clearing prevents QSS from drawing a hard-coded theme color
+    // (style-provided tree background) so the delegate can control overlay
+    // painting. We keep the brush for selected/focused/hovered items
+    // to preserve interactive visuals.
     if (((!overlayActive || disableOverlayBg) || (overlayActive && overlayColorEnabled))
         && !isSelected && !hasFocus && !stateHovered) {
         option->backgroundBrush = QBrush(Qt::NoBrush);
@@ -5442,9 +5442,12 @@ DocumentObjectItem::~DocumentObjectItem()
 }
 
 void DocumentObjectItem::restoreBackground() {
-    // Do not apply a default BackgroundColor2 anymore. Use no brush
-    // so the style/parent widget determines the idle background unless
-    // an explicit highlight/background was set on the item.
+    // We intentionally do not set a hard-coded background color here.
+    // Previously this used the 3D view theme color which forced the
+    // tree items to show that hard color even when the style or overlay
+    // handling should control the appearance. By using NoBrush the
+    // widget/style can decide the idle background and only explicit
+    // per-item highlights will override it.
     this->setBackground(0, QBrush(Qt::NoBrush));
     this->bgBrush = this->background(0);
 }
@@ -5452,10 +5455,14 @@ void DocumentObjectItem::restoreBackground() {
 void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
     QFont f = this->font(0);
 
-    // Highlights are applied explicitly. When clearing a highlight we
-    // revert to no background (Qt::NoBrush) unless an explicit offCol
-    // is provided.
-    auto highlight = [this, set](const QColor& col, const QColor& offCol = QColor()) {
+    // Helper: apply or clear an explicit per-item highlight.
+    // - When `set` is true we apply the provided color as the item's
+    //   background. When clearing (`set` == false) we revert to the
+    //   widget/style default (NoBrush) so stylesheet or overlay logic
+    //   can control the idle appearance.
+    //   optional `offCol` if provided; otherwise we revert to NoBrush
+    //   so the widget/style determines the idle background.
+    auto applyHighlight = [this, set](const QColor& col, const QColor& offCol = QColor()) {
         if (set) {
             this->setBackground(0, col);
         } else {
@@ -5484,15 +5491,15 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
         f.setStrikeOut(set);
         break;
     case HighlightMode::Blue:
-        highlight(QColor(200, 200, 255));
+        applyHighlight(QColor(200, 200, 255));
         break;
     case HighlightMode::LightBlue:
-        highlight(QColor(230, 230, 255));
+        applyHighlight(QColor(230, 230, 255));
         break;
     case HighlightMode::UserDefined:
     {
         QColor color(230, 230, 255);
-        if (set) {
+            if (set) {
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
             bool bold = hGrp->GetBool("TreeActiveBold", true);
             bool italic = hGrp->GetBool("TreeActiveItalic", false);
@@ -5505,7 +5512,7 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
 
             unsigned long col = hGrp->GetUnsigned("TreeActiveColor", 1538528255);
             color = Base::Color::fromPackedRGB<QColor>(col);
-            highlight(color);
+            applyHighlight(color);
         }
         else {
             f.setBold(false);
@@ -5513,7 +5520,9 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
             f.setUnderline(false);
             f.setOverline(false);
             // Revert to no background (offCol omitted -> NoBrush)
-            highlight(color);
+            // We call applyHighlight without offCol so the lambda will
+            // set NoBrush and leave the idle background to the widget/style.
+            applyHighlight(color);
         }
     }   break;
     default:
