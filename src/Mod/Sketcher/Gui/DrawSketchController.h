@@ -632,7 +632,9 @@ protected:
 
         // if the state changed and is not the last state (End). And is init (ie tool has not
         // reset)
-        if (!handler->isLastState() && handler->state() != currentstate && firstMoveInit) {
+        // Defend against null handler pointer that can occur during teardown
+        if (handler && !handler->isLastState() && handler->state() != currentstate
+            && firstMoveInit) {
             // mode has changed, so reprocess the previous position to the new widget state
             handler->mouseMove(prevCursorPosition);
         }
