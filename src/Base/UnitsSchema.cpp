@@ -79,7 +79,13 @@ UnitsSchema::translate(const Quantity& quant, double& factor, std::string& unitS
     }
 
     if (unitSpec->factor == 0) {
-        return UnitsSchemasData::runSpecial(unitSpec->unitString, value, factor, unitString);
+        const QuantityFormat& format = quant.getFormat();
+        return UnitsSchemasData::runSpecial(unitSpec->unitString,
+                                            value,
+                                            format.getPrecision(),
+                                            format.getDenominator(),
+                                            factor,
+                                            unitString);
     }
 
     factor = unitSpec->factor;
@@ -98,7 +104,8 @@ UnitsSchema::toLocale(const Quantity& quant, const double factor, const std::str
     }
 
     auto valueString =
-        Lc.toString(quant.getValue() / factor, format.toFormat(), format.precision).toStdString();
+        Lc.toString(quant.getValue() / factor, format.toFormat(), format.getPrecision())
+            .toStdString();
 
     auto notUnit = [](auto s) {
         return s.empty() || s == "°" || s == "″" || s == "′" || s == "\"" || s == "'";

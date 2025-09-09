@@ -191,6 +191,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     coords = new SoCoordinate3();
     coords->ref();
     faceset = new SoBrepFaceSet();
+    faceset->setViewProvider(this);
     faceset->ref();
     norm = new SoNormal;
     norm->ref();
@@ -198,8 +199,10 @@ ViewProviderPartExt::ViewProviderPartExt()
     normb->value = SoNormalBinding::PER_VERTEX_INDEXED;
     normb->ref();
     lineset = new SoBrepEdgeSet();
+    lineset->setViewProvider(this);
     lineset->ref();
     nodeset = new SoBrepPointSet();
+    nodeset->setViewProvider(this);
     nodeset->ref();
 
     pcFaceBind = new SoMaterialBinding();
@@ -447,9 +450,9 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
 
     // normal viewing with edges and points
     pcNormalRoot->addChild(pcPointsRoot);
-    pcNormalRoot->addChild(wireframe);
     pcNormalRoot->addChild(offset);
     pcNormalRoot->addChild(pcFlatRoot);
+    pcNormalRoot->addChild(wireframe);
 
     // just faces with no edges or points
     pcFlatRoot->addChild(pShapeHints);

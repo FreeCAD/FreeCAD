@@ -22998,9 +22998,9 @@ Efaces
 Efaces
 
 ***********************************************************
-** constraints fixed node sets
-** ConstraintFixed
-*NSET,NSET=ConstraintFixed
+** constraints displacement node sets
+** ConstraintDisplacement
+*NSET,NSET=ConstraintDisplacement
 2,
 3,
 136,
@@ -38383,15 +38383,12 @@ DEPConstraintContact, INDConstraintContact
 
 
 ***********************************************************
-** Fixed Constraints
-** ConstraintFixed
+** Displacement constraint applied
+** ConstraintDisplacement
 *BOUNDARY
-ConstraintFixed,1
-ConstraintFixed,2
-ConstraintFixed,3
-ConstraintFixed,4
-ConstraintFixed,5
-ConstraintFixed,6
+ConstraintDisplacement,1,1,0.0
+ConstraintDisplacement,2,2,0.0
+ConstraintDisplacement,3,3,0.0
 
 
 ***********************************************************
@@ -38410,8 +38407,8 @@ U
 *EL FILE
 S, E
 ** outputs --> dat file
-** reaction forces for Constraint fixed
-*NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
+** reaction forces for Constraint displacement constraining translation
+*NODE PRINT, NSET=ConstraintDisplacement, TOTALS=ONLY
 RF
 ** contact forces for Constraint contact
 *CONTACT PRINT, MASTER=INDConstraintContact, SLAVE=DEPConstraintContact

@@ -248,17 +248,20 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
 
 gp_Vec LinearPattern::calculateOffsetVector(LinearPatternDirection dir) const
 {
-    const auto& occurrencesProp =
-        (dir == LinearPatternDirection::First) ? Occurrences : Occurrences2;
+    bool firstDir = dir == LinearPatternDirection::First;
+    const auto& occurrencesProp = firstDir ? Occurrences : Occurrences2;
     int occurrences = occurrencesProp.getValue();
     if (occurrences <= 1) {
         return gp_Vec();  // Return zero vector if no transformation is needed
     }
 
-    const auto& dirProp = (dir == LinearPatternDirection::First) ? Direction : Direction2;
-    const auto& reversedProp = (dir == LinearPatternDirection::First) ? Reversed : Reversed2;
-    const auto& modeProp = (dir == LinearPatternDirection::First) ? Mode : Mode2;
-    const auto& lengthProp = (dir == LinearPatternDirection::First) ? Length : Length2;
+    const auto& dirProp = firstDir ? Direction : Direction2;
+    if (!dirProp.getValue()) {
+        return gp_Vec();
+    }
+    const auto& reversedProp = firstDir ? Reversed : Reversed2;
+    const auto& modeProp = firstDir ? Mode : Mode2;
+    const auto& lengthProp = firstDir ? Length : Length2;
 
     double distance = lengthProp.getValue();
     if (distance < Precision::Confusion()) {
@@ -551,4 +554,5 @@ void LinearPattern::syncLengthAndOffset(LinearPatternDirection dir)
 }
 
 }
+
 

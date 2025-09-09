@@ -32,12 +32,15 @@
 # include <Inventor/nodes/SoTranslation.h>
 #endif
 
+#include <Base/Tools.h>
 #include <App/Datums.h>
 #include <Gui/Utilities.h>
 #include <Gui/ViewParams.h>
 
 #include "ViewProviderLine.h"
 #include "ViewProviderCoordinateSystem.h"
+
+#include <SoTextLabel.h>
 
 
 using namespace Gui;
@@ -49,7 +52,14 @@ ViewProviderLine::ViewProviderLine()
 {
     sPixmap = "Std_Axis";
 
-    pLabel = new SoText2();
+    pLabel = new SoFrameLabel();
+    pLabel->textColor.setValue(1.0, 1.0, 1.0);
+    pLabel->horAlignment = SoImage::CENTER;
+    pLabel->vertAlignment = SoImage::HALF;
+    pLabel->border = false;
+    pLabel->frame = false;
+    pLabel->textUseBaseColor = true;
+    pLabel->size = 8;  // NOLINT
 }
 
 ViewProviderLine::~ViewProviderLine() = default;
@@ -58,6 +68,39 @@ void ViewProviderLine::attach(App::DocumentObject *obj)
 {
     ViewProviderDatum::attach(obj);
 
+    // indexes used to create the edges
+    static const int32_t lines[4] = { 0, 1, -1 };
+
+    SoSeparator *sep = getDatumRoot();
+
+    pCoords = new SoCoordinate3();
+    sep->addChild(pCoords);
+
+    auto pLines  = new SoIndexedLineSet();
+    pLines->coordIndex.setNum(3);
+    pLines->coordIndex.setValues(0, 3, lines);
+    sep->addChild(pLines);
+
+    pLabelTranslation = new SoTranslation();
+    sep->addChild(pLabelTranslation);
+
+    auto ps = new SoPickStyle();
+    ps->style.setValue(SoPickStyle::SHAPE_ON_TOP);
+    sep->addChild(ps);
+
+    sep->addChild(pLabel);
+
+    handlers.addDelayedHandler(
+        ViewParams::instance()->getHandle(),
+        {"DatumLineSize", "DatumScale"},
+        [this](const ParameterGrp::handle&) { updateLineSize(); }
+    );
+
+    updateLineSize();
+}
+
+void ViewProviderLine::updateLineSize()
+{
     // Setup label text and line colors
     const char* name = pcObject->getNameInDocument();
 
@@ -82,11 +125,13 @@ void ViewProviderLine::attach(App::DocumentObject *obj)
         noRole = true;
     }
 
-    static const float size = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetFloat("DatumLineSize", 70.0);
+    const auto params = ViewParams::instance();
+    const float size = params->getDatumLineSize() * Base::fromPercent(params->getDatumScale());
 
     auto line = getObject<App::Line>();
     Base::Vector3d dir = line->getBaseDirection();
     SbVec3f verts[2];
+
     if (noRole) {
         verts[0] = Base::convertTo<SbVec3f>(dir * 2 * size);
         verts[1] = SbVec3f(0, 0, 0);
@@ -96,28 +141,8 @@ void ViewProviderLine::attach(App::DocumentObject *obj)
         verts[1] = Base::convertTo<SbVec3f>(dir * 0.2 * size);
     }
 
-    // indexes used to create the edges
-    static const int32_t lines[4] = { 0, 1, -1 };
+    pCoords->point.setNum(2);
+    pCoords->point.setValues(0, 2, verts);
 
-    SoSeparator *sep = getDatumRoot();
-
-    auto pCoords = new SoCoordinate3 ();
-    pCoords->point.setNum (2);
-    pCoords->point.setValues ( 0, 2, verts );
-    sep->addChild ( pCoords );
-
-    auto pLines  = new SoIndexedLineSet ();
-    pLines->coordIndex.setNum(3);
-    pLines->coordIndex.setValues(0, 3, lines);
-    sep->addChild ( pLines );
-
-    auto textTranslation = new SoTranslation ();
-    textTranslation->translation.setValue(Base::convertTo<SbVec3f>(dir * 1.1 * size));
-    sep->addChild ( textTranslation );
-
-    auto ps = new SoPickStyle();
-    ps->style.setValue(SoPickStyle::SHAPE_ON_TOP);
-    sep->addChild(ps);
-
-    sep->addChild (pLabel);
+    pLabelTranslation->translation.setValue(Base::convertTo<SbVec3f>(dir * 1.2 * size));
 }
