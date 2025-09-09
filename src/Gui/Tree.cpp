@@ -617,6 +617,17 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
         }
     }
 
+    // If the item is hovered (and not selected or focused), use the
+    // ThemeAccentColor1 from preferences as the hover background. This
+    // guarantees the hover color matches the UI Accent Color 1 setting
+    // even if stylesheet parameters were reverted.
+    if (option->state.testFlag(QStyle::State_MouseOver) && !isSelected && !hasFocus) {
+        ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Start");
+        unsigned long col = hTheme->GetUnsigned("ThemeAccentColor1", 1252392959UL);
+        QColor accent = Base::Color::fromPackedRGB<QColor>(col);
+        option->backgroundBrush = QBrush(accent);
+    }
+
     option->textElideMode = Qt::ElideMiddle;
 
     QSize size = option->icon.actualSize(QSize(0xffff, 0xffff));
