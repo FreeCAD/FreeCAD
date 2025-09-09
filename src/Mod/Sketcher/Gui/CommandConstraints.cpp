@@ -1732,6 +1732,7 @@ class DrawSketchHandlerDimension : public DrawSketchHandler
 public:
     // Helper constants for hint texts
     static constexpr const char* PICK_EDGE = "%1 pick edge";
+    static constexpr const char* PICK_POINT_OR_EDGE = "%1 pick point or edge";
     static constexpr const char* PICK_SECOND_POINT_OR_EDGE = "%1 pick second point or edge";
     static constexpr const char* PLACE_DIMENSION = "%1 place dimension";
     explicit DrawSketchHandlerDimension(std::vector<std::string> SubNames)
@@ -1983,11 +1984,20 @@ public:
 
 std::list<Gui::InputHint> getToolHints() const override {
     if (selectionEmpty()) {
-        return {{QObject::tr(PICK_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
-    } else if (selPoints.size() == 1 && selLine.empty() && selCircleArc.empty()) {
+        return {{QObject::tr(PICK_POINT_OR_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
+    } else if (selPoints.size() == 1 && selLine.empty() && selCircleArc.empty() && selEllipseAndCo.empty() && selSplineAndCo.empty()) {
+        // Single point - can add more points, lines, circles, etc.
+        return {{QObject::tr(PICK_SECOND_POINT_OR_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
+    } else if (selLine.size() == 1 && selPoints.empty() && selCircleArc.empty() && selEllipseAndCo.empty() && selSplineAndCo.empty()) {
+        // Single line - can add more points, lines, circles, etc.
+        return {{QObject::tr(PICK_SECOND_POINT_OR_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
+    } else if (selCircleArc.size() == 1 && selPoints.empty() && selLine.empty() && selEllipseAndCo.empty() && selSplineAndCo.empty()) {
+        // Single circle/arc - can add more points, lines, circles, etc.
         return {{QObject::tr(PICK_SECOND_POINT_OR_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
     } else {
-        return {{QObject::tr(PLACE_DIMENSION), {Gui::InputHint::UserInput::MouseLeft}}};
+        // Multiple selections or complex combinations - check if more selections are possible
+        // For now, assume more selections are possible unless we have a complete constraint
+        return {{QObject::tr(PICK_SECOND_POINT_OR_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
     }
 }
 
