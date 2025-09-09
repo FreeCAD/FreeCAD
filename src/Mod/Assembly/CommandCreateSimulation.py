@@ -422,9 +422,7 @@ class ViewProviderMotion:
         if self.app_obj.Joint is not None:
             joint = self.app_obj.Joint[0]
 
-        dialog = MotionEditDialog(
-            assembly, self.app_obj.MotionType, joint, self.app_obj.Formula
-        )
+        dialog = MotionEditDialog(assembly, self.app_obj.MotionType, joint, self.app_obj.Formula)
         if dialog.exec_():
             self.app_obj.MotionType = dialog.motionType
             self.app_obj.Joint = dialog.joint
@@ -452,7 +450,6 @@ class ViewProviderMotion:
             Gui.ActiveDocument.setEdit(assembly)
 
         return assembly
-        
 
 
 class MotionEditDialog:
