@@ -1308,14 +1308,14 @@ void CmdTechDrawBalloon::activated(int iMsg)
         QGVPage* viewPage = pageVP->getQGVPage();
         QGSPage* scenePage = pageVP->getQGSPage();
         if (viewPage) {
-            viewPage->startBalloonPlacing(objFeat);
-
-            QGIView* view = dynamic_cast<QGIView*>(viewVP->getQView());
+            auto* view = dynamic_cast<QGIView*>(viewVP->getQView());
             QPointF placement;
             if (view && _checkDirectPlacement(view, selection[0].getSubNames(), placement)) {
                 //this creates the balloon if something is already selected
                 scenePage->createBalloon(placement, objFeat);
+                return;
             }
+            viewPage->startBalloonPlacing(objFeat);
         }
     }
 }
