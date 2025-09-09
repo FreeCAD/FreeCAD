@@ -518,13 +518,28 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
         };
 
         // Paint the custom overlay background whenever we're inside a
-        // translucent overlay and a tree item background is configured.
-        // A user-controlled preference can disable this default overlay
-        // background without requiring UI changes. Don't rely on the
-        // style's backgroundBrush (which may change on hover); only avoid
-        // painting over selected or focused items so the standard
-        // selection/active visuals remain visible.
-        if (isAncestorOverlay(tree) && _TreeItemBackground.style() != Qt::NoBrush) {
+        // translucent overlay. The background used can be the standard
+        // tree item background (_TreeItemBackground) or, if the user
+        // enabled it, a dedicated overlay color (OverlayActiveColor).
+        // A user-controlled preference can also completely disable the
+        // overlay item background without requiring UI changes. Don't
+        // rely on the style's backgroundBrush (which may change on
+        // hover); only avoid painting over selected or focused items so
+        // the standard selection/active visuals remain visible.
+        // Evaluate painting if either the default tree background is set
+        // or the overlay color feature is enabled.
+        bool overlayColorEnabled = false;
+        unsigned long overlayColorPacked = 0;
+        {
+            ParameterGrp::handle hTree = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+            overlayColorEnabled = hTree->GetBool("OverlayActiveEnabled", false);
+            overlayColorPacked = hTree->GetUnsigned("OverlayActiveColor", 0UL);
+        }
+
+    // Only paint overlay backgrounds when the overlay is active and
+    // the user explicitly enabled the overlay active color. Do not
+    // fall back to the old tree item background.
+    if (isAncestorOverlay(tree) && overlayColorEnabled) {
             // Read a runtime preference to optionally disable the default
             // overlay background. Preference path: User parameter:BaseApp/Preferences/TreeView
             // Key: DisableOverlayItemBackground (bool, default false)
@@ -537,17 +552,24 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
                 // user requested to disable the default overlay background
                 // — skip painting here.
             } else {
-            QRect rect = calculateItemRect(option);
+            QRect rect = calculateItemRect(opt);
 
             bool hasFocus = opt.state.testFlag(QStyle::State_HasFocus);
             bool isSelected = opt.state.testFlag(QStyle::State_Selected);
             bool hovered = opt.state.testFlag(QStyle::State_MouseOver);
 
-            // Don't paint the overlay fill when the item is hovered; prefer
-            // the hover style/QSS to paint hover visuals. Also avoid
-            // painting over selected or focused items.
-            if (!isSelected && !hasFocus && !hovered) {
-                painter->fillRect(rect, _TreeItemBackground);
+            // Use only the configured overlay color (if non-zero/valid).
+            if (overlayColorPacked != 0UL) {
+                QColor oc = Base::Color::fromPackedRGB<QColor>(overlayColorPacked);
+                if (oc.isValid()) {
+                    QBrush paintBrush(oc);
+                    // Don't paint the overlay fill when the item is hovered;
+                    // prefer the hover style/QSS to paint hover visuals. Also
+                    // avoid painting over selected or focused items.
+                    if (!isSelected && !hasFocus && !hovered && paintBrush.style() != Qt::NoBrush) {
+                        painter->fillRect(rect, paintBrush);
+                    }
+                }
             }
             }
         }
@@ -605,6 +627,15 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
         ParameterGrp::handle hTree = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
         disableOverlayBg = hTree->GetBool("DisableOverlayItemBackground", false);
     }
+    // Read runtime pref for overlay active color feature. When overlay is
+    // active and this feature is enabled we want to paint the overlay
+    // ourselves in the delegate, so clear the style background to avoid
+    // QSS drawing BackgroundColor2 for idle items.
+    bool overlayColorEnabled = false;
+    {
+        ParameterGrp::handle hTree2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+        overlayColorEnabled = hTree2->GetBool("OverlayActiveEnabled", false);
+    }
     // Preserve selection/highlight: only clear the backgroundBrush when the
     // overlay is inactive and the item is not selected, not focused, and
     // not hovered. This ensures active/selected items still show their
@@ -620,7 +651,13 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
     // inactive (original behavior) OR when the overlay is active but the
     // user explicitly disabled the default overlay item background. Keep
     // the brush for selected/hovered/focused items so highlights remain.
-    if ((!overlayActive || disableOverlayBg) && !isSelected && !hasFocus && !stateHovered) {
+    // Clear the style background for idle items when either:
+    // - the overlay is inactive (original behavior),
+    // - the user explicitly disabled the overlay background, OR
+    // - the overlay is active AND the overlay-color feature is enabled
+    // In the last case we will paint the overlay color in the delegate.
+    if (((!overlayActive || disableOverlayBg) || (overlayActive && overlayColorEnabled))
+        && !isSelected && !hasFocus && !stateHovered) {
         option->backgroundBrush = QBrush(Qt::NoBrush);
     }
     // Determine the default 3D view background so we can tell whether the

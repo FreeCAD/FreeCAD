@@ -388,6 +388,49 @@
           </property>
          </widget>
         </item>
+  <!-- New overlay enable checkbox and color for active container overlay -->
+  <item row="2" column="0">
+   <widget class="Gui::PrefCheckBox" name="checkOverlayActiveEnabled">
+    <property name="text">
+     <string>Enable overlay background color</string>
+    </property>
+    <property name="toolTip">
+     <string>When checked, active container overlay will use a custom background color</string>
+    </property>
+    <property name="prefEntry" stdset="0">
+     <cstring>OverlayActiveEnabled</cstring>
+    </property>
+    <property name="prefPath" stdset="0">
+     <cstring>TreeView</cstring>
+    </property>
+   </widget>
+  </item>
+  <item row="2" column="1">
+   <widget class="Gui::PrefColorButton" name="TreeOverlayActiveColor">
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="toolTip">
+     <string>Overlay background color for active containers when overlay is enabled</string>
+    </property>
+    <property name="color" stdset="0">
+     <color>
+      <red>60</red>
+      <green>145</green>
+      <blue>252</blue>
+     </color>
+    </property>
+    <property name="prefEntry" stdset="0">
+     <cstring>OverlayActiveColor</cstring>
+    </property>
+    <property name="prefPath" stdset="0">
+     <cstring>TreeView</cstring>
+    </property>
+   </widget>
+  </item>
        </layout>
       </item>
       <item row="0" column="1">
