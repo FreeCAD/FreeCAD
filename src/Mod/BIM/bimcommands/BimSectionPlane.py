@@ -39,7 +39,7 @@ class Arch_SectionPlane:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_SectionPlane_Tree',
+        return {'Pixmap'  : 'Arch_SectionPlane',
                 'Accel': "S, E",
                 'MenuText': QT_TRANSLATE_NOOP("Arch_SectionPlane","Section Plane"),
                 'ToolTip': QT_TRANSLATE_NOOP("Arch_SectionPlane","Creates a section plane object, including the selected objects")}
