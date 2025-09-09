@@ -660,23 +660,13 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
         && !isSelected && !hasFocus && !stateHovered) {
         option->backgroundBrush = QBrush(Qt::NoBrush);
     }
-    // Determine the default 3D view background so we can tell whether the
-    // item's brush is the default or a custom highlight. Only apply the
-    // item's background to the style option when it's a custom highlight
-    // (different from BackgroundColor2) and the item is selected or has
-    // focus. Do not apply on mere hover — that caused BackgroundColor2 to
-    // appear when hovering other items.
-    QColor defaultBg = Qt::white;
-    {
-        ParameterGrp::handle hView = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-        unsigned long col = hView->GetUnsigned("BackgroundColor2", 0);
-        defaultBg = Base::Color::fromPackedRGB<QColor>(col);
-    }
+    // If the item has an explicit background set (by setHighlight or
+    // similar), apply it so edited/active items remain visible. We no
+    // longer treat BackgroundColor2 as a default item background so any
+    // non-empty brush is considered a custom highlight.
     if (itemBg.style() != Qt::NoBrush) {
         QColor itemColor = itemBg.color();
-        if (itemColor.isValid() && itemColor != defaultBg) {
-            // Apply custom highlight/background regardless of hover or
-            // selection so edited/active items are visible at all times.
+        if (itemColor.isValid()) {
             option->backgroundBrush = itemBg;
         }
     }
@@ -5452,38 +5442,27 @@ DocumentObjectItem::~DocumentObjectItem()
 }
 
 void DocumentObjectItem::restoreBackground() {
-    // Restore to the user 3D view background color if available,
-    // otherwise fall back to the current tree widget background color.
-    QColor defaultBg = Qt::white;
-    // read the 3D view background from user preferences (always present)
-    {
-    ParameterGrp::handle hView = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long col = hView->GetUnsigned("BackgroundColor2", 0);
-        defaultBg = Base::Color::fromPackedRGB<QColor>(col);
-    }
-    this->setBackground(0, defaultBg);
+    // Do not apply a default BackgroundColor2 anymore. Use no brush
+    // so the style/parent widget determines the idle background unless
+    // an explicit highlight/background was set on the item.
+    this->setBackground(0, QBrush(Qt::NoBrush));
     this->bgBrush = this->background(0);
 }
 
 void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
     QFont f = this->font(0);
 
-    // Use the user 3D view background color for default (always present)
-    QColor defaultBg = Qt::white;
-    {
-    ParameterGrp::handle hView = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long col = hView->GetUnsigned("BackgroundColor2", 0);
-        defaultBg = Base::Color::fromPackedRGB<QColor>(col);
-    }
-
-    auto highlight = [this, set, defaultBg](const QColor& col, const QColor& offCol = QColor()) {
+    // Highlights are applied explicitly. When clearing a highlight we
+    // revert to no background (Qt::NoBrush) unless an explicit offCol
+    // is provided.
+    auto highlight = [this, set](const QColor& col, const QColor& offCol = QColor()) {
         if (set) {
             this->setBackground(0, col);
         } else {
             if (offCol.isValid())
                 this->setBackground(0, offCol);
             else
-                this->setBackground(0, defaultBg);
+                this->setBackground(0, QBrush(Qt::NoBrush));
         }
         this->bgBrush = this->background(0);
     };
@@ -5533,7 +5512,8 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
             f.setItalic(false);
             f.setUnderline(false);
             f.setOverline(false);
-            highlight(color, defaultBg);
+            // Revert to no background (offCol omitted -> NoBrush)
+            highlight(color);
         }
     }   break;
     default:
