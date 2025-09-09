@@ -999,12 +999,14 @@ class DrawSketchHandlerGenConstraint: public DrawSketchHandler
 public:
     // Helper constants for all hint texts
     static constexpr const char* PICK_EDGE_OR_FIRST_POINT = "%1 pick edge or first point";
+    static constexpr const char* PICK_EDGE_OR_SECOND_POINT = "%1 pick edge or second point";
     static constexpr const char* PICK_FIRST_EDGE = "%1 pick first edge";
     static constexpr const char* PICK_SECOND_EDGE = "%1 pick second edge";
     static constexpr const char* PICK_SECOND_LINE_OR_POINT = "%1 pick second line or point";
     static constexpr const char* PICK_SECOND_EDGE_OR_POINT = "%1 pick second edge or point";
     static constexpr const char* PICK_SYMMETRY_POINT = "%1 pick symmetry point";
     static constexpr const char* PICK_SYMMETRY_LINE_OR_POINT = "%1 pick symmetry line or point";
+    static constexpr const char* PICK_SYMMETRY_LINE = "%1 pick symmetry line";
     static constexpr const char* PICK_SECOND_LINE = "%1 pick second line";
     static constexpr const char* PICK_SECOND_POINT_OR_EDGE = "%1 pick second point or edge";
     static constexpr const char* PICK_POINT_OR_EDGE = "%1 pick point or edge";
@@ -1018,7 +1020,6 @@ public:
     static constexpr const char* PICK_OPTIONAL_TANGENT_POINT = "%1 pick optional tangent point";
     static constexpr const char* PICK_OPTIONAL_PERPENDICULAR_POINT = "%1 pick optional perpendicular point";
     static constexpr const char* PICK_LINE = "%1 pick line";
-    static constexpr const char* PICK_SYMMETRY_LINE = "%1 pick symmetry line";
     static constexpr const char* PICK_POINT = "%1 pick point";
     static constexpr const char* PLACE_DIMENSION = "%1 place dimension";
 
@@ -1183,12 +1184,15 @@ public:
                 // Point + Edge + Edge workflow
                 return {{QObject::tr(PICK_FIRST_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
             } else {
-                // Edge + Edge workflow
-                return {{QObject::tr(PICK_SECOND_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
+                // Edge + Edge or Edge + Point + Edge workflow
+                return {{QObject::tr(PICK_SECOND_EDGE_OR_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
             }
         } else if (selectionStep == 2 && !selSeq.empty()) {
             if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
                 // Point + Edge + Edge workflow
+                return {{QObject::tr(PICK_SECOND_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
+            } else if (isVertex(selSeq[1].GeoId, selSeq[1].PosId)) {
+                // Edge + Point + Edge workflow
                 return {{QObject::tr(PICK_SECOND_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
             }
         }
@@ -1217,6 +1221,36 @@ public:
         }
     }
 
+    // Special case for Sketcher_ConstrainDistanceX to generate context-aware hints
+    if (commandName == "Sketcher_ConstrainDistanceX") {
+        if (selectionStep == 0) {
+            return {{QObject::tr(PICK_POINT_OR_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
+        } else if (selectionStep == 1 && !selSeq.empty()) {
+            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+                // Point + Point workflow
+                return {{QObject::tr(PICK_SECOND_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
+            } else {
+                // Edge workflow - no second selection needed
+                return {{QObject::tr(PLACE_DIMENSION), {Gui::InputHint::UserInput::MouseLeft}}};
+            }
+        }
+    }
+
+    // Special case for Sketcher_ConstrainDistanceY to generate context-aware hints
+    if (commandName == "Sketcher_ConstrainDistanceY") {
+        if (selectionStep == 0) {
+            return {{QObject::tr(PICK_POINT_OR_EDGE), {Gui::InputHint::UserInput::MouseLeft}}};
+        } else if (selectionStep == 1 && !selSeq.empty()) {
+            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+                // Point + Point workflow
+                return {{QObject::tr(PICK_SECOND_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
+            } else {
+                // Edge workflow - no second selection needed
+                return {{QObject::tr(PLACE_DIMENSION), {Gui::InputHint::UserInput::MouseLeft}}};
+            }
+        }
+    }
+
     // Special case for Sketcher_ConstrainSymmetric to generate context-aware hints
     if (commandName == "Sketcher_ConstrainSymmetric") {
         if (selectionStep == 0) {
@@ -1224,15 +1258,15 @@ public:
         } else if (selectionStep == 1 && !selSeq.empty()) {
             if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
                 // Point + Edge + Point or Point + Point + Edge/Point workflow
-                return {{QObject::tr(PICK_EDGE_OR_FIRST_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
+                return {{QObject::tr(PICK_EDGE_OR_SECOND_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
             } else {
                 // Edge + Point workflow
                 return {{QObject::tr(PICK_SYMMETRY_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
             }
         } else if (selectionStep == 2 && !selSeq.empty()) {
             if (isVertex(selSeq[0].GeoId, selSeq[0].PosId) && isVertex(selSeq[1].GeoId, selSeq[1].PosId)) {
-                // Point + Point + Edge/Point workflow
-                return {{QObject::tr(PICK_SYMMETRY_LINE_OR_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
+                // Point + Point + Edge workflow
+                return {{QObject::tr(PICK_SYMMETRY_LINE), {Gui::InputHint::UserInput::MouseLeft}}};
             } else if (isVertex(selSeq[0].GeoId, selSeq[0].PosId) && !isVertex(selSeq[1].GeoId, selSeq[1].PosId)) {
                 // Point + Edge + Point workflow
                 return {{QObject::tr(PICK_SYMMETRY_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
@@ -9690,8 +9724,7 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
                            {SelVertex, SelEdgeOrAxis, SelVertex},
                            {SelVertexOrRoot, SelVertexOrRoot, SelEdge},
                            {SelVertexOrRoot, SelVertexOrRoot, SelExternalEdge},
-                           {SelVertex, SelVertex, SelEdgeOrAxis},
-                           {SelVertexOrRoot, SelVertexOrRoot, SelVertexOrRoot}};
+                           {SelVertex, SelVertex, SelEdgeOrAxis}};
 }
 
 void CmdSketcherConstrainSymmetric::activated(int iMsg)
@@ -9968,21 +10001,6 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair>& selS
                                 "or a line and a symmetry point from the sketch."));
             }
             return;
-        }
-        case 8:// {SelVertexOrRoot, SelVertexOrRoot, SelVertexOrRoot}
-        {
-            GeoId1 = selSeq.at(0).GeoId;
-            GeoId2 = selSeq.at(1).GeoId;
-            GeoId3 = selSeq.at(2).GeoId;
-            PosId1 = selSeq.at(0).PosId;
-            PosId2 = selSeq.at(1).PosId;
-            PosId3 = selSeq.at(2).PosId;
-
-            if (areAllPointsOrSegmentsFixed(Obj, GeoId1, GeoId2, GeoId3)) {
-                showNoConstraintBetweenFixedGeometry(Obj);
-                return;
-            }
-            break;
         }
         default:
             break;
