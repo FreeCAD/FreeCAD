@@ -33,6 +33,7 @@
 
 using namespace Part;
 
+const char* Part::Offset::ModeEnums[]= {"Skin","Pipe", "RectoVerso",nullptr};
 const char* Part::Offset::JoinEnums[]= {"Arc","Tangent", "Intersection",nullptr};
 
 PROPERTY_SOURCE(Part::Offset, Part::Feature)
@@ -41,6 +42,8 @@ Offset::Offset()
 {
     ADD_PROPERTY_TYPE(Source,(nullptr),"Offset",App::Prop_None,"Source shape");
     ADD_PROPERTY_TYPE(Value,(1.0),"Offset",App::Prop_None,"Offset value");
+    ADD_PROPERTY_TYPE(Mode,(long(0)),"Offset",App::Prop_None,"Mode");
+    Mode.setEnums(ModeEnums);
     ADD_PROPERTY_TYPE(Join,(long(0)),"Offset",App::Prop_None,"Join type");
     Join.setEnums(JoinEnums);
     ADD_PROPERTY_TYPE(Intersection,(false),"Offset",App::Prop_None,"Intersection");
@@ -57,6 +60,8 @@ short Offset::mustExecute() const
     if (Source.isTouched())
         return 1;
     if (Value.isTouched())
+        return 1;
+    if (Mode.isTouched())
         return 1;
     if (Join.isTouched())
         return 1;
@@ -78,28 +83,25 @@ App::DocumentObjectExecReturn *Offset::execute()
     double tol = Precision::Confusion();
     bool inter = Intersection.getValue();
     bool self = SelfIntersection.getValue();
+    short mode = (short)Mode.getValue();
     bool fill = Fill.getValue();
     auto shape = Feature::getTopoShape(source, ShapeOption::ResolveLink | ShapeOption::Transform);
     if(shape.isNull())
         return new App::DocumentObjectExecReturn("Invalid source link");
     auto join = static_cast<JoinType>(Join.getValue());
     this->Shape.setValue(TopoShape(0).makeElementOffset(
-        shape,offset,tol,inter,self,0,join,fill ? FillType::fill : FillType::noFill));
+        shape,offset,tol,inter,self,mode,join,fill ? FillType::fill : FillType::noFill));
     return App::DocumentObject::StdReturn;
 }
 
 
 //-------------------------------------------------------------------------------------------------------
 
-const char* Part::Offset2D::ModeEnums[]= {"Skin","Pipe",nullptr};
 
 PROPERTY_SOURCE(Part::Offset2D, Part::Offset)
 
 Offset2D::Offset2D()
 {
-    ADD_PROPERTY_TYPE(Mode,(long(0)),"Offset",App::Prop_None,"Mode");
-    Mode.setEnums(ModeEnums);
-
     this->SelfIntersection.setStatus(App::Property::Status::Hidden, true);
     this->Mode.setValue(1); //switch to Pipe mode by default, because skin mode does not function properly on closed profiles.
 }
@@ -137,6 +139,8 @@ App::DocumentObjectExecReturn *Offset2D::execute()
     double offset = Value.getValue();
     short mode = (short)Mode.getValue();
     auto openresult = mode == 0 ? OpenResult::allowOpenResult : OpenResult::noOpenResult;
+    if (mode == 2)
+        return new App::DocumentObjectExecReturn("Mode 'Recto-Verso' is not supported for 2D offset.");
     auto join = static_cast<JoinType>(Join.getValue());
     auto fill = Fill.getValue() ? FillType::fill : FillType::noFill;
     bool inter = Intersection.getValue();
