@@ -21,38 +21,46 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_VERSIONMIGRATOR_H
-#define GUI_VERSIONMIGRATOR_H
+#ifndef GUI_DIALOG_VERSIONMIGRATOR_H
+#define GUI_DIALOG_VERSIONMIGRATOR_H
 
 #include <FCGlobal.h>
 #include <cstdint>
-#include <QObject>
+#include <memory>
+#include <QDialog>
+
 
 namespace Gui {
 
     class MainWindow;
 
+    namespace Dialog {
 
-class GuiExport VersionMigrator : public QObject
-{
-    Q_OBJECT
+        class GuiExport DlgVersionMigrator final : public QDialog
+        {
+            Q_OBJECT
 
-public:
-    explicit VersionMigrator(MainWindow *mw);
-    void execute();
+        public:
+            explicit DlgVersionMigrator(MainWindow *mw);
+            ~DlgVersionMigrator() override;
+            Q_DISABLE_COPY_MOVE(DlgVersionMigrator)
 
-protected Q_SLOTS:
+            int exec() override;
 
-    void confirmMigration();
-    void migrationCancelled() const;
-    void showSizeOfMigration(uintmax_t size);
-    void migrateToCurrentVersion();
+        protected Q_SLOTS:
 
-private:
-    MainWindow* mainWindow;
-};
+            void calculateMigrationSize(); // Async -> this starts the process and immediately returns
+            void showSizeOfMigration(uintmax_t size);
+            void migrateToCurrentVersion();
+            void doNotMigrate(const QString &linkText);
 
+        private:
+            MainWindow* mainWindow;
+            QThread* sizeCalculationWorkerThread;
+            std::unique_ptr<class Ui_DlgVersionMigrator> ui;
+        };
 
+    }
 }
 
-#endif // GUI_VERSIONMIGRATOR_H
+#endif // GUI_DIALOG_VERSIONMIGRATOR_H
