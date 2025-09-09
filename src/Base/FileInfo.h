@@ -127,8 +127,6 @@ public:
     unsigned int size() const;
     /// Returns the time when the file was last modified.
     TimeInfo lastModified() const;
-    /// Returns the time when the file was last read (accessed).
-    TimeInfo lastRead() const;
     //@}
 
     /** @name Directory management*/

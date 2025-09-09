@@ -373,6 +373,7 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
         Client.defaultApplicationFontSizePixels();  // returns height in pixels, not points
 
     int sketcherfontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSizePixels);
+    int constraintSymbolSizePref = hGrp->GetInt("ConstraintSymbolSize", defaultFontSizePixels);
 
     double dpi = Client.getApplicationLogicalDPIX();
     double devicePixelRatio = Client.getDevicePixelRatio();
@@ -385,11 +386,10 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
     // internally. Coin, at least our coin at this time, takes pixels, not points.
 
     Client.drawingParameters.coinFontSize =
-        std::lround(sketcherfontSize * devicePixelRatio);  // in pixels
-    Client.drawingParameters.labelFontSize =
-        std::lround(sketcherfontSize * devicePixelRatio * 72.0f
-                    / dpi);  // in points, as SoDatumLabel uses points
-    Client.drawingParameters.constraintIconSize = std::lround(0.8 * sketcherfontSize);
+        std::lround(sketcherfontSize * devicePixelRatio);  // in pixels (Coin uses pixels)
+    Client.drawingParameters.labelFontSize = std::lround(
+        sketcherfontSize * devicePixelRatio * 72.0f / dpi);  // in points (SoDatumLabel uses points)
+    Client.drawingParameters.constraintIconSize = constraintSymbolSizePref;
 
     auto supportedsizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes("CIRCLE_LINE");
     auto scaledMarkerSize = std::lround(markerSize * devicePixelRatio);

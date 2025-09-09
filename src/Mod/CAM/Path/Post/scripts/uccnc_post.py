@@ -552,25 +552,17 @@ def parse(pathobj):
     precision_string = "." + str(PRECISION) + "f"
     currLocation = {}  # keep track for no doubles
 
+    # Command which can not skip parameters
+    mandatoryCmd = ("G81", "G82", "G83")
+
+    # Int parameters which can not be skipped
+    mandatoryParamInt = ("D", "H", "S", "T")
+
+    # Float parameters which can not be skipped
+    mandatoryParamFloat = ("I", "J", "K")
+
     # The params list control the order of parameters
-    params = [
-        "X",
-        "Y",
-        "Z",
-        "A",
-        "B",
-        "C",
-        "I",
-        "J",
-        "K",
-        "R",
-        "F",
-        "S",
-        "T",
-        "H",
-        "L",
-        "Q",
-    ]
+    params = ("X", "Y", "Z", "A", "B", "C", "I", "J", "K", "R", "F", "S", "T", "H", "L", "Q")
     firstmove = Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
     currLocation.update(firstmove.Parameters)  # set First location Parameters
 
@@ -623,17 +615,15 @@ def parse(pathobj):
                                 )
                         else:
                             continue
-                    elif param == "T":
-                        commandlist.append(param + str(int(c.Parameters["T"])))
-                    elif param == "H":
-                        commandlist.append(param + str(int(c.Parameters["H"])))
-                    elif param == "D":
-                        commandlist.append(param + str(int(c.Parameters["D"])))
-                    elif param == "S":
-                        commandlist.append(param + str(int(c.Parameters["S"])))
+                    elif param in mandatoryParamInt:
+                        commandlist.append(param + str(int(c.Parameters[param])))
+                    elif param in mandatoryParamFloat:
+                        commandlist.append(
+                            param + format(float(c.Parameters[param]), precision_string)
+                        )
                     else:
                         if (
-                            (not REPEAT_ARGUMENTS and c.Name not in ["G81", "G82", "G83"])
+                            (not REPEAT_ARGUMENTS and c.Name not in mandatoryCmd)
                             and (param in currLocation)
                             and (currLocation[param] == c.Parameters[param])
                         ):

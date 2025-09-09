@@ -622,7 +622,7 @@ void SketchAnalysis::solveSketch(const char* errorText)
     solvesketch(status, dofs, true);
 
     if (status == int(Solver::RedundantConstraints)) {
-        sketch->autoRemoveRedundants(false);
+        sketch->autoRemoveRedundants(DeleteOption::NoFlag);
 
         solvesketch(status, dofs, false);
     }

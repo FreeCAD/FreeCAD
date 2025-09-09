@@ -37,6 +37,7 @@
 
 #include <Base/FileInfo.h>
 #include <Base/Exception.h>
+#include "SafeMode.h"
 
 #include <Python.h>
 #include <QString>
@@ -66,6 +67,11 @@ ApplicationDirectories::ApplicationDirectories(std::map<std::string,std::string>
 const fs::path& ApplicationDirectories::getHomePath() const
 {
     return this->_home;
+}
+
+const fs::path& ApplicationDirectories::getUserHomePath() const
+{
+    return this->_userHome;
 }
 
 const fs::path& ApplicationDirectories::getTempPath() const {
@@ -182,10 +188,19 @@ void ApplicationDirectories::configurePaths(std::map<std::string,std::string>& m
     // get the system standard paths
     auto [configHome, dataHome, cacheHome, tempPath] = getStandardPaths();
 
+    if (mConfig.contains("SafeMode")) {
+        if (startSafeMode(mConfig)) {
+            // If we're in safe mode, don't try to set any directories here, they've been overridden
+            // by temp directories in the SafeMode setup.
+            return;
+        }
+    }
+
     // User home path
     //
     fs::path homePath = findUserHomePath(customHome);
     mConfig["UserHomePath"] = Base::FileInfo::pathToString(homePath);
+    _userHome = homePath;
 
     // the old path name to save config and data files
     std::vector<std::string> subdirs;
@@ -242,6 +257,23 @@ void ApplicationDirectories::configurePaths(std::map<std::string,std::string>& m
     _userMacro = macro;
     mConfig["UserMacroPath"] = Base::FileInfo::pathToString(macro) + PATHSEP;
 }
+
+bool ApplicationDirectories::startSafeMode(std::map<std::string,std::string>& mConfig)
+{
+    SafeMode::StartSafeMode();
+    if (SafeMode::SafeModeEnabled()) {
+        _userAppData = mConfig["UserAppData"];
+        _userConfig = mConfig["UserConfigPath"];
+        _userCache = mConfig["UserCachePath"];
+        _temp = mConfig["AppTempPath"];
+        _userMacro = mConfig["UserMacroPath"];
+        _userHome = mConfig["UserHomePath"];
+        _usingCustomDirectories = true;
+        return true;
+    }
+    return false;
+}
+
 
 void ApplicationDirectories::configureResourceDirectory(const std::map<std::string,std::string>& mConfig) {
 #ifdef RESOURCEDIR

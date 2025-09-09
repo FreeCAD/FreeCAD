@@ -63,7 +63,7 @@
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="127"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="129"/>
       <source>Active object</source>
       <translation>대상체 활성화</translation>
     </message>
@@ -884,19 +884,72 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="196"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="198"/>
       <source>The object is associated to one or more joints.</source>
       <translation>이 대상체는 하나 이상의 관절로 연결되어 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="198"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="200"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>관절 연결을 삭제하고 이 대상체를 이동시키겠습니까?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="960"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="982"/>
       <source>Move part</source>
       <translation>부품 이동</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1316"/>
+      <source>ViewProviderAssembly</source>
+      <comment>and %1 more</comment>
+      <translation type="unfinished">ViewProviderAssembly</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1333"/>
+      <source>Empty Assembly</source>
+      <translation type="unfinished">Empty Assembly</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1337"/>
+      <source>Over-constrained:</source>
+      <translation>과도한 구속:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1344"/>
+      <source>Malformed joints:</source>
+      <translation type="unfinished">Malformed joints:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1350"/>
+      <source>Redundant joints:</source>
+      <translation type="unfinished">Redundant joints:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1357"/>
+      <source>Partially redundant:</source>
+      <translation>부분적인 중복:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1363"/>
+      <source>Solver failed to converge</source>
+      <translation type="unfinished">Solver failed to converge</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1369"/>
+      <source>Under-constrained:</source>
+      <translation>구속되지 않음:</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../ViewProviderAssembly.cpp" line="1371"/>
+      <source>%n Degrees of Freedom</source>
+      <translation type="unfinished">
+        <numerusform>%n Degrees of Freedom</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1375"/>
+      <source>Fully constrained</source>
+      <translation>완전히 구속됨</translation>
     </message>
   </context>
   <context>
@@ -1453,6 +1506,34 @@ Grounding a part permanently locks its position in the assembly, preventing any 
       <location filename="../../../CommandInsertLink.py" line="73"/>
       <source>Insert Component</source>
       <translation>부품 삽입</translation>
+    </message>
+  </context>
+  <context>
+    <name>AssemblyGui::TaskAssemblyMessages</name>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="41"/>
+      <source>Solver messages</source>
+      <translation type="unfinished">Solver messages</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
+      <source>Click to select these conflicting joints.</source>
+      <translation type="unfinished">Click to select these conflicting joints.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
+      <source>Click to select these redundant joints.</source>
+      <translation type="unfinished">Click to select these redundant joints.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="64"/>
+      <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
+      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="68"/>
+      <source>Click to select these malformed joints.</source>
+      <translation type="unfinished">Click to select these malformed joints.</translation>
     </message>
   </context>
 </TS>

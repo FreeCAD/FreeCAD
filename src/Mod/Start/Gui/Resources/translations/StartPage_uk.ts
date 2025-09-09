@@ -16,12 +16,12 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="99"/>
       <source>Set your basic configuration options below.</source>
-      <translation type="unfinished">Set your basic configuration options below.</translation>
+      <translation>Налаштуйте свої базові параметри конфігурації нижче.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="100"/>
       <source>These options (and many more) can be changed later in the preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in the preferences.</translation>
+      <translation>Ці параметри (та багато інших) можна буде змінити пізніше у налаштуваннях.</translation>
     </message>
   </context>
   <context>
@@ -166,12 +166,12 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="114"/>
       <source>FreeCAD Dark</source>
-      <translation>FreeCAD темна</translation>
+      <translation>FreeCAD Темна</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
       <source>FreeCAD Light</source>
-      <translation>FreeCAD світла</translation>
+      <translation>FreeCAD Світла</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="238"/>
@@ -187,13 +187,13 @@
       <location filename="../../ThemeSelectorWidget.cpp" line="241"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
-      <translation>FreeCAD темна</translation>
+      <translation>FreeCAD Темна</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="242"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
-      <translation>FreeCAD світла</translation>
+      <translation>FreeCAD Світла</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="243"/>

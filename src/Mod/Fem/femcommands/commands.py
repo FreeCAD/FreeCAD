@@ -71,19 +71,28 @@ class _Analysis(CommandManager):
         FreeCADGui.doCommand("ObjectsFem.makeAnalysis(FreeCAD.ActiveDocument, 'Analysis')")
         FreeCADGui.doCommand("FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.ActiveObject)")
         FreeCAD.ActiveDocument.commitTransaction()
-        if get_default_solver() != "None":
+        def_solver = get_default_solver()
+        if def_solver:
             FreeCAD.ActiveDocument.openTransaction("Create default solver")
+            cmd = ""
+            match def_solver:
+                case "CalculiX":
+                    cmd = "FEM_SolverCalculiX"
+                case "Elmer":
+                    cmd = "FEM_SolverElmer"
+                case "Mystran":
+                    cmd = "FEM_SolverMystran"
+                case "Z88":
+                    cmd = "FEM_SolverZ88"
+
+            if cmd:
+                FreeCADGui.doCommand(f'FreeCADGui.runCommand("{cmd}")')
+
             FreeCADGui.doCommand(
-                f"ObjectsFem.makeSolver{get_default_solver()}(FreeCAD.ActiveDocument)"
-            )
-            FreeCADGui.doCommand(
-                "FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)"
+                "FreeCADGui.ActiveDocument.toggleTreeItem(FemGui.getActiveAnalysis(), 2)"
             )
             FreeCAD.ActiveDocument.commitTransaction()
-            self.do_activated = "add_obj_on_gui_expand_noset_edit"
-            # Fixme: expand analysis object in tree view to make added solver visible
-            # expandParentObject() does not work because the Analysis is not yet a tree
-            # in the tree view
+
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -962,26 +971,26 @@ class _SolverCalculixContextManager:
             )
         )
         FreeCADGui.doCommand(
-            "{}.IterationsMaximum = {}".format(
-                self.cli_name, ccx_prefs.GetInt("AnalysisMaxIterations", 2000)
+            "{}.IncrementsMaximum = {}".format(
+                self.cli_name, ccx_prefs.GetInt("StepMaxIncrements", 2000)
             )
         )
         FreeCADGui.doCommand(
-            "{}.TimeInitialStep = {}".format(
-                self.cli_name, ccx_prefs.GetFloat("AnalysisTimeInitialStep", 1.0)
+            "{}.TimeInitialIncrement = {}".format(
+                self.cli_name, ccx_prefs.GetFloat("TimeInitialIncrement", 1.0)
             )
         )
         FreeCADGui.doCommand(
-            "{}.TimeEnd = {}".format(self.cli_name, ccx_prefs.GetFloat("AnalysisTime", 1.0))
+            "{}.TimePeriod = {}".format(self.cli_name, ccx_prefs.GetFloat("TimePeriod", 1.0))
         )
         FreeCADGui.doCommand(
-            "{}.TimeMinimumStep = {}".format(
-                self.cli_name, ccx_prefs.GetFloat("AnalysisTimeMinimumStep", 0.00001)
+            "{}.TimeMinimumIncrement = {}".format(
+                self.cli_name, ccx_prefs.GetFloat("TimeMinimumIncrement", 0.00001)
             )
         )
         FreeCADGui.doCommand(
-            "{}.TimeMaximumStep = {}".format(
-                self.cli_name, ccx_prefs.GetFloat("AnalysisTimeMaximumStep", 1.0)
+            "{}.TimeMaximumIncrement = {}".format(
+                self.cli_name, ccx_prefs.GetFloat("TimeMaximumIncrement", 1.0)
             )
         )
         FreeCADGui.doCommand(

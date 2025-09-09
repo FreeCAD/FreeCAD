@@ -1771,7 +1771,7 @@ bool SketchObject::hasInternalGeometry(const Part::Geometry* geo)
             || geo->is<Part::GeomBSplineCurve>());
 }
 
-int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
+int SketchObject::delGeometry(int GeoId, DeleteOptions options)
 {
     if (GeoId < 0) {
         if(GeoId > GeoEnum::RefExt)
@@ -1787,7 +1787,7 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
         return -1;
     }
 
-    if (deleteinternalgeo && hasInternalGeometry(getGeometry(GeoId))) {
+    if (options.testFlag(DeleteOption::IncludeInternalGeometry) && hasInternalGeometry(getGeometry(GeoId))) {
         // Only for supported types
         this->deleteUnusedInternalGeometry(GeoId, true);
         return 0;
@@ -1828,19 +1828,20 @@ int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
     Geometry.touch();
 
     // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
-    if (noRecomputes)
-        solve();
+    if (noRecomputes && !options.testFlag(DeleteOption::NoSolve)) {
+        solve(options.testFlag(DeleteOption::UpdateGeometry));
+    }
 
     return 0;
 }
 
-int SketchObject::delGeometries(const std::vector<int>& GeoIds)
+int SketchObject::delGeometries(const std::vector<int>& GeoIds, DeleteOptions options)
 {
-    return delGeometries(GeoIds.begin(), GeoIds.end());
+    return delGeometries(GeoIds.begin(), GeoIds.end(), options);
 }
 
 template <class InputIt>
-int SketchObject::delGeometries(InputIt first, InputIt last)
+int SketchObject::delGeometries(InputIt first, InputIt last, DeleteOptions options)
 {
     std::vector<int> sGeoIds;
     std::vector<int> negativeGeoIds;
@@ -1885,23 +1886,25 @@ int SketchObject::delGeometries(InputIt first, InputIt last)
     auto newend = std::unique(sGeoIds.begin(), sGeoIds.end());
     sGeoIds.resize(std::distance(sGeoIds.begin(), newend));
 
-    return delGeometriesExclusiveList(sGeoIds);
+    return delGeometriesExclusiveList(sGeoIds, options);
 }
 
-int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
+int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds, DeleteOptions options)
 {
     std::vector<int> sGeoIds(GeoIds);
 
     std::ranges::sort(sGeoIds);
-    if (sGeoIds.empty())
+    if (sGeoIds.empty()) {
         return 0;
+    }
 
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
     const std::vector<Part::Geometry*>& vals = getInternalGeometry();
-    if (sGeoIds.front() < 0 || sGeoIds.back() >= int(vals.size()))
+    if (sGeoIds.front() < 0 || sGeoIds.back() >= int(vals.size())) {
         return -1;
+    }
 
     std::vector<Part::Geometry*> newVals(vals);
     for (auto it = sGeoIds.rbegin(); it != sGeoIds.rend(); ++it) {
@@ -1950,8 +1953,9 @@ int SketchObject::delGeometriesExclusiveList(const std::vector<int>& GeoIds)
     Geometry.touch();
 
     // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
-    if (noRecomputes)
-        solve();
+    if (noRecomputes && !options.testFlag(DeleteOption::NoSolve)) {
+        solve(options.testFlag(DeleteOption::UpdateGeometry));
+    }
 
     return 0;
 }
@@ -1990,7 +1994,7 @@ void SketchObject::replaceGeometries(std::vector<int> oldGeoIds,
     Geometry.setValues(std::move(newVals));
 }
 
-int SketchObject::deleteAllGeometry()
+int SketchObject::deleteAllGeometry(DeleteOptions options)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
@@ -2009,13 +2013,14 @@ int SketchObject::deleteAllGeometry()
     Geometry.touch();
 
     // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
-    if (noRecomputes)
-        solve();
+    if (noRecomputes && !options.testFlag(DeleteOption::NoSolve)) {
+        solve(options.testFlag(DeleteOption::UpdateGeometry));
+    }
 
     return 0;
 }
 
-int SketchObject::deleteAllConstraints()
+int SketchObject::deleteAllConstraints(DeleteOptions options)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
@@ -2025,8 +2030,9 @@ int SketchObject::deleteAllConstraints()
     this->Constraints.setValues(newConstraints);
 
     // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
-    if (noRecomputes)
-        solve();
+    if (noRecomputes && !options.testFlag(DeleteOption::NoSolve)) {
+        solve(options.testFlag(DeleteOption::UpdateGeometry));
+    }
 
     return 0;
 }
@@ -2307,14 +2313,15 @@ int SketchObject::addConstraint(std::unique_ptr<Constraint> constraint)
     return this->Constraints.getSize() - 1;
 }
 
-int SketchObject::delConstraint(int ConstrId)
+int SketchObject::delConstraint(int ConstrId, DeleteOptions options)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
 
     const std::vector<Constraint*>& vals = this->Constraints.getValues();
-    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+    if (ConstrId < 0 || ConstrId >= int(vals.size())) {
         return -1;
+    }
 
     std::vector<Constraint*> newVals(vals);
     auto ctriter = newVals.begin() + ConstrId;
@@ -2323,18 +2330,20 @@ int SketchObject::delConstraint(int ConstrId)
     this->Constraints.setValues(std::move(newVals));
 
     // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
-    if (noRecomputes)
-        solve();
+    if (noRecomputes && !options.testFlag(DeleteOption::NoSolve)) {
+        solve(options.testFlag(DeleteOption::UpdateGeometry));
+    }
 
     return 0;
 }
 
-int SketchObject::delConstraints(std::vector<int> ConstrIds, bool updategeometry)
+int SketchObject::delConstraints(std::vector<int> ConstrIds, DeleteOptions options)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
-    if (ConstrIds.empty())
+    if (ConstrIds.empty()) {
         return 0;
+    }
 
     const std::vector<Constraint*>& vals = this->Constraints.getValues();
 
@@ -2354,8 +2363,9 @@ int SketchObject::delConstraints(std::vector<int> ConstrIds, bool updategeometry
     this->Constraints.setValues(std::move(newVals));
 
     // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
-    if (noRecomputes)
-        solve(updategeometry);
+    if (noRecomputes && !options.testFlag(DeleteOption::NoSolve)) {
+        solve(options.testFlag(DeleteOption::UpdateGeometry));
+    }
 
     return 0;
 }
@@ -2524,7 +2534,7 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
                 }
             }
         }
-        delConstraints(std::move(deleteme), false);
+        delConstraints(std::move(deleteme), DeleteOption::UpdateGeometry);
         return;
     }
 
@@ -3486,7 +3496,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         addConstraint(std::move(newConstr));
     };
 
-    delConstraints(std::move(idsOfOldConstraints), false);
+    delConstraints(std::move(idsOfOldConstraints), DeleteOption::UpdateGeometry);
 
     if (!isOriginalCurvePeriodic) {
         transferConstraints(GeoId, PointPos::start, newIds.front(), PointPos::start, true);
@@ -6163,7 +6173,7 @@ int SketchObject::deleteUnusedInternalGeometryWhenTwoFoci(int GeoId, bool delgeo
     std::sort(delgeometries.begin(), delgeometries.end(), std::greater<>());
 
     for (auto& dGeoId : delgeometries) {
-        delGeometry(dGeoId, false);
+        delGeometry(dGeoId, DeleteOption::UpdateGeometry);
     }
 
     int ndeleted = delgeometries.size();
@@ -6230,7 +6240,7 @@ int SketchObject::deleteUnusedInternalGeometryWhenOneFocus(int GeoId, bool delge
     std::sort(delgeometries.begin(), delgeometries.end(), std::greater<>());
 
     for (auto& dGeoId : delgeometries) {
-        delGeometry(dGeoId, false);
+        delGeometry(dGeoId, DeleteOption::UpdateGeometry);
     }
 
     int ndeleted = delgeometries.size();
@@ -7391,7 +7401,7 @@ int SketchObject::delAllExternal()
 }
 // clang-format off
 
-int SketchObject::delConstraintsToExternal()
+int SketchObject::delConstraintsToExternal(DeleteOptions options)
 {
     // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
@@ -7411,8 +7421,9 @@ int SketchObject::delConstraintsToExternal()
     Constraints.acceptGeometry(getCompleteGeometry());
 
     // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
-    if (noRecomputes)
-        solve();
+    if (noRecomputes && !options.testFlag(DeleteOption::NoFlag)) {
+        solve(options.testFlag(DeleteOption::UpdateGeometry));
+    }
 
     return 0;
 }
@@ -11555,18 +11566,19 @@ int SketchObject::removeDegeneratedGeometries(double tolerance)
     return analyser->removeDegeneratedGeometries(tolerance);
 }
 
-int SketchObject::autoRemoveRedundants(bool updategeo)
+int SketchObject::autoRemoveRedundants(DeleteOptions options)
 {
     auto redundants = getLastRedundant();
 
-    if (redundants.empty())
+    if (redundants.empty()) {
         return 0;
+    }
 
     // getLastRedundant is base 1, while delConstraints is base 0
     for (size_t i = 0; i < redundants.size(); i++)
         redundants[i]--;
 
-    delConstraints(redundants, updategeo);
+    delConstraints(redundants, options);
 
     return redundants.size();
 }

@@ -33,28 +33,23 @@ set(FemGui_LIBS
     PartGui
 )
 
-generate_from_xml(ViewProviderFemConstraintPy)
-generate_from_xml(ViewProviderFemMeshPy)
-generate_from_xml(ViewProviderFemPostPipelinePy)
-generate_from_xml(ViewProviderFemPostFilterPy)
-
-generate_from_py_(ViewProviderFemConstraintPy)
-generate_from_py_(ViewProviderFemMeshPy)
-generate_from_py_(ViewProviderFemPostPipelinePy)
-generate_from_py_(ViewProviderFemPostFilterPy)
+generate_from_py(ViewProviderFemConstraint)
+generate_from_py(ViewProviderFemMesh)
+generate_from_py(ViewProviderFemPostPipeline)
+generate_from_py(ViewProviderFemPostFilter)
 
 SET(Python_SRCS
-    ViewProviderFemConstraintPy.xml
+    ViewProviderFemConstraint.pyi
     ViewProviderFemConstraintPyImp.cpp
-    ViewProviderFemMeshPy.xml
+    ViewProviderFemMesh.pyi
     ViewProviderFemMeshPyImp.cpp
 )
 if(BUILD_FEM_VTK)
     set(Python_SRCS
         ${Python_SRCS}
-        ViewProviderFemPostPipelinePy.xml
+        ViewProviderFemPostPipeline.pyi
         ViewProviderFemPostPipelinePyImp.cpp
-        ViewProviderFemPostFilterPy.xml
+        ViewProviderFemPostFilter.pyi
         ViewProviderFemPostFilterPyImp.cpp
     )
 endif(BUILD_FEM_VTK)

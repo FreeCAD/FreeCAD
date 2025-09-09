@@ -152,10 +152,10 @@ Objects can then automatically be added to groups as well.</string>
       <item row="0" column="0" colspan="3">
        <widget class="Gui::PrefCheckBox" name="checkBox_ToolMessages">
         <property name="toolTip">
-         <string>If checked, instructions are displayed in the Report view when using Draft commands</string>
+         <string>If checked, instructions are displayed in the Report View when using Draft commands</string>
         </property>
         <property name="text">
-         <string>Show prompts in the Report view</string>
+         <string>Show prompts in the Report View</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ToolMessages</cstring>

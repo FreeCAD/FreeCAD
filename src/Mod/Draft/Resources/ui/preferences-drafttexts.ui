@@ -37,7 +37,7 @@
         </property>
         <property name="toolTip">
          <string>The default annotation scale multiplier. This is the inverse of the scale set
-in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
+in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</string>
         </property>
         <property name="minimum">
          <number>0</number>

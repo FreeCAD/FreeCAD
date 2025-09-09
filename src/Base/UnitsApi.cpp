@@ -23,11 +23,9 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <iomanip>
-#include <sstream>
 #endif
 
 #include <CXX/WrapPython.h>
-#include <fmt/format.h>
 
 #include "Exception.h"
 #include "UnitsApi.h"
@@ -38,11 +36,6 @@
 using Base::UnitsApi;
 using Base::UnitsSchema;
 using Base::UnitsSchemas;
-
-void UnitsApi::init()
-{
-    schemas = std::make_unique<UnitsSchemas>(UnitsSchemasData::unitSchemasDataPack);
-}
 
 std::vector<std::string> UnitsApi::getDescriptions()
 {
@@ -74,9 +67,24 @@ std::string UnitsApi::getBasicLengthUnit()
     return schemas->currentSchema()->getBasicLengthUnit();
 }
 
-std::size_t UnitsApi::getFractDenominator()
+void UnitsApi::setDecimals(const int prec)
 {
-    return schemas->defFractDenominator();
+    decimals = prec;
+}
+
+int UnitsApi::getDecimals()
+{
+    return decimals < 0 ? schemas->getDecimals() : decimals;
+}
+
+void UnitsApi::setDenominator(int frac)
+{
+    denominator = frac;
+}
+
+int UnitsApi::getDenominator()
+{
+    return denominator < 0 ? schemas->defFractDenominator() : denominator;
 }
 
 std::unique_ptr<UnitsSchema> UnitsApi::createSchema(const std::size_t num)
@@ -92,35 +100,6 @@ void UnitsApi::setSchema(const std::string& name)
 void UnitsApi::setSchema(const size_t num)
 {
     schemas->select(num);
-}
-
-std::string UnitsApi::toString(const Quantity& quantity, const QuantityFormat& format)
-{
-    return fmt::format("'{} {}'", toNumber(quantity, format), quantity.getUnit().getString());
-}
-
-std::string UnitsApi::toNumber(const Quantity& quantity, const QuantityFormat& format)
-{
-    return toNumber(quantity.getValue(), format);
-}
-
-std::string UnitsApi::toNumber(const double value, const QuantityFormat& format)
-{
-    std::stringstream ss;
-
-    switch (format.format) {
-        case QuantityFormat::Fixed:
-            ss << std::fixed;
-            break;
-        case QuantityFormat::Scientific:
-            ss << std::scientific;
-            break;
-        default:
-            break;
-    }
-    ss << std::setprecision(format.precision) << value;
-
-    return ss.str();
 }
 
 double UnitsApi::toDouble(PyObject* args, const Base::Unit& u)
@@ -156,19 +135,4 @@ std::string UnitsApi::schemaTranslate(const Quantity& quant)
     double dummy1 {};  // to satisfy GCC
     std::string dummy2;
     return schemas->currentSchema()->translate(quant, dummy1, dummy2);
-}
-
-void UnitsApi::setDecimals(const std::size_t prec)
-{
-    decimals = prec;
-}
-
-size_t UnitsApi::getDecimals()
-{
-    return decimals;
-}
-
-size_t UnitsApi::getDefDecimals()
-{
-    return schemas->getDecimals();
 }

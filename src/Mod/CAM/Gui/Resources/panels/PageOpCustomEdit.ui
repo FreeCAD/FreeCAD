@@ -53,6 +53,13 @@
       <item row="1" column="1">
        <widget class="QComboBox" name="coolantController"/>
       </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="editToolController">
+        <property name="text">
+         <string>Edit Tool Controller</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

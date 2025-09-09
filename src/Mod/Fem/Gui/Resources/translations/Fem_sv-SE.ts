@@ -1713,14 +1713,14 @@ Specify another file.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="209"/>
-      <source>Maximal places in stiffnes matrix.
+      <source>Maximum places in the stiffness matrix.
 You might need to increase this when using the
-Cholesky solver and you get the error message
+Cholesky solver and getting the error message
 that "MAXGS" needs to be increased.</source>
-      <translation>Maximala platser i stiffnesmatrisen.
-Du kan behöva öka detta när du använder
-Cholesky-lösaren och du får felmeddelandet
-att "MAXGS" behöver ökas.</translation>
+      <translation type="unfinished">Maximum places in the stiffness matrix.
+You might need to increase this when using the
+Cholesky solver and getting the error message
+that "MAXGS" needs to be increased.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="240"/>
@@ -1818,7 +1818,7 @@ Specify another file.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintContact</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="542"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="546"/>
       <source>Input error</source>
       <translation>Inmatningsfel</translation>
     </message>
@@ -1858,7 +1858,7 @@ Specify another file.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="515"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="517"/>
       <source>Input error</source>
       <translation>Inmatningsfel</translation>
     </message>
@@ -1874,7 +1874,7 @@ Specify another file.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="305"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="307"/>
       <source>Input error</source>
       <translation>Inmatningsfel</translation>
     </message>
@@ -2016,17 +2016,17 @@ Specify another file.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="204"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="215"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="223"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="231"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="265"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="274"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="319"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="325"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="330"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="341"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="348"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="356"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="391"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="400"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="232"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="267"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="276"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="321"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="327"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="332"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="343"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="350"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="359"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="395"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="404"/>
       <source>Selection error</source>
       <translation>Markeringsfel</translation>
     </message>
@@ -2037,15 +2037,15 @@ Specify another file.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="194"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="320"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="322"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
       <translation>Endast en masteryta och en slavyta för en kontaktbegränsning!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="199"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="265"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="325"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="391"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="267"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="327"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="395"/>
       <source>Nothing selected!</source>
       <translation>Inget markerat!</translation>
     </message>
@@ -2057,25 +2057,25 @@ Specify another file.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="215"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="274"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="341"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="400"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="276"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="343"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="404"/>
       <source>Selected object is not a part!</source>
       <translation>Markerad objekt är inte en komponent!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="231"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="356"/>
-      <source>Only faces can be picked</source>
-      <translation>Endast ytor kan väljas</translation>
+      <location filename="../../TaskFemConstraintContact.cpp" line="233"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="360"/>
+      <source>Only faces can be picked (edges in 2D models)</source>
+      <translation type="unfinished">Only faces can be picked (edges in 2D models)</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="331"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="333"/>
       <source>Only one master for a contact constraint!</source>
       <translation>Endast en master för en kontaktbegränsning!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="349"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="351"/>
       <source>Only one master face for a contact constraint!</source>
       <translation>Endast ett masterface för en kontaktbegränsning!</translation>
     </message>
@@ -2337,30 +2337,30 @@ Specify another file.</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="267"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="276"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="286"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="330"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="340"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="350"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="287"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="331"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="341"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="352"/>
       <source>Selection error</source>
       <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="267"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="330"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="331"/>
       <source>Nothing selected!</source>
       <translation>Inget markerat!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="276"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="340"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="341"/>
       <source>Selected object is not a part!</source>
       <translation>Markerad objekt är inte en komponent!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="287"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="351"/>
-      <source>Selection must only consist of faces!</source>
-      <translation>Urvalet får bara bestå av ansikten!</translation>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="288"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="353"/>
+      <source>Selection must only consist of faces! (edges in 2D models)</source>
+      <translation type="unfinished">Selection must only consist of faces! (edges in 2D models)</translation>
     </message>
   </context>
   <context>
@@ -2411,28 +2411,28 @@ Specify another file.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="132"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="141"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="150"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="184"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="193"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="151"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="186"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="195"/>
       <source>Selection error</source>
       <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="132"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="184"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="186"/>
       <source>Nothing selected!</source>
       <translation>Inget markerat!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="141"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="193"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="195"/>
       <source>Selected object is not a part!</source>
       <translation>Markerad objekt är inte en komponent!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="150"/>
-      <source>Only faces can be picked</source>
-      <translation>Endast ytor kan väljas</translation>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="152"/>
+      <source>Only faces (edges in 2D models) can be picked</source>
+      <translation type="unfinished">Only faces (edges in 2D models) can be picked</translation>
     </message>
   </context>
   <context>

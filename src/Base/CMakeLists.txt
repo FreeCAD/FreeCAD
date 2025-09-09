@@ -152,6 +152,7 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsApi.cpp
     UnitsApiPy.cpp
     UnitsApi.h
+    UnitsConvData.h
     UnitsSchema.h
     UnitsSchema.cpp
     UnitsSchemas.cpp

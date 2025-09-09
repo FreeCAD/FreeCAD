@@ -150,7 +150,7 @@ class CommandPathPost:
             # This is also backwards compatible with the "previous" way of doing things.
             newline_handling = None
 
-        if policy == "Open File Dialog":
+        if policy.casefold() == "open file dialog":
             dlg = QtGui.QFileDialog()
             dlg.setFileMode(QtGui.QFileDialog.FileMode.AnyFile)
             dlg.setAcceptMode(QtGui.QFileDialog.AcceptMode.AcceptSave)
@@ -164,14 +164,14 @@ class CommandPathPost:
             else:
                 return
 
-        elif policy == "Append Unique ID on conflict":
+        elif policy.casefold() == "append unique id on conflict":
             while os.path.isfile(filename):
                 base, ext = os.path.splitext(filename)
                 filename = f"{base}-1{ext}"
             with open(filename, "w", encoding="utf-8", newline=newline_handling) as f:
                 f.write(gcode)
 
-        elif policy == "Open File Dialog on conflict":
+        elif policy.casefold() == "open file dialog on conflict":
             if os.path.isfile(filename):
                 dlg = QtGui.QFileDialog()
                 dlg.setFileMode(QtGui.QFileDialog.FileMode.AnyFile)

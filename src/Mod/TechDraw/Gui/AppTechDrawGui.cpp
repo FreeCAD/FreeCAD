@@ -162,7 +162,6 @@ PyMOD_INIT_FUNC(TechDrawGui)
     TechDrawGui::ViewProviderWeld::init();
 
     TechDrawGui::ViewProviderPageExtension ::init();
-    //    TechDrawGui::ViewProviderPageExtensionPython::init();
     TechDrawGui::ViewProviderDrawingViewExtension::init();
     TechDrawGui::ViewProviderTemplateExtension::init();
 

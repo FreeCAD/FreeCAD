@@ -116,7 +116,10 @@ ThicknessWidget::ThicknessWidget(Part::Thickness* thickness, QWidget* parent)
 
     d->ui.spinOffset->bind(d->thickness->Value);
 
-    setupGizmos();
+    // The interactive gizmos are implemented for this operation just as a proof
+    // of concept. And so, it is kept disabled until the other operations of the
+    // Part workbench are covered.
+    // setupGizmos();
 }
 
 ThicknessWidget::~ThicknessWidget()

@@ -784,10 +784,10 @@
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBox_SnapBarShowOnlyDuringCommands">
         <property name="toolTip">
-         <string>If checked, the Draft snap toolbar will only be visible during commands</string>
+         <string>If checked, the Draft Snap toolbar will only be visible during commands</string>
         </property>
         <property name="text">
-         <string>Only show the Draft snap toolbar during commands</string>
+         <string>Only show the Draft Snap toolbar during commands</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -803,10 +803,10 @@
       <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBox_DisplayStatusbarSnapWidget">
         <property name="toolTip">
-         <string>If checked, the Snap widget is displayed in the Draft status bar</string>
+         <string>If checked, the Draft Snap Widget is displayed in the Draft Status Bar</string>
         </property>
         <property name="text">
-         <string>Show the Snap widget in the Draft Workbench</string>
+         <string>Show the Draft Snap Widget in the Draft Workbench</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -822,10 +822,10 @@
       <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBox_DisplayStatusbarScaleWidget">
         <property name="toolTip">
-         <string>If checked, the annotation scale widget is displayed in the Draft status bar</string>
+         <string>If checked, the Draft Scale Widget is displayed in the Draft Status Bar</string>
         </property>
         <property name="text">
-         <string>Show the Annotation Scale Widget in the Draft Workbench</string>
+         <string>Show the Draft Scale Widget in the Draft Workbench</string>
         </property>
         <property name="checked">
          <bool>true</bool>

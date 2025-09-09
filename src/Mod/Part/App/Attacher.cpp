@@ -47,6 +47,8 @@
 # include <gp_Parab.hxx>
 # include <gp_Pln.hxx>
 # include <gp_Pnt.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Cylinder.hxx>
 # include <GProp_GProps.hxx>
 # include <GProp_PGProps.hxx>
 # include <GProp_PrincipalProps.hxx>
@@ -58,6 +60,7 @@
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Vertex.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
+# include <GeomAbs_CurveType.hxx>
 #endif
 
 #include <App/Application.h>
@@ -1986,6 +1989,24 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
 
                         placement.setRotation(Base::Rotation::fromNormalVector(direction));
                     }
+
+                    // Midpoint for circular edges
+                    const TopoDS_Shape& sh = shape->getShape();
+                    if (!sh.IsNull() && sh.ShapeType() == TopAbs_EDGE) {
+                        TopoDS_Edge ed = TopoDS::Edge(sh);
+                        BRepAdaptor_Curve adapt(ed);
+                        if (adapt.GetType() == GeomAbs_Circle) {
+                            // Center of the circle / arc
+                            const gp_Circ circ = adapt.Circle();
+                            const gp_Pnt center = circ.Location();
+                            const gp_Dir axisDir = circ.Axis().Direction(); // normal to circle plane
+
+                            placement.setPosition(Base::convertTo<Base::Vector3d>(center));
+                            placement.setRotation(Base::Rotation::fromNormalVector(
+                                Base::convertTo<Base::Vector3d>(axisDir)));
+                            break;
+                        }
+                    }
                 }
                 break;
 
@@ -2002,6 +2023,26 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
 
                     auto midU = (u1 + u2) / 2;
                     auto midV = (v1 + v2) / 2;
+
+                    // Axis for circular faces
+                    if (adaptorSurface.GetType() == GeomAbs_Cylinder) {
+                        const gp_Cylinder cyl = adaptorSurface.Cylinder();
+                        const gp_Ax1 axis = cyl.Axis();
+                        const gp_Pnt origin = axis.Location();
+                        const gp_Dir axisDir = axis.Direction();
+
+                        const gp_Pnt midPnt = adaptorSurface.Value(midU, midV);
+
+                        // Project midPnt onto the cylinder axis to get an axis-center point near face
+                        const gp_Vec v(origin, midPnt);
+                        const Standard_Real t = v.Dot(gp_Vec(axisDir));       // scalar projection onto axis
+                        const gp_Pnt axisCenter = origin.Translated(gp_Vec(axisDir) * t);
+
+                        placement.setPosition(Base::convertTo<Base::Vector3d>(axisCenter));
+                        placement.setRotation(Base::Rotation::fromNormalVector(
+                            Base::convertTo<Base::Vector3d>(axisDir)));
+                        break;
+                    }
 
                     if (auto sphere = freecad_cast<GeomSphere*>(geom.get())) {
                         placement.setPosition(sphere->getLocation());

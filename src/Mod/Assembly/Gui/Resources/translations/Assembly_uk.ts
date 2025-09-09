@@ -63,7 +63,7 @@
       <translation>Збірка</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="127"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="129"/>
       <source>Active object</source>
       <translation>Активний об'єкт</translation>
     </message>
@@ -884,19 +884,75 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="196"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="198"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Об'єкт пов'язаний з одним або декількома з'єднаннями.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="198"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="200"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Ви хочете перемістити об'єкт і видалити пов'язані з ним з'єднання?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="960"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="982"/>
       <source>Move part</source>
       <translation>Перемістити деталь</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1316"/>
+      <source>ViewProviderAssembly</source>
+      <comment>and %1 more</comment>
+      <translation type="unfinished">ViewProviderAssembly</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1333"/>
+      <source>Empty Assembly</source>
+      <translation type="unfinished">Empty Assembly</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1337"/>
+      <source>Over-constrained:</source>
+      <translation>Надлишково обмежено:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1344"/>
+      <source>Malformed joints:</source>
+      <translation type="unfinished">Malformed joints:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1350"/>
+      <source>Redundant joints:</source>
+      <translation type="unfinished">Redundant joints:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1357"/>
+      <source>Partially redundant:</source>
+      <translation>Частково надлишкові:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1363"/>
+      <source>Solver failed to converge</source>
+      <translation>Рішення не сходиться</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1369"/>
+      <source>Under-constrained:</source>
+      <translation>Частково обмежений:</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../ViewProviderAssembly.cpp" line="1371"/>
+      <source>%n Degrees of Freedom</source>
+      <translation type="unfinished">
+        <numerusform>%n Degrees of Freedom</numerusform>
+        <numerusform>%n Degrees of Freedom</numerusform>
+        <numerusform>%n Degrees of Freedom</numerusform>
+        <numerusform>%n Degrees of Freedom</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1375"/>
+      <source>Fully constrained</source>
+      <translation>Повністю обмежений</translation>
     </message>
   </context>
   <context>
@@ -1453,6 +1509,34 @@ Grounding a part permanently locks its position in the assembly, preventing any 
       <location filename="../../../CommandInsertLink.py" line="73"/>
       <source>Insert Component</source>
       <translation>Вставити компонент</translation>
+    </message>
+  </context>
+  <context>
+    <name>AssemblyGui::TaskAssemblyMessages</name>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="41"/>
+      <source>Solver messages</source>
+      <translation type="unfinished">Solver messages</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
+      <source>Click to select these conflicting joints.</source>
+      <translation type="unfinished">Click to select these conflicting joints.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
+      <source>Click to select these redundant joints.</source>
+      <translation type="unfinished">Click to select these redundant joints.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="64"/>
+      <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
+      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="68"/>
+      <source>Click to select these malformed joints.</source>
+      <translation type="unfinished">Click to select these malformed joints.</translation>
     </message>
   </context>
 </TS>

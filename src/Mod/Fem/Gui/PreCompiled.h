@@ -81,6 +81,7 @@
 #include <QPushButton>
 #include <QSlider>
 #include <QStackedWidget>
+#include <QStandardPaths>
 #include <QString>
 #include <QStringList>
 #include <QTextCharFormat>

@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <cstdio>
 #ifndef _PreComp_
 
 #include <QPainterPath>
 #include <QKeyEvent>
+#include <cstdio>
 #include <qmath.h>
 #endif// #ifndef _PreComp_
 
