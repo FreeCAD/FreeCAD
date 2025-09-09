@@ -84,6 +84,15 @@ FC_LOG_LEVEL_INIT("Tree", false, true, true)
 using namespace Gui;
 namespace sp = std::placeholders;
 
+namespace {
+// Single canonical parameter group path used throughout this file so
+// callers don't repeat the literal string. This reduces the chance of
+// typos and makes future refactors (e.g. moving the path to a header)
+// easier.
+static constexpr const char* kTreeParamPath = "User parameter:BaseApp/Preferences/TreeView";
+
+}
+
 /////////////////////////////////////////////////////////////////////////////////
 
 std::unique_ptr<QPixmap>  TreeWidget::documentPixmap;
@@ -502,20 +511,7 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
         // attributes/property are set on ancestor widgets (Dock/Overlay
         // containers) so check parents too. Also consider the "transparent"
         // property set on OverlayTabWidget.
-        auto isAncestorOverlay = [&](QWidget *w)->bool{
-            while (w) {
-                if (w->testAttribute(Qt::WA_NoSystemBackground)
-                        && w->testAttribute(Qt::WA_TranslucentBackground))
-                    return true;
-                // OverlayTabWidget sets a dynamic property "transparent";
-                // accept that as indication of overlay translucency too.
-                QVariant prop = w->property("transparent");
-                if (prop.isValid() && prop.toBool())
-                    return true;
-                w = w->parentWidget();
-            }
-            return false;
-        };
+    // use file-local helper to detect overlay ancestors
 
         // Paint the custom overlay background whenever we're inside a
         // translucent overlay. The background used can be the standard
@@ -531,7 +527,7 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
         bool overlayColorEnabled = false;
         unsigned long overlayColorPacked = 0;
         {
-            ParameterGrp::handle hTree = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+            ParameterGrp::handle hTree = App::GetApplication().GetParameterGroupByPath(kTreeParamPath);
             overlayColorEnabled = hTree->GetBool("OverlayActiveEnabled", false);
             overlayColorPacked = hTree->GetUnsigned("OverlayActiveColor", 0UL);
         }
@@ -539,13 +535,31 @@ void TreeWidgetItemDelegate::paint(QPainter *painter,
     // Only paint overlay backgrounds when the overlay is active and
     // the user explicitly enabled the overlay active color. Do not
     // fall back to the old tree item background.
+    // Walk up the parent chain to find whether we're inside an overlay
+    // with a translucent background. In some layouts the overlay
+    // attributes/property are set on ancestor widgets (Dock/Overlay
+    // containers) so check parents too. Also consider the "transparent"
+    // property set on OverlayTabWidget.
+    auto isAncestorOverlay = [&](QWidget *w)->bool{
+        while (w) {
+            if (w->testAttribute(Qt::WA_NoSystemBackground)
+                    && w->testAttribute(Qt::WA_TranslucentBackground))
+                return true;
+            QVariant prop = w->property("transparent");
+            if (prop.isValid() && prop.toBool())
+                return true;
+            w = w->parentWidget();
+        }
+        return false;
+    };
+
     if (isAncestorOverlay(tree) && overlayColorEnabled) {
             // Read a runtime preference to optionally disable the default
             // overlay background. Preference path: User parameter:BaseApp/Preferences/TreeView
             // Key: DisableOverlayItemBackground (bool, default false)
             bool disableOverlayBg = false;
             {
-                ParameterGrp::handle hTree = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+                ParameterGrp::handle hTree = App::GetApplication().GetParameterGroupByPath(kTreeParamPath);
                 disableOverlayBg = hTree->GetBool("DisableOverlayItemBackground", false);
             }
             if (disableOverlayBg) {
@@ -594,6 +608,11 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
     // backgroundBrush for non-selected items. Some QSS rules paint the
     // background via the style's CE_ItemViewItem; clearing backgroundBrush
     // prevents that drawing when we don't want the overlay background.
+    // Walk up the parent chain to find whether we're inside an overlay
+    // with a translucent background. In some layouts the overlay
+    // attributes/property are set on ancestor widgets (Dock/Overlay
+    // containers) so check parents too. Also consider the "transparent"
+    // property set on OverlayTabWidget.
     auto isAncestorOverlay = [&](QWidget *w)->bool{
         while (w) {
             if (w->testAttribute(Qt::WA_NoSystemBackground)
@@ -624,7 +643,7 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
     // the overlay fill for idle items when the user requested it.
     bool disableOverlayBg = false;
     {
-        ParameterGrp::handle hTree = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+        ParameterGrp::handle hTree = App::GetApplication().GetParameterGroupByPath(kTreeParamPath);
         disableOverlayBg = hTree->GetBool("DisableOverlayItemBackground", false);
     }
     // Read runtime pref for overlay active color feature. When overlay is
@@ -633,7 +652,7 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
     // theme color for idle items.
     bool overlayColorEnabled = false;
     {
-        ParameterGrp::handle hTree2 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+        ParameterGrp::handle hTree2 = App::GetApplication().GetParameterGroupByPath(kTreeParamPath);
         overlayColorEnabled = hTree2->GetBool("OverlayActiveEnabled", false);
     }
     // Preserve selection/highlight: only clear the backgroundBrush when the
@@ -1317,7 +1336,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     action->setStatusTip(tr("Shows a description column for items. An item's description can be set by by editing the 'label2' property."));
     action->setCheckable(true);
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(kTreeParamPath);
     action->setChecked(!hGrp->GetBool("HideColumn", true));
 
     settingsMenu.addAction(action);
@@ -4038,7 +4057,7 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
     (void)v;
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/TreeView");
+        kTreeParamPath);
     unsigned long col = hGrp->GetUnsigned("TreeEditColor", 563609599);
     QColor color(Base::Color::fromPackedRGB<QColor>(col));
 
@@ -5500,7 +5519,7 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
     {
         QColor color(230, 230, 255);
             if (set) {
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(kTreeParamPath);
             bool bold = hGrp->GetBool("TreeActiveBold", true);
             bool italic = hGrp->GetBool("TreeActiveItalic", false);
             bool underlined = hGrp->GetBool("TreeActiveUnderlined", false);
@@ -5519,10 +5538,11 @@ void DocumentObjectItem::setHighlight(bool set, Gui::HighlightMode high) {
             f.setItalic(false);
             f.setUnderline(false);
             f.setOverline(false);
-            // Revert to no background (offCol omitted -> NoBrush)
-            // We call applyHighlight without offCol so the lambda will
-            // set NoBrush and leave the idle background to the widget/style.
-            applyHighlight(color);
+            // Revert to no explicit per-item background so the widget/style
+            // (or overlay logic) controls the idle appearance. Passing an
+            // empty QColor signals the helper to set Qt::NoBrush instead
+            // of reusing any previously selected color.
+            applyHighlight(QColor());
         }
     }   break;
     default:

@@ -388,7 +388,11 @@
           </property>
          </widget>
         </item>
-  <!-- New overlay enable checkbox and color for active container overlay -->
+  <!-- Controls to configure overlay background behavior for active containers:
+    - checkOverlayActiveEnabled: enables/disables using a dedicated overlay color
+    - TreeOverlayActiveColor: the color used when overlay active coloring is enabled
+    These settings control how the Tree delegate paints backgrounds when running
+    inside translucent overlay widgets. -->
   <item row="2" column="0">
    <widget class="Gui::PrefCheckBox" name="checkOverlayActiveEnabled">
     <property name="text">
