@@ -9,12 +9,12 @@
       <translation>Стандартная (мм, кг, с, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="315"/>
+      <location filename="../../UnitsSchemasData.h" line="318"/>
       <source>MKS (m, kg, s, °)</source>
       <translation>Сістэма МКС (м, кг, с, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="579"/>
+      <location filename="../../UnitsSchemasData.h" line="582"/>
       <source>US customary (in, lb)</source>
       <translation>Звычайная Злучаных Штатаў (цалі, фунты)</translation>
     </message>
@@ -24,12 +24,12 @@
       <translation>Брытанская сістэма (цалі, фунты)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="540"/>
+      <location filename="../../UnitsSchemasData.h" line="543"/>
       <source>Building Euro (cm, m², m³)</source>
       <translation>Еўрапейская будаўнічая (см, м², м³)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="617"/>
+      <location filename="../../UnitsSchemasData.h" line="620"/>
       <source>Building US (ft-in, sqft, cft)</source>
       <translation>Будаўнічая Злучаных Штатаў (футы-цалі, кв. футы, куб. футы)</translation>
     </message>
@@ -39,12 +39,12 @@
       <translation>Малыя метрычныя дэталі і CNC (мм, мм/хв)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="628"/>
+      <location filename="../../UnitsSchemasData.h" line="631"/>
       <source>Imperial for Civil Eng (ft, ft/s)</source>
       <translation>Брытанская для грамадскіх інжынераў (футы, футы/с)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="567"/>
+      <location filename="../../UnitsSchemasData.h" line="570"/>
       <source>FEM (mm, N, s)</source>
       <translation>МКЭ (мм, Н, с)</translation>
     </message>

@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="273"/>
       <source>MeshPart</source>
-      <translation>Паліганальная сетка Дэталяў</translation>
+      <translation>Паліганальная сетка дэталяў</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="274"/>
@@ -217,9 +217,12 @@
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
-      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+      <translation>Націсніце 'Пуск', потым абярыце кропкі на паліганальнай сетцы; калі будзе дастатковая колькасць кропак, пстрыкніце правай кнопкай мышы і абярыце 'Стварыць'.
+Паўтарыце працэс, каб стварыць больш сплайнаў.
+Зачыніце гэтую панэль задач, каб завяршыць аперацыю.
 
-This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</translation>
+Каманда працуе толькі з аб'ектам 'паліганальная сетка', а не з звычайнымі гранямі ці паверхнямі.
+Каб пераўтварыць аб'ект у паліганальную сетку, ужывайце інструменты варштата Паліганальная сетка.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -544,7 +547,7 @@ Select a different shape.</source>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Select the side to keep</source>
-      <translation type="unfinished">Select the side to keep</translation>
+      <translation>Абраць бок, які пакінуць</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>
@@ -567,7 +570,7 @@ Select a different shape.</source>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
-      <translation>Паліганальная сетка Дэталяў</translation>
+      <translation>Паліганальная сетка дэталяў</translation>
     </message>
   </context>
   <context>

@@ -41,7 +41,7 @@ class TestWebGLExport(TestArchBase):
     def setUp(self):
         """Using TestArchBase setUp to initialize the document for convenience,
         but also create a temporary directory for tests."""
-        super().setUp()  
+        super().setUp()
         self.test_dir = tempfile.mkdtemp()
         self.test_template_content = """
         <!DOCTYPE html>

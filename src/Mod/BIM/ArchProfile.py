@@ -323,6 +323,77 @@ class _ProfileT(_Profile):
         obj.Placement = pl
 
 
+class _ProfileTSLOT(_Profile):
+
+    '''T slot profile common made of aluminum'''
+
+    def __init__(self, obj, profile):
+        self.cleanProperties(obj)
+        obj.addProperty("App::PropertyLength","size","Draft",QT_TRANSLATE_NOOP("App::Property","side size"), locked=True).size = profile[4]
+        obj.addProperty("App::PropertyLength","slot_size","Draft",QT_TRANSLATE_NOOP("App::Property","Slot size"), locked=True).slot_size = profile[5]
+        obj.addProperty("App::PropertyLength","wall_thickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the wall"), locked=True).wall_thickness = profile[6]
+        obj.addProperty("App::PropertyLength","tnut_slot_width","Draft",QT_TRANSLATE_NOOP("App::Property","t-nut slot width"), locked=True).tnut_slot_width = profile[7]
+        obj.addProperty("App::PropertyLength","tnut_slot_depth","Draft",QT_TRANSLATE_NOOP("App::Property","t-nut slot depth"), locked=True).tnut_slot_depth = profile[8]
+        obj.addProperty("App::PropertyLength","core_size","Draft",QT_TRANSLATE_NOOP("App::Property","Internal core size"), locked=True).core_size = profile[9]
+        obj.addProperty("App::PropertyLength","hole_diameter","Draft",QT_TRANSLATE_NOOP("App::Property","Internal core size"), locked=True).hole_diameter = profile[10]
+        obj.addProperty("App::PropertyLength","rd","Draft",QT_TRANSLATE_NOOP("App::Property","fillet radius"), locked=True).rd = profile[11]
+        _Profile.__init__(self,obj,profile)
+
+    def execute(self,obj):
+        import Part
+        import math
+        # import DraftGeomUtils
+        pl = obj.Placement
+        nut_depth = obj.core_size/2-(obj.wall_thickness/math.sqrt(2))
+        core_dim = obj.core_size/2
+        wall_dim = obj.wall_thickness
+        slot_dim = obj.slot_size/2
+        nut_width_dim = obj.tnut_slot_width/2
+        templist = list()
+        templist.append(Vector(nut_depth, core_dim, 0.0))
+        templist.append(Vector(nut_width_dim, nut_width_dim+(wall_dim/math.sqrt(2)), 0.0))
+        templist.append(Vector(nut_width_dim, obj.size/2-wall_dim, 0.0))
+        templist.append(Vector(slot_dim, obj.size/2-wall_dim, 0.0))
+        templist.append(Vector(slot_dim, obj.size/2, 0.0))
+        templist.append(Vector(obj.size/2, obj.size/2, 0.0))
+        #TODO:
+        # add fillet four profile corners
+        # sub_poly1 = Part.makePolygon(templist)
+        # rd1=Vector(obj.size/2-(obj.rd),obj.size,0)
+        # rd2=Vector(obj.size/2-(obj.rd-obj.rd*math.sin(math.pi/4)),obj.size/2-(obj.rd-obj.rd*math.sin(math.pi/4)),0)
+        # rd3=Vector(obj.size,obj.size/2-(obj.rd),0)
+        # templist.append(Part.Arc(rd1,rd2,rd3))
+        templist.append(Vector(obj.size/2, slot_dim, 0.0))
+        templist.append(Vector(obj.size/2-wall_dim, slot_dim, 0.0))
+        templist.append(Vector(obj.size/2-wall_dim, nut_width_dim, 0.0))
+        templist.append(Vector(nut_width_dim+(wall_dim/math.sqrt(2)), nut_width_dim, 0.0))
+        templist.append(Vector(core_dim, nut_depth, 0.0))
+        # sub_poly2 = Part.makePolygon(templist3)
+        # l1=Part.LineSegment(Vector(obj.slot_size/2, obj.size/2, 0.0),Vector(obj.size/2, obj.size/2, 0.0))
+        # l2=Part.LineSegment(Vector(obj.size/2, obj.size/2, 0.0),Vector(obj.size/2, 2.7500000000022977, 0.0))
+        # round=DraftGeomUtils.fillet([l2.toShape(),l1.toShape()],obj.rd)
+        # wire=Part.Wire(round)
+        # p = Part.Shape([sub_poly1,round,sub_poly2])
+        # p=Part.Face(Shape.Edges)
+        templist2 = list()
+        for vec in reversed(templist):
+            templist2.append(Vector(vec.x,vec.y*-1,vec.z))
+        templist = templist + templist2
+        templist2.clear()
+        for vec in reversed(templist):
+            templist2.append(Vector(vec.x*-1,vec.y,vec.z))
+        templist = templist + templist2
+        templist.append(templist[0])
+        poly = Part.makePolygon(templist)
+        pf = Part.Face(poly)
+        orificio = Part.makeCircle(obj.hole_diameter/2, FreeCAD.Vector(0, 0, 0))
+        cf=Part.Face(Part.Wire(orificio))
+        p=pf.cut(cf)
+        #p.reverse()
+        obj.Shape = p
+        obj.Placement = pl
+
+
 class ViewProviderProfile(Draft._ViewProviderDraft):
 
     '''General view provider for Profile classes'''
@@ -376,6 +447,8 @@ class ProfileTaskPanel:
             self.type = "L"
         elif isinstance(self.obj.Proxy,_ProfileT):
             self.type = "T"
+        elif isinstance(self.obj.Proxy,_ProfileTSLOT):
+            self.type = "TSLOT"
         else:
             self.type = "Building Element Proxy"
         self.form = QtGui.QWidget()
@@ -454,6 +527,8 @@ class ProfileTaskPanel:
                 _ProfileL(self.obj, self.Profile)
             elif self.Profile[3]=="T":
                 _ProfileT(self.obj, self.Profile)
+            elif self.Profile[3]=="TSLOT":
+                _ProfileTSLOT(self.obj, self.Profile)
             else:
                 print("Profile not supported")
 

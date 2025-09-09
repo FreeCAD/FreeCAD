@@ -9,12 +9,12 @@
       <translation>標準（mm, kg, s, °）</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="315"/>
+      <location filename="../../UnitsSchemasData.h" line="318"/>
       <source>MKS (m, kg, s, °)</source>
       <translation>MKS単位系（m, kg, s, °）</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="579"/>
+      <location filename="../../UnitsSchemasData.h" line="582"/>
       <source>US customary (in, lb)</source>
       <translation>米国慣用単位（in, lb）</translation>
     </message>
@@ -24,12 +24,12 @@
       <translation>帝国単位（in, lb）</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="540"/>
+      <location filename="../../UnitsSchemasData.h" line="543"/>
       <source>Building Euro (cm, m², m³)</source>
       <translation>建築：メートル法（cm, m², m³）</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="617"/>
+      <location filename="../../UnitsSchemasData.h" line="620"/>
       <source>Building US (ft-in, sqft, cft)</source>
       <translation>建築：国際フィート（ft-in, sqft, cft）</translation>
     </message>
@@ -39,12 +39,12 @@
       <translation>パーツ、CNC工作機械（mm、mm/min）</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="628"/>
+      <location filename="../../UnitsSchemasData.h" line="631"/>
       <source>Imperial for Civil Eng (ft, ft/s)</source>
       <translation>土木工学：帝国単位（ft, ft/s）</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="567"/>
+      <location filename="../../UnitsSchemasData.h" line="570"/>
       <source>FEM (mm, N, s)</source>
       <translation>有限要素法（mm, N, s）</translation>
     </message>

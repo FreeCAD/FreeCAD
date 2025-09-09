@@ -804,7 +804,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-specific-widgets
 report view
 --------------------------------------------------------------------------- */
 QTextEdit {
-  background-color: @PrimaryColor;
+  background-color: @TextEditFieldBackgroundColor;
   border-top: 1px solid @GeneralBorderColor;
 }
 

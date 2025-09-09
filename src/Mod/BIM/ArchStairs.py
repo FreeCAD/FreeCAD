@@ -48,11 +48,8 @@ from draftutils import params
 if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
-    from draftutils.translate import translate
 else:
     # \cond
-    def translate(ctxt,txt):
-        return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
@@ -237,7 +234,7 @@ class _Stairs(ArchComponent.Component):
 
 
     def loads(self,state):
-        super().loads(state)  # do nothing as of 2024.11.28
+        self.Type = "Stairs"
         if state == None:
             return
         elif state[0] == 'S':  # state[1] == 't', behaviour before 2024.11.28
@@ -248,7 +245,6 @@ class _Stairs(ArchComponent.Component):
         elif state[0] != 'Stairs':  # model before merging super.dumps/loads()
             self.ArchSkPropSetPickedUuid = state[0]
             self.ArchSkPropSetListPrev = state[1]
-        self.Type = "Stairs"
 
 
     def onDocumentRestored(self,obj):
@@ -290,9 +286,14 @@ class _Stairs(ArchComponent.Component):
         obj.removeProperty("OutlineWireLeft")
         obj.removeProperty("OutlineWireRight")
         self.update_properties_to_0v20(obj)
-        from draftutils.messages import _wrn
-        _wrn("v0.20.3, " + obj.Label + ", "
-             + translate("Arch", "removed properties 'OutlineWireLeft' and 'OutlineWireRight', and added properties 'RailingLeft' and 'RailingRight'"))
+        from draftutils.messages import _log
+        _log(
+            "v0.20.3, "
+            + obj.Name
+            + ", "
+            + "removed properties 'OutlineWireLeft' and 'OutlineWireRight', "
+            + "and added properties 'RailingLeft' and 'RailingRight'"
+        )
 
     def update_properties_0v19_to_0v20(self, obj):
         doc = FreeCAD.ActiveDocument
@@ -304,9 +305,13 @@ class _Stairs(ArchComponent.Component):
         obj.RailingLeft = railingLeftObject
         obj.RailingRight = railingRightObject
         self.update_properties_to_0v20(obj)
-        from draftutils.messages import _wrn
-        _wrn("v0.20.3, " + obj.Label + ", "
-             + translate("Arch", "changed the type of properties 'RailingLeft' and 'RailingRight'"))
+        from draftutils.messages import _log
+        _log(
+            "v0.20.3, "
+            + obj.Name
+            + ", "
+            + "changed the type of properties 'RailingLeft' and 'RailingRight'"
+        )
 
     def update_properties_to_0v20(self, obj):
         additions = obj.Additions
@@ -592,6 +597,7 @@ class _Stairs(ArchComponent.Component):
 
     def onChanged(self,obj,prop):
 
+        self.hideSubobjects(obj,prop)
         ArchComponent.Component.onChanged(self,obj,prop)
 
         if (prop == "ArchSketchPropertySet"

@@ -232,7 +232,6 @@ class _Window(ArchComponent.Component):
         if prop == "Sill":
             self.setSillProperties(obj)  # Can't wait until onDocumentRestored
             self.onSillChanged(obj)
-            
         elif not "Restore" in obj.State:
             if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts","Shape"]:
                 # anti-recursive loops, bc the base sketch will touch the Placement all the time
@@ -878,6 +877,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             if color is None:
                 sapp_mat = base_sapp_mat
             else:
+                # color is an RGBA tuple (0.0-1.0)
                 sapp_mat = FreeCAD.Material()  # ShapeAppearance material with default v0.21 properties.
                 sapp_mat.DiffuseColor = color[:3] + (1.0, )
                 sapp_mat.Transparency = 1.0 - color[3]
@@ -896,6 +896,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
     def getSolidMaterial(self,obj,arch_mat,name,mtype=None):
 
+        """returns an RGBA tuple of floats (0.0 - 1.0)"""
+
         color = None
         if arch_mat is not None and hasattr(arch_mat,"Materials") and arch_mat.Names:
             mat = None
@@ -909,7 +911,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                         color = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
                 if color and ('Transparency' in mat.Material):
                     t = float(mat.Material['Transparency'])/100.0
-                    color = color[:3] + (t, )
+                    color = color[:3] + (1.0-t, )
         return color
 
     def getHingeEdgeIndices(self):

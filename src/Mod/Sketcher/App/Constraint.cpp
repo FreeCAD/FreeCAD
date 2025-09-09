@@ -136,7 +136,7 @@ Quantity Constraint::getPresentationValue() const
     QuantityFormat format = quantity.getFormat();
     format.option = QuantityFormat::None;
     format.format = QuantityFormat::Default;
-    format.precision = 6;  // QString's default
+    format.setPrecision(6);  // QString's default
     quantity.setFormat(format);
     return quantity;
 }

@@ -365,6 +365,14 @@ class Component(ArchIFC.IfcProduct):
             elif hasattr(o,"Host"):
                 if obj == o.Host:
                     ilist.append(o)
+
+        # Stairs railings should be considered as children
+        # (RailingLeft and RailingRight property)
+        if hasattr(obj, "RailingLeft") and obj.RailingLeft:
+            ilist.append(obj.RailingLeft)
+        if hasattr(obj, "RailingRight") and obj.RailingRight:
+            ilist.append(obj.RailingRight)
+
         ilist2 = []
         for o in ilist:
             if hasattr(o,"MoveWithHost"):
@@ -727,14 +735,25 @@ class Component(ArchIFC.IfcProduct):
         # treat additions
         for o in obj.Additions:
 
-            if not base:
+            # Arch Objects can have no Base, but Additions only
+            # If there is no base/base isNull, 1st Addition becomes 'base',
+            # placement should be treated as rest of Additions.
+            #if not base:
+            if not base or base.isNull():
                 if hasattr(o,'Shape'):
-                    base = o.Shape
+                    base = Part.Shape(o.Shape)  #base = o.Shape
+                    # Base is first Addition, treat placement as other Additions
+                    if placement:
+                        # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
+                        base.Placement = placement.multiply(base.Placement)
             else:
-                if base.isNull():
-                    if hasattr(o,'Shape'):
-                        base = o.Shape
-                else:
+                # base.isNull() case grouped into if condition above, no need
+                # if/else below.  Remarked out 2025.9.2
+                #
+                #if base.isNull():
+                #    if hasattr(o,'Shape'):
+                #        base = o.Shape
+                #else:
                     # special case, both walls with coinciding endpoints
                     import ArchWall
                     js = ArchWall.mergeShapes(o,obj)
@@ -746,7 +765,7 @@ class Component(ArchIFC.IfcProduct):
                         base = base.fuse(add)
                     elif hasattr(o,'Shape'):
                         if o.Shape and not o.Shape.isNull() and o.Shape.Solids:
-                            ## TODO use Part.Shape() instead?
+                            # TODO use Part.Shape() instead?
                             s = o.Shape.copy()
                             if placement:
                                 # see https://forum.freecad.org/viewtopic.php?p=579754#p579754

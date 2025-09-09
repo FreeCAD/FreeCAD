@@ -54,6 +54,8 @@
 #include "TaskFeaturePick.h"
 #include "Utils.h"
 
+#include <Gui/ViewParams.h>
+
 
 using namespace PartDesignGui;
 using namespace Attacher;
@@ -159,7 +161,7 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
             Gui::Application::Instance->getViewProvider(origin));
         if (vpo) {
             vpo->setTemporaryVisibility(originVisStatus[origin]);
-            vpo->setTemporaryScale(4.0);  // NOLINT
+            vpo->setTemporaryScale(Gui::ViewParams::instance()->getDatumTemporaryScaleFactor());
             vpo->setPlaneLabelVisibility(true);
             origins.push_back(vpo);
         }

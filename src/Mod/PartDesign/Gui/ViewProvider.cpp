@@ -49,7 +49,6 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/Part/Gui/ViewProviderExt.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
-#include <Mod/Part/Gui/ViewProviderPreviewExtension.h>
 
 #include "TaskFeatureParameters.h"
 #include "StyleParameters.h"
@@ -222,10 +221,13 @@ void ViewProvider::attachPreview()
 
     auto* styleParameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>();
 
-    pcPreviewShape->lineWidth = styleParameterManager->resolve(StyleParameters::PreviewLineWidth).value;
+    const double opacity = styleParameterManager->resolve(StyleParameters::PreviewToolOpacity).value;
+    const double lineWidth = styleParameterManager->resolve(StyleParameters::PreviewLineWidth).value;
+
+    pcPreviewShape->lineWidth = static_cast<float>(lineWidth);
 
     pcToolPreview = new PartGui::SoPreviewShape;
-    pcToolPreview->transparency = styleParameterManager->resolve(StyleParameters::PreviewToolTransparency).value;
+    pcToolPreview->transparency = 1.0F - static_cast<float>(opacity);
     pcToolPreview->color.connectFrom(&pcPreviewShape->color);
 
     pcPreviewRoot->addChild(pcToolPreview);
@@ -439,7 +441,8 @@ PyObject* ViewProvider::getPyObject()
     return pyViewObject;
 }
 
-ViewProviderBody* ViewProvider::getBodyViewProvider() {
+ViewProviderBody* ViewProvider::getBodyViewProvider()
+{
 
     auto body = PartDesign::Body::findBodyOf(getObject());
     auto doc = getDocument();
@@ -460,4 +463,3 @@ PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderPython, PartDesignGui::ViewP
 // explicit template instantiation
 template class PartDesignGuiExport ViewProviderFeaturePythonT<PartDesignGui::ViewProvider>;
 }
-

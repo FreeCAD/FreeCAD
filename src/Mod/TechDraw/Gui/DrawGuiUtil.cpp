@@ -650,7 +650,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawGuiUtil::getProjDirFromFace(App::D
                                       | Part::ShapeOption::ResolveLink
                                       | Part::ShapeOption::Transform,
                                       faceName.c_str());
-                                          
+
     if (ts.IsNull() || ts.ShapeType() != TopAbs_FACE) {
         Base::Console().warning("getProjDirFromFace(%s) is not a Face\n", faceName.c_str());
         return dirs;

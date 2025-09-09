@@ -63,7 +63,7 @@
       <translation>Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="127"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="129"/>
       <source>Active object</source>
       <translation>Aktives Objekt</translation>
     </message>
@@ -193,7 +193,7 @@
     <message>
       <location filename="../../../JointObject.py" line="1404"/>
       <source>Select 2 elements from 2 separate parts</source>
-      <translation type="unfinished">Select 2 elements from 2 separate parts</translation>
+      <translation>2 Elemente von 2 separaten Bauteilen auswählen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1564"/>
@@ -203,7 +203,7 @@
     <message>
       <location filename="../../../JointObject.py" line="1566"/>
       <source>Thread pitch</source>
-      <translation type="unfinished">Thread pitch</translation>
+      <translation>Gewindesteigung</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1568"/>
@@ -338,7 +338,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="140"/>
       <source>If the new document is not saved the new part cannot be linked in the assembly.</source>
-      <translation type="unfinished">If the new document is not saved the new part cannot be linked in the assembly.</translation>
+      <translation>Wurde das neue Dokument noch nicht gespeichert, kann das neue Bauteil nicht in der Baugruppe verknüpft werden.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="141"/>
@@ -353,7 +353,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="146"/>
       <source>Do not Link</source>
-      <translation type="unfinished">Do not Link</translation>
+      <translation>Nicht verknüpfen</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="483"/>
@@ -363,7 +363,7 @@
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="536"/>
       <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
-      <translation type="unfinished">In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</translation>
+      <translation>Großgeschriebenen Variablen müssen durch richtige Werte ersetzt werden. Weitere Einzelheiten zu jedem Beispiel finden sich in den zugehörigen Quick-Infos.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="539"/>
@@ -531,74 +531,74 @@ SLOPE definiert die Steilheit des Übergangs zwischen 0 und H1 und H2 auf 0 übe
     <message>
       <location filename="../../../JointObject.py" line="221"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
-      <translation type="unfinished">This is the local coordinate system within Reference1's object that will be used for the joint</translation>
+      <translation>Dies ist das lokale Koordinatensystem im Objekt von Reference1, das für die Verbindung verwendet wird</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="233"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
-      <translation type="unfinished">This prevents Placement1 from recomputing, enabling custom positioning of the placement</translation>
+      <translation>Dies verhindert die Neuberechnung der Eigenschaft Placement1, wodurch eine benutzerdefinierte Einstellung dieser Positionierung ermöglicht wird</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="245"/>
       <location filename="../../../JointObject.py" line="516"/>
       <source>This is the attachment offset of the first connector of the joint</source>
-      <translation type="unfinished">This is the attachment offset of the first connector of the joint</translation>
+      <translation>Dies ist der Befestigungsversatz an der ersten Verbindungsstelle der Verbindung</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="267"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
-      <translation type="unfinished">This is the local coordinate system within Reference2's object that will be used for the joint</translation>
+      <translation>Dies ist das lokale Koordinatensystem im Objekt von Reference2, das für die Verbindung verwendet wird</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="279"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
-      <translation type="unfinished">This prevents Placement2 from recomputing, enabling custom positioning of the placement</translation>
+      <translation>Dies verhindert die Neuberechnung der Eigenschaft Placement2, wodurch eine benutzerdefinierte Einstellung dieser Positionierung ermöglicht wird</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="291"/>
       <location filename="../../../JointObject.py" line="527"/>
       <source>This is the attachment offset of the second connector of the joint</source>
-      <translation type="unfinished">This is the attachment offset of the second connector of the joint</translation>
+      <translation>Dies ist der Befestigungsversatz an der zweiten Verbindungsstelle der Verbindung</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="328"/>
       <source>Enable the minimum length limit of the joint</source>
-      <translation type="unfinished">Enable the minimum length limit of the joint</translation>
+      <translation>Aktiviert den unteren Längengrenzwert der Verbindung</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="341"/>
       <source>Enable the maximum length limit of the joint</source>
-      <translation type="unfinished">Enable the maximum length limit of the joint</translation>
+      <translation>Aktiviert den oberen Längengrenzwert der Verbindung</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="354"/>
       <source>Enable the minimum angle limit of the joint</source>
-      <translation type="unfinished">Enable the minimum angle limit of the joint</translation>
+      <translation>Aktiviert den unteren Winkelgrenzwert der Verbindung</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="367"/>
       <source>Enable the maximum angle limit of the joint</source>
-      <translation type="unfinished">Enable the maximum angle limit of the joint</translation>
+      <translation>Aktiviert den oberen Winkelgrenzwert der Verbindung</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="380"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
-      <translation type="unfinished">This is the minimum limit for the length between both coordinate systems (along their z-axis)</translation>
+      <translation>Dies ist der untere Grenzwert für den Abstand zwischen beiden Koordinatensystemen (entlang ihrer Z-Achse)</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="392"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
-      <translation type="unfinished">This is the maximum limit for the length between both coordinate systems (along their z-axis)</translation>
+      <translation>Dies ist der obere Grenzwert für den Abstand zwischen beiden Koordinatensystemen (entlang ihrer Z-Achse)</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="404"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
-      <translation type="unfinished">This is the minimum limit for the angle between both coordinate systems (between their x-axis)</translation>
+      <translation>Dies ist der untere Grenzwert für den Winkel zwischen beiden Koordinatensystemen (zwischen ihren X-Achsen)</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="416"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
-      <translation type="unfinished">This is the maximum limit for the angle between both coordinate systems (between their x-axis)</translation>
+      <translation>Dies ist der obere Grenzwert für den Winkel zwischen beiden Koordinatensystemen (zwischen ihren X-Achsen)</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="255"/>
@@ -884,19 +884,73 @@ Die Dateien heißen "runPreDrag.asmt" und "dragging.log" und befinden sich im St
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="196"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="198"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Das Objekt gehört zu einer oder mehreren Verbindungen.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="198"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="200"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Soll das Objekt bewegt und zugehörige Verbindungen gelöscht werden?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="960"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="982"/>
       <source>Move part</source>
       <translation>Bauteil verschieben</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1316"/>
+      <source>ViewProviderAssembly</source>
+      <comment>and %1 more</comment>
+      <translation type="unfinished">ViewProviderAssembly</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1333"/>
+      <source>Empty Assembly</source>
+      <translation type="unfinished">Empty Assembly</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1337"/>
+      <source>Over-constrained:</source>
+      <translation>Überbestimmt:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1344"/>
+      <source>Malformed joints:</source>
+      <translation type="unfinished">Malformed joints:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1350"/>
+      <source>Redundant joints:</source>
+      <translation type="unfinished">Redundant joints:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1357"/>
+      <source>Partially redundant:</source>
+      <translation>Teilweise redundant:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1363"/>
+      <source>Solver failed to converge</source>
+      <translation>Der Gleichungslöser konnte keine Lösung annähern</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1369"/>
+      <source>Under-constrained:</source>
+      <translation>Unterbestimmt:</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../ViewProviderAssembly.cpp" line="1371"/>
+      <source>%n Degrees of Freedom</source>
+      <translation type="unfinished">
+        <numerusform>%n Degrees of Freedom</numerusform>
+        <numerusform>%n Degrees of Freedom</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1375"/>
+      <source>Fully constrained</source>
+      <translation>Vollständig bestimmt</translation>
     </message>
   </context>
   <context>
@@ -1453,6 +1507,34 @@ Das Verankern eines Bauteils setzt seine Position in der Baugruppe fest und verh
       <location filename="../../../CommandInsertLink.py" line="73"/>
       <source>Insert Component</source>
       <translation>Komponente einfügen</translation>
+    </message>
+  </context>
+  <context>
+    <name>AssemblyGui::TaskAssemblyMessages</name>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="41"/>
+      <source>Solver messages</source>
+      <translation type="unfinished">Solver messages</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
+      <source>Click to select these conflicting joints.</source>
+      <translation type="unfinished">Click to select these conflicting joints.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
+      <source>Click to select these redundant joints.</source>
+      <translation type="unfinished">Click to select these redundant joints.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="64"/>
+      <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
+      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="68"/>
+      <source>Click to select these malformed joints.</source>
+      <translation type="unfinished">Click to select these malformed joints.</translation>
     </message>
   </context>
 </TS>

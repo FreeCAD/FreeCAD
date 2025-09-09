@@ -30,12 +30,14 @@ import Path.Base.Util as PathUtil
 import Path.Main.Job as PathJob
 import Path.Op.Base as PathOp
 import Path.Op.Gui.Selection as PathSelection
+import Path.Tool.Controller as PathToolController
+from Path.Tool.library.ui.dock import ToolBitLibraryDock
 import PathGui
 import PathScripts.PathUtils as PathUtils
 import importlib
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-from PySide import QtCore, QtGui
+from PySide import QtCore, QtGui, QtWidgets
 
 __title__ = "CAM Operation UI base classes"
 __author__ = "sliptonic (Brad Collette)"
@@ -212,9 +214,12 @@ class TaskPanelPage(object):
         self.isdirty = False
         self.parent = None
         self.panelTitle = "Operation"
+        self.tcEditor = None
+        self.combo = None
 
         if self._installTCUpdate():
             PathJob.Notification.updateTC.connect(self.resetToolController)
+            self.form.toolController.currentIndexChanged.connect(self.tcComboChanged)
 
     def show_error_message(self, title, message):
         msg_box = QtGui.QMessageBox()
@@ -389,27 +394,141 @@ class TaskPanelPage(object):
         """populateCombobox(form, enumTups, comboBoxesPropertyMap) ... proxy for PathGuiUtil.populateCombobox()"""
         PathGuiUtil.populateCombobox(form, enumTups, comboBoxesPropertyMap)
 
+    def tcComboChanged(self, newIndex):
+        if self.obj is not None and self.tcEditor:
+            if newIndex == self.combo.count() - 1:
+                # Special entry: new tool controller. Show the tool dock and reset combo
+                dock = ToolBitLibraryDock(self.job, True)
+                dock.open()
+                self.resetTCCombo()
+            elif newIndex == self.combo.count() - 2:
+                # Special entry: copy tool controller
+                self.copyToolController()  # this function also rebuilds the combo
+                self.resetTCCombo()
+            else:
+                tc = PathUtils.findToolController(
+                    self.obj, self.obj.Proxy, self.form.toolController.currentText()
+                )
+                self.obj.ToolController = tc
+                self.setupToolController()
+
+    def updateToolControllerEditorVisibility(self):
+        if self.form.editToolController.isChecked():
+            self.tcEditor.controller.show()
+        else:
+            self.tcEditor.controller.hide()
+
     def resetToolController(self, job, tc):
         if self.obj is not None:
             self.obj.ToolController = tc
-            combo = self.form.toolController
-            self.setupToolController(self.obj, combo)
+            self.setupToolController()
 
-    def setupToolController(self, obj, combo):
+    def copyToolController(self):
+        oldTc = self.tcEditor.obj
+        self.tcEditor.updateToolController()
+        tc = PathToolController.Create(
+            name=oldTc.Label, tool=oldTc.Tool, toolNumber=oldTc.ToolNumber
+        )
+        job = self.obj.Proxy.getJob(self.obj)
+        job.Proxy.addToolController(tc)
+
+        tc.HorizFeed = oldTc.HorizFeed
+        tc.VertFeed = oldTc.VertFeed
+        tc.HorizRapid = oldTc.HorizRapid
+        tc.VertRapid = oldTc.VertRapid
+        tc.SpindleSpeed = oldTc.SpindleSpeed
+        tc.SpindleDir = oldTc.SpindleDir
+        for attr, expr in oldTc.ExpressionEngine:
+            tc.setExpression(attr, expr)
+
+        self.obj.ToolController = tc
+        self.setupToolController()
+
+    def tcEditorChanged(self):
+        self.setDirty()
+        self.resetTCCombo()
+
+    def resetTCCombo(self):
+        controllers = PathUtils.getToolControllers(self.obj)
+
+        if self.obj.ToolController is None:
+            self.obj.ToolController = PathUtils.findToolController(self.obj, self.obj.Proxy)
+        if len(controllers) > 0 and not self.obj.Proxy.isToolSupported(
+            self.obj, self.obj.ToolController.Tool
+        ):
+            self.obj.ToolController = controllers[0]
+
+        tcName = self.obj.ToolController.Label if self.obj.ToolController else ""
+        labels = [c.Label for c in controllers]
+        labels.append(FreeCAD.Qt.translate("CAM_Operation", "Copy {0}…").format(tcName))
+        labels.append(FreeCAD.Qt.translate("CAM_Operation", "New tool controller…"))
+        self.combo.blockSignals(True)
+        self.combo.clear()
+        self.combo.addItems(labels)
+        self.combo.insertSeparator(len(controllers))
+        self.combo.blockSignals(False)
+
+        if self.obj.ToolController is not None:
+            self.selectInComboBox(self.obj.ToolController.Label, self.combo)
+
+    def setupToolController(self, obj=None, combo=None):
         """setupToolController(obj, combo) ...
         helper function to setup obj's ToolController
         in the given combo box."""
-        controllers = PathUtils.getToolControllers(self.obj)
-        labels = [c.Label for c in controllers]
-        combo.blockSignals(True)
-        combo.clear()
-        combo.addItems(labels)
-        combo.blockSignals(False)
+        obj = obj or self.obj
+        combo = combo or self.combo
+        self.obj, self.combo = obj, combo
 
-        if obj.ToolController is None:
-            obj.ToolController = PathUtils.findToolController(obj, obj.Proxy)
-        if obj.ToolController is not None:
-            self.selectInComboBox(obj.ToolController.Label, combo)
+        self.resetTCCombo()
+
+        if hasattr(self.form, "editToolController"):
+            layout = self.form.editToolController.parent().layout()
+            oldEditor = self.tcEditor
+
+            # Count the number of times the tool controller is used in other operations
+            # If it is used in other operations, we will offer the "copy tool controller" button
+            tcCount = 0
+            for job in PathUtils.GetJobs():
+                for op in job.Operations.Group:
+                    if op == self.obj:
+                        continue
+                    elif hasattr(op, "ToolController") and op.ToolController == obj.ToolController:
+                        tcCount += 1
+
+            self.tcEditor = Path.Tool.Gui.Controller.ToolControllerEditor(
+                obj.ToolController,
+                False,
+                self.tcEditorChanged,
+                True,
+                True,
+            )
+            self.tcEditor.setupUi()
+
+            labelStr = FreeCAD.Qt.translate(
+                "CAM_Operation", "This tool controller is used by {0} other operations."
+            ).format(tcCount)
+            self.tcEditor.controller.tcOperationCountLabel.setText(labelStr)
+
+            # add to layout -- requires a grid layout
+            if isinstance(layout, QtWidgets.QGridLayout):
+                layout.addWidget(
+                    self.tcEditor.controller, layout.rowCount(), 0, 1, layout.columnCount()
+                )
+            else:
+                Path.Log.error(
+                    "Panel uses a layout incompatible with editing tool controllers. Report a bug: it should be a QGridLayout"
+                )
+
+            self.updateToolControllerEditorVisibility()
+            self.tcEditor.updateUi()
+            self.form.editToolController.checkStateChanged.connect(
+                self.updateToolControllerEditorVisibility
+            )
+
+            if oldEditor:
+                oldEditor.updateToolController()
+                oldEditor.controller.hide()
+                layout.removeWidget(oldEditor.controller)
 
     def updateToolController(self, obj, combo):
         """updateToolController(obj, combo) ...
@@ -418,6 +537,8 @@ class TaskPanelPage(object):
         tc = PathUtils.findToolController(obj, obj.Proxy, combo.currentText())
         if obj.ToolController != tc:
             obj.ToolController = tc
+        if self.tcEditor:
+            self.tcEditor.updateToolController()
 
     def setupCoolant(self, obj, combo):
         """setupCoolant(obj, combo) ...
@@ -1245,7 +1366,10 @@ class TaskPanel(object):
 
         # Update properties based upon expressions in case expression value has changed
         for prp, expr in self.obj.ExpressionEngine:
-            val = FreeCAD.Units.Quantity(self.obj.evalExpression(expr))
+            evalExpr = self.obj.evalExpression(expr)
+            if not isinstance(evalExpr, (int, float, FreeCAD.Units.Quantity)):
+                continue
+            val = FreeCAD.Units.Quantity(evalExpr)
             value = val.Value if hasattr(val, "Value") else val
             prop = getattr(self.obj, prp)
             if hasattr(prop, "Value"):

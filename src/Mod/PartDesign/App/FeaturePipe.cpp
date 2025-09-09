@@ -402,7 +402,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
 
             if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                                                                           "Result has multiple solids: enable 'Allow Compounds' in the active body."));
+                                                                           "Result has multiple solids: enable 'Allow Compound' in the active body."));
             }
 
             // store shape before refinement
@@ -423,7 +423,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
 
             if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                                                                           "Result has multiple solids: enable 'Allow Compounds' in the active body."));
+                                                                           "Result has multiple solids: enable 'Allow Compound' in the active body."));
             }
 
             // store shape before refinement

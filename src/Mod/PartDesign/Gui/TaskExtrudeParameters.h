@@ -23,6 +23,8 @@
 #ifndef GUI_TASKVIEW_TaskExtrudeParameters_H
 #define GUI_TASKVIEW_TaskExtrudeParameters_H
 
+#include <Gui/Inventor/Draggers/Gizmo.h>
+
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderExtrude.h"
 
@@ -40,6 +42,12 @@ class PropertyLinkSubList;
 }
 namespace Gui {
 class PrefQuantitySpinBox;
+}
+
+namespace Gui {
+class LinearGizmo;
+class RotationalGizmo;
+class GizmoContainer;
 }
 
 namespace PartDesign {
@@ -86,7 +94,7 @@ public:
         ToShape,
     };
 
-    enum SelectionMode { 
+    enum SelectionMode {
         None,
         SelectFace,
         SelectShape,
@@ -96,7 +104,7 @@ public:
 
     TaskExtrudeParameters(ViewProviderExtrude *ExtrudeView, QWidget *parent,
                           const std::string& pixmapname, const QString& parname);
-    ~TaskExtrudeParameters() override;
+    ~TaskExtrudeParameters() override = default;
 
     void saveHistory() override;
 
@@ -231,6 +239,14 @@ private:
     void changeFaceName(QLineEdit* lineEdit, const QString& text);
 
     void createSideControllers();
+
+    std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    Gui::LinearGizmo* lengthGizmo1 = nullptr;
+    Gui::LinearGizmo* lengthGizmo2 = nullptr;
+    Gui::RotationGizmo* taperAngleGizmo1 = nullptr;
+    Gui::RotationGizmo* taperAngleGizmo2 = nullptr;
+    void setupGizmos();
+    void setGizmoPositions();
 
 protected:
     QWidget* proxy;

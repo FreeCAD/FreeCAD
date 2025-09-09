@@ -80,7 +80,7 @@
     <message>
       <location filename="../../StartView.cpp" line="225"/>
       <source>Creates a 2D Draft document</source>
-      <translation type="unfinished">Creates a 2D Draft document</translation>
+      <translation>Crea un documento 2D Draft</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="228"/>
@@ -90,7 +90,7 @@
     <message>
       <location filename="../../StartView.cpp" line="208"/>
       <source>Empty File</source>
-      <translation type="unfinished">Empty File</translation>
+      <translation>File Vuoto</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="209"/>
@@ -100,7 +100,7 @@
     <message>
       <location filename="../../StartView.cpp" line="213"/>
       <source>Opens an existing CAD file or 3D model</source>
-      <translation type="unfinished">Opens an existing CAD file or 3D model</translation>
+      <translation>Apre un file CAD esistente o un modello 3D</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="216"/>

@@ -58,12 +58,12 @@ def get_after_write_constraint():
 
 
 def write_meshdata_constraint(f, femobj, bodyheatsource_obj, ccxwriter):
+
     f.write(f"*ELSET,ELSET={bodyheatsource_obj.Name}\n")
-    if isinstance(femobj["FEMElements"], str):
-        f.write("{}\n".format(femobj["FEMElements"]))
-    else:
-        for e in femobj["FEMElements"]:
-            f.write(f"{e},\n")
+    for refs, surf, is_sub_el in femobj["BodyHeatSourceElements"]:
+        if not is_sub_el:
+            for elem in surf:
+                f.write(f"{elem},\n")
 
 
 def write_constraint(f, femobj, bodyheatsource_obj, ccxwriter):

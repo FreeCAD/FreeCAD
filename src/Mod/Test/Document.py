@@ -666,6 +666,17 @@ class DocumentBasicCases(unittest.TestCase):
         root = ET.fromstring(test.Content)
         self.assertEqual(root.tag, "Properties")
 
+    def testValidateXml(self):
+        self.Doc.openTransaction("Add")
+        obj = self.Doc.addObject("App::FeatureTest", "Label")
+        obj.Label = "abc\x01ef"
+        TempPath = tempfile.gettempdir()
+        SaveName = TempPath + os.sep + "CreateTest.FCStd"
+        self.Doc.saveAs(SaveName)
+        FreeCAD.closeDocument(self.Doc.Name)
+        self.Doc = FreeCAD.open(SaveName)
+        self.assertEqual(self.Doc.ActiveObject.Label, "abc_ef")
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument("CreateTest")
