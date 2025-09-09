@@ -51,9 +51,12 @@
 #include <Mod/Part/Gui/TaskAttacher.h>
 
 #include "TaskAttacher.h"
-
+#include "ViewProviderDatum.h"
 #include "ViewProvider2DObject.h"
+
 #include "ui_TaskAttacher.h"
+
+#include <Gui/ViewParams.h>
 
 
 using namespace PartGui;
@@ -218,6 +221,21 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject* ViewProvider, QWidge
     ui->attachmentOffsetPitch->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(), std::string("AttachmentOffset.Rotation.Pitch")));
     ui->attachmentOffsetRoll->bind(App::ObjectIdentifier::parse(ViewProvider->getObject(), std::string("AttachmentOffset.Rotation.Roll")));
 
+
+    auto document = ViewProvider->getObject()->getDocument();
+    for (auto planeDocumentObject : document->getObjectsOfType(App::Plane::getClassTypeId())) {
+        auto planeViewProvider = Application::Instance->getViewProvider<Gui::ViewProviderPlane>(planeDocumentObject);
+
+        if (!planeViewProvider) {
+            continue;
+        }
+
+        modifiedPlaneViewProviders.push_back(planeViewProvider);
+
+        planeViewProvider->setTemporaryScale(ViewParams::instance()->getDatumTemporaryScaleFactor());
+        planeViewProvider->setLabelVisibility(true);
+    };
+
     visibilityAutomation(true);
     updateAttachmentOffsetUI();
     updateReferencesUI();
@@ -231,9 +249,9 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject* ViewProvider, QWidge
     auto bnd1 = std::bind(&TaskAttacher::objectDeleted, this, sp::_1);
     auto bnd2 = std::bind(&TaskAttacher::documentDeleted, this, sp::_1);
     //NOLINTEND
-    Gui::Document* document = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
-    connectDelObject = document->signalDeletedObject.connect(bnd1);
-    connectDelDocument = document->signalDeleteDocument.connect(bnd2);
+    Gui::Document* guiDocument = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
+    connectDelObject = guiDocument->signalDeletedObject.connect(bnd1);
+    connectDelDocument = guiDocument->signalDeleteDocument.connect(bnd2);
 
     handleInitialSelection();
 }
@@ -248,6 +266,11 @@ TaskAttacher::~TaskAttacher()
 
     connectDelObject.disconnect();
     connectDelDocument.disconnect();
+
+    for (auto planeViewProvider : modifiedPlaneViewProviders) {
+        planeViewProvider->resetTemporarySize();
+        planeViewProvider->setLabelVisibility(false);
+    }
 }
 
 void TaskAttacher::objectDeleted(const Gui::ViewProviderDocumentObject& view)
