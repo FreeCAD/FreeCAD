@@ -511,7 +511,6 @@ class ProfileTaskPanel:
 
         self.obj.Label = self.Profile[2] + "_"
         if self.Profile:
-            print(self.Profile[3])
             if self.Profile[3]=="C":
                 _ProfileC(self.obj, self.Profile)
             elif self.Profile[3]=="H":
