@@ -33,6 +33,7 @@
 
 #include <vtkSmartPointer.h>
 #include <vtkUnstructuredGridAlgorithm.h>
+#include <vtkCleanUnstructuredGrid.h>
 
 class vtkInformation;
 class vtkInformationVector;
@@ -77,7 +78,7 @@ public:
     FemPostPipeline();
 
     App::PropertyEnumeration Frame;
-
+    App::PropertyBool MergeDuplicate;
 
     virtual vtkDataSet* getDataSet() override;
     Fem::FemPostFunctionProvider* getFunctionProvider();
@@ -137,6 +138,7 @@ protected:
 private:
     App::Enumeration m_frameEnum;
     vtkSmartPointer<FemFrameSourceAlgorithm> m_source_algorithm;
+    vtkSmartPointer<vtkCleanUnstructuredGrid> m_clean_filter;
 
     bool m_block_property = false;
     bool m_data_updated = false;

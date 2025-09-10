@@ -213,9 +213,17 @@ FemPostPipeline::FemPostPipeline()
                       App::Prop_None,
                       "The frame used to calculate the data in the pipeline processing (read only, "
                       "set via pipeline object).");
+    ADD_PROPERTY_TYPE(MergeDuplicate,
+                      (true),
+                      "Pipeline",
+                      App::Prop_None,
+                      "Remove coindent elements.");
 
     // create our source algorithm
     m_source_algorithm = vtkSmartPointer<FemFrameSourceAlgorithm>::New();
+    m_clean_filter = vtkSmartPointer<vtkCleanUnstructuredGrid>::New();
+
+    m_clean_filter->SetPointDataWeighingStrategy(vtkCleanUnstructuredGrid::AVERAGING);
     m_transform_filter->SetInputConnection(m_source_algorithm->GetOutputPort(0));
 }
 
@@ -411,6 +419,19 @@ void FemPostPipeline::onChanged(const Property* prop)
     // update placement
     if (prop == &Placement) {
         // pipeline data updated!
+        updateData();
+        recomputeChildren();
+    }
+
+    if (prop == &MergeDuplicate) {
+        if (MergeDuplicate.getValue()) {
+            m_clean_filter->SetInputConnection(m_source_algorithm->GetOutputPort(0));
+            m_transform_filter->SetInputConnection(m_clean_filter->GetOutputPort(0));
+        }
+        else {
+            m_transform_filter->SetInputConnection(m_source_algorithm->GetOutputPort(0));
+        }
+        m_transform_filter->Update();
         updateData();
         recomputeChildren();
     }

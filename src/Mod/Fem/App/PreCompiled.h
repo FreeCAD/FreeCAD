@@ -157,6 +157,7 @@
 #include <vtkAppendFilter.h>
 #include <vtkArrayCalculator.h>
 #include <vtkCellArray.h>
+#include <vtkCleanUnstructuredGrid.h>
 #include <vtkCompositeDataSet.h>
 #include <vtkDataArray.h>
 #include <vtkDataSetReader.h>
