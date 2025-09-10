@@ -234,8 +234,7 @@ std::string ViewProviderPlane::getRole() const
 {
     // Note: Role property of App::Plane is not set yet when attaching.
     const char* name = pcObject->getNameInDocument();
-
-    if (!pcObject->isAttachedToDocument()) {
+    if (!name) {
         return "";
     }
 
