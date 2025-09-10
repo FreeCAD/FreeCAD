@@ -6,12 +6,12 @@
     <message>
       <location filename="../../Command.cpp" line="146"/>
       <source>Inspect Appearance</source>
-      <translation type="unfinished">Inspect Appearance</translation>
+      <translation>检查外观</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="147"/>
       <source>Inspects the appearance properties of the selected object</source>
-      <translation type="unfinished">Inspects the appearance properties of the selected object</translation>
+      <translation>检查所选对象的外观属性</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="149"/>
@@ -24,12 +24,12 @@
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Inspect Material</source>
-      <translation type="unfinished">Inspect Material</translation>
+      <translation>检查材质</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Inspects the material properties of the selected object</source>
-      <translation type="unfinished">Inspects the material properties of the selected object</translation>
+      <translation>检查所选对象的材质属性</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="176"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Array2D.cpp" line="138"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>上下文菜单</translation>
     </message>
   </context>
   <context>
@@ -72,7 +72,7 @@
       <location filename="../../Array3D.cpp" line="231"/>
       <location filename="../../Array3D.cpp" line="302"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>上下文菜单</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="263"/>
@@ -84,7 +84,7 @@
       <location filename="../../Array3D.cpp" line="265"/>
       <location filename="../../Array3D.cpp" line="337"/>
       <source>Delete the row?</source>
-      <translation type="unfinished">Delete the row?</translation>
+      <translation>删除该行？</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="267"/>
@@ -97,12 +97,12 @@
     <message>
       <location filename="../../ArrayDelegate.cpp" line="148"/>
       <source>False</source>
-      <translation>否</translation>
+      <translation>假</translation>
     </message>
     <message>
       <location filename="../../ArrayDelegate.cpp" line="149"/>
       <source>True</source>
-      <translation>是</translation>
+      <translation>真</translation>
     </message>
   </context>
   <context>
@@ -110,12 +110,12 @@
     <message>
       <location filename="../../BaseDelegate.cpp" line="439"/>
       <source>False</source>
-      <translation>否</translation>
+      <translation>假</translation>
     </message>
     <message>
       <location filename="../../BaseDelegate.cpp" line="440"/>
       <source>True</source>
-      <translation>是</translation>
+      <translation>真</translation>
     </message>
   </context>
   <context>
@@ -123,22 +123,22 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="14"/>
       <source>Display Properties</source>
-      <translation type="unfinished">Display Properties</translation>
+      <translation>显示属性</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="20"/>
       <source>Viewing Mode</source>
-      <translation type="unfinished">Viewing Mode</translation>
+      <translation>查看模式</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="55"/>
       <source>Document window</source>
-      <translation type="unfinished">Document window</translation>
+      <translation>文档窗口</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="87"/>
       <source>Plot mode</source>
-      <translation type="unfinished">Plot mode</translation>
+      <translation>图表模式</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="106"/>
@@ -168,17 +168,17 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="365"/>
       <source>Color plot</source>
-      <translation type="unfinished">Color plot</translation>
+      <translation>彩色图表</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="372"/>
       <source>Custom appearance</source>
-      <translation type="unfinished">Custom appearance</translation>
+      <translation>自定义外观</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="382"/>
       <source>Point color</source>
-      <translation>点颜色：</translation>
+      <translation>点颜色</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="389"/>
@@ -206,17 +206,17 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="57"/>
       <source>Name of the active document</source>
-      <translation>当前活动文档的名字</translation>
+      <translation>当前活动文档的名称</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="50"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>文档名称</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="64"/>
       <source>Label / internal name</source>
-      <translation type="unfinished">Label / internal name</translation>
+      <translation>标签/内部名称</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="74"/>
@@ -251,17 +251,17 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="211"/>
       <source>Ambient color</source>
-      <translation type="unfinished">Ambient color</translation>
+      <translation>环境颜色</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="220"/>
       <source>Emissive color</source>
-      <translation type="unfinished">Emissive color</translation>
+      <translation>自发光颜色</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="229"/>
       <source>Specular color</source>
-      <translation type="unfinished">Specular color</translation>
+      <translation>高光颜色</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="238"/>
@@ -289,17 +289,17 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="57"/>
       <source>Name of the active document</source>
-      <translation>当前活动文档的名字</translation>
+      <translation>当前活动文档的名称</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="50"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>文档名称</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="64"/>
       <source>Label / internal name</source>
-      <translation type="unfinished">Label / internal name</translation>
+      <translation>标签/内部名称</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="74"/>
@@ -319,7 +319,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
       <source>Copy to Clipboard</source>
-      <translation type="unfinished">Copy to Clipboard</translation>
+      <translation>复制到剪贴板</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="151"/>
@@ -334,7 +334,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="172"/>
       <source>Internal name: </source>
-      <translation type="unfinished">Internal name: </translation>
+      <translation>内部名称：</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="190"/>
@@ -345,7 +345,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="192"/>
       <source>TypeID: </source>
-      <translation>种类ID:</translation>
+      <translation>类型ID：</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="221"/>
@@ -380,37 +380,37 @@
       <location filename="../../DlgInspectMaterial.cpp" line="273"/>
       <location filename="../../DlgInspectMaterial.cpp" line="346"/>
       <source>Library directory: </source>
-      <translation type="unfinished">Library directory: </translation>
+      <translation>库目录：</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="276"/>
       <source>Subdirectory: </source>
-      <translation type="unfinished">Subdirectory: </translation>
+      <translation>子目录：</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="348"/>
       <source>Sub directory: </source>
-      <translation type="unfinished">Sub directory: </translation>
+      <translation>子目录：</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="365"/>
       <source>Appearance models:</source>
-      <translation type="unfinished">Appearance models:</translation>
+      <translation>外观模型：</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="371"/>
       <source>Physical models:</source>
-      <translation type="unfinished">Physical models:</translation>
+      <translation>物理模型：</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="377"/>
       <source>Appearance properties:</source>
-      <translation type="unfinished">Appearance properties:</translation>
+      <translation>外观属性：</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="383"/>
       <source>Physical properties:</source>
-      <translation type="unfinished">Physical properties:</translation>
+      <translation>物理属性：</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="279"/>
@@ -426,7 +426,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
       <source>Has value: </source>
-      <translation>值为:</translation>
+      <translation>具有值：</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
@@ -486,47 +486,47 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="23"/>
       <source>Card Resources</source>
-      <translation type="unfinished">Card Resources</translation>
+      <translation>卡资源</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="31"/>
       <source>The cards built-in to FreeCAD will be listed as available</source>
-      <translation type="unfinished">The cards built-in to FreeCAD will be listed as available</translation>
+      <translation>列出 FreeCAD 内置的卡</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="50"/>
       <source>Use materials added by external workbenches</source>
-      <translation type="unfinished">Use materials added by external workbenches</translation>
+      <translation>使用外部工作台添加的材质</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="69"/>
       <source>Cards from FreeCAD’s preferences directory are also listed as available</source>
-      <translation type="unfinished">Cards from FreeCAD’s preferences directory are also listed as available</translation>
+      <translation>也列出 FreeCAD 首选项目录中的卡</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="72"/>
       <source>Use materials from the Materials preference directory</source>
-      <translation type="unfinished">Use materials from the Materials preference directory</translation>
+      <translation>使用“材质”首选项目录中的材质</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="88"/>
       <source>Material cards from the specified directory will also be listed as available</source>
-      <translation type="unfinished">Material cards from the specified directory will also be listed as available</translation>
+      <translation>也列出指定目录中的材质卡</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="91"/>
       <source>Use materials from user-defined directory</source>
-      <translation type="unfinished">Use materials from user-defined directory</translation>
+      <translation>使用用户定义目录中的材质</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="154"/>
       <source>Card Sorting and Duplicates</source>
-      <translation type="unfinished">Card Sorting and Duplicates</translation>
+      <translation>卡整理和重复</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="160"/>
       <source>Duplicate cards will be deleted from the displayed material card list</source>
-      <translation type="unfinished">Duplicate cards will be deleted from the displayed material card list</translation>
+      <translation>重复的卡将从显示的材质卡列表中删除</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="163"/>
@@ -647,12 +647,12 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialDelegate.cpp" line="475"/>
       <source>False</source>
-      <translation>否</translation>
+      <translation>假</translation>
     </message>
     <message>
       <location filename="../../MaterialDelegate.cpp" line="476"/>
       <source>True</source>
-      <translation>是</translation>
+      <translation>真</translation>
     </message>
   </context>
   <context>
@@ -665,7 +665,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialSave.ui" line="22"/>
       <source>Library</source>
-      <translation type="unfinished">Library</translation>
+      <translation>库</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="70"/>
@@ -675,7 +675,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialSave.ui" line="104"/>
       <source>Save as inherited</source>
-      <translation type="unfinished">Save as inherited</translation>
+      <translation>另存为继承</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
@@ -700,32 +700,32 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialSave.cpp" line="193"/>
       <source>Save over &apos;%1&apos;?</source>
-      <translation type="unfinished">Save over &apos;%1&apos;?</translation>
+      <translation>覆盖保存“%1”？</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="218"/>
       <source>Confirm Save as New Material</source>
-      <translation type="unfinished">Confirm Save as New Material</translation>
+      <translation>确认另存为新材质</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="223"/>
       <source>This material already exists in this library. Save as a new material?</source>
-      <translation type="unfinished">This material already exists in this library. Save as a new material?</translation>
+      <translation>此材质已存在于此库中。是否另存为新材质？</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="245"/>
       <source>Confirm Save as Copy</source>
-      <translation type="unfinished">Confirm Save as Copy</translation>
+      <translation>确认另存为副本</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="247"/>
       <source>Save as copy</source>
-      <translation type="unfinished">Save as copy</translation>
+      <translation>另存为副本</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="250"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
-      <translation type="unfinished">Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</translation>
+      <translation>不建议保存副本，因为这可能会破坏其他文档。建议将其保存为新材质。</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="253"/>
@@ -741,12 +741,12 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../MaterialSave.cpp" line="486"/>
       <location filename="../../MaterialSave.cpp" line="496"/>
       <source>New folder</source>
-      <translation type="unfinished">New folder</translation>
+      <translation>新建文件夹</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="536"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>上下文菜单</translation>
     </message>
   </context>
   <context>
@@ -754,17 +754,17 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="140"/>
       <source>Launch Editor</source>
-      <translation type="unfinished">Launch Editor</translation>
+      <translation>启动编辑器</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="313"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="537"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="534"/>
       <source>Favorites</source>
       <translation>收藏夹</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="313"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="544"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="541"/>
       <source>Recent</source>
       <translation>最近</translation>
     </message>
@@ -799,7 +799,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.ui" line="101"/>
       <source>Description</source>
-      <translation>描述</translation>
+      <translation>说明</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="108"/>
@@ -814,17 +814,17 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.ui" line="151"/>
       <source>Source reference</source>
-      <translation type="unfinished">Source reference</translation>
+      <translation>来源参考</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="202"/>
       <source>Adds or removes to/from favorites</source>
-      <translation type="unfinished">Adds or removes to/from favorites</translation>
+      <translation>添加/移除收藏</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="205"/>
       <source>Toggle Favorite</source>
-      <translation type="unfinished">Toggle Favorite</translation>
+      <translation>切换收藏</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="164"/>
@@ -933,17 +933,17 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1320"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>上下文菜单</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1322"/>
       <source>Inherit From</source>
-      <translation type="unfinished">Inherit From</translation>
+      <translation>继承自</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1326"/>
       <source>Inherit New Material</source>
-      <translation type="unfinished">Inherit New Material</translation>
+      <translation>继承新材质</translation>
     </message>
   </context>
   <context>
@@ -962,13 +962,13 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../ModelSelect.ui" line="49"/>
       <location filename="../../ModelSelect.cpp" line="365"/>
       <source>URL</source>
-      <translation>网址</translation>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="56"/>
       <location filename="../../ModelSelect.cpp" line="364"/>
       <source>Description</source>
-      <translation>描述</translation>
+      <translation>说明</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="63"/>
@@ -983,12 +983,12 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../ModelSelect.ui" line="159"/>
       <source>Adds or removes to/from favorites</source>
-      <translation type="unfinished">Adds or removes to/from favorites</translation>
+      <translation>添加/移除收藏</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="162"/>
       <source>Toggle Favorites</source>
-      <translation type="unfinished">Toggle Favorites</translation>
+      <translation>切换收藏</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="172"/>
@@ -1046,7 +1046,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>
       <source>Material Card</source>
-      <translation type="unfinished">Material Card</translation>
+      <translation>材质卡</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
@@ -1066,32 +1066,32 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../ui/materials-editor.ui" line="70"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>打开…</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>
       <source>Save As…</source>
-      <translation type="unfinished">Save As…</translation>
+      <translation>另存为…</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="96"/>
       <source>Material Parameter</source>
-      <translation type="unfinished">Material Parameter</translation>
+      <translation>材质参数</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="115"/>
       <source>Add/Remove Parameter</source>
-      <translation type="unfinished">Add/Remove Parameter</translation>
+      <translation>添加/移除参数</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="126"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>添加属性</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="133"/>
       <source>Delete Property</source>
-      <translation type="unfinished">Delete Property</translation>
+      <translation>删除属性</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
@@ -1112,7 +1112,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../AppMatGui.cpp" line="110"/>
       <source>Material Workbench</source>
-      <translation type="unfinished">Material Workbench</translation>
+      <translation>材质工作台</translation>
     </message>
     <message>
       <location filename="../../AppMatGui.cpp" line="112"/>
@@ -1135,7 +1135,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialSave.cpp" line="568"/>
       <source>Delete &apos;%1&apos;?</source>
-      <translation type="unfinished">Delete &apos;%1&apos;?</translation>
+      <translation>删除“%1”？</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="572"/>
@@ -1145,7 +1145,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="609"/>
       <source>Save the material before using it.</source>
-      <translation type="unfinished">Save the material before using it.</translation>
+      <translation>使用前必须保存材质。</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1347"/>
@@ -1155,12 +1155,12 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1348"/>
       <source>Save changes to the material before closing?</source>
-      <translation type="unfinished">Save changes to the material before closing?</translation>
+      <translation>关闭前要保存对材质所做的更改吗？</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1349"/>
       <source>Otherwise, all changes will be lost.</source>
-      <translation type="unfinished">Otherwise, all changes will be lost.</translation>
+      <translation>否则所有更改都将丢失。</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="170"/>
@@ -1173,7 +1173,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
       <source>Delete the row?</source>
-      <translation type="unfinished">Delete the row?</translation>
+      <translation>删除该行？</translation>
     </message>
   </context>
   <context>
@@ -1181,7 +1181,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>&amp;Appearance</source>
-      <translation type="unfinished">&amp;Appearance</translation>
+      <translation>外观(&amp;A)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="89"/>
@@ -1195,7 +1195,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../Command.cpp" line="117"/>
       <source>&amp;Material</source>
-      <translation type="unfinished">&amp;Material</translation>
+      <translation>材质(&amp;M)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="118"/>
@@ -1232,12 +1232,12 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="20"/>
       <source>Select material libraries</source>
-      <translation type="unfinished">Select material libraries</translation>
+      <translation>选择材质库</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="34"/>
       <source>Select model libraries</source>
-      <translation type="unfinished">Select model libraries</translation>
+      <translation>选择模型库</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="41"/>
@@ -1252,7 +1252,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="180"/>
       <source>&amp;Migrate</source>
-      <translation>&amp;迁移</translation>
+      <translation>迁移(&amp;M)</translation>
     </message>
   </context>
   <context>
@@ -1270,7 +1270,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="29"/>
       <source>External interface</source>
-      <translation type="unfinished">External interface</translation>
+      <translation>外部接口</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="65"/>
@@ -1280,18 +1280,18 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="91"/>
       <source>Model cache size</source>
-      <translation type="unfinished">Model cache size</translation>
+      <translation>模型缓存大小</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="98"/>
       <location filename="../../DlgSettingsExternal.ui" line="124"/>
       <source>Hit rate</source>
-      <translation type="unfinished">Hit rate</translation>
+      <translation>命中率</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="134"/>
       <source>Material cache size</source>
-      <translation type="unfinished">Material cache size</translation>
+      <translation>材质缓存大小</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.cpp" line="97"/>
@@ -1304,7 +1304,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="77"/>
       <source>Migrating models…</source>
-      <translation type="unfinished">Migrating models…</translation>
+      <translation>迁移模型中…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="83"/>
@@ -1325,23 +1325,23 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="89"/>
       <source>Validating models…</source>
-      <translation type="unfinished">Validating models…</translation>
+      <translation>验证模型中…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="101"/>
       <source>Migrating materials…</source>
-      <translation type="unfinished">Migrating materials…</translation>
+      <translation>迁移材质中…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="113"/>
       <source>Validating materials…</source>
-      <translation type="unfinished">Validating materials…</translation>
+      <translation>验证材质中…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="147"/>
       <location filename="../../TaskMigrateExternal.cpp" line="150"/>
       <source>Unknown exception - aborted</source>
-      <translation type="unfinished">Unknown exception - aborted</translation>
+      <translation>未知异常 - 已中止</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="127"/>
@@ -1368,7 +1368,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Edits material properties</source>
-      <translation type="unfinished">Edits material properties</translation>
+      <translation>编辑材质属性</translation>
     </message>
   </context>
   <context>
@@ -1381,7 +1381,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../Command.cpp" line="203"/>
       <source>Migrates the materials to the external materials manager</source>
-      <translation type="unfinished">Migrates the materials to the external materials manager</translation>
+      <translation>将材质迁移到外部材质管理器</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="205"/>
@@ -1394,17 +1394,17 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="181"/>
       <source>Basic appearance</source>
-      <translation type="unfinished">Basic appearance</translation>
+      <translation>基本外观</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="186"/>
       <source>Texture appearance</source>
-      <translation type="unfinished">Texture appearance</translation>
+      <translation>纹理外观</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="191"/>
       <source>All materials</source>
-      <translation type="unfinished">All materials</translation>
+      <translation>所有材质</translation>
     </message>
   </context>
 </TS>

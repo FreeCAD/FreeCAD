@@ -276,7 +276,7 @@ class ToolController:
 
 
 def Create(
-    name="TC: Default Tool",
+    name="TC: 5mm Endmill",
     tool=None,
     toolNumber=1,
     assignViewProvider=True,

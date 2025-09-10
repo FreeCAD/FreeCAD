@@ -824,7 +824,7 @@
          <item row="1" column="1">
           <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius2">
            <property name="toolTip">
-            <string>Radius in local x-direction</string>
+            <string>Radius in local X-direction</string>
            </property>
            <property name="keyboardTracking">
             <bool>false</bool>
@@ -847,7 +847,7 @@
          <item row="2" column="1">
           <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius3">
            <property name="toolTip">
-            <string>Radius in local y-direction
+            <string>Radius in local Y-direction
 If zero, it is equal to Radius2</string>
            </property>
            <property name="keyboardTracking">

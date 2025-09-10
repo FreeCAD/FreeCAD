@@ -9,25 +9,25 @@
       <translation>&lt;空&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2387"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2659"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2383"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2652"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2391"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2663"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2387"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2656"/>
       <source>Axis</source>
       <translation>轴线</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2668"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2661"/>
       <source>Position</source>
       <translation>位置</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="295"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2924"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="303"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2911"/>
       <source>Enum</source>
       <translation>列举</translation>
     </message>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../CommandTest.cpp" line="716"/>
       <source>Test Console Output</source>
-      <translation type="unfinished">Test Console Output</translation>
+      <translation>测试控制台输出</translation>
     </message>
     <message>
       <location filename="../CommandTest.cpp" line="717"/>
@@ -58,17 +58,17 @@
       <translation>编辑</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="788"/>
+      <location filename="../Application.cpp" line="821"/>
       <source>Import</source>
       <translation>导入</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1343"/>
+      <location filename="../CommandDoc.cpp" line="1358"/>
       <source>Delete</source>
       <translation>删除</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1948"/>
+      <location filename="../CommandDoc.cpp" line="1963"/>
       <source>Paste expressions</source>
       <translation>粘贴表达式</translation>
     </message>
@@ -125,7 +125,7 @@
     <message>
       <location filename="../Placement.cpp" line="434"/>
       <source>Placement</source>
-      <translation>定位</translation>
+      <translation>放置</translation>
     </message>
     <message>
       <location filename="../TaskTransform.cpp" line="129"/>
@@ -138,7 +138,7 @@
     <message>
       <location filename="../ViewProviderLink.cpp" line="2617"/>
       <source>Toggle array elements</source>
-      <translation>切换数组元素</translation>
+      <translation>切换阵列元素</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.cpp" line="259"/>
@@ -162,19 +162,19 @@
       <translation>略过重新计算</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="881"/>
+      <location filename="../CommandView.cpp" line="884"/>
       <source>Toggle Visibility</source>
-      <translation type="unfinished">Toggle Visibility</translation>
+      <translation>切换可见性</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="915"/>
+      <location filename="../CommandView.cpp" line="918"/>
       <source>Toggle Transparency</source>
-      <translation type="unfinished">Toggle Transparency</translation>
+      <translation>切换透明度</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1032"/>
+      <location filename="../CommandView.cpp" line="1035"/>
       <source>Toggle Selectability</source>
-      <translation type="unfinished">Toggle Selectability</translation>
+      <translation>切换可选择性</translation>
     </message>
   </context>
   <context>
@@ -247,7 +247,7 @@
     <message>
       <location filename="../Workbench.cpp" line="538"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>树状图</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="539"/>
@@ -270,22 +270,22 @@
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="22"/>
       <source>Global sensitivity</source>
-      <translation type="unfinished">Global sensitivity</translation>
+      <translation>全局敏感度</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="54"/>
       <source>Dominant mode</source>
-      <translation type="unfinished">Dominant mode</translation>
+      <translation>主导模式</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="72"/>
       <source>Enable translations</source>
-      <translation type="unfinished">Enable translations</translation>
+      <translation>启用平移</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="82"/>
       <source>Enable rotations</source>
-      <translation type="unfinished">Enable rotations</translation>
+      <translation>启用旋转</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="107"/>
@@ -323,42 +323,37 @@
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="26"/>
       <source>Expression Editor</source>
-      <translation type="unfinished">Expression Editor</translation>
+      <translation>表达式编辑器</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.ui" line="38"/>
-      <source>Variable Sets</source>
-      <translation>变量集</translation>
+      <location filename="../Dialogs/DlgExpressionInput.ui" line="183"/>
+      <source>Store in VarSet...</source>
+      <translation type="unfinished">Store in VarSet...</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.ui" line="49"/>
+      <location filename="../Dialogs/DlgExpressionInput.ui" line="256"/>
+      <source>Error</source>
+      <translation>错误</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.ui" line="280"/>
+      <source>Variable Set</source>
+      <translation type="unfinished">Variable Set</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.ui" line="297"/>
+      <source>Name</source>
+      <translation>名称</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.ui" line="290"/>
       <source>Group</source>
       <translation>组</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.ui" line="75"/>
-      <source>Variable set</source>
-      <translation type="unfinished">Variable set</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgExpressionInput.ui" line="85"/>
-      <source>Info</source>
-      <translation type="unfinished">Info</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgExpressionInput.ui" line="92"/>
-      <source>New property</source>
-      <translation>新建属性</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgExpressionInput.ui" line="149"/>
+      <location filename="../Dialogs/DlgExpressionInput.ui" line="101"/>
       <source>Result</source>
       <translation>结果</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgExpressionInput.ui" line="114"/>
-      <source>Show variable sets</source>
-      <translation>显示变量集</translation>
     </message>
   </context>
   <context>
@@ -377,44 +372,44 @@
   <context>
     <name>EditMode</name>
     <message>
-      <location filename="../Application.h" line="277"/>
+      <location filename="../Application.h" line="283"/>
       <source>&amp;Default</source>
       <translation>默认(&amp;D)</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="278"/>
+      <location filename="../Application.h" line="284"/>
       <source>The object will be edited using the mode defined internally to be the most appropriate for the object type</source>
       <translation>对象将使用内部定义的模式（以最适合对象的类型）进行编辑</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="282"/>
+      <location filename="../Application.h" line="288"/>
       <source>Trans&amp;form</source>
       <translation>变换(&amp;F)</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="287"/>
+      <location filename="../Application.h" line="293"/>
       <source>Cu&amp;tting</source>
       <translation>切割(&amp;T)</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="292"/>
+      <location filename="../Application.h" line="298"/>
       <source>&amp;Color</source>
       <translation>颜色(&amp;C)</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="283"/>
+      <location filename="../Application.h" line="299"/>
+      <source>The object will have the color of its individual faces editable with the Appearance per Face command</source>
+      <translation type="unfinished">The object will have the color of its individual faces editable with the Appearance per Face command</translation>
+    </message>
+    <message>
+      <location filename="../Application.h" line="289"/>
       <source>The object will have its placement editable with the Std TransformManip command</source>
       <translation>该对象将可以通过 Std TransformManip 命令进行放置编辑</translation>
     </message>
     <message>
-      <location filename="../Application.h" line="288"/>
+      <location filename="../Application.h" line="294"/>
       <source>This edit mode is implemented as available but currently does not seem to be used by any object</source>
       <translation>此编辑模式是可用的，但当前似乎没有用于任何对象</translation>
-    </message>
-    <message>
-      <location filename="../Application.h" line="293"/>
-      <source>The object will have the color of its individual faces editable with the Part FaceAppearances command</source>
-      <translation>该对象各个面的颜色将使用 FaceAppearances 命令进行编辑</translation>
     </message>
   </context>
   <context>
@@ -422,7 +417,7 @@
     <message>
       <location filename="../QuantitySpinBox_p.h" line="63"/>
       <source>Enter expression… (=)</source>
-      <translation type="unfinished">Enter expression… (=)</translation>
+      <translation>输入表达式… (=)</translation>
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="64"/>
@@ -450,7 +445,7 @@
     <message>
       <location filename="../Widgets.cpp" line="235"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
     <message>
       <location filename="../Widgets.cpp" line="236"/>
@@ -509,7 +504,7 @@
     <message>
       <location filename="../Navigation/BlenderNavigationStyle.cpp" line="54"/>
       <source>Press Shift and middle mouse button</source>
-      <translation type="unfinished">Press Shift and middle mouse button</translation>
+      <translation>按 Shift 和鼠标中键</translation>
     </message>
     <message>
       <location filename="../Navigation/BlenderNavigationStyle.cpp" line="56"/>
@@ -537,13 +532,14 @@
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="55"/>
       <source>Press middle+left or middle+right mouse button</source>
-      <translation type="unfinished">Press middle+left or middle+right mouse button</translation>
+      <translation>按鼠标中键+左键或鼠标中键+右键</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="57"/>
-      <source>Scroll middle mouse button or keep middle button depressed
+      <source>Scroll mouse wheel or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>滚动鼠标中键或在点击鼠标左键或右键时按住鼠标中键并移动鼠标</translation>
+      <translation type="unfinished">Scroll mouse wheel or keep middle button depressed
+while doing a left or right click and move the mouse up or down</translation>
     </message>
   </context>
   <context>
@@ -562,24 +558,24 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::DAG::Model</name>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="127"/>
+      <location filename="../DAGView/DAGModel.cpp" line="126"/>
       <source>Rename</source>
       <translation>重命名</translation>
     </message>
     <message>
-      <location filename="../DAGView/DAGModel.cpp" line="128"/>
+      <location filename="../DAGView/DAGModel.cpp" line="127"/>
       <source>Renames the object</source>
-      <translation type="unfinished">Renames the object</translation>
+      <translation>重命名对象</translation>
+    </message>
+    <message>
+      <location filename="../DAGView/DAGModel.cpp" line="134"/>
+      <source>Finish Editing</source>
+      <translation>完成编辑</translation>
     </message>
     <message>
       <location filename="../DAGView/DAGModel.cpp" line="135"/>
-      <source>Finish Editing</source>
-      <translation type="unfinished">Finish Editing</translation>
-    </message>
-    <message>
-      <location filename="../DAGView/DAGModel.cpp" line="136"/>
       <source>Finishes editing the object</source>
-      <translation type="unfinished">Finishes editing the object</translation>
+      <translation>完成编辑对象</translation>
     </message>
   </context>
   <context>
@@ -613,12 +609,12 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/AboutApplication.ui" line="177"/>
       <source>Architecture</source>
-      <translation>结构</translation>
+      <translation>建筑</translation>
     </message>
     <message>
       <location filename="../Dialogs/AboutApplication.ui" line="225"/>
       <source>Copy to Clipboard</source>
-      <translation type="unfinished">Copy to Clipboard</translation>
+      <translation>复制到剪贴板</translation>
     </message>
     <message>
       <location filename="../Dialogs/AboutApplication.ui" line="261"/>
@@ -639,56 +635,56 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <location filename="../Dialogs/DlgAbout.cpp" line="318"/>
-      <location filename="../Dialogs/DlgAbout.cpp" line="330"/>
       <source>Credits</source>
       <translation>鸣谢</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAbout.cpp" line="327"/>
-      <source>This version of FreeCAD is dedicated to the memory of Brad McLean, aka bgbsww.</source>
-      <extracomment>Header for bgbsww</extracomment>
-      <translation>此版本的 FreeCAD 专门用于纪念 Brad McLean（又名 bgbsww）。</translation>
+      <source>Credits</source>
+      <comment>Header for the Credits tab of the About screen</comment>
+      <extracomment>Header for the Credits tab of the About screen</extracomment>
+      <translation>鸣谢</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="332"/>
-      <source>FreeCAD would not be possible without the contributions of</source>
-      <translation>如果没有以下贡献者的帮助，FreeCAD 项目不可能成立</translation>
+      <location filename="../Dialogs/DlgAbout.cpp" line="328"/>
+      <source>FreeCAD would not be possible without the contributions of:</source>
+      <translation type="unfinished">FreeCAD would not be possible without the contributions of:</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="335"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="330"/>
       <source>Individuals</source>
-      <extracomment>Header for the list of individual people in the Credits list.</extracomment>
+      <comment>Header for the list of individual people in the Credits list.</comment>
       <translation>个人用户</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="348"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="342"/>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>组织</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="376"/>
-      <location filename="../Dialogs/DlgAbout.cpp" line="467"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="370"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="461"/>
       <source>License</source>
       <translation>授权许可</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="413"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="407"/>
       <source>Libraries</source>
       <translation>库</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="435"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="429"/>
       <source>Collection</source>
       <translation>集合</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="454"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="448"/>
       <source>Privacy Policy</source>
       <translation>隐私政策</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAbout.cpp" line="491"/>
+      <location filename="../Dialogs/DlgAbout.cpp" line="485"/>
       <source>Copied!</source>
       <translation>已复制</translation>
     </message>
@@ -698,7 +694,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="242"/>
       <source>Cache Directory</source>
-      <translation type="unfinished">Cache Directory</translation>
+      <translation>缓存目录</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="244"/>
@@ -708,12 +704,12 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="245"/>
       <source>Clear it now?</source>
-      <translation type="unfinished">Clear it now?</translation>
+      <translation>立即清除？</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="246"/>
       <source>Warning: Make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
-      <translation type="unfinished">Warning: Make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</translation>
+      <translation>警告：请确保这是唯一正在运行的 %1 实例，并且没有打开任何文档，因为这可能会导致数据丢失！</translation>
     </message>
   </context>
   <context>
@@ -726,7 +722,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="288"/>
       <source>Out of range</source>
-      <translation type="unfinished">Out of range</translation>
+      <translation>超出范围</translation>
     </message>
   </context>
   <context>
@@ -734,7 +730,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="361"/>
       <source>Camera Settings</source>
-      <translation type="unfinished">Camera Settings</translation>
+      <translation>相机设置</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="368"/>
@@ -764,7 +760,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="421"/>
       <source>Current View</source>
-      <translation type="unfinished">Current View</translation>
+      <translation>当前视图</translation>
     </message>
   </context>
   <context>
@@ -807,7 +803,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Clipping.ui" line="155"/>
       <source>Custom Clipping Direction</source>
-      <translation type="unfinished">Custom Clipping Direction</translation>
+      <translation>自定义剪切方向</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="190"/>
@@ -922,7 +918,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="14"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>添加属性</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="20"/>
@@ -943,7 +939,7 @@ while doing a left or right click and move the mouse up or down</source>
       <location filename="../Dialogs/DlgAddProperty.ui" line="50"/>
       <location filename="../Dialogs/DlgAddProperty.ui" line="60"/>
       <source>Verbose description of the new property</source>
-      <translation type="unfinished">Verbose description of the new property</translation>
+      <translation>新属性的详细描述</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="67"/>
@@ -952,11 +948,11 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not checked, the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
-In this case the prefix will be automatically trimmed when shown in the property editor.
-However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+      <translation>为避免与现有属性冲突，在属性名称前添加组名前缀，格式为“Group_Name”。
+在这种情况下，前缀在属性编辑器中显示时将被自动截断。
+但是，该属性在脚本中仍会以全名使用，例如“obj.Group_Name”。
 
-If this is not checked, the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+如果未选中此项，则该属性必须具有唯一名称，并且访问方式类似于“obj.Name”。</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="53"/>
@@ -1029,7 +1025,7 @@ If this is not checked, the property must be uniquely named, and it is accessed 
     <message>
       <location filename="../Dialogs/DlgChooseIcon.ui" line="38"/>
       <source>Icon Folders</source>
-      <translation type="unfinished">Icon Folders</translation>
+      <translation>图标文件夹</translation>
     </message>
   </context>
   <context>
@@ -1060,7 +1056,7 @@ If this is not checked, the property must be uniquely named, and it is accessed 
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="163"/>
       <source>Export configuration</source>
-      <translation type="unfinished">Export configuration</translation>
+      <translation>导出配置</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="171"/>
@@ -1070,7 +1066,7 @@ If this is not checked, the property must be uniquely named, and it is accessed 
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="172"/>
       <source>A preference pack with that name already exists. Overwrite it?</source>
-      <translation type="unfinished">A preference pack with that name already exists. Overwrite it?</translation>
+      <translation>同名的首选项包已存在。是否要覆盖？</translation>
     </message>
   </context>
   <context>
@@ -1093,7 +1089,7 @@ If this is not checked, the property must be uniquely named, and it is accessed 
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="67"/>
       <source>Menu text</source>
-      <translation type="unfinished">Menu text</translation>
+      <translation>菜单文本</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="74"/>
@@ -1103,17 +1099,17 @@ If this is not checked, the property must be uniquely named, and it is accessed 
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="81"/>
       <source>Status text</source>
-      <translation type="unfinished">Status text</translation>
+      <translation>状态文本</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="88"/>
       <source>What's this</source>
-      <translation type="unfinished">What's this</translation>
+      <translation>这是什么</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="95"/>
       <source>Accelerator</source>
-      <translation type="unfinished">Accelerator</translation>
+      <translation>加速器</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="118"/>
@@ -1133,7 +1129,7 @@ If this is not checked, the property must be uniquely named, and it is accessed 
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="238"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="245"/>
@@ -1160,33 +1156,18 @@ If this is not checked, the property must be uniquely named, and it is accessed 
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="214"/>
-      <source>Could not find macro file '%1'.</source>
-      <translation type="unfinished">Could not find macro file '%1'.</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="238"/>
-      <source>First, specify the macro.</source>
-      <translation type="unfinished">First, specify the macro.</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="243"/>
-      <source>Fisrst, specify the menu text.</source>
-      <translation type="unfinished">Fisrst, specify the menu text.</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="308"/>
-      <source>First, select a macro item.</source>
-      <translation type="unfinished">First, select a macro item.</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgActionsImp.cpp" line="313"/>
-      <source>First, specify the menu text.</source>
-      <translation type="unfinished">First, specify the menu text.</translation>
+      <source>Could not find macro file '%1'</source>
+      <translation type="unfinished">Could not find macro file '%1'</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="238"/>
       <source>Empty macro</source>
       <translation>空白宏</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="238"/>
+      <source>Specify the macro first</source>
+      <translation type="unfinished">Specify the macro first</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="243"/>
@@ -1195,9 +1176,20 @@ If this is not checked, the property must be uniquely named, and it is accessed 
       <translation>空文本</translation>
     </message>
     <message>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="243"/>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="313"/>
+      <source>Specify the menu text first</source>
+      <translation type="unfinished">Specify the menu text first</translation>
+    </message>
+    <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="308"/>
       <source>No item selected</source>
       <translation>未选中对象</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgActionsImp.cpp" line="308"/>
+      <source>Select a macro item first</source>
+      <translation type="unfinished">Select a macro item first</translation>
     </message>
   </context>
   <context>
@@ -1239,27 +1231,27 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="48"/>
       <source>&amp;Category</source>
-      <translation type="unfinished">&amp;Category</translation>
+      <translation>类别(&amp;C)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="100"/>
       <source>Current shortcut</source>
-      <translation type="unfinished">Current shortcut</translation>
+      <translation>当前快捷键</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="119"/>
       <source>&amp;New shortcut</source>
-      <translation type="unfinished">&amp;New shortcut</translation>
+      <translation>新建快捷键(&amp;N)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="137"/>
       <source>Multi-key sequence delay</source>
-      <translation type="unfinished">Multi-key sequence delay</translation>
+      <translation>多键序列延迟</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="191"/>
       <source>Shortcut priority list</source>
-      <translation type="unfinished">Shortcut priority list</translation>
+      <translation>快捷键优先级列表</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="238"/>
@@ -1289,7 +1281,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="265"/>
       <source>Re&amp;set All</source>
-      <translation>全部重设(&amp;S)</translation>
+      <translation>全部重置(&amp;S)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="268"/>
@@ -1304,7 +1296,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="304"/>
       <source>Down</source>
-      <translation>向下</translation>
+      <translation>下</translation>
     </message>
     <message>
       <source/>
@@ -1316,7 +1308,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgKeyboardImp.cpp" line="152"/>
       <source>Type to search…</source>
-      <translation type="unfinished">Type to search…</translation>
+      <translation>键入以搜索…</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboardImp.cpp" line="234"/>
@@ -1357,74 +1349,74 @@ same time. The one with the highest priority will be triggered.</source>
   <context>
     <name>Gui::Dialog::DlgCustomToolbars</name>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="14"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="20"/>
       <source>Toolbars</source>
       <translation>工具栏</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="57"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="63"/>
       <source>Category</source>
       <translation>类别</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="107"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="119"/>
       <source>Move Right</source>
-      <translation type="unfinished">Move Right</translation>
+      <translation>右移</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="110"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="122"/>
       <source>&lt;b&gt;Moves the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
       <translation type="unfinished">&lt;b&gt;Moves the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="133"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="145"/>
       <source>Move Left</source>
-      <translation type="unfinished">Move Left</translation>
+      <translation>左移</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="136"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="148"/>
       <source>&lt;b&gt;Moves the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
       <translation type="unfinished">&lt;b&gt;Moves the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="165"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="177"/>
       <source>Move Up</source>
-      <translation type="unfinished">Move Up</translation>
+      <translation>上移</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="168"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="180"/>
       <source>&lt;b&gt;Moves the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
       <translation type="unfinished">&lt;b&gt;Moves the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="191"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="203"/>
       <source>Move Down</source>
-      <translation type="unfinished">Move Down</translation>
+      <translation>下移</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="194"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="206"/>
       <source>&lt;b&gt;Moves the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
       <translation type="unfinished">&lt;b&gt;Moves the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="288"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="300"/>
       <source>New</source>
       <translation>新建</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="295"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="307"/>
       <source>Rename</source>
       <translation>重命名</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="302"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="314"/>
       <source>Delete</source>
       <translation>删除</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgToolbars.ui" line="334"/>
+      <location filename="../Dialogs/DlgToolbars.ui" line="346"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;注意:&lt;/span&gt;此变更将在您下一次加载工作台时生效&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;注意：&lt;/span&gt;更改将在下次加载相应的工作台时生效。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbarsImp.cpp" line="86"/>
@@ -1536,7 +1528,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="728"/>
       <source>Reset</source>
-      <translation>重设</translation>
+      <translation>重置</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpaceball.cpp" line="758"/>
@@ -1599,17 +1591,12 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="85"/>
       <source>Find file</source>
-      <translation type="unfinished">Find file</translation>
+      <translation>查找文件</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="99"/>
       <source>Find in files</source>
       <translation type="unfinished">Find in files</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgMacroExecute.ui" line="106"/>
-      <source>Filter by case-insensitive file content, regular expressions supported</source>
-      <translation>按大小写不敏感的文件内容过滤，支持正则表达式</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="122"/>
@@ -1659,12 +1646,12 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="281"/>
       <source>Launches a guide on how to set up a macro in a custom global toolbar</source>
-      <translation type="unfinished">Launches a guide on how to set up a macro in a custom global toolbar</translation>
+      <translation>启动如何在自定义全局工具栏中设置宏的指南</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="307"/>
       <source>Opens the Addon Manager to download macros created by the community</source>
-      <translation type="unfinished">Opens the Addon Manager to download macros created by the community</translation>
+      <translation>打开附加组件管理器下载社区创建的宏文件</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="321"/>
@@ -1679,12 +1666,17 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="358"/>
       <source>Open Folder</source>
-      <translation type="unfinished">Open Folder</translation>
+      <translation>打开目录</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="284"/>
       <source>Toolbar</source>
       <translation>工具栏</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgMacroExecute.ui" line="106"/>
+      <source>Filter by file content, case-insensitive. Regular expressions are supported.</source>
+      <translation type="unfinished">Filter by file content, case-insensitive. Regular expressions are supported.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="310"/>
@@ -1803,7 +1795,7 @@ Note: your changes will be applied when you next switch workbenches
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="697"/>
       <source>Walkthrough, Dialog 2 of 2</source>
-      <translation type="unfinished">Walkthrough, Dialog 2 of 2</translation>
+      <translation>遍历，对话框2 / 2</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="866"/>
@@ -1864,7 +1856,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMacroRecord.ui" line="62"/>
       <source>Macro Path</source>
-      <translation type="unfinished">Macro Path</translation>
+      <translation>宏路径</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroRecord.ui" line="96"/>
@@ -1942,7 +1934,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="71"/>
       <source>Reset</source>
-      <translation>重设</translation>
+      <translation>重置</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="14"/>
@@ -1962,12 +1954,12 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="78"/>
       <source>Ambient color</source>
-      <translation type="unfinished">Ambient color</translation>
+      <translation>环境颜色</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="114"/>
       <source>Specular color</source>
-      <translation type="unfinished">Specular color</translation>
+      <translation>高光颜色</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="131"/>
@@ -1977,7 +1969,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="148"/>
       <source>Emissive color</source>
-      <translation type="unfinished">Emissive color</translation>
+      <translation>自发光颜色</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="155"/>
@@ -2043,28 +2035,28 @@ Specify another directory.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="63"/>
-      <source>Quick search</source>
-      <translation>快速搜索</translation>
+      <source>Search</source>
+      <translation>搜索</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="70"/>
-      <source>Type in a group name to find it</source>
-      <translation>键入组名以找到它</translation>
+      <source>Enter a group name to search</source>
+      <translation type="unfinished">Enter a group name to search</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgParameter.ui" line="86"/>
+      <source>Find</source>
+      <translation>查找</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgParameter.ui" line="109"/>
+      <source>Save</source>
+      <translation>保存</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="73"/>
       <source>Search group</source>
       <translation type="unfinished">Search group</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgParameter.ui" line="86"/>
-      <source>Find…</source>
-      <translation type="unfinished">Find…</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgParameter.ui" line="109"/>
-      <source>Save to Disk</source>
-      <translation type="unfinished">Save to Disk</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="112"/>
@@ -2093,7 +2085,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterFind.ui" line="55"/>
       <source>Look At</source>
-      <translation type="unfinished">Look At</translation>
+      <translation>查看</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterFind.ui" line="61"/>
@@ -2244,7 +2236,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferences.ui" line="156"/>
       <source>Reset</source>
-      <translation>重设</translation>
+      <translation>重置</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferences.ui" line="196"/>
@@ -2276,7 +2268,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="779"/>
       <source>Reset Group '%1'</source>
-      <translation type="unfinished">Reset Group '%1'</translation>
+      <translation>重置组 '%1'</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="787"/>
@@ -2316,7 +2308,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="957"/>
       <source>Restart Later</source>
-      <translation type="unfinished">Restart Later</translation>
+      <translation>稍后重启</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferencesImp.cpp" line="783"/>
@@ -2349,7 +2341,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="47"/>
       <source>&amp;Name</source>
-      <translation type="unfinished">&amp;Name</translation>
+      <translation>名称(&amp;N)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="73"/>
@@ -2374,27 +2366,27 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="159"/>
       <source>Created &amp;by</source>
-      <translation type="unfinished">Created &amp;by</translation>
+      <translation>作者(&amp;B)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="182"/>
       <source>Creation &amp;date</source>
-      <translation type="unfinished">Creation &amp;date</translation>
+      <translation>创建日期(&amp;D)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="208"/>
       <source>&amp;Last modified by</source>
-      <translation type="unfinished">&amp;Last modified by</translation>
+      <translation>上次修改者(&amp;L)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="231"/>
       <source>Last &amp;modification date</source>
-      <translation type="unfinished">Last &amp;modification date</translation>
+      <translation>上次修改日期(&amp;M)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="257"/>
       <source>Com&amp;pany</source>
-      <translation type="unfinished">Com&amp;pany</translation>
+      <translation>公司(&amp;P)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="280"/>
@@ -2404,12 +2396,12 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="308"/>
       <source>Open in Browser</source>
-      <translation type="unfinished">Open in Browser</translation>
+      <translation>在浏览器中打开</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="317"/>
       <source>&amp;Comment</source>
-      <translation type="unfinished">&amp;Comment</translation>
+      <translation>注释(&amp;C)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="152"/>
@@ -2545,7 +2537,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgPropertyLink.cpp" line="113"/>
       <source>Reset</source>
-      <translation>重设</translation>
+      <translation>重置</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPropertyLink.cpp" line="114"/>
@@ -2591,7 +2583,7 @@ Specify another directory.</translation>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="20"/>
       <source>Running External Program</source>
-      <translation type="unfinished">Running External Program</translation>
+      <translation>运行外部程序</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="38"/>
@@ -2711,22 +2703,22 @@ will be shown at the lower left corner in opened files</source>
       <translation>使用 OpenGL VBO (顶点缓存对象)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="436"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="330"/>
       <source>Render cache</source>
       <translation>渲染缓存</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="418"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="363"/>
       <source>Auto</source>
       <translation>自动</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="423"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="368"/>
       <source>Distributed</source>
       <translation>分布</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="428"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="373"/>
       <source>Centralized</source>
       <translation>居中</translation>
     </message>
@@ -2761,27 +2753,27 @@ will be shown at the lower left corner in opened files</source>
       <translation>MSAA 反锯齿 8x</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="376"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="443"/>
       <source>Render types of transparent objects</source>
       <translation>透明对象的渲染类型</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="386"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="453"/>
       <source>One pass</source>
-      <translation>單次通過</translation>
+      <translation>一次通过</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="391"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="458"/>
       <source>Backface pass</source>
       <translation>背面通过</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="456"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="492"/>
       <source>Size of vertices in the Sketcher, TechDraw and other workbenches</source>
       <translation>草图、 技术绘图和其他工作台顶点大小</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="443"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="337"/>
       <source>Eye to eye distance for stereo modes</source>
       <translation>立体模式的双眼距离</translation>
     </message>
@@ -2806,8 +2798,8 @@ in the corner in % of height/width of the viewport</translation>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="286"/>
       <source>This option is useful for troubleshooting graphics card and driver problems.
 Changing this option requires a restart of the application.</source>
-      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
-Changing this option requires a restart of the application.</translation>
+      <translation>此选项对故障排除显卡和驱动程序问题非常有用。
+更改此选项需要重启应用程序。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="303"/>
@@ -2833,27 +2825,27 @@ issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="336"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="387"/>
       <source>Method of multisample anti-aliasing</source>
       <translation type="unfinished">Method of multisample anti-aliasing</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="346"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="479"/>
       <source>Marker size</source>
       <translation>标记大小</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="353"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="394"/>
       <source>Anti-aliasing</source>
       <translation>抗锯齿</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="363"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="469"/>
       <source>Transparent objects</source>
       <translation type="unfinished">Transparent objects</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="405"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="350"/>
       <source>'Render caching' is another way to say 'Rendering acceleration'.
 There are 3 options available to achieve this:
 1) 'Auto' (default), let Coin3D decide where to cache.
@@ -2870,7 +2862,8 @@ only cache at the scene graph root node. This offers the fastest rendering speed
 but slower response to any scene changes.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="469"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="407"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="515"/>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
@@ -2879,29 +2872,39 @@ bounding box size of the 3D object that is currently displayed.</source>
 边界框大小乘以的因素。</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="504"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="502"/>
+      <source>Datum size</source>
+      <translation type="unfinished">Datum size</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="520"/>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="553"/>
       <source>Camera Type</source>
       <translation type="unfinished">Camera Type</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="541"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="590"/>
       <source>Objects will be in orthographic projection</source>
       <translation type="unfinished">Objects will be in orthographic projection</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="525"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="574"/>
       <source>Objects will appear in a perspective projection</source>
       <translation>对象将以透视投影法显示</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="528"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="577"/>
       <source>Perspective renderin&amp;g</source>
-      <translation>以透视渲染 (&amp;G)</translation>
+      <translation>透视渲染(&amp;G)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="544"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="593"/>
       <source>Or&amp;thographic rendering</source>
-      <translation>正视投影渲染 (&amp;T)</translation>
+      <translation>正视投影渲染(&amp;T)</translation>
     </message>
     <message>
       <source/>
@@ -2911,57 +2914,57 @@ bounding box size of the 3D object that is currently displayed.</source>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="175"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="177"/>
       <source>5px</source>
       <translation>5px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="176"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="178"/>
       <source>7px</source>
       <translation>7px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="177"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="179"/>
       <source>9px</source>
       <translation>9px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="178"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="180"/>
       <source>11px</source>
       <translation>11px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="179"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="181"/>
       <source>13px</source>
       <translation>13px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="180"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="182"/>
       <source>15px</source>
       <translation>15px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="181"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="183"/>
       <source>20px</source>
       <translation>20px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="182"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="184"/>
       <source>25px</source>
       <translation>25px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="183"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="185"/>
       <source>30px</source>
       <translation>30px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="236"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="238"/>
       <source>Anti-aliasing</source>
       <translation>抗锯齿</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="237"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="239"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>打开一个新的查看器或重新启动 %1 以应用消除锯齿的更改。</translation>
     </message>
@@ -2981,7 +2984,7 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="20"/>
       <source>Cache Directory</source>
-      <translation type="unfinished">Cache Directory</translation>
+      <translation>缓存目录</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="28"/>
@@ -3064,7 +3067,7 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="32"/>
       <source>&amp;Gradient</source>
-      <translation type="unfinished">&amp;Gradient</translation>
+      <translation>渐变(&amp;G)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="43"/>
@@ -3099,7 +3102,7 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="109"/>
       <source>&amp;Flow</source>
-      <translation>流 (&amp;F)</translation>
+      <translation>流程(&amp;F)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="112"/>
@@ -3114,7 +3117,7 @@ bounding box size of the 3D object that is currently displayed.</source>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="125"/>
       <source>&amp;Zero</source>
-      <translation>零 (&amp;Z)</translation>
+      <translation>零(&amp;Z)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="128"/>
@@ -3135,7 +3138,7 @@ will be displayed in gray</source>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="163"/>
       <source>Out g&amp;rayed</source>
-      <translation>外部呈灰色 (&amp;R)</translation>
+      <translation>外部呈灰色(&amp;R)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="166"/>
@@ -3151,7 +3154,7 @@ will be displayed with transparency</source>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="177"/>
       <source>Out &amp;transparent</source>
-      <translation>输出透明度 (&amp;T)</translation>
+      <translation>输出透明度(&amp;T)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="180"/>
@@ -3166,22 +3169,22 @@ will be displayed with transparency</source>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="196"/>
       <source>Ma&amp;ximum</source>
-      <translation type="unfinished">Ma&amp;ximum</translation>
+      <translation>最大值(&amp;X)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="241"/>
       <source>&amp;Labels</source>
-      <translation type="unfinished">&amp;Labels</translation>
+      <translation>标签(&amp;L)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="267"/>
       <source>Mi&amp;nimum</source>
-      <translation type="unfinished">Mi&amp;nimum</translation>
+      <translation>最小值(&amp;N)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="296"/>
       <source>&amp;Decimals</source>
-      <translation type="unfinished">&amp;Decimals</translation>
+      <translation>小数位(&amp;D)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsColorGradient.ui" line="257"/>
@@ -3326,7 +3329,7 @@ This feature may slightly increase recomputation time.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="281"/>
       <source>Add thumbnail to project file when saving</source>
-      <translation type="unfinished">Add thumbnail to project file when saving</translation>
+      <translation>保存文件时同时保存缩略图到项目文件</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="320"/>
@@ -3350,7 +3353,7 @@ automatically run a file recovery when it is started</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="448"/>
       <source>The program icon will be added to the thumbnail</source>
-      <translation type="unfinished">The program icon will be added to the thumbnail</translation>
+      <translation>程序徽标将被添加到缩略图</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="451"/>
@@ -3523,7 +3526,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="55"/>
       <source>Other</source>
-      <translation>其它</translation>
+      <translation>其他</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="709"/>
@@ -3600,12 +3603,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="199"/>
       <source>&amp;Width</source>
-      <translation type="unfinished">&amp;Width</translation>
+      <translation>宽度(&amp;W)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="226"/>
       <source>&amp;Height</source>
-      <translation type="unfinished">&amp;Height</translation>
+      <translation>高度(&amp;H)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="272"/>
@@ -3625,7 +3628,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="289"/>
       <source>&amp;4:3</source>
-      <translation>&amp;4:3</translation>
+      <translation>4:3(&amp;4)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="292"/>
@@ -3635,7 +3638,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="299"/>
       <source>1&amp;6:9</source>
-      <translation>1&amp;6:9</translation>
+      <translation>16:9(&amp;6)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="302"/>
@@ -3645,7 +3648,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="309"/>
       <source>&amp;1:1</source>
-      <translation>&amp;1:1</translation>
+      <translation>1:1(&amp;1)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="312"/>
@@ -3660,7 +3663,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="345"/>
       <source>Back&amp;ground</source>
-      <translation type="unfinished">Back&amp;ground</translation>
+      <translation>背景(&amp;G)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="379"/>
@@ -3766,7 +3769,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="69"/>
       <source>Macro Path</source>
-      <translation type="unfinished">Macro Path</translation>
+      <translation>宏路径</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="109"/>
@@ -3973,6 +3976,23 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
       <translation>环绕模式</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="475"/>
+      <source>Rotation orbit style.
+Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.
+Trackball: moving the mouse horizontally will rotate the part around the Y-axis.
+Trackball Classic: moving the mouse will rotate the part allowing precession.
+Turntable: the part will be rotated around the Z-axis (with constrained axes).
+Free Turntable: the part will be rotated around the Z-axis.
+         </source>
+      <translation type="unfinished">Rotation orbit style.
+Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.
+Trackball: moving the mouse horizontally will rotate the part around the Y-axis.
+Trackball Classic: moving the mouse will rotate the part allowing precession.
+Turntable: the part will be rotated around the Z-axis (with constrained axes).
+Free Turntable: the part will be rotated around the Z-axis.
+         </translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="488"/>
       <source>Turntable</source>
       <translation>转盘</translation>
@@ -4045,11 +4065,6 @@ The value is the diameter of the sphere to fit on the screen.</source>
 该值是要适合屏幕的球体的直径。</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="749"/>
-      <source>Enable support of legacy space mouse devices</source>
-      <translation>启用对旧式空间鼠标设备的支持</translation>
-    </message>
-    <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="765"/>
       <source>Animations</source>
       <translation>动画</translation>
@@ -4070,9 +4085,23 @@ The value is the diameter of the sphere to fit on the screen.</source>
       <translation>具有固定持续时间的导航动画持续时间</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="719"/>
+      <source>Prevents view tilting when pinch-zooming.
+Affects only Gesture navigation style.
+Mouse tilting is not disabled by this setting.</source>
+      <translation type="unfinished">Prevents view tilting when pinch-zooming.
+Affects only Gesture navigation style.
+Mouse tilting is not disabled by this setting.</translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="743"/>
       <source>Space Mouse</source>
       <translation type="unfinished">Space Mouse</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="749"/>
+      <source>Enable support of legacy SpaceMouse devices</source>
+      <translation type="unfinished">Enable support of legacy SpaceMouse devices</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="777"/>
@@ -4132,23 +4161,6 @@ Select a set and then press the button to view said configurations.</translation
       <translation type="unfinished">Mouse Configuration</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="475"/>
-      <source>Rotation orbit style.
-Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis.
-Trackball Classic: moving the mouse will rotate the part allowing precession.
-Turntable: the part will be rotated around the z-axis (with constrained axes).
-Free Turntable: the part will be rotated around the z-axis.
-         </source>
-      <translation>旋转轨道样式。
-圆角弧球：在屏幕角落移动鼠标只会滚动部件。
-轨迹球：水平移动鼠标会使部件绕 Y 轴旋转。
-经典轨迹球：移动鼠标将旋转允许进动的部分。
-转盘：部件将绕 Z 轴旋转（轴受约束）。
-自由转盘：部件将绕 Z 轴旋转。
-         </translation>
-    </message>
-    <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="619"/>
       <source>Zoom operations will be performed at position of mouse pointer</source>
       <translation>缩放操作将在鼠标指针位置进行</translation>
@@ -4173,15 +4185,6 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="703"/>
       <source>Invert zoom</source>
       <translation>反向缩放</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="719"/>
-      <source>Prevents view tilting when pinch-zooming.
-Affects only gesture navigation style.
-Mouse tilting is not disabled by this setting.</source>
-      <translation>防止缩放时视图倾斜。
-仅影响手势导航样式。
-此设置不会禁用鼠标倾斜。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="724"/>
@@ -4310,12 +4313,12 @@ horizontal space in Python console</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="94"/>
       <source> ms</source>
-      <translation> 毫秒</translation>
+      <translation> ms</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="119"/>
       <source>Other</source>
-      <translation>其它</translation>
+      <translation>其他</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="144"/>
@@ -4507,7 +4510,7 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="281"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>树状图</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="341"/>
@@ -4683,7 +4686,7 @@ The preference system is the one set in the general preferences.</translation>
     <message>
       <location filename="../Placement.cpp" line="1099"/>
       <source>Placement</source>
-      <translation>定位</translation>
+      <translation>放置</translation>
     </message>
   </context>
   <context>
@@ -4694,7 +4697,7 @@ The preference system is the one set in the general preferences.</translation>
       <translation>文档恢复</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.ui" line="33"/>
+      <location filename="../DocumentRecovery.ui" line="20"/>
       <source>Press 'Start Recovery' to start the recovery process of the document listed below.
 
 The 'Status' column shows whether the document could be recovered.</source>
@@ -4702,17 +4705,17 @@ The 'Status' column shows whether the document could be recovered.</source>
 '状态'列显示文档能否被恢复。</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.ui" line="55"/>
+      <location filename="../DocumentRecovery.ui" line="49"/>
       <source>Status of recovered documents</source>
       <translation type="unfinished">Status of recovered documents</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.ui" line="66"/>
+      <location filename="../DocumentRecovery.ui" line="60"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>文档名称</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.ui" line="71"/>
+      <location filename="../DocumentRecovery.ui" line="65"/>
       <source>Status</source>
       <translation>状态</translation>
     </message>
@@ -4774,7 +4777,7 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation type="unfinished">When deleting all transient directories it is not possible to recover any files afterwards.</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.ui" line="82"/>
+      <location filename="../DocumentRecovery.ui" line="42"/>
       <location filename="../DocumentRecovery.cpp" line="522"/>
       <location filename="../DocumentRecovery.cpp" line="554"/>
       <source>Cleanup</source>
@@ -4902,7 +4905,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="460"/>
       <source>Icon Folders</source>
-      <translation type="unfinished">Icon Folders</translation>
+      <translation>图标文件夹</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="597"/>
@@ -4924,8 +4927,8 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="625"/>
-      <source>Removing a folder only takes effect after an application restart.</source>
-      <translation>只有应用程序重新启动后移除资料夹才生效。</translation>
+      <source>Removing a folder only takes effect after an application restart</source>
+      <translation type="unfinished">Removing a folder only takes effect after an application restart</translation>
     </message>
   </context>
   <context>
@@ -5161,7 +5164,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.ui" line="14"/>
       <source>Placement</source>
-      <translation>定位</translation>
+      <translation>放置</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="187"/>
@@ -5172,18 +5175,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <location filename="../Placement.ui" line="226"/>
       <source>Rotation axis and angle</source>
       <translation>旋转轴和角度</translation>
-    </message>
-    <message>
-      <location filename="../Placement.ui" line="360"/>
-      <location filename="../Placement.ui" line="367"/>
-      <source>Yaw (around z-axis)</source>
-      <translation>偏航角（绕z轴）</translation>
-    </message>
-    <message>
-      <location filename="../Placement.ui" line="380"/>
-      <location filename="../Placement.ui" line="387"/>
-      <source>Pitch (around y-axis)</source>
-      <translation>俯仰角（绕y轴）</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="20"/>
@@ -5236,14 +5227,26 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>角度</translation>
     </message>
     <message>
+      <location filename="../Placement.ui" line="360"/>
+      <location filename="../Placement.ui" line="367"/>
+      <source>Yaw (around Z-axis)</source>
+      <translation type="unfinished">Yaw (around Z-axis)</translation>
+    </message>
+    <message>
+      <location filename="../Placement.ui" line="380"/>
+      <location filename="../Placement.ui" line="387"/>
+      <source>Pitch (around Y-axis)</source>
+      <translation type="unfinished">Pitch (around Y-axis)</translation>
+    </message>
+    <message>
       <location filename="../Placement.ui" line="400"/>
-      <source>Roll (around x-axis)</source>
-      <translation>横滚角（绕x轴）</translation>
+      <source>Roll (around X-axis)</source>
+      <translation type="unfinished">Roll (around X-axis)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="407"/>
-      <source>Roll (around the x-axis)</source>
-      <translation>横滚角（绕x轴）</translation>
+      <source>Roll (around the X-axis)</source>
+      <translation type="unfinished">Roll (around the X-axis)</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="445"/>
@@ -5253,7 +5256,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.ui" line="465"/>
       <source>Reset</source>
-      <translation>重设</translation>
+      <translation>重置</translation>
     </message>
     <message>
       <location filename="../Placement.cpp" line="712"/>
@@ -5456,15 +5459,15 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../Dialogs/DlgObjectSelection.cpp" line="157"/>
-      <source>&amp;Use Original Selections</source>
-      <translation>使用原有选择 (&amp;U)</translation>
+      <source>&amp;Use Original Selection</source>
+      <translation type="unfinished">&amp;Use Original Selection</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgObjectSelection.cpp" line="158"/>
-      <source>Ignore dependencies and proceed with objects
+      <source>Ignore dependencies and proceed with the objects
 originally selected prior to opening this dialog</source>
-      <translation>忽略依赖关系并继续执行最初选择的对象
-之前打开此对话框</translation>
+      <translation type="unfinished">Ignore dependencies and proceed with the objects
+originally selected prior to opening this dialog</translation>
     </message>
   </context>
   <context>
@@ -5492,11 +5495,6 @@ originally selected prior to opening this dialog</source>
       <translation>选项</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="593"/>
-      <source>Display message types</source>
-      <translation>显示消息类型</translation>
-    </message>
-    <message>
       <location filename="../ReportView.cpp" line="596"/>
       <location filename="../ReportView.cpp" line="620"/>
       <source>Normal Messages</source>
@@ -5513,11 +5511,6 @@ originally selected prior to opening this dialog</source>
       <location filename="../ReportView.cpp" line="636"/>
       <source>Critical Messages</source>
       <translation type="unfinished">Critical Messages</translation>
-    </message>
-    <message>
-      <location filename="../ReportView.cpp" line="617"/>
-      <source>Show report view on</source>
-      <translation type="unfinished">Show report view on</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="642"/>
@@ -5537,7 +5530,7 @@ originally selected prior to opening this dialog</source>
     <message>
       <location filename="../ReportView.cpp" line="672"/>
       <source>Save As…</source>
-      <translation type="unfinished">Save As…</translation>
+      <translation>另存为…</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="681"/>
@@ -5551,10 +5544,20 @@ originally selected prior to opening this dialog</source>
       <translation>警告</translation>
     </message>
     <message>
+      <location filename="../ReportView.cpp" line="593"/>
+      <source>Display Message Types</source>
+      <translation type="unfinished">Display Message Types</translation>
+    </message>
+    <message>
       <location filename="../ReportView.cpp" line="608"/>
       <location filename="../ReportView.cpp" line="632"/>
       <source>Errors</source>
       <translation>错误</translation>
+    </message>
+    <message>
+      <location filename="../ReportView.cpp" line="617"/>
+      <source>Show Report View On</source>
+      <translation type="unfinished">Show Report View On</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="670"/>
@@ -5585,102 +5588,102 @@ originally selected prior to opening this dialog</source>
   <context>
     <name>Gui::DockWnd::SelectionView</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="63"/>
+      <location filename="../Selection/SelectionView.cpp" line="68"/>
       <source>Selection View</source>
       <translation>选择视图</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="70"/>
+      <location filename="../Selection/SelectionView.cpp" line="75"/>
       <source>Search</source>
       <translation>搜索</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="71"/>
+      <location filename="../Selection/SelectionView.cpp" line="76"/>
       <source>Searches object labels</source>
       <translation>搜索对象标签</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="79"/>
+      <location filename="../Selection/SelectionView.cpp" line="84"/>
       <source>Clears the search field</source>
       <translation>清除搜索栏</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="83"/>
+      <location filename="../Selection/SelectionView.cpp" line="88"/>
       <source>The number of selected items</source>
       <translation>选定项的数目</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="94"/>
+      <location filename="../Selection/SelectionView.cpp" line="99"/>
       <source>Picked object list</source>
       <translation>选择对象列表</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="641"/>
+      <location filename="../Selection/SelectionView.cpp" line="646"/>
       <source>Select Only</source>
       <translation type="unfinished">Select Only</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="651"/>
+      <location filename="../Selection/SelectionView.cpp" line="656"/>
       <source>Zoom Fit</source>
       <translation type="unfinished">Zoom Fit</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="655"/>
+      <location filename="../Selection/SelectionView.cpp" line="660"/>
       <source>Go to Selection</source>
       <translation type="unfinished">Go to Selection</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="658"/>
+      <location filename="../Selection/SelectionView.cpp" line="663"/>
       <source>Mark to Recompute</source>
       <translation type="unfinished">Mark to Recompute</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="660"/>
+      <location filename="../Selection/SelectionView.cpp" line="665"/>
       <source>Marks this object to be recomputed</source>
       <translation type="unfinished">Marks this object to be recomputed</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="663"/>
+      <location filename="../Selection/SelectionView.cpp" line="668"/>
       <source>To Python Console</source>
       <translation type="unfinished">To Python Console</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="672"/>
+      <location filename="../Selection/SelectionView.cpp" line="677"/>
       <source>Duplicate Subshape</source>
       <translation type="unfinished">Duplicate Subshape</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="645"/>
+      <location filename="../Selection/SelectionView.cpp" line="650"/>
       <source>Selects only this object</source>
       <translation>仅选择此对象</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="647"/>
+      <location filename="../Selection/SelectionView.cpp" line="652"/>
       <source>Deselect</source>
       <translation>取消选定</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="649"/>
+      <location filename="../Selection/SelectionView.cpp" line="654"/>
       <source>Deselects this object</source>
       <translation>取消选择此对象</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="653"/>
+      <location filename="../Selection/SelectionView.cpp" line="658"/>
       <source>Selects and fits this object in the 3D window</source>
       <translation>于3D视窗选取并居中此物体</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="656"/>
+      <location filename="../Selection/SelectionView.cpp" line="661"/>
       <source>Selects and locates this object in the tree view</source>
       <translation>在树视图中，选择和定位此对象</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="666"/>
+      <location filename="../Selection/SelectionView.cpp" line="671"/>
       <source>Reveals this object and its subelements in the Python console.</source>
       <translation>在 Python 控制台中显示此对象及其子元素。</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="674"/>
+      <location filename="../Selection/SelectionView.cpp" line="679"/>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>在文档中创建此子形状的独立副本</translation>
     </message>
@@ -5749,7 +5752,7 @@ Save all changes?</translation>
     <message>
       <location filename="../EditorView.cpp" line="554"/>
       <source> - Editor</source>
-      <translation> - Editor</translation>
+      <translation> - 编辑器</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="614"/>
@@ -5770,13 +5773,13 @@ Save all changes?</translation>
   <context>
     <name>Gui::FileDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="215"/>
+      <location filename="../FileDialog.cpp" line="218"/>
       <source>Save As</source>
       <translation type="unfinished">Save As</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="291"/>
-      <location filename="../FileDialog.cpp" line="344"/>
+      <location filename="../FileDialog.cpp" line="294"/>
+      <location filename="../FileDialog.cpp" line="347"/>
       <source>Open</source>
       <translation>打开</translation>
     </message>
@@ -5784,12 +5787,12 @@ Save all changes?</translation>
   <context>
     <name>Gui::FileOptionsDialog</name>
     <message>
-      <location filename="../FileDialog.cpp" line="453"/>
+      <location filename="../FileDialog.cpp" line="456"/>
       <source>Extended</source>
       <translation>扩展</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="489"/>
+      <location filename="../FileDialog.cpp" line="492"/>
       <source>All files (*.*)</source>
       <translation>所有文件(*.*)</translation>
     </message>
@@ -5819,7 +5822,7 @@ Save all changes?</translation>
     <message>
       <location filename="../Flag.cpp" line="170"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
   </context>
   <context>
@@ -5841,8 +5844,8 @@ Save all changes?</translation>
     </message>
     <message>
       <location filename="../Navigation/GestureNavigationStyle.cpp" line="863"/>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>捏合（将两根手指放在屏幕上并分开或靠近拖动），或滚动鼠标中键，或使用键盘上的 PgUp/PgDown。</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -5959,8 +5962,8 @@ Save all changes?</translation>
     </message>
     <message>
       <location filename="../Navigation/InventorNavigationStyle.cpp" line="57"/>
-      <source>Scroll middle mouse button</source>
-      <translation>滚动鼠标中键</translation>
+      <source>Scroll mouse wheel</source>
+      <translation>滚动鼠标滚轮</translation>
     </message>
   </context>
   <context>
@@ -6069,12 +6072,12 @@ Save all changes?</translation>
       <translation>宏</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1132"/>
+      <location filename="../Command.cpp" line="1130"/>
       <source>Macro file doesn't exist</source>
       <translation>宏文件不存在</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="1133"/>
+      <location filename="../Command.cpp" line="1131"/>
       <source>No such macro file: '%1'</source>
       <translation>没有这样的宏文件: '%1'</translation>
     </message>
@@ -6083,7 +6086,7 @@ Save all changes?</translation>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="180"/>
-      <location filename="../MainWindow.cpp" line="2193"/>
+      <location filename="../MainWindow.cpp" line="2199"/>
       <source>Dimension</source>
       <translation>尺寸标注</translation>
     </message>
@@ -6099,59 +6102,59 @@ Save all changes?</translation>
       <translation>就绪</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1178"/>
+      <location filename="../MainWindow.cpp" line="1184"/>
       <source>Close All</source>
       <translation>全部关闭</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1427"/>
-      <location filename="../MainWindow.cpp" line="1428"/>
-      <location filename="../MainWindow.cpp" line="1429"/>
+      <location filename="../MainWindow.cpp" line="1433"/>
+      <location filename="../MainWindow.cpp" line="1434"/>
+      <location filename="../MainWindow.cpp" line="1435"/>
       <source>Toggles this toolbar</source>
       <translation>切换此工具栏</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1448"/>
-      <location filename="../MainWindow.cpp" line="1449"/>
-      <location filename="../MainWindow.cpp" line="1450"/>
+      <location filename="../MainWindow.cpp" line="1454"/>
+      <location filename="../MainWindow.cpp" line="1455"/>
+      <location filename="../MainWindow.cpp" line="1456"/>
       <source>Toggles this dockable window</source>
       <translation>切换此可停靠的窗口</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1642"/>
+      <location filename="../MainWindow.cpp" line="1648"/>
       <source>Safe mode enabled</source>
       <translation>安全模式已启用</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1643"/>
+      <location filename="../MainWindow.cpp" line="1649"/>
       <source>FreeCAD is now running in safe mode.</source>
       <translation>FreeCAD 正在以安全模式运行。</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1647"/>
+      <location filename="../MainWindow.cpp" line="1653"/>
       <source>Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</source>
       <translation>由于安全模式，您的配置和插件已被临时禁用，重启 FreeCAD 以退出安全模式。</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1989"/>
-      <location filename="../MainWindow.cpp" line="2081"/>
+      <location filename="../MainWindow.cpp" line="1995"/>
+      <location filename="../MainWindow.cpp" line="2087"/>
       <source>Unsaved document</source>
       <translation>未保存的文件</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1990"/>
+      <location filename="../MainWindow.cpp" line="1996"/>
       <source>The exported object contains external link. Save the documentat least once before exporting.</source>
       <translation type="unfinished">The exported object contains external link. Save the documentat least once before exporting.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2082"/>
+      <location filename="../MainWindow.cpp" line="2088"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation type="unfinished">To link to external objects, the document must be saved at least once.
 Save the document now?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2384"/>
+      <location filename="../MainWindow.cpp" line="2390"/>
       <source>Safe Mode</source>
       <translation>安全模式</translation>
     </message>
@@ -6265,12 +6268,12 @@ How do you want to proceed?</source>
     <message>
       <location filename="../ManualAlignment.cpp" line="1250"/>
       <source>&amp;Remove Last Point</source>
-      <translation type="unfinished">&amp;Remove Last Point</translation>
+      <translation>移除最后一个点(&amp;R)</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1256"/>
       <source>&amp;Synchronize Views</source>
-      <translation type="unfinished">&amp;Synchronize Views</translation>
+      <translation>同步视图(&amp;S)</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1252"/>
@@ -6297,8 +6300,8 @@ How do you want to proceed?</source>
     </message>
     <message>
       <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="100"/>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press Alt + right mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press Alt + right mouse button OR PgUp/PgDown on keyboard.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR press Alt + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR press Alt + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -6412,12 +6415,12 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4526"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4513"/>
       <source>Error</source>
       <translation>错误</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4526"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4513"/>
       <source>Object not found</source>
       <translation>未发现物件</translation>
     </message>
@@ -6425,68 +6428,72 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="339"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="388"/>
       <source>Edit</source>
       <translation>编辑</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="350"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="399"/>
       <source>property</source>
       <translation>属性</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="756"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="827"/>
       <source>Copy</source>
       <translation>复制</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="763"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="834"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>添加属性</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="768"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="839"/>
       <source>Rename Property Group</source>
       <translation type="unfinished">Rename Property Group</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="776"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="950"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="847"/>
+      <source>Rename Property</source>
+      <translation type="unfinished">Rename Property</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="864"/>
+      <source>Delete Property</source>
+      <translation>删除属性</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1021"/>
       <source>Rename property</source>
       <translation type="unfinished">Rename property</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="793"/>
-      <source>Remove Property</source>
-      <translation type="unfinished">Remove Property</translation>
-    </message>
-    <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="800"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="871"/>
       <source>Show Hidden</source>
       <translation type="unfinished">Show Hidden</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="806"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="877"/>
       <source>Auto-Expand</source>
       <translation type="unfinished">Auto-Expand</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="821"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="892"/>
       <source>Expression</source>
       <translation>表达式</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="951"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1022"/>
       <source>Property name</source>
       <translation type="unfinished">Property name</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="975"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1046"/>
       <source>Rename property group</source>
       <translation>重命名属性组</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="976"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1047"/>
       <source>Group name:</source>
       <translation>组名:</translation>
     </message>
@@ -6569,12 +6576,12 @@ Exit without saving all data?</translation>
     <message>
       <location filename="../PythonConsole.cpp" line="1300"/>
       <source>&amp;Copy Command</source>
-      <translation type="unfinished">&amp;Copy Command</translation>
+      <translation>复制命令(&amp;C)</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="1303"/>
       <source>&amp;Copy History</source>
-      <translation type="unfinished">&amp;Copy History</translation>
+      <translation>复制历史(&amp;C)</translation>
     </message>
     <message>
       <location filename="../PythonConsole.cpp" line="1306"/>
@@ -6693,7 +6700,7 @@ Exit without saving all data?</translation>
     <message>
       <location filename="../Navigation/RevitNavigationStyle.cpp" line="55"/>
       <source>Press Shift and middle mouse button</source>
-      <translation type="unfinished">Press Shift and middle mouse button</translation>
+      <translation>按 Shift 和鼠标中键</translation>
     </message>
     <message>
       <location filename="../Navigation/RevitNavigationStyle.cpp" line="57"/>
@@ -6727,12 +6734,12 @@ Exit without saving all data?</translation>
   <context>
     <name>Gui::SelectModule</name>
     <message>
-      <location filename="../FileDialog.cpp" line="842"/>
+      <location filename="../FileDialog.cpp" line="845"/>
       <source>Select Module</source>
       <translation type="unfinished">Select Module</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="844"/>
+      <location filename="../FileDialog.cpp" line="847"/>
       <source>Open %1 as</source>
       <translation>打开 %1 作为</translation>
     </message>
@@ -6837,7 +6844,7 @@ Specify another directory?</translation>
     <message>
       <location filename="../TaskElementColors.ui" line="54"/>
       <source>Remove</source>
-      <translation>删除</translation>
+      <translation>移除</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="61"/>
@@ -6871,12 +6878,12 @@ Specify another directory?</translation>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="37"/>
       <source>Document window</source>
-      <translation type="unfinished">Document window</translation>
+      <translation>文档窗口</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="60"/>
       <source>Plot mode</source>
-      <translation type="unfinished">Plot mode</translation>
+      <translation>图表模式</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="84"/>
@@ -6951,8 +6958,8 @@ Specify another directory?</translation>
     </message>
     <message>
       <location filename="../Navigation/TinkerCADNavigationStyle.cpp" line="55"/>
-      <source>Scroll middle mouse button</source>
-      <translation>滚动鼠标中键</translation>
+      <source>Scroll mouse wheel</source>
+      <translation>滚动鼠标滚轮</translation>
     </message>
   </context>
   <context>
@@ -7012,13 +7019,15 @@ Specify another directory?</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="187"/>
-      <source>Chinese Simplified</source>
-      <translation>简体中文</translation>
+      <source>Chinese (Simplified)</source>
+      <oldsource>Chinese Simplified</oldsource>
+      <translation type="unfinished">Chinese (Simplified)</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="188"/>
-      <source>Chinese Traditional</source>
-      <translation>繁体中文</translation>
+      <source>Chinese (Traditional)</source>
+      <oldsource>Chinese Traditional</oldsource>
+      <translation type="unfinished">Chinese (Traditional)</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="189"/>
@@ -7117,8 +7126,9 @@ Specify another directory?</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="210"/>
-      <source>Portuguese, Brazilian</source>
-      <translation>葡萄牙语 (巴西)</translation>
+      <source>Portuguese (Brazilian)</source>
+      <oldsource>Portuguese, Brazilian</oldsource>
+      <translation type="unfinished">Portuguese (Brazilian)</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="211"/>
@@ -7142,8 +7152,9 @@ Specify another directory?</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="215"/>
-      <source>Serbian, Latin</source>
-      <translation>塞尔维亚拉丁语</translation>
+      <source>Serbian (Latin)</source>
+      <oldsource>Serbian, Latin</oldsource>
+      <translation type="unfinished">Serbian (Latin)</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="216"/>
@@ -7162,8 +7173,9 @@ Specify another directory?</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="219"/>
-      <source>Spanish, Argentina</source>
-      <translation>西班牙语（阿根廷）</translation>
+      <source>Spanish (Argentina)</source>
+      <oldsource>Spanish, Argentina</oldsource>
+      <translation type="unfinished">Spanish (Argentina)</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="220"/>
@@ -7198,7 +7210,7 @@ Specify another directory?</translation>
     <message>
       <location filename="Translator.cpp" line="191"/>
       <source>Danish</source>
-      <translation>Danish</translation>
+      <translation>丹麦语</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="198"/>
@@ -7231,16 +7243,6 @@ Specify another directory?</translation>
   </context>
   <context>
     <name>Gui::TreeWidget</name>
-    <message>
-      <location filename="../Tree.cpp" line="686"/>
-      <source>Search...</source>
-      <translation>搜索...</translation>
-    </message>
-    <message>
-      <location filename="../Tree.cpp" line="687"/>
-      <source>Search for objects</source>
-      <translation>搜索对象</translation>
-    </message>
     <message>
       <location filename="../Tree.cpp" line="1134"/>
       <source>Activate Document</source>
@@ -7305,7 +7307,7 @@ Specify another directory?</translation>
     <message>
       <location filename="../Tree.cpp" line="3359"/>
       <source>Description</source>
-      <translation>描述</translation>
+      <translation>说明</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3360"/>
@@ -7345,7 +7347,7 @@ Specify another directory?</translation>
     <message>
       <location filename="../Tree.cpp" line="3374"/>
       <source>Finish Editing</source>
-      <translation type="unfinished">Finish Editing</translation>
+      <translation>完成编辑</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3375"/>
@@ -7431,6 +7433,16 @@ Specify another directory?</translation>
       <location filename="../Tree.cpp" line="3366"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>在树状视图中切换选中项目的可见性</translation>
+    </message>
+    <message>
+      <location filename="../Tree.cpp" line="686"/>
+      <source>Search Objects</source>
+      <translation type="unfinished">Search Objects</translation>
+    </message>
+    <message>
+      <location filename="../Tree.cpp" line="687"/>
+      <source>Searches for objects in the tree</source>
+      <translation type="unfinished">Searches for objects in the tree</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3371"/>
@@ -7685,47 +7697,47 @@ Specify another directory?</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="636"/>
-      <source>Tree view</source>
-      <translation>结构树浏览器</translation>
-    </message>
-    <message>
-      <location filename="../MainWindow.cpp" line="558"/>
+      <location filename="../MainWindow.cpp" line="559"/>
       <source>Tasks</source>
       <translation>任务</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="662"/>
-      <source>Property view</source>
-      <translation>属性浏览器</translation>
+      <location filename="../MainWindow.cpp" line="576"/>
+      <source>Selection View</source>
+      <translation>选择视图</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="575"/>
-      <source>Selection view</source>
-      <translation>选择浏览器</translation>
-    </message>
-    <message>
-      <location filename="../MainWindow.cpp" line="593"/>
+      <location filename="../MainWindow.cpp" line="594"/>
       <source>Report View</source>
       <translation type="unfinished">Report View</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="613"/>
+      <location filename="../MainWindow.cpp" line="614"/>
       <source>Python Console</source>
       <translation type="unfinished">Python Console</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="690"/>
+      <location filename="../MainWindow.cpp" line="638"/>
+      <source>Tree View</source>
+      <translation>树状图</translation>
+    </message>
+    <message>
+      <location filename="../MainWindow.cpp" line="665"/>
+      <source>Property View</source>
+      <translation type="unfinished">Property View</translation>
+    </message>
+    <message>
+      <location filename="../MainWindow.cpp" line="694"/>
       <source>Task List</source>
       <translation>任务列表</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="715"/>
+      <location filename="../MainWindow.cpp" line="720"/>
       <source>Model</source>
       <translation>模型</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="741"/>
+      <location filename="../MainWindow.cpp" line="747"/>
       <source>DAG View</source>
       <translation>DAG视图</translation>
     </message>
@@ -7760,7 +7772,7 @@ Specify another directory?</translation>
     <message>
       <location filename="../resource.cpp" line="92"/>
       <source>Import-Export</source>
-      <translation>Import-Export</translation>
+      <translation>导入/导出</translation>
     </message>
     <message>
       <location filename="../resource.cpp" line="93"/>
@@ -7770,35 +7782,35 @@ Specify another directory?</translation>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="748"/>
-      <location filename="../Application.cpp" line="847"/>
-      <location filename="../Application.cpp" line="924"/>
+      <location filename="../Application.cpp" line="781"/>
+      <location filename="../Application.cpp" line="880"/>
+      <location filename="../Application.cpp" line="957"/>
       <source>Unknown filetype</source>
       <translation>未知文件类型</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="749"/>
-      <location filename="../Application.cpp" line="848"/>
+      <location filename="../Application.cpp" line="782"/>
+      <location filename="../Application.cpp" line="881"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>无法打开未知文件类型: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="915"/>
+      <location filename="../Application.cpp" line="948"/>
       <source>Export failed</source>
       <translation>导出失败</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="925"/>
+      <location filename="../Application.cpp" line="958"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>无法保存为未知的文件类型: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1054"/>
+      <location filename="../Application.cpp" line="1087"/>
       <source>Recomputation required</source>
       <translation>需要重新计算</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1055"/>
+      <location filename="../Application.cpp" line="1088"/>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
@@ -7807,39 +7819,88 @@ Recompute now?</source>
 Recompute now?</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1073"/>
+      <location filename="../Application.cpp" line="1106"/>
       <source>Failed to recompute some documents.
 Check the report view for more details.</source>
       <translation type="unfinished">Failed to recompute some documents.
 Check the report view for more details.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1072"/>
+      <location filename="../Application.cpp" line="1105"/>
       <source>Recompute error</source>
       <translation>重新计算错误</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1754"/>
+      <location filename="../Application.cpp" line="1787"/>
       <source>Workbench failure</source>
       <translation>工作台故障</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1755"/>
+      <location filename="../Application.cpp" line="1788"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="333"/>
+      <location filename="../StartupProcess.cpp" line="342"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation type="unfinished">This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="342"/>
+      <location filename="../StartupProcess.cpp" line="351"/>
       <source>Invalid OpenGL Version</source>
       <translation>无效的 OpenGL 版本</translation>
     </message>
     <message>
-      <location filename="../Command.cpp" line="488"/>
+      <location filename="../StartupProcess.cpp" line="608"/>
+      <source>Welcome to %1 v%2.%3</source>
+      <translation type="unfinished">Welcome to %1 v%2.%3</translation>
+    </message>
+    <message>
+      <location filename="../StartupProcess.cpp" line="609"/>
+      <source>Welcome to %1 v%2.%3
+
+</source>
+      <translation type="unfinished">Welcome to %1 v%2.%3
+
+</translation>
+    </message>
+    <message>
+      <location filename="../StartupProcess.cpp" line="610"/>
+      <source>Configuration data and addons from previous program version found. Migrate the old configuration to this version?</source>
+      <translation type="unfinished">Configuration data and addons from previous program version found. Migrate the old configuration to this version?</translation>
+    </message>
+    <message>
+      <location filename="../StartupProcess.cpp" line="657"/>
+      <source>Migrating</source>
+      <translation type="unfinished">Migrating</translation>
+    </message>
+    <message>
+      <location filename="../StartupProcess.cpp" line="658"/>
+      <source>Migrating configuration data and addons...</source>
+      <translation type="unfinished">Migrating configuration data and addons...</translation>
+    </message>
+    <message>
+      <location filename="../StartupProcess.cpp" line="669"/>
+      <source>Migration complete. Restarting...</source>
+      <translation type="unfinished">Migration complete. Restarting...</translation>
+    </message>
+    <message>
+      <location filename="../StartupProcess.cpp" line="670"/>
+      <source>Restarting</source>
+      <translation type="unfinished">Restarting</translation>
+    </message>
+    <message>
+      <location filename="../StartupProcess.cpp" line="694"/>
+      <source>Migration failed</source>
+      <translation type="unfinished">Migration failed</translation>
+    </message>
+    <message>
+      <location filename="../StartupProcess.cpp" line="694"/>
+      <source>Migration failed. See the Report View for details.</source>
+      <translation type="unfinished">Migration failed. See the Report View for details.</translation>
+    </message>
+    <message>
+      <location filename="../Command.cpp" line="486"/>
       <source>Exception</source>
       <translation>异常</translation>
     </message>
@@ -7849,18 +7910,18 @@ Check the report view for more details.</translation>
       <translation>打开文档</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1082"/>
-      <location filename="../Application.cpp" line="1094"/>
+      <location filename="../Application.cpp" line="1115"/>
+      <location filename="../Application.cpp" line="1127"/>
       <source>Error</source>
       <translation>错误</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1083"/>
+      <location filename="../Application.cpp" line="1116"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>加载文件时出错。有些数据可能已经修改或未全部恢复。在报告视图中查看有关对象的更多信息。</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1095"/>
+      <location filename="../Application.cpp" line="1128"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>加载文件时出现严重错误。有些数据可能已被修改或根本没有恢复。 保存项目很可能导致数据丢失。</translation>
     </message>
@@ -7877,7 +7938,7 @@ Check the report view for more details.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="910"/>
       <source>Printing…</source>
-      <translation type="unfinished">Printing…</translation>
+      <translation>打印中…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="973"/>
@@ -7890,22 +7951,22 @@ Check the report view for more details.</translation>
       <translation type="unfinished">The exported object contains an external link. Save the document.at least once before exporting.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1834"/>
+      <location filename="../CommandDoc.cpp" line="1849"/>
       <source>Copy Selected</source>
       <translation type="unfinished">Copy Selected</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1835"/>
+      <location filename="../CommandDoc.cpp" line="1850"/>
       <source>Copy Active Document</source>
       <translation type="unfinished">Copy Active Document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1836"/>
+      <location filename="../CommandDoc.cpp" line="1851"/>
       <source>Copy All Documents</source>
       <translation type="unfinished">Copy All Documents</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1943"/>
+      <location filename="../CommandDoc.cpp" line="1958"/>
       <source>Failed to parse some of the expressions.
 Check the report view for more details.</source>
       <translation type="unfinished">Failed to parse some of the expressions.
@@ -7917,28 +7978,28 @@ Check the report view for more details.</translation>
       <translation>未保存的文件</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1450"/>
-      <location filename="../CommandDoc.cpp" line="1454"/>
+      <location filename="../CommandDoc.cpp" line="1465"/>
+      <location filename="../CommandDoc.cpp" line="1469"/>
       <source>Delete failed</source>
       <translation>删除失败</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1506"/>
+      <location filename="../CommandDoc.cpp" line="1521"/>
       <source>Dependency error</source>
       <translation>依赖关系错误</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1837"/>
+      <location filename="../CommandDoc.cpp" line="1852"/>
       <source>Paste</source>
       <translation>粘贴</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1942"/>
+      <location filename="../CommandDoc.cpp" line="1957"/>
       <source>Expression error</source>
       <translation>表达式错误</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1967"/>
+      <location filename="../CommandDoc.cpp" line="1982"/>
       <source>Failed to paste expressions</source>
       <translation>粘贴表达式失败</translation>
     </message>
@@ -7969,86 +8030,86 @@ Check the report view for more details.</translation>
       <translation type="unfinished">Safe mode temporarily disables the configuration and addons.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="338"/>
-      <location filename="../CommandView.cpp" line="571"/>
+      <location filename="../CommandView.cpp" line="341"/>
+      <location filename="../CommandView.cpp" line="574"/>
       <source>&amp;Save Views…</source>
-      <translation type="unfinished">&amp;Save Views…</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="340"/>
-      <location filename="../CommandView.cpp" line="572"/>
-      <source>&amp;Load Views…</source>
-      <translation type="unfinished">&amp;Load Views…</translation>
+      <translation>保存视图(&amp;S)…</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="343"/>
-      <location filename="../CommandView.cpp" line="573"/>
-      <source>F&amp;reeze View</source>
-      <translation type="unfinished">F&amp;reeze View</translation>
+      <location filename="../CommandView.cpp" line="575"/>
+      <source>&amp;Load Views…</source>
+      <translation>加载视图(&amp;L)…</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="346"/>
-      <location filename="../CommandView.cpp" line="574"/>
-      <source>&amp;Clear Views</source>
-      <translation type="unfinished">&amp;Clear Views</translation>
+      <location filename="../CommandView.cpp" line="576"/>
+      <source>F&amp;reeze View</source>
+      <translation>冻结视图(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="392"/>
-      <location filename="../CommandView.cpp" line="531"/>
+      <location filename="../CommandView.cpp" line="349"/>
+      <location filename="../CommandView.cpp" line="577"/>
+      <source>&amp;Clear Views</source>
+      <translation>清除视图(&amp;C)</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="395"/>
+      <location filename="../CommandView.cpp" line="534"/>
       <source>Restore view &amp;%1</source>
       <translation>还原视图 &amp;%1</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="421"/>
+      <location filename="../CommandView.cpp" line="424"/>
       <source>Save frozen views</source>
       <translation>保存冻结视图</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="422"/>
-      <location filename="../CommandView.cpp" line="472"/>
+      <location filename="../CommandView.cpp" line="425"/>
+      <location filename="../CommandView.cpp" line="475"/>
       <source>Frozen views</source>
       <translation>冻结视图</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="462"/>
-      <location filename="../CommandView.cpp" line="477"/>
+      <location filename="../CommandView.cpp" line="465"/>
+      <location filename="../CommandView.cpp" line="480"/>
       <source>Restore views</source>
       <translation>还原视图</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="463"/>
+      <location filename="../CommandView.cpp" line="466"/>
       <source>Importing the restored views would clear the already stored views.
 Continue?</source>
       <translation type="unfinished">Importing the restored views would clear the already stored views.
 Continue?</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1965"/>
+      <location filename="../CommandView.cpp" line="1968"/>
       <source>Save Image</source>
       <translation type="unfinished">Save Image</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2113"/>
+      <location filename="../CommandView.cpp" line="2116"/>
       <source>Choose an Image File to Open</source>
       <translation type="unfinished">Choose an Image File to Open</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="471"/>
+      <location filename="../CommandView.cpp" line="474"/>
       <source>Restore frozen views</source>
       <translation>恢复冻结视图</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="478"/>
+      <location filename="../CommandView.cpp" line="481"/>
       <source>Cannot open file '%1'.</source>
       <translation>无法打开文件'%1'.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="578"/>
+      <location filename="../CommandView.cpp" line="581"/>
       <source>Restore View &amp;%1</source>
-      <translation type="unfinished">Restore View &amp;%1</translation>
+      <translation>还原视图 &amp;%1</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1957"/>
+      <location filename="../CommandView.cpp" line="1960"/>
       <source>files</source>
       <translation>文件</translation>
     </message>
@@ -8427,12 +8488,12 @@ Choose 'Abort' to abort</source>
       <translation>无法打开您的系统浏览器.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2482"/>
+      <location filename="../View3DInventorViewer.cpp" line="2444"/>
       <source>Out of memory</source>
       <translation>内存不足</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2483"/>
+      <location filename="../View3DInventorViewer.cpp" line="2445"/>
       <source>Not enough memory available to display the data.</source>
       <translation>没有足够的可用内存来显示数据.</translation>
     </message>
@@ -8448,9 +8509,14 @@ Choose 'Abort' to abort</source>
       <translation>在 %2 或 %3 中找不到文件 %1</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="1930"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="1983"/>
       <source>Navigation styles</source>
       <translation>导航模式</translation>
+    </message>
+    <message>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2032"/>
+      <source>Clarify Selection</source>
+      <translation type="unfinished">Clarify Selection</translation>
     </message>
     <message>
       <location filename="../ViewProviderDragger.cpp" line="125"/>
@@ -8459,32 +8525,32 @@ Choose 'Abort' to abort</source>
       <translation>变换</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="801"/>
+      <location filename="../MainWindow.cpp" line="807"/>
       <source>Unsaved Document</source>
       <translation type="unfinished">Unsaved Document</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="804"/>
+      <location filename="../MainWindow.cpp" line="810"/>
       <source>Save all changes to document '%1' before closing?</source>
       <translation type="unfinished">Save all changes to document '%1' before closing?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="805"/>
+      <location filename="../MainWindow.cpp" line="811"/>
       <source>Save all changes to document before closing?</source>
       <translation type="unfinished">Save all changes to document before closing?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="809"/>
+      <location filename="../MainWindow.cpp" line="815"/>
       <source>Otherwise, all changes will be lost.</source>
-      <translation type="unfinished">Otherwise, all changes will be lost.</translation>
+      <translation>否则所有更改都将丢失。</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="927"/>
+      <location filename="../MainWindow.cpp" line="933"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 文档未保存</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="928"/>
+      <location filename="../MainWindow.cpp" line="934"/>
       <source>Some documents could not be saved. Cancel closing?</source>
       <translation type="unfinished">Some documents could not be saved. Cancel closing?</translation>
     </message>
@@ -8499,11 +8565,6 @@ Choose 'Abort' to abort</source>
       <translation>不允取删除系统自有宏</translation>
     </message>
     <message>
-      <location filename="../DAGView/DAGFilter.cpp" line="41"/>
-      <source>Origin</source>
-      <translation>原点</translation>
-    </message>
-    <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="180"/>
       <source>Delete group content?</source>
       <translation>删除群组内容？</translation>
@@ -8514,7 +8575,7 @@ Choose 'Abort' to abort</source>
       <translation>%1 不是空的，一并删除其相关内容吗？</translation>
     </message>
     <message>
-      <location filename="../Inventor/Draggers/SoLinearDragger.cpp" line="341"/>
+      <location filename="../Inventor/Draggers/SoLinearDragger.cpp" line="267"/>
       <source>Translation:</source>
       <translation>变换:</translation>
     </message>
@@ -8524,7 +8585,7 @@ Choose 'Abort' to abort</source>
       <translation>XY 平面轉移：</translation>
     </message>
     <message>
-      <location filename="../Inventor/Draggers/SoRotationDragger.cpp" line="332"/>
+      <location filename="../Inventor/Draggers/SoRotationDragger.cpp" line="250"/>
       <source>Rotation:</source>
       <translation>旋转:</translation>
     </message>
@@ -8607,13 +8668,13 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="150"/>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="790"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="798"/>
       <source>Add property</source>
       <translation>添加属性</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="151"/>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="791"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="799"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>加入屬性至 '%1':%2 失敗</translation>
     </message>
@@ -8624,7 +8685,7 @@ underscore, and must not start with a digit.</translation>
       <translation>拖放失败</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="814"/>
+      <location filename="../MainWindow.cpp" line="820"/>
       <location filename="../ViewProviderLink.cpp" line="2487"/>
       <source>Apply to all</source>
       <translation>应用到全部</translation>
@@ -8898,16 +8959,6 @@ the current copy will be lost.
       <translation>选项</translation>
     </message>
     <message>
-      <location filename="../ViewProviderDocumentObjectGroup.cpp" line="107"/>
-      <source>Select group contents</source>
-      <translation type="unfinished">Select group contents</translation>
-    </message>
-    <message>
-      <location filename="../ViewProviderDocumentObjectGroup.cpp" line="108"/>
-      <source>Selects all objects that are children of this group.</source>
-      <translation type="unfinished">Selects all objects that are children of this group.</translation>
-    </message>
-    <message>
       <location filename="../ViewProviderImagePlane.cpp" line="169"/>
       <source>Change Image</source>
       <translation type="unfinished">Change Image</translation>
@@ -8926,6 +8977,16 @@ the current copy will be lost.
       <location filename="../TaskView/TaskDialog.cpp" line="102"/>
       <source>Close this dialog?</source>
       <translation type="unfinished">Close this dialog?</translation>
+    </message>
+    <message>
+      <location filename="../ViewProviderDocumentObjectGroup.cpp" line="107"/>
+      <source>Select Group Contents</source>
+      <translation type="unfinished">Select Group Contents</translation>
+    </message>
+    <message>
+      <location filename="../ViewProviderDocumentObjectGroup.cpp" line="108"/>
+      <source>Selects all objects that are children of this group</source>
+      <translation type="unfinished">Selects all objects that are children of this group</translation>
     </message>
   </context>
   <context>
@@ -8946,7 +9007,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="222"/>
       <source>&amp;About %1</source>
-      <translation>关于%1(&amp;A)</translation>
+      <translation>关于 %1(&amp;A)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="223"/>
@@ -8959,7 +9020,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandStd.cpp" line="288"/>
       <source>About &amp;Qt</source>
-      <translation>关于Qt(&amp;Q)</translation>
+      <translation>关于 Qt(&amp;Q)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="289"/>
@@ -8972,7 +9033,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandWindow.cpp" line="172"/>
       <source>&amp;Next</source>
-      <translation>下一页(&amp;N)</translation>
+      <translation>下一个(&amp;N)</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="173"/>
@@ -8985,7 +9046,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandWindow.cpp" line="201"/>
       <source>&amp;Previous</source>
-      <translation>上一页(&amp;P)</translation>
+      <translation>上一个(&amp;P)</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="202"/>
@@ -9061,12 +9122,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdDelete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1328"/>
+      <location filename="../CommandDoc.cpp" line="1343"/>
       <source>&amp;Delete</source>
       <translation>删除(&amp;D)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1329"/>
+      <location filename="../CommandDoc.cpp" line="1344"/>
       <source>Deletes the selected objects</source>
       <translation>删除选中的对象</translation>
     </message>
@@ -9076,7 +9137,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandMacro.cpp" line="53"/>
       <source>Record &amp;Macro</source>
-      <translation type="unfinished">Record &amp;Macro</translation>
+      <translation>录制宏(&amp;M)</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="55"/>
@@ -9110,12 +9171,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdEdit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1713"/>
+      <location filename="../CommandDoc.cpp" line="1728"/>
       <source>Toggle &amp;Edit Mode</source>
-      <translation type="unfinished">Toggle &amp;Edit Mode</translation>
+      <translation>切换编辑模式(&amp;E)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1714"/>
+      <location filename="../CommandDoc.cpp" line="1729"/>
       <source>Toggles the selected object's edit mode</source>
       <translation>切换所选对象的编辑模式</translation>
     </message>
@@ -9125,7 +9186,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="269"/>
       <source>&amp;Export…</source>
-      <translation type="unfinished">&amp;Export…</translation>
+      <translation>导出(&amp;E)…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="270"/>
@@ -9146,12 +9207,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1790"/>
+      <location filename="../CommandDoc.cpp" line="1805"/>
       <source>Expression Actions</source>
       <translation type="unfinished">Expression Actions</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1791"/>
+      <location filename="../CommandDoc.cpp" line="1806"/>
       <source>Actions that apply to expressions</source>
       <translation>适用于表达式的行动</translation>
     </message>
@@ -9185,12 +9246,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
-      <location filename="../CommandView.cpp" line="323"/>
+      <location filename="../CommandView.cpp" line="326"/>
       <source>F&amp;reeze Display</source>
-      <translation type="unfinished">F&amp;reeze Display</translation>
+      <translation>冻结显示(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="324"/>
+      <location filename="../CommandView.cpp" line="327"/>
       <source>Freezes the current view position</source>
       <translation>冻结当前视图位置</translation>
     </message>
@@ -9200,7 +9261,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="183"/>
       <source>&amp;Import…</source>
-      <translation type="unfinished">&amp;Import…</translation>
+      <translation>导入(&amp;I)…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="184"/>
@@ -9223,7 +9284,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandLink.cpp" line="852"/>
       <source>&amp;Link Navigation</source>
-      <translation type="unfinished">&amp;Link Navigation</translation>
+      <translation>链接导航(&amp;L)</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="853"/>
@@ -9249,7 +9310,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="524"/>
       <source>&amp;Merge Document</source>
-      <translation type="unfinished">&amp;Merge Document</translation>
+      <translation>合并文档(&amp;M)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="526"/>
@@ -9277,14 +9338,14 @@ the current copy will be lost.
     <name>StdCmdNew</name>
     <message>
       <location filename="../DocumentRecovery.cpp" line="393"/>
-      <location filename="../MainWindow.cpp" line="2186"/>
+      <location filename="../MainWindow.cpp" line="2192"/>
       <source>Unnamed</source>
       <translation>未命名</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="653"/>
       <source>&amp;New Document</source>
-      <translation type="unfinished">&amp;New Document</translation>
+      <translation>新建文档(&amp;N)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="654"/>
@@ -9310,7 +9371,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="89"/>
       <source>&amp;Open…</source>
-      <translation type="unfinished">&amp;Open…</translation>
+      <translation>打开(&amp;O)…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="90"/>
@@ -9510,12 +9571,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="1303"/>
+      <location filename="../CommandView.cpp" line="1306"/>
       <source>&amp;5 Bottom</source>
-      <translation>底视图(&amp;5)</translation>
+      <translation>&amp;5 底部</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1304"/>
+      <location filename="../CommandView.cpp" line="1307"/>
       <source>Sets the camera to the bottom view</source>
       <translation type="unfinished">Sets the camera to the bottom view</translation>
     </message>
@@ -9523,12 +9584,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewDimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1472"/>
+      <location filename="../CommandView.cpp" line="1475"/>
       <source>&amp;Dimetric</source>
       <translation>二轴测(&amp;D)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1473"/>
+      <location filename="../CommandView.cpp" line="1476"/>
       <source>Sets the camera to the dimetric view</source>
       <translation type="unfinished">Sets the camera to the dimetric view</translation>
     </message>
@@ -9536,12 +9597,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewExample1</name>
     <message>
-      <location filename="../CommandView.cpp" line="2262"/>
+      <location filename="../CommandView.cpp" line="2265"/>
       <source>Inventor Example #1</source>
       <translation type="unfinished">Inventor Example #1</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2263"/>
+      <location filename="../CommandView.cpp" line="2266"/>
       <source>Shows a 3D texture with manipulator</source>
       <translation>自动控制显示三维纹理</translation>
     </message>
@@ -9549,12 +9610,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewExample2</name>
     <message>
-      <location filename="../CommandView.cpp" line="2290"/>
+      <location filename="../CommandView.cpp" line="2293"/>
       <source>Inventor Example #2</source>
       <translation type="unfinished">Inventor Example #2</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2291"/>
+      <location filename="../CommandView.cpp" line="2294"/>
       <source>Shows spheres and drag-lights</source>
       <translation>显示操控球和拖放指示</translation>
     </message>
@@ -9562,12 +9623,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewFront</name>
     <message>
-      <location filename="../CommandView.cpp" line="1327"/>
+      <location filename="../CommandView.cpp" line="1330"/>
       <source>&amp;1 Front</source>
-      <translation>前视图(&amp;1)</translation>
+      <translation>&amp;1 前视图</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1328"/>
+      <location filename="../CommandView.cpp" line="1331"/>
       <source>Sets the camera to the front view</source>
       <translation type="unfinished">Sets the camera to the front view</translation>
     </message>
@@ -9575,12 +9636,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewHome</name>
     <message>
-      <location filename="../CommandView.cpp" line="1275"/>
+      <location filename="../CommandView.cpp" line="1278"/>
       <source>&amp;Home</source>
       <translation>主页(&amp;H)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1276"/>
+      <location filename="../CommandView.cpp" line="1279"/>
       <source>Sets the camera to the default home view</source>
       <translation type="unfinished">Sets the camera to the default home view</translation>
     </message>
@@ -9588,12 +9649,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIsometric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1448"/>
+      <location filename="../CommandView.cpp" line="1451"/>
       <source>&amp;Isometric</source>
       <translation>等轴测(&amp;I)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1449"/>
+      <location filename="../CommandView.cpp" line="1452"/>
       <source>Sets the camera to the isometric view</source>
       <translation type="unfinished">Sets the camera to the isometric view</translation>
     </message>
@@ -9601,12 +9662,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
-      <location filename="../CommandView.cpp" line="2460"/>
+      <location filename="../CommandView.cpp" line="2463"/>
       <source>Stereo Interleaved &amp;Columns</source>
       <translation>三维成像列扫描(&amp;C)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2461"/>
+      <location filename="../CommandView.cpp" line="2464"/>
       <source>Switches stereo viewing to interleaved columns</source>
       <translation type="unfinished">Switches stereo viewing to interleaved columns</translation>
     </message>
@@ -9614,12 +9675,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
-      <location filename="../CommandView.cpp" line="2432"/>
+      <location filename="../CommandView.cpp" line="2435"/>
       <source>Stereo Interleaved &amp;Rows</source>
       <translation>三维成像行扫描(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2433"/>
+      <location filename="../CommandView.cpp" line="2436"/>
       <source>Switches stereo viewing to interleaved rows</source>
       <translation type="unfinished">Switches stereo viewing to interleaved rows</translation>
     </message>
@@ -9627,12 +9688,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
-      <location filename="../CommandView.cpp" line="2347"/>
+      <location filename="../CommandView.cpp" line="2350"/>
       <source>Stereo &amp;Off</source>
       <translation>关闭立体(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2348"/>
+      <location filename="../CommandView.cpp" line="2351"/>
       <source>Switches stereo viewing off</source>
       <translation type="unfinished">Switches stereo viewing off</translation>
     </message>
@@ -9640,12 +9701,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1351"/>
+      <location filename="../CommandView.cpp" line="1354"/>
       <source>&amp;6 Left</source>
       <translation>左视(&amp;6)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1352"/>
+      <location filename="../CommandView.cpp" line="1355"/>
       <source>Sets the camera to the left view</source>
       <translation type="unfinished">Sets the camera to the left view</translation>
     </message>
@@ -9653,12 +9714,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRear</name>
     <message>
-      <location filename="../CommandView.cpp" line="1375"/>
+      <location filename="../CommandView.cpp" line="1378"/>
       <source>&amp;4 Rear</source>
       <translation>后视(&amp;4)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1376"/>
+      <location filename="../CommandView.cpp" line="1379"/>
       <source>Sets the camera to the rear view</source>
       <translation type="unfinished">Sets the camera to the rear view</translation>
     </message>
@@ -9666,12 +9727,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1399"/>
+      <location filename="../CommandView.cpp" line="1402"/>
       <source>&amp;3 Right</source>
       <translation>右视(&amp;3)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1400"/>
+      <location filename="../CommandView.cpp" line="1403"/>
       <source>Sets the camera to the right view</source>
       <translation type="unfinished">Sets the camera to the right view</translation>
     </message>
@@ -9679,12 +9740,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1518"/>
+      <location filename="../CommandView.cpp" line="1521"/>
       <source>Rotate &amp;Left</source>
       <translation>向左旋转(&amp;L)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1519"/>
+      <location filename="../CommandView.cpp" line="1522"/>
       <source>Rotates the view by 90° counter-clockwise</source>
       <translation type="unfinished">Rotates the view by 90° counter-clockwise</translation>
     </message>
@@ -9692,12 +9753,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="1423"/>
+      <location filename="../CommandView.cpp" line="1426"/>
       <source>&amp;2 Top</source>
       <translation>上视(&amp;2)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1424"/>
+      <location filename="../CommandView.cpp" line="1427"/>
       <source>Sets the camera to the top view</source>
       <translation type="unfinished">Sets the camera to the top view</translation>
     </message>
@@ -9705,12 +9766,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewTrimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1495"/>
+      <location filename="../CommandView.cpp" line="1498"/>
       <source>&amp;Trimetric</source>
       <translation>三轴测(&amp;T)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1496"/>
+      <location filename="../CommandView.cpp" line="1499"/>
       <source>Sets the camera to the trimetric view</source>
       <translation type="unfinished">Sets the camera to the trimetric view</translation>
     </message>
@@ -9757,12 +9818,12 @@ the current copy will be lost.
   <context>
     <name>StdMainFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1726"/>
+      <location filename="../CommandView.cpp" line="1729"/>
       <source>Fullscreen</source>
       <translation>全屏</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1727"/>
+      <location filename="../CommandView.cpp" line="1730"/>
       <source>Displays the main window in fullscreen mode</source>
       <translation type="unfinished">Displays the main window in fullscreen mode</translation>
     </message>
@@ -9770,12 +9831,12 @@ the current copy will be lost.
   <context>
     <name>StdOrthographicCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="132"/>
+      <location filename="../CommandView.cpp" line="135"/>
       <source>Orthographic View</source>
       <translation type="unfinished">Orthographic View</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="133"/>
+      <location filename="../CommandView.cpp" line="136"/>
       <source>Switches to orthographic view mode</source>
       <translation>切换到正交视图模式</translation>
     </message>
@@ -9783,12 +9844,12 @@ the current copy will be lost.
   <context>
     <name>StdPerspectiveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="182"/>
+      <location filename="../CommandView.cpp" line="185"/>
       <source>Perspective View</source>
       <translation type="unfinished">Perspective View</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="183"/>
+      <location filename="../CommandView.cpp" line="186"/>
       <source>Switches to perspective view mode</source>
       <translation>切换到透视视图模式</translation>
     </message>
@@ -9796,12 +9857,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeCollapseDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3355"/>
+      <location filename="../CommandView.cpp" line="3358"/>
       <source>Collapse/E&amp;xpand</source>
       <translation>折叠/展开(&amp;X)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3356"/>
+      <location filename="../CommandView.cpp" line="3359"/>
       <source>Expands the active document and collapses all others</source>
       <translation type="unfinished">Expands the active document and collapses all others</translation>
     </message>
@@ -9809,25 +9870,25 @@ the current copy will be lost.
   <context>
     <name>StdTreePreSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3448"/>
+      <location filename="../CommandView.cpp" line="3451"/>
       <source>&amp;4 Preselection</source>
       <translation>&amp;4预选</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3449"/>
-      <source>Pre-selects the object in 3D view when hovering the cursor over the tree item</source>
-      <translation type="unfinished">Pre-selects the object in 3D view when hovering the cursor over the tree item</translation>
+      <location filename="../CommandView.cpp" line="3452"/>
+      <source>Preselects the object in 3D view when hovering the cursor over the tree item</source>
+      <translation type="unfinished">Preselects the object in 3D view when hovering the cursor over the tree item</translation>
     </message>
   </context>
   <context>
     <name>StdViewDock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1668"/>
+      <location filename="../CommandView.cpp" line="1671"/>
       <source>&amp;Docked</source>
-      <translation>&amp;停留</translation>
+      <translation>已停靠(&amp;D)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1669"/>
+      <location filename="../CommandView.cpp" line="1672"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation type="unfinished">Displays the active view either in fullscreen, undocked, or docked mode</translation>
     </message>
@@ -9835,12 +9896,12 @@ the current copy will be lost.
   <context>
     <name>StdViewFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1758"/>
+      <location filename="../CommandView.cpp" line="1761"/>
       <source>&amp;Fullscreen</source>
       <translation>全屏(&amp;F)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1759"/>
+      <location filename="../CommandView.cpp" line="1762"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation type="unfinished">Displays the active view either in fullscreen, undocked, or docked mode</translation>
     </message>
@@ -9848,12 +9909,12 @@ the current copy will be lost.
   <context>
     <name>StdViewScreenShot</name>
     <message>
-      <location filename="../CommandView.cpp" line="1924"/>
+      <location filename="../CommandView.cpp" line="1927"/>
       <source>Save &amp;Image…</source>
-      <translation type="unfinished">Save &amp;Image…</translation>
+      <translation>保存图片(&amp;I)…</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1925"/>
+      <location filename="../CommandView.cpp" line="1928"/>
       <source>Creates a screenshot of the active view</source>
       <translation>创建当前视图的屏幕截图</translation>
     </message>
@@ -9861,12 +9922,12 @@ the current copy will be lost.
   <context>
     <name>StdViewUndock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1697"/>
+      <location filename="../CommandView.cpp" line="1700"/>
       <source>&amp;Undocked</source>
-      <translation>&amp;未停留的</translation>
+      <translation>未停靠(&amp;U)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1698"/>
+      <location filename="../CommandView.cpp" line="1701"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation type="unfinished">Displays the active view either in fullscreen, undocked, or docked mode</translation>
     </message>
@@ -9874,12 +9935,12 @@ the current copy will be lost.
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <location filename="../CommandView.cpp" line="2539"/>
+      <location filename="../CommandView.cpp" line="2542"/>
       <source>Zoom &amp;In</source>
-      <translation>放大</translation>
+      <translation>放大(&amp;I)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2540"/>
+      <location filename="../CommandView.cpp" line="2543"/>
       <source>Increases the zoom factor by a fixed amount</source>
       <translation type="unfinished">Increases the zoom factor by a fixed amount</translation>
     </message>
@@ -9887,12 +9948,12 @@ the current copy will be lost.
   <context>
     <name>StdViewZoomOut</name>
     <message>
-      <location filename="../CommandView.cpp" line="2568"/>
+      <location filename="../CommandView.cpp" line="2571"/>
       <source>Zoom &amp;Out</source>
-      <translation>缩小</translation>
+      <translation>缩小(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2569"/>
+      <location filename="../CommandView.cpp" line="2572"/>
       <source>Decreases the zoom factor by a fixed amount</source>
       <translation type="unfinished">Decreases the zoom factor by a fixed amount</translation>
     </message>
@@ -9900,7 +9961,7 @@ the current copy will be lost.
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1406"/>
+      <location filename="../CommandDoc.cpp" line="1421"/>
       <source>The following referencing objects might break.
 
 Continue?
@@ -9911,7 +9972,7 @@ Continue?
 </translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1415"/>
+      <location filename="../CommandDoc.cpp" line="1430"/>
       <source>Object dependencies</source>
       <translation>对象依赖关系</translation>
     </message>
@@ -9919,72 +9980,72 @@ Continue?
   <context>
     <name>Std_DrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="727"/>
+      <location filename="../CommandView.cpp" line="730"/>
       <source>&amp;1 As is</source>
-      <translation>&amp;1 为</translation>
+      <translation>&amp;1 如同</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="729"/>
+      <location filename="../CommandView.cpp" line="732"/>
       <source>Normal mode</source>
       <translation>普通模式</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="732"/>
+      <location filename="../CommandView.cpp" line="735"/>
       <source>&amp;2 Points</source>
       <translation>&amp;2 点</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="737"/>
+      <location filename="../CommandView.cpp" line="740"/>
       <source>&amp;3 Wireframe</source>
-      <translation>&amp;3线框</translation>
+      <translation>&amp;3 线框</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="742"/>
+      <location filename="../CommandView.cpp" line="745"/>
       <source>&amp;4 Hidden line</source>
       <translation>&amp;4 隐藏线</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="747"/>
+      <location filename="../CommandView.cpp" line="750"/>
       <source>&amp;5 No shading</source>
       <translation>&amp;5 无阴影</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="752"/>
+      <location filename="../CommandView.cpp" line="755"/>
       <source>&amp;6 Shaded</source>
       <translation>&amp;6 阴影</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="757"/>
+      <location filename="../CommandView.cpp" line="760"/>
       <source>&amp;7 Flat lines</source>
       <translation>&amp;7 平面线</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="734"/>
+      <location filename="../CommandView.cpp" line="737"/>
       <source>Points mode</source>
       <translation>点模式</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="739"/>
+      <location filename="../CommandView.cpp" line="742"/>
       <source>Wireframe mode</source>
       <translation>线框模式</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="744"/>
+      <location filename="../CommandView.cpp" line="747"/>
       <source>Hidden line mode</source>
       <translation>隐藏线模式</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="749"/>
+      <location filename="../CommandView.cpp" line="752"/>
       <source>No shading mode</source>
       <translation>没有阴影模式</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="754"/>
+      <location filename="../CommandView.cpp" line="757"/>
       <source>Shaded mode</source>
       <translation>着色模式</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="759"/>
+      <location filename="../CommandView.cpp" line="762"/>
       <source>Flat lines mode</source>
       <translation>带边着色模式</translation>
     </message>
@@ -10090,7 +10151,7 @@ Save the document now?</translation>
     <message>
       <location filename="../Workbench.cpp" line="547"/>
       <source>Standard &amp;Views</source>
-      <translation type="unfinished">Standard &amp;Views</translation>
+      <translation>标准视图(&amp;V)</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="548"/>
@@ -10100,7 +10161,7 @@ Save the document now?</translation>
     <message>
       <location filename="../Workbench.cpp" line="557"/>
       <source>&amp;Online Help</source>
-      <translation type="unfinished">&amp;Online Help</translation>
+      <translation>联机帮助(&amp;O)</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="565"/>
@@ -10110,7 +10171,7 @@ Save the document now?</translation>
     <message>
       <location filename="../Workbench.cpp" line="550"/>
       <source>&amp;Stereo</source>
-      <translation>立体显示(&amp;S)</translation>
+      <translation>立体视图(&amp;S)</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="551"/>
@@ -10120,12 +10181,12 @@ Save the document now?</translation>
     <message>
       <location filename="../Workbench.cpp" line="549"/>
       <source>A&amp;xonometric</source>
-      <translation>&amp;坐标轴</translation>
+      <translation>轴测图(&amp;X)</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="552"/>
       <source>V&amp;isibility</source>
-      <translation>V&amp;可见性</translation>
+      <translation>可见性(&amp;I)</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="553"/>
@@ -10175,7 +10236,7 @@ Save the document now?</translation>
     <message>
       <location filename="../Workbench.cpp" line="563"/>
       <source>Special Ops</source>
-      <translation>特殊设定</translation>
+      <translation>特殊操作</translation>
     </message>
   </context>
   <context>
@@ -10201,12 +10262,12 @@ Save the document now?</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, show the notification area in the status bar: a button with the current notification count, which can expand the detailed notification list. Optionally, with additional pop-up notifications.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;如果选中，在状态栏中显示通知区域：一个显示当前通知计数的按钮，可以展开详细的通知列表。（可选）使用其他弹出通知。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;如果选中，则在状态栏中显示通知区域：一个显示当前通知数量的按钮，可展开详细通知列表。（可选）显示其他弹出通知。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="66"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum amount of time the notification will be shown (unless mouse buttons are clicked). It also controls when user notifications will be removed if the &amp;quot;Auto-remove user notifications&amp;quot; setting is checked.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;通知显示的最大时间 (除非鼠标按键被点击)。 如果选中 &amp;quot;自动移除用户通知&amp;quot; 设置，它还控制用户通知何时被移除。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;通知显示的最长时长（除非点击鼠标按钮）。如果选中“自动移除用户通知”设置，它还控制何时移除用户通知。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="69"/>
@@ -10217,12 +10278,12 @@ Save the document now?</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="91"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum amount of time the notification will be shown (unless the notification bubble is dismissed by clicking on it).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;通知将显示的最短时间(除非点击通知气泡被取消)。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;通知显示的最短时间（除非通过点击通知气泡将其关闭）。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="117"/>
       <source>Maximum number of notifications that will be simultaneously present on the notification bubble.</source>
-      <translation>同时出现在屏幕上的最大通知数量.</translation>
+      <translation>通知气泡中同时显示的最大通知数量。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="23"/>
@@ -10266,7 +10327,7 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="140"/>
       <source>Width of the pop-up notification bubble in pixels.</source>
-      <translation>以像素为单位的通知宽度.</translation>
+      <translation>弹出通知气泡的宽度（以像素为单位）。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="143"/>
@@ -10276,22 +10337,22 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="168"/>
       <source>Any open pop-up notifications will disappear when another window is activated.</source>
-      <translation>当另一个窗口被激活时，任何打开的弹出通知都将消失。</translation>
+      <translation>当另一个窗口被激活时，任何打开的弹出通知都会消失。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="187"/>
       <source>Prevent pop-up notifications from appearing when the FreeCAD window is not the active window.</source>
-      <translation>当FreeCAD 窗口不是活动窗口时防止弹出通知。</translation>
+      <translation>当 FreeCAD 窗口不是活动窗口时，防止出现弹出通知。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="190"/>
       <source>Do not show when window is inactive</source>
-      <translation>未激活时不显示</translation>
+      <translation>窗口处于非活动状态时不显示</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="209"/>
       <source>Additional notification sources to show in the notification area.</source>
-      <translation>在通知区域显示额外的通知源。</translation>
+      <translation>在通知区域中显示的其他通知源。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="212"/>
@@ -10301,17 +10362,17 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="218"/>
       <source>Errors intended for developers will appear in the notification area.</source>
-      <translation>针对开发者的错误将出现在通知区域.</translation>
+      <translation>针对开发人员的错误将出现在通知区域。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="237"/>
       <source>Warnings intended for developers will appear in the notification area.</source>
-      <translation>针对开发者的错误将出现在通知区域.</translation>
+      <translation>针对开发人员的警告将出现在通知区域。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="259"/>
       <source>Controls the amount of notifications to show in the list.</source>
-      <translation>控制显示在列表中的通知数量。</translation>
+      <translation>控制列表中显示的通知数量。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="262"/>
@@ -10326,7 +10387,7 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="268"/>
       <source>Limits the number of notifications that will be kept in the list. If 0, there is no limit.</source>
-      <translation>限制将保留在列表中的通知数量。如果是 0，则没有限制。</translation>
+      <translation>限制列表中保留的通知数量。如果为 0，则无限制。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="294"/>
@@ -10715,12 +10776,12 @@ after FreeCAD launches</translation>
   <context>
     <name>StdViewLoadImage</name>
     <message>
-      <location filename="../CommandView.cpp" line="2092"/>
+      <location filename="../CommandView.cpp" line="2095"/>
       <source>&amp;Load Image…</source>
-      <translation type="unfinished">&amp;Load Image…</translation>
+      <translation>加载图像(&amp;L)…</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2093"/>
+      <location filename="../CommandView.cpp" line="2096"/>
       <source>Loads an image</source>
       <translation>加载图像</translation>
     </message>
@@ -10743,32 +10804,32 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../View3DSettings.cpp" line="661"/>
       <source>FRONT</source>
-      <translation>前視圖</translation>
+      <translation>前视图</translation>
     </message>
     <message>
       <location filename="../View3DSettings.cpp" line="663"/>
       <source>TOP</source>
-      <translation>上視圖</translation>
+      <translation>上视图</translation>
     </message>
     <message>
       <location filename="../View3DSettings.cpp" line="665"/>
       <source>RIGHT</source>
-      <translation>右視圖</translation>
+      <translation>右视图</translation>
     </message>
     <message>
       <location filename="../View3DSettings.cpp" line="667"/>
       <source>REAR</source>
-      <translation>後視圖</translation>
+      <translation>后视图</translation>
     </message>
     <message>
       <location filename="../View3DSettings.cpp" line="669"/>
       <source>BOTTOM</source>
-      <translation>底視圖</translation>
+      <translation>底视图</translation>
     </message>
     <message>
       <location filename="../View3DSettings.cpp" line="671"/>
       <source>LEFT</source>
-      <translation>左視圖</translation>
+      <translation>左视图</translation>
     </message>
   </context>
   <context>
@@ -11033,6 +11094,11 @@ after FreeCAD launches</translation>
       <translation>工程</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="254"/>
+      <source>Tree View and Property View mode</source>
+      <translation type="unfinished">Tree View and Property View mode</translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="278"/>
       <source>How many files should be listed in recent files list</source>
       <translation>最近文件列表中应该列出多少个文件</translation>
@@ -11077,9 +11143,9 @@ after FreeCAD launches</translation>
       <source>Substitutes numerical keypad decimal separator with locale separator, except
 in the Python console and the macro editor where a
 dot/period will always be printed</source>
-      <translation type="unfinished">Substitutes numerical keypad decimal separator with locale separator, except
-in the Python console and the macro editor where a
-dot/period will always be printed</translation>
+      <translation>将数字键盘上的小数点分隔符替换为语言环境分隔符，
+但 Python 控制台和宏编辑器除外，
+因为这些情况下始终会打印点/句点</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="211"/>
@@ -11105,11 +11171,6 @@ dot/period will always be printed</translation>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="247"/>
       <source>Icon size in the toolbar</source>
       <translation type="unfinished">Icon size in the toolbar</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="254"/>
-      <source>Tree view and property view mode</source>
-      <translation type="unfinished">Tree view and property view mode</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="261"/>
@@ -11541,11 +11602,6 @@ from Python console to Report view panel</source>
   <context>
     <name>OverlayParams</name>
     <message>
-      <location filename="../OverlayParams.cpp" line="317"/>
-      <source>Overlay dock (re),layout delay.</source>
-      <translation>叠加层停靠(re),布局延迟。</translation>
-    </message>
-    <message>
       <location filename="../OverlayParams.cpp" line="372"/>
       <source>Overlay splitter handle auto hide delay. Set zero to disable auto hiding.</source>
       <translation>叠加层分隔符自动隐藏延迟。设置零以禁用自动隐藏。</translation>
@@ -11563,19 +11619,24 @@ If disabled, then show on mouse click.</source>
       <translation>鼠标通过透明的基座叠加层自动点击。</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="457"/>
-      <source>Auto pass through mouse wheel event on transparent dock overlay.</source>
-      <translation>在透明基座叠加层自动通过鼠标滚轮事件。</translation>
+      <location filename="../OverlayParams.cpp" line="317"/>
+      <source>Overlay layout delay</source>
+      <translation type="unfinished">Overlay layout delay</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="485"/>
+      <location filename="../OverlayParams.cpp" line="457"/>
+      <source>Automatically passes mouse wheel events through the transparent areas of an overlay panel</source>
+      <translation type="unfinished">Automatically passes mouse wheel events through the transparent areas of an overlay panel</translation>
+    </message>
+    <message>
+      <location filename="../OverlayParams.cpp" line="486"/>
       <source>Delay capturing mouse wheel event for passing through if it is
 previously handled by other widget.</source>
       <translation>延时捕获鼠标滚轮事件，如果它是
 先前由其他小部件处理。</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="514"/>
+      <location filename="../OverlayParams.cpp" line="515"/>
       <source>If auto mouse click through is enabled, then this radius
 defines a region of alpha test under the mouse cursor.
 Auto click through is only activated if all pixels within
@@ -11586,92 +11647,92 @@ the region are non-opaque.</source>
 区域内的所有像素不是不透明时才被激活。</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="545"/>
+      <location filename="../OverlayParams.cpp" line="546"/>
       <source>Leave space for Navigation Cube in dock overlay</source>
       <translation>将导航立方体留在基座叠加层</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="573"/>
+      <location filename="../OverlayParams.cpp" line="574"/>
       <source>Auto hide hint visual display triggering width</source>
       <translation>自动隐藏提示视觉显示触发宽度</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="601"/>
+      <location filename="../OverlayParams.cpp" line="602"/>
       <source>Auto hide hint visual display width</source>
       <translation>自动隐藏提示视觉显示宽度</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="629"/>
+      <location filename="../OverlayParams.cpp" line="630"/>
       <source>Auto hide hint visual display length for left panel. Set to zero to fill the space.</source>
       <translation>自动隐藏左侧面板的提示视觉显示长度。设置为零以填充空间。</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="657"/>
+      <location filename="../OverlayParams.cpp" line="658"/>
       <source>Auto hide hint visual display length for right panel. Set to zero to fill the space.</source>
       <translation>自动隐藏右侧面板的提示视觉显示长度。设置为零以填充空间。</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="685"/>
+      <location filename="../OverlayParams.cpp" line="686"/>
       <source>Auto hide hint visual display length for top panel. Set to zero to fill the space.</source>
       <translation>自动隐藏顶部面板的提示视觉显示长度。设置为零以填充空间。</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="713"/>
+      <location filename="../OverlayParams.cpp" line="714"/>
       <source>Auto hide hint visual display length for bottom panel. Set to zero to fill the space.</source>
       <translation>自动隐藏底部面板的提示视觉显示长度。设置为零以填充空间。</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="741"/>
+      <location filename="../OverlayParams.cpp" line="742"/>
       <source>Auto hide hint visual display offset for left panel</source>
       <translation>自动隐藏左侧面板的提示视觉显示偏移</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="769"/>
+      <location filename="../OverlayParams.cpp" line="770"/>
       <source>Auto hide hint visual display offset for right panel</source>
       <translation>自动隐藏右侧面板的提示视觉显示偏移</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="797"/>
+      <location filename="../OverlayParams.cpp" line="798"/>
       <source>Auto hide hint visual display offset for top panel</source>
       <translation>自动隐藏顶部面板的提示视觉显示偏移</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="825"/>
+      <location filename="../OverlayParams.cpp" line="826"/>
       <source>Auto hide hint visual display offset for bottom panel</source>
       <translation>自动隐藏底部面板的提示视觉显示偏移</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="853"/>
+      <location filename="../OverlayParams.cpp" line="854"/>
       <source>Show tab bar on mouse over when auto hide</source>
       <translation>自动隐藏时鼠标悬停时显示标签栏</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="881"/>
+      <location filename="../OverlayParams.cpp" line="882"/>
       <source>Hide tab bar in dock overlay</source>
       <translation>在基座叠加层隐藏标签栏</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="909"/>
+      <location filename="../OverlayParams.cpp" line="910"/>
       <source>Delay before show hint visual</source>
       <translation>显示提示视图前延迟</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="937"/>
+      <location filename="../OverlayParams.cpp" line="938"/>
       <source>Auto hide animation duration, 0 to disable</source>
       <translation>自动隐藏动画持续时间，0 以禁用</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="965"/>
+      <location filename="../OverlayParams.cpp" line="966"/>
       <source>Auto hide animation curve type</source>
       <translation>自动隐藏动画曲线类型</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="993"/>
+      <location filename="../OverlayParams.cpp" line="994"/>
       <source>Hide property view scroll bar in dock overlay</source>
       <translation>在基座覆盖时隐藏属性视图滚动条</translation>
     </message>
     <message>
-      <location filename="../OverlayParams.cpp" line="1021"/>
+      <location filename="../OverlayParams.cpp" line="1022"/>
       <source>Minimum overlay dock widget width/height</source>
       <translation>最小叠加层小部件宽度/高度</translation>
     </message>
@@ -11747,12 +11808,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdProperties</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1753"/>
+      <location filename="../CommandDoc.cpp" line="1768"/>
       <source>Propert&amp;ies</source>
-      <translation>属性</translation>
+      <translation>属性(&amp;I)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1754"/>
+      <location filename="../CommandDoc.cpp" line="1769"/>
       <source>Shows the property view, which displays the properties of the selected object.</source>
       <translation type="unfinished">Shows the property view, which displays the properties of the selected object.</translation>
     </message>
@@ -11783,7 +11844,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandStd.cpp" line="914"/>
       <source>&amp;Reload Stylesheet</source>
-      <translation type="unfinished">&amp;Reload Stylesheet</translation>
+      <translation>重载样式表(&amp;R)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="915"/>
@@ -11796,7 +11857,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../Dialogs/DlgAddPropertyVarSet.ui" line="14"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>添加属性</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddPropertyVarSet.ui" line="20"/>
@@ -11829,37 +11890,37 @@ the region are non-opaque.</source>
       <translation>工具提示</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="442"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="450"/>
       <source>Add a Property to %1</source>
       <translation type="unfinished">Add a Property to %1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="513"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="521"/>
       <source>Invalid group name</source>
       <translation type="unfinished">Invalid group name</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="516"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="524"/>
       <source>Invalid type name</source>
       <translation type="unfinished">Invalid type name</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="522"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="530"/>
       <source>Invalid property name '%1'</source>
       <translation type="unfinished">Invalid property name '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="525"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="533"/>
       <source>Property '%1' already exists</source>
       <translation type="unfinished">Property '%1' already exists</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="528"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="536"/>
       <source>'%1' is a constant</source>
       <translation type="unfinished">'%1' is a constant</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="531"/>
+      <location filename="../Dialogs/DlgAddPropertyVarSet.cpp" line="539"/>
       <source>'%1' is a unit</source>
       <translation type="unfinished">'%1' is a unit</translation>
     </message>
@@ -11869,12 +11930,12 @@ the region are non-opaque.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="14"/>
       <source>UI</source>
-      <translation>界面</translation>
+      <translation>UI</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="38"/>
       <source>Accent color 1</source>
-      <translation>強調色1</translation>
+      <translation>强调色 1</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="54"/>
@@ -11886,12 +11947,12 @@ the region are non-opaque.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="74"/>
       <source>Accent color 2</source>
-      <translation>強調色2</translation>
+      <translation>强调色 2</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="84"/>
       <source>Accent color 3</source>
-      <translation>強調色3</translation>
+      <translation>强调色 3</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="166"/>
@@ -11901,7 +11962,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="232"/>
       <source>Icon size override, set to 0 for the default value.</source>
-      <translation>重设图标大小，设为0时使用默认值。</translation>
+      <translation>覆写图标大小，设为 0 使用默认值。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="251"/>
@@ -11956,7 +12017,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="207"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>树状图</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="213"/>
@@ -12059,19 +12120,29 @@ the region are non-opaque.</source>
       <translation type="unfinished">Automatically pass through of the mouse cursor</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettingsUI.ui" line="480"/>
+      <source>Automatically passes mouse wheel events through the transparent areas of an overlay panel</source>
+      <translation type="unfinished">Automatically passes mouse wheel events through the transparent areas of an overlay panel</translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="483"/>
       <source>Automatically pass through of the mouse wheel</source>
       <translation type="unfinished">Automatically pass through of the mouse wheel</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettingsUI.ui" line="502"/>
+      <source>Suggested Actions</source>
+      <translation type="unfinished">Suggested Actions</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsUI.ui" line="508"/>
+      <source>Suggest actions in the task view based on the selection</source>
+      <translation type="unfinished">Suggest actions in the task view based on the selection</translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="461"/>
       <source>Auto mouse click through transparent part of dock overlay.</source>
       <translation>鼠标通过透明的基座叠加层自动点击。</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsUI.ui" line="480"/>
-      <source>Auto pass through mouse wheel event on transparent dock overlay.</source>
-      <translation>在透明基座叠加层自动通过鼠标滚轮事件。</translation>
     </message>
   </context>
   <context>
@@ -12092,7 +12163,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../VectorListEditor.cpp" line="211"/>
       <source>Unsupported format.  Must be 3 values per row separated by tabs, semicolons, or commas:</source>
-      <translation>不支持的格式。每行必须有3个值，以制表符、分号或逗号分隔：</translation>
+      <translation>格式不受支持。每行必须包含 3 个值，并用制表符、分号或逗号分隔：</translation>
     </message>
   </context>
   <context>
@@ -12100,7 +12171,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="325"/>
       <source>Python &amp;Modules Documentation</source>
-      <translation type="unfinished">Python &amp;Modules Documentation</translation>
+      <translation>Python 模块文档(&amp;M)</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="326"/>
@@ -12139,7 +12210,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandStd.cpp" line="641"/>
       <source>FreeCAD W&amp;ebsite</source>
-      <translation>FreeCAD网站</translation>
+      <translation>FreeCAD 网站(&amp;E)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="642"/>
@@ -12152,7 +12223,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandStd.cpp" line="669"/>
       <source>&amp;User Documentation</source>
-      <translation>用户文档</translation>
+      <translation>用户文档(&amp;U)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="670"/>
@@ -12165,7 +12236,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandStd.cpp" line="725"/>
       <source>Report an &amp;Issue</source>
-      <translation>上报问题</translation>
+      <translation>报告问题(&amp;I)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="726"/>
@@ -12176,12 +12247,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1607"/>
+      <location filename="../CommandDoc.cpp" line="1622"/>
       <source>Trans&amp;form</source>
       <translation>变换(&amp;F)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1608"/>
+      <location filename="../CommandDoc.cpp" line="1623"/>
       <source>Transforms the selected object in the 3D view</source>
       <translation type="unfinished">Transforms the selected object in the 3D view</translation>
     </message>
@@ -12191,7 +12262,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../TaskTransform.ui" line="14"/>
       <source>Placement</source>
-      <translation>定位</translation>
+      <translation>放置</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="25"/>
@@ -12379,7 +12450,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsPDF.cpp" line="85"/>
       <source>This PDF format is intended for professional printing and requires all fonts to be embedded; some interactive features may not be supported.</source>
-      <translation>此 PDF 格式适用于专业打印，需要嵌入所有字体；某些交互功能可能不受支持。</translation>
+      <translation>此 PDF 格式适用于专业打印，需要嵌入所有字体，某些交互功能可能不受支持。</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPDF.cpp" line="89"/>
@@ -12531,7 +12602,7 @@ the region are non-opaque.</source>
       <location filename="../InputHintWidget.cpp" line="283"/>
       <source>⇧ Shift</source>
       <extracomment>Keyboard key for Shift on Windows &amp; Linux</extracomment>
-      <translation type="unfinished">⇧ Shift</translation>
+      <translation>⇧ Shift</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="340"/>
@@ -12744,17 +12815,22 @@ the region are non-opaque.</source>
   <context>
     <name>Gui::Application</name>
     <message>
-      <location filename="../Application.cpp" line="385"/>
+      <location filename="../Application.cpp" line="414"/>
       <source>Built-in Parameters</source>
       <translation type="unfinished">Built-in Parameters</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="391"/>
+      <location filename="../Application.cpp" line="402"/>
       <source>Theme Parameters</source>
       <translation type="unfinished">Theme Parameters</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="398"/>
+      <location filename="../Application.cpp" line="421"/>
+      <source>Theme Parameters - Fallback</source>
+      <translation type="unfinished">Theme Parameters - Fallback</translation>
+    </message>
+    <message>
+      <location filename="../Application.cpp" line="430"/>
       <source>User Parameters</source>
       <translation type="unfinished">User Parameters</translation>
     </message>
@@ -12772,7 +12848,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="579"/>
       <source>Dependency Gra&amp;ph</source>
-      <translation type="unfinished">Dependency Gra&amp;ph</translation>
+      <translation>依赖关系图(&amp;P)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="581"/>
@@ -12793,7 +12869,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="612"/>
       <source>Export Dependency &amp;Graph</source>
-      <translation type="unfinished">Export Dependency &amp;Graph</translation>
+      <translation>导出依赖关系图(&amp;G)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="613"/>
@@ -12806,7 +12882,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="712"/>
       <source>Save &amp;As…</source>
-      <translation type="unfinished">Save &amp;As…</translation>
+      <translation>另存为(&amp;A)…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="713"/>
@@ -12819,7 +12895,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="741"/>
       <source>Save Cop&amp;y</source>
-      <translation type="unfinished">Save Cop&amp;y</translation>
+      <translation>保存副本(&amp;Y)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="743"/>
@@ -12850,7 +12926,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="836"/>
       <source>Doc&amp;ument Information</source>
-      <translation type="unfinished">Doc&amp;ument Information</translation>
+      <translation>文档信息(&amp;U)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="838"/>
@@ -12863,7 +12939,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="868"/>
       <source>Do&amp;cument Utility</source>
-      <translation type="unfinished">Do&amp;cument Utility</translation>
+      <translation>文档工具(&amp;C)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="870"/>
@@ -12876,12 +12952,12 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="896"/>
       <source>&amp;Print</source>
-      <translation type="unfinished">&amp;Print</translation>
+      <translation>打印(&amp;P)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="898"/>
       <source>Prints the active document</source>
-      <translation type="unfinished">Prints the active document</translation>
+      <translation>打印当前活动文档</translation>
     </message>
   </context>
   <context>
@@ -12889,12 +12965,12 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="929"/>
       <source>Print Previe&amp;w</source>
-      <translation type="unfinished">Print Previe&amp;w</translation>
+      <translation>打印预览(&amp;W)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="931"/>
       <source>Previews the active document before printing</source>
-      <translation type="unfinished">Previews the active document before printing</translation>
+      <translation>打印前预览活动文档</translation>
     </message>
   </context>
   <context>
@@ -12902,12 +12978,12 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="960"/>
       <source>Export P&amp;DF</source>
-      <translation type="unfinished">Export P&amp;DF</translation>
+      <translation>导出 PDF(&amp;D)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="962"/>
       <source>Exports the active document as a PDF file</source>
-      <translation type="unfinished">Exports the active document as a PDF file</translation>
+      <translation>将活动文档导出为 PDF 文件</translation>
     </message>
   </context>
   <context>
@@ -12915,7 +12991,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="1209"/>
       <source>Duplicate Selecti&amp;on</source>
-      <translation type="unfinished">Duplicate Selecti&amp;on</translation>
+      <translation>复制选择(&amp;O)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1210"/>
@@ -12926,12 +13002,12 @@ the region are non-opaque.</source>
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1476"/>
+      <location filename="../CommandDoc.cpp" line="1491"/>
       <source>Recompute</source>
       <translation>重新计算</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1477"/>
+      <location filename="../CommandDoc.cpp" line="1492"/>
       <source>Recomputes the active document</source>
       <translation type="unfinished">Recomputes the active document</translation>
     </message>
@@ -12939,7 +13015,7 @@ the region are non-opaque.</source>
   <context>
     <name>Std_Refresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1507"/>
+      <location filename="../CommandDoc.cpp" line="1522"/>
       <source>The document contains dependency cycles.
 Check the report view for more details.
 
@@ -12953,12 +13029,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdTransform</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1531"/>
+      <location filename="../CommandDoc.cpp" line="1546"/>
       <source>Transform</source>
       <translation>变换</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1533"/>
+      <location filename="../CommandDoc.cpp" line="1548"/>
       <source>Transforms the selected object</source>
       <translation type="unfinished">Transforms the selected object</translation>
     </message>
@@ -12966,12 +13042,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1558"/>
+      <location filename="../CommandDoc.cpp" line="1573"/>
       <source>P&amp;lacement</source>
-      <translation type="unfinished">P&amp;lacement</translation>
+      <translation>放置(&amp;L)</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1560"/>
+      <location filename="../CommandDoc.cpp" line="1575"/>
       <source>Opens the placement editor to adjust the placement of the selected object</source>
       <translation type="unfinished">Opens the placement editor to adjust the placement of the selected object</translation>
     </message>
@@ -12979,12 +13055,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdAlignment</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1642"/>
+      <location filename="../CommandDoc.cpp" line="1657"/>
       <source>Ali&amp;gn To…</source>
-      <translation type="unfinished">Ali&amp;gn To…</translation>
+      <translation>对齐到(&amp;G)…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1644"/>
+      <location filename="../CommandDoc.cpp" line="1659"/>
       <source>Aligns the selected objects</source>
       <translation type="unfinished">Aligns the selected objects</translation>
     </message>
@@ -12994,7 +13070,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandFeat.cpp" line="82"/>
       <source>Random &amp;Color</source>
-      <translation type="unfinished">Random &amp;Color</translation>
+      <translation>随机颜色(&amp;C)</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="83"/>
@@ -13098,7 +13174,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="649"/>
       <source>&amp;Go to Linked Object</source>
-      <translation type="unfinished">&amp;Go to Linked Object</translation>
+      <translation>转到链接对象(&amp;G)</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="650"/>
@@ -13111,7 +13187,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="777"/>
       <source>Go to &amp;Deepest Linked Object</source>
-      <translation type="unfinished">Go to &amp;Deepest Linked Object</translation>
+      <translation>转到最深链接对象(&amp;D)</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="778"/>
@@ -13124,7 +13200,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="812"/>
       <source>Select &amp;All Links</source>
-      <translation type="unfinished">Select &amp;All Links</translation>
+      <translation>选择所有链接(&amp;A)</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="813"/>
@@ -13150,7 +13226,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="97"/>
       <source>Ma&amp;cros</source>
-      <translation type="unfinished">Ma&amp;cros</translation>
+      <translation>宏(&amp;C)</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="99"/>
@@ -13163,7 +13239,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="127"/>
       <source>&amp;Execute Macro</source>
-      <translation type="unfinished">&amp;Execute Macro</translation>
+      <translation>执行宏(&amp;E)</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="128"/>
@@ -13176,7 +13252,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="153"/>
       <source>&amp;Attach to Remote Debugger</source>
-      <translation type="unfinished">&amp;Attach to Remote Debugger</translation>
+      <translation>附加到远程调试器(&amp;A)</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="155"/>
@@ -13189,7 +13265,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="179"/>
       <source>&amp;Debug Macro</source>
-      <translation type="unfinished">&amp;Debug Macro</translation>
+      <translation>调试宏(&amp;D)</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="180"/>
@@ -13202,7 +13278,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="209"/>
       <source>&amp;Stop Debugging</source>
-      <translation type="unfinished">&amp;Stop Debugging</translation>
+      <translation>停止调试(&amp;S)</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="210"/>
@@ -13215,7 +13291,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="236"/>
       <source>Step &amp;Over</source>
-      <translation type="unfinished">Step &amp;Over</translation>
+      <translation>步过(&amp;O)</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="237"/>
@@ -13228,7 +13304,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="263"/>
       <source>Step &amp;Into</source>
-      <translation type="unfinished">Step &amp;Into</translation>
+      <translation>步入(&amp;I)</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="264"/>
@@ -13241,7 +13317,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="290"/>
       <source>Toggle &amp;Breakpoint</source>
-      <translation type="unfinished">Toggle &amp;Breakpoint</translation>
+      <translation>切换断点(&amp;B)</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="291"/>
@@ -13267,7 +13343,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="181"/>
       <source>&amp;Recent Macros</source>
-      <translation type="unfinished">&amp;Recent Macros</translation>
+      <translation>最近的宏(&amp;R)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="182"/>
@@ -13280,7 +13356,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="381"/>
       <source>E&amp;dit Parameters</source>
-      <translation type="unfinished">E&amp;dit Parameters</translation>
+      <translation>编辑参数(&amp;D)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="383"/>
@@ -13293,7 +13369,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="407"/>
       <source>Prefere&amp;nces</source>
-      <translation type="unfinished">Prefere&amp;nces</translation>
+      <translation>首选项(&amp;N)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="409"/>
@@ -13306,7 +13382,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="452"/>
       <source>Cu&amp;stomize…</source>
-      <translation type="unfinished">Cu&amp;stomize…</translation>
+      <translation>自定义(&amp;S)…</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="453"/>
@@ -13319,7 +13395,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="479"/>
       <source>Command &amp;Line</source>
-      <translation type="unfinished">Command &amp;Line</translation>
+      <translation>命令行(&amp;L)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="481"/>
@@ -13332,7 +13408,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="580"/>
       <source>Donate to FreeCA&amp;D</source>
-      <translation type="unfinished">Donate to FreeCA&amp;D</translation>
+      <translation>向 FreeCAD 捐赠(&amp;D)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="581"/>
@@ -13358,7 +13434,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="752"/>
       <source>Te&amp;xt Document</source>
-      <translation type="unfinished">Te&amp;xt Document</translation>
+      <translation>文本文档(&amp;X)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="753"/>
@@ -13371,7 +13447,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="785"/>
       <source>&amp;Units Converter</source>
-      <translation type="unfinished">&amp;Units Converter</translation>
+      <translation>单位换算器(&amp;U)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="787"/>
@@ -13384,7 +13460,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="822"/>
       <source>Edit &amp;Mode</source>
-      <translation type="unfinished">Edit &amp;Mode</translation>
+      <translation>编辑模式(&amp;M)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="823"/>
@@ -13410,7 +13486,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="107"/>
       <source>New Group</source>
-      <translation type="unfinished">New Group</translation>
+      <translation>新建组</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="108"/>
@@ -13434,12 +13510,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewSaveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="242"/>
+      <location filename="../CommandView.cpp" line="245"/>
       <source>Save Current Camera</source>
       <translation type="unfinished">Save Current Camera</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="243"/>
+      <location filename="../CommandView.cpp" line="246"/>
       <source>Saves the current camera settings</source>
       <translation type="unfinished">Saves the current camera settings</translation>
     </message>
@@ -13447,12 +13523,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewRestoreCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="268"/>
+      <location filename="../CommandView.cpp" line="271"/>
       <source>Restore Saved Camera</source>
       <translation type="unfinished">Restore Saved Camera</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="269"/>
+      <location filename="../CommandView.cpp" line="272"/>
       <source>Restores the saved camera settings</source>
       <translation type="unfinished">Restores the saved camera settings</translation>
     </message>
@@ -13460,12 +13536,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdToggleClipPlane</name>
     <message>
-      <location filename="../CommandView.cpp" line="595"/>
+      <location filename="../CommandView.cpp" line="598"/>
       <source>Clippin&amp;g View</source>
-      <translation type="unfinished">Clippin&amp;g View</translation>
+      <translation>修剪视图(&amp;G)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="596"/>
+      <location filename="../CommandView.cpp" line="599"/>
       <source>Toggles clipping of the active view</source>
       <translation type="unfinished">Toggles clipping of the active view</translation>
     </message>
@@ -13473,12 +13549,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="648"/>
+      <location filename="../CommandView.cpp" line="651"/>
       <source>&amp;Draw Style</source>
-      <translation type="unfinished">&amp;Draw Style</translation>
+      <translation>绘图样式(&amp;D)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="649"/>
+      <location filename="../CommandView.cpp" line="652"/>
       <source>Changes the draw style of the objects</source>
       <translation type="unfinished">Changes the draw style of the objects</translation>
     </message>
@@ -13486,12 +13562,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdToggleVisibility</name>
     <message>
-      <location filename="../CommandView.cpp" line="868"/>
+      <location filename="../CommandView.cpp" line="871"/>
       <source>Toggle &amp;Visibility</source>
-      <translation type="unfinished">Toggle &amp;Visibility</translation>
+      <translation>切换可见性(&amp;V)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="869"/>
+      <location filename="../CommandView.cpp" line="872"/>
       <source>Toggles the visibility of the selection</source>
       <translation type="unfinished">Toggles the visibility of the selection</translation>
     </message>
@@ -13499,12 +13575,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdToggleTransparency</name>
     <message>
-      <location filename="../CommandView.cpp" line="899"/>
+      <location filename="../CommandView.cpp" line="902"/>
       <source>Toggle Transparenc&amp;y</source>
-      <translation type="unfinished">Toggle Transparenc&amp;y</translation>
+      <translation>切换透明度(&amp;Y)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="901"/>
+      <location filename="../CommandView.cpp" line="904"/>
       <source>Toggles the transparency of the selected objects. Transparency can be fine-tuned in the appearance task dialog</source>
       <translation type="unfinished">Toggles the transparency of the selected objects. Transparency can be fine-tuned in the appearance task dialog</translation>
     </message>
@@ -13512,12 +13588,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-      <location filename="../CommandView.cpp" line="1010"/>
+      <location filename="../CommandView.cpp" line="1013"/>
       <source>Toggle Se&amp;lectability</source>
-      <translation type="unfinished">Toggle Se&amp;lectability</translation>
+      <translation>切换可选择性(&amp;L)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1011"/>
+      <location filename="../CommandView.cpp" line="1014"/>
       <source>Toggles the property of the objects to get selected in the 3D view</source>
       <translation type="unfinished">Toggles the property of the objects to get selected in the 3D view</translation>
     </message>
@@ -13525,12 +13601,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdShowSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1062"/>
+      <location filename="../CommandView.cpp" line="1065"/>
       <source>Sho&amp;w Selection</source>
-      <translation type="unfinished">Sho&amp;w Selection</translation>
+      <translation>显示所选(&amp;W)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1063"/>
+      <location filename="../CommandView.cpp" line="1066"/>
       <source>Shows all selected objects</source>
       <translation type="unfinished">Shows all selected objects</translation>
     </message>
@@ -13538,12 +13614,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdHideSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1090"/>
+      <location filename="../CommandView.cpp" line="1093"/>
       <source>&amp;Hide Selection</source>
-      <translation type="unfinished">&amp;Hide Selection</translation>
+      <translation>隐藏所选(&amp;H)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1091"/>
+      <location filename="../CommandView.cpp" line="1094"/>
       <source>Hides all selected objects</source>
       <translation type="unfinished">Hides all selected objects</translation>
     </message>
@@ -13551,12 +13627,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdSelectVisibleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1118"/>
+      <location filename="../CommandView.cpp" line="1121"/>
       <source>&amp;Select Visible Objects</source>
-      <translation type="unfinished">&amp;Select Visible Objects</translation>
+      <translation>选择可见对象(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1119"/>
+      <location filename="../CommandView.cpp" line="1122"/>
       <source>Selects all visible objects in the active document</source>
       <translation type="unfinished">Selects all visible objects in the active document</translation>
     </message>
@@ -13564,12 +13640,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdToggleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1160"/>
+      <location filename="../CommandView.cpp" line="1163"/>
       <source>To&amp;ggle All Objects</source>
-      <translation type="unfinished">To&amp;ggle All Objects</translation>
+      <translation>切换所有对象(&amp;G)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1161"/>
+      <location filename="../CommandView.cpp" line="1164"/>
       <source>Toggles the visibility of all objects in the active document</source>
       <translation type="unfinished">Toggles the visibility of all objects in the active document</translation>
     </message>
@@ -13577,12 +13653,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdShowObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1201"/>
+      <location filename="../CommandView.cpp" line="1204"/>
       <source>Show &amp;All Objects</source>
-      <translation type="unfinished">Show &amp;All Objects</translation>
+      <translation>显示所有对象(&amp;A)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1202"/>
+      <location filename="../CommandView.cpp" line="1205"/>
       <source>Shows all objects in the document</source>
       <translation type="unfinished">Shows all objects in the document</translation>
     </message>
@@ -13590,12 +13666,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdHideObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1238"/>
+      <location filename="../CommandView.cpp" line="1241"/>
       <source>Hide All &amp;Objects</source>
-      <translation type="unfinished">Hide All &amp;Objects</translation>
+      <translation>隐藏所有对象(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1239"/>
+      <location filename="../CommandView.cpp" line="1242"/>
       <source>Hides all objects in the document</source>
       <translation type="unfinished">Hides all objects in the document</translation>
     </message>
@@ -13603,12 +13679,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewRotateRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1543"/>
+      <location filename="../CommandView.cpp" line="1546"/>
       <source>Rotates &amp;Right</source>
-      <translation type="unfinished">Rotates &amp;Right</translation>
+      <translation>向右旋转(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1544"/>
+      <location filename="../CommandView.cpp" line="1547"/>
       <source>Rotates the view by 90° clockwise</source>
       <translation type="unfinished">Rotates the view by 90° clockwise</translation>
     </message>
@@ -13616,12 +13692,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="1568"/>
+      <location filename="../CommandView.cpp" line="1571"/>
       <source>&amp;Fit All</source>
-      <translation type="unfinished">&amp;Fit All</translation>
+      <translation>适应所有(&amp;F)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1569"/>
+      <location filename="../CommandView.cpp" line="1572"/>
       <source>Fits all content into the 3D view</source>
       <translation type="unfinished">Fits all content into the 3D view</translation>
     </message>
@@ -13629,12 +13705,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewFitSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1599"/>
+      <location filename="../CommandView.cpp" line="1602"/>
       <source>Fit &amp;Selection</source>
-      <translation type="unfinished">Fit &amp;Selection</translation>
+      <translation>适合所选(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1600"/>
+      <location filename="../CommandView.cpp" line="1603"/>
       <source>Fits the selected content into the 3D view</source>
       <translation type="unfinished">Fits the selected content into the 3D view</translation>
     </message>
@@ -13642,12 +13718,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewGroup</name>
     <message>
-      <location filename="../CommandView.cpp" line="1629"/>
+      <location filename="../CommandView.cpp" line="1632"/>
       <source>Standard &amp;Views</source>
-      <translation type="unfinished">Standard &amp;Views</translation>
+      <translation>标准视图(&amp;V)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1630"/>
+      <location filename="../CommandView.cpp" line="1633"/>
       <source>Changes to a standard view</source>
       <translation type="unfinished">Changes to a standard view</translation>
     </message>
@@ -13655,12 +13731,12 @@ Proceed?</translation>
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1788"/>
+      <location filename="../CommandView.cpp" line="1791"/>
       <source>D&amp;ocument Window</source>
-      <translation type="unfinished">D&amp;ocument Window</translation>
+      <translation>文档窗口(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1789"/>
+      <location filename="../CommandView.cpp" line="1792"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation type="unfinished">Displays the active view either in fullscreen, undocked, or docked mode</translation>
     </message>
@@ -13668,12 +13744,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewVR</name>
     <message>
-      <location filename="../CommandView.cpp" line="1895"/>
+      <location filename="../CommandView.cpp" line="1898"/>
       <source>FreeCAD VR</source>
       <translation type="unfinished">FreeCAD VR</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1896"/>
+      <location filename="../CommandView.cpp" line="1899"/>
       <source>Extends the FreeCAD 3D Window to a VR device</source>
       <translation type="unfinished">Extends the FreeCAD 3D Window to a VR device</translation>
     </message>
@@ -13681,12 +13757,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewCreate</name>
     <message>
-      <location filename="../CommandView.cpp" line="2138"/>
+      <location filename="../CommandView.cpp" line="2141"/>
       <source>New 3D View</source>
       <translation type="unfinished">New 3D View</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2139"/>
+      <location filename="../CommandView.cpp" line="2142"/>
       <source>Opens a new 3D view window for the active document</source>
       <translation type="unfinished">Opens a new 3D view window for the active document</translation>
     </message>
@@ -13694,12 +13770,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
-      <location filename="../CommandView.cpp" line="2167"/>
+      <location filename="../CommandView.cpp" line="2170"/>
       <source>Toggle Navigation/&amp;Edit Mode</source>
-      <translation type="unfinished">Toggle Navigation/&amp;Edit Mode</translation>
+      <translation>切换导航/编辑模式(&amp;E)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2168"/>
+      <location filename="../CommandView.cpp" line="2171"/>
       <source>Toggles between navigation and edit mode</source>
       <translation type="unfinished">Toggles between navigation and edit mode</translation>
     </message>
@@ -13707,12 +13783,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdAxisCross</name>
     <message>
-      <location filename="../CommandView.cpp" line="2216"/>
+      <location filename="../CommandView.cpp" line="2219"/>
       <source>Toggle A&amp;xis Cross</source>
-      <translation type="unfinished">Toggle A&amp;xis Cross</translation>
+      <translation>切换轴交叉(&amp;X)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2217"/>
+      <location filename="../CommandView.cpp" line="2220"/>
       <source>Toggles the axis cross at the origin</source>
       <translation type="unfinished">Toggles the axis cross at the origin</translation>
     </message>
@@ -13720,12 +13796,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewExample3</name>
     <message>
-      <location filename="../CommandView.cpp" line="2318"/>
+      <location filename="../CommandView.cpp" line="2321"/>
       <source>Inventor Example #3</source>
       <translation type="unfinished">Inventor Example #3</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2319"/>
+      <location filename="../CommandView.cpp" line="2322"/>
       <source>Shows an animated texture</source>
       <translation type="unfinished">Shows an animated texture</translation>
     </message>
@@ -13733,12 +13809,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="2376"/>
+      <location filename="../CommandView.cpp" line="2379"/>
       <source>Stereo Re&amp;d/Cyan</source>
-      <translation type="unfinished">Stereo Re&amp;d/Cyan</translation>
+      <translation>立体红/青(&amp;D)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2377"/>
+      <location filename="../CommandView.cpp" line="2380"/>
       <source>Switches stereo viewing to red/cyan</source>
       <translation type="unfinished">Switches stereo viewing to red/cyan</translation>
     </message>
@@ -13746,12 +13822,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
-      <location filename="../CommandView.cpp" line="2404"/>
+      <location filename="../CommandView.cpp" line="2407"/>
       <source>Stereo &amp;Quad Buffer</source>
-      <translation type="unfinished">Stereo &amp;Quad Buffer</translation>
+      <translation>立体四缓冲器(&amp;Q)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2405"/>
+      <location filename="../CommandView.cpp" line="2408"/>
       <source>Switches stereo viewing to quad buffer</source>
       <translation type="unfinished">Switches stereo viewing to quad buffer</translation>
     </message>
@@ -13759,12 +13835,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
-      <location filename="../CommandView.cpp" line="2489"/>
+      <location filename="../CommandView.cpp" line="2492"/>
       <source>Issue Camera &amp;Position</source>
-      <translation type="unfinished">Issue Camera &amp;Position</translation>
+      <translation>发布相机位置(&amp;P)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2490"/>
+      <location filename="../CommandView.cpp" line="2493"/>
       <source>Issues the camera position to the console and to a macro, to easily recall this position</source>
       <translation type="unfinished">Issues the camera position to the console and to a macro, to easily recall this position</translation>
     </message>
@@ -13772,12 +13848,12 @@ Proceed?</translation>
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <location filename="../CommandView.cpp" line="2711"/>
+      <location filename="../CommandView.cpp" line="2714"/>
       <source>&amp;Box Zoom</source>
-      <translation type="unfinished">&amp;Box Zoom</translation>
+      <translation>框缩放(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2712"/>
+      <location filename="../CommandView.cpp" line="2715"/>
       <source>Activates the box zoom tool</source>
       <translation type="unfinished">Activates the box zoom tool</translation>
     </message>
@@ -13785,12 +13861,12 @@ Proceed?</translation>
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2745"/>
+      <location filename="../CommandView.cpp" line="2748"/>
       <source>&amp;Box Selection</source>
-      <translation type="unfinished">&amp;Box Selection</translation>
+      <translation>框选(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2746"/>
+      <location filename="../CommandView.cpp" line="2749"/>
       <source>Activates the box selection tool</source>
       <translation type="unfinished">Activates the box selection tool</translation>
     </message>
@@ -13798,12 +13874,12 @@ Proceed?</translation>
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2971"/>
+      <location filename="../CommandView.cpp" line="2974"/>
       <source>Bo&amp;x Element Selection</source>
-      <translation type="unfinished">Bo&amp;x Element Selection</translation>
+      <translation>框元素选择(&amp;X)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2972"/>
+      <location filename="../CommandView.cpp" line="2975"/>
       <source>Activates box element selection</source>
       <translation type="unfinished">Activates box element selection</translation>
     </message>
@@ -13811,12 +13887,12 @@ Proceed?</translation>
   <context>
     <name>StdTreeSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3016"/>
+      <location filename="../CommandView.cpp" line="3019"/>
       <source>&amp;Go to Selection</source>
-      <translation type="unfinished">&amp;Go to Selection</translation>
+      <translation>转到所选(&amp;G)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3017"/>
+      <location filename="../CommandView.cpp" line="3020"/>
       <source>Scrolls to the first selected item</source>
       <translation type="unfinished">Scrolls to the first selected item</translation>
     </message>
@@ -13824,12 +13900,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdTreeCollapse</name>
     <message>
-      <location filename="../CommandView.cpp" line="3041"/>
+      <location filename="../CommandView.cpp" line="3044"/>
       <source>Collapse Selected Items</source>
       <translation type="unfinished">Collapse Selected Items</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3042"/>
+      <location filename="../CommandView.cpp" line="3045"/>
       <source>Collapses the currently selected tree items</source>
       <translation type="unfinished">Collapses the currently selected tree items</translation>
     </message>
@@ -13837,12 +13913,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <location filename="../CommandView.cpp" line="3066"/>
+      <location filename="../CommandView.cpp" line="3069"/>
       <source>Expand Selected Items</source>
       <translation type="unfinished">Expand Selected Items</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3067"/>
+      <location filename="../CommandView.cpp" line="3070"/>
       <source>Expands the currently selected tree items</source>
       <translation type="unfinished">Expands the currently selected tree items</translation>
     </message>
@@ -13850,12 +13926,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
     <message>
-      <location filename="../CommandView.cpp" line="3091"/>
+      <location filename="../CommandView.cpp" line="3094"/>
       <source>Select All Instances</source>
       <translation type="unfinished">Select All Instances</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3092"/>
+      <location filename="../CommandView.cpp" line="3095"/>
       <source>Selects all instances of the currently selected object</source>
       <translation type="unfinished">Selects all instances of the currently selected object</translation>
     </message>
@@ -13863,12 +13939,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <location filename="../CommandView.cpp" line="3144"/>
+      <location filename="../CommandView.cpp" line="3147"/>
       <source>Scene I&amp;nspector</source>
-      <translation type="unfinished">Scene I&amp;nspector</translation>
+      <translation>场景检查器(&amp;N)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3145"/>
+      <location filename="../CommandView.cpp" line="3148"/>
       <source>Opens the scene inspector</source>
       <translation type="unfinished">Opens the scene inspector</translation>
     </message>
@@ -13876,12 +13952,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <location filename="../CommandView.cpp" line="3177"/>
+      <location filename="../CommandView.cpp" line="3180"/>
       <source>Text&amp;ure Mapping</source>
-      <translation type="unfinished">Text&amp;ure Mapping</translation>
+      <translation>纹理映射(&amp;U)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3178"/>
+      <location filename="../CommandView.cpp" line="3181"/>
       <source>Maps textures to shapes</source>
       <translation type="unfinished">Maps textures to shapes</translation>
     </message>
@@ -13889,12 +13965,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <location filename="../CommandView.cpp" line="3204"/>
+      <location filename="../CommandView.cpp" line="3207"/>
       <source>View &amp;Turntable</source>
-      <translation type="unfinished">View &amp;Turntable</translation>
+      <translation>视图转盘(&amp;T)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3205"/>
+      <location filename="../CommandView.cpp" line="3208"/>
       <source>Opens a turntable view</source>
       <translation type="unfinished">Opens a turntable view</translation>
     </message>
@@ -13902,12 +13978,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdSelBack</name>
     <message>
-      <location filename="../CommandView.cpp" line="3233"/>
+      <location filename="../CommandView.cpp" line="3236"/>
       <source>Selection &amp;Back</source>
-      <translation type="unfinished">Selection &amp;Back</translation>
+      <translation>向后选择(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3235"/>
+      <location filename="../CommandView.cpp" line="3238"/>
       <source>Restores the previous tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation type="unfinished">Restores the previous tree view selection. Only works if tree RecordSelection mode is switched on.</translation>
     </message>
@@ -13915,12 +13991,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdSelForward</name>
     <message>
-      <location filename="../CommandView.cpp" line="3267"/>
+      <location filename="../CommandView.cpp" line="3270"/>
       <source>Selection &amp;Forward</source>
-      <translation type="unfinished">Selection &amp;Forward</translation>
+      <translation>向前选择(&amp;F)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3269"/>
+      <location filename="../CommandView.cpp" line="3272"/>
       <source>Restores the next tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation type="unfinished">Restores the next tree view selection. Only works if tree RecordSelection mode is switched on.</translation>
     </message>
@@ -13928,12 +14004,12 @@ Proceed?</translation>
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3321"/>
+      <location filename="../CommandView.cpp" line="3324"/>
       <source>&amp;Single Document</source>
-      <translation type="unfinished">&amp;Single Document</translation>
+      <translation>单文档(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3322"/>
+      <location filename="../CommandView.cpp" line="3325"/>
       <source>Displays only the active document in the tree view</source>
       <translation type="unfinished">Displays only the active document in the tree view</translation>
     </message>
@@ -13941,12 +14017,12 @@ Proceed?</translation>
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3338"/>
+      <location filename="../CommandView.cpp" line="3341"/>
       <source>&amp;Multi Document</source>
-      <translation type="unfinished">&amp;Multi Document</translation>
+      <translation>多文档(&amp;M)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3339"/>
+      <location filename="../CommandView.cpp" line="3342"/>
       <source>Displays all documents in the tree view</source>
       <translation type="unfinished">Displays all documents in the tree view</translation>
     </message>
@@ -13954,12 +14030,12 @@ Proceed?</translation>
   <context>
     <name>StdTreeSyncView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3394"/>
+      <location filename="../CommandView.cpp" line="3397"/>
       <source>&amp;1 Sync View</source>
-      <translation type="unfinished">&amp;1 Sync View</translation>
+      <translation>&amp;1 同步视图</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3395"/>
+      <location filename="../CommandView.cpp" line="3398"/>
       <source>Switches to the 3D view containing the selected item from the tree view</source>
       <translation type="unfinished">Switches to the 3D view containing the selected item from the tree view</translation>
     </message>
@@ -13967,12 +14043,12 @@ Proceed?</translation>
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3412"/>
+      <location filename="../CommandView.cpp" line="3415"/>
       <source>&amp;2 Sync Selection</source>
-      <translation type="unfinished">&amp;2 Sync Selection</translation>
+      <translation>&amp;2 同步选择</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3413"/>
+      <location filename="../CommandView.cpp" line="3416"/>
       <source>Expands the tree item when the corresponding object is selected in the 3D view</source>
       <translation type="unfinished">Expands the tree item when the corresponding object is selected in the 3D view</translation>
     </message>
@@ -13980,12 +14056,12 @@ Proceed?</translation>
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
-      <location filename="../CommandView.cpp" line="3430"/>
+      <location filename="../CommandView.cpp" line="3433"/>
       <source>&amp;3 Sync Placement</source>
-      <translation type="unfinished">&amp;3 Sync Placement</translation>
+      <translation>&amp;3 同步放置</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3431"/>
+      <location filename="../CommandView.cpp" line="3434"/>
       <source>Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)</source>
       <translation type="unfinished">Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)</translation>
     </message>
@@ -13993,12 +14069,12 @@ Proceed?</translation>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3466"/>
+      <location filename="../CommandView.cpp" line="3469"/>
       <source>&amp;5 Record Selection</source>
-      <translation type="unfinished">&amp;5 Record Selection</translation>
+      <translation>&amp;5 记录选择</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3467"/>
+      <location filename="../CommandView.cpp" line="3470"/>
       <source>Records the selection in the tree view in order to go back/forward using the navigation buttons</source>
       <translation type="unfinished">Records the selection in the tree view in order to go back/forward using the navigation buttons</translation>
     </message>
@@ -14006,12 +14082,12 @@ Proceed?</translation>
   <context>
     <name>StdTreeDrag</name>
     <message>
-      <location filename="../CommandView.cpp" line="3484"/>
+      <location filename="../CommandView.cpp" line="3487"/>
       <source>Initiate &amp;Dragging</source>
-      <translation type="unfinished">Initiate &amp;Dragging</translation>
+      <translation>启动拖动(&amp;D)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3485"/>
+      <location filename="../CommandView.cpp" line="3488"/>
       <source>Initiates dragging of the currently selected tree items</source>
       <translation type="unfinished">Initiates dragging of the currently selected tree items</translation>
     </message>
@@ -14019,12 +14095,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <location filename="../CommandView.cpp" line="3517"/>
+      <location filename="../CommandView.cpp" line="3520"/>
       <source>Tree View Actions</source>
       <translation type="unfinished">Tree View Actions</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3518"/>
+      <location filename="../CommandView.cpp" line="3521"/>
       <source>Tree view behavior options and actions</source>
       <translation type="unfinished">Tree view behavior options and actions</translation>
     </message>
@@ -14032,12 +14108,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <location filename="../CommandView.cpp" line="3559"/>
+      <location filename="../CommandView.cpp" line="3562"/>
       <source>&amp;Bounding Box</source>
-      <translation type="unfinished">&amp;Bounding Box</translation>
+      <translation>边界框(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3560"/>
+      <location filename="../CommandView.cpp" line="3563"/>
       <source>Shows selection bounding box</source>
       <translation type="unfinished">Shows selection bounding box</translation>
     </message>
@@ -14045,12 +14121,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdDockOverlayAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3604"/>
+      <location filename="../CommandView.cpp" line="3607"/>
       <source>Toggle Overl&amp;ay for All Panels</source>
-      <translation type="unfinished">Toggle Overl&amp;ay for All Panels</translation>
+      <translation>切换所有面板的叠加层(&amp;A)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3605"/>
+      <location filename="../CommandView.cpp" line="3608"/>
       <source>Toggled overlay mode for all docked panels</source>
       <translation type="unfinished">Toggled overlay mode for all docked panels</translation>
     </message>
@@ -14058,12 +14134,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdDockOverlayTransparentAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3628"/>
+      <location filename="../CommandView.cpp" line="3631"/>
       <source>Toggle Tra&amp;nsparent Panels</source>
-      <translation type="unfinished">Toggle Tra&amp;nsparent Panels</translation>
+      <translation>切换透明面板(&amp;N)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3629"/>
+      <location filename="../CommandView.cpp" line="3632"/>
       <source>Toggles transparent mode for all docked overlay panels.
 This makes the docked panels stay transparent at all times.</source>
       <translation type="unfinished">Toggles transparent mode for all docked overlay panels.
@@ -14073,12 +14149,12 @@ This makes the docked panels stay transparent at all times.</translation>
   <context>
     <name>StdCmdDockOverlayToggle</name>
     <message>
-      <location filename="../CommandView.cpp" line="3653"/>
+      <location filename="../CommandView.cpp" line="3656"/>
       <source>Toggle &amp;Overlay</source>
-      <translation type="unfinished">Toggle &amp;Overlay</translation>
+      <translation>切换叠加层(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3654"/>
+      <location filename="../CommandView.cpp" line="3657"/>
       <source>Toggles overlay mode for the docked window under the cursor</source>
       <translation type="unfinished">Toggles overlay mode for the docked window under the cursor</translation>
     </message>
@@ -14086,12 +14162,12 @@ This makes the docked panels stay transparent at all times.</translation>
   <context>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3677"/>
+      <location filename="../CommandView.cpp" line="3680"/>
       <source>Toggle Tran&amp;sparent Mode</source>
-      <translation type="unfinished">Toggle Tran&amp;sparent Mode</translation>
+      <translation>切换透明模式(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3678"/>
+      <location filename="../CommandView.cpp" line="3681"/>
       <source>Toggles transparent mode for the docked panel under cursor.
 This makes the docked panel stay transparent at all times.</source>
       <translation type="unfinished">Toggles transparent mode for the docked panel under cursor.
@@ -14101,12 +14177,12 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>StdCmdDockOverlayToggleLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="3702"/>
+      <location filename="../CommandView.cpp" line="3705"/>
       <source>Toggle &amp;Left</source>
-      <translation type="unfinished">Toggle &amp;Left</translation>
+      <translation>切换左(&amp;L)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3703"/>
+      <location filename="../CommandView.cpp" line="3706"/>
       <source>Toggles the visibility of the left overlay panel</source>
       <translation type="unfinished">Toggles the visibility of the left overlay panel</translation>
     </message>
@@ -14114,12 +14190,12 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>StdCmdDockOverlayToggleRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="3727"/>
+      <location filename="../CommandView.cpp" line="3730"/>
       <source>Toggle &amp;Right</source>
-      <translation type="unfinished">Toggle &amp;Right</translation>
+      <translation>切换右(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3728"/>
+      <location filename="../CommandView.cpp" line="3731"/>
       <source>Toggles the visibility of the right overlay panel</source>
       <translation type="unfinished">Toggles the visibility of the right overlay panel</translation>
     </message>
@@ -14127,12 +14203,12 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>StdCmdDockOverlayToggleTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="3752"/>
+      <location filename="../CommandView.cpp" line="3755"/>
       <source>Toggle &amp;Top</source>
-      <translation type="unfinished">Toggle &amp;Top</translation>
+      <translation>切换顶部(&amp;T)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3753"/>
+      <location filename="../CommandView.cpp" line="3756"/>
       <source>Toggles the visibility of the top overlay panel</source>
       <translation type="unfinished">Toggles the visibility of the top overlay panel</translation>
     </message>
@@ -14140,12 +14216,12 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>StdCmdDockOverlayToggleBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="3777"/>
+      <location filename="../CommandView.cpp" line="3780"/>
       <source>Toggle &amp;Bottom</source>
-      <translation type="unfinished">Toggle &amp;Bottom</translation>
+      <translation>切换底部(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3778"/>
+      <location filename="../CommandView.cpp" line="3781"/>
       <source>Toggles the visibility of the bottom overlay panel</source>
       <translation type="unfinished">Toggles the visibility of the bottom overlay panel</translation>
     </message>
@@ -14153,12 +14229,12 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>StdCmdDockOverlayMouseTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3802"/>
+      <location filename="../CommandView.cpp" line="3805"/>
       <source>Bypass &amp;Mouse Events in Overlay Panels</source>
-      <translation type="unfinished">Bypass &amp;Mouse Events in Overlay Panels</translation>
+      <translation>绕过叠加层面板中的鼠标事件(&amp;M)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3803"/>
+      <location filename="../CommandView.cpp" line="3806"/>
       <source>Bypasses all mouse events in docked overlay panels</source>
       <translation type="unfinished">Bypasses all mouse events in docked overlay panels</translation>
     </message>
@@ -14166,12 +14242,12 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>StdCmdDockOverlay</name>
     <message>
-      <location filename="../CommandView.cpp" line="3844"/>
+      <location filename="../CommandView.cpp" line="3847"/>
       <source>Overlay Docked Panel</source>
       <translation type="unfinished">Overlay Docked Panel</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3845"/>
+      <location filename="../CommandView.cpp" line="3848"/>
       <source>Sets the docked panel in overlay mode</source>
       <translation type="unfinished">Sets the docked panel in overlay mode</translation>
     </message>
@@ -14179,12 +14255,12 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>StdStoreWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3876"/>
+      <location filename="../CommandView.cpp" line="3879"/>
       <source>St&amp;ore Working View</source>
-      <translation type="unfinished">St&amp;ore Working View</translation>
+      <translation>保存工作视图(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3877"/>
+      <location filename="../CommandView.cpp" line="3880"/>
       <source>Stores a temporary working view for the current document</source>
       <translation type="unfinished">Stores a temporary working view for the current document</translation>
     </message>
@@ -14192,12 +14268,12 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>StdRecallWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3906"/>
+      <location filename="../CommandView.cpp" line="3909"/>
       <source>R&amp;ecall Working View</source>
-      <translation type="unfinished">R&amp;ecall Working View</translation>
+      <translation>调用工作视图(&amp;E)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3907"/>
+      <location filename="../CommandView.cpp" line="3910"/>
       <source>Recalls a previously stored temporary working view</source>
       <translation type="unfinished">Recalls a previously stored temporary working view</translation>
     </message>
@@ -14205,12 +14281,12 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>StdCmdAlignToSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3938"/>
+      <location filename="../CommandView.cpp" line="3941"/>
       <source>&amp;Align to Selection</source>
-      <translation type="unfinished">&amp;Align to Selection</translation>
+      <translation>与所选对齐(&amp;C)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3939"/>
+      <location filename="../CommandView.cpp" line="3942"/>
       <source>Aligns the camera view to the selected elements in the 3D view</source>
       <translation type="unfinished">Aligns the camera view to the selected elements in the 3D view</translation>
     </message>
@@ -14220,7 +14296,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="235"/>
       <source>Choose Open &amp;Window</source>
-      <translation type="unfinished">Choose Open &amp;Window</translation>
+      <translation>选择打开窗口(&amp;W)</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="237"/>
@@ -14257,7 +14333,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1058"/>
+      <location filename="../ExpressionCompleter.cpp" line="1060"/>
       <source>Exact Match</source>
       <translation type="unfinished">Exact Match</translation>
     </message>
@@ -14265,7 +14341,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1162"/>
+      <location filename="../ExpressionCompleter.cpp" line="1225"/>
       <source>Exact Match</source>
       <translation type="unfinished">Exact Match</translation>
     </message>
@@ -14273,13 +14349,13 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::FileChooser</name>
     <message>
-      <location filename="../FileDialog.cpp" line="744"/>
-      <location filename="../FileDialog.cpp" line="746"/>
+      <location filename="../FileDialog.cpp" line="747"/>
+      <location filename="../FileDialog.cpp" line="749"/>
       <source>Select a File</source>
       <translation type="unfinished">Select a File</translation>
     </message>
     <message>
-      <location filename="../FileDialog.cpp" line="749"/>
+      <location filename="../FileDialog.cpp" line="752"/>
       <source>Select a Directory</source>
       <translation type="unfinished">Select a Directory</translation>
     </message>
@@ -14313,31 +14389,72 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Tree.cpp" line="3749"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>树状图</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgExpressionInput</name>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="72"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="77"/>
       <source>Revert to last calculated value (as constant)</source>
       <translation>恢复到最后一个计算值(为常量)</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="346"/>
+      <source> (Warning: unit discarded)</source>
+      <translation type="unfinished"> (Warning: unit discarded)</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="451"/>
+      <source>Invalid property name: %1</source>
+      <translation type="unfinished">Invalid property name: %1</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="455"/>
+      <source>Unknown object</source>
+      <translation type="unfinished">Unknown object</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="461"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="828"/>
+      <source>the name cannot be empty</source>
+      <translation type="unfinished">the name cannot be empty</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="471"/>
+      <source>%1 is a unit</source>
+      <translation type="unfinished">%1 is a unit</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="476"/>
+      <source>%1 is a constant</source>
+      <translation type="unfinished">%1 is a constant</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="482"/>
+      <source>%1 already exists</source>
+      <translation type="unfinished">%1 already exists</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="824"/>
+      <source>Invalid group name: %1</source>
+      <translation type="unfinished">Invalid group name: %1</translation>
     </message>
   </context>
   <context>
     <name>QWidget</name>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="65"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="66"/>
       <source>Generic</source>
       <translation>通用</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="68"/>
-      <source>Length</source>
-      <translation>长度</translation>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="69"/>
+      <source>Numeric</source>
+      <translation type="unfinished">Numeric</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="71"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="72"/>
       <source>Color</source>
       <translation>颜色</translation>
     </message>
@@ -14345,7 +14462,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui</name>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="282"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="283"/>
       <source>New parameter...</source>
       <translation type="unfinished">New parameter...</translation>
     </message>
@@ -14353,32 +14470,32 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::StyleParametersModel</name>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="356"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="357"/>
       <source>All Theme Editor Parameters</source>
       <translation type="unfinished">All Theme Editor Parameters</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="426"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="427"/>
       <source>Root</source>
       <translation type="unfinished">Root</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="495"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="500"/>
       <source>Name</source>
       <translation>名称</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="497"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="502"/>
       <source>Expression</source>
       <translation>表达式</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="499"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="504"/>
       <source>Preview</source>
       <translation>预览</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgThemeEditor.cpp" line="501"/>
+      <location filename="../Dialogs/DlgThemeEditor.cpp" line="506"/>
       <source>Type</source>
       <translation>类型</translation>
     </message>
@@ -14418,7 +14535,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4560"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4547"/>
       <source>Changes the linked object</source>
       <translation type="unfinished">Changes the linked object</translation>
     </message>
@@ -14434,6 +14551,47 @@ This makes the docked panel stay transparent at all times.</translation>
       <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="137"/>
       <source>No</source>
       <translation>否</translation>
+    </message>
+  </context>
+  <context>
+    <name>Exceptions</name>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="286"/>
+      <source>Value out of range (%1 out of [%2, %3])</source>
+      <translation type="unfinished">Value out of range (%1 out of [%2, %3])</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="333"/>
+      <source>Not a number</source>
+      <translation type="unfinished">Not a number</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="340"/>
+      <source>Unit mismatch between result and required unit</source>
+      <translation type="unfinished">Unit mismatch between result and required unit</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdClarifySelection</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3969"/>
+      <source>Clarify Selection</source>
+      <translation type="unfinished">Clarify Selection</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3970"/>
+      <source>Displays a context menu at the mouse cursor to select overlapping or obstructed geometry in the 3D view.
+</source>
+      <translation type="unfinished">Displays a context menu at the mouse cursor to select overlapping or obstructed geometry in the 3D view.
+</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::SelectionMenu</name>
+    <message>
+      <location filename="../Selection/SelectionView.cpp" line="1118"/>
+      <source>Whole Object</source>
+      <translation type="unfinished">Whole Object</translation>
     </message>
   </context>
 </TS>

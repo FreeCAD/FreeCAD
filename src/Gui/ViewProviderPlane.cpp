@@ -43,13 +43,19 @@
 #include "ViewProviderPlane.h"
 #include "ViewProviderCoordinateSystem.h"
 
+#include <Utilities.h>
+#include <Base/Tools.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/events/SoEvent.h>
+#include <Inventor/nodes/SoFontStyle.h>
+
 
 using namespace Gui;
 
 PROPERTY_SOURCE(Gui::ViewProviderPlane, Gui::ViewProviderDatum)
 
 
-ViewProviderPlane::ViewProviderPlane()
+ViewProviderPlane::ViewProviderPlane() : SelectionObserver(true)
 {
     sPixmap = "Std_Plane";
     lineThickness = 1.0;
@@ -72,37 +78,23 @@ void ViewProviderPlane::attach(App::DocumentObject * obj) {
     // and faceSeparator...
     //ShapeAppearance.setTransparency(0.8);
     auto material = new SoMaterial();
-    material->transparency.setValue(0.95f);
+    material->transparency.setValue(0.85f);
+
     if (!role.empty()) {
         ShapeAppearance.setDiffuseColor(getColor(role));
-        SbColor color;
-        float alpha = 0.0f;
-        color.setPackedValue(getColor(role), alpha);
-        material->ambientColor.setValue(color);
-        material->diffuseColor.setValue(color);
     }
 
-    static const float size = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetFloat("DatumPlaneSize", 40.0);
-    static const float startSize = 0.25 * size; //NOLINT
+    SbColor color = ShapeAppearance.getDiffuseColor().asValue<SbColor>();
+    material->ambientColor.setValue(color);
+    material->diffuseColor.setValue(color);
 
-    SbVec3f verts[4];
-    if (role.empty()) {
-        verts[0] = SbVec3f(size, size, 0);
-        verts[1] = SbVec3f(size, -size, 0);
-        verts[2] = SbVec3f(-size, -size, 0);
-        verts[3] = SbVec3f(-size, size, 0);
-    }
-    else {
-        verts[0] = SbVec3f(size, size, 0);
-        verts[1] = SbVec3f(size, startSize, 0);
-        verts[2] = SbVec3f(startSize, startSize, 0);
-        verts[3] = SbVec3f(startSize, size, 0);
-    }
+    auto ps = new SoPickStyle();
+    ps->style.setValue(SoPickStyle::SHAPE_ON_TOP);
 
-    auto pCoords = new SoCoordinate3();
-    pCoords->point.setNum(4);
-    pCoords->point.setValues(0, 4, verts);
+    pCoords = new SoCoordinate3();
     sep->addChild(pCoords);
+    sep->addChild(material);
+    sep->addChild(ps);
 
     auto lineSeparator = new SoSeparator();
     auto pLines = new SoIndexedLineSet();
@@ -110,17 +102,12 @@ void ViewProviderPlane::attach(App::DocumentObject * obj) {
     pLines->coordIndex.setNum(6);
     pLines->coordIndex.setValues(0, 6, lines);
 
-    auto ps = new SoPickStyle();
-    ps->style.setValue(SoPickStyle::SHAPE_ON_TOP);
-    lineSeparator->addChild(ps);
     lineSeparator->addChild(pLines);
     sep->addChild(lineSeparator);
 
     // add semi transparent face
     auto faceSeparator = new SoSeparator();
     sep->addChild(faceSeparator);
-
-    faceSeparator->addChild(material);
 
     // disable backface culling and render with two-sided lighting
     auto shapeHints = new SoShapeHints();
@@ -130,26 +117,87 @@ void ViewProviderPlane::attach(App::DocumentObject * obj) {
 
     auto faceSet = new SoFaceSet();
     auto vertexProperty = new SoVertexProperty();
-    vertexProperty->vertex.setValues(0, 4, verts);
+    vertexProperty->vertex.connectFrom(&pCoords->point);
     faceSet->vertexProperty.setValue(vertexProperty);
     faceSeparator->addChild(faceSet);
 
-    auto textTranslation = new SoTranslation();
-    SbVec3f centeringVec = size * SbVec3f(0.36F, 0.49F, 0.0F);  // NOLINT
-    textTranslation->translation.setValue(centeringVec);
-    sep->addChild(textTranslation);
+    pTextTranslation = new SoTranslation();
+    sep->addChild(pTextTranslation);
 
     pLabel->string.setValue(getLabelText(role).c_str());
-
+    pLabel->justification = SoAsciiText::RIGHT;
     labelSwitch = new SoSwitch();
     setLabelVisibility(false);
+
+    auto font = new SoFontStyle();
+    font->size = 10.0;
+    font->style = SoFontStyle::BOLD;
+    font->family = SoFontStyle::SANS;
+
+    auto labelMaterial = static_cast<SoMaterial*>(material->copy());
+    labelMaterial->transparency = 0.0;
+
+    labelSwitch->addChild(font);
+    labelSwitch->addChild(labelMaterial);
+    labelSwitch->addChild(pTextTranslation);
     labelSwitch->addChild(pLabel);
+
+    updatePlaneSize();
+
     sep->addChild(labelSwitch);
+
+    handlers.addDelayedHandler(
+        ViewParams::instance()->getHandle(),
+        {"DatumLineSize", "DatumScale"},
+        [this](ParameterGrp::handle) { updatePlaneSize(); }
+    );
+
+    updatePlaneSize();
 }
 
 void ViewProviderPlane::setLabelVisibility(bool val)
 {
     labelSwitch->whichChild = val ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+}
+
+void ViewProviderPlane::onSelectionChanged(const SelectionChanges&)
+{
+    isSelected = Gui::Selection().isSelected(getObject());
+    isHovered = Gui::Selection().getPreselection().Object.getSubObject() == getObject() || Gui::Selection().getPreselection().Object.getObject() == getObject();
+
+    updatePlaneSize();
+}
+
+void ViewProviderPlane::updatePlaneSize()
+{
+    if (!pcObject->isAttachedToDocument()) {
+        return;
+    }
+
+    const auto params = ViewParams::instance();
+
+    const float size = params->getDatumPlaneSize() * Base::fromPercent(params->getDatumScale());
+    const float offset = 8.0F;
+
+    SbVec3f verts[4];
+
+    bool isSelectedOrHovered = isSelected || isHovered;
+
+    if (!getRole().empty() && !isSelectedOrHovered) {
+        verts[0] = SbVec3f(size, size, 0);
+        verts[1] = SbVec3f(size, offset, 0);
+        verts[2] = SbVec3f(offset, offset, 0);
+        verts[3] = SbVec3f(offset, size, 0);
+    } else {
+        verts[0] = SbVec3f(size, size, 0);
+        verts[1] = SbVec3f(size, -size, 0);
+        verts[2] = SbVec3f(-size, -size, 0);
+        verts[3] = SbVec3f(-size, size, 0);
+    }
+
+    pTextTranslation->translation.setValue(verts[0] / 2  - SbVec3f(2, 6, 0)); // NOLINT
+    pCoords->point.setNum(4);
+    pCoords->point.setValues(0, 4, verts);
 }
 
 unsigned long ViewProviderPlane::getColor(const std::string& role) const
@@ -169,24 +217,27 @@ unsigned long ViewProviderPlane::getColor(const std::string& role) const
 
 std::string ViewProviderPlane::getLabelText(const std::string& role) const
 {
-    std::string text;
     auto planesRoles = App::LocalCoordinateSystem::PlaneRoles;
     if (role == planesRoles[0]) {
-        text = "XY";
+        return "XY";
     }
     else if (role == planesRoles[1]) {
-        text = "XZ";
+        return "XZ";
     }
     else if (role == planesRoles[2]) {
-        text = "YZ";
+        return "YZ";
     }
-    return text;
+    return getObject()->getNameInDocument();
 }
 
 std::string ViewProviderPlane::getRole() const
 {
     // Note: Role property of App::Plane is not set yet when attaching.
     const char* name = pcObject->getNameInDocument();
+    if (!name) {
+        return "";
+    }
+
     auto planesRoles = App::LocalCoordinateSystem::PlaneRoles;
     if (strncmp(name, planesRoles[0], strlen(planesRoles[0])) == 0) {
         return planesRoles[0];

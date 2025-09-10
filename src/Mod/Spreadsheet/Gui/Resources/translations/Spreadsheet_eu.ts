@@ -342,7 +342,7 @@
       <translation>Sortu kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="260"/>
+      <location filename="../../PropertiesDialog.cpp" line="267"/>
       <source>Set cell properties</source>
       <translation>Ezarri gelaxka-propietateak</translation>
     </message>

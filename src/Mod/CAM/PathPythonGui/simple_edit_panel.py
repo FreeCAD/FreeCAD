@@ -5,7 +5,11 @@ from PySide import QtGui
 translate = FreeCAD.Qt.translate
 
 PROP_TYPE_QTYES = ["App::PropertyDistance", "App::PropertyAngle"]
-PROP_TYPE_NUMERIC = PROP_TYPE_QTYES + ["App::PropertyPercent", "App:PropertyFloat"]
+PROP_TYPE_NUMERIC = PROP_TYPE_QTYES + [
+    "App::PropertyPercent",
+    "App::PropertyInteger",
+    "App:PropertyFloat",
+]
 
 
 class SimpleEditPanel:
@@ -30,7 +34,10 @@ class SimpleEditPanel:
 
     def getFields(self):
         for prop_name, (get_field, set_field) in self._fc.items():
-            setattr(self.obj, prop_name, get_field())
+            val = get_field()
+            if isinstance(getattr(self.obj, prop_name), int):
+                val = int(val)
+            setattr(self.obj, prop_name, val)
 
     def setFields(self):
         for prop_name, (get_field, set_field) in self._fc.items():

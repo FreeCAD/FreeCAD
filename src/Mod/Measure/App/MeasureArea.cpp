@@ -53,6 +53,15 @@ MeasureArea::MeasureArea()
 
 MeasureArea::~MeasureArea() = default;
 
+bool MeasureArea::isSupported(App::MeasureElementType type)
+{
+    // clang-format off
+    return (type == App::MeasureElementType::PLANE) ||
+           (type == App::MeasureElementType::CYLINDER) ||
+           (type == App::MeasureElementType::SURFACE) ||
+           (type == App::MeasureElementType::VOLUME);
+    // clang-format on
+}
 
 bool MeasureArea::isValidSelection(const App::MeasureSelection& selection)
 {
@@ -68,8 +77,7 @@ bool MeasureArea::isValidSelection(const App::MeasureSelection& selection)
             return false;
         }
 
-        if ((type != App::MeasureElementType::PLANE && type != App::MeasureElementType::CYLINDER
-             && type != App::MeasureElementType::SURFACE)) {
+        if (!isSupported(type)) {
             return false;
         }
     }

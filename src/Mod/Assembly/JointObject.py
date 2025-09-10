@@ -620,7 +620,7 @@ class Joint:
 
             self.updateJCSPlacements(joint)
 
-            presolved = self.preSolve(joint, False)
+            presolved = joint.JointType in JointUsingPreSolve and self.preSolve(joint, False)
 
             isAssembly = self.getAssembly(joint).Type == "Assembly"
             if isAssembly and not presolved:
@@ -1562,6 +1562,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
                 self.jForm.distanceLabel.setText(translate("Assembly", "Angle"))
             elif jType == "Gears" or jType == "Belt":
                 self.jForm.distanceLabel.setText(translate("Assembly", "Radius 1"))
+            elif jType == "Screw":
+                self.jForm.distanceLabel.setText(translate("Assembly", "Thread pitch"))
             else:
                 self.jForm.distanceLabel.setText(translate("Assembly", "Pitch radius"))
 

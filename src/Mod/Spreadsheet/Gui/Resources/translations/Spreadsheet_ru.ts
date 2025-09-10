@@ -342,7 +342,7 @@
       <translation>Создание электронной таблицы</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="260"/>
+      <location filename="../../PropertiesDialog.cpp" line="267"/>
       <source>Set cell properties</source>
       <translation>Изменения свойств ячеек</translation>
     </message>

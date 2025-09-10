@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>576</width>
+    <width>736</width>
     <height>352</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Toolbars</string>
@@ -60,6 +66,12 @@
        </item>
        <item row="2" column="0" colspan="2">
         <widget class="QTreeWidget" name="commandTreeWidget">
+         <property name="minimumSize">
+          <size>
+           <width>400</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="rootIsDecorated">
           <bool>false</bool>
          </property>
@@ -72,7 +84,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -208,10 +220,10 @@
          <item>
           <spacer>
            <property name="orientation">
-            <enum>Qt::Vertical</enum>
+            <enum>Qt::Orientation::Vertical</enum>
            </property>
            <property name="sizeType">
-            <enum>QSizePolicy::Expanding</enum>
+            <enum>QSizePolicy::Policy::Expanding</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>

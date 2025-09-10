@@ -160,13 +160,13 @@ This only applies if Markdown is selected above.</translation>
     <name>Help</name>
     <message>
       <location filename="../../Help.py" line="75"/>
-      <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation>無法檢索該頁面的內容. 請檢查 編輯 -&gt; 偏好設定 -&gt; 一般 -&gt; 說明 選單之下的設定</translation>
+      <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
+      <translation type="unfinished">Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="79"/>
-      <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation>無法確定說明檔案位置. 請檢查 編輯 -&gt; 偏好設定 -&gt; 一般 -&gt; 說明 選單之下的設定</translation>
+      <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
+      <translation type="unfinished">Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="83"/>

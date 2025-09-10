@@ -485,10 +485,10 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             # raise and reposition the head only if new wire starts further than 0.5 mm
             # from current head position
             if not canSkipRepositioning(currentPosition, newPosition):
-                path.append(Path.Command("G0 Z{}".format(obj.SafeHeight.Value)))
+                path.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
                 path.append(
                     Path.Command(
-                        "G0 X{} Y{} Z{}".format(newPosition.x, newPosition.y, obj.SafeHeight.Value)
+                        "G0", {"X": newPosition.x, "Y": newPosition.y, "Z": obj.SafeHeight.Value}
                     )
                 )
 
@@ -496,7 +496,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             vSpeed = obj.ToolController.VertFeed.Value
             path.append(
                 Path.Command(
-                    "G1 X{} Y{} Z{} F{}".format(newPosition.x, newPosition.y, newPosition.z, vSpeed)
+                    "G1", {"X": newPosition.x, "Y": newPosition.y, "Z": newPosition.z, "F": vSpeed}
                 )
             )
             for e in wire:

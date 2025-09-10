@@ -116,7 +116,7 @@ App::DocumentObjectExecReturn *Fillet::execute()
         this->rawShape = shape;
         shape = refineShapeIfActive(shape);
         if (!isSingleSolidRuleSatisfied(shape.getShape())) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compound' in the active body."));
         }
 
         shape = getSolid(shape);

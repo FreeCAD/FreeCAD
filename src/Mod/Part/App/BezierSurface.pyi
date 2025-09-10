@@ -35,7 +35,7 @@ class BezierSurface(GeometrySurface):
     Returns the polynomial degree in v direction of this Bezier surface,
     which is equal to the number of poles minus 1.
     """
-    
+
     MaxDegree: Final[int]
     """
     Returns the value of the maximum polynomial degree of any

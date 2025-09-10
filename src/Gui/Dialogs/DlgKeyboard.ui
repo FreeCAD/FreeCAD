@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>642</width>
+    <width>736</width>
     <height>376</height>
    </rect>
   </property>
@@ -59,7 +59,7 @@
         <widget class="QTreeWidget" name="commandTreeWidget">
          <property name="minimumSize">
           <size>
-           <width>220</width>
+           <width>400</width>
            <height>0</height>
           </size>
          </property>

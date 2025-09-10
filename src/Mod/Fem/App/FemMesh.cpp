@@ -1533,6 +1533,7 @@ void FemMesh::readAbaqus(const std::string& FileName)
     'Mod/Fem/femtest/data/mesh/tetra10_mesh.inp')
     */
 
+    Base::PyGILStateLocker lock;
     PyObject* module = PyImport_ImportModule("feminout.importInpMesh");
     if (!module) {
         return;
@@ -1573,6 +1574,7 @@ void FemMesh::readZ88(const std::string& FileName)
     'Mod/Fem/femtest/data/mesh/tetra10_mesh.z88')
     */
 
+    Base::PyGILStateLocker lock;
     PyObject* module = PyImport_ImportModule("feminout.importZ88Mesh");
     if (!module) {
         return;
@@ -2236,13 +2238,19 @@ void FemMesh::writeZ88(const std::string& FileName) const
     feminout.importZ88Mesh.write(App.ActiveDocument.Box_Mesh.FemMesh, '/tmp/mesh.z88')
     */
 
+    Base::PyGILStateLocker lock;
     PyObject* module = PyImport_ImportModule("feminout.importZ88Mesh");
     if (!module) {
         return;
     }
+
+    // Make sure the reference counter won't become 0 when passing this mesh to its wrapper
+    FemMesh* self = const_cast<FemMesh*>(this);
+    self->ref();
+
     try {
         Py::Module z88mod(module, true);
-        Py::Object mesh = Py::asObject(new FemMeshPy(const_cast<FemMesh*>(this)));
+        Py::Object mesh = Py::asObject(new FemMeshPy(self));
         Py::Callable method(z88mod.getAttr("write"));
         Py::Tuple args(2);
         args.setItem(0, mesh);
@@ -2252,6 +2260,9 @@ void FemMesh::writeZ88(const std::string& FileName) const
     catch (Py::Exception& e) {
         e.clear();
     }
+
+    // Safely decrease the reference counter without destroying this mesh
+    self->unrefNoDelete();
 }
 
 

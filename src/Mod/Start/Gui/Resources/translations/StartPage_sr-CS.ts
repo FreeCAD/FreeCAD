@@ -16,12 +16,12 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="99"/>
       <source>Set your basic configuration options below.</source>
-      <translation type="unfinished">Set your basic configuration options below.</translation>
+      <translation>Pre početka prvo ispod podesi svoje osnovne opcije.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="100"/>
       <source>These options (and many more) can be changed later in the preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in the preferences.</translation>
+      <translation>Ove opcije (i mnoge druge) mogu biti kasnije promenjene u Podešavanjima.</translation>
     </message>
   </context>
   <context>
@@ -57,101 +57,101 @@
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
       <source>Displays the start page</source>
-      <translation type="unfinished">Displays the start page</translation>
+      <translation>Prikazuje početnu stranicu</translation>
     </message>
   </context>
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="211"/>
+      <location filename="../../StartView.cpp" line="212"/>
       <source>Open File</source>
       <translation>Otvori datoteku</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="219"/>
+      <location filename="../../StartView.cpp" line="220"/>
       <source>Assembly</source>
       <translation>Sklop</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="223"/>
+      <location filename="../../StartView.cpp" line="224"/>
       <source>2D Draft</source>
       <translation>2D crtež</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="225"/>
+      <source>Creates a 2D Draft document</source>
+      <translation type="unfinished">Creates a 2D Draft document</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="228"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Arhitektura</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="207"/>
-      <source>Empty File</source>
-      <translation type="unfinished">Empty File</translation>
-    </message>
-    <message>
       <location filename="../../StartView.cpp" line="208"/>
+      <source>Empty File</source>
+      <translation>Prazna datoteka</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="209"/>
       <source>Creates a new empty FreeCAD file</source>
-      <translation type="unfinished">Creates a new empty FreeCAD file</translation>
+      <translation>Napravi novu praznu FreeCAD datoteku</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="212"/>
+      <location filename="../../StartView.cpp" line="213"/>
       <source>Opens an existing CAD file or 3D model</source>
-      <translation type="unfinished">Opens an existing CAD file or 3D model</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="215"/>
-      <source>Parametric Body</source>
-      <translation type="unfinished">Parametric Body</translation>
+      <translation>Otvori postojeću CAD datoteku ili 3D model</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="216"/>
+      <source>Parametric Body</source>
+      <translation>Deo</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="217"/>
       <source>Creates a body with the Part Design workbench</source>
-      <translation type="unfinished">Creates a body with the Part Design workbench</translation>
+      <translation>Napravi deo u okruženju Konstruisanje delova</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="220"/>
+      <location filename="../../StartView.cpp" line="221"/>
       <source>Creates an assembly project</source>
-      <translation type="unfinished">Creates an assembly project</translation>
+      <translation>Napravi sklop u okruženju Sklopovi</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="224"/>
-      <source>Creates a 2D draft document</source>
-      <translation type="unfinished">Creates a 2D draft document</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="229"/>
       <source>Creates an architectural project</source>
-      <translation type="unfinished">Creates an architectural project</translation>
+      <translation>Napravi arhitektonski projekat</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="459"/>
+      <location filename="../../StartView.cpp" line="497"/>
       <source>New File</source>
       <translation>Nova datoteka</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="460"/>
+      <location filename="../../StartView.cpp" line="498"/>
       <source>Examples</source>
       <translation>Primeri</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="461"/>
+      <location filename="../../StartView.cpp" line="499"/>
       <source>Recent Files</source>
       <translation>Nedavne datoteke</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="476"/>
+      <location filename="../../StartView.cpp" line="514"/>
       <source>Open First Start Setup</source>
-      <translation type="unfinished">Open First Start Setup</translation>
+      <translation>Otvori početna podešavanja</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="478"/>
+      <location filename="../../StartView.cpp" line="516"/>
       <source>Do not show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Do not show this Start page again (start with blank screen)</translation>
+      <translation>Ne prikazuj ponovo ovu početnu stranu (počni sa praznim ekranom)</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="453"/>
+      <location filename="../../StartView.cpp" line="491"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>
@@ -234,18 +234,18 @@
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>An optional custom folder to be displayed on the Start page.
 Multiple folders can be added using ";;" to separate paths.</source>
-      <translation type="unfinished">An optional custom folder to be displayed on the Start page.
-Multiple folders can be added using ";;" to separate paths.</translation>
+      <translation>Prikaži na početnoj strani sadržaj soptvene fascikle.
+Ako se njihove putanje odvajaju pomoću „;;“, moguće je dodati više fascikli.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
       <source>Shows example files on the start page</source>
-      <translation type="unfinished">Shows example files on the start page</translation>
+      <translation>Prikaži na početnoj strani datoteke primera</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="114"/>
       <source>The start page is closed automatically when FreeCAD launches</source>
-      <translation type="unfinished">The start page is closed automatically when FreeCAD launches</translation>
+      <translation>Kada se pokrene FreeCAD početna stranica će biti automatski zatvorena</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="108"/>

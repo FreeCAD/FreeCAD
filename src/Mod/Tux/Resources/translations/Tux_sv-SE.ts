@@ -31,12 +31,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="92"/>
       <source>Navigation style</source>
-      <translation>Navigationsstil</translation>
+      <translation>Navigeringsstil</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="93"/>
       <source>Page Up or Page Down key.</source>
-      <translation>Page Up eller Page Down-tangenten.</translation>
+      <translation>Page Up- eller Page Down-tangenten.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="94"/>
@@ -46,12 +46,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="95"/>
       <source>Middle mouse button or H key.</source>
-      <translation>Mittersta musknappen eller H-tangenten.</translation>
+      <translation>Mitten musknapp eller H-tangenten.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="97"/>
       <source>Middle mouse button.</source>
-      <translation>Mus-knappen i mitten.</translation>
+      <translation>Mitten av musknappen.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="100"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="652"/>
       <source>Orbit style</source>
-      <translation>Orbit stil</translation>
+      <translation>Orbit-stil</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="653"/>
@@ -76,12 +76,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="654"/>
       <source>Tooltip</source>
-      <translation>Verktygstips</translation>
+      <translation>Tips</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="655"/>
       <source>Turntable</source>
-      <translation>Skivtallrik</translation>
+      <translation>Vridskiva</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="656"/>

@@ -239,7 +239,7 @@ class _Wall(ArchComponent.Component):
         return dump
 
     def loads(self,state):
-        super().loads(state)  # do nothing as of 2024.11.28
+        self.Type = "Wall"
         if state == None:
             return
         elif state[0] == 'W':  # state[1] == 'a', behaviour before 2024.11.28
@@ -250,13 +250,12 @@ class _Wall(ArchComponent.Component):
         elif state[0] != 'Wall':  # model before merging super.dumps/loads()
             self.ArchSkPropSetPickedUuid = state[0]
             self.ArchSkPropSetListPrev = state[1]
-        self.Type = "Wall"
 
     def onDocumentRestored(self,obj):
         """Method run when the document is restored. Re-adds the Arch component, and Arch wall properties."""
 
         import DraftGeomUtils
-        from draftutils.messages import _wrn
+        from draftutils.messages import _log
 
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
@@ -274,15 +273,15 @@ class _Wall(ArchComponent.Component):
                 and not obj.Base.isDerivedFrom("Sketcher::SketchObject") \
                 and DraftGeomUtils.get_shape_normal(obj.Base.Shape) != Vector(0, 0, 1):
             obj.Normal = Vector(0, 0, 1)
-            _wrn(
+            _log(
                 "v1.0, "
-                + obj.Label
+                + obj.Name
                 + ", "
-                + translate("Arch", "changed 'Normal' to [0, 0, 1] to preserve extrusion direction")
+                + "changed 'Normal' to [0, 0, 1] to preserve extrusion direction"
             )
 
         if hasattr(obj,"ArchSketchData") and obj.ArchSketchData and Draft.getType(obj.Base) == "ArchSketch":
-            if hasattr(obj,"Width"):	# TODO need test?
+            if hasattr(obj,"Width"):  # TODO need test?
                 obj.setEditorMode("Width", ["ReadOnly"])
             if hasattr(obj,"Align"):
                 obj.setEditorMode("Align", ["ReadOnly"])

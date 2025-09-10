@@ -241,6 +241,17 @@ public:
     }
 };
 
+class ViewProviderMeasureCOM: public ViewProviderMeasure
+{
+    PROPERTY_HEADER(MeasureGui::ViewProviderMeasureCOM);
+
+public:
+    ViewProviderMeasureCOM()
+    {
+        sPixmap = "Measurement-CenterOfMass";
+    }
+};
+
 
 }  // namespace MeasureGui
 

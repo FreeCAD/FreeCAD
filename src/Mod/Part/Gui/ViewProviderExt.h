@@ -156,6 +156,9 @@ public:
 
     bool allowOverride(const App::DocumentObject &) const override;
 
+    void setFaceHighlightActive(bool active) { faceHighlightActive = active; }
+    bool isFaceHighlightActive() const { return faceHighlightActive; }
+
     /** @name Edit methods */
     //@{
     void setupContextMenu(QMenu*, QObject*, const char*) override;
@@ -213,6 +216,7 @@ protected:
 
     bool VisualTouched;
     bool NormalsFromUV;
+    bool faceHighlightActive = false;
 
 private:
     Gui::ViewProviderFaceTexture texture;

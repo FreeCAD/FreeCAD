@@ -26,6 +26,7 @@ import FreeCAD
 from draftobjects.hatch import Hatch
 if FreeCAD.GuiUp:
     from draftviewproviders.view_hatch import ViewProviderDraftHatch
+    import draftutils.gui_utils as gui_utils
 
 def make_hatch(baseobject, filename, pattern, scale, rotation, translate=True):
 
@@ -46,4 +47,6 @@ def make_hatch(baseobject, filename, pattern, scale, rotation, translate=True):
     obj.Translate = translate
     if FreeCAD.GuiUp:
         ViewProviderDraftHatch(obj.ViewObject)
+        gui_utils.format_object(obj)
+        gui_utils.autogroup(obj)
     return obj

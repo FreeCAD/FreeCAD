@@ -29,11 +29,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/openscadprefs-base.ui" line="102"/>
-        <source>Use ViewProvider in Tree View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/openscadprefs-base.ui" line="119"/>
         <source>If this is checked, Multmatrix Object will be Parametric</source>
         <translation type="unfinished"></translation>
@@ -113,6 +108,11 @@
     <message>
         <location filename="../ui/openscadprefs-base.ui" line="74"/>
         <source>OpenSCAD Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/openscadprefs-base.ui" line="102"/>
+        <source>Use ViewProviders in Tree View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -288,12 +288,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../OpenSCADUtils.py" line="653"/>
+        <location filename="../../OpenSCADUtils.py" line="649"/>
         <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../OpenSCADUtils.py" line="664"/>
+        <location filename="../../OpenSCADUtils.py" line="660"/>
         <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
         <translation type="unfinished"></translation>
     </message>
@@ -319,7 +319,7 @@
     </message>
     <message>
         <location filename="../../OpenSCADCommands.py" line="103"/>
-        <source>Removes fusion and applies placement to children, and color randomly</source>
+        <source>Explodes a fusion or compound and applies random colors</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -358,7 +358,7 @@
     </message>
     <message>
         <location filename="../../OpenSCADCommands.py" line="269"/>
-        <source>Creates a feature that allows increasing the tolerance</source>
+        <source>Creates a feature to increase the tolerance</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -371,7 +371,7 @@
     </message>
     <message>
         <location filename="../../OpenSCADCommands.py" line="286"/>
-        <source>Expands all placements downwards in the tree view</source>
+        <source>Expands all placements downwards in the Tree View</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -384,7 +384,7 @@
     </message>
     <message>
         <location filename="../../OpenSCADCommands.py" line="307"/>
-        <source>Replaces an object in the tree view. Select old, new, and parent object</source>
+        <source>Replaces an object in the Tree View</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -397,7 +397,7 @@
     </message>
     <message>
         <location filename="../../OpenSCADCommands.py" line="320"/>
-        <source>Removes the selected objects and all children that are not referenced from other objects</source>
+        <source>Removes the selected objects and all children that are not referenced by other objects</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -483,7 +483,7 @@
     </message>
     <message>
         <location filename="../../OpenSCADCommands.py" line="533"/>
-        <source>Adds an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
+        <source>Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -496,7 +496,7 @@
     </message>
     <message>
         <location filename="../../OpenSCADCommands.py" line="548"/>
-        <source>Exports objects as meshes and use OpenSCAD to perform a boolean operation</source>
+        <source>Performs a boolean operation using the OpenSCAD binary</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

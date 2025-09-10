@@ -17,8 +17,7 @@
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
       <source>Fetches the documentation from pages rendered on GitHub.
 This is currently not available.</source>
-      <translation type="unfinished">Fetches the documentation from pages rendered on GitHub.
-This is currently not available.</translation>
+      <translation>Holtdie Dokumentation von Seiten, die auf GitHub gerendert werden. Diese Option ist derzeit nicht verfügbar.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>
@@ -58,16 +57,12 @@ Documentation can be downloaded for offline use via the Addon Manager and instal
 &quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
 automatically search for the help files at the default location
 ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-Documentation can be downloaded for offline use via the Addon Manager and installing the
-&quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
-automatically search for the help files at the default location
-($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>Hier eine eigene URL oder den Ordner angeben, wo sich die Hilfedateien befinden. Die Dokumentation kann für die Offline-Verwendung mit dem Addon-Manager heruntergeladen und das &quot;Offline-Documentation&quot;-Addon installiert werden. Bleibt dieses Feld leer, wird FreeCAD die Hilfedateien automatisch an dem voreingestellten Ablageort suchen ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="112"/>
       <source>Translation suffix</source>
-      <translation type="unfinished">Translation suffix</translation>
+      <translation>Übersetzungs-Suffix</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="119"/>
@@ -101,41 +96,41 @@ oder &apos;Pandoc&apos; installiert sein.</translation>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</translation>
+      <translation>Hinweis: Wenn PySide-Web-Komponenten nicht auf dem System gefunden werden, werden Hilfe-Seiten im Standard-Webbrowser geöffnet, unabhängig von den folgenden Optionen.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="180"/>
       <source>The documentation will open in the default web browser</source>
-      <translation type="unfinished">The documentation will open in the default web browser</translation>
+      <translation>Die Dokumentation wird im Standard-Webbrowser geöffnet</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="183"/>
       <source>In the default web browser</source>
-      <translation type="unfinished">In the default web browser</translation>
+      <translation>Im Standard-Browser</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="199"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</source>
-      <translation type="unfinished">The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</translation>
+      <translation>Die Dokumentation wird in einem neuen Reiter innerhalb der FreeCAD-Oberfläche geöffnet. Dies erfordert die PySide-Komponente QtWebengineWidgets.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
 Requires the PySide QtWebengineWidgets component.</source>
-      <translation type="unfinished">Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
-Requires the PySide QtWebengineWidgets component.</translation>
+      <translation>Die Dokumentation wird in einem andockbaren Dialog innerhalb von FreeCAD geöffnet, wodurch gleichzeitig in der 3D-Ansicht gearbeitet werden kann.
+Benötigt die PySide QtWebengineWidgets-Komponente.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="249"/>
       <source>Custom stylesheet</source>
-      <translation type="unfinished">Custom stylesheet</translation>
+      <translation>Benutzerdefinierte Stilvorlage</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="256"/>
       <source>Specify the path to an alternative CSS file for styling Markdown pages.
 This only applies if Markdown is selected above.</source>
-      <translation type="unfinished">Specify the path to an alternative CSS file for styling Markdown pages.
-This only applies if Markdown is selected above.</translation>
+      <translation>Angabe eines Pfads zu einer alternativen CSS-Datei für das Styling von Markdown-Seiten.
+Dies gilt nur, wenn Markdown oben ausgewählt ist.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -157,13 +152,13 @@ This only applies if Markdown is selected above.</translation>
     <name>Help</name>
     <message>
       <location filename="../../Help.py" line="75"/>
-      <source>Contents for this page could not be retrieved. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation>Inhalte für diese Seite konnten nicht abgerufen werden. Bitte die Einstellungen im Menü Bearbeiten -&gt; Einstellungen -&gt; Allgemein -&gt; Hilfe überprüfen</translation>
+      <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
+      <translation>Inhalte für diese Seite konnten nicht abgerufen werden. Bitte die Einstellungen im Menü Bearbeiten → Einstellungen → Allgemein → Hilfe überprüfen</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="79"/>
-      <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation>Der Speicherort der Hilfedateien konnte nicht ermittelt werden. Bitte die Einstellungen im Menü Bearbeiten -&gt; Einstellungen -&gt; Allgemein -&gt; Hilfe überprüfen</translation>
+      <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
+      <translation>Der Speicherort der Hilfedateien konnte nicht ermittelt werden. Bitte die Einstellungen im Menü Bearbeiten → Einstellungen → Allgemein → Hilfe überprüfen</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="83"/>

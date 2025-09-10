@@ -501,7 +501,7 @@
      <property name="title">
       <string>Suggested Actions</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="showTaskWatcherCheckBox">
         <property name="text">

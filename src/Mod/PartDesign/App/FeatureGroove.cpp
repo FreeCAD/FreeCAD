@@ -193,7 +193,7 @@ App::DocumentObjectExecReturn *Groove::execute()
         this->rawShape = boolOp;
         boolOp = refineShapeIfActive(boolOp);
         if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compound' in the active body."));
         }
         boolOp = getSolid(boolOp);
         Shape.setValue(boolOp);

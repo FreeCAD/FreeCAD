@@ -32,7 +32,6 @@
 #include <Gui/WidgetFactory.h>
 
 #include "DlgPrefsMeasureAppearanceImp.h"
-#include "QuickMeasure.h"
 #include "QuickMeasurePy.h"
 #include "ViewProviderMeasureAngle.h"
 #include "ViewProviderMeasureDistance.h"
@@ -102,6 +101,7 @@ PyMOD_INIT_FUNC(MeasureGui)
     MeasureGui::ViewProviderMeasureLength              ::init();
     MeasureGui::ViewProviderMeasurePosition            ::init();
     MeasureGui::ViewProviderMeasureRadius              ::init();
+    MeasureGui::ViewProviderMeasureCOM                 ::init();
     // clang-format on
 
     // register preferences pages
@@ -111,10 +111,6 @@ PyMOD_INIT_FUNC(MeasureGui)
     //    Q_INIT_RESOURCE(Measure);
 
     Base::Interpreter().addType(&MeasureGui::QuickMeasurePy::Type, mod, "QuickMeasure");
-
-    // Create a QuickMeasure instance
-    auto measure = new MeasureGui::QuickMeasure(QApplication::instance());
-    Q_UNUSED(measure)
 
     PyMOD_Return(mod);
 }

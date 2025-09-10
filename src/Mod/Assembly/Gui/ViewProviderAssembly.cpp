@@ -69,6 +69,8 @@
 #include <Mod/Assembly/App/BomGroup.h>
 #include <Mod/PartDesign/App/Body.h>
 
+#include "TaskAssemblyMessages.h"
+
 #include "ViewProviderAssembly.h"
 #include "ViewProviderAssemblyPy.h"
 
@@ -277,6 +279,17 @@ bool ViewProviderAssembly::setEdit(int mode)
 
         attachSelection();
 
+        Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
+        if (taskView) {
+            // Waiting for the solver to support reporting information.
+            // taskSolver = new TaskAssemblyMessages(this);
+            // taskView->addContextualPanel(taskSolver);
+        }
+
+        auto* assembly = getObject<AssemblyObject>();
+        connectSolverUpdate = assembly->signalSolverUpdate.connect(
+            boost::bind(&ViewProviderAssembly::UpdateSolverInformation, this));
+
         return true;
     }
     return ViewProviderPart::setEdit(mode);
@@ -304,6 +317,15 @@ void ViewProviderAssembly::unsetEdit(int mode)
                                 "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', None)",
                                 this->getObject()->getDocument()->getName(),
                                 PARTKEY);
+
+        Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
+        if (taskView) {
+            // Waiting for the solver to support reporting information.
+            // taskView->removeContextualPanel(taskSolver);
+        }
+
+        connectSolverUpdate.disconnect();
+
         return;
     }
     ViewProviderPart::unsetEdit(mode);
@@ -1270,4 +1292,88 @@ ViewProviderAssembly::getCenterOfBoundingBox(const std::vector<MovingObject>& mo
     }
 
     return center;
+}
+
+inline QString intListHelper(const std::vector<int>& ints)
+{
+    QString results;
+    if (ints.size() < 8) {  // The 8 is a bit heuristic... more than that and we shift formats
+        for (const auto i : ints) {
+            if (results.isEmpty()) {
+                results.append(QStringLiteral("%1").arg(i));
+            }
+            else {
+                results.append(QStringLiteral(", %1").arg(i));
+            }
+        }
+    }
+    else {
+        const int numToShow = 3;
+        int more = ints.size() - numToShow;
+        for (int i = 0; i < numToShow; ++i) {
+            results.append(QStringLiteral("%1, ").arg(ints[i]));
+        }
+        results.append(ViewProviderAssembly::tr("ViewProviderAssembly", "and %1 more").arg(more));
+    }
+    return results;
+}
+
+void ViewProviderAssembly::UpdateSolverInformation()
+{
+    // Updates Solver Information with the Last solver execution at AssemblyObject level
+    auto* assembly = getObject<AssemblyObject>();
+
+    int dofs = assembly->getLastDoF();
+    bool hasConflicts = assembly->getLastHasConflicts();
+    bool hasRedundancies = assembly->getLastHasRedundancies();
+    bool hasPartiallyRedundant = assembly->getLastHasPartialRedundancies();
+    bool hasMalformed = assembly->getLastHasMalformedConstraints();
+
+    if (assembly->isEmpty()) {
+        signalSetUp(QStringLiteral("empty"), tr("Empty Assembly"), QString(), QString());
+    }
+    else if (dofs < 0 || hasConflicts) {  // over-constrained
+        signalSetUp(QStringLiteral("conflicting_constraints"),
+                    tr("Over-constrained:") + QLatin1String(" "),
+                    QStringLiteral("#conflicting"),
+                    QStringLiteral("(%1)").arg(intListHelper(assembly->getLastConflicting())));
+    }
+    else if (hasMalformed) {  // malformed joints
+        signalSetUp(
+            QStringLiteral("malformed_constraints"),
+            tr("Malformed joints:") + QLatin1String(" "),
+            QStringLiteral("#malformed"),
+            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastMalformedConstraints())));
+    }
+    else if (hasRedundancies) {
+        signalSetUp(QStringLiteral("redundant_constraints"),
+                    tr("Redundant joints:") + QLatin1String(" "),
+                    QStringLiteral("#redundant"),
+                    QStringLiteral("(%1)").arg(intListHelper(assembly->getLastRedundant())));
+    }
+    else if (hasPartiallyRedundant) {
+        signalSetUp(
+            QStringLiteral("partially_redundant_constraints"),
+            tr("Partially redundant:") + QLatin1String(" "),
+            QStringLiteral("#partiallyredundant"),
+            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastPartiallyRedundant())));
+    }
+    else if (assembly->getLastSolverStatus() != 0) {
+        signalSetUp(QStringLiteral("solver_failed"),
+                    tr("Solver failed to converge"),
+                    QStringLiteral(""),
+                    QStringLiteral(""));
+    }
+    else if (dofs > 0) {
+        signalSetUp(QStringLiteral("under_constrained"),
+                    tr("Under-constrained:") + QLatin1String(" "),
+                    QStringLiteral("#dofs"),
+                    tr("%n Degrees of Freedom", "", dofs));
+    }
+    else {
+        signalSetUp(QStringLiteral("fully_constrained"),
+                    tr("Fully constrained"),
+                    QString(),
+                    QString());
+    }
 }

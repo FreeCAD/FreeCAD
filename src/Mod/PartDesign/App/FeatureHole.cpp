@@ -2182,7 +2182,7 @@ App::DocumentObjectExecReturn* Hole::execute()
 
         if (!isSingleSolidRuleSatisfied(result.getShape())) {
             return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compounds' in the active body."));
+                    QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: enable 'Allow Compound' in the active body."));
         }
         this->Shape.setValue(result);
 

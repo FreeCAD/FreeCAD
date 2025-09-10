@@ -342,7 +342,7 @@
       <translation>Crear hoja de cálculo</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="260"/>
+      <location filename="../../PropertiesDialog.cpp" line="267"/>
       <source>Set cell properties</source>
       <translation>Propiedades</translation>
     </message>

@@ -76,36 +76,6 @@
 #define INKSCAPE_NS_URI "http://www.inkscape.org/namespaces/inkscape"
 #define SODIPODI_NS_URI "http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
 
-/*** pan-style cursor *******/
-
-#define PAN_WIDTH 16
-#define PAN_HEIGHT 16
-#define PAN_BYTES ((PAN_WIDTH + 7) / 8) * PAN_HEIGHT
-#define PAN_HOT_X 7
-#define PAN_HOT_Y 7
-
-static unsigned char pan_bitmap[PAN_BYTES] = {
-    0xc0, 0x03, 0x60, 0x02, 0x20, 0x04, 0x10, 0x08, 0x68, 0x16, 0x54, 0x2a, 0x73, 0xce, 0x01, 0x80,
-    0x01, 0x80, 0x73, 0xce, 0x54, 0x2a, 0x68, 0x16, 0x10, 0x08, 0x20, 0x04, 0x40, 0x02, 0xc0, 0x03};
-
-static unsigned char pan_mask_bitmap[PAN_BYTES] = {
-    0xc0, 0x03, 0xe0, 0x03, 0xe0, 0x07, 0xf0, 0x0f, 0xe8, 0x17, 0xdc, 0x3b, 0xff, 0xff, 0xff, 0xff,
-    0xff, 0xff, 0xff, 0xff, 0xdc, 0x3b, 0xe8, 0x17, 0xf0, 0x0f, 0xe0, 0x07, 0xc0, 0x03, 0xc0, 0x03};
-/*** zoom-style cursor ******/
-
-#define ZOOM_WIDTH 16
-#define ZOOM_HEIGHT 16
-#define ZOOM_BYTES ((ZOOM_WIDTH + 7) / 8) * ZOOM_HEIGHT
-#define ZOOM_HOT_X 5
-#define ZOOM_HOT_Y 7
-
-static unsigned char zoom_bitmap[ZOOM_BYTES] = {
-    0x00, 0x0f, 0x80, 0x1c, 0x40, 0x38, 0x20, 0x70, 0x90, 0xe4, 0xc0, 0xcc, 0xf0, 0xfc, 0x00, 0x0c,
-    0x00, 0x0c, 0xf0, 0xfc, 0xc0, 0xcc, 0x90, 0xe4, 0x20, 0x70, 0x40, 0x38, 0x80, 0x1c, 0x00, 0x0f};
-
-static unsigned char zoom_mask_bitmap[ZOOM_BYTES] = {
-    0x00, 0x0f, 0x80, 0x1f, 0xc0, 0x3f, 0xe0, 0x7f, 0xf0, 0xff, 0xf0, 0xff, 0xf0, 0xff, 0x00, 0x0f,
-    0x00, 0x0f, 0xf0, 0xff, 0xf0, 0xff, 0xf0, 0xff, 0xe0, 0x7f, 0xc0, 0x3f, 0x80, 0x1f, 0x00, 0x0f};
 using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -213,7 +183,7 @@ QGVPage::QGVPage(ViewProviderPage* vpPage, QGSPage* scenePage, QWidget* parent)
 
     initNavigationStyle();
 
-    createStandardCursors(devicePixelRatio());
+    createStandardCursors();
 }
 
 QGVPage::~QGVPage()
@@ -667,36 +637,13 @@ Base::Type QGVPage::getStyleType(std::string model)
     return type;
 }
 
-static QCursor createCursor(QBitmap &bitmap, QBitmap &mask, int hotX, int hotY, double dpr)
+void QGVPage::createStandardCursors()
 {
-#if defined(Q_OS_WIN32)
-    bitmap.setDevicePixelRatio(dpr);
-    mask.setDevicePixelRatio(dpr);
-#else
-    Q_UNUSED(dpr)
-#endif
-#if defined(Q_OS_LINUX) && QT_VERSION < QT_VERSION_CHECK(6,6,0)
-    if (qGuiApp->platformName() == QLatin1String("wayland")) {
-        QImage img = bitmap.toImage();
-        img.convertTo(QImage::Format_ARGB32);
-        QPixmap pixmap = QPixmap::fromImage(img);
-        pixmap.setMask(mask);
-        return QCursor(pixmap, hotX, hotY);
-    }
-#endif
+    QPixmap panPixmap = BitmapFactory().pixmapFromSvg("cursor-pan", QSize(16,16));
+    QPixmap zoomPixmap = BitmapFactory().pixmapFromSvg("cursor-zoom", QSize(16,16));
 
-    return QCursor(bitmap, mask, hotX, hotY);
-}
-
-void QGVPage::createStandardCursors(double dpr)
-{
-    QBitmap cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
-    QBitmap mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
-    panCursor = createCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y, dpr);
-
-    cursor = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_bitmap);
-    mask = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_mask_bitmap);
-    zoomCursor = createCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y, dpr);
+    this->panCursor = QCursor(panPixmap, 8, 8);
+    this->zoomCursor = QCursor(zoomPixmap, 8, 8);
 }
 
 #include <Mod/TechDraw/Gui/moc_QGVPage.cpp>

@@ -70,6 +70,9 @@
 // STL
 #include <bitset>
 #include <chrono>
+#if defined(FC_OS_WIN32)
+#include <codecvt>
+#endif
 #include <exception>
 #include <functional>
 #include <iterator>
@@ -100,6 +103,12 @@
 #include <boost/scope_exit.hpp>
 
 #include <fmt/format.h>
+
+// Qt -- only QtCore
+#include <QDir>
+#include <QProcessEnvironment>
+#include <QStandardPaths>
+#include <QString>
 
 #endif  //_PreComp_
 
