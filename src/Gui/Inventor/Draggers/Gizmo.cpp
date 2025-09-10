@@ -88,7 +88,7 @@ bool Gizmo::getVisibility() {
 
 LinearGizmo::LinearGizmo(QuantitySpinBox* property)
 {
-    setProperty(property);
+    this->property = property;
 }
 
 SoInteractionKit* LinearGizmo::initDragger()
@@ -118,8 +118,6 @@ SoInteractionKit* LinearGizmo::initDragger()
 
     dragger->labelVisible = false;
 
-    setDragLength(property->value().getValue());
-
     dragger->instantiateBaseGeometry();
 
     // change the dragger dimensions
@@ -128,6 +126,8 @@ SoInteractionKit* LinearGizmo::initDragger()
     arrow->cylinderRadius = 0.2;
 
     updateColorTheme();
+
+    setProperty(property);
 
     return draggerContainer;
 }
@@ -169,7 +169,6 @@ void LinearGizmo::reverseDir() {
     auto dir = getDraggerContainer()->getPointerDirection();
     getDraggerContainer()->setPointerDirection(dir * -1);
 }
-
 
 double LinearGizmo::getDragLength()
 {
@@ -217,6 +216,10 @@ void LinearGizmo::setProperty(QuantitySpinBox* property)
             setVisibility(visible);
         }
     );
+
+    // Updates the gizmo state based on the new property
+    setDragLength(property->rawValue());
+    setVisibility(visible);
 }
 
 void LinearGizmo::setMultFactor(const double val)
@@ -269,7 +272,7 @@ void LinearGizmo::draggingContinued()
 
 RotationGizmo::RotationGizmo(QuantitySpinBox* property)
 {
-    setProperty(property);
+    this->property = property;
 }
 
 RotationGizmo::~RotationGizmo()
@@ -312,7 +315,7 @@ SoInteractionKit* RotationGizmo::initDragger()
         this
     );
 
-    setRotAngle(property->value().getValue());
+    setProperty(property);
 
     updateColorTheme();
 
@@ -502,6 +505,10 @@ void RotationGizmo::setProperty(QuantitySpinBox* property)
             setVisibility(visible);
         }
     );
+
+    // Updates the gizmo state based on the new property
+    setRotAngle(property->rawValue());
+    setVisibility(visible);
 }
 
 void RotationGizmo::setMultFactor(const double val)
