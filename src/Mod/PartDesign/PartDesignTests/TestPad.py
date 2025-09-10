@@ -238,7 +238,7 @@ class TestPad(unittest.TestCase):
         self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
         self.Body.addObject(self.Pad1)
         self.Pad1.Profile = self.PadSketch1
-        self.Pad1.Type = 4
+        self.Pad1.Type = 5
         self.Doc.recompute()
         self.assertAlmostEqual(self.Pad1.Shape.Volume, 2.58787, places=4)
 
