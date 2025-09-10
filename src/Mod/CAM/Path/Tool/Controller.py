@@ -66,10 +66,8 @@ def _migrateRampDressups(tc):
     # Enumerate ramp dressups using this TC and their feed rates
     ramps = set()
     job_ramp_feeds = []
-    print("search tc", tc.Name)
     for job in tc.Document.Objects:
         if hasattr(job, "Operations") and hasattr(job.Operations, "Group"):
-            print("job", job.Name)
             for op in job.Operations.Group:
                 for ramp in [op] + op.OutListRecursive:
                     try:
@@ -87,7 +85,7 @@ def _migrateRampDressups(tc):
                                     if prop == "CustomFeedRate":
                                         customFeedRate = exp
                             else:
-                                ramp.Proxy.CustomFeedRate
+                                customFeedRate = ramp.Proxy.CustomFeedRate
 
                             if op.Base.ToolController == tc:
                                 ramps.add(ramp)
@@ -101,12 +99,10 @@ def _migrateRampDressups(tc):
                                 else:
                                     feed = customFeedRate
                                 job_ramp_feeds.append((job, ramp, feed))
-                                print("add", ramp.Label)
                     except:
                         pass
 
     # Ensure there is a TC for each required feed, starting with this one
-    print("job_ramp_feeds", job_ramp_feeds)
     feed_to_tc = {}
     for i, (job, ramp, feed) in enumerate(job_ramp_feeds):
         if feed in feed_to_tc:
@@ -116,9 +112,9 @@ def _migrateRampDressups(tc):
             opTc = tc
         else:
             opTc = copyTC(tc, job)
-            # Note: C++ doesn't make an effort to deduplicate the Labels of
-            # objects created during document restore, so here we will reuse the
-            # (deduplicated) name as the label
+            # Note: C++ doesn't try to deduplicate the Labels of objects created
+            # during document restore, so here we will reuse the (deduplicated)
+            # name as the label
             opTc.Label = opTc.Name
 
         feed_to_tc[feed] = opTc
@@ -128,11 +124,11 @@ def _migrateRampDressups(tc):
         else:
             opTc.setExpression("RampFeed", None)
             opTc.RampFeed = feed
-        opTc.recompute()
+        if opTc is not tc:
+            opTc.recompute()
 
     # Loop over ramps and assign each one the appropriate TC
     for _, ramp, feed in job_ramp_feeds:
-        print("assign", ramp.Name, feed_to_tc[feed].Name)
         ramp.Base.ToolController = feed_to_tc[feed]
 
 
@@ -483,7 +479,6 @@ def copyTC(tc, job):
     for prop in tc.PropertiesList:
         try:
             if prop not in ["Label", "Label2"]:
-                print("set prop", prop, getattr(tc, prop))
                 setattr(newtc, prop, getattr(tc, prop))
         except:
             pass

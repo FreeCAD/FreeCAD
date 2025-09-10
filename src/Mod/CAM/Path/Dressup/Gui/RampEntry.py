@@ -278,7 +278,6 @@ class ObjectDressup:
         if hasattr(obj, "RampFeedRate"):
             obj.Proxy.RampFeedRate = obj.RampFeedRate
             obj.removeProperty("RampFeedRate")
-            print("delete RampFeedRate", obj.Label)
 
         if hasattr(obj, "CustomFeedRate"):
             tmp = obj.CustomFeedRate.Value
@@ -287,7 +286,6 @@ class ObjectDressup:
                     tmp = exp
             obj.Proxy.CustomFeedRate = tmp
             obj.removeProperty("CustomFeedRate")
-            print("delete CustomFeedRate", obj.Label)
 
     def setup(self, obj):
         obj.Angle = 60
