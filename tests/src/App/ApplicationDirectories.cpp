@@ -751,7 +751,8 @@ TEST_F(ApplicationDirectoriesTest, extractVersionNegativeNumbersPassThrough)
 }
 
 
-TEST_F(ApplicationDirectoriesTest, sanitizeRemovesNullCharacterAtEnd) {
+TEST_F(ApplicationDirectoriesTest, sanitizeRemovesNullCharacterAtEnd)
+{
     std::string input = std::string("valid_path") + '\0' + "junk_after";
     std::filesystem::path result = ApplicationDirectoriesTestClass::wrapSanitizePath(input);
 
@@ -759,7 +760,8 @@ TEST_F(ApplicationDirectoriesTest, sanitizeRemovesNullCharacterAtEnd) {
     EXPECT_EQ(result.string().find('\0'), std::string::npos);
 }
 
-TEST_F(ApplicationDirectoriesTest, sanitizeReturnsUnchangedIfNoNullCharacter) {
+TEST_F(ApplicationDirectoriesTest, sanitizeReturnsUnchangedIfNoNullCharacter)
+{
     std::string input = "clean_path/without_nulls";
     std::filesystem::path result = ApplicationDirectoriesTestClass::wrapSanitizePath(input);
 
