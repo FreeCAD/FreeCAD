@@ -107,6 +107,12 @@ class AssetManager:
         visited_uris: Set[AssetUri],
         depth: Optional[int] = None,
     ) -> Optional[_AssetConstructionData]:
+        # Log library fetch details
+        if uri.asset_type == "library":
+            logger.info(
+                f"LIBRARY FETCH: Loading library '{uri.asset_id}' with depth={depth} from stores {store_names}"
+            )
+
         logger.debug(
             f"_fetch_asset_construction_data_recursive_async called {store_names} {uri} {depth}"
         )
@@ -126,29 +132,59 @@ class AssetManager:
         # Fetch the requested asset, trying each store in order
         raw_data = None
         found_store_name = None
+
+        # Log toolbit search details
+        if uri.asset_type == "toolbit":
+            logger.info(
+                f"TOOLBIT SEARCH: Looking for toolbit '{uri.asset_id}' in stores: {store_names}"
+            )
+
         for current_store_name in store_names:
             store = self.stores.get(current_store_name)
             if not store:
                 logger.warning(f"Store '{current_store_name}' not registered. Skipping.")
                 continue
 
+            # Log store search path for toolbits
+            if uri.asset_type == "toolbit":
+                store_path = getattr(store, "base_path", "unknown")
+                logger.info(
+                    f"TOOLBIT SEARCH: Checking store '{current_store_name}' at path: {store_path}"
+                )
+
             try:
                 raw_data = await store.get(uri)
                 found_store_name = current_store_name
+                if uri.asset_type == "toolbit":
+                    logger.info(
+                        f"TOOLBIT FOUND: '{uri.asset_id}' found in store '{found_store_name}'"
+                    )
                 logger.debug(
                     f"_fetch_asset_construction_data_recursive_async: Asset {uri} found in store {found_store_name}"
                 )
                 break  # Asset found, no need to check other stores
             except FileNotFoundError:
+                if uri.asset_type == "toolbit":
+                    logger.info(
+                        f"TOOLBIT SEARCH: '{uri.asset_id}' NOT found in store '{current_store_name}'"
+                    )
                 logger.debug(
                     f"_fetch_asset_construction_data_recursive_async: Asset {uri} not found in store {current_store_name}"
                 )
                 continue  # Try next store
 
         if raw_data is None or not found_store_name:
+            if uri.asset_type == "toolbit":
+                logger.warning(
+                    f"TOOLBIT NOT FOUND: '{uri.asset_id}' not found in any of the stores: {store_names}"
+                )
             return None  # Asset not found in any store
 
         if depth == 0:
+            if uri.asset_type == "library":
+                logger.warning(
+                    f"LIBRARY SHALLOW: Library '{uri.asset_id}' loaded with depth=0 - no dependencies will be resolved"
+                )
             return _AssetConstructionData(
                 store=found_store_name,
                 uri=uri,
@@ -241,10 +277,23 @@ class AssetManager:
         resolved_dependencies: Optional[Mapping[AssetUri, Any]] = None
         if construction_data.dependencies_data is not None:
             resolved_dependencies = {}
+
+            # Log dependency resolution for libraries
+            if construction_data.uri.asset_type == "library":
+                logger.info(
+                    f"LIBRARY DEPS: Resolving {len(construction_data.dependencies_data)} dependencies for library '{construction_data.uri.asset_id}'"
+                )
+
             for (
                 dep_uri,
                 dep_data_node,
             ) in construction_data.dependencies_data.items():
+                # Log toolbit dependency resolution
+                if dep_uri.asset_type == "toolbit":
+                    logger.info(
+                        f"TOOLBIT DEP: Resolving dependency '{dep_uri.asset_id}' for library '{construction_data.uri.asset_id}'"
+                    )
+
                 # Assuming dependencies are fetched from the same store context
                 # for caching purposes. If a dependency *could* be from a
                 # different store and that store has different cacheability,
@@ -252,7 +301,18 @@ class AssetManager:
                 # For now, use the parent's store_name_for_cache.
                 try:
                     dep = self._build_asset_tree_from_data_sync(dep_data_node)
+                    if dep_uri.asset_type == "toolbit":
+                        if dep:
+                            logger.info(
+                                f"TOOLBIT DEP: Successfully resolved '{dep_uri.asset_id}' -> {type(dep).__name__}"
+                            )
+                        else:
+                            logger.warning(
+                                f"TOOLBIT DEP: Dependency '{dep_uri.asset_id}' resolved to None"
+                            )
                 except Exception as e:
+                    if dep_uri.asset_type == "toolbit":
+                        logger.error(f"TOOLBIT DEP: Error resolving '{dep_uri.asset_id}': {e}")
                     logger.error(
                         f"Error building dependency '{dep_uri}' for asset '{construction_data.uri}': {e}",
                         exc_info=True,
@@ -260,9 +320,31 @@ class AssetManager:
                 else:
                     resolved_dependencies[dep_uri] = dep
 
+            # Log final dependency count for libraries
+            if construction_data.uri.asset_type == "library":
+                toolbit_deps = [
+                    uri for uri in resolved_dependencies.keys() if uri.asset_type == "toolbit"
+                ]
+                logger.info(
+                    f"LIBRARY DEPS: Resolved {len(resolved_dependencies)} total dependencies ({len(toolbit_deps)} toolbits) for library '{construction_data.uri.asset_id}'"
+                )
+        else:
+            # Log when dependencies_data is None
+            if construction_data.uri.asset_type == "library":
+                logger.warning(
+                    f"LIBRARY NO DEPS: Library '{construction_data.uri.asset_id}' has dependencies_data=None - was loaded with depth=0"
+                )
+
         asset_class = construction_data.asset_class
         serializer = self.get_serializer_for_class(asset_class)
         try:
+            # Log library instantiation with dependency info
+            if construction_data.uri.asset_type == "library":
+                dep_count = len(resolved_dependencies) if resolved_dependencies else 0
+                logger.info(
+                    f"LIBRARY INSTANTIATE: Creating library '{construction_data.uri.asset_id}' with {dep_count} dependencies"
+                )
+
             final_asset = asset_class.from_bytes(
                 construction_data.raw_data,
                 construction_data.uri.asset_id,
@@ -307,6 +389,24 @@ class AssetManager:
         # Log entry with thread info for verification
         calling_thread_name = threading.current_thread().name
         stores_list = [store] if isinstance(store, str) else store
+
+        # Log all asset get requests
+        asset_uri_obj = AssetUri(uri) if isinstance(uri, str) else uri
+        if asset_uri_obj.asset_type == "library":
+            logger.info(
+                f"LIBRARY GET: Request for library '{asset_uri_obj.asset_id}' with depth={depth}"
+            )
+        elif asset_uri_obj.asset_type == "toolbit":
+            logger.info(
+                f"TOOLBIT GET: Direct request for toolbit '{asset_uri_obj.asset_id}' with depth={depth} from stores {stores_list}"
+            )
+            # Add stack trace to see who's calling this
+            import traceback
+
+            stack = traceback.format_stack()
+            caller_info = "".join(stack[-3:-1])  # Get the 2 frames before this one
+            logger.info(f"TOOLBIT GET CALLER:\n{caller_info}")
+
         logger.debug(
             f"AssetManager.get(uri='{uri}', stores='{stores_list}', depth='{depth}') called from thread: {calling_thread_name}"
         )
