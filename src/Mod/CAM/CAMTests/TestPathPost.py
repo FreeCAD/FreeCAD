@@ -68,8 +68,8 @@ class TestFileNameGenerator(unittest.TestCase):
     |Operation| %O | %T %t %W |
     |Tool| **Either %T or %t** | %O %W |
 
-    The confusing bit is that for split on tool,  it will use EITHER the tool number or the tool label.  
-    If you include both, the second one overrides the first.  
+    The confusing bit is that for split on tool,  it will use EITHER the tool number or the tool label.
+    If you include both, the second one overrides the first.
     And for split on operation, where including the tool should be possible, it ignores it altogether.
 
         self.job.Fixtures = ["G54"]
@@ -98,20 +98,21 @@ class TestFileNameGenerator(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
-        
+
         # Create a new document instead of opening external file
         cls.doc = FreeCAD.newDocument("TestFileNaming")
         cls.testfilename = cls.doc.Name
         cls.testfilepath = os.getcwd()
         cls.macro = FreeCAD.getUserMacroDir()
-        
+
         # Create a simple geometry object for the job
         import Part
+
         box = cls.doc.addObject("Part::Box", "TestBox")
         box.Length = 100
         box.Width = 100
         box.Height = 20
-        
+
         # Create CAM job programmatically
         cls.job = PathJob.Create("MainJob", [box], None)
         cls.job.PostProcessor = "linuxcnc"
@@ -119,9 +120,10 @@ class TestFileNameGenerator(unittest.TestCase):
         cls.job.SplitOutput = False
         cls.job.OrderOutputBy = "Operation"
         cls.job.Fixtures = ["G54", "G55"]
-        
+
         # Create a tool controller for testing tool-related substitutions
         from Path.Tool.toolbit import ToolBit
+
         tool_attrs = {
             "name": "TestTool",
             "shape": "endmill.fcstd",
@@ -131,18 +133,18 @@ class TestFileNameGenerator(unittest.TestCase):
         toolbit = ToolBit.from_dict(tool_attrs)
         tool = toolbit.attach_to_doc(doc=cls.doc)
         tool.Label = "6mm_Endmill"
-        
+
         tc = PathToolController.Create("TC_Test_Tool", tool, 5)
         tc.Label = "TC: 6mm Endmill"
         cls.job.addObject(tc)
-        
+
         # Create a simple mock operation for testing operation-related substitutions
         profile_op = cls.doc.addObject("Path::FeaturePython", "TestProfile")
         profile_op.Label = "OutsideProfile"
         # Path::FeaturePython objects already have a Path property
         profile_op.Path = Path.Path()
         cls.job.Operations.addObject(profile_op)
-        
+
         cls.doc.recompute()
 
     @classmethod
@@ -260,9 +262,7 @@ class TestFileNameGenerator(unittest.TestCase):
         filename_generator = generator.generate_filenames()
         filename = next(filename_generator)
 
-        assertFilePathsEqual(
-            self, filename, os.path.join(self.testfilepath, "0-TestFileNaming.nc")
-        )
+        assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "0-TestFileNaming.nc"))
 
     def test060(self):
         """Test subpart naming"""
@@ -281,59 +281,59 @@ class TestFileNameGenerator(unittest.TestCase):
         """Test %T substitution (tool number) with actual tool controller"""
         teststring = "%T.nc"
         self.job.PostProcessorOutputFile = teststring
-        
+
         generator = PostUtils.FilenameGenerator(job=self.job)
         generator.set_subpartname("5")  # Tool number from our test tool controller
         filename_generator = generator.generate_filenames()
         filename = next(filename_generator)
-        
+
         assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "5.nc"))
 
     def test071(self):
         """Test %t substitution (tool description) with actual tool controller"""
         teststring = "%t.nc"
         self.job.PostProcessorOutputFile = teststring
-        
+
         generator = PostUtils.FilenameGenerator(job=self.job)
         generator.set_subpartname("TC__6mm_Endmill")  # Sanitized tool label
         filename_generator = generator.generate_filenames()
         filename = next(filename_generator)
-        
+
         assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "TC__6mm_Endmill.nc"))
 
     def test072(self):
         """Test %W substitution (work coordinate system/fixture)"""
         teststring = "%W.nc"
         self.job.PostProcessorOutputFile = teststring
-        
+
         generator = PostUtils.FilenameGenerator(job=self.job)
         generator.set_subpartname("G54")  # First fixture from our job setup
         filename_generator = generator.generate_filenames()
         filename = next(filename_generator)
-        
+
         assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "G54.nc"))
 
     def test073(self):
         """Test %O substitution (operation label)"""
         teststring = "%O.nc"
         self.job.PostProcessorOutputFile = teststring
-        
+
         generator = PostUtils.FilenameGenerator(job=self.job)
         generator.set_subpartname("OutsideProfile")  # Operation label from our test setup
         filename_generator = generator.generate_filenames()
         filename = next(filename_generator)
-        
+
         assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "OutsideProfile.nc"))
 
     def test075(self):
         """Test path and filename substitutions together"""
         teststring = "%D/%j_%S.nc"
         self.job.PostProcessorOutputFile = teststring
-        
+
         generator = PostUtils.FilenameGenerator(job=self.job)
         filename_generator = generator.generate_filenames()
         filename = next(filename_generator)
-        
+
         # %D should resolve to document directory (empty since doc has no filename)
         # %j should resolve to job name "MainJob"
         # %S should resolve to sequence number "0"
@@ -343,11 +343,11 @@ class TestFileNameGenerator(unittest.TestCase):
         """Test invalid substitution characters are ignored"""
         teststring = "%X%Y%Z/invalid_%Q.nc"
         self.job.PostProcessorOutputFile = teststring
-        
+
         generator = PostUtils.FilenameGenerator(job=self.job)
         filename_generator = generator.generate_filenames()
         filename = next(filename_generator)
-        
+
         # Invalid substitutions should be removed, leaving "invalid_.nc"
         assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "invalid_.nc"))
 
@@ -358,14 +358,15 @@ class TestResolvingPostProcessorName(unittest.TestCase):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         # Create a new document instead of opening external file
         cls.doc = FreeCAD.newDocument("boxtest")
-        
+
         # Create a simple geometry object for the job
         import Part
+
         box = cls.doc.addObject("Part::Box", "TestBox")
         box.Length = 100
         box.Width = 100
         box.Height = 20
-        
+
         # Create CAM job programmatically
         cls.job = PathJob.Create("MainJob", [box], None)
         cls.job.PostProcessorOutputFile = ""
@@ -418,26 +419,28 @@ class TestResolvingPostProcessorName(unittest.TestCase):
                 postname = PathCommand._resolve_post_processor_name(self.job)
                 self.assertEqual(postname, "generic")
         else:
-            with patch.object(self.job, 'PostProcessor', ""):
+            with patch.object(self.job, "PostProcessor", ""):
                 with self.assertRaises(ValueError):
                     PathCommand._resolve_post_processor_name(self.job)
 
 
 class TestPostProcessorFactory(unittest.TestCase):
     """Test creation of postprocessor objects."""
+
     @classmethod
     def setUpClass(cls):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         # Create a new document instead of opening external file
         cls.doc = FreeCAD.newDocument("boxtest")
-        
+
         # Create a simple geometry object for the job
         import Part
+
         box = cls.doc.addObject("Part::Box", "TestBox")
         box.Length = 100
         box.Width = 100
         box.Height = 20
-        
+
         # Create CAM job programmatically
         cls.job = PathJob.Create("MainJob", [box], None)
         cls.job.PostProcessor = "linuxcnc"
@@ -450,7 +453,7 @@ class TestPostProcessorFactory(unittest.TestCase):
     def tearDownClass(cls):
         FreeCAD.closeDocument(cls.doc.Name)
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
-        
+
     def setUp(self):
         pass
 
@@ -474,8 +477,6 @@ class TestPostProcessorFactory(unittest.TestCase):
         """Test that the __name__ of the postprocessor is correct."""
         post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc")
         self.assertEqual(post.script_module.__name__, "linuxcnc_post")
-
-
 
 
 class TestPathPostUtils(unittest.TestCase):
@@ -526,14 +527,15 @@ class TestBuildPostList(unittest.TestCase):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
         # Create a new document instead of opening external file
         cls.doc = FreeCAD.newDocument("test_filenaming")
-        
+
         # Create a simple geometry object for the job
         import Part
+
         box = cls.doc.addObject("Part::Box", "TestBox")
         box.Length = 100
         box.Width = 100
         box.Height = 20
-        
+
         # Create CAM job programmatically
         cls.job = PathJob.Create("MainJob", [box], None)
         cls.job.PostProcessor = "generic"
@@ -541,43 +543,50 @@ class TestBuildPostList(unittest.TestCase):
         cls.job.SplitOutput = False
         cls.job.OrderOutputBy = "Operation"
         cls.job.Fixtures = ["G54", "G55"]  # 2 fixtures as expected by tests
-        
+
         # Create additional tool controllers to match original file structure
         # Original had 2 tool controllers both with "TC: 7/16\" two flute" label
-        
+
         # Modify the first tool controller to have the expected values
         cls.job.Tools.Group[0].ToolNumber = 5
-        cls.job.Tools.Group[0].Label = "TC: 7/16\" two flute"  # test050 expects this sanitized to "TC__7_16__two_flute"
-        
+        cls.job.Tools.Group[0].Label = (
+            'TC: 7/16" two flute'  # test050 expects this sanitized to "TC__7_16__two_flute"
+        )
+
         # Add second tool controller with same label but different number
         tc2 = PathToolController.Create()
         tc2.ToolNumber = 2
-        tc2.Label = "TC: 7/16\" two flute"  # Same label as first tool controller
+        tc2.Label = 'TC: 7/16" two flute'  # Same label as first tool controller
         cls.job.Proxy.addToolController(tc2)
-        
+
         # Create mock operations to match original file structure
         # Original had 3 operations: outsideprofile, DrillAllHoles, Comment
         # The Comment operation has no tool controller
         operation_names = ["outsideprofile", "DrillAllHoles", "Comment"]
-        
+
         for i, name in enumerate(operation_names):
             # Create a simple document object that mimics an operation
             op = cls.doc.addObject("Path::FeaturePython", name)
             op.Label = name
             # Path::FeaturePython objects already have a Path property
             op.Path = Path.Path()
-            
+
             # Only add ToolController property for operations that need it
             if name != "Comment":
                 # Add ToolController property to the operation
-                op.addProperty("App::PropertyLink", "ToolController", "Base", "Tool controller for this operation")
+                op.addProperty(
+                    "App::PropertyLink",
+                    "ToolController",
+                    "Base",
+                    "Tool controller for this operation",
+                )
                 # Assign operations to tool controllers
                 if i == 0:  # outsideprofile uses first tool controller (tool 5)
                     op.ToolController = cls.job.Tools.Group[0]
                 elif i == 1:  # DrillAllHoles uses second tool controller (tool 2)
                     op.ToolController = cls.job.Tools.Group[1]
             # Comment operation has no tool controller (None)
-            
+
             # Add to job operations
             cls.job.Operations.addObject(op)
 
@@ -597,7 +606,9 @@ class TestBuildPostList(unittest.TestCase):
         # check that the test file is structured correctly
         self.assertEqual(len(self.job.Tools.Group), 2)
         self.assertEqual(len(self.job.Fixtures), 2)
-        self.assertEqual(len(self.job.Operations.Group), 3)  # Updated back to 3 operations, Comment has no tool controller
+        self.assertEqual(
+            len(self.job.Operations.Group), 3
+        )  # Updated back to 3 operations, Comment has no tool controller
 
         self.job.SplitOutput = False
         self.job.OrderOutputBy = "Operation"
