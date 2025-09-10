@@ -70,37 +70,38 @@ def _migrateRampDressups(tc):
         if hasattr(job, "Operations") and hasattr(job.Operations, "Group"):
             for op in job.Operations.Group:
                 for ramp in [op] + op.OutListRecursive:
-                    try:
-                        if ramp not in ramps and (
-                            hasattr(ramp, "RampFeedRate") or hasattr(ramp.Proxy, "RampFeedRate")
-                        ):
-                            rampFeedRate = (
-                                ramp.RampFeedRate
-                                if hasattr(ramp, "RampFeedRate")
-                                else ramp.Proxy.RampFeedRate
+                    if ramp not in ramps and (
+                        hasattr(ramp, "RampFeedRate")
+                        or (hasattr(ramp, "Proxy") and hasattr(ramp.Proxy, "RampFeedRate"))
+                    ):
+                        rampFeedRate = (
+                            ramp.RampFeedRate
+                            if hasattr(ramp, "RampFeedRate")
+                            else ramp.Proxy.RampFeedRate
+                        )
+                        if hasattr(ramp, "CustomFeedRate"):
+                            customFeedRate = ramp.CustomFeedRate.Value
+                            for prop, exp in ramp.ExpressionEngine:
+                                if prop == "CustomFeedRate":
+                                    customFeedRate = exp
+                        else:
+                            customFeedRate = (
+                                ramp.Proxy.CustomFeedRate
+                                if hasattr(ramp.Proxy, "CustomFeedRate")
+                                else "HorizFeed"
                             )
-                            if hasattr(ramp, "CustomFeedRate"):
-                                customFeedRate = ramp.CustomFeedRate.Value
-                                for prop, exp in ramp.ExpressionEngine:
-                                    if prop == "CustomFeedRate":
-                                        customFeedRate = exp
-                            else:
-                                customFeedRate = ramp.Proxy.CustomFeedRate
 
-                            if op.Base.ToolController == tc:
-                                ramps.add(ramp)
+                        if op.Base.ToolController == tc:
+                            ramps.add(ramp)
+                            if rampFeedRate == "Horizontal Feed Rate":
                                 feed = "HorizFeed"
-                                if rampFeedRate == "Horizontal Feed Rate":
-                                    feed = "HorizFeed"
-                                elif rampFeedRate == "Vertical Feed Rate":
-                                    feed = "VertFeed"
-                                elif rampFeedRate == "Ramp Feed Rate":
-                                    feed = "sqrt(HorizFeed * HorizFeed + VertFeed * VertFeed)"
-                                else:
-                                    feed = customFeedRate
-                                job_ramp_feeds.append((job, ramp, feed))
-                    except:
-                        pass
+                            elif rampFeedRate == "Vertical Feed Rate":
+                                feed = "VertFeed"
+                            elif rampFeedRate == "Ramp Feed Rate":
+                                feed = "sqrt(HorizFeed * HorizFeed + VertFeed * VertFeed)"
+                            else:
+                                feed = customFeedRate
+                            job_ramp_feeds.append((job, ramp, feed))
 
     # Ensure there is a TC for each required feed, starting with this one
     feed_to_tc = {}
@@ -481,6 +482,8 @@ def copyTC(tc, job):
             if prop not in ["Label", "Label2"]:
                 setattr(newtc, prop, getattr(tc, prop))
         except:
+            # ignore failure; it will succeed for all attributes that are meant
+            # to be assigned
             pass
     for attr, expr in tc.ExpressionEngine:
         newtc.setExpression(attr, expr)
