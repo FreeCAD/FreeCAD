@@ -1022,16 +1022,32 @@ class _ViewProviderSectionPlane:
         return mode
 
     def updateData(self,obj,prop):
-
+        vobj = obj.ViewObject
         if prop in ["Placement"]:
             # for some reason the text doesn't rotate with the host placement??
             self.txtcoords.rotation.setValue(obj.Placement.Rotation.Q)
-            self.onChanged(obj.ViewObject,"DisplayLength")
-            self.onChanged(obj.ViewObject,"CutView")
+            self.onChanged(vobj,"DisplayLength")
+
+            # Defer the clipping plane update until after the current event
+            # loop finishes. This ensures the scene graph has been updated with the
+            # new placement before we try to recalculate the clip plane.
+            if vobj and hasattr(vobj, "CutView") and vobj.CutView:
+                from PySide import QtCore
+                # We use a lambda to pass the vobj argument to the delayed function.
+                QtCore.QTimer.singleShot(0, lambda: self.refreshCutView(vobj))
         elif prop == "Label":
             if hasattr(obj.ViewObject,"ShowLabel") and obj.ViewObject.ShowLabel:
                 self.txt.string = obj.Label
         return
+
+    def refreshCutView(self, vobj):
+        """
+        Forces a refresh of the SoClipPlane by toggling the CutView property.
+        This is called with a delay to ensure the object's placement is up-to-date.
+        """
+        if vobj and hasattr(vobj, "CutView") and vobj.CutView:
+            vobj.CutView = False
+            vobj.CutView = True
 
     def onChanged(self,vobj,prop):
 
