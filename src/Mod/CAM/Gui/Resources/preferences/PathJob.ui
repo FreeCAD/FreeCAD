@@ -24,8 +24,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>681</width>
-        <height>370</height>
+        <width>695</width>
+        <height>308</height>
        </rect>
       </property>
       <attribute name="label">
@@ -38,37 +38,7 @@
           <string>Defaults</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_7">
-            <property name="text">
-             <string>Path</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="leDefaultFilePath">
-            <property name="toolTip">
-             <string>Path to look for templates, post processors, tool tables and other external files.
-
-If left empty the macro directory is used.</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="3">
-           <widget class="QToolButton" name="tbDefaultFilePath">
-            <property name="text">
-             <string notr="true">…</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>Template</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
            <widget class="QLineEdit" name="leDefaultJobTemplate">
             <property name="toolTip">
              <string>The default template to be selected when creating a new job.
@@ -79,7 +49,14 @@ If left empty no template will be preselected.</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="3">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Template</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
            <widget class="QToolButton" name="tbDefaultJobTemplate">
             <property name="text">
              <string notr="true">…</string>
@@ -129,7 +106,7 @@ If left empty no template will be preselected.</string>
        <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -146,8 +123,8 @@ If left empty no template will be preselected.</string>
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>681</width>
-        <height>518</height>
+        <width>695</width>
+        <height>480</height>
        </rect>
       </property>
       <attribute name="label">
@@ -167,7 +144,7 @@ If left empty no template will be preselected.</string>
          </property>
          <layout class="QFormLayout" name="formLayout_2">
           <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+           <enum>QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow</enum>
           </property>
           <item row="1" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -280,7 +257,7 @@ See the file save policy below on how to deal with name conflicts.</string>
          </property>
          <layout class="QFormLayout" name="formLayout">
           <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+           <enum>QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow</enum>
           </property>
           <item row="0" column="0">
            <widget class="QLabel" name="label_3">
@@ -345,7 +322,7 @@ See the file save policy below on how to deal with name conflicts.</string>
        <item>
         <spacer name="verticalSpacer_2">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -362,8 +339,8 @@ See the file save policy below on how to deal with name conflicts.</string>
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>662</width>
-        <height>755</height>
+        <width>674</width>
+        <height>619</height>
        </rect>
       </property>
       <attribute name="label">
@@ -410,7 +387,7 @@ See the file save policy below on how to deal with name conflicts.</string>
           <item>
            <spacer name="horizontalSpacer">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -537,7 +514,7 @@ See the file save policy below on how to deal with name conflicts.</string>
           <item>
            <spacer name="horizontalSpacer_2">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -579,21 +556,21 @@ See the file save policy below on how to deal with name conflicts.</string>
              <item row="3" column="2">
               <widget class="QDoubleSpinBox" name="stockAxisX">
                <property name="buttonSymbols">
-                <enum>QAbstractSpinBox::NoButtons</enum>
+                <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
                </property>
               </widget>
              </item>
              <item row="3" column="3">
               <widget class="QDoubleSpinBox" name="stockAxisY">
                <property name="buttonSymbols">
-                <enum>QAbstractSpinBox::NoButtons</enum>
+                <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
                </property>
               </widget>
              </item>
              <item row="3" column="4">
               <widget class="QDoubleSpinBox" name="stockAxisZ">
                <property name="buttonSymbols">
-                <enum>QAbstractSpinBox::NoButtons</enum>
+                <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
                </property>
               </widget>
              </item>
@@ -622,7 +599,7 @@ See the file save policy below on how to deal with name conflicts.</string>
        <item>
         <spacer name="verticalSpacer_3">
          <property name="orientation">
-          <enum>Qt::Vertical</enum>
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -634,52 +611,12 @@ See the file save policy below on how to deal with name conflicts.</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_4">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>681</width>
-        <height>171</height>
-       </rect>
-      </property>
-      <attribute name="label">
-       <string>Tools</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <item>
-        <widget class="QCheckBox" name="toolsAbsolutePaths">
-         <property name="toolTip">
-          <string>References to tool bits and their shapes can either be stored with an absolute path or with a relative path to the search path.
-Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.
-Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths.</string>
-         </property>
-         <property name="text">
-          <string>Store Absolute Paths</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
     </widget>
    </item>
    <item>
     <spacer name="verticalSpacer_5">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -700,8 +637,6 @@ Should multiple tools or tool shapes with the same name exist in different direc
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>leDefaultFilePath</tabstop>
-  <tabstop>tbDefaultFilePath</tabstop>
   <tabstop>leDefaultJobTemplate</tabstop>
   <tabstop>tbDefaultJobTemplate</tabstop>
   <tabstop>geometryTolerance</tabstop>

@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 import yaml
-from typing import List, Optional, Mapping, Type
+from typing import List, Optional, Mapping, Type, cast
 from ...assets.serializer import AssetSerializer
 from ...assets.uri import AssetUri
 from ...shape import ToolBitShape
@@ -81,8 +81,13 @@ class YamlToolBitSerializer(AssetSerializer):
 
     @classmethod
     def deep_deserialize(cls, data: bytes) -> ToolBit:
-        """
-        Like deserialize(), but builds dependencies itself if they are
-        sufficiently defined in the data.
-        """
-        raise NotImplementedError
+        """Deep deserialize preserving the original toolbit ID."""
+        data_dict = yaml.safe_load(data)
+        if not isinstance(data_dict, dict):
+            raise ValueError("Invalid YAML data for ToolBit")
+
+        original_id = data_dict.get("id")  # Extract the original ID
+        toolbit = ToolBit.from_dict(data_dict)
+        if original_id:
+            toolbit.id = original_id  # Preserve the original ID
+        return toolbit

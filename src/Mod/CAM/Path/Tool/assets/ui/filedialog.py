@@ -29,6 +29,7 @@ from .util import (
     make_export_filters,
     get_serializer_from_extension,
 )
+import Path.Preferences as Preferences
 
 
 class AssetOpenDialog(QFileDialog):
@@ -40,7 +41,11 @@ class AssetOpenDialog(QFileDialog):
         parent=None,
     ):
         super().__init__(parent)
-        self.setDirectory(pathlib.Path.home().as_posix())
+
+        # Set default directory based on asset type
+        default_dir = self._get_default_directory(asset_class)
+        self.setDirectory(default_dir.as_posix())
+
         self.asset_class = asset_class
         self.asset_manager = asset_manager
         self.serializers = list(serializers)
@@ -70,7 +75,7 @@ class AssetOpenDialog(QFileDialog):
             raw_data = file_path.read_bytes()
             dependencies = serializer_class.extract_dependencies(raw_data)
             for dependency_uri in dependencies:
-                if not self.asset_manager.exists(dependency_uri):
+                if not self.asset_manager.exists(dependency_uri, store=["local", "builtin"]):
                     QMessageBox.critical(
                         self,
                         "Error",
@@ -101,6 +106,24 @@ class AssetOpenDialog(QFileDialog):
                     return file_path, asset
         return None
 
+    def _get_default_directory(self, asset_class: Type[Asset]) -> pathlib.Path:
+        """Get the appropriate default directory based on asset type."""
+        try:
+            asset_path = Preferences.getAssetPath()
+
+            # Check asset type to determine subdirectory
+            asset_type = getattr(asset_class, "asset_type", None)
+            if asset_type == "toolbit":
+                return asset_path / "Tool" / "Bit"
+            elif asset_type == "library" or asset_type == "toolbitlibrary":
+                return asset_path / "Tool" / "Library"
+            else:
+                # Default to asset path root for unknown types
+                return asset_path
+        except Exception:
+            # Fallback to home directory if anything goes wrong
+            return pathlib.Path.home()
+
 
 class AssetSaveDialog(QFileDialog):
     def __init__(
@@ -110,7 +133,10 @@ class AssetSaveDialog(QFileDialog):
         parent=None,
     ):
         super().__init__(parent)
-        self.setDirectory(pathlib.Path.home().as_posix())
+
+        # Set default directory based on asset type
+        default_dir = self._get_default_directory(asset_class)
+        self.setDirectory(default_dir.as_posix())
         self.asset_class = asset_class
         self.serializers = list(serializers)
         self.setFileMode(QFileDialog.AnyFile)
@@ -144,6 +170,11 @@ class AssetSaveDialog(QFileDialog):
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to export asset: {e}")
             return False
+
+    def _get_default_directory(self, asset_class: Type[Asset]) -> pathlib.Path:
+        """Get the appropriate default directory based on asset type."""
+        # For exports, default to home directory instead of CAM assets path
+        return pathlib.Path.home()
 
     def exec_(self, asset: Asset) -> Optional[Tuple[pathlib.Path, Type[AssetSerializer]]]:
         self.setWindowTitle(f"Save {asset.label or self.asset_class.asset_type}")

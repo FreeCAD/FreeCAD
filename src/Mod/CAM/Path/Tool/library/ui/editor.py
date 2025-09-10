@@ -350,7 +350,9 @@ class LibraryEditor(QWidget):
         self.form.renameLibraryButton.setEnabled(library_selected)
         self.form.exportLibraryButton.setEnabled(library_selected)
         self.form.importLibraryButton.setEnabled(True)
-        self.form.addToolBitButton.setEnabled(library_selected)
+        self.form.addToolBitButton.setEnabled(
+            True
+        )  # Always enabled - can create standalone toolbits
         # TODO: self.form.exportToolBitButton.setEnabled(toolbit_selected)
 
     def _save_library(self):
@@ -475,17 +477,9 @@ class LibraryEditor(QWidget):
         self._update_button_states()
 
     def _on_add_toolbit_requested(self):
-        """Handles request to add a new toolbit to the current library."""
+        """Handles request to add a new toolbit to the current library or create standalone."""
         Path.Log.debug("_on_add_toolbit_requested: Called.")
         current_library = self.browser.get_current_library()
-        if not current_library:
-            Path.Log.warning("Cannot add toolbit: No library selected.")
-            QMessageBox.warning(
-                self,
-                FreeCAD.Qt.translate("CAM", "Warning"),
-                FreeCAD.Qt.translate("CAM", "Please select a library first."),
-            )
-            return
 
         # Select the shape for the new toolbit
         selector = ShapeSelector()
@@ -508,15 +502,19 @@ class LibraryEditor(QWidget):
             tool_asset_uri = cam_assets.add(new_toolbit)
             Path.Log.debug(f"_on_add_toolbit_requested: Saved tool with URI: {tool_asset_uri}")
 
-            # Add the toolbit to the current library
-            toolno = current_library.add_bit(new_toolbit)
-            Path.Log.debug(
-                f"_on_add_toolbit_requested: Added toolbit {new_toolbit.get_id()} (URI: {new_toolbit.get_uri()}) "
-                f"to current_library with number {toolno}."
-            )
-
-            # Save the library
-            cam_assets.add(current_library)
+            # Add the toolbit to the current library if one is selected
+            if current_library:
+                toolno = current_library.add_bit(new_toolbit)
+                Path.Log.debug(
+                    f"_on_add_toolbit_requested: Added toolbit {new_toolbit.get_id()} (URI: {new_toolbit.get_uri()}) "
+                    f"to current_library with number {toolno}."
+                )
+                # Save the library
+                cam_assets.add(current_library)
+            else:
+                Path.Log.debug(
+                    f"_on_add_toolbit_requested: Created standalone toolbit {new_toolbit.get_id()} (URI: {new_toolbit.get_uri()})"
+                )
 
         except Exception as e:
             Path.Log.error(f"Failed to create or add new toolbit: {e}")
@@ -552,17 +550,50 @@ class LibraryEditor(QWidget):
             return
         file_path, toolbit = cast(Tuple[pathlib.Path, ToolBit], response)
 
-        # Add the imported toolbit to the current library
-        added_toolbit = current_library.add_bit(toolbit)
+        # Debug logging for imported toolbit
+        Path.Log.info(
+            f"IMPORT TOOLBIT: file_path={file_path}, toolbit.id={toolbit.id}, toolbit.label={toolbit.label}"
+        )
+        import traceback
+
+        stack = traceback.format_stack()
+        caller_info = "".join(stack[-3:-1])
+        Path.Log.info(f"IMPORT TOOLBIT CALLER:\n{caller_info}")
+
+        # Check if toolbit already exists in asset manager
+        toolbit_uri = toolbit.get_uri()
+        Path.Log.info(f"IMPORT CHECK: toolbit_uri={toolbit_uri}")
+        existing_toolbit = None
+        try:
+            existing_toolbit = cam_assets.get(toolbit_uri, store=["local", "builtin"], depth=0)
+            Path.Log.info(
+                f"IMPORT CHECK: Toolbit {toolbit.id} already exists, using existing reference"
+            )
+            Path.Log.info(
+                f"IMPORT CHECK: existing_toolbit.id={existing_toolbit.id}, existing_toolbit.label={existing_toolbit.label}"
+            )
+        except FileNotFoundError:
+            # Toolbit doesn't exist, save it as new
+            Path.Log.info(f"IMPORT CHECK: Toolbit {toolbit.id} is new, saving to disk")
+            new_uri = cam_assets.add(toolbit)
+            Path.Log.info(f"IMPORT CHECK: Toolbit saved with new URI: {new_uri}")
+            existing_toolbit = toolbit
+
+        # Add the toolbit (existing or new) to the current library
+        Path.Log.info(
+            f"IMPORT ADD: Adding toolbit {existing_toolbit.id} to library {current_library.label}"
+        )
+        added_toolbit = current_library.add_bit(existing_toolbit)
         if added_toolbit:
-            cam_assets.add(toolbit)  # Save the imported toolbit to disk
+            Path.Log.info(f"IMPORT ADD: Successfully added toolbit to library")
             cam_assets.add(current_library)  # Save the modified library
             self.browser.refresh()
-            self.browser.select_by_uri([str(toolbit.get_uri())])
+            self.browser.select_by_uri([str(existing_toolbit.get_uri())])
             self._update_button_states()
         else:
+            Path.Log.warning(f"IMPORT ADD: Failed to add toolbit {existing_toolbit.id} to library")
             Path.Log.warning(
-                f"Failed to import toolbit from {file_path} to library {current_library.label}."
+                f"IMPORT FAILED: Failed to import toolbit from {file_path} to library {current_library.label}."
             )
             QMessageBox.warning(
                 self,

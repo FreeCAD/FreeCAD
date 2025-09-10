@@ -42,19 +42,31 @@ class LibraryPropertyDialog(QtWidgets.QDialog):
         self.form.lineEditLibraryName.setText(self.library.label)
         self.update_window_title()
 
-        if new:
-            label = FreeCAD.Qt.translate("CAM", "Create Library")
-            self.form.pushButtonSave.setText(label)
-
-        self.form.buttonBox.accepted.connect(self.accept)
+        self.form.buttonBox.accepted.connect(self.save_properties)
         self.form.buttonBox.rejected.connect(self.reject)
-        self.form.pushButtonSave.clicked.connect(self.save_properties)
 
         # Connect text changed signal to update window title
         self.form.lineEditLibraryName.textChanged.connect(self.update_window_title)
 
+        # Make the OK button the default so Enter key works
+        ok_button = self.form.buttonBox.button(QtWidgets.QDialogButtonBox.Ok)
+        cancel_button = self.form.buttonBox.button(QtWidgets.QDialogButtonBox.Cancel)
+
+        if cancel_button:
+            cancel_button.setDefault(False)
+            cancel_button.setAutoDefault(False)
+
+        if ok_button:
+            ok_button.setDefault(True)
+            ok_button.setAutoDefault(True)
+            ok_button.setFocus()  # Also set focus to the OK button
+
         # Set minimum width for the dialog
         self.setMinimumWidth(450)
+
+        # Set focus to the text input so user can start typing immediately
+        self.form.lineEditLibraryName.setFocus()
+        self.form.lineEditLibraryName.selectAll()  # Select all text for easy replacement
 
     def update_window_title(self):
         # Update title based on current text in the line edit

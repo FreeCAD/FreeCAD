@@ -45,11 +45,10 @@ class JobPreferencesPage:
         self.processor = {}
 
     def saveSettings(self):
-        filePath = self.form.leDefaultFilePath.text()
         jobTemplate = self.form.leDefaultJobTemplate.text()
         geometryTolerance = Units.Quantity(self.form.geometryTolerance.text())
         curveAccuracy = Units.Quantity(self.form.curveAccuracy.text())
-        Path.Preferences.setJobDefaults(filePath, jobTemplate, geometryTolerance, curveAccuracy)
+        Path.Preferences.setJobDefaults(jobTemplate, geometryTolerance, curveAccuracy)
 
         if curveAccuracy:
             Path.Area.setDefaultParams(Accuracy=curveAccuracy)
@@ -146,7 +145,6 @@ class JobPreferencesPage:
         )
 
     def loadSettings(self):
-        self.form.leDefaultFilePath.setText(Path.Preferences.defaultFilePath())
         self.form.leDefaultJobTemplate.setText(Path.Preferences.defaultJobTemplate())
 
         blacklist = Path.Preferences.postProcessorBlacklist()
@@ -175,7 +173,6 @@ class JobPreferencesPage:
         self.form.leOutputFile.setText(Path.Preferences.defaultOutputFile())
         self.selectComboEntry(self.form.cboOutputPolicy, Path.Preferences.defaultOutputPolicy())
 
-        self.form.tbDefaultFilePath.clicked.connect(self.browseDefaultFilePath)
         self.form.tbDefaultJobTemplate.clicked.connect(self.browseDefaultJobTemplate)
         self.form.postProcessorList.itemEntered.connect(self.setProcessorListTooltip)
         self.form.postProcessorList.itemChanged.connect(self.verifyAndUpdateDefaultPostProcessor)
@@ -311,7 +308,8 @@ class JobPreferencesPage:
             self.form.defaultPostProcessorArgs.setToolTip(self.postProcessorArgsDefaultTooltip)
 
     def bestGuessForFilePath(self):
-        path = self.form.leDefaultFilePath.text()
+
+        path = Path.Preferences.defaultFilePath()
         if not path:
             path = Path.Preferences.filePath()
         return path
@@ -325,14 +323,6 @@ class JobPreferencesPage:
         )[0]
         if foo:
             self.form.leDefaultJobTemplate.setText(foo)
-
-    def browseDefaultFilePath(self):
-        path = self.bestGuessForFilePath()
-        foo = QtGui.QFileDialog.getExistingDirectory(
-            QtGui.QApplication.activeWindow(), "Path - External File Directory", path
-        )
-        if foo:
-            self.form.leDefaultFilePath.setText(foo)
 
     def browseOutputFile(self):
         path = self.form.leOutputFile.text()

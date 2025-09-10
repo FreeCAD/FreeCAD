@@ -395,7 +395,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         self._to_clipboard(uris, mode="copy")
 
     def _on_delete_requested(self):
-        """Deletes selected toolbits."""
+        """Deletes selected toolbits and removes them from all libraries."""
         Path.Log.debug("ToolBitBrowserWidget._on_delete_requested: Function entered.")
         uris = self.get_selected_bit_uris()
         if not uris:
@@ -406,7 +406,10 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         reply = QMessageBox.question(
             self,
             FreeCAD.Qt.translate("CAM", "Confirm Deletion"),
-            FreeCAD.Qt.translate("CAM", "Are you sure you want to delete the selected toolbit(s)?"),
+            FreeCAD.Qt.translate(
+                "CAM",
+                "Are you sure you want to delete the selected toolbit(s)? This is not reversible. The toolbits will be removed from disk and from all libraries that contain them.",
+            ),
             QMessageBox.Yes | QMessageBox.No,
             QMessageBox.No,
         )
@@ -415,18 +418,65 @@ class ToolBitBrowserWidget(QtGui.QWidget):
             return
 
         deleted_count = 0
+        libraries_modified = []  # Use list instead of set since Library objects aren't hashable
+
         for uri_string in uris:
             try:
-                # Delete the toolbit using the asset manager
-                self._asset_manager.delete(AssetUri(uri_string))
+                toolbit_uri = AssetUri(uri_string)
+
+                # First, remove the toolbit from all libraries that contain it
+                libraries_to_update = self._find_libraries_containing_toolbit(toolbit_uri)
+                for library in libraries_to_update:
+                    library.remove_bit_by_uri(uri_string)
+                    if library not in libraries_modified:  # Avoid duplicates
+                        libraries_modified.append(library)
+                    Path.Log.info(
+                        f"Removed toolbit {toolbit_uri.asset_id} from library {library.label}"
+                    )
+
+                # Then delete the toolbit file from disk
+                self._asset_manager.delete(toolbit_uri)
                 deleted_count += 1
+                Path.Log.info(f"Deleted toolbit file {uri_string}")
+
             except Exception as e:
                 Path.Log.error(f"Failed to delete toolbit {uri_string}: {e}")
-                # Optionally show a message box to the user
+
+        # Save all modified libraries
+        for library in libraries_modified:
+            try:
+                self._asset_manager.add(library)
+                Path.Log.info(f"Saved updated library {library.label}")
+            except Exception as e:
+                Path.Log.error(f"Failed to save library {library.label}: {e}")
 
         if deleted_count > 0:
-            Path.Log.info(f"Deleted {deleted_count} toolbit(s).")
+            Path.Log.info(
+                f"Deleted {deleted_count} toolbit(s) and updated {len(libraries_modified)} libraries."
+            )
             self.refresh()
+
+    def _find_libraries_containing_toolbit(self, toolbit_uri: AssetUri) -> List:
+        """Find all libraries that contain the specified toolbit."""
+        from ...library.models.library import Library
+
+        libraries_with_toolbit = []
+        try:
+            # Get all libraries from the asset manager
+            all_libraries = self._asset_manager.fetch("toolbitlibrary", store="local", depth=1)
+
+            for library in all_libraries:
+                if isinstance(library, Library):
+                    # Check if this library contains the toolbit
+                    for toolbit in library:
+                        if toolbit.get_uri() == toolbit_uri:
+                            libraries_with_toolbit.append(library)
+                            break
+
+        except Exception as e:
+            Path.Log.error(f"Error finding libraries containing toolbit {toolbit_uri}: {e}")
+
+        return libraries_with_toolbit
 
     def get_selected_bit_uris(self) -> List[str]:
         """
