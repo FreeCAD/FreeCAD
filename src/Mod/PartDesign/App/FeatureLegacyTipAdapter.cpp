@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 
 #include <Mod/PartDesign/App/Feature.h>
-#include <Mod/PartDesign/App/ShapeBinder.h>
 #include "FeatureLegacyTipAdapter.h"
 
 using namespace PartDesign;
@@ -32,20 +31,16 @@ PROPERTY_SOURCE(PartDesign::LegacyTipAdapter, PartDesign::Feature)
 
 LegacyTipAdapter::LegacyTipAdapter()
 {
-    ADD_PROPERTY_TYPE(Binder,(nullptr),"Base", App::PropertyType(App::Prop_None),
-                      "SubShapeBinder carrying the legacy tip");
+//    ADD_PROPERTY_TYPE(Binder,(nullptr),"Base", App::PropertyType(App::Prop_None),
+//                      "SubShapeBinder carrying the legacy tip");
 }
 
 App::DocumentObjectExecReturn* LegacyTipAdapter::execute()
 {
-    auto* ssb = dynamic_cast<PartDesign::SubShapeBinder*>(Binder.getValue());
-    if (!ssb) return new App::DocumentObjectExecReturn("No SubShapeBinder");
-
-    const auto shp = static_cast<Part::Feature*>(ssb)->Shape.getShape();
-    if (shp.isNull()) return new App::DocumentObjectExecReturn("Binder shape is empty");
+    const auto shp = this->getBaseShape();
+    if (shp.IsNull()) return new App::DocumentObjectExecReturn("Base Shape is empty");
 
     this->Shape.setValue(Part::TopoShape(shp));
-    this->Placement.setValue(ssb->Placement.getValue());
     return App::DocumentObject::StdReturn;
 }
 

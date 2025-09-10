@@ -44,20 +44,33 @@ ViewProviderLegacyTipAdapter::ViewProviderLegacyTipAdapter() = default;
 
 QIcon ViewProviderLegacyTipAdapter::getIcon() const
 {
-    const QIcon ic = Gui::BitmapFactory().iconFromTheme("PartDesign_SubShapeBinder");
-    if (!ic.isNull())
-        return ic;
+    // Mirror icon from BaseFeature if available
+    if (auto* obj = this->getObject()) {
+        if (auto* link = dynamic_cast<App::PropertyLink*>(obj->getPropertyByName("BaseFeature"))) {
+            if (auto* base = link->getValue()) {
+                if (auto* vp = Gui::Application::Instance
+                               ? Gui::Application::Instance->getViewProvider(base) : nullptr) {
+                    if (auto* vpd = dynamic_cast<Gui::ViewProvider*>(vp))
+                        return vpd->getIcon();
+                }
+            }
+        }
+    }
+    // Fallback
+    QIcon ic = Gui::BitmapFactory().iconFromTheme("PartDesign_Feature");
+    if (!ic.isNull()) return ic;
     return QIcon(QStringLiteral(":/icons/PartDesign_SubShapeBinder.svg"));
 }
+
 
 std::vector<App::DocumentObject*>
 ViewProviderLegacyTipAdapter::claimChildren() const
 {
     std::vector<App::DocumentObject*> kids;
     if (auto* obj = this->getObject()) {
-        if (auto* pl = dynamic_cast<App::PropertyLink*>(obj->getPropertyByName("Binder"))) {
-            if (auto* ch = pl->getValue())
-                kids.push_back(ch);
+        if (auto* link = dynamic_cast<App::PropertyLink*>(obj->getPropertyByName("BaseFeature"))) {
+            if (auto* base = link->getValue())
+                kids.push_back(base);
         }
     }
     return kids;
@@ -67,83 +80,45 @@ void ViewProviderLegacyTipAdapter::attach(App::DocumentObject* obj)
 {
     PartDesignGui::ViewProvider::attach(obj);
 
-    if (!obj) return;
-
-    // Try now; if child's VP isn't there yet, queue retries.
-    if (!hideChildBinderVP(obj))
-        hideChildBinderVPLater(obj);
-}
-
-void ViewProviderLegacyTipAdapter::onChanged(const App::Property* prop)
-{
-    // Keep base behavior (hides other PD::Feature siblings when this turns visible)
-    PartDesignGui::ViewProvider::onChanged(prop);
-
-    if (!prop) return;
-
-    // 1) If our own Visibility flips ON, immediately hide the child binder
-    if (prop == &Visibility && Visibility.getValue()) {
-        if (!hideChildBinderVP(this->getObject()))
-            hideChildBinderVPLater(this->getObject());
-        return;
-    }
-
-    // 2) If the Binder link changes, hide the (new) child too
-    if (std::strcmp(prop->getName(), "Binder") == 0) {
-        if (!hideChildBinderVP(this->getObject()))
-            hideChildBinderVPLater(this->getObject());
-        return;
-    }
-}
-
-bool ViewProviderLegacyTipAdapter::onDelete(const std::vector<std::string>& what)
-{
-    if (auto* obj = this->getObject()) {
-        if (auto* pl = dynamic_cast<App::PropertyLink*>(obj->getPropertyByName("Binder"))) {
-            if (auto* ch = pl->getValue()) {
-                if (auto* doc = obj->getDocument())
-                    doc->removeObject(ch->getNameInDocument());
+    // Hide BaseFeature immediately (tree+3D) if it already exists
+    if (!obj || !Gui::Application::Instance) return;
+    if (auto* link = dynamic_cast<App::PropertyLink*>(obj->getPropertyByName("BaseFeature"))) {
+        if (auto* base = link->getValue()) {
+            if (auto* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
+                    Gui::Application::Instance->getViewProvider(base))) {
+                vp->hide();
+                if (auto* vis = dynamic_cast<App::PropertyBool*>(vp->getPropertyByName("Visibility")))
+                    vis->setValue(false);
             }
         }
     }
-    return PartDesignGui::ViewProvider::onDelete(what);
 }
 
-bool ViewProviderLegacyTipAdapter::hideChildBinderVP(App::DocumentObject* obj) const
+
+void ViewProviderLegacyTipAdapter::onChanged(const App::Property* prop)
 {
-    if (!obj || !Gui::Application::Instance)
-        return false;
+    // Keep default PD behavior: when this object becomes visible, PD hides other PD::Feature siblings
+    PartDesignGui::ViewProvider::onChanged(prop);
+    if (!prop) return;
 
-    auto* pl = dynamic_cast<App::PropertyLink*>(obj->getPropertyByName("Binder"));
-    if (!pl) return false;
+    // If our own Visibility flips ON or BaseFeature changes, ensure the BaseFeature VP is hidden
+    const bool becameVisible = (prop == &Visibility && Visibility.getValue());
+    const bool baseChanged   = (std::strcmp(prop->getName(), "BaseFeature") == 0);
+    if (!becameVisible && !baseChanged) return;
 
-    App::DocumentObject* ch = pl->getValue();
-    if (!ch) return false;
-
-    // Fetch the child's VP directly from the application (independent of GUI doc timing)
-    if (auto* vpChild = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-            Gui::Application::Instance->getViewProvider(ch))) {
-
-        // Hide in 3D
-        vpChild->hide();
-        // Close the eye in the tree
-        if (auto* vis = dynamic_cast<App::PropertyBool*>(vpChild->getPropertyByName("Visibility")))
-            vis->setValue(false);
-        // Optional: keep it from being picked
-        if (auto* sel = dynamic_cast<App::PropertyBool*>(vpChild->getPropertyByName("Selectable")))
-            sel->setValue(false);
-
-        return true;
+    if (!Gui::Application::Instance) return;
+    if (auto* obj = this->getObject()) {
+        if (auto* link = dynamic_cast<App::PropertyLink*>(obj->getPropertyByName("BaseFeature"))) {
+            if (auto* base = link->getValue()) {
+                if (auto* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
+                        Gui::Application::Instance->getViewProvider(base))) {
+                    vp->hide();
+                    if (auto* vis = dynamic_cast<App::PropertyBool*>(vp->getPropertyByName("Visibility")))
+                        vis->setValue(false);
+                }
+            }
+        }
     }
-    return false;
 }
 
-void ViewProviderLegacyTipAdapter::hideChildBinderVPLater(App::DocumentObject* obj) const
-{
-    // Re-try shortly; binder VP is sometimes created after we attach
-    auto retry = [this, obj]() { this->hideChildBinderVP(obj); };
-    QTimer::singleShot(0, retry);
-    QTimer::singleShot(50, retry);
-    QTimer::singleShot(150, retry);
-}
 

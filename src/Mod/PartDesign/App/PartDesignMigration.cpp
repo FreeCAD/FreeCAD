@@ -141,39 +141,20 @@ static bool wrapTipWithBinder(App::Document* doc, PartDesign::Body* body, const 
     // Build a safe name
     std::string objName = std::string(body->getNameInDocument()) + "_LegacyTip";
 
-    auto* ssb = dynamic_cast<PartDesign::SubShapeBinder*>(
-        doc->addObject("PartDesign::SubShapeBinder", objName.c_str()));
-    if (!ssb) return false;
-
-    body->addObject(ssb);
-
-    // Bind the whole 'tip' shape
-    if (auto* pXL = dynamic_cast<App::PropertyXLinkSubList*>(ssb->getPropertyByName("Support"))) {
-        // Your build accepts a vector<DocumentObject*> for XLink
-        pXL->setValues(std::vector<App::DocumentObject*>{ tip });
-    } else if (auto* pL = dynamic_cast<App::PropertyLinkSubList*>(ssb->getPropertyByName("Support"))) {
-        // LinkSubList expects two parallel vectors: objects & subnames
-        std::vector<App::DocumentObject*> objs{ tip };
-        std::vector<std::string> subs(1); // one empty string => whole object
-        pL->setValues(objs, subs);
-    } else if (auto* p = dynamic_cast<App::PropertyLink*>(ssb->getPropertyByName("Object"))) {
-        p->setValue(tip);
-    }
-
-    // Freeze relative behavior (if present) and assign the legacy transform
-    if (auto* rel = dynamic_cast<App::PropertyBool*>(ssb->getPropertyByName("Relative")))
-        rel->setValue(false);
-    ssb->Placement.setValue(P);
-    doc->recompute(); // ensure body has a shape
-
     // after creating ssb (the SubShapeBinder)
     auto* ada = static_cast<PartDesign::LegacyTipAdapter*>(
-        doc->addObject("PartDesign::LegacyTipAdapter",
-                       (std::string(body->getNameInDocument()) + "_LegacyTip").c_str()));
+        doc->addObject("PartDesign::LegacyTipAdapter", 
+		(std::string("Migrated(") + tip->getNameInDocument() + std::string(")")).c_str())
+    );
 
     body->addObject(ada);
-    ada->Label.setValue(std::string(body->Label.getStrValue()) + " (Migrated Tip)");
-    ada->Binder.setValue(ssb);
+    ada->Label.setValue((std::string("Migrated(") + tip->getNameInDocument() + std::string(")")).c_str());
+    ada->BaseFeature.setValue(tip);
+    ada->Placement.setValue(P);
+    // Freeze relative behavior (if present) and assign the legacy transform
+    if (auto* rel = dynamic_cast<App::PropertyBool*>(ada->getPropertyByName("Relative")))
+        rel->setValue(false);
+
     doc->recompute(); // ensure adapter has a shape
     body->Tip.setValue(ada);
 

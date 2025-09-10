@@ -41,11 +41,7 @@ public:
     std::vector<App::DocumentObject*> claimChildren() const override;
     void attach(App::DocumentObject* obj) override;
     void onChanged(const App::Property* prop) override;
-    bool onDelete(const std::vector<std::string>&) override;
 
-private:
-    bool hideChildBinderVP(App::DocumentObject* obj) const;
-    void hideChildBinderVPLater(App::DocumentObject* obj) const;
 };
 
 } // namespace PartDesignGui

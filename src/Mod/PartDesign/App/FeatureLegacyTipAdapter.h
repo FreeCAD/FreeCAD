@@ -36,8 +36,6 @@ class PartDesignExport LegacyTipAdapter : public PartDesign::Feature
 public:
     LegacyTipAdapter();
 
-    App::PropertyLink Binder;  // points to PartDesign::SubShapeBinder
-
     App::DocumentObjectExecReturn* execute() override;
     const char* getViewProviderName() const override;  // returns the name string only
 };
