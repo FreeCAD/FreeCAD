@@ -1604,7 +1604,7 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
     <message>
       <location filename="../../CommandDecorate.cpp" line="243"/>
       <source>Bitmap Image</source>
-      <translation type="unfinished">Bitmap Image</translation>
+      <translation>Bitmap-Bild</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="244"/>
@@ -1655,7 +1655,7 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1554"/>
       <source>Length Dimension</source>
-      <translation type="unfinished">Length Dimension</translation>
+      <translation>Längenmaß</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1555"/>
@@ -1709,7 +1709,7 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
     <message>
       <location filename="../../Command.cpp" line="170"/>
       <source>New Page From Template</source>
-      <translation type="unfinished">New Page From Template</translation>
+      <translation>Neue Seite von Vorlage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="171"/>
@@ -1755,7 +1755,7 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
     <message>
       <location filename="../../Command.cpp" line="1917"/>
       <source>Project Shape</source>
-      <translation type="unfinished">Project Shape</translation>
+      <translation>Fläche projizieren</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1918"/>
@@ -1809,7 +1809,7 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1458"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>Radiusmaß</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1459"/>
@@ -1832,7 +1832,7 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
     <message>
       <location filename="../../Command.cpp" line="240"/>
       <source>Redraws the current page</source>
-      <translation type="unfinished">Redraws the current page</translation>
+      <translation>Zeichnet die aktuelle Seite neu</translation>
     </message>
   </context>
   <context>
@@ -1927,7 +1927,7 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
     <message>
       <location filename="../../Command.cpp" line="1737"/>
       <source>Spreadsheet View</source>
-      <translation type="unfinished">Spreadsheet View</translation>
+      <translation>Tabellenansicht</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1738"/>
@@ -2073,7 +2073,7 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
     <message>
       <location filename="../../Command.cpp" line="1535"/>
       <source>Insert SVG</source>
-      <translation type="unfinished">Insert SVG</translation>
+      <translation>SVG einfügen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1536"/>
@@ -2127,7 +2127,7 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
     <message>
       <location filename="../../Command.cpp" line="300"/>
       <source>New View</source>
-      <translation type="unfinished">New View</translation>
+      <translation>Neue Ansicht</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="301"/>
@@ -2172,7 +2172,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="482"/>
       <source>Create image</source>
-      <translation type="unfinished">Create image</translation>
+      <translation>Bild erstellen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="500"/>
@@ -2286,19 +2286,19 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandCreateDims.cpp" line="246"/>
       <source>Insert dimension</source>
-      <translation type="unfinished">Insert dimension</translation>
+      <translation>Maß einfügen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="759"/>
       <source>Add area dimension</source>
-      <translation type="unfinished">Add area dimension</translation>
+      <translation>Flächenmaß hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="770"/>
       <location filename="../../CommandCreateDims.cpp" line="1065"/>
       <location filename="../../CommandCreateDims.cpp" line="1166"/>
       <source>Add distance dimension</source>
-      <translation type="unfinished">Add distance dimension</translation>
+      <translation>Abstandsmaß hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="779"/>
@@ -2327,7 +2327,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandCreateDims.cpp" line="896"/>
       <source>Add angle dimension</source>
-      <translation type="unfinished">Add angle dimension</translation>
+      <translation>Winkelmaß hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="911"/>
@@ -2343,7 +2343,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="950"/>
       <location filename="../../CommandCreateDims.cpp" line="984"/>
       <source>Add arc length dimension</source>
-      <translation type="unfinished">Add arc length dimension</translation>
+      <translation>Bogenmaß hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="960"/>
@@ -2916,72 +2916,72 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.ui" line="96"/>
       <source>Undo (Ctrl+Z)</source>
-      <translation type="unfinished">Undo (Ctrl+Z)</translation>
+      <translation>Rückgängig (Strg+Z)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="145"/>
       <source>Cut (Ctrl+X)</source>
-      <translation type="unfinished">Cut (Ctrl+X)</translation>
+      <translation>Ausschneiden (Strg+X)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="168"/>
       <source>Copy (Ctrl+C)</source>
-      <translation type="unfinished">Copy (Ctrl+C)</translation>
+      <translation>Kopieren (Strg+C)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="191"/>
       <source>Paste (Ctrl+V)</source>
-      <translation type="unfinished">Paste (Ctrl+V)</translation>
+      <translation>Einfügen (Strg+V)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="221"/>
       <source>Link (Ctrl+L)</source>
-      <translation type="unfinished">Link (Ctrl+L)</translation>
+      <translation>Verknüpfen (Strg+L)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="280"/>
       <source>Italic (Ctrl+I)</source>
-      <translation type="unfinished">Italic (Ctrl+I)</translation>
+      <translation>Kursiv (Strg+I)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="306"/>
       <source>Underline (Ctrl+U)</source>
-      <translation type="unfinished">Underline (Ctrl+U)</translation>
+      <translation>Unterstrichen (Strg+U)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="329"/>
       <source>Strikethrough text</source>
-      <translation type="unfinished">Strikethrough text</translation>
+      <translation>Durchgestrichener Text</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="362"/>
       <source>Bullet list (Ctrl+-)</source>
-      <translation type="unfinished">Bullet list (Ctrl+-)</translation>
+      <translation>Aufzählungsliste (Strg+-)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="388"/>
       <source>Ordered list (Ctrl+=)</source>
-      <translation type="unfinished">Ordered list (Ctrl+=)</translation>
+      <translation>Geordnete Liste (Strg+=)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="414"/>
       <source>Decrease indentation (Ctrl+,)</source>
-      <translation type="unfinished">Decrease indentation (Ctrl+,)</translation>
+      <translation>Einzug verringern (Strg+,)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="417"/>
       <source>Decrease Indentation</source>
-      <translation type="unfinished">Decrease Indentation</translation>
+      <translation>Einzug verringern</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="437"/>
       <source>Increase indentation (Ctrl+.)</source>
-      <translation type="unfinished">Increase indentation (Ctrl+.)</translation>
+      <translation>Einzug vergrößern (Strg+.)</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="440"/>
       <source>Increase Indentation</source>
-      <translation type="unfinished">Increase Indentation</translation>
+      <translation>Einzug vergrößern</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="473"/>
@@ -3356,7 +3356,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1556"/>
       <source>Scalable vector graphic</source>
-      <translation type="unfinished">Scalable vector graphic</translation>
+      <translation>Skalierbare Vektorgrafik</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1556"/>
@@ -3692,7 +3692,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1297"/>
       <source>No view in selection</source>
-      <translation type="unfinished">No view in selection</translation>
+      <translation>Keine Ansicht in der Auswahl</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1366"/>
@@ -4234,7 +4234,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskProjGroup.cpp" line="189"/>
       <source>New View</source>
-      <translation type="unfinished">New View</translation>
+      <translation>Neue Ansicht</translation>
     </message>
     <message>
       <location filename="../../CommandHelpers.cpp" line="91"/>
@@ -5581,7 +5581,7 @@ This affects only the toolbar; all tools remain available via the menu and short
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="566"/>
       <source>Dimension tool diameter/radius mode</source>
-      <translation type="unfinished">Dimension tool diameter/radius mode</translation>
+      <translation>Maßwerkzeugmodus Durchmesser/Radius</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
@@ -6309,7 +6309,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="115"/>
       <source>None</source>
-      <translation>Kein</translation>
+      <translation>Ohne</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="124"/>
@@ -9034,7 +9034,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="39"/>
       <source>None</source>
-      <translation>Kein</translation>
+      <translation>Ohne</translation>
     </message>
   </context>
   <context>
@@ -9817,7 +9817,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1405"/>
       <source>Dimension tools</source>
-      <translation type="unfinished">Dimension tools</translation>
+      <translation>Maßwerkzeuge</translation>
     </message>
   </context>
   <context>
@@ -9879,7 +9879,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
     <message>
       <location filename="../../../App/BalloonPropEnum.cpp" line="33"/>
       <source>None</source>
-      <translation>Kein</translation>
+      <translation>Ohne</translation>
     </message>
     <message>
       <location filename="../../../App/BalloonPropEnum.cpp" line="34"/>

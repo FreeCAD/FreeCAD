@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../CommandExportASMT.py" line="46"/>
       <source>Export ASMT File</source>
-      <translation type="unfinished">Export ASMT File</translation>
+      <translation>ASMT Dosyasını Dışa Aktar</translation>
     </message>
     <message>
       <location filename="../../../CommandExportASMT.py" line="50"/>
@@ -39,7 +39,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="89"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Bileşen</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="50"/>
       <source>Solve Assembly</source>
-      <translation type="unfinished">Solve Assembly</translation>
+      <translation>Montajı Çöz</translation>
     </message>
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="57"/>
       <source>Solves the currently active assembly.</source>
-      <translation type="unfinished">Solves the currently active assembly.</translation>
+      <translation>Şu anda etkin olan montajı çözer.</translation>
     </message>
   </context>
   <context>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="129"/>
       <source>Active object</source>
-      <translation type="unfinished">Active object</translation>
+      <translation>Etkin nesne</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="125"/>
@@ -90,12 +90,12 @@
     <message>
       <location filename="../../../App/BomObject.cpp" line="272"/>
       <source>N/A</source>
-      <translation type="unfinished">N/A</translation>
+      <translation>Uygun Değil</translation>
     </message>
     <message>
       <location filename="../../../App/BomObject.cpp" line="296"/>
       <source>Not supported</source>
-      <translation type="unfinished">Not supported</translation>
+      <translation>Desteklenmiyor</translation>
     </message>
   </context>
   <context>
@@ -108,12 +108,12 @@
     <message>
       <location filename="../../../InitGui.py" line="110"/>
       <source>Assembly Joints</source>
-      <translation type="unfinished">Assembly Joints</translation>
+      <translation>Montaj Bağlantıları</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="113"/>
       <source>&amp;Assembly</source>
-      <translation type="unfinished">&amp;Assembly</translation>
+      <translation>&amp;Montaj</translation>
     </message>
   </context>
   <context>
@@ -131,17 +131,17 @@
     <message>
       <location filename="../../../JointObject.py" line="52"/>
       <source>Cylindrical</source>
-      <translation type="unfinished">Cylindrical</translation>
+      <translation>Silindirik</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="53"/>
       <source>Slider</source>
-      <translation type="unfinished">Slider</translation>
+      <translation>Kaydırıcı</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
       <source>Ball</source>
-      <translation type="unfinished">Ball</translation>
+      <translation>Top</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
@@ -173,22 +173,22 @@
     <message>
       <location filename="../../../JointObject.py" line="60"/>
       <source>Screw</source>
-      <translation type="unfinished">Screw</translation>
+      <translation>Vida</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="61"/>
       <source>Gears</source>
-      <translation type="unfinished">Gears</translation>
+      <translation>Dişli</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="62"/>
       <source>Belt</source>
-      <translation type="unfinished">Belt</translation>
+      <translation>Kemer</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="641"/>
       <source>Broken link in: </source>
-      <translation type="unfinished">Broken link in: </translation>
+      <translation>Bozuk bağlantı: </translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1404"/>
@@ -228,7 +228,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="46"/>
       <source>Index (auto)</source>
-      <translation type="unfinished">Index (auto)</translation>
+      <translation>İndeks (oto)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="47"/>
@@ -248,7 +248,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="50"/>
       <source>Quantity (auto)</source>
-      <translation type="unfinished">Quantity (auto)</translation>
+      <translation>Miktar (oto)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="200"/>
@@ -288,7 +288,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="397"/>
       <source>Columns</source>
-      <translation type="unfinished">Columns</translation>
+      <translation>Sütunlar</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="410"/>
@@ -303,7 +303,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="418"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Dışa Aktar</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="425"/>
@@ -318,7 +318,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="87"/>
       <source>Part name</source>
-      <translation type="unfinished">Part name</translation>
+      <translation>Bölüm adı</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="92"/>
@@ -328,7 +328,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="97"/>
       <source>Create part in new file</source>
-      <translation type="unfinished">Create part in new file</translation>
+      <translation>Yeni dosyada bölüm oluştur</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="104"/>
@@ -343,7 +343,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="141"/>
       <source>Save Document</source>
-      <translation type="unfinished">Save Document</translation>
+      <translation>Dokümanı Kaydet</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="143"/>
@@ -353,12 +353,12 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="146"/>
       <source>Do not Link</source>
-      <translation type="unfinished">Do not Link</translation>
+      <translation>Bağlama</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="483"/>
       <source>Enter your formula...</source>
-      <translation type="unfinished">Enter your formula...</translation>
+      <translation>Formülü gir...</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="536"/>
@@ -478,7 +478,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="682"/>
       <source>Hide help</source>
-      <translation type="unfinished">Hide help</translation>
+      <translation>Yardımı gizle</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="142"/>
@@ -498,12 +498,12 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../InitGui.py" line="203"/>
       <source>Grounding</source>
-      <translation type="unfinished">Grounding</translation>
+      <translation>Temellendirme</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="230"/>
       <source>Constraints</source>
-      <translation type="unfinished">Constraints</translation>
+      <translation>Kısıtlamalar</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="246"/>

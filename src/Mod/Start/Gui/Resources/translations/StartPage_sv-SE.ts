@@ -6,7 +6,7 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="94"/>
       <source>Done</source>
-      <translation>Färdig</translation>
+      <translation>Klar</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="96"/>
@@ -16,12 +16,12 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="99"/>
       <source>Set your basic configuration options below.</source>
-      <translation type="unfinished">Set your basic configuration options below.</translation>
+      <translation>Ställ in dina grundläggande konfigurationsalternativ nedan.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="100"/>
       <source>These options (and many more) can be changed later in the preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in the preferences.</translation>
+      <translation>Dessa alternativ (och många fler) kan ändras senare i inställningarna.</translation>
     </message>
   </context>
   <context>
@@ -57,7 +57,7 @@
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
       <source>Displays the start page</source>
-      <translation type="unfinished">Displays the start page</translation>
+      <translation>Visar startsidan</translation>
     </message>
   </context>
   <context>
@@ -70,57 +70,57 @@
     <message>
       <location filename="../../StartView.cpp" line="220"/>
       <source>Assembly</source>
-      <translation>Ihopsättning</translation>
+      <translation>Montering</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="224"/>
       <source>2D Draft</source>
-      <translation>2D-skiss</translation>
+      <translation>2D-utkast</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="225"/>
       <source>Creates a 2D Draft document</source>
-      <translation type="unfinished">Creates a 2D Draft document</translation>
+      <translation>Skapar ett 2D-utkastdokument</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="228"/>
       <source>BIM/Architecture</source>
-      <translation>BIM/arkitektur</translation>
+      <translation>BIM/Arkitektur</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="208"/>
       <source>Empty File</source>
-      <translation type="unfinished">Empty File</translation>
+      <translation>Tom fil</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="209"/>
       <source>Creates a new empty FreeCAD file</source>
-      <translation type="unfinished">Creates a new empty FreeCAD file</translation>
+      <translation>Skapar en ny tom FreeCAD-fil</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="213"/>
       <source>Opens an existing CAD file or 3D model</source>
-      <translation type="unfinished">Opens an existing CAD file or 3D model</translation>
+      <translation>Öppnar en befintlig CAD-fil eller 3D-modell</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="216"/>
       <source>Parametric Body</source>
-      <translation type="unfinished">Parametric Body</translation>
+      <translation>Parametrisk kropp</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="217"/>
       <source>Creates a body with the Part Design workbench</source>
-      <translation type="unfinished">Creates a body with the Part Design workbench</translation>
+      <translation>Skapar en kropp med arbetsbänken Part Design</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="221"/>
       <source>Creates an assembly project</source>
-      <translation type="unfinished">Creates an assembly project</translation>
+      <translation>Skapar ett monteringsprojekt</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="229"/>
       <source>Creates an architectural project</source>
-      <translation type="unfinished">Creates an architectural project</translation>
+      <translation>Skapar ett arkitektoniskt projekt</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="497"/>
@@ -140,12 +140,12 @@
     <message>
       <location filename="../../StartView.cpp" line="514"/>
       <source>Open First Start Setup</source>
-      <translation type="unfinished">Open First Start Setup</translation>
+      <translation>Öppna första startkonfigurationen</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="516"/>
       <source>Do not show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Do not show this Start page again (start with blank screen)</translation>
+      <translation>Visa inte denna startsida igen (börja med en tom skärm)</translation>
     </message>
   </context>
   <context>
@@ -181,7 +181,7 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="239"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation>Letar du efter fler teman? Du kan få dem med &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</translation>
+      <translation>Letar du efter fler teman? Du kan hämta dem med hjälp av &lt;a href="freecad:Std_AddonMgr"&gt;Tilläggshanterare&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="241"/>
@@ -234,18 +234,18 @@
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>An optional custom folder to be displayed on the Start page.
 Multiple folders can be added using ";;" to separate paths.</source>
-      <translation type="unfinished">An optional custom folder to be displayed on the Start page.
-Multiple folders can be added using ";;" to separate paths.</translation>
+      <translation>En valfri anpassad mapp som ska visas på startsidan.
+Flera mappar kan läggas till med hjälp av ";;" för att separera sökvägar.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
       <source>Shows example files on the start page</source>
-      <translation type="unfinished">Shows example files on the start page</translation>
+      <translation>Visar exempel på filer på startsidan</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="114"/>
       <source>The start page is closed automatically when FreeCAD launches</source>
-      <translation type="unfinished">The start page is closed automatically when FreeCAD launches</translation>
+      <translation>Startsidan stängs automatiskt när FreeCAD startas</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="108"/>
@@ -255,7 +255,7 @@ Multiple folders can be added using ";;" to separate paths.</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
       <source>Close start page after loading</source>
-      <translation>Stäng startsidan efter laddning</translation>
+      <translation>Stäng startsidan efter inläsning</translation>
     </message>
   </context>
   <context>

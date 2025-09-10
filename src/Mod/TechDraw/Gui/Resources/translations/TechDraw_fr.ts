@@ -96,7 +96,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1697"/>
       <source>Angle Dimension</source>
-      <translation type="unfinished">Angle Dimension</translation>
+      <translation>Cote de l'angle</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1698"/>
@@ -358,7 +358,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1506"/>
       <source>Diameter Dimension</source>
-      <translation type="unfinished">Diameter Dimension</translation>
+      <translation>Cote du diamètre</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1507"/>
@@ -1655,7 +1655,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1554"/>
       <source>Length Dimension</source>
-      <translation type="unfinished">Length Dimension</translation>
+      <translation>Cote de la longueur</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1555"/>
@@ -1809,7 +1809,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1458"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>Cote de rayon</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1459"/>
@@ -5583,7 +5583,7 @@ This affects only the toolbar; all tools remain available via the menu and short
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="566"/>
       <source>Dimension tool diameter/radius mode</source>
-      <translation type="unfinished">Dimension tool diameter/radius mode</translation>
+      <translation>Mode pour les diamètres/rayons de l'outil Contrainte de dimension</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>

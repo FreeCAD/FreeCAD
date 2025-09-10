@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="715"/>
       <source>Add Triangle</source>
-      <translation type="unfinished">Add Triangle</translation>
+      <translation>Lägg till triangel</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="716"/>
       <source>Adds a triangle manually to a mesh</source>
-      <translation type="unfinished">Adds a triangle manually to a mesh</translation>
+      <translation>Lägger till en triangel manuellt till ett nät</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="1432"/>
       <source>Bounding Box Info</source>
-      <translation type="unfinished">Bounding Box Info</translation>
+      <translation>Info om avgränsande box</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1433"/>
       <source>Shows the bounding box coordinates of the selected mesh</source>
-      <translation type="unfinished">Shows the bounding box coordinates of the selected mesh</translation>
+      <translation>Visar koordinaterna för begränsningsrutan för det valda nätet</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="952"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Tvärsnitt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="953"/>
       <source>Creates cross-sections of the mesh</source>
-      <translation type="unfinished">Creates cross-sections of the mesh</translation>
+      <translation>Skapar tvärsnitt av nätet</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="1328"/>
       <source>Decimate</source>
-      <translation type="unfinished">Decimate</translation>
+      <translation>Decimera</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1329"/>
       <source>Decimates a mesh</source>
-      <translation>Decimerar ett nät</translation>
+      <translation>Decimerar en mask</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="165"/>
       <source>Creates a boolean difference of the selected meshes</source>
-      <translation type="unfinished">Creates a boolean difference of the selected meshes</translation>
+      <translation>Skapar en boolesk skillnad mellan de valda maskorna</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="1083"/>
       <source>Face Info</source>
-      <translation type="unfinished">Face Info</translation>
+      <translation>Ansiktsinformation</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1084"/>
       <source>Displays information about the selected faces</source>
-      <translation type="unfinished">Displays information about the selected faces</translation>
+      <translation>Visar information om de valda ansiktena</translation>
     </message>
   </context>
   <context>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="1258"/>
       <source>Evaluate Solid</source>
-      <translation type="unfinished">Evaluate Solid</translation>
+      <translation>Utvärdera Solid</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1259"/>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="1039"/>
       <source>Evaluate and Repair</source>
-      <translation type="unfinished">Evaluate and Repair</translation>
+      <translation>Utvärdera och reparera</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1040"/>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="373"/>
       <source>Export Mesh…</source>
-      <translation type="unfinished">Export Mesh…</translation>
+      <translation>Exportera nät..</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="374"/>
       <source>Exports a mesh to a file</source>
-      <translation type="unfinished">Exports a mesh to a file</translation>
+      <translation>Exporterar ett nät till en fil</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="1567"/>
       <source>Close Hole</source>
-      <translation type="unfinished">Close Hole</translation>
+      <translation>Stäng hålet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1568"/>
       <source>Closes a hole interactively in the mesh</source>
-      <translation type="unfinished">Closes a hole interactively in the mesh</translation>
+      <translation>Stänger ett hål interaktivt i maskan</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="1516"/>
       <source>Fill Holes</source>
-      <translation type="unfinished">Fill Holes</translation>
+      <translation>Fyllningshål</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1517"/>
       <source>Fills holes in the mesh</source>
-      <translation type="unfinished">Fills holes in the mesh</translation>
+      <translation>Fyller hål i maskorna</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="1396"/>
       <source>Flip Normals</source>
-      <translation type="unfinished">Flip Normals</translation>
+      <translation>Vänd normaler</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1397"/>
       <source>Flips the normals of the selected mesh</source>
-      <translation type="unfinished">Flips the normals of the selected mesh</translation>
+      <translation>Vänder på normalerna för det valda nätet</translation>
     </message>
   </context>
   <context>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../Command.cpp" line="456"/>
       <source>Mesh From Geometry</source>
-      <translation type="unfinished">Mesh From Geometry</translation>
+      <translation>Mesh från geometri</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="457"/>
       <source>Creates a mesh from the selected geometry</source>
-      <translation type="unfinished">Creates a mesh from the selected geometry</translation>
+      <translation>Skapar ett nät från den markerade geometrin</translation>
     </message>
   </context>
   <context>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../Command.cpp" line="527"/>
       <source>Mesh From Shape</source>
-      <translation type="unfinished">Mesh From Shape</translation>
+      <translation>Nät från form</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="528"/>
       <source>Tessellates the selected shape to a mesh</source>
-      <translation type="unfinished">Tessellates the selected shape to a mesh</translation>
+      <translation>Tessellerar den valda formen till ett nät</translation>
     </message>
   </context>
   <context>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../Command.cpp" line="1360"/>
       <source>Harmonize Normals</source>
-      <translation type="unfinished">Harmonize Normals</translation>
+      <translation>Harmonisera normaler</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1361"/>
@@ -299,12 +299,12 @@
     <message>
       <location filename="../../Command.cpp" line="320"/>
       <source>Import Mesh…</source>
-      <translation type="unfinished">Import Mesh…</translation>
+      <translation>Importera nät..</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="321"/>
       <source>Imports a mesh from a file</source>
-      <translation type="unfinished">Imports a mesh from a file</translation>
+      <translation>Importerar ett nät från en fil</translation>
     </message>
   </context>
   <context>
@@ -322,7 +322,7 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Creates a boolean intersection from the selected meshes</source>
-      <translation type="unfinished">Creates a boolean intersection from the selected meshes</translation>
+      <translation>Skapar en boolesk intersektion från de valda maskorna</translation>
     </message>
   </context>
   <context>
@@ -340,7 +340,7 @@
     <message>
       <location filename="../../Command.cpp" line="1687"/>
       <source>Merges selected meshes into one</source>
-      <translation>Förenar de markerade näten till ett nät</translation>
+      <translation>Sammanfogar valda maskor till en</translation>
     </message>
   </context>
   <context>
@@ -353,12 +353,12 @@
     <message>
       <location filename="../../Command.cpp" line="764"/>
       <source>Cut</source>
-      <translation>Klipp</translation>
+      <translation>Klipp ut</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="765"/>
       <source>Cuts the mesh with a selected polygon</source>
-      <translation type="unfinished">Cuts the mesh with a selected polygon</translation>
+      <translation>Skär mesh med en markerad polygon</translation>
     </message>
   </context>
   <context>
@@ -371,7 +371,7 @@
     <message>
       <location filename="../../Command.cpp" line="656"/>
       <source>Segment</source>
-      <translation>Segment</translation>
+      <translation>Segmentet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="657"/>
@@ -394,7 +394,7 @@
     <message>
       <location filename="../../Command.cpp" line="982"/>
       <source>Splits a mesh into 2 meshes</source>
-      <translation type="unfinished">Splits a mesh into 2 meshes</translation>
+      <translation>Delar upp ett nät i 2 nät</translation>
     </message>
   </context>
   <context>
@@ -412,7 +412,7 @@
     <message>
       <location filename="../../Command.cpp" line="830"/>
       <source>Trims a mesh with a selected polygon</source>
-      <translation type="unfinished">Trims a mesh with a selected polygon</translation>
+      <translation>Trimmar ett nät med en markerad polygon</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="832"/>
@@ -430,12 +430,12 @@
     <message>
       <location filename="../../Command.cpp" line="1177"/>
       <source>Refinement</source>
-      <translation type="unfinished">Refinement</translation>
+      <translation>Förädling</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1178"/>
       <source>Refines an existing mesh</source>
-      <translation type="unfinished">Refines an existing mesh</translation>
+      <translation>Förfinar ett befintligt nät</translation>
     </message>
   </context>
   <context>
@@ -448,12 +448,12 @@
     <message>
       <location filename="../../Command.cpp" line="1211"/>
       <source>Remove Components Manually</source>
-      <translation type="unfinished">Remove Components Manually</translation>
+      <translation>Ta bort komponenter manuellt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1212"/>
       <source>Marks a component to remove it from the mesh</source>
-      <translation type="unfinished">Marks a component to remove it from the mesh</translation>
+      <translation>Markerar en komponent för att ta bort den från nätet</translation>
     </message>
   </context>
   <context>
@@ -466,12 +466,12 @@
     <message>
       <location filename="../../Command.cpp" line="1129"/>
       <source>Remove Components</source>
-      <translation type="unfinished">Remove Components</translation>
+      <translation>Ta bort komponenter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1130"/>
       <source>Removes topologically independent components from the mesh</source>
-      <translation type="unfinished">Removes topologically independent components from the mesh</translation>
+      <translation>Avlägsnar topologiskt oberoende komponenter från nätet</translation>
     </message>
   </context>
   <context>
@@ -489,7 +489,7 @@
     <message>
       <location filename="../../Command.cpp" line="1780"/>
       <source>Scales the selected mesh objects</source>
-      <translation type="unfinished">Scales the selected mesh objects</translation>
+      <translation>Skalar de valda mesh-objekten</translation>
     </message>
   </context>
   <context>
@@ -502,12 +502,12 @@
     <message>
       <location filename="../../Command.cpp" line="923"/>
       <source>Section From Plane</source>
-      <translation type="unfinished">Section From Plane</translation>
+      <translation>Sektion från flygplan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="924"/>
       <source>Sections the mesh with the selected plane</source>
-      <translation type="unfinished">Sections the mesh with the selected plane</translation>
+      <translation>Sektioner av nätet med det valda planet</translation>
     </message>
   </context>
   <context>
@@ -525,7 +525,7 @@
     <message>
       <location filename="../../Command.cpp" line="1615"/>
       <source>Creates new mesh segments from the mesh</source>
-      <translation type="unfinished">Creates new mesh segments from the mesh</translation>
+      <translation>Skapar nya nätsegment från nätet</translation>
     </message>
   </context>
   <context>
@@ -538,12 +538,12 @@
     <message>
       <location filename="../../Command.cpp" line="1650"/>
       <source>Segmentation From Best-Fit Surfaces</source>
-      <translation type="unfinished">Segmentation From Best-Fit Surfaces</translation>
+      <translation>Segmentering från ytor som passar bäst</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1651"/>
       <source>Creates new mesh segments from the best-fit surfaces</source>
-      <translation type="unfinished">Creates new mesh segments from the best-fit surfaces</translation>
+      <translation>Skapar nya mesh-segment från de ytor som passar bäst</translation>
     </message>
   </context>
   <context>
@@ -556,12 +556,12 @@
     <message>
       <location filename="../../Command.cpp" line="1299"/>
       <source>Smooth</source>
-      <translation type="unfinished">Smooth</translation>
+      <translation>Smidig</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1300"/>
       <source>Smoothes the selected meshes</source>
-      <translation type="unfinished">Smoothes the selected meshes</translation>
+      <translation>Utjämnar de valda maskorna</translation>
     </message>
   </context>
   <context>
@@ -574,12 +574,12 @@
     <message>
       <location filename="../../Command.cpp" line="1731"/>
       <source>Split by Components</source>
-      <translation type="unfinished">Split by Components</translation>
+      <translation>Uppdelat på komponenter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1732"/>
       <source>Splits the selected mesh into its components</source>
-      <translation type="unfinished">Splits the selected mesh into its components</translation>
+      <translation>Delar upp det valda nätet i sina komponenter</translation>
     </message>
   </context>
   <context>
@@ -592,12 +592,12 @@
     <message>
       <location filename="../../Command.cpp" line="894"/>
       <source>Trim With Plane</source>
-      <translation type="unfinished">Trim With Plane</translation>
+      <translation>Trimma med plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="895"/>
       <source>Trims a mesh by removing faces on one side of a selected plane</source>
-      <translation type="unfinished">Trims a mesh by removing faces on one side of a selected plane</translation>
+      <translation>Trimmar ett nät genom att ta bort ytor på ena sidan av ett valt plan</translation>
     </message>
   </context>
   <context>
@@ -615,7 +615,7 @@
     <message>
       <location filename="../../Command.cpp" line="87"/>
       <source>Unites the selected meshes</source>
-      <translation type="unfinished">Unites the selected meshes</translation>
+      <translation>Sammanfogar de valda maskorna</translation>
     </message>
   </context>
   <context>
@@ -628,7 +628,7 @@
     <message>
       <location filename="../../Command.cpp" line="553"/>
       <source>Curvature Plot</source>
-      <translation type="unfinished">Curvature Plot</translation>
+      <translation>Krökningsdiagram</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="554"/>
@@ -646,12 +646,12 @@
     <message>
       <location filename="../../Command.cpp" line="608"/>
       <source>Curvature Info</source>
-      <translation type="unfinished">Curvature Info</translation>
+      <translation>Info om krökning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="609"/>
       <source>Displays information about the curvature</source>
-      <translation type="unfinished">Displays information about the curvature</translation>
+      <translation>Visar information om krökningen</translation>
     </message>
   </context>
   <context>
@@ -659,7 +659,7 @@
     <message>
       <location filename="../../Command.cpp" line="102"/>
       <source>Mesh union</source>
-      <translation>Förena nät</translation>
+      <translation>Nätförening</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="178"/>
@@ -684,37 +684,37 @@
     <message>
       <location filename="../../DlgSmoothing.cpp" line="170"/>
       <source>Mesh Smoothing</source>
-      <translation>Nätutjämning</translation>
+      <translation>Utjämning av nät</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1371"/>
       <source>Harmonize mesh normals</source>
-      <translation>Harmonisera närnormaler</translation>
+      <translation>Harmonisera mesh-normaler</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1407"/>
       <source>Flip mesh normals</source>
-      <translation>Vänd nät normaler</translation>
+      <translation>Vänd mesh-normaler</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1541"/>
       <source>Fill up holes</source>
-      <translation>Fyll hål</translation>
+      <translation>Fylla igen hål</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1700"/>
       <source>Mesh merge</source>
-      <translation>Slå samman nät</translation>
+      <translation>Sammanfogning av nät</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1745"/>
       <source>Mesh split</source>
-      <translation>Dela nät</translation>
+      <translation>Split i mesh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1807"/>
       <source>Mesh scale</source>
-      <translation>Skala nät</translation>
+      <translation>Mesh-skala</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.cpp" line="156"/>
@@ -739,7 +739,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="832"/>
       <source>Remove degenerated faces</source>
-      <translation>Ta bort degenererade ytor</translation>
+      <translation>Ta bort degenererade ansikten</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="903"/>
@@ -749,7 +749,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="972"/>
       <source>Remove duplicated points</source>
-      <translation>Ta bort duplicerade punkter</translation>
+      <translation>Ta bort dubblerade punkter</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1057"/>
@@ -759,23 +759,23 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1135"/>
       <source>Remove folds</source>
-      <translation>Ta bort vik</translation>
+      <translation>Ta bort veck</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1179"/>
       <source>Repair Mesh</source>
-      <translation type="unfinished">Repair Mesh</translation>
+      <translation>Reparation av nät</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="163"/>
       <source>Delete selection</source>
-      <translation>Ta bort val</translation>
+      <translation>Radera val</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="956"/>
       <location filename="../../ViewProvider.cpp" line="1017"/>
       <source>Cut</source>
-      <translation>Klipp</translation>
+      <translation>Klipp ut</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="966"/>
@@ -791,7 +791,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1246"/>
       <source>Segment</source>
-      <translation>Segment</translation>
+      <translation>Segmentet</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1848"/>
@@ -801,7 +801,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1974"/>
       <source>Fill hole</source>
-      <translation>Fyll hål</translation>
+      <translation>Fyll i hål</translation>
     </message>
   </context>
   <context>
@@ -809,17 +809,17 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="14"/>
       <source>Decimating</source>
-      <translation>Decimerar</translation>
+      <translation>Decimering</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="20"/>
       <source>Reduction</source>
-      <translation>Reducering</translation>
+      <translation>Minskning</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="28"/>
       <source>None</source>
-      <translation>Inget</translation>
+      <translation>Ingen</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
@@ -830,7 +830,7 @@
       <location filename="../../DlgDecimating.ui" line="66"/>
       <location filename="../../DlgDecimating.cpp" line="101"/>
       <source>Absolute number</source>
-      <translation>Absolut tal</translation>
+      <translation>Absolut antal</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="102"/>
@@ -868,22 +868,22 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="23"/>
       <source>Mesh Information</source>
-      <translation type="unfinished">Mesh Information</translation>
+      <translation>Information om nät</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="46"/>
       <source>Number of faces</source>
-      <translation>Antal ytor</translation>
+      <translation>Antal ansikten</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="79"/>
       <source>Number of edges</source>
-      <translation type="unfinished">Number of edges</translation>
+      <translation>Antal kanter</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="112"/>
       <source>Number of points</source>
-      <translation>Antal punkter</translation>
+      <translation>Antal poäng</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="147"/>
@@ -988,7 +988,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="459"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="460"/>
       <source>No information</source>
-      <translation>Ingen Information</translation>
+      <translation>Ingen information</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="556"/>
@@ -1024,7 +1024,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="675"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="678"/>
       <source>Non-manifolds</source>
-      <translation>Icke-mångfalder</translation>
+      <translation>Icke-mångfaldiga</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="678"/>
@@ -1089,7 +1089,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="912"/>
       <source>Duplicated faces</source>
-      <translation>Duplicerade ytor</translation>
+      <translation>Duplicerade ansikten</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="948"/>
@@ -1110,7 +1110,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1030"/>
       <source>Self-intersections</source>
-      <translation>Självskärningar</translation>
+      <translation>Självskärande korsningar</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1100"/>
@@ -1139,7 +1139,7 @@
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="14"/>
       <source>Evaluation Settings</source>
-      <translation type="unfinished">Evaluation Settings</translation>
+      <translation>Inställningar för utvärdering</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
@@ -1149,17 +1149,17 @@
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="26"/>
       <source>Check for non-manifold points</source>
-      <translation>Kontrollera för icke-manifold-punkter</translation>
+      <translation>Kontrollera för icke-manifoldpunkter</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="33"/>
       <source>Enable check for folds on surface</source>
-      <translation>Aktivera kontroll efter veck på ytan</translation>
+      <translation>Möjliggör kontroll av veck på ytan</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="40"/>
       <source>Only consider zero area faces as degenerated</source>
-      <translation>Anse endast ytor med noll area som degenererade</translation>
+      <translation>Betrakta endast nollytor som degenererade</translation>
     </message>
   </context>
   <context>
@@ -1231,7 +1231,7 @@
       <location filename="../../DlgRegularSolid.ui" line="273"/>
       <location filename="../../DlgRegularSolid.ui" line="424"/>
       <source>Edge length</source>
-      <translation type="unfinished">Edge length</translation>
+      <translation>Kantlängd</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="293"/>
@@ -1240,7 +1240,7 @@
       <location filename="../../DlgRegularSolid.ui" line="642"/>
       <location filename="../../DlgRegularSolid.ui" line="746"/>
       <source>Sampling</source>
-      <translation type="unfinished">Sampling</translation>
+      <translation>Provtagning</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="353"/>
@@ -1281,14 +1281,14 @@
   <context>
     <name>MeshGui::DlgRegularSolidImp</name>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="124"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="205"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="213"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="123"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="204"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="212"/>
       <source>Create %1</source>
       <translation>Skapa %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="124"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="123"/>
       <source>No active document</source>
       <translation>Inget aktivt dokument</translation>
     </message>
@@ -1308,7 +1308,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="28"/>
       <source>Deviation of tessellation to the actual surface</source>
-      <translation>Definierar tesseleringens avvikelse till det egentliga ytan</translation>
+      <translation>Tesselleringens avvikelse från den faktiska ytan</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="31"/>
@@ -1318,7 +1318,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="34"/>
       <source>Maximum mesh deviation</source>
-      <translation>Maximal nät-avvikelse</translation>
+      <translation>Maximal maskavvikelse</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="41"/>
@@ -1328,7 +1328,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="63"/>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
-      <translation>ZIP-komprimering används när man skriver en nätfil i AMF-format</translation>
+      <translation>ZIP-komprimering används när du skriver en mesh-fil i AMF-format</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="66"/>
@@ -1359,8 +1359,8 @@
       <location filename="../../DlgSettingsImportExportImp.cpp" line="39"/>
       <source>This parameter indicates whether ZIP compression
 is used when writing a file in AMF format</source>
-      <translation>Denna parameter anger om ZIP-kompression
-används vid skrivning av fil i AMF-format</translation>
+      <translation>Denna parameter anger om ZIP-komprimering
+används när du skriver en fil i AMF-format</translation>
     </message>
   </context>
   <context>
@@ -1373,7 +1373,7 @@ används vid skrivning av fil i AMF-format</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="80"/>
       <source>Default color for new meshes</source>
-      <translation>Standardfärgen för nya nät</translation>
+      <translation>Standardfärg för nya maskor</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="116"/>
@@ -1388,7 +1388,7 @@ används vid skrivning av fil i AMF-format</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="149"/>
       <source>Default line color for new meshes</source>
-      <translation>Standard linjefärg för nya nät</translation>
+      <translation>Standardfärg för linjer i nya maskor</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="185"/>
@@ -1443,12 +1443,12 @@ används vid skrivning av fil i AMF-format</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="14"/>
       <source>Mesh View</source>
-      <translation type="unfinished">Mesh View</translation>
+      <translation>Nätvy</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="35"/>
       <source>Default Appearance for New Meshes</source>
-      <translation type="unfinished">Default Appearance for New Meshes</translation>
+      <translation>Standardutseende för nya nät</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="251"/>
@@ -1484,10 +1484,10 @@ till ett mjukare utseende.
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</source>
-      <translation>Veck vinkel är en tröskelvinkel mellan två ytor.
+      <translation>Veckvinkel är en tröskelvinkel mellan två ytor.
 
- Om vinkeln för ytan ≥ veck vinkel, så används fasett skuggning
- Om vinkeln &lt; veck vinkel, så används jämn skuggning</translation>
+ Om ansiktsvinkeln ≥ veckvinkeln används fasettskuggning
+ Om ansiktsvinkeln &lt; veckvinkeln används slät skuggning</translation>
     </message>
   </context>
   <context>
@@ -1543,12 +1543,12 @@ till ett mjukare utseende.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="99"/>
       <source>Automatic</source>
-      <translation>Automatisk</translation>
+      <translation>Automatiskt</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="100"/>
       <source>Adaptive</source>
-      <translation>Anpassad</translation>
+      <translation>Adaptiv</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="102"/>
@@ -1558,17 +1558,17 @@ till ett mjukare utseende.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="105"/>
       <source>Parallelograms</source>
-      <translation>Parallelogram</translation>
+      <translation>Parallellogram</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Frontal quad</source>
-      <translation type="unfinished">Frontal quad</translation>
+      <translation>Frontal fyrkant</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="106"/>
       <source>Quasi-structured quad</source>
-      <translation type="unfinished">Quasi-structured quad</translation>
+      <translation>Kvasi-strukturerad kvadrant</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="200"/>
@@ -1579,12 +1579,12 @@ till ett mjukare utseende.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="246"/>
       <source>Running Gmsh…</source>
-      <translation type="unfinished">Running Gmsh…</translation>
+      <translation>Kör Gmsh..</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="269"/>
       <source>Failed to start</source>
-      <translation>Det gick inte att starta</translation>
+      <translation>Misslyckades med att starta</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="276"/>
@@ -1597,12 +1597,12 @@ till ett mjukare utseende.
     <message>
       <location filename="../../MeshEditor.cpp" line="396"/>
       <source>Add Triangle</source>
-      <translation type="unfinished">Add Triangle</translation>
+      <translation>Lägg till triangel</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="397"/>
       <source>Flip Normal</source>
-      <translation type="unfinished">Flip Normal</translation>
+      <translation>Vänd Normal</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="398"/>
@@ -1620,7 +1620,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../MeshEditor.cpp" line="767"/>
       <source>Finish</source>
-      <translation>Gör klart</translation>
+      <translation>Slutför</translation>
     </message>
   </context>
   <context>
@@ -1638,7 +1638,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="185"/>
       <source>Selection</source>
-      <translation>Markering</translation>
+      <translation>Urval</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="193"/>
@@ -1668,7 +1668,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="307"/>
       <source>Before fitting the surface select an area.</source>
-      <translation>Innan passning av ytan markera en area.</translation>
+      <translation>Välj ett område innan du monterar ytan.</translation>
     </message>
   </context>
   <context>
@@ -1686,17 +1686,17 @@ till ett mjukare utseende.
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing</source>
-      <translation>Meshing</translation>
+      <translation>Meshning</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto)</source>
-      <translation type="unfinished">Max element size (0.0 = Auto)</translation>
+      <translation>Max elementstorlek (0.0 = Auto)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
       <source>Min element size (0.0 = Auto)</source>
-      <translation type="unfinished">Min element size (0.0 = Auto)</translation>
+      <translation>Minsta elementstorlek (0.0 = Auto)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
@@ -1716,7 +1716,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../RemeshGmsh.ui" line="141"/>
       <source>Leave empty to use default gmsh executable</source>
-      <translation type="unfinished">Leave empty to use default gmsh executable</translation>
+      <translation>Lämna tomt för att använda standardkörbar gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="157"/>
@@ -1739,7 +1739,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../RemoveComponents.ui" line="14"/>
       <source>Remove Components</source>
-      <translation type="unfinished">Remove Components</translation>
+      <translation>Ta bort komponenter</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="20"/>
@@ -1773,17 +1773,17 @@ till ett mjukare utseende.
       <location filename="../../RemoveComponents.ui" line="89"/>
       <location filename="../../RemoveComponents.ui" line="175"/>
       <source>Pick Triangle</source>
-      <translation type="unfinished">Pick Triangle</translation>
+      <translation>Välj triangel</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="192"/>
       <source>Region Options</source>
-      <translation type="unfinished">Region Options</translation>
+      <translation>Alternativ för region</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="208"/>
       <source>Respect only triangles with screen-facing normals</source>
-      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
+      <translation>Respektera endast trianglar med normaler som vetter mot skärmen</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="96"/>
@@ -1816,7 +1816,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>Segmentering av nät</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
@@ -1853,27 +1853,27 @@ till ett mjukare utseende.
       <location filename="../../Segmentation.ui" line="92"/>
       <location filename="../../Segmentation.ui" line="172"/>
       <source>Curvature</source>
-      <translation>Böjning</translation>
+      <translation>Krökning</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="109"/>
       <source>Tolerance (flat)</source>
-      <translation type="unfinished">Tolerance (flat)</translation>
+      <translation>Tolerans (platt)</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="126"/>
       <source>Tolerance (curved)</source>
-      <translation type="unfinished">Tolerance (curved)</translation>
+      <translation>Tolerans (krökt)</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="235"/>
       <source>Maximum curvature</source>
-      <translation type="unfinished">Maximum curvature</translation>
+      <translation>Maximal krökning</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="269"/>
       <source>Minimum curvature</source>
-      <translation type="unfinished">Minimum curvature</translation>
+      <translation>Minsta krökning</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
@@ -1896,7 +1896,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="14"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>Segmentering av nät</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="29"/>
@@ -1917,7 +1917,7 @@ till ett mjukare utseende.
       <location filename="../../SegmentationBestFit.ui" line="106"/>
       <location filename="../../SegmentationBestFit.ui" line="159"/>
       <source>Minimum number of faces</source>
-      <translation>Minsta antal ytor</translation>
+      <translation>Minsta antal ansikten</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="73"/>
@@ -1954,7 +1954,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="428"/>
       <source>Center</source>
-      <translation>Centrum</translation>
+      <translation>Centrera</translation>
     </message>
   </context>
   <context>
@@ -1963,7 +1963,7 @@ till ett mjukare utseende.
       <location filename="../../Selection.ui" line="14"/>
       <location filename="../../Selection.ui" line="20"/>
       <source>Selection</source>
-      <translation>Markering</translation>
+      <translation>Urval</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="39"/>
@@ -1983,17 +1983,17 @@ till ett mjukare utseende.
     <message>
       <location filename="../../Selection.ui" line="63"/>
       <source>Respect only triangles with screen-facing normals</source>
-      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
+      <translation>Respektera endast trianglar med normaler som vetter mot skärmen</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="86"/>
       <source>Use a brush tool to select the area</source>
-      <translation>Använd penselverktyget för att markera området</translation>
+      <translation>Använd ett penselverktyg för att markera området</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="89"/>
       <source>Clears completely the selected area</source>
-      <translation>Rensar helt det markerade området</translation>
+      <translation>Rensar det markerade området helt och hållet</translation>
     </message>
   </context>
   <context>
@@ -2002,7 +2002,7 @@ till ett mjukare utseende.
       <location filename="../../RemoveComponents.cpp" line="209"/>
       <location filename="../../RemoveComponents.cpp" line="254"/>
       <source>Delete</source>
-      <translation>Radera</translation>
+      <translation>Ta bort</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="210"/>
@@ -2025,7 +2025,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../Command.cpp" line="1455"/>
       <source>Boundings of %1:</source>
-      <translation>Begränsningar för %1:</translation>
+      <translation>Avgränsningar av %1:</translation>
     </message>
   </context>
   <context>
@@ -2045,7 +2045,7 @@ till ett mjukare utseende.
       <location filename="../../Command.cpp" line="216"/>
       <location filename="../../Command.cpp" line="294"/>
       <source>Unknown error occurred while running OpenSCAD.</source>
-      <translation>Ett okänt fel inträffade under körningen av OpenSCAD.</translation>
+      <translation>Okänt fel inträffade under körning av OpenSCAD.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="143"/>
@@ -2053,8 +2053,8 @@ till ett mjukare utseende.
       <location filename="../../Command.cpp" line="299"/>
       <source>OpenSCAD cannot be found on the system.
 Visit https://openscad.org/ to install it.</source>
-      <translation type="unfinished">OpenSCAD cannot be found on the system.
-Visit https://openscad.org/ to install it.</translation>
+      <translation>OpenSCAD kan inte hittas på systemet.
+Besök https://openscad.org/ för att installera det.</translation>
     </message>
   </context>
   <context>
@@ -2062,7 +2062,7 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1328"/>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Utvärdera &amp; reparera Nät</translation>
+      <translation>Utvärdera och reparera maskor</translation>
     </message>
   </context>
   <context>
@@ -2070,17 +2070,17 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../AppMeshGui.cpp" line="157"/>
       <source>Display</source>
-      <translation>Fönster</translation>
+      <translation>Visa</translation>
     </message>
     <message>
       <location filename="../../AppMeshGui.cpp" line="159"/>
       <source>Import-Export</source>
-      <translation>Importera/Exportera</translation>
+      <translation>Import och export</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="332"/>
       <source>All Mesh Files</source>
-      <translation>Alla Mesh-filer</translation>
+      <translation>Alla nätfiler</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="333"/>
@@ -2111,7 +2111,7 @@ Visit https://openscad.org/ to install it.</translation>
       <location filename="../../Command.cpp" line="337"/>
       <location filename="../../Command.cpp" line="399"/>
       <source>Object File Format</source>
-      <translation>Object Filformat</translation>
+      <translation>Filformat för objekt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="338"/>
@@ -2153,7 +2153,7 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>X3D Extensible 3D</source>
-      <translation>X3D Extensible 3D</translation>
+      <translation>X3D Utökad 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
@@ -2233,12 +2233,12 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="1530"/>
       <source>Fill Holes</source>
-      <translation type="unfinished">Fill Holes</translation>
+      <translation>Fyllningshål</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1531"/>
       <source>Fill holes with maximum number of edges</source>
-      <translation type="unfinished">Fill holes with maximum number of edges</translation>
+      <translation>Fyll hålen med maximalt antal kanter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1795"/>
@@ -2248,33 +2248,33 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="1796"/>
       <source>Enter scaling factor:</source>
-      <translation>Ange skalfaktor:</translation>
+      <translation>Ange skalningsfaktor:</translation>
     </message>
     <message>
       <location filename="../../PropertyEditorMesh.cpp" line="77"/>
       <source>[Points: %1, Edges: %2, Faces: %3]</source>
-      <translation>[Punkter: %1, Kanter: %2, Ytor: %3]</translation>
+      <translation>[Punkter: %1, Kanter: %2, Faces: %3]</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="795"/>
       <source>Display Components</source>
-      <translation type="unfinished">Display Components</translation>
+      <translation>Displaykomponenter</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="803"/>
       <source>Display Segments</source>
-      <translation type="unfinished">Display Segments</translation>
+      <translation>Displaysegment</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="811"/>
       <source>Display Colors</source>
-      <translation type="unfinished">Display Colors</translation>
+      <translation>Displayfärger</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1681"/>
       <location filename="../../ViewProviderCurvature.cpp" line="540"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>Lämna Info-läge</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1748"/>
@@ -2284,22 +2284,22 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="1774"/>
       <source>Leave Hole-Filling Mode</source>
-      <translation type="unfinished">Leave Hole-Filling Mode</translation>
+      <translation>Lämna hålfyllningsläget</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1822"/>
       <source>Leave Removal Mode</source>
-      <translation type="unfinished">Leave Removal Mode</translation>
+      <translation>Lämna borttagningsläge</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1823"/>
       <source>Delete Selected Faces</source>
-      <translation type="unfinished">Delete Selected Faces</translation>
+      <translation>Ta bort valda ansikten</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1824"/>
       <source>Clear Selected Faces</source>
-      <translation type="unfinished">Clear Selected Faces</translation>
+      <translation>Rensa utvalda ansikten</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCurvature.cpp" line="537"/>
@@ -2309,32 +2309,32 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>
       <source>Number of points</source>
-      <translation>Antal punkter</translation>
+      <translation>Antal poäng</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
       <source>Number of facets</source>
-      <translation type="unfinished">Number of facets</translation>
+      <translation>Antal fasetter</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="78"/>
       <source>Minimum bound</source>
-      <translation type="unfinished">Minimum bound</translation>
+      <translation>Minsta gräns</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
       <source>Maximum bound</source>
-      <translation type="unfinished">Maximum bound</translation>
+      <translation>Maximal gräns</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="88"/>
       <source>Mesh Info Box</source>
-      <translation type="unfinished">Mesh Info Box</translation>
+      <translation>Info Box i nät</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="89"/>
       <source>Mesh Info</source>
-      <translation type="unfinished">Mesh Info</translation>
+      <translation>Info om nät</translation>
     </message>
   </context>
   <context>
@@ -2362,32 +2362,32 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Mesh Tools</source>
-      <translation type="unfinished">Mesh Tools</translation>
+      <translation>Verktyg för nät</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Mesh Modify</source>
-      <translation type="unfinished">Mesh Modify</translation>
+      <translation>Mesh Modifiera</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Mesh Boolean</source>
-      <translation type="unfinished">Mesh Boolean</translation>
+      <translation>Nät-boolean</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh Cutting</source>
-      <translation type="unfinished">Mesh Cutting</translation>
+      <translation>Skärning av nät</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>Segmentering av nät</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Mesh Analyze</source>
-      <translation type="unfinished">Mesh Analyze</translation>
+      <translation>Mesh Analysera</translation>
     </message>
   </context>
 </TS>
