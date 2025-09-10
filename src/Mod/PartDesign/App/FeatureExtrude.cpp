@@ -740,7 +740,7 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(const TopoShape& sketchsha
 void FeatureExtrude::onDocumentRestored()
 {
     // property Type no longer has TwoLengths.
-    if (strcmp(Type.getValueAsString(), "TwoLengths") == 0) {
+    if (strcmp(Type.getValueAsString(), "?TwoLengths") == 0) {
         Type.setValue("Length");
         Type2.setValue("Length");
         SideType.setValue("Two sides");
