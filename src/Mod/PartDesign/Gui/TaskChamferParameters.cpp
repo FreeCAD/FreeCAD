@@ -367,7 +367,6 @@ void TaskChamferParameters::setupGizmos(ViewProviderDressUp* vp)
                 angleGizmo->setVisibility(false);
 
                 secondDistanceGizmo->setProperty(ui->chamferSize);
-                secondDistanceGizmo->setDragLength(ui->chamferSize->value().getValue());
 
                 break;
             case Part::ChamferType::twoDistances:
@@ -375,7 +374,6 @@ void TaskChamferParameters::setupGizmos(ViewProviderDressUp* vp)
                 angleGizmo->setVisibility(false);
 
                 secondDistanceGizmo->setProperty(ui->chamferSize2);
-                secondDistanceGizmo->setDragLength(ui->chamferSize2->value().getValue());
 
                 break;
             case Part::ChamferType::distanceAngle:
