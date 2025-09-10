@@ -104,7 +104,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</source>
-      <translation>Примітка: якщо компоненти PySide Web не знайдено в системі, сторінки довідки відкриватимуться в типовому веб-браузері незалежно від наведених нижче параметрів.</translation>
+      <translation>Нотатка: якщо компоненти PySide Web не знайдено в системі, сторінки довідки відкриватимуться в типовому веб-браузері незалежно від наведених нижче параметрів.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="180"/>

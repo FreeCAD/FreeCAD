@@ -6,17 +6,17 @@
     <message>
       <location filename="../../Command.cpp" line="146"/>
       <source>Inspect Appearance</source>
-      <translation type="unfinished">Inspect Appearance</translation>
+      <translation>Inspektera utseende</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="147"/>
       <source>Inspects the appearance properties of the selected object</source>
-      <translation type="unfinished">Inspects the appearance properties of the selected object</translation>
+      <translation>Inspekterar utseendeegenskaperna för det markerade objektet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Inspect the appearance properties of the selected object</source>
-      <translation>Inspektera den valda föremålets utseendesegenskaper</translation>
+      <translation>Inspektera utseendeegenskaperna för det valda objektet</translation>
     </message>
   </context>
   <context>
@@ -24,17 +24,17 @@
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Inspect Material</source>
-      <translation type="unfinished">Inspect Material</translation>
+      <translation>Inspektera materialet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Inspects the material properties of the selected object</source>
-      <translation type="unfinished">Inspects the material properties of the selected object</translation>
+      <translation>Inspekterar materialegenskaperna för det valda objektet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Inspect the material properties of the selected object</source>
-      <translation>Inspektera det valda föremålets materialegenskaper</translation>
+      <translation>Inspektera materialegenskaperna för det valda objektet</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Array2D.cpp" line="138"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>Kontextmeny</translation>
     </message>
   </context>
   <context>
@@ -72,24 +72,24 @@
       <location filename="../../Array3D.cpp" line="231"/>
       <location filename="../../Array3D.cpp" line="302"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>Kontextmeny</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="263"/>
       <location filename="../../Array3D.cpp" line="335"/>
       <source>Confirm Delete</source>
-      <translation>Bekräfta radering</translation>
+      <translation>Bekräfta borttagning</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="265"/>
       <location filename="../../Array3D.cpp" line="337"/>
       <source>Delete the row?</source>
-      <translation type="unfinished">Delete the row?</translation>
+      <translation>Ta bort raden?</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="267"/>
       <source>Removing this will also remove all 2D contents.</source>
-      <translation>Att radera detta kommer också ta bort 3D-innehåll.</translation>
+      <translation>Om du tar bort detta kommer även allt 2D-innehåll att tas bort.</translation>
     </message>
   </context>
   <context>
@@ -123,27 +123,27 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="14"/>
       <source>Display Properties</source>
-      <translation type="unfinished">Display Properties</translation>
+      <translation>Egenskaper för display</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="20"/>
       <source>Viewing Mode</source>
-      <translation type="unfinished">Viewing Mode</translation>
+      <translation>Visningsläge</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="55"/>
       <source>Document window</source>
-      <translation type="unfinished">Document window</translation>
+      <translation>Dokumentfönster</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="87"/>
       <source>Plot mode</source>
-      <translation type="unfinished">Plot mode</translation>
+      <translation>Plot-läge</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="106"/>
       <source>Display</source>
-      <translation>Fönster</translation>
+      <translation>Visa</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="144"/>
@@ -158,27 +158,27 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="237"/>
       <source>Transparency</source>
-      <translation>Transparens</translation>
+      <translation>Genomskinlighet</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="289"/>
       <source>Line transparency</source>
-      <translation>Linjegenomskinlighet</translation>
+      <translation>Transparenta linjer</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="365"/>
       <source>Color plot</source>
-      <translation type="unfinished">Color plot</translation>
+      <translation>Färgplott</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="372"/>
       <source>Custom appearance</source>
-      <translation type="unfinished">Custom appearance</translation>
+      <translation>Anpassat utseende</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="382"/>
       <source>Point color</source>
-      <translation>Punktfärg</translation>
+      <translation>Punktens färg</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="389"/>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="14"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation>Formulär</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="35"/>
@@ -211,12 +211,12 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="50"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>Dokumentnamn</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="64"/>
       <source>Label / internal name</source>
-      <translation type="unfinished">Label / internal name</translation>
+      <translation>Etikett / internt namn</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="74"/>
@@ -251,27 +251,27 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="211"/>
       <source>Ambient color</source>
-      <translation type="unfinished">Ambient color</translation>
+      <translation>Omgivande färg</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="220"/>
       <source>Emissive color</source>
-      <translation type="unfinished">Emissive color</translation>
+      <translation>Emissiv färg</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="229"/>
       <source>Specular color</source>
-      <translation type="unfinished">Specular color</translation>
+      <translation>Speculär färg</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="238"/>
       <source>Shininess</source>
-      <translation>Glans</translation>
+      <translation>Glansfullhet</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="248"/>
       <source>Transparency</source>
-      <translation>Transparens</translation>
+      <translation>Genomskinlighet</translation>
     </message>
   </context>
   <context>
@@ -279,7 +279,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="14"/>
       <source>Form</source>
-      <translation>Form</translation>
+      <translation>Formulär</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="35"/>
@@ -294,12 +294,12 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="50"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>Dokumentnamn</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="64"/>
       <source>Label / internal name</source>
-      <translation type="unfinished">Label / internal name</translation>
+      <translation>Etikett / internt namn</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="74"/>
@@ -319,7 +319,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
       <source>Copy to Clipboard</source>
-      <translation type="unfinished">Copy to Clipboard</translation>
+      <translation>Kopiera till urklipp</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="151"/>
@@ -334,7 +334,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="172"/>
       <source>Internal name: </source>
-      <translation type="unfinished">Internal name: </translation>
+      <translation>Internt namn: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="190"/>
@@ -362,7 +362,7 @@
       <location filename="../../DlgInspectMaterial.cpp" line="309"/>
       <location filename="../../DlgInspectMaterial.cpp" line="360"/>
       <source>None</source>
-      <translation>Inget</translation>
+      <translation>Ingen</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="266"/>
@@ -380,37 +380,37 @@
       <location filename="../../DlgInspectMaterial.cpp" line="273"/>
       <location filename="../../DlgInspectMaterial.cpp" line="346"/>
       <source>Library directory: </source>
-      <translation type="unfinished">Library directory: </translation>
+      <translation>Bibliotekskatalog: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="276"/>
       <source>Subdirectory: </source>
-      <translation type="unfinished">Subdirectory: </translation>
+      <translation>Underkatalog: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="348"/>
       <source>Sub directory: </source>
-      <translation type="unfinished">Sub directory: </translation>
+      <translation>Underkatalog: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="365"/>
       <source>Appearance models:</source>
-      <translation type="unfinished">Appearance models:</translation>
+      <translation>Utseende modeller:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="371"/>
       <source>Physical models:</source>
-      <translation type="unfinished">Physical models:</translation>
+      <translation>Fysiska modeller:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="377"/>
       <source>Appearance properties:</source>
-      <translation type="unfinished">Appearance properties:</translation>
+      <translation>Utseendemässiga egenskaper:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="383"/>
       <source>Physical properties:</source>
-      <translation type="unfinished">Physical properties:</translation>
+      <translation>Fysikaliska egenskaper:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="279"/>
@@ -486,59 +486,59 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="23"/>
       <source>Card Resources</source>
-      <translation type="unfinished">Card Resources</translation>
+      <translation>Kortresurser</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="31"/>
       <source>The cards built-in to FreeCAD will be listed as available</source>
-      <translation type="unfinished">The cards built-in to FreeCAD will be listed as available</translation>
+      <translation>De kort som är inbyggda i FreeCAD kommer att listas som tillgängliga</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="50"/>
       <source>Use materials added by external workbenches</source>
-      <translation type="unfinished">Use materials added by external workbenches</translation>
+      <translation>Använd material som lagts till av externa arbetsbänkar</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="69"/>
       <source>Cards from FreeCAD’s preferences directory are also listed as available</source>
-      <translation type="unfinished">Cards from FreeCAD’s preferences directory are also listed as available</translation>
+      <translation>Kort från FreeCADs preferences-katalog listas också som tillgängliga</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="72"/>
       <source>Use materials from the Materials preference directory</source>
-      <translation type="unfinished">Use materials from the Materials preference directory</translation>
+      <translation>Använd material från katalogen Materialpreferenser</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="88"/>
       <source>Material cards from the specified directory will also be listed as available</source>
-      <translation type="unfinished">Material cards from the specified directory will also be listed as available</translation>
+      <translation>Materialkort från den angivna katalogen kommer också att listas som tillgängliga</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="91"/>
       <source>Use materials from user-defined directory</source>
-      <translation type="unfinished">Use materials from user-defined directory</translation>
+      <translation>Använd material från användardefinierad katalog</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="154"/>
       <source>Card Sorting and Duplicates</source>
-      <translation type="unfinished">Card Sorting and Duplicates</translation>
+      <translation>Sortering av kort och dubbletter</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="160"/>
       <source>Duplicate cards will be deleted from the displayed material card list</source>
-      <translation type="unfinished">Duplicate cards will be deleted from the displayed material card list</translation>
+      <translation>Duplicerade kort raderas från den visade materialkortlistan</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="163"/>
       <source>Delete card duplicates</source>
-      <translation>Radera dubbletter av kort</translation>
+      <translation>Ta bort kortdubbletter</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="179"/>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
-      <translation>Materialkort visas sorterade efter deras resurser (platser).
-Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
+      <translation>Materialkort visas sorterade efter sina resurser (platser).
+Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="183"/>
@@ -583,7 +583,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="285"/>
       <source>Material Editor</source>
-      <translation>Materialredigerare</translation>
+      <translation>Materialredaktör</translation>
     </message>
   </context>
   <context>
@@ -634,7 +634,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../ListEdit.ui" line="14"/>
       <source>List Edit</source>
-      <translation>Redigera lista</translation>
+      <translation>Lista redigera</translation>
     </message>
     <message>
       <location filename="../../ListEdit.ui" line="41"/>
@@ -665,7 +665,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../MaterialSave.ui" line="22"/>
       <source>Library</source>
-      <translation type="unfinished">Library</translation>
+      <translation>Bibliotek</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="70"/>
@@ -675,7 +675,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../MaterialSave.ui" line="104"/>
       <source>Save as inherited</source>
-      <translation type="unfinished">Save as inherited</translation>
+      <translation>Spara som nedärvd</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
@@ -685,12 +685,12 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="96"/>
       <source>Delete</source>
-      <translation>Radera</translation>
+      <translation>Ta bort</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="196"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
-      <translation>Att spara över den ursprungliga filen kan leda till att andra dokument skadas. Detta rekommenderas inte.</translation>
+      <translation>Om du sparar över originalfilen kan det leda till att andra dokument går sönder. Detta är inte att rekommendera.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="220"/>
@@ -700,32 +700,32 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="193"/>
       <source>Save over &apos;%1&apos;?</source>
-      <translation type="unfinished">Save over &apos;%1&apos;?</translation>
+      <translation>Spara över "%1"?</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="218"/>
       <source>Confirm Save as New Material</source>
-      <translation type="unfinished">Confirm Save as New Material</translation>
+      <translation>Bekräfta Spara som nytt material</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="223"/>
       <source>This material already exists in this library. Save as a new material?</source>
-      <translation type="unfinished">This material already exists in this library. Save as a new material?</translation>
+      <translation>Det här materialet finns redan i det här biblioteket. Spara som ett nytt material?</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="245"/>
       <source>Confirm Save as Copy</source>
-      <translation type="unfinished">Confirm Save as Copy</translation>
+      <translation>Bekräfta Spara som kopia</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="247"/>
       <source>Save as copy</source>
-      <translation type="unfinished">Save as copy</translation>
+      <translation>Spara som kopia</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="250"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
-      <translation type="unfinished">Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</translation>
+      <translation>Att spara en kopia är inte att rekommendera eftersom det kan förstöra andra dokument. Vi rekommenderar att du sparar som ett nytt material.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="253"/>
@@ -741,12 +741,12 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
       <location filename="../../MaterialSave.cpp" line="486"/>
       <location filename="../../MaterialSave.cpp" line="496"/>
       <source>New folder</source>
-      <translation type="unfinished">New folder</translation>
+      <translation>Ny mapp</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="536"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>Kontextmeny</translation>
     </message>
   </context>
   <context>
@@ -754,7 +754,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="140"/>
       <source>Launch Editor</source>
-      <translation type="unfinished">Launch Editor</translation>
+      <translation>Starta Editor</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="313"/>
@@ -766,7 +766,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
       <location filename="../../MaterialTreeWidget.cpp" line="313"/>
       <location filename="../../MaterialTreeWidget.cpp" line="541"/>
       <source>Recent</source>
-      <translation>Senaste</translation>
+      <translation>Nyligen</translation>
     </message>
   </context>
   <context>
@@ -784,7 +784,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="74"/>
       <source>Parent</source>
-      <translation>Förälder</translation>
+      <translation>Överordnad</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="84"/>
@@ -794,7 +794,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="91"/>
       <source>Source URL</source>
-      <translation>Käll-URL</translation>
+      <translation>URL källa</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="101"/>
@@ -809,22 +809,22 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="141"/>
       <source>Author</source>
-      <translation>Upphovsman</translation>
+      <translation>Författare</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="151"/>
       <source>Source reference</source>
-      <translation type="unfinished">Source reference</translation>
+      <translation>Referens till källa</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="202"/>
       <source>Adds or removes to/from favorites</source>
-      <translation type="unfinished">Adds or removes to/from favorites</translation>
+      <translation>Lägger till eller tar bort till/från favoriter</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="205"/>
       <source>Toggle Favorite</source>
-      <translation type="unfinished">Toggle Favorite</translation>
+      <translation>Växla favorit</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="164"/>
@@ -854,7 +854,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="246"/>
       <source>Delete physical model</source>
-      <translation>Radera fysisk modell</translation>
+      <translation>Ta bort fysisk modell</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="262"/>
@@ -879,17 +879,17 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="606"/>
       <source>Old Format Material</source>
-      <translation>Gammalt formatmaterial</translation>
+      <translation>Material i gammalt format</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="608"/>
       <source>This file is in the old material card format.</source>
-      <translation>Denna fil är i det gamla materialkortsformatet.</translation>
+      <translation>Den här filen är i det gamla materialkortformatet.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="694"/>
       <source>This card uses the old format and must be saved before use</source>
-      <translation>Detta kort använder det gamla formatet och måste sparas innan användning</translation>
+      <translation>Detta kort använder det gamla formatet och måste sparas före användning</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="754"/>
@@ -897,7 +897,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
       <location filename="../../MaterialsEditor.cpp" line="1088"/>
       <location filename="../../MaterialsEditor.cpp" line="1150"/>
       <source>Property</source>
-      <translation>Egenskap</translation>
+      <translation>Fastighet</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="755"/>
@@ -923,7 +923,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="886"/>
       <source>Recent</source>
-      <translation>Senaste</translation>
+      <translation>Nyligen</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1153"/>
@@ -933,17 +933,17 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1320"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>Kontextmeny</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1322"/>
       <source>Inherit From</source>
-      <translation type="unfinished">Inherit From</translation>
+      <translation>Ärva från</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1326"/>
       <source>Inherit New Material</source>
-      <translation type="unfinished">Inherit New Material</translation>
+      <translation>Ärva nytt material</translation>
     </message>
   </context>
   <context>
@@ -973,7 +973,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../ModelSelect.ui" line="63"/>
       <source>DOI</source>
-      <translation type="unfinished">DOI</translation>
+      <translation>DOI</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="87"/>
@@ -983,12 +983,12 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../ModelSelect.ui" line="159"/>
       <source>Adds or removes to/from favorites</source>
-      <translation type="unfinished">Adds or removes to/from favorites</translation>
+      <translation>Lägger till eller tar bort till/från favoriter</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="162"/>
       <source>Toggle Favorites</source>
-      <translation type="unfinished">Toggle Favorites</translation>
+      <translation>Växla mellan favoriter</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="172"/>
@@ -1005,7 +1005,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../ModelSelect.cpp" line="342"/>
       <source>Recent</source>
-      <translation>Senaste</translation>
+      <translation>Nyligen</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="361"/>
@@ -1015,7 +1015,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../ModelSelect.cpp" line="362"/>
       <source>Property</source>
-      <translation>Egenskap</translation>
+      <translation>Fastighet</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="363"/>
@@ -1033,7 +1033,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../TextEdit.ui" line="14"/>
       <source>Text Edit</source>
-      <translation>Textredigering</translation>
+      <translation>Redigera text</translation>
     </message>
   </context>
   <context>
@@ -1041,17 +1041,17 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="14"/>
       <source>Material Editor</source>
-      <translation>Materialredigerare</translation>
+      <translation>Materialredaktör</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>
       <source>Material Card</source>
-      <translation type="unfinished">Material Card</translation>
+      <translation>Material kort</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
       <source>Opens the Product URL of this material in an external browser</source>
-      <translation>Öppnar produkt-URL för detta material i en extern webbläsare</translation>
+      <translation>Öppnar produkt-URL:en för detta material i en extern webbläsare</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="56"/>
@@ -1066,32 +1066,32 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="70"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>Öppna…</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>
       <source>Save As…</source>
-      <translation type="unfinished">Save As…</translation>
+      <translation>Spara som…</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="96"/>
       <source>Material Parameter</source>
-      <translation type="unfinished">Material Parameter</translation>
+      <translation>Materialparameter</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="115"/>
       <source>Add/Remove Parameter</source>
-      <translation type="unfinished">Add/Remove Parameter</translation>
+      <translation>Lägg till/ta bort parameter</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="126"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>Nytt objekt</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="133"/>
       <source>Delete Property</source>
-      <translation type="unfinished">Delete Property</translation>
+      <translation>Radera bostadsobjekt</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
@@ -1112,7 +1112,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../AppMatGui.cpp" line="110"/>
       <source>Material Workbench</source>
-      <translation type="unfinished">Material Workbench</translation>
+      <translation>Arbetsbänk för material</translation>
     </message>
     <message>
       <location filename="../../AppMatGui.cpp" line="112"/>
@@ -1135,45 +1135,45 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="568"/>
       <source>Delete &apos;%1&apos;?</source>
-      <translation type="unfinished">Delete &apos;%1&apos;?</translation>
+      <translation>Ta bort "%1"?</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="572"/>
       <source>Removing this will also remove all contents.</source>
-      <translation>Att radera detta kommer också att ta bort allt innehåll.</translation>
+      <translation>Om du tar bort detta tas även allt innehåll bort.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="609"/>
       <source>Save the material before using it.</source>
-      <translation type="unfinished">Save the material before using it.</translation>
+      <translation>Spara materialet innan du använder det.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1347"/>
       <source>Unsaved Material</source>
-      <translation>Osparat material</translation>
+      <translation>Oavsatt material</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1348"/>
       <source>Save changes to the material before closing?</source>
-      <translation type="unfinished">Save changes to the material before closing?</translation>
+      <translation>Spara ändringar i materialet innan du stänger?</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1349"/>
       <source>Otherwise, all changes will be lost.</source>
-      <translation type="unfinished">Otherwise, all changes will be lost.</translation>
+      <translation>Annars kommer alla ändringar att gå förlorade.</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="565"/>
       <source>Confirm Delete</source>
-      <translation>Bekräfta radering</translation>
+      <translation>Bekräfta borttagning</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
       <source>Delete the row?</source>
-      <translation type="unfinished">Delete the row?</translation>
+      <translation>Ta bort raden?</translation>
     </message>
   </context>
   <context>
@@ -1181,13 +1181,13 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>&amp;Appearance</source>
-      <translation type="unfinished">&amp;Appearance</translation>
+      <translation>&amp;Utseende</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <location filename="../../Command.cpp" line="91"/>
       <source>Sets the display properties of the selected object</source>
-      <translation>Ställer in det markerade objektets visningsegenskaper</translation>
+      <translation>Ställer in visningsegenskaperna för det valda objektet</translation>
     </message>
   </context>
   <context>
@@ -1195,13 +1195,13 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../Command.cpp" line="117"/>
       <source>&amp;Material</source>
-      <translation type="unfinished">&amp;Material</translation>
+      <translation>&amp;Material</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <location filename="../../Command.cpp" line="120"/>
       <source>Sets the material of the selected object</source>
-      <translation>Ställer in det markerade föremålets material</translation>
+      <translation>Ställer in materialet för det valda objektet</translation>
     </message>
   </context>
   <context>
@@ -1232,12 +1232,12 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="20"/>
       <source>Select material libraries</source>
-      <translation type="unfinished">Select material libraries</translation>
+      <translation>Välj materialbibliotek</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="34"/>
       <source>Select model libraries</source>
-      <translation type="unfinished">Select model libraries</translation>
+      <translation>Välj modellbibliotek</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="41"/>
@@ -1270,7 +1270,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="29"/>
       <source>External interface</source>
-      <translation type="unfinished">External interface</translation>
+      <translation>Externt gränssnitt</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="65"/>
@@ -1280,23 +1280,23 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="91"/>
       <source>Model cache size</source>
-      <translation type="unfinished">Model cache size</translation>
+      <translation>Storlek på modellens cache</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="98"/>
       <location filename="../../DlgSettingsExternal.ui" line="124"/>
       <source>Hit rate</source>
-      <translation type="unfinished">Hit rate</translation>
+      <translation>Träfffrekvens</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="134"/>
       <source>Material cache size</source>
-      <translation type="unfinished">Material cache size</translation>
+      <translation>Storlek på materialcache</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.cpp" line="97"/>
       <source>None</source>
-      <translation>Inget</translation>
+      <translation>Ingen</translation>
     </message>
   </context>
   <context>
@@ -1304,7 +1304,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="77"/>
       <source>Migrating models…</source>
-      <translation type="unfinished">Migrating models…</translation>
+      <translation>Migrering av modeller…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="83"/>
@@ -1312,7 +1312,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
       <location filename="../../TaskMigrateExternal.cpp" line="107"/>
       <location filename="../../TaskMigrateExternal.cpp" line="119"/>
       <source>  Library: </source>
-      <translation>  Bibliotek:</translation>
+      <translation>  Bibliotek: </translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="87"/>
@@ -1325,23 +1325,23 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="89"/>
       <source>Validating models…</source>
-      <translation type="unfinished">Validating models…</translation>
+      <translation>Validering av modeller…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="101"/>
       <source>Migrating materials…</source>
-      <translation type="unfinished">Migrating materials…</translation>
+      <translation>Migrerande material…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="113"/>
       <source>Validating materials…</source>
-      <translation type="unfinished">Validating materials…</translation>
+      <translation>Validering av material…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="147"/>
       <location filename="../../TaskMigrateExternal.cpp" line="150"/>
       <source>Unknown exception - aborted</source>
-      <translation type="unfinished">Unknown exception - aborted</translation>
+      <translation>Okänt undantag - avbrutet</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="127"/>
@@ -1350,7 +1350,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
       <location filename="../../TaskMigrateExternal.cpp" line="139"/>
       <location filename="../../TaskMigrateExternal.cpp" line="143"/>
       <source>Aborted</source>
-      <translation>Avbryten</translation>
+      <translation>Avbruten</translation>
     </message>
   </context>
   <context>
@@ -1368,7 +1368,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Edits material properties</source>
-      <translation type="unfinished">Edits material properties</translation>
+      <translation>Redigerar materialegenskaper</translation>
     </message>
   </context>
   <context>
@@ -1381,7 +1381,7 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../Command.cpp" line="203"/>
       <source>Migrates the materials to the external materials manager</source>
-      <translation type="unfinished">Migrates the materials to the external materials manager</translation>
+      <translation>Överför materialet till den externa materialhanteraren</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="205"/>
@@ -1394,17 +1394,17 @@ Om de är omarkerade kommer de att sorteras efter deras namn.</translation>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="181"/>
       <source>Basic appearance</source>
-      <translation type="unfinished">Basic appearance</translation>
+      <translation>Grundläggande utseende</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="186"/>
       <source>Texture appearance</source>
-      <translation type="unfinished">Texture appearance</translation>
+      <translation>Texturens utseende</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="191"/>
       <source>All materials</source>
-      <translation type="unfinished">All materials</translation>
+      <translation>Alla material</translation>
     </message>
   </context>
 </TS>

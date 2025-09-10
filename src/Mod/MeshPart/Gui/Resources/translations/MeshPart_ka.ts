@@ -546,7 +546,7 @@ Select a different shape.</source>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Select the side to keep</source>
-      <translation type="unfinished">Select the side to keep</translation>
+      <translation>აირჩიეთ მხარე, რომელსაც იტოვებთ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>

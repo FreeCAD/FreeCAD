@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="237"/>
       <source>Convert to Points</source>
-      <translation type="unfinished">Convert to Points</translation>
+      <translation>Konvertera till punkter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="238"/>
       <source>Converts to points</source>
-      <translation type="unfinished">Converts to points</translation>
+      <translation>Omvandlas till punkter</translation>
     </message>
   </context>
   <context>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="151"/>
       <source>Export Points…</source>
-      <translation type="unfinished">Export Points…</translation>
+      <translation>Exportera punkter…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="152"/>
@@ -48,7 +48,7 @@
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <source>Import Points…</source>
-      <translation type="unfinished">Import Points…</translation>
+      <translation>Importera punkter…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="70"/>
@@ -66,12 +66,12 @@
     <message>
       <location filename="../../Command.cpp" line="373"/>
       <source>Merge Point Clouds</source>
-      <translation type="unfinished">Merge Point Clouds</translation>
+      <translation>Sammanfoga punktmoln</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="374"/>
       <source>Merges several point clouds into one</source>
-      <translation type="unfinished">Merges several point clouds into one</translation>
+      <translation>Sammanfogar flera punktmoln till ett</translation>
     </message>
   </context>
   <context>
@@ -84,12 +84,12 @@
     <message>
       <location filename="../../Command.cpp" line="325"/>
       <source>Cut Point Cloud</source>
-      <translation type="unfinished">Cut Point Cloud</translation>
+      <translation>Moln för skärningspunkt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="326"/>
       <source>Cuts a point cloud with a selected polygon</source>
-      <translation type="unfinished">Cuts a point cloud with a selected polygon</translation>
+      <translation>Klipper ett punktmoln med en vald polygon</translation>
     </message>
   </context>
   <context>
@@ -102,12 +102,12 @@
     <message>
       <location filename="../../Command.cpp" line="435"/>
       <source>Structured Point Cloud</source>
-      <translation type="unfinished">Structured Point Cloud</translation>
+      <translation>Strukturerat punktmoln</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="436"/>
       <source>Converts points to a structured point cloud</source>
-      <translation type="unfinished">Converts points to a structured point cloud</translation>
+      <translation>Konverterar punkter till ett strukturerat punktmoln</translation>
     </message>
   </context>
   <context>
@@ -125,7 +125,7 @@
     <message>
       <location filename="../../Command.cpp" line="199"/>
       <source>Performs tests to transform a point cloud</source>
-      <translation type="unfinished">Performs tests to transform a point cloud</translation>
+      <translation>Utför tester för att omvandla ett punktmoln</translation>
     </message>
   </context>
   <context>
@@ -138,18 +138,18 @@
     <message>
       <location filename="../../Command.cpp" line="213"/>
       <source>Transform points</source>
-      <translation>Omvandla punkter</translation>
+      <translation>Transformera punkter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="270"/>
       <source>Convert to points</source>
-      <translation>Omvandla till punkter</translation>
+      <translation>Konvertera till punkter</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="485"/>
       <location filename="../../ViewProvider.cpp" line="653"/>
       <source>Cut points</source>
-      <translation>Klipp ut punkter</translation>
+      <translation>Nedskärningspunkter</translation>
     </message>
   </context>
   <context>
@@ -187,7 +187,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="14"/>
       <source>ASCII Points Import</source>
-      <translation type="unfinished">ASCII Points Import</translation>
+      <translation>Import av ASCII-punkter</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="34"/>
@@ -197,51 +197,51 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="46"/>
       <source>Special Lines</source>
-      <translation type="unfinished">Special Lines</translation>
+      <translation>Särskilda linjer</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="58"/>
       <source>First Line</source>
-      <translation type="unfinished">First Line</translation>
+      <translation>Första raden</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="101"/>
       <source>Cluster by lines starting with</source>
-      <translation type="unfinished">Cluster by lines starting with</translation>
+      <translation>Kluster av linjer som börjar med</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="111"/>
       <source>Ignore lines starting with</source>
-      <translation type="unfinished">Ignore lines starting with</translation>
+      <translation>Ignorera rader som börjar med</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="126"/>
       <source>Point Format</source>
-      <translation type="unfinished">Point Format</translation>
+      <translation>Punktformat</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="146"/>
       <source>Number separator</source>
-      <translation type="unfinished">Number separator</translation>
+      <translation>Nummerseparator</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="180"/>
       <source>Points format</source>
-      <translation type="unfinished">Points format</translation>
+      <translation>Punkterformat</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="201"/>
       <location filename="../../DlgPointsRead.ui" line="237"/>
       <location filename="../../DlgPointsRead.ui" line="273"/>
       <source>Next block</source>
-      <translation type="unfinished">Next block</translation>
+      <translation>Nästa block</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="209"/>
       <location filename="../../DlgPointsRead.ui" line="245"/>
       <location filename="../../DlgPointsRead.ui" line="281"/>
       <source>None</source>
-      <translation>Inget</translation>
+      <translation>Ingen</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="214"/>
@@ -269,12 +269,12 @@
       <location filename="../../DlgPointsRead.ui" line="265"/>
       <location filename="../../DlgPointsRead.ui" line="301"/>
       <source>I (gray value)</source>
-      <translation type="unfinished">I (gray value)</translation>
+      <translation>I (grått värde)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="341"/>
       <source>Number of previewed lines</source>
-      <translation type="unfinished">Number of previewed lines</translation>
+      <translation>Antal förhandsgranskade rader</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="314"/>
@@ -288,7 +288,7 @@
       <location filename="../../Command.cpp" line="85"/>
       <location filename="../../Command.cpp" line="171"/>
       <source>Point formats</source>
-      <translation>Punkt-format</translation>
+      <translation>Punktformat</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
@@ -299,17 +299,17 @@
     <message>
       <location filename="../../Command.cpp" line="116"/>
       <source>Points not at Origin</source>
-      <translation>Poäng inte vid Ursprung</translation>
+      <translation>Punkter inte vid origo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="117"/>
       <source>The bounding box of the imported points does not contain the origin. Translate it to the origin?</source>
-      <translation type="unfinished">The bounding box of the imported points does not contain the origin. Translate it to the origin?</translation>
+      <translation>Begränsningsrutan för de importerade punkterna innehåller inte origo. Översätt den till ursprunget?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="257"/>
       <source>Distance</source>
-      <translation>Distans</translation>
+      <translation>Avstånd</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="258"/>
@@ -322,7 +322,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Points Tools</source>
-      <translation type="unfinished">Points Tools</translation>
+      <translation>Verktyg för punkter</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="35"/>

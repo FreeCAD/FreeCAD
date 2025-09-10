@@ -2955,7 +2955,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
         <location filename="../../DraftGui.py" line="568"/>
-        <location filename="../../DraftGui.py" line="840"/>
+        <location filename="../../DraftGui.py" line="859"/>
         <source>Continue</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2988,7 +2988,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
         <location filename="../../DraftGui.py" line="592"/>
         <location filename="../../draftguitools/gui_move.py" line="200"/>
         <location filename="../../draftguitools/gui_rotate.py" line="267"/>
-        <location filename="../../draftguitools/gui_scale.py" line="209"/>
+        <location filename="../../draftguitools/gui_scale.py" line="211"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3073,8 +3073,8 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
         <location filename="../../DraftGui.py" line="500"/>
         <location filename="../../DraftGui.py" line="528"/>
-        <location filename="../../DraftGui.py" line="1478"/>
-        <location filename="../../DraftGui.py" line="1493"/>
+        <location filename="../../DraftGui.py" line="1497"/>
+        <location filename="../../DraftGui.py" line="1512"/>
         <location filename="../../draftguitools/gui_groups.py" line="254"/>
         <source>None</source>
         <translation type="unfinished"></translation>
@@ -3122,7 +3122,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
         <location filename="../../DraftGui.py" line="546"/>
-        <location filename="../../DraftGui.py" line="823"/>
+        <location filename="../../DraftGui.py" line="842"/>
         <source>Radius</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3142,12 +3142,12 @@ if they match the X, Y or Z axis of the global coordinate system</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="778"/>
+        <location filename="../../DraftGui.py" line="797"/>
         <source>Label Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="824"/>
+        <location filename="../../DraftGui.py" line="843"/>
         <source>Radius of Circle</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3209,12 +3209,12 @@ Uncheck to use working plane coordinate system</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="1675"/>
+        <location filename="../../DraftGui.py" line="1694"/>
         <source>Modify Objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="1829"/>
+        <location filename="../../DraftGui.py" line="1848"/>
         <source>Facebinder Elements</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3306,50 +3306,50 @@ Not available if the &apos;Use Part Primitives&apos; preference is enabled</sour
     </message>
     <message>
         <location filename="../../DraftGui.py" line="621"/>
-        <location filename="../../DraftGui.py" line="1481"/>
-        <location filename="../../DraftGui.py" line="1496"/>
+        <location filename="../../DraftGui.py" line="1500"/>
+        <location filename="../../DraftGui.py" line="1515"/>
         <source>Autogroup off</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="707"/>
+        <location filename="../../DraftGui.py" line="726"/>
         <location filename="../../draftguitools/gui_lines.py" line="66"/>
         <source>Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="715"/>
+        <location filename="../../DraftGui.py" line="734"/>
         <source>DWire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="733"/>
+        <location filename="../../DraftGui.py" line="752"/>
         <source>Circle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="738"/>
+        <location filename="../../DraftGui.py" line="757"/>
         <source>Arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="743"/>
+        <location filename="../../DraftGui.py" line="762"/>
         <location filename="../../draftguitools/gui_rotate.py" line="269"/>
         <source>Rotate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="747"/>
+        <location filename="../../DraftGui.py" line="766"/>
         <source>Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="776"/>
+        <location filename="../../DraftGui.py" line="795"/>
         <source>Label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="794"/>
+        <location filename="../../DraftGui.py" line="813"/>
         <location filename="../../draftguitools/gui_offset.py" line="242"/>
         <location filename="../../draftguitools/gui_offset.py" line="259"/>
         <location filename="../../draftguitools/gui_offset.py" line="324"/>
@@ -3357,31 +3357,31 @@ Not available if the &apos;Use Part Primitives&apos; preference is enabled</sour
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="799"/>
-        <location filename="../../DraftGui.py" line="816"/>
+        <location filename="../../DraftGui.py" line="818"/>
+        <location filename="../../DraftGui.py" line="835"/>
         <location filename="../../draftguitools/gui_trimex.py" line="224"/>
         <source>Distance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="800"/>
-        <location filename="../../DraftGui.py" line="817"/>
+        <location filename="../../DraftGui.py" line="819"/>
+        <location filename="../../DraftGui.py" line="836"/>
         <location filename="../../draftguitools/gui_trimex.py" line="226"/>
         <source>Offset distance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="813"/>
+        <location filename="../../DraftGui.py" line="832"/>
         <source>Trimex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="889"/>
-        <location filename="../../DraftGui.py" line="890"/>
-        <location filename="../../DraftGui.py" line="891"/>
-        <location filename="../../DraftGui.py" line="893"/>
-        <location filename="../../DraftGui.py" line="894"/>
-        <location filename="../../DraftGui.py" line="895"/>
+        <location filename="../../DraftGui.py" line="908"/>
+        <location filename="../../DraftGui.py" line="909"/>
+        <location filename="../../DraftGui.py" line="910"/>
+        <location filename="../../DraftGui.py" line="912"/>
+        <location filename="../../DraftGui.py" line="913"/>
+        <location filename="../../DraftGui.py" line="914"/>
         <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
         <location filename="../../drafttaskpanels/task_shapestring.py" line="121"/>
         <location filename="../../drafttaskpanels/task_shapestring.py" line="122"/>
@@ -3389,12 +3389,12 @@ Not available if the &apos;Use Part Primitives&apos; preference is enabled</sour
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="897"/>
-        <location filename="../../DraftGui.py" line="898"/>
-        <location filename="../../DraftGui.py" line="899"/>
-        <location filename="../../DraftGui.py" line="901"/>
-        <location filename="../../DraftGui.py" line="902"/>
-        <location filename="../../DraftGui.py" line="903"/>
+        <location filename="../../DraftGui.py" line="916"/>
+        <location filename="../../DraftGui.py" line="917"/>
+        <location filename="../../DraftGui.py" line="918"/>
+        <location filename="../../DraftGui.py" line="920"/>
+        <location filename="../../DraftGui.py" line="921"/>
+        <location filename="../../DraftGui.py" line="922"/>
         <location filename="../../drafttaskpanels/task_shapestring.py" line="116"/>
         <location filename="../../drafttaskpanels/task_shapestring.py" line="117"/>
         <location filename="../../drafttaskpanels/task_shapestring.py" line="118"/>
@@ -3402,22 +3402,22 @@ Not available if the &apos;Use Part Primitives&apos; preference is enabled</sour
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="1489"/>
+        <location filename="../../DraftGui.py" line="1508"/>
         <source>Autogroup:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="1826"/>
+        <location filename="../../DraftGui.py" line="1845"/>
         <source>Faces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="1827"/>
+        <location filename="../../DraftGui.py" line="1846"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DraftGui.py" line="1828"/>
+        <location filename="../../DraftGui.py" line="1847"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4534,22 +4534,22 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_scale.py" line="154"/>
+        <location filename="../../draftguitools/gui_scale.py" line="155"/>
         <source>Pick reference distance from base point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_scale.py" line="199"/>
+        <location filename="../../draftguitools/gui_scale.py" line="200"/>
         <source>Zero scale factor not allowed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_scale.py" line="211"/>
+        <location filename="../../draftguitools/gui_scale.py" line="213"/>
         <source>Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftguitools/gui_scale.py" line="244"/>
+        <location filename="../../draftguitools/gui_scale.py" line="246"/>
         <source>Pick new distance from base point</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4935,59 +4935,33 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/shapestring.py" line="121"/>
-        <source>added &apos;Fuse&apos;, &apos;Justification&apos;, &apos;JustificationReference&apos;, &apos;KeepLeftMargin&apos;, &apos;ObliqueAngle&apos; and &apos;ScaleToSize&apos;  properties</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/shapestring.py" line="123"/>
-        <source>changed &apos;Tracking&apos; property type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/shapestring.py" line="144"/>
+        <location filename="../../draftobjects/shapestring.py" line="147"/>
         <source>Font file not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/shapestring.py" line="147"/>
+        <location filename="../../draftobjects/shapestring.py" line="151"/>
         <source>Specified font file is not a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/shapestring.py" line="150"/>
+        <location filename="../../draftobjects/shapestring.py" line="155"/>
         <source>Specified font type is not supported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/shapestring.py" line="204"/>
+        <location filename="../../draftobjects/shapestring.py" line="211"/>
         <source>ShapeString: oblique angle must be in the -80 to +80 degree range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/shapestring.py" line="216"/>
+        <location filename="../../draftobjects/shapestring.py" line="223"/>
         <source>ShapeString: string has no wires</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/shapestring.py" line="249"/>
+        <location filename="../../draftobjects/shapestring.py" line="255"/>
         <source>ShapeString: face creation failed for one character</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/draft_annotation.py" line="82"/>
-        <source>added view property &apos;ScaleMultiplier&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/draft_annotation.py" line="85"/>
-        <source>added view property &apos;AnnotationStyle&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/draft_annotation.py" line="120"/>
-        <location filename="../../draftobjects/wire.py" line="132"/>
-        <source>migrated view properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4996,89 +4970,49 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="581"/>
-        <source>migrated &apos;PathObj&apos; property to &apos;PathObject&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/patharray.py" line="583"/>
-        <source>migrated &apos;PathSubs&apos; property to &apos;PathSubelements&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/patharray.py" line="585"/>
-        <source>migrated &apos;Xlate&apos; property to &apos;ExtraTranslation&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/patharray.py" line="587"/>
-        <location filename="../../draftobjects/pathtwistedarray.py" line="160"/>
-        <location filename="../../draftobjects/pointarray.py" line="162"/>
-        <source>added &apos;Fuse&apos; property</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/patharray.py" line="657"/>
+        <location filename="../../draftobjects/patharray.py" line="666"/>
         <source>Start Offset too large for path length. Using 0 instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="667"/>
+        <location filename="../../draftobjects/patharray.py" line="676"/>
         <source>End Offset too large for path length minus Start Offset. Using 0 instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="792"/>
+        <location filename="../../draftobjects/patharray.py" line="801"/>
         <source>Length of tangent vector is 0. Copy not aligned.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="809"/>
-        <location filename="../../draftobjects/patharray.py" line="831"/>
+        <location filename="../../draftobjects/patharray.py" line="818"/>
+        <location filename="../../draftobjects/patharray.py" line="840"/>
         <source>Length of normal vector is 0. Using a default axis instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="76"/>
-        <location filename="../../draftobjects/patharray.py" line="593"/>
-        <location filename="../../draftobjects/pathtwistedarray.py" line="162"/>
-        <location filename="../../draftobjects/pointarray.py" line="164"/>
-        <source>added hidden property &apos;PlacementList&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/patharray.py" line="589"/>
-        <source>moved &apos;Count&apos; property to &apos;Spacing&apos; subsection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/patharray.py" line="591"/>
-        <source>added &apos;ReversePath&apos;, &apos;SpacingMode&apos;, &apos;SpacingUnit&apos;, &apos;UseSpacingPattern&apos; and &apos;SpacingPattern&apos; properties</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/patharray.py" line="681"/>
+        <location filename="../../draftobjects/patharray.py" line="690"/>
         <source>Spacing unit of 0 is not allowed, using default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="759"/>
+        <location filename="../../draftobjects/patharray.py" line="768"/>
         <source>Operation would generate too many objects. Aborting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="815"/>
-        <location filename="../../draftobjects/patharray.py" line="837"/>
+        <location filename="../../draftobjects/patharray.py" line="824"/>
+        <location filename="../../draftobjects/patharray.py" line="846"/>
         <source>Tangent and normal vectors are parallel. Normal replaced by a default axis.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="827"/>
+        <location filename="../../draftobjects/patharray.py" line="836"/>
         <source>Cannot calculate normal vector. Using the default normal instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/patharray.py" line="843"/>
+        <location filename="../../draftobjects/patharray.py" line="852"/>
         <source>AlignMode {} is not implemented</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5569,70 +5503,43 @@ The final angle will be the base angle plus this amount.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/dimension.py" line="202"/>
-        <source>added view property &apos;TextColor&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/dimension.py" line="204"/>
-        <location filename="../../draftobjects/label.py" line="267"/>
-        <location filename="../../draftobjects/text.py" line="99"/>
-        <source>renamed &apos;DisplayMode&apos; options to &apos;World/Screen&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/label.py" line="263"/>
-        <source>renamed view property &apos;TextFont&apos; to &apos;FontName&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/label.py" line="265"/>
-        <source>renamed view property &apos;TextSize&apos; to &apos;FontSize&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/label.py" line="330"/>
+        <location filename="../../draftobjects/label.py" line="327"/>
         <source>No Target</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="411"/>
+        <location filename="../../draftobjects/label.py" line="408"/>
         <source>Invalid label type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="426"/>
+        <location filename="../../draftobjects/label.py" line="423"/>
         <source>Tag not available for object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="433"/>
+        <location filename="../../draftobjects/label.py" line="430"/>
         <source>Material not available for object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="442"/>
+        <location filename="../../draftobjects/label.py" line="439"/>
         <source>Position not available for (sub)object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="458"/>
+        <location filename="../../draftobjects/label.py" line="455"/>
         <source>Length not available for (sub)object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="472"/>
+        <location filename="../../draftobjects/label.py" line="469"/>
         <source>Area not available for (sub)object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="485"/>
+        <location filename="../../draftobjects/label.py" line="482"/>
         <source>Volume not available for (sub)object</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/array.py" line="74"/>
-        <source>added property &apos;Count&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5669,26 +5576,6 @@ The final angle will be the base angle plus this amount.</source>
         <location filename="../../draftutils/params.py" line="206"/>
         <source>Do you want to update the SVG pattern options
 of existing objects in all opened documents?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/pointarray.py" line="158"/>
-        <source>added &apos;ExtraPlacement&apos; property</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/pointarray.py" line="160"/>
-        <source>migrated &apos;PointList&apos; property to &apos;PointObject&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/layer.py" line="76"/>
-        <source>changed &apos;Group&apos; property type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/layer.py" line="102"/>
-        <source>updated view properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5729,11 +5616,6 @@ of existing objects in all opened documents?</source>
     <message>
         <location filename="../../draftguitools/gui_layers.py" line="252"/>
         <source>Layers change</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../draftobjects/clone.py" line="75"/>
-        <source>added &apos;ForceCompound&apos; property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5896,11 +5778,6 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <source>Pattern not found in PAT file</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../../draftobjects/text.py" line="113"/>
-        <source>removed view properties</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Workbench</name>
@@ -6058,32 +5935,27 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../drafttaskpanels/task_scale.py" line="89"/>
-        <source>Working plane orientation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../drafttaskpanels/task_scale.py" line="93"/>
+        <location filename="../../drafttaskpanels/task_scale.py" line="94"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../drafttaskpanels/task_scale.py" line="97"/>
+        <location filename="../../drafttaskpanels/task_scale.py" line="98"/>
         <source>Modify subelements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../drafttaskpanels/task_scale.py" line="105"/>
+        <location filename="../../drafttaskpanels/task_scale.py" line="106"/>
         <source>Pick From/To Points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../drafttaskpanels/task_scale.py" line="195"/>
+        <location filename="../../drafttaskpanels/task_scale.py" line="202"/>
         <source>Edit Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../drafttaskpanels/task_scale.py" line="101"/>
+        <location filename="../../drafttaskpanels/task_scale.py" line="102"/>
         <source>Create a clone</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6109,7 +5981,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     </message>
     <message>
         <location filename="../../draftguitools/gui_layers.py" line="366"/>
-        <location filename="../../draftobjects/label.py" line="335"/>
+        <location filename="../../draftobjects/label.py" line="332"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6149,67 +6021,67 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="334"/>
+        <location filename="../../draftobjects/label.py" line="331"/>
         <source>Custom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="336"/>
+        <location filename="../../draftobjects/label.py" line="333"/>
         <source>Label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="337"/>
+        <location filename="../../draftobjects/label.py" line="334"/>
         <source>Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="338"/>
+        <location filename="../../draftobjects/label.py" line="335"/>
         <source>Length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="339"/>
+        <location filename="../../draftobjects/label.py" line="336"/>
         <source>Area</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="340"/>
+        <location filename="../../draftobjects/label.py" line="337"/>
         <source>Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="341"/>
+        <location filename="../../draftobjects/label.py" line="338"/>
         <source>Tag</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="342"/>
+        <location filename="../../draftobjects/label.py" line="339"/>
         <source>Material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="343"/>
+        <location filename="../../draftobjects/label.py" line="340"/>
         <source>Label + Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="344"/>
+        <location filename="../../draftobjects/label.py" line="341"/>
         <source>Label + Length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="345"/>
+        <location filename="../../draftobjects/label.py" line="342"/>
         <source>Label + Area</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="346"/>
+        <location filename="../../draftobjects/label.py" line="343"/>
         <source>Label + Volume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/label.py" line="350"/>
+        <location filename="../../draftobjects/label.py" line="347"/>
         <source>Label + Material</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6680,12 +6552,12 @@ For example, a 3D solid is deconstructed into separate faces, wires, and then ed
 <context>
     <name>App::Property</name>
     <message>
-        <location filename="../../draftobjects/text.py" line="56"/>
+        <location filename="../../draftobjects/text.py" line="55"/>
         <source>The placement of the base point of the first line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/text.py" line="69"/>
+        <location filename="../../draftobjects/text.py" line="68"/>
         <source>The text displayed by this object.
 It is a list of strings; each element in the list will be displayed in its own line.</source>
         <translation type="unfinished"></translation>
@@ -6776,23 +6648,23 @@ It is a list of strings; each element in the list will be displayed in its own l
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/clone.py" line="52"/>
+        <location filename="../../draftobjects/clone.py" line="51"/>
         <source>The objects included in this clone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/clone.py" line="55"/>
+        <location filename="../../draftobjects/clone.py" line="54"/>
         <source>The scale factor of this clone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/clone.py" line="61"/>
+        <location filename="../../draftobjects/clone.py" line="60"/>
         <source>If Clones includes several objects,
 set True for fusion or False for compound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/clone.py" line="64"/>
+        <location filename="../../draftobjects/clone.py" line="63"/>
         <source>Always create a compound</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6826,12 +6698,12 @@ set True for fusion or False for compound</source>
         <location filename="../../draftobjects/circle.py" line="62"/>
         <location filename="../../draftobjects/polygon.py" line="72"/>
         <location filename="../../draftobjects/rectangle.py" line="67"/>
-        <location filename="../../draftobjects/wire.py" line="95"/>
+        <location filename="../../draftobjects/wire.py" line="94"/>
         <source>The area of this object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/layer.py" line="61"/>
+        <location filename="../../draftobjects/layer.py" line="60"/>
         <source>The objects that are part of this layer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6853,50 +6725,50 @@ set True for fusion or False for compound</source>
     <message>
         <location filename="../../draftobjects/polygon.py" line="60"/>
         <location filename="../../draftobjects/rectangle.py" line="52"/>
-        <location filename="../../draftobjects/wire.py" line="79"/>
+        <location filename="../../draftobjects/wire.py" line="78"/>
         <source>Radius to use to fillet the corners</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftobjects/polygon.py" line="64"/>
         <location filename="../../draftobjects/rectangle.py" line="55"/>
-        <location filename="../../draftobjects/wire.py" line="83"/>
+        <location filename="../../draftobjects/wire.py" line="82"/>
         <source>Size of the chamfer to give to the corners</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/pathtwistedarray.py" line="87"/>
+        <location filename="../../draftobjects/pathtwistedarray.py" line="86"/>
         <source>The base object that will be duplicated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../draftobjects/patharray.py" line="225"/>
-        <location filename="../../draftobjects/pathtwistedarray.py" line="95"/>
+        <location filename="../../draftobjects/pathtwistedarray.py" line="94"/>
         <source>The object along which the copies will be distributed. It must contain &apos;Edges&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/pathtwistedarray.py" line="115"/>
+        <location filename="../../draftobjects/pathtwistedarray.py" line="114"/>
         <source>Number of copies to create.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/pathtwistedarray.py" line="123"/>
+        <location filename="../../draftobjects/pathtwistedarray.py" line="122"/>
         <source>Rotation factor of the twisted array.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="368"/>
+        <location filename="../../draftobjects/array.py" line="367"/>
         <location filename="../../draftobjects/patharray.py" line="262"/>
-        <location filename="../../draftobjects/pathtwistedarray.py" line="131"/>
+        <location filename="../../draftobjects/pathtwistedarray.py" line="130"/>
         <location filename="../../draftobjects/pointarray.py" line="116"/>
         <source>Show the individual array elements (only for Link arrays)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="154"/>
+        <location filename="../../draftobjects/array.py" line="153"/>
         <location filename="../../draftobjects/patharray.py" line="274"/>
-        <location filename="../../draftobjects/pathtwistedarray.py" line="140"/>
+        <location filename="../../draftobjects/pathtwistedarray.py" line="139"/>
         <location filename="../../draftobjects/pointarray.py" line="127"/>
         <source>The placement for each array element</source>
         <translation type="unfinished"></translation>
@@ -6991,7 +6863,7 @@ they will only be editable by changing the style through the &apos;Annotation st
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="100"/>
+        <location filename="../../draftobjects/array.py" line="99"/>
         <location filename="../../draftobjects/patharray.py" line="216"/>
         <source>The base object that will be duplicated</source>
         <translation type="unfinished"></translation>
@@ -7084,7 +6956,7 @@ Otherwise the copies will have the same orientation as the original Base object.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="116"/>
+        <location filename="../../draftobjects/array.py" line="115"/>
         <source>The type of array to create.
 - Ortho: places the copies in the direction of the global X, Y, Z axes.
 - Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
@@ -7092,98 +6964,98 @@ Otherwise the copies will have the same orientation as the original Base object.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="128"/>
+        <location filename="../../draftobjects/array.py" line="127"/>
         <location filename="../../draftobjects/patharray.py" line="253"/>
-        <location filename="../../draftobjects/pathtwistedarray.py" line="104"/>
+        <location filename="../../draftobjects/pathtwistedarray.py" line="103"/>
         <location filename="../../draftobjects/pointarray.py" line="88"/>
         <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="168"/>
+        <location filename="../../draftobjects/array.py" line="167"/>
         <source>Number of copies in X-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="178"/>
+        <location filename="../../draftobjects/array.py" line="177"/>
         <source>Number of copies in Y-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="188"/>
+        <location filename="../../draftobjects/array.py" line="187"/>
         <source>Number of copies in Z-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="199"/>
+        <location filename="../../draftobjects/array.py" line="198"/>
         <source>Distance and orientation of intervals in X-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="210"/>
+        <location filename="../../draftobjects/array.py" line="209"/>
         <source>Distance and orientation of intervals in Y-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="221"/>
+        <location filename="../../draftobjects/array.py" line="220"/>
         <source>Distance and orientation of intervals in Z-direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="237"/>
+        <location filename="../../draftobjects/array.py" line="236"/>
         <source>The axis direction around which the elements in a polar or a circular array will be created</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="249"/>
+        <location filename="../../draftobjects/array.py" line="248"/>
         <source>Center point for polar and circular arrays.
 The &apos;Axis&apos; passes through this point.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="269"/>
+        <location filename="../../draftobjects/array.py" line="268"/>
         <source>The axis object that overrides the value of &apos;Axis&apos; and &apos;Center&apos;, for example, a datum line.
 Its placement, position and rotation, will be used when creating polar and circular arrays.
 Leave this property empty to be able to set &apos;Axis&apos; and &apos;Center&apos; manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="283"/>
+        <location filename="../../draftobjects/array.py" line="282"/>
         <source>Number of copies in the polar direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="294"/>
+        <location filename="../../draftobjects/array.py" line="293"/>
         <source>Distance and orientation of intervals in &apos;Axis&apos; direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="304"/>
+        <location filename="../../draftobjects/array.py" line="303"/>
         <source>Angle to cover with copies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="318"/>
+        <location filename="../../draftobjects/array.py" line="317"/>
         <source>Distance between concentric circles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="329"/>
+        <location filename="../../draftobjects/array.py" line="328"/>
         <source>Distance between copies in the same circle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="340"/>
+        <location filename="../../draftobjects/array.py" line="339"/>
         <source>Number of concentric circle. The &apos;Base&apos; object counts as one circle.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="352"/>
+        <location filename="../../draftobjects/array.py" line="351"/>
         <source>A parameter that determines how many symmetry planes the circular array will have</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/array.py" line="142"/>
+        <location filename="../../draftobjects/array.py" line="141"/>
         <source>Total number of elements in the array.
 This property is read-only, as the number depends on the parameters of the array.</source>
         <translation type="unfinished"></translation>
@@ -7382,17 +7254,17 @@ This property is read-only, as the number depends on the points in &apos;Point O
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/dimension.py" line="135"/>
+        <location filename="../../draftobjects/dimension.py" line="134"/>
         <source>The normal direction of the text of the dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/dimension.py" line="148"/>
+        <location filename="../../draftobjects/dimension.py" line="147"/>
         <source>The object measured by this dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/dimension.py" line="166"/>
+        <location filename="../../draftobjects/dimension.py" line="165"/>
         <source>The object, and specific subelements of it,
 that this dimension is measuring.
 
@@ -7403,7 +7275,7 @@ There are various possibilities:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/dimension.py" line="190"/>
+        <location filename="../../draftobjects/dimension.py" line="189"/>
         <source>A point through which the dimension line, or an extrapolation of it, will pass.
 
 - For linear dimensions, this property controls how close the dimension line
@@ -7415,7 +7287,7 @@ that displays the measured angle.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/dimension.py" line="237"/>
+        <location filename="../../draftobjects/dimension.py" line="234"/>
         <source>Starting point of the dimension line.
 
 If it is a radius dimension it will be the center of the arc.
@@ -7423,7 +7295,7 @@ If it is a diameter dimension it will be a point that lies on the arc.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/dimension.py" line="252"/>
+        <location filename="../../draftobjects/dimension.py" line="249"/>
         <source>Ending point of the dimension line.
 
 If it is a radius or diameter dimension
@@ -7431,13 +7303,13 @@ it will be a point that lies on the arc.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/dimension.py" line="265"/>
+        <location filename="../../draftobjects/dimension.py" line="262"/>
         <source>The direction of the dimension line.
 If this remains &apos;(0,0,0)&apos;, the direction will be calculated automatically.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/dimension.py" line="283"/>
+        <location filename="../../draftobjects/dimension.py" line="280"/>
         <source>The value of the measurement.
 
 This property is read-only because the value is calculated
@@ -7448,25 +7320,25 @@ is the radius or diameter, depending on the &apos;Diameter&apos; property.</sour
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/dimension.py" line="295"/>
+        <location filename="../../draftobjects/dimension.py" line="292"/>
         <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/dimension.py" line="531"/>
+        <location filename="../../draftobjects/dimension.py" line="528"/>
         <source>Starting angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/dimension.py" line="543"/>
+        <location filename="../../draftobjects/dimension.py" line="540"/>
         <source>Ending angle of the dimension line (circular arc).
 The arc is drawn counter-clockwise.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/dimension.py" line="559"/>
+        <location filename="../../draftobjects/dimension.py" line="556"/>
         <source>The center point of the dimension line, which is a circular arc.
 
 This is normally the point where two line segments, or their extensions
@@ -7474,7 +7346,7 @@ intersect, resulting in the measured &apos;Angle&apos; between them.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/dimension.py" line="574"/>
+        <location filename="../../draftobjects/dimension.py" line="571"/>
         <source>The value of the measurement.
 
 This property is read-only because the value is calculated from
@@ -7537,47 +7409,47 @@ the &apos;First Angle&apos; and &apos;Last Angle&apos; properties.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/wire.py" line="51"/>
+        <location filename="../../draftobjects/wire.py" line="50"/>
         <source>The vertices of the wire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/wire.py" line="55"/>
+        <location filename="../../draftobjects/wire.py" line="54"/>
         <source>If the wire is closed or not</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/wire.py" line="59"/>
+        <location filename="../../draftobjects/wire.py" line="58"/>
         <source>The base object is the wire, it&apos;s formed from 2 objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/wire.py" line="63"/>
+        <location filename="../../draftobjects/wire.py" line="62"/>
         <source>The tool object is the wire, it&apos;s formed from 2 objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/wire.py" line="67"/>
+        <location filename="../../draftobjects/wire.py" line="66"/>
         <source>The start point of this line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/wire.py" line="71"/>
+        <location filename="../../draftobjects/wire.py" line="70"/>
         <source>The end point of this line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/wire.py" line="75"/>
+        <location filename="../../draftobjects/wire.py" line="74"/>
         <source>The length of this line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/wire.py" line="87"/>
+        <location filename="../../draftobjects/wire.py" line="86"/>
         <source>Create a face if this object is closed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../draftobjects/wire.py" line="91"/>
+        <location filename="../../draftobjects/wire.py" line="90"/>
         <source>The number of subdivisions of each edge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8006,7 +7878,7 @@ However, a single sketch with disconnected traces is converted into several indi
     <name>Draft_AddToGroup</name>
     <message>
         <location filename="../../draftguitools/gui_groups.py" line="73"/>
-        <source>Add to Group…</source>
+        <source>Add to Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
