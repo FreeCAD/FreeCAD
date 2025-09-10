@@ -491,7 +491,7 @@ static bool removeOriginIfUnreferenced(App::Document* doc, App::Origin* og)
 }
 
 
-static void relinkInPartObjOfTypeKeepWorld(App::Document* doc,App::Part* part, Base::Type objType)
+static void relinkInPartObjOfTypeKeepWorld(App::Document* doc,App::Part* part, const std::vector<Base::Type>& types)
 {
 
     // Helper to get global placement for any object we may target here
@@ -508,7 +508,7 @@ static void relinkInPartObjOfTypeKeepWorld(App::Document* doc,App::Part* part, B
     for (auto* ch : partOrigin->baseObjects()) partOriginDatum.insert(ch->getNameInDocument());
 	
     // Relink support of each obj of type whose *owner body* is under this Part
-    std::vector<App::DocumentObject*> objList = doc->getObjectsOfType(objType);
+    std::vector<App::DocumentObject*> objList = doc->getObjectsOfType(types);
     for (auto* obj : objList) {
         auto* body = PartDesign::Body::findBodyOf(obj);
         if (!body) continue;
@@ -567,7 +567,7 @@ static void relinkInPartObjOfTypeKeepWorld(App::Document* doc,App::Part* part, B
 
 }
 
-static void relinkTopLevelObjOfTypeKeepWorld(App::Document* doc, App::Origin* canonical, Base::Type objType)
+static void relinkTopLevelObjOfTypeKeepWorld(App::Document* doc, App::Origin* canonical, const std::vector<Base::Type>& types)
 {
    // Helper to get global placement for any object we may target here
         auto getGlobal = [&](App::DocumentObject* obj) -> Base::Placement {
@@ -578,7 +578,7 @@ static void relinkTopLevelObjOfTypeKeepWorld(App::Document* doc, App::Origin* ca
     };
 
     // Relink support of each obj of type whose *owner body* is under this Part
-    std::vector<App::DocumentObject*> objList = doc->getObjectsOfType(objType);
+    std::vector<App::DocumentObject*> objList = doc->getObjectsOfType(types);
     for (auto* obj : objList) {
         auto* body = PartDesign::Body::findBodyOf(obj);
         if (!body || App::Part::getPartOfObject(obj)) continue; // only top-level bodies
@@ -618,7 +618,6 @@ static void relinkTopLevelObjOfTypeKeepWorld(App::Document* doc, App::Origin* ca
         std::vector<std::string> newSubs;
         newSubs.emplace_back(role);
 
-
         // Preserve world: A' = G_new^{-1} · G_old · A
         auto* offProp = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("AttachmentOffset"));
         Base::Placement A = offProp ? offProp->getValue() : Base::Placement();
@@ -652,21 +651,21 @@ static void relinkInPartSketchesKeepWorld(
          return Base::Placement();
     };
         
-
     // Walk all Parts present in the document
     auto parts = doc->getObjectsOfType(App::Part::getClassTypeId());
     for (auto* po : parts) {
         auto* part = static_cast<App::Part*>(po);
         auto* partOrigin = part->getOrigin();
         if (!partOrigin) continue;
-
-        // Relink each sketch whose *owner body* is under this Part
-        auto sketchType = Base::Type::fromName("Sketcher::SketchObject");
-        relinkInPartObjOfTypeKeepWorld(doc,part,sketchType);
     
-        // Relink each LCS whose *owner body* is under this Part
-        Base::Type lcsType = Base::Type::fromName("App::LocalCoordinateSystem");
-        relinkInPartObjOfTypeKeepWorld(doc,part,lcsType);
+        // Relink of sketches and user datum whose *owner body* is under this Part
+	std::vector<Base::Type> datumTypes;
+        datumTypes.push_back(Base::Type::fromName("Sketcher::SketchObject"));
+        datumTypes.push_back(Base::Type::fromName("App::LocalCoordinateSystem"));
+        datumTypes.push_back(Base::Type::fromName("PartDesign::Plane"));
+        datumTypes.push_back(Base::Type::fromName("PartDesign::Line"));
+        datumTypes.push_back(Base::Type::fromName("PartDesign::Point"));
+        relinkInPartObjOfTypeKeepWorld(doc,part,datumTypes);
     
         // ---- Cleanup *body-local* legacy origins inside Bodies, and any extra origins under this Part ----
         {
@@ -680,7 +679,6 @@ static void relinkInPartSketchesKeepWorld(
                     }
                 }
             }
-        
             // B) origins under this Part (if present), except the Part's canonical origin
             if (part && partOrigin) {
                 for (auto* o : doc->getObjectsOfType(App::Origin::getClassTypeId())) {
@@ -701,13 +699,15 @@ static void relinkTopLevelSketchesKeepWorld(
 {
     if (!doc || !canonical) return;
 
-    // Relink support of sketches whose *owner body* is a top level body
-    auto sketchType = Base::Type::fromName("Sketcher::SketchObject");
-    relinkTopLevelObjOfTypeKeepWorld(doc,canonical,sketchType);
+    // Relink support of sketches and user Datum whose *owner body* a top level body
+    std::vector<Base::Type> datumTypes;
+    datumTypes.push_back(Base::Type::fromName("Sketcher::SketchObject"));
+    datumTypes.push_back(Base::Type::fromName("App::LocalCoordinateSystem"));
+    datumTypes.push_back(Base::Type::fromName("PartDesign::Plane"));
+    datumTypes.push_back(Base::Type::fromName("PartDesign::Line"));
+    datumTypes.push_back(Base::Type::fromName("PartDesign::Point"));
 
-    // Relink support of LCS whose *owner body* a top level body
-    Base::Type lcsType = Base::Type::fromName("App::LocalCoordinateSystem");
-    relinkTopLevelObjOfTypeKeepWorld(doc,canonical,lcsType);
+    relinkTopLevelObjOfTypeKeepWorld(doc,canonical,datumTypes);
 
     // ---- Cleanup extra *top-level* origins and their children (not the canonical) ----
     {
