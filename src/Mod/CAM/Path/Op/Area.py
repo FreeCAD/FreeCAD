@@ -131,7 +131,15 @@ class ObjectOp(PathOp.ObjectOp):
         if prop in ["AreaParams", "PathParams", "removalshape"]:
             obj.setEditorMode(prop, 2)
 
-        if hasattr(obj, "Side") and prop == "Base" and len(obj.Base) == 1:
+        if (
+            hasattr(obj, "Side")
+            and prop == "Base"
+            and len(obj.Base) == 1
+            and getattr(self, "init", None)
+        ):
+            # Offer side only while create new operation
+            self.init = False
+
             (base, subNames) = obj.Base[0]
 
             # find parent boundbox
