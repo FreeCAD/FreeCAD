@@ -606,10 +606,9 @@ class ObjectDressup:
                 arcBegin = begin + tangent + normal
                 arcCenter = begin + normalMax
                 arcOffset = arcCenter - arcBegin
+                feedRate = PathDressup.toolController(obj.Base).LeadInFeed.Value
                 lead.append(
-                    self.createArcMove(
-                        obj, arcBegin, begin, arcOffset, obj.InvertIn, obj.LeadInFeed.Value
-                    )
+                    self.createArcMove(obj, arcBegin, begin, arcOffset, obj.InvertIn, feedRate)
                 )
 
             # prepend "Line" style lead-in - line in XY
@@ -624,7 +623,8 @@ class ObjectDressup:
                     * normalLength
                 )
                 lineBegin = begin + tangent + normal
-                lead.append(self.createStraightMove(obj, lineBegin, begin, obj.LeadInFeed.Value))
+                feedRate = PathDressup.toolController(obj.Base).LeadInFeed.Value
+                lead.append(self.createStraightMove(obj, lineBegin, begin, feedRate))
 
             # prepend "LineZ" style lead-in - vertical inclined line
             # Should be apply only on straight Path segment
@@ -640,7 +640,8 @@ class ObjectDressup:
                 tangent = -self.angleToVector(angleTangent) * tangentLength
                 normal = App.Vector(0, 0, normalLength)
                 lineBegin = begin + tangent + normal
-                lead.append(self.createStraightMove(obj, lineBegin, begin, obj.LeadInFeed.Value))
+                feedRate = PathDressup.toolController(obj.Base).LeadInFeed.Value
+                lead.append(self.createStraightMove(obj, lineBegin, begin, feedRate))
 
             # prepend "ArcZ" style lead-in - vertical Arc
             # Should be apply only on straight Path segment
@@ -660,9 +661,8 @@ class ObjectDressup:
                 tangent = -self.angleToVector(angleTangent) * tangentLength
                 normal = App.Vector(0, 0, normalLength)
                 arcBegin = begin + tangent + normal
-                lead.extend(
-                    self.createArcZMoveDown(obj, arcBegin, begin, arcRadius, obj.LeadInFeed.Value)
-                )
+                feedRate = PathDressup.toolController(obj.Base).LeadInFeed.Value
+                lead.extend(self.createArcZMoveDown(obj, arcBegin, begin, arcRadius, feedRate))
 
             # replace 'begin' position by first lead-in command
             begin = lead[0].positionBegin()
