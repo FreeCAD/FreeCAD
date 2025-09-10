@@ -1217,13 +1217,15 @@ class SectionPlaneTaskPanel:
         self.grid.addWidget(self.delButton, 2, 1, 1, 1)
         self.delButton.setEnabled(False)
 
-        # Cut View checkbox
-        self.cutViewCheckBox = QtGui.QCheckBox(self.form)
-        self.cutViewCheckBox.setObjectName("cutViewCheckBox")
-        self.grid.addWidget(self.cutViewCheckBox, 3, 0, 1, 2)
-        self.cutViewCheckBox.setText(QtGui.QApplication.translate("Arch", "Cut View", None))
-        self.cutViewCheckBox.setToolTip(QtGui.QApplication.translate("Arch", "Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model.", None))
-        QtCore.QObject.connect(self.cutViewCheckBox, QtCore.SIGNAL("stateChanged(int)"), self.toggleCutView)
+        # Cut View toggle button
+        self.cutViewButton = QtGui.QPushButton(self.form)
+        self.cutViewButton.setIcon(QtGui.QIcon(":/icons/Arch_SectionPlane_Tree.svg"))
+        self.cutViewButton.setObjectName("cutViewButton")
+        self.grid.addWidget(self.cutViewButton, 3, 0, 1, 2)
+        self.cutViewButton.setText(QtGui.QApplication.translate("Arch", "Cut View", None))
+        self.cutViewButton.setToolTip(QtGui.QApplication.translate("Arch", "Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model.", None))
+        self.cutViewButton.setCheckable(True)
+        QtCore.QObject.connect(self.cutViewButton, QtCore.SIGNAL("toggled(bool)"), self.toggleCutView)
 
         # rotate / resize buttons
         self.rlabel = QtGui.QLabel(self.form)
@@ -1279,7 +1281,7 @@ class SectionPlaneTaskPanel:
                 item.setToolTip(0,o.Name)
                 item.setIcon(0,self.getIcon(o))
             if self.obj.ViewObject and hasattr(self.obj.ViewObject, "CutView"):
-                self.cutViewCheckBox.setChecked(self.obj.ViewObject.CutView)
+                self.cutViewButton.setChecked(self.obj.ViewObject.CutView)
         self.retranslateUi(self.form)
 
     def addElement(self):
@@ -1363,9 +1365,10 @@ class SectionPlaneTaskPanel:
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 
-    def toggleCutView(self, state):
-        if self.obj and self.obj.ViewObject and hasattr(self.obj.ViewObject, "CutView"):
-            self.obj.ViewObject.CutView = (state == QtCore.Qt.Checked)
+    def toggleCutView(self, checked):
+         if self.obj and self.obj.ViewObject and hasattr(self.obj.ViewObject, "CutView"):
+            self.obj.ViewObject.CutView = checked
+            FreeCAD.ActiveDocument.recompute()
 
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Section plane settings", None))
