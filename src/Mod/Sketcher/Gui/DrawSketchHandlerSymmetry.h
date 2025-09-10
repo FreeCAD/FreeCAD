@@ -302,4 +302,3 @@ void DSHSymmetryController::adaptDrawingToCheckboxChange(int checkboxindex, bool
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerSymmetry_H
-
