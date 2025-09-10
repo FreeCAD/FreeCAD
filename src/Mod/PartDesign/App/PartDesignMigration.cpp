@@ -31,11 +31,16 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/Link.h>
+#include <App/PropertyStandard.h>
 #include <App/Property.h>
 #include <App/PropertyLinks.h>
-#include <Base/Type.h>               // Base::Type::fromName
-#include <App/PropertyLinks.h>       // PropertyLinkSub
 #include <App/GeoFeature.h>
+
+#include <Base/Type.h>               // Base::Type::fromName
+#include <Base/Placement.h>
+#include <Base/CoordinateSystem.h>
+
+
 
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
@@ -52,7 +57,7 @@
 #include <unordered_map>
 #include <algorithm>   // std::replace
 #include <cctype>      // std::tolower, std::isdigit
-
+#include <cstring>
 
 
 using Base::Placement;
@@ -290,12 +295,16 @@ static const char* planeRoleOf(const App::DocumentObject* planeObj) {
 }
 
 // 2) Get the *canonical* subobject under an Origin by *role*
-static App::DocumentObject* getPlaneByRole(App::Origin* org, const char* role) {
+static App::DocumentObject* getDatumByRole(App::Origin* org, const char* role) {
     if (!org || !role) return nullptr;
     using LCS = App::LocalCoordinateSystem;
     if      (std::strcmp(role, LCS::PlaneRoles[0]) == 0) return org->getXY();
     else if (std::strcmp(role, LCS::PlaneRoles[1]) == 0) return org->getXZ();
     else if (std::strcmp(role, LCS::PlaneRoles[2]) == 0) return org->getYZ();
+    else if (std::strcmp(role, LCS::AxisRoles[0]) == 0) return org->getX();
+    else if (std::strcmp(role, LCS::AxisRoles[1]) == 0) return org->getY();
+    else if (std::strcmp(role, LCS::AxisRoles[2]) == 0) return org->getZ();
+    else if (std::strcmp(role, LCS::PointRoles[0]) == 0) return org->getOrigin();
     return nullptr;
 }
 
@@ -307,19 +316,19 @@ struct SupportView {
     enum Kind { None, LinkSub, LinkSubList, XLinkSub, XLinkSubList } kind = None;
 };
 
-static SupportView readSketchSupport(App::DocumentObject* sk)
+static SupportView readAttachmentSupport(App::DocumentObject* obj)
 {
     SupportView sv;
-    if (!sk) return sv;
+    if (!obj) return sv;
 
-    // Prefer AttachmentSupport (what your file has), then fall back to Support
+    // Prefer AttachmentSupport, then Support
     const char* candidates[] = {"AttachmentSupport", "Support"};
 
     for (const char* name : candidates) {
-        if (auto* pl = dynamic_cast<App::PropertyLinkSubList*>(sk->getPropertyByName(name))) {
+        if (auto* pl = dynamic_cast<App::PropertyLinkSubList*>(obj->getPropertyByName(name))) {
             sv.prop = pl;
             const auto& links   = pl->getValues();
-            const auto& sublist = pl->getSubValues();        // aligned with links
+            const auto& sublist = pl->getSubValues(); // aligned with links
             if (!links.empty()) {
                 sv.target = links.front();
                 if (!sublist.empty()) { sv.subs.clear(); sv.subs.push_back(sublist.front()); }
@@ -327,25 +336,25 @@ static SupportView readSketchSupport(App::DocumentObject* sk)
                 return sv;
             }
         }
-        if (auto* ps = dynamic_cast<App::PropertyLinkSub*>(sk->getPropertyByName(name))) {
+        if (auto* ps = dynamic_cast<App::PropertyLinkSub*>(obj->getPropertyByName(name))) {
             sv.prop   = ps;
             sv.target = ps->getValue();
             sv.subs   = ps->getSubValues();
             sv.kind   = SupportView::LinkSub;
             if (sv.target) return sv;
         }
-        if (auto* xpl = dynamic_cast<App::PropertyXLinkSubList*>(sk->getPropertyByName(name))) {
+        if (auto* xpl = dynamic_cast<App::PropertyXLinkSubList*>(obj->getPropertyByName(name))) {
             sv.prop = xpl;
             const auto& links = xpl->getValues();
             if (!links.empty()) {
                 sv.target = links.front();
-                const auto& sublist = xpl->getSubValues(links.front()); // needs object
+                const auto& sublist = xpl->getSubValues(links.front()); // requires object
                 if (!sublist.empty()) { sv.subs.clear(); sv.subs.push_back(sublist.front()); }
                 sv.kind = SupportView::XLinkSubList;
                 return sv;
             }
         }
-        if (auto* xps = dynamic_cast<App::PropertyXLinkSub*>(sk->getPropertyByName(name))) {
+        if (auto* xps = dynamic_cast<App::PropertyXLinkSub*>(obj->getPropertyByName(name))) {
             sv.prop   = xps;
             sv.target = xps->getValue();
             sv.subs   = xps->getSubValues();
@@ -357,32 +366,36 @@ static SupportView readSketchSupport(App::DocumentObject* sk)
     return sv; // None
 }
 
-static void writeSketchSupportPlane(App::DocumentObject* sk,
-                                    App::DocumentObject* planeObj,
-                                    const std::vector<std::string>& subs = {})
-{
-    if (!sk || !planeObj) return;
 
-    // Prefer AttachmentSupport, then Support
+static void writeAttachmentSupport(App::DocumentObject* obj,
+                                   App::DocumentObject* supportObj,
+                                   std::vector<std::string> subs = {})
+{
+    if (!obj || !supportObj) return;
+
+    // For *List* variants, ensure we pass one sub (empty ok)
+    if (subs.empty())
+        subs.emplace_back(); // ""
+
     const char* candidates[] = {"AttachmentSupport", "Support"};
 
     for (const char* name : candidates) {
-        if (auto* pl = dynamic_cast<App::PropertyLinkSubList*>(sk->getPropertyByName(name))) {
-            std::vector<App::DocumentObject*> objs{ planeObj };
+        if (auto* pl = dynamic_cast<App::PropertyLinkSubList*>(obj->getPropertyByName(name))) {
+            std::vector<App::DocumentObject*> objs{ supportObj };
             pl->setValues(objs, subs);
             return;
         }
-        if (auto* ps = dynamic_cast<App::PropertyLinkSub*>(sk->getPropertyByName(name))) {
-            ps->setValue(planeObj, subs);
+        if (auto* ps = dynamic_cast<App::PropertyLinkSub*>(obj->getPropertyByName(name))) {
+            ps->setValue(supportObj, subs);
             return;
         }
-        if (auto* xpl = dynamic_cast<App::PropertyXLinkSubList*>(sk->getPropertyByName(name))) {
-            std::vector<App::DocumentObject*> objs{ planeObj };
+        if (auto* xpl = dynamic_cast<App::PropertyXLinkSubList*>(obj->getPropertyByName(name))) {
+            std::vector<App::DocumentObject*> objs{ supportObj };
             xpl->setValues(objs, subs);
             return;
         }
-        if (auto* xps = dynamic_cast<App::PropertyXLinkSub*>(sk->getPropertyByName(name))) {
-            xps->setValue(planeObj, subs);
+        if (auto* xps = dynamic_cast<App::PropertyXLinkSub*>(obj->getPropertyByName(name))) {
+            xps->setValue(supportObj, subs);
             return;
         }
     }
@@ -445,6 +458,181 @@ static bool removeOriginIfUnreferenced(App::Document* doc, App::Origin* og)
 }
 
 
+[[maybe_unused]] static bool isUpstreamOfTip(PartDesign::Body* body, App::DocumentObject* cand)
+{
+    if (!body || !cand) return false;
+    auto* tip = body->Tip.getValue();
+    if (!tip) return false;
+
+    std::vector<App::DocumentObject*> stack{ tip };
+    std::unordered_set<App::DocumentObject*> seen;
+    while (!stack.empty()) {
+        auto* cur = stack.back(); stack.pop_back();
+        if (!cur || seen.count(cur)) continue;
+        seen.insert(cur);
+        if (cur == cand) return true;
+        for (auto* dep : cur->getOutList())      // deps the tip uses
+            if (dep) stack.push_back(dep);
+    }
+    return false;
+}
+
+[[maybe_unused]] static Base::Placement getPlacement(App::DocumentObject* o)
+{
+    if (!o) return Base::Placement();
+    if (auto* pp = dynamic_cast<App::PropertyPlacement*>(o->getPropertyByName("Placement")))
+        return pp->getValue();
+    return Base::Placement();
+}
+
+[[maybe_unused]] static App::PropertyPlacement* getAttachmentOffset(App::DocumentObject* o)
+{
+    return o ? dynamic_cast<App::PropertyPlacement*>(o->getPropertyByName("AttachmentOffset")) : nullptr;
+}
+
+
+static void relinkInPartObjOfTypeKeepWorld(App::Document* doc,App::Part* part, Base::Type objType)
+{
+
+    // Helper to get global placement for any object we may target here
+    auto getGlobal = [&](App::DocumentObject* obj) -> Base::Placement {
+         if (auto* gf = dynamic_cast<App::GeoFeature*>(obj))
+             return globalOf(gf, containerCS);   // your existing helper
+         // Top-level canonical origin has identity in world; if not GeoFeature, fallback to identity
+         return Base::Placement();
+    };
+       
+    auto* partOrigin = part->getOrigin();
+    // Map of the Part origin's planes by base label, and their globals
+    std::set<std::string> partOriginDatum;
+    for (auto* ch : partOrigin->baseObjects()) partOriginDatum.insert(ch->getNameInDocument());
+	
+    // Relink support of each obj of type whose *owner body* is under this Part
+    std::vector<App::DocumentObject*> objList = doc->getObjectsOfType(objType);
+    for (auto* obj : objList) {
+        auto* body = PartDesign::Body::findBodyOf(obj);
+        if (!body) continue;
+        if (App::Part::getPartOfObject(body) != part) continue; // only bodies under this Part
+								// 
+	//don't relink support of removed Body Origin
+	Base::Type lcsType = Base::Type::fromName("App::LocalCoordinateSystem");
+	const char *skip="Origin";
+	if(obj->isDerivedFrom(lcsType)) if(!strncmp(obj->getNameInDocument(),skip,6)) continue; 
+        
+        auto sv = readAttachmentSupport(obj);
+        if (!sv.prop || !sv.target) continue;
+
+        App::DocumentObject* oldSup = sv.target;
+        if (!oldSup) continue;
+ 
+        App::DatumElement* oldSupDatum = nullptr;
+            
+        if (auto* oldSupOrigin = dynamic_cast<App::Origin*>(oldSup)) {
+             const std::vector<std::string>& subs = sv.subs;   // may be empty
+             if (!subs.empty()) {
+		 std::map<std::string,App::DocumentObject*> m;
+                 for (auto* s : oldSupOrigin->baseObjects()) m[s->getNameInDocument()]=s;
+		 std::string sname=subs.front();
+		 sname.erase (sname.find_last_not_of('.') + 1, std::string::npos);
+		 if(m.find(sname)!=m.end()) oldSupDatum = static_cast<App::DatumElement*>(m[sname]);
+             }
+        }
+        if (!oldSupDatum)
+            continue;
+
+        // Counterpart plane under this Part's origin
+        auto itDatum = partOriginDatum.find(oldSupDatum->getNameInDocument());
+        if (itDatum == partOriginDatum.end()) continue;
+
+        const char* role = oldSupDatum->Role.getValue();
+        if (!role) continue;
+        App::DocumentObject* newTargetObj = partOrigin;   // your Part_Origin
+        std::vector<std::string> newSubs;
+        newSubs.emplace_back(role);                      
+
+        auto* offProp = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("AttachmentOffset"));
+        Base::Placement A = offProp ? offProp->getValue() : Base::Placement();
+        Base::Placement g_old = getGlobal(oldSupDatum);
+        Base::Placement g_new = newSubs.empty()
+            ? getGlobal(newTargetObj)
+            : getGlobal(getDatumByRole(partOrigin, role));
+
+        Base::Placement A_prime = g_new.inverse() * g_old * A;
+
+        writeAttachmentSupport(obj, newTargetObj, newSubs);
+        if (offProp) offProp->setValue(A_prime);
+            obj->touch();
+
+    }
+
+}
+
+static void relinkTopLevelObjOfTypeKeepWorld(App::Document* doc, App::Origin* canonical, Base::Type objType)
+{
+   // Helper to get global placement for any object we may target here
+        auto getGlobal = [&](App::DocumentObject* obj) -> Base::Placement {
+            if (auto* gf = dynamic_cast<App::GeoFeature*>(obj))
+                return globalOf(gf, containerCS);   // your existing helper
+            // Top-level canonical origin has identity in world; if not GeoFeature, fallback to identity
+            return Base::Placement();
+    };
+
+    // Relink support of each obj of type whose *owner body* is under this Part
+    std::vector<App::DocumentObject*> objList = doc->getObjectsOfType(objType);
+    for (auto* obj : objList) {
+        auto* body = PartDesign::Body::findBodyOf(obj);
+        if (!body || App::Part::getPartOfObject(obj)) continue; // only top-level bodies
+
+	//don't relink support of removed Body Origin
+	Base::Type lcsType = Base::Type::fromName("App::LocalCoordinateSystem");
+	const char *skip="Origin";
+	if(obj->isDerivedFrom(lcsType)) if(!strncmp(obj->getNameInDocument(),skip,6)) continue; 
+
+        auto sv = readAttachmentSupport(obj);
+        if (!sv.prop || !sv.target) continue;
+
+        App::DocumentObject* oldSup = sv.target;
+        if (!oldSup) continue;
+        if (oldSup == canonical) continue;
+
+        App::DatumElement* oldSupDatum = nullptr;
+        if (auto* oldSupOrigin = dynamic_cast<App::Origin*>(oldSup)) {
+             const std::vector<std::string>& subs = sv.subs;   // may be empty
+             if (!subs.empty()) {
+		 std::map<std::string,App::DocumentObject*> m;
+                 for (auto* s : oldSupOrigin->baseObjects()) m[s->getNameInDocument()]=s;
+		 std::string sname=subs.front();
+		 sname.erase (sname.find_last_not_of('.') + 1, std::string::npos);
+		 if(m.find(sname)!=m.end()) oldSupDatum = static_cast<App::DatumElement*>(m[sname]);
+             }
+        }
+        if (!oldSupDatum)
+            continue;
+
+        // Counterpart under canonical
+
+        // --- Always attach to Origin + subelement (no plane-object fast path) ---
+
+        const char* role = oldSupDatum->Role.getValue();
+        if (!role) continue;
+        std::vector<std::string> newSubs;
+        newSubs.emplace_back(role);
+
+
+        // Preserve world: A' = G_new^{-1} · G_old · A
+        auto* offProp = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("AttachmentOffset"));
+        Base::Placement A = offProp ? offProp->getValue() : Base::Placement();
+        Base::Placement g_old = getGlobal(oldSupDatum);
+        Base::Placement g_new = getGlobal(getDatumByRole(canonical, role)); // frame of the subelement
+        
+        Base::Placement A_prime = g_new.inverse() * g_old * A;
+        
+        // Write support + offset
+        writeAttachmentSupport(obj, canonical, newSubs);
+        if (offProp) offProp->setValue(A_prime);
+        obj->touch();
+    }
+}
 
 // For each App::Part in the document, relink supports of sketches that live in Bodies under that Part
 // from any *origin feature* that is NOT the Part's own origin, to the matching plane of the Part's Origin,
@@ -472,64 +660,14 @@ static void relinkInPartSketchesKeepWorld(
         auto* partOrigin = part->getOrigin();
         if (!partOrigin) continue;
 
-        // Map of the Part origin's planes by base label, and their globals
-       std::set<std::string> partOriginFeatures;
-       for (auto* ch : partOrigin->baseObjects()) partOriginFeatures.insert(ch->getNameInDocument());
-
         // Relink each sketch whose *owner body* is under this Part
         auto sketchType = Base::Type::fromName("Sketcher::SketchObject");
-        std::vector<App::DocumentObject*> sketches = doc->getObjectsOfType(sketchType);
-        for (auto* sk : sketches) {
-            auto* body = PartDesign::Body::findBodyOf(sk);
-            if (!body) continue;
-            if (App::Part::getPartOfObject(body) != part) continue; // only bodies under this Part
-
-            auto sv = readSketchSupport(sk);
-            if (!sv.prop || !sv.target) continue;
-
-            App::DocumentObject* tgt = sv.target;
-            if (!tgt) continue;
-
-
-            // Resolve actual old plane + base label for both forms
-            App::DocumentObject* oldPlane = nullptr;
-            
-            if (auto* tgtOrigin = dynamic_cast<App::Origin*>(tgt)) {
-                const std::vector<std::string>& subs = sv.subs;   // may be empty
-                if (!subs.empty() && tgtOrigin != partOrigin) {
-                    // 1) Fast path: try exact document object by subname
-                    oldPlane = sk->getDocument()->getObject(subs.front().c_str());
-                }
-            }
-            
-            if (!oldPlane)
-                continue;
-
-            // Counterpart plane under this Part's origin
-            auto itPlane = partOriginFeatures.find(oldPlane->getNameInDocument());
-            if (itPlane == partOriginFeatures.end()) continue;
-
-            // using role of oldPlane
-            const char* role = planeRoleOf(oldPlane);
-            if (!role) continue;
-            App::DocumentObject* newTargetObj = partOrigin;   // your Part_Origin
-            std::vector<std::string> newSubs;
-            newSubs.emplace_back(role);                      // {"XY_Plane"} | {"XZ_Plane"} | {"YZ_Plane"}
-        
-            auto* offProp = dynamic_cast<App::PropertyPlacement*>(sk->getPropertyByName("AttachmentOffset"));
-            Base::Placement A = offProp ? offProp->getValue() : Base::Placement();
-            Base::Placement g_old = getGlobal(oldPlane);
-            Base::Placement g_new = newSubs.empty()
-               ? getGlobal(newTargetObj)
-               : getGlobal(getPlaneByRole(partOrigin, role));
-
-            Base::Placement A_prime = g_new.inverse() * g_old * A;
-
-            writeSketchSupportPlane(sk, newTargetObj, newSubs);
-            if (offProp) offProp->setValue(A_prime);
-            sk->touch();
-        }
-
+        relinkInPartObjOfTypeKeepWorld(doc,part,sketchType);
+    
+        // Relink each LCS whose *owner body* is under this Part
+        Base::Type lcsType = Base::Type::fromName("App::LocalCoordinateSystem");
+        relinkInPartObjOfTypeKeepWorld(doc,part,lcsType);
+    
         // ---- Cleanup *body-local* legacy origins inside Bodies, and any extra origins under this Part ----
         {
             // A) body-local origins
@@ -552,11 +690,8 @@ static void relinkInPartSketchesKeepWorld(
                 }
             }
         }
-
-
     }
 }
-
 
 
 static void relinkTopLevelSketchesKeepWorld(
@@ -566,84 +701,13 @@ static void relinkTopLevelSketchesKeepWorld(
 {
     if (!doc || !canonical) return;
 
-    // 2) Walk sketches in *top-level* Bodies and relink if owner != canonical
+    // Relink support of sketches whose *owner body* is a top level body
     auto sketchType = Base::Type::fromName("Sketcher::SketchObject");
-    std::vector<App::DocumentObject*> sketches = doc->getObjectsOfType(sketchType);
+    relinkTopLevelObjOfTypeKeepWorld(doc,canonical,sketchType);
 
-    for (auto* sk : sketches) {
-        auto* body = PartDesign::Body::findBodyOf(sk);
-        if (!body || App::Part::getPartOfObject(body)) continue; // only top-level bodies
-
-        auto sv = readSketchSupport(sk);
-        if (!sv.prop || !sv.target) continue;
-
-        App::DocumentObject* tgt = sv.target;
-
-        if (!tgt) continue;
-
-
-        App::DocumentObject* oldPlane = nullptr;
-        App::Origin*         oldOwner = nullptr;
-        
-        if (auto* tgtOrigin = dynamic_cast<App::Origin*>(tgt)) {
-            if (App::Part::getPartOfObject(tgtOrigin))                 // not a top-level origin
-                continue;
-        
-            const std::vector<std::string>& subs = sv.subs;            // may be empty
-            if (subs.empty())
-                continue;
-        
-            // 1) Fast path: sub name is usually the child's document name
-            oldPlane = sk->getDocument()->getObject(subs.front().c_str());        
-            if (!oldPlane)
-                continue;
-        
-            oldOwner = tgtOrigin;
-        
-        }
-        // Not origin-based support
-        else {
-            continue;
-        }
-
-        // Already on canonical origin? nothing to do
-        if (oldOwner == canonical) continue;
-
-        // Counterpart under canonical
-
-        // Helper to get global placement for any object we may target here
-        auto getGlobal = [&](App::DocumentObject* obj) -> Base::Placement {
-            if (auto* gf = dynamic_cast<App::GeoFeature*>(obj))
-                return globalOf(gf, containerCS);   // your existing helper
-            // Top-level canonical origin has identity in world; if not GeoFeature, fallback to identity
-            return Base::Placement();
-        };
-        
-        
-        // --- Always attach to Origin + subelement (no plane-object fast path) ---
-        
-        // using role of oldPlane
-        const char* role = planeRoleOf(oldPlane);
-        if (!role) continue;
-        App::DocumentObject* newTargetObj = canonical;   // your Global_Origin
-        std::vector<std::string> newSubs;
-        newSubs.emplace_back(role);                      // {"XY_Plane"} | {"XZ_Plane"} | {"YZ_Plane"}
-        
-        // Preserve world: A' = G_new^{-1} · G_old · A
-        auto* offProp = dynamic_cast<App::PropertyPlacement*>(
-            sk->getPropertyByName("AttachmentOffset"));
-        Base::Placement A = offProp ? offProp->getValue() : Base::Placement();
-        
-        Base::Placement g_old = getGlobal(oldPlane);
-        Base::Placement g_new = getGlobal(getPlaneByRole(canonical, role)); // frame of the subelement
-        
-        Base::Placement A_prime = g_new.inverse() * g_old * A;
-        
-        // Write support + offset
-        writeSketchSupportPlane(sk, newTargetObj, newSubs);
-        if (offProp) offProp->setValue(A_prime);
-        sk->touch();
-    }
+    // Relink support of LCS whose *owner body* a top level body
+    Base::Type lcsType = Base::Type::fromName("App::LocalCoordinateSystem");
+    relinkTopLevelObjOfTypeKeepWorld(doc,canonical,lcsType);
 
     // ---- Cleanup extra *top-level* origins and their children (not the canonical) ----
     {
