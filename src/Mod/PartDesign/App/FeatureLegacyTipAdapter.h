@@ -29,16 +29,17 @@
 
 namespace PartDesign {
 
-class PartDesignExport LegacyTipAdapter : public PartDesign::Feature
-{
+class PartDesignExport LegacyTipAdapter : public PartDesign::Feature {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::LegacyTipAdapter);
-
 public:
     LegacyTipAdapter();
 
+    App::PropertyLink BaseObject;
+
     App::DocumentObjectExecReturn* execute() override;
-    const char* getViewProviderName() const override;  // returns the name string only
+    const char* getViewProviderName() const override;
 };
+
 
 } // namespace PartDesign
 

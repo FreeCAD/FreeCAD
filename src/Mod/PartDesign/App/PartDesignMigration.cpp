@@ -132,31 +132,34 @@ static void collectSupportObjects(App::DocumentObject* binder,
 
 
 /// Create a PartDesign::SubShapeBinder inside the body, pointing to the current Tip,
-static bool wrapTipWithBinder(App::Document* doc, PartDesign::Body* body, const Base::Placement& P)
+static bool wrapWithLegacyTipAdapter(App::Document* doc, PartDesign::Body* body, App::DocumentObject* obj, const Base::Placement& P, bool setTip=false)
 {
     if (!doc || !body || P.isIdentity()) return false;
-    App::DocumentObject* tip = body->Tip.getValue();
-    if (!tip) return false;
-
-    // Build a safe name
-    std::string objName = std::string(body->getNameInDocument()) + "_LegacyTip";
 
     // after creating ssb (the SubShapeBinder)
     auto* ada = static_cast<PartDesign::LegacyTipAdapter*>(
         doc->addObject("PartDesign::LegacyTipAdapter", 
-		(std::string("Migrated(") + tip->getNameInDocument() + std::string(")")).c_str())
+		(std::string("Migrated(") + obj->getNameInDocument() + std::string(")")).c_str())
     );
 
     body->addObject(ada);
-    ada->Label.setValue((std::string("Migrated(") + tip->getNameInDocument() + std::string(")")).c_str());
-    ada->BaseFeature.setValue(tip);
+    ada->Label.setValue((std::string("Migrated(") + obj->getNameInDocument() + std::string(")")).c_str());
+
+    // Only set BaseFeature if it's a Part::Feature
+    if (obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+       ada->BaseFeature.setValue(obj);
+    else
+       ada->BaseObject.setValue(obj);  // LCS/Datum goes here
+
     ada->Placement.setValue(P);
     // Freeze relative behavior (if present) and assign the legacy transform
+/*
     if (auto* rel = dynamic_cast<App::PropertyBool*>(ada->getPropertyByName("Relative")))
         rel->setValue(false);
+*/
 
     doc->recompute(); // ensure adapter has a shape
-    body->Tip.setValue(ada);
+    if(setTip) body->Tip.setValue(ada);
 
     return true;
 }
@@ -190,12 +193,34 @@ static void migrateBodyTips(App::Document* doc,
                             const std::vector<PartDesign::Body*>& bodies,
                             const std::map<PartDesign::Body*, Placement>& legacyP)
 {
-    for (auto* b : bodies) {
-        const Placement& P = legacyP.at(b);
+    for (auto* body : bodies) {
+        const Placement& P = legacyP.at(body);
         if (P.isIdentity()) continue;
-        wrapTipWithBinder(doc, b, P);
+        App::DocumentObject* tip = body->Tip.getValue();
+        if (!tip) continue;
+        wrapWithLegacyTipAdapter(doc, body, tip, P, true);
     }
 }
+
+
+static void migrateBodyDatum(App::Document* doc,
+                            const std::map<PartDesign::Body*, Placement>& legacyP)
+{
+    std::vector<Base::Type> datumTypes;
+    datumTypes.push_back(Base::Type::fromName("App::LocalCoordinateSystem"));
+    datumTypes.push_back(Base::Type::fromName("App::Plane"));
+    datumTypes.push_back(Base::Type::fromName("App::Line"));
+    datumTypes.push_back(Base::Type::fromName("App::Point"));
+    std::vector<App::DocumentObject*> objList = doc->getObjectsOfType(datumTypes);
+    for (auto* obj : objList) {
+        auto* body = PartDesign::Body::findBodyOf(obj);
+        if (!body) continue;
+        const Placement& P = legacyP.at(body);
+        if (P.isIdentity()) continue;
+        wrapWithLegacyTipAdapter(doc, body, obj, P);
+    }
+}
+
 
 static void migrateInterBodyBinders(App::Document* doc,
                                     const std::map<PartDesign::Body*, Placement>& legacyP)
@@ -643,9 +668,9 @@ static void relinkInPartSketchesKeepWorld(
 	std::vector<Base::Type> datumTypes;
         datumTypes.push_back(Base::Type::fromName("Sketcher::SketchObject"));
         datumTypes.push_back(Base::Type::fromName("App::LocalCoordinateSystem"));
-        datumTypes.push_back(Base::Type::fromName("PartDesign::Plane"));
-        datumTypes.push_back(Base::Type::fromName("PartDesign::Line"));
-        datumTypes.push_back(Base::Type::fromName("PartDesign::Point"));
+        datumTypes.push_back(Base::Type::fromName("App::Plane"));
+        datumTypes.push_back(Base::Type::fromName("App::Line"));
+        datumTypes.push_back(Base::Type::fromName("App::Point"));
         relinkInPartObjOfTypeKeepWorld(doc,part,datumTypes);
     
         // ---- Cleanup *body-local* legacy origins inside Bodies, and any extra origins under this Part ----
@@ -684,9 +709,9 @@ static void relinkTopLevelSketchesKeepWorld(
     std::vector<Base::Type> datumTypes;
     datumTypes.push_back(Base::Type::fromName("Sketcher::SketchObject"));
     datumTypes.push_back(Base::Type::fromName("App::LocalCoordinateSystem"));
-    datumTypes.push_back(Base::Type::fromName("PartDesign::Plane"));
-    datumTypes.push_back(Base::Type::fromName("PartDesign::Line"));
-    datumTypes.push_back(Base::Type::fromName("PartDesign::Point"));
+    datumTypes.push_back(Base::Type::fromName("App::Plane"));
+    datumTypes.push_back(Base::Type::fromName("App::Line"));
+    datumTypes.push_back(Base::Type::fromName("App::Point"));
 
     relinkTopLevelObjOfTypeKeepWorld(doc,canonical,datumTypes);
 
@@ -774,6 +799,9 @@ void migrateLegacyBodyPlacements(App::Document* doc)
     if (anyLegacyBodyPlacement) {
         Base::Console().message("[PD-Migrate] wrap tips (push Body.Placement to Tip)\n");
         migrateBodyTips(doc, bodies, legacyP);
+
+        Base::Console().message("[PD-Migrate] wrap LCS and Datum (push Body.Placement to LCS and Datum)\n");
+        migrateBodyDatum(doc, legacyP);
 
         Base::Console().message("[PD-Migrate] adjust inter-body binders\n");
         migrateInterBodyBinders(doc, legacyP); // IMPORTANT: same container-root guard inside

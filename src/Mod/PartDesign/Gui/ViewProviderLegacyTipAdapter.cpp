@@ -44,81 +44,73 @@ ViewProviderLegacyTipAdapter::ViewProviderLegacyTipAdapter() = default;
 
 QIcon ViewProviderLegacyTipAdapter::getIcon() const
 {
-    // Mirror icon from BaseFeature if available
-    if (auto* obj = this->getObject()) {
-        if (auto* link = dynamic_cast<App::PropertyLink*>(obj->getPropertyByName("BaseFeature"))) {
-            if (auto* base = link->getValue()) {
-                if (auto* vp = Gui::Application::Instance
-                               ? Gui::Application::Instance->getViewProvider(base) : nullptr) {
-                    if (auto* vpd = dynamic_cast<Gui::ViewProvider*>(vp))
-                        return vpd->getIcon();
-                }
-            }
+    auto getIconOf = [](App::DocumentObject* obj) -> QIcon {
+        if (!obj || !Gui::Application::Instance) return {};
+        if (auto* vp = Gui::Application::Instance->getViewProvider(obj))
+            if (auto* vpd = dynamic_cast<Gui::ViewProvider*>(vp))
+                return vpd->getIcon();
+        return {};
+    };
+
+    if (auto* obj = getObject()) {
+        // Prefer BaseFeature (if set), else BaseObject
+        if (auto* pf = dynamic_cast<App::PropertyLink*>(obj->getPropertyByName("BaseFeature"))) {
+            if (auto ic = getIconOf(pf->getValue()); !ic.isNull()) return ic;
+        }
+        if (auto* po = dynamic_cast<App::PropertyLink*>(obj->getPropertyByName("BaseObject"))) {
+            if (auto ic = getIconOf(po->getValue()); !ic.isNull()) return ic;
         }
     }
-    // Fallback
-    QIcon ic = Gui::BitmapFactory().iconFromTheme("PartDesign_Feature");
-    if (!ic.isNull()) return ic;
-    return QIcon(QStringLiteral(":/icons/PartDesign_SubShapeBinder.svg"));
+
+    auto ic = Gui::BitmapFactory().iconFromTheme("PartDesign_Feature");
+    return ic.isNull() ? QIcon(QStringLiteral(":/icons/PartDesign_Feature.svg")) : ic;
 }
 
-
-std::vector<App::DocumentObject*>
-ViewProviderLegacyTipAdapter::claimChildren() const
+std::vector<App::DocumentObject*> ViewProviderLegacyTipAdapter::claimChildren() const
 {
     std::vector<App::DocumentObject*> kids;
-    if (auto* obj = this->getObject()) {
-        if (auto* link = dynamic_cast<App::PropertyLink*>(obj->getPropertyByName("BaseFeature"))) {
-            if (auto* base = link->getValue())
-                kids.push_back(base);
-        }
+    if (auto* o = getObject()) {
+        if (auto* pf = dynamic_cast<App::PropertyLink*>(o->getPropertyByName("BaseFeature")))
+            if (auto* v = pf->getValue()) kids.push_back(v);
+        if (auto* po = dynamic_cast<App::PropertyLink*>(o->getPropertyByName("BaseObject")))
+            if (auto* v = po->getValue()) kids.push_back(v);
     }
     return kids;
 }
 
-void ViewProviderLegacyTipAdapter::attach(App::DocumentObject* obj)
+
+void ViewProviderLegacyTipAdapter::attach(App::DocumentObject* o)
 {
-    PartDesignGui::ViewProvider::attach(obj);
+    PartDesignGui::ViewProvider::attach(o);
 
-    // Hide BaseFeature immediately (tree+3D) if it already exists
-    if (!obj || !Gui::Application::Instance) return;
-    if (auto* link = dynamic_cast<App::PropertyLink*>(obj->getPropertyByName("BaseFeature"))) {
-        if (auto* base = link->getValue()) {
-            if (auto* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                    Gui::Application::Instance->getViewProvider(base))) {
-                vp->hide();
-                if (auto* vis = dynamic_cast<App::PropertyBool*>(vp->getPropertyByName("Visibility")))
-                    vis->setValue(false);
-            }
+    auto hideChild = [](App::DocumentObject* ch) {
+        if (!ch || !Gui::Application::Instance) return;
+        if (auto* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
+                Gui::Application::Instance->getViewProvider(ch))) {
+            vp->hide();
+            if (auto* vis = dynamic_cast<App::PropertyBool*>(vp->getPropertyByName("Visibility")))
+                vis->setValue(false);
         }
-    }
-}
+    };
 
+    if (!o) return;
+    if (auto* pf = dynamic_cast<App::PropertyLink*>(o->getPropertyByName("BaseFeature")))
+        hideChild(pf->getValue());
+    if (auto* po = dynamic_cast<App::PropertyLink*>(o->getPropertyByName("BaseObject")))
+        hideChild(po->getValue());
+}
 
 void ViewProviderLegacyTipAdapter::onChanged(const App::Property* prop)
 {
-    // Keep default PD behavior: when this object becomes visible, PD hides other PD::Feature siblings
     PartDesignGui::ViewProvider::onChanged(prop);
     if (!prop) return;
 
-    // If our own Visibility flips ON or BaseFeature changes, ensure the BaseFeature VP is hidden
     const bool becameVisible = (prop == &Visibility && Visibility.getValue());
-    const bool baseChanged   = (std::strcmp(prop->getName(), "BaseFeature") == 0);
+    const bool baseChanged   = std::strcmp(prop->getName(), "BaseFeature") == 0
+                            || std::strcmp(prop->getName(), "BaseObject")  == 0;
+
     if (!becameVisible && !baseChanged) return;
 
-    if (!Gui::Application::Instance) return;
-    if (auto* obj = this->getObject()) {
-        if (auto* link = dynamic_cast<App::PropertyLink*>(obj->getPropertyByName("BaseFeature"))) {
-            if (auto* base = link->getValue()) {
-                if (auto* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                        Gui::Application::Instance->getViewProvider(base))) {
-                    vp->hide();
-                    if (auto* vis = dynamic_cast<App::PropertyBool*>(vp->getPropertyByName("Visibility")))
-                        vis->setValue(false);
-                }
-            }
-        }
-    }
+    attach(getObject()); // reuse the same hide logic
 }
-
 
