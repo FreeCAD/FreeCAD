@@ -32,6 +32,11 @@
 #include "FemResultObject.h"
 #include "VTKExtensions/vtkFemFrameSourceAlgorithm.h"
 
+#if VTK_VERSION_NUMBER < VTK_VERSION_CHECK(9, 3, 0)
+#include "VTKExtensions/vtkCleanUnstructuredGrid.h"
+#else
+#include <vtkCleanUnstructuredGrid.h>
+#endif
 #include <vtkSmartPointer.h>
 
 
@@ -47,7 +52,7 @@ public:
     FemPostPipeline();
 
     App::PropertyEnumeration Frame;
-
+    App::PropertyBool MergeDuplicate;
 
     virtual vtkDataSet* getDataSet() override;
     Fem::FemPostFunctionProvider* getFunctionProvider();
@@ -108,6 +113,7 @@ private:
     App::Enumeration m_frameEnum;
 
     vtkSmartPointer<vtkFemFrameSourceAlgorithm> m_source_algorithm;
+    vtkSmartPointer<vtkCleanUnstructuredGrid> m_clean_filter;
 
     bool m_block_property = false;
     bool m_data_updated = false;
