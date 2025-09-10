@@ -63,6 +63,9 @@ void ViewProviderFemPostPipeline::updateData(const App::Property* prop)
         updateFunctionSize();
         updateColorBars();
     }
+    else if (prop == &pipeline->MergeDuplicate) {
+        updateVtk();
+    }
 }
 
 void ViewProviderFemPostPipeline::updateFunctionSize()
