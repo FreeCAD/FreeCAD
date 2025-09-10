@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="49"/>
       <source>Creates a feature area from the selected objects</source>
-      <translation type="unfinished">Creates a feature area from the selected objects</translation>
+      <translation>ქმნის თვისებების ადგილს მონიშნული ობიექტებისგან</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="239"/>
       <source>Creates a compound from the selected toolpaths</source>
-      <translation type="unfinished">Creates a compound from the selected toolpaths</translation>
+      <translation>შექმნის გადაბმის მონიშნული ხელსაწყოს მოძრაობის ტრაექტორიებიდან</translation>
     </message>
   </context>
   <context>
@@ -171,7 +171,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="38"/>
       <source>Hint about the current post processing configuration</source>
-      <translation type="unfinished">Hint about the current post processing configuration</translation>
+      <translation>მინიშნება მიმდინარე პოსტპროცესინგის კონფიგურაციის შესახებ</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="48"/>
@@ -411,7 +411,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="72"/>
       <source>Deletes the selected tool bits from the library</source>
-      <translation type="unfinished">Deletes the selected tool bits from the library</translation>
+      <translation>წაშლის მონიშნულ ხელსაწყოს მჭრელ იარაღებს ბიბლიოთეკიდან</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="75"/>
@@ -699,7 +699,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="36"/>
       <source>List of operations with base geometry in the current job</source>
-      <translation type="unfinished">List of operations with base geometry in the current job</translation>
+      <translation>მიმდინარე ამოცანაში საბაზისო გეომეტრიის შემცველი ოპერაციების სია</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
@@ -998,7 +998,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/PageOpVcarveEdit.ui" line="57"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="53"/>
       <source>Edit Tool Controller</source>
-      <translation type="unfinished">Edit Tool Controller</translation>
+      <translation>ხელსაწყოს კონტროლერის ჩასწორება</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="71"/>
@@ -1230,7 +1230,7 @@ This option changes that behavior to cut each discrete area to its full depth be
     <message>
       <location filename="../panels/PageOpTappingEdit.ui" line="50"/>
       <source>2x tap tip</source>
-      <translation type="unfinished">2x tap tip</translation>
+      <translation>2x შიგხრახნიანიბუნიკი</translation>
     </message>
     <message>
       <location filename="../panels/PageOpTappingEdit.ui" line="89"/>
@@ -1707,7 +1707,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="42"/>
       <source> The tool and its settings to be used for this operation</source>
-      <translation type="unfinished"> The tool and its settings to be used for this operation</translation>
+      <translation> ხელსაწყო და ამ ოპერაციაში გამოყენებული მისი პარამეტრები</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="78"/>
@@ -1857,7 +1857,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSurfaceEdit.ui" line="77"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="98"/>
       <source>Select the overall boundary for the operation</source>
-      <translation type="unfinished">Select the overall boundary for the operation</translation>
+      <translation>აირჩიეთ ჯამური საზღვარი ოპერაციისთვის</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="84"/>
@@ -1930,7 +1930,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSurfaceEdit.ui" line="212"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="156"/>
       <source>Set the Z-axis depth offset from the target surface</source>
-      <translation type="unfinished">Set the Z-axis depth offset from the target surface</translation>
+      <translation>სამიზნე ზედაპირიდან Z-ღერძის სიღრმის წანაცვლების დაყენება</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="222"/>
@@ -2183,7 +2183,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="36"/>
       <source>The tool and its settings to be used for this operation.</source>
-      <translation type="unfinished">The tool and its settings to be used for this operation.</translation>
+      <translation>ხელსაწყო და ამ ოპერაციაში გამოყენებული მისი პარამეტრები.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="155"/>
@@ -2383,7 +2383,7 @@ If the specified height is 0 the dressup will use half the height of the part. S
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="65"/>
       <source>Plunge angle for ascent and descent of holding tag</source>
-      <translation type="unfinished">Plunge angle for ascent and descent of holding tag</translation>
+      <translation>ჩაძირვის კუთხე სამაგრის აწევისა და დაწევისთვის</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="87"/>
@@ -2629,7 +2629,7 @@ See the file save policy below on how to deal with name conflicts.</source>
     <message>
       <location filename="../preferences/PathJob.ui" line="312"/>
       <source>Select one of the post processors as the default</source>
-      <translation type="unfinished">Select one of the post processors as the default</translation>
+      <translation>აირჩიეთ ნაგულისხმევი პოსტპროცესორი</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="325"/>
@@ -3188,7 +3188,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="61"/>
       <source>Plunge angle for ascent and descent of holding tag</source>
-      <translation type="unfinished">Plunge angle for ascent and descent of holding tag</translation>
+      <translation>ჩაძირვის კუთხე სამაგრის აწევისა და დაწევისთვის</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="126"/>
@@ -3323,7 +3323,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="115"/>
       <source>Run the simulation until it ends without an animation</source>
-      <translation type="unfinished">Run the simulation until it ends without an animation</translation>
+      <translation>სიმულაციის გაშვება მანამდე, სანამ ის ანიმაციის გარეშე არ დასრულდება</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="180"/>
@@ -4238,6 +4238,13 @@ Default: 3 mm</source>
       <translation>კუთხის გარშემო შემოჭრები, რომლებსაც ზღუდარი არ აქვთ</translation>
     </message>
     <message>
+      <location filename="../../../Path/Dressup/DogboneII.py" line="265"/>
+      <source>Create bones only for outer closed profiles
+Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset pattern</source>
+      <translation type="unfinished">Create bones only for outer closed profiles
+Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset pattern</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Dressup/Tags.py" line="910"/>
       <source>Width of tags.</source>
       <translation>ჭდეების სიგანე.</translation>
@@ -4285,7 +4292,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="42"/>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="58"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="60"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="70"/>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="169"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="62"/>
       <source>The base toolpath to modify</source>
@@ -4307,60 +4314,83 @@ Default: 3 mm</source>
       <translation>კუთხის მოქმედებისას აწევის სიმაღლე</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="66"/>
-      <source>Calculate roll-on to toolpath</source>
-      <translation>ხელსაწყოს მოძრაობის ტრაექტორიამდე გადასვლის გამოთვლა</translation>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="76"/>
+      <source>Modify lead in to toolpath</source>
+      <translation type="unfinished">Modify lead in to toolpath</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="72"/>
-      <source>Calculate roll-off from toolpath</source>
-      <translation>ხელსაწყოს მოძრაობის ტრაექტორიიდან გადახვევის გამოთვლა</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="78"/>
-      <source>Keep the tool down in toolpath</source>
-      <translation>ხელსაწყოს მოძრაობის ტრაექტორიაში ხელსაწყოს დაბლა შეკავება</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="84"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="208"/>
-      <source>Length or radius of the approach</source>
-      <translation>მიდგომის რადიუსის სიგრძე</translation>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="82"/>
+      <source>Modify lead out from toolpath</source>
+      <translation type="unfinished">Modify lead out from toolpath</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="90"/>
-      <source>Length or radius of the exit</source>
-      <translation>გამოსვლის რადიუსის სიგრძე</translation>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="350"/>
+      <source>Set distance which will attempts to avoid unnecessary retractions</source>
+      <translation type="unfinished">Set distance which will attempts to avoid unnecessary retractions</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="96"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="186"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="231"/>
       <source>The style of motion into the toolpath</source>
       <translation>ხელსაწყოს მოძრაობის ტრაექტორიაში მოძრაობის სტილი</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="103"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="197"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="243"/>
       <source>The style of motion out of the toolpath</source>
       <translation>ხელსაწყოს მოძრაობის ტრაექტორიის გარეთ მოძრაობის სტილი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="110"/>
-      <source>Extends lead in distance</source>
-      <translation>ადიდებს შეყვანის მანძილს</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="116"/>
-      <source>Extends lead out distance</source>
-      <translation>ადიდებს გამოყვანის მანძილს</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="128"/>
-      <source>Apply Lead in/out to layers within an operation</source>
-      <translation type="unfinished">Apply Lead in/out to layers within an operation</translation>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="254"/>
+      <source>Angle of the Lead-In (1..90)</source>
+      <translation type="unfinished">Angle of the Lead-In (1..90)</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="122"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="262"/>
+      <source>Angle of the Lead-Out (1..90)</source>
+      <translation type="unfinished">Angle of the Lead-Out (1..90)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="128"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="289"/>
+      <source>Determine length of the Lead-In</source>
+      <translation type="unfinished">Determine length of the Lead-In</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="134"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="299"/>
+      <source>Determine length of the Lead-Out</source>
+      <translation type="unfinished">Determine length of the Lead-Out</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="140"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="319"/>
+      <source>Invert Lead-In direction</source>
+      <translation type="unfinished">Invert Lead-In direction</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="146"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="326"/>
+      <source>Invert Lead-Out direction</source>
+      <translation type="unfinished">Invert Lead-Out direction</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="152"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="333"/>
+      <source>Move start point</source>
+      <translation type="unfinished">Move start point</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="158"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="340"/>
+      <source>Move end point</source>
+      <translation type="unfinished">Move end point</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="110"/>
       <source>Perform plunges with G0</source>
       <translation>ჩაძირვის G0-ით შესრულება</translation>
     </message>
@@ -4897,7 +4927,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="164"/>
-      <location filename="../../../Path/Op/Drilling.py" line="242"/>
+      <location filename="../../../Path/Op/Drilling.py" line="241"/>
       <source>Controls tool retract height between holes in same op, Default=G98: safety height
 Use property KeepToolDown to change this</source>
       <translation type="unfinished">Controls tool retract height between holes in same op, Default=G98: safety height
@@ -4915,7 +4945,7 @@ Use property KeepToolDown to change this</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="188"/>
-      <location filename="../../../Path/Op/Drilling.py" line="231"/>
+      <location filename="../../../Path/Op/Drilling.py" line="230"/>
       <location filename="../../../Path/Op/Gui/Drilling.py" line="150"/>
       <source>Apply G99 retraction: only retract to RetractHeight between holes in this operation</source>
       <translation type="unfinished">Apply G99 retraction: only retract to RetractHeight between holes in this operation</translation>
@@ -5294,7 +5324,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/Surface.py" line="255"/>
       <location filename="../../../Path/Op/Waterline.py" line="283"/>
       <source>Cut internal feature areas within a larger selected face.</source>
-      <translation type="unfinished">Cut internal feature areas within a larger selected face.</translation>
+      <translation>შიდა თვისების ფართობების ამოჭრა უფრო დიდ მონიშნულ ზედაპირში.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="263"/>
@@ -5516,18 +5546,18 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Dressup/Array.py" line="65"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="70"/>
       <source>The number of copies in X-direction in linear pattern</source>
-      <translation type="unfinished">The number of copies in X-direction in linear pattern</translation>
+      <translation>ასლების რაოდენობა X მიმართულებით ხაზოვანი შაბლონით</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="73"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="78"/>
       <source>The number of copies in Y-direction in linear pattern</source>
-      <translation type="unfinished">The number of copies in Y-direction in linear pattern</translation>
+      <translation>ასლების რაოდენობა Y მიმართულებით ხაზოვანი შაბლონით</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="102"/>
       <source>Make copies in X-direction before Y in linear 2D pattern</source>
-      <translation type="unfinished">Make copies in X-direction before Y in linear 2D pattern</translation>
+      <translation>ასლების Y-მდე X მიმართულებით შექმნა წრფივ 2D შაბლონში</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="108"/>
@@ -5557,7 +5587,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Dressup/Array.py" line="57"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="62"/>
       <source>The spacing between the array copies in linear pattern</source>
-      <translation type="unfinished">The spacing between the array copies in linear pattern</translation>
+      <translation>მასივის ასლებს შორის დაშორება წრფივ შაბლონში</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="79"/>
@@ -5569,7 +5599,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Dressup/Array.py" line="87"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="92"/>
       <source>The number of copies in linear 1D and polar pattern</source>
-      <translation type="unfinished">The number of copies in linear 1D and polar pattern</translation>
+      <translation>ასლების რაოდენობა წრფივ 1D და პოლარულ შაბლონში</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="93"/>
@@ -5709,7 +5739,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Stop.py" line="40"/>
       <source>Add an optional or mandatory stop to the program</source>
-      <translation type="unfinished">Add an optional or mandatory stop to the program</translation>
+      <translation>პროგრამაში აუცილებელი ან არასავალდებულო გაჩერების დამატება</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/mixins/cutting.py" line="38"/>
@@ -6320,7 +6350,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="183"/>
       <source>Total invalid lines in Custom Text G-code: %s</source>
-      <translation type="unfinished">Total invalid lines in Custom Text G-code: %s</translation>
+      <translation>არასწორი ხაზების ჯამი მორგებული ტექსტის G-code-ში: %s</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="192"/>
@@ -6330,7 +6360,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="209"/>
       <source>Total invalid lines in Custom File G-code: %s</source>
-      <translation type="unfinished">Total invalid lines in Custom File G-code: %s</translation>
+      <translation>არასწორი ხაზების ჯამი მორგებული ფაილის G-code-ში: %s</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="215"/>
@@ -6376,7 +6406,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../PathCommands.py" line="63"/>
       <source>Completes the selection of edges that form a loop</source>
-      <translation type="unfinished">Completes the selection of edges that form a loop</translation>
+      <translation>დაასრულებს მონიშნულ წიბოებს, რომლებიც მარყუჟს ქმნიან</translation>
     </message>
     <message>
       <location filename="../../../PathCommands.py" line="131"/>
@@ -6392,139 +6422,161 @@ Aborting op creation</source>
   <context>
     <name>CAM_DressupLeadInOut</name>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="28"/>
-      <source>Enable lead-in move</source>
-      <translation>შეყვანის გადაადგილების ჩართვა</translation>
-    </message>
-    <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="31"/>
-      <source>Enable lead-in</source>
-      <translation>შეყვანის ჩართვა</translation>
-    </message>
-    <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="38"/>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="112"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="37"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="155"/>
       <source>Style</source>
       <translation>სტილი</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="61"/>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="135"/>
-      <source>Length/radius</source>
-      <translation>სიგრძე/რადიუსი</translation>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="26"/>
+      <source>Lead In</source>
+      <translation type="unfinished">Lead In</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="68"/>
-      <source>Length or radius of the lead-in</source>
-      <translation>შეყვანის სიგრძე ან რადიუსი</translation>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="60"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="178"/>
+      <source>Radius/length (% tool radius)</source>
+      <translation type="unfinished">Radius/length (% tool radius)</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="88"/>
-      <source>Extends the lead-in distance</source>
-      <translation>ზრდის შეყვანის მანძილს</translation>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="67"/>
+      <source>Length of the Lead-in, as a percentage of tool radius</source>
+      <translation type="unfinished">Length of the Lead-in, as a percentage of tool radius</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="102"/>
-      <source>Enable lead-out move</source>
-      <translation>გამოყვანის გადაადგილების ჩართვა</translation>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="89"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="207"/>
+      <source>Angle</source>
+      <translation>კუთხე</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="105"/>
-      <source>Enable lead out</source>
-      <translation>გამოყვანის ჩართვა</translation>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="96"/>
+      <source>Angular extent of the lead in arc (degrees)</source>
+      <translation type="unfinished">Angular extent of the lead in arc (degrees)</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="142"/>
-      <source>Length or radius of the lead-out</source>
-      <translation>გამოყვანის რადიუსის სიგრძე</translation>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="112"/>
+      <source>Offset Entrance Location</source>
+      <translation type="unfinished">Offset Entrance Location</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="162"/>
-      <source>Extends the lead-out distance</source>
-      <translation>ზრდის გამოყვანის მანძილს</translation>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="132"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="250"/>
+      <source>Invert Direction</source>
+      <translation type="unfinished">Invert Direction</translation>
+    </message>
+    <message>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="144"/>
+      <source>Lead Out</source>
+      <translation type="unfinished">Lead Out</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="185"/>
+      <source>Length of the Lead-out, as a percentage of tool radius</source>
+      <translation type="unfinished">Length of the Lead-out, as a percentage of tool radius</translation>
+    </message>
+    <message>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="214"/>
+      <source>Angular extent of the lead out arc (degrees)</source>
+      <translation type="unfinished">Angular extent of the lead out arc (degrees)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="230"/>
+      <source>Offset Exit Location</source>
+      <translation type="unfinished">Offset Exit Location</translation>
+    </message>
+    <message>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="273"/>
       <source>Rapid plunge</source>
       <translation>სწრაფი ჩაძირვა</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="192"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="280"/>
       <source>Apply lead-in/out on all layers</source>
       <translation>შეყვანა/გამოყვანის გადატარება ყველა ფენაზე</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="195"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="283"/>
       <source>Include layers</source>
       <translation>ფენების ჩათვლით</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="205"/>
-      <source>Keep tool down</source>
-      <translation>ხელსაწყოს დაბლა დაკავება</translation>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="290"/>
+      <source>Retract Threshold</source>
+      <translation type="unfinished">Retract Threshold</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="81"/>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="155"/>
-      <source>Extend</source>
-      <translation>გაფართოება</translation>
-    </message>
-    <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="182"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="270"/>
       <source>Plunge at rapid speed</source>
       <translation>სწრაფი ჩაძირვა</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="202"/>
-      <source>Keep the tool down in the path</source>
-      <translation>ხელსაწყოს ტრაექტორიაში დაბლა შეკავება</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="51"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="176"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="50"/>
       <source>Arc</source>
       <translation>რკალი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="52"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="177"/>
-      <source>Tangent</source>
-      <translation>მხები</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="53"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="178"/>
-      <source>Perpendicular</source>
-      <translation>პერპენდიკულარული</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="161"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="167"/>
-      <source>Length/radius positive not Null</source>
-      <translation>სიგრძე/რადიუსი ნულზე მეტი უნდა იყოს</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="489"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1191"/>
       <source>Lead In/Out</source>
       <translation>შეყვანა/გამოყვანა</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="493"/>
-      <source>Creates a cutter radius compensation G41/G42 entry dressup object from a selected path</source>
-      <translation type="unfinished">Creates a cutter radius compensation G41/G42 entry dressup object from a selected path</translation>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="51"/>
+      <source>Line</source>
+      <translation>ხაზი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="506"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="53"/>
+      <source>Arc3d</source>
+      <translation type="unfinished">Arc3d</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="54"/>
+      <source>ArcZ</source>
+      <translation type="unfinished">ArcZ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="55"/>
+      <source>Helix</source>
+      <translation>სპირალები</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="56"/>
+      <source>Line3d</source>
+      <translation type="unfinished">Line3d</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="57"/>
+      <source>LineZ</source>
+      <translation type="unfinished">LineZ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="58"/>
+      <source>No Retract</source>
+      <translation type="unfinished">No Retract</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="59"/>
+      <source>Vertical</source>
+      <translation>ვერტიკალურად</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1195"/>
+      <source>Creates entry and exit motions for a selected path</source>
+      <translation type="unfinished">Creates entry and exit motions for a selected path</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1208"/>
       <source>Select one toolpath object</source>
       <translation>აირჩიეთ ერთი ხელსაწყოს მოძრაობის ტრაექტორიის ობიექტი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="515"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1217"/>
       <source>Select a Profile object</source>
       <translation>აირჩიეთ პროფილი ობიექტი</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="511"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1213"/>
       <source>The selected object is not a toolpath</source>
       <translation>მონიშნული ობიექტი ხელსაწყოს მოძრაობის ტრაექტორია არაა</translation>
     </message>
@@ -6544,7 +6596,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary.py" line="263"/>
       <source>Creates a boundary dress-up from a selected toolpath</source>
-      <translation type="unfinished">Creates a boundary dress-up from a selected toolpath</translation>
+      <translation>შექმნის საზღვრის ზღუდარს მონიშნული ხელსაწყოს მოძრაობის ტრაექტორიიდან</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Boundary.py" line="278"/>
@@ -6582,7 +6634,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="553"/>
       <source>Creates a tag dress-up object from a selected toolpath</source>
-      <translation type="unfinished">Creates a tag dress-up object from a selected toolpath</translation>
+      <translation>შექმნის ჭდის ზღუდარის ობიექტს მონიშნული ხელსაწყოს მოძრაობის ტრაექტორიიდან</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="567"/>
@@ -7432,17 +7484,17 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="463"/>
       <source>Copy {0}…</source>
-      <translation type="unfinished">Copy {0}…</translation>
+      <translation>{0}-ის კოპირება…</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="464"/>
       <source>New tool controller…</source>
-      <translation type="unfinished">New tool controller…</translation>
+      <translation>ახალი ხელსაწყოს კონტროლერი…</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="509"/>
       <source>This tool controller is used by {0} other operations.</source>
-      <translation type="unfinished">This tool controller is used by {0} other operations.</translation>
+      <translation>ეს ხელსაწყოს კონტროლერი {0} სხვა ოპერაციის მიერ გამოიყენება.</translation>
     </message>
   </context>
   <context>
@@ -7639,7 +7691,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/drill.py" line="44"/>
       <source>{diameter} drill, {tip_angle} tip, {flutes}-flute</source>
-      <translation type="unfinished">{diameter} drill, {tip_angle} tip, {flutes}-flute</translation>
+      <translation>{diameter} ბურღი, {tip_angle} ბუნიკი, {flutes}-ჭრილი</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/endmill.py" line="46"/>
@@ -7649,17 +7701,17 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/fillet.py" line="46"/>
       <source>R{radius} fillet bit, {diameter} shank, {flutes}-flute</source>
-      <translation type="unfinished">R{radius} fillet bit, {diameter} shank, {flutes}-flute</translation>
+      <translation>R{radius} მომრგვალებული ნაზოლის ბიტი, {diameter} ბოლოვანა, {flutes}-ბურბუშელას გამოსასვლელი ღარაკი</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/probe.py" line="47"/>
       <source>{diameter} probe, {length} length, {shaft_diameter} shaft</source>
-      <translation type="unfinished">{diameter} probe, {length} length, {shaft_diameter} shaft</translation>
+      <translation>{diameter} ზონდი, {length} სიგრძე, {shaft_diameter} ლილვი</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/reamer.py" line="43"/>
       <source>{diameter} reamer, {cutting_edge_height} cutting edge</source>
-      <translation type="unfinished">{diameter} reamer, {cutting_edge_height} cutting edge</translation>
+      <translation>{diameter} საფართი, {cutting_edge_height} მჭრელი წიბო</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/slittingsaw.py" line="46"/>
@@ -7679,7 +7731,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/vbit.py" line="44"/>
       <source>{diameter} {cutting_edge_angle} v-bit, {flutes}-flute</source>
-      <translation type="unfinished">{diameter} {cutting_edge_angle} v-bit, {flutes}-flute</translation>
+      <translation>{diameter} {cutting_edge_angle} v-bit, {flutes}-ბურბუშელას გამოსასვლელი ღარაკი</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/serializers/camotics.py" line="62"/>
@@ -8469,7 +8521,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Op/Gui/Stop.py" line="111"/>
       <source>Adds an optional or mandatory stop to the program</source>
-      <translation type="unfinished">Adds an optional or mandatory stop to the program</translation>
+      <translation>ამატებს პროგრამაში აუცილებელ, ან არასავალდებულო გაჩერებას</translation>
     </message>
   </context>
   <context>
@@ -8516,7 +8568,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="130"/>
       <source>Forward</source>
-      <translation type="unfinished">Forward</translation>
+      <translation>წინ</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="131"/>
@@ -9260,27 +9312,27 @@ Aborting op creation</source>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="26"/>
       <source>Controller Name / Tool Number</source>
-      <translation type="unfinished">Controller Name / Tool Number</translation>
+      <translation>კონტროლერის სახელი / ხელსაწყოს ნომერი</translation>
     </message>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="64"/>
       <source>Horizontal feed</source>
-      <translation type="unfinished">Horizontal feed</translation>
+      <translation>ჰოტიზონტალური მიწოდება</translation>
     </message>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="93"/>
       <source>Vertical feed</source>
-      <translation type="unfinished">Vertical feed</translation>
+      <translation>ვერტიკალური მიწოდება</translation>
     </message>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="122"/>
       <source>Horizontal rapid</source>
-      <translation type="unfinished">Horizontal rapid</translation>
+      <translation>სწრაფი ჰორიზონტალური მიწოდება</translation>
     </message>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="151"/>
       <source>Vertical rapid</source>
-      <translation type="unfinished">Vertical rapid</translation>
+      <translation>ვერტიკალური სწრაფი მიწოდება</translation>
     </message>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="183"/>
@@ -9290,7 +9342,7 @@ Aborting op creation</source>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="196"/>
       <source>Forward</source>
-      <translation type="unfinished">Forward</translation>
+      <translation>წინ</translation>
     </message>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="201"/>
@@ -9303,12 +9355,12 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/library/ui/cmd.py" line="51"/>
       <source>Add toolbit…</source>
-      <translation type="unfinished">Add toolbit…</translation>
+      <translation>ხელსაწყოს დამატება…</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/cmd.py" line="54"/>
       <source>Opens the toolbit selection dialog</source>
-      <translation type="unfinished">Opens the toolbit selection dialog</translation>
+      <translation>გახსნის ხელსაწყოს არჩევნის დიალოგს</translation>
     </message>
   </context>
 </TS>

@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Tvärsnitt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Applies cross-sections to the mesh</source>
-      <translation type="unfinished">Applies cross-sections to the mesh</translation>
+      <translation>Tillämpar tvärsnitt på nätet</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="310"/>
       <source>Curve on Mesh</source>
-      <translation type="unfinished">Curve on Mesh</translation>
+      <translation>Kurva på nät</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="311"/>
       <source>Creates an approximated curve on top of a mesh object</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh object</translation>
+      <translation>Skapar en approximerad kurva ovanpå ett mesh-objekt</translation>
     </message>
   </context>
   <context>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Mesh From Shape</source>
-      <translation type="unfinished">Mesh From Shape</translation>
+      <translation>Nät från form</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="61"/>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="191"/>
       <source>Creates a section from a mesh and plane</source>
-      <translation type="unfinished">Creates a section from a mesh and plane</translation>
+      <translation>Skapar en sektion från ett nät och ett plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>Section</source>
-      <translation>Sektionering</translation>
+      <translation>Sektion</translation>
     </message>
   </context>
   <context>
@@ -109,12 +109,12 @@
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross Sections</source>
-      <translation type="unfinished">Cross Sections</translation>
+      <translation>Tvärsnitt</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding Plane</source>
-      <translation type="unfinished">Guiding Plane</translation>
+      <translation>Styrande flygplan</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -139,12 +139,12 @@
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
       <source>Distance</source>
-      <translation>Distans</translation>
+      <translation>Avstånd</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation>Sektionering</translation>
+      <translation>Sektioner</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
@@ -169,7 +169,7 @@
     <message>
       <location filename="../../CrossSections.cpp" line="384"/>
       <source>Failure</source>
-      <translation>Misslyckande</translation>
+      <translation>Fel</translation>
     </message>
   </context>
   <context>
@@ -182,7 +182,7 @@
     <message>
       <location filename="../../CurveOnMesh.cpp" line="364"/>
       <source>Close wire</source>
-      <translation>Stäng tråd</translation>
+      <translation>Stäng kabeln</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="366"/>
@@ -197,12 +197,12 @@
     <message>
       <location filename="../../CurveOnMesh.cpp" line="623"/>
       <source>Wrong mesh selected</source>
-      <translation type="unfinished">Wrong mesh selected</translation>
+      <translation>Fel nät valt</translation>
     </message>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="662"/>
       <source>No point was selected</source>
-      <translation type="unfinished">No point was selected</translation>
+      <translation>Ingen punkt valdes</translation>
     </message>
   </context>
   <context>
@@ -210,16 +210,16 @@
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="14"/>
       <source>Curve on Mesh</source>
-      <translation type="unfinished">Curve on Mesh</translation>
+      <translation>Kurva på nät</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="23"/>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
-      <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
+      <translation>Tryck på "Start" och välj sedan punkter på nätet; när tillräckligt många punkter har ställts in högerklickar du och väljer "Create". Upprepa denna process för att skapa fler splines. Stäng denna uppgiftspanel för att slutföra operationen.
 
-This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</translation>
+Det här kommandot fungerar bara med ett Mesh-objekt, inte med en vanlig yta eller ett ansikte. Om du vill konvertera ett objekt till ett mesh använder du verktygen i arbetsbänken Mesh.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -229,7 +229,7 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
       <source>Snap tolerance to vertices</source>
-      <translation>Snäpptolerans till hörnpunkter</translation>
+      <translation>Snap-tolerans för hörn</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="51"/>
@@ -239,7 +239,7 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="61"/>
       <source>Split threshold</source>
-      <translation>Delningströskel</translation>
+      <translation>Delad tröskel</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="87"/>
@@ -249,7 +249,7 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="96"/>
       <source>Tolerance to mesh</source>
-      <translation>Tolerans till nät</translation>
+      <translation>Tolerans mot maskor</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="122"/>
@@ -259,7 +259,7 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="136"/>
       <source>Maximum curve degree</source>
-      <translation>Maximal kurvvinkel</translation>
+      <translation>Maximal krökningsgrad</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="153"/>
@@ -307,7 +307,7 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../Tessellation.ui" line="112"/>
       <source>Apply face colors to mesh</source>
-      <translation>Applicera ytfärger till nät</translation>
+      <translation>Applicera ansiktsfärger på mesh</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="119"/>
@@ -321,7 +321,7 @@ denna funktion (t.ex. formatet OBJ).</translation>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
       <source>Define segments by face colors</source>
-      <translation>Definiera segment av ytfärger</translation>
+      <translation>Definiera segment med hjälp av ansiktsfärger</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="145"/>
@@ -336,29 +336,29 @@ denna funktion (t.ex. formatet OBJ).</translation>
     <message>
       <location filename="../../Tessellation.ui" line="20"/>
       <source>Meshing Options</source>
-      <translation type="unfinished">Meshing Options</translation>
+      <translation>Meshing-alternativ</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
       <source>Surface deviation</source>
-      <translation type="unfinished">Surface deviation</translation>
+      <translation>Avvikelse från ytan</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="67"/>
       <source>Angular deviation</source>
-      <translation type="unfinished">Angular deviation</translation>
+      <translation>Vinkelavvikelse</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="98"/>
       <source>The maximal linear deviation of a mesh segment will be the specified
 surface deviation multiplied by the length of the current mesh segment (edge)</source>
-      <translation type="unfinished">The maximal linear deviation of a mesh segment will be the specified
-surface deviation multiplied by the length of the current mesh segment (edge)</translation>
+      <translation>Den maximala linjära avvikelsen för ett nätsegment kommer att vara den angivna
+angivna ytavvikelsen multiplicerad med längden på det aktuella masksegmentet (kant)</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="156"/>
       <source>Maximum edge length</source>
-      <translation type="unfinished">Maximum edge length</translation>
+      <translation>Maximal kantlängd</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="162"/>
@@ -400,7 +400,7 @@ Det minsta värdet är 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="244"/>
       <source>Moderate</source>
-      <translation>Måttlig</translation>
+      <translation>Måttligt</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
@@ -420,17 +420,17 @@ Det minsta värdet är 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="269"/>
       <source>Mesh size grading</source>
-      <translation type="unfinished">Mesh size grading</translation>
+      <translation>Sortering av maskstorlek</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
       <source>Elements per edge</source>
-      <translation type="unfinished">Elements per edge</translation>
+      <translation>Element per kant</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
       <source>Elements per curvature radius</source>
-      <translation type="unfinished">Elements per curvature radius</translation>
+      <translation>Element per krökningsradie</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="279"/>
@@ -475,7 +475,7 @@ Ett värde i intervallet 0,2-10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="396"/>
       <source>Quad dominated</source>
-      <translation>Fyrdominerad</translation>
+      <translation>Quad dominerade</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="422"/>
@@ -497,15 +497,15 @@ Ett värde i intervallet 0,2-10.</translation>
       <location filename="../../Tessellation.cpp" line="279"/>
       <source>Error: body without a tip selected.
 Either set the tip of the body or select a different shapee.</source>
-      <translation type="unfinished">Error: body without a tip selected.
-Either set the tip of the body or select a different shapee.</translation>
+      <translation>Fel: kropp utan vald spets.
+Ställ antingen in spetsen på kroppen eller välj en annan form.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="285"/>
       <source>Error: shape without faces selected.
 Select a different shape.</source>
-      <translation type="unfinished">Error: shape without faces selected.
-Select a different shape.</translation>
+      <translation>Fel: form utan ansikten vald.
+Välj en annan form.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="289"/>
@@ -523,7 +523,7 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="204"/>
       <source>Select a plane to section the mesh with.</source>
-      <translation type="unfinished">Select a plane to section the mesh with.</translation>
+      <translation>Välj ett plan att skära nätet med.</translation>
     </message>
   </context>
   <context>
@@ -531,32 +531,32 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="97"/>
       <source>Select plane</source>
-      <translation>Markera plan</translation>
+      <translation>Välj plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="98"/>
       <source>Select a plane to trim the mesh with.</source>
-      <translation type="unfinished">Select a plane to trim the mesh with.</translation>
+      <translation>Välj ett plan att trimma nätet med.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Trim With Plane</source>
-      <translation type="unfinished">Trim With Plane</translation>
+      <translation>Trimma med plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Select the side to keep</source>
-      <translation type="unfinished">Select the side to keep</translation>
+      <translation>Välj den sida du vill behålla</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>
       <source>Below</source>
-      <translation>Nedanför</translation>
+      <translation>Nedan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="109"/>
       <source>Above</source>
-      <translation>Ovanför</translation>
+      <translation>Ovan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="111"/>
@@ -569,7 +569,7 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
-      <translation>NätDel</translation>
+      <translation>MeshDel</translation>
     </message>
   </context>
   <context>
@@ -577,12 +577,12 @@ Select a different shape.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>Vik upp nät</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
       <source>Finds a flat representation of a mesh</source>
-      <translation type="unfinished">Finds a flat representation of a mesh</translation>
+      <translation>Hittar en platt representation av ett nät</translation>
     </message>
   </context>
   <context>
@@ -595,7 +595,7 @@ Select a different shape.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>
       <source>Finds a flat representation of a face</source>
-      <translation type="unfinished">Finds a flat representation of a face</translation>
+      <translation>Hittar en platt representation av ett ansikte</translation>
     </message>
   </context>
 </TS>

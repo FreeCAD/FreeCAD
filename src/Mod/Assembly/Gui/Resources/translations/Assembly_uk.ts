@@ -313,7 +313,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="404"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
-      <translation>Автоматичні стовпці: (Індекс, Кількість, Назва...) заповнюються автоматично. Будь-які зміни, які ви зробите, будуть перевизначені. Ці стовпці не можна перейменовувати.</translation>
+      <translation>Автоматичні стовпці: (Індекс, Кількість, Назва...) заповнюються автоматично. Будь-які зміни, які ви зробите, будуть перевизначені. Ці стовпці не можна перейменувати.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="87"/>

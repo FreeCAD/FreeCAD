@@ -902,12 +902,12 @@ Les fichiers sont nommés « runPreDrag.asmt » et « dragging.log » et se trou
       <location filename="../../ViewProviderAssembly.cpp" line="1316"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
-      <translation type="unfinished">ViewProviderAssembly</translation>
+      <translation>Fournisseur d'affichage d'Assembly</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1333"/>
       <source>Empty Assembly</source>
-      <translation type="unfinished">Empty Assembly</translation>
+      <translation>Assemblage vide</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1337"/>
@@ -917,12 +917,12 @@ Les fichiers sont nommés « runPreDrag.asmt » et « dragging.log » et se trou
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1344"/>
       <source>Malformed joints:</source>
-      <translation type="unfinished">Malformed joints:</translation>
+      <translation>Liaisons défectueuses :</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1350"/>
       <source>Redundant joints:</source>
-      <translation type="unfinished">Redundant joints:</translation>
+      <translation>Liaisons redondantes :</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1357"/>
@@ -942,9 +942,9 @@ Les fichiers sont nommés « runPreDrag.asmt » et « dragging.log » et se trou
     <message numerus="yes">
       <location filename="../../ViewProviderAssembly.cpp" line="1371"/>
       <source>%n Degrees of Freedom</source>
-      <translation type="unfinished">
-        <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
+      <translation>
+        <numerusform>%n degrés de liberté</numerusform>
+        <numerusform>%n degrés de liberté</numerusform>
       </translation>
     </message>
     <message>
@@ -1519,27 +1519,27 @@ Le blocage d'une pièce verrouille définitivement sa position dans l'assemblage
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="41"/>
       <source>Solver messages</source>
-      <translation type="unfinished">Solver messages</translation>
+      <translation>Messages du solveur</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
       <source>Click to select these conflicting joints.</source>
-      <translation type="unfinished">Click to select these conflicting joints.</translation>
+      <translation>Cliquer pour sélectionner ces liaisons problématiques</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
       <source>Click to select these redundant joints.</source>
-      <translation type="unfinished">Click to select these redundant joints.</translation>
+      <translation>Cliquer pour sélectionner ces liaisons redondantes</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="64"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
-      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</translation>
+      <translation>L'assemblage a des composants non contraints donnant naissance à ces degrés de liberté. Cliquer pour sélectionner ces composants sans contrainte.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="68"/>
       <source>Click to select these malformed joints.</source>
-      <translation type="unfinished">Click to select these malformed joints.</translation>
+      <translation>Cliquer pour sélectionner ces liaisons défectueuses</translation>
     </message>
   </context>
 </TS>

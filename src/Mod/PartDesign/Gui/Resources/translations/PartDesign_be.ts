@@ -912,18 +912,18 @@ False = унутраная шасцярня</translation>
       <translation>Пераўтварыць элемент множнага пераўтварэння</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="256"/>
+      <location filename="../../SketchWorkflow.cpp" line="258"/>
       <source>Sketch on Face</source>
       <translation>Эскіз у грань</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="315"/>
+      <location filename="../../SketchWorkflow.cpp" line="317"/>
       <source>Make copy</source>
       <translation>Зрабіць копію</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="512"/>
-      <location filename="../../SketchWorkflow.cpp" line="718"/>
+      <location filename="../../SketchWorkflow.cpp" line="515"/>
+      <location filename="../../SketchWorkflow.cpp" line="743"/>
       <source>New Sketch</source>
       <translation>Новы эскіз</translation>
     </message>
@@ -1820,52 +1820,52 @@ If zero, it is equal to Radius2</source>
       <translation>Стварыць крыжаваны спасылак</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="67"/>
+      <location filename="../../TaskFeaturePick.cpp" line="69"/>
       <source>Valid</source>
       <translation>Дапушчальны</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="69"/>
+      <location filename="../../TaskFeaturePick.cpp" line="71"/>
       <source>Invalid shape</source>
       <translation>Хібная фігура</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="71"/>
+      <location filename="../../TaskFeaturePick.cpp" line="73"/>
       <source>No wire in sketch</source>
       <translation>Ломаная лінія ў эскіз не знойдзеная</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="73"/>
+      <location filename="../../TaskFeaturePick.cpp" line="75"/>
       <source>Sketch already used by other feature</source>
       <translation>Эскіз ужо ўжываецца іншым элементам</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="75"/>
+      <location filename="../../TaskFeaturePick.cpp" line="77"/>
       <source>Belongs to another body</source>
       <translation>Належыць да іншага цела</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="77"/>
+      <location filename="../../TaskFeaturePick.cpp" line="79"/>
       <source>Belongs to another part</source>
       <translation>Належыць да іншай дэталі</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="79"/>
+      <location filename="../../TaskFeaturePick.cpp" line="81"/>
       <source>Doesn't belong to any body</source>
       <translation>Не належыць аніякаму целу</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="81"/>
+      <location filename="../../TaskFeaturePick.cpp" line="83"/>
       <source>Base plane</source>
       <translation>Асноўная плоскасць</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="83"/>
+      <location filename="../../TaskFeaturePick.cpp" line="85"/>
       <source>Feature is located after the tip of the body</source>
       <translation>Элемент размешчаны пасля кончыка цела</translation>
     </message>
     <message>
-      <location filename="../../TaskFeaturePick.cpp" line="93"/>
+      <location filename="../../TaskFeaturePick.cpp" line="95"/>
       <source>Select attachment</source>
       <translation>Абраць укладанне</translation>
     </message>
@@ -2135,58 +2135,58 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="79"/>
       <source>ISO tyre valves</source>
-      <translation type="unfinished">ISO tyre valves</translation>
+      <translation>Клапаны для шын ISO</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="670"/>
+      <location filename="../../TaskHoleParameters.cpp" line="673"/>
       <source>Medium</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Сярэдні</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="671"/>
+      <location filename="../../TaskHoleParameters.cpp" line="674"/>
       <source>Fine</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Дакладна</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="672"/>
+      <location filename="../../TaskHoleParameters.cpp" line="675"/>
       <source>Coarse</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>Груба</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="675"/>
+      <location filename="../../TaskHoleParameters.cpp" line="678"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Звычайны</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="676"/>
+      <location filename="../../TaskHoleParameters.cpp" line="679"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Зачыніць</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="677"/>
+      <location filename="../../TaskHoleParameters.cpp" line="680"/>
       <source>Loose</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>Свабодны (найбольшая дакладнасць)</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="680"/>
+      <location filename="../../TaskHoleParameters.cpp" line="683"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Звычайны</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="681"/>
+      <location filename="../../TaskHoleParameters.cpp" line="684"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Зачыніць</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="682"/>
+      <location filename="../../TaskHoleParameters.cpp" line="685"/>
       <source>Wide</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>Чарнавы</translation>
@@ -3191,48 +3191,48 @@ measured along the specified direction</source>
       <translation>Памылка</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="751"/>
+      <location filename="../../SketchWorkflow.cpp" line="778"/>
       <source>Several sub-elements selected</source>
       <translation>Некалькі абраных укладзеных элементаў</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="752"/>
+      <location filename="../../SketchWorkflow.cpp" line="779"/>
       <source>Select a single face as support for a sketch!</source>
       <translation>Абраць адну грань у якасці падтрымкі для эскізу!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="756"/>
+      <location filename="../../SketchWorkflow.cpp" line="783"/>
       <source>Select a face as support for a sketch!</source>
       <translation>Абраць грань у якасці падтрымкі для эскізу!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="760"/>
+      <location filename="../../SketchWorkflow.cpp" line="787"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation>Патрэбна абраць плоскую грань у якасці падтрымкі для эскізу!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="764"/>
+      <location filename="../../SketchWorkflow.cpp" line="791"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation>Стварыць плоскасць, альбо абраць грань на эскізе</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="755"/>
+      <location filename="../../SketchWorkflow.cpp" line="782"/>
       <source>No support face selected</source>
       <translation>Не абрана грань падтрымкі</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="759"/>
+      <location filename="../../SketchWorkflow.cpp" line="786"/>
       <source>No planar support</source>
       <translation>Адсутнічае плоская падтрымка</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="763"/>
+      <location filename="../../SketchWorkflow.cpp" line="790"/>
       <source>No valid planes in this document</source>
       <translation>У дакуменце дапушчальныя плоскасці адсутнічаюць</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1014"/>
-      <location filename="../../SketchWorkflow.cpp" line="678"/>
+      <location filename="../../SketchWorkflow.cpp" line="703"/>
       <location filename="../../ViewProvider.cpp" line="139"/>
       <location filename="../../ViewProviderDatum.cpp" line="250"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
@@ -3277,7 +3277,7 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../SketchWorkflow.cpp" line="679"/>
+      <location filename="../../SketchWorkflow.cpp" line="704"/>
       <location filename="../../ViewProvider.cpp" line="140"/>
       <location filename="../../ViewProviderDatum.cpp" line="251"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
@@ -3964,137 +3964,137 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
   <context>
     <name>TaskHoleParameters</name>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="803"/>
+      <location filename="../../TaskHoleParameters.ui" line="813"/>
       <source>Live update of changes to the thread
 Note that the calculation can take some time</source>
       <translation>Абнаўленне змяненняў разьбы ў рэальным часе
 Звярніце ўвагу, што разлікі могуць заняць некаторы час</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="996"/>
+      <location filename="../../TaskHoleParameters.ui" line="1006"/>
       <source>Thread Depth</source>
       <translation>Глыбіня разьбы</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="1049"/>
+      <location filename="../../TaskHoleParameters.ui" line="1059"/>
       <source>Customize thread clearance</source>
       <translation>Адрэгуляваць зазор разьбы</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="722"/>
+      <location filename="../../TaskHoleParameters.ui" line="709"/>
       <source>Clearance</source>
       <translation>Зазор</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="78"/>
+      <location filename="../../TaskHoleParameters.ui" line="65"/>
       <source>Head type</source>
       <translation>Тып галоўкі</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="117"/>
+      <location filename="../../TaskHoleParameters.ui" line="153"/>
       <source>Depth type</source>
       <translation>Тып глыбіні</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="199"/>
+      <location filename="../../TaskHoleParameters.ui" line="245"/>
       <source>Head diameter</source>
       <translation>Дыяметр галоўкі</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="247"/>
+      <location filename="../../TaskHoleParameters.ui" line="293"/>
       <source>Head depth</source>
       <translation>Глыбіня галоўкі</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="668"/>
+      <location filename="../../TaskHoleParameters.ui" line="678"/>
       <source>Clearance / Passthrough</source>
       <translation>Зазор / праходжанне</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="673"/>
+      <location filename="../../TaskHoleParameters.ui" line="683"/>
       <source>Tap drill (to be threaded)</source>
       <translation>Свердзел-метчык (для наразання разьбы)</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="678"/>
+      <location filename="../../TaskHoleParameters.ui" line="688"/>
       <source>Modeled thread</source>
       <translation>Мадэль разьбы</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="686"/>
+      <location filename="../../TaskHoleParameters.ui" line="696"/>
       <source>Hole type</source>
       <translation>Тып адтуліны</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="807"/>
+      <location filename="../../TaskHoleParameters.ui" line="817"/>
       <source>Update thread view</source>
       <translation>Абнавіць агульны выгляд</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="1055"/>
+      <location filename="../../TaskHoleParameters.ui" line="1065"/>
       <source>Custom Clearance</source>
       <translation>Індывідуальны знешні выгляд</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="1068"/>
+      <location filename="../../TaskHoleParameters.ui" line="1078"/>
       <source>Custom Thread clearance value</source>
       <translation>Карыстальніцкае значэнне зазору разьбы</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="858"/>
+      <location filename="../../TaskHoleParameters.ui" line="868"/>
       <source>Direction</source>
       <translation>Напрамак</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="650"/>
+      <location filename="../../TaskHoleParameters.ui" line="49"/>
       <source>Size</source>
       <translation>Памер</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="735"/>
+      <location filename="../../TaskHoleParameters.ui" line="722"/>
       <source>Hole clearance
 Only available for holes without thread</source>
       <translation>Зазор адтуліны
 Даступнае толькі да адтуліны без разьбы</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="627"/>
-      <location filename="../../TaskHoleParameters.ui" line="740"/>
+      <location filename="../../TaskHoleParameters.ui" line="88"/>
+      <location filename="../../TaskHoleParameters.ui" line="727"/>
       <source>Standard</source>
       <translation>Стандартны</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="745"/>
+      <location filename="../../TaskHoleParameters.ui" line="732"/>
       <source>Close</source>
       <translation>Зачыніць</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="750"/>
+      <location filename="../../TaskHoleParameters.ui" line="737"/>
       <source>Wide</source>
       <translation>Чарнавы</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="838"/>
+      <location filename="../../TaskHoleParameters.ui" line="848"/>
       <source>Class</source>
       <translation>Поле дакладнасці</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="825"/>
+      <location filename="../../TaskHoleParameters.ui" line="835"/>
       <source>Tolerance class for threaded holes according to hole profile</source>
       <translation>Клас дакладнасці для разьбовых адтулін у адпаведнасці з профілем адтуліны</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="506"/>
+      <location filename="../../TaskHoleParameters.ui" line="552"/>
       <source>Diameter</source>
       <translation>Дыяметр</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="528"/>
+      <location filename="../../TaskHoleParameters.ui" line="574"/>
       <source>Hole diameter</source>
       <translation>Дыяметр адтуліны</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="461"/>
+      <location filename="../../TaskHoleParameters.ui" line="507"/>
       <source>Depth</source>
       <translation>Глыбіня</translation>
     </message>
@@ -4104,118 +4104,128 @@ Only available for holes without thread</source>
       <translation>Налады адтуліны</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="43"/>
+      <location filename="../../TaskHoleParameters.ui" line="95"/>
       <source>Base profile types</source>
       <translation>Тыпы асноўных профіляў</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="51"/>
+      <location filename="../../TaskHoleParameters.ui" line="126"/>
       <source>Circles and arcs</source>
       <translation>Акружнасці і дугі</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="56"/>
+      <location filename="../../TaskHoleParameters.ui" line="131"/>
       <source>Points, circles and arcs</source>
       <translation>Кропкі, акружнасці і дугі</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="61"/>
+      <location filename="../../TaskHoleParameters.ui" line="136"/>
       <source>Points</source>
       <translation>Кропкі</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="95"/>
-      <location filename="../../TaskHoleParameters.ui" line="966"/>
+      <location filename="../../TaskHoleParameters.ui" line="170"/>
+      <location filename="../../TaskHoleParameters.ui" line="976"/>
       <source>Dimension</source>
       <translation>Вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="100"/>
+      <location filename="../../TaskHoleParameters.ui" line="175"/>
       <source>Through all</source>
       <translation>Праз усё</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="151"/>
+      <location filename="../../TaskHoleParameters.ui" line="197"/>
       <source>Custom head values</source>
       <translation>Карыстальніцкія значэнні галоўкі</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="321"/>
+      <location filename="../../TaskHoleParameters.ui" line="367"/>
       <source>Drill angle</source>
       <extracomment>Translate it as short as possible</extracomment>
       <translation>Вугал дрылі</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="357"/>
+      <location filename="../../TaskHoleParameters.ui" line="403"/>
       <source>Include in depth</source>
       <extracomment>Translate it as short as possible</extracomment>
       <translation>Уключаць у глыбіню</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="564"/>
+      <location filename="../../TaskHoleParameters.ui" line="610"/>
       <source>Switch direction</source>
       <translation>Змяніць напрамак</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="882"/>
+      <location filename="../../TaskHoleParameters.ui" line="662"/>
+      <source>&lt;b&gt;Threading&lt;/b&gt;</source>
+      <translation type="unfinished">&lt;b&gt;Threading&lt;/b&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="783"/>
+      <source>Thread</source>
+      <translation>Разьба</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="892"/>
       <source>&amp;Right hand</source>
       <translation>&amp;Правая рука</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="898"/>
+      <location filename="../../TaskHoleParameters.ui" line="908"/>
       <source>&amp;Left hand</source>
       <translation>&amp;Левая рука</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="947"/>
+      <location filename="../../TaskHoleParameters.ui" line="957"/>
       <source>Thread Depth Type</source>
       <translation>Тып глыбіні разьбы</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="961"/>
+      <location filename="../../TaskHoleParameters.ui" line="971"/>
       <source>Hole depth</source>
       <translation>Глыбіня адтуліны</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="971"/>
+      <location filename="../../TaskHoleParameters.ui" line="981"/>
       <source>Tapped (DIN76)</source>
       <translation>Разьбавы (DIN76)</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="130"/>
+      <location filename="../../TaskHoleParameters.ui" line="118"/>
       <source>Cut type for screw heads</source>
       <translation>Тып выемкі пад галоўку шруба</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="145"/>
+      <location filename="../../TaskHoleParameters.ui" line="191"/>
       <source>Check to override the values predefined by the 'Type'</source>
       <translation>Птушка, каб перавызначыць значэнне, наканаваныя 'Тыпам'</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="260"/>
+      <location filename="../../TaskHoleParameters.ui" line="306"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
       <translation>Для зянкоўкі глыбіня размяшчэння верхняй часткі шрубы пад паверхняй</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="416"/>
+      <location filename="../../TaskHoleParameters.ui" line="462"/>
       <source>Countersink angle</source>
       <translation>Вугал зянкоўкі</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="353"/>
+      <location filename="../../TaskHoleParameters.ui" line="399"/>
       <source>The size of the drill point will be taken into
 account for the depth of blind holes</source>
       <translation>Памер кропкі свідравання будзе ўлічвацца
 для глыбіні глухіх адтулін</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="580"/>
+      <location filename="../../TaskHoleParameters.ui" line="626"/>
       <source>Tapered</source>
       <translation>Конусная зянкоўка</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="593"/>
+      <location filename="../../TaskHoleParameters.ui" line="639"/>
       <source>Taper angle for the hole
 90 degree: straight hole
 under 90: smaller hole radius at the bottom
@@ -4226,7 +4236,7 @@ over 90: larger hole radius at the bottom</source>
 болей чым 90: радыус адтуліны павялічвацца ўнізе</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="561"/>
+      <location filename="../../TaskHoleParameters.ui" line="607"/>
       <source>Reverses the hole direction</source>
       <translation>Адваротны напрамак адтуліны</translation>
     </message>
@@ -4526,8 +4536,8 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="404"/>
       <location filename="../../../App/FeaturePipe.cpp" line="425"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="233"/>
-      <source>Result has multiple solids: enable 'Allow Compounds' in the active body.</source>
-      <translation>У выніку атрымліваецца мноства цвёрдых рэчываў: уключыце функцыю 'Дапускаць злучэнні' ў бягучым целе.</translation>
+      <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
+      <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="112"/>
@@ -5482,7 +5492,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Абраць апорны напрамак (рабро, грань, апорная лінія)</translation>
     </message>
     <message>
-      <location filename="../../TaskPatternParameters.cpp" line="294"/>
+      <location filename="../../TaskPatternParameters.cpp" line="299"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
       <translation>Хібны выбар.
 Абярыце рабро, плоскую грань ці апорную лінію.</translation>
