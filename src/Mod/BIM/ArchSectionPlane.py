@@ -1226,30 +1226,35 @@ class SectionPlaneTaskPanel:
 
         # Create the second box for tools
         self.tools_widget = QtGui.QWidget()
-        tools_layout = QtGui.QGridLayout(self.tools_widget)
-        self.initialCutViewState = None
+        tools_layout = QtGui.QVBoxLayout(self.tools_widget)
 
         # Cut View toggle button
         self.cutViewButton = QtGui.QPushButton(self.tools_widget)
-        self.cutViewButton.setIcon(QtGui.QIcon(":/icons/Arch_SectionPlane_Tree.svg"))
+        self.cutViewButton.setIcon(QtGui.QIcon(":/icons/Arch_CutPlane.svg"))
         self.cutViewButton.setObjectName("cutViewButton")
-        tools_layout.addWidget(self.cutViewButton, 0, 0, 1, 2)
         self.cutViewButton.setCheckable(True)
         QtCore.QObject.connect(self.cutViewButton, QtCore.SIGNAL("toggled(bool)"), self.toggleCutView)
+        tools_layout.addWidget(self.cutViewButton)
 
         # rotate / resize buttons
-        self.rlabel = QtGui.QLabel(self.tools_widget)
-        tools_layout.addWidget(self.rlabel, 1, 0, 1, 2)
+        self.rotation_label = QtGui.QLabel(self.tools_widget)
+        tools_layout.addWidget(self.rotation_label)
+
+        rotation_layout = QtGui.QHBoxLayout()
         self.rotateXButton = QtGui.QPushButton(self.tools_widget)
-        tools_layout.addWidget(self.rotateXButton, 2, 0, 1, 1)
         self.rotateYButton = QtGui.QPushButton(self.tools_widget)
-        tools_layout.addWidget(self.rotateYButton, 2, 1, 1, 1)
         self.rotateZButton = QtGui.QPushButton(self.tools_widget)
-        tools_layout.addWidget(self.rotateZButton, 3, 0, 1, 1)
+        rotation_layout.addWidget(self.rotateXButton)
+        rotation_layout.addWidget(self.rotateYButton)
+        rotation_layout.addWidget(self.rotateZButton)
+        tools_layout.addLayout(rotation_layout)
+
+        size_pos_layout = QtGui.QHBoxLayout()
         self.resizeButton = QtGui.QPushButton(self.tools_widget)
-        tools_layout.addWidget(self.resizeButton, 4, 0, 1, 1)
         self.recenterButton = QtGui.QPushButton(self.tools_widget)
-        tools_layout.addWidget(self.recenterButton, 4, 1, 1, 1)
+        size_pos_layout.addWidget(self.resizeButton)
+        size_pos_layout.addWidget(self.recenterButton)
+        tools_layout.addLayout(size_pos_layout)
 
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
         QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
@@ -1294,7 +1299,7 @@ class SectionPlaneTaskPanel:
                 item.setIcon(0,self.getIcon(o))
             if self.obj.ViewObject and hasattr(self.obj.ViewObject, "CutView"):
                 self.cutViewButton.setChecked(self.obj.ViewObject.CutView)
-        self.retranslateUi(self.form)
+        self.retranslateUi()
 
     def addElement(self):
         if self.obj:
@@ -1320,7 +1325,8 @@ class SectionPlaneTaskPanel:
         if self.obj and self.obj.Shape and self.obj.Shape.Faces:
             face = self.obj.Shape.copy()
             import Part
-            face.rotate(self.obj.Placement.Base, axis, 90)
+            local_axis = self.obj.Placement.Rotation.multVec(axis)
+            face.rotate(self.obj.Placement.Base, local_axis, 90)
             self.obj.Placement = face.Placement
             self.obj.Proxy.execute(self.obj)
 
@@ -1380,9 +1386,8 @@ class SectionPlaneTaskPanel:
     def toggleCutView(self, checked):
          if self.obj and self.obj.ViewObject and hasattr(self.obj.ViewObject, "CutView"):
             self.obj.ViewObject.CutView = checked
-            FreeCAD.ActiveDocument.recompute()
 
-    def retranslateUi(self, TaskPanel):
+    def retranslateUi(self):
         self.scope_widget.setWindowTitle(QtGui.QApplication.translate("Arch", "Scope", None))
         self.tools_widget.setWindowTitle(QtGui.QApplication.translate("Arch", "Placement and Visuals", None))
         self.title.setText(QtGui.QApplication.translate("Arch", "Objects seen by this section plane:", None))
@@ -1392,14 +1397,14 @@ class SectionPlaneTaskPanel:
         self.addButton.setToolTip(QtGui.QApplication.translate("Arch", "Add selected object(s) to the scope of this section plane", None))
         self.cutViewButton.setText(QtGui.QApplication.translate("Arch", "Cut View", None))
         self.cutViewButton.setToolTip(QtGui.QApplication.translate("Arch", "Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model.", None))
-        self.rlabel.setText(QtGui.QApplication.translate("Arch", "Section plane placement:", None))
+        self.rotation_label.setText(QtGui.QApplication.translate("Arch", "Rotate by 90°:", None))
         self.rotateXButton.setText(QtGui.QApplication.translate("Arch", "Rotate X", None))
-        self.rotateXButton.setToolTip(QtGui.QApplication.translate("Arch", "Rotates the plane along the X axis", None))
+        self.rotateXButton.setToolTip(QtGui.QApplication.translate("Arch", "Rotates the plane around its local X axis", None))
         self.rotateYButton.setText(QtGui.QApplication.translate("Arch", "Rotate Y", None))
-        self.rotateYButton.setToolTip(QtGui.QApplication.translate("Arch", "Rotates the plane along the Y axis", None))
+        self.rotateYButton.setToolTip(QtGui.QApplication.translate("Arch", "Rotates the plane around its local Y axis", None))
         self.rotateZButton.setText(QtGui.QApplication.translate("Arch", "Rotate Z", None))
-        self.rotateZButton.setToolTip(QtGui.QApplication.translate("Arch", "Rotates the plane along the Z axis", None))
-        self.resizeButton.setText(QtGui.QApplication.translate("Arch", "Resize", None))
+        self.rotateZButton.setToolTip(QtGui.QApplication.translate("Arch", "Rotates the plane around its local Z axis", None))
+        self.resizeButton.setText(QtGui.QApplication.translate("Arch", "Resize to Fit", None))
         self.resizeButton.setToolTip(QtGui.QApplication.translate("Arch", "Resizes the plane to fit the objects in the list above", None))
-        self.recenterButton.setText(QtGui.QApplication.translate("Arch", "Center", None))
+        self.recenterButton.setText(QtGui.QApplication.translate("Arch", "Recenter Plane", None))
         self.recenterButton.setToolTip(QtGui.QApplication.translate("Arch", "Centers the plane on the objects in the list above", None))
