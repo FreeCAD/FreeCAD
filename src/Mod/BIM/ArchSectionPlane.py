@@ -848,7 +848,7 @@ class _SectionPlane:
         self.setProperties(obj)
 
     def execute(self,obj):
-
+        import math
         import Part
         l = 1
         h = 1
@@ -866,9 +866,14 @@ class _SectionPlane:
             h = 1
         p = Part.makePlane(l,h,Vector(l/2,-h/2,0),Vector(0,0,-1))
         # make sure the normal direction is pointing outwards, you never know what OCC will decide...
-        if p.normalAt(0,0).getAngle(obj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))) > 1:
-            p.reverse()
+        # Apply the object's placement to the new plane first.
         p.Placement = obj.Placement
+
+        # Now, check if the resulting plane's normal matches the placement's intended direction.
+        # This robustly handles all rotation angles and potential OCC inconsistencies.
+        target_normal = obj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
+        if p.normalAt(0,0).getAngle(target_normal) > math.pi / 2:
+            p.reverse()
         obj.Shape = p
         self.svgcache = None
         self.shapecache = None
