@@ -1,8 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
 
 set(PathGui_LIBS
     Path
@@ -75,6 +70,13 @@ SET(PathGuiIcon_SVG
 )
 
 add_library(PathGui SHARED ${PathGui_SRCS} ${PathGuiIcon_SVG})
+target_include_directories(
+    PathGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 target_link_libraries(PathGui ${PathGui_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(PathGui)

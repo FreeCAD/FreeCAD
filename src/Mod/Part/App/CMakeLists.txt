@@ -1,6 +1,8 @@
 add_library(Part SHARED)
 
-include_directories(
+target_include_directories(
+    Part
+    PRIVATE
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -26,7 +28,10 @@ target_link_directories(Part PUBLIC ${OCC_LIBRARY_DIR})
 if(FREETYPE_FOUND)
     add_definitions(-DFCUseFreeType)
 
-    include_directories(
+    target_include_directories(
+        Part
+        SYSTEM
+        PUBLIC
         ${FREETYPE_INCLUDE_DIRS}
     )
 

@@ -1,16 +1,3 @@
-include_directories(
-  ${CMAKE_BINARY_DIR}
-  ${CMAKE_BINARY_DIR}/src
-  ${CMAKE_SOURCE_DIR}/src
-  ${CMAKE_CURRENT_BINARY_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
-include_directories(
-  SYSTEM
-  ${FREETYPE_INCLUDE_DIRS}
-)
-
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Blending)
 
 generate_from_py(Blending/BlendPoint)
@@ -65,8 +52,25 @@ if(FREECAD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(Surface PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif(FREECAD_USE_PCH)
 
-link_directories(${OCC_LIBRARY_DIR})
 add_library(Surface SHARED ${Surface_SRCS})
+target_include_directories(
+    Surface
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_include_directories(
+    Surface
+    SYSTEM
+    PUBLIC
+    ${FREETYPE_INCLUDE_DIRS}
+)
+
+target_link_directories(Surface PUBLIC ${OCC_LIBRARY_DIR})
 target_link_libraries(Surface ${Surface_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Surface)
