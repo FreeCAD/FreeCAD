@@ -420,6 +420,8 @@ private:
                      {
                          {tr("%1 pick first control point"), {MouseLeft}},
                          switchModeHint,
+                         {tr("%1 + degree"), {KeyU}},
+                         {tr("%1 - degree"), {KeyJ}},
                      }},
                 {.state = {ConstructionMethod::ControlPoints, SelectMode::SeekSecond},
                  .hints =
@@ -427,6 +429,8 @@ private:
                          {tr("%1 pick next control point"), {MouseLeft}},
                          {tr("%1 finish B-spline"), {MouseRight}},
                          switchModeHint,
+                         {tr("%1 + degree"), {KeyU}},
+                         {tr("%1 - degree"), {KeyJ}},
                      }},
 
                 // Knots method
@@ -435,6 +439,7 @@ private:
                      {
                          {tr("%1 pick first knot"), {MouseLeft}},
                          switchModeHint,
+                         {tr("%1 toggle periodic"), {KeyR}},
                      }},
                 {.state = {ConstructionMethod::Knots, SelectMode::SeekSecond},
                  .hints =
@@ -442,6 +447,7 @@ private:
                          {tr("%1 pick next knot"), {MouseLeft}},
                          {tr("%1 finish B-spline"), {MouseRight}},
                          switchModeHint,
+                         {tr("%1 toggle periodic"), {KeyR}},
                      }},
             });
     }
