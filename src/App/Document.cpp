@@ -296,6 +296,16 @@ void Document::renamePropertyOfObject(TransactionalObject* obj,
     });
 }
 
+void Document::arrangeMovePropertyOfObject(TransactionalObject* obj,
+                                           const Property* prop,
+                                           TransactionalObject* targetObj,
+                                           Property* newProp)
+{
+    changePropertyOfObject(obj, prop, [this, obj, prop, targetObj, newProp]() {
+        d->activeUndoTransaction->arrangeMoveProperty(obj, prop, targetObj, newProp);
+    });
+}
+
 void Document::addOrRemovePropertyOfObject(TransactionalObject* obj,
                                            const Property* prop, const bool add)
 {

@@ -59,6 +59,8 @@ PropertyExpressionContainer::PropertyExpressionContainer()
             PropertyExpressionContainer::slotRelabelDocument);
         GetApplication().signalRenameDynamicProperty.connect(
             PropertyExpressionContainer::slotRenameDynamicProperty);
+        GetApplication().signalMoveDynamicProperty.connect(
+            PropertyExpressionContainer::slotMoveDynamicProperty);
     }
     _ExprContainers.insert(this);
 }
@@ -85,6 +87,14 @@ void PropertyExpressionContainer::slotRenameDynamicProperty(const App::Property&
 {
     for (auto container : _ExprContainers) {
         container->onRenameDynamicProperty(prop, oldName);
+    }
+}
+
+void PropertyExpressionContainer::slotMoveDynamicProperty(const App::Property& prop,
+                                                          const App::DocumentObject& targetObj)
+{
+    for (auto container : _ExprContainers) {
+        container->onMoveDynamicProperty(prop, targetObj);
     }
 }
 
@@ -1151,6 +1161,18 @@ void PropertyExpressionEngine::onRenameDynamicProperty(const App::Property& prop
 {
     ObjectIdentifier oldNameId = ObjectIdentifier(prop.getContainer(), std::string(oldName));
     ObjectIdentifier newNameId = ObjectIdentifier(prop);
+    const std::map<ObjectIdentifier, ObjectIdentifier> paths = {
+        {oldNameId, newNameId},
+    };
+
+    renameObjectIdentifiers(paths);
+}
+
+void PropertyExpressionEngine::onMoveDynamicProperty(const App::Property& prop,
+                                                     const DocumentObject& targetObj)
+{
+    ObjectIdentifier oldNameId = ObjectIdentifier(prop);
+    ObjectIdentifier newNameId = ObjectIdentifier(&targetObj, std::string(prop.getName()));
     const std::map<ObjectIdentifier, ObjectIdentifier> paths = {
         {oldNameId, newNameId},
     };
