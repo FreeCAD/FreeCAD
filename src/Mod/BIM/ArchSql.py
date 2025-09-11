@@ -1,0 +1,218 @@
+# SPDX-License-Identifier: MIT
+#
+# Copyright (c) 2019 Daniel Furtlehner (furti)
+# Copyright (c) 2025 The FreeCAD Project
+#
+# This file is a derivative work of the sql_parser.py file from the
+# FreeCAD-Reporting workbench (https://github.com/furti/FreeCAD-Reporting).
+# As per the terms of the original MIT license, this derivative work is also
+# licensed under the MIT license.
+
+"""Contains the SQL parsing and execution engine for BIM/Arch objects."""
+
+import FreeCAD
+import re
+
+# Import exception types from the generated parser for robust, type-safe handling.
+try:
+    from generated_sql_parser import UnexpectedEOF, UnexpectedToken
+except ImportError:
+    # Provide a dummy class if the parser hasn't been generated yet.
+    class UnexpectedEOF(Exception): pass
+    class UnexpectedToken(Exception): pass
+
+# Global variables to cache the parser and transformer for performance
+_parser = None
+_transformer = None
+
+def get_property(obj, prop_name):
+    """Gets a property from a FreeCAD object, including sub-properties."""
+    current_val = obj
+    for part in prop_name.split('.'):
+        if hasattr(current_val, part):
+            current_val = getattr(current_val, part)
+        else:
+            return None
+    return current_val
+
+# Query Object Model
+class SelectStatement:
+    def __init__(self, columns, from_clause, where_clause):
+        self.columns = columns
+        self.from_clause = from_clause
+        self.where_clause = where_clause
+    def execute(self):
+        objects = self.from_clause.get_objects()
+        if self.where_clause:
+            return [o for o in objects if self.where_clause.matches(o)]
+        return objects
+
+class FromClause:
+    def __init__(self, reference):
+        self.reference = reference
+    def get_objects(self):
+        if self.reference.value == 'document':
+            return FreeCAD.ActiveDocument.Objects
+        return []
+
+class WhereClause:
+    def __init__(self, expression):
+        self.expression = expression
+    def matches(self, obj):
+        return self.expression.evaluate(obj)
+
+class BooleanExpression:
+    def __init__(self, left, op, right):
+        self.left = left
+        self.op = op
+        self.right = right
+    def evaluate(self, obj):
+        if self.op is None: return self.left.evaluate(obj)
+        if self.op == 'and': return self.left.evaluate(obj) and self.right.evaluate(obj)
+        if self.op == 'or': return self.left.evaluate(obj) or self.right.evaluate(obj)
+
+class BooleanComparison:
+    def __init__(self, left, op, right):
+        self.left = left
+        self.op = op
+        self.right = right
+    def evaluate(self, obj):
+        left_val = self.left.get_value(obj)
+        right_val = self.right.get_value(obj)
+        if self.op == 'is': return left_val is right_val
+        if self.op == 'is_not': return left_val is not right_val
+        if left_val is None or right_val is None: return False
+        if isinstance(left_val, FreeCAD.Units.Quantity): left_val = left_val.Value
+        if isinstance(right_val, FreeCAD.Units.Quantity): right_val = right_val.Value
+
+        def like_to_regex(pattern):
+            s = str(pattern).replace('%', '.*').replace('_', '.')
+            return s
+
+        ops = {
+            '=': lambda a,b: a == b, '!=': lambda a,b: a != b,
+            '>': lambda a,b: a > b, '<': lambda a,b: a < b,
+            '>=': lambda a,b: a >= b, '<=': lambda a,b: a <= b,
+            'like': lambda a,b: re.search(like_to_regex(b), str(a), re.IGNORECASE) is not None
+        }
+
+        try:
+            if self.op in ['=', '!=', 'like']:
+                left_val, right_val = str(left_val), str(right_val)
+        except: return False
+
+        return ops[self.op](left_val, right_val) if self.op in ops else False
+
+class ReferenceExtractor:
+    def __init__(self, value): self.value = value
+    def get_value(self, obj): return get_property(obj, self.value)
+
+class StaticExtractor:
+    def __init__(self, value): self.value = value
+    def get_value(self, obj): return self.value
+
+# Lark Transformer (with no runtime dependency on the lark library)
+class SqlTreeTransformer:
+    def start(self, i): return i[0]
+    def statement(self, children):
+        cols = next((c for c in children if c.__class__ == list), None)
+        from_c = next((c for c in children if isinstance(c, FromClause)), None)
+        where_c = next((c for c in children if isinstance(c, WhereClause)), None)
+        return SelectStatement(cols, from_c, where_c)
+
+    def from_clause(self, i): return FromClause(i[1])
+    def where_clause(self, i): return WhereClause(i[1])
+    def columns(self, i): return i
+    def column(self, i): return i[0]
+    def asterisk(self, _): return "*"
+
+    def boolean_expression_recursive(self, items):
+        return BooleanExpression(items[0], items[1].value.lower(), items[2])
+
+    def boolean_expression(self, i): return BooleanExpression(i[0], None, None)
+    def boolean_or(self, i): return i[0]
+    def boolean_and(self, i): return i[0]
+    def boolean_term(self, i): return i[0]
+
+    def boolean_comparison(self, items):
+        return BooleanComparison(items[0], items[1], items[2])
+
+    def comparison_operator(self, i): return i[0]
+    def eq_op(self, _): return "="
+    def neq_op(self, _): return "!="
+    def like_op(self, _): return "like"
+    def is_op(self, _): return "is"
+    def is_not_op(self, _): return "is_not"
+    def gt_op(self, _): return ">"
+    def lt_op(self, _): return "<"
+    def gte_op(self, _): return ">="
+    def lte_op(self, _): return "<="
+
+    def operand(self, i): return i[0]
+    def reference(self, items): return ReferenceExtractor(str(items[0]))
+    def literal(self, items): return StaticExtractor(items[0].value[1:-1])
+    def null(self, _): return StaticExtractor(None)
+
+    def function(self, i): return StaticExtractor("FUNC_NOT_IMPL")
+    def multi_param_function(self, i): return StaticExtractor("FUNC_NOT_IMPL")
+
+
+def _get_query_object(query_string):
+    """
+    Internal function to parse and transform a query string.
+    """
+    global _parser, _transformer
+    if _parser is None:
+        try:
+            import generated_sql_parser
+
+            class FinalTransformer(generated_sql_parser.Transformer, SqlTreeTransformer):
+                pass
+
+            _parser = generated_sql_parser.Lark_StandAlone()
+            _transformer = FinalTransformer()
+        except ImportError:
+            return None, "Parser not generated. Please rebuild FreeCAD."
+        except Exception as e:
+            return None, f"Initialization Error: {e}"
+
+    try:
+        tree = _parser.parse(query_string)
+        statement = _transformer.transform(tree)
+        return statement, None
+    except Exception as e:
+        return None, e
+
+def run_query_for_count(query_string):
+    """Public interface for the Task Panel to get a result count."""
+
+    # First, do a quick pre-flight check for unclosed quotes. This is a clear
+    # sign the user is still typing a string literal.
+    if (query_string.count("'") % 2 != 0) or (query_string.count('"') % 2 != 0):
+        return -1, "INCOMPLETE"
+
+    statement, error = _get_query_object(query_string)
+    if error:
+        # A query is "incomplete" if the parser fails because it reached the end
+        # of the file unexpectedly. This can be either an UnexpectedEOF or an
+        # UnexpectedToken where the token is the special '$END' token.
+        is_incomplete = isinstance(error, UnexpectedEOF) or \
+                        (isinstance(error, UnexpectedToken) and error.token.type == '$END')
+
+        if is_incomplete:
+            return -1, "INCOMPLETE"
+
+        return -1, f"Syntax Error: Invalid token near '{error.token}'" if isinstance(error, UnexpectedToken) else "Syntax Error"
+    try:
+        results = statement.execute()
+        return len(results), None
+    except Exception as e:
+        return -1, f"Execution Error: {e}"
+
+def run_query_for_objects(query_string):
+    """Public interface for the Report object to get the resulting objects."""
+    statement, error = _get_query_object(query_string)
+    if error:
+        FreeCAD.Console.PrintError(f"BIM Report Execution Error: A {type(error).__name__} occurred.\n")
+        return []
+    return statement.execute()

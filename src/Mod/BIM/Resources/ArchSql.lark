@@ -1,0 +1,83 @@
+// SPDX-License-Identifier: MIT
+//
+// Copyright (c) 2019 Daniel Furtlehner (furti)
+// Copyright (c) 2025 The FreeCAD Project
+//
+// This file is a derivative work of the sql_grammar.peg file from the
+// FreeCAD-Reporting workbench (https://github.com/furti/FreeCAD-Reporting).
+// As per the terms of the original MIT license, this derivative work is also
+// licensed under the MIT license.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, to be subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+// Main Rule
+start: statement
+statement: SELECT columns from_clause where_clause? ";"*
+
+// Clauses
+from_clause: FROM reference
+where_clause: WHERE boolean_expression
+columns: (column ("," column)*)
+column: (asterisk | operand) as_clause?
+as_clause: AS literal
+operand: reference | literal | NUMBER | null
+
+// Boolean Logic
+boolean_expression: boolean_or
+boolean_or: boolean_or OR boolean_and -> boolean_expression_recursive
+          | boolean_and
+boolean_and: boolean_and AND boolean_term -> boolean_expression_recursive
+           | boolean_term
+boolean_term: boolean_comparison | "(" boolean_expression ")"
+boolean_comparison: operand comparison_operator operand
+
+// Comparison Operator
+comparison_operator: eq_op | neq_op | gt_op | lt_op | gte_op | lte_op | is_not_op | is_op | like_op
+eq_op: "="
+neq_op: "!="
+gt_op: ">"
+lt_op: "<"
+gte_op: ">="
+lte_op: "<="
+is_not_op: IS NOT
+is_op: IS
+like_op: LIKE
+
+// Basic Tokens
+asterisk: "*"
+reference: CNAME
+literal: STRING
+null: NULL
+
+// Terminal Definitions
+SELECT: "SELECT"i
+FROM:   "FROM"i
+WHERE:  "WHERE"i
+AS:     "AS"i
+OR:     "OR"i
+AND:    "AND"i
+IS:     "IS"i
+NOT:    "NOT"i
+LIKE:   "LIKE"i
+NULL:   "NULL"i
+STRING : /"[^"]*"|'[^']*'/
+CNAME: /[a-zA-Z0-9\._]+/
+NUMBER: /[0-9]+(\.[0-9]+)?/
+%import common.WS
+%ignore WS
