@@ -16,7 +16,7 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="99"/>
       <source>Set your basic configuration options below.</source>
-      <translation type="unfinished">Set your basic configuration options below.</translation>
+      <translation>Die grundlegenden Konfigurationsoptionen werden unten festgelegt.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="100"/>
@@ -105,12 +105,12 @@
     <message>
       <location filename="../../StartView.cpp" line="216"/>
       <source>Parametric Body</source>
-      <translation>Parametrisches Bauteil</translation>
+      <translation>Parametrischer Körper</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="217"/>
       <source>Creates a body with the Part Design workbench</source>
-      <translation>Erstellt ein Bauteil mit dem Arbeitsbereich Part Design</translation>
+      <translation>Erstellt einen Körper mit dem Arbeitsbereich Part-Design</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="221"/>
@@ -145,7 +145,7 @@
     <message>
       <location filename="../../StartView.cpp" line="516"/>
       <source>Do not show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Do not show this Start page again (start with blank screen)</translation>
+      <translation>Diese Startseite nicht mehr anzeigen (mit leerem Bildschirm beginnen)</translation>
     </message>
   </context>
   <context>
@@ -181,7 +181,7 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="239"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
-      <translation>Auf der Suche nach weiteren Themes? Über den &lt;a href="freecad:Std_AddonMgr"&gt;Addon-Manager&lt;/a&gt; abrufen.</translation>
+      <translation>Auf der Suche nach weiteren Themes? Diese können über den &lt;a href="freecad:Std_AddonMgr"&gt;Addon-Manager&lt;/a&gt; abgerufen werden.</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="241"/>

@@ -902,12 +902,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <location filename="../../ViewProviderAssembly.cpp" line="1316"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
-      <translation type="unfinished">ViewProviderAssembly</translation>
+      <translation>Поставщик Вида для Сборки</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1333"/>
       <source>Empty Assembly</source>
-      <translation type="unfinished">Empty Assembly</translation>
+      <translation>Пустая сборка</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1337"/>
@@ -917,12 +917,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1344"/>
       <source>Malformed joints:</source>
-      <translation type="unfinished">Malformed joints:</translation>
+      <translation>Неверные сопряжения:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1350"/>
       <source>Redundant joints:</source>
-      <translation type="unfinished">Redundant joints:</translation>
+      <translation>Избыточные сопряжения:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1357"/>
@@ -942,11 +942,11 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message numerus="yes">
       <location filename="../../ViewProviderAssembly.cpp" line="1371"/>
       <source>%n Degrees of Freedom</source>
-      <translation type="unfinished">
-        <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
+      <translation>
+        <numerusform>%n Степень свободы</numerusform>
+        <numerusform>%n Степени свободы</numerusform>
+        <numerusform>%n Степеней свободы</numerusform>
+        <numerusform>%n Степеней свободы</numerusform>
       </translation>
     </message>
     <message>
@@ -1515,27 +1515,27 @@ Grounding a part permanently locks its position in the assembly, preventing any 
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="41"/>
       <source>Solver messages</source>
-      <translation type="unfinished">Solver messages</translation>
+      <translation>Сообщения решателя</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
       <source>Click to select these conflicting joints.</source>
-      <translation type="unfinished">Click to select these conflicting joints.</translation>
+      <translation>Нажмите, чтобы выбрать конфликтующие сопряжения.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
       <source>Click to select these redundant joints.</source>
-      <translation type="unfinished">Click to select these redundant joints.</translation>
+      <translation>Нажмите, чтобы выбрать эти избыточные сопряжения.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="64"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
-      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</translation>
+      <translation>Сборка имеет неограниченные компоненты, приводящие к этим степеням свободы. Щёлкните, чтобы выбрать эти неограниченные компоненты.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="68"/>
       <source>Click to select these malformed joints.</source>
-      <translation type="unfinished">Click to select these malformed joints.</translation>
+      <translation>Нажмите, чтобы выбрать данные неверные сопряжения.</translation>
     </message>
   </context>
 </TS>

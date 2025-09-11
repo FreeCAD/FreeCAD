@@ -1,9 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
 
 set(CAMSimulator_LIBS
     Path
@@ -89,6 +83,14 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 add_library(CAMSimulator SHARED ${CAMSimulator_SRCS})
+target_include_directories(
+    CAMSimulator
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 target_link_libraries(CAMSimulator ${CAMSimulator_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(CAMSimulator)

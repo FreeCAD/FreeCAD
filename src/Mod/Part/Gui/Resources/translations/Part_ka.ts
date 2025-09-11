@@ -883,19 +883,19 @@
       <location filename="../../AttacherTexts.cpp" line="94"/>
       <source>XY-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY-plane by 3 points</translation>
+      <translation>XY სიბრტყე 3 წერტილით</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="95"/>
       <source>Align XY-plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XY-plane to pass through three vertices.</translation>
+      <translation>XY სიბრტყის ისე სწორება, რომ გაიაროს სამ წვეროზე.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="97"/>
       <source>XZ-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XZ-plane by 3 points</translation>
+      <translation>XZ სიბრტყე 3 წერტილით</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="98"/>
@@ -2142,7 +2142,7 @@ of the projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1070"/>
       <source>Import Curve Net</source>
-      <translation type="unfinished">Import Curve Net</translation>
+      <translation>რკალების ქსელის შემოტანა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1186"/>
@@ -2197,7 +2197,7 @@ of the projection.</source>
     <message>
       <location filename="../../CommandSimple.cpp" line="70"/>
       <source>Create Cylinder</source>
-      <translation type="unfinished">Create Cylinder</translation>
+      <translation>ცილინდრის შექმნა</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="180"/>
@@ -2220,7 +2220,7 @@ of the projection.</source>
       <translation>მრავალკუთხა ბადის გარდაქმნა</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1267"/>
+      <location filename="../../TaskAttacher.cpp" line="1292"/>
       <source>Edit attachment</source>
       <translation>მიმაგრების ჩასწორება</translation>
     </message>
@@ -2316,7 +2316,7 @@ of the projection.</source>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="235"/>
       <source>Around X-axis</source>
-      <translation type="unfinished">Around X-axis</translation>
+      <translation>X ღერძის გარშემო</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="254"/>
@@ -2328,7 +2328,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
       <source>Around Y-axis</source>
-      <translation type="unfinished">Around Y-axis</translation>
+      <translation>Y ღერძის გარშემო</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="299"/>
@@ -2340,7 +2340,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="325"/>
       <source>Around Z-axis</source>
-      <translation type="unfinished">Around Z-axis</translation>
+      <translation>Z ღერძის გარშემო</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="344"/>
@@ -2359,17 +2359,17 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
       <source>In X-direction</source>
-      <translation type="unfinished">In X-direction</translation>
+      <translation>X მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="171"/>
       <source>In Y-direction</source>
-      <translation type="unfinished">In Y-direction</translation>
+      <translation>Y მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="203"/>
       <source>In Z-direction</source>
-      <translation type="unfinished">In Z-direction</translation>
+      <translation>Z მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="367"/>
@@ -2432,7 +2432,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../CrossSections.cpp" line="308"/>
       <source>Cannot compute cross-sections</source>
-      <translation type="unfinished">Cannot compute cross-sections</translation>
+      <translation>ჯვარედინი კვეთების გამოთვლა შეუძლებელია</translation>
     </message>
   </context>
   <context>
@@ -2689,7 +2689,7 @@ the size of the resulting STEP file.</source>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="71"/>
-      <location filename="../../DlgExtrusion.cpp" line="240"/>
+      <location filename="../../DlgExtrusion.cpp" line="242"/>
       <source>Select</source>
       <translation>აირჩიეთ</translation>
     </message>
@@ -2816,41 +2816,41 @@ If both lengths are zero, magnitude of direction is used.</source>
       <translation>ფიგურა</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="214"/>
+      <location filename="../../DlgExtrusion.cpp" line="216"/>
       <source>Selecting…</source>
       <translation>არჩევა…</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="462"/>
+      <location filename="../../DlgExtrusion.cpp" line="464"/>
       <source>The document '%1' doesn't exist.</source>
       <translation type="unfinished">The document '%1' doesn't exist.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="511"/>
+      <location filename="../../DlgExtrusion.cpp" line="515"/>
       <source>Creating extrusion failed.
 %1</source>
       <translation>გამოწნევის შექმნა ჩავარდა.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="517"/>
+      <location filename="../../DlgExtrusion.cpp" line="521"/>
       <source>Creating Extrusion failed.
 %1</source>
       <translation>გამოწნევის შექმნის შეცდომა.
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="584"/>
+      <location filename="../../DlgExtrusion.cpp" line="588"/>
       <source>Object not found: %1</source>
       <translation>ობიექტი ნაპოვნი არაა: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="646"/>
+      <location filename="../../DlgExtrusion.cpp" line="650"/>
       <source>No shapes selected for extrusion.</source>
       <translation>გამოწნევისთვის მოხაზულობები არჩეული არაა.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="692"/>
+      <location filename="../../DlgExtrusion.cpp" line="696"/>
       <source>Cannot determine normal vector of shape to be extruded. Use other mode. 
 
 (%1)</source>
@@ -2859,12 +2859,12 @@ If both lengths are zero, magnitude of direction is used.</source>
 (%1)</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="663"/>
+      <location filename="../../DlgExtrusion.cpp" line="667"/>
       <source>Unknown error</source>
       <translation>უცნობი შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="667"/>
+      <location filename="../../DlgExtrusion.cpp" line="671"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
@@ -2873,17 +2873,17 @@ If both lengths are zero, magnitude of direction is used.</source>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="669"/>
+      <location filename="../../DlgExtrusion.cpp" line="673"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
       <translation>მიმართულების რეჟიმი იყენებს წიბოს, მაგრამ მიბმული წიბოები არ არსებობს.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="702"/>
+      <location filename="../../DlgExtrusion.cpp" line="706"/>
       <source>Extrusion direction vector is zero-length. It must be non-zero.</source>
       <translation>გამოწნევის მიმართულების სიგრძე უდრის ნულს. ის არ უნდა იყოს ნული.</translation>
     </message>
     <message>
-      <location filename="../../DlgExtrusion.cpp" line="713"/>
+      <location filename="../../DlgExtrusion.cpp" line="717"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
       <translation>გამოწნევის ჯამური სიგრძე ნულის ტოლია (სიგრძე1 == -სიგრძე2). არ შეიძლება იყოს ნულის ტოლი.</translation>
     </message>
@@ -3610,7 +3610,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1725"/>
       <source>Pitch</source>
-      <translation>ტონი</translation>
+      <translation>ტანგაჟი</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1802"/>
@@ -3904,7 +3904,7 @@ Check one or more edge entities first.</source>
       <translation>მყარი სხეულის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="468"/>
+      <location filename="../../DlgRevolution.cpp" line="474"/>
       <source>Select reference</source>
       <translation>ბმის მონიშვნა</translation>
     </message>
@@ -3914,19 +3914,19 @@ Check one or more edge entities first.</source>
       <translation>სიმეტრიული კუთხე</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="188"/>
+      <location filename="../../DlgRevolution.cpp" line="190"/>
       <source>Object not found: %1</source>
       <translation>ობიექტი ნაპოვნი არაა: %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="269"/>
+      <location filename="../../DlgRevolution.cpp" line="271"/>
       <source>Select a shape for revolution.</source>
       <translation>აირჩიეთ მოსაბრუნებელი მოხაზულობა.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="285"/>
-      <location filename="../../DlgRevolution.cpp" line="290"/>
-      <location filename="../../DlgRevolution.cpp" line="295"/>
+      <location filename="../../DlgRevolution.cpp" line="287"/>
+      <location filename="../../DlgRevolution.cpp" line="292"/>
+      <location filename="../../DlgRevolution.cpp" line="297"/>
       <source>Revolution axis link is invalid.
 
 %1</source>
@@ -3935,23 +3935,23 @@ Check one or more edge entities first.</source>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="295"/>
+      <location filename="../../DlgRevolution.cpp" line="297"/>
       <source>Unknown error</source>
       <translation>უცნობი შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="304"/>
+      <location filename="../../DlgRevolution.cpp" line="306"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
       <translation>მიმართულების ღერძის შემობრუნების კუთხე ნულის ტოლია. ეს არ უნდა ხდებოდეს.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="314"/>
+      <location filename="../../DlgRevolution.cpp" line="316"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
       <translation>სხეულის მობრუნების კუთხე ნულის ტოლია. ეს არ უნდა ხდებოდეს.</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="448"/>
-      <location filename="../../DlgRevolution.cpp" line="452"/>
+      <location filename="../../DlgRevolution.cpp" line="454"/>
+      <location filename="../../DlgRevolution.cpp" line="458"/>
       <source>Creating Revolve failed.
 
 %1</source>
@@ -3960,7 +3960,7 @@ Check one or more edge entities first.</source>
 %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRevolution.cpp" line="464"/>
+      <location filename="../../DlgRevolution.cpp" line="470"/>
       <source>Selecting… (line or arc)</source>
       <translation>მონიშვნა… (ხაზი ან რკალი)</translation>
     </message>
@@ -4088,7 +4088,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="206"/>
       <source>Show final result by default when editing features</source>
-      <translation type="unfinished">Show final result by default when editing features</translation>
+      <translation>საბოლოო შედეგის ნაგულისხმევად ჩვენება თვისებების ჩასწორებისას</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="219"/>
@@ -4098,7 +4098,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="235"/>
       <source>Highlight the profile used to create features</source>
-      <translation type="unfinished">Highlight the profile used to create features</translation>
+      <translation>თვისებების შექმნისთვის გამოყენებული პროფილების გამოკვეთა</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="257"/>
@@ -4113,12 +4113,12 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="276"/>
       <source>Show interactive draggers when editing features</source>
-      <translation type="unfinished">Show interactive draggers when editing features</translation>
+      <translation>ინტერაქტიული გადამთრევების ჩვენება თვისებების ჩასწორებისას</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="292"/>
       <source>Disable recompute while dragging</source>
-      <translation type="unfinished">Disable recompute while dragging</translation>
+      <translation>გადათრევისას გადათვლის გამორთვა</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="172"/>
@@ -4865,22 +4865,22 @@ of the object being attached</source>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
       <source>In X-direction</source>
-      <translation type="unfinished">In X-direction</translation>
+      <translation>X მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="172"/>
       <source>In Y-direction</source>
-      <translation type="unfinished">In Y-direction</translation>
+      <translation>Y მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="208"/>
       <source>In Z-direction</source>
-      <translation type="unfinished">In Z-direction</translation>
+      <translation>Z მიმართულებით</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="244"/>
       <source>Around X-axis</source>
-      <translation type="unfinished">Around X-axis</translation>
+      <translation>X ღერძის გარშემო</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="257"/>
@@ -4892,7 +4892,7 @@ of the object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="283"/>
       <source>Around Y-axis</source>
-      <translation type="unfinished">Around Y-axis</translation>
+      <translation>Y ღერძის გარშემო</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="296"/>
@@ -4904,7 +4904,7 @@ of the object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="322"/>
       <source>Around Z-axis</source>
-      <translation type="unfinished">Around Z-axis</translation>
+      <translation>Z ღერძის გარშემო</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="335"/>
@@ -4924,82 +4924,82 @@ of the object being attached.</translation>
       <translation>გვერდებისთვის ადგილის გაცვლა</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="327"/>
+      <location filename="../../TaskAttacher.cpp" line="352"/>
       <source>OCC error: %1</source>
       <translation>OCC-ის შეცდომა: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="330"/>
+      <location filename="../../TaskAttacher.cpp" line="355"/>
       <source>unknown error</source>
       <translation>გაურკვეველი შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="333"/>
+      <location filename="../../TaskAttacher.cpp" line="358"/>
       <source>Attachment mode failed: %1</source>
       <translation>მიმაგრების რეჟიმის შეცდომა: %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="338"/>
+      <location filename="../../TaskAttacher.cpp" line="363"/>
       <source>Not attached</source>
       <translation>არაა მიმაგრებული</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="343"/>
+      <location filename="../../TaskAttacher.cpp" line="368"/>
       <source>Attached with mode %1</source>
       <translation>მიბმულია რეჟიმში %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="347"/>
+      <location filename="../../TaskAttacher.cpp" line="372"/>
       <source>Attachment offset (in its local coordinate system):</source>
       <translation>მიმაგრების წანაცვლება (მის ლოკალურ კოორდინატების სისტემაში):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="347"/>
+      <location filename="../../TaskAttacher.cpp" line="372"/>
       <source>Attachment offset (inactive - not attached):</source>
       <translation>მიმაგრების წანაცვლება (არააქტიური - არაფერია მიმაგრებული):</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="882"/>
+      <location filename="../../TaskAttacher.cpp" line="907"/>
       <source>Selecting…</source>
       <translation>არჩევა…</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="802"/>
+      <location filename="../../TaskAttacher.cpp" line="827"/>
       <source>Face</source>
       <translation>ზედაპირი</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="809"/>
+      <location filename="../../TaskAttacher.cpp" line="834"/>
       <source>Edge</source>
       <translation>წიბო</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="816"/>
+      <location filename="../../TaskAttacher.cpp" line="841"/>
       <source>Vertex</source>
       <translation>წვერო</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="888"/>
+      <location filename="../../TaskAttacher.cpp" line="913"/>
       <source>Reference%1</source>
       <translation>ორიენტირი %1</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="935"/>
+      <location filename="../../TaskAttacher.cpp" line="960"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
       <translation>არაა ჩასწორებადი იმიტომ, რომ AttachmentOffset-ის ტრიალი ჩაკეტილი გამონათქვამებით.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1002"/>
+      <location filename="../../TaskAttacher.cpp" line="1027"/>
       <source>Reference combinations:</source>
       <translation>ბმის კომბინაციები:</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1019"/>
+      <location filename="../../TaskAttacher.cpp" line="1044"/>
       <source>%1 (add %2)</source>
       <translation>%1 (%2-ის დამატება)</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1025"/>
+      <location filename="../../TaskAttacher.cpp" line="1050"/>
       <source>%1 (add more references)</source>
       <translation>%1 (დაამატეთ მეტი ბმა)</translation>
     </message>
@@ -5298,12 +5298,12 @@ Individual boolean operation checks:</source>
   <context>
     <name>PartGui::TaskDlgAttacher</name>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1249"/>
+      <location filename="../../TaskAttacher.cpp" line="1274"/>
       <source>Attachment</source>
       <translation>დანართი</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="1310"/>
+      <location filename="../../TaskAttacher.cpp" line="1335"/>
       <source>Datum dialog: input error</source>
       <translation>სიდიდის დიალოგი: შეყვანის შეცდომა</translation>
     </message>
@@ -5639,8 +5639,8 @@ Continue?</source>
       <translation>მონიშნეთ ან 2 წიბო, ან 2 პოლიხაზი.</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="70"/>
-      <location filename="../../TaskAttacher.cpp" line="100"/>
+      <location filename="../../TaskAttacher.cpp" line="73"/>
+      <location filename="../../TaskAttacher.cpp" line="103"/>
       <source>No reference selected</source>
       <translation>მიბმა არჩეული არაა</translation>
     </message>
@@ -5980,7 +5980,7 @@ Continue?</source>
       <translation>მიმაგრების რედაქტორი</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="891"/>
+      <location filename="../../ViewProviderExt.cpp" line="894"/>
       <source>Appearance per Face</source>
       <translation>გარეგნობა თითოეული ზედაპირისთვის</translation>
     </message>
@@ -6025,7 +6025,7 @@ Continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Boolean Tools</source>
-      <translation type="unfinished">Boolean Tools</translation>
+      <translation>ლოგიკური ხელსაწყოები</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
@@ -6976,7 +6976,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="374"/>
       <source>Supports making planar faces with holes and holes as faces</source>
-      <translation type="unfinished">Supports making planar faces with holes and holes as faces</translation>
+      <translation>აქვს ნახვრეტიანი ბრტყელი სიბრტყეების და ნახვრეტების, როგორც ზედაპირების შექმნის მხარდაჭერა</translation>
     </message>
   </context>
   <context>
@@ -7083,7 +7083,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="43"/>
       <source>Reverse the direction of the pattern.</source>
-      <translation type="unfinished">Reverse the direction of the pattern.</translation>
+      <translation>შაბლონის მიმართულების რევერსი.</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="61"/>
@@ -7109,7 +7109,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="134"/>
       <source>Add spacing to create spacing patterns.</source>
-      <translation type="unfinished">Add spacing to create spacing patterns.</translation>
+      <translation>დაამატეთ დაშორება დაშორების შაბლონების შესაქმნელად.</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="151"/>
@@ -7130,13 +7130,13 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="336"/>
       <source>Remove this spacing definition.</source>
-      <translation type="unfinished">Remove this spacing definition.</translation>
+      <translation>ამ დაშორების აღწერის წაშლა.</translation>
     </message>
   </context>
   <context>
     <name>PartGui::ViewProviderPreviewExtension</name>
     <message>
-      <location filename="../../ViewProviderPreviewExtension.cpp" line="243"/>
+      <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
       <translation>მინიატურის რენდერი ჩავარდა: %1. ეს, ჩვეულებრივ, მოდელის შეცდომას ნიშნავს.</translation>
     </message>

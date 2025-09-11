@@ -106,7 +106,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="14"/>
       <source>New Job</source>
-      <translation type="unfinished">New Job</translation>
+      <translation>Neuer Auftrag</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="23"/>
@@ -126,7 +126,7 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="14"/>
       <source>Base Model Selection</source>
-      <translation type="unfinished">Base Model Selection</translation>
+      <translation>Basismodellauswahl</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>
@@ -196,12 +196,12 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="85"/>
       <source>Operation heights</source>
-      <translation type="unfinished">Operation heights</translation>
+      <translation>Bearbeitungshöhen</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="95"/>
       <source>Operation depths</source>
-      <translation type="unfinished">Operation depths</translation>
+      <translation>Bearbeitungstiefen</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="105"/>
@@ -421,12 +421,12 @@ Für Rohmaterial aus dem Begrenzungsrahmen des Basis-Objekts bedeutet es zusätz
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="99"/>
       <source>Add new tool table</source>
-      <translation type="unfinished">Add new tool table</translation>
+      <translation>Neue Werkzeugtabelle hinzufügen</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="146"/>
       <source>Save the current library</source>
-      <translation type="unfinished">Save the current library</translation>
+      <translation>Aktuelle Bibliothek speichern</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="197"/>
@@ -451,17 +451,17 @@ Für Rohmaterial aus dem Begrenzungsrahmen des Basis-Objekts bedeutet es zusätz
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="90"/>
       <source>Notes</source>
-      <translation type="unfinished">Notes</translation>
+      <translation>Notizen</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="107"/>
       <source>Coating</source>
-      <translation type="unfinished">Coating</translation>
+      <translation>Beschichtung</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="117"/>
       <source>Hardness</source>
-      <translation type="unfinished">Hardness</translation>
+      <translation>Härte</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="127"/>
@@ -471,7 +471,7 @@ Für Rohmaterial aus dem Begrenzungsrahmen des Basis-Objekts bedeutet es zusätz
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="140"/>
       <source>Supplier</source>
-      <translation type="unfinished">Supplier</translation>
+      <translation>Lieferant</translation>
     </message>
   </context>
   <context>
@@ -499,7 +499,7 @@ Für Rohmaterial aus dem Begrenzungsrahmen des Basis-Objekts bedeutet es zusätz
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="29"/>
       <source>Tool controller</source>
-      <translation type="unfinished">Tool controller</translation>
+      <translation>Werkzeugsteuerung</translation>
     </message>
   </context>
   <context>
@@ -535,12 +535,12 @@ Für Rohmaterial aus dem Begrenzungsrahmen des Basis-Objekts bedeutet es zusätz
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="45"/>
       <source>Create box</source>
-      <translation type="unfinished">Create box</translation>
+      <translation>Box erstellen</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="50"/>
       <source>Create cylinder</source>
-      <translation type="unfinished">Create cylinder</translation>
+      <translation>Zylinder erstellen</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
@@ -615,7 +615,7 @@ Für Rohmaterial aus dem Begrenzungsrahmen des Basis-Objekts bedeutet es zusätz
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="182"/>
       <source>Radius of the cylinder</source>
-      <translation type="unfinished">Radius of the cylinder</translation>
+      <translation>Radius des Zylinders</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="189"/>
@@ -626,7 +626,7 @@ Für Rohmaterial aus dem Begrenzungsrahmen des Basis-Objekts bedeutet es zusätz
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="196"/>
       <source>Height of the cylinder</source>
-      <translation type="unfinished">Height of the cylinder</translation>
+      <translation>Höhe des Zylinders</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="209"/>
@@ -636,7 +636,7 @@ Für Rohmaterial aus dem Begrenzungsrahmen des Basis-Objekts bedeutet es zusätz
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="216"/>
       <source>Length of the box</source>
-      <translation type="unfinished">Length of the box</translation>
+      <translation>Länge der Box</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="223"/>
@@ -646,12 +646,12 @@ Für Rohmaterial aus dem Begrenzungsrahmen des Basis-Objekts bedeutet es zusätz
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="230"/>
       <source>Width of the box</source>
-      <translation type="unfinished">Width of the box</translation>
+      <translation>Breite der Box</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="244"/>
       <source>Height of the box</source>
-      <translation type="unfinished">Height of the box</translation>
+      <translation>Höhe der Box</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
@@ -787,7 +787,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="60"/>
       <source>Edit selected location</source>
-      <translation type="unfinished">Edit selected location</translation>
+      <translation>Ausgewählten Ort bearbeiten</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="70"/>
@@ -808,7 +808,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
       <location filename="../panels/SetupGlobal.ui" line="36"/>
       <source>Start depth</source>
-      <translation type="unfinished">Start depth</translation>
+      <translation>Starttiefe</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
@@ -826,7 +826,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageDepthsEdit.ui" line="85"/>
       <location filename="../panels/SetupGlobal.ui" line="52"/>
       <source>Final depth</source>
-      <translation type="unfinished">Final depth</translation>
+      <translation>Endtiefe</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="92"/>
@@ -843,7 +843,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageDepthsEdit.ui" line="131"/>
       <location filename="../panels/SetupGlobal.ui" line="68"/>
       <source>Step down</source>
-      <translation type="unfinished">Step down</translation>
+      <translation>Schritt runter</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="138"/>
@@ -868,7 +868,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="57"/>
       <source>Max diameter</source>
-      <translation type="unfinished">Max diameter</translation>
+      <translation>Maximaldurchmesser</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="80"/>
@@ -878,7 +878,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="24"/>
       <source>Safe height</source>
-      <translation type="unfinished">Safe height</translation>
+      <translation>Sichere Höhe</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="31"/>
@@ -979,7 +979,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
       <source>Tool controller</source>
-      <translation type="unfinished">Tool controller</translation>
+      <translation>Werkzeugsteuerung</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="43"/>
@@ -998,7 +998,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/PageOpVcarveEdit.ui" line="57"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="53"/>
       <source>Edit Tool Controller</source>
-      <translation type="unfinished">Edit Tool Controller</translation>
+      <translation>Werkzeugsteuerung bearbeiten</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="71"/>
@@ -1178,7 +1178,7 @@ This option changes that behavior to cut each discrete area to its full depth be
       <location filename="../panels/PageOpDrillingEdit.ui" line="102"/>
       <location filename="../panels/PageOpTappingEdit.ui" line="65"/>
       <source>Extend depth</source>
-      <translation type="unfinished">Extend depth</translation>
+      <translation>Tiefe erweitern</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="122"/>
@@ -1288,7 +1288,7 @@ This option changes that behavior to cut each discrete area to its full depth be
       <location filename="../panels/PageOpHelixEdit.ui" line="144"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="108"/>
       <source>Extra offset</source>
-      <translation type="unfinished">Extra offset</translation>
+      <translation>Extra Versatz</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="125"/>
@@ -1340,7 +1340,7 @@ This option changes that behavior to cut each discrete area to its full depth be
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="22"/>
       <source>Enable extensions</source>
-      <translation type="unfinished">Enable extensions</translation>
+      <translation>Erweiterungen aktivieren</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="65"/>
@@ -1355,7 +1355,7 @@ This option changes that behavior to cut each discrete area to its full depth be
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="78"/>
       <source>Default length</source>
-      <translation type="unfinished">Default length</translation>
+      <translation>Standardlänge</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="85"/>
@@ -1514,7 +1514,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpPocketFullEdit.ui" line="234"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="264"/>
       <source>Use start point</source>
-      <translation type="unfinished">Use start point</translation>
+      <translation>Startpunkt verwenden</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="241"/>
@@ -1569,17 +1569,17 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="108"/>
       <source>X offset</source>
-      <translation type="unfinished">X offset</translation>
+      <translation>X-Versatz</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="122"/>
       <source>Y offset</source>
-      <translation type="unfinished">Y offset</translation>
+      <translation>Y-Versatz</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="145"/>
       <source>File name</source>
-      <translation type="unfinished">File name</translation>
+      <translation>Dateiname</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="139"/>
@@ -1616,7 +1616,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="70"/>
       <source>Cut side</source>
-      <translation type="unfinished">Cut side</translation>
+      <translation>Frässeite</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="77"/>
@@ -1626,7 +1626,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="128"/>
       <source>Number of passes</source>
-      <translation type="unfinished">Number of passes</translation>
+      <translation>Anzahl der Durchgänge</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="138"/>
@@ -1636,7 +1636,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="145"/>
       <source>Pass stepover</source>
-      <translation type="unfinished">Pass stepover</translation>
+      <translation>Durchgänge überspringen</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="158"/>
@@ -1671,7 +1671,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="204"/>
       <source>Process circles</source>
-      <translation type="unfinished">Process circles</translation>
+      <translation>Kreise verarbeiten</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="211"/>
@@ -1730,23 +1730,23 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSlotEdit.ui" line="114"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="186"/>
       <source>Lowest point</source>
-      <translation type="unfinished">Lowest point</translation>
+      <translation>Tiefster Punkt</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="119"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="191"/>
       <source>Highest point</source>
-      <translation type="unfinished">Highest point</translation>
+      <translation>Höchster Punkt</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="124"/>
       <source>Long edge</source>
-      <translation type="unfinished">Long edge</translation>
+      <translation>Lange Kante</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="129"/>
       <source>Short edge</source>
-      <translation type="unfinished">Short edge</translation>
+      <translation>Kurze Kante</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="169"/>
@@ -1756,12 +1756,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="229"/>
       <source>No base geometry Selected</source>
-      <translation type="unfinished">No base geometry Selected</translation>
+      <translation>Keine Basisgeometrie ausgewählt</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="235"/>
       <source>No base geometry selected</source>
-      <translation type="unfinished">No base geometry selected</translation>
+      <translation>Keine Basisgeometrie ausgewählt</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="248"/>
@@ -1783,12 +1783,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSurfaceEdit.ui" line="98"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="105"/>
       <source>Layer mode</source>
-      <translation type="unfinished">Layer mode</translation>
+      <translation>Ebenenmodus</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="381"/>
       <source>Path orientation</source>
-      <translation type="unfinished">Path orientation</translation>
+      <translation>Pfadausrichtung</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="388"/>
@@ -1798,7 +1798,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="392"/>
       <source>Start to end</source>
-      <translation type="unfinished">Start to end</translation>
+      <translation>Anfang bis Ende</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="298"/>
@@ -1873,7 +1873,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSurfaceEdit.ui" line="112"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="124"/>
       <source>Cut pattern</source>
-      <translation type="unfinished">Cut pattern</translation>
+      <translation>Fräsmuster</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="119"/>
@@ -1935,7 +1935,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="222"/>
       <source>Stepover</source>
-      <translation type="unfinished">Stepover</translation>
+      <translation>Überspringen</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="261"/>
@@ -2181,7 +2181,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="36"/>
       <source>The tool and its settings to be used for this operation.</source>
-      <translation type="unfinished">The tool and its settings to be used for this operation.</translation>
+      <translation>Das Werkzeug und seine Einstellungen, das für diese Bearbeitung verwendet werden soll.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="155"/>
@@ -2307,7 +2307,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../panels/ToolEditor.ui" line="67"/>
       <source>Length offset</source>
-      <translation type="unfinished">Length offset</translation>
+      <translation>Längenversatz</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="103"/>
@@ -2317,7 +2317,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../panels/ToolEditor.ui" line="110"/>
       <source>Corner radius</source>
-      <translation type="unfinished">Corner radius</translation>
+      <translation>Eckenradius</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="117"/>
@@ -2348,7 +2348,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="26"/>
       <source>Default width</source>
-      <translation type="unfinished">Default width</translation>
+      <translation>Standardbreite</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="33"/>
@@ -2362,7 +2362,7 @@ Wenn die Breite auf 0 gesetzt ist, wird die Aufbereitung versuchen, einen vernü
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="42"/>
       <source>Default height</source>
-      <translation type="unfinished">Default height</translation>
+      <translation>Standardhöhe</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="49"/>
@@ -2376,7 +2376,7 @@ Wenn die angegebene Höhe 0 ist, wird die halbe Höhe des Teils verwendet. Ist d
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="58"/>
       <source>Default angle</source>
-      <translation type="unfinished">Default angle</translation>
+      <translation>Standardwinkel</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="65"/>
@@ -2386,7 +2386,7 @@ Wenn die angegebene Höhe 0 ist, wird die halbe Höhe des Teils verwendet. Ist d
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="87"/>
       <source>Default radius</source>
-      <translation type="unfinished">Default radius</translation>
+      <translation>Standardradius</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="112"/>
@@ -2588,17 +2588,17 @@ Der Umgang mit Namenskonflikten, kann in der unten stehenden Richtlinie zum Spei
     <message>
       <location filename="../preferences/PathJob.ui" line="117"/>
       <source>Default curve accuracy</source>
-      <translation type="unfinished">Default curve accuracy</translation>
+      <translation>Standard-Kurvengenauigkeit</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="154"/>
       <source>Post processor</source>
-      <translation type="unfinished">Post processor</translation>
+      <translation>Post-Prozessor</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="177"/>
       <source>Default path</source>
-      <translation type="unfinished">Default path</translation>
+      <translation>Standardpfad</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="230"/>
@@ -2608,12 +2608,12 @@ Der Umgang mit Namenskonflikten, kann in der unten stehenden Richtlinie zum Spei
     <message>
       <location filename="../preferences/PathJob.ui" line="251"/>
       <source>Open file dialog</source>
-      <translation type="unfinished">Open file dialog</translation>
+      <translation>Dateidialog öffnen</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="256"/>
       <source>Open file dialog on conflict</source>
-      <translation type="unfinished">Open file dialog on conflict</translation>
+      <translation>Dateidialog im Falle eines Konflikts öffnen</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="288"/>
@@ -2623,7 +2623,7 @@ Der Umgang mit Namenskonflikten, kann in der unten stehenden Richtlinie zum Spei
     <message>
       <location filename="../preferences/PathJob.ui" line="305"/>
       <source>Default post processor</source>
-      <translation type="unfinished">Default post processor</translation>
+      <translation>Standard-Post-Prozessor</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="312"/>
@@ -2633,7 +2633,7 @@ Der Umgang mit Namenskonflikten, kann in der unten stehenden Richtlinie zum Spei
     <message>
       <location filename="../preferences/PathJob.ui" line="325"/>
       <source>Default arguments</source>
-      <translation type="unfinished">Default arguments</translation>
+      <translation>Standardargumente</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="332"/>
@@ -2643,12 +2643,12 @@ Der Umgang mit Namenskonflikten, kann in der unten stehenden Richtlinie zum Spei
     <message>
       <location filename="../preferences/PathJob.ui" line="395"/>
       <source>Create box</source>
-      <translation type="unfinished">Create box</translation>
+      <translation>Box erstellen</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="400"/>
       <source>Create cylinder</source>
-      <translation type="unfinished">Create cylinder</translation>
+      <translation>Zylinder erstellen</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="405"/>
@@ -2952,7 +2952,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../../TaskDlgPathCompound.ui" line="14"/>
       <source>Paths List</source>
-      <translation type="unfinished">Paths List</translation>
+      <translation>Pfadliste</translation>
     </message>
     <message>
       <location filename="../../TaskDlgPathCompound.ui" line="20"/>
@@ -3152,7 +3152,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="63"/>
       <source>Pivot height</source>
-      <translation type="unfinished">Pivot height</translation>
+      <translation>Pivot-Höhe</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="70"/>
@@ -3269,7 +3269,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <location filename="../panels/TaskCAMSimulator.ui" line="31"/>
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
       <source>Accuracy</source>
-      <translation type="unfinished">Accuracy</translation>
+      <translation>Genauigkeit</translation>
     </message>
     <message>
       <location filename="../panels/TaskCAMSimulator.ui" line="86"/>
@@ -3529,12 +3529,12 @@ FreeCAD hat keine Kenntnis davon, wo ein bestimmtes Koordinatensystem innerhalb 
     <message>
       <location filename="../panels/PathEdit.ui" line="118"/>
       <source>Template export</source>
-      <translation type="unfinished">Template export</translation>
+      <translation>Vorlagenexport</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="134"/>
       <source>Output file</source>
-      <translation type="unfinished">Output file</translation>
+      <translation>Ausgabedatei</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="196"/>
@@ -3544,7 +3544,7 @@ FreeCAD hat keine Kenntnis davon, wo ein bestimmtes Koordinatensystem innerhalb 
     <message>
       <location filename="../panels/PathEdit.ui" line="235"/>
       <source>Order by</source>
-      <translation type="unfinished">Order by</translation>
+      <translation>Sortieren nach</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="397"/>
@@ -3554,12 +3554,12 @@ FreeCAD hat keine Kenntnis davon, wo ein bestimmtes Koordinatensystem innerhalb 
     <message>
       <location filename="../panels/PathEdit.ui" line="478"/>
       <source>Create box</source>
-      <translation type="unfinished">Create box</translation>
+      <translation>Box erstellen</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="483"/>
       <source>Create cylinder</source>
-      <translation type="unfinished">Create cylinder</translation>
+      <translation>Zylinder erstellen</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="488"/>
@@ -3690,22 +3690,22 @@ FreeCAD hat keine Kenntnis davon, wo ein bestimmtes Koordinatensystem innerhalb 
     <message>
       <location filename="../panels/PathEdit.ui" line="1041"/>
       <source>Default values</source>
-      <translation type="unfinished">Default values</translation>
+      <translation>Standardwerte</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1053"/>
       <source>Start depth</source>
-      <translation type="unfinished">Start depth</translation>
+      <translation>Starttiefe</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1069"/>
       <source>Final depth</source>
-      <translation type="unfinished">Final depth</translation>
+      <translation>Endtiefe</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1085"/>
       <source>Step down</source>
-      <translation type="unfinished">Step down</translation>
+      <translation>Schritt runter</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1189"/>
@@ -3867,12 +3867,12 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../panels/PathEdit.ui" line="1270"/>
       <source>Horizontal feed</source>
-      <translation type="unfinished">Horizontal feed</translation>
+      <translation>Horizontaler Vorschub</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1282"/>
       <source>Vertical feed</source>
-      <translation type="unfinished">Vertical feed</translation>
+      <translation>Vertikaler Vorschub</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1291"/>
@@ -4238,6 +4238,13 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
       <translation>Knochen die nicht erweitert wurden</translation>
     </message>
     <message>
+      <location filename="../../../Path/Dressup/DogboneII.py" line="265"/>
+      <source>Create bones only for outer closed profiles
+Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset pattern</source>
+      <translation type="unfinished">Create bones only for outer closed profiles
+Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset pattern</translation>
+    </message>
+    <message>
       <location filename="../../../Path/Dressup/Tags.py" line="910"/>
       <source>Width of tags.</source>
       <translation>Breite der Haltestege.</translation>
@@ -4285,7 +4292,7 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="42"/>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="58"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="60"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="70"/>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="169"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="62"/>
       <source>The base toolpath to modify</source>
@@ -4307,67 +4314,90 @@ Standard: "3 mm" - Das Werkzeug sollte in diesem Fall auf Verbindungsfahrten imm
       <translation>Anhebehöhe bei Eckenprozess</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="66"/>
-      <source>Calculate roll-on to toolpath</source>
-      <translation>Anfahrt des Werkzeugwegs berechnen</translation>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="76"/>
+      <source>Modify lead in to toolpath</source>
+      <translation type="unfinished">Modify lead in to toolpath</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="72"/>
-      <source>Calculate roll-off from toolpath</source>
-      <translation>Wegfahrt des Werkzeugwegs berechnen</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="78"/>
-      <source>Keep the tool down in toolpath</source>
-      <translation type="unfinished">Keep the tool down in toolpath</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="84"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="208"/>
-      <source>Length or radius of the approach</source>
-      <translation type="unfinished">Length or radius of the approach</translation>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="82"/>
+      <source>Modify lead out from toolpath</source>
+      <translation type="unfinished">Modify lead out from toolpath</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="90"/>
-      <source>Length or radius of the exit</source>
-      <translation type="unfinished">Length or radius of the exit</translation>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="350"/>
+      <source>Set distance which will attempts to avoid unnecessary retractions</source>
+      <translation type="unfinished">Set distance which will attempts to avoid unnecessary retractions</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="96"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="186"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="231"/>
       <source>The style of motion into the toolpath</source>
       <translation type="unfinished">The style of motion into the toolpath</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="103"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="197"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="243"/>
       <source>The style of motion out of the toolpath</source>
       <translation type="unfinished">The style of motion out of the toolpath</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="110"/>
-      <source>Extends lead in distance</source>
-      <translation type="unfinished">Extends lead in distance</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="116"/>
-      <source>Extends lead out distance</source>
-      <translation type="unfinished">Extends lead out distance</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="128"/>
-      <source>Apply Lead in/out to layers within an operation</source>
-      <translation type="unfinished">Apply Lead in/out to layers within an operation</translation>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="254"/>
+      <source>Angle of the Lead-In (1..90)</source>
+      <translation type="unfinished">Angle of the Lead-In (1..90)</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="122"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="262"/>
+      <source>Angle of the Lead-Out (1..90)</source>
+      <translation type="unfinished">Angle of the Lead-Out (1..90)</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="128"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="289"/>
+      <source>Determine length of the Lead-In</source>
+      <translation type="unfinished">Determine length of the Lead-In</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="134"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="299"/>
+      <source>Determine length of the Lead-Out</source>
+      <translation type="unfinished">Determine length of the Lead-Out</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="140"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="319"/>
+      <source>Invert Lead-In direction</source>
+      <translation type="unfinished">Invert Lead-In direction</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="146"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="326"/>
+      <source>Invert Lead-Out direction</source>
+      <translation type="unfinished">Invert Lead-Out direction</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="152"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="333"/>
+      <source>Move start point</source>
+      <translation type="unfinished">Move start point</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="158"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="340"/>
+      <source>Move end point</source>
+      <translation type="unfinished">Move end point</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="110"/>
       <source>Perform plunges with G0</source>
       <translation>Schnelles Eintauchen mit G0</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="175"/>
       <source>Angle of ramp</source>
-      <translation type="unfinished">Angle of ramp</translation>
+      <translation>Winkel der Rampe</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="181"/>
@@ -4897,7 +4927,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="164"/>
-      <location filename="../../../Path/Op/Drilling.py" line="242"/>
+      <location filename="../../../Path/Op/Drilling.py" line="241"/>
       <source>Controls tool retract height between holes in same op, Default=G98: safety height
 Use property KeepToolDown to change this</source>
       <translation type="unfinished">Controls tool retract height between holes in same op, Default=G98: safety height
@@ -4915,7 +4945,7 @@ Use property KeepToolDown to change this</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="188"/>
-      <location filename="../../../Path/Op/Drilling.py" line="231"/>
+      <location filename="../../../Path/Op/Drilling.py" line="230"/>
       <location filename="../../../Path/Op/Gui/Drilling.py" line="150"/>
       <source>Apply G99 retraction: only retract to RetractHeight between holes in this operation</source>
       <translation>G99 Rückzug anwenden: Rückzug nur auf RetractHeight zwischen Löchern in dieser Operation</translation>
@@ -5617,7 +5647,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="285"/>
       <source>Tool material</source>
-      <translation type="unfinished">Tool material</translation>
+      <translation>Werkzeugmaterial</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="688"/>
@@ -5703,7 +5733,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="72"/>
       <source>User assigned label</source>
-      <translation type="unfinished">User assigned label</translation>
+      <translation>Benutzerzugewiesene Bezeichnung</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Stop.py" line="40"/>
@@ -6253,12 +6283,12 @@ Wenn es notwendig ist, die endgültige Tiefe manuell einzustellen, bitte einen a
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1419"/>
       <source>Start Point Selection</source>
-      <translation type="unfinished">Start Point Selection</translation>
+      <translation>Startpunktauswahl</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1420"/>
       <source>Selects the start point</source>
-      <translation type="unfinished">Selects the start point</translation>
+      <translation>Wählt den Startpunkt</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1467"/>
@@ -6334,7 +6364,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Op/Custom.py" line="215"/>
       <source>Please check lines: %s</source>
-      <translation type="unfinished">Please check lines: %s</translation>
+      <translation>Bitte überprüfe Zeile: %s</translation>
     </message>
   </context>
   <context>
@@ -6391,139 +6421,161 @@ Abbruch der OP-Erstellung</translation>
   <context>
     <name>CAM_DressupLeadInOut</name>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="28"/>
-      <source>Enable lead-in move</source>
-      <translation type="unfinished">Enable lead-in move</translation>
-    </message>
-    <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="31"/>
-      <source>Enable lead-in</source>
-      <translation type="unfinished">Enable lead-in</translation>
-    </message>
-    <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="38"/>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="112"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="37"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="155"/>
       <source>Style</source>
       <translation>Stil</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="61"/>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="135"/>
-      <source>Length/radius</source>
-      <translation type="unfinished">Length/radius</translation>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="26"/>
+      <source>Lead In</source>
+      <translation type="unfinished">Lead In</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="68"/>
-      <source>Length or radius of the lead-in</source>
-      <translation type="unfinished">Length or radius of the lead-in</translation>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="60"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="178"/>
+      <source>Radius/length (% tool radius)</source>
+      <translation type="unfinished">Radius/length (% tool radius)</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="88"/>
-      <source>Extends the lead-in distance</source>
-      <translation type="unfinished">Extends the lead-in distance</translation>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="67"/>
+      <source>Length of the Lead-in, as a percentage of tool radius</source>
+      <translation type="unfinished">Length of the Lead-in, as a percentage of tool radius</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="102"/>
-      <source>Enable lead-out move</source>
-      <translation type="unfinished">Enable lead-out move</translation>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="89"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="207"/>
+      <source>Angle</source>
+      <translation>Winkel</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="105"/>
-      <source>Enable lead out</source>
-      <translation type="unfinished">Enable lead out</translation>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="96"/>
+      <source>Angular extent of the lead in arc (degrees)</source>
+      <translation type="unfinished">Angular extent of the lead in arc (degrees)</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="142"/>
-      <source>Length or radius of the lead-out</source>
-      <translation type="unfinished">Length or radius of the lead-out</translation>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="112"/>
+      <source>Offset Entrance Location</source>
+      <translation type="unfinished">Offset Entrance Location</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="162"/>
-      <source>Extends the lead-out distance</source>
-      <translation type="unfinished">Extends the lead-out distance</translation>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="132"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="250"/>
+      <source>Invert Direction</source>
+      <translation type="unfinished">Invert Direction</translation>
+    </message>
+    <message>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="144"/>
+      <source>Lead Out</source>
+      <translation type="unfinished">Lead Out</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="185"/>
+      <source>Length of the Lead-out, as a percentage of tool radius</source>
+      <translation type="unfinished">Length of the Lead-out, as a percentage of tool radius</translation>
+    </message>
+    <message>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="214"/>
+      <source>Angular extent of the lead out arc (degrees)</source>
+      <translation type="unfinished">Angular extent of the lead out arc (degrees)</translation>
+    </message>
+    <message>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="230"/>
+      <source>Offset Exit Location</source>
+      <translation type="unfinished">Offset Exit Location</translation>
+    </message>
+    <message>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="273"/>
       <source>Rapid plunge</source>
       <translation type="unfinished">Rapid plunge</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="192"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="280"/>
       <source>Apply lead-in/out on all layers</source>
       <translation type="unfinished">Apply lead-in/out on all layers</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="195"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="283"/>
       <source>Include layers</source>
-      <translation type="unfinished">Include layers</translation>
+      <translation>Ebenen einbeziehen</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="205"/>
-      <source>Keep tool down</source>
-      <translation type="unfinished">Keep tool down</translation>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="290"/>
+      <source>Retract Threshold</source>
+      <translation type="unfinished">Retract Threshold</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="81"/>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="155"/>
-      <source>Extend</source>
-      <translation>Erweitern</translation>
-    </message>
-    <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="182"/>
+      <location filename="../panels/DressUpLeadInOutEdit.ui" line="270"/>
       <source>Plunge at rapid speed</source>
       <translation>Schnelles Eintauchen</translation>
     </message>
     <message>
-      <location filename="../panels/DressUpLeadInOutEdit.ui" line="202"/>
-      <source>Keep the tool down in the path</source>
-      <translation>Werkzeug auf dem Pfad halten</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="51"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="176"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="50"/>
       <source>Arc</source>
       <translation>Kreisbogen</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="52"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="177"/>
-      <source>Tangent</source>
-      <translation>Tangential</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="53"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="178"/>
-      <source>Perpendicular</source>
-      <translation>Rechtwinklig</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="161"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="167"/>
-      <source>Length/radius positive not Null</source>
-      <translation type="unfinished">Length/radius positive not Null</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="489"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1191"/>
       <source>Lead In/Out</source>
       <translation>An/Abfahrt</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="493"/>
-      <source>Creates a cutter radius compensation G41/G42 entry dressup object from a selected path</source>
-      <translation type="unfinished">Creates a cutter radius compensation G41/G42 entry dressup object from a selected path</translation>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="51"/>
+      <source>Line</source>
+      <translation>Linie</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="506"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="53"/>
+      <source>Arc3d</source>
+      <translation type="unfinished">Arc3d</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="54"/>
+      <source>ArcZ</source>
+      <translation type="unfinished">ArcZ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="55"/>
+      <source>Helix</source>
+      <translation>Wendel</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="56"/>
+      <source>Line3d</source>
+      <translation type="unfinished">Line3d</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="57"/>
+      <source>LineZ</source>
+      <translation type="unfinished">LineZ</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="58"/>
+      <source>No Retract</source>
+      <translation type="unfinished">No Retract</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="59"/>
+      <source>Vertical</source>
+      <translation>Vertikal</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1195"/>
+      <source>Creates entry and exit motions for a selected path</source>
+      <translation type="unfinished">Creates entry and exit motions for a selected path</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1208"/>
       <source>Select one toolpath object</source>
       <translation type="unfinished">Select one toolpath object</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="515"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1217"/>
       <source>Select a Profile object</source>
       <translation type="unfinished">Select a Profile object</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="511"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1213"/>
       <source>The selected object is not a toolpath</source>
       <translation>Das ausgewählte Objekt ist kein Werkzeugweg</translation>
     </message>
@@ -6659,7 +6711,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="579"/>
       <source>Drag Knife</source>
-      <translation type="unfinished">Drag Knife</translation>
+      <translation>Ziehe Messer</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="583"/>
@@ -6957,12 +7009,12 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="57"/>
       <source>New Job</source>
-      <translation type="unfinished">New Job</translation>
+      <translation>Neuer Auftrag</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="59"/>
       <source>Creates a CAM job</source>
-      <translation type="unfinished">Creates a CAM job</translation>
+      <translation>Erzeugt einen CAM-Auftrag</translation>
     </message>
   </context>
   <context>
@@ -6990,7 +7042,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="255"/>
       <source>Inspect Toolpath</source>
-      <translation type="unfinished">Inspect Toolpath</translation>
+      <translation>Werkzeugpfad untersuchen</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="259"/>
@@ -7125,7 +7177,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="91"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>Werkzeugsteuerung</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="60"/>
@@ -7432,17 +7484,17 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="463"/>
       <source>Copy {0}…</source>
-      <translation type="unfinished">Copy {0}…</translation>
+      <translation>Kopiere {0}…</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="464"/>
       <source>New tool controller…</source>
-      <translation type="unfinished">New tool controller…</translation>
+      <translation>Neue Werkzeugsteuerung…</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="509"/>
       <source>This tool controller is used by {0} other operations.</source>
-      <translation type="unfinished">This tool controller is used by {0} other operations.</translation>
+      <translation>Diese Werkzeugsteuerung wird von {0} anderen Vorgängen verwendet.</translation>
     </message>
   </context>
   <context>
@@ -7589,17 +7641,17 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Post/scripts/svg_post.py" line="48"/>
       <source>SVG post processor</source>
-      <translation type="unfinished">SVG post processor</translation>
+      <translation>SVG-Post-Prozessor</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/serializers/camotics.py" line="59"/>
       <source>Camotics Tool Library</source>
-      <translation type="unfinished">Camotics Tool Library</translation>
+      <translation>Camotics-Werkzeugbibliothek</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/serializers/fctl.py" line="42"/>
       <source>FreeCAD Tool Library</source>
-      <translation type="unfinished">FreeCAD Tool Library</translation>
+      <translation>FreeCAD-Werkzeugbibliothek</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/serializers/linuxcnc.py" line="42"/>
@@ -7609,7 +7661,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/drill.py" line="56"/>
       <source>Drill</source>
-      <translation type="unfinished">Drill</translation>
+      <translation>Bohren</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/ballend.py" line="46"/>
@@ -7689,7 +7741,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/serializers/fctb.py" line="47"/>
       <source>FreeCAD Tool</source>
-      <translation type="unfinished">FreeCAD Tool</translation>
+      <translation>FreeCAD-Werkzeug</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/editor.py" line="61"/>
@@ -7704,7 +7756,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/selector.py" line="39"/>
       <source>Add Tool</source>
-      <translation type="unfinished">Add Tool</translation>
+      <translation>Werkzeug hinzufügen</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/selector.py" line="44"/>
@@ -8516,7 +8568,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="130"/>
       <source>Forward</source>
-      <translation type="unfinished">Forward</translation>
+      <translation>Vorwärts</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="131"/>
@@ -8531,7 +8583,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Tool/Gui/Controller.py" line="143"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>Werkzeugsteuerung</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/Controller.py" line="146"/>
@@ -8572,7 +8624,7 @@ Abbruch der OP-Erstellung</translation>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="344"/>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="569"/>
       <source>No Library Loaded</source>
-      <translation type="unfinished">No Library Loaded</translation>
+      <translation>Keine Bibliothek geladen</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="286"/>
@@ -8599,7 +8651,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="475"/>
       <source>New Tool Library</source>
-      <translation type="unfinished">New Tool Library</translation>
+      <translation>Neue Werkzeugbibliothek</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="476"/>
@@ -8624,7 +8676,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="60"/>
       <source>Tool Selector</source>
-      <translation type="unfinished">Tool Selector</translation>
+      <translation>Werkzeugauswahl</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="89"/>
@@ -8634,12 +8686,12 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="90"/>
       <source>Add to Job</source>
-      <translation type="unfinished">Add to Job</translation>
+      <translation>Zum Auftrag hinzufügen</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="161"/>
       <source>No Job Found</source>
-      <translation type="unfinished">No Job Found</translation>
+      <translation>Kein Auftrag gefunden</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="162"/>
@@ -8851,7 +8903,7 @@ oder TPI (Gewindegänge pro Zoll)</translation>
     <message>
       <location filename="../../../PathCommands.py" line="201"/>
       <source>Copy Operation</source>
-      <translation type="unfinished">Copy Operation</translation>
+      <translation>Kopiere Operation</translation>
     </message>
     <message>
       <location filename="../../../PathCommands.py" line="202"/>
@@ -8885,12 +8937,12 @@ oder TPI (Gewindegänge pro Zoll)</translation>
     <message>
       <location filename="../panels/ShapeSelector.ui" line="34"/>
       <source>Standard tools</source>
-      <translation type="unfinished">Standard tools</translation>
+      <translation>Standardwerkzeuge</translation>
     </message>
     <message>
       <location filename="../panels/ShapeSelector.ui" line="47"/>
       <source>My tools</source>
-      <translation type="unfinished">My tools</translation>
+      <translation>Meine Werkzeuge</translation>
     </message>
   </context>
   <context>
@@ -9048,7 +9100,7 @@ oder TPI (Gewindegänge pro Zoll)</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/bullnose.py" line="56"/>
       <source>Torus radius</source>
-      <translation type="unfinished">Torus radius</translation>
+      <translation>Torusradius</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/bullnose.py" line="64"/>
@@ -9146,7 +9198,7 @@ oder TPI (Gewindegänge pro Zoll)</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/probe.py" line="36"/>
       <source>Ball diameter</source>
-      <translation type="unfinished">Ball diameter</translation>
+      <translation>Kugeldurchmesser</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/probe.py" line="40"/>
@@ -9156,7 +9208,7 @@ oder TPI (Gewindegänge pro Zoll)</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/probe.py" line="44"/>
       <source>Shaft diameter</source>
-      <translation type="unfinished">Shaft diameter</translation>
+      <translation>Schaftdurchmesser</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/probe.py" line="52"/>
@@ -9216,7 +9268,7 @@ oder TPI (Gewindegänge pro Zoll)</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="68"/>
       <source>V-Bit</source>
-      <translation type="unfinished">V-Bit</translation>
+      <translation>Gravur-Fräser</translation>
     </message>
   </context>
   <context>
@@ -9232,7 +9284,7 @@ oder TPI (Gewindegänge pro Zoll)</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="52"/>
       <source>New Tool</source>
-      <translation type="unfinished">New Tool</translation>
+      <translation>Neues Werkzeug</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="53"/>
@@ -9245,7 +9297,7 @@ oder TPI (Gewindegänge pro Zoll)</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="77"/>
       <source>Save Tool As…</source>
-      <translation type="unfinished">Save Tool As…</translation>
+      <translation>Werkzeug speichern unter…</translation>
     </message>
   </context>
   <context>
@@ -9261,17 +9313,17 @@ oder TPI (Gewindegänge pro Zoll)</translation>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="26"/>
       <source>Controller Name / Tool Number</source>
-      <translation type="unfinished">Controller Name / Tool Number</translation>
+      <translation>Name der Steuerung / Werkzeugnummer</translation>
     </message>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="64"/>
       <source>Horizontal feed</source>
-      <translation type="unfinished">Horizontal feed</translation>
+      <translation>Horizontaler Vorschub</translation>
     </message>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="93"/>
       <source>Vertical feed</source>
-      <translation type="unfinished">Vertical feed</translation>
+      <translation>Vertikaler Vorschub</translation>
     </message>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="122"/>
@@ -9291,12 +9343,12 @@ oder TPI (Gewindegänge pro Zoll)</translation>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="196"/>
       <source>Forward</source>
-      <translation type="unfinished">Forward</translation>
+      <translation>Vorwärts</translation>
     </message>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="201"/>
       <source>Reverse</source>
-      <translation>Umkehren</translation>
+      <translation>Rückwärts</translation>
     </message>
   </context>
   <context>

@@ -170,6 +170,10 @@ void ViewProviderPlane::onSelectionChanged(const SelectionChanges&)
 
 void ViewProviderPlane::updatePlaneSize()
 {
+    if (!pcObject->isAttachedToDocument()) {
+        return;
+    }
+
     const auto params = ViewParams::instance();
 
     const float size = params->getDatumPlaneSize() * Base::fromPercent(params->getDatumScale());
@@ -230,6 +234,10 @@ std::string ViewProviderPlane::getRole() const
 {
     // Note: Role property of App::Plane is not set yet when attaching.
     const char* name = pcObject->getNameInDocument();
+    if (!name) {
+        return "";
+    }
+
     auto planesRoles = App::LocalCoordinateSystem::PlaneRoles;
     if (strncmp(name, planesRoles[0], strlen(planesRoles[0])) == 0) {
         return planesRoles[0];

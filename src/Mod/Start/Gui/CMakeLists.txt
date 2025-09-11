@@ -21,10 +21,6 @@
 #  *                                                                          *
 #  ***************************************************************************/
 
-include_directories(
-        ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(StartGui_LIBS
         Start
         FreeCADGui
@@ -97,7 +93,18 @@ if (APPLE)
     endif()
 endif()
 
-add_library(StartGui SHARED ${StartGui_SRCS} ${StartGuiIcon_SVG} ${StartGuiThumbnail_PNG})
+add_library(StartGui SHARED
+    ${StartGui_SRCS}
+    ${StartGuiIcon_SVG}
+    ${StartGuiThumbnail_PNG}
+)
+
+target_include_directories(
+    StartGui
+    PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 # target_link_libraries(StartGui ${StartGui_LIBS} Qt::Quick Qt::Qml Qt::QuickWidgets)
 target_link_libraries(StartGui ${StartGui_LIBS})
 if (FREECAD_WARN_ERROR)
