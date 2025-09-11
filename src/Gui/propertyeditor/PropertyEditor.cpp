@@ -42,6 +42,7 @@
 
 #include "PropertyEditor.h"
 #include "Dialogs/DlgAddProperty.h"
+#include "Dialogs/DlgDocumentObject.h"
 #include "MainWindow.h"
 #include "PropertyItemDelegate.h"
 #include "PropertyModel.h"
@@ -755,6 +756,42 @@ void PropertyEditor::renameProperty(const App::Property& prop)
     }
 }
 
+static bool movePossible(const App::SubObjectT& subObj, const App::Property* prop)
+{
+    App::DocumentObject* obj = subObj.getSubObject();
+    if (obj == nullptr) {
+        return false;
+    }
+    if (obj->getPropertyByName(prop->getName())) {
+        FC_ERR(obj->getFullName() << " already has property " << prop->getName());
+        return false;
+    }
+    return true;
+}
+
+static void moveProperties(std::unordered_set<App::Property*>& props,
+                           QList<App::SubObjectT>& subObjects)
+{
+    for (auto& prop : props) {
+        if (std::ranges::any_of(subObjects, [&prop](const App::SubObjectT& subObj) {
+            return !movePossible(subObj, prop); })) {
+            return;
+        }
+    }
+
+    App::AutoTransaction committer(props.size() == 1 ? "Move property" : "Move properties");
+
+    for (auto& prop : props) {
+        auto* obj = freecad_cast<App::DocumentObject*>(prop->getContainer());
+        if (!obj) {
+            FC_ERR("Cannot move property " << prop->getName()
+                   << " because its container is not a DocumentObject");
+            continue;
+        }
+        obj->moveDynamicProperty(prop, subObjects[0].getObject());
+    }
+}
+
 enum MenuAction
 {
     MA_AutoExpand,
@@ -763,6 +800,7 @@ enum MenuAction
     MA_RemoveProp,
     MA_RenameProp,
     MA_AddProp,
+    MA_MoveProp,
     MA_EditPropGroup,
     MA_Transient,
     MA_Output,
@@ -862,6 +900,16 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
     }
     if (canRemove) {
         menu.addAction(tr("Delete Property"))->setData(QVariant(MA_RemoveProp));
+    }
+
+    auto canBeMoved = [](const App::Property* prop) {
+        auto* obj = freecad_cast<App::DocumentObject*>(prop->getContainer());
+        return obj && prop->testStatus(App::Property::PropDynamic)
+            && !prop->testStatus(App::Property::LockDynamic);
+    };
+
+    if (props.size() > 0 && std::ranges::all_of(props, canBeMoved)) {
+        menu.addAction(tr("Move property"))->setData(QVariant(MA_MoveProp));
     }
 
     // add a separator between adding/removing properties and the rest
@@ -1059,6 +1107,17 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         case MA_RemoveProp: {
             removeProperties(props);
             break;
+        }
+        case MA_MoveProp: {
+            Gui::Dialog::DlgDocumentObject dlg(Gui::getMainWindow());
+            App::Property* prop = *props.begin();
+            auto* obj = freecad_cast<App::DocumentObject*>(prop->getContainer());
+            dlg.init(obj);
+            if (dlg.exec() == QDialog::Rejected) {
+                break;
+            }
+            QList<App::SubObjectT> subObjects = dlg.currentSubObjects();
+            moveProperties(props, subObjects);
         }
         default:
             break;

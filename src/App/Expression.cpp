@@ -3060,7 +3060,9 @@ bool VariableExpression::_renameObjectIdentifier(
         else {
             var = it->second;
         }
-        if (originalHasDocumentObjectName) {
+        bool localRename = var.getDocumentObject() == oldPath.getDocumentObject();
+
+        if (localRename && originalHasDocumentObjectName) {
             var.setDocumentObjectName(std::move(originalDocumentObjectName),
                                       true,
                                       originalSubObjectName);
@@ -3077,7 +3079,7 @@ void VariableExpression::_collectReplacement(
         App::DocumentObject *newObj) const
 {
     ObjectIdentifier path;
-    if(var.replaceObject(path,parent,oldObj,newObj))
+    if (var.replaceObject(path, parent, oldObj, newObj))
         paths[var.canonicalPath()] = std::move(path);
 }
 

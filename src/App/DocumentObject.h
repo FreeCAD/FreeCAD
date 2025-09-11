@@ -570,6 +570,20 @@ public:
 
     bool renameDynamicProperty(Property *prop, const char *name) override;
 
+  /**
+   * @brief Move the dynamic property to a document object.
+   *
+   * @param[in] prop The property to move.
+   * @param[in] targetObj The object to which the property is moved.
+   *
+   * @return a pointer to the moved property if successful; `nullptr` if the
+   * target object is the same as the current one.
+   * @throw Base::NameError If the property already exists in the object.
+   * @throw Base::RuntimeError On various runtime errors, such as when the
+   *   property is locked or the target object is invalid.
+   */
+    virtual Property* moveDynamicProperty(Property* prop, DocumentObject* targetObj);
+
     App::Property* addDynamicProperty(const char* type,
                                       const char* name = nullptr,
                                       const char* group = nullptr,
@@ -769,6 +783,11 @@ protected:
     void onPropertyStatusChanged(const Property& prop, unsigned long oldStatus) override;
 
 private:
+    void moveExpressionTargetingProp(Property* prop, Property* newProp,
+                                     DocumentObject* targetObj);
+    void arrangeMoveProperty(Property* toBeMovedProp,
+                             Property* newProp,
+                             DocumentObject* targetObj);
     void printInvalidLinks() const;
 
     /// python object of this class and all descendent
