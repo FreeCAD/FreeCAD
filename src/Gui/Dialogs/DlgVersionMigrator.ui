@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-
  <class>Gui::Dialog::DlgVersionMigrator</class>
  <widget class="QDialog" name="Gui::Dialog::DlgVersionMigrator">
   <property name="windowModality">
@@ -10,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>527</width>
+    <width>556</width>
     <height>233</height>
    </rect>
   </property>
@@ -70,6 +69,13 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
+      <widget class="QPushButton" name="helpButton">
+       <property name="text">
+        <string>Help</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -83,20 +89,25 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="shareLinkLabel">
+      <widget class="QPushButton" name="copyButton">
        <property name="text">
-        <!--Don't translate this here, it's replaced in code-->
-        <string notr="true">Share configuration between versions</string>
+        <string>Copy Configuration (Recommended)</string>
        </property>
-       <property name="textFormat">
-        <enum>Qt::AutoText</enum>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="copyButton">
+      <widget class="QToolButton" name="menuButton">
        <property name="text">
-        <string>Copy Configuration</string>
+        <string notr="true">⋮</string>
+       </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextOnly</enum>
        </property>
       </widget>
      </item>

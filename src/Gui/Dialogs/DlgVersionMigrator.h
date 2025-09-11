@@ -51,13 +51,17 @@ namespace Gui {
 
             void calculateMigrationSize(); // Async -> this starts the process and immediately returns
             void showSizeOfMigration(uintmax_t size);
-            void migrateToCurrentVersion();
-            void doNotMigrate(const QString &linkText);
+            void migrate();
+            void share();
+            void freshStart();
+            void help();
 
         private:
             MainWindow* mainWindow;
             QThread* sizeCalculationWorkerThread;
             std::unique_ptr<class Ui_DlgVersionMigrator> ui;
+
+            void restart();
         };
 
     }
