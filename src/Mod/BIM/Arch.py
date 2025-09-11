@@ -2384,3 +2384,40 @@ def _initializeArchObject(
         return None
 
     return obj
+
+def makeReport(name=None):
+    """
+    Creates a BIM Report object in the active document.
+
+    Parameters
+    ----------
+    name : str, optional
+        The name to assign to the created report object. Defaults to None.
+
+    Returns
+    -------
+    App::FeaturePython
+        The created report object.
+    """
+
+    # Use the helper to create the main object. Note that we pass the
+    # correct class and module names.
+    report_obj = _initializeArchObject(
+        objectType="App::FeaturePython",
+        baseClassName="Report",
+        internalName="ArchReport",
+        defaultLabel=name if name else translate("Arch", "Report"),
+        moduleName="ArchReport",
+        viewProviderName="ViewProviderReport"
+    )
+
+    # The helper returns None if there's no document, so we can exit early.
+    if not report_obj:
+        return None
+
+    # Create and link the spreadsheet target
+    sheet = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet", "ReportResult")
+    report_obj.Target = sheet
+
+    FreeCAD.ActiveDocument.recompute()
+    return report_obj
