@@ -791,7 +791,7 @@ void DSHArcSlotController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHArcSlotController::doChangeDrawSketchHandlerMode()
+void DSHArcSlotController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
@@ -799,7 +799,7 @@ void DSHArcSlotController::doChangeDrawSketchHandlerMode()
             auto& secondParam = onViewParameters[OnViewParameter::Second];
 
             if (firstParam->hasFinishedEditing && secondParam->hasFinishedEditing) {
-                handler->setState(SelectMode::SeekSecond);
+                handler->setNextState(SelectMode::SeekSecond);
             }
         } break;
         case SelectMode::SeekSecond: {
@@ -807,21 +807,21 @@ void DSHArcSlotController::doChangeDrawSketchHandlerMode()
             auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
 
             if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing) {
-                handler->setState(SelectMode::SeekThird);
+                handler->setNextState(SelectMode::SeekThird);
             }
         } break;
         case SelectMode::SeekThird: {
             auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
 
             if (fifthParam->hasFinishedEditing) {
-                handler->setState(SelectMode::SeekFourth);
+                handler->setNextState(SelectMode::SeekFourth);
             }
         } break;
         case SelectMode::SeekFourth: {
             auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
 
             if (sixthParam->hasFinishedEditing) {
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
         } break;
         default:

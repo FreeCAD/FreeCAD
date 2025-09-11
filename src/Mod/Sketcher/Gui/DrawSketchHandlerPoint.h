@@ -229,7 +229,7 @@ void DSHPointController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHPointController::doChangeDrawSketchHandlerMode()
+void DSHPointController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
@@ -237,7 +237,7 @@ void DSHPointController::doChangeDrawSketchHandlerMode()
             auto& secondParam = onViewParameters[OnViewParameter::Second];
 
             if (firstParam->hasFinishedEditing && secondParam->hasFinishedEditing) {
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
                 // handler->finish(); // Called by the change of mode
             }
         } break;
