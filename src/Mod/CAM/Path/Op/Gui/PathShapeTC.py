@@ -22,18 +22,22 @@
 # *                                                                         *
 # ***************************************************************************
 
-import Draft
 import FreeCAD
 import FreeCADGui
 import Part
 import Path
 import Path.Op.Base as OpBase
+import Path.Op.Util as PathOpUtil
+import Path.Base.Util as PathUtil
+
 import PathScripts.PathUtils as PathUtils
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+import pprint
+
 __title__ = "CAM Path from Shape with Tool Controller"
-__author__ = ""
+__author__ = "tarman3"
 __inspirer__ = "Russ4262"
 __url__ = "https://forum.freecad.org/viewtopic.php?t=93896"
 __doc__ = ""
@@ -45,101 +49,458 @@ if False:
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
-
 translate = FreeCAD.Qt.translate
 
 
-# Add base set of operation properties
-def _addBaseProperties(obj):
-    obj.addProperty(
-        "App::PropertyBool",
-        "Active",
-        "Path",
-        QT_TRANSLATE_NOOP("App::Property", "Make False, to prevent operation from generating code"),
-        locked=True,
-    )
-    obj.addProperty(
-        "App::PropertyString",
-        "Comment",
-        "Path",
-        QT_TRANSLATE_NOOP("App::Property", "An optional comment for this operation"),
-        locked=True,
-    )
-    obj.addProperty(
-        "App::PropertyString",
-        "UserLabel",
-        "Path",
-        QT_TRANSLATE_NOOP("App::Property", "User assigned label"),
-        locked=True,
-    )
-    obj.addProperty(
-        "App::PropertyString",
-        "CycleTime",
-        "Path",
-        QT_TRANSLATE_NOOP("App::Property", "Operations cycle time estimation"),
-        locked=True,
-    )
-    obj.setEditorMode("CycleTime", 1)  # Set property read-only
-    obj.Active = True
+class ObjectPathShape:
+    def __init__(self, obj):
+        self.Type = "PathShapeObject"
+        self.obj = obj
+        obj.Proxy = self
 
+        # Base properties group
+        obj.addProperty(
+            "App::PropertyBool",
+            "Active",
+            "Base",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Make False, to prevent operation from generating code"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "Comment",
+            "Base",
+            QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Operation"),
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "CycleTime",
+            "Base",
+            QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
+        )
+        obj.addProperty(
+            "App::PropertyLinkList",
+            "Sources",
+            "Base",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Sources of the shapes",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyLink",
+            "ToolController",
+            "Base",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The tool controller that will be used to calculate the path"
+            ),
+        )
 
-# Add ToolController properties
-def _addToolController(obj):
-    obj.addProperty(
-        "App::PropertyLink",
-        "ToolController",
-        "Path",
-        QT_TRANSLATE_NOOP(
-            "App::Property",
-            "The tool controller that will be used to calculate the path",
-        ),
-    )
-    obj.addProperty(
-        "App::PropertyDistance",
-        "OpToolDiameter",
-        "Op Values",
-        QT_TRANSLATE_NOOP("App::Property", "Holds the diameter of the tool"),
-    )
-    obj.setEditorMode("OpToolDiameter", 1)  # Set property read-only
-    obj.ToolController = PathUtils.findToolController(obj, None)
-    if not obj.ToolController:
-        raise OpBase.PathNoTCException()
-    obj.OpToolDiameter = obj.ToolController.Tool.Diameter
+        # Feed properties group
+        obj.addProperty(
+            "App::PropertySpeed",
+            "HorizFeed",
+            "Feed",
+            QT_TRANSLATE_NOOP("App::Property", "Normal move feed rate"),
+        )
+        obj.addProperty(
+            "App::PropertySpeed",
+            "VertFeed",
+            "Feed",
+            QT_TRANSLATE_NOOP("App::Property", "Vertical only (step down) move feed rate"),
+        )
 
-    obj.FeedRate = obj.ToolController.HorizFeed.Value
-    obj.FeedRateVertical = obj.ToolController.VertFeed.Value
+        # Start point properties group
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "StartPoint",
+            "StartPoint",
+            QT_TRANSLATE_NOOP("App::Property", "Feed start position"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "EnableStartPoint",
+            "StartPoint",
+            QT_TRANSLATE_NOOP("App::Property", "Enable feed start position"),
+        )
 
+        # Curves properties group
+        obj.addProperty(
+            "App::PropertyBool",
+            "AbsoluteArcCenter",
+            "Curves",
+            QT_TRANSLATE_NOOP("App::Property", "Use absolute arc center mode (G90.1)"),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "ArcPlane",
+            "Curves",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                """Arc drawing plane, corresponding to G17, G18, and G19.
+If not 'None', the output wires will be transformed to align with the selected plane,
+and the corresponding GCode will be inserted.
+\n'Auto' means the plane is determined by the first encountered arc plane.
+If the found plane does not align to any GCode plane, XY plane is used.
+\n'Variable' means the arc plane can be changed during operation to align to the
+arc encountered.""",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyLength",
+            "Segmentation",
+            "Curves",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                """Break long curves into segments of this length.
+One use case is for PCB autolevel, so that more correction points can be inserted""",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyFloat",
+            "Deflection",
+            "Curves",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                """Deflection for non circular curve discretization.
+It also also used for discretizing circular wires,
+when you 'Explode' the shape for wire operations""",
+            ),
+        )
 
-# Get list of tool controllers
-def _getToolControllers(obj, proxy=None):
-    # Modified getToolControllers() from PathScripts.PathUtils
-    # for Path object without Proxy
-    job = PathUtils.findParentJob(obj)
-    if job:
-        return [tc for tc in job.Tools.Group]
-    else:
-        return []
+        # Path properties group
+        obj.addProperty(
+            "App::PropertyLength",
+            "MinDistance",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                """Minimum distance for the generated new wires.
+Wires maybe broken if the algorithm see fits.
+Set to zero to disable wire breaking.""",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Orientation",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                """Enforce loop orientation.
+\n'Normal' means CCW for outer wires when looking against the positive axis direction,
+and CW for inner wires.
+\n'Reversed' means the other way round""",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Direction",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Enforce open path direction"),
+        )
 
+        # Sorting properties group
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "SortMode",
+            "Sorting",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                """"Wire sorting mode to optimize travel distance.
+\n'2D5' explode shapes into wires, and groups the shapes by its plane.
+The 'start' position chooses the first plane to start.
+The algorithm will then sort within the plane and then move on to the next nearest plane.
+\n'3D' makes no assumption of planarity. The sorting is done across 3D space.
+\n'Greedy' like '2D5' but will try to minimize travel by searching for nearest path below
+the current milling layer. The path in lower layer is only selected if the moving "distance
+is within the value given in 'threshold'.""",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyLength",
+            "SortAbscissa",
+            "Sorting",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                """Controls vertex sampling on wire for nearest point searching.
+The sampling is dong using OCC GCPnts_UniformAbscissa""",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyInteger",
+            "NearestK",
+            "Sorting",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Nearest k sampling vertices are considered during sorting"
+            ),
+        )
 
-# Set safety height parameters for Path operation
-def _setSafetyZ(obj):
-    job = PathUtils.findParentJob(obj)
-    if job:
-        safetyZ = job.Stock.Shape.BoundBox.ZMax + 10
-        obj.RetractThreshold = safetyZ
-        obj.Retraction = safetyZ
-        obj.ResumeHeight = safetyZ
+        # Gcode properties group
+        obj.addProperty(
+            "App::PropertyBool",
+            "Verbose",
+            "Gcode",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "If true, each motion GCode will contain full coordinate and feedrate",
+            ),
+        )
+
+        obj.addProperty(
+            "App::PropertyBool",
+            "EmitPreamble",
+            "Gcode",
+            QT_TRANSLATE_NOOP("App::Property", "Emit preambles G90 G17"),
+        )
+
+        # Retract properties group
+        obj.addProperty(
+            "App::PropertyLength",
+            "RetractThreshold",
+            "Retract",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                """If two wire's end points are separated within this threshold, they are consider as connected.
+You may want to set this to the tool diameter to keep the tool down.""",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "RetractAxis",
+            "Retract",
+            QT_TRANSLATE_NOOP("App::Property", "Tool retraction axis"),
+        )
+        obj.addProperty(
+            "App::PropertyLength",
+            "Retraction",
+            "Retract",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Tool retraction absolute coordinate along retraction axis"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyLength",
+            "ResumeHeight",
+            "Retract",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                """When return from last retraction,
+this gives the pause height relative to the Z value of the next move""",
+            ),
+        )
+
+        # Offset properties group
+        obj.addProperty(
+            "App::PropertyBool",
+            "EnableOffset",
+            "Offset",
+            QT_TRANSLATE_NOOP("App::Property", "Apply offset to shape"),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "OffsetType",
+            "Offset",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                """The output wires will be transformed by offset function
+\n'makeOffset2D' use Part.Wire.makeOffset2D() directly
+\n'offsetWire' use Path.Op.Util.offsetWire()""",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseComp",
+            "Offset",
+            QT_TRANSLATE_NOOP("App::Property", "Use tool radius compensation"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "OffsetInvertSide",
+            "Offset",
+            QT_TRANSLATE_NOOP("App::Property", "Invert offset drection"),
+        )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "OffsetExtra",
+            "Offset",
+            QT_TRANSLATE_NOOP("App::Property", "Offset from shape"),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "OffsetJoin",
+            "Offset",
+            QT_TRANSLATE_NOOP("App::Property", "Method of offsetting non-tangent joints"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "OffsetOpenResult",
+            "Offset",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                """Affects the way open wires are processed.
+If False, an open wire is made.
+If True, a closed wire is made from a double-sided offset, with rounds around open vertices""",
+            ),
+        )
+
+        self.setDefaultValues(obj)
+        self.setEditorMode(obj)
+        self.addToolController(obj)
+        self.setSafetyZ(obj)
+
+    def setDefaultValues(self, obj):
+        obj.Active = True
+        obj.ArcPlane = ("None", "Auto", "XY", "ZX", "YZ", "Variable")
+        obj.ArcPlane = "Auto"
+        obj.Deflection = 0.05
+        obj.Direction = (
+            "None",
+            "XPositive",
+            "XNegative",
+            "YPositive",
+            "YNegative",
+            "ZPositive",
+            "ZNegative",
+        )
+        obj.Direction = "None"
+        obj.EmitPreamble = True
+        obj.NearestK = 3
+        obj.OffsetJoin = ("arcs", "tangent", "intersection")
+        obj.OffsetType = ("makeOffset2D", "offsetWire")
+        obj.OffsetType = "offsetWire"
+        obj.Orientation = ("Normal", "Reversed")
+        obj.Orientation = "Normal"
+        obj.RetractAxis = ("X", "Y", "Z")
+        obj.RetractAxis = "Z"
+        obj.SortAbscissa = 3.0
+        obj.SortMode = ("None", "2D5", "3D", "Greedy")
+        obj.SortMode = "2D5"
+        obj.Verbose = True
+
+    def setEditorMode(self, obj):
+        obj.setEditorMode("CycleTime", 1)  # read-only
+        # obj.setEditorMode("ToolController", 2)  # hidden
+
+        startPointMode = 0 if obj.EnableStartPoint else 2
+        offsetMode = 0 if obj.EnableOffset else 2
+        offsetMode2 = 0 if obj.EnableOffset and obj.OffsetType == "makeOffset2D" else 2
+
+        obj.setEditorMode("StartPoint", startPointMode)
+        obj.setEditorMode("UseComp", offsetMode)
+        obj.setEditorMode("OffsetExtra", offsetMode)
+        obj.setEditorMode("OffsetInvertSide", offsetMode)
+        obj.setEditorMode("OffsetType", offsetMode)
+        obj.setEditorMode("OffsetJoin", offsetMode2)
+        obj.setEditorMode("OffsetOpenResult", offsetMode2)
+
+    def dumps(self):
+        return None
+
+    def loads(self, state):
+        return None
+
+    def onChanged(self, obj, prop):
+        if prop in ("EnableOffset", "EnableStartPoint", "OffsetType"):
+            self.setEditorMode(obj)
+        if prop == "Path":
+            obj.CycleTime = OpBase.getCycleTimeEstimate(obj)
+
+        return None
+
+    def onDocumentRestored(self, obj):
+        self.setEditorMode(obj)
+        return None
+
+    def execute(self, obj):
+        offset = 0
+        if obj.EnableOffset:
+            offset = obj.OffsetExtra.Value
+            if obj.UseComp:
+                offset += obj.ToolController.Tool.Diameter.Value / 2
+            if obj.OffsetInvertSide:
+                offset = -offset
+
+        if offset:
+            join = obj.getEnumerationsOfProperty("OffsetJoin").index(obj.OffsetJoin)
+            openResult = obj.OffsetOpenResult
+            shape = []
+            if obj.OffsetType == "makeOffset2D":
+                for source in obj.Sources:
+                    for wire in source.Shape.Wires:
+                        shape.append(wire.makeOffset2D(offset, join=join, openResult=openResult))
+            else:
+                job = PathUtils.findParentJob(obj)
+                base = job.Model.Group[0].Shape
+                for source in obj.Sources:
+                    for wire in source.Shape.Wires:
+                        shape.append(PathOpUtil.offsetWire(wire, base, offset, forward=True))
+
+        else:
+            shape = [so.Shape for so in obj.Sources]
+
+        params = {}
+        params["shapes"] = shape
+        if obj.EnableStartPoint:
+            params["start"] = obj.StartPoint
+        params["return_end"] = False
+        params["arc_plane"] = obj.getEnumerationsOfProperty("ArcPlane").index(obj.ArcPlane)
+        params["sort_mode"] = obj.getEnumerationsOfProperty("SortMode").index(obj.SortMode)
+        params["min_dist"] = obj.MinDistance
+        params["abscissa"] = obj.SortAbscissa
+        params["nearest_k"] = obj.NearestK
+        params["orientation"] = obj.getEnumerationsOfProperty("Orientation").index(obj.Orientation)
+        params["direction"] = obj.getEnumerationsOfProperty("Direction").index(obj.Direction)
+        params["threshold"] = obj.RetractThreshold
+        params["retract_axis"] = obj.getEnumerationsOfProperty("RetractAxis").index(obj.RetractAxis)
+        params["retraction"] = obj.Retraction
+        params["resume_height"] = obj.ResumeHeight
+        params["segmentation"] = obj.Segmentation
+        params["feedrate"] = obj.HorizFeed.Value
+        params["feedrate_v"] = obj.VertFeed.Value
+        params["verbose"] = obj.Verbose
+        params["abs_center"] = obj.AbsoluteArcCenter
+        params["preamble"] = obj.EmitPreamble
+        params["deflection"] = obj.Deflection
+
+        pprint.pprint(params)
+        obj.Path = Path.fromShapes(**params)
+
+    # This method must return True and needed for PathUtils.findToolController()
+    def isToolSupported(self, obj, tool=None):
+        return True
+
+    def addToolController(self, obj):
+        obj.ToolController = PathUtil.toolControllerForOp(obj)
+        if not obj.ToolController:
+            obj.ToolController = PathUtils.findToolController(obj, self)
+
+        if obj.ToolController:
+            obj.HorizFeed = obj.ToolController.HorizFeed.Value
+            obj.VertFeed = obj.ToolController.VertFeed.Value
+        else:
+            Path.Log.warning(
+                translate("PathShape", "Tool controller not selected for operation %s") % obj.Label
+            )
+
+    # Set safety height parameters
+    def setSafetyZ(self, obj):
+        job = PathUtils.findParentJob(obj)
+        if job:
+            safetyZ = job.Stock.Shape.BoundBox.ZMax + 10
+            obj.Retraction = safetyZ
+            obj.ResumeHeight = safetyZ
 
 
 # Geometry for selected shapes
 class ObjectPartShape:
     def __init__(self, obj, base):
-        # Path.Log.info("ObjectPartShape.__init__()")
+        self.Type = "PartShapeObject"
         self.obj = obj
         obj.addProperty(
             "App::PropertyLinkSubListGlobal",
             "Base",
-            "Path",
+            "Base",
             QT_TRANSLATE_NOOP("App::Property", "The base geometry for this operation"),
         )
         obj.Base = base
@@ -163,27 +524,53 @@ class ObjectPartShape:
             pass
 
     def execute(self, obj):
-        edges = []
-        if obj.Base:
-            (base, subNames) = obj.Base[0]
-            edges = [
-                base.Shape.getElement(sub).copy() for sub in subNames if sub.startswith("Edge")
-            ]
+        wires = []
+        for base in obj.Base:
+            edges = []
+            (baseObj, subNames) = base
+            if not subNames or subNames == ("",):
+                subNames = [f"Edge{i[0]+1}" for i in enumerate(baseObj.Shape.Edges)]
+            edges.extend(
+                [baseObj.Shape.getElement(sub).copy() for sub in subNames if sub.startswith("Edge")]
+            )
+            for sortedEdges in Part.sortEdges(edges):
+                wires.append(Part.Wire(sortedEdges))
+        obj.Shape = Part.makeCompound(wires)
 
-        if edges:
-            obj.Shape = Part.Wire(Part.__sortEdges__(edges))
-        else:
-            obj.Shape = Part.Shape()
+
+class ViewProviderPathShape:
+    def __init__(self, vobj):
+        self.Object = vobj.Object
+        vobj.Proxy = self
+
+    def attach(self, vobj):
+        self.Object = vobj.Object
+        return
+
+    def dumps(self):
+        return None
+
+    def loads(self, state):
+        return None
+
+    def claimChildren(self):
+        return [base for base in self.Object.Sources]
+
+    def onDelete(self, vobj, args):
+        for shape in self.Object.Sources:
+            if "PartShape" in shape.Name:
+                # do not remove external link objects
+                shape.Document.removeObject(shape.Name)
+        self.Object.Document.removeObject(self.Object.Name)
 
 
 class CommandPathShapeTC:
     def GetResources(self):
         return {
             "Pixmap": "CAM_ShapeTC",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_PathShapeTC", "Path From Shape TC"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_PathShapeTC", "Path from Shape TC"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_PathShapeTC",
-                "Creates a path from the selected shapes with the tool controller",
+                "CAM_PathShapeTC", "Creates path from selected shapes with tool controller"
             ),
         }
 
@@ -197,41 +584,37 @@ class CommandPathShapeTC:
         if isJob:
             selection = FreeCADGui.Selection.getSelectionEx()
             if selection:
-                base = selection[0].Object
-                subBase = selection[0].SubElementNames
-                if subBase and [edge for edge in subBase if "Edge" in edge]:
+                baseObj = selection[0].Object
+                subNames = selection[0].SubElementNames
+                if subNames and [edge for edge in subNames if "Edge" in edge]:
                     return True
-                elif base.Shape.ShapeType in ["Wire", "Edge"]:
+                elif (
+                    hasattr(baseObj, "Shape")
+                    and hasattr(baseObj.Shape, "Edges")
+                    and baseObj.Shape.Edges
+                ):
                     return True
         return False
 
     def Activated(self):
-        print("Create PathShape object with Tool Controller")
         doc = FreeCAD.ActiveDocument
         selection = FreeCADGui.Selection.getSelectionEx()
-        shapeObj = None
-        if selection:
-            base = selection[0].Object
-            subBase = selection[0].SubElementNames
-            if subBase:
-                subEdges = [edge for edge in subBase if "Edge" in edge]
-                shapeObj = doc.addObject("Part::FeaturePython", "PartShape")
-                shapeObj.ViewObject.Proxy = 0
-                shapeObj.Visibility = False
-                shapeObj.Proxy = ObjectPartShape(shapeObj, [(base, subEdges)])
-            elif base.Shape.ShapeType in ["Wire", "Edge"]:
-                shapeObj = Draft.make_clone(base)
+        base = []
+        for sel in selection:
+            baseObj = sel.Object
+            subNames = sel.SubElementNames if sel.SubElementNames else ("",)
+            base.append([baseObj, subNames])
+        shapeObj = doc.addObject("Part::FeaturePython", "PartShape")
+        shapeObj.ViewObject.Proxy = 0
+        shapeObj.Visibility = False
+        shapeObj.Proxy = ObjectPartShape(shapeObj, base)
 
-        pathObj = doc.addObject("Path::FeatureShape", "PathShape")
-        pathObj.Sources = [shapeObj]
-
-        # Overwrite getToolControllers() function with modified version
-        PathUtils.getToolControllers = _getToolControllers
-
-        PathUtils.addToJob(pathObj)
-        _addBaseProperties(pathObj)
-        _addToolController(pathObj)
-        _setSafetyZ(pathObj)
+        pathShapeObj = doc.addObject("Path::FeaturePython", "PathShape")
+        PathUtils.addToJob(pathShapeObj)
+        ObjectPathShape(pathShapeObj)
+        pathShapeObj.ViewObject.Proxy = 0
+        pathShapeObj.ViewObject.Proxy = ViewProviderPathShape(pathShapeObj.ViewObject)
+        pathShapeObj.Sources = [shapeObj]
         doc.recompute()
 
 
