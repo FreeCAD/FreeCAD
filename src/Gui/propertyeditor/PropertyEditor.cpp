@@ -763,6 +763,7 @@ enum MenuAction
     MA_RemoveProp,
     MA_RenameProp,
     MA_AddProp,
+    MA_EditPropTooltip,
     MA_EditPropGroup,
     MA_Transient,
     MA_Output,
@@ -845,6 +846,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         if (prop->testStatus(App::Property::PropDynamic)
             && !prop->testStatus(App::Property::LockDynamic)) {
             menu.addAction(tr("Rename Property"))->setData(QVariant(MA_RenameProp));
+            menu.addAction(tr("Edit Property Tooltip"))->setData(QVariant(MA_EditPropTooltip));
         }
     }
 
@@ -1003,6 +1005,33 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             Gui::Dialog::DlgAddProperty dlg(Gui::getMainWindow(), std::move(containers));
             dlg.exec();
             return;
+        }
+        case MA_EditPropTooltip: {
+            if (props.size() != 1) {
+                break;
+            }
+
+            App::Property* prop = *props.begin();
+            if (!prop->testStatus(App::Property::PropDynamic)
+                || prop->testStatus(App::Property::LockDynamic)) {
+                break;
+            }
+
+            bool ok = false;
+            const QString currentTooltip = QString::fromUtf8(prop->getDocumentation());
+            QString newTooltip = QInputDialog::getMultiLineText(Gui::getMainWindow(),
+                                                         tr("Edit Property Tooltip"),
+                                                         tr("Tooltip"),
+                                                         currentTooltip,
+                                                         &ok);
+            if (!ok || newTooltip == currentTooltip) {
+                break;
+            }
+
+            prop->getContainer()->changeDynamicProperty(prop,
+                                                        prop->getGroup(),
+                                                        newTooltip.toUtf8().constData());
+            break;
         }
         case MA_RenameProp: {
             if (props.size() != 1) {
