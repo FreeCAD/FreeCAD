@@ -1432,6 +1432,7 @@ protected:
 private:
     void changePropertyOfObject(TransactionalObject* obj, const Property* prop,
                                 const std::function<void()>& changeFunc);
+    void setDefiningTransaction(bool definingTransaction);
 
 private:
     // # Data Member of the document
