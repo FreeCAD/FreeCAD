@@ -32,6 +32,11 @@
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
 
+namespace App
+{
+    class Document;
+}
+
 namespace Gui
 {
 

@@ -27,9 +27,10 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
+#include <FCGlobal.h>
 
-class Ui_DlgLocationPos;
-class ui_DlgLocationAngle;
+class Ui_Position;
+class Ui_Angle;
 
 namespace Gui {
 

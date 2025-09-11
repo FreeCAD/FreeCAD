@@ -23,6 +23,7 @@
 #ifndef GUI_WAIT_CURSOR_H
 #define GUI_WAIT_CURSOR_H
 
+#include <FCGlobal.h>
 
 namespace Gui {
 
