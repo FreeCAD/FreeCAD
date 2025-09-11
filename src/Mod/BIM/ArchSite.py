@@ -807,6 +807,9 @@ class _ViewProviderSite:
         vobj.Proxy = self
         vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
         self.setProperties(vobj)
+        # Defer the constraint and default value setup until after the GUI is fully initialized.
+        from PySide import QtCore
+        QtCore.QTimer.singleShot(0, lambda: self.restoreConstraints(vobj))
 
     def setProperties(self,vobj):
         """Give the site view provider its site view provider specific properties.
@@ -856,23 +859,26 @@ class _ViewProviderSite:
             vobj.ShowHourLabels = True # Show hour labels by default
 
     def restoreConstraints(self, vobj):
-        """Re-apply non-persistent property constraints after a file load."""
+        """Re-apply non-persistent property constraints after a file load.
+
+        It also handles new objects, where their value is 0.
+        """
         pl = vobj.PropertiesList
         if "SunDateMonth" in pl:
-            saved_month = vobj.SunDateMonth
+            saved_month = vobj.SunDateMonth if vobj.SunDateMonth != 0 else 6
             vobj.SunDateMonth = (saved_month, 1, 12, 1)
         else:
             vobj.SunDateMonth = (6, 1, 12, 1) # Default to June
 
         if "SunDateDay" in pl:
-            saved_day = vobj.SunDateDay
+            saved_day = vobj.SunDateDay if vobj.SunDateDay != 0 else 21
             vobj.SunDateDay = (saved_day, 1, 31, 1)
         else:
             # 31 is a safe maximum; the datetime object will handle invalid dates like Feb 31.
             vobj.SunDateDay = (21, 1, 31, 1) # Default to the 21st (solstice)
 
         if "SunTimeHour" in pl:
-            saved_hour = vobj.SunTimeHour
+            saved_hour = vobj.SunTimeHour if abs(vobj.SunTimeHour) > 1e-9 else 12.0
             vobj.SunTimeHour = (saved_hour, 0.0, 23.5, 0.5)
         else:
             # Use 23.5 to avoid issues with hour 24
