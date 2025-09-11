@@ -220,7 +220,7 @@ void DlgBindSheet::accept()
                 App::Range toRange(toCellStart, toCellEnd, true);
                 if (fromRange.size() != toRange.size()) {
                     auto res = QMessageBox::warning(this,
-                                                    tr("Bind cells"),
+                                                    tr("Bind Cells"),
                                                     tr("Source and target cell count mismatch. "
                                                        "Partial binding may still work.\n\n"
                                                        "Continue?"),
@@ -297,7 +297,7 @@ void DlgBindSheet::onDiscard()
     }
     catch (Base::Exception& e) {
         e.reportException();
-        QMessageBox::critical(this, tr("Unbind cells"), QString::fromUtf8(e.what()));
+        QMessageBox::critical(this, tr("Unbind Cells"), QString::fromUtf8(e.what()));
         Gui::Command::abortCommand();
     }
 }

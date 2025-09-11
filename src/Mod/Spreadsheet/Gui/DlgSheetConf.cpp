@@ -277,7 +277,7 @@ void DlgSheetConf::accept()
     }
     catch (Base::Exception& e) {
         e.reportException();
-        QMessageBox::critical(this, tr("Setup configuration table"), QString::fromUtf8(e.what()));
+        QMessageBox::critical(this, tr("Setup Configuration Table"), QString::fromUtf8(e.what()));
         if (commandActive) {
             Gui::Command::abortCommand();
         }
@@ -335,7 +335,7 @@ void DlgSheetConf::onDiscard()
     }
     catch (Base::Exception& e) {
         e.reportException();
-        QMessageBox::critical(this, tr("Unsetup configuration table"), QString::fromUtf8(e.what()));
+        QMessageBox::critical(this, tr("Unsetup Configuration Table"), QString::fromUtf8(e.what()));
         if (commandActive) {
             Gui::Command::abortCommand();
         }
