@@ -123,14 +123,16 @@ DlgVersionMigrator::DlgVersionMigrator(MainWindow *mw) :
     // NOTE: All rich-text strings are generated programmatically so that translators don't have to deal with the
     // markup. The two strings in the middle of the dialog are set in the UI file.
 
-    auto welcomeString = QStringLiteral("<b>") + QObject::tr("Welcome to %1 %2.%3\n\n").arg(
-        programName, QString::number(major), QString::number(minor)) + QStringLiteral("</b>");
+    auto programNameString = QObject::tr("Welcome to %1 %2.%3\n\n").arg(
+        programName, QString::number(major), QString::number(minor));
+    auto welcomeString = QStringLiteral("<b>") + programNameString + QStringLiteral("</b>");
 
     auto calculatingSizeString = QStringLiteral("<b>") + QObject::tr("Calculating size…") + QStringLiteral("</b>");
 
     auto shareConfigurationString = QStringLiteral("<a href='#shareConfiguration'>") +
         QObject::tr("Share configuration between versions") + QStringLiteral("</a>");
 
+    setWindowTitle(programNameString);
     ui->welcomeLabel->setText(welcomeString);
     ui->sizeLabel->setText(calculatingSizeString);
     ui->shareLinkLabel->setText(shareConfigurationString);
