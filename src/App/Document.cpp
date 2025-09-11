@@ -273,6 +273,11 @@ bool Document::redo(const int id)
     return true;
 }
 
+void Document::setDefiningTransaction(bool definingTransaction)
+{
+    d->definingTransaction = definingTransaction;
+}
+
 void Document::changePropertyOfObject(TransactionalObject* obj,
                                       const Property* prop,
                                       const std::function<void()>& changeFunc)
@@ -907,7 +912,7 @@ void Document::onBeforeChangeProperty(const TransactionalObject* Who, const Prop
     if (Who->isDerivedFrom<DocumentObject>()) {
         signalBeforeChangeObject(*static_cast<const DocumentObject*>(Who), *What);
     }
-    if (!d->rollback && !globalIsRelabeling) {
+    if (!d->rollback && !globalIsRelabeling && !d->definingTransaction) {
         _checkTransaction(nullptr, What, __LINE__);
         if (d->activeUndoTransaction) {
             d->activeUndoTransaction->addObjectChange(Who, What);
