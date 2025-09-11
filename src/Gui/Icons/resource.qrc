@@ -285,6 +285,29 @@
         <file>TreeItemVisible.svg</file>
         <file>umf-measurement.svg</file>
         <file>Unlink.svg</file>
+        <file>Invisible.svg</file>
+        <file>folder.svg</file>
+        <file>document-python.svg</file>
+        <file>document-package.svg</file>
+        <file>cursor-through.svg</file>
+        <file>Std_Alignment.svg</file>
+        <file>Std_DuplicateSelection.svg</file>
+        <file>Std_UserEditModeDefault.svg</file>
+        <file>Std_UserEditModeTransform.svg</file>
+        <file>Std_UserEditModeCutting.svg</file>
+        <file>Std_UserEditModeColor.svg</file>
+        <file>Warning.svg</file>
+        <file>image-open.svg</file>
+        <file>image-plane.svg</file>
+        <file>image-scaling.svg</file>
+        <file>VarSet.svg</file>
+        <file>AddProperties.svg</file>
+        <file>Std_ToggleFreeze.svg</file>
+        <file>3dx_pivot.png</file>
+        <file>overlay_recompute.svg</file>
+        <file>overlay_error.svg</file>
+        <file>feature_suppressed.svg</file>
+        <file>forbidden.svg</file>
         <file>user-input/mouse-left.svg</file>
         <file>user-input/mouse-middle.svg</file>
         <file>user-input/mouse-move.svg</file>
