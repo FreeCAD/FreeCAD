@@ -111,6 +111,21 @@ public:
     void renameProperty(TransactionalObject* Obj, const Property* pcProp, const char* oldName);
 
     /**
+     * @brief Arrange moving a property.
+     *
+     * @param[in] Obj The object from which the property is moved.
+     * @param[in] pcProp The property that is moved.
+     * @param[in] target The object to which the property is moved.
+     * @param[in] newProp The new property that represents the moved property.
+     */
+    void arrangeMoveProperty(
+        TransactionalObject* Obj,
+        const Property* pcProp,
+        TransactionalObject* target,
+        Property* newProp
+    );
+
+    /**
      * @brief Record adding or removing a property from an object.
      *
      * @param[in] Obj The object to add or remove the property from.
@@ -214,6 +229,15 @@ public:
     void renameProperty(const Property* pcProp, const char* oldName);
 
     /**
+     * @brief Arrange moving a property.
+     *
+     * @param[in] pcProp The property that is moved.
+     * @param[in] target The object to which the property is moved.
+     * @param[in] newProp The property that represents the moved property.
+     */
+    void arrangeMoveProperty(const Property* pcProp, TransactionalObject* target, Property* newProp);
+
+    /**
      * @brief Add or remove a property from the object.
      *
      * @param[in] prop The property to add or remove.
@@ -243,6 +267,10 @@ protected:
         const Property* propertyOrig = nullptr;
         // for property renaming
         std::string nameOrig;
+        // for property moving
+        Property* propertyTarget = nullptr;
+        TransactionalObject* target = nullptr;
+        PropertyContainer* source = nullptr;
     };
 
     /// A map to maintain the properties of the object.
