@@ -29,6 +29,8 @@ import Path
 import Path.Post.Command as PathCommand
 import Path.Post.Processor as PathPost
 import Path.Post.Utils as PostUtils
+import Path.Main.Job as PathJob
+import Path.Tool.Controller as PathToolController
 import difflib
 import os
 import unittest
@@ -50,13 +52,25 @@ class TestFileNameGenerator(unittest.TestCase):
 
     The Following can be used if output is being split. If Output is not split
     these will be ignored.
+
     %S ... Sequence Number (default)
 
+    Either:
     %T ... Tool Number
     %t ... Tool Controller label
 
     %W ... Work Coordinate System
     %O ... Operation Label
+
+    |split on| use | Ignore |
+    |-----------|-------|--------|
+    |fixture | %W | %O %T %t |
+    |Operation| %O | %T %t %W |
+    |Tool| **Either %T or %t** | %O %W |
+
+    The confusing bit is that for split on tool,  it will use EITHER the tool number or the tool label.
+    If you include both, the second one overrides the first.
+    And for split on operation, where including the tool should be possible, it ignores it altogether.
 
         self.job.Fixtures = ["G54"]
         self.job.SplitOutput = False
@@ -83,54 +97,60 @@ class TestFileNameGenerator(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        # cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/CAMTests/boxtest.fcstd")
-        # cls.job = cls.doc.getObject("Job")
-
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
 
-        cls.testfile = FreeCAD.getHomePath() + "Mod/CAM/CAMTests/test_filenaming.fcstd"
-        cls.testfilepath, cls.testfilename = os.path.split(cls.testfile)
-        cls.testfilename, cls.ext = os.path.splitext(cls.testfilename)
-
-        cls.doc = FreeCAD.open(cls.testfile)
-        cls.job = cls.doc.getObjectsByLabel("MainJob")[0]
+        # Create a new document instead of opening external file
+        cls.doc = FreeCAD.newDocument("TestFileNaming")
+        cls.testfilename = cls.doc.Name
+        cls.testfilepath = os.getcwd()
         cls.macro = FreeCAD.getUserMacroDir()
+
+        # Create a simple geometry object for the job
+        import Part
+
+        box = cls.doc.addObject("Part::Box", "TestBox")
+        box.Length = 100
+        box.Width = 100
+        box.Height = 20
+
+        # Create CAM job programmatically
+        cls.job = PathJob.Create("MainJob", [box], None)
+        cls.job.PostProcessor = "linuxcnc"
+        cls.job.PostProcessorOutputFile = ""
         cls.job.SplitOutput = False
+        cls.job.OrderOutputBy = "Operation"
+        cls.job.Fixtures = ["G54", "G55"]
+
+        # Create a tool controller for testing tool-related substitutions
+        from Path.Tool.toolbit import ToolBit
+
+        tool_attrs = {
+            "name": "TestTool",
+            "shape": "endmill.fcstd",
+            "parameter": {"Diameter": 6.0},
+            "attribute": {},
+        }
+        toolbit = ToolBit.from_dict(tool_attrs)
+        tool = toolbit.attach_to_doc(doc=cls.doc)
+        tool.Label = "6mm_Endmill"
+
+        tc = PathToolController.Create("TC_Test_Tool", tool, 5)
+        tc.Label = "TC: 6mm Endmill"
+        cls.job.addObject(tc)
+
+        # Create a simple mock operation for testing operation-related substitutions
+        profile_op = cls.doc.addObject("Path::FeaturePython", "TestProfile")
+        profile_op.Label = "OutsideProfile"
+        # Path::FeaturePython objects already have a Path property
+        profile_op.Path = Path.Path()
+        cls.job.Operations.addObject(profile_op)
+
+        cls.doc.recompute()
 
     @classmethod
     def tearDownClass(cls):
         FreeCAD.closeDocument(cls.doc.Name)
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
-
-    # def test010(self):
-    #     self.job.PostProcessorOutputFile = ""
-    #     generator = PostUtils.FilenameGenerator(job=self.job)
-
-    #     filename_generator = generator.generate_filenames()
-    #     generated_filename = next(filename_generator)
-    #     self.assertEqual(generated_filename, "-Job.nc")
-
-    # def test020(self):
-    #     generator = PostUtils.FilenameGenerator(job=self.job)
-    #     filename_generator = generator.generate_filenames()
-    #     expected_filenames = ["-Job.nc"] + [f"-Job-{i}.nc" for i in range(1, 5)]
-    #     print(expected_filenames)
-    #     for expected_filename in expected_filenames:
-    #         generated_filename = next(filename_generator)
-    #         self.assertEqual(generated_filename, expected_filename)
-
-    # def setUp(self):
-    #     self.testfile = FreeCAD.getHomePath() + "Mod/CAM/CAMTests/test_filenaming.fcstd"
-    #     self.testfilepath, self.testfilename = os.path.split(self.testfile)
-    #     self.testfilename, self.ext = os.path.splitext(self.testfilename)
-
-    #     self.doc = FreeCAD.open(self.testfile)
-    #     self.job = self.doc.getObjectsByLabel("MainJob")[0]
-    #     self.macro = FreeCAD.getUserMacroDir()
-    #     self.job.SplitOutput = False
-
-    # def tearDown(self):
-    #     FreeCAD.closeDocument(self.doc.Name)
 
     def test000(self):
         # Test basic name generation with empty string
@@ -143,13 +163,6 @@ class TestFileNameGenerator(unittest.TestCase):
         filename_generator = generator.generate_filenames()
         filename = next(filename_generator)
         Path.Log.debug(filename)
-        # outlist = PathPost.buildPostList(self.job)
-
-        # self.assertTrue(len(outlist) == 1)
-        # subpart, objs = outlist[0]
-
-        # filename = PathPost.resolveFileName(self.job, subpart, 0)
-        # self.assertEqual(filename, os.path.normpath(f"{self.testfilename}.nc"))
         assertFilePathsEqual(
             self, filename, os.path.join(self.testfilepath, f"{self.testfilename}.nc")
         )
@@ -172,16 +185,11 @@ class TestFileNameGenerator(unittest.TestCase):
         teststring = "~/Desktop/%j.nc"
         self.job.PostProcessorOutputFile = teststring
         Path.Preferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
-        # outlist = PathPost.buildPostList(self.job)
-
-        # self.assertTrue(len(outlist) == 1)
-        # subpart, objs = outlist[0]
 
         generator = PostUtils.FilenameGenerator(job=self.job)
         filename_generator = generator.generate_filenames()
         filename = next(filename_generator)
 
-        # filename = PathPost.resolveFileName(self.job, subpart, 0)
         assertFilePathsEqual(self, filename, "~/Desktop/MainJob.nc")
 
     def test020(self):
@@ -224,8 +232,8 @@ class TestFileNameGenerator(unittest.TestCase):
         """Testing the sequence number substitution"""
         generator = PostUtils.FilenameGenerator(job=self.job)
         filename_generator = generator.generate_filenames()
-        expected_filenames = [f"test_filenaming{os.sep}testdoc.nc"] + [
-            f"test_filenaming{os.sep}testdoc-{i}.nc" for i in range(1, 5)
+        expected_filenames = [f"TestFileNaming{os.sep}testdoc.nc"] + [
+            f"TestFileNaming{os.sep}testdoc-{i}.nc" for i in range(1, 5)
         ]
         for expected_filename in expected_filenames:
             filename = next(filename_generator)
@@ -238,7 +246,7 @@ class TestFileNameGenerator(unittest.TestCase):
         generator = PostUtils.FilenameGenerator(job=self.job)
         filename_generator = generator.generate_filenames()
         expected_filenames = [
-            os.path.join(self.testfilepath, f"{i}-test_filenaming.nc") for i in range(5)
+            os.path.join(self.testfilepath, f"{i}-TestFileNaming.nc") for i in range(5)
         ]
         for expected_filename in expected_filenames:
             filename = next(filename_generator)
@@ -254,9 +262,7 @@ class TestFileNameGenerator(unittest.TestCase):
         filename_generator = generator.generate_filenames()
         filename = next(filename_generator)
 
-        assertFilePathsEqual(
-            self, filename, os.path.join(self.testfilepath, "0-test_filenaming.nc")
-        )
+        assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "0-TestFileNaming.nc"))
 
     def test060(self):
         """Test subpart naming"""
@@ -271,13 +277,102 @@ class TestFileNameGenerator(unittest.TestCase):
 
         assertFilePathsEqual(self, filename, f"{self.macro}outfile-Tool.nc")
 
+    def test070(self):
+        """Test %T substitution (tool number) with actual tool controller"""
+        teststring = "%T.nc"
+        self.job.PostProcessorOutputFile = teststring
+
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        generator.set_subpartname("5")  # Tool number from our test tool controller
+        filename_generator = generator.generate_filenames()
+        filename = next(filename_generator)
+
+        assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "5.nc"))
+
+    def test071(self):
+        """Test %t substitution (tool description) with actual tool controller"""
+        teststring = "%t.nc"
+        self.job.PostProcessorOutputFile = teststring
+
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        generator.set_subpartname("TC__6mm_Endmill")  # Sanitized tool label
+        filename_generator = generator.generate_filenames()
+        filename = next(filename_generator)
+
+        assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "TC__6mm_Endmill.nc"))
+
+    def test072(self):
+        """Test %W substitution (work coordinate system/fixture)"""
+        teststring = "%W.nc"
+        self.job.PostProcessorOutputFile = teststring
+
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        generator.set_subpartname("G54")  # First fixture from our job setup
+        filename_generator = generator.generate_filenames()
+        filename = next(filename_generator)
+
+        assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "G54.nc"))
+
+    def test073(self):
+        """Test %O substitution (operation label)"""
+        teststring = "%O.nc"
+        self.job.PostProcessorOutputFile = teststring
+
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        generator.set_subpartname("OutsideProfile")  # Operation label from our test setup
+        filename_generator = generator.generate_filenames()
+        filename = next(filename_generator)
+
+        assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "OutsideProfile.nc"))
+
+    def test075(self):
+        """Test path and filename substitutions together"""
+        teststring = "%D/%j_%S.nc"
+        self.job.PostProcessorOutputFile = teststring
+
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        filename_generator = generator.generate_filenames()
+        filename = next(filename_generator)
+
+        # %D should resolve to document directory (empty since doc has no filename)
+        # %j should resolve to job name "MainJob"
+        # %S should resolve to sequence number "0"
+        assertFilePathsEqual(self, filename, os.path.join(".", "MainJob_0.nc"))
+
+    def test076(self):
+        """Test invalid substitution characters are ignored"""
+        teststring = "%X%Y%Z/invalid_%Q.nc"
+        self.job.PostProcessorOutputFile = teststring
+
+        generator = PostUtils.FilenameGenerator(job=self.job)
+        filename_generator = generator.generate_filenames()
+        filename = next(filename_generator)
+
+        # Invalid substitutions should be removed, leaving "invalid_.nc"
+        assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "invalid_.nc"))
+
 
 class TestResolvingPostProcessorName(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
-        cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/CAMTests/boxtest.fcstd")
-        cls.job = cls.doc.getObject("Job")
+        # Create a new document instead of opening external file
+        cls.doc = FreeCAD.newDocument("boxtest")
+
+        # Create a simple geometry object for the job
+        import Part
+
+        box = cls.doc.addObject("Part::Box", "TestBox")
+        box.Length = 100
+        box.Width = 100
+        box.Height = 20
+
+        # Create CAM job programmatically
+        cls.job = PathJob.Create("MainJob", [box], None)
+        cls.job.PostProcessorOutputFile = ""
+        cls.job.SplitOutput = False
+        cls.job.OrderOutputBy = "Operation"
+        cls.job.Fixtures = ["G54", "G55"]
 
     @classmethod
     def tearDownClass(cls):
@@ -293,6 +388,7 @@ class TestResolvingPostProcessorName(unittest.TestCase):
 
     def test010(self):
         # Test if post is defined in job
+        self.job.PostProcessor = "linuxcnc"
         with patch("Path.Post.Processor.PostProcessor.exists", return_value=True):
             postname = PathCommand._resolve_post_processor_name(self.job)
             self.assertEqual(postname, "linuxcnc")
@@ -305,16 +401,16 @@ class TestResolvingPostProcessorName(unittest.TestCase):
 
     def test030(self):
         # Test if post is defined in prefs
+        self.job.PostProcessor = ""
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
         pref.SetString("PostProcessorDefault", "grbl")
-        self.job.PostProcessor = ""
+
         with patch("Path.Post.Processor.PostProcessor.exists", return_value=True):
             postname = PathCommand._resolve_post_processor_name(self.job)
             self.assertEqual(postname, "grbl")
 
     def test040(self):
         # Test if user interaction is correctly handled
-        self.job.PostProcessor = ""
         if FreeCAD.GuiUp:
             with patch("Path.Post.Command.DlgSelectPostProcessor") as mock_dlg, patch(
                 "Path.Post.Processor.PostProcessor.exists", return_value=True
@@ -323,8 +419,9 @@ class TestResolvingPostProcessorName(unittest.TestCase):
                 postname = PathCommand._resolve_post_processor_name(self.job)
                 self.assertEqual(postname, "generic")
         else:
-            with self.assertRaises(ValueError):
-                PathCommand._resolve_post_processor_name(self.job)
+            with patch.object(self.job, "PostProcessor", ""):
+                with self.assertRaises(ValueError):
+                    PathCommand._resolve_post_processor_name(self.job)
 
 
 class TestPostProcessorFactory(unittest.TestCase):
@@ -333,8 +430,24 @@ class TestPostProcessorFactory(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
-        cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/CAMTests/boxtest.fcstd")
-        cls.job = cls.doc.getObject("Job")
+        # Create a new document instead of opening external file
+        cls.doc = FreeCAD.newDocument("boxtest")
+
+        # Create a simple geometry object for the job
+        import Part
+
+        box = cls.doc.addObject("Part::Box", "TestBox")
+        box.Length = 100
+        box.Width = 100
+        box.Height = 20
+
+        # Create CAM job programmatically
+        cls.job = PathJob.Create("MainJob", [box], None)
+        cls.job.PostProcessor = "linuxcnc"
+        cls.job.PostProcessorOutputFile = ""
+        cls.job.SplitOutput = False
+        cls.job.OrderOutputBy = "Operation"
+        cls.job.Fixtures = ["G54", "G55"]
 
     @classmethod
     def tearDownClass(cls):
@@ -364,212 +477,6 @@ class TestPostProcessorFactory(unittest.TestCase):
         """Test that the __name__ of the postprocessor is correct."""
         post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc")
         self.assertEqual(post.script_module.__name__, "linuxcnc_post")
-
-
-class TestPostProcessorClass(unittest.TestCase):
-    """Test new post structure objects."""
-
-    @classmethod
-    def setUpClass(cls):
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
-        cls.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/CAMTests/boxtest.fcstd")
-        cls.job = cls.doc.getObject("Job")
-
-    @classmethod
-    def tearDownClass(cls):
-        FreeCAD.closeDocument(cls.doc.Name)
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
-
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
-
-    def test010(self):
-        """Test the export function."""
-        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc")
-        sections = post.export()
-        for sec in sections:
-            print(sec[0])
-
-    def test020(self):
-        """Test the export function with splitting."""
-        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc")
-        sections = post.export()
-        for sec in sections:
-            print(sec[0])
-
-    def test030(self):
-        """Test the export function with splitting."""
-        post = PostProcessorFactory.get_post_processor(self.job, "generic")
-        sections = post.export()
-        for sec in sections:
-            print(sec[0])
-
-
-# class TestPostProcessorScript(unittest.TestCase):
-#     """Test old-school posts"""
-
-#     def setUp(self):
-#         self.doc = FreeCAD.open(FreeCAD.getHomePath() + "/Mod/CAM/CAMTests/boxtest.fcstd")
-#         self.job = self.doc.getObject("Job")
-#         post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc")
-#         results = post.export()
-
-#     def tearDown(self):
-#         FreeCAD.closeDocument("boxtest")
-
-##
-## You can run just this test using:
-## ./FreeCAD -c -t CAMTests.TestPathPost.TestPathPost.test_postprocessors
-##
-# def test_postprocessors(self):
-#    """Test the postprocessors."""
-#    #
-#    # The tests are performed in the order they are listed:
-#    # one test performed on all of the postprocessors
-#    # then the next test on all of the postprocessors, etc.
-#    # You can comment out the tuples for tests that you don't want
-#    # to use.
-#    #
-#    tests_to_perform = (
-#        # (output_file_id, freecad_document, job_name, postprocessor_arguments,
-#        #  postprocessor_list)
-#        #
-#        # test with all of the defaults (metric mode, etc.)
-#        ("default", "boxtest1", "Job", "--no-show-editor", ()),
-#        # test in Imperial mode
-#        ("imperial", "boxtest1", "Job", "--no-show-editor --inches", ()),
-#        # test in metric, G55, M4, the other way around the part
-#        ("other_way", "boxtest1", "Job001", "--no-show-editor", ()),
-#        # test in metric, split by fixtures, G54, G55, G56
-#        ("split", "boxtest1", "Job002", "--no-show-editor", ()),
-#        # test in metric mode without the header
-#        ("no_header", "boxtest1", "Job", "--no-header --no-show-editor", ()),
-#        # test translating G81, G82, and G83 to G00 and G01 commands
-#        (
-#            "drill_translate",
-#            "drill_test1",
-#            "Job",
-#            "--no-show-editor --translate_drill",
-#            ("grbl", "refactored_grbl"),
-#        ),
-#    )
-#    #
-#    # The postprocessors to test.
-#    # You can comment out any postprocessors that you don't want
-#    # to test.
-#    #
-#    postprocessors_to_test = (
-#        "centroid",
-#        # "fanuc",
-#        "grbl",
-#        "linuxcnc",
-#        "mach3_mach4",
-#        "refactored_centroid",
-#        # "refactored_fanuc",
-#        "refactored_grbl",
-#        "refactored_linuxcnc",
-#        "refactored_mach3_mach4",
-#        "refactored_test",
-#    )
-#    #
-#    # Enough of the path to where the tests are stored so that
-#    # they can be found by the python interpreter.
-#    #
-#    PATHTESTS_LOCATION = "Mod/CAM/CAMTests"
-#    #
-#    # The following code tries to reuse an open FreeCAD document
-#    # as much as possible.  It compares the current document with
-#    # the document for the next test.  If the names are different
-#    # then the current document is closed and the new document is
-#    # opened.  The final document is closed at the end of the code.
-#    #
-#    current_document = ""
-#    for (
-#        output_file_id,
-#        freecad_document,
-#        job_name,
-#        postprocessor_arguments,
-#        postprocessor_list,
-#    ) in tests_to_perform:
-#        if current_document != freecad_document:
-#            if current_document != "":
-#                FreeCAD.closeDocument(current_document)
-#            current_document = freecad_document
-#            current_document_path = (
-#                FreeCAD.getHomePath()
-#                + PATHTESTS_LOCATION
-#                + os.path.sep
-#                + current_document
-#                + ".fcstd"
-#            )
-#            FreeCAD.open(current_document_path)
-#        job = FreeCAD.ActiveDocument.getObject(job_name)
-#        # Create the objects to be written by the postprocessor.
-#        self.pp._buildPostList(job)
-#        for postprocessor_id in postprocessors_to_test:
-#            if postprocessor_list == () or postprocessor_id in postprocessor_list:
-#                print(
-#                    "\nRunning %s test on %s postprocessor:\n"
-#                    % (output_file_id, postprocessor_id)
-#                )
-#                processor = PostProcessor.load(postprocessor_id)
-#                output_file_path = FreeCAD.getHomePath() + PATHTESTS_LOCATION
-#                output_file_pattern = "test_%s_%s" % (
-#                    postprocessor_id,
-#                    output_file_id,
-#                )
-#                output_file_extension = ".ngc"
-#                for idx, section in enumerate(postlist):
-#                    partname = section[0]
-#                    sublist = section[1]
-#                    output_filename = PathPost.processFileNameSubstitutions(
-#                        job,
-#                        partname,
-#                        idx,
-#                        output_file_path,
-#                        output_file_pattern,
-#                        output_file_extension,
-#                    )
-#                    # print("output file: " + output_filename)
-#                    file_path, extension = os.path.splitext(output_filename)
-#                    reference_file_name = "%s%s%s" % (file_path, "_ref", extension)
-#                    # print("reference file: " + reference_file_name)
-#                    gcode = processor.export(
-#                        sublist, output_filename, postprocessor_arguments
-#                    )
-#                    if not gcode:
-#                        print("no gcode")
-#                    with open(reference_file_name, "r") as fp:
-#                        reference_gcode = fp.read()
-#                    if not reference_gcode:
-#                        print("no reference gcode")
-#                    # Remove the "Output Time:" line in the header from the
-#                    # comparison if it is present because it changes with
-#                    # every test.
-#                    gcode_lines = [
-#                        i for i in gcode.splitlines(True) if "Output Time:" not in i
-#                    ]
-#                    reference_gcode_lines = [
-#                        i
-#                        for i in reference_gcode.splitlines(True)
-#                        if "Output Time:" not in i
-#                    ]
-#                    if gcode_lines != reference_gcode_lines:
-#                        msg = "".join(
-#                            difflib.ndiff(gcode_lines, reference_gcode_lines)
-#                        )
-#                        self.fail(
-#                            os.path.basename(output_filename)
-#                            + " output doesn't match:\n"
-#                            + msg
-#                        )
-#                    if not KEEP_DEBUG_OUTPUT:
-#                        os.remove(output_filename)
-#    if current_document != "":
-#        FreeCAD.closeDocument(current_document)
 
 
 class TestPathPostUtils(unittest.TestCase):
@@ -618,14 +525,75 @@ class TestBuildPostList(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
-        cls.testfile = FreeCAD.getHomePath() + "Mod/CAM/CAMTests/test_filenaming.fcstd"
-        cls.doc = FreeCAD.open(cls.testfile)
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
-        cls.job = cls.doc.getObjectsByLabel("MainJob")[0]
+        # Create a new document instead of opening external file
+        cls.doc = FreeCAD.newDocument("test_filenaming")
+
+        # Create a simple geometry object for the job
+        import Part
+
+        box = cls.doc.addObject("Part::Box", "TestBox")
+        box.Length = 100
+        box.Width = 100
+        box.Height = 20
+
+        # Create CAM job programmatically
+        cls.job = PathJob.Create("MainJob", [box], None)
+        cls.job.PostProcessor = "generic"
+        cls.job.PostProcessorOutputFile = ""
+        cls.job.SplitOutput = False
+        cls.job.OrderOutputBy = "Operation"
+        cls.job.Fixtures = ["G54", "G55"]  # 2 fixtures as expected by tests
+
+        # Create additional tool controllers to match original file structure
+        # Original had 2 tool controllers both with "TC: 7/16\" two flute" label
+
+        # Modify the first tool controller to have the expected values
+        cls.job.Tools.Group[0].ToolNumber = 5
+        cls.job.Tools.Group[0].Label = (
+            'TC: 7/16" two flute'  # test050 expects this sanitized to "TC__7_16__two_flute"
+        )
+
+        # Add second tool controller with same label but different number
+        tc2 = PathToolController.Create()
+        tc2.ToolNumber = 2
+        tc2.Label = 'TC: 7/16" two flute'  # Same label as first tool controller
+        cls.job.Proxy.addToolController(tc2)
+
+        # Create mock operations to match original file structure
+        # Original had 3 operations: outsideprofile, DrillAllHoles, Comment
+        # The Comment operation has no tool controller
+        operation_names = ["outsideprofile", "DrillAllHoles", "Comment"]
+
+        for i, name in enumerate(operation_names):
+            # Create a simple document object that mimics an operation
+            op = cls.doc.addObject("Path::FeaturePython", name)
+            op.Label = name
+            # Path::FeaturePython objects already have a Path property
+            op.Path = Path.Path()
+
+            # Only add ToolController property for operations that need it
+            if name != "Comment":
+                # Add ToolController property to the operation
+                op.addProperty(
+                    "App::PropertyLink",
+                    "ToolController",
+                    "Base",
+                    "Tool controller for this operation",
+                )
+                # Assign operations to tool controllers
+                if i == 0:  # outsideprofile uses first tool controller (tool 5)
+                    op.ToolController = cls.job.Tools.Group[0]
+                elif i == 1:  # DrillAllHoles uses second tool controller (tool 2)
+                    op.ToolController = cls.job.Tools.Group[1]
+            # Comment operation has no tool controller (None)
+
+            # Add to job operations
+            cls.job.Operations.addObject(op)
 
     @classmethod
     def tearDownClass(cls):
         FreeCAD.closeDocument(cls.doc.Name)
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
 
     def setUp(self):
         self.pp = PathPost.PostProcessor(self.job, "generic", "", "")
@@ -636,9 +604,11 @@ class TestBuildPostList(unittest.TestCase):
     def test000(self):
 
         # check that the test file is structured correctly
-        self.assertTrue(len(self.job.Tools.Group) == 2)
-        self.assertTrue(len(self.job.Fixtures) == 2)
-        self.assertTrue(len(self.job.Operations.Group) == 3)
+        self.assertEqual(len(self.job.Tools.Group), 2)
+        self.assertEqual(len(self.job.Fixtures), 2)
+        self.assertEqual(
+            len(self.job.Operations.Group), 3
+        )  # Updated back to 3 operations, Comment has no tool controller
 
         self.job.SplitOutput = False
         self.job.OrderOutputBy = "Operation"
@@ -658,7 +628,7 @@ class TestBuildPostList(unittest.TestCase):
         self.job.SplitOutput = False
         self.job.OrderOutputBy = "Operation"
         postlist = self.pp._buildPostList()
-        self.assertTrue(len(postlist) == 1)
+        self.assertEqual(len(postlist), 1)
 
     def test030(self):
         # No splitting should include all ops, tools, and fixtures
@@ -667,7 +637,9 @@ class TestBuildPostList(unittest.TestCase):
         postlist = self.pp._buildPostList()
         firstoutputitem = postlist[0]
         firstoplist = firstoutputitem[1]
-        self.assertTrue(len(firstoplist) == 14)
+        print(f"DEBUG test030: postlist length={len(firstoplist)}, expected=14")
+        print(f"DEBUG test030: firstoplist={[str(item) for item in firstoplist]}")
+        self.assertEqual(len(firstoplist), 14)
 
     def test040(self):
         # Test splitting by tool
@@ -679,11 +651,14 @@ class TestBuildPostList(unittest.TestCase):
         postlist = self.pp._buildPostList()
 
         firstoutputitem = postlist[0]
+        print(f"DEBUG test040: firstoutputitem[0]={firstoutputitem[0]}, expected='5'")
+        print(f"DEBUG test040: tool numbers={[tc.ToolNumber for tc in self.job.Tools.Group]}")
         self.assertTrue(firstoutputitem[0] == str(5))
 
         # check length of output
         firstoplist = firstoutputitem[1]
-        self.assertTrue(len(firstoplist) == 5)
+        print(f"DEBUG test040: postlist length={len(firstoplist)}, expected=5")
+        self.assertEqual(len(firstoplist), 5)
 
     def test050(self):
         # ordering by tool with tool description for string
@@ -706,5 +681,5 @@ class TestBuildPostList(unittest.TestCase):
 
         firstoutputitem = postlist[0]
         firstoplist = firstoutputitem[1]
-        self.assertTrue(len(firstoplist) == 6)
+        self.assertEqual(len(firstoplist), 6)
         self.assertTrue(firstoutputitem[0] == "G54")

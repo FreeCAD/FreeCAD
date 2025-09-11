@@ -139,8 +139,8 @@ class FilenameGenerator:
         substitutions = {
             "%d": self.job.Document.Label,
             "%j": self.job.Label,
-            "%T": self.subpartname,  # Tool
-            "%t": self.subpartname,  # Tool
+            "%T": self.subpartname,  # Tool Number
+            "%t": self.subpartname,  # Tool Controller Label
             "%W": self.subpartname,  # Fixture
             "%O": self.subpartname,  # Operation
         }
@@ -167,6 +167,10 @@ class FilenameGenerator:
                 f"-{self.sequencenumber}" if not explicit_sequence and self.sequencenumber else ""
             )
             filename = f"{temp_filename}{subpart}{sequence}{self.extension}"
+
+            # Trim leading dash if filename starts with one
+            if filename.startswith("-"):
+                filename = filename[1:]
             full_path = os.path.join(self.qualified_path, filename)
 
             self.sequencenumber += 1
