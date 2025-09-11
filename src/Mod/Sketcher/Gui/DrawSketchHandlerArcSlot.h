@@ -97,27 +97,33 @@ public:
     {
         using enum Gui::InputHint::UserInput;
 
+        const Gui::InputHint switchModeHint {.message = tr("%1 switch mode"), .sequences = {KeyM}};
+
         return Gui::lookupHints<SelectMode>(state(),
                                             {
                                                 {.state = SelectMode::SeekFirst,
                                                  .hints =
                                                      {
                                                          {tr("%1 pick slot center"), {MouseLeft}},
+                                                         switchModeHint,
                                                      }},
                                                 {.state = SelectMode::SeekSecond,
                                                  .hints =
                                                      {
                                                          {tr("%1 pick slot radius"), {MouseLeft}},
+                                                         switchModeHint,
                                                      }},
                                                 {.state = SelectMode::SeekThird,
                                                  .hints =
                                                      {
                                                          {tr("%1 pick slot angle"), {MouseLeft}},
+                                                         switchModeHint,
                                                      }},
                                                 {.state = SelectMode::SeekFourth,
                                                  .hints =
                                                      {
                                                          {tr("%1 pick slot width"), {MouseLeft}},
+                                                         switchModeHint,
                                                      }},
                                             });
     }
