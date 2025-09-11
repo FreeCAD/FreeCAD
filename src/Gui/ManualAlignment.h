@@ -24,7 +24,9 @@
 #ifndef GUI_MANUALALIGNMENT_H
 #define GUI_MANUALALIGNMENT_H
 
+#include <QObject>
 #include <QPointer>
+
 #include <Base/BoundBox.h>
 #include <Base/Placement.h>
 #include <Base/Vector3D.h>
