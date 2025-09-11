@@ -254,11 +254,29 @@ The sampling is dong using OCC GCPnts_UniformAbscissa""",
             QT_TRANSLATE_NOOP("App::Property", "Emit preambles G90 G17"),
         )
 
-        # Retract properties group
+        # Retract and Depth properties group
+        obj.addProperty(
+            "App::PropertyBool",
+            "EnableStepDown",
+            "Depth",
+            QT_TRANSLATE_NOOP("App::Property", "Apply incremental step down of tool"),
+        )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "StartDepth",
+            "Depth",
+            QT_TRANSLATE_NOOP("App::Property", "Start depth"),
+        )
+        obj.addProperty(
+            "App::PropertyLength",
+            "StepDown",
+            "Depth",
+            QT_TRANSLATE_NOOP("App::Property", "Step down"),
+        )
         obj.addProperty(
             "App::PropertyLength",
             "RetractThreshold",
-            "Retract",
+            "Depth",
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 """If two wire's end points are separated within this threshold, they are consider as connected.
@@ -268,13 +286,13 @@ You may want to set this to the tool diameter to keep the tool down.""",
         obj.addProperty(
             "App::PropertyEnumeration",
             "RetractAxis",
-            "Retract",
+            "Depth",
             QT_TRANSLATE_NOOP("App::Property", "Tool retraction axis"),
         )
         obj.addProperty(
             "App::PropertyLength",
             "Retraction",
-            "Retract",
+            "Depth",
             QT_TRANSLATE_NOOP(
                 "App::Property", "Tool retraction absolute coordinate along retraction axis"
             ),
@@ -282,7 +300,7 @@ You may want to set this to the tool diameter to keep the tool down.""",
         obj.addProperty(
             "App::PropertyLength",
             "ResumeHeight",
-            "Retract",
+            "Depth",
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 """When return from last retraction,
@@ -364,7 +382,6 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
             "ZNegative",
         )
         obj.Direction = "None"
-        obj.EmitPreamble = True
         obj.NearestK = 3
         obj.OffsetJoin = ("arcs", "tangent", "intersection")
         obj.OffsetType = ("makeOffset2D", "offsetWire")
@@ -385,6 +402,7 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
         startPointMode = 0 if obj.EnableStartPoint else 2
         offsetMode = 0 if obj.EnableOffset else 2
         offsetMode2 = 0 if obj.EnableOffset and obj.OffsetType == "makeOffset2D" else 2
+        stepDownMode = 0 if obj.EnableStepDown else 2
 
         obj.setEditorMode("StartPoint", startPointMode)
         obj.setEditorMode("UseComp", offsetMode)
@@ -393,6 +411,8 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
         obj.setEditorMode("OffsetType", offsetMode)
         obj.setEditorMode("OffsetJoin", offsetMode2)
         obj.setEditorMode("OffsetOpenResult", offsetMode2)
+        obj.setEditorMode("StartDepth", stepDownMode)
+        obj.setEditorMode("StepDown", stepDownMode)
 
     def dumps(self):
         return None
@@ -401,7 +421,7 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
         return None
 
     def onChanged(self, obj, prop):
-        if prop in ("EnableOffset", "EnableStartPoint", "OffsetType"):
+        if prop in ("EnableOffset", "EnableStartPoint", "OffsetType", "EnableStepDown"):
             self.setEditorMode(obj)
         if prop == "Path":
             obj.CycleTime = OpBase.getCycleTimeEstimate(obj)
@@ -464,7 +484,57 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
         params["deflection"] = obj.Deflection
 
         pprint.pprint(params)
-        obj.Path = Path.fromShapes(**params)
+        path = Path.fromShapes(**params)
+        if obj.EnableStepDown:
+            obj.Path = self.processStepDown(obj, path)
+        else:
+            obj.Path = path
+
+    # First coordinates of each axis
+    def getStartPoint(self, path):
+        x = y = z = None
+        for cmd in path.Commands:
+            x = cmd.x if x is None and cmd.x is not None else x
+            y = cmd.y if y is None and cmd.y is not None else y
+            z = cmd.z if z is None and cmd.z is not None else z
+            if x is not None and y is not None and z is not None:
+                return FreeCAD.Vector(x, y, z)
+
+        if x is None:
+            Path.Log.warning(translate("PathShape", "Can not determinate axis X"))
+        if y is None:
+            Path.Log.warning(translate("PathShape", "Can not determinate axis Y"))
+        if z is None:
+            Path.Log.warning(translate("PathShape", "Can not determinate axis Z"))
+
+        return None
+
+    # Add several passes with step down
+    def processStepDown(self, obj, path):
+        startPoint = self.getStartPoint(path)
+        stepDepth = obj.StepDown.Value
+        limitDepth = obj.StartDepth.Value
+        stop = False
+        commands = []
+        firstStep = True
+        while not stop:
+            stop = True
+            limitDepth -= stepDepth
+            if not firstStep and startPoint:
+                # add safety moves to start point before next step down
+                commands.append(Path.Command("G0", {"Z": startPoint.z}))
+                commands.append(Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y}))
+
+            for i, cmd in enumerate(path.Commands):
+                if "Z" in cmd.Parameters and cmd.Parameters["Z"] < limitDepth:
+                    stop = False
+                    cmd.Parameters["Z"] = limitDepth
+                    cmd = Path.Command(cmd.Name, cmd.Parameters)
+                commands.append(cmd)
+
+            firstStep = False
+
+        return Path.Path(commands)
 
     # This method must return True and needed for PathUtils.findToolController()
     def isToolSupported(self, obj, tool=None):
@@ -478,6 +548,7 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
         if obj.ToolController:
             obj.HorizFeed = obj.ToolController.HorizFeed.Value
             obj.VertFeed = obj.ToolController.VertFeed.Value
+            obj.StepDown = obj.ToolController.Tool.Diameter / 2
         else:
             Path.Log.warning(
                 translate("PathShape", "Tool controller not selected for operation %s") % obj.Label
@@ -487,9 +558,11 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
     def setSafetyZ(self, obj):
         job = PathUtils.findParentJob(obj)
         if job:
-            safetyZ = job.Stock.Shape.BoundBox.ZMax + 10
+            zmax = job.Stock.Shape.BoundBox.ZMax
+            safetyZ = zmax + 10
             obj.Retraction = safetyZ
             obj.ResumeHeight = safetyZ
+            obj.StartDepth = zmax + 1
 
 
 # Geometry for selected shapes
