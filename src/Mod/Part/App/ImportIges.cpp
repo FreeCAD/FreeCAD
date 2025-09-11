@@ -40,17 +40,20 @@
 # include <XSControl_WorkSession.hxx>
 #endif
 
+#include <Base/Console.h>
 #include <App/Document.h>
 #include <Base/Sequencer.h>
 
 #include "ImportIges.h"
 #include "PartFeature.h"
 
+FC_LOG_LEVEL_INIT("Part")
 
 using namespace Part;
 
 int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
 {
+    FC_WARN("Importing IGES via 'Part' is deprecated. Use 'ImportGui' instead.");
     try {
         Base::FileInfo fi(FileName);
         // read iges file
