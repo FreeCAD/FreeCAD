@@ -456,7 +456,7 @@ QString getAutoGroupCommandStr(std::string name)
     App::Part* activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("part");
     if (activePart) {
         QString activePartName = QString::fromLatin1(activePart->getNameInDocument());
-	QString objName        = QString::fromLatin1(name.c_str());
+        QString objName        = QString::fromLatin1(name.c_str());
         return QStringLiteral("App.ActiveDocument.getObject('%1\')."
             "addObject(App.ActiveDocument.getObject('%2\'))\n")
             .arg(activePartName).arg(objName);

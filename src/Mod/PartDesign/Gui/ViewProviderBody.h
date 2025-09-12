@@ -27,7 +27,7 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
 #include <Mod/PartDesign/App/Feature.h>
-#include <Gui/ViewProviderGeoFeatureGroupExtension.h>
+#include <Gui/ViewProviderOriginGroupExtension.h>
 #include <QCoreApplication>
 
 class SoGroup;
@@ -42,7 +42,7 @@ namespace PartDesignGui {
  *  If the Body is not active it shows only the result shape (tip).
  * \author jriegel
  */
-class PartDesignGuiExport ViewProviderBody : public PartGui::ViewProviderPart, public Gui::ViewProviderGeoFeatureGroupExtension
+class PartDesignGuiExport ViewProviderBody : public PartGui::ViewProviderPart, public Gui::ViewProviderOriginGroupExtension
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderBody)
     PROPERTY_HEADER_WITH_EXTENSIONS(PartDesignGui::ViewProviderBody);

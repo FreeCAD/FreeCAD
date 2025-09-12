@@ -31,7 +31,6 @@
 #include <App/Part.h>
 #include <App/VarSet.h>
 #include <App/Origin.h>
-#include <App/PDMigrationGate.h>
 
 #include <Base/Placement.h>
 
@@ -493,6 +492,13 @@ void Body::onChanged(const App::Property* prop) {
     Part::BodyBase::onChanged(prop);
 }
 
+void Body::setupObject () {
+    Part::BodyBase::setupObject ();
+}
+
+void Body::unsetupObject () {
+    Part::BodyBase::unsetupObject ();
+}
 
 PyObject *Body::getPyObject()
 {
@@ -591,11 +597,11 @@ bool anyLegacyBodyPlacement(App::Document* doc)
 
 void Body::onDocumentRestored()
 {
-    for (auto obj : Group.getValues()) {
-        if (obj->isDerivedFrom<PartDesign::Feature>())
+    for(auto obj : Group.getValues()) {
+        if(obj->isDerivedFrom<PartDesign::Feature>())
             static_cast<PartDesign::Feature*>(obj)->_Body.setValue(this);
     }
-    _GroupTouched.setStatus(App::Property::Output, true);
+    _GroupTouched.setStatus(App::Property::Output,true);
 
     // trigger ViewProviderBody::copyColorsfromTip
     if (Tip.getValue())
@@ -611,10 +617,6 @@ void Body::onDocumentRestored()
         App::GetApplication().signalFinishRestoreDocument.connect(
             [doc](const App::Document& done) {
                 if (&done != doc) return;
-    
-                // One-shot: run migration only if restore marked this document
-                if (!App::ConsumeDocNeedsPDMigration(&done) && !anyLegacyBodyPlacement(doc)) return;
-    
                 PartDesign::migrateLegacyBodyPlacements(const_cast<App::Document*>(&done));
             }
         );
@@ -622,7 +624,6 @@ void Body::onDocumentRestored()
 
     DocumentObject::onDocumentRestored();
 }
-
 
 // a body is solid if it has features that are solid
 bool Body::isSolid()
@@ -634,27 +635,3 @@ bool Body::isSolid()
     }
     return false;
 }
-
-namespace {
-    // Use the official API to find the owning Part (or nullptr if top-level)
-    static const App::Origin* findGlobalOrigin(const App::Document* doc) {
-        if (!doc) return nullptr;
-        if (auto* obj = doc->getObject("Global_Origin"))
-            if (auto* og = dynamic_cast<App::Origin*>(obj)) return og;
-        return nullptr;
-    }
-}
-
-App::Origin* Body::getOrigin() const
-{
-    if (auto* part = App::Part::getPartOfObject(this))
-        return part->getOrigin();
-
-    if (auto* og = findGlobalOrigin(getDocument()))
-        return const_cast<App::Origin*>(og);
-
-    // New docs with top-level Body will prompt to pick a plane/face — that's intended.
-    return nullptr;
-}
-
-

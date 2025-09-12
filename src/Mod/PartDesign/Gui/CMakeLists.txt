@@ -119,8 +119,6 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderHelix.cpp
     ViewProviderBase.h
     ViewProviderBase.cpp
-    ViewProviderLegacyTipAdapter.cpp
-    ViewProviderLegacyTipAdapter.h
 )
 SOURCE_GROUP("ViewProvider" FILES ${PartDesignGuiViewProvider_SRCS})
 

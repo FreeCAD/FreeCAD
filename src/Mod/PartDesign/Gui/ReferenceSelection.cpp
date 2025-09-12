@@ -316,18 +316,6 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
                 return false;
             }
 
-/*
-            if (!dlg.radioXRef->isChecked()) {
-                App::Document* document = thisObj->getDocument();
-                document->openTransaction("Make copy");
-                auto copy = PartDesignGui::TaskFeaturePick::makeCopy(selObj, subname, dlg.radioIndependent->isChecked());
-                body->addObject(copy);
-
-                selObj = copy;
-                subname.erase(std::remove_if(subname.begin(), subname.end(), &isdigit), subname.end());
-                subname.append("1");
-            }
-*/
         }
     }
 
