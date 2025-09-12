@@ -115,6 +115,9 @@ private:
         using enum Gui::InputHint::UserInput;
 
         const Gui::InputHint switchHint {.message = tr("%1 switch mode"), .sequences = {KeyM}};
+        const Gui::InputHint roundedCornersHint {.message = tr("%1 toggle rounded corners"),
+                                                 .sequences = {KeyU}};
+        const Gui::InputHint frameHint {.message = tr("%1 toggle frame"), .sequences = {KeyJ}};
 
         return Gui::lookupHints<State>(
             {constructionMethod(), state()},
@@ -125,24 +128,32 @@ private:
                      {
                          {tr("%1 pick first corner"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::Diagonal, SelectMode::SeekSecond},
                  .hints =
                      {
                          {tr("%1 pick opposite corner"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::Diagonal, SelectMode::SeekThird},
                  .hints =
                      {
                          {tr("%1 set corner radius or frame thickness"), {MouseMove}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::Diagonal, SelectMode::SeekFourth},
                  .hints =
                      {
                          {tr("%1 set frame thickness"), {MouseMove}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
 
                 // CenterAndCorner method
@@ -151,24 +162,32 @@ private:
                      {
                          {tr("%1 pick center"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekSecond},
                  .hints =
                      {
                          {tr("%1 pick corner"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekThird},
                  .hints =
                      {
                          {tr("%1 set corner radius or frame thickness"), {MouseMove}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekFourth},
                  .hints =
                      {
                          {tr("%1 set frame thickness"), {MouseMove}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
 
                 // ThreePoints method
@@ -177,24 +196,32 @@ private:
                      {
                          {tr("%1 pick first corner"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekSecond},
                  .hints =
                      {
                          {tr("%1 pick second corner"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekThird},
                  .hints =
                      {
                          {tr("%1 pick third corner"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekFourth},
                  .hints =
                      {
                          {tr("%1 set corner radius or frame thickness"), {MouseMove}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
 
                 // CenterAnd3Points method
@@ -203,24 +230,32 @@ private:
                      {
                          {tr("%1 pick center"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekSecond},
                  .hints =
                      {
                          {tr("%1 pick first corner"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekThird},
                  .hints =
                      {
                          {tr("%1 pick second corner"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekFourth},
                  .hints =
                      {
                          {tr("%1 set corner radius or frame thickness"), {MouseMove}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
             });
     }
