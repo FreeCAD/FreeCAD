@@ -30,12 +30,15 @@ These are common functions and classes for creating custom post processors.
 
 
 from Path.Base.MachineState import MachineState
+from Path.Main.Gui.Editor import CodeEditor
+
 from PySide import QtCore, QtGui
+
 import FreeCAD
-import Part
 import Path
 import os
 import re
+
 
 debug = False
 if debug:
@@ -215,14 +218,16 @@ class GCodeEditorDialog(QtGui.QDialog):
 
         layout = QtGui.QVBoxLayout(self)
 
-        # nice text editor widget for editing the gcode
-        self.editor = QtGui.QTextEdit()
+        # self.editor = QtGui.QTextEdit()  # without lines enumeration
+        self.editor = CodeEditor()  # with lines enumeration
+
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Editor")
         font = QtGui.QFont()
-        font.setFamily("Courier")
+        font.setFamily(p.GetString("Font", "Courier"))
         font.setFixedPitch(True)
-        font.setPointSize(10)
+        font.setPointSize(p.GetInt("FontSize", 10))
         self.editor.setFont(font)
-        self.editor.setText("G01 X55 Y4.5 F300.0")
+        self.editor.setPlainText("G01 X55 Y4.5 F300.0")
         layout.addWidget(self.editor)
 
         # OK and Cancel buttons
