@@ -964,4 +964,3 @@ void DSHArcController::doConstructionMethodChanged()
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerArc_H
-
