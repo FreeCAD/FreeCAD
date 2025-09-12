@@ -79,6 +79,7 @@ public:
     bool getUseCustomThreadClearance() const;
     double getCustomThreadClearance() const;
     bool getModelThread() const;
+    bool getCosmeticThreaded() const;
     long getThreadDepthType() const;
     double getThreadDepth() const;
     int getBaseProfileType() const;
@@ -125,7 +126,8 @@ private:
     enum HoleTypeIndex : int {
         Clearance = 0,
         TapDrill = 1,
-        ModeledThread = 2
+        ModeledThread = 2,
+        Threaded = 3
     };
 
 protected:
