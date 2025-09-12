@@ -736,10 +736,10 @@ private:
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Sketch B-Spline"));
 
         // Restore keyboard focus after command restart
-        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        Gui::MDIView* mdi = doc ? doc->getActiveView() : nullptr;
-        if (mdi) {
-            mdi->setFocus();
+        if (Gui::Document* doc = Gui::Application::Instance->activeDocument()) {
+            if (Gui::MDIView* mdi = doc->getActiveView()) {
+                mdi->setFocus();
+            }
         }
 
         // Add the necessary alignment geometries and constraints
