@@ -79,12 +79,12 @@ class ToolBitBrowserWidget(QtGui.QWidget):
 
         # UI Elements
         self._search_edit = QtGui.QLineEdit()
-        self._search_edit.setPlaceholderText("Search tools...")
+        self._search_edit.setPlaceholderText("Search toolbits...")
 
         # Sorting dropdown
         self._sort_combo = QtGui.QComboBox()
         if self._tool_no_factory:
-            self._sort_combo.addItem("Sort by Tool Number", "tool_no")
+            self._sort_combo.addItem("Sort by Toolbit Number", "tool_no")
         self._sort_combo.addItem("Sort by Label", "label")
         self._sort_combo.setCurrentIndex(0)
         self._sort_combo.setVisible(self._tool_no_factory is not None)  # Hide if no tool_no_factory

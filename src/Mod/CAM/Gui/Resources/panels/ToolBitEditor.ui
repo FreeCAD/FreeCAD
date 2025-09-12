@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Tool Parameter Editor</string>
+   <string>Toolbit Parameter Editor</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -62,7 +62,7 @@
              </sizepolicy>
             </property>
             <attribute name="title">
-             <string>Tool</string>
+             <string>Toolbit</string>
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1">
              <item>

@@ -204,7 +204,7 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
 
     def _get_filtered_assets(self):
         """Get assets filtered by tool type if a specific type is selected."""
-        if not self._selected_tool_type or self._selected_tool_type == "All Tool Types":
+        if self._tool_type_combo.currentIndex() == 0:  # "All Toolbit Types"
             return self._all_assets
 
         filtered_assets = []
@@ -575,7 +575,7 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
         self._tool_type_combo.blockSignals(True)
         try:
             self._tool_type_combo.clear()
-            self._tool_type_combo.addItem("All Tool Types")
+            self._tool_type_combo.addItem(FreeCAD.Qt.translate("CAM", "All Toolbit Types"))
 
             for tool_type in self._get_available_tool_types():
                 self._tool_type_combo.addItem(tool_type)
@@ -586,7 +586,6 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
                 self._tool_type_combo.setCurrentIndex(index)
             else:
                 self._tool_type_combo.setCurrentIndex(0)
-                self._selected_tool_type = "All Tool Types"
         finally:
             self._tool_type_combo.blockSignals(False)
 

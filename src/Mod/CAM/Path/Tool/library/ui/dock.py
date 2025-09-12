@@ -56,7 +56,7 @@ class ToolBitLibraryDock(object):
         self.autoClose = autoClose
         self.form = QtWidgets.QDialog()
         self.form.setObjectName("ToolSelector")
-        self.form.setWindowTitle(translate("CAM_ToolBit", "Tool Selector"))
+        self.form.setWindowTitle(translate("CAM_ToolBit", "Toolbit Selector"))
         self.form.setMinimumSize(600, 400)
         self.form.resize(800, 600)
         self.form.adjustSize()

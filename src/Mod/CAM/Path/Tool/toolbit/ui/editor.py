@@ -68,7 +68,7 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
         self._shape_widget = None  # Will be created in load_toolbit
 
         # Layout
-        toolbit_group_box = QtGui.QGroupBox(translate("CAM", "Tool Bit"))
+        toolbit_group_box = QtGui.QGroupBox(translate("CAM", "Toolbit"))
         form_layout = QtGui.QFormLayout(toolbit_group_box)
         form_layout.addRow(translate("CAM", "Label:"), self._label_edit)
         form_layout.addRow(translate("CAM", "ID:"), self._id_label)
