@@ -23,9 +23,8 @@
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/nodes/SoSeparator.h>
-#include <Precision.hxx>
+#include <Inventor/nodes/SoSwitch.h>
 #include <QMenu>
-
 
 #include <App/Document.h>
 #include <App/Origin.h>
@@ -37,20 +36,15 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MDIView.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/ViewProviderCoordinateSystem.h>
 #include <Gui/ViewProviderDatum.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/DatumCS.h>
-#include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
+#include <Mod/PartDesign/App/FeatureHole.h>
 
 #include "ViewProviderBody.h"
 #include "Utils.h"
 #include "ViewProvider.h"
-#include "ViewProviderDatum.h"
-
+#include "ViewProviderHole.h"
 
 using namespace PartDesignGui;
 namespace sp = std::placeholders;
@@ -70,7 +64,72 @@ ViewProviderBody::ViewProviderBody()
 }
 
 ViewProviderBody::~ViewProviderBody()
-{}
+{
+    clearThreadTextures();
+}
+
+void ViewProviderBody::clearThreadTextures()
+{
+    if (auto* root = this->getRoot()) {
+        for (auto const& [hole, sw] : m_threadOverlays) {
+            root->removeChild(sw);
+            sw->unref();
+        }
+    }
+    m_threadOverlays.clear();
+}
+
+bool ViewProviderBody::isHoleThreadVisible(const PartDesign::Hole* hole) const
+{
+    auto* body = getObject<PartDesign::Body>();
+    if (!body || !Visibility.getValue() || hole->Suppressed.getValue() || !hole->Threaded.getValue()
+        || !hole->CosmeticThread.getValue() || hole->ModelThread.getValue()) {
+        return false;
+    }
+    const auto& features = body->Group.getValues();
+    auto holeIt = std::ranges::find(features, hole);
+    if (holeIt == features.end()) {
+        return false;
+    }
+    for (auto it = holeIt; it != features.end(); ++it) {
+        auto* posteriorFeature = dynamic_cast<PartDesign::Feature*>(*it);
+        if (posteriorFeature && posteriorFeature->Visibility.getValue()) {
+            return true;
+        }
+    }
+    // We've reached the end and no posterior feature is visible,
+    return false;
+}
+
+void ViewProviderBody::updateThreadTextureForHole(const PartDesign::Hole* hole)
+{
+    bool isThreadVisible = isHoleThreadVisible(hole);
+    // Cleanup
+    auto it = m_threadOverlays.find(hole);
+    if (it != m_threadOverlays.end()) {
+        SoSwitch* existingSwitch = it->second;
+        if (auto* holeVP
+            = dynamic_cast<ViewProviderHole*>(Gui::Application::Instance->getViewProvider(hole))) {
+            holeVP->getRoot()->removeChild(existingSwitch);
+        }
+        existingSwitch->unref();
+        m_threadOverlays.erase(it);
+    }
+    // Add the thread
+    if (isThreadVisible) {
+        if (auto* holeVP
+            = dynamic_cast<ViewProviderHole*>(Gui::Application::Instance->getViewProvider(hole))) {
+            if (SoSeparator* newSep = holeVP->createThreadTextureSeparator()) {
+                auto* threadSwitch = new SoSwitch();
+                threadSwitch->ref();
+                threadSwitch->addChild(newSep);
+                holeVP->getRoot()->addChild(threadSwitch);
+                threadSwitch->whichChild = SO_SWITCH_ALL;
+                m_threadOverlays[hole] = threadSwitch;
+            }
+        }
+    }
+}
 
 void ViewProviderBody::attach(App::DocumentObject* pcFeat)
 {
@@ -79,6 +138,64 @@ void ViewProviderBody::attach(App::DocumentObject* pcFeat)
 
     // set default display mode
     onChanged(&DisplayModeBody);
+
+    if (App::Document* doc = pcFeat->getDocument()) {
+        m_RecomputedConn = doc->signalRecomputed.connect(
+            [this](const App::Document& doc, const std::vector<App::DocumentObject*>& recomputedObjs) {
+                this->afterRecompute(doc, recomputedObjs);
+            }
+        );
+    }
+    m_ChangedConn = Gui::Application::Instance->signalChangedObject.connect(
+        [this](const Gui::ViewProvider& vp, const App::Property& prop) {
+            this->onChangedObject(vp, prop);
+        }
+    );
+}
+
+void ViewProviderBody::onChangedObject(const Gui::ViewProvider& vp, const App::Property& prop)
+{
+    static const std::unordered_set<std::string> watchedProps {"Visibility", "CosmeticThread"};
+    if (!watchedProps.contains(prop.getName())) {
+        return;
+    }
+    auto* vpd = dynamic_cast<const Gui::ViewProviderDocumentObject*>(&vp);
+    if (!vpd) {
+        return;
+    }
+    auto* changedObj = vpd->getObject();
+    if (!changedObj) {
+        return;
+    }
+    auto* body = this->getObject<PartDesign::Body>();
+    if (!body) {
+        return;
+    }
+    const auto& features = body->Group.getValues();
+    bool isRelevantChange = (changedObj == body)
+        || (std::ranges::find(features, changedObj) != features.end());
+
+    if (isRelevantChange) {
+        refreshAllHoleThreads();
+    }
+}
+
+void ViewProviderBody::afterRecompute(const App::Document& /* doc */, const std::vector<App::DocumentObject*>& /* recomputedObjs */)
+{
+    refreshAllHoleThreads();
+}
+
+void ViewProviderBody::refreshAllHoleThreads()
+{
+    auto* body = getObject<PartDesign::Body>();
+    if (!body) {
+        return;
+    }
+    for (auto* feature : body->Group.getValues()) {
+        if (auto* hole = dynamic_cast<PartDesign::Hole*>(feature)) {
+            updateThreadTextureForHole(hole);
+        }
+    }
 }
 
 // TODO on activating the body switch to the "Through" mode (2015-09-05, Fat-Zer)
@@ -294,6 +411,15 @@ void ViewProviderBody::onChanged(const App::Property* prop)
         unifyVisualProperty(prop);
     }
 
+    if (prop == &Visibility) {
+        bool visible = Visibility.getValue();
+        for (auto& [hole, sw] : m_threadOverlays) {
+            if (sw) {
+                sw->whichChild = visible ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+            }
+        }
+    }
+
     // When changing transparency then adjust the ShapeAppearance inside onChanged()
     // of the base class but don't notify its container again. This breaks the chain of
     // notification and avoids the call of onChanged() with the ShapeAppearance as argument
@@ -308,7 +434,6 @@ void ViewProviderBody::onChanged(const App::Property* prop)
         ShapeAppearance.enableNotify(true);
     }
 }
-
 
 void ViewProviderBody::unifyVisualProperty(const App::Property* prop)
 {

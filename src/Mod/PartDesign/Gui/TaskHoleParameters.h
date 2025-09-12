@@ -82,6 +82,7 @@ public:
     bool getUseCustomThreadClearance() const;
     double getCustomThreadClearance() const;
     bool getModelThread() const;
+    bool getCosmeticThreaded() const;
     long getThreadDepthType() const;
     double getThreadDepth() const;
     int getBaseProfileType() const;
@@ -108,6 +109,7 @@ private Q_SLOTS:
     void taperedChanged();
     void taperedAngleChanged(double value);
     void reversedChanged();
+    void modelThreadChanged();
     void useCustomThreadClearanceChanged();
     void customThreadClearanceChanged(double value);
     void updateViewChanged(bool isChecked);
@@ -131,7 +133,7 @@ private:
     {
         Clearance = 0,
         TapDrill = 1,
-        ModeledThread = 2
+        Threaded = 2
     };
 
 protected:
