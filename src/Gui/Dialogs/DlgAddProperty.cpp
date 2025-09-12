@@ -481,14 +481,8 @@ void DlgAddProperty::setAddEnabled(bool enabled)
 {
     QPushButton *addButton = ui->buttonBox->button(QDialogButtonBox::Ok);
     QPushButton *cancelButton = ui->buttonBox->button(QDialogButtonBox::Cancel);
-    if (enabled) {
-        cancelButton->setDefault(false);
-        addButton->setDefault(true);
-    }
-    else {
-        cancelButton->setDefault(true);
-        addButton->setDefault(false);
-    }
+    cancelButton->setDefault(!enabled);
+    addButton->setDefault(enabled);
     addButton->setEnabled(enabled);
 }
 
@@ -550,12 +544,12 @@ bool DlgAddProperty::isTypeValid()
 
 bool DlgAddProperty::isDocument() const
 {
-    return container && freecad_cast<const App::Document*>(container);
+    return container->isDerivedFrom<App::Document>();
 }
 
 bool DlgAddProperty::isDocumentObject() const
 {
-    return container && freecad_cast<const App::DocumentObject*>(container);
+    return container->isDerivedFrom<App::DocumentObject>();
 }
 
 bool DlgAddProperty::areFieldsValid()
@@ -830,9 +824,8 @@ void DlgAddProperty::openTransaction()
 void DlgAddProperty::critical(const QString& title, const QString& text) {
     static bool criticalDialogShown = false;
     if (!criticalDialogShown) {
-        criticalDialogShown = true;
+        Base::StateLocker locker(criticalDialogShown);
         QMessageBox::critical(this, title, text);
-        criticalDialogShown = false;
     }
 }
 
