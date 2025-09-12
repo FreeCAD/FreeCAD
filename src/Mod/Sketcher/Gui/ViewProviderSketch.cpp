@@ -2811,7 +2811,7 @@ bool ViewProviderSketch::selectAll()
             Base::Console().error("Select All: Not all geometry was selected");
         }
     }
-    
+
     if (focusOnConstraintWidget || noWidgetSelected) {
         const std::vector<Sketcher::Constraint*>& constraints = sketchObject->Constraints.getValues();
         for (size_t i = 0; i < constraints.size(); ++i) {
