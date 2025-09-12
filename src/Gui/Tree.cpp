@@ -1512,8 +1512,8 @@ void TreeWidget::setupResizableColumn(TreeWidget *tree) {
     }
 }
 
-std::vector<Document*> TreeWidget::getSelectedDocuments() {
-    std::vector<Document*> ret;
+TreeWidget* TreeWidget::getTreeForSelection()
+{
     TreeWidget* tree = instance();
     if (!tree || !tree->isSelectionAttached()) {
         for (auto pTree : Instances)
@@ -1522,13 +1522,28 @@ std::vector<Document*> TreeWidget::getSelectedDocuments() {
                 break;
             }
     }
-    if (!tree)
-        return ret;
+    if (!tree) {
+        return nullptr;
+    }
 
-    if (tree->selectTimer->isActive())
+    if (tree->selectTimer->isActive()) {
         tree->onSelectTimer();
-    else
+    }
+    else {
         tree->_updateStatus(false);
+    }
+
+    return tree;
+}
+
+std::vector<Document*> TreeWidget::getSelectedDocuments()
+{
+    std::vector<Document*> ret;
+    TreeWidget* tree = getTreeForSelection();
+
+    if (!tree) {
+        return ret;
+    }
 
     const auto items = tree->selectedItems();
     for (auto ti : items) {
@@ -1548,22 +1563,11 @@ std::vector<Document*> TreeWidget::getSelectedDocuments() {
 std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
 {
     std::vector<SelInfo> ret;
+    TreeWidget* tree = getTreeForSelection();
 
-    TreeWidget* tree = instance();
-    if (!tree || !tree->isSelectionAttached()) {
-        for (auto pTree : Instances)
-            if (pTree->isSelectionAttached()) {
-                tree = pTree;
-                break;
-            }
-    }
-    if (!tree)
+    if (!tree) {
         return ret;
-
-    if (tree->selectTimer->isActive())
-        tree->onSelectTimer();
-    else
-        tree->_updateStatus(false);
+    }
 
     const auto items = tree->selectedItems();
     for (auto ti : items) {
