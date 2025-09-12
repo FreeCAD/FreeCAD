@@ -1735,6 +1735,11 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
         previouslySelectedItemIndex = focusItemIndex;
 
     ui->listWidgetElements->repaint();
+
+    // it seems that addSelections gives back the focus to the view, and not immediately.
+    QTimer::singleShot(200, [this]() {
+        ui->listWidgetElements->setFocus();
+    });
 }
 
 bool TaskSketcherElements::hasInputWidgetFocused()
