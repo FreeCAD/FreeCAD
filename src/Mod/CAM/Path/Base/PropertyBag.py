@@ -105,6 +105,7 @@ class PropertyBag(object):
             try:
                 obj.removeProperty(self.CustomPropertyGroups)
             except Exception:
+                # Removing the property may fail if it does not exist; safe to ignore in this context.
                 pass
             obj.addProperty(
                 "App::PropertyEnumeration",

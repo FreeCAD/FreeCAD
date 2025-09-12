@@ -28,7 +28,7 @@ from ...shape import ToolBitShape
 from ..models.base import ToolBit
 
 
-if True:
+if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:

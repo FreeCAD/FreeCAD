@@ -106,7 +106,7 @@ If left empty no template will be preselected.</string>
        <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
-          <enum>Qt::Orientation::Vertical</enum>
+          <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -144,7 +144,7 @@ If left empty no template will be preselected.</string>
          </property>
          <layout class="QFormLayout" name="formLayout_2">
           <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow</enum>
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
           </property>
           <item row="1" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -257,7 +257,7 @@ See the file save policy below on how to deal with name conflicts.</string>
          </property>
          <layout class="QFormLayout" name="formLayout">
           <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow</enum>
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
           </property>
           <item row="0" column="0">
            <widget class="QLabel" name="label_3">
@@ -322,7 +322,7 @@ See the file save policy below on how to deal with name conflicts.</string>
        <item>
         <spacer name="verticalSpacer_2">
          <property name="orientation">
-          <enum>Qt::Orientation::Vertical</enum>
+          <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -387,7 +387,7 @@ See the file save policy below on how to deal with name conflicts.</string>
           <item>
            <spacer name="horizontalSpacer">
             <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
+             <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -514,7 +514,7 @@ See the file save policy below on how to deal with name conflicts.</string>
           <item>
            <spacer name="horizontalSpacer_2">
             <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
+             <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -556,21 +556,21 @@ See the file save policy below on how to deal with name conflicts.</string>
              <item row="3" column="2">
               <widget class="QDoubleSpinBox" name="stockAxisX">
                <property name="buttonSymbols">
-                <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+                <enum>QAbstractSpinBox::NoButtons</enum>
                </property>
               </widget>
              </item>
              <item row="3" column="3">
               <widget class="QDoubleSpinBox" name="stockAxisY">
                <property name="buttonSymbols">
-                <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+                <enum>QAbstractSpinBox::NoButtons</enum>
                </property>
               </widget>
              </item>
              <item row="3" column="4">
               <widget class="QDoubleSpinBox" name="stockAxisZ">
                <property name="buttonSymbols">
-                <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+                <enum>QAbstractSpinBox::NoButtons</enum>
                </property>
               </widget>
              </item>
@@ -599,7 +599,7 @@ See the file save policy below on how to deal with name conflicts.</string>
        <item>
         <spacer name="verticalSpacer_3">
          <property name="orientation">
-          <enum>Qt::Orientation::Vertical</enum>
+          <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -616,7 +616,7 @@ See the file save policy below on how to deal with name conflicts.</string>
    <item>
     <spacer name="verticalSpacer_5">
      <property name="orientation">
-      <enum>Qt::Orientation::Vertical</enum>
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>

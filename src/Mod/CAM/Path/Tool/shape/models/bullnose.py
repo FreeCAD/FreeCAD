@@ -52,12 +52,12 @@ class ToolBitShapeBullnose(ToolBitShape):
                 FreeCAD.Qt.translate("ToolBitShape", "Shank diameter"),
                 "App::PropertyLength",
             ),
-            "FlatRadius": (
-                FreeCAD.Qt.translate("ToolBitShape", "Torus radius"),
+            "CornerRadius": (
+                FreeCAD.Qt.translate("ToolBitShape", "Corner radius"),
                 "App::PropertyLength",
             ),
         }
 
     @property
     def label(self) -> str:
-        return FreeCAD.Qt.translate("ToolBitShape", "Torus")
+        return FreeCAD.Qt.translate("ToolBitShape", "Bullnose")
