@@ -515,6 +515,12 @@ private:
             sketchgui->getSketchObject()->solve();
         }
         else if (state() == SelectMode::SeekSecond) {
+            // Prevent adding a new point if it's coincident with the last one.
+            if (!points.empty()
+                && (prevCursorPosition - getLastPoint()).Length() < Precision::Confusion()) {
+                return false;
+            }
+
             // We stay in SeekSecond unless the user closed the bspline.
             bool isClosed = false;
 
@@ -776,7 +782,9 @@ private:
         for (auto& point : points) {
             bsplinePoints3D.emplace_back(point.x, point.y, 0.0);
         }
-        if (onlyeditoutline) {
+
+        double len = (prevCursorPosition - getLastPoint()).Length();
+        if (onlyeditoutline && (points.empty() || len >= Precision::Confusion())) {
             bsplinePoints3D.emplace_back(prevCursorPosition.x, prevCursorPosition.y, 0.0);
         }
 
