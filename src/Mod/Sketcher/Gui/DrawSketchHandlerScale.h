@@ -669,20 +669,20 @@ void DSHScaleController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHScaleController::doChangeDrawSketchHandlerMode()
+void DSHScaleController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
             if (onViewParameters[OnViewParameter::First]->isSet
                 && onViewParameters[OnViewParameter::Second]->isSet) {
 
-                handler->setState(SelectMode::SeekSecond);
+                handler->setNextState(SelectMode::SeekSecond);
             }
         } break;
         case SelectMode::SeekThird: {
             if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing) {
 
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
         } break;
             break;

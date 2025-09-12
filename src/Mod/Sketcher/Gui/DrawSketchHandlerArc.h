@@ -749,7 +749,7 @@ void DSHArcController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHArcController::doChangeDrawSketchHandlerMode()
+void DSHArcController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
@@ -757,7 +757,7 @@ void DSHArcController::doChangeDrawSketchHandlerMode()
             auto& secondParam = onViewParameters[OnViewParameter::Second];
 
             if (firstParam->hasFinishedEditing && secondParam->hasFinishedEditing) {
-                handler->setState(SelectMode::SeekSecond);
+                handler->setNextState(SelectMode::SeekSecond);
             }
         } break;
         case SelectMode::SeekSecond: {
@@ -765,21 +765,21 @@ void DSHArcController::doChangeDrawSketchHandlerMode()
             auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
 
             if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing) {
-                handler->setState(SelectMode::SeekThird);
+                handler->setNextState(SelectMode::SeekThird);
             }
         } break;
         case SelectMode::SeekThird: {
             auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
             if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
                 if (fifthParam->hasFinishedEditing) {
-                    handler->setState(SelectMode::End);
+                    handler->setNextState(SelectMode::End);
                 }
             }
             else {
                 auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
 
                 if (fifthParam->hasFinishedEditing && sixthParam->hasFinishedEditing) {
-                    handler->setState(SelectMode::End);
+                    handler->setNextState(SelectMode::End);
                 }
             }
         } break;
