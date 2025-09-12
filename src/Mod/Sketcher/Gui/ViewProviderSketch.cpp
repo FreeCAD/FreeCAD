@@ -3731,7 +3731,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     cameraSensor.attach(viewer->getCamera());
 
     blockContextMenu = false;
-    
+
     if (auto* window = viewer->window()->windowHandle()) {
         screenChangeConnection = QObject::connect(window, &QWindow::screenChanged, [this](QScreen*) {
             if (isInEditMode() && editCoinManager) {
