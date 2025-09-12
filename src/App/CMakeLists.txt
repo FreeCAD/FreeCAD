@@ -86,6 +86,7 @@ list(APPEND FreeCADApp_LIBS
         ${QtXml_LIBRARIES}
 )
 
+generate_from_py(ApplicationDirectories)
 generate_from_py(Document)
 generate_from_py(DocumentObject)
 generate_from_py(Extension)
@@ -112,6 +113,7 @@ generate_embed_from_py(FreeCADInit InitScript.h)
 generate_embed_from_py(FreeCADTest TestScript.h)
 
 SET(FreeCADApp_Pyi_SRCS
+    ApplicationDirectories.pyi
     Extension.pyi
     ExtensionContainer.pyi
     DocumentObjectExtension.pyi
@@ -281,6 +283,7 @@ SET(FreeCADApp_CPP_SRCS
     ${Properties_CPP_SRCS}
     Application.cpp
     ApplicationDirectories.cpp
+    ApplicationDirectoriesPyImp.cpp
     ApplicationPy.cpp
     AutoTransaction.cpp
     Branding.cpp
