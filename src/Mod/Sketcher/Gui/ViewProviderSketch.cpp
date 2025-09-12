@@ -2821,7 +2821,7 @@ bool ViewProviderSketch::selectAll()
         // get root point if they exist
         addSelection2("RootPoint");
     }
-    
+
     if (focusOnConstraintWidget || noWidgetSelected) {
         const std::vector<Sketcher::Constraint*>& constraints = sketchObject->Constraints.getValues();
         for (size_t i = 0; i < constraints.size(); ++i) {
