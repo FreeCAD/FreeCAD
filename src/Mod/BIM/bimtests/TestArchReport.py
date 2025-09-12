@@ -168,3 +168,21 @@ class TestArchReport(TestArchBase.TestArchBase):
             self.doc.recompute()
         except Exception as e:
             self.fail(f"Recomputing a report with no Target raised an unexpected exception: {e}")
+
+    def test_api_selectObjects(self):
+        """Test the public API function Arch.selectObjects()."""
+        # 1. Test a successful query
+        walls = Arch.selectObjects('SELECT * FROM document WHERE IfcType = "Wall"')
+        self.assertEqual(len(walls), 2)
+        self.assertCountEqual([o.Label for o in walls], [self.wall_ext.Label, self.wall_int.Label])
+
+        # 2. Test a query that should return no results
+        no_results = Arch.selectObjects('SELECT * FROM document WHERE Label = "NonExistentObject"')
+        self.assertEqual(len(no_results), 0)
+
+        # 3. Test that an invalid query does not crash and returns an empty list
+        with patch('FreeCAD.Console.PrintError') as mock_print_error:
+            invalid_results = Arch.selectObjects('SELECT FRM document')
+            self.assertEqual(len(invalid_results), 0)
+            # Verify that an error was printed to the console
+            mock_print_error.assert_called_once()
