@@ -356,7 +356,7 @@ def export(objectslist, filename, argstring):
             print("Skipping editor since output is greater than 100kb")
         else:
             dia = PostUtils.GCodeEditorDialog()
-            dia.editor.setText(gcode)
+            dia.editor.setPlainText(gcode)
             result = dia.exec_()
             if result:
                 final = dia.editor.toPlainText()
