@@ -1108,7 +1108,7 @@ void DSHBSplineController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHBSplineController::doChangeDrawSketchHandlerMode()
+void DSHBSplineController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {

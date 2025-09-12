@@ -1206,14 +1206,14 @@ void DSHOffsetController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHOffsetController::doChangeDrawSketchHandlerMode()
+void DSHOffsetController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
             auto& firstParam = onViewParameters[OnViewParameter::First];
 
             if (firstParam->hasFinishedEditing) {
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
         } break;
         default:
