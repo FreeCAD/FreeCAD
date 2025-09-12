@@ -784,7 +784,7 @@ private:
         }
 
         double len = (prevCursorPosition - getLastPoint()).Length();
-        if (onlyeditoutline && (points.empty() || len > Precision::Confusion())) {
+        if (onlyeditoutline && (points.empty() || len >= Precision::Confusion())) {
             bsplinePoints3D.emplace_back(prevCursorPosition.x, prevCursorPosition.y, 0.0);
         }
 
@@ -1267,3 +1267,4 @@ void DSHBSplineController::addConstraints()
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerBSpline_H
+
