@@ -25,6 +25,32 @@
 #define PARTGUI_ViewProviderHole_H
 
 #include "ViewProvider.h"
+#include <Gui/ViewProviderTextureExtension.h>
+#include <App/Material.h>
+
+#include <vector>
+#include <memory>
+
+// Forward declarations for classes to reduce include dependencies
+class SoTexture2;
+class SoSeparator;
+class SoClipPlane;
+class QMenu;
+
+namespace App {
+    class DocumentObject;
+    class Property;
+}
+
+namespace PartDesign {
+    class Hole;
+}
+
+// Forward declarations for OpenCascade classes
+class TopoDS_Face;
+class TopoDS_Shape;
+class gp_Dir;
+class gp_Pnt;
 
 
 namespace PartDesignGui {
@@ -32,6 +58,9 @@ namespace PartDesignGui {
 class PartDesignGuiExport ViewProviderHole : public ViewProvider
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderHole);
+
+    SoClipPlane* m_endThreadClipper {nullptr};
+    SoTexture2*  m_threadTexture {nullptr};
 
 public:
     /// constructor
@@ -42,14 +71,30 @@ public:
     /// grouping handling
     std::vector<App::DocumentObject*> claimChildren()const override;
     void setupContextMenu(QMenu *menu, QObject *receiver, const char *member) override;
+    SoSeparator* createThreadTextureSeparator();
 
 protected:
     TaskDlgFeatureParameters* getEditDialog() override;
+    void updateData(const App::Property* prop) override;
+
+private:
+    std::unique_ptr<Gui::ViewProviderTextureExtension> textureExtension;
+    gp_Dir getHoleNormal(const PartDesign::Hole* pcHole) const;
+    gp_Pnt getHoleOrigin(const PartDesign::Hole* pcHole) const;
+    std::vector<TopoDS_Face> collectBoreFaces(const PartDesign::Hole* pcHole) const;
+    App::Material getGlobalMaterial();
+    bool generateBoreMeshData(
+        const PartDesign::Hole* pcHole,
+        const std::vector<TopoDS_Face>& boreFaces,
+        const gp_Pnt& holeOriginPnt,
+        std::vector<SbVec3f>& vertices, std::vector<SbVec3f>& normals,
+        std::vector<int>& indices, std::vector<SbVec2f>& uvs
+    ) const;
+    TopoDS_Shape getLastShownShape(const PartDesign::Hole* pcHole) const;
+    void updateThreadClipper(const PartDesign::Hole* pcHole);
+    void updateThreadDirection(const PartDesign::Hole* pcHole);
 };
 
-
-
 } // namespace PartDesignGui
-
 
 #endif // PARTGUI_ViewProviderHole_H
