@@ -336,14 +336,10 @@ class Proxy(object):
             boundbox = FreeCAD.BoundBox(minX, minY, 0, maxX, maxY, 0)
             boundboxList.append(boundbox)
 
-        # print("boundboxList", boundboxList)
         excludeList = []
         for i, boundbox in enumerate(boundboxList):
-            # print(" ", i, boundbox)
             for bb in boundboxList:
-                # print("    ", bb)
                 if not self.isEquelBoundboxes(boundbox, bb) and bb.isInside(boundbox):
-                    # print("  exclude", i)
                     excludeList.append(i)
                     break
         return excludeList
@@ -376,8 +372,6 @@ class Proxy(object):
                 endArea = i
 
             if startArea and endArea:
-                print("startArea", startArea, source[startArea])
-                print("endArea", endArea, source[endArea])
                 p1 = source[startArea].positionBegin()
                 p2 = source[endArea].positionEnd()
                 if Path.Geom.pointsCoincide(p1, p2):
@@ -391,16 +385,12 @@ class Proxy(object):
                         source, startArea, endArea
                     )
                     if startIndex is not None and endIndex is not None:
-                        print("startIndex", startIndex, source[startIndex])
-                        print("endIndex", endIndex, source[endIndex])
                         closedProfilesIndex.append(list(range(startIndex, endIndex + 1)))
 
                 startArea = None
                 endArea = None
 
-        print(closedProfilesIndex)
         excludeList = self.getIndexInnerProfiles(source, closedProfilesIndex)
-        print(excludeList)
 
         outerClosedProfilesIndex = []
         for i, area in enumerate(closedProfilesIndex):
@@ -426,10 +416,8 @@ class Proxy(object):
                 closedProfilesIndex = self.getIndexOuterClosedProfiles(source)
             else:
                 closedProfilesIndex = None
-            print("closedProfilesIndex", closedProfilesIndex)
 
             for index, instr in enumerate(source):
-                print(index, instr)
                 # Path.Log.debug(f"instr: {instr}")
                 if instr.isMove():
                     thisMove = instr
@@ -437,22 +425,17 @@ class Proxy(object):
                     if thisMove.isPlunge() or (
                         closedProfilesIndex is not None and index not in closedProfilesIndex
                     ):
-                        print("  is Plunge")
                         if lastMove and moveAfterPlunge and lastMove.leadsInto(moveAfterPlunge):
-                            print("   create last Bone")
                             bone = self.createBone(obj, lastMove, moveAfterPlunge)
                         lastMove = None
                         moveAfterPlunge = None
                     else:
-                        print("  is not Plunge")
                         if moveAfterPlunge is None:
                             moveAfterPlunge = thisMove
                         if lastMove:
-                            print("    create Bone")
                             bone = self.createBone(obj, lastMove, thisMove)
                         lastMove = thisMove
                     if bone:
-                        print("    3 bone was created")
                         enabled = len(bones) not in obj.BoneBlacklist
                         if enabled and not (
                             dressingUpDogbone and obj.Base.Proxy.includesBoneAt(bone.position())
