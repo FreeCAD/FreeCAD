@@ -169,7 +169,6 @@ SET(Document_CPP_SRCS
     Origin.cpp
     Path.cpp
     InventorObject.cpp
-    PDMigrationGate.cpp
     Placement.cpp
     ProjectFile.cpp
     Datums.cpp
@@ -217,7 +216,6 @@ SET(Document_HPP_SRCS
     Origin.h
     Path.h
     InventorObject.h
-    PDMigrationGate.h
     Placement.h
     ProjectFile.h
     Datums.h
