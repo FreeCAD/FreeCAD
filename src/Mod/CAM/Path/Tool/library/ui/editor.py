@@ -155,7 +155,7 @@ class LibraryEditor(QWidget):
             self._clear_highlight()
             return True
 
-        # Prevent drop into "All Tools"
+        # Prevent drop into "All Toolbits"
         item = self.listModel.itemFromIndex(index)
         if not item or item.data(_LibraryRole) == "all_tools":
             self._clear_highlight()
@@ -286,10 +286,15 @@ class LibraryEditor(QWidget):
         Path.Log.track()
         self.listModel.clear()
 
-        # Add "All Tools" item
-        all_tools_item = QStandardItem(translate("CAM", "All Tools"))
+        # Add "All Toolbits" item
+        all_tools_item = QStandardItem(translate("CAM", "All Toolbits"))
         all_tools_item.setData("all_tools", _LibraryRole)
-        all_tools_item.setIcon(QPixmap(":/icons/CAM_ToolTable.svg"))
+        # all_tools_item.setIcon(QPixmap(":/icons/CAM_ToolTable.svg"))
+        # Make the "All Toolbits" item bold and italic
+        font = all_tools_item.font()
+        font.setBold(True)
+        font.setItalic(True)
+        all_tools_item.setFont(font)
         self.listModel.appendRow(all_tools_item)
 
         # Use AssetManager to fetch library assets (depth=0 for shallow fetch)
