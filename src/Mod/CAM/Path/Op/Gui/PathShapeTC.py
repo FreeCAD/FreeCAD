@@ -214,6 +214,28 @@ and CW for inner wires.
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Invert direction on each step down"),
         )
+        obj.addProperty(
+            "App::PropertyLength",
+            "RetractThreshold",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                """If two wire's end points are separated within this threshold, they are consider as connected.
+You may want to set this to the tool diameter to keep the tool down.""",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "SafetyFinish",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Add move to clearance height in the end"),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "RetractAxis",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Tool retraction axis"),
+        )
 
         # Sorting properties group
         obj.addProperty(
@@ -294,35 +316,20 @@ Note that emitting preambles between moves breaks some dressups and prevents pat
         )
         obj.addProperty(
             "App::PropertyLength",
-            "RetractThreshold",
+            "ClearanceHeight",
             "Depth",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                """If two wire's end points are separated within this threshold, they are consider as connected.
-You may want to set this to the tool diameter to keep the tool down.""",
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "RetractAxis",
-            "Depth",
-            QT_TRANSLATE_NOOP("App::Property", "Tool retraction axis"),
-        )
-        obj.addProperty(
-            "App::PropertyLength",
-            "Retraction",
-            "Depth",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Tool retraction absolute coordinate along retraction axis"
+                "Retraction\nTool retraction absolute coordinate along retraction axis",
             ),
         )
         obj.addProperty(
             "App::PropertyLength",
-            "ResumeHeight",
+            "SafeHeight",
             "Depth",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                """When return from last retraction,
+                """Resume Height\nWhen return from last retraction,
 this gives the pause height relative to the Z value of the next move""",
             ),
         )
@@ -411,6 +418,7 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
         obj.Orientation = "Normal"
         obj.RetractAxis = ("X", "Y", "Z")
         obj.RetractAxis = "Z"
+        obj.SafetyFinish = True
         obj.SortAbscissa = 3.0
         obj.SortMode = ("None", "2D5", "3D", "Greedy")
         obj.SortMode = "2D5"
@@ -494,8 +502,8 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
         params["direction"] = obj.getEnumerationsOfProperty("Direction").index(obj.Direction)
         params["threshold"] = obj.RetractThreshold
         params["retract_axis"] = obj.getEnumerationsOfProperty("RetractAxis").index(obj.RetractAxis)
-        params["retraction"] = obj.Retraction
-        params["resume_height"] = obj.ResumeHeight
+        params["retraction"] = obj.ClearanceHeight
+        params["resume_height"] = obj.SafeHeight
         params["segmentation"] = obj.Segmentation
         params["feedrate"] = obj.HorizFeed.Value
         params["feedrate_v"] = obj.VertFeed.Value
@@ -518,10 +526,15 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
                         # if length of the path is different, the path is inverted
                         break
 
-            obj.Path = self.processStepDown(obj, path, pathReversed)
-
+            commands = self.processStepDown(obj, path, pathReversed)
         else:
-            obj.Path = path
+            commands = path.Commands
+
+        if obj.SafetyFinish:
+            z = obj.ClearanceHeight.Value
+            commands.append(Path.Command("G0", {"Z": z}))
+
+        obj.Path = Path.Path(commands)
 
     """
 fromShapes(shapes, start=Vector(), return_end=False arc_plane=1,
@@ -579,10 +592,10 @@ Returns a Path object from a list of shapes
 * deflection(0.01): Deflection for non circular curve discretization.
     It also also used for discretizing circular wires when youExplode the shape for wire operations"""
 
-    # First coordinates of each axis
-    def getStartPoint(self, path):
+    # Get coordinates of each axis from path commands
+    def getPoint(self, commands):
         x = y = z = None
-        for cmd in path.Commands:
+        for cmd in commands:
             x = cmd.x if x is None and cmd.x is not None else x
             y = cmd.y if y is None and cmd.y is not None else y
             z = cmd.z if z is None and cmd.z is not None else z
@@ -590,27 +603,39 @@ Returns a Path object from a list of shapes
                 return FreeCAD.Vector(x, y, z)
 
         if x is None:
-            Path.Log.warning(translate("PathShape", "Can not determinate start X"))
+            Path.Log.warning(translate("PathShape", "Can not determinate X"))
         if y is None:
-            Path.Log.warning(translate("PathShape", "Can not determinate start Y"))
+            Path.Log.warning(translate("PathShape", "Can not determinate Y"))
         if z is None:
-            Path.Log.warning(translate("PathShape", "Can not determinate start Z"))
+            Path.Log.warning(translate("PathShape", "Can not determinate Z"))
 
         return None
+
+    def isClosedPath(self, point1, point2):
+        if point1.x != point2.x:
+            return False
+        if point1.y != point2.y:
+            return False
+
+        return True
 
     # Add several passes with step down
     def processStepDown(self, obj, path, pathReversed):
         commands = []
-        startPoint = self.getStartPoint(path)
+        startPoint = self.getPoint(path.Commands)
+        endPoint = self.getPoint(reversed(path.Commands))
         stepDepth = obj.StepDown.Value
         limitDepth = obj.StartDepth.Value
-        stop = False
+        repeat = True
         firstStep = True
         changeDir = False
-        while not stop:
-            stop = True
+        while repeat:
+            repeat = False
             limitDepth -= stepDepth
-            if not firstStep and startPoint and not obj.DualDirection:
+
+            skipZ = self.isClosedPath(startPoint, endPoint)
+
+            if not firstStep and startPoint and not obj.DualDirection and not skipZ:
                 # add safety moves to start point before next step down
                 commands.append(Path.Command("G0", {"Z": startPoint.z}))
                 commands.append(Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y}))
@@ -618,10 +643,13 @@ Returns a Path object from a list of shapes
             currentPath = pathReversed if changeDir else path
 
             for cmd in currentPath.Commands:
-                if "Z" in cmd.Parameters and cmd.Parameters["Z"] < limitDepth:
-                    stop = False
-                    cmd.Parameters["Z"] = limitDepth
-                    cmd = Path.Command(cmd.Name, cmd.Parameters)
+                if not firstStep and cmd.z == obj.ClearanceHeight and skipZ:
+                    # skip start move for closed profile
+                    continue
+
+                if cmd.z is not None and cmd.z < limitDepth:
+                    repeat = True  # did not get final depth, so repeat step down
+                    cmd.z = limitDepth
                 commands.append(cmd)
 
             firstStep = False
@@ -630,7 +658,7 @@ Returns a Path object from a list of shapes
                 # change direction after on each step down
                 changeDir = not changeDir
 
-        return Path.Path(commands)
+        return commands
 
     # This method must return True and needed for PathUtils.findToolController()
     def isToolSupported(self, obj, tool):
@@ -662,9 +690,8 @@ Returns a Path object from a list of shapes
         obj = self.obj
         if job:
             zmax = job.Stock.Shape.BoundBox.ZMax
-            safetyZ = zmax + 10
-            obj.Retraction = safetyZ
-            obj.ResumeHeight = safetyZ
+            obj.ClearanceHeight = zmax + 30
+            obj.SafeHeight = zmax + 10
             obj.StartDepth = zmax + 1
 
 
