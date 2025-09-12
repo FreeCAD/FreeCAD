@@ -53,9 +53,10 @@ translate = FreeCAD.Qt.translate
 
 
 class ObjectPathShape:
-    def __init__(self, obj):
+    def __init__(self, obj, job):
         self.Type = "PathShapeObject"
         self.obj = obj
+        self.job = job
         obj.Proxy = self
 
         # Base properties group
@@ -88,13 +89,21 @@ class ObjectPathShape:
                 "Sources of the shapes",
             ),
         )
+
+        # Tool properties group
         obj.addProperty(
             "App::PropertyLink",
             "ToolController",
-            "Base",
+            "Tool",
             QT_TRANSLATE_NOOP(
                 "App::Property", "The tool controller that will be used to calculate the path"
             ),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "CoolantMode",
+            "Tool",
+            QT_TRANSLATE_NOOP("App::Property", "Coolant mode for this operation"),
         )
 
         # Feed properties group
@@ -251,7 +260,11 @@ The sampling is dong using OCC GCPnts_UniformAbscissa""",
             "App::PropertyBool",
             "EmitPreamble",
             "Gcode",
-            QT_TRANSLATE_NOOP("App::Property", "Emit preambles G90 G17"),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                """Emit preambles G90.1 G17 G18 G19
+Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers""",
+            ),
         )
 
         # Retract and Depth properties group
@@ -364,13 +377,15 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
 
         self.setDefaultValues(obj)
         self.setEditorMode(obj)
-        self.addToolController(obj)
-        self.setSafetyZ(obj)
+        self.addToolController()
+        self.setSafetyZ()
 
     def setDefaultValues(self, obj):
         obj.Active = True
         obj.ArcPlane = ("None", "Auto", "XY", "ZX", "YZ", "Variable")
         obj.ArcPlane = "Auto"
+        obj.CoolantMode = ("None", "Flood", "Mist")
+        obj.CoolantMode = "None"
         obj.Deflection = 0.05
         obj.Direction = (
             "None",
@@ -537,15 +552,21 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
         return Path.Path(commands)
 
     # This method must return True and needed for PathUtils.findToolController()
-    def isToolSupported(self, obj, tool=None):
+    def isToolSupported(self, obj, tool):
         return True
 
-    def addToolController(self, obj):
-        obj.ToolController = PathUtil.toolControllerForOp(obj)
-        if not obj.ToolController:
-            obj.ToolController = PathUtils.findToolController(obj, self)
+    def addToolController(self):
+        job = self.job
+        obj = self.obj
+        for op in job.Operations.Group[-2::-1]:
+            toolController = PathUtil.toolControllerForOp(op)
+            if toolController:
+                break
+        else:
+            toolController = PathUtils.findToolController(obj, self)
 
-        if obj.ToolController:
+        if toolController:
+            obj.ToolController = toolController
             obj.HorizFeed = obj.ToolController.HorizFeed.Value
             obj.VertFeed = obj.ToolController.VertFeed.Value
             obj.StepDown = obj.ToolController.Tool.Diameter / 2
@@ -555,8 +576,9 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
             )
 
     # Set safety height parameters
-    def setSafetyZ(self, obj):
-        job = PathUtils.findParentJob(obj)
+    def setSafetyZ(self):
+        job = self.job
+        obj = self.obj
         if job:
             zmax = job.Stock.Shape.BoundBox.ZMax
             safetyZ = zmax + 10
@@ -682,12 +704,12 @@ class CommandPathShapeTC:
         shapeObj.Visibility = False
         shapeObj.Proxy = ObjectPartShape(shapeObj, base)
 
-        pathShapeObj = doc.addObject("Path::FeaturePython", "PathShape")
-        PathUtils.addToJob(pathShapeObj)
-        ObjectPathShape(pathShapeObj)
-        pathShapeObj.ViewObject.Proxy = 0
-        pathShapeObj.ViewObject.Proxy = ViewProviderPathShape(pathShapeObj.ViewObject)
-        pathShapeObj.Sources = [shapeObj]
+        pathObj = doc.addObject("Path::FeaturePython", "PathShape")
+        job = PathUtils.addToJob(pathObj)
+        pathObj.Proxy = ObjectPathShape(pathObj, job)
+        # pathObj.ViewObject.Proxy = 0
+        pathObj.ViewObject.Proxy = ViewProviderPathShape(pathObj.ViewObject)
+        pathObj.Sources = [shapeObj]
         doc.recompute()
 
 
