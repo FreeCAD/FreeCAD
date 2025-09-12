@@ -101,6 +101,7 @@
 #include "Annotation.h"
 #include "Application.h"
 #include "ApplicationDirectories.h"
+#include "ApplicationDirectoriesPy.h"
 #include "CleanupProcess.h"
 #include "ComplexGeoData.h"
 #include "Services.h"
@@ -331,6 +332,7 @@ void Application::setupPythonTypes()
     Base::InterpreterSingleton::addType(&Base::TypePy            ::Type,pBaseModule,"TypeId");
     Base::InterpreterSingleton::addType(&Base::PrecisionPy       ::Type,pBaseModule,"Precision");
 
+    Base::InterpreterSingleton::addType(&ApplicationDirectoriesPy::Type, pAppModule, "ApplicationDirectories");
     Base::InterpreterSingleton::addType(&MaterialPy::Type, pAppModule, "Material");
     Base::InterpreterSingleton::addType(&MetadataPy::Type, pAppModule, "Metadata");
 
