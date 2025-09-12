@@ -3731,6 +3731,15 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     cameraSensor.attach(viewer->getCamera());
 
     blockContextMenu = false;
+    
+    if (auto* window = viewer->window()->windowHandle()) {
+        screenChangeConnection = QObject::connect(window, &QWindow::screenChanged, [this](QScreen*) {
+            if (isInEditMode() && editCoinManager) {
+                editCoinManager->updateElementSizeParameters();
+                draw();
+            }
+        });
+    }
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
@@ -3746,6 +3755,8 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
     viewer->setSelectionEnabled(true);
 
     blockContextMenu = false;
+
+    QObject::disconnect(screenChangeConnection);
 }
 
 void ViewProviderSketch::camSensDeleteCB(void* data, SoSensor *s)

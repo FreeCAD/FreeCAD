@@ -26,6 +26,7 @@
 #include <Inventor/SoRenderManager.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <QCoreApplication>
+#include <QMetaObject>
 #include <boost/signals2.hpp>
 #include <memory>
 
@@ -955,6 +956,8 @@ private:
     boost::signals2::connection connectUndoDocument;
     boost::signals2::connection connectRedoDocument;
     boost::signals2::connection connectSolverUpdate;
+
+    QMetaObject::Connection screenChangeConnection;
 
     // modes while sketching
     SketchMode Mode;
