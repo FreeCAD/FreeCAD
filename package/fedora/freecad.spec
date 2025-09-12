@@ -224,8 +224,9 @@ Development file for OndselSolver
         echo "**** Failed ctest ****"
         touch %{buildroot}%tests_resultdir/ctest.failed
         #cat %{buildroot}%tests_resultdir/ctest.result
-        if %ctest -VV --rerun-failed; then
+        if %ctest -VV --rerun-failed &>> %{buildroot}%tests_resultdir/ctest.result; then
             echo "Now OK"
+            rm %{buildroot}%tests_resultdir/ctest.failed
         fi
     fi
 %endif
