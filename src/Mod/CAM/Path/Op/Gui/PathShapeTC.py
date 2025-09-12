@@ -177,12 +177,10 @@ It also also used for discretizing circular wires,
 when you 'Explode' the shape for wire operations""",
             ),
         )
-
-        # Path properties group
         obj.addProperty(
             "App::PropertyLength",
             "MinDistance",
-            "Path",
+            "Curves",
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 """Minimum distance for the generated new wires.
@@ -190,6 +188,8 @@ Wires maybe broken if the algorithm see fits.
 Set to zero to disable wire breaking.""",
             ),
         )
+
+        # Path properties group
         obj.addProperty(
             "App::PropertyEnumeration",
             "Orientation",
@@ -207,6 +207,12 @@ and CW for inner wires.
             "Direction",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Enforce open path direction"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "DualDirection",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Invert direction on each step down"),
         )
 
         # Sorting properties group
@@ -499,11 +505,79 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
         params["deflection"] = obj.Deflection
 
         pprint.pprint(params)
+
         path = Path.fromShapes(**params)
+        pathReversed = Path.Path()
         if obj.EnableStepDown:
-            obj.Path = self.processStepDown(obj, path)
+            if obj.DualDirection:
+                # get path with inverted direction
+                for dir in (1, 2, 3, 4, 5, 6):
+                    params["direction"] = dir
+                    pathReversed = Path.fromShapes(**params)
+                    if pathReversed.Length != path.Length:
+                        # if length of the path is different, the path is inverted
+                        break
+
+            obj.Path = self.processStepDown(obj, path, pathReversed)
+
         else:
             obj.Path = path
+
+    """
+fromShapes(shapes, start=Vector(), return_end=False arc_plane=1,
+sort_mode=1, min_dist=0.0, abscissa=3.0, nearest_k=3, orientation=0,
+direction=0, threshold=0.0, retract_axis=2, retraction=0.0,
+resume_height=0.0, segmentation=0.0, feedrate=0.0, feedrate_v=0.0,
+verbose=true, abs_center=false, preamble=true, deflection=0.01)
+
+Returns a Path object from a list of shapes
+
+* shapes: input list of shapes.
+* start (Vector()): feed start position, and also serves as a hint of path entry.
+* return_end (False): if True, returns tuple (path, endPosition).
+* arc_plane(1): 0=None,1=Auto,2=XY,3=ZX,4=YZ,5=Variable.
+    Arc drawing plane, corresponding to G17, G18, and G19.
+    If not 'None', the output wires will be transformed to align with the selected plane,
+    and the corresponding GCode will be inserted.
+    'Auto' means the plane is determined by the first encountered arc plane.
+    If the found plane does not align to any GCode plane, XY plane is used.
+    'Variable' means the arc plane can be changed during operation to align to the arc encountered.
+* sort_mode(1): 0=None, 1=2D5, 2=3D, 3=Greedy.
+    Wire sorting mode to optimize travel distance.
+    '2D5' explode shapes into wires, and groups the shapes by its plane.
+    The 'start' position chooses the first plane to start.
+    The algorithm will then sort within the plane and then move on to the next nearest plane.
+    '3D' makes no assumption of planarity. The sorting is done across 3D space.
+    'Greedy' like2D5 but will try to minimize travel by searching for nearest path below the current milling layer.
+    The path in lower layer is only selected if the moving distance is within the value given inthreshold.
+* min_dist(0.0): minimum distance for the generated new wires.
+    Wires maybe broken if the algorithm see fits. Set to zero to disable wire breaking.
+* abscissa(3.0): Controls vertex sampling on wire for nearest point searching.
+    The sampling is dong using OCC GCPnts_UniformAbscissa
+* nearest_k(3): Nearest k sampling vertices are considered during sorting
+* orientation(0): 0=Normal,1=Reversed. Enforce loop orientation
+    'Normal' means CCW for outer wires when looking against the positive axis direction,
+    and CW for inner wires.
+    'Reversed' means the other way round
+* direction(0):
+    0=None,1=XPositive,2=XNegative,3=YPositive,4=YNegative,5=ZPositive,6=ZNegative.
+    Enforce open path direction
+* threshold(0.0): If two wire's end points are separated within this threshold,
+    they are consider as connected.
+    You may want to set this to the tool diameter to keep the tool down.
+* retract_axis(2): 0=X, 1=Y, 2=Z. Tool retraction axis
+* retraction(0.0): Tool retraction absolute coordinate along retraction axis
+* resume_height(0.0): When return from last retraction, this gives the pause
+    height relative to the Z value of the next move.
+* segmentation(0.0): Break long curves into segments of this length.
+    One use case is for PCB autolevel, so that more correction points can be inserted
+* feedrate(0.0): Normal move feed rate
+* feedrate_v(0.0): Vertical only (step down) move feed rate
+* verbose(true): If true, each motion GCode will contain full coordinate and feedrate
+* abs_center(false): Use absolute arc center mode (G90.1)
+* preamble(true): Emit preambles
+* deflection(0.01): Deflection for non circular curve discretization.
+    It also also used for discretizing circular wires when youExplode the shape for wire operations"""
 
     # First coordinates of each axis
     def getStartPoint(self, path):
@@ -516,31 +590,34 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
                 return FreeCAD.Vector(x, y, z)
 
         if x is None:
-            Path.Log.warning(translate("PathShape", "Can not determinate axis X"))
+            Path.Log.warning(translate("PathShape", "Can not determinate start X"))
         if y is None:
-            Path.Log.warning(translate("PathShape", "Can not determinate axis Y"))
+            Path.Log.warning(translate("PathShape", "Can not determinate start Y"))
         if z is None:
-            Path.Log.warning(translate("PathShape", "Can not determinate axis Z"))
+            Path.Log.warning(translate("PathShape", "Can not determinate start Z"))
 
         return None
 
     # Add several passes with step down
-    def processStepDown(self, obj, path):
+    def processStepDown(self, obj, path, pathReversed):
+        commands = []
         startPoint = self.getStartPoint(path)
         stepDepth = obj.StepDown.Value
         limitDepth = obj.StartDepth.Value
         stop = False
-        commands = []
         firstStep = True
+        changeDir = False
         while not stop:
             stop = True
             limitDepth -= stepDepth
-            if not firstStep and startPoint:
+            if not firstStep and startPoint and not obj.DualDirection:
                 # add safety moves to start point before next step down
                 commands.append(Path.Command("G0", {"Z": startPoint.z}))
                 commands.append(Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y}))
 
-            for i, cmd in enumerate(path.Commands):
+            currentPath = pathReversed if changeDir else path
+
+            for cmd in currentPath.Commands:
                 if "Z" in cmd.Parameters and cmd.Parameters["Z"] < limitDepth:
                     stop = False
                     cmd.Parameters["Z"] = limitDepth
@@ -548,6 +625,10 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
                 commands.append(cmd)
 
             firstStep = False
+
+            if obj.DualDirection:
+                # change direction after on each step down
+                changeDir = not changeDir
 
         return Path.Path(commands)
 
