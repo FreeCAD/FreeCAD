@@ -1531,7 +1531,7 @@ target_link_libraries(FreeCADGui PUBLIC ${FreeCADGui_LIBS})
 
 if (MSVC)
     target_compile_definitions(FreeCADGui PRIVATE WIN32_LEAN_AND_MEAN)
-    target_compile_options(FreeCADApp PRIVATE /wd4251 /wd4273 /wd4275)
+    target_compile_options(FreeCADGui PRIVATE /wd4251 /wd4273 /wd4275)
 endif()
 
 if (FREECAD_WARN_ERROR)
