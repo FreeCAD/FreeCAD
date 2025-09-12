@@ -735,6 +735,12 @@ private:
         tryAutoRecomputeIfNotSolve(sketchgui->getSketchObject());
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Sketch B-Spline"));
 
+        // Restore keyboard focus after command restart
+        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+        if (mdi) {
+            mdi->setFocus();
+        }
+
         // Add the necessary alignment geometries and constraints
         for (size_t i = 0; i < geoIds.size(); ++i) {
             addGeometry(points[i], geoIds[i], i == 0);
