@@ -35,9 +35,6 @@ class FCTLSerializer(AssetSerializer):
     extensions = (".fctl",)
     mime_type = "application/x-freecad-toolbit-library"
 
-    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
-    Path.Log.trackModule(Path.Log.thisModule())
-
     @classmethod
     def get_label(cls) -> str:
         return FreeCAD.Qt.translate("CAM", "FreeCAD Tool Library")
