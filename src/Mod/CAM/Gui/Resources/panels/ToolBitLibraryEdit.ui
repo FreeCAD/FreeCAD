@@ -24,7 +24,7 @@
        <item>
         <widget class="QPushButton" name="addLibraryButton">
          <property name="toolTip">
-          <string>Add New Library</string>
+          <string>Adds a new library</string>
          </property>
          <property name="icon">
           <iconset resource="../Path.qrc">
@@ -35,7 +35,7 @@
        <item>
         <widget class="QPushButton" name="removeLibraryButton">
          <property name="toolTip">
-          <string>Remove Library</string>
+          <string>Removes the library</string>
          </property>
          <property name="icon">
           <iconset resource="../../../../../Gui/Icons/resource.qrc">
@@ -46,7 +46,7 @@
        <item>
         <widget class="QPushButton" name="renameLibraryButton">
          <property name="toolTip">
-          <string>Rename Library</string>
+          <string>Renames the library</string>
          </property>
          <property name="icon">
           <iconset resource="../../../../../Gui/Icons/resource.qrc">
@@ -57,7 +57,7 @@
        <item>
         <widget class="QPushButton" name="importLibraryButton">
          <property name="toolTip">
-          <string>Import Library</string>
+          <string>Imports a library</string>
          </property>
          <property name="icon">
           <iconset resource="../../../../../Gui/Icons/resource.qrc">
@@ -68,7 +68,7 @@
        <item>
         <widget class="QPushButton" name="exportLibraryButton">
          <property name="toolTip">
-          <string>Export Library</string>
+          <string>Exports the library</string>
          </property>
          <property name="icon">
           <iconset resource="../../../../../Gui/Icons/resource.qrc">
@@ -108,7 +108,7 @@
        <item>
         <widget class="QPushButton" name="addToolBitButton">
          <property name="toolTip">
-          <string>Add Toolbit</string>
+          <string>Adds a toolbit</string>
          </property>
          <property name="icon">
           <iconset resource="../Path.qrc">
@@ -119,7 +119,7 @@
        <item>
         <widget class="QPushButton" name="importToolBitButton">
          <property name="toolTip">
-          <string>Import Toolbit</string>
+          <string>Imports a toolbit</string>
          </property>
          <property name="icon">
           <iconset resource="../../../../../Gui/Icons/resource.qrc">
@@ -130,7 +130,7 @@
        <item>
         <widget class="QPushButton" name="exportToolBitButton">
          <property name="toolTip">
-          <string>Export Toolbit</string>
+          <string>Exports the toolbit</string>
          </property>
          <property name="icon">
           <iconset resource="../../../../../Gui/Icons/resource.qrc">
@@ -200,7 +200,7 @@
         <bool>true</bool>
        </property>
        <property name="toolTip">
-        <string>Table of Tool Bits of the library.</string>
+        <string>Table of tool bits of the library</string>
        </property>
        <property name="frameShape">
         <enum>QFrame::Box</enum>
