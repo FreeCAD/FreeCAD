@@ -190,8 +190,9 @@ protected:
     void applyNextState()
     {
         if (nextMode) {
-            setState(std::move(*nextMode));
+            auto next = std::move(*nextMode);
             nextMode = std::nullopt;
+            setState(next);
         }
     }
 
