@@ -228,6 +228,7 @@ private:
 
     bool CheckForDependents();
     void addDependentToSelection(App::Document* doc, App::DocumentObject* docObject);
+    static TreeWidget* getTreeForSelection();
 
 private:
     QAction* createGroupAction;
