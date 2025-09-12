@@ -180,7 +180,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->UpdateView->setVisible(isThreaded && isModeled);
 
     ui->Depth->setEnabled(depthIsDimension);
-    ui->ThreadDepthWidget->setVisible(isThreaded && isModeled);
+    ui->ThreadDepthWidget->setVisible(isThreaded);
 
     ui->ThreadDepthDimensionWidget->setVisible(
         std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension"
@@ -280,9 +280,11 @@ void TaskHoleParameters::holeTypeChanged(int index)
     }
     bool isThreaded = getThreaded();
     bool isModeled = getModelThread();
+    bool isCosmetic = getCosmeticThreaded();
 
     pcHole->Threaded.setValue(isThreaded);
     pcHole->ModelThread.setValue(isModeled);
+    pcHole->CosmeticThread.setValue(isCosmetic);
 
     ui->ThreadGroupBox->setVisible(isThreaded);
     // update view not active if modeling threads
@@ -294,7 +296,7 @@ void TaskHoleParameters::holeTypeChanged(int index)
     ui->CustomClearanceWidget->setVisible(isModeled);
     ui->CustomThreadClearance->setEnabled(pcHole->UseCustomThreadClearance.getValue());
 
-    ui->ThreadDepthWidget->setVisible(isThreaded && isModeled);
+    ui->ThreadDepthWidget->setVisible(isThreaded);
     ui->ThreadDepthDimensionWidget->setVisible(
         std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension"
     );
@@ -803,7 +805,10 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
         widget->setDisabled(ro);
     };
 
-    if (&Prop == &hole->Threaded || &Prop == &hole->ModelThread) {
+    if (&Prop == &hole->Threaded
+        || &Prop == &hole->ModelThread
+        || &Prop == &hole->CosmeticThread
+    ) {
         updateHoleTypeCombo();
     }
     else if (&Prop == &hole->ThreadType) {
@@ -924,6 +929,8 @@ void TaskHoleParameters::updateHoleTypeCombo()
     if (hole->Threaded.getValue()) {
         if (hole->ModelThread.getValue()) {
             ui->HoleType->setCurrentIndex(ModeledThread);
+        } else if (hole->CosmeticThread.getValue()) {
+            ui->HoleType->setCurrentIndex(Threaded);
         } else {
             ui->HoleType->setCurrentIndex(TapDrill);
         }
@@ -946,6 +953,12 @@ bool TaskHoleParameters::getModelThread() const
 {
     return ui->HoleType->currentIndex() == ModeledThread;
 }
+
+bool TaskHoleParameters::getCosmeticThreaded() const
+{
+    return ui->HoleType->currentIndex() == Threaded;
+}
+
 
 long TaskHoleParameters::getThreadType() const
 {
@@ -1099,6 +1112,9 @@ void TaskHoleParameters::apply()
     }
     if (!hole->ModelThread.isReadOnly()) {
         FCMD_OBJ_CMD(hole, "ModelThread = " << (getModelThread() ? 1 : 0));
+    }
+    if (!hole->CosmeticThread.isReadOnly()) {
+        FCMD_OBJ_CMD(hole, "CosmeticThread = " << (getCosmeticThreaded() ? 1 : 0));
     }
     if (!hole->ThreadDepthType.isReadOnly()) {
         FCMD_OBJ_CMD(hole, "ThreadDepthType = " << getThreadDepthType());
