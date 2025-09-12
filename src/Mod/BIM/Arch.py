@@ -2421,3 +2421,29 @@ def makeReport(name=None):
 
     FreeCAD.ActiveDocument.recompute()
     return report_obj
+
+def selectObjects(query_string):
+    """
+    Selects objects from the active document using a SQL-like query.
+
+    This provides a powerful, declarative way to select BIM objects
+    based on their properties.
+
+    Parameters
+    ----------
+    query_string : str
+        The SQL query to execute. For example:
+        'SELECT * FROM document WHERE IfcType = "Wall" AND Label LIKE "%exterior%"'
+
+    Returns
+    -------
+    list of App::DocumentObject
+        A list of the FreeCAD document objects that match the query.
+        Returns an empty list if the query is invalid or finds no objects.
+    """
+    # Use a local import to follow Arch.py conventions (lazy loading).
+    import ArchSql
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("Arch.selectObjects() requires an active document.\n")
+        return []
+    return ArchSql.run_query_for_objects(query_string)
