@@ -24,6 +24,7 @@
 #ifndef PARTGUI_ViewProviderBody_H
 #define PARTGUI_ViewProviderBody_H
 
+#include "Mod/PartDesign/App/FeatureHole.h"
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
 #include <Mod/PartDesign/App/Feature.h>
@@ -91,6 +92,8 @@ public:
     bool canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const override;
     /* Check whether the object accept reordering of its children during drop.*/
     bool acceptReorderingObjects() const override { return true; };
+    /** Update the nodes for threads */
+    void updateThreadTextureForHole(const PartDesign::Hole* hole);
 
 protected:
     /// Copy over all visual properties to the child features
@@ -100,9 +103,18 @@ protected:
 
 private:
     static const char* BodyModeEnum[];
+
+    // Cosmetical thread
+    std::map<const PartDesign::Hole*, SoSwitch*> m_threadOverlays;
+    void clearThreadTextures();
+    void afterRecompute(const App::Document&, const std::vector<App::DocumentObject*>& recomputedObjs);
+    boost::signals2::scoped_connection m_RecomputedConn;
+    void onChangedObject(const Gui::ViewProvider& vp, const App::Property& prop);
+    boost::signals2::scoped_connection m_ChangedConn;
+    bool isHoleThreadVisible(const PartDesign::Hole* hole) const;
+    void refreshAllHoleThreads();
+    // End of Cosmetical thread
 };
-
-
 
 } // namespace PartDesignGui
 
