@@ -151,7 +151,7 @@ SoArrowBase::SoArrowBase()
 
     SO_KIT_ADD_FIELD(cylinderHeight, (1.0));
     SO_KIT_ADD_FIELD(cylinderRadius, (0.15));
-    SO_KIT_ADD_FIELD(color, (0.214, 0.560, 0.930));
+    SO_KIT_ADD_FIELD(color, (0, 0, 1));
 
     SO_KIT_INIT_INSTANCE();
 

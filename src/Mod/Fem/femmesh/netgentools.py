@@ -29,7 +29,7 @@ import numpy as np
 import shutil
 import sys
 import tempfile
-from PySide.QtCore import QProcess, QThread
+from PySide.QtCore import QProcess, QThread, QProcessEnvironment
 
 import FreeCAD
 import Fem
@@ -122,7 +122,9 @@ class NetgenTools:
             )
 
     def compute(self):
-        self.process.start(self._get_python_exe(), [self.script_file])
+        env = QProcessEnvironment.systemEnvironment()
+        self.process.setProcessEnvironment(env)
+        self.process.start(self._get_python_exe(), ["-E", self.script_file])
 
         return self.process
 
@@ -133,8 +135,8 @@ print("Python interpreter:", sys.executable, flush=True)
 print("Meshing script:", *sys.argv, flush=True)
 
 try:
-    import pyngcore as ngcore
     from netgen import occ, meshing
+    import pyngcore as ngcore
     import numpy as np
 except ModuleNotFoundError:
     sys.exit("To use FemMesh Netgen, install numpy and Netgen Python bindings")

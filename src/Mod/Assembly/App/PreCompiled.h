@@ -26,10 +26,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _MSC_VER
-#pragma warning(disable : 5208)
-#endif
-
 #ifdef _PreComp_
 
 // standard

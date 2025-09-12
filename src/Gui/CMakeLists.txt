@@ -60,7 +60,9 @@ if (BUILD_TRACY_FRAME_PROFILER)
     add_definitions(-DBUILD_TRACY_FRAME_PROFILER)
 endif()
 
-include_directories(
+target_include_directories(
+    FreeCADGui
+    PUBLIC
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/Quarter
@@ -86,7 +88,10 @@ target_include_directories(
 )
 
 if(MSVC)
-    include_directories(
+    target_include_directories(
+        FreeCADGui
+        SYSTEM
+        PUBLIC
         ${CMAKE_SOURCE_DIR}/src/3rdParty/OpenGL/api
     )
 endif(MSVC)
@@ -191,7 +196,12 @@ IF(SPNAV_FOUND AND FREECAD_USE_3DCONNEXION_LEGACY)
         add_definitions(-DSPNAV_USE_X11)
         if (FREECAD_QT_MAJOR_VERSION EQUAL 5 AND UNIX AND NOT APPLE)
             find_package(Qt5X11Extras REQUIRED)
-            include_directories(SYSTEM ${Qt5X11Extras_INCLUDE_DIRS})
+            target_include_directories(
+                FreeCADGui
+                SYSTEM
+                PUBLIC
+                ${Qt5X11Extras_INCLUDE_DIRS}
+            )
             list(APPEND FreeCADGui_LIBS ${Qt5X11Extras_LIBRARIES})
             # Note that Qt6 has removed the QtX11Extras files
         endif()
@@ -228,8 +238,10 @@ IF(SPNAV_FOUND AND FREECAD_USE_3DCONNEXION_LEGACY)
     )
 
     add_definitions(-DSPNAV_FOUND)
-    include_directories(
+    target_include_directories(
+        FreeCADGui
         SYSTEM
+        PUBLIC
         ${SPNAV_INCLUDE_DIR}
     )
     list(APPEND FreeCADGui_LIBS
@@ -239,8 +251,10 @@ ENDIF(SPNAV_FOUND AND FREECAD_USE_3DCONNEXION_LEGACY)
 
 IF(OCULUS_FOUND)
     add_definitions(-DOCULUS_FOUND)
-    include_directories(
+    target_include_directories(
+        FreeCADGui
         SYSTEM
+        PUBLIC
         ${OCULUS_INCLUDE_DIRS}
     )
     list(APPEND FreeCADGui_LIBS
@@ -250,8 +264,10 @@ ENDIF(OCULUS_FOUND)
 
 if(FREECAD_USE_SHIBOKEN)
     add_definitions(-DHAVE_SHIBOKEN${PYSIDE_MAJOR_VERSION})
-    include_directories(
+    target_include_directories(
+        FreeCADGui
         SYSTEM
+        PUBLIC
         ${SHIBOKEN_INCLUDE_DIR}
     )
     if (SHIBOKEN_LIBRARY)
@@ -272,8 +288,10 @@ if(FREECAD_USE_SHIBOKEN)
 endif(FREECAD_USE_SHIBOKEN)
 
 if(FREECAD_USE_PYSIDE)
-    include_directories(
+    target_include_directories(
+        FreeCADGui
         SYSTEM
+        PUBLIC
         ${PYSIDE_INCLUDE_DIR}
         ${PYSIDE_INCLUDE_DIR}/QtCore
         ${PYSIDE_INCLUDE_DIR}/QtGui
@@ -1161,6 +1179,7 @@ SET(Inventor_SRCS
     Inventor/Draggers/SoRotationDraggerGeometry.h
     Inventor/Draggers/Gizmo.h
     Inventor/Draggers/GizmoHelper.h
+    Inventor/Draggers/GizmoStyleParameters.h
     SoFCColorBar.h
     SoFCColorBarNotifier.h
     SoFCColorGradient.h
@@ -1512,6 +1531,12 @@ endif ()
 
 target_sources(FreeCADGui PRIVATE ${FreeCADGui_SRCS})
 target_link_libraries(FreeCADGui PUBLIC ${FreeCADGui_LIBS})
+
+if (MSVC)
+    target_compile_definitions(FreeCADGui PRIVATE WIN32_LEAN_AND_MEAN)
+    target_compile_options(FreeCADApp PRIVATE /wd4251 /wd4273 /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(FreeCADGui)
 endif()

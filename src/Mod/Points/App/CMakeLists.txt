@@ -4,7 +4,9 @@ if(WIN32)
     add_definitions(-DFCAppPoints)
 endif(WIN32)
 
-include_directories(
+target_include_directories(
+    Points
+    PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
@@ -14,6 +16,7 @@ target_include_directories(
     SYSTEM
     PUBLIC
     ${EIGEN3_INCLUDE_DIR}
+    ${QtConcurrent_INCLUDE_DIRS}
 )
 
 if (NOT FREECAD_USE_EXTERNAL_E57FORMAT)
@@ -28,13 +31,6 @@ endif()
 
 set(Points_LIBS
     FreeCADApp
-)
-
-include_directories(
-    SYSTEM
-    ${QtConcurrent_INCLUDE_DIRS}
-)
-list(APPEND Points_LIBS
     ${QtConcurrent_LIBRARIES}
 )
 
@@ -77,7 +73,7 @@ endif(FREECAD_USE_PCH)
 target_sources(Points PRIVATE ${Points_SRCS} ${Points_Scripts})
 
 if (NOT FREECAD_USE_EXTERNAL_E57FORMAT)
-    link_directories(${CMAKE_BINARY_DIR}/src/3rdParty/libE57Format)
+    target_link_directories(Points PUBLIC ${CMAKE_BINARY_DIR}/src/3rdParty/libE57Format)
 endif()
 
 target_link_libraries(Points E57Format ${Points_LIBS})

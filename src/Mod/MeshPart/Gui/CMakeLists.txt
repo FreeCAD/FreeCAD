@@ -9,14 +9,6 @@ if(BUILD_FEM_NETGEN)
     add_definitions(-DHAVE_NETGEN)
 endif(BUILD_FEM_NETGEN)
 
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-link_directories(${SMESH_LIB_PATH})
-
 set(MeshPartGui_LIBS
     MeshPart
     PartGui
@@ -74,7 +66,21 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 add_library(MeshPartGui SHARED ${MeshPartGui_SRCS} ${MeshPartGui_Scripts} ${FLATMESH_PY_SRCS})
+target_include_directories(
+    MeshPartGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_link_directories(MeshPartGui PUBLIC ${SMESH_LIB_PATH})
 target_link_libraries(MeshPartGui ${MeshPartGui_LIBS})
+
+if (MSVC)
+    target_compile_options(MeshPartGui PRIVATE /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(MeshPartGui)
 endif()

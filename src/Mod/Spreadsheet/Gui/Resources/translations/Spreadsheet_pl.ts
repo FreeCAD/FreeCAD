@@ -1039,81 +1039,81 @@ Domyślnie %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="142"/>
       <source>Insert %n Row(s) Above</source>
-      <translation type="unfinished">
-        <numerusform>Wstaw %n wiersz(y) powyżej</numerusform>
-        <numerusform>Insert %n Row(s) Above</numerusform>
-        <numerusform>Insert %n Row(s) Above</numerusform>
-        <numerusform>Insert %n Row(s) Above</numerusform>
+      <translation>
+        <numerusform>Wstaw %n wiersz powyżej</numerusform>
+        <numerusform>Wstaw %n wiersze powyżej</numerusform>
+        <numerusform>Wstaw %n wierszy powyżej</numerusform>
+        <numerusform>Wstaw %n wierszy powyżej</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="147"/>
       <source>Insert %n Row(s) Below</source>
-      <translation type="unfinished">
-        <numerusform>Wstaw %n wiersz(y) poniżej</numerusform>
-        <numerusform>Insert %n Row(s) Below</numerusform>
-        <numerusform>Insert %n Row(s) Below</numerusform>
-        <numerusform>Insert %n Row(s) Below</numerusform>
+      <translation>
+        <numerusform>Wstaw %n wiersz poniżej</numerusform>
+        <numerusform>Wstaw %n wiersze poniżej</numerusform>
+        <numerusform>Wstaw %n wierszy poniżej</numerusform>
+        <numerusform>Wstaw %n wierszy poniżej</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="152"/>
       <source>Insert %n Non-Contiguous Rows</source>
-      <translation type="unfinished">
-        <numerusform>Wstaw %n nieciągłych wierszy</numerusform>
-        <numerusform>Insert %n Non-Contiguous Rows</numerusform>
-        <numerusform>Insert %n Non-Contiguous Rows</numerusform>
-        <numerusform>Insert %n Non-Contiguous Rows</numerusform>
+      <translation>
+        <numerusform>Wstaw %n wiersz, który nie jest sąsiadujący</numerusform>
+        <numerusform>Wstaw %n wiersze, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n wierszy, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n wierszy, które nie są sąsiadujące</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="155"/>
       <source>Remove Rows</source>
-      <translation type="unfinished">
+      <translation>
+        <numerusform>Usuń wiersz</numerusform>
         <numerusform>Usuń wiersze</numerusform>
-        <numerusform>Remove Rows</numerusform>
-        <numerusform>Remove Rows</numerusform>
-        <numerusform>Remove Rows</numerusform>
+        <numerusform>Usuń wiersze</numerusform>
+        <numerusform>Usuń wiersze</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="169"/>
       <source>Insert %n Column(s) Left</source>
-      <translation type="unfinished">
+      <translation>
+        <numerusform>Wstaw %n kolumn(y) z prawej strony</numerusform>
+        <numerusform>Wstaw %n kolumny z lewej strony</numerusform>
         <numerusform>Wstaw %n kolumn z lewej strony</numerusform>
-        <numerusform>Insert %n Column(s) Left</numerusform>
-        <numerusform>Insert %n Column(s) Left</numerusform>
-        <numerusform>Insert %n Column(s) Left</numerusform>
+        <numerusform>Wstaw %n kolumny z lewej strony</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="174"/>
       <source>Insert %n Column(s) Right</source>
-      <translation type="unfinished">
+      <translation>
+        <numerusform>Wstaw %n kolumnę z prawej strony</numerusform>
+        <numerusform>Wstaw %n kolumny z prawej strony</numerusform>
         <numerusform>Wstaw %n kolumn z prawej strony</numerusform>
-        <numerusform>Insert %n Column(s) Right</numerusform>
-        <numerusform>Insert %n Column(s) Right</numerusform>
-        <numerusform>Insert %n Column(s) Right</numerusform>
+        <numerusform>Wstaw %n kolumn(y) z prawej strony</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="183"/>
       <source>Insert %n Non-Contiguous Columns</source>
-      <translation type="unfinished">
-        <numerusform>Wstaw %n nieciągłych kolumn</numerusform>
-        <numerusform>Insert %n Non-Contiguous Columns</numerusform>
-        <numerusform>Insert %n Non-Contiguous Columns</numerusform>
-        <numerusform>Insert %n Non-Contiguous Columns</numerusform>
+      <translation>
+        <numerusform>Wstaw %n kolumnę, która nie jest sąsiadująca</numerusform>
+        <numerusform>Wstaw %n kolumny, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n kolumn, które nie są sąsiadujące</numerusform>
+        <numerusform>Wstaw %n kolumn, które nie są sąsiadujące</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="186"/>
       <source>Remove Column(s)</source>
-      <translation type="unfinished">
+      <translation>
+        <numerusform>Usuń kolumnę</numerusform>
         <numerusform>Usuń kolumny</numerusform>
-        <numerusform>Remove Column(s)</numerusform>
-        <numerusform>Remove Column(s)</numerusform>
-        <numerusform>Remove Column(s)</numerusform>
+        <numerusform>Usuń kolumn(y)</numerusform>
+        <numerusform>Usuń kolumn(y)</numerusform>
       </translation>
     </message>
     <message>

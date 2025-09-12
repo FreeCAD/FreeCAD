@@ -394,8 +394,13 @@ class DraftToolBar:
         self.globalMode = params.get_param("GlobalMode")
         self.makeFaceMode = params.get_param("MakeFaceMode")
 
-        feature_name = getattr(FreeCAD.activeDraftCommand, "featureName", None)
-        self.continueMode = params.get_param(feature_name, "Mod/Draft/ContinueMode", silent=True)
+        if getattr(FreeCAD, "activeDraftCommand", None) \
+                and getattr(FreeCAD.activeDraftCommand, "featureName", None):
+            self.continueMode = params.get_param(
+                FreeCAD.activeDraftCommand.featureName,
+                "Mod/ContinueMode",
+                silent=True
+            )
 
         self.chainedMode = params.get_param("ChainedMode")
 

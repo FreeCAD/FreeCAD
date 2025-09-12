@@ -25,24 +25,6 @@
 
 #include <FCConfig.h>
 
-// point at which warnings of overly long specifiers disabled
-#ifdef _MSC_VER
-#pragma warning(disable : 4251)
-#pragma warning(disable : 4273)
-#pragma warning(disable : 4275)
-#pragma warning(disable : 4482)  // nonstandard extension used: enum 'App::ObjectStatus' used in
-                                 // qualified name
-#pragma warning(disable : 4503)
-#pragma warning(disable : 4786)  // specifier longer then 255 chars
-#endif
-
-#ifdef FC_OS_WIN32
-#define WIN32_LEAN_AND_MEAN
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#endif
-
 #ifdef _PreComp_
 
 // standard

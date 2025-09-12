@@ -1,11 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
 set(SurfaceGui_LIBS
     Surface
     PartGui
@@ -66,8 +58,22 @@ if(FREECAD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(SurfaceGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif(FREECAD_USE_PCH)
 
-link_directories(${OCC_LIBRARY_DIR})
-add_library(SurfaceGui SHARED ${SurfaceGui_SRCS} ${SurfaceGuiIcon_SVG})
+add_library(SurfaceGui SHARED
+    ${SurfaceGui_SRCS}
+    ${SurfaceGuiIcon_SVG}
+)
+
+target_include_directories(
+    SurfaceGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_link_directories(SurfaceGui PUBLIC ${OCC_LIBRARY_DIR})
 target_link_libraries(SurfaceGui ${SurfaceGui_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(SurfaceGui)

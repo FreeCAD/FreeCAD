@@ -1,7 +1,3 @@
-include_directories(
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 if(MSVC)
     include_directories(
         ${CMAKE_SOURCE_DIR}/src/3rdParty/OpenGL/api
@@ -163,7 +159,17 @@ if (EIGEN3_NO_DEPRECATED_COPY)
 endif ()
 
 add_library(MeshGui SHARED ${MeshGui_SRCS} ${MeshGuiIcon_SVG})
+target_include_directories(
+    MeshGui
+    PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 target_link_libraries(MeshGui ${MeshGui_LIBS})
+
+if (MSVC)
+    target_compile_options(MeshGui PRIVATE /wd4251 /wd4273 /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(MeshGui)
 endif()

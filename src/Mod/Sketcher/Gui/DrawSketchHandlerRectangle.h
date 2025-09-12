@@ -115,6 +115,9 @@ private:
         using enum Gui::InputHint::UserInput;
 
         const Gui::InputHint switchHint {.message = tr("%1 switch mode"), .sequences = {KeyM}};
+        const Gui::InputHint roundedCornersHint {.message = tr("%1 toggle rounded corners"),
+                                                 .sequences = {KeyU}};
+        const Gui::InputHint frameHint {.message = tr("%1 toggle frame"), .sequences = {KeyJ}};
 
         return Gui::lookupHints<State>(
             {constructionMethod(), state()},
@@ -125,24 +128,32 @@ private:
                      {
                          {tr("%1 pick first corner"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::Diagonal, SelectMode::SeekSecond},
                  .hints =
                      {
                          {tr("%1 pick opposite corner"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::Diagonal, SelectMode::SeekThird},
                  .hints =
                      {
                          {tr("%1 set corner radius or frame thickness"), {MouseMove}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::Diagonal, SelectMode::SeekFourth},
                  .hints =
                      {
                          {tr("%1 set frame thickness"), {MouseMove}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
 
                 // CenterAndCorner method
@@ -151,24 +162,32 @@ private:
                      {
                          {tr("%1 pick center"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekSecond},
                  .hints =
                      {
                          {tr("%1 pick corner"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekThird},
                  .hints =
                      {
                          {tr("%1 set corner radius or frame thickness"), {MouseMove}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekFourth},
                  .hints =
                      {
                          {tr("%1 set frame thickness"), {MouseMove}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
 
                 // ThreePoints method
@@ -177,24 +196,32 @@ private:
                      {
                          {tr("%1 pick first corner"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekSecond},
                  .hints =
                      {
                          {tr("%1 pick second corner"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekThird},
                  .hints =
                      {
                          {tr("%1 pick third corner"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekFourth},
                  .hints =
                      {
                          {tr("%1 set corner radius or frame thickness"), {MouseMove}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
 
                 // CenterAnd3Points method
@@ -203,24 +230,32 @@ private:
                      {
                          {tr("%1 pick center"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekSecond},
                  .hints =
                      {
                          {tr("%1 pick first corner"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekThird},
                  .hints =
                      {
                          {tr("%1 pick second corner"), {MouseLeft}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
                 {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekFourth},
                  .hints =
                      {
                          {tr("%1 set corner radius or frame thickness"), {MouseMove}},
                          switchHint,
+                         roundedCornersHint,
+                         frameHint,
                      }},
             });
     }
@@ -2439,14 +2474,14 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHRectangleController::doChangeDrawSketchHandlerMode()
+void DSHRectangleController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
             if (onViewParameters[OnViewParameter::First]->hasFinishedEditing
                 && onViewParameters[OnViewParameter::Second]->hasFinishedEditing) {
 
-                handler->setState(SelectMode::SeekSecond);
+                handler->setNextState(SelectMode::SeekSecond);
             }
         } break;
         case SelectMode::SeekSecond: {
@@ -2457,10 +2492,10 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
                     || handler->constructionMethod() == ConstructionMethod::ThreePoints
                     || handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
 
-                    handler->setState(SelectMode::SeekThird);
+                    handler->setNextState(SelectMode::SeekThird);
                 }
                 else {
-                    handler->setState(SelectMode::End);
+                    handler->setNextState(SelectMode::End);
                 }
             }
         } break;
@@ -2471,26 +2506,26 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
                     && onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing) {
 
                     if (handler->makeFrame) {
-                        handler->setState(SelectMode::SeekFourth);
+                        handler->setNextState(SelectMode::SeekFourth);
                     }
                     else {
-                        handler->setState(SelectMode::End);
+                        handler->setNextState(SelectMode::End);
                     }
                 }
                 else if (handler->makeFrame
                          && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
 
-                    handler->setState(SelectMode::End);
+                    handler->setNextState(SelectMode::End);
                 }
             }
             else {
                 if (onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing
                     && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
                     if (handler->roundCorners || handler->makeFrame) {
-                        handler->setState(SelectMode::SeekFourth);
+                        handler->setNextState(SelectMode::SeekFourth);
                     }
                     else {
-                        handler->setState(SelectMode::End);
+                        handler->setNextState(SelectMode::End);
                     }
                 }
             }
@@ -2499,7 +2534,7 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
             if (handler->constructionMethod() == ConstructionMethod::Diagonal
                 || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
                 if (onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
-                    handler->setState(SelectMode::End);
+                    handler->setNextState(SelectMode::End);
                 }
             }
             else {
@@ -2507,22 +2542,22 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
                     && onViewParameters[OnViewParameter::Seventh]->hasFinishedEditing) {
 
                     if (handler->makeFrame) {
-                        handler->setState(SelectMode::SeekFifth);
+                        handler->setNextState(SelectMode::SeekFifth);
                     }
                     else {
-                        handler->setState(SelectMode::End);
+                        handler->setNextState(SelectMode::End);
                     }
                 }
                 else if (handler->makeFrame
                          && onViewParameters[OnViewParameter::Eighth]->hasFinishedEditing) {
-                    handler->setState(SelectMode::End);
+                    handler->setNextState(SelectMode::End);
                 }
             }
         } break;
         case SelectMode::SeekFifth: {
             if (handler->makeFrame
                 && onViewParameters[OnViewParameter::Eighth]->hasFinishedEditing) {
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
         } break;
         default:

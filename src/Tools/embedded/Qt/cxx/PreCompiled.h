@@ -1,10 +1,6 @@
 #ifndef __PRECOMPILED__
 #define __PRECOMPILED__
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4251)
-#endif
-
 #ifdef FC_OS_WIN32
 // cmake generates this define
 #if defined(FreeCADPlugin_EXPORTS)

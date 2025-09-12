@@ -1,8 +1,3 @@
-include_directories(
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
 generate_from_py(ViewProviderSpreadsheet)
 
 # The XML files
@@ -105,8 +100,24 @@ set(SpreadsheetGui_UIC_SRCS
     DlgSettings.ui
 )
 
-add_library(SpreadsheetGui SHARED ${SpreadsheetGui_SRCS} ${SpreadsheetGuiIcon_SVG})
+add_library(SpreadsheetGui SHARED
+    ${SpreadsheetGui_SRCS}
+    ${SpreadsheetGuiIcon_SVG}
+)
+
+target_include_directories(
+    SpreadsheetGui
+    PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
 target_link_libraries(SpreadsheetGui ${SpreadsheetGui_LIBS})
+
+if (MSVC)
+    target_compile_options(SpreadsheetGui PRIVATE /wd4251)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(SpreadsheetGui)
 endif()

@@ -17,8 +17,8 @@
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
       <source>Fetches the documentation from pages rendered on GitHub.
 This is currently not available.</source>
-      <translation type="unfinished">Fetches the documentation from pages rendered on GitHub.
-This is currently not available.</translation>
+      <translation>Hämtar dokumentationen från sidor som återges på GitHub.
+Detta är för närvarande inte tillgängligt.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>
@@ -52,8 +52,8 @@ standardplatsen ($USERAPPDATADIR/Mod/offline-documentation).</translation>
       <location filename="../../dlgPreferencesHelp.ui" line="72"/>
       <source>A translation suffix to use, for example &quot;fr&quot;
 to get French translation of the documentation.</source>
-      <translation>Ett översättningssuffix som ska användas, t.ex. &quot;fr&quot;
-för att få en fransk översättning av dokumentationen.</translation>
+      <translation>Ett översättningssuffix som ska användas, t.ex. &quot;sv&quot;
+för att få en svensk översättning av dokumentationen.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="86"/>
@@ -62,16 +62,16 @@ Documentation can be downloaded for offline use via the Addon Manager and instal
 &quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
 automatically search for the help files at the default location
 ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-Documentation can be downloaded for offline use via the Addon Manager and installing the
-&quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
-automatically search for the help files at the default location
-($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>Ställ in detta till en anpassad URL eller den mapp där hjälpfilerna finns.
+Dokumentation kan laddas ner för offline-användning via Tilläggshanterare och installation av tillägget
+&quot; offline-documentation &quot;. Om det här fältet lämnas tomt kommer FreeCAD
+automatiskt söka efter hjälpfilerna på standardplatsen
+($USERAPPDATADIR/Mod/offline-dokumentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="112"/>
       <source>Translation suffix</source>
-      <translation type="unfinished">Translation suffix</translation>
+      <translation>Översättningssuffix</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="119"/>
@@ -99,46 +99,46 @@ anpassad stilmall nedan och kan se trevligare ut än wiki-alternativet. Python-m
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="164"/>
       <source>Display</source>
-      <translation>Fönster</translation>
+      <translation>Visa</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</translation>
+      <translation>Observera: Om PySide Web-komponenter inte finns på systemet öppnas hjälpsidor i standardwebbläsaren oavsett alternativen nedan.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="180"/>
       <source>The documentation will open in the default web browser</source>
-      <translation type="unfinished">The documentation will open in the default web browser</translation>
+      <translation>Dokumentationen kommer att öppnas i standardwebbläsaren</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="183"/>
       <source>In the default web browser</source>
-      <translation type="unfinished">In the default web browser</translation>
+      <translation>I standardwebbläsaren</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="199"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</source>
-      <translation type="unfinished">The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</translation>
+      <translation>Dokumentationen kommer att öppnas i en ny flik i FreeCAD-gränssnittet. Detta kräver PySide QtWebengineWidgets-komponenten.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
 Requires the PySide QtWebengineWidgets component.</source>
-      <translation type="unfinished">Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
-Requires the PySide QtWebengineWidgets component.</translation>
+      <translation>Dokumentationen öppnas i en dockningsbar dialogruta i FreeCAD, vilket gör det möjligt att arbeta samtidigt i 3D-vyn.
+Kräver komponenten PySide QtWebengineWidgets.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="249"/>
       <source>Custom stylesheet</source>
-      <translation type="unfinished">Custom stylesheet</translation>
+      <translation>Anpassad stilmall</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="256"/>
       <source>Specify the path to an alternative CSS file for styling Markdown pages.
 This only applies if Markdown is selected above.</source>
-      <translation type="unfinished">Specify the path to an alternative CSS file for styling Markdown pages.
-This only applies if Markdown is selected above.</translation>
+      <translation>Ange sökvägen till en alternativ CSS-fil för styling av Markdown-sidor.
+Detta gäller endast om Markdown har valts ovan.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -148,7 +148,7 @@ This only applies if Markdown is selected above.</translation>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="225"/>
       <source>In a separate, embeddable dialog</source>
-      <translation>I en separat inbäddningsbar dialogruta</translation>
+      <translation>I en separat, inbäddningsbar dialogruta</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="241"/>
@@ -161,12 +161,12 @@ This only applies if Markdown is selected above.</translation>
     <message>
       <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
-      <translation type="unfinished">Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</translation>
+      <translation>Innehållet på den här sidan kunde inte hämtas. Kontrollera inställningarna under menyn Redigera → Inställningar → Allmänt → Hjälp</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
-      <translation type="unfinished">Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</translation>
+      <translation>Hjälpfilernas plats kunde inte bestämmas. Kontrollera inställningarna under menyn Redigera → Inställningar → Allmänt → Hjälp</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="83"/>
@@ -189,7 +189,7 @@ This only applies if Markdown is selected above.</translation>
     <message>
       <location filename="../../Help.py" line="435"/>
       <source>General</source>
-      <translation>Allmän</translation>
+      <translation>Allmänt</translation>
     </message>
   </context>
 </TS>

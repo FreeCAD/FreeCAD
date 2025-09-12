@@ -18,16 +18,6 @@ if (PCL_SAMPLE_CONSENSUS_FOUND)
     add_definitions(-DHAVE_PCL_SAMPLE_CONSENSUS)
 endif ()
 
-include_directories(
-    ${CMAKE_SOURCE_DIR}/src
-)
-
-include_directories(
-    SYSTEM
-    ${PCL_INCLUDE_DIRS}
-    ${FLANN_INCLUDE_DIRS}
-)
-
 set(Reen_LIBS
     Part
     Mesh
@@ -69,7 +59,26 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 add_library(ReverseEngineering SHARED ${Reen_SRCS})
+
+target_include_directories(
+    ReverseEngineering
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+)
+
+target_include_directories(
+    ReverseEngineering
+    SYSTEM
+    PUBLIC
+    ${PCL_INCLUDE_DIRS}
+    ${FLANN_INCLUDE_DIRS}
+)
 target_link_libraries(ReverseEngineering ${Reen_LIBS})
+
+if (MSVC)
+    target_compile_options(ReverseEngineering PRIVATE /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(ReverseEngineering)
 endif()

@@ -105,3 +105,7 @@ endif()
 
 add_library(FreeCADPlugin SHARED ${FreeCADPlugin_SRCS})
 target_link_libraries(FreeCADPlugin ${FreeCADPlugin_LIBS})
+
+if (MSVC)
+    target_compile_options(FreeCADPlugin PRIVATE /wd4251)
+endif()

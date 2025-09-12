@@ -447,7 +447,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="294"/>
       <source>Set default speed</source>
-      <translation>Встановити швидкість за замовчуванням</translation>
+      <translation>Встановити типову швидкість</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="295"/>
@@ -457,7 +457,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="308"/>
       <source>Set default continuity</source>
-      <translation>Встановити послідовність за замовчуванням</translation>
+      <translation>Встановити типову послідовність</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="309"/>
@@ -467,7 +467,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="322"/>
       <source>Set default acceleration</source>
-      <translation>Встановити прискорення за замовчуванням</translation>
+      <translation>Встановити типове прискорення</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="323"/>

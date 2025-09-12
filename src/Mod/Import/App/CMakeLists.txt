@@ -1,9 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
 set(Import_LIBS
     Part
     ${OCC_OCAF_LIBRARIES}
@@ -79,7 +73,19 @@ SOURCE_GROUP("SCL" FILES ${SCL_Resources})
 generate_from_py(StepShape)
 
 add_library(Import SHARED ${Import_SRCS})
+target_include_directories(
+    Import
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
 target_link_libraries(Import ${Import_LIBS})
+
+if (MSVC)
+    target_compile_options(Import PRIVATE /wd4251 /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Import)
 endif()

@@ -551,7 +551,7 @@ void QGIDatumLabel::setPrettyNormal()
     m_tolTextOver->setPrettyNormal();
     m_tolTextUnder->setPrettyNormal();
     m_unitText->setPrettyNormal();
-    setFrameColor(PreferencesGui::normalQColor());
+    setFrameColor(m_colNormal);
     Q_EMIT setPretty(NORMAL);
 }
 

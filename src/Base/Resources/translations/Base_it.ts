@@ -4,52 +4,52 @@
   <context>
     <name>UnitsApi</name>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="85"/>
+      <location filename="../../UnitsSchemasData.h" line="88"/>
       <source>Standard (mm, kg, s, °)</source>
       <translation>Standard (mm, kg, s, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="318"/>
+      <location filename="../../UnitsSchemasData.h" line="321"/>
       <source>MKS (m, kg, s, °)</source>
       <translation>MKS (m, kg, s, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="582"/>
+      <location filename="../../UnitsSchemasData.h" line="585"/>
       <source>US customary (in, lb)</source>
       <translation>Tradizionale US (in, lb)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="70"/>
+      <location filename="../../UnitsSchemasData.h" line="634"/>
+      <source>Imperial for Civil Eng (ft, lb, mph)</source>
+      <translation type="unfinished">Imperial for Civil Eng (ft, lb, mph)</translation>
+    </message>
+    <message>
+      <location filename="../../UnitsSchemasData.h" line="73"/>
       <source>Imperial decimal (in, lb)</source>
       <translation>Imperiale decimale (in, lb)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="543"/>
+      <location filename="../../UnitsSchemasData.h" line="546"/>
       <source>Building Euro (cm, m², m³)</source>
       <translation>Costruttivo Euro (cm, m², m³)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="620"/>
+      <location filename="../../UnitsSchemasData.h" line="623"/>
       <source>Building US (ft-in, sqft, cft)</source>
       <translation>Costruttivo US (ft-in, sqft, cft)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="48"/>
+      <location filename="../../UnitsSchemasData.h" line="51"/>
       <source>Metric small parts &amp; CNC (mm, mm/min)</source>
       <translation>Metrico piccole parti &amp; CNC (mm, mm/min)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="631"/>
-      <source>Imperial for Civil Eng (ft, ft/s)</source>
-      <translation>Imperiale per Ingegneria Civile (ft, ft/sec)</translation>
-    </message>
-    <message>
-      <location filename="../../UnitsSchemasData.h" line="570"/>
+      <location filename="../../UnitsSchemasData.h" line="573"/>
       <source>FEM (mm, N, s)</source>
       <translation>FEM (mm, N, s)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="57"/>
+      <location filename="../../UnitsSchemasData.h" line="60"/>
       <source>Meter decimal (m, m², m³)</source>
       <translation>Metrico decimale (m, m2, m3)</translation>
     </message>

@@ -1,10 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(PartGui_LIBS
     Part
     FreeCADGui
@@ -21,10 +14,6 @@ if(MSVC)
     )
 endif(MSVC)
 
-include_directories(
-    SYSTEM
-    ${QtConcurrent_INCLUDE_DIRS}
-)
 list(APPEND PartGui_LIBS
     ${QtConcurrent_LIBRARIES}
 )
@@ -273,7 +262,28 @@ SET(PartGuiIcon_SVG
 )
 
 add_library(PartGui SHARED ${PartGui_SRCS} ${PartGuiIcon_SVG})
+
+target_include_directories(
+    PartGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_include_directories(
+    PartGui
+    SYSTEM
+    PUBLIC
+    ${QtConcurrent_INCLUDE_DIRS}
+)
 target_link_libraries(PartGui ${PartGui_LIBS})
+
+if (MSVC)
+    target_compile_options(PartGui PRIVATE /wd4251 /wd4273)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(PartGui)
 endif()

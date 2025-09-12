@@ -4,52 +4,52 @@
   <context>
     <name>UnitsApi</name>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="85"/>
+      <location filename="../../UnitsSchemasData.h" line="88"/>
       <source>Standard (mm, kg, s, °)</source>
       <translation>Стандартная (мм, кг, с, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="318"/>
+      <location filename="../../UnitsSchemasData.h" line="321"/>
       <source>MKS (m, kg, s, °)</source>
       <translation>Сістэма МКС (м, кг, с, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="582"/>
+      <location filename="../../UnitsSchemasData.h" line="585"/>
       <source>US customary (in, lb)</source>
       <translation>Звычайная Злучаных Штатаў (цалі, фунты)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="70"/>
+      <location filename="../../UnitsSchemasData.h" line="634"/>
+      <source>Imperial for Civil Eng (ft, lb, mph)</source>
+      <translation type="unfinished">Imperial for Civil Eng (ft, lb, mph)</translation>
+    </message>
+    <message>
+      <location filename="../../UnitsSchemasData.h" line="73"/>
       <source>Imperial decimal (in, lb)</source>
       <translation>Брытанская сістэма (цалі, фунты)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="543"/>
+      <location filename="../../UnitsSchemasData.h" line="546"/>
       <source>Building Euro (cm, m², m³)</source>
       <translation>Еўрапейская будаўнічая (см, м², м³)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="620"/>
+      <location filename="../../UnitsSchemasData.h" line="623"/>
       <source>Building US (ft-in, sqft, cft)</source>
       <translation>Будаўнічая Злучаных Штатаў (футы-цалі, кв. футы, куб. футы)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="48"/>
+      <location filename="../../UnitsSchemasData.h" line="51"/>
       <source>Metric small parts &amp; CNC (mm, mm/min)</source>
       <translation>Малыя метрычныя дэталі і CNC (мм, мм/хв)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="631"/>
-      <source>Imperial for Civil Eng (ft, ft/s)</source>
-      <translation>Брытанская для грамадскіх інжынераў (футы, футы/с)</translation>
-    </message>
-    <message>
-      <location filename="../../UnitsSchemasData.h" line="570"/>
+      <location filename="../../UnitsSchemasData.h" line="573"/>
       <source>FEM (mm, N, s)</source>
       <translation>МКЭ (мм, Н, с)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="57"/>
+      <location filename="../../UnitsSchemasData.h" line="60"/>
       <source>Meter decimal (m, m², m³)</source>
       <translation>Метрычная сістэма (м, м², м³)</translation>
     </message>

@@ -2,11 +2,6 @@ if(WIN32)
     add_definitions(-DFCAppSpreadsheet)
 endif(WIN32)
 
-include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(Spreadsheet_LIBS
     FreeCADApp
 )
@@ -52,7 +47,20 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 add_library(Spreadsheet SHARED ${Spreadsheet_SRCS})
+
+target_include_directories(
+    Spreadsheet
+    PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 target_link_libraries(Spreadsheet ${Spreadsheet_LIBS})
+
+if (MSVC)
+    target_compile_options(Spreadsheet PRIVATE /wd4251 /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Spreadsheet)
 endif()

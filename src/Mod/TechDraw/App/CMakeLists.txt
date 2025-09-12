@@ -1,12 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(TechDrawLIBS
     Measure
     Part
@@ -17,14 +8,6 @@ set(TechDrawLIBS
 if (BUILD_IMPORT)
     list(APPEND TechDrawLIBS Import)
 endif ()
-
-include_directories(
-    SYSTEM
-    ${QtConcurrent_INCLUDE_DIRS}
-    ${QtCore_INCLUDE_DIR}
-    ${QtGui_INCLUDE_DIR}
-    ${QtWidgets_INCLUDE_DIRS}
-)
 
 list(APPEND TechDrawLIBS
     ${QtConcurrent_LIBRARIES}
@@ -276,9 +259,41 @@ if(FREECAD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(TechDraw PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif(FREECAD_USE_PCH)
 
-add_library(TechDraw SHARED ${TechDraw_SRCS} ${Draw_SRCS} ${TechDrawAlgos_SRCS}
-                           ${Geometry_SRCS} ${Python_SRCS})
+add_library(TechDraw SHARED
+    ${TechDraw_SRCS}
+    ${Draw_SRCS}
+    ${TechDrawAlgos_SRCS}
+    ${Geometry_SRCS}
+    ${Python_SRCS}
+)
+
+target_include_directories(
+    TechDraw
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_include_directories(
+    TechDraw
+    SYSTEM
+    PUBLIC
+    ${QtConcurrent_INCLUDE_DIRS}
+    ${QtCore_INCLUDE_DIR}
+    ${QtGui_INCLUDE_DIR}
+    ${QtWidgets_INCLUDE_DIRS}
+)
+
 target_link_libraries(TechDraw ${TechDrawLIBS} ${TechDraw})
+
+if (MSVC)
+    target_compile_options(TechDraw PRIVATE /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(TechDraw)
 endif()

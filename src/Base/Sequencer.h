@@ -24,6 +24,9 @@
 #ifndef BASE_SEQUENCER_H
 #define BASE_SEQUENCER_H
 
+#include <cstddef>
+
+#include <FCGlobal.h>
 
 namespace Base
 {
