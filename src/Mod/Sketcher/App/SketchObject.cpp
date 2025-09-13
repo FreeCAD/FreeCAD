@@ -4029,17 +4029,7 @@ bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* p
     App::Part* part_this = App::Part::getPartOfObject(this);
     App::Part* part_obj = App::Part::getPartOfObject(pObj);
     if (part_this == part_obj) {// either in the same part, or in the root of document
-        if (!body_this) {
-            return true;
-        }
-        else if (body_this == body_obj) {
-            return true;
-        }
-        else {
-            if (rsn)
-                *rsn = rlOtherBody;
-            return false;
-        }
+        return true;
     }
     else {
         // cross-part link. Disallow, should be done via shapebinders only

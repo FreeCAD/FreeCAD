@@ -37,13 +37,6 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QCheckBox" name="checkOtherBody">
-        <property name="text">
-         <string>From other bodies of the same part</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QCheckBox" name="checkOtherPart">
         <property name="text">
          <string>From different parts or free features</string>

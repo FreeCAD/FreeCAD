@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 
 #include <App/Document.h>
+#include <App/Part.h>
 #include <Base/Tools.h>
 
 #include "GeoFeatureGroupExtension.h"
@@ -519,24 +520,34 @@ void GeoFeatureGroupExtension::getInvalidLinkObjects(const DocumentObject* obj,
 
     // no cross CS link for local links.
     auto result = getScopedObjectsFromLinks(obj, LinkScope::Local);
-    auto group = obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())
-        ? obj
-        : getGroupOfObject(obj);
-    for (auto link : result) {
-        if (getGroupOfObject(link) != group) {
-            vec.push_back(link);
-        }
-    }
 
-    // for links with scope SubGroup we need to check if all features are part of subgroups
-    if (group) {
-        result = getScopedObjectsFromLinks(obj, LinkScope::Child);
-        auto groupExt = group->getExtensionByType<App::GeoFeatureGroupExtension>();
-        for (auto link : result) {
-            if (!groupExt->hasObject(link, true)) {
-                vec.push_back(link);
+    const App::Part* scopePart = App::Part::getPartOfObject(obj);
+    
+    for (auto* link : result) {
+         if (!link) continue;
+ 
+        // --- New: Part-based scoping takes precedence ---
+        const App::Part* linkPart = App::Part::getPartOfObject(link);
+
+        // If neither is inside a Part, allow (single global CS; cross-linking OK)
+        if (!scopePart && !linkPart) {
+            continue;
+        }
+        // If both have a nearest Part, allow only if they match
+        if (scopePart && linkPart) {
+            if (scopePart == linkPart) {
+                continue;  // same Part -> OK
+            } else {
+                vec.push_back(link);  // different Parts -> out of allowed scope
+                continue;
             }
         }
+        // If exactly one side is in a Part, consider it out-of-scope
+        if ((scopePart && !linkPart) || (!scopePart && linkPart)) {
+            vec.push_back(link);
+            continue;
+        }
+
     }
 }
 
