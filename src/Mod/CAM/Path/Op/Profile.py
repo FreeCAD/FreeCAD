@@ -275,6 +275,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 else:
                     setattr(obj, n, val)
 
+        self.init = True
+
     def areaOpSetDefaultValues(self, obj, job):
         if self.addNewProps and self.addNewProps.__len__() > 0:
             self.areaOpApplyPropertyDefaults(obj, job, self.addNewProps)
