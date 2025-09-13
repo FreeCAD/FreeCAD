@@ -50,6 +50,7 @@ class SoLinearDraggerContainer;
 class SoRotationDragger;
 class SoRotationDraggerContainer;
 class View3DInventorViewer;
+class OVP;
 
 struct GizmoPlacement
 {
@@ -77,11 +78,15 @@ public:
 
     bool getVisibility();
 
+    void createOvp(View3DInventorViewer* viewer);
+    virtual void updateOvpPosition() {};
+
 protected:
     double multFactor = 1.0f;
     double addFactor = 0.0f;
 
     QuantitySpinBox* property = nullptr;
+    std::unique_ptr<OVP> ovp;
     double initialValue;
 
     bool visible = true;
@@ -111,6 +116,7 @@ public:
     void setMultFactor(const double val);
     void setAddFactor(const double val);
     void setVisibility(bool visible);
+    void updateOvpPosition() override;
 
 private:
     SoLinearDragger* dragger = nullptr;
@@ -156,6 +162,7 @@ public:
     void setMultFactor(const double val);
     void setAddFactor(const double val);
     void setVisibility(bool visible);
+    void updateOvpPosition() override;
 
 private:
     SoRotationDragger* dragger = nullptr;
@@ -247,13 +254,41 @@ public:
 
 private:
     std::vector<Gizmo*> gizmos;
-    SoFieldSensor cameraSensor;
-    SoFieldSensor cameraPositionSensor;
+    SoFieldSensor cameraRotateSensor;
+    SoFieldSensor cameraZoomSensor;
+    SoFieldSensor cameraPanSensor;
 
     void addGizmo(Gizmo* gizmo);
 
-    static void cameraChangeCallback(void* data, SoSensor*);
-    static void cameraPositionChangeCallback(void* data, SoSensor*);
+    static void cameraRotated(void* data, SoSensor*);
+    static void cameraZoomed(void* data, SoSensor*);
+    static void cameraPanned(void* data, SoSensor*);
+};
+
+
+class OVP
+{
+public:
+    QuantitySpinBox* ovp = nullptr;
+    OVP(QuantitySpinBox* property, View3DInventorViewer* viewer, bool visible);
+    ~OVP();
+
+    bool getVisibility();
+    void setVisibility(bool visible);
+
+    void updatePosition(const SbVec3f& pos, const SbVec3f& dir);
+
+private:
+    bool visible;
+
+    QuantitySpinBox* property = nullptr;
+
+    QMetaObject::Connection inConnection;
+    QMetaObject::Connection outConnection;
+
+    View3DInventorViewer* viewer = nullptr;
+
+    void setProperty(QuantitySpinBox* property);
 };
 
 }

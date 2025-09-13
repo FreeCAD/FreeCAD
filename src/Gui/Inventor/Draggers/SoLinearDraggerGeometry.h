@@ -44,7 +44,7 @@ class GuiExport SoLinearGeometryKit: public SoBaseKit
 public:
     static void initClass();
 
-    SoSFVec3f tipPosition;
+    SoSFVec3f tipPosition; //!< should be set in the subclasses depending on the geometry
 
 protected:
     SoLinearGeometryKit();

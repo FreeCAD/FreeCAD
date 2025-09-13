@@ -82,8 +82,19 @@ double Gizmo::getAddFactor()
     return addFactor;
 }
 
-bool Gizmo::getVisibility() {
-    return visible;
+bool Gizmo::getVisibility()
+{
+    return visible && !property->hasExpression();
+}
+
+void Gizmo::createOvp(View3DInventorViewer* viewer)
+{
+    if (!viewer) {
+        return;
+    }
+
+    ovp = std::make_unique<OVP>(property, viewer, visible);
+    updateOvpPosition();
 }
 
 LinearGizmo::LinearGizmo(QuantitySpinBox* property)
@@ -163,6 +174,8 @@ void LinearGizmo::setDraggerPlacement(const SbVec3f& pos, const SbVec3f& dir)
     assert(draggerContainer && "Forgot to call GizmoContainer::initGizmos?");
     draggerContainer->translation = pos;
     draggerContainer->setPointerDirection(dir);
+
+    updateOvpPosition();
 }
 
 void LinearGizmo::reverseDir() {
@@ -206,6 +219,7 @@ void LinearGizmo::setProperty(QuantitySpinBox* property)
         property, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
         [this] (double value) {
             setDragLength(value);
+            updateOvpPosition();
         }
     );
     formulaDialogConnection = QuantitySpinBox::connect(
@@ -238,6 +252,27 @@ void LinearGizmo::setVisibility(bool visible)
 {
     this->visible = visible;
     getDraggerContainer()->visible = visible && !property->hasExpression();
+    if (ovp) {
+        ovp->setVisibility(visible);
+    }
+}
+
+void LinearGizmo::updateOvpPosition()
+{
+    if (!ovp) {
+        return;
+    }
+
+    SbVec3f dir = getDraggerContainer()->getPointerDirection();
+    SbRotation rotation = getDraggerContainer()->rotation.getValue();
+    dir.normalize();
+    SbVec3f basePos = getDraggerContainer()->translation.getValue();
+    SbVec3f tipPos = SO_GET_PART(dragger, "arrow", SoLinearGeometryKit)->tipPosition.getValue();
+    SbVec3f translation = dragger->translation.getValue() + tipPos * dragger->geometryScale.getValue()[1];
+    rotation.multVec(translation, translation);
+    SbVec3f pos = basePos + translation;
+
+    ovp->updatePosition(pos, dir * dragger->geometryScale.getValue()[0]);
 }
 
 void LinearGizmo::draggingStarted()
@@ -267,6 +302,7 @@ void LinearGizmo::draggingContinued()
 
     property->setValue(value);
     setDragLength(value);
+    updateOvpPosition();
 }
 
 
@@ -330,6 +366,8 @@ void RotationGizmo::uninitDragger()
     translationSensor.detach();
     translationSensor.setData(nullptr);
     translationSensor.setFunction(nullptr);
+
+    ovp = nullptr;
 }
 
 void RotationGizmo::updateColorTheme()
@@ -391,6 +429,8 @@ void RotationGizmo::translationSensorCB(void* data, SoSensor* sensor)
     SbVec3f dir = placement.dir;
     dir.normalize();
     sudoThis->draggerContainer->translation = placement.pos + dir * (yComp + sudoThis->sepDistance);
+
+    sudoThis->updateOvpPosition();
 }
 
 void RotationGizmo::placeBelowLinearGizmo(LinearGizmo* gizmo)
@@ -527,6 +567,28 @@ void RotationGizmo::setVisibility(bool visible)
 {
     this->visible = visible;
     getDraggerContainer()->visible = visible && !property->hasExpression();
+    if (ovp) {
+        ovp->setVisibility(visible && !property->hasExpression());
+    }
+}
+
+void RotationGizmo::updateOvpPosition()
+{
+    if (!ovp) {
+        return;
+    }
+
+    SbVec3f dir = getDraggerContainer()->getPointerDirection();
+    SbRotation rotation = getDraggerContainer()->rotation.getValue();
+    dir.normalize();
+    SbVec3f basePos = getDraggerContainer()->translation.getValue();
+    SbVec3f tipPos = SO_GET_PART(dragger, "rotator", SoRotatorGeometryKit)->pivotPosition.getValue();
+    SbVec3f translation =  tipPos * dragger->geometryScale.getValue()[1];
+    rotation.multVec(translation, translation);
+    SbVec3f pos = basePos + translation;
+
+    ovp->updatePosition(pos, dir * dragger->geometryScale.getValue()[0]);
+    ovp->setVisibility(false);
 }
 
 DirectedRotationGizmo::DirectedRotationGizmo(QuantitySpinBox* property): RotationGizmo(property)
@@ -641,20 +703,24 @@ GizmoContainer::GizmoContainer()
 
     setPart("geometry", new SoSeparator);
 
-    cameraSensor.setFunction(&GizmoContainer::cameraChangeCallback);
-    cameraSensor.setData(this);
-
-    cameraPositionSensor.setData(this);
-    cameraPositionSensor.setFunction(cameraPositionChangeCallback);
+    cameraRotateSensor.setFunction(cameraRotated);
+    cameraRotateSensor.setData(this);
+    cameraZoomSensor.setData(this);
+    cameraZoomSensor.setFunction(cameraZoomed);
+    cameraPanSensor.setData(this);
+    cameraPanSensor.setFunction(cameraPanned);
 }
 
 GizmoContainer::~GizmoContainer()
 {
-    cameraSensor.setData(nullptr);
-    cameraSensor.detach();
+    cameraRotateSensor.setData(nullptr);
+    cameraRotateSensor.detach();
 
-    cameraPositionSensor.setData(nullptr);
-    cameraPositionSensor.detach();
+    cameraZoomSensor.setData(nullptr);
+    cameraZoomSensor.detach();
+
+    cameraPanSensor.setData(nullptr);
+    cameraPanSensor.detach();
 
     uninitGizmos();
 }
@@ -703,38 +769,42 @@ void GizmoContainer::attachViewer(Gui::View3DInventorViewer* viewer, Base::Place
     viewer->getDocument()->setEditingTransform(mat);
     So3DAnnotation* annotation = SO_GET_ANY_PART(this, "annotation", So3DAnnotation);
     viewer->setupEditingRoot(annotation, &mat);
+
+    for (auto gizmo: gizmos) {
+        gizmo->createOvp(viewer);
+    }
 }
 
 void GizmoContainer::setUpAutoScale(SoCamera* cameraIn)
 {
     if (cameraIn->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
         auto localCamera = dynamic_cast<SoOrthographicCamera*>(cameraIn);
-        cameraSensor.attach(&localCamera->height);
-        cameraPositionSensor.attach(&localCamera->orientation);
+        cameraRotateSensor.attach(&localCamera->height);
+        cameraZoomSensor.attach(&localCamera->orientation);
+        cameraPanSensor.attach(&localCamera->position);
         calculateScaleAndOrientation();
-
     }
     else if (cameraIn->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
         auto localCamera = dynamic_cast<SoPerspectiveCamera*>(cameraIn);
-        cameraSensor.attach(&localCamera->position);
-        cameraPositionSensor.attach(&localCamera->orientation);
+        cameraRotateSensor.attach(&localCamera->position);
+        cameraZoomSensor.attach(&localCamera->orientation);
         calculateScaleAndOrientation();
     }
 }
 
 void GizmoContainer::calculateScaleAndOrientation()
 {
-    if (cameraSensor.getAttachedField()) {
-        cameraChangeCallback(this, nullptr);
-        cameraPositionChangeCallback(this, nullptr);
+    if (cameraRotateSensor.getAttachedField()) {
+        cameraRotated(this, nullptr);
+        cameraZoomed(this, nullptr);
     }
 }
 
-void GizmoContainer::cameraChangeCallback(void* data, SoSensor*)
+void GizmoContainer::cameraRotated(void* data, SoSensor*)
 {
     auto sudoThis = static_cast<GizmoContainer*>(data);
 
-    SoField* field = sudoThis->cameraSensor.getAttachedField();
+    SoField* field = sudoThis->cameraRotateSensor.getAttachedField();
     if (!field) {
         return;
     }
@@ -745,19 +815,33 @@ void GizmoContainer::cameraChangeCallback(void* data, SoSensor*)
     for (auto gizmo: sudoThis->gizmos) {
         float localScale = viewVolume.getWorldToScreenScale(gizmo->getDraggerPlacement().pos, 0.015);
         gizmo->setGeometryScale(localScale);
+        gizmo->updateOvpPosition();
     }
 }
 
-void GizmoContainer::cameraPositionChangeCallback(void* data, SoSensor*)
+void GizmoContainer::cameraZoomed(void* data, SoSensor*)
 {
     auto sudoThis = static_cast<GizmoContainer*>(data);
 
-    SoField* field = sudoThis->cameraSensor.getAttachedField();
+    SoField* field = sudoThis->cameraRotateSensor.getAttachedField();
     if (field) {
         auto camera = static_cast<SoCamera*>(field->getContainer());
 
         for (auto gizmo: sudoThis->gizmos) {
             gizmo->orientAlongCamera(camera);
+            gizmo->updateOvpPosition();
+        }
+    }
+}
+
+void GizmoContainer::cameraPanned(void* data, SoSensor*)
+{
+    auto sudoThis = static_cast<GizmoContainer*>(data);
+
+    SoField* field = sudoThis->cameraRotateSensor.getAttachedField();
+    if (field) {
+        for (auto gizmo: sudoThis->gizmos) {
+            gizmo->updateOvpPosition();
         }
     }
 }
@@ -769,4 +853,117 @@ bool GizmoContainer::isEnabled()
         .GetGroup("BaseApp/Preferences/Mod/PartDesign");
 
     return hGrp->GetBool("EnableGizmos", true);
+}
+
+
+OVP::OVP(QuantitySpinBox* property, View3DInventorViewer* viewer, bool visible)
+    : property(property), viewer(viewer)
+{
+    if (!viewer) {
+        return;
+    }
+
+    ovp = new QuantitySpinBox(viewer);
+    setProperty(property);
+    setVisibility(visible);
+}
+
+OVP::~OVP()
+{
+    delete ovp;
+}
+
+bool OVP::getVisibility()
+{
+    return visible && !property->hasExpression();
+}
+
+void OVP::setVisibility(bool visible)
+{
+    this->visible = visible;
+    ovp->setVisible(visible && !property->hasExpression());
+}
+
+
+void OVP::updatePosition(const SbVec3f& pos, const SbVec3f& dir)
+{
+    if (!viewer) {
+        return;
+    }
+
+    auto vpPos = viewer->toQPoint(viewer->getPointOnViewport(pos));
+
+    const SbViewportRegion& vp = viewer->getSoRenderManager()->getViewportRegion();
+    float fRatio = vp.getViewportAspectRatio();
+    SbViewVolume vv = viewer->getSoRenderManager()->getCamera()->getViewVolume(fRatio);
+
+    SbVec3f ptOg(pos);
+    vv.projectToScreen(ptOg, ptOg);
+    SbVec3f pt(pos + dir);
+    vv.projectToScreen(pt, pt);
+
+    auto size = ovp->size();
+    int w = size.width()/2;
+    int h = size.height()/2;
+    auto pos2 = SbVec2f{pt[0] - ptOg[0], pt[1] - ptOg[1]};
+    float tan = pos2[1]/pos2[0];
+
+    int x, y;
+    if (pos2[0] == 0.0) {
+        x = 0;
+        y = h;
+    } else if (pos2[1] == 0.0) {
+        x = w;
+        y = 0;
+    } else {
+        x = std::min(std::abs(static_cast<int>(h/tan)), w);
+        y = std::min(std::abs(static_cast<int>(w * tan)), h);
+    }
+    x = std::copysign(x, -pos2[0]);
+    y = std::copysign(y, pos2[1]);
+
+    ovp->move(
+        {vpPos.x() - w - x, vpPos.y() - h - y}
+    );
+}
+
+void OVP::setProperty(QuantitySpinBox* property)
+{
+    // Disconnect older connections
+    QuantitySpinBox::disconnect(inConnection);
+    QuantitySpinBox::disconnect(outConnection);
+
+    ovp->setValue(property->value());
+    auto font = ovp->font();
+    font.setPointSize(10);
+    ovp->setFont(font);
+    ovp->setMaximumWidth(80);
+    ovp->setMaximumHeight(5);
+    ovp->adjustSize();
+    ovp->setMinimum(property->minimum());
+    ovp->setMaximum(property->maximum());
+    ovp->setButtonSymbols(QAbstractSpinBox::NoButtons);
+    ovp->setKeyboardTracking(false);
+
+    // Update the ovp when the property changes
+    inConnection = QuantitySpinBox::connect(
+        property, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        [this] (double value) {
+            if (ovp->rawValue() != value) {
+                ovp->setValue(value);
+            }
+        }
+    );
+
+    // Update the property when the ovp changes
+    outConnection = QuantitySpinBox::connect(
+        ovp, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        [property] (double value) {
+            if (property->rawValue() != value) {
+                property->setValue(value);
+            }
+        }
+    );
+
+    this->property = property;
 }
