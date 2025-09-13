@@ -3782,9 +3782,6 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         deriveConstraintsForPieces(GeoId, newIds, con, newConstraints);
     }
 
-    // `if (noRecomputes)` results in a failed test (`testPD_TNPSketchPadSketchSplit(self)`)
-    // TODO: figure out why, and if that check must be used
-    solve();
     // This also seems to reset SketchObject::Geometry.
     // TODO: figure out why, and if that check must be used
     geoAsCurve = getGeometry<Part::GeomCurve>(GeoId);
@@ -3819,7 +3816,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         transferConstraints(GeoId, PointPos::mid, newIds.front(), PointPos::mid);
     }
 
-    delConstraints(std::move(idsOfOldConstraints));
+    delConstraints(std::move(idsOfOldConstraints), DeleteOption::NoSolve);
     replaceGeometries({GeoId}, newGeos);
     addConstraints(newConstraints);
 
