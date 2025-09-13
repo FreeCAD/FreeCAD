@@ -27,9 +27,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:export-bgcolor="#ffffff00"
-     inkscape:zoom="16.397483"
-     inkscape:cx="30.248545"
-     inkscape:cy="697.4241"
+     inkscape:zoom="2.0496854"
+     inkscape:cx="521.05558"
+     inkscape:cy="349.80978"
      inkscape:window-width="1920"
      inkscape:window-height="1028"
      inkscape:window-x="1913"
@@ -4739,7 +4739,7 @@
          sodipodi:nodetypes="ccccc" /></g><g
        id="overlay-darkgray"
        transform="matrix(0.39687499,0,0,0.396875,161.4126,108.95)"
-       inkscape:label="overlay_lighter"><path
+       inkscape:label="overlay-darkgray"><path
          style="color:#000000;fill:#4d4d4d;fill-opacity:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:100;-inkscape-stroke:none"
          d="M 1.5,1 A 0.50004899,0.50004899 0 0 0 1,1.5 v 9 A 0.50004899,0.50004899 0 0 0 1.5,11 h 9 A 0.50004899,0.50004899 0 0 0 11,10.5 v -9 A 0.50004899,0.50004899 0 0 0 10.5,1 Z M 2,2 h 8 v 8 H 2 Z"
          id="rect1-5-1-2-6-9" /><rect
