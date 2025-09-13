@@ -133,6 +133,10 @@
 typedef long int Py_hash_t;
 #endif
 
+#if PY_VERSION_HEX >= 0x030d0000
+#define Py_UNICODE_DEPRECATED
+#endif
+
 #ifndef PYCXX_PYTHON_2TO3
 #define PYCXX_PYTHON_2TO3
 #endif
