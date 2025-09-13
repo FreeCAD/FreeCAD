@@ -23,11 +23,11 @@
 #ifndef __shader_h__
 #define __shader_h__
 
-#include "OpenGlWrapper.h"
 #include "linmath.h"
 
-namespace MillSim
+namespace CAMSimulator
 {
+
 class Shader
 {
 public:
@@ -37,13 +37,16 @@ public:
 
 public:
     unsigned int shaderId = 0;
-    void UpdateModelMat(mat4x4 transformMat, mat4x4 normalMat);
-    void UpdateProjectionMat(mat4x4 mat);
-    void UpdateViewMat(mat4x4 mat);
-    void UpdateEnvColor(vec3 lightPos, vec3 lightColor, vec3 ambient, float linearity);
+    void UpdateModelMat(const mat4x4& transformMat, const mat4x4& normalMat);
+    void UpdateProjectionMat(const mat4x4& mat);
+    void UpdateViewMat(const mat4x4& mat);
+    void UpdateEnvColor(const vec3& lightPos,
+                        const vec3& lightColor,
+                        const vec3& ambient,
+                        float linearity);
     void UpdateScreenDimension(int width, int height);
-    void UpdateObjColor(vec3 objColor);
-    void UpdateObjColorAlpha(vec4 objColor);
+    void UpdateObjColor(const vec3& objColor);
+    void UpdateObjColorAlpha(const vec4& objColor);
     void UpdateNormalState(bool isInverted);
     void UpdateSsaoActive(bool isInverted);
     void UpdateTextureSlot(int slot);
@@ -54,14 +57,12 @@ public:
     void UpdateSsaoTexSlot(int ssaoSlot);
     void UpdateKernelVals(int nVals, float* vals);
     void UpdateCurSegment(int curSeg);
+    void UpdateStartEnd(const vec3& start, const vec3& end);
+
     unsigned int CompileShader(const char* name, const char* vertShader, const char* fragShader);
     void Activate();
     void Destroy();
-    bool IsValid()
-    {
-        return shaderId > 0;
-    }
-
+    bool IsValid();
 
 protected:
     int mModelPos = -1;
@@ -86,6 +87,7 @@ protected:
     int mCurSegmentPos = -1;
     int mScreenWidthPos = -1;
     int mScreenHeightPos = -1;
+    int mStartEndPos = -1;
 
     const char* vertShader = nullptr;
     const char* fragShader = nullptr;
@@ -110,6 +112,6 @@ extern const char* FragShaderSSAOBlur;
 extern const char* VertShader3DLine;
 extern const char* FragShader3DLine;
 
+}  // namespace CAMSimulator
 
-}  // namespace MillSim
 #endif  // !__shader_h__

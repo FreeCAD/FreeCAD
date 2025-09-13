@@ -21,10 +21,13 @@
  ***************************************************************************/
 
 #include "Texture.h"
+
+#include "OpenGlWrapper.h"
 #include "GlUtils.h"
 
-namespace MillSim
+namespace CAMSimulator
 {
+
 Texture::~Texture()
 {
     DestroyTexture();
@@ -64,4 +67,4 @@ bool Texture::unbind()
     return true;
 }
 
-}  // namespace MillSim
+}  // namespace CAMSimulator
