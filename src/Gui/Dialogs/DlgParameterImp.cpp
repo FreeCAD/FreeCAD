@@ -20,10 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <limits>
 #include <sstream>
+
 #include <QByteArray>
 #include <QContextMenuEvent>
 #include <QHeaderView>
@@ -31,7 +30,6 @@
 #include <QMessageBox>
 #include <QMenu>
 #include <QTreeWidget>
-#endif
 
 #include <App/Application.h>
 #include <Base/Exception.h>

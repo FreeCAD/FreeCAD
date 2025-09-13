@@ -20,12 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <QAction>
 #include <QList>
-#endif
 
 #include "Dialogs/DlgUndoRedo.h"
 #include "Application.h"

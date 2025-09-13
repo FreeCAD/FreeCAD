@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <sstream>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/nodes/SoDrawStyle.h>
-#endif
+
 
 #include <App/DocumentObject.h>
 

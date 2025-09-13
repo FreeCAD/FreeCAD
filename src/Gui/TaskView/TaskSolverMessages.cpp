@@ -21,11 +21,8 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QAction>
 #include <QMenu>
-#endif
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>

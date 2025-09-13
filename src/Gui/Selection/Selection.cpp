@@ -21,14 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <array>
 # include <set>
 # include <boost/algorithm/string/predicate.hpp>
 # include <QApplication>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

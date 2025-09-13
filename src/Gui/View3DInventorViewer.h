@@ -39,6 +39,8 @@
 #include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoSwitch.h>
 
+#include <FCConfig.h>
+
 #ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
 #else

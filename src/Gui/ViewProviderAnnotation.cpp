@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <QMenu>
 # include <QFont>
 # include <QFontMetrics>
@@ -41,7 +40,7 @@
 # include <Inventor/nodes/SoRotationXYZ.h>
 # include <Inventor/nodes/SoText2.h>
 # include <Inventor/nodes/SoTranslation.h>
-#endif
+
 # include <Inventor/draggers/SoTranslate2Dragger.h>
 
 #include <App/Annotation.h>

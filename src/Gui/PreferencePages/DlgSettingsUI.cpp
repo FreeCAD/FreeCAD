@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QPushButton>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/ParamHandler.h>

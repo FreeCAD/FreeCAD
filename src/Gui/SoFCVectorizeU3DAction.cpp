@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <qglobal.h>
 # include <iomanip>
 # include <ios>
 # include <Inventor/SbBSPTree.h>
-#endif
+
 
 #include <Base/FileInfo.h>
 #include <Base/Tools.h>

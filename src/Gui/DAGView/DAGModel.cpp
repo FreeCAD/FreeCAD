@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <boost/graph/topological_sort.hpp>
 #include <boost_graph_reverse_graph.hpp>
 #include <memory>
@@ -37,7 +35,6 @@
 #include <QPen>
 #include <QString>
 #include <QTimer>
-#endif
 
 #include <Base/Console.h>
 #include <Base/TimeInfo.h>

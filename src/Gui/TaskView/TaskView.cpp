@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QAbstractSpinBox>
 # include <QActionEvent>
 # include <QApplication>
@@ -33,7 +30,8 @@
 # include <QPushButton>
 # include <QTimer>
 # include <QVBoxLayout>
-#endif
+
+#include <FCConfig.h>
 
 #include <App/Document.h>
 #include <Gui/ActionFunction.h>

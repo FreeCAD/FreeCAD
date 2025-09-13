@@ -21,15 +21,14 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoTexture3.h>
-#endif
+
 
 #include "ViewProviderTextureExtension.h"
 #include <Gui/BitmapFactory.h>

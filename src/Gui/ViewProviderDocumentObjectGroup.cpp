@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+
 
 #include <App/DocumentObjectGroup.h>
 #include <App/Document.h>

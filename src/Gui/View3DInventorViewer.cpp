@@ -20,11 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
 #include <Inventor/SoFCPlacementIndicatorKit.h>
 
-#ifndef _PreComp_
 # ifdef FC_OS_WIN32
 #  include <windows.h>
 # endif
@@ -90,7 +89,6 @@
 # include <QTimer>
 # include <QVariantAnimation>
 # include <QWheelEvent>
-#endif
 
 #include <App/Document.h>
 #include <App/GeoFeatureGroupExtension.h>

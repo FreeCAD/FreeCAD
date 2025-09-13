@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 #include <limits>
 #include <QButtonGroup>
@@ -29,7 +27,6 @@
 #include <QFontMetrics>
 #include <QLocale>
 #include <QMessageBox>
-#endif
 
 #include "Dialogs/DlgSettingsColorGradientImp.h"
 #include "ui_DlgSettingsColorGradient.h"

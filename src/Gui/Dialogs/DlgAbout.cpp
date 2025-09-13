@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <cstdlib>
 #include <QApplication>
 #include <QClipboard>
@@ -40,7 +37,6 @@
 #include <QTextStream>
 #include <QTimer>
 #include <Inventor/C/basic.h>
-#endif
 
 #include <App/Application.h>
 #include <App/Metadata.h>

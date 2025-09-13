@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Inventor/nodes/SoCamera.h>
 # include <QApplication>
-#endif
 
 #include "Navigation/NavigationStyle.h"
 #include "View3DInventorViewer.h"

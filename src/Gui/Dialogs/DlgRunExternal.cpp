@@ -20,10 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QFileDialog>
-#endif
 
 #include "Dialogs/DlgRunExternal.h"
 #include "ui_DlgRunExternal.h"

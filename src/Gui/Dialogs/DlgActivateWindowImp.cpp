@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QApplication>
 # include <QPushButton>
-#endif
 
 #include "Dialogs/DlgActivateWindowImp.h"
 #include "ui_DlgActivateWindow.h"

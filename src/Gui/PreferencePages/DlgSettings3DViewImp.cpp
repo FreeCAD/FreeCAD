@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
 # include <QOffscreenSurface>
 # include <QOpenGLContext>
 # include <QSurfaceFormat>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Parameter.h>

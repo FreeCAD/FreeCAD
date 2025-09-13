@@ -20,11 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
-
 #include <QOpenGLWidget>
 
 #include "GLPainter.h"

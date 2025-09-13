@@ -24,6 +24,7 @@
 #ifndef GUI_TOOLS_H
 #define GUI_TOOLS_H
 
+#include <FCConfig.h>
 #include <FCGlobal.h>
 
 #include <QFontMetrics>

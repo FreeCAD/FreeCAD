@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
-#endif
 
 #include "Dialogs/DlgSettingsImageImp.h"
 #include "ui_DlgSettingsImage.h"

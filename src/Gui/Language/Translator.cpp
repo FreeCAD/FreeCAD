@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <algorithm>
 # include <QApplication>
 # include <QDir>
@@ -30,7 +28,7 @@
 # include <QStringList>
 # include <QTranslator>
 # include <QWidget>
-#endif
+
 
 #include <App/Application.h>
 #include <Gui/TextEdit.h>

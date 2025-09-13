@@ -20,10 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QCoreApplication>
 # include <QDir>
 # include <QFileInfo>
@@ -31,7 +27,6 @@
 # include <QMessageBox>
 # include <QProcess>
 # include <QTextStream>
-#endif
 
 #include <App/Application.h>
 #include <Base/Console.h>

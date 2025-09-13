@@ -20,14 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QAction>
 # include <QMap>
 # include <QPointer>
 # include <QTimer>
-#endif
 
 #include "ActionFunction.h"
 

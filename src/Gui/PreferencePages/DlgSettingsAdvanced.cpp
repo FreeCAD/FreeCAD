@@ -20,7 +20,6 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <QPropertyAnimation>
 #include <QTimer>
@@ -31,14 +30,13 @@ DlgSettingsAdvanced.define()
 ]]]*/
 
 // Auto generated code (Tools/params_utils.py:567)
-#ifndef _PreComp_
 #   include <QApplication>
 #   include <QLabel>
 #   include <QGroupBox>
 #   include <QGridLayout>
 #   include <QVBoxLayout>
 #   include <QHBoxLayout>
-#endif
+
 #include <Gui/TreeParams.h>
 #include <Gui/OverlayParams.h>
 // Auto generated code (Tools/params_utils.py:589)

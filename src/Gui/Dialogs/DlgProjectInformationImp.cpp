@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QByteArray>
 #include <QDateTime>
 #include <QDesktopServices>
 #include <QLocale>
 #include <QUrl>
-#endif
 
 #include <App/Document.h>
 #include <App/License.h>

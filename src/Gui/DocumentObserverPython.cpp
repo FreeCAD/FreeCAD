@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include <Base/Interpreter.h>
 
 #include "Application.h"

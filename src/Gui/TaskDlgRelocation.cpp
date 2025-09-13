@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+
 
 #include "Dialogs/ui_DlgLocationAngle.h"
 #include "Dialogs/ui_DlgLocationPos.h"

@@ -21,7 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+
 #include "NavigationAnimation.h"
 #include <Inventor/nodes/SoCamera.h>
 

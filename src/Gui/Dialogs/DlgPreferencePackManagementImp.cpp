@@ -20,10 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QMessageBox>
-#endif
 
 #include "Dialogs/DlgPreferencePackManagementImp.h"
 #include "ui_DlgPreferencePackManagement.h"

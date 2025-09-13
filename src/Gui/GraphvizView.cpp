@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <QApplication>
 # include <QFile>
 # include <QGraphicsScene>
@@ -37,7 +36,8 @@
 # include <QSvgRenderer>
 # include <QScrollBar>
 # include <QThread>
-#endif
+
+#include <FCConfig.h>
 
 #include <App/Application.h>
 #include <App/Document.h>

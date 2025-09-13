@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <Inventor/actions/SoGetMatrixAction.h>
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/actions/SoCallbackAction.h>
@@ -33,7 +31,7 @@
 # include <Inventor/elements/SoViewportRegionElement.h>
 # include <Inventor/elements/SoViewVolumeElement.h>
 # include <Inventor/nodes/SoCamera.h>
-#endif
+
 
 #include "SoAutoZoomTranslation.h"
 

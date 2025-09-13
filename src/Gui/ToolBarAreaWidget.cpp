@@ -19,11 +19,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 #include <QHBoxLayout>
 #include <QTimer>
-#endif
+
 
 #include "MainWindow.h"
 #include "ToolBarAreaWidget.h"

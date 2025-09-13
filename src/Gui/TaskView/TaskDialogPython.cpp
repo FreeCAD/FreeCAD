@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
 # include <QEvent>
 # include <QFile>
 # include <QPointer>
-#endif
+
 
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
