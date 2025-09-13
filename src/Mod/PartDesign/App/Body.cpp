@@ -31,7 +31,6 @@
 #include <App/Part.h>
 #include <App/VarSet.h>
 #include <App/Origin.h>
-
 #include <Base/Placement.h>
 
 #include "Body.h"
@@ -51,7 +50,6 @@ Body::Body()
 {
     ADD_PROPERTY_TYPE(AllowCompound, (false), "Experimental", App::Prop_None, "Allow multiple solids in Body (experimental)");
     Placement.setStatus(App::Property::Hidden, true);
-    Placement.setStatus(App::Property::ReadOnly, true);
 
     _GroupTouched.setStatus(App::Property::Output, true);
 }
@@ -287,6 +285,7 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
     }
 
     //ensure that all origin links are ok
+    relinkToOrigin(feature);
 
     std::vector<App::DocumentObject*> model = Group.getValues();
     std::vector<App::DocumentObject*>::iterator insertInto;
@@ -494,6 +493,14 @@ void Body::onChanged(const App::Property* prop) {
 
 void Body::setupObject () {
     Part::BodyBase::setupObject ();
+    try {
+        if (auto* origin = this->getOrigin()) {
+                origin->Placement.setStatus(App::Property::Hidden, false);
+                origin->Placement.setStatus(App::Property::ReadOnly, false);
+        }
+    } catch (const Base::Exception&) {
+            // Origin not yet present in very early group changes — ignore
+    }
 }
 
 void Body::unsetupObject () {
@@ -581,14 +588,14 @@ namespace {
 
 bool anyLegacyBodyPlacement(App::Document* doc)
 {
-    if (!doc) false;
+    if (!doc) return false;
 
     // --- gather bodies
     std::vector<PartDesign::Body*> bodies;
     for (auto* o : doc->getObjectsOfType(PartDesign::Body::getClassTypeId()))
         if (auto* b = dynamic_cast<PartDesign::Body*>(o))
             bodies.push_back(b);
-    if (bodies.empty()) false;
+    if (bodies.empty()) return false;
     for (auto* b : bodies) {
         if (!b->Placement.getValue().isIdentity()) return true;
     }
@@ -606,10 +613,15 @@ void Body::onDocumentRestored()
     // trigger ViewProviderBody::copyColorsfromTip
     if (Tip.getValue())
         Tip.touch();
-
     // Hide & lock Body.Placement in the UI
     Placement.setStatus(App::Property::Hidden, true);
-    Placement.setStatus(App::Property::ReadOnly, true);
+
+    // Ensure Origins under *this* Body keep their Placement visible/editable
+    {
+	auto* origin = this->getOrigin();
+        origin->Placement.setStatus(App::Property::Hidden, false);
+        origin->Placement.setStatus(App::Property::ReadOnly, false);
+    }
 
     // Defer migration until the document has finished restoring
     App::Document* doc = getDocument();
