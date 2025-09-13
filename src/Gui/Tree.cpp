@@ -1512,10 +1512,8 @@ void TreeWidget::setupResizableColumn(TreeWidget *tree) {
     }
 }
 
-std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
+TreeWidget* TreeWidget::getTreeForSelection()
 {
-    std::vector<SelInfo> ret;
-
     TreeWidget* tree = instance();
     if (!tree || !tree->isSelectionAttached()) {
         for (auto pTree : Instances)
@@ -1524,13 +1522,52 @@ std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
                 break;
             }
     }
-    if (!tree)
-        return ret;
+    if (!tree) {
+        return nullptr;
+    }
 
-    if (tree->selectTimer->isActive())
+    if (tree->selectTimer->isActive()) {
         tree->onSelectTimer();
-    else
+    }
+    else {
         tree->_updateStatus(false);
+    }
+
+    return tree;
+}
+
+std::vector<Document*> TreeWidget::getSelectedDocuments()
+{
+    std::vector<Document*> ret;
+    TreeWidget* tree = getTreeForSelection();
+
+    if (!tree) {
+        return ret;
+    }
+
+    const auto items = tree->selectedItems();
+    for (auto ti : items) {
+        if (ti->type() != DocumentType)
+            continue;
+        auto item = static_cast<DocumentItem*>(ti);
+        auto doc = item->document();
+        if (!doc || !doc->getDocument()) {
+            FC_WARN("skip invalid document");
+            continue;
+        }
+        ret.push_back(doc);
+    }
+    return ret;
+}
+
+std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
+{
+    std::vector<SelInfo> ret;
+    TreeWidget* tree = getTreeForSelection();
+
+    if (!tree) {
+        return ret;
+    }
 
     const auto items = tree->selectedItems();
     for (auto ti : items) {

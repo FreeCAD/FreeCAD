@@ -15,83 +15,72 @@
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0">
-    <widget class="QLabel" name="label_type">
-     <property name="text">
-      <string>Type</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QComboBox" name="comboType"/>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_group">
-     <property name="text">
-      <string>Group</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="edtGroup"/>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_name">
+    <widget class="QLabel" name="labelName">
      <property name="text">
       <string>Name</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
-    <widget class="QLineEdit" name="edtName"/>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="lineEditName"/>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_doc">
-     <property name="toolTip">
-      <string>Verbose description of the new property</string>
-     </property>
+   <item row="1" column="0">
+    <widget class="QLabel" name="labelGroup">
      <property name="text">
-      <string>Documentation</string>
+      <string>Group</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
-    <widget class="QPlainTextEdit" name="edtDoc">
-     <property name="toolTip">
-      <string>Verbose description of the new property</string>
+   <item row="2" column="0">
+    <widget class="QLabel" name="labelType">
+     <property name="text">
+      <string>Type</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="comboBoxType">
+     <property name="editable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="labelValue">
+     <property name="text">
+      <string>Value</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="labelToolTip">
+     <property name="text">
+      <string>Tooltip</string>
      </property>
     </widget>
    </item>
    <item row="4" column="1">
-    <widget class="QCheckBox" name="chkAppend">
-     <property name="toolTip">
-      <string>Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
-In this case the prefix will be automatically trimmed when shown in the property editor.
-However, the property is still used in a script with the full name, like 'obj.Group_Name'.
-
-If this is not checked, the property must be uniquely named, and it is accessed like 'obj.Name'.</string>
-     </property>
+    <widget class="QLineEdit" name="lineEditToolTip"/>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="QLabel" name="labelError">
      <property name="text">
-      <string>Prefix group name</string>
+      <string/>
      </property>
     </widget>
    </item>
-   <item row="5" column="0" colspan="2">
+   <item row="6" column="0" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
- <tabstops>
-  <tabstop>comboType</tabstop>
-  <tabstop>edtGroup</tabstop>
-  <tabstop>edtName</tabstop>
- </tabstops>
  <resources/>
  <connections>
   <connection>
