@@ -25,8 +25,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // standard
 #include <stdexcept>
 
@@ -37,7 +35,5 @@
 // Qt
 #include <QCoreApplication>
 #include <QTcpSocket>
-
-#endif  //_PreComp_
 
 #endif
