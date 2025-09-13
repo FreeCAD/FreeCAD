@@ -344,13 +344,13 @@ SET(FreeCADApp_SRCS
     ${FreeCADApp_Pyi_SRCS}
     FreeCADInit.py
     FreeCADTest.py
-    PreCompiled.cpp
     PreCompiled.h
 )
 
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    ADD_MSVC_PRECOMPILED_HEADER(FreeCADApp PreCompiled.h PreCompiled.cpp FreeCADApp_CPP_SRCS)
+    target_precompile_headers(FreeCADApp PRIVATE
+        $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
 target_sources(FreeCADApp PRIVATE ${FreeCADApp_SRCS})

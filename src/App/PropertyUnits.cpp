@@ -20,10 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <limits>
-#endif
 
 #include <Base/QuantityPy.h>
 #include <Base/UnitPy.h>

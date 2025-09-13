@@ -22,7 +22,6 @@
  **************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include <cassert>
 #include <xercesc/util/PlatformUtils.hpp>

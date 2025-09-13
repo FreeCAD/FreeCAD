@@ -20,11 +20,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <unordered_set>
-#endif
 
 #include "MappedName.h"
 

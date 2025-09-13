@@ -19,17 +19,16 @@
  *                                                                                                 *
  **************************************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <fmt/format.h>
 #include <utility>
 #include <QDir>
 #include <QProcessEnvironment>
 #include <QStandardPaths>
 #include <QCoreApplication>
-#endif
 
 #include "ApplicationDirectories.h"
+
+#include <FCConfig.h>
 
 #if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 #include <pwd.h>

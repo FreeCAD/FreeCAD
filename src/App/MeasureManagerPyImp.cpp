@@ -20,7 +20,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
 
 // inclusion of the generated files (generated out of MeasureManagerPy.xml)
 #include "MeasureManagerPy.h"

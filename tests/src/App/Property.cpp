@@ -23,6 +23,8 @@
 
 #include <gtest/gtest.h>
 
+#include <FCConfig.h>
+
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Interpreter.h>

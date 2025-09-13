@@ -20,11 +20,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <iostream>
-#endif
 
 #include "VarSet.h"
 #include "DocumentObject.h"

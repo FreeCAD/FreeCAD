@@ -20,15 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <cassert>
 #include <vector>
 #include <map>
 #include <string>
-#endif
 
 #include <Base/PyObjectBase.h>
 
