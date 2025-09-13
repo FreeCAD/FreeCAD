@@ -135,15 +135,15 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          }},
         {"ViewScalingFactor",
          [this](const std::string& param) {
-             updateElementSizeParameters(param);
+             Client.updateElementSizeParameters();
          }},
         {"MarkerSize",
          [this](const std::string& param) {
-             updateElementSizeParameters(param);
+             Client.updateElementSizeParameters();
          }},
         {"EditSketcherFontSize",
          [this](const std::string& param) {
-             updateElementSizeParameters(param);
+             Client.updateElementSizeParameters();
          }},
         {"EdgeWidth",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
@@ -353,54 +353,6 @@ void EditModeCoinManager::ParameterObserver::updateOverlayVisibilityParameter(
     }
 
     Client.overlayParameters.visibleInformationChanged = true;
-}
-
-void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
-    const std::string& parametername)
-{
-    (void)parametername;
-
-    // Add scaling to Constraint icons
-    ParameterGrp::handle hGrp =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-
-    double viewScalingFactor = hGrp->GetFloat("ViewScalingFactor", 1.0);
-    viewScalingFactor = std::clamp<double>(viewScalingFactor, 0.5, 5.0);
-
-    int markerSize = hGrp->GetInt("MarkerSize", 7);
-
-    int defaultFontSizePixels =
-        Client.defaultApplicationFontSizePixels();  // returns height in pixels, not points
-
-    int sketcherfontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSizePixels);
-    int constraintSymbolSizePref = hGrp->GetInt("ConstraintSymbolSize", defaultFontSizePixels);
-
-    double dpi = Client.getApplicationLogicalDPIX();
-    double devicePixelRatio = Client.getDevicePixelRatio();
-
-    // simple scaling factor for hardcoded pixel values in the Sketcher
-    Client.drawingParameters.pixelScalingFactor = devicePixelRatio * viewScalingFactor;
-
-    // About sizes:
-    // SoDatumLabel takes the size in points, not in pixels. This is because it uses QFont
-    // internally. Coin, at least our coin at this time, takes pixels, not points.
-
-    Client.drawingParameters.coinFontSize =
-        std::lround(sketcherfontSize * devicePixelRatio);  // in pixels (Coin uses pixels)
-    Client.drawingParameters.labelFontSize = std::lround(
-        sketcherfontSize * devicePixelRatio * 72.0f / dpi);  // in points (SoDatumLabel uses points)
-    Client.drawingParameters.constraintIconSize = constraintSymbolSizePref;
-
-    auto supportedsizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes("CIRCLE_LINE");
-    auto scaledMarkerSize = std::lround(markerSize * devicePixelRatio);
-    auto const it =
-        std::lower_bound(supportedsizes.begin(), supportedsizes.end(), scaledMarkerSize);
-    if (it != supportedsizes.end()) {
-        scaledMarkerSize = *it;
-    }
-    Client.drawingParameters.markerSize = scaledMarkerSize;
-
-    Client.updateInventorNodeSizes();
 }
 
 void EditModeCoinManager::ParameterObserver::updateWidth(int& width,
@@ -1115,6 +1067,51 @@ void EditModeCoinManager::setEditDrawStyle(GeometryCreationMode mode)
     editModeScenegraphNodes.EditCurvesDrawStyle->linePattern = toCopy->linePattern;
     editModeScenegraphNodes.EditCurvesDrawStyle->linePatternScaleFactor =
         toCopy->linePatternScaleFactor;
+}
+
+void EditModeCoinManager::updateElementSizeParameters()
+{
+    // Add scaling to Constraint icons
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+
+    double viewScalingFactor = hGrp->GetFloat("ViewScalingFactor", 1.0);
+    viewScalingFactor = std::clamp<double>(viewScalingFactor, 0.5, 5.0);
+
+    int markerSize = hGrp->GetInt("MarkerSize", 7);
+
+    int defaultFontSizePixels =
+        defaultApplicationFontSizePixels();  // returns height in pixels, not points
+
+    int sketcherfontSize = hGrp->GetInt("EditSketcherFontSize", defaultFontSizePixels);
+    int constraintSymbolSizePref = hGrp->GetInt("ConstraintSymbolSize", defaultFontSizePixels);
+
+    double dpi = getApplicationLogicalDPIX();
+    double devicePixelRatio = getDevicePixelRatio();
+
+    // simple scaling factor for hardcoded pixel values in the Sketcher
+    drawingParameters.pixelScalingFactor = devicePixelRatio * viewScalingFactor;
+
+    // About sizes:
+    // SoDatumLabel takes the size in points, not in pixels. This is because it uses QFont
+    // internally. Coin, at least our coin at this time, takes pixels, not points.
+
+    drawingParameters.coinFontSize =
+        std::lround(sketcherfontSize * devicePixelRatio);  // in pixels (Coin uses pixels)
+    drawingParameters.labelFontSize = std::lround(sketcherfontSize * devicePixelRatio * 72.0f
+                                                  / dpi);  // in points (SoDatumLabel uses points)
+    drawingParameters.constraintIconSize = constraintSymbolSizePref;
+
+    auto supportedsizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes("CIRCLE_LINE");
+    auto scaledMarkerSize = std::lround(markerSize * devicePixelRatio);
+    auto const it =
+        std::lower_bound(supportedsizes.begin(), supportedsizes.end(), scaledMarkerSize);
+    if (it != supportedsizes.end()) {
+        scaledMarkerSize = *it;
+    }
+    drawingParameters.markerSize = scaledMarkerSize;
+
+    updateInventorNodeSizes();
 }
 
 /************************ Delegated constraint public interface **********/
