@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Inventor/nodes/SoCamera.h>
 # include <QApplication>
 # include <QCheckBox>
@@ -31,7 +28,6 @@
 # include <QMessageBox>
 # include <QTextStream>
 # include <QTreeWidgetItem>
-#endif
 
 #include <boost/regex.hpp>
 #include <boost/algorithm/string/replace.hpp>

@@ -21,11 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <Inventor/nodes/SoCamera.h>
 # include <QApplication>
-#endif
+
 
 #include "Inventor/SoMouseWheelEvent.h"
 #include "Navigation/NavigationStyle.h"

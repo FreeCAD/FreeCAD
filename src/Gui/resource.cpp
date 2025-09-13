@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+
 
 #include "BitmapFactory.h"
 #include "WidgetFactory.h"

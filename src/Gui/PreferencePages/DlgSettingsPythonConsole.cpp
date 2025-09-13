@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DlgSettingsPythonConsole.h"
 #include "ui_DlgSettingsPythonConsole.h"

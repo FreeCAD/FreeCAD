@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
 # include <Inventor/SoFullPath.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoCallbackAction.h>
@@ -59,7 +58,7 @@
 # include <Inventor/nodes/SoNormalBinding.h>
 # include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/threads/SbStorage.h>
-#endif
+
 
 #ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>

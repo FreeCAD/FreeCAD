@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <QApplication>
 # include <QTimer>
 # include <Inventor/SoPickedPoint.h>
@@ -34,7 +33,7 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransform.h>
-#endif
+
 
 #include <Base/BoundBox.h>
 #include <Base/Console.h>

@@ -35,7 +35,6 @@ See also:
 http://www.3dconnexion.com/forum/viewtopic.php?f=19&t=4968&sid=72c018bdcf0e6edc99a6effb5c0c48d9
 */
 
-#include "PreCompiled.h"
 #include <FCConfig.h>
 
 #include "GuiNativeEventWin32.h"

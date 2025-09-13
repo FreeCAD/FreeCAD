@@ -20,15 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <QBuffer>
 #include <QIODevice>
 #ifdef __GNUC__
 #include <cstdint>
-#endif
 #endif
 
 #include "Stream.h"

@@ -21,11 +21,10 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 #include <QCoreApplication>
 #include <QOpenGLFramebufferObjectFormat>
-#endif
+
 
 #include "Multisample.h"
 #include <App/Application.h>

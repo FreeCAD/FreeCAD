@@ -20,14 +20,10 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QApplication>
 # include <QKeyEvent>
 # include <QLineEdit>
 # include <QAbstractItemView>
-#endif
 
 #include "Application.h"
 #include "ShortcutManager.h"

@@ -20,12 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QEvent>
 # include <QGridLayout>
 # include <QSplitter>
-#endif
 
 #include "ComboView.h"
 #include "PropertyView.h"

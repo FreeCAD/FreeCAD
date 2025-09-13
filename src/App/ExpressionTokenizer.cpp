@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <string>
 #include <tuple>
-#endif
 
 #include "ExpressionParser.h"
 #include "ExpressionTokenizer.h"

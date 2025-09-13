@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cstdlib>
-#endif
 
 #include <Base/Exception.h>
 

@@ -56,10 +56,9 @@
  * This style wasn't tested with space during development (I don't have one).
  */
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QApplication>
-#endif
+
 
 #include <Base/Console.h>
 

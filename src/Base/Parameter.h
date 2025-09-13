@@ -35,6 +35,8 @@
 // Python stuff
 using PyObject = struct _object;
 
+#include <FCConfig.h>
+
 #ifdef FC_OS_MACOSX
 #undef toupper
 #undef tolower

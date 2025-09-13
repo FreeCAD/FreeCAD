@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QApplication>
 # include <QContextMenuEvent>
 # include <QGridLayout>
@@ -29,7 +28,7 @@
 # include <QTextCursor>
 # include <QTextStream>
 # include <QTime>
-#endif
+
 
 #include <Base/Interpreter.h>
 #include <Base/Color.h>

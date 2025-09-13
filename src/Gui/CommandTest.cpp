@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QApplication>
 # include <QEventLoop>
 # include <QFileDialog>
@@ -36,7 +33,6 @@
 # include <QTimer>
 # include <QTranslator>
 # include <QWaitCondition>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Sequencer.h>

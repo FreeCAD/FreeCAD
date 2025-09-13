@@ -21,11 +21,10 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 #include <QFileInfo>
 #include <QMessageBox>
-#endif
+
 
 
 #include "ModuleIO.h"

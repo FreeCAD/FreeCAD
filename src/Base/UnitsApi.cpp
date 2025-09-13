@@ -20,10 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <iomanip>
-#endif
 
 #include <CXX/WrapPython.h>
 

@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 #include <cstdlib>
 #include <QApplication>
 #include <QClipboard>
@@ -34,7 +33,7 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QWaitCondition>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Metadata.h>

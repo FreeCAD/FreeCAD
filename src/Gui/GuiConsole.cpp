@@ -20,17 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <FCConfig.h>
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # ifdef FC_OS_WIN32
 #   include "io.h"
 #   include <windows.h>
 # endif
 # include <fcntl.h>
 # include <iostream>
-#endif
 
 #include "GuiConsole.h"
 

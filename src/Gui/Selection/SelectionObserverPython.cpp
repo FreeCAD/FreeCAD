@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+
 
 #include "SelectionObserverPython.h"
 #include <Base/Interpreter.h>

@@ -19,15 +19,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <algorithm>
 #include <tuple>
 #include <vector>
 #include <string>
 #include <set>
-#endif
+
 #include "UniqueNameManager.h"
 
 std::tuple<std::string, std::string, unsigned int, Base::UnlimitedUnsigned>

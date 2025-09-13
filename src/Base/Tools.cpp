@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <unicode/unistr.h>
 #include <unicode/uchar.h>
 #include <vector>
@@ -30,7 +27,6 @@
 #include <sstream>
 #include <QDateTime>
 #include <QTimeZone>
-#endif
 
 #include "PyExport.h"
 #include "Interpreter.h"

@@ -21,21 +21,17 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "Parser.h"
 #include "ParameterManager.h"
 
 #include <Utilities.h>
 #include <Base/Tools.h>
 
-#ifndef _PreComp_
 #include <QColor>
 #include <QRegularExpression>
 #include <QString>
 #include <ranges>
 #include <variant>
-#endif
 
 namespace Gui::StyleParameters
 {

@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QCheckBox>
 #include <QLabel>
 #include <QLineEdit>
@@ -32,7 +30,6 @@
 #include <QToolButton>
 #include <QVBoxLayout>
 #include <set>
-#endif
 
 #include <App/ComplexGeoData.h>
 #include <App/Document.h>

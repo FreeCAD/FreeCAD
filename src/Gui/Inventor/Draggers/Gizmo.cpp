@@ -21,18 +21,14 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "Gizmo.h"
 
-#ifndef _PreComp_
 #include <cmath>
 
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/nodes/SoPickStyle.h>
 #include <algorithm>
-#endif
 
 #include <App/Application.h>
 #include <Base/Converter.h>

@@ -20,13 +20,12 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <boost/algorithm/string/predicate.hpp>
 # include <Inventor/elements/SoCacheElement.h>
 # include <Inventor/misc/SoState.h>
-#endif
+
 
 #include "SoFCSelectionContext.h"
 #include "SoFCUnifiedSelection.h"

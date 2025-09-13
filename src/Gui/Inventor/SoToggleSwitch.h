@@ -24,6 +24,8 @@
 #ifndef SO_TOGGLE_SWITCH
 #define SO_TOGGLE_SWITCH
 
+#include <FCGlobal.h>
+
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/nodes/SoSwitch.h>
 

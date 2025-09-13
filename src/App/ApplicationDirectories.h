@@ -22,12 +22,17 @@
 #ifndef SRC_APP_APPLICATIONDIRECTORIES_H_
 #define SRC_APP_APPLICATIONDIRECTORIES_H_
 
+#include "FCConfig.h"
 #include "FCGlobal.h"
 
 #include <filesystem>
 #include <map>
 #include <string>
 #include <vector>
+
+#ifdef FC_OS_WIN32
+#include <QString>
+#endif
 
 namespace App {
 

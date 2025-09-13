@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <limits>
+
 # include <QApplication>
 # include <QKeyEvent>
 # include <QLabel>
@@ -32,7 +30,6 @@
 # include <QRegularExpressionMatch>
 # include <QTextCursor>
 # include <QToolTip>
-#endif
 
 #include <App/Property.h>
 #include <App/PropertyContainer.h>

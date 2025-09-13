@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <array>
 # include <QAction>
 # include <QApplication>
@@ -31,7 +28,6 @@
 # include <QMouseEvent>
 # include <QPointer>
 # include <QTimer>
-#endif
 
 #include <boost/algorithm/string/predicate.hpp>
 

@@ -21,9 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
 # if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 #  include <unistd.h>
 #  include <pwd.h>
@@ -48,7 +47,6 @@
 # include <tuple>
 # include <vector>
 # include <fmt/format.h>
-#endif
 
 #ifdef FC_OS_WIN32
 # include <Shlobj.h>

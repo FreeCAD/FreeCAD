@@ -27,11 +27,8 @@
 **
 **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QHeaderView>
 # include <QPushButton>
-#endif
 
 #include <App/Application.h>
 

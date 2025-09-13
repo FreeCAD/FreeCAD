@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <memory>
-#endif
 
 #include "ComplexGeoData.h"
 #include "StringHasher.h"

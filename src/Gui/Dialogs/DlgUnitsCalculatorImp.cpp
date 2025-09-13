@@ -20,13 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QClipboard>
 #include <QLocale>
-#endif
 
 #include "Dialogs/DlgUnitsCalculatorImp.h"
 #include "ui_DlgUnitsCalculator.h"

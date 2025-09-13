@@ -20,16 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QAction>
 # include <QApplication>
 # include <QDebug>
 # include <QDockWidget>
 # include <QPointer>
-#endif
 
 #include <App/AutoTransaction.h>
 #include <Gui/ComboView.h>

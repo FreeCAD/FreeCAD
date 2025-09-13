@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 #include <functional>
 #include <limits>
@@ -29,7 +27,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#endif
 
 #include "Unit.h"
 

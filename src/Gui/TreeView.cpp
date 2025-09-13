@@ -21,10 +21,9 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QMouseEvent>
-#endif
+
 
 #include "TreeView.h"
 #include "Application.h"

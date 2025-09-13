@@ -26,12 +26,10 @@
 #ifndef FONTSCALEDSVG_H
 #define FONTSCALEDSVG_H
 
-#ifndef _PreComp_
 #include <QWidget>
 #include <QSvgRenderer>
 #include <QPainter>
 #include <QFontMetrics>
-#endif
 
 #include <FCGlobal.h>
 

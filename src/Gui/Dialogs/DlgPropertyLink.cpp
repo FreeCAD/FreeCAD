@@ -20,13 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <algorithm>
 #include <sstream>
 #include <QStyledItemDelegate>
 #include <QTreeWidgetItem>
-#endif
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>

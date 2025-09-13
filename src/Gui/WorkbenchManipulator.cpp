@@ -22,7 +22,7 @@
  **************************************************************************/
 
 
-#include "PreCompiled.h"
+
 #include "WorkbenchManipulator.h"
 
 using namespace Gui;

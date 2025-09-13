@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 #include <QApplication>
 #include <QBuffer>
 #include <QImageWriter>
 #include <QMessageBox>
 #include <QTcpSocket>
-#endif
+
 
 #include <Base/Interpreter.h>
 #include <Base/Exception.h>

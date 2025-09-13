@@ -1,4 +1,3 @@
-#include "PreCompiled.h"
 
 #include "ElementNamingUtils.h"
 #include <boost/algorithm/string/predicate.hpp>
