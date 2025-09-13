@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 /*! \namespace MeshGui
     \brief The namespace of the Mesh Graphical interface layer library
