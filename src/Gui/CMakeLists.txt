@@ -448,6 +448,7 @@ SET(Gui_UIC_SRCS
     Dialogs/DlgPropertyLink.ui
     Dialogs/DlgRevertToBackupConfig.ui
     Dialogs/DlgThemeEditor.ui
+    Dialogs/DlgVersionMigrator.ui
     PreferencePages/DlgSettings3DView.ui
     PreferencePages/DlgSettingsCacheDirectory.ui
     Dialogs/DlgSettingsColorGradient.ui
@@ -564,6 +565,7 @@ SET(Dialog_CPP_SRCS
     Dialogs/DlgRevertToBackupConfigImp.cpp
     Dialogs/DlgExpressionInput.cpp
     Dialogs/DlgThemeEditor.cpp
+    Dialogs/DlgVersionMigrator.cpp
     TaskDlgRelocation.cpp
     Dialogs/DlgCheckableMessageBox.cpp
     TaskTransform.cpp
@@ -606,6 +608,7 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgCheckableMessageBox.h
     Dialogs/DlgExpressionInput.h
     Dialogs/DlgThemeEditor.h
+    Dialogs/DlgVersionMigrator.h
     TaskDlgRelocation.h
     TaskTransform.h
     Dialogs/DlgUndoRedo.h
@@ -652,6 +655,7 @@ SET(Dialog_SRCS
     Dialogs/DlgTreeWidget.ui
     Dialogs/DlgExpressionInput.ui
     Dialogs/DlgCreateNewPreferencePack.ui
+    Dialogs/DlgVersionMigrator.ui
     DownloadManager.ui
     DownloadItem.ui
     DocumentRecovery.ui
