@@ -456,7 +456,7 @@ bool GraphvizView::onMsg(const char* pMsg, const char**)
         }
 
         QString selectedFilter;
-        QString fn = Gui::FileDialog::getSaveFileName(this, tr("Export graph"), QString(), filter.join(QLatin1String(";;")), &selectedFilter);
+        QString fn = Gui::FileDialog::getSaveFileName(this, tr("Export Graph"), QString(), filter.join(QLatin1String(";;")), &selectedFilter);
         if (!fn.isEmpty()) {
             QString format;
             for (const auto & it : std::as_const(formatMap)) {
@@ -546,7 +546,7 @@ void GraphvizView::printPdf()
     filter << QStringLiteral("%1 (*.pdf)").arg(tr("PDF format"));
 
     QString selectedFilter;
-    QString fn = Gui::FileDialog::getSaveFileName(this, tr("Export graph"), QString(), filter.join(QLatin1String(";;")), &selectedFilter);
+    QString fn = Gui::FileDialog::getSaveFileName(this, tr("Export Graph"), QString(), filter.join(QLatin1String(";;")), &selectedFilter);
     if (!fn.isEmpty()) {
         QByteArray buffer = exportGraph(selectedFilter);
         if (buffer.isEmpty())
