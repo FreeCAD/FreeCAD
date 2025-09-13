@@ -49,7 +49,7 @@ class CommandToolBitCreate:
     def GetResources(self):
         return {
             "Pixmap": "CAM_ToolBit",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitCreate", "New Tool"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitCreate", "New Toolbit"),
             "ToolTip": QT_TRANSLATE_NOOP("CAM_ToolBitCreate", "Creates a new toolbit object"),
         }
 

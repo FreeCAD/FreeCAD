@@ -22,7 +22,9 @@
 
 """Unit tests for the ToolBitListWidget."""
 
+from typing import cast
 import unittest
+from Path.Tool.toolbit import ToolBit
 from Path.Tool.toolbit.ui.toollist import ToolBitListWidget, ToolBitUriRole
 from Path.Tool.toolbit.ui.tablecell import TwoLineTableCell
 from .PathTestUtils import PathTestWithAssets  # Import the base test class
@@ -37,7 +39,7 @@ class TestToolBitListWidget(PathTestWithAssets):
 
     def test_add_toolbit(self):
         # Get a real ToolBit asset
-        toolbit = self.assets.get("toolbit://5mm_Endmill")
+        toolbit = cast(ToolBit, self.assets.get("toolbit://5mm_Endmill"))
         tool_no = 1
 
         self.widget.add_toolbit(toolbit, str(tool_no))
@@ -61,8 +63,8 @@ class TestToolBitListWidget(PathTestWithAssets):
 
     def test_clear_list(self):
         # Add some real items first
-        toolbit1 = self.assets.get("toolbit://5mm_Endmill")
-        toolbit2 = self.assets.get("toolbit://slittingsaw")
+        toolbit1 = cast(ToolBit, self.assets.get("toolbit://5mm_Endmill"))
+        toolbit2 = cast(ToolBit, self.assets.get("toolbit://slittingsaw"))
         self.widget.add_toolbit(toolbit1, 1)
         self.widget.add_toolbit(toolbit2, 2)
         self.assertEqual(self.widget.count(), 2)
@@ -72,9 +74,9 @@ class TestToolBitListWidget(PathTestWithAssets):
 
     def test_apply_filter(self):
         # Add items with distinct text for filtering
-        toolbit1 = self.assets.get("toolbit://5mm_Endmill")
-        toolbit2 = self.assets.get("toolbit://slittingsaw")
-        toolbit3 = self.assets.get("toolbit://probe")
+        toolbit1 = cast(ToolBit, self.assets.get("toolbit://5mm_Endmill"))
+        toolbit2 = cast(ToolBit, self.assets.get("toolbit://slittingsaw"))
+        toolbit3 = cast(ToolBit, self.assets.get("toolbit://probe"))
 
         self.widget.add_toolbit(toolbit1, 1)
         self.widget.add_toolbit(toolbit2, 2)
@@ -117,8 +119,8 @@ class TestToolBitListWidget(PathTestWithAssets):
             self.assertEqual(cell.search_highlight, "3mm")
 
     def test_get_selected_toolbit_uri(self):
-        toolbit1 = self.assets.get("toolbit://5mm_Endmill")
-        toolbit2 = self.assets.get("toolbit://slittingsaw")
+        toolbit1 = cast(ToolBit, self.assets.get("toolbit://5mm_Endmill"))
+        toolbit2 = cast(ToolBit, self.assets.get("toolbit://slittingsaw"))
 
         self.widget.add_toolbit(toolbit1, 1)
         self.widget.add_toolbit(toolbit2, 2)

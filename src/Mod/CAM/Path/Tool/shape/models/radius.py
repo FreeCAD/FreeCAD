@@ -19,25 +19,48 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 import FreeCAD
-import Path
-from ...shape import ToolBitShapeDrill
-from ..mixins import RotaryToolBitMixin, CuttingToolMixin
-from .base import ToolBit
+from typing import Tuple, Mapping
+from .base import ToolBitShape
 
 
-class ToolBitDrill(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
-    SHAPE_CLASS = ToolBitShapeDrill
+class ToolBitShapeRadius(ToolBitShape):
+    name = "Radius"
+    aliases = (
+        "radius",
+        "fillet",
+    )
 
-    def __init__(self, shape: ToolBitShapeDrill, id: str | None = None):
-        Path.Log.track(f"ToolBitDrill __init__ called with shape: {shape}, id: {id}")
-        super().__init__(shape, id=id)
-        CuttingToolMixin.__init__(self, self.obj)
+    @classmethod
+    def schema(cls) -> Mapping[str, Tuple[str, str]]:
+        return {
+            "CuttingEdgeHeight": (
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge height"),
+                "App::PropertyLength",
+            ),
+            "Diameter": (
+                FreeCAD.Qt.translate("ToolBitShape", "Diameter"),
+                "App::PropertyLength",
+            ),
+            "CuttingRadius": (
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting radius"),
+                "App::PropertyLength",
+            ),
+            "Flutes": (
+                FreeCAD.Qt.translate("ToolBitShape", "Flutes"),
+                "App::PropertyInteger",
+            ),
+            "Length": (
+                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length"),
+                "App::PropertyLength",
+            ),
+            "ShankDiameter": (
+                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter"),
+                "App::PropertyLength",
+            ),
+        }
 
     @property
-    def summary(self) -> str:
-        diameter = self.get_property_str("Diameter", "?", precision=3)
-        tip_angle = self.get_property_str("TipAngle", "?", precision=3)
-        flutes = self.get_property("Flutes")
-
-        return FreeCAD.Qt.translate("CAM", f"{diameter} drill, {tip_angle} tip, {flutes}-flute")
+    def label(self) -> str:
+        return FreeCAD.Qt.translate("ToolBitShape", "Radius Mill")

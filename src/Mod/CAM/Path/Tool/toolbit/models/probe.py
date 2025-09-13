@@ -36,9 +36,9 @@ class ToolBitProbe(ToolBit):
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property_str("Diameter", "?")
-        length = self.get_property_str("Length", "?")
-        shaft_diameter = self.get_property_str("ShaftDiameter", "?")
+        diameter = self.get_property_str("Diameter", "?", precision=3)
+        length = self.get_property_str("Length", "?", precision=3)
+        shaft_diameter = self.get_property_str("ShaftDiameter", "?", precision=3)
 
         return FreeCAD.Qt.translate(
             "CAM", f"{diameter} probe, {length} length, {shaft_diameter} shaft"
@@ -46,3 +46,32 @@ class ToolBitProbe(ToolBit):
 
     def can_rotate(self) -> bool:
         return False
+
+    # Connor: Add getters and setters for Diameter and Length
+    def get_diameter(self) -> FreeCAD.Units.Quantity:
+        """
+        Get the diameter of the rotary tool bit from the shape.
+        """
+        return self.obj.Diameter
+
+    def set_diameter(self, diameter: FreeCAD.Units.Quantity):
+        """
+        Set the diameter of the rotary tool bit on the shape.
+        """
+        if not isinstance(diameter, FreeCAD.Units.Quantity):
+            raise ValueError("Diameter must be a FreeCAD Units.Quantity")
+        self.obj.Diameter = diameter
+
+    def get_length(self) -> FreeCAD.Units.Quantity:
+        """
+        Get the length of the rotary tool bit from the shape.
+        """
+        return self.obj.Length
+
+    def set_length(self, length: FreeCAD.Units.Quantity):
+        """
+        Set the length of the rotary tool bit on the shape.
+        """
+        if not isinstance(length, FreeCAD.Units.Quantity):
+            raise ValueError("Length must be a FreeCAD Units.Quantity")
+        self.obj.Length = length

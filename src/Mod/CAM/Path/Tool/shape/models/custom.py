@@ -34,9 +34,31 @@ class ToolBitShapeCustom(ToolBitShape):
     name: str = "Custom"
     aliases = ("custom",)
 
+    # Connor: We're going to treat custom tools as normal endmills
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
-        return {}
+        return {
+            "CuttingEdgeHeight": (
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge height"),
+                "App::PropertyLength",
+            ),
+            "Diameter": (
+                FreeCAD.Qt.translate("ToolBitShape", "Diameter"),
+                "App::PropertyLength",
+            ),
+            "Flutes": (
+                FreeCAD.Qt.translate("ToolBitShape", "Flutes"),
+                "App::PropertyInteger",
+            ),
+            "Length": (
+                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length"),
+                "App::PropertyLength",
+            ),
+            "ShankDiameter": (
+                FreeCAD.Qt.translate("ToolBitToolBitShapeShapeEndMill", "Shank diameter"),
+                "App::PropertyLength",
+            ),
+        }
 
     @property
     def label(self) -> str:

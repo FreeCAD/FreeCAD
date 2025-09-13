@@ -68,12 +68,14 @@ class PropertyBag(object):
     CustomPropertyGroupDefault = "User"
 
     def __init__(self, obj):
-        obj.addProperty(
-            "App::PropertyStringList",
-            self.CustomPropertyGroups,
-            "Base",
-            QT_TRANSLATE_NOOP("App::Property", "List of custom property groups"),
-        )
+        # Always add as enumeration
+        if not hasattr(obj, self.CustomPropertyGroups):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                self.CustomPropertyGroups,
+                "Base",
+                QT_TRANSLATE_NOOP("App::Property", "List of custom property groups"),
+            )
         self.onDocumentRestored(obj)
 
     def dumps(self):
@@ -96,15 +98,40 @@ class PropertyBag(object):
 
     def onDocumentRestored(self, obj):
         self.obj = obj
-        obj.setEditorMode(self.CustomPropertyGroups, 2)  # hide
+        cpg = getattr(obj, self.CustomPropertyGroups, None)
+        # If it's a string list, convert to enum
+        if isinstance(cpg, list):
+            vals = cpg
+            try:
+                obj.removeProperty(self.CustomPropertyGroups)
+            except Exception:
+                # Removing the property may fail if it does not exist; safe to ignore in this context.
+                pass
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                self.CustomPropertyGroups,
+                "Base",
+                QT_TRANSLATE_NOOP("App::Property", "List of custom property groups"),
+            )
+            if hasattr(obj, "setEnumerationsOfProperty"):
+                obj.setEnumerationsOfProperty(self.CustomPropertyGroups, vals)
+            else:
+                # Fallback: set the property value directly (may not work in all FreeCAD versions)
+                setattr(obj, self.CustomPropertyGroups, vals)
+            if hasattr(obj, "setEditorMode"):
+                obj.setEditorMode(self.CustomPropertyGroups, 2)  # hide
+        elif hasattr(obj, "getEnumerationsOfProperty"):
+            if hasattr(obj, "setEditorMode"):
+                obj.setEditorMode(self.CustomPropertyGroups, 2)  # hide
 
     def getCustomProperties(self):
-        """getCustomProperties() ... Return a list of all custom properties created in this container."""
-        return [
-            p
-            for p in self.obj.PropertiesList
-            if self.obj.getGroupOfProperty(p) in self.obj.CustomPropertyGroups
-        ]
+        """Return a list of all custom properties created in this container."""
+        groups = []
+        if hasattr(self.obj, "getEnumerationsOfProperty"):
+            groups = list(self.obj.getEnumerationsOfProperty(self.CustomPropertyGroups))
+        else:
+            groups = list(getattr(self.obj, self.CustomPropertyGroups, []))
+        return [p for p in self.obj.PropertiesList if self.obj.getGroupOfProperty(p) in groups]
 
     def addCustomProperty(self, propertyType, name, group=None, desc=None):
         """addCustomProperty(propertyType, name, group=None, desc=None) ... adds a custom property and tracks its group."""
@@ -112,15 +139,23 @@ class PropertyBag(object):
             desc = ""
         if group is None:
             group = self.CustomPropertyGroupDefault
-        groups = self.obj.CustomPropertyGroups
+
+        # Always use enum for groups
+        if hasattr(self.obj, "getEnumerationsOfProperty"):
+            groups = list(self.obj.getEnumerationsOfProperty(self.CustomPropertyGroups))
+        else:
+            groups = list(getattr(self.obj, self.CustomPropertyGroups, []))
 
         name = self.__sanitizePropertyName(name)
         if not re.match("^[A-Za-z0-9_]*$", name):
             raise ValueError("Property Name can only contain letters and numbers")
 
-        if not group in groups:
+        if group not in groups:
             groups.append(group)
-            self.obj.CustomPropertyGroups = groups
+            if hasattr(self.obj, "setEnumerationsOfProperty"):
+                self.obj.setEnumerationsOfProperty(self.CustomPropertyGroups, groups)
+            else:
+                setattr(self.obj, self.CustomPropertyGroups, groups)
         self.obj.addProperty(propertyType, name, group, desc)
         return name
 
@@ -129,9 +164,16 @@ class PropertyBag(object):
         customGroups = []
         for p in self.obj.PropertiesList:
             group = self.obj.getGroupOfProperty(p)
-            if group in self.obj.CustomPropertyGroups and not group in customGroups:
+            if hasattr(self.obj, "getEnumerationsOfProperty"):
+                groups = list(self.obj.getEnumerationsOfProperty(self.CustomPropertyGroups))
+            else:
+                groups = list(getattr(self.obj, self.CustomPropertyGroups, []))
+            if group in groups and group not in customGroups:
                 customGroups.append(group)
-        self.obj.CustomPropertyGroups = customGroups
+        if hasattr(self.obj, "setEnumerationsOfProperty"):
+            self.obj.setEnumerationsOfProperty(self.CustomPropertyGroups, customGroups)
+        else:
+            setattr(self.obj, self.CustomPropertyGroups, customGroups)
 
 
 def Create(name="PropertyBag"):

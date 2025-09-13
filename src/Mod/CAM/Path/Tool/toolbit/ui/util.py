@@ -19,45 +19,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-
-import FreeCAD
-from typing import Tuple, Mapping
-from .base import ToolBitShape
+import re
 
 
-class ToolBitShapeFillet(ToolBitShape):
-    name = "Fillet"
-    aliases = ("fillet",)
+def natural_sort_key(s, _nsre=re.compile(r"(\d+[\.,]?\d*)")):
+    def try_convert(text):
+        try:
+            return float(text.replace(",", "."))
+        except ValueError:
+            return text.lower()
 
-    @classmethod
-    def schema(cls) -> Mapping[str, Tuple[str, str]]:
-        return {
-            "CrownHeight": (
-                FreeCAD.Qt.translate("ToolBitShape", "Crown height"),
-                "App::PropertyLength",
-            ),
-            "Diameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Diameter"),
-                "App::PropertyLength",
-            ),
-            "FilletRadius": (
-                FreeCAD.Qt.translate("ToolBitShape", "Fillet radius"),
-                "App::PropertyLength",
-            ),
-            "Flutes": (
-                FreeCAD.Qt.translate("ToolBitShape", "Flutes"),
-                "App::PropertyInteger",
-            ),
-            "Length": (
-                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length"),
-                "App::PropertyLength",
-            ),
-            "ShankDiameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter"),
-                "App::PropertyLength",
-            ),
-        }
-
-    @property
-    def label(self) -> str:
-        return FreeCAD.Qt.translate("ToolBitShape", "Filleted Chamfer")
+    return [try_convert(text) for text in _nsre.split(s)]

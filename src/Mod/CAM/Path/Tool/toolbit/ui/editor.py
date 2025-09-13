@@ -30,6 +30,8 @@ from ...shape.ui.shapewidget import ShapeWidget
 from ...docobject.ui import DocumentObjectEditorWidget
 from ..models.base import ToolBit
 
+translate = FreeCAD.Qt.translate
+
 
 class ToolBitPropertiesWidget(QtGui.QWidget):
     """
@@ -38,11 +40,19 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
 
     # Signal emitted when the toolbit data has been modified
     toolBitChanged = QtCore.Signal()
+    toolNoChanged = QtCore.Signal(int)
 
-    def __init__(self, toolbit: Optional[ToolBit] = None, parent=None, icon: bool = True):
+    def __init__(
+        self,
+        toolbit: Optional[ToolBit] = None,
+        tool_no: Optional[int] = None,
+        parent=None,
+        icon: bool = True,
+    ):
         super().__init__(parent)
         self._toolbit = None
         self._show_shape = icon
+        self._tool_no = tool_no
 
         # UI Elements
         self._label_edit = QtGui.QLineEdit()
@@ -58,10 +68,17 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
         self._shape_widget = None  # Will be created in load_toolbit
 
         # Layout
-        toolbit_group_box = QtGui.QGroupBox(FreeCAD.Qt.translate("CAM", "Tool Bit"))
+        toolbit_group_box = QtGui.QGroupBox(translate("CAM", "Toolbit"))
         form_layout = QtGui.QFormLayout(toolbit_group_box)
-        form_layout.addRow("Label:", self._label_edit)
-        form_layout.addRow("ID:", self._id_label)
+        form_layout.addRow(translate("CAM", "Label:"), self._label_edit)
+        form_layout.addRow(translate("CAM", "ID:"), self._id_label)
+
+        # Optional tool number edit field.
+        self._tool_no_edit = QtGui.QSpinBox()
+        self._tool_no_edit.setMinimum(1)
+        self._tool_no_edit.setMaximum(99999999)
+        if tool_no is not None:
+            form_layout.addRow(translate("CAM", "Tool Number:"), self._tool_no_edit)
 
         main_layout = QtGui.QVBoxLayout(self)
         main_layout.addWidget(toolbit_group_box)
@@ -93,6 +110,7 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
 
         # Connections
         self._label_edit.editingFinished.connect(self._on_label_changed)
+        self._tool_no_edit.valueChanged.connect(self._on_tool_no_changed)
         self._property_editor.propertyChanged.connect(self.toolBitChanged)
 
         if toolbit:
@@ -106,6 +124,12 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
                 self._toolbit.obj.Label = new_label
                 self.toolBitChanged.emit()
 
+    def _on_tool_no_changed(self, value):
+        """Update the tool number when the line edit changes."""
+        if self._tool_no != value:
+            self._tool_no = value
+            self.toolNoChanged.emit(value)
+
     def load_toolbit(self, toolbit: ToolBit):
         """Load a ToolBit object into the editor."""
         self._toolbit = toolbit
@@ -114,12 +138,14 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
             self._label_edit.clear()
             self._label_edit.setEnabled(False)
             self._id_label.clear()
+            self._tool_no_edit.clear()
             self._property_editor.setObject(None)
             # Clear existing shape widget if any
             if self._shape_widget:
                 self._shape_display_layout.removeWidget(self._shape_widget)
                 self._shape_widget.deleteLater()
                 self._shape_widget = None
+            self._tool_no_edit.setValue(1)
             self.setEnabled(False)
             return
 
@@ -127,6 +153,7 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
         self._label_edit.setEnabled(True)
         self._label_edit.setText(self._toolbit.obj.Label)
         self._id_label.setText(self._toolbit.get_id())
+        self._tool_no_edit.setValue(int(self._tool_no or 1))
 
         # Get properties and suffixes
         props_to_show = self._toolbit._get_props(("Shape", "Attributes"))
@@ -214,12 +241,18 @@ class ToolBitEditor(QtGui.QWidget):
     # Signals
     toolBitChanged = QtCore.Signal()  # Re-emit signal from inner widget
 
-    def __init__(self, toolbit: ToolBit, parent=None):
+    def __init__(
+        self,
+        toolbit: ToolBit,
+        tool_no: Optional[int] = None,
+        parent=None,
+        icon: bool = False,
+    ):
         super().__init__(parent)
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitEditor.ui")
 
         self.toolbit = toolbit
-        # self.tool_no = tool_no
+        self.tool_no = tool_no
         self.default_title = self.form.windowTitle()
 
         # Get first tab from the form, add the shape widget at the top.
@@ -228,9 +261,9 @@ class ToolBitEditor(QtGui.QWidget):
         tool_tab_layout.addWidget(widget)
 
         # Add tool properties editor to the same tab.
-        props = ToolBitPropertiesWidget(toolbit, self, icon=False)
+        props = ToolBitPropertiesWidget(toolbit, tool_no, self, icon=icon)
         props.toolBitChanged.connect(self._update)
-        # props.toolNoChanged.connect(self._on_tool_no_changed)
+        props.toolNoChanged.connect(self._on_tool_no_changed)
         tool_tab_layout.addWidget(props)
 
         self.form.tabWidget.setCurrentIndex(0)
@@ -279,6 +312,9 @@ class ToolBitEditor(QtGui.QWidget):
 
     def _on_tool_no_changed(self, value):
         self.tool_no = value
+
+    def get_tool_no(self):
+        return self.tool_no
 
     def show(self):
         return self.form.exec_()
