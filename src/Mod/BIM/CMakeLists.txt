@@ -1,3 +1,12 @@
+# ==============================================================================
+# File Management
+# Define the source files and resources of the BIM workbench
+# ==============================================================================
+
+# If we are building the GUI mode, we need to process the Qt resource file
+# Note that if any of the files listed in the .qrc file changes, the
+# resource file will NOT be regenerated automatically. To work around this,
+# use `touch` on the .qrc file to force regeneration.
 IF (BUILD_GUI)
     PYSIDE_WRAP_RC(Arch_QRC_SRCS Resources/Arch.qrc)
 ENDIF (BUILD_GUI)
@@ -227,6 +236,7 @@ SET(bimtests_SRCS
     bimtests/TestArchFrame.py
     bimtests/TestArchReference.py
     bimtests/TestArchSchedule.py
+    bimtests/TestArchSiteGui.py
     bimtests/TestArchTruss.py
     bimtests/TestWebGLExport.py
     bimtests/TestWebGLExportGui.py
@@ -234,7 +244,9 @@ SET(bimtests_SRCS
     bimtests/TestArchBuildingPartGui.py
 )
 
-SOURCE_GROUP("" FILES ${Arch_SRCS})
+set(bimtests_FIXTURES
+    bimtests/fixtures/FC_site_simple-102.FCStd
+)
 
 SET(BIMGuiIcon_SVG
     Resources/icons/BIMWorkbench.svg
@@ -244,6 +256,38 @@ SET(ImportersSample_Files
     importers/samples/Sample.sh3d
 )
 
+# TODO:
+# - ImportersSample_Files should probably be merged into bimtests_FIXTURES
+# - BIM_templates should probably be merged into Arch_presets
+
+# ==============================================================================
+# Developer workflow
+# This populates the build tree using the file lists from the Install Manifest
+# above, enabling the workbench to be run directly from the build tree.
+#
+# For a faster development cycle when working on Python or resource
+# files, symlinking can be enabled. This allows developers to edit source files
+# and see the changes immediately without needing to rebuild the project.
+#
+# To enable this, the build directory needs to be reconfigured from the command
+# line with:
+#   cmake -DINSTALL_PREFER_SYMLINKS=ON <path_to_build_dir>
+#
+# Note for Windows users: "Developer Mode" must be enabled in the
+# Windows settings for unprivileged symlink creation to work.
+# ==============================================================================
+
+# The `BIM` custom target aggregates BIM module sources for IDEs and the build
+# system.
+#
+# - Listing files here makes IDEs show the workbench and its files under a
+#   single node.
+# - The ALL keyword makes this target part of the default build (so the build
+#   tree is populated automatically).
+# - Importantly, since they share the same output files, it makes the
+#   `fc_copy_sources` and `fc_target_copy_resource` output a dependency of the
+#   BIM target. Thus building the BIM target triggers populating the build tree
+#   with the workbench sources and resources, if needed.
 ADD_CUSTOM_TARGET(BIM ALL
     SOURCES ${Arch_SRCS}
             ${Arch_QRC_SRCS}
@@ -251,49 +295,45 @@ ADD_CUSTOM_TARGET(BIM ALL
             ${Arch_presets}
             ${ArchGuiIcon_SVG}
             ${importers_SRCS}
+            ${ImportersSample_Files}
             ${bimcommands_SRCS}
             ${bimtests_SRCS}
+            ${bimtests_FIXTURES}
             ${nativeifc_SRCS}
             ${BIMGuiIcon_SVG}
             ${BIM_templates}
 )
 
-ADD_CUSTOM_TARGET(ImporterPythonTestData ALL
-    SOURCES ${ImportersSample_Files}
-)
-
+# Populate the build tree with the BIM workbench sources and test data
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${Arch_SRCS})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${Dice3DS_SRCS})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${importers_SRCS})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${bimcommands_SRCS})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${bimtests_SRCS})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${bimtests_FIXTURES})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${ImportersSample_Files})
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/Mod/BIM" ${nativeifc_SRCS})
+
+# Populate the build tree with the BIM workbench resources.
 fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM" ${BIMGuiIcon_SVG})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM" ${Arch_presets})
+fc_copy_sources(BIM "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM" ${BIM_templates})
 
-fc_target_copy_resource(BIM
-    ${CMAKE_SOURCE_DIR}/src/Mod/BIM
-    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM
-    ${Arch_presets}
-)
-
-fc_target_copy_resource(BIM
-    ${CMAKE_SOURCE_DIR}/src/Mod/BIM
-    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM
-    ${BIM_templates}
-)
-
-fc_target_copy_resource(ImporterPythonTestData
-    ${CMAKE_SOURCE_DIR}/src/Mod/BIM
-    ${CMAKE_BINARY_DIR}/Mod/BIM
-    ${ImportersSample_Files})
-
-
+# For generated resources, we cannot rely on `fc_copy_sources` in case
+# INSTALL_PREFER_SYMLINKS=ON has been specified, since we're generating a new
+# file not present in the source tree and thus cannot create a symlink to it.
 IF (BUILD_GUI)
     fc_target_copy_resource(BIM
         ${CMAKE_CURRENT_BINARY_DIR}
         ${CMAKE_BINARY_DIR}/Mod/BIM
         Arch_rc.py)
 ENDIF (BUILD_GUI)
+
+# ==============================================================================
+# Install Manifest
+# Defines what gets installed into the final package, running the --install
+# target.
+# ==============================================================================
 
 INSTALL(
     FILES
@@ -328,6 +368,12 @@ INSTALL(
 
 INSTALL(
     FILES
+        ${bimtests_FIXTURES}
+    DESTINATION Mod/BIM/bimtests/fixtures
+)
+
+INSTALL(
+    FILES
         ${nativeifc_SRCS}
     DESTINATION Mod/BIM/nativeifc
 )
@@ -336,7 +382,7 @@ INSTALL(
     DIRECTORY
         Presets
     DESTINATION
-        ${CMAKE_INSTALL_DATADIR}/Mod/BIM
+        "${CMAKE_INSTALL_DATADIR}/Mod/BIM"
 )
 
 INSTALL(

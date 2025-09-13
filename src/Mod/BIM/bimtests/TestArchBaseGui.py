@@ -42,7 +42,7 @@ class TestArchBaseGui(TestArchBase):
         """
         if not FreeCAD.GuiUp:
             raise unittest.SkipTest("Cannot run GUI tests in a CLI environment.")
-        
+
         # Activating the workbench ensures all GUI commands are loaded and ready.
         FreeCADGui.activateWorkbench("BIMWorkbench")
 
@@ -52,4 +52,20 @@ class TestArchBaseGui(TestArchBase):
         The workbench is already activated by setUpClass.
         """
         super().setUp()
+
+    def pump_gui_events(self, timeout_ms=200):
+        """Run the Qt event loop briefly so queued GUI callbacks execute.
+
+        This helper starts a QEventLoop and quits it after `timeout_ms` milliseconds using
+        QTimer.singleShot. Any exception (e.g. missing Qt in the environment) is silently ignored so
+        tests can still run in pure-CLI environments where the GUI isn't available.
+        """
+        try:
+            from PySide import QtCore
+            loop = QtCore.QEventLoop()
+            QtCore.QTimer.singleShot(int(timeout_ms), loop.quit)
+            loop.exec_()
+        except Exception:
+            # Best-effort: if Qt isn't present or event pumping fails, continue.
+            pass
 
