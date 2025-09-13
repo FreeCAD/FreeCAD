@@ -51,7 +51,7 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketFullEdit.ui")
         comboToPropertyMap = [
             ("cutMode", "CutMode"),
-            ("offsetPattern", "OffsetPattern"),
+            ("clearingPattern", "ClearingPattern"),
             ("boundaryShape", "BoundaryShape"),
         ]
 

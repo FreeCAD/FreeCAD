@@ -65,7 +65,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 (translate("CAM_Pocket", "Center"), "Center"),
                 (translate("CAM_Pocket", "Edge"), "Edge"),
             ],
-            "OffsetPattern": [
+            "ClearingPattern": [
                 (translate("CAM_Pocket", "ZigZag"), "ZigZag"),
                 (translate("CAM_Pocket", "Offset"), "Offset"),
                 (translate("CAM_Pocket", "ZigZagOffset"), "ZigZagOffset"),
@@ -159,8 +159,8 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         )
         obj.addProperty(
             "App::PropertyEnumeration",
-            "OffsetPattern",
-            "Face",
+            "ClearingPattern",
+            "Pocket",
             QT_TRANSLATE_NOOP("App::Property", "Clearing pattern to use"),
         )
         obj.addProperty(
@@ -233,7 +233,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             "Grid": 6,
         }
 
-        params["PocketMode"] = Pattern.get(obj.OffsetPattern, 1)
+        params["PocketMode"] = Pattern.get(obj.ClearingPattern, 1)
 
         if obj.SplitArcs:
             params["Explode"] = True
@@ -266,6 +266,9 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 ),
             )
 
+        if hasattr(obj, "OffsetPattern"):
+            obj.setGroupOfProperty("OffsetPattern", "Pocket")
+            obj.renameProperty("OffsetPattern", "ClearingPattern")
         if hasattr(obj, "RestMachiningRegions"):
             obj.removeProperty("RestMachiningRegions")
         if hasattr(obj, "RestMachiningRegionsNeedRecompute"):
@@ -301,7 +304,7 @@ def SetupProperties():
     setup.append("ExtraOffset")
     setup.append("StepOver")
     setup.append("ZigZagAngle")
-    setup.append("OffsetPattern")
+    setup.append("ClearingPattern")
     setup.append("StartAt")
     setup.append("MinTravel")
     setup.append("KeepToolDown")
