@@ -465,12 +465,16 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 dir, offset1, makeface, base);
             prisms.push_back(prism1);
 
-            // Prism 2 : Make a symmetric of prism1
-            Base::Vector3d base = sketchshape.getBoundBox().GetCenter();
-            gp_Ax2 axe(gp_Pnt(base.x, base.y, base.z), dir);
-            TopoShape prism2 = prism1.makeElementMirror(axe);
-            prisms.push_back(prism2);
+            // Prism 2: Mirror prism1 across the sketch plane.
+            // The mirror plane's normal must be the sketch normal, not the extrusion direction.
+            gp_Dir sketchNormalDir(SketchVector.x, SketchVector.y, SketchVector.z);
+            sketchNormalDir.Transform(invTrsf);  // Transform to global CS, like 'dir' was.
 
+            Base::Vector3d sketchCenter = sketchshape.getBoundBox().GetCenter();
+            gp_Ax2 mirrorPlane(gp_Pnt(sketchCenter.x, sketchCenter.y, sketchCenter.z),
+                               sketchNormalDir);
+            TopoShape prism2 = prism1.makeElementMirror(mirrorPlane);
+            prisms.push_back(prism2);
         }
         else if (Sidemethod == "Two sides") {
             TopoShape prism1 = generateSingleExtrusionSide(sketchshape.makeElementCopy(),
