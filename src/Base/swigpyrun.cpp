@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 #include <sstream>
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))
 #if defined(__clang__)

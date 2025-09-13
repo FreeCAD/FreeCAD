@@ -20,10 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <memory>
-#endif
 
 #include <CXX/Objects.hxx>
 

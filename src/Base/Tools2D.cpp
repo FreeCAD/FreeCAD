@@ -20,14 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <array>
 #include <limits>
 #include <set>
-#endif
 
 #include "Tools2D.h"
 #include "Vector3D.h"

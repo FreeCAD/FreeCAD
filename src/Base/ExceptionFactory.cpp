@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "ExceptionFactory.h"
 #include <CXX/Objects.hxx>

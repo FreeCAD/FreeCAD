@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "GeometryPyCXX.h"
 
 // generated out of Axis.pyi

@@ -21,15 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
 #ifdef FC_OS_WIN32
 #include <windows.h>
 #endif
 #include <cstring>
 #include <Python.h>
-#endif
 
 #include <frameobject.h>
 

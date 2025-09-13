@@ -84,7 +84,6 @@
  *
  **********************************************************************/
 
-#include <PreCompiled.h>
 #include "StackWalker.h"
 
 #include <stdio.h>

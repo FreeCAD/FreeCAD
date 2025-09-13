@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
 #include "CoordinateSystem.h"
 #include "Exception.h"
 #include "Matrix.h"

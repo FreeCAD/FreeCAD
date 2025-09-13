@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "GeometryPyCXX.h"
 #include "PyWrapParseTupleAndKeywords.h"
 #include "Tools.h"
