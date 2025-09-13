@@ -867,7 +867,7 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
     root->addDockWidget("Std_PropertyView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::Visible);
     root->addDockWidget("Std_SelectionView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::Hidden);
     root->addDockWidget("Std_ComboView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::VisibleTabbed);
-    root->addDockWidget("Std_TaskView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::VisibleTabbed);
+    root->addDockWidget("Std_TaskView", Qt::RightDockWidgetArea, Gui::DockWindowOption::VisibleTabbed);
     root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, Gui::DockWindowOption::HiddenTabbed);
     root->addDockWidget("Std_PythonView", Qt::BottomDockWidgetArea, Gui::DockWindowOption::HiddenTabbed);
 
