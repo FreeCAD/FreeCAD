@@ -21,11 +21,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cstring>
 #include <sstream>
-#endif
 
 #include "Matrix.h"
 #include "Converter.h"

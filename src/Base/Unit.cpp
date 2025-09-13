@@ -19,8 +19,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -28,7 +26,6 @@
 #include <limits>
 #include <ranges>
 #include <vector>
-#endif
 
 #include <fmt/format.h>
 #include <fmt/ranges.h>
