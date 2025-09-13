@@ -48,6 +48,7 @@
 #include <Gui/Dialogs/DlgPreferencesImp.h>
 #include <Gui/Dialogs/DlgPreferencePackManagementImp.h>
 #include <Gui/Dialogs/DlgRevertToBackupConfigImp.h>
+#include <Gui/Dialogs/DlgActionsImp.h>
 #include <Gui/MainWindow.h>
 #include <Gui/OverlayManager.h>
 #include <Gui/ParamHandler.h>
@@ -108,8 +109,10 @@ DlgSettingsGeneral::DlgSettingsGeneral( QWidget* parent )
         connect(ui->SaveNewPreferencePack, &QPushButton::clicked, this, &DlgSettingsGeneral::saveAsNewPreferencePack);
         ui->ManagePreferencePacks->setToolTip(tr("Manage preference packs"));
         connect(ui->ManagePreferencePacks, &QPushButton::clicked, this, &DlgSettingsGeneral::onManagePreferencePacksClicked);
-        connect(ui->themesCombobox, qOverload<int>(&QComboBox::activated), this, &DlgSettingsGeneral::onThemeChanged);
-        connect(ui->moreThemesLabel, &QLabel::linkActivated, this, &DlgSettingsGeneral::onLinkActivated);
+    connect(ui->themesCombobox, qOverload<int>(&QComboBox::activated), this, &DlgSettingsGeneral::onThemeChanged);
+    // Connect the custom icon folder button before the moreThemesLabel
+    connect(ui->CustomIconFolderPushbutton, &QPushButton::clicked, this, &DlgSettingsGeneral::onCustomIconFolderClicked);
+    connect(ui->moreThemesLabel, &QLabel::linkActivated, this, &DlgSettingsGeneral::onLinkActivated);
     }
 
     // If there are any saved config file backs, show the revert button, otherwise hide it:
@@ -653,6 +656,44 @@ void DlgSettingsGeneral::recreatePreferencePackMenu()
         }
         ui->PreferencePacks->setCellWidget(row, 2, button);
         ++row;
+    }
+}
+
+// Slot to open the IconDialog for custom icon folders
+void DlgSettingsGeneral::onCustomIconFolderClicked()
+{
+    // Get current custom icon paths from user preferences
+    Base::Reference<ParameterGrp> group =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Bitmaps");
+    std::vector<std::string> paths = group->GetASCIIs("CustomPath");
+    QStringList pathList;
+    QList<bool> enabledList;
+    int index = 0;
+    for (const auto& path : paths) {
+        pathList << QString::fromUtf8(path.c_str());
+        std::stringstream enabledKey;
+        enabledKey << "CustomPathEnabled" << index;
+        bool enabled = group->GetBool(enabledKey.str().c_str(), true);
+        enabledList << enabled;
+        ++index;
+    }
+
+    // Open the IconFolders dialog
+    Gui::Dialog::IconFolders dlg(pathList, enabledList, this);
+    dlg.setWindowTitle(tr("Custom icon folders"));
+    if (dlg.exec()) {
+        group->Clear();
+        int rowCount = dlg.getRowCount();
+        for (int row = 0; row < rowCount; ++row) {
+            QString path = dlg.getPathAt(row);
+            bool enabled = dlg.isPathEnabledAt(row);
+            std::stringstream pathKey;
+            pathKey << "CustomPath" << row;
+            group->SetASCII(pathKey.str().c_str(), (const char*)QDir::toNativeSeparators(path).toUtf8());
+            std::stringstream enabledKey;
+            enabledKey << "CustomPathEnabled" << row;
+            group->SetBool(enabledKey.str().c_str(), enabled);
+        }
     }
 }
 

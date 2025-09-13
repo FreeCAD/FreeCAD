@@ -448,6 +448,7 @@ SET(Gui_UIC_SRCS
     Dialogs/DlgPropertyLink.ui
     Dialogs/DlgRevertToBackupConfig.ui
     Dialogs/DlgThemeEditor.ui
+    Dialogs/DlgIconFolder.ui
     PreferencePages/DlgSettings3DView.ui
     PreferencePages/DlgSettingsCacheDirectory.ui
     Dialogs/DlgSettingsColorGradient.ui
@@ -606,6 +607,7 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgCheckableMessageBox.h
     Dialogs/DlgExpressionInput.h
     Dialogs/DlgThemeEditor.h
+    Dialogs/DlgIconFolder.h
     TaskDlgRelocation.h
     TaskTransform.h
     Dialogs/DlgUndoRedo.h
