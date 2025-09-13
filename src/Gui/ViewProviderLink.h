@@ -39,6 +39,7 @@
 class SoBase;
 class SoDragger;
 class SoMaterialBinding;
+class SoPickStyle;
 
 namespace Gui {
 
@@ -337,6 +338,9 @@ protected:
     ViewProviderDocumentObject *childVp;
     LinkInfoPtr childVpLink;
     mutable qint64 overlayCacheKey;
+
+private:
+    SoPickStyle* pcPickStyle {nullptr};
 };
 
 using ViewProviderLinkPython = ViewProviderFeaturePythonT<ViewProviderLink>;

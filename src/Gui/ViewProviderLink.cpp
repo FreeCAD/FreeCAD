@@ -403,6 +403,13 @@ public:
 
         for(int i=0,count=root->getNumChildren();i<count;++i) {
             SoNode *node = root->getChild(i);
+
+            // Exclude the linked object's pick style from the snapshot,
+            // so that the Link's own pick style is the only one in effect.
+            if (node->isOfType(SoPickStyle::getClassTypeId())) {
+                continue;
+            }
+
             if(node==pcLinked->getTransformNode()) {
                 if(type!=LinkView::SnapshotTransform)
                     pcSnapshot->addChild(node);
@@ -503,7 +510,7 @@ public:
     bool getElementPicked(bool addname, int type,
             const SoPickedPoint *pp, std::ostream &str) const
     {
-        if(!pp || !isLinked() || !pcLinked->isSelectable())
+        if(!pp || !isLinked())
             return false;
 
         if(addname)
@@ -1671,10 +1678,14 @@ ViewProviderLink::ViewProviderLink()
     DisplayMode.setStatus(App::Property::Status::Hidden, true);
 
     linkView = new LinkView;
+
+    pcPickStyle = new SoPickStyle;
+    pcPickStyle->ref();
 }
 
 ViewProviderLink::~ViewProviderLink()
 {
+    pcPickStyle->unref();
     linkView->setInvalid();
 }
 
@@ -1682,7 +1693,12 @@ bool ViewProviderLink::isSelectable() const {
     return Selectable.getValue();
 }
 
-void ViewProviderLink::attach(App::DocumentObject *pcObj) {
+void ViewProviderLink::attach(App::DocumentObject* pcObj)
+{
+    if (pcRoot->findChild(pcPickStyle) < 0) {
+        pcRoot->insertChild(pcPickStyle, 0);
+    }
+
     SoNode *node = linkView->getLinkRoot();
     node->setName(pcObj->getFullName().c_str());
     addDisplayMaskMode(node,"Link");
@@ -1744,7 +1760,12 @@ QPixmap ViewProviderLink::getOverlayPixmap() const {
         return BitmapFactory().pixmapFromSvg("LinkOverlay", QSizeF(px,px));
 }
 
-void ViewProviderLink::onChanged(const App::Property* prop) {
+void ViewProviderLink::onChanged(const App::Property* prop)
+{
+    if (prop == &Selectable) {
+        pcPickStyle->style = Selectable.getValue() ? SoPickStyle::SHAPE : SoPickStyle::UNPICKABLE;
+    }
+
     if(prop==&ChildViewProvider) {
         childVp = freecad_cast<ViewProviderDocumentObject*>(ChildViewProvider.getObject().get());
         if(childVp && getObject()) {
