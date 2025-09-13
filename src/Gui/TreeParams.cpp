@@ -1539,8 +1539,36 @@ void TreeParams::onItemSpacingChanged()
 
 void TreeParams::refreshTreeViews()
 {
-    for(auto tree : TreeWidget::Instances) {
+    for (auto tree : TreeWidget::Instances) {
+        if (!tree)
+            continue;
+        // schedule layout update and force a viewport repaint so
+        // background/overlay preference changes apply to every item
         tree->scheduleDelayedItemsLayout();
+        if (tree->viewport())
+            tree->viewport()->update();
+        else
+            tree->update();
+        // additionally force update per visible item rect to ensure
+        // delegate paint runs for each item (fixes case where only the
+        // first item received a repaint)
+        QTreeWidgetItem *root = tree->invisibleRootItem();
+        if (root) {
+            std::function<void(QTreeWidgetItem*)> recurse = [&](QTreeWidgetItem* it){
+                if (!it)
+                    return;
+                for (int i = 0; i < it->childCount(); ++i) {
+                    QTreeWidgetItem* child = it->child(i);
+                    if (!child)
+                        continue;
+                    QRect r = tree->visualItemRect(child);
+                    if (!r.isNull())
+                        tree->update(r);
+                    recurse(child);
+                }
+            };
+            recurse(root);
+        }
     }
 }
 
