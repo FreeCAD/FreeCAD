@@ -25,8 +25,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // standard
 #include <cassert>
 #include <csignal>
@@ -91,7 +89,5 @@
 #include <QProcessEnvironment>
 #include <QStandardPaths>
 #include <QString>
-
-#endif  //_PreComp_
 
 #endif  // APP_PRECOMPILED_H

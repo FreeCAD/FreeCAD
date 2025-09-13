@@ -20,13 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <cstring>
 #include <random>
-#endif
 
 #include "Application.h"
 #include "Material.h"
