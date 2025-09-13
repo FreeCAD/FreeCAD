@@ -402,7 +402,7 @@ void DockWindowManager::removeDockWindow(QWidget* widget)
 /**
  * If the corresponding dock widget isn't visible then activate it.
  */
-void DockWindowManager::activate(QWidget* widget)
+void DockWindowManager::activate(QWidget* widget, bool setFocus)
 {
     QDockWidget* dw = nullptr;
     QWidget* par = widget->parentWidget();
@@ -421,7 +421,8 @@ void DockWindowManager::activate(QWidget* widget)
         dw->toggleViewAction()->activate(QAction::Trigger);
     }
 
-    dw->raise();
+    if (setFocus)
+        dw->raise();
 }
 
 /**
