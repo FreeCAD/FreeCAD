@@ -26,6 +26,8 @@
 # include <QImage>
 # include <QMouseEvent>
 # include <QPainter>
+# include <Inventor/SbMatrix.h>
+# include <Inventor/SbViewVolume.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoImage.h>
 #endif
@@ -75,7 +77,11 @@ public:
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glOrtho(0, size[0], 0, size[1], -1, 1);
+    SbViewVolume vv;
+    vv.ortho(0, size[0], 0, size[1], -1, 1);
+    SbMatrix affine, proj;
+    vv.getMatrices(affine, proj);
+    glLoadMatrixf((float*)proj);
 
     glPushAttrib(GL_ALL_ATTRIB_BITS);
     glEnable(GL_BLEND);
@@ -196,7 +202,11 @@ void paintGL()
 
     if (rubberBandIsShown) {
         glMatrixMode(GL_PROJECTION);
-        glOrtho(0, size[0], size[1], 0, 0, 100);
+        SbViewVolume vv;
+        vv.ortho(0, size[0], size[1], 0, 0, 100);
+        SbMatrix affine, proj;
+        vv.getMatrices(affine, proj);
+        glLoadMatrixf((float*)proj);
         glMatrixMode(GL_MODELVIEW);
         glDisable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
@@ -275,7 +285,11 @@ void paintGL()
     SbVec2s size = vp.getViewportSizePixels();
 
         glMatrixMode(GL_PROJECTION);
-        glOrtho(0, size[0], size[1], 0, 0, 100);
+        SbViewVolume vv;
+        vv.ortho(0, size[0], size[1], 0, 0, 100);
+        SbMatrix affine, proj;
+        vv.getMatrices(affine, proj);
+        glLoadMatrixf((float*)proj);
         glMatrixMode(GL_MODELVIEW);
         glDisable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
@@ -355,7 +369,11 @@ void DrawingPlane::draw ()
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glOrtho(0, view[0], 0, view[1], -1, 1);
+    SbViewVolume vv;
+    vv.ortho(0, view[0], 0, view[1], -1, 1);
+    SbMatrix affine, proj;
+    vv.getMatrices(affine, proj);
+    glLoadMatrixf((float*)proj);
 
     // Store GL state
     glPushAttrib(GL_ALL_ATTRIB_BITS);

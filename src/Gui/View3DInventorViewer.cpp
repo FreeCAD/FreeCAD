@@ -41,6 +41,8 @@
 # include <Inventor/SbBox.h>
 # include <Inventor/SoEventManager.h>
 # include <Inventor/SoPickedPoint.h>
+# include <Inventor/SbMatrix.h>
+# include <Inventor/SbViewVolume.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoGetMatrixAction.h>
 # include <Inventor/actions/SoHandleEventAction.h>
@@ -2344,7 +2346,11 @@ void View3DInventorViewer::renderGLImage()
     glViewport(0, 0, size[0], size[1]);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, size[0], 0, size[1], 0, 100);  // NOLINT
+    SbViewVolume vv;
+    vv.ortho(0, size[0], 0, size[1], 0, 100);
+    SbMatrix affine, proj;
+    vv.getMatrices(affine, proj);
+    glLoadMatrixf((float*)proj);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
@@ -3901,8 +3907,11 @@ void View3DInventorViewer::drawAxisCross()
     const float NEARVAL = 0.1F;
     const float FARVAL = 10.0F;
     const float dim = NEARVAL * float(tan(std::numbers::pi / 8.0)); // FOV is 45 deg (45/360 = 1/8)
-    glFrustum(-dim, dim, -dim, dim, NEARVAL, FARVAL);
-
+    SbViewVolume vv;
+    vv.frustum(-dim, dim, -dim, dim, NEARVAL, FARVAL);
+    SbMatrix affine, proj;
+    vv.getMatrices(affine, proj);
+    glLoadMatrixf((float*)proj);
 
     // Set up the model matrix.
     glMatrixMode(GL_MODELVIEW);
@@ -4003,7 +4012,9 @@ void View3DInventorViewer::drawAxisCross()
     // Render axis notation letters ("X", "Y", "Z").
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, view[0], 0, view[1], -1, 1);
+    vv.ortho(0, view[0], 0, view[1], -1, 1);
+    vv.getMatrices(affine, proj);
+    glLoadMatrixf((float*)proj);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -4100,7 +4111,11 @@ void View3DInventorViewer::drawSingleBackground(const QColor& col)
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glOrtho(-1, 1, -1, 1, -1, 1);
+    SbViewVolume vv;
+    vv.ortho(-1, 1, -1, 1, -1, 1);
+    SbMatrix affine, proj;
+    vv.getMatrices(affine, proj);
+    glLoadMatrixf((float*)proj);
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
