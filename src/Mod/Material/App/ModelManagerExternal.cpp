@@ -19,10 +19,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 #include <QMutexLocker>
 
 #include <App/Application.h>

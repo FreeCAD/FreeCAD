@@ -19,12 +19,10 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMenu>
 #include <QMessageBox>
 #include <QTreeView>
-#endif
+
 
 #include <Gui/Application.h>
 #include <Gui/Command.h>
