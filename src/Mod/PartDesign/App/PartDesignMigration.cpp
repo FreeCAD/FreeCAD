@@ -164,7 +164,21 @@ static void migrateInterBodyBinders(App::Document* doc,
     }
 }
 
-
+// A child is considered “loose-placement-only” iff:
+//   (a) It has a Placement property, and
+//   (b) BOTH ‘AttachmentSupport’ and ‘Support’ are empty (across Link/XLink/Sub/List variants).
+//
+// RATIONALE
+// ---------
+// • PD datums/features & binders expose their geometric dependency via
+//   AttachmentSupport/Support → we DO NOT bake those here. They are handled
+//   either by migrateInterBodyBinders() (inter-body binders) or they move
+//   coherently when the body goes to identity.
+// • App::Link uses ‘Link’ (not ‘Support’). We deliberately treat Links as
+//   “placement-only” so we DO bake P_body into their Placement; otherwise
+//   zeroing the body would change their world pose.
+// • If a binder was turned into an “independent copy” (supports cleared),
+//   it becomes placement-only by design and is baked here once.
 static bool isLoosePlacementOnly(App::DocumentObject* o)
 {
     if (!o) return false;
@@ -191,22 +205,12 @@ static void resetBodyPlacements(App::Document* doc, bool adjustLooseChildren=tru
     if (!doc) return;
 
     // Snapshot all Origin objects once
-    const auto tOrigin = App::Origin::getClassTypeId();
-    std::vector<App::DocumentObject*> origins = doc->getObjectsOfType(tOrigin);
-
-    std::unordered_set<PartDesign::Body*> seen;
+    std::vector<App::DocumentObject*> bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
 
     // Single pass, no recompute inside the loop
-    for (auto* og : origins) {
-        auto* origin = dynamic_cast<App::Origin*>(og);
-        if (!origin) continue;
-
-        auto* body = PartDesign::Body::findBodyOf(origin);
-        if (!body) continue;
-
-        // Avoid baking the same body multiple times (in case of multiple Origin-like objects)
-        if (!seen.insert(body).second)
-            continue;
+    for (auto* b : bodies) {
+        auto* body = dynamic_cast<PartDesign::Body*>(b);
+	auto* origin = body->getOrigin();
 
         // Snapshot placements
         const Base::Placement Pbody   = body->Placement.getValue();
@@ -250,16 +254,15 @@ void migrateLegacyBodyPlacements(App::Document* doc)
     if (!doc) return;
 
     // --- gather bodies
-    std::vector<PartDesign::Body*> bodies;
-    for (auto* o : doc->getObjectsOfType(PartDesign::Body::getClassTypeId()))
-        if (auto* b = dynamic_cast<PartDesign::Body*>(o))
-            bodies.push_back(b);
+    std::vector<App::DocumentObject*> bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
     if (bodies.empty()) return;
 
     //Snapshot legacy placements for ALL bodies
     std::map<PartDesign::Body*, Base::Placement> legacyP;
-    for (auto* b : bodies)
-        legacyP[b] = b->Placement.getValue();
+    for (auto* b : bodies){
+        auto* body = dynamic_cast<PartDesign::Body*>(b);
+        legacyP[body] = body->Placement.getValue();
+    }
 
     bool anyLegacyBodyPlacement = false;
     for (const auto& kv : legacyP) {
