@@ -30,7 +30,7 @@ jobs:
   targets:
     fedora-stable:
       without_opts:
-      - debug_info
+    f  - debug_info
 
 - job: tests
   identifier: pull_request
@@ -41,6 +41,9 @@ jobs:
     fedora-latest-stable:
       without_opts:
       - debug_info
+  tf_post_install_script: |
+    sudo dnf copr enable bpostle/IfcOpenShell
+    sudo dnf install IfcOpenShell-python3
   fmf_path: package/fedora/tests
 
 - job: copr_build
