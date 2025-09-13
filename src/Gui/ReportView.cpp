@@ -555,7 +555,7 @@ bool ReportOutput::event(QEvent* event)
 {
     if (event && event->type() == QEvent::ShortcutOverride) {
         auto kevent = static_cast<QKeyEvent*>(event);
-        if (kevent == QKeySequence::Copy)
+        if (kevent == QKeySequence::Copy || kevent == QKeySequence::SelectAll)
             kevent->accept();
     }
     return QTextEdit::event(event);
