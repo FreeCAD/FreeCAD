@@ -41,8 +41,8 @@ jobs:
     fedora-latest-stable:
       without_opts:
       - debug_info
-  additional_repos:
-    - copr://bpostle/IfcOpenShell
+  tf_post_install_script: |
+    sudo dnf copr enable bpostle/IfcOpenShell
   fmf_path: package/fedora/tests
 
 - job: copr_build
