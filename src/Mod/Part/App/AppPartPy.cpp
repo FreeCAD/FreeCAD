@@ -111,6 +111,8 @@
 #  include "FT2FC.h"
 #endif
 
+FC_LOG_LEVEL_INIT("Part")
+
 extern const char* BRepBuilderAPI_FaceErrorText(BRepBuilderAPI_FaceError fe);
 
 namespace Part {
@@ -784,6 +786,7 @@ private:
             pcDoc->recompute();
         }
         else {
+            FC_WARN("Importing BREP via 'Part' is deprecated. Use 'ImportGui' instead.");
             TopoShape shape;
             shape.read(EncodedName.c_str());
 
