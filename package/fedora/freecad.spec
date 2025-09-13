@@ -73,7 +73,7 @@ Requires:       %{name}-data = %{epoch}:%{version}-%{release}
 # Obsolete old doc package since it's required for functionality.
 Obsoletes:      %{name}-doc < 0.22-1
 
-Requires:       hicolor-icon-theme fmt python3-matplotlib python3-pivy python3-collada python3-pyside6 qt6-assistant
+Requires:       hicolor-icon-theme fmt python3-matplotlib python3-pivy python3-collada python3-pyside6 qt6-assistant IfcOpenShell-python3
 
 %if %{with bundled_smesh}
 Provides:       bundled(smesh) = %{bundled_smesh_version}
@@ -83,7 +83,7 @@ Provides:       bundled(python-pycxx) = %{bundled_pycxx_version}
 %endif
 Provides:       bundled(libondselsolver) = %{bundled_ondsel_solver_version}
 
-Recommends:     python3-pysolar IfcOpenShell-python3
+Recommends:     python3-pysolar 
 
 
 
@@ -224,7 +224,7 @@ Development file for OndselSolver
         echo "**** Failed ctest ****"
         touch %{buildroot}%tests_resultdir/ctest.failed
         #cat %{buildroot}%tests_resultdir/ctest.result
-        if %ctest -VV --rerun-failed &>> %{buildroot}%tests_resultdir/ctest.result; then
+        if %ctest -VV --rerun-failed; then
             echo "Now OK"
             rm %{buildroot}%tests_resultdir/ctest.failed
         fi
