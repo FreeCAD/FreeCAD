@@ -90,12 +90,9 @@ def segments(poly):
 
 
 def loopdetect(obj, edge1, edge2):
-    """
-    Returns a loop wire that includes the two edges.
+    """Returns a loop of edges that includes the two edges.
     Useful for detecting boundaries of negative space features ie 'holes'
     If a unique loop is not found, returns None
-    edge1 = edge
-    edge2 = edge
     """
 
     Path.Log.track()
@@ -110,20 +107,97 @@ def loopdetect(obj, edge1, edge2):
     if len(loop) != 1:
         return None
     loopwire = next(x for x in loop)[1]
-    return loopwire
+    return loopwire.Edges
 
 
-def horizontalEdgeLoop(obj, edge):
-    """horizontalEdgeLoop(obj, edge) ... returns a wire in the horizontal plane, if that is the only horizontal wire the given edge is a part of."""
-    h = edge.hashCode()
-    wires = [w for w in obj.Shape.Wires if any(e.hashCode() == h for e in w.Edges)]
+def horizontalEdgeLoop(obj, edge, verbose=False):
+    """Returns a loop of edges in the horizontal plane that includes one edge"""
+
+    isHorizontal = Path.Geom.isHorizontal
+    isRoughly = Path.Geom.isRoughly
+
+    if not isHorizontal(edge) and verbose:
+        # stop if selected edge is not horizontal
+        return None
+
+    # Trying to find edges in loop wires from shape
+    ehash = edge.hashCode()
+    wires = [w for w in obj.Shape.Wires if any(e.hashCode() == ehash for e in w.Edges)]
     loops = [
-        w
-        for w in wires
-        if all(Path.Geom.isHorizontal(e) for e in w.Edges) and Path.Geom.isHorizontal(Part.Face(w))
+        w for w in wires if all(isHorizontal(e) for e in w.Edges) and isHorizontal(Part.Face(w))
     ]
-    if len(loops) == 1:
-        return loops[0]
+    if len(loops) > 0:
+        return loops[0].Edges
+
+    # Trying to find edges in loop without wires from shape
+
+    # get edges in horizontal plane with selected edge
+    candidates = [
+        e
+        for e in obj.Shape.Edges
+        if isHorizontal(e) and isRoughly(e.BoundBox.ZMin, edge.BoundBox.ZMin)
+    ]
+
+    # get cluster of edges from which closed wire can be created
+    # this cluster should contain selected edge
+    for cluster in Part.getSortedClusters(candidates):
+        wire = Part.Wire(cluster)
+        if wire.isClosed() and any(e.hashCode() == ehash for e in cluster):
+            # cluster is found
+            return cluster
+
+    return None
+
+
+def tangentEdgeLoop(obj, edge):
+    """Returns a tangent loop of edges"""
+
+    isCoincide = Path.Geom.pointsCoincide
+
+    loop = [edge]
+    hashes = [edge.hashCode()]
+    startPoint = edge.Vertexes[0].Point
+    lastEdge = edge
+    lastIndex = -1
+    repeatCount = 0
+    while repeatCount < len(obj.Shape.Edges):
+        repeatCount += 1
+
+        lastPoint = lastEdge.Vertexes[lastIndex].Point
+        lastTangent = lastEdge.tangentAt(lastEdge.ParameterRange[lastIndex])
+
+        if isCoincide(lastEdge.Vertexes[lastIndex].Point, startPoint):
+            # stop because return to start point and loop is closed
+            break
+
+        for e in obj.Shape.Edges:
+            if e.hashCode() in hashes:
+                # this edge is already in loop
+                continue
+
+            if isCoincide(lastPoint, e.Vertexes[0].Point):
+                index = 0
+            elif isCoincide(lastPoint, e.Vertexes[-1].Point):
+                index = -1
+            else:
+                continue
+
+            tangent = e.tangentAt(e.ParameterRange[index])
+            if isCoincide(tangent, lastTangent, 0.05):
+                # found next tangency edge
+                loop.append(e)
+                hashes.append(e.hashCode())
+                lastEdge = e
+                lastIndex = -1 if index == 0 else 0
+                break
+
+        else:
+            # stop because next tangency edge was not found
+            break
+
+    if loop:
+        return loop
+
     return None
 
 
@@ -131,27 +205,45 @@ def horizontalFaceLoop(obj, face, faceList=None):
     """horizontalFaceLoop(obj, face, faceList=None) ... returns a list of face names which form the walls of a vertical hole face is a part of.
     All face names listed in faceList must be part of the hole for the solution to be returned."""
 
-    wires = [horizontalEdgeLoop(obj, e) for e in face.Edges]
-    # Not sure if sorting by Area is a premature optimization - but it seems
-    # the loop we're looking for is typically the biggest of the them all.
-    wires = sorted([w for w in wires if w], key=lambda w: Part.Face(w).Area)
+    isVertical = Path.Geom.isVertical
+    isRoughly = Path.Geom.isRoughly
 
-    for wire in wires:
-        hashes = [e.hashCode() for e in wire.Edges]
+    if not all(isVertical(obj.Shape.getElement(f)) for f in faceList):
+        # stop if selected faces is not vertical
+        Path.Log.warning(
+            translate(
+                "CAM",
+                "Selected faces should be vertical",
+            )
+        )
+        return None
 
-        # find all faces that share a an edge with the wire and are vertical
+    cluster = [horizontalEdgeLoop(obj, e) for e in face.Edges]
+
+    # use sorting by Area as simple optimization
+    clusterSorted = sorted(
+        [edges for edges in cluster if edges],
+        key=lambda edges: Part.Face(Part.Wire(Part.sortEdges(edges)[0])).Area,
+    )
+
+    for edges in clusterSorted:
+        hashes = [e.hashCode() for e in edges]
+
+        # find all faces that share an edges and are vertical
         faces = [
             "Face%d" % (i + 1)
             for i, f in enumerate(obj.Shape.Faces)
-            if any(e.hashCode() in hashes for e in f.Edges) and Path.Geom.isVertical(f)
+            if any(e.hashCode() in hashes for e in f.Edges) and isVertical(f)
         ]
 
         if faceList and not all(f in faces for f in faceList):
+            # not all selected faces in list of candidates faces
             continue
 
         # verify they form a valid hole by getting the outline and comparing
         # the resulting XY footprint with that of the faces
         comp = Part.makeCompound([obj.Shape.getElement(f) for f in faces])
+
         outline = TechDraw.findShapeOutline(comp, 1, Vector(0, 0, 1))
 
         # findShapeOutline always returns closed wires, by removing the
@@ -161,18 +253,20 @@ def horizontalFaceLoop(obj, face, faceList=None):
             if any(Path.Geom.edgesMatch(edge, e) for e in uniqueEdges):
                 continue
             uniqueEdges.append(edge)
+
         w = Part.Wire(uniqueEdges)
 
         # if the faces really form the walls of a hole then the resulting
         # wire is still closed and it still has the same footprint
         bb1 = comp.BoundBox
         bb2 = w.BoundBox
+        prec = 1  # used low precision because findShapeOutline() is dirty
         if (
             w.isClosed()
-            and Path.Geom.isRoughly(bb1.XMin, bb2.XMin)
-            and Path.Geom.isRoughly(bb1.XMax, bb2.XMax)
-            and Path.Geom.isRoughly(bb1.YMin, bb2.YMin)
-            and Path.Geom.isRoughly(bb1.YMax, bb2.YMax)
+            and isRoughly(bb1.XMin, bb2.XMin, prec)
+            and isRoughly(bb1.XMax, bb2.XMax, prec)
+            and isRoughly(bb1.YMin, bb2.YMin, prec)
+            and isRoughly(bb1.YMax, bb2.YMax, prec)
         ):
             return faces
     return None

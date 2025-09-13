@@ -1458,6 +1458,11 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemSelectionChanged()
         Gui::Selection().addSelections(doc_name.c_str(), obj_name.c_str(), constraintSubNames);
 
     this->blockSelection(block);
+
+    // it seems that addSelections gives back the focus to the view, and not immediately.
+    QTimer::singleShot(200, [this]() {
+        ui->listWidgetConstraints->setFocus();
+    });
 }
 
 void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter(bool filterEnabled)

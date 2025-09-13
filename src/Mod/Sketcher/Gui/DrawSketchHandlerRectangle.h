@@ -2474,14 +2474,14 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHRectangleController::doChangeDrawSketchHandlerMode()
+void DSHRectangleController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
             if (onViewParameters[OnViewParameter::First]->hasFinishedEditing
                 && onViewParameters[OnViewParameter::Second]->hasFinishedEditing) {
 
-                handler->setState(SelectMode::SeekSecond);
+                handler->setNextState(SelectMode::SeekSecond);
             }
         } break;
         case SelectMode::SeekSecond: {
@@ -2492,10 +2492,10 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
                     || handler->constructionMethod() == ConstructionMethod::ThreePoints
                     || handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
 
-                    handler->setState(SelectMode::SeekThird);
+                    handler->setNextState(SelectMode::SeekThird);
                 }
                 else {
-                    handler->setState(SelectMode::End);
+                    handler->setNextState(SelectMode::End);
                 }
             }
         } break;
@@ -2506,26 +2506,26 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
                     && onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing) {
 
                     if (handler->makeFrame) {
-                        handler->setState(SelectMode::SeekFourth);
+                        handler->setNextState(SelectMode::SeekFourth);
                     }
                     else {
-                        handler->setState(SelectMode::End);
+                        handler->setNextState(SelectMode::End);
                     }
                 }
                 else if (handler->makeFrame
                          && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
 
-                    handler->setState(SelectMode::End);
+                    handler->setNextState(SelectMode::End);
                 }
             }
             else {
                 if (onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing
                     && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
                     if (handler->roundCorners || handler->makeFrame) {
-                        handler->setState(SelectMode::SeekFourth);
+                        handler->setNextState(SelectMode::SeekFourth);
                     }
                     else {
-                        handler->setState(SelectMode::End);
+                        handler->setNextState(SelectMode::End);
                     }
                 }
             }
@@ -2534,7 +2534,7 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
             if (handler->constructionMethod() == ConstructionMethod::Diagonal
                 || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
                 if (onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
-                    handler->setState(SelectMode::End);
+                    handler->setNextState(SelectMode::End);
                 }
             }
             else {
@@ -2542,22 +2542,22 @@ void DSHRectangleController::doChangeDrawSketchHandlerMode()
                     && onViewParameters[OnViewParameter::Seventh]->hasFinishedEditing) {
 
                     if (handler->makeFrame) {
-                        handler->setState(SelectMode::SeekFifth);
+                        handler->setNextState(SelectMode::SeekFifth);
                     }
                     else {
-                        handler->setState(SelectMode::End);
+                        handler->setNextState(SelectMode::End);
                     }
                 }
                 else if (handler->makeFrame
                          && onViewParameters[OnViewParameter::Eighth]->hasFinishedEditing) {
-                    handler->setState(SelectMode::End);
+                    handler->setNextState(SelectMode::End);
                 }
             }
         } break;
         case SelectMode::SeekFifth: {
             if (handler->makeFrame
                 && onViewParameters[OnViewParameter::Eighth]->hasFinishedEditing) {
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
         } break;
         default:

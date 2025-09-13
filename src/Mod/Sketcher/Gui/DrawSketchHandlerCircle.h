@@ -624,7 +624,7 @@ void DSHCircleController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHCircleController::doChangeDrawSketchHandlerMode()
+void DSHCircleController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
@@ -632,7 +632,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
             auto& secondParam = onViewParameters[OnViewParameter::Second];
 
             if (firstParam->hasFinishedEditing && secondParam->hasFinishedEditing) {
-                handler->setState(SelectMode::SeekSecond);
+                handler->setNextState(SelectMode::SeekSecond);
             }
         } break;
         case SelectMode::SeekSecond: {
@@ -642,7 +642,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
                 && handler->constructionMethod()
                     == DrawSketchHandlerCircle::ConstructionMethod::Center) {
 
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
             else if (onViewParameters.size() > 3) {
                 auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
@@ -650,7 +650,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
                     && handler->constructionMethod()
                         == DrawSketchHandlerCircle::ConstructionMethod::ThreeRim) {
 
-                    handler->setState(SelectMode::SeekThird);
+                    handler->setNextState(SelectMode::SeekThird);
                 }
             }
         } break;
@@ -659,7 +659,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
             auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
 
             if (fifthParam->hasFinishedEditing && sixthParam->hasFinishedEditing) {
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
         } break;
         default:

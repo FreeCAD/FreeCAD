@@ -73,6 +73,8 @@ PropertyEditor::PropertyEditor(QWidget* parent)
     delegate = new PropertyItemDelegate(this);
     delegate->setItemEditorFactory(new PropertyItemEditorFactory);
     setItemDelegate(delegate);
+    // prevent a non-persistent editor when pressing an edit key
+    setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     setAlternatingRowColors(true);
     setRootIsDecorated(false);
@@ -251,21 +253,34 @@ void PropertyEditor::keyPressEvent(QKeyEvent* event)
 
     const auto key = event->key();
     const auto mods = event->modifiers();
-    const bool allowedModifiers =
+
+    const bool allowedDeleteModifiers =
         mods == Qt::NoModifier ||
         mods == Qt::KeypadModifier;
 
 #if defined(Q_OS_MACOS) || defined(Q_OS_MAC)
     const bool isDeleteKey = key == Qt::Key_Backspace || key == Qt::Key_Delete;
+    const bool isEditKey = (mods == Qt::NoModifier) &&
+        (key == Qt::Key_Return || key == Qt::Key_Enter);
 #else
     const bool isDeleteKey = key == Qt::Key_Delete;
+    const bool isEditKey = (mods == Qt::NoModifier) && (key == Qt::Key_F2);
 #endif
 
-    if (allowedModifiers && isDeleteKey) {
+    if (allowedDeleteModifiers && isDeleteKey) {
         if (removeSelectedDynamicProperties()) {
             event->accept();
             return;
         }
+    }
+    else if (isEditKey) {
+        // open a persistent editor when an edit key is pressed
+        event->accept();
+        auto index = model() ? model()->buddy(currentIndex()) : QModelIndex();
+        if (index.isValid()) {
+            openEditor(index);
+        }
+        return;
     }
 
     QTreeView::keyPressEvent(event);

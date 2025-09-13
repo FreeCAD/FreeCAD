@@ -259,7 +259,7 @@ private:
         TopoDS_Shape offsetShape = mkOffset.Shape();
 
         if (offsetShape.IsNull()) {
-            throw Base::CADKernelError("makeOffset2D: result of offsetting is null!");
+            return offsetShape;
         }
 
         // Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
@@ -344,6 +344,9 @@ private:
                        std::vector<int>& listOfOffsetGeoIds)
     {
         TopoDS_Shape offsetShape = makeOffsetShape();
+        if (offsetShape.IsNull()) {
+            return;
+        }
 
         TopExp_Explorer expl(offsetShape, TopAbs_EDGE);
         int geoIdToAdd = firstCurveCreated;
@@ -383,6 +386,15 @@ private:
         getOffsetGeos(geometriesToAdd, listOfOffsetGeoIds);
 
         SketchObject* Obj = sketchgui->getSketchObject();
+
+        if (listOfOffsetGeoIds.empty()) {
+            Gui::NotifyUserError(
+                Obj,
+                QT_TRANSLATE_NOOP("Notifications", "Offset Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Offset could not be created."));
+            return;
+        }
+
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Offset"));
 
         // Create geos
@@ -403,6 +415,9 @@ private:
 
     void jointOffsetCurves(std::vector<int>& listOfOffsetGeoIds)
     {
+        if (listOfOffsetGeoIds.empty()) {
+            return;
+        }
         std::stringstream stream;
         stream << "conList = []\n";
         for (size_t i = 0; i < listOfOffsetGeoIds.size() - 1; i++) {
@@ -1206,14 +1221,14 @@ void DSHOffsetController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHOffsetController::doChangeDrawSketchHandlerMode()
+void DSHOffsetController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
             auto& firstParam = onViewParameters[OnViewParameter::First];
 
             if (firstParam->hasFinishedEditing) {
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
         } break;
         default:
