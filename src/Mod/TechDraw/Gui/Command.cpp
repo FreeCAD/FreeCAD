@@ -181,7 +181,7 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
     QString templateDir = Preferences::defaultTemplateDir();
     QString templateFileName = Gui::FileDialog::getOpenFileName(
         Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Select a template file")), templateDir,
-        QString::fromUtf8(QT_TR_NOOP("Template (*.svg)")));
+        QStringList(QString::fromUtf8(QT_TR_NOOP("Template (*.svg)"))));
     Gui::FileDialog::setWorkingDirectory(work_dir);// Don't overwrite WD with templateDir
 
     if (templateFileName.isEmpty()) {
@@ -442,11 +442,13 @@ void CmdTechDrawView::activated(int iMsg)
                 }
             }
 
+            QStringList filterList;
+            filterList << QStringLiteral("%1 (*.svg *.svgz *.jpg *.jpeg *.png *.bmp)").arg(QObject::tr("SVG or Image files"));
+            filterList << QStringLiteral("%2 (*.*)").arg(QObject::tr("All Files"));
             QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
                 QObject::tr("Select a SVG or Image file to open"),
                 Preferences::defaultSymbolDir(),
-                QStringLiteral("%1 (*.svg *.svgz *.jpg *.jpeg *.png *.bmp);;%2 (*.*)")
-                .arg(QObject::tr("SVG or Image files"), QObject::tr("All Files")));
+                filterList);
 
             if (!filename.isEmpty()) {
                 if (filename.endsWith(QStringLiteral(".svg"), Qt::CaseInsensitive)
@@ -1549,11 +1551,13 @@ void CmdTechDrawSymbol::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     // Reading an image
+    QStringList filterList;
+    filterList << QStringLiteral("%1 (*.svg *.svgz)").arg(QObject::tr("Scalable vector graphic"));
+    filterList << QStringLiteral("%1 (*.*)").arg(QObject::tr("All files"));
     QString filename = Gui::FileDialog::getOpenFileName(
         Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"),
         Preferences::defaultSymbolDir(),
-        QStringLiteral("%1 (*.svg *.svgz);;%2 (*.*)")
-            .arg(QObject::tr("Scalable vector graphic"), QObject::tr("All files")));
+        filterList);
 
     if (!filename.isEmpty()) {
         std::string FeatName = getUniqueObjectName("Symbol");
@@ -1885,7 +1889,7 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(
         Gui::getMainWindow(), QString::fromUtf8(QT_TR_NOOP("Save DXF file")), defaultDir,
-        QStringLiteral("DXF (*.dxf)"));
+        QStringList(QStringLiteral("DXF (*.dxf)")));
 
     if (fileName.isEmpty()) {
         return;
