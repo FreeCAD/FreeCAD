@@ -613,6 +613,21 @@ class _Site(ArchIFC.IfcProduct):
         # We must defer the constraint restoration until after the entire
         # loading process is complete.
         if FreeCAD.GuiUp and hasattr(obj, "ViewObject"):
+            # Ensure the view-provider has a chance to (re-)add any view
+            # properties that may be missing (idempotent). Some restore
+            # paths allocate the view-provider without calling its
+            # __init__, so setProperties may never have been executed.
+            try:
+                proxy = getattr(obj.ViewObject, "Proxy", None)
+                if proxy is not None and hasattr(proxy, "setProperties"):
+                    try:
+                        proxy.setProperties(obj.ViewObject)
+                    except Exception as e:
+                        FreeCAD.Console.PrintError("ArchSite: proxy.setProperties failed: %s\n" % (e,))
+            except Exception:
+                # defensive: do not break document restore if anything goes wrong
+                pass
+
             from PySide import QtCore
             QtCore.QTimer.singleShot(0, lambda: obj.ViewObject.Proxy.restoreConstraints(obj.ViewObject))
 
@@ -1335,6 +1350,46 @@ class _ViewProviderSite:
         return None
 
     def loads(self,state):
+        """Restore hook for view-provider instances created by the loader.
+
+        During document deserialization the Python instance may be
+        allocated without calling __init__, so runtime initialization
+        (adding view properties) must be performed here. We defer the
+        actual re-initialization to the event loop to ensure the
+        ViewObject binding and the Property Editor are available.
+        """
+        # store state if needed for later use
+        try:
+            self._saved_state = state
+        except Exception:
+            pass
+
+        from PySide import QtCore
+
+        def try_restore_binding():
+            # Try common ways to obtain the ViewObject
+            vobj = getattr(self, "__vobject__", None)
+            if vobj is None:
+                appobj = getattr(self, "Object", None)
+                if appobj is not None:
+                    vobj = getattr(appobj, "ViewObject", None)
+
+            if vobj is None:
+                # binding not ready yet: retry shortly
+                QtCore.QTimer.singleShot(50, try_restore_binding)
+                return
+
+            # Ensure properties exist (idempotent)
+            try:
+                self.setProperties(vobj)
+            except Exception:
+                pass
+
+            # Give the UI one more event cycle to pick up the new properties,
+            # then restore constraints and defaults.
+            QtCore.QTimer.singleShot(0, lambda: self.restoreConstraints(vobj))
+
+        QtCore.QTimer.singleShot(0, try_restore_binding)
 
         return None
 
