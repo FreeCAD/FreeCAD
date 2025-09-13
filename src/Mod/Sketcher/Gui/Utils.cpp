@@ -124,7 +124,7 @@ bool SketcherGui::tryAutoRecompute(Sketcher::SketchObject* obj, bool& autoremove
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
     bool autoRecompute = hGrp->GetBool("AutoRecompute", false);
-    bool autoRemoveRedundants = hGrp->GetBool("AutoRemoveRedundants", false);
+    bool autoRemoveRedundants = hGrp->GetBool("AutoRemoveRedundants", true);
 
     // We need to make sure the solver has right redundancy information before trying to remove the
     // redundants. for example if a non-driving constraint has been added.
