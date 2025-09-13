@@ -43,6 +43,7 @@ if App.GuiUp:
     import FreeCADGui
 
 from bimtests.TestWebGLExportGui import TestWebGLExportGui
+from bimtests.TestArchSiteGui import TestArchSiteGui
 
 class ArchTest(unittest.TestCase):
 

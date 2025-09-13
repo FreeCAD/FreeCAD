@@ -205,6 +205,7 @@ SET(bimtests_SRCS
     bimtests/TestArch.py
     bimtests/TestArchAxis.py
     bimtests/TestArchBase.py
+    bimtests/TestArchBaseGui.py
     bimtests/TestArchComponent.py
     bimtests/TestArchBuildingPart.py
     bimtests/TestArchRoof.py
@@ -229,6 +230,7 @@ SET(bimtests_SRCS
     bimtests/TestArchTruss.py
     bimtests/TestWebGLExport.py
     bimtests/TestWebGLExportGui.py
+    bimtests/TestArchSiteGui.py
 )
 
 SOURCE_GROUP("" FILES ${Arch_SRCS})
@@ -278,6 +280,27 @@ fc_target_copy_resource(BIM
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM
     ${BIM_templates}
 )
+
+set(BIM_TEST_FIXTURES
+    bimtests/fixtures/FC_site_simple-102.FCStd
+)
+
+# Always append fixtures into the bimtests sources so the single fc_copy_sources(BIM ...
+# ${bimtests_SRCS}) earlier in this file will copy both test sources and fixtures into the build
+# tree.
+list(APPEND bimtests_SRCS ${BIM_TEST_FIXTURES})
+
+# Preserve the bimtests install sources (so INSTALL below stays correct)
+set(bimtests_INSTALL_SRCS ${bimtests_SRCS})
+
+# Also explicitly install test fixtures into a fixtures subdirectory so packaged installs expose
+# them clearly and avoid ambiguity with test sources being installed into the parent directory.
+INSTALL(
+    FILES
+        ${BIM_TEST_FIXTURES}
+    DESTINATION Mod/BIM/bimtests/fixtures
+)
+
 
 fc_target_copy_resource(ImporterPythonTestData
     ${CMAKE_SOURCE_DIR}/src/Mod/BIM
