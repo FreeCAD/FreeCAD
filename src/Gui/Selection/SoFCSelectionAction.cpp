@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/elements/SoComplexityElement.h>
@@ -60,7 +59,7 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransformation.h>
-#endif
+
 
 #include "SoFCSelectionAction.h"
 #include "SoFCSelection.h"

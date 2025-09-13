@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <QAction>
 # include <QMenu>
 # include <Inventor/SoFullPath.h>
@@ -31,7 +30,7 @@
 # include <Inventor/details/SoDetail.h>
 # include <Inventor/misc/SoChildList.h>
 # include <Inventor/nodes/SoSeparator.h>
-#endif
+
 
 #include <App/Document.h>
 #include <App/Origin.h>

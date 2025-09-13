@@ -1416,7 +1416,6 @@ SET(FreeCADGui_SRCS
     MetaTypes.h
     ModuleIO.h
     Notifications.h
-    PreCompiled.cpp
     PreCompiled.h
     QtAll.h
     Control.h
@@ -1497,9 +1496,15 @@ if(MSVC)
     )
 endif(MSVC)
 
-if (FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    ADD_MSVC_PRECOMPILED_HEADER(FreeCADGui PreCompiled.h PreCompiled.cpp FreeCADGui_CPP_SRCS)
+if(FREECAD_USE_PCH)
+    target_precompile_headers(FreeCADGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+
+    set_source_files_properties(
+            ${qsintActionPanel_SRCS}
+            ${Quarter_SRCS}
+            PROPERTIES SKIP_PRECOMPILE_HEADERS TRUE)
 endif(FREECAD_USE_PCH)
 
 if (FREECAD_USE_QT_FILEDIALOG)

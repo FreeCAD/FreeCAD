@@ -21,11 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QDockWidget>
 # include <QStatusBar>
-#endif
+
 
 #include "Workbench.h"
 #include "WorkbenchManipulator.h"

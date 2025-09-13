@@ -21,10 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 #include <App/DocumentObjectGroup.h>
 #include <App/GroupExtension.h>
 #include <App/Part.h>

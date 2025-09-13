@@ -21,8 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "Tools.h"
 #include "Application.h"
 #include "OverlayManager.h"
@@ -34,13 +32,11 @@
 #include <Base/ServiceProvider.h>
 #include <Base/Tools.h>
 
-#ifndef _PreComp_
 # include <ranges>
 # include <QImageReader>
 # include <QPainter>
 # include <QStyledItemDelegate>
 # include <QTimer>
-#endif
 
 QPixmap colorPreview(const QColor& color)
 {

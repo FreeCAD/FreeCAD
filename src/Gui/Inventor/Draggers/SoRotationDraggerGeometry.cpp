@@ -21,9 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <algorithm>
 #include <cmath>
 #include <numbers>
@@ -39,7 +36,6 @@
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoTranslation.h>
-#endif
 
 #include "SoRotationDraggerGeometry.h"
 

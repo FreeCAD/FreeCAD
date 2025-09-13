@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <limits>
 # include <QApplication>
 # include <QDebug>
@@ -34,7 +31,6 @@
 # include <QStyle>
 # include <QStyleOptionSpinBox>
 # include <QToolTip>
-#endif
 
 #include <sstream>
 

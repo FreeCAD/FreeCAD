@@ -20,7 +20,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
+
 
 #include <Base/BoundBoxPy.h>
 #include <Base/MatrixPy.h>

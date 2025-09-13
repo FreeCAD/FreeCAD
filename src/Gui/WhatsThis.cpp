@@ -21,11 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QApplication>
 # include <QWhatsThisClickedEvent>
-#endif
+
 
 #include "WhatsThis.h"
 #include "Action.h"

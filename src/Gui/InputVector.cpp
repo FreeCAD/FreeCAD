@@ -21,10 +21,9 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QComboBox>
-#endif
+
 
 #include <Base/UnitsApi.h>
 

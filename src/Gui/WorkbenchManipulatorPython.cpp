@@ -22,7 +22,7 @@
  **************************************************************************/
 
 
-#include "PreCompiled.h"
+
 #include "WorkbenchManipulatorPython.h"
 #include "MenuManager.h"
 #include "ToolBarManager.h"

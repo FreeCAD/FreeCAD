@@ -20,12 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <Inventor/nodes/SoCamera.h>
 # include <string>
-#endif
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/Interpreter.h>

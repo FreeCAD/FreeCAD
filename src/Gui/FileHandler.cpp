@@ -21,13 +21,12 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QFileInfo>
 # include <QImageReader>
 # include <QStringList>
 # include <Inventor/SoInput.h>
-#endif
+
 
 #include "FileHandler.h"
 #include "Application.h"

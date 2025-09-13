@@ -21,15 +21,11 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "ComboLinks.h"
 
-#ifndef _PreComp_
 #include <QComboBox>
 #include <QVariant>
 #include <QString>
-#endif
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
