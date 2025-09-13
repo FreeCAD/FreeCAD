@@ -975,8 +975,7 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
                 }
                 ss.str("");
 
-                ensureElementMap()->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
-                elementMap()->setElementName(element, name, Tag, &sids);
+                ensureElementMap()->setElementName(element, name, Tag, &sids);
             }
         }
     }
@@ -1465,9 +1464,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                                                 true,
                                                 &sids));
 
-                int newShapeCounter = 0;
                 for (auto& newShape : mapper.modified(otherElement)) {
-                    ++newShapeCounter;
                     if (newShape.ShapeType() >= TopAbs_SHAPE) {
                         // NOLINTNEXTLINE
                         FC_ERR("unknown modified shape type " << newShape.ShapeType() << " from "
@@ -1507,10 +1504,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                     }
 
                     key.tag = incomingShape.Tag;
-                    auto& name_info = newNames[element][key];
-                    name_info.sids = sids;
-                    name_info.index = newShapeCounter;
-                    name_info.shapetype = info.shapetype;
+
+                    elementMap()->setElementName(element, key.name, Tag, &sids);
                 }
 
                 int checkParallel = -1;
@@ -1518,7 +1513,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
 
                 // Find all new objects that were generated from an old object
                 // (e.g. a face generated from an edge)
-                newShapeCounter = 0;
+                int newShapeCounter = 0;
                 for (auto& newShape : mapper.generated(otherElement)) {
                     if (newShape.ShapeType() >= TopAbs_SHAPE) {
                         // NOLINTNEXTLINE
