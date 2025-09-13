@@ -160,7 +160,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         obj.addProperty(
             "App::PropertyEnumeration",
             "ClearingPattern",
-            "Face",
+            "Pocket",
             QT_TRANSLATE_NOOP("App::Property", "Clearing pattern to use"),
         )
         obj.addProperty(
@@ -266,6 +266,9 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 ),
             )
 
+        if hasattr(obj, "OffsetPattern"):
+            obj.setGroupOfProperty("OffsetPattern", "Pocket")
+            obj.renameProperty("OffsetPattern", "ClearingPattern")
         if hasattr(obj, "RestMachiningRegions"):
             obj.removeProperty("RestMachiningRegions")
         if hasattr(obj, "RestMachiningRegionsNeedRecompute"):
