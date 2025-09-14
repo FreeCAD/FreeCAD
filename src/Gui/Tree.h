@@ -92,6 +92,7 @@ public:
      * which Gui::Selection() cannot provide.
      */
     static std::vector<SelInfo> getSelection(App::Document *doc=nullptr);
+    static std::vector<Document*> getSelectedDocuments();
 
     static TreeWidget *instance();
 
@@ -227,6 +228,7 @@ private:
 
     bool CheckForDependents();
     void addDependentToSelection(App::Document* doc, App::DocumentObject* docObject);
+    static TreeWidget* getTreeForSelection();
 
 private:
     QAction* createGroupAction;

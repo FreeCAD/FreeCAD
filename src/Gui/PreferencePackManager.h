@@ -27,6 +27,10 @@
 #include <string>
 #include <mutex>
 
+#include <QMetaType>
+
+#include <FCGlobal.h>
+
 #include "App/Metadata.h"
 
 namespace Gui {

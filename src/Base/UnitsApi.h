@@ -41,7 +41,6 @@ namespace Base
 class BaseExport UnitsApi
 {
 public:
-    static void init();
     static std::unique_ptr<UnitsSchema> createSchema(std::size_t num);
     static void setSchema(const std::string& name);
     static void setSchema(std::size_t num);
@@ -51,32 +50,13 @@ public:
 
     static std::string schemaTranslate(const Quantity& quant);
 
-    /**
-     * toString & toNumber:
-     * Quantity to string. Optionally apply format
-     * The string is a number in C locale (i.e. the decimal separator is always a dot)
-     * Scientific notation (if needed).
-     */
-
-    /** INCLUDES unit */
-    static std::string
-    toString(const Quantity& quantity,
-             const QuantityFormat& format = QuantityFormat(QuantityFormat::Default));
-
-    /** Does NOT include unit */
-    static std::string
-    toNumber(const Quantity& quantity,
-             const QuantityFormat& format = QuantityFormat(QuantityFormat::Default));
-
-    /** Does NOT include unit */
-    static std::string
-    toNumber(double value, const QuantityFormat& format = QuantityFormat(QuantityFormat::Default));
-
     static double toDouble(PyObject* args, const Base::Unit& u = Base::Unit());
 
-    static void setDecimals(std::size_t);
-    static std::size_t getDecimals();
-    static std::size_t getDefDecimals();
+    static void setDecimals(int);
+    static int getDecimals();
+
+    static void setDenominator(int);
+    static int getDenominator();
 
     static std::vector<std::string> getDescriptions();
     static std::vector<std::string> getNames();
@@ -86,7 +66,6 @@ public:
     static bool isMultiUnitAngle();
     static bool isMultiUnitLength();
     static std::string getBasicLengthUnit();
-    static std::size_t getFractDenominator();
 
     static std::size_t getDefSchemaNum()
     {
@@ -98,8 +77,8 @@ public:
 protected:
     static inline auto schemas =
         std::make_unique<UnitsSchemas>(UnitsSchemasData::unitSchemasDataPack);
-    static inline std::size_t decimals {2};
-    static inline std::size_t denominator {2};
+    static inline int decimals {-1};
+    static inline int denominator {-1};
 
     // the python API wrapper methods
     static PyObject* sParseQuantity(PyObject* self, PyObject* args);

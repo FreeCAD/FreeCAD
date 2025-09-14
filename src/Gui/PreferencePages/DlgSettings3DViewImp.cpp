@@ -69,6 +69,7 @@ void DlgSettings3DViewImp::saveSettings()
     ui->CheckBox_use_SW_OpenGL->onSave();
     ui->CheckBox_useVBO->onSave();
     ui->FloatSpinBox_EyeDistance->onSave();
+    ui->FloatSpinBox_DatumScale->onSave();
     ui->axisLetterColor->onSave();
     ui->radioPerspective->onSave();
     ui->radioOrthographic->onSave();
@@ -86,6 +87,7 @@ void DlgSettings3DViewImp::loadSettings()
     ui->CheckBox_use_SW_OpenGL->onRestore();
     ui->CheckBox_useVBO->onRestore();
     ui->FloatSpinBox_EyeDistance->onRestore();
+    ui->FloatSpinBox_DatumScale->onRestore();
     ui->axisLetterColor->onRestore();
     ui->radioPerspective->onRestore();
     ui->radioOrthographic->onRestore();

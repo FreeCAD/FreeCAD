@@ -49,6 +49,11 @@ SOURCE_GROUP("Module" FILES ${JtReader_SRCS})
 
 add_library(JtReader SHARED ${JtReader_SRCS} ${JRJT_SRCS} ${JtReader_Scripts})
 target_link_libraries(JtReader ${JtReader_LIBS})
+
+if (MSVC)
+    target_compile_options(JtReader PRIVATE /wd4251 /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(JtReader)
 endif()

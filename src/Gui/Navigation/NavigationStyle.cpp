@@ -48,6 +48,8 @@
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/NavigationStylePy.h"
 #include "Application.h"
+#include "Command.h"
+#include "Action.h"
 #include "Inventor/SoMouseWheelEvent.h"
 #include "MenuManager.h"
 #include "MouseSelection.h"
@@ -1022,6 +1024,11 @@ SbVec3f NavigationStyle::getRotationCenter(SbBool& found) const
     return this->rotationCenter;
 }
 
+std::optional<SbVec2s>& NavigationStyle::getRightClickPosition()
+{
+    return rightClickPosition;
+}
+
 void NavigationStyle::setRotationCenter(const SbVec3f& cnt)
 {
     this->rotationCenter = cnt;
@@ -1932,9 +1939,39 @@ SbBool NavigationStyle::isPopupMenuEnabled() const
     return this->menuenabled;
 }
 
+bool NavigationStyle::isNavigationStyleAction(QAction* action, QActionGroup* navMenuGroup) const
+{
+    return action && navMenuGroup->actions().indexOf(action) >= 0 && action->isChecked();
+}
+
+QWidget* NavigationStyle::findView3DInventorWidget() const
+{
+    QWidget* widget = viewer->getWidget();
+    while (widget && !widget->inherits("Gui::View3DInventor")) {
+        widget = widget->parentWidget();
+    }
+    return widget;
+}
+
+void NavigationStyle::applyNavigationStyleChange(QAction* selectedAction)
+{
+    QByteArray navigationStyleTypeName = selectedAction->data().toByteArray();
+    QWidget* view3DWidget = findView3DInventorWidget();
+    
+    if (view3DWidget) {
+        Base::Type newNavigationStyle = Base::Type::fromName(navigationStyleTypeName.constData());
+        if (newNavigationStyle != this->getTypeId()) {
+            QEvent* navigationChangeEvent = new NavigationStyleEvent(newNavigationStyle);
+            QApplication::postEvent(view3DWidget, navigationChangeEvent);
+        }
+    }
+}
+
 void NavigationStyle::openPopupMenu(const SbVec2s& position)
 {
-    Q_UNUSED(position);
+    // store the right-click position for potential use by Clarify Selection
+    rightClickPosition = position;
+
     // ask workbenches and view provider, ...
     MenuItem view;
     Gui::Application::Instance->setupContextMenu("View", &view);
@@ -1953,6 +1990,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
         QAction *item = navMenuGroup->addAction(name);
         navMenu->addAction(item);
         item->setCheckable(true);
+        item->setData(QByteArray(style.first.getName()));
 
         if (const Base::Type item_style = style.first; item_style != this->getTypeId()) {
             auto triggeredFun = [this, item_style](){
@@ -1970,7 +2008,58 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
             item->setChecked(true);
     }
 
-    contextMenu->popup(QCursor::pos());
+    // Add Clarify Selection option if there are objects under cursor
+    bool separator = false;
+    auto posAction = !contextMenu->actions().empty() ? contextMenu->actions().front() : nullptr;
+
+    // Get picked objects at position
+    SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
+    rp.setPoint(position);
+    rp.setRadius(viewer->getPickRadius());
+    rp.setPickAll(true);
+    rp.apply(viewer->getSoRenderManager()->getSceneGraph());
+    
+    const SoPickedPointList& pplist = rp.getPickedPointList();
+    QAction *pickAction = nullptr;
+    
+    if (pplist.getLength() > 0) {
+        separator = true;
+        if (auto cmd =
+                Application::Instance->commandManager().getCommandByName("Std_ClarifySelection")) {
+            pickAction = new QAction(cmd->getAction()->text(), contextMenu);
+            pickAction->setShortcut(cmd->getAction()->shortcut());
+        } else {
+            pickAction = new QAction(QObject::tr("Clarify Selection"), contextMenu);
+        }
+        if (posAction) {
+            contextMenu->insertAction(posAction, pickAction);
+            contextMenu->insertSeparator(posAction);
+        } else {
+            contextMenu->addAction(pickAction);
+        }
+    }
+
+    if (separator && posAction)
+        contextMenu->insertSeparator(posAction);
+
+    QAction* selectedAction = contextMenu->exec(QCursor::pos());
+    
+    // handle navigation style change if user selected a navigation style option
+    if (selectedAction && isNavigationStyleAction(selectedAction, navMenuGroup)) {
+        applyNavigationStyleChange(selectedAction);
+        rightClickPosition.reset();
+        return;
+    }
+
+    if (pickAction && selectedAction == pickAction) {
+        // Execute the Clarify Selection command at this position
+        auto cmd = Application::Instance->commandManager().getCommandByName("Std_ClarifySelection");
+        if (cmd && cmd->isActive()) {
+            cmd->invoke(0); // required placeholder value - we don't use group command
+        }
+    }
+
+    rightClickPosition.reset();
 }
 
 PyObject* NavigationStyle::getPyObject()

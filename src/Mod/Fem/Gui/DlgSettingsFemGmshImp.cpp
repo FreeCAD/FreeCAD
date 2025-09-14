@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QMessageBox>
+#include <QStandardPaths>
 #include <QThread>
 #endif
 
@@ -42,16 +43,15 @@ DlgSettingsFemGmshImp::DlgSettingsFemGmshImp(QWidget* parent)
     ui->setupUi(this);
 
     connect(ui->fc_gmsh_binary_path,
-            &Gui::PrefFileChooser::fileNameChanged,
+            &Gui::PrefFileChooser::fileNameSelected,
             this,
-            &DlgSettingsFemGmshImp::onfileNameChanged);
+            &DlgSettingsFemGmshImp::onfileNameSelected);
 }
 
 DlgSettingsFemGmshImp::~DlgSettingsFemGmshImp() = default;
 
 void DlgSettingsFemGmshImp::saveSettings()
 {
-    ui->cb_gmsh_binary_std->onSave();
     ui->fc_gmsh_binary_path->onSave();
     ui->cb_log_verbosity->onSave();
     ui->sb_threads->onSave();
@@ -59,7 +59,6 @@ void DlgSettingsFemGmshImp::saveSettings()
 
 void DlgSettingsFemGmshImp::loadSettings()
 {
-    ui->cb_gmsh_binary_std->onRestore();
     ui->fc_gmsh_binary_path->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -84,14 +83,15 @@ void DlgSettingsFemGmshImp::changeEvent(QEvent* e)
     }
 }
 
-void DlgSettingsFemGmshImp::onfileNameChanged(QString FileName)
+void DlgSettingsFemGmshImp::onfileNameSelected(QString FileName)
 {
-    if (!QFileInfo::exists(FileName)) {
-        QMessageBox::critical(this,
-                              tr("File does not exist"),
-                              tr("The specified executable\n'%1'\n does not exist!\n"
-                                 "Specify another file.")
-                                  .arg(FileName));
+    if (!FileName.isEmpty() && QStandardPaths::findExecutable(FileName).isEmpty()) {
+        QMessageBox::critical(
+            this,
+            tr("Not an executable binary"),
+            tr("The specified file \n'%1'\n does not exist or is not executable.\n"
+               "Specify another file.")
+                .arg(FileName));
     }
 }
 

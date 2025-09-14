@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="983"/>
       <source>Add a cosmetic line that passes through 2 selected points</source>
-      <translation type="unfinished">Add a cosmetic line that passes through 2 selected points</translation>
+      <translation>დამხმარე ხაზის დამატება, რომელიც გაივლის 2 მონიშნულ წერტილზე</translation>
     </message>
   </context>
   <context>
@@ -1027,7 +1027,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="350"/>
       <source>Adds centerlines to a circular pattern of selected circles</source>
-      <translation type="unfinished">Adds centerlines to a circular pattern of selected circles</translation>
+      <translation>ამატებს ცენტრალურ ხაზებს მონიშნული წრეწირების წრიულ შაბლონს</translation>
     </message>
   </context>
   <context>
@@ -3722,7 +3722,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../CommandDecorate.cpp" line="112"/>
       <source>Some faces in the selection are already hatched. Replace?</source>
-      <translation type="unfinished">Some faces in the selection are already hatched. Replace?</translation>
+      <translation>ზოგიერთი ზედაპირი უკვე დაშტრიხულია. ჩავანაცვლო?</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="314"/>
@@ -9841,7 +9841,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1792"/>
       <source>Inserts an annotation showing the area of a selected face</source>
-      <translation type="unfinished">Inserts an annotation showing the area of a selected face</translation>
+      <translation>ჩასვამს ანოტაციას, რომელიც მონიშნული ზედაპირის ფართობს აჩვენებს</translation>
     </message>
   </context>
   <context>

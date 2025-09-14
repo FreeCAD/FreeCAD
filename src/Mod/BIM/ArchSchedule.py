@@ -94,21 +94,21 @@ class _ArchSchedule:
             self.update_properties_1v1(obj)
 
     def update_properties_0v21(self,obj):
-        from draftutils.messages import _wrn
+        from draftutils.messages import _log
         sp = obj.Result
         if sp is not None:
             self.setSchedulePropertySpreadsheet(sp, obj)
         obj.removeProperty("Result")
-        _wrn("v0.21, " + obj.Label + ", " + translate("Arch", "removed property 'Result', and added property 'AutoUpdate'"))
+        _log("v0.21, " + obj.Name + ", removed property 'Result', and added property 'AutoUpdate'")
         if sp is not None:
-            _wrn("v0.21, " + sp.Label + ", " + translate("Arch", "added property 'Schedule'"))
+            _log("v0.21, " + sp.Name + ", added property 'Schedule'")
 
     def update_properties_1v1(self,obj):
-        from draftutils.messages import _wrn
+        from draftutils.messages import _log
         if obj.getTypeIdOfProperty("Description") == "App::PropertyStringList":
             obj.Operation = obj.Description
             obj.removeProperty("Description")
-            _wrn("v1.1, " + obj.Label + ", " + translate("Arch", "renamed property 'Description' to 'Operation'"))
+            _log("v1.1, " + obj.Name + ", renamed property 'Description' to 'Operation'")
         for prop in ("Operation", "Value", "Unit", "Objects", "Filter", "CreateSpreadsheet", "DetailedResults"):
             obj.setGroupOfProperty(prop,"Schedule")
 
