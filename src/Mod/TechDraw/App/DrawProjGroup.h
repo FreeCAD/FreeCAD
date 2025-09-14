@@ -152,6 +152,7 @@ public:
     void dumpTouchedProps();
 
 protected:
+    void unsetupObject() override;
     void onChanged(const App::Property* prop) override;
 
     /// Annoying helper - keep in sync with DrawProjGroupItem::TypeEnums
