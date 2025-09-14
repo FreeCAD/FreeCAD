@@ -1211,3 +1211,25 @@ void DrawProjGroup::handleChangedPropertyType(Base::XMLReader& reader, const cha
         spacingY.setValue(spacingYProperty.getValue());
     }
 }
+
+void DrawProjGroup::unsetupObject()
+{
+    if (getDocument() && !getDocument()->isAnyRestoring()) {
+
+        std::vector<std::string> childNamesToDelete;
+        for (App::DocumentObject* child : Views.getValues()) {
+            if (child) {
+                const char* name = child->getNameInDocument();
+                if (name) {
+                    childNamesToDelete.push_back(name);
+                }
+            }
+        }
+
+        for (const std::string& childName : childNamesToDelete) {
+            getDocument()->removeObject(childName.c_str());
+        }
+    }
+
+    DrawViewCollection::unsetupObject();
+}
