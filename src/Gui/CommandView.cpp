@@ -478,6 +478,15 @@ void StdCmdFreezeViews::onRestoreViews()
     }
 
     QDomDocument xmlDocument;
+
+#if QT_VERSION >= QT_VERSION_CHECK(6,5,0)
+    if (const auto result = xmlDocument.setContent(&file, QDomDocument::ParseOption::UseNamespaceProcessing); !result) {
+        std::cerr << "Parse error in XML content at line " << result.errorLine
+                  << ", column " << result.errorColumn << ": "
+                  << qPrintable(result.errorMessage) << std::endl;
+        return;
+    }
+#else
     QString errorStr;
     int errorLine;
     int errorColumn;
@@ -489,6 +498,7 @@ void StdCmdFreezeViews::onRestoreViews()
                   << (const char*)errorStr.toLatin1() << std::endl;
         return;
     }
+#endif
 
     // get the root element
     QDomElement root = xmlDocument.documentElement();
