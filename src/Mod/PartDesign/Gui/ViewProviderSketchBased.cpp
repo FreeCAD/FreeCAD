@@ -33,6 +33,7 @@
 #include "StyleParameters.h"
 
 #include <Gui/Inventor/So3DAnnotation.h>
+#include <Mod/Part/App/BodyBase.h>
 
 
 using namespace PartDesignGui;
@@ -96,7 +97,12 @@ void ViewProviderSketchBased::updateProfileShape()
     }
 
     auto profileBased = getObject<PartDesign::ProfileBased>();
-    updatePreviewShape(profileBased->getTopoShapeVerifiedFace(true), pcProfileShape);
+    auto profileShape = profileBased->getTopoShapeVerifiedFace(true);
+
+    // set the correct coordinate space for the profile shape
+    profileShape.setPlacement(profileShape.getPlacement() * profileBased->Placement.getValue().inverse());
+
+    updatePreviewShape(profileShape, pcProfileShape);
 }
 
 void ViewProviderSketchBased::updateData(const App::Property* prop)
