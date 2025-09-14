@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>371</width>
-    <height>698</height>
+    <height>729</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,11 +17,119 @@
    <item>
     <widget class="QGroupBox" name="gbTolerancing">
      <property name="title">
-      <string>Tolerancing</string>
+      <string>Dimension</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <layout class="QGridLayout" name="gridLayout_2">
+       <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,1">
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Format specifier</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="leFormatSpecifier">
+          <property name="toolTip">
+           <string>Text to be displayed</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="cbArbitrary">
+          <property name="toolTip">
+           <string>Sets use of 'Format spec' instead of the dimension value</string>
+          </property>
+          <property name="text">
+           <string>Arbitrary text</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>Number of decimals</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="sbNumDecimals">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Increments the number of decimals of the selected dimenesion&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QCheckBox" name="cbReference">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Encloses the dimension value in parentheses () to indicate it is for reference only&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Reference</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbFormatting">
+     <property name="title">
+      <string>Tolerancing</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QGridLayout" name="gridLayout" columnstretch="1,1">
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="cbEqualTolerance">
+          <property name="toolTip">
+           <string>Assign same value to over and under tolerance</string>
+          </property>
+          <property name="text">
+           <string>Equal tolerance</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLineEdit" name="leFormatSpecifierOverTolerance">
+          <property name="toolTip">
+           <string>Specifies the overtolerance format in printf() style, or arbitrary text</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QCheckBox" name="cbArbitraryTolerances">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Uses the tolerance format spec&lt;/p&gt;&lt;p&gt;instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string>Arbitrary tolerance text</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>Undertolerance format specifier</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Overtolerance format specifier</string>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="0">
          <widget class="QCheckBox" name="cbTheoreticallyExact">
           <property name="toolTip">
@@ -32,13 +140,10 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QCheckBox" name="cbEqualTolerance">
+        <item row="5" column="1">
+         <widget class="QLineEdit" name="leFormatSpecifierUnderTolerance">
           <property name="toolTip">
-           <string>Assign same value to over and under tolerance</string>
-          </property>
-          <property name="text">
-           <string>Equal tolerance</string>
+           <string>Specifies the undertolerance format in printf() style, or arbitrary text</string>
           </property>
          </widget>
         </item>
@@ -50,7 +155,7 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="Gui::QuantitySpinBox" name="qsbOvertolerance">
+         <widget class="Gui::QuantitySpinBox" name="qsbOvertolerance" native="true">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -62,13 +167,10 @@
 If 'Equal tolerance' is checked this is also
 the negated value for 'Undertolerance'.</string>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="singleStep">
+          <property name="singleStep" stdset="0">
            <double>0.100000000000000</double>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>0.000000000000000</double>
           </property>
          </widget>
@@ -81,7 +183,7 @@ the negated value for 'Undertolerance'.</string>
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="Gui::QuantitySpinBox" name="qsbUndertolerance">
+         <widget class="Gui::QuantitySpinBox" name="qsbUndertolerance" native="true">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -93,89 +195,11 @@ the negated value for 'Undertolerance'.</string>
 If 'Equal tolerance' is checked it will be replaced
 by negative value of 'Overtolerance'.</string>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="singleStep">
+          <property name="singleStep" stdset="0">
            <double>0.100000000000000</double>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>0.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="gbFormatting">
-     <property name="title">
-      <string>Formatting</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_11">
-          <property name="text">
-           <string>Format specifier</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="leFormatSpecifier">
-          <property name="toolTip">
-           <string>Text to be displayed</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QCheckBox" name="cbArbitrary">
-          <property name="toolTip">
-           <string>Sets use of 'Format spec' instead of the dimension value</string>
-          </property>
-          <property name="text">
-           <string>Arbitrary text</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Overtolerance format specifier</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLineEdit" name="leFormatSpecifierOverTolerance">
-          <property name="toolTip">
-           <string>Specifies the overtolerance format in printf() style, or arbitrary text</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_12">
-          <property name="text">
-           <string>Undertolerance format specifier</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLineEdit" name="leFormatSpecifierUnderTolerance">
-          <property name="toolTip">
-           <string>Specifies the undertolerance format in printf() style, or arbitrary text</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QCheckBox" name="cbArbitraryTolerances">
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Uses the tolerance format spec&lt;/p&gt;&lt;p&gt;instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="text">
-           <string>Arbitrary tolerance text</string>
           </property>
          </widget>
         </item>
@@ -214,7 +238,7 @@ by negative value of 'Overtolerance'.</string>
           <property name="toolTip">
            <string>Color of the dimension</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>0</red>
             <green>0</green>
@@ -231,7 +255,7 @@ by negative value of 'Overtolerance'.</string>
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="Gui::QuantitySpinBox" name="qsbFontSize">
+         <widget class="Gui::QuantitySpinBox" name="qsbFontSize" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -247,13 +271,10 @@ by negative value of 'Overtolerance'.</string>
           <property name="toolTip">
            <string>Font size for text</string>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="minimum">
+          <property name="minimum" stdset="0">
            <double>0.000000000000000</double>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>4.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
