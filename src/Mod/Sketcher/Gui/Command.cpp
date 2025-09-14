@@ -696,7 +696,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
         // bool ok; //already defined
         // QStringList items; //already defined
         items.clear();
-        items.push_back(QObject::tr("Don't attach"));
+        items.push_back(QObject::tr("Do not attach"));
         int iSugg = 0;// index of the auto-suggested mode in the list of valid modes
         int iCurr = 0;// index of current mode in the list of valid modes
         for (size_t i = 0; i < validModes.size(); ++i) {
