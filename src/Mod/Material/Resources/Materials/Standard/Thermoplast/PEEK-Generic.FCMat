@@ -3,7 +3,7 @@ General:
   UUID: "1fed8adb-7bf6-4d8a-9b1e-a3b50f8b2093"
   Name: "PEEK-Generic"
   Author: "FreeCAD"
-  License: "CC-BY-3.0"
+  License: "CC-BY-SA-4.0"
   Description: "Polyether ether ketone (PEEK) is a beige coloured organic thermoplastic polymer in the polyaryletherketone (PAEK) family, used in engineering applications. The values are average across the spectrum. If you need a more precise material definition use the more specialised PEEK-blend cards."
   SourceURL: "https://www.matweb.com/search/DataSheet.aspx?MatGUID=2164cacabcde4391a596640d553b2ebe"
 Models:
@@ -12,7 +12,7 @@ Models:
     Father: "Thermoplast"
   Linear Elastic:
     UUID: "7b561d1d-fb9b-44f6-9da9-56a4f74d7536"
-    Density: "1340 kg/mm^3"
+    Density: "1340 kg/m^3"
     UltimateTensileStrength: "98.9 MPa"
     YieldStrength: "97.1 MPa"
     YoungsModulus: "3880 MPa"
