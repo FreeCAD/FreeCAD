@@ -20,10 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QApplication>
-#endif
+
 
 #include "Navigation/NavigationStyle.h"
 #include "View3DInventorViewer.h"

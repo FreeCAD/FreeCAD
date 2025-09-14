@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 #include <QClipboard>
 #include <QDockWidget>
 #include <QKeyEvent>
 #include <QMessageBox>
 #include <QMetaObject>
 #include <QSignalMapper>
-#endif
+
 
 #include <App/ComplexGeoData.h>
 #include <App/Document.h>

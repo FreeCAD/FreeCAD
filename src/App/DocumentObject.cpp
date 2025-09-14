@@ -21,16 +21,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <stack>
 #include <memory>
 #include <map>
 #include <set>
 #include <vector>
 #include <string>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Matrix.h>

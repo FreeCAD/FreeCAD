@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+
 #include <Base/Interpreter.h>
 
 #include "SoQtOffscreenRendererPy.h"

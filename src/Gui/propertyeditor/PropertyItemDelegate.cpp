@@ -20,17 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QApplication>
 # include <QCheckBox>
 # include <QComboBox>
 # include <QModelIndex>
 # include <QPainter>
 # include <QTimer>
-#endif
 
 #include <Base/Tools.h>
 

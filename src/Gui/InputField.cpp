@@ -20,16 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <limits>
 # include <QContextMenuEvent>
 # include <QMenu>
 # include <QPixmapCache>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
-#endif
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>

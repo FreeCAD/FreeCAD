@@ -27,6 +27,8 @@
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SoOffscreenRenderer.h>
 
+#include <FCConfig.h>
+
 #ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
 #else

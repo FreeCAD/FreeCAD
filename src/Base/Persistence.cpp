@@ -20,16 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <algorithm>
 #include <array>
 #include <cassert>
 #include <codecvt>
 #include <locale>
-#endif
 
 #include <zipios++/zipinputstream.h>
 

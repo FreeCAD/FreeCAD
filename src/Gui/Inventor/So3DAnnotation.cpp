@@ -20,17 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
 #ifdef FC_OS_MACOSX
 #include <OpenGL/gl.h>
 #else
+#ifdef FC_OS_WIN32
+#include <windows.h>
+#endif
 #include <GL/gl.h>
 #endif
+
 #include <Inventor/elements/SoCacheElement.h>
 #include <algorithm>
-#endif
 
 #include "So3DAnnotation.h"
 #include <Gui/Selection/Selection.h>

@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <array>
 #include <cmath>
 #include <limits>
 #include <numbers>
 #include <sstream>
 #include <string>
-#endif
 
 #include <fmt/format.h>
 

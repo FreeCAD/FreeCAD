@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QDir>
 # include <QMessageBox>
-#endif
 
 #include <App/Application.h>
 

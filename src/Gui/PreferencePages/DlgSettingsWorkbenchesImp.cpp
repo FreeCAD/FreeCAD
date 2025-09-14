@@ -22,15 +22,12 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QAction>
 #include <QCheckBox>
 #include <QLabel>
 #include <QMenu>
 #include <QPushButton>
 #include <sstream>
-#endif
 
 #include <Gui/Application.h>
 #include <Gui/Workbench.h>

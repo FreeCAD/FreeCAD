@@ -20,12 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QLineEdit>
 # include <QPixmapCache>
 # include <QStyle>
-#endif
 
 #include "BitmapFactory.h"
 #include "Command.h"

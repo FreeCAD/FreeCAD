@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <limits>
 # include <unordered_map>
 # include <list>
@@ -31,7 +30,7 @@
 # include <QIcon>
 # include <QPrinter>
 # include <QWidget>
-#endif
+
 
 #include <QMetaType>
 
@@ -40,6 +39,8 @@
 //#undef HAVE_PYSIDE2
 //#undef HAVE_SHIBOKEN6
 //#undef HAVE_PYSIDE6
+
+#include <FCConfig.h>
 
 #ifdef FC_OS_WIN32
 #undef max
@@ -131,10 +132,9 @@
 #endif
 
 // Must be imported after PySide headers
-#ifndef _PreComp_
 # include <QGraphicsItem>
 # include <QGraphicsObject>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>

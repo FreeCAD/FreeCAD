@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <QApplication>
 # include <QStyle>
-#endif
+
 
 #include "ViewProviderMaterialObject.h"
 #include "Application.h"

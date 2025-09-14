@@ -19,7 +19,7 @@
  *   <https://www.gnu.org/licenses/>.                                      *
  *                                                                         *
  **************************************************************************/
-#include "PreCompiled.h"
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/VectorPy.h>

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <sstream>
 # include <QAction>
 # include <QFileInfo>
@@ -37,7 +36,7 @@
 # include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/nodes/SoTexture2.h>
 # include <Inventor/nodes/SoTextureCoordinate2.h>
-#endif
+
 
 #include <App/Document.h>
 #include <Gui/ActionFunction.h>

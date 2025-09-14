@@ -20,10 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QActionEvent>
 # include <QActionGroup>
 # include <QApplication>
@@ -36,7 +32,6 @@
 # include <QToolBar>
 # include <QToolButton>
 # include <QToolTip>
-#endif
 
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>

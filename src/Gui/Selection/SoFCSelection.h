@@ -23,6 +23,8 @@
 #ifndef GUI_SOFCSELECTION_H
 #define GUI_SOFCSELECTION_H
 
+#include <FCConfig.h>
+
 # ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
 # else

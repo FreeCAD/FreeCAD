@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QDateTime>
 # include <QPushButton>
-#endif
 
 #include "Dialogs/DlgRevertToBackupConfigImp.h"
 #include "ui_DlgRevertToBackupConfig.h"

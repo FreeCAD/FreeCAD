@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <Inventor/SbSphere.h>
 # include <Inventor/SbString.h>
 # include <Inventor/SoInteraction.h>
@@ -40,7 +39,7 @@
 # include <QProcess>
 # include <QTemporaryFile>
 # include <sstream>
-#endif
+
 
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>

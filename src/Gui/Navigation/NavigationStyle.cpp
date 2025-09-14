@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <Inventor/SbViewportRegion.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -37,7 +36,7 @@
 # include <QByteArray>
 # include <QCursor>
 # include <QMenu>
-#endif
+
 
 #include <cmath>
 #include <limits>

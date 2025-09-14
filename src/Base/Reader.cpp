@@ -20,17 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <map>
 #include <vector>
 #include <iostream>
 #include <string>
 #include <xercesc/sax2/XMLReaderFactory.hpp>
 #include <xercesc/sax2/Attributes.hpp>
-#endif
 
 #include <locale>
 

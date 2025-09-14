@@ -21,15 +21,12 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <limits>
 # include <Inventor/sensors/SoNodeSensor.h>
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoTransform.h>
 # include <Inventor/nodes/SoSwitch.h>
-#endif // _PreComp_
 
 #include <QEvent>
 #include <QKeyEvent>
@@ -270,7 +267,7 @@ void EditableDatumLabel::stopEdit()
 
         spinBox->deleteLater();
         spinBox = nullptr;
-        
+
         // Lock icon will be automatically destroyed as it's a child of spinbox
         lockIconLabel = nullptr;
     }
@@ -351,7 +348,7 @@ void EditableDatumLabel::positionSpinbox()
     pxCoord.setX(posX);
     pxCoord.setY(posY);
     spinBox->move(pxCoord);
-    
+
     // Update lock icon position inside the spinbox if it exists and is visible
     if (lockIconLabel && lockIconLabel->isVisible()) {
         int iconSize = 14;
@@ -498,7 +495,7 @@ void EditableDatumLabel::setLockedAppearance(bool locked)
 {
     if (locked) {
         if (spinBox) {
-            
+
             // create lock icon label it it doesn't exist, if it does - show it
             if (!lockIconLabel) {
                 lockIconLabel = new QLabel(spinBox);
@@ -536,7 +533,7 @@ void EditableDatumLabel::setLockedAppearance(bool locked)
         // if spinbox exists, reset its appearance
         if (spinBox) {
             spinBox->setStyleSheet(QString());
-            
+
             // hide lock icon if it exists for later reuse
             if (lockIconLabel) {
                 lockIconLabel->hide();

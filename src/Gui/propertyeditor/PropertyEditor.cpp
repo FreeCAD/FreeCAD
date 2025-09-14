@@ -20,10 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <algorithm>
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
@@ -32,7 +28,6 @@
 #include <QHeaderView>
 #include <QMenu>
 #include <QPainter>
-#endif
 
 #include <App/Application.h>
 #include <App/AutoTransaction.h>

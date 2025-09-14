@@ -21,9 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <algorithm>
 #include <iomanip>
 #include <limits>
@@ -39,7 +36,6 @@
 #include <QTimer>
 #include <QtGlobal>
 #include <QMenu>
-#endif
 
 #include "PropertyItem.h"
 #include "PropertyView.h"

@@ -314,7 +314,6 @@ SET(FreeCADBase_SRCS
     ${FreeCADBase_UNITAPI_SRCS}
     PyTools.c
     PyTools.h
-    PreCompiled.cpp
     PreCompiled.h
 )
 
@@ -334,8 +333,9 @@ else()
 endif()
 
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    ADD_MSVC_PRECOMPILED_HEADER(FreeCADBase PreCompiled.h PreCompiled.cpp FreeCADBase_CPP_SRCS)
+    target_precompile_headers(FreeCADBase PRIVATE
+        $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
 target_sources(FreeCADBase PRIVATE ${FreeCADBase_SRCS})

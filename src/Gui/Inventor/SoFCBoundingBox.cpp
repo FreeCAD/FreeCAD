@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <sstream>
 
 #include <Inventor/SbBox.h>
@@ -31,7 +28,6 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTransform.h>
-#endif
 
 #include "SoFCBoundingBox.h"
 

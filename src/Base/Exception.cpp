@@ -21,10 +21,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <utility>
-#endif
+
+#include <FCConfig.h>
 
 #include "Console.h"
 #include "PyObjectBase.h"
