@@ -388,7 +388,7 @@ void SketcherValidation::onDelConstrExtrClicked()
 
     int reply = QMessageBox::question(
         this,
-        tr("Delete constraints to external geom."),
+        tr("Delete Constraints to External Geometry"),
         tr("This will delete all constraints that deal with external geometry. This is "
            "useful to rescue a sketch with broken or changed links to external geometry. Delete "
            "the constraints?"),
