@@ -281,7 +281,6 @@ void TaskDimension::onReferenceChanged()
     
     if (isChecked) {
         newFormat = std::regex_replace(currentFormat, specRegex, "($&)");
-
     } else {
         newFormat = std::regex_replace(currentFormat, refRegex, "$1");
     }
