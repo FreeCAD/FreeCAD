@@ -371,24 +371,26 @@ class TaskPanelPage(object):
     def selectInComboBox(self, name, combo):
         """selectInComboBox(name, combo) ...
         helper function to select a specific value in a combo box."""
-        blocker = QtCore.QSignalBlocker(combo)
-        index = combo.currentIndex()  # Save initial index
+        try:
+            combo.blockSignals(True)
+            index = combo.currentIndex()  # Save initial index
 
-        # Search using currentData and return if found
-        newindex = combo.findData(name)
-        if newindex >= 0:
-            combo.setCurrentIndex(newindex)
-            return
+            # Search using currentData and return if found
+            newindex = combo.findData(name)
+            if newindex >= 0:
+                combo.setCurrentIndex(newindex)
+                return
 
-        # if not found, search using current text
-        newindex = combo.findText(name, QtCore.Qt.MatchFixedString)
-        if newindex >= 0:
-            combo.setCurrentIndex(newindex)
-            return
+            # if not found, search using current text
+            newindex = combo.findText(name, QtCore.Qt.MatchFixedString)
+            if newindex >= 0:
+                combo.setCurrentIndex(newindex)
+                return
 
-        # not found, return unchanged
-        combo.setCurrentIndex(index)
-        return
+            # not found, return unchanged
+            combo.setCurrentIndex(index)
+        finally:
+            combo.blockSignals(False)
 
     def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
         """populateCombobox(form, enumTups, comboBoxesPropertyMap) ... proxy for PathGuiUtil.populateCombobox()"""
