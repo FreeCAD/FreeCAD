@@ -44,7 +44,7 @@ Source0:        freecad-sources.tar.gz
 # Utilities
 BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils tbb-devel ninja-build
 %if %{with tests}
-BuildRequires:  xorg-x11-server-Xvfb IfcOpenShell-python3
+BuildRequires:  xorg-x11-server-Xvfb python3-typing-extensions
 %if %{without bundled_gtest}
 BuildRequires: gtest-devel gmock-devel
 %endif
@@ -73,7 +73,7 @@ Requires:       %{name}-data = %{epoch}:%{version}-%{release}
 # Obsolete old doc package since it's required for functionality.
 Obsoletes:      %{name}-doc < 0.22-1
 
-Requires:       hicolor-icon-theme fmt python3-matplotlib python3-pivy python3-collada python3-pyside6 qt6-assistant
+Requires:       hicolor-icon-theme fmt python3-matplotlib python3-pivy python3-collada python3-pyside6 qt6-assistant python3-typing-extensions
 
 %if %{with bundled_smesh}
 Provides:       bundled(smesh) = %{bundled_smesh_version}
