@@ -1,0 +1,35 @@
+﻿---
+General:
+  UUID: "1fed8adb-7bf6-4d8a-9b1e-a3b50f8b2093"
+  Name: "PEEK-Generic"
+  Author: "FreeCAD"
+  License: "CC-BY-SA-4.0"
+  Description: "Polyether ether ketone (PEEK) is a beige coloured organic thermoplastic polymer in the polyaryletherketone (PAEK) family, used in engineering applications. The values are average across the spectrum. If you need a more precise material definition use the more specialised PEEK-blend cards."
+  SourceURL: "https://www.matweb.com/search/DataSheet.aspx?MatGUID=2164cacabcde4391a596640d553b2ebe"
+Models:
+  Father:
+    UUID: "9cdda8b6-b606-4778-8f13-3934d8668e67"
+    Father: "Thermoplast"
+  Linear Elastic:
+    UUID: "7b561d1d-fb9b-44f6-9da9-56a4f74d7536"
+    Density: "1340 kg/m^3"
+    UltimateTensileStrength: "98.9 MPa"
+    YieldStrength: "97.1 MPa"
+    YoungsModulus: "3880 MPa"
+  Thermal:
+    UUID: "9959d007-a970-4ea7-bae4-3eb1b8b883c7"
+    SpecificHeat: "1410 J/kg/K"
+    ThermalConductivity: "0.299 W/m/K"
+    ThermalExpansionCoefficient: "0.0000529 m/m/K"
+  Costs:
+    UUID: "881df808-8726-4c2e-be38-688bb6cce466"
+    ProductURL: "https://en.wikipedia.org/wiki/Polyether_ether_ketone"
+AppearanceModels:
+  Basic Rendering:
+    UUID: "f006c7e4-35b7-43d5-bbf9-c5d572309e6e"
+    AmbientColor: "(0.933333,0.933333,0.933333,1)"
+    DiffuseColor: "(0.756863,0.678431,0.580392,1)"
+    EmissiveColor: "(0, 0, 0, 1)"
+    Shininess: "0.0078"
+    SpecularColor: "(0.0666667,0.0666667,0.0666667,1)"
+    Transparency: "0"
