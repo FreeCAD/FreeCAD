@@ -83,7 +83,7 @@ std::vector<int> getListOfSelectedGeoIds(bool forceInternalSelection)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(),
-            QObject::tr("Wrong selection"),
+            QObject::tr("Wrong Selection"),
             QObject::tr("Select elements from a single sketch."));
         return {};
     }
@@ -1438,7 +1438,7 @@ void SketcherCopy::activate(SketcherCopy::Op op)
     // Ask the user if they want to clone or to simple copy
     /*
     int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Dimensional/Geometric
-    constraints"), QObject::tr("Do you want to clone the object, i.e. substitute dimensional
+    Constraints"), QObject::tr("Do you want to clone the object, i.e. substitute dimensional
     constraints by geometric constraints?"), QMessageBox::Yes, QMessageBox::No,
     QMessageBox::Cancel);
     // use an equality constraint
@@ -2087,7 +2087,7 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
 
     int ret = QMessageBox::question(
         Gui::getMainWindow(),
-        QObject::tr("Delete all geometry"),
+        QObject::tr("Delete All Geometry"),
         QObject::tr("Delete all geometry and constraints?"),
         QMessageBox::Yes,
         QMessageBox::Cancel);
@@ -2151,7 +2151,7 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
 
     int ret = QMessageBox::question(
         Gui::getMainWindow(),
-        QObject::tr("Delete all constraints"),
+        QObject::tr("Delete All Constraints"),
         QObject::tr("Delete all the constraints in the sketch?"),
         QMessageBox::Yes,
         QMessageBox::Cancel);
