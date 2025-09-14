@@ -523,9 +523,13 @@ class TaskPanelPage(object):
 
             self.updateToolControllerEditorVisibility()
             self.tcEditor.updateUi()
-            self.form.editToolController.checkStateChanged.connect(
-                self.updateToolControllerEditorVisibility
+            checkbox = self.form.editToolController
+            checkboxSignal = (
+                checkbox.checkStateChanged
+                if hasattr(checkbox, "checkStateChanged")
+                else checkbox.stateChanged
             )
+            checkboxSignal.connect(self.updateToolControllerEditorVisibility)
 
             if oldEditor:
                 oldEditor.updateToolController()
