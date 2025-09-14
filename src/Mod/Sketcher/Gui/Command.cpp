@@ -454,7 +454,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
     if (sketch->AttachmentSupport.getValue()) {
         int ret = QMessageBox::question(
             Gui::getMainWindow(),
-            qApp->translate("Sketcher_ReorientSketch", "Sketch has support"),
+            qApp->translate("Sketcher_ReorientSketch", "Sketch Has Support"),
             qApp->translate("Sketcher_ReorientSketch",
                             "Sketch with a support face cannot be reoriented.\n"
                             "Detach it from the support?"),
@@ -1925,3 +1925,4 @@ void CreateSketcherCommands()
     rcCmdMgr.addCommand(new CmdRenderingOrder());
 }
 // clang-format on
+
