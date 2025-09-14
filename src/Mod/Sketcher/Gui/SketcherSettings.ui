@@ -23,7 +23,7 @@
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxAdvancedSolverTaskBox">
         <property name="toolTip">
-         <string>Displays the additional section 'Advanced solver control' to adjust solver settings in the task view</string>
+         <string>Displays the additional section 'Advanced Solver Controls' to adjust solver settings in the task view</string>
         </property>
         <property name="text">
          <string>Show section 'Advanced solver control'</string>
