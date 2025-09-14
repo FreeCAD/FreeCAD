@@ -22,21 +22,12 @@
         <layout class="QGridLayout" name="gridLayout_1">
          <!-- Constraint symbol size -->
          <item row="1" column="0">
-          <widget class="Gui::PrefCheckBox" name="checkBoxUseConstraintSymbolSize">
-           <property name="toolTip">
-            <string>Enable a custom pixel size for constraint symbols (otherwise the font size is used).</string>
-           </property>
+          <widget class="QLabel" name="label_ConstraintSymbolSize">
            <property name="text">
-            <string>Use custom constraint symbol size</string>
+            <string>Constraint symbol size</string>
            </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-           <property name="prefEntry" stdset="0">
-            <cstring>UseConstraintSymbolSize</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>View</cstring>
+           <property name="buddy">
+            <cstring>ConstraintSymbolSize</cstring>
            </property>
           </widget>
          </item>
@@ -56,9 +47,6 @@
            </property>
            <property name="value">
             <number>15</number>
-           </property>
-           <property name="enabled">
-            <bool>false</bool>
            </property>
            <property name="prefEntry" stdset="0">
             <cstring>ConstraintSymbolSize</cstring>

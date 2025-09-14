@@ -225,7 +225,7 @@ public:
     {}
 
     /** function that is called by the handler with a Vector2d position to update the widget*/
-    void doChangeDrawSketchHandlerMode() override
+    void computeNextDrawSketchHandlerMode() override
     {}
 
     /** function that is called by the handler with a Vector2d position to update the widget */

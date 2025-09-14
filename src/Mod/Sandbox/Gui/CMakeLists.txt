@@ -57,6 +57,10 @@ set (SandboxGui_Scripts
 add_library(SandboxGui SHARED ${SandboxGui_SRCS} ${SandboxGui_Scripts})
 target_link_libraries(SandboxGui ${SandboxGui_LIBS})
 
+if (MSVC)
+    target_compile_definitions(SandboxGui PRIVATE WIN32_LEAN_AND_MEAN)
+endif()
+
 
 fc_target_copy_resource_flat(SandboxGui
     ${CMAKE_CURRENT_SOURCE_DIR}

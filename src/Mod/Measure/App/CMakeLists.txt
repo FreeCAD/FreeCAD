@@ -1,25 +1,15 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(Measure_LIBS
     Part
     FreeCADApp
 )
 
-generate_from_xml(MeasurementPy)
-generate_from_xml(MeasureBasePy)
-
-generate_from_py_(MeasurementPy)
-generate_from_py_(MeasureBasePy)
+generate_from_py(Measurement)
+generate_from_py(MeasureBase)
 
 SET(Python_SRCS
-    MeasurementPy.xml
+    Measurement.pyi
     MeasurementPyImp.cpp
-    MeasureBasePy.xml
+    MeasureBase.pyi
     MeasureBasePyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
@@ -73,6 +63,16 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 add_library(Measure SHARED ${Measure_SRCS})
+
+target_include_directories(
+    Measure
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 target_link_libraries(Measure ${Measure_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Measure)

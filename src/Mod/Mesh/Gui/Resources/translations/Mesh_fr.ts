@@ -1281,14 +1281,14 @@
   <context>
     <name>MeshGui::DlgRegularSolidImp</name>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="124"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="205"/>
-      <location filename="../../DlgRegularSolidImp.cpp" line="213"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="123"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="204"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="212"/>
       <source>Create %1</source>
       <translation>Créer %1</translation>
     </message>
     <message>
-      <location filename="../../DlgRegularSolidImp.cpp" line="124"/>
+      <location filename="../../DlgRegularSolidImp.cpp" line="123"/>
       <source>No active document</source>
       <translation>Aucun document actif</translation>
     </message>
@@ -1557,12 +1557,12 @@ Avec l'ombrage plat, les normales de la surface ne sont pas définies par les so
     <message>
       <location filename="../../RemeshGmsh.cpp" line="104"/>
       <source>Frontal quad</source>
-      <translation type="unfinished">Frontal quad</translation>
+      <translation>Quadrilatéral frontal</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="106"/>
       <source>Quasi-structured quad</source>
-      <translation type="unfinished">Quasi-structured quad</translation>
+      <translation>Quadrilatéral quasi-structuré</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="200"/>
@@ -1710,7 +1710,7 @@ Avec l'ombrage plat, les normales de la surface ne sont pas définies par les so
     <message>
       <location filename="../../RemeshGmsh.ui" line="141"/>
       <source>Leave empty to use default gmsh executable</source>
-      <translation type="unfinished">Leave empty to use default gmsh executable</translation>
+      <translation>Laisser vide pour utiliser l'exécutable de Gmsh par défaut</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="157"/>

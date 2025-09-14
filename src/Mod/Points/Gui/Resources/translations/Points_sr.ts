@@ -304,7 +304,7 @@
     <message>
       <location filename="../../Command.cpp" line="117"/>
       <source>The bounding box of the imported points does not contain the origin. Translate it to the origin?</source>
-      <translation>Координатни почетак се не налази унутар граничне кутије увезених тачака. Да ли желиш да их померим у координатни почетак?</translation>
+      <translation>Координатни почетак се не налази унутар граничне кутије увезених тачака. Да ли желиш да их преместим у координатни почетак?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="257"/>

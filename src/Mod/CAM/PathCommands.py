@@ -21,12 +21,13 @@
 # ***************************************************************************
 
 import FreeCAD
+import Part
 import Path
-import PathScripts
 import traceback
 
 from PathScripts.PathUtils import loopdetect
 from PathScripts.PathUtils import horizontalEdgeLoop
+from PathScripts.PathUtils import tangentEdgeLoop
 from PathScripts.PathUtils import horizontalFaceLoop
 from PathScripts.PathUtils import addToJob
 from PathScripts.PathUtils import findParentJob
@@ -59,7 +60,8 @@ class _CommandSelectLoop:
             "MenuText": QT_TRANSLATE_NOOP("CAM_SelectLoop", "Finish Selecting Loop"),
             "Accel": "P, L",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_SelectLoop", "Completes the selection of edges that form a loop"
+                "CAM_SelectLoop",
+                "Completes the selection of edges that form a loop\n Select one edge to search loop edges in horizontal plane\n Select two edges to search loop edges in wires of the shape\n Select one or more vertical faces to search loop faces which form the walls",
             ),
             "CmdType": "ForEdit",
         }
@@ -97,7 +99,7 @@ class _CommandSelectLoop:
         obj = sel.Object
         sub = sel.SubObjects
         names = sel.SubElementNames
-        loopwire = None
+        loop = None
 
         # Face selection
         if "Face" in names[0]:
@@ -107,21 +109,27 @@ class _CommandSelectLoop:
                 FreeCADGui.Selection.addSelection(obj, loop)
                 return
 
-        # One edge selected
-        elif len(sub) == 1:
-            loopwire = horizontalEdgeLoop(obj, sub[0])
+        elif "Edge" in names[0]:
+            if len(sub) == 1:
+                # One edge selected
+                loop = horizontalEdgeLoop(obj, sub[0], verbose=True)
 
-        # Two edges selected
-        elif len(sub) >= 2:
-            loopwire = loopdetect(obj, sub[0], sub[1])
+            if len(sub) >= 2:
+                # Several edges selected
+                loop = loopdetect(obj, sub[0], sub[1])
 
-        if hasattr(loopwire, "Edges") and loopwire.Edges:
-            elist = obj.Shape.Edges
+            if not loop:
+                # Try to find tangent non planar loop
+                loop = tangentEdgeLoop(obj, sub[0])
+
+        if isinstance(loop, list) and len(loop) > 0 and isinstance(loop[0], Part.Edge):
+            # Select edges from list
+            objEdges = obj.Shape.Edges
             FreeCADGui.Selection.clearSelection()
-            for i in loopwire.Edges:
-                for e in elist:
-                    if e.hashCode() == i.hashCode():
-                        FreeCADGui.Selection.addSelection(obj, f"Edge{elist.index(e) + 1}")
+            for el in loop:
+                for eo in objEdges:
+                    if eo.hashCode() == el.hashCode():
+                        FreeCADGui.Selection.addSelection(obj, f"Edge{objEdges.index(eo) + 1}")
             return
 
         # Final fallback

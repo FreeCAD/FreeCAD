@@ -1,7 +1,3 @@
-include_directories(
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(PointsGui_LIBS
     Points
     FreeCADGui
@@ -58,7 +54,18 @@ if(FREECAD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(PointsGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif(FREECAD_USE_PCH)
 
-add_library(PointsGui SHARED ${PointsGui_SRCS} ${PointsGui_Scripts} ${PointsGuiIcon_SVG})
+add_library(PointsGui SHARED
+    ${PointsGui_SRCS}
+    ${PointsGui_Scripts}
+    ${PointsGuiIcon_SVG}
+)
+
+target_include_directories(
+    PointsGui
+    PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 target_link_libraries(PointsGui ${PointsGui_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(PointsGui)

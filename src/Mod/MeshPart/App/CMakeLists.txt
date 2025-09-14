@@ -11,7 +11,9 @@ if(BUILD_FEM_NETGEN)
     add_definitions(-DHAVE_NETGEN)
 endif(BUILD_FEM_NETGEN)
 
-include_directories(
+target_include_directories(
+    MeshPart
+    PRIVATE
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
 )
@@ -83,6 +85,11 @@ endif()
 
 target_sources(MeshPart PRIVATE ${MeshPart_SRCS} ${MeshPart_Scripts})
 target_link_libraries(MeshPart ${MeshPart_LIBS})
+
+if (MSVC)
+    target_compile_options(MeshPart PRIVATE /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(MeshPart)
 endif()

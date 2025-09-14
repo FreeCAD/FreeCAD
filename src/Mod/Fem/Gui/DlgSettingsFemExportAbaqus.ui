@@ -43,7 +43,7 @@ not belonging to faces and faces not belonging to volumes.</string>
            <string/>
           </property>
           <property name="whatsThis">
-           <string>element parameter: All: all elements, highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</string>
+           <string>element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>AbaqusElementChoice</cstring>
@@ -80,14 +80,14 @@ not belonging to faces and faces not belonging to volumes.</string>
           <property name="toolTip">
            <string>Mesh groups are exported too.
 Every analysis feature and, if there are different materials,
-material consists of two mesh groups, faces and nodes where
+material consists of two mesh groups - faces and nodes where
 the constraint or material is applied.</string>
           </property>
           <property name="text">
            <string/>
           </property>
           <property name="checked">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>AbaqusWriteGroups</cstring>

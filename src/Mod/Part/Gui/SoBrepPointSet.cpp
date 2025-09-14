@@ -44,7 +44,9 @@
 #endif
 
 #include <Gui/Selection/SoFCUnifiedSelection.h>
+#include <Gui/Inventor/So3DAnnotation.h>
 
+#include "ViewProviderExt.h"
 #include "SoBrepPointSet.h"
 
 
@@ -81,6 +83,22 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
         return;
     if(selContext2->checkGlobal(ctx))
         ctx = selContext2;
+    
+
+    bool hasContextHighlight =
+        ctx && ctx->isHighlighted() && !ctx->isHighlightAll() && ctx->highlightIndex >= 0;
+    // for clarifyselection, add this node to delayed path if it is highlighted and render it on
+    // top of everything else (highest priority)
+    if (Gui::Selection().isClarifySelectionActive() && hasContextHighlight
+        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
+        if (viewProvider) {
+            viewProvider->setFaceHighlightActive(true);
+        }
+        Gui::SoDelayedAnnotationsElement::addDelayedPath(action->getState(),
+                                                        action->getCurPath()->copy(),
+                                                        300);
+        return;
+    }
 
     if(ctx && ctx->highlightIndex == std::numeric_limits<int>::max()) {
         if(ctx->selectionIndex.empty() || ctx->isSelectAll()) {
@@ -121,8 +139,15 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
     }
     if(ctx2 && !ctx2->selectionIndex.empty())
         renderSelection(action,ctx2,false);
-    else
+    else if (Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
+        glPushAttrib(GL_DEPTH_BUFFER_BIT);
+        glDepthFunc(GL_ALWAYS);
         inherited::GLRender(action);
+        glPopAttrib();
+    }
+    else {
+        inherited::GLRender(action);
+    }
 
     // Workaround for #0000433
 //#if !defined(FC_OS_WIN32)

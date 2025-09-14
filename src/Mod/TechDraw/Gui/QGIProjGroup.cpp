@@ -78,11 +78,6 @@ bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
             qWatched->setFlag(QGraphicsItem::ItemIsMovable, false);
             switch (event->type()) {
                 case QEvent::GraphicsSceneMousePress:
-                    // TODO - Perhaps just pass the mouse event on to the watched item somehow?
-                    if (scene() && !qWatched->isSelected()) {
-                        scene()->clearSelection();
-                        qWatched->setSelected(true);
-                    }
                     mousePressEvent(mEvent);
                     break;
                 case QEvent::GraphicsSceneMouseMove:

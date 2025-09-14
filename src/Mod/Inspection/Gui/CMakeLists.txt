@@ -1,8 +1,3 @@
-include_directories(
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(InspectionGui_LIBS
     Inspection
     FreeCADGui
@@ -48,8 +43,25 @@ SET(InspectionGuiIcon_SVG
     Resources/icons/InspectionWorkbench.svg
 )
 
-add_library(InspectionGui SHARED ${InspectionGui_SRCS} ${InspectionGui_Scripts} ${InspectionGuiIcon_SVG})
+add_library(InspectionGui SHARED
+    ${InspectionGui_SRCS}
+    ${InspectionGui_Scripts}
+    ${InspectionGuiIcon_SVG}
+)
+
+target_include_directories(
+    InspectionGui
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 target_link_libraries(InspectionGui ${InspectionGui_LIBS})
+
+if (MSVC)
+    target_compile_options(InspectionGui PRIVATE /wd4251)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(InspectionGui)
 endif()

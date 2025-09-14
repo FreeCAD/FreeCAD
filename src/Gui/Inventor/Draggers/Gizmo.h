@@ -96,6 +96,8 @@ public:
     SoInteractionKit* initDragger() override;
     void uninitDragger() override;
 
+    void updateColorTheme();
+
     // Returns the position and rotation of the base of the dragger
     GizmoPlacement getDraggerPlacement() override;
     void setDraggerPlacement(const SbVec3f& pos, const SbVec3f& dir) override;
@@ -131,6 +133,8 @@ public:
 
     SoInteractionKit* initDragger() override;
     void uninitDragger() override;
+
+    void updateColorTheme();
 
     // Distance between the linear gizmo base and rotation gizmo
     double sepDistance = 0;
@@ -189,6 +193,8 @@ public:
     RadialGizmo(QuantitySpinBox* property);
 
     SoInteractionKit* initDragger() override;
+
+    void updateColorTheme();
 
     void setRadius(float radius);
     void flipArrow();

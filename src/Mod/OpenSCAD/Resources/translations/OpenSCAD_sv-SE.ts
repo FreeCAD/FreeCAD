@@ -6,43 +6,43 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="35"/>
       <source>General OpenSCAD Settings</source>
-      <translation>Allmänna OpenSCAD-inställningar</translation>
+      <translation>Allmänna inställningar för OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="43"/>
       <source>OpenSCAD executable</source>
-      <translation>OpenSCAD-programfil</translation>
+      <translation>Körbar OpenSCAD-fil</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="56"/>
       <source>The path to the OpenSCAD executable</source>
-      <translation>Sökväg till OpenSCAD-programfil</translation>
+      <translation>Sökvägen till den körbara filen för OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="82"/>
       <source>Print debug information in the Console</source>
-      <translation>Skriv debug-information i konsolen</translation>
+      <translation>Skriv ut felsökningsinformation i konsolen</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="99"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation>Funktioner kommer visa dess underobjekt i trädvyn</translation>
+      <translation>Om detta är markerat kommer funktioner att kräva sina barn i trädvyn</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation>Multmatrix-objekt kommer att vara parametriska</translation>
+      <translation>Om detta är markerat kommer Multmatrix-objektet att vara parametriskt</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="122"/>
       <source>Use Multmatrix Feature</source>
-      <translation>Använd multmatrix-funktion</translation>
+      <translation>Använd Multmatrix-funktionen</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="139"/>
       <location filename="../ui/openscadprefs-base.ui" line="162"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>Det maximala antalet ytor på en polygon, prisma eller stympad kon. Om fn är högre än detta värde anses objektet vara cirkulärt. Ange 0 för ingen gräns</translation>
+      <translation>Det maximala antalet ytor i en polygon, prisma eller kegelstump. Om fn är större än detta värde anses objektet vara cirkulärt. Sätt till 0 för ingen begränsning</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="142"/>
@@ -57,7 +57,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="205"/>
       <source>Standard temp directory</source>
-      <translation>Standard temp-katalog</translation>
+      <translation>Temporär standardkatalog</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="210"/>
@@ -108,22 +108,22 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="74"/>
       <source>OpenSCAD Import</source>
-      <translation type="unfinished">OpenSCAD Import</translation>
+      <translation>OpenSCAD-import</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
       <source>Use ViewProviders in Tree View</source>
-      <translation type="unfinished">Use ViewProviders in Tree View</translation>
+      <translation>Använda ViewProviders i trädvyn</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
       <source>Send to OpenSCAD via</source>
-      <translation type="unfinished">Send to OpenSCAD via</translation>
+      <translation>Skicka till OpenSCAD via</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="261"/>
       <source>OpenSCAD Export</source>
-      <translation type="unfinished">OpenSCAD Export</translation>
+      <translation>OpenSCAD-export</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="331"/>
@@ -144,18 +144,18 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="425"/>
       <source>Mesh fallback</source>
-      <translation>Nätreserv</translation>
+      <translation>Reservnät</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="445"/>
       <location filename="../ui/openscadprefs-base.ui" line="462"/>
       <source>Deflection</source>
-      <translation>Avvikning</translation>
+      <translation>Avböjning</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="448"/>
       <source>deflection</source>
-      <translation>avvikning</translation>
+      <translation>avböjning</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="455"/>
@@ -227,32 +227,32 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="139"/>
       <source>Converts edges to faces</source>
-      <translation type="unfinished">Converts edges to faces</translation>
+      <translation>Omvandlar kanter till ytor</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="301"/>
       <source>Select 3 objects first</source>
-      <translation type="unfinished">Select 3 objects first</translation>
+      <translation>Välj 3 objekt först</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="335"/>
       <source>Clear Code</source>
-      <translation type="unfinished">Clear Code</translation>
+      <translation>Rensa kod</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="336"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>Öppna…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Save…</source>
-      <translation type="unfinished">Save…</translation>
+      <translation>Spara…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>
       <source>as mesh</source>
-      <translation type="unfinished">as mesh</translation>
+      <translation>som nät</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="427"/>
@@ -301,13 +301,13 @@
       <location filename="../../importCSG.py" line="517"/>
       <location filename="../../importCSG.py" line="1389"/>
       <source>Unsupported Function</source>
-      <translation>Funktionen stöds inte</translation>
+      <translation>Funktion som inte stöds</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="517"/>
       <location filename="../../importCSG.py" line="1389"/>
       <source>Press OK</source>
-      <translation>Tryck på 'Ok'</translation>
+      <translation>Tryck på OK</translation>
     </message>
   </context>
   <context>
@@ -315,12 +315,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="100"/>
       <source>Explode Group</source>
-      <translation>Explodera grupp</translation>
+      <translation>Exploderande grupp</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="103"/>
       <source>Explodes a fusion or compound and applies random colors</source>
-      <translation type="unfinished">Explodes a fusion or compound and applies random colors</translation>
+      <translation>Exploderar en fusion eller förening och applicerar slumpmässiga färger</translation>
     </message>
   </context>
   <context>
@@ -328,12 +328,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="116"/>
       <source>Color Shapes</source>
-      <translation>Färg-former</translation>
+      <translation>Färg Former</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="119"/>
       <source>Colors shapes by validity and type</source>
-      <translation type="unfinished">Colors shapes by validity and type</translation>
+      <translation>Färgformer efter giltighet och typ</translation>
     </message>
   </context>
   <context>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="159"/>
       <source>Creates a refined shape</source>
-      <translation type="unfinished">Creates a refined shape</translation>
+      <translation>Skapar en förfinad form</translation>
     </message>
   </context>
   <context>
@@ -359,7 +359,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="269"/>
       <source>Creates a feature to increase the tolerance</source>
-      <translation type="unfinished">Creates a feature to increase the tolerance</translation>
+      <translation>Skapar en funktion för att öka toleransen</translation>
     </message>
   </context>
   <context>
@@ -372,7 +372,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="286"/>
       <source>Expands all placements downwards in the Tree View</source>
-      <translation type="unfinished">Expands all placements downwards in the Tree View</translation>
+      <translation>Expanderar alla placeringar nedåt i trädvyn</translation>
     </message>
   </context>
   <context>
@@ -380,12 +380,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="304"/>
       <source>Replace Object</source>
-      <translation>Byt ut objekt</translation>
+      <translation>Ersätt objekt</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>
       <source>Replaces an object in the Tree View</source>
-      <translation type="unfinished">Replaces an object in the Tree View</translation>
+      <translation>Ersätter ett objekt i trädvyn</translation>
     </message>
   </context>
   <context>
@@ -393,12 +393,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="317"/>
       <source>Remove Objects and Children</source>
-      <translation type="unfinished">Remove Objects and Children</translation>
+      <translation>Ta bort objekt och barn</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="320"/>
       <source>Removes the selected objects and all children that are not referenced by other objects</source>
-      <translation type="unfinished">Removes the selected objects and all children that are not referenced by other objects</translation>
+      <translation>Tar bort de markerade objekten och alla underordnade objekt som inte refereras av andra objekt</translation>
     </message>
   </context>
   <context>
@@ -406,12 +406,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="565"/>
       <source>Hull</source>
-      <translation>skrov</translation>
+      <translation>Skrov</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="568"/>
       <source>Creates a hull</source>
-      <translation type="unfinished">Creates a hull</translation>
+      <translation>Skapar ett skrov</translation>
     </message>
   </context>
   <context>
@@ -432,7 +432,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="136"/>
       <source>Convert Edges to Faces</source>
-      <translation type="unfinished">Convert Edges to Faces</translation>
+      <translation>Konvertera kanter till ytor</translation>
     </message>
   </context>
   <context>
@@ -445,7 +445,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="189"/>
       <source>Mirrors the mesh</source>
-      <translation type="unfinished">Mirrors the mesh</translation>
+      <translation>Speglar maskan</translation>
     </message>
   </context>
   <context>
@@ -453,12 +453,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="215"/>
       <source>Scale Mesh Feature</source>
-      <translation type="unfinished">Scale Mesh Feature</translation>
+      <translation>Skala Mesh-funktion</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="219"/>
       <source>Scales the mesh</source>
-      <translation type="unfinished">Scales the mesh</translation>
+      <translation>Skalar maskorna</translation>
     </message>
   </context>
   <context>
@@ -466,12 +466,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="245"/>
       <source>Resize Mesh Feature</source>
-      <translation type="unfinished">Resize Mesh Feature</translation>
+      <translation>Ändra storlek på nätfunktion</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="249"/>
       <source>Resizes the mesh</source>
-      <translation type="unfinished">Resizes the mesh</translation>
+      <translation>Ändrar storlek på nätet</translation>
     </message>
   </context>
   <context>
@@ -484,7 +484,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="533"/>
       <source>Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</source>
-      <translation type="unfinished">Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</translation>
+      <translation>Lägger till ett OpenSCAD-element baserat på inmatad OpenSCAD-kod med hjälp av OpenSCAD-binärfilen</translation>
     </message>
   </context>
   <context>
@@ -492,12 +492,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="544"/>
       <source>Mesh Boolean</source>
-      <translation type="unfinished">Mesh Boolean</translation>
+      <translation>Nät-boolean</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="548"/>
       <source>Performs a boolean operation using the OpenSCAD binary</source>
-      <translation type="unfinished">Performs a boolean operation using the OpenSCAD binary</translation>
+      <translation>Utför en boolesk operation med hjälp av OpenSCAD-binärfilen</translation>
     </message>
   </context>
   <context>
@@ -505,12 +505,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="585"/>
       <source>Minkowski Sum</source>
-      <translation type="unfinished">Minkowski Sum</translation>
+      <translation>Minkowski-summa</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="588"/>
       <source>Creates a Minkowski sum</source>
-      <translation type="unfinished">Creates a Minkowski sum</translation>
+      <translation>Skapar en Minkowski-summa</translation>
     </message>
   </context>
 </TS>

@@ -25,6 +25,10 @@
 
 #include <type_traits>
 
+#include <QFont>
+#include <QPoint>
+#include <QString>
+
 namespace Gui
 {
 

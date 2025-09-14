@@ -4,6 +4,7 @@
 
 #ifdef _MSC_VER
 #pragma warning(disable : 4996)
+#pragma warning(disable : 4305)
 #endif
 
 #include "Base/Exception.h"

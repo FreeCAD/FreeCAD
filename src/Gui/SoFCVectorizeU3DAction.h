@@ -24,9 +24,11 @@
 #define GUI_SOFCVECTORIZEU3DACTION_H
 
 #include <fstream>
+
 #include <Inventor/annex/HardCopy/SoVectorizeAction.h>
 #include <Inventor/annex/HardCopy/SoVectorOutput.h>
 
+#include <FCGlobal.h>
 
 namespace Gui {
 

@@ -1368,6 +1368,7 @@ DockEvaluateMeshImp::DockEvaluateMeshImp(QWidget* parent, Qt::WindowFlags fl)
     scrollArea->setFrameShadow(QFrame::Plain);
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(this);
+    scrollArea->setWindowTitle(windowTitle());
 
     // embed this dialog into a dockable widget container
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();

@@ -1,50 +1,35 @@
 
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(Assembly_LIBS
     Part
     PartDesign
-	Spreadsheet
+    Spreadsheet
     FreeCADApp
-	OndselSolver
+    OndselSolver
 )
 
-generate_from_xml(AssemblyObjectPy)
-generate_from_xml(AssemblyLinkPy)
-generate_from_xml(BomObjectPy)
-generate_from_xml(BomGroupPy)
-generate_from_xml(JointGroupPy)
-generate_from_xml(ViewGroupPy)
-generate_from_xml(SimulationGroupPy)
-
-generate_from_py_(AssemblyObjectPy)
-generate_from_py_(AssemblyLinkPy)
-generate_from_py_(BomObjectPy)
-generate_from_py_(BomGroupPy)
-generate_from_py_(JointGroupPy)
-generate_from_py_(ViewGroupPy)
-generate_from_py_(SimulationGroupPy)
+generate_from_py(AssemblyObject)
+generate_from_py(AssemblyLink)
+generate_from_py(BomObject)
+generate_from_py(BomGroup)
+generate_from_py(JointGroup)
+generate_from_py(ViewGroup)
+generate_from_py(SimulationGroup)
 
 
 SET(Python_SRCS
-    AssemblyObjectPy.xml
+    AssemblyObject.pyi
     AssemblyObjectPyImp.cpp
-    AssemblyLinkPy.xml
+    AssemblyLink.pyi
     AssemblyLinkPyImp.cpp
-    BomObjectPy.xml
+    BomObject.pyi
     BomObjectPyImp.cpp
-    BomGroupPy.xml
+    BomGroup.pyi
     BomGroupPyImp.cpp
-    JointGroupPy.xml
+    JointGroup.pyi
     JointGroupPyImp.cpp
-    ViewGroupPy.xml
+    ViewGroup.pyi
     ViewGroupPyImp.cpp
-    SimulationGroupPy.xml
+    SimulationGroup.pyi
     SimulationGroupPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
@@ -79,6 +64,14 @@ SET(Assembly_SRCS
 )
 
 add_library(Assembly SHARED ${Assembly_SRCS})
+target_include_directories(
+    Assembly
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 target_link_libraries(Assembly ${Assembly_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Assembly)

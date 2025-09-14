@@ -1,7 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
 
 set(AssemblyGui_LIBS
     Assembly
@@ -22,8 +18,7 @@ qt_add_resources(AssemblyResource_SRCS Resources/Assembly.qrc ${Assembly_TR_QRC}
 
 SOURCE_GROUP("Resources" FILES ${AssemblyResource_SRCS})
 
-generate_from_xml(ViewProviderAssemblyPy)
-generate_from_py_(ViewProviderAssemblyPy)
+generate_from_py(ViewProviderAssembly)
 
 set(AssemblyGui_UIC_SRCS
     TaskAssemblyCreateBom.ui
@@ -35,7 +30,7 @@ set(AssemblyGui_UIC_SRCS
 )
 
 SET(Python_SRCS
-    ViewProviderAssemblyPy.xml
+    ViewProviderAssembly.pyi
     ViewProviderAssemblyPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
@@ -85,6 +80,13 @@ SET(AssemblyGuiIcon_SVG
 )
 
 add_library(AssemblyGui SHARED ${AssemblyGui_SRCS} ${AssemblyGuiIcon_SVG})
+
+target_include_directories(
+    AssemblyGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 
 if(WIN32)
     target_compile_definitions(AssemblyGui PRIVATE _USE_MATH_DEFINES)
