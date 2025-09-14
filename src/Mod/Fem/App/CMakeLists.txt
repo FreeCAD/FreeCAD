@@ -82,6 +82,12 @@ if(BUILD_FEM_VTK)
         FemVTKTools.cpp
     )
     SOURCE_GROUP("PostObjects" FILES ${FemPost_SRCS})
+
+    SET(FemVTK_SRCS
+        VTKExtensions/vtkFemFrameSourceAlgorithm.h
+        VTKExtensions/vtkFemFrameSourceAlgorithm.cpp
+    )
+    SOURCE_GROUP("VTKExtensions" FILES ${FemVTK_SRCS})
 endif(BUILD_FEM_VTK)
 
 
@@ -178,6 +184,7 @@ SET(Fem_SRCS
     ${FemConstraints_SRCS}
     ${FemPost_SRCS}
     ${FemSet_SRCS}
+    ${FemVTK_SRCS}
     ${Mod_SRCS}
     ${Python_SRCS}
 )
@@ -197,6 +204,7 @@ target_include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 target_include_directories(
