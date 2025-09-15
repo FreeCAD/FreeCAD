@@ -1,6 +1,4 @@
 /tests:
-    /TestAddonManagerApp   :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestAddonManagerApp
     /TestAssemblyWorkbench :
         test: xvfb-run  /usr/bin/FreeCAD -t  TestAssemblyWorkbench
     /TestArch              :
@@ -41,10 +39,10 @@
         test: xvfb-run  /usr/bin/FreeCAD -t  UnicodeTests
     /TestPythonSyntax      :
         test: xvfb-run  /usr/bin/FreeCAD -t  TestPythonSyntax
-    /TestAddonManagerGui   :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestAddonManagerGui
     /TestArchGui           :
         test: xvfb-run  /usr/bin/FreeCAD -t  TestArchGui
+    /TestCAMGui           :
+        test: xvfb-run  /usr/bin/FreeCAD -t  TestCAMGui
     /TestDraftGui          :
         test: xvfb-run  /usr/bin/FreeCAD -t  TestDraftGui
     /TestFemGui            :

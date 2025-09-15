@@ -1,6 +1,4 @@
 /tests:
-  /TestAddonManagerApp   :
-    test: /usr/bin/FreeCADCmd -t  TestAddonManagerApp
   /TestAssemblyWorkbench :
     test: /usr/bin/FreeCADCmd -t  TestAssemblyWorkbench
   /TestArch              :
