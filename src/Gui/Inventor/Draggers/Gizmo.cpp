@@ -253,6 +253,9 @@ void LinearGizmo::draggingFinished()
         property->blockSignals(false);
         property->valueChanged(property->value().getValue());
     }
+
+    property->setFocus();
+    property->selectAll();
 }
 
 void LinearGizmo::draggingContinued()
@@ -448,6 +451,9 @@ void RotationGizmo::draggingFinished()
         property->blockSignals(false);
         property->valueChanged(property->value().getValue());
     }
+
+    property->setFocus();
+    property->selectAll();
 }
 
 void RotationGizmo::draggingContinued()
