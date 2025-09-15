@@ -701,4 +701,3 @@ bool TaskTessellation::reject()
 }
 
 #include "moc_Tessellation.cpp"
-
