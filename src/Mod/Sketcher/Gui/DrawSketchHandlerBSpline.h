@@ -907,8 +907,9 @@ void DSHBSplineController::configureToolWidget()
         toolWidget->setNoticeText(
             QApplication::translate("TaskSketcherTool_c1_bspline", "Press F to undo last point."));
 
-        QStringList names = {QApplication::translate("Sketcher_CreateBSpline", "By control points"),
-                             QApplication::translate("Sketcher_CreateBSpline", "By knots")};
+        QStringList names = {
+            QApplication::translate("Sketcher_CreateBSpline", "From control points"),
+            QApplication::translate("Sketcher_CreateBSpline", "From knots")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
         toolWidget->setCheckboxLabel(
