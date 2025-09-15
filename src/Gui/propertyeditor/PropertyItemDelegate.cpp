@@ -160,6 +160,30 @@ void PropertyItemDelegate::paint(
         &opt,
         qobject_cast<QWidget*>(parent())
     ));
+
+    if (index.column() == 1 && property && property->isSeparator()) {
+        const auto* view = qobject_cast<const QTreeView*>(option.widget ? option.widget : parent());
+        QModelIndex indexFirstColumn = index.sibling(index.row(), 0);
+        const bool expanded = view ? view->isExpanded(indexFirstColumn) : false;
+
+        if (!expanded) {
+            // Add your indicator here
+            QStyleOption branchOpt;
+            branchOpt.rect = option.rect.adjusted(4, 0, -4, 0);
+            branchOpt.state = QStyle::State_Children | QStyle::State_Enabled;
+
+        QStyle* style = option.widget ? option.widget->style() : QApplication::style();
+        style->drawPrimitive(
+            QStyle::PE_IndicatorBranch,
+            &branchOpt,
+            painter,
+            option.widget
+        );
+        }
+    }
+
+    QColor color = static_cast<QRgb>(QApplication::style()->styleHint(QStyle::SH_Table_GridLineColor, &opt, qobject_cast<QWidget*>(parent())));
+    
     painter->setPen(QPen(color));
     if (index.column() == 1 || !(property && property->isSeparator())) {
         int right = (option.direction == Qt::LeftToRight) ? option.rect.right() : option.rect.left();
