@@ -3,41 +3,148 @@
 # Copyright (c) 2025 The FreeCAD Project
 
 import FreeCAD
-import FreeCADGui
-from PySide import QtCore, QtWidgets
+
+from draftutils import params
+
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtWidgets
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
+else:
+    def translate(ctxt, txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt, txt):
+        return txt
+
 import ArchSql
 
-class Report:
-    """The proxy class for the ArchReport FeaturePython object."""
+
+class _ArchReportDocObserver:
+    """Document observer that triggers report execution on recompute."""
+
+    def __init__(self, doc, report):
+        self.doc = doc
+        self.report = report
+
+    def slotRecomputedDocument(self, doc):
+        if doc != self.doc:
+            return
+        # Execute the report when the document is recomputed. Let exceptions
+        # propagate so test failures and real errors are visible to the caller.
+        self.report.Proxy.execute(self.report)
+
+
+class _ArchReport:
 
     def __init__(self, obj):
+        self.setProperties(obj)
         obj.Proxy = self
-        self.Type = "ArchReport"
-        self.set_properties(obj)
+        self.Type = 'ArchReport'
 
-    def set_properties(self, obj):
-        if not hasattr(obj, "Query"):
-            obj.addProperty("App::PropertyString", "Query", "Report", "The SQL query to execute")
-        if not hasattr(obj, "Target"):
-            obj.addProperty("App::PropertyLink", "Target", "Report", "The spreadsheet for the results")
+    def onDocumentRestored(self, obj):
+        self.setProperties(obj)
 
-    def execute(self, fp):
-        """Called on document recompute."""
-        if not fp.Target or not fp.Query:
+    def setProperties(self, obj):
+        if not 'Query' in obj.PropertiesList:
+            obj.addProperty('App::PropertyString', 'Query', 'Report', QT_TRANSLATE_NOOP('App::Property', 'The SQL query to execute'))
+        if not 'Target' in obj.PropertiesList:
+            obj.addProperty('App::PropertyLink', 'Target', 'Report', QT_TRANSLATE_NOOP('App::Property', 'The spreadsheet for the results'))
+        if not 'AutoUpdate' in obj.PropertiesList:
+            obj.addProperty('App::PropertyBool', 'AutoUpdate', 'Report', QT_TRANSLATE_NOOP('App::Property', 'If True, update report when document recomputes'))
+            obj.AutoUpdate = True
+
+        # Attach observer state
+        self.onChanged(obj, 'AutoUpdate')
+
+    def setReportPropertySpreadsheet(self, sp, obj):
+        if not hasattr(sp, 'Report'):
+            sp.addProperty('App::PropertyLink', 'Report', 'Arch', QT_TRANSLATE_NOOP('App::Property', 'The BIM Report that uses this spreadsheet'))
+        sp.Report = obj
+
+    def getSpreadSheet(self, obj, force=False):
+        """Return or create the spreadsheet used by this report.
+
+        Behaviour intentionally mirrors ArchSchedule.getSpreadSheet.
+        """
+        # If we cached a spreadsheet, check it still belongs to this report.
+        # If the attribute access raises, let the exception propagate so the
+        # caller can handle it (don't silently swallow deletions).
+        if getattr(self, 'spreadsheet', None) is not None and getattr(self.spreadsheet, 'Report', None) == obj:
+            return self.spreadsheet
+
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.TypeId == 'Spreadsheet::Sheet' and getattr(o, 'Report', None) == obj:
+                self.spreadsheet = o
+                return self.spreadsheet
+
+        if force:
+            self.spreadsheet = FreeCAD.ActiveDocument.addObject('Spreadsheet::Sheet', 'ReportResult')
+            self.setReportPropertySpreadsheet(self.spreadsheet, obj)
+            return self.spreadsheet
+        else:
+            return None
+
+    def onChanged(self, obj, prop):
+        if prop == 'AutoUpdate':
+            if obj.AutoUpdate:
+                if getattr(self, 'docObserver', None) is None:
+                    self.docObserver = _ArchReportDocObserver(FreeCAD.ActiveDocument, obj)
+                    FreeCAD.addDocumentObserver(self.docObserver)
+            else:
+                if getattr(self, 'docObserver', None) is not None:
+                    FreeCAD.removeDocumentObserver(self.docObserver)
+                    self.docObserver = None
+
+    def setSpreadsheetData(self, obj, labels, force=False):
+        """Write header and rows into the spreadsheet, then recompute and purgeTouched."""
+        if not hasattr(self, 'data'):
+            self.data = labels
+        if not self.data:
             return
+        if not (getattr(obj, 'Target', None) or force):
+            return
+        sp = self.getSpreadSheet(obj, force=True)
+        # preserve widths
+        widths = [sp.getColumnWidth(col) for col in ('A', 'B', 'C')]
+        sp.clearAll()
+        for col, width in zip(('A', 'B', 'C'), widths):
+            sp.setColumnWidth(col, width)
+        sp.set('A1', 'Object Label')
+        sp.setStyle('A1', 'bold', 'add')
+        for k, v in enumerate(self.data, start=2):
+            sp.set('A%d' % k, v)
+        sp.recompute()
+        sp.purgeTouched()
 
-        results = ArchSql.run_query_for_objects(fp.Query)
-
+    def execute(self, obj):
+        if not getattr(obj, 'Query', None):
+            return
+        results = ArchSql.run_query_for_objects(obj.Query)
         if results is None:
-            FreeCAD.Console.PrintError(f"Report '{fp.Label}': Error executing query.\n")
+            FreeCAD.Console.PrintError("Report '%s': Error executing query.\n" % getattr(obj, 'Label', ''))
             return
+        labels = []
+        for o in results:
+            if o is None:
+                continue
+            if getattr(o, 'TypeId', '') == 'Spreadsheet::Sheet':
+                continue
+            if hasattr(o, 'Proxy') and getattr(o.Proxy, 'Type', None) in ('Schedule', 'ArchReport'):
+                continue
+            labels.append(getattr(o, 'Label', getattr(o, 'Name', '')))
+        self.setSpreadsheetData(obj, labels, force=True)
 
-        sheet = fp.Target
-        sheet.clearAll()
-        if results:
-            sheet.set("A1", "'Object Label'")
-            for i, res_obj in enumerate(results, 2):
-                sheet.set(f"A{i}", f"'{res_obj.Label}'")
+
+class Report(_ArchReport):
+    """Public alias class so Arch._initializeArchObject can find 'Report'.
+
+    This mirrors the naming pattern used by ArchSchedule where the public
+    base class is available at module level. It simply inherits from
+    the implementation class and does not change behaviour.
+    """
+    def __init__(self, obj):
+        super().__init__(obj)
 
 
 class ViewProviderReport:
@@ -66,6 +173,23 @@ class ViewProviderReport:
             return True
         return False
 
+    def claimChildren(self):
+        vobj = getattr(self, 'vobj', None)
+        if vobj is None:
+            return []
+        obj = getattr(vobj, 'Object', None)
+        if obj is None:
+            return []
+        target = getattr(obj, 'Target', None)
+        if target is not None and getattr(target, 'TypeId', '') == 'Spreadsheet::Sheet':
+            return [target]
+        doc = getattr(obj, 'Document', FreeCAD.ActiveDocument)
+        children = []
+        for o in getattr(doc, 'Objects', []):
+            if getattr(o, 'TypeId', '') == 'Spreadsheet::Sheet' and getattr(o, 'Report', None) == obj:
+                children.append(o)
+        return children
+
     def dumps(self):
         """Tells FreeCAD not to save any state for this view provider."""
         return None
@@ -73,6 +197,7 @@ class ViewProviderReport:
     def loads(self, state):
         """Tells FreeCAD not to restore any state for this view provider."""
         return None
+
 
 class ReportTaskPanel:
     """The Task Panel UI for editing an ArchReport object."""
