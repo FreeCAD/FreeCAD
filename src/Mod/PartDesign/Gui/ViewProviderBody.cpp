@@ -392,6 +392,9 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
     else if (obj->isDerivedFrom<App::LocalCoordinateSystem>()) {
         return !obj->isDerivedFrom<App::Origin>();
     }
+    else if (obj->isDerivedFrom<Part::Part2DObject>()) {
+        return true;
+    }
     else if (!obj->isDerivedFrom<Part::Feature>()) {
         return false;
     }
@@ -462,4 +465,5 @@ bool ViewProviderBody::canDragObjectToTarget(App::DocumentObject* obj,
 
     return ViewProviderPart::canDragObjectToTarget(obj, target);
 }
+
 
