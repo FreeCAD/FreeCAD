@@ -21,9 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QApplication>
 #include <QClipboard>
@@ -31,7 +29,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QMimeData>
-#endif
+
 
 #include "SheetTableViewAccessibleInterface.h"
 

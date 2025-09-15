@@ -26,8 +26,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // standard
 #include <cmath>
 
@@ -41,7 +39,5 @@
 
 // Qt Toolkit
 #include <Gui/QtAll.h>
-
-#endif  //_PreComp_
 
 #endif  // SPREADSHEET_PRECOMPILED_H

@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QPalette>
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include <QPrinter>
 #include <QTextDocument>
-#endif
+
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>

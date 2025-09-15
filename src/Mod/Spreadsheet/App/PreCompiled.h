@@ -26,8 +26,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // STL
 #include <algorithm>
 #include <deque>
@@ -47,7 +45,5 @@
 
 // Qt
 #include <QLocale>
-
-#endif  //_PreComp_
 
 #endif  // SPREADSHEET_PRECOMPILED_H
