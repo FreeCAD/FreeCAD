@@ -383,7 +383,7 @@ void TaskChamferParameters::setupGizmos(ViewProviderDressUp* vp)
         }
     });
 
-    gizmoContainer = GizmoContainer::createGizmo({
+    gizmoContainer = GizmoContainer::create({
         distanceGizmo, secondDistanceGizmo, angleGizmo
     }, vp);
 

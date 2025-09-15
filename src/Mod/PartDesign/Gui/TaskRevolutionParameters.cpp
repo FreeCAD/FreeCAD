@@ -739,7 +739,7 @@ void TaskRevolutionParameters::setupGizmos(ViewProvider* vp)
     rotationGizmo = new Gui::RadialGizmo(ui->revolveAngle);
     rotationGizmo2 = new Gui::RadialGizmo(ui->revolveAngle2);
 
-    gizmoContainer = GizmoContainer::createGizmo({rotationGizmo, rotationGizmo2}, vp);
+    gizmoContainer = GizmoContainer::create({rotationGizmo, rotationGizmo2}, vp);
     rotationGizmo->flipArrow();
     rotationGizmo2->flipArrow();
 

@@ -50,6 +50,7 @@ class SoLinearDraggerContainer;
 class SoRotationDragger;
 class SoRotationDraggerContainer;
 class View3DInventorViewer;
+class ViewProviderDragger;
 
 struct GizmoPlacement
 {
@@ -235,20 +236,16 @@ public:
 
     // Checks if the gizmos are enabled in the preferences
     static bool isEnabled();
-    template <typename T>
-    static inline std::unique_ptr<GizmoContainer> createGizmo(std::initializer_list<Gui::Gizmo*> gizmos, T vp)
-    {
-        auto ptr = std::make_unique<GizmoContainer>();
-        ptr->addGizmos(gizmos);
-        vp->setGizmoContainer(ptr.get());
-
-        return ptr;
-    }
+    static std::unique_ptr<GizmoContainer> create(
+        std::initializer_list<Gui::Gizmo*> gizmos,
+        ViewProviderDragger* vp
+    );
 
 private:
     std::vector<Gizmo*> gizmos;
     SoFieldSensor cameraSensor;
     SoFieldSensor cameraPositionSensor;
+    ViewProviderDragger* viewProvider = nullptr;
 
     void addGizmo(Gizmo* gizmo);
 

@@ -216,7 +216,7 @@ void TaskFilletParameters::setupGizmos(ViewProviderDressUp* vp)
     radiusGizmo = new Gui::LinearGizmo(ui->filletRadius);
     radiusGizmo2 = new Gui::LinearGizmo(ui->filletRadius);
 
-    gizmoContainer = GizmoContainer::createGizmo({radiusGizmo, radiusGizmo2}, vp);
+    gizmoContainer = GizmoContainer::create({radiusGizmo, radiusGizmo2}, vp);
 
     setGizmoPositions();
 }

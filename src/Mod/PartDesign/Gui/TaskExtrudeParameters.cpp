@@ -1375,7 +1375,7 @@ void TaskExtrudeParameters::setupGizmos()
         setGizmoPositions();
     });
 
-    gizmoContainer = GizmoContainer::createGizmo({
+    gizmoContainer = GizmoContainer::create({
         lengthGizmo1, lengthGizmo2,
         taperAngleGizmo1, taperAngleGizmo2
     }, vp);

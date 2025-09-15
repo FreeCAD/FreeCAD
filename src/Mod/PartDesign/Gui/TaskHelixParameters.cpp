@@ -726,7 +726,7 @@ void TaskHelixParameters::setupGizmos(ViewProviderHelix* vp)
         heightGizmo->setVisibility(!isPitchTurnsAngle);
     });
 
-    gizmoContainer = GizmoContainer::createGizmo({heightGizmo}, vp);
+    gizmoContainer = GizmoContainer::create({heightGizmo}, vp);
 
     setGizmoPositions();
 
