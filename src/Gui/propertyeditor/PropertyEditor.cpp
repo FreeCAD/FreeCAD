@@ -76,7 +76,7 @@ PropertyEditor::PropertyEditor(QWidget* parent)
 
     setAlternatingRowColors(true);
     setRootIsDecorated(false);
-    setExpandsOnDoubleClick(true);
+    setExpandsOnDoubleClick(false);
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QStyleOptionViewItem opt = PropertyEditor::viewOptions();
@@ -411,6 +411,18 @@ void PropertyEditor::openEditor(const QModelIndex& index)
 
 void PropertyEditor::onItemActivated(const QModelIndex& index)
 {
+    if (!index.isValid()) {
+        return;
+    }
+    if (auto* prop = static_cast<PropertyItem*>(index.internalPointer());
+        prop && prop->isSeparator()) {
+
+        // setExpanded() only works on column 0
+        QModelIndex idxFirstColum = propertyModel->index(index.row(), 0, index.parent());
+        setExpanded(idxFirstColum, !isExpanded(idxFirstColum));
+        return;
+    }
+
     if (index.column() != 1) {
         return;
     }
