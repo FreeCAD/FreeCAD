@@ -127,6 +127,8 @@ DlgSettingsGeneral::DlgSettingsGeneral( QWidget* parent )
     const auto visible = UnitsApi::isMultiUnitLength();
     ui->comboBox_FracInch->setVisible(visible);
     ui->fractionalInchLabel->setVisible(visible);
+    ui->moreThemesLabel->setEnabled(
+        Application::Instance->commandManager().getCommandByName("Std_AddonMgr") != nullptr);
 }
 
 /**
