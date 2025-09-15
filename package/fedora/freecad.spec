@@ -146,6 +146,7 @@ Development file for OndselSolver
 #         -DCMAKE_INSTALL_INCLUDEDIR=%{_includedir} \
 #         -DCMAKE_INSTALL_DATAROOTDIR=%{_datadir} \
 #         -DRESOURCEDIR=%{_datadir}/%{name} \
+
     %cmake \
         -DCMAKE_INSTALL_PREFIX=%{_libdir}/%{name} \
         -DCMAKE_INSTALL_DOCDIR=%{_docdir}/%{name} \
@@ -201,7 +202,7 @@ Development file for OndselSolver
     rm -rf %{buildroot}%{_libdir}/%{name}/%{_lib}/cmake
     rm -rf %{buildroot}%{_libdir}/%{name}/%{_lib}/pkgconfig
 
-    #Move files using `-DCMAKE_INSTALL_DATAROOTDIR=%%{_datadir}` breack ctest
+    #Move files using `-DCMAKE_INSTALL_DATAROOTDIR=%%{_datadir}` break ctest
     mkdir -p %{buildroot}%{_datadir}
     mv %{buildroot}%{_libdir}/freecad/share/applications %{buildroot}%{_datadir}/
     mkdir -p %{buildroot}%{_metainfodir}
@@ -223,10 +224,13 @@ Development file for OndselSolver
     else
         echo "**** Failed ctest ****"
         touch %{buildroot}%tests_resultdir/ctest.failed
-        #cat %{buildroot}%tests_resultdir/ctest.result
-        if %ctest -VV --rerun-failed &>> %{buildroot}%tests_resultdir/ctest.result; then
+
+        # show only failed tests
+        if %ctest -VV --rerun-failed &> %{buildroot}%tests_resultdir/ctest.result; then
             echo "Now OK"
             rm %{buildroot}%tests_resultdir/ctest.failed
+        else
+            cat %{buildroot}%tests_resultdir/ctest.result
         fi
     fi
 %endif
