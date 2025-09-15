@@ -97,7 +97,7 @@ QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Radius or Diameter Dimension");
 
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Angle Dimension");
 
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Construction Geometry");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Toggle Construction Geometry");
 
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Constraints");
 
