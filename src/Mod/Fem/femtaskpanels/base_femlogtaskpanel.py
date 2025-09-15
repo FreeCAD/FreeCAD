@@ -79,6 +79,16 @@ class _BaseLogTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
     def setup_connections(self):
         QtCore.QObject.connect(self._thread, QtCore.SIGNAL("started()"), self.thread_started)
         QtCore.QObject.connect(self._thread, QtCore.SIGNAL("finished()"), self.thread_finished)
+        QtCore.QObject.connect(
+            self.tool.process,
+            QtCore.SIGNAL("errorOccurred(QProcess::ProcessError)"),
+            self.process_failed,
+        )
+        QtCore.QObject.connect(
+            self.tool.process,
+            QtCore.SIGNAL("errorOccurred(QProcess::ProcessError)"),
+            self.stop_timer,
+        )
         QtCore.QObject.connect(self.tool.process, QtCore.SIGNAL("started()"), self.process_started)
         QtCore.QObject.connect(
             self.tool.process,
@@ -130,12 +140,21 @@ class _BaseLogTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
                 return
             self.tool.update_properties()
             self.write_log("Process finished\n", QtGui.QColor(getOutputWinColor("Text")))
-        else:
-            self.write_log("Process crashed\n", QtGui.QColor(getOutputWinColor("Error")))
 
     def process_started(self):
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         self.write_log("Start process...\n", QtGui.QColor(getOutputWinColor("Text")))
+
+    def process_failed(self, error):
+        match error:
+            case QtCore.QProcess.ProcessError.FailedToStart:
+                self.write_log(
+                    "Process failed to start\n", QtGui.QColor(getOutputWinColor("Error"))
+                )
+            case QtCore.QProcess.ProcessError.Crashed:
+                self.write_log("Process crashed\n", QtGui.QColor(getOutputWinColor("Error")))
+            case _:
+                self.write_log("Process failed\n", QtGui.QColor(getOutputWinColor("Error")))
 
     def write_output(self):
         self.write_log(
@@ -216,7 +235,7 @@ class _BaseLogTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
     def update_timer_text(self):
         self.text_time.setText(f"Time: {self.elapsed.elapsed()/1000:4.1f} s")
 
-    def stop_timer(self, code, status):
+    def stop_timer(self, *reason):
         self.timer.stop()
         QtGui.QApplication.restoreOverrideCursor()
 
