@@ -70,7 +70,7 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Construction Geometry");
+    sMenuText = QT_TR_NOOP("Toggle Construction Geometry");
     sToolTipText = QT_TR_NOOP("Toggles between defining geometry and construction geometry modes");
     sWhatsThis = "Sketcher_ToggleConstruction";
     sStatusTip = sToolTipText;
@@ -254,3 +254,4 @@ void CreateSketcherCommandsAlterGeo()
 
     rcCmdMgr.addCommand(new CmdSketcherToggleConstruction());
 }
+
