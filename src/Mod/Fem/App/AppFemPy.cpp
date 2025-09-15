@@ -41,6 +41,7 @@
 #include "FemPostPipeline.h"
 #include "FemVTKTools.h"
 #include <LibraryVersions.h>
+#include <vtkVersionMacros.h>
 #endif
 
 #ifdef FC_USE_VTK_PYTHON
@@ -83,6 +84,12 @@ public:
         add_varargs_method("getVtkVersion",
                            &Module::getVtkVersion,
                            "Returns the VTK version FreeCAD is linked against");
+        add_varargs_method("getVtkVersionNumber",
+                           &Module::getVtkVersionNumber,
+                           "Returns the VTK version FreeCAD is linked against as a number");
+        add_varargs_method("vtkVersionCheck",
+                           &Module::vtkVersionCheck,
+                           "Returns VTK version number from `major`, `minor` and `build` values");
 #ifdef FC_USE_VTK_PYTHON
         add_varargs_method(
             "isVtkCompatible",
@@ -340,6 +347,27 @@ private:
         }
 
         return Py::String(fcVtkVersion);
+    }
+
+    Py::Object getVtkVersionNumber(const Py::Tuple& args)
+    {
+        if (!PyArg_ParseTuple(args.ptr(), "")) {
+            throw Py::Exception();
+        }
+
+        return Py::Long(VTK_VERSION_NUMBER);
+    }
+
+    Py::Object vtkVersionCheck(const Py::Tuple& args)
+    {
+        int major;
+        int minor;
+        int build = 0;
+        if (!PyArg_ParseTuple(args.ptr(), "ii|i", &major, &minor, &build)) {
+            throw Py::Exception();
+        }
+
+        return Py::Long(VTK_VERSION_CHECK(major, minor, build));
     }
 
 #ifdef FC_USE_VTK_PYTHON
