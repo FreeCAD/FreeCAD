@@ -858,7 +858,7 @@ def makeProfile(profile=[0, 'REC', 'REC100x100', 'R', 100, 100]):
             ArchProfile._ProfileL(obj, profile)
         case "T":
             ArchProfile._ProfileT(obj, profile)
-        case "T-s":
+        case "TSLOT":
             ArchProfile._ProfileTSLOT(obj, profile)
         case _:
             print("Profile not supported")
