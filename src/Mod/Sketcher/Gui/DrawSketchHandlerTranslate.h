@@ -182,7 +182,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("Translate parameters"));
+        return QString(tr("Translate Parameters"));
     }
 
     void onButtonPressed(Base::Vector2d onSketchPos) override

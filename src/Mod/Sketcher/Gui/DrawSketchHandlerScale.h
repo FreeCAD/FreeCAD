@@ -230,7 +230,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("Scale parameters"));
+        return QString(tr("Scale Parameters"));
     }
 
     void activated() override

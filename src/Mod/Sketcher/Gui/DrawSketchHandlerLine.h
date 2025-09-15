@@ -214,7 +214,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("Line parameters"));
+        return QString(tr("Line Parameters"));
     }
 
     bool canGoToNextMode() override
