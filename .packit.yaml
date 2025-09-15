@@ -30,7 +30,7 @@ jobs:
   targets:
     fedora-stable:
       without_opts:
-    f  - debug_info
+      - debug_info
 
 - job: tests
   identifier: pull_request
