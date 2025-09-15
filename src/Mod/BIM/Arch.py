@@ -2415,11 +2415,11 @@ def makeReport(name=None):
     if not report_obj:
         return None
 
-    # Create and link the spreadsheet target
-    sheet = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet", "ReportResult")
-    report_obj.Target = sheet
+    # Initialize spreadsheet if the proxy requests it (mirrors makeSchedule)
+    if hasattr(report_obj, 'Proxy') and hasattr(report_obj.Proxy, 'getSpreadSheet'):
+        # Let exceptions propagate here instead of masking them so failures are visible
+        report_obj.Proxy.getSpreadSheet(report_obj, force=True)
 
-    FreeCAD.ActiveDocument.recompute()
     return report_obj
 
 def selectObjects(query_string):
