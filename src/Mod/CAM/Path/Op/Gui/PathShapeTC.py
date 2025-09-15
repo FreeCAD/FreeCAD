@@ -212,7 +212,10 @@ and CW for inner wires.
             "App::PropertyBool",
             "DualDirection",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Invert direction on each step down"),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Invert direction on each step down\nOnly if HandleMultipleFeatures is Individually",
+            ),
         )
         obj.addProperty(
             "App::PropertyLength",
@@ -235,6 +238,14 @@ You may want to set this to the tool diameter to keep the tool down.""",
             "RetractAxis",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Tool retraction axis"),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "HandleMultipleFeatures",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Choose how to process multiple Base Geometry features."
+            ),
         )
 
         # Sorting properties group
@@ -410,6 +421,8 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
             "ZNegative",
         )
         obj.Direction = "None"
+        obj.HandleMultipleFeatures = ("Collectively", "Individually")
+        obj.HandleMultipleFeatures = "Individually"
         obj.NearestK = 3
         obj.OffsetJoin = ("arcs", "tangent", "intersection")
         obj.OffsetType = ("makeOffset2D", "offsetWire")
@@ -423,6 +436,7 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
         obj.SortMode = ("None", "2D5", "3D", "Greedy")
         obj.SortMode = "2D5"
         obj.Verbose = True
+        obj.UseComp = True
 
     def setEditorMode(self, obj):
         obj.setEditorMode("CycleTime", 1)  # read-only
@@ -432,6 +446,7 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
         offsetMode = 0 if obj.EnableOffset else 2
         offsetMode2 = 0 if obj.EnableOffset and obj.OffsetType == "makeOffset2D" else 2
         stepDownMode = 0 if obj.EnableStepDown else 2
+        dualDirectionMode = 0 if obj.HandleMultipleFeatures == "Individually" else 2
 
         obj.setEditorMode("StartPoint", startPointMode)
         obj.setEditorMode("UseComp", offsetMode)
@@ -442,6 +457,7 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
         obj.setEditorMode("OffsetOpenResult", offsetMode2)
         obj.setEditorMode("StartDepth", stepDownMode)
         obj.setEditorMode("StepDown", stepDownMode)
+        obj.setEditorMode("DualDirection", dualDirectionMode)
 
     def dumps(self):
         return None
@@ -450,7 +466,13 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
         return None
 
     def onChanged(self, obj, prop):
-        if prop in ("EnableOffset", "EnableStartPoint", "OffsetType", "EnableStepDown"):
+        if prop in (
+            "EnableOffset",
+            "EnableStartPoint",
+            "OffsetType",
+            "EnableStepDown",
+            "HandleMultipleFeatures",
+        ):
             self.setEditorMode(obj)
         if prop == "Path":
             obj.CycleTime = OpBase.getCycleTimeEstimate(obj)
@@ -473,23 +495,25 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
         if offset:
             join = obj.getEnumerationsOfProperty("OffsetJoin").index(obj.OffsetJoin)
             openResult = obj.OffsetOpenResult
-            shape = []
+            shapes = []
             if obj.OffsetType == "makeOffset2D":
                 for source in obj.Sources:
                     for wire in source.Shape.Wires:
-                        shape.append(wire.makeOffset2D(offset, join=join, openResult=openResult))
+                        shapes.append(wire.makeOffset2D(offset, join=join, openResult=openResult))
             else:
                 job = PathUtils.findParentJob(obj)
                 base = job.Model.Group[0].Shape
                 for source in obj.Sources:
                     for wire in source.Shape.Wires:
-                        shape.append(PathOpUtil.offsetWire(wire, base, offset, forward=True))
+                        shapes.append(PathOpUtil.offsetWire(wire, base, offset, forward=True))
 
         else:
-            shape = [so.Shape for so in obj.Sources]
+            shapes = [so.Shape for so in obj.Sources]
+
+        if obj.HandleMultipleFeatures == "Individually":
+            shapes = [sub for sh in shapes for sub in sh.SubShapes]
 
         params = {}
-        params["shapes"] = shape
         if obj.EnableStartPoint:
             params["start"] = obj.StartPoint
         params["return_end"] = False
@@ -514,25 +538,28 @@ If True, a closed wire is made from a double-sided offset, with rounds around op
 
         pprint.pprint(params)
 
-        path = Path.fromShapes(**params)
-        pathReversed = Path.Path()
-        if obj.EnableStepDown:
-            if obj.DualDirection:
-                # get path with inverted direction
-                for dir in (1, 2, 3, 4, 5, 6):
-                    params["direction"] = dir
-                    pathReversed = Path.fromShapes(**params)
-                    if pathReversed.Length != path.Length:
-                        # if length of the path is different, the path is inverted
-                        break
+        commands = []
+        for shape in shapes:
+            params["shapes"] = shape
 
-            commands = self.processStepDown(obj, path, pathReversed)
-        else:
-            commands = path.Commands
+            path = Path.fromShapes(**params)
+            pathReversed = Path.Path()
+            if obj.EnableStepDown:
+                if obj.DualDirection and obj.HandleMultipleFeatures == "Individually":
+                    # get path with inverted direction
+                    for dir in (1, 2, 3, 4, 5, 6):
+                        params["direction"] = dir
+                        pathReversed = Path.fromShapes(**params)
+                        if pathReversed.Length != path.Length:
+                            # if length of the path is different, the path is inverted
+                            break
+                commands.extend(self.processStepDown(obj, path, pathReversed))
+            else:
+                commands.extend(path.Commands)
 
-        if obj.SafetyFinish:
-            z = obj.ClearanceHeight.Value
-            commands.append(Path.Command("G0", {"Z": z}))
+            if obj.SafetyFinish:
+                z = obj.ClearanceHeight.Value
+                commands.append(Path.Command("G0", {"Z": z}))
 
         obj.Path = Path.Path(commands)
 
@@ -612,12 +639,24 @@ Returns a Path object from a list of shapes
         return None
 
     def isClosedPath(self, point1, point2):
-        if point1.x != point2.x:
+        if point1 is None or point2 is None:
             return False
-        if point1.y != point2.y:
+        if not Path.Geom.isRoughly(point1.x, point2.x):
+            return False
+        if not Path.Geom.isRoughly(point1.y, point2.y):
             return False
 
         return True
+
+    def isLower(self, z1, z2):
+        if z1 is None or z2 is None:
+            return False
+        if Path.Geom.isRoughly(z1, z2):
+            return False
+        if z1 < z2:
+            return True
+
+        return False
 
     # Add several passes with step down
     def processStepDown(self, obj, path, pathReversed):
@@ -633,9 +672,12 @@ Returns a Path object from a list of shapes
             repeat = False
             limitDepth -= stepDepth
 
-            skipZ = self.isClosedPath(startPoint, endPoint)
+            skipZ = not firstStep and (
+                self.isClosedPath(startPoint, endPoint)
+                or (obj.DualDirection and obj.HandleMultipleFeatures == "Individually")
+            )
 
-            if not firstStep and startPoint and not obj.DualDirection and not skipZ:
+            if not skipZ:
                 # add safety moves to start point before next step down
                 commands.append(Path.Command("G0", {"Z": startPoint.z}))
                 commands.append(Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y}))
@@ -643,18 +685,23 @@ Returns a Path object from a list of shapes
             currentPath = pathReversed if changeDir else path
 
             for cmd in currentPath.Commands:
-                if not firstStep and cmd.z == obj.ClearanceHeight and skipZ:
+                if (
+                    skipZ
+                    and cmd.x is None
+                    and cmd.y is None
+                    and (cmd.z == obj.ClearanceHeight or obj.SafeHeight)
+                ):
                     # skip start move for closed profile
                     continue
 
-                if cmd.z is not None and cmd.z < limitDepth:
+                if self.isLower(cmd.z, limitDepth):
                     repeat = True  # did not get final depth, so repeat step down
                     cmd.z = limitDepth
                 commands.append(cmd)
 
             firstStep = False
 
-            if obj.DualDirection:
+            if obj.DualDirection and obj.HandleMultipleFeatures == "Individually":
                 # change direction after on each step down
                 changeDir = not changeDir
 
