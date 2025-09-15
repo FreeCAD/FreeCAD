@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 # include <QStatusBar>
-#endif // #ifndef _PreComp_
 
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>

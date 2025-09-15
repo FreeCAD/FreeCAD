@@ -22,13 +22,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QAction>
 # include <QColor>
 # include <QMenu>
-#endif
+
 
 #include <QMessageBox>
 
