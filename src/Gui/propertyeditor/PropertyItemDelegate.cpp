@@ -144,6 +144,16 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         QItemDelegate::paint(painter, option, index);
     }
 
+    if (index.column() == 1 && property && property->isSeparator()) {
+        const auto* view = qobject_cast<const QTreeView*>(option.widget ? option.widget : parent());
+        QModelIndex indexFirstColumn = index.sibling(index.row(), 0);
+        const bool expanded = view ? view->isExpanded(indexFirstColumn) : false;
+
+        if (!expanded) {
+            // Add your indicator here
+        }
+    }
+
     QColor color = static_cast<QRgb>(QApplication::style()->styleHint(QStyle::SH_Table_GridLineColor, &opt, qobject_cast<QWidget*>(parent())));
     painter->setPen(QPen(color));
     if (index.column() == 1 || !(property && property->isSeparator())) {
