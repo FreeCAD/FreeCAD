@@ -230,7 +230,8 @@ class ToolControllerEditor(object):
     def selectInComboBox(self, name, combo):
         """selectInComboBox(name, combo) ...
         helper function to select a specific value in a combo box."""
-        with QtCore.QSignalBlocker(combo):
+        try:
+            combo.blockSignals(True)
             index = combo.currentIndex()  # Save initial index
 
             # Search using currentData and return if found
@@ -247,21 +248,26 @@ class ToolControllerEditor(object):
 
             # not found, return unchanged
             combo.setCurrentIndex(index)
-        return
+        finally:
+            combo.blockSignals(False)
 
     def updateUi(self):
         tc = self.obj
 
-        with (
-            QtCore.QSignalBlocker(self.controller.tcName),
-            QtCore.QSignalBlocker(self.controller.tcNumber),
-            QtCore.QSignalBlocker(self.horizFeed.widget),
-            QtCore.QSignalBlocker(self.horizRapid.widget),
-            QtCore.QSignalBlocker(self.vertFeed.widget),
-            QtCore.QSignalBlocker(self.vertRapid.widget),
-            QtCore.QSignalBlocker(self.controller.spindleSpeed),
-            QtCore.QSignalBlocker(self.controller.spindleDirection),
-        ):
+        blockObjects = [
+            self.controller.tcName,
+            self.controller.tcNumber,
+            self.horizFeed.widget,
+            self.horizRapid.widget,
+            self.vertFeed.widget,
+            self.vertRapid.widget,
+            self.controller.spindleSpeed,
+            self.controller.spindleDirection,
+        ]
+        try:
+            for obj in blockObjects:
+                obj.blockSignals(True)
+
             self.controller.tcName.setText(tc.Label)
             self.controller.tcNumber.setValue(tc.ToolNumber)
             self.horizFeed.updateWidget()
@@ -274,6 +280,9 @@ class ToolControllerEditor(object):
 
             if self.editor:
                 self.editor.updateUI()
+        finally:
+            for obj in blockObjects:
+                obj.blockSignals(False)
 
     def updateToolController(self):
         tc = self.obj
