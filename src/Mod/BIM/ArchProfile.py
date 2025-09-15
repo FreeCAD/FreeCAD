@@ -112,10 +112,8 @@ class _Profile(Draft._DraftObject):
 
         '''Remove all Profile properties'''
 
-        for prop in [
-            "Width", "Height", "WebThickness", "FlangeThickness","OutDiameter", "Thickness"
-        ]:
-            if hasattr(obj, prop):
+        for prop in obj.PropertiesList:
+            if obj.getGroupOfProperty(prop) == "Draft":
                 obj.setPropertyStatus(prop, "-LockDynamic")
                 obj.removeProperty(prop)
 
@@ -329,14 +327,14 @@ class _ProfileTSLOT(_Profile):
 
     def __init__(self, obj, profile):
         self.cleanProperties(obj)
-        obj.addProperty("App::PropertyLength","size","Draft",QT_TRANSLATE_NOOP("App::Property","side size"), locked=True).size = profile[4]
-        obj.addProperty("App::PropertyLength","slot_size","Draft",QT_TRANSLATE_NOOP("App::Property","Slot size"), locked=True).slot_size = profile[5]
-        obj.addProperty("App::PropertyLength","wall_thickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the wall"), locked=True).wall_thickness = profile[6]
-        obj.addProperty("App::PropertyLength","tnut_slot_width","Draft",QT_TRANSLATE_NOOP("App::Property","t-nut slot width"), locked=True).tnut_slot_width = profile[7]
-        obj.addProperty("App::PropertyLength","tnut_slot_depth","Draft",QT_TRANSLATE_NOOP("App::Property","t-nut slot depth"), locked=True).tnut_slot_depth = profile[8]
-        obj.addProperty("App::PropertyLength","core_size","Draft",QT_TRANSLATE_NOOP("App::Property","Internal core size"), locked=True).core_size = profile[9]
-        obj.addProperty("App::PropertyLength","hole_diameter","Draft",QT_TRANSLATE_NOOP("App::Property","Internal core size"), locked=True).hole_diameter = profile[10]
-        obj.addProperty("App::PropertyLength","rd","Draft",QT_TRANSLATE_NOOP("App::Property","fillet radius"), locked=True).rd = profile[11]
+        obj.addProperty("App::PropertyLength","Size","Draft",QT_TRANSLATE_NOOP("App::Property","Overall size"), locked=True).Size = profile[4]
+        obj.addProperty("App::PropertyLength","SlotSize","Draft",QT_TRANSLATE_NOOP("App::Property","Slot size"), locked=True).SlotSize = profile[5]
+        obj.addProperty("App::PropertyLength","WallThickness","Draft",QT_TRANSLATE_NOOP("App::Property","Thickness of the wall"), locked=True).WallThickness = profile[6]
+        obj.addProperty("App::PropertyLength","TnutSlotWidth","Draft",QT_TRANSLATE_NOOP("App::Property","T-nut slot width"), locked=True).TnutSlotWidth = profile[7]
+        obj.addProperty("App::PropertyLength","TnutSlotDepth","Draft",QT_TRANSLATE_NOOP("App::Property","T-nut slot depth"), locked=True).TnutSlotDepth = profile[8]
+        obj.addProperty("App::PropertyLength","CoreSize","Draft",QT_TRANSLATE_NOOP("App::Property","Internal core size"), locked=True).CoreSize = profile[9]
+        obj.addProperty("App::PropertyLength","HoleDiameter","Draft",QT_TRANSLATE_NOOP("App::Property","Internal hole diameter"), locked=True).HoleDiameter = profile[10]
+        obj.addProperty("App::PropertyLength","FilletRadius","Draft",QT_TRANSLATE_NOOP("App::Property","Corner fillet radius"), locked=True).FilletRadius = profile[11]
         _Profile.__init__(self,obj,profile)
 
     def execute(self,obj):
@@ -344,34 +342,34 @@ class _ProfileTSLOT(_Profile):
         import math
         # import DraftGeomUtils
         pl = obj.Placement
-        nut_depth = obj.core_size/2-(obj.wall_thickness/math.sqrt(2))
-        core_dim = obj.core_size/2
-        wall_dim = obj.wall_thickness
-        slot_dim = obj.slot_size/2
-        nut_width_dim = obj.tnut_slot_width/2
+        nut_depth = obj.CoreSize/2-(obj.WallThickness/math.sqrt(2))
+        core_dim = obj.CoreSize/2
+        wall_dim = obj.WallThickness
+        slot_dim = obj.SlotSize/2
+        nut_width_dim = obj.TnutSlotWidth/2
         templist = list()
         templist.append(Vector(nut_depth, core_dim, 0.0))
         templist.append(Vector(nut_width_dim, nut_width_dim+(wall_dim/math.sqrt(2)), 0.0))
-        templist.append(Vector(nut_width_dim, obj.size/2-wall_dim, 0.0))
-        templist.append(Vector(slot_dim, obj.size/2-wall_dim, 0.0))
-        templist.append(Vector(slot_dim, obj.size/2, 0.0))
-        templist.append(Vector(obj.size/2, obj.size/2, 0.0))
+        templist.append(Vector(nut_width_dim, obj.Size/2-wall_dim, 0.0))
+        templist.append(Vector(slot_dim, obj.Size/2-wall_dim, 0.0))
+        templist.append(Vector(slot_dim, obj.Size/2, 0.0))
+        templist.append(Vector(obj.Size/2, obj.Size/2, 0.0))
         #TODO:
         # add fillet four profile corners
         # sub_poly1 = Part.makePolygon(templist)
-        # rd1=Vector(obj.size/2-(obj.rd),obj.size,0)
-        # rd2=Vector(obj.size/2-(obj.rd-obj.rd*math.sin(math.pi/4)),obj.size/2-(obj.rd-obj.rd*math.sin(math.pi/4)),0)
-        # rd3=Vector(obj.size,obj.size/2-(obj.rd),0)
+        # rd1=Vector(obj.Size/2-(obj.FilletRadius),obj.Size,0)
+        # rd2=Vector(obj.Size/2-(obj.FilletRadius-obj.FilletRadius*math.sin(math.pi/4)),obj.Size/2-(obj.FilletRadius-obj.FilletRadius*math.sin(math.pi/4)),0)
+        # rd3=Vector(obj.Size,obj.Size/2-(obj.FilletRadius),0)
         # templist.append(Part.Arc(rd1,rd2,rd3))
-        templist.append(Vector(obj.size/2, slot_dim, 0.0))
-        templist.append(Vector(obj.size/2-wall_dim, slot_dim, 0.0))
-        templist.append(Vector(obj.size/2-wall_dim, nut_width_dim, 0.0))
+        templist.append(Vector(obj.Size/2, slot_dim, 0.0))
+        templist.append(Vector(obj.Size/2-wall_dim, slot_dim, 0.0))
+        templist.append(Vector(obj.Size/2-wall_dim, nut_width_dim, 0.0))
         templist.append(Vector(nut_width_dim+(wall_dim/math.sqrt(2)), nut_width_dim, 0.0))
         templist.append(Vector(core_dim, nut_depth, 0.0))
         # sub_poly2 = Part.makePolygon(templist3)
-        # l1=Part.LineSegment(Vector(obj.slot_size/2, obj.size/2, 0.0),Vector(obj.size/2, obj.size/2, 0.0))
-        # l2=Part.LineSegment(Vector(obj.size/2, obj.size/2, 0.0),Vector(obj.size/2, 2.7500000000022977, 0.0))
-        # round=DraftGeomUtils.fillet([l2.toShape(),l1.toShape()],obj.rd)
+        # l1=Part.LineSegment(Vector(obj.SlotSize/2, obj.Size/2, 0.0),Vector(obj.Size/2, obj.Size/2, 0.0))
+        # l2=Part.LineSegment(Vector(obj.Size/2, obj.Size/2, 0.0),Vector(obj.Size/2, 2.7500000000022977, 0.0))
+        # round=DraftGeomUtils.fillet([l2.toShape(),l1.toShape()],obj.FilletRadius)
         # wire=Part.Wire(round)
         # p = Part.Shape([sub_poly1,round,sub_poly2])
         # p=Part.Face(Shape.Edges)
@@ -386,8 +384,8 @@ class _ProfileTSLOT(_Profile):
         templist.append(templist[0])
         poly = Part.makePolygon(templist)
         pf = Part.Face(poly)
-        orificio = Part.makeCircle(obj.hole_diameter/2, FreeCAD.Vector(0, 0, 0))
-        cf=Part.Face(Part.Wire(orificio))
+        hole = Part.makeCircle(obj.HoleDiameter/2, FreeCAD.Vector(0, 0, 0))
+        cf=Part.Face(Part.Wire(hole))
         p=pf.cut(cf)
         #p.reverse()
         obj.Shape = p
@@ -511,7 +509,7 @@ class ProfileTaskPanel:
 
     def accept(self):
 
-        self.obj.Label = self.Profile[2]
+        self.obj.Label = self.Profile[2] + "_"
         if self.Profile:
             if self.Profile[3]=="C":
                 _ProfileC(self.obj, self.Profile)
