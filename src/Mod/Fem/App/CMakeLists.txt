@@ -90,7 +90,6 @@ SET(Mod_SRCS
     AppFemPy.cpp
     FemTools.cpp
     FemTools.h
-    PreCompiled.cpp
     PreCompiled.h
 )
 SOURCE_GROUP("Module" FILES ${Mod_SRCS})
@@ -182,13 +181,13 @@ SET(Fem_SRCS
     ${Python_SRCS}
 )
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Fem_CPP_SRCS ${Fem_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Fem PreCompiled.h PreCompiled.cpp Fem_CPP_SRCS)
-endif(FREECAD_USE_PCH)
-
 add_library(Fem SHARED ${Fem_SRCS})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(Fem PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
 
 target_include_directories(
     Fem

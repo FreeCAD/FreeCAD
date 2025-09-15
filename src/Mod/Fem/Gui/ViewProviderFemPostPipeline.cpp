@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <vtkPointData.h>
-#endif
+
 
 #include <App/FeaturePythonPyImp.h>
 #include <App/GroupExtension.h>

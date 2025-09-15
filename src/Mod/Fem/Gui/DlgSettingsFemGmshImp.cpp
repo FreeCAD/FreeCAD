@@ -22,12 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMessageBox>
 #include <QStandardPaths>
 #include <QThread>
-#endif
+
 
 #include <App/Application.h>
 #include "DlgSettingsFemGmshImp.h"

@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <cmath>
+
 #include <Python.h>
 #include <vtkAppendFilter.h>
 #include <vtkDataSetReader.h>
@@ -45,7 +43,6 @@
 #include <vtkStringArray.h>
 #include <vtkInformation.h>
 #include <vtkInformationVector.h>
-#endif
 
 #include <Base/Console.h>
 

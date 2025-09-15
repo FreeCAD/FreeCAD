@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "TaskPostBoxes.h"
 #include "ViewProviderFemPostBranchFilter.h"
 #include <Mod/Fem/App/FemPostGroupExtension.h>

@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cstdlib>
 #include <memory>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

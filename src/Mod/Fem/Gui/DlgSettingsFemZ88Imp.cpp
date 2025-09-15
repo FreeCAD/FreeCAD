@@ -22,11 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMessageBox>
 #include <QStandardPaths>
-#endif
 
 #include <Gui/Application.h>
 

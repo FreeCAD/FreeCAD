@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoCoordinate3.h>
@@ -34,7 +31,6 @@
 #include <QMessageBox>
 #include <QMetaMethod>
 #include <QToolTip>
-#endif
 
 #include <App/Document.h>
 #include <Base/Console.h>

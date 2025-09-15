@@ -21,10 +21,8 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Python.h>
-#endif
+
 
 #include "FemPostObjectPy.h"
 #include "FemPostObjectPy.cpp"
