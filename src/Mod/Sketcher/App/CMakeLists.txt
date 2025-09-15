@@ -123,7 +123,6 @@ SOURCE_GROUP("PlaneGCS" FILES ${PlaneGCS_SRCS})
 SET(SketchModule_SRCS
     AppSketcher.cpp
     AppSketcherPy.cpp
-    PreCompiled.cpp
     PreCompiled.h
     Measure.cpp
     Measure.h
@@ -159,9 +158,9 @@ if (FREECAD_WARN_ERROR)
 endif()
 
 if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Sketcher_CPP_SRCS ${Sketcher_PCH_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Sketcher PreCompiled.h PreCompiled.cpp Sketcher_CPP_SRCS)
+    target_precompile_headers(Sketcher PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
 endif(FREECAD_USE_PCH)
 
 # Suppress some very long Eigen3 warnings of older versions

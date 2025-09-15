@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <limits>
+
 #include <Precision.hxx>
 #include <QPainter>
-#endif
 
 #include <boost/range/adaptor/reversed.hpp>
 

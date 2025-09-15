@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 /// Qt Include Files
 #include <Inventor/sensors/SoSensor.h>
 #include <QApplication>
 #include <QDialog>
-#endif
+
 
 #include <Base/Tools.h>
 #include <Gui/Application.h>

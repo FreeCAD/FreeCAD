@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDateTime>
 #include <boost/random.hpp>
 #include <algorithm>
@@ -30,7 +28,6 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-#endif
 
 #include <fmt/ranges.h>
 

@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QCheckBox>
 #include <QGridLayout>
@@ -32,7 +30,7 @@
 #include <QMessageBox>
 #include <QSignalBlocker>
 #include <QWidgetAction>
-#endif
+
 
 #include <App/DocumentObjectGroup.h>
 #include <App/Datums.h>

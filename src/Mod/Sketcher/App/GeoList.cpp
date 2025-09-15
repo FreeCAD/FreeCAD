@@ -20,10 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cassert>
-#endif  // #ifndef _PreComp_
 
 #include <boost/core/ignore_unused.hpp>
 

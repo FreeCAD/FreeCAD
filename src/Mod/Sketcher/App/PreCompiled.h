@@ -26,8 +26,6 @@
 #include <FCConfig.h>
 
 
-#ifdef _PreComp_
-
 // standard
 #include <algorithm>
 #include <cassert>
@@ -109,6 +107,5 @@
 
 #elif defined(FC_OS_WIN32)
 #include <windows.h>
-#endif  // _PreComp_
 
 #endif

@@ -25,8 +25,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // standard
 #include <cmath>
 #include <cstdlib>
@@ -70,7 +68,5 @@
 
 // all of Inventor
 #include <Gui/InventorAll.h>
-
-#endif  //_PreComp_
 
 #endif  // __PRECOMPILED_GUI__
