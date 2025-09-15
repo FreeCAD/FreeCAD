@@ -254,4 +254,3 @@ void CreateSketcherCommandsAlterGeo()
 
     rcCmdMgr.addCommand(new CmdSketcherToggleConstruction());
 }
-
