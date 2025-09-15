@@ -111,25 +111,6 @@ void ViewProviderPart::applyTransparency(float transparency, std::vector<App::Ma
     }
 }
 
-void ViewProviderPart::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
-{
-    ViewProviderPartExt::setEditViewer(viewer, ModNum);
-
-    if (gizmoContainer) {
-        gizmoContainer->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
-
-        auto originPlacement = App::GeoFeature::getGlobalPlacement(getObject())
-            * getObjectPlacement().inverse();
-        gizmoContainer->attachViewer(viewer, originPlacement);
-    }
-}
-
-void ViewProviderPart::setGizmoContainer(Gui::GizmoContainer* gizmoContainer)
-{
-    assert(gizmoContainer);
-    this->gizmoContainer = gizmoContainer;
-}
-
 // ----------------------------------------------------------------------------
 
 void ViewProviderShapeBuilder::buildNodes(const App::Property* prop, std::vector<SoNode*>& nodes) const

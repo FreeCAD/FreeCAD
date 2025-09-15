@@ -278,7 +278,7 @@ void TaskThicknessParameters::setupGizmos(ViewProviderDressUp* vp)
 
     linearGizmo = new Gui::LinearGizmo(ui->Value);
 
-    gizmoContainer = GizmoContainer::createGizmo({linearGizmo}, vp);
+    gizmoContainer = GizmoContainer::create({linearGizmo}, vp);
 
     setGizmoPositions();
 }
