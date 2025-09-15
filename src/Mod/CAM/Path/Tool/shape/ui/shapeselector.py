@@ -39,7 +39,6 @@ class ShapeSelector:
         self.flows = {}
 
         self.update_shapes()
-        self.form.toolBox.setCurrentIndex(0)
 
     def _add_shape_group(self, toolbox):
         if toolbox in self.flows:
@@ -70,8 +69,10 @@ class ShapeSelector:
         custom = cam_assets.fetch(asset_type="toolbitshape", store="local")
         for shape in custom:
             builtin.pop(shape.id, None)
-        self._add_shapes(self.form.standardTools, builtin.values())
-        self._add_shapes(self.form.customTools, custom)
+
+        # Combine all shapes into a single list
+        all_shapes = list(builtin.values()) + list(custom)
+        self._add_shapes(self.form.toolsContainer, all_shapes)
 
     def on_shape_button_clicked(self, shape):
         self.shape = shape
