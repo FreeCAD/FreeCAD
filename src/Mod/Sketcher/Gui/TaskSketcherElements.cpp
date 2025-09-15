@@ -2128,4 +2128,3 @@ void TaskSketcherElements::onSettingsExtendedInformationChanged()
 #include "TaskSketcherElements.moc"// For Delegate as it is QOBJECT
 #include "moc_TaskSketcherElements.cpp"
 // clang-format on
-
