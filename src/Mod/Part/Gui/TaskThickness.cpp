@@ -326,7 +326,7 @@ void ThicknessWidget::setupGizmos()
         delete linearGizmo;
         return;
     }
-    gizmoContainer = Gui::GizmoContainer::createGizmo({linearGizmo}, vp);
+    gizmoContainer = Gui::GizmoContainer::create({linearGizmo}, vp);
 
     setGizmoPositions();
 }

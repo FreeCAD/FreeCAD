@@ -1172,7 +1172,7 @@ void TaskHoleParameters::setupGizmos(ViewProviderHole* vp)
 
     holeDepthGizmo = new LinearGizmo(ui->Depth);
 
-    gizmoContainer = GizmoContainer::createGizmo({holeDepthGizmo}, vp);
+    gizmoContainer = GizmoContainer::create({holeDepthGizmo}, vp);
 
     setGizmoPositions();
 }
