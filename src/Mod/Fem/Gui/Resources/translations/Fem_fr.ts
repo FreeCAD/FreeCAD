@@ -890,12 +890,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="307"/>
       <source>Initial time increment</source>
-      <translation type="unfinished">Initial time increment</translation>
+      <translation>Incrément de temps initial</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="314"/>
       <source>Time period</source>
-      <translation type="unfinished">Time period</translation>
+      <translation>Période de temps</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="360"/>
@@ -910,17 +910,17 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="521"/>
       <source>Maximum number of increments</source>
-      <translation type="unfinished">Maximum number of increments</translation>
+      <translation>Nombre maximum d'incréments</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="528"/>
       <source>Minimum time increment</source>
-      <translation type="unfinished">Minimum time increment</translation>
+      <translation>Incrément de temps minimum</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="658"/>
       <source>Maximum time increment</source>
-      <translation type="unfinished">Maximum time increment</translation>
+      <translation>Incrément de temps maximum</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="724"/>
@@ -1282,7 +1282,10 @@ FEM : seuls les éléments FEM seront exportés. Cela signifie uniquement les ar
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="46"/>
       <source>element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
-      <translation type="unfinished">element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</translation>
+      <translation>Paramètres des éléments :
+- Tout : tous les éléments,
+- Les plus élevés : éléments les plus élevés seulement,
+- FEM : éléments de FEM seulement (uniquement les arêtes n'appartenant pas aux faces et aux faces n'appartenant pas aux volumes)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="81"/>
@@ -1290,10 +1293,9 @@ FEM : seuls les éléments FEM seront exportés. Cela signifie uniquement les ar
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups - faces and nodes where
 the constraint or material is applied.</source>
-      <translation type="unfinished">Mesh groups are exported too.
-Every analysis feature and, if there are different materials,
-material consists of two mesh groups - faces and nodes where
-the constraint or material is applied.</translation>
+      <translation>Les groupes de maillage sont également exportés.
+Chaque fonction d'analyse et, s'il y a différents matériaux, le matériau se compose de deux
+groupes de maillage : les faces et les nœuds où la contrainte ou le matériau est appliqué.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="56"/>
@@ -1497,7 +1499,7 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="91"/>
       <source>Not an executable binary</source>
-      <translation type="unfinished">Not an executable binary</translation>
+      <translation>Ce n'est pas un fichier binaire exécutable.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="92"/>
@@ -1505,10 +1507,8 @@ adding an analysis container</source>
 '%1'
  does not exist or is not executable.
 Specify another file.</source>
-      <translation type="unfinished">The specified file
-'%1'
- does not exist or is not executable.
-Specify another file.</translation>
+      <translation>Le fichier spécifié « %1 » n'existe pas ou n'est pas exécutable.
+Spécifier un autre fichier.</translation>
     </message>
   </context>
   <context>
@@ -2279,7 +2279,7 @@ Spécifier un autre fichier</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="311"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="326"/>
       <source>Wrong selection</source>
-      <translation>Sélection invalide</translation>
+      <translation>Sélection non valide</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="311"/>
@@ -2657,7 +2657,7 @@ Appliquer d'abord une condition limite de déplacement ou une charge de force su
     <message>
       <location filename="../ui/Material.ui" line="386"/>
       <source>Specific heat capacity</source>
-      <translation>Capacité thermique intrinsèque</translation>
+      <translation>Capacité thermique massique</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="190"/>
@@ -6613,7 +6613,7 @@ No matching module was found in the current Python path.</source>
       <location filename="../../TaskCreateElementSet.cpp" line="472"/>
       <location filename="../../TaskCreateElementSet.cpp" line="563"/>
       <source>Wrong selection</source>
-      <translation>Sélection invalide</translation>
+      <translation>Sélection non valide</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="232"/>
@@ -6762,14 +6762,14 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="54"/>
       <source>Python path</source>
-      <translation type="unfinished">Python path</translation>
+      <translation>Chemin d'accès de Python</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
       <source>Python executable for which Netgen Python bindings are installed.
 Leave blank to use default Python executable</source>
-      <translation type="unfinished">Python executable for which Netgen Python bindings are installed.
-Leave blank to use default Python executable</translation>
+      <translation>L'exécutable de Python pour lequel les liaisons Python Netgen sont installées.
+Laisser ce champ vide pour utiliser l'exécutable de Python par défaut.</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="102"/>
@@ -7877,7 +7877,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../fempreferencepages/dlg_settings_netgen.py" line="84"/>
       <source>Executable '{}' not found</source>
-      <translation type="unfinished">Executable '{}' not found</translation>
+      <translation>Le fichier exécutable « {} » est introuvable.</translation>
     </message>
   </context>
   <context>
@@ -7885,7 +7885,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_centrif.py" line="67"/>
       <source>Axis Reference Selector</source>
-      <translation type="unfinished">Axis Reference Selector</translation>
+      <translation>Sélecteur de référence de l'axe</translation>
     </message>
   </context>
 </TS>

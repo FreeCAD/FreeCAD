@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="273"/>
       <source>MeshPart</source>
-      <translation>NätDel</translation>
+      <translation>MeshPart</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="274"/>
@@ -217,9 +217,9 @@
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
 This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
-      <translation>Tryck på "Start" och välj sedan punkter på nätet; när tillräckligt många punkter har ställts in högerklickar du och väljer "Create". Upprepa denna process för att skapa fler splines. Stäng denna uppgiftspanel för att slutföra operationen.
+      <translation>Tryck på "Start" och välj sedan punkter på nätet; när tillräckligt många punkter har ställts in högerklickar du och väljer "Skapa". Upprepa denna process för att skapa fler splines. Stäng denna uppgiftspanel för att slutföra operationen.
 
-Det här kommandot fungerar bara med ett Mesh-objekt, inte med en vanlig yta eller ett ansikte. Om du vill konvertera ett objekt till ett mesh använder du verktygen i arbetsbänken Mesh.</translation>
+Det här kommandot fungerar bara med ett Mesh-objekt, inte med en vanlig yta. Om du vill konvertera ett objekt till ett mesh använder du verktygen i arbetsbänken Mesh.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -302,12 +302,12 @@ Det här kommandot fungerar bara med ett Mesh-objekt, inte med en vanlig yta ell
     <message>
       <location filename="../../Tessellation.ui" line="109"/>
       <source>Mesh will get face colors of the object</source>
-      <translation>Mesh kommer att få ansiktsfärger på objektet</translation>
+      <translation>Mesh kommer att få ytfärger på objektet</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="112"/>
       <source>Apply face colors to mesh</source>
-      <translation>Applicera ansiktsfärger på mesh</translation>
+      <translation>Tillämpa ytfärger på mesh</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="119"/>
@@ -321,7 +321,7 @@ denna funktion (t.ex. formatet OBJ).</translation>
     <message>
       <location filename="../../Tessellation.ui" line="124"/>
       <source>Define segments by face colors</source>
-      <translation>Definiera segment med hjälp av ansiktsfärger</translation>
+      <translation>Definiera segment med hjälp av ytfärger</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="145"/>
@@ -496,15 +496,15 @@ Ett värde i intervallet 0,2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="279"/>
       <source>Error: body without a tip selected.
-Either set the tip of the body or select a different shapee.</source>
-      <translation>Fel: kropp utan vald spets.
-Ställ antingen in spetsen på kroppen eller välj en annan form.</translation>
+Either set the tip of the body or select a different shape.</source>
+      <translation type="unfinished">Error: body without a tip selected.
+Either set the tip of the body or select a different shape.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="285"/>
       <source>Error: shape without faces selected.
 Select a different shape.</source>
-      <translation>Fel: form utan ansikten vald.
+      <translation>Fel: form utan ytor vald.
 Välj en annan form.</translation>
     </message>
     <message>
@@ -595,7 +595,7 @@ Välj en annan form.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>
       <source>Finds a flat representation of a face</source>
-      <translation>Hittar en platt representation av ett ansikte</translation>
+      <translation>Hittar en platt representation av en yta</translation>
     </message>
   </context>
 </TS>

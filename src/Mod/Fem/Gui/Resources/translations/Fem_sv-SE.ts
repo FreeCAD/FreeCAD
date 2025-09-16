@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="358"/>
       <source>Creates a displacement boundary condition for a geometric entity</source>
-      <translation>Skapar ett randvillkor för förskjutning för en geometrisk enhet</translation>
+      <translation>Skapar ett förskjutningsvillkor för en geometrisk entitet</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="408"/>
       <source>Creates a fixed boundary condition for a geometric entity</source>
-      <translation>Skapar ett fast gränsvillkor för en geometrisk enhet</translation>
+      <translation>Skapar ett fast gränsvillkor för en geometrisk entitet</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Create fluid boundary condition on face entity for Computional Fluid Dynamics</source>
-      <translation>Skapa vätskegränsvillkor på ansiktsenhet för Computional Fluid Dynamics</translation>
+      <translation>Skapa vätskegränsvillkor på ytentitet för Computional Fluid Dynamics</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="562"/>
       <source>Creates a force load applied to a geometric entity</source>
-      <translation>Skapar en kraftbelastning som appliceras på en geometrisk enhet</translation>
+      <translation>Skapar en kraftbelastning som appliceras på en geometrisk entitet</translation>
     </message>
   </context>
   <context>
@@ -173,7 +173,7 @@
     <message>
       <location filename="../../Command.cpp" line="778"/>
       <source>Plane Multi-Point Constraint</source>
-      <translation type="unfinished">Plane Multi-Point Constraint</translation>
+      <translation>Flerpunktig planbegränsning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="779"/>
@@ -605,7 +605,7 @@
     <message>
       <location filename="../../Command.cpp" line="308"/>
       <source>Make contact constraint on a face</source>
-      <translation>Skapa kontaktbegränsning på ett ansikte</translation>
+      <translation>Skapa kontaktbegränsning på en yta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="374"/>
@@ -635,7 +635,7 @@
     <message>
       <location filename="../../Command.cpp" line="683"/>
       <source>Make heat flux load on face</source>
-      <translation>Gör värmeflödesbelastning på ansiktet</translation>
+      <translation>Gör värmeflödesbelastning på ytan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="744"/>
@@ -650,7 +650,7 @@
     <message>
       <location filename="../../Command.cpp" line="846"/>
       <source>Make pressure load on face</source>
-      <translation>Gör tryckbelastning på ansiktet</translation>
+      <translation>Gör tryckbelastning på ytan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="902"/>
@@ -875,7 +875,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="251"/>
       <source>Thermomech</source>
-      <translation type="unfinished">Thermomech</translation>
+      <translation>Termomekanik</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="260"/>
@@ -885,17 +885,17 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="269"/>
       <source>Buckling</source>
-      <translation type="unfinished">Buckling</translation>
+      <translation>Knäckning</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="307"/>
       <source>Initial time increment</source>
-      <translation type="unfinished">Initial time increment</translation>
+      <translation>Inledande tidsökning</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="314"/>
       <source>Time period</source>
-      <translation type="unfinished">Time period</translation>
+      <translation>Tidsperiod</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="360"/>
@@ -910,17 +910,17 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="521"/>
       <source>Maximum number of increments</source>
-      <translation type="unfinished">Maximum number of increments</translation>
+      <translation>Maximalt antal steg</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="528"/>
       <source>Minimum time increment</source>
-      <translation type="unfinished">Minimum time increment</translation>
+      <translation>Minsta tidssteg</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="658"/>
       <source>Maximum time increment</source>
-      <translation type="unfinished">Maximum time increment</translation>
+      <translation>Maximal tidsökning</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="724"/>
@@ -955,7 +955,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="151"/>
       <source>External editor</source>
-      <translation>Extern redaktör</translation>
+      <translation>Extern redigerare</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="202"/>
@@ -1031,7 +1031,7 @@
       <location filename="../../DlgSettingsFemCcx.ui" line="675"/>
       <source>Load results as pipeline instead of CCX_Results objects.
 After unchecking this option, the CalculiX command behaves like SolverCalculiXCcxTools</source>
-      <translation>Ladda resultat som pipeline istället för CCX_Results-objekt.
+      <translation>Läs in resultat som pipeline istället för CCX_Results-objekt.
 När du har avmarkerat det här alternativet beter sig CalculiX-kommandot som SolverCalculiXCcxTools</translation>
     </message>
     <message>
@@ -1124,7 +1124,7 @@ Ange en annan fil.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="205"/>
       <source>Multithreading</source>
-      <translation type="unfinished">Multithreading</translation>
+      <translation>Flertrådning</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="217"/>
@@ -1191,12 +1191,12 @@ kommer att slås samman för att göra volymgränserna osynliga.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="29"/>
       <source>Elmer Binaries</source>
-      <translation type="unfinished">Elmer Binaries</translation>
+      <translation>Elmer-binärer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="38"/>
       <source>ElmerGrid</source>
-      <translation type="unfinished">ElmerGrid</translation>
+      <translation>ElmerGrid</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="141"/>
@@ -1285,7 +1285,7 @@ som inte hör till ytor och ytor som inte hör till volymer.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="46"/>
       <source>element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
-      <translation type="unfinished">element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</translation>
+      <translation>parameter för element: All: alla element, Highest: endast de högsta elementen, FEM: endast FEM-element (endast kanter som inte hör till ytor och ytor som inte hör till volymer)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="81"/>
@@ -1293,10 +1293,10 @@ som inte hör till ytor och ytor som inte hör till volymer.</translation>
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups - faces and nodes where
 the constraint or material is applied.</source>
-      <translation type="unfinished">Mesh groups are exported too.
-Every analysis feature and, if there are different materials,
-material consists of two mesh groups - faces and nodes where
-the constraint or material is applied.</translation>
+      <translation>Mesh-grupper exporteras också.
+Varje analysfunktion och, om det finns olika material,
+material består av två mesh-grupper - ytor och noder där
+där begränsningen eller materialet tillämpas.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="56"/>
@@ -1500,7 +1500,7 @@ lägga till en analysbehållare</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="91"/>
       <source>Not an executable binary</source>
-      <translation type="unfinished">Not an executable binary</translation>
+      <translation>Inte en körbar binär fil</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="92"/>
@@ -1508,10 +1508,10 @@ lägga till en analysbehållare</translation>
 '%1'
  does not exist or is not executable.
 Specify another file.</source>
-      <translation type="unfinished">The specified file
+      <translation>Den angivna filen
 '%1'
- does not exist or is not executable.
-Specify another file.</translation>
+ finns inte eller är inte körbar.
+Ange en annan fil.</translation>
     </message>
   </context>
   <context>
@@ -1600,7 +1600,7 @@ exporterade från FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="29"/>
       <source>Mystran Binary</source>
-      <translation type="unfinished">Mystran Binary</translation>
+      <translation>Mystran-binär</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="40"/>
@@ -2023,12 +2023,12 @@ Ange en annan fil.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="395"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="404"/>
       <source>Selection error</source>
-      <translation>Fel vid urval</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="133"/>
       <source>Only one face in object! - moved to master face</source>
-      <translation>Bara ett ansikte i objektet! - flyttad till master face</translation>
+      <translation>Bara en yta i objektet! - flyttad till huvudyta</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="194"/>
@@ -2048,7 +2048,7 @@ Ange en annan fil.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="205"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="224"/>
       <source>Only one slave face for a contact constraint!</source>
-      <translation>Endast ett slavansikte för en kontaktbegränsning!</translation>
+      <translation>Endast en slavyta för en kontaktbegränsning!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="215"/>
@@ -2062,7 +2062,7 @@ Ange en annan fil.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="233"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="360"/>
       <source>Only faces can be picked (edges in 2D models)</source>
-      <translation>Endast ansikten kan väljas (kanter i 2D-modeller)</translation>
+      <translation>Endast ytor kan väljas (kanter i 2D-modeller)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="333"/>
@@ -2084,7 +2084,7 @@ Ange en annan fil.</translation>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="312"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="322"/>
       <source>Selection error</source>
-      <translation>Fel vid urval</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="242"/>
@@ -2101,7 +2101,7 @@ Ange en annan fil.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="287"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation>Endast en typ av urval (vertex, yta eller kant) per analysfunktion är tillåten!</translation>
+      <translation>Endast en typ av urval (hörnpunkt, yta eller kant) per analysfunktion är tillåten!</translation>
     </message>
   </context>
   <context>
@@ -2113,7 +2113,7 @@ Ange en annan fil.</translation>
       <location filename="../../TaskFemConstraintFixed.cpp" line="179"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="188"/>
       <source>Selection error</source>
-      <translation>Fel vid urval</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="110"/>
@@ -2130,7 +2130,7 @@ Ange en annan fil.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="154"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation>Endast en typ av urval (vertex, yta eller kant) per analysfunktion är tillåten!</translation>
+      <translation>Endast en typ av urval (hörnpunkt, yta eller kant) per analysfunktion är tillåten!</translation>
     </message>
   </context>
   <context>
@@ -2194,12 +2194,12 @@ Ange en annan fil.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="633"/>
       <source>Empty selection</source>
-      <translation>Tomt urval</translation>
+      <translation>Tom markering</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="633"/>
       <source>Select an edge or a face.</source>
-      <translation>Välj en kant eller ett ansikte.</translation>
+      <translation>Välj en kant eller yta.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="645"/>
@@ -2242,7 +2242,7 @@ Ange en annan fil.</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="891"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="901"/>
       <source>Selection error</source>
-      <translation>Fel vid urval</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="821"/>
@@ -2271,7 +2271,7 @@ Ange en annan fil.</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="196"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="205"/>
       <source>Selection error</source>
-      <translation>Fel vid urval</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="127"/>
@@ -2299,7 +2299,7 @@ Ange en annan fil.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="311"/>
       <source>Select an edge or a face.</source>
-      <translation>Välj en kant eller ett ansikte.</translation>
+      <translation>Välj en kant eller yta.</translation>
     </message>
   </context>
   <context>
@@ -2309,7 +2309,7 @@ Ange en annan fil.</translation>
       <location filename="../../TaskFemConstraintGear.cpp" line="158"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="165"/>
       <source>Selection error</source>
-      <translation>Fel vid urval</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="151"/>
@@ -2337,7 +2337,7 @@ Ange en annan fil.</translation>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="341"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="352"/>
       <source>Selection error</source>
-      <translation>Fel vid urval</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="267"/>
@@ -2355,7 +2355,7 @@ Ange en annan fil.</translation>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="288"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="353"/>
       <source>Selection must only consist of faces! (edges in 2D models)</source>
-      <translation>Urvalet får endast bestå av ansikten! (kanter i 2D-modeller)</translation>
+      <translation>Markeringen får endast bestå av ytor! (kanter i 2D-modeller)</translation>
     </message>
   </context>
   <context>
@@ -2370,7 +2370,7 @@ Ange en annan fil.</translation>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="216"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="226"/>
       <source>Selection error</source>
-      <translation>Fel vid urval</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="128"/>
@@ -2393,7 +2393,7 @@ Ange en annan fil.</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="161"/>
       <source>Only faces can be picked</source>
-      <translation>Endast ansikten kan väljas</translation>
+      <translation>Endast ytor kan väljas</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="170"/>
@@ -2410,7 +2410,7 @@ Ange en annan fil.</translation>
       <location filename="../../TaskFemConstraintPressure.cpp" line="186"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="195"/>
       <source>Selection error</source>
-      <translation>Fel vid urval</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="132"/>
@@ -2427,7 +2427,7 @@ Ange en annan fil.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="152"/>
       <source>Only faces (edges in 2D models) can be picked</source>
-      <translation>Endast ansikten (kanter i 2D-modeller) kan väljas</translation>
+      <translation>Endast ytor (kanter i 2D-modeller) kan väljas</translation>
     </message>
   </context>
   <context>
@@ -2452,7 +2452,7 @@ Ange en annan fil.</translation>
       <location filename="../../TaskFemConstraintSpring.cpp" line="182"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="191"/>
       <source>Selection error</source>
-      <translation>Fel vid urval</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="130"/>
@@ -2469,7 +2469,7 @@ Ange en annan fil.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="148"/>
       <source>Only faces can be picked</source>
-      <translation>Endast ansikten kan väljas</translation>
+      <translation>Endast ytor kan väljas</translation>
     </message>
   </context>
   <context>
@@ -2480,7 +2480,7 @@ Ange en annan fil.</translation>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="239"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="249"/>
       <source>Selection error</source>
-      <translation>Fel vid urval</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="190"/>
@@ -2514,7 +2514,7 @@ Ange en annan fil.</translation>
       <location filename="../../TaskFemConstraintTransform.cpp" line="420"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="429"/>
       <source>Selection error</source>
-      <translation>Fel vid urval</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="295"/>
@@ -2531,7 +2531,7 @@ Ange en annan fil.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="331"/>
       <source>Only one face for local coordinate system!</source>
-      <translation>Endast ett ansikte för lokalt koordinatsystem!</translation>
+      <translation>Endast en yta för lokalt koordinatsystem!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="387"/>
@@ -2547,12 +2547,12 @@ Ange en annan fil.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="203"/>
       <source>The transformable faces have changed. Add only the transformable faces and remove non-transformable faces!</source>
-      <translation>De transformerbara ansiktena har ändrats. Lägg bara till de transformerbara ansiktena och ta bort icke-transformerbara ansikten!</translation>
+      <translation>De transformerbara ytorna har ändrats. Lägg bara till de transformerbara ytor och ta bort icke-transformerbara ytor!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="338"/>
       <source>Only faces can be picked</source>
-      <translation>Endast ansikten kan väljas</translation>
+      <translation>Endast ytor kan väljas</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="349"/>
@@ -2631,7 +2631,7 @@ Ange en annan fil.</translation>
     <message>
       <location filename="../ui/Material.ui" line="14"/>
       <source>FEM Material</source>
-      <translation type="unfinished">FEM Material</translation>
+      <translation>FEM-material</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="40"/>
@@ -2909,7 +2909,7 @@ Ange en annan fil.</translation>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="14"/>
       <source>Centrif Parameter</source>
-      <translation type="unfinished">Centrif Parameter</translation>
+      <translation>Centrif-parameter</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="34"/>
@@ -3094,7 +3094,7 @@ Obs: har ingen effekt om en solid har valts</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="455"/>
       <source>Counter of the body (or face) with a capacitance</source>
-      <translation>Räknare på kroppen (eller ansiktet) med kapacitans</translation>
+      <translation>Räknare på kroppen (eller ytan) med kapacitans</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="14"/>
@@ -3432,7 +3432,7 @@ med harmonisk/oscillerande drivström</translation>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="237"/>
       <source>Current density normal to surface</source>
-      <translation>Strömtäthet vinkelrätt mot ytan</translation>
+      <translation>Aktuell täthet vinkelrätt mot ytan</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="263"/>
@@ -3483,7 +3483,7 @@ med harmonisk/oscillerande drivström</translation>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
       <source>Index</source>
-      <translation type="unfinished">Index</translation>
+      <translation>Index</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
@@ -3645,7 +3645,7 @@ med harmonisk/oscillerande drivström</translation>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="112"/>
       <source>Faces</source>
-      <translation>Ansikten</translation>
+      <translation>Ytor</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="113"/>
@@ -3864,7 +3864,7 @@ För möjliga variabler, se beskrivningsrutan nedan.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="90"/>
       <source>stress: sxx, syy, szz, sxy, sxz, syz</source>
-      <translation type="unfinished">stress: sxx, syy, szz, sxy, sxz, syz</translation>
+      <translation>stress: sxx, syy, szz, sxy, sxz, syz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="118"/>
@@ -3924,7 +3924,7 @@ För möjliga variabler, se beskrivningsrutan nedan.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="248"/>
       <source>Mohr-Coulomb: mc</source>
-      <translation type="unfinished">Mohr-Coulomb: mc</translation>
+      <translation>Mohr-Coulomb: mc</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="148"/>
@@ -3987,7 +3987,7 @@ För möjliga variabler, se beskrivningsrutan nedan.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="98"/>
       <source>Buckling</source>
-      <translation type="unfinished">Buckling</translation>
+      <translation>Knäckning</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="110"/>
@@ -4089,7 +4089,7 @@ För möjliga variabler, se beskrivningsrutan nedan.</translation>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
       <source>Pick</source>
-      <translation>Plock</translation>
+      <translation>Välj</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="87"/>
@@ -4250,7 +4250,7 @@ För möjliga variabler, se beskrivningsrutan nedan.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
       <source>Select slave face, click Add or Remove</source>
-      <translation>Välj slavansikte, klicka på Lägg till eller ta bort</translation>
+      <translation>Välj slavyta, klicka på Lägg till eller ta bort</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="151"/>
@@ -4365,17 +4365,17 @@ som genereras av flödet
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="245"/>
       <source>Rotation X</source>
-      <translation type="unfinished">Rotation X</translation>
+      <translation>Rotation X</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="264"/>
       <source>Rotation Y</source>
-      <translation type="unfinished">Rotation Y</translation>
+      <translation>Rotation Y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="283"/>
       <source>Rotation Z</source>
-      <translation type="unfinished">Rotation Z</translation>
+      <translation>Rotation Z</translation>
     </message>
   </context>
   <context>
@@ -4462,13 +4462,13 @@ som genereras av flödet
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Riktningen på kanten eller riktningen på ansiktets
-normalvektorn för ansiktet används som riktning</translation>
+      <translation>Riktningen på kanten eller riktningen på ytans
+normalvektorn för ytan används som riktning</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="70"/>
       <source>Select multiple faces, click Add or Remove</source>
-      <translation>Välj flera ansikten och klicka på Lägg till eller Ta bort</translation>
+      <translation>Välj flera ytor och klicka på Lägg till eller Ta bort</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="298"/>
@@ -4552,8 +4552,8 @@ normalvektorn för ansiktet används som riktning</translation>
       <location filename="../../TaskFemConstraintForce.ui" line="127"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Riktningen på kanten eller riktningen på ansiktets
-normalvektorn för ansiktet används som riktning</translation>
+      <translation>Riktningen på kanten eller riktningen på ytans
+normalvektorn för ytan används som riktning</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="137"/>
@@ -4571,7 +4571,7 @@ normalvektorn för ansiktet används som riktning</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="20"/>
       <source>Click Add or Remove and select faces</source>
-      <translation>Klicka på Lägg till eller ta bort och välj ansikten</translation>
+      <translation>Klicka på Lägg till eller ta bort och välj ytor</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="35"/>
@@ -4628,7 +4628,7 @@ normalvektorn för ansiktet används som riktning</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
       <source>Select a single face, click Add or Remove</source>
-      <translation>Välj ett enskilt ansikte, klicka på Lägg till eller Ta bort</translation>
+      <translation>Välj en enskild yta, klicka på Lägg till eller Ta bort</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="35"/>
@@ -4646,7 +4646,7 @@ normalvektorn för ansiktet används som riktning</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
       <source>Click Add or Remove and select faces</source>
-      <translation>Klicka på Lägg till eller ta bort och välj ansikten</translation>
+      <translation>Klicka på Lägg till eller ta bort och välj ytor</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="35"/>
@@ -4674,7 +4674,7 @@ normalvektorn för ansiktet används som riktning</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
       <source>Click Add or Remove and select faces</source>
-      <translation>Klicka på Lägg till eller ta bort och välj ansikten</translation>
+      <translation>Klicka på Lägg till eller ta bort och välj ytor</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="35"/>
@@ -4700,7 +4700,7 @@ normalvektorn för ansiktet används som riktning</translation>
       <location filename="../../TaskFemConstraintSpring.ui" line="82"/>
       <location filename="../../TaskFemConstraintSpring.ui" line="105"/>
       <source>N/m</source>
-      <translation type="unfinished">N/m</translation>
+      <translation>N/m</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="98"/>
@@ -4761,7 +4761,7 @@ normalvektorn för ansiktet används som riktning</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="44"/>
       <source>Select a face, click Add or Remove</source>
-      <translation>Välj ett ansikte och klicka på Lägg till eller Ta bort</translation>
+      <translation>Välj en yta och klicka på Lägg till eller Ta bort</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="59"/>
@@ -4943,7 +4943,7 @@ normalvektorn för ansiktet används som riktning</translation>
       <location filename="../../TaskPostDisplay.ui" line="42"/>
       <location filename="../../TaskPostDisplay.ui" line="93"/>
       <source>Outline</source>
-      <translation>Översikt</translation>
+      <translation>Kontur</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="47"/>
@@ -4999,7 +4999,7 @@ normalvektorn för ansiktet används som riktning</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="42"/>
       <source>Outline</source>
-      <translation>Översikt</translation>
+      <translation>Kontur</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="47"/>
@@ -5394,7 +5394,7 @@ normalvektorn för ansiktet används som riktning</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="566"/>
       <source>Material Editor</source>
-      <translation>Materialredaktör</translation>
+      <translation>Materialredigerare</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="569"/>
@@ -5464,7 +5464,7 @@ normalvektorn för ansiktet används som riktning</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="852"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Skapar ett FEM-nät från en solid eller en ansiktsform med Netgens interna mesher</translation>
+      <translation>Skapar ett FEM-nät från en solid eller en ytform med Netgens interna mesher</translation>
     </message>
   </context>
   <context>
@@ -5748,7 +5748,7 @@ normalvektorn för ansiktet används som riktning</translation>
       <source>No histogram available.
 Please select a result type first.</source>
       <translation>Inget histogram tillgängligt.
-Vänligen välj en resultattyp först.</translation>
+Välj en resultattyp först.</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="610"/>
@@ -5789,7 +5789,7 @@ Korrekt modul hittades i:
 Should this module be loaded instead?</source>
       <translation>
 
-Ska den här modulen laddas i stället?</translation>
+Ska den här modulen läsas in i stället?</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="223"/>
@@ -6003,12 +6003,12 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="281"/>
       <source>The hatch pattern drawn in the bar</source>
-      <translation>Luckmönstret ritat i fältet</translation>
+      <translation>Skrafferingsmönstret ritat i fältet</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="288"/>
       <source>The line width of the hatch)</source>
-      <translation>Linjebredden på luckan)</translation>
+      <translation>Linjebredden på skrafferingen)</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="304"/>
@@ -6035,7 +6035,7 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="423"/>
       <source>The line width of all drawn hatch patterns</source>
-      <translation>Linjebredden för alla ritade luckmönster</translation>
+      <translation>Linjebredden för alla ritade skrafferingsmönster</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="430"/>
@@ -6547,7 +6547,7 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
     <message>
       <location filename="../../Command.cpp" line="458"/>
       <source>Creates a rigid body constraint for a geometric entity</source>
-      <translation>Skapar en styv kroppsbegränsning för en geometrisk enhet</translation>
+      <translation>Skapar en styv kroppsbegränsning för en geometrisk entitet</translation>
     </message>
   </context>
   <context>
@@ -6559,7 +6559,7 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="347"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="357"/>
       <source>Selection error</source>
-      <translation>Fel vid urval</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="275"/>
@@ -6576,7 +6576,7 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="322"/>
       <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
-      <translation>Endast en typ av urval (vertex, yta eller kant) per begränsning är tillåten!</translation>
+      <translation>Endast en typ av markering (hörnpunkt, yta eller kant) per begränsning är tillåten!</translation>
     </message>
   </context>
   <context>
@@ -6789,14 +6789,14 @@ Ingen matchande modul hittades i den aktuella Python-sökvägen.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="54"/>
       <source>Python path</source>
-      <translation type="unfinished">Python path</translation>
+      <translation>Python-väg</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
       <source>Python executable for which Netgen Python bindings are installed.
 Leave blank to use default Python executable</source>
-      <translation type="unfinished">Python executable for which Netgen Python bindings are installed.
-Leave blank to use default Python executable</translation>
+      <translation>Python-körbar fil för vilken Netgen Python-bindningar är installerade.
+Lämna tomt för att använda standard Python-körbar fil</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="102"/>
@@ -6987,7 +6987,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="66"/>
       <source>…</source>
-      <translation type="unfinished">…</translation>
+      <translation>…</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="86"/>
@@ -7105,7 +7105,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/TaskPostGlyph.ui" line="126"/>
       <location filename="../ui/TaskPostGlyph.ui" line="144"/>
       <source>Which data field is used to scale the glyphs</source>
-      <translation>Vilket datafält används för att skala glyferna?</translation>
+      <translation>Vilket datafält används för att skala glyferna</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="129"/>
@@ -7155,7 +7155,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="251"/>
       <source>Vertex Mas&amp;king</source>
-      <translation type="unfinished">Vertex Mas&amp;king</translation>
+      <translation>Vertex-mas&amp;kning</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="263"/>
@@ -7268,7 +7268,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="208"/>
       <source>Hatch Line Width</source>
-      <translation>Bredd på luckans linje</translation>
+      <translation>Bredd på skrafferingslinje</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="215"/>
@@ -7348,7 +7348,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="105"/>
       <source>Clipping Plane on Face</source>
-      <translation>Klippning av plan på ansikte</translation>
+      <translation>Klippning av plan på yta</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="108"/>
@@ -7763,7 +7763,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
       <source>Hatch pattern</source>
-      <translation>Luckmönster</translation>
+      <translation>Skrafferingsmönster</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="89"/>
@@ -7773,7 +7773,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="102"/>
       <source>Density of hatch pattern</source>
-      <translation>Täthet av kläckningsmönster</translation>
+      <translation>Densitet för skrafferingsmönster</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="112"/>
@@ -7789,7 +7789,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="135"/>
       <source>Color of all lines (bar outline and hatches)</source>
-      <translation>Färg på alla linjer (bar outline och luckor)</translation>
+      <translation>Färg på alla linjer (balkkontur och skraffering)</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
@@ -7898,7 +7898,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../fempreferencepages/dlg_settings_netgen.py" line="84"/>
       <source>Executable '{}' not found</source>
-      <translation type="unfinished">Executable '{}' not found</translation>
+      <translation>Exekverbar fil '{}' hittades inte</translation>
     </message>
   </context>
   <context>
@@ -7906,7 +7906,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_centrif.py" line="67"/>
       <source>Axis Reference Selector</source>
-      <translation type="unfinished">Axis Reference Selector</translation>
+      <translation>Väljare för axelreferens</translation>
     </message>
   </context>
 </TS>

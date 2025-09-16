@@ -304,7 +304,7 @@
     <message>
       <location filename="../../Command.cpp" line="117"/>
       <source>The bounding box of the imported points does not contain the origin. Translate it to the origin?</source>
-      <translation>Begränsningsrutan för de importerade punkterna innehåller inte origo. Översätt den till ursprunget?</translation>
+      <translation>Begränsningsrutan för de importerade punkterna innehåller inte origo. Translatera den till origo?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="257"/>

@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="1083"/>
       <source>Face Info</source>
-      <translation>Ansiktsinformation</translation>
+      <translation>Ytinformation</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1084"/>
       <source>Displays information about the selected faces</source>
-      <translation>Visar information om de valda ansiktena</translation>
+      <translation>Visar information om de valda ytorna</translation>
     </message>
   </context>
   <context>
@@ -502,7 +502,7 @@
     <message>
       <location filename="../../Command.cpp" line="923"/>
       <source>Section From Plane</source>
-      <translation>Sektion från flygplan</translation>
+      <translation>Sektion från plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="924"/>
@@ -614,8 +614,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="87"/>
-      <source>Unites the selected meshes</source>
-      <translation>Sammanfogar de valda maskorna</translation>
+      <source>Unifies the selected meshes</source>
+      <translation type="unfinished">Unifies the selected meshes</translation>
     </message>
   </context>
   <context>
@@ -739,7 +739,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="832"/>
       <source>Remove degenerated faces</source>
-      <translation>Ta bort degenererade ansikten</translation>
+      <translation>Ta bort degenererade ytor</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="903"/>
@@ -846,123 +846,123 @@
   <context>
     <name>MeshGui::DlgEvaluateMesh</name>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="14"/>
-      <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Utvärdera &amp; reparera Nät</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="69"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="102"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="135"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="211"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="291"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="371"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="451"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="531"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="611"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="691"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="753"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="61"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="141"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="221"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="301"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="381"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="461"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="541"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="603"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="795"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="828"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="861"/>
       <source>No information</source>
       <translation>Ingen Information</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="23"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="745"/>
       <source>Mesh Information</source>
       <translation>Information om nät</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="46"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="772"/>
       <source>Number of faces</source>
-      <translation>Antal ansikten</translation>
+      <translation>Antal ytor</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="79"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="805"/>
       <source>Number of edges</source>
       <translation>Antal kanter</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="112"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="838"/>
       <source>Number of points</source>
-      <translation>Antal poäng</translation>
+      <translation>Antal punkter</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="147"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="754"/>
       <source>Refresh</source>
-      <translation>Ladda om</translation>
+      <translation>Läs om</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="187"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="14"/>
+      <source>Evaluate and Repair Mesh</source>
+      <translation type="unfinished">Evaluate and Repair Mesh</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMesh.ui" line="37"/>
       <source>Orientation</source>
       <translation>Orientering</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="234"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="314"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="394"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="474"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="554"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="634"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="714"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="773"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="853"/>
-      <source>Analyze</source>
-      <translation>Analysera</translation>
-    </message>
-    <message>
+      <location filename="../../DlgEvaluateMesh.ui" line="84"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="164"/>
       <location filename="../../DlgEvaluateMesh.ui" line="244"/>
       <location filename="../../DlgEvaluateMesh.ui" line="324"/>
       <location filename="../../DlgEvaluateMesh.ui" line="404"/>
       <location filename="../../DlgEvaluateMesh.ui" line="484"/>
       <location filename="../../DlgEvaluateMesh.ui" line="564"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="644"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="724"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="783"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="863"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="623"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="703"/>
+      <source>Analyze</source>
+      <translation>Analysera</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMesh.ui" line="94"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="174"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="254"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="334"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="414"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="494"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="574"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="633"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="713"/>
       <source>Repair</source>
       <translation>Reparera</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="267"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="117"/>
       <source>Duplicated faces</source>
       <translation>Duplicerade ytor</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="347"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="197"/>
       <source>Duplicated points</source>
       <translation>Duplicerade punkter</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="427"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="277"/>
       <source>Non-manifolds</source>
       <translation>Icke-mångfalder</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="507"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="357"/>
       <source>Degenerated faces</source>
       <translation>Degenererade ytor</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="587"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="437"/>
       <source>Face indices</source>
       <translation>Ytindex</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="667"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="517"/>
       <source>Self-intersections</source>
       <translation>Självskärningar</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="735"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="585"/>
       <source>Folds on surface</source>
       <translation>Veck på ytan</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="806"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="656"/>
       <source>All above tests together</source>
       <translation>Alla ovanstående test tillsammans</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="830"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="680"/>
       <source>Repetitive repair</source>
       <translation>Upprepad reparation</translation>
     </message>
@@ -1089,7 +1089,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="912"/>
       <source>Duplicated faces</source>
-      <translation>Duplicerade ansikten</translation>
+      <translation>Duplicerade ytor</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="948"/>
@@ -1486,8 +1486,8 @@ till ett mjukare utseende.
  If face angle &lt; crease angle, smooth shading is used</source>
       <translation>Veckvinkel är en tröskelvinkel mellan två ytor.
 
- Om ansiktsvinkeln ≥ veckvinkeln används fasettskuggning
- Om ansiktsvinkeln &lt; veckvinkeln används slät skuggning</translation>
+ Om ytvinkeln ≥ veckvinkeln används fasettskuggning
+ Om ytvinkeln &lt; veckvinkeln används slät skuggning</translation>
     </message>
   </context>
   <context>
@@ -1525,7 +1525,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../DlgSmoothing.ui" line="72"/>
       <source>Lambda</source>
-      <translation type="unfinished">Lambda</translation>
+      <translation>Lambda</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="95"/>
@@ -1638,7 +1638,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="185"/>
       <source>Selection</source>
-      <translation>Urval</translation>
+      <translation>Markering</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="193"/>
@@ -1917,7 +1917,7 @@ till ett mjukare utseende.
       <location filename="../../SegmentationBestFit.ui" line="106"/>
       <location filename="../../SegmentationBestFit.ui" line="159"/>
       <source>Minimum number of faces</source>
-      <translation>Minsta antal ansikten</translation>
+      <translation>Minsta antal ytor</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="73"/>
@@ -1963,7 +1963,7 @@ till ett mjukare utseende.
       <location filename="../../Selection.ui" line="14"/>
       <location filename="../../Selection.ui" line="20"/>
       <source>Selection</source>
-      <translation>Urval</translation>
+      <translation>Markering</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="39"/>
@@ -1977,13 +1977,13 @@ till ett mjukare utseende.
     </message>
     <message>
       <location filename="../../Selection.ui" line="53"/>
-      <source>Respect only visible triangles</source>
-      <translation>Respektera endast synliga trianglar</translation>
+      <source>Accept only visible triangles</source>
+      <translation type="unfinished">Accept only visible triangles</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="63"/>
-      <source>Respect only triangles with screen-facing normals</source>
-      <translation>Respektera endast trianglar med normaler som vetter mot skärmen</translation>
+      <source>Accept only triangles with screen-facing normals</source>
+      <translation type="unfinished">Accept only triangles with screen-facing normals</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="86"/>
@@ -2062,7 +2062,7 @@ Besök https://openscad.org/ för att installera det.</translation>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1328"/>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Utvärdera och reparera maskor</translation>
+      <translation>Utvärdera &amp; reparera Nät</translation>
     </message>
   </context>
   <context>
@@ -2294,22 +2294,22 @@ Besök https://openscad.org/ för att installera det.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="1823"/>
       <source>Delete Selected Faces</source>
-      <translation>Ta bort valda ansikten</translation>
+      <translation>Ta bort valda ytor</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1824"/>
       <source>Clear Selected Faces</source>
-      <translation>Rensa utvalda ansikten</translation>
+      <translation>Rensa utvalda ytor</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCurvature.cpp" line="537"/>
       <source>Annotation</source>
-      <translation>Annotering</translation>
+      <translation>Anteckning</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>
       <source>Number of points</source>
-      <translation>Antal poäng</translation>
+      <translation>Antal punkter</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
