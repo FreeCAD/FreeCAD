@@ -75,12 +75,12 @@
     <message>
       <location filename="../../StartView.cpp" line="224"/>
       <source>2D Draft</source>
-      <translation>2D-utkast</translation>
+      <translation>2D-släppning</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="225"/>
       <source>Creates a 2D Draft document</source>
-      <translation>Skapar ett 2D-utkastdokument</translation>
+      <translation>Skapar ett 2D-släppningsdokument</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="228"/>

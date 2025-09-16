@@ -70,7 +70,7 @@
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="125"/>
       <source>Turn flexible</source>
-      <translation>Vrid flexibel</translation>
+      <translation>Gör flexibel</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="126"/>
@@ -80,7 +80,7 @@
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="130"/>
       <source>Turn rigid</source>
-      <translation>Vrid styv</translation>
+      <translation>Gör solid</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="131"/>
@@ -126,7 +126,7 @@
     <message>
       <location filename="../../../JointObject.py" line="51"/>
       <source>Revolute</source>
-      <translation>Revolver</translation>
+      <translation>Vrid</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="52"/>
@@ -136,7 +136,7 @@
     <message>
       <location filename="../../../JointObject.py" line="53"/>
       <source>Slider</source>
-      <translation type="unfinished">Slider</translation>
+      <translation>Glid</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="54"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../../JointObject.py" line="59"/>
       <source>RackPinion</source>
-      <translation>KuggstångPinion</translation>
+      <translation>Kugghjuls- och kuggstång</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="60"/>
@@ -203,12 +203,12 @@
     <message>
       <location filename="../../../JointObject.py" line="1566"/>
       <source>Thread pitch</source>
-      <translation>Stigning i tråd</translation>
+      <translation>Gängstigning</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1568"/>
       <source>Pitch radius</source>
-      <translation>Pitch-radie</translation>
+      <translation>Stigningsradie</translation>
     </message>
     <message>
       <location filename="../../../Preferences.py" line="49"/>
@@ -228,7 +228,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="46"/>
       <source>Index (auto)</source>
-      <translation type="unfinished">Index (auto)</translation>
+      <translation>Index (auto)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="47"/>
@@ -263,7 +263,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="297"/>
       <source>This name is already used. Please choose a different name.</source>
-      <translation>Detta namn är redan använt. Vänligen välj ett annat namn.</translation>
+      <translation>Detta namn är redan använt. Välj ett annat namn.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="376"/>
@@ -333,7 +333,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="104"/>
       <source>Joint new part origin</source>
-      <translation>Joint ny del ursprung</translation>
+      <translation>Foga nya delens origo</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="140"/>
@@ -521,17 +521,17 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../JointObject.py" line="183"/>
       <source>The type of the joint</source>
-      <translation>Typ av led</translation>
+      <translation>Typen för fogen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="209"/>
       <source>The first reference of the joint</source>
-      <translation>Den första hänvisningen till den gemensamma</translation>
+      <translation>Den första referensen för fogen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="221"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
-      <translation>Detta är det lokala koordinatsystem inom Reference1:s objekt som kommer att användas för leden</translation>
+      <translation>Detta är det lokala koordinatsystem inom Reference1:s objekt som kommer att användas för fogen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="233"/>
@@ -542,12 +542,12 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
       <location filename="../../../JointObject.py" line="245"/>
       <location filename="../../../JointObject.py" line="516"/>
       <source>This is the attachment offset of the first connector of the joint</source>
-      <translation>Detta är fästförskjutningen för den första kontakten i leden</translation>
+      <translation>Detta är fästförskjutningen för den första anslutaren i fogen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="267"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
-      <translation>Detta är det lokala koordinatsystem inom Reference2:s objekt som kommer att användas för leden</translation>
+      <translation>Detta är det lokala koordinatsystem inom Reference2:s objekt som kommer att användas för fogen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="279"/>
@@ -558,7 +558,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
       <location filename="../../../JointObject.py" line="291"/>
       <location filename="../../../JointObject.py" line="527"/>
       <source>This is the attachment offset of the second connector of the joint</source>
-      <translation>Detta är fästförskjutningen för den andra kontakten i skarven</translation>
+      <translation>Detta är fästförskjutningen för den andra anslutaren i fogen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="328"/>
@@ -573,12 +573,12 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../JointObject.py" line="354"/>
       <source>Enable the minimum angle limit of the joint</source>
-      <translation>Aktivera den minsta vinkelgränsen för leden</translation>
+      <translation>Aktivera den minsta vinkelgränsen för fogen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="367"/>
       <source>Enable the maximum angle limit of the joint</source>
-      <translation>Aktivera den maximala vinkelgränsen för leden</translation>
+      <translation>Aktivera den maximala vinkelgränsen för fogen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="380"/>
@@ -603,32 +603,32 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../JointObject.py" line="255"/>
       <source>The second reference of the joint</source>
-      <translation>Den andra hänvisningen till den gemensamma</translation>
+      <translation>Den andra referensen för fogen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="435"/>
       <source>The first object of the joint</source>
-      <translation>Det första objektet i den gemensamma</translation>
+      <translation>Det första objektet för fogen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="455"/>
       <source>The second object of the joint</source>
-      <translation>Det andra föremålet för den gemensamma</translation>
+      <translation>Det andra objektet för fogen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="304"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
-      <translation>Detta är avståndet till leden. Det används endast av Distance joint och Rack and Pinion (pitch radius), Screw and Gears och Belt (radius1)</translation>
+      <translation>Detta är distansen för fogen. Det används endast av Distansfog och kuggstång och drev (radie på bultcirkeln), Skruvar och kugghjul samt Bälte (radius1)</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="316"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
-      <translation>Detta är ledens andra avstånd. Det används endast av växelleden för att lagra den andra radien.</translation>
+      <translation>Detta är fogens andra distans. Det används endast av växelleden för att lagra den andra radien.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="469"/>
       <source>The {order} reference of the joint</source>
-      <translation>Ledens {order}-referens</translation>
+      <translation>Ledens {order}-referens för fogen</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1035"/>
@@ -702,7 +702,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="41"/>
       <source>Distance</source>
-      <translation>Avstånd</translation>
+      <translation>Distans</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="65"/>
@@ -712,7 +712,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="89"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Förskjutning</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="113"/>
@@ -722,32 +722,32 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="137"/>
       <source>Offset1</source>
-      <translation type="unfinished">Offset1</translation>
+      <translation>Förskjutning1</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="158"/>
       <source>Offset2</source>
-      <translation type="unfinished">Offset2</translation>
+      <translation>Förskjutning2</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="177"/>
       <source>Show advanced offsets</source>
-      <translation>Visa avancerade offsets</translation>
+      <translation>Visa avancerade förskjutningar</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="14"/>
       <source>Joint</source>
-      <translation>Gemensam</translation>
+      <translation>Fog</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="144"/>
       <source>Sets the attachment offset of the joint’s first marker (coordinate system)</source>
-      <translation>Ställer in fästoffset för ledens första markör (koordinatsystem)</translation>
+      <translation>Ställer in fästförskjutning för fogens första markör (koordinatsystem)</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="165"/>
       <source>Sets the attachment offset of the second marker (coordinate system) of the joint</source>
-      <translation>Ställer in fästoffset för ledens andra markör (koordinatsystem)</translation>
+      <translation>Ställer in fästförskjutning för fogens andra markör (koordinatsystem)</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="193"/>
@@ -833,7 +833,7 @@ You can change this behavior at any time by either right-clicking the sub-assemb
 Styv innebär att den underenhet som läggs till betraktas som en solid enhet i den överordnade enheten.
 Flexibel innebär att den tillagda underenheten tillåter rörelse av de enskilda komponenternas leder inom den överordnade enheten.
 Du kan ändra detta beteende när som helst genom att antingen högerklicka på underenheten i dokumentträdet och växla mellan
-"Turn rigid"/"Turn flexible" där, eller genom att redigera egenskapen Rigid i egenskapsredigeraren.</translation>
+"Gör solid"/"Gör flexibel" där, eller genom att redigera egenskapen Solid i egenskapsredigeraren.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="81"/>
@@ -857,7 +857,7 @@ Du kan ändra detta beteende när som helst genom att antingen högerklicka på 
       <location filename="../preferences/Assembly.ui" line="39"/>
       <source>Log the dragging steps of the solver. Useful to report a bug.
 The files are named "runPreDrag.asmt" and "dragging.log" and are located in the default directory of std::ofstream (on Windows it's the desktop)</source>
-      <translation>Loggar lösarens draggningssteg. Användbart för att rapportera en bugg.
+      <translation>Loggar lösarens dragningssteg. Användbart för att rapportera en bugg.
 Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen för std::ofstream (på Windows är det skrivbordet)</translation>
     </message>
     <message>
@@ -886,12 +886,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="198"/>
       <source>The object is associated to one or more joints.</source>
-      <translation>Objektet är kopplat till en eller flera leder.</translation>
+      <translation>Objektet är kopplat till en eller flera fogar.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="200"/>
       <source>Do you want to move the object and delete associated joints?</source>
-      <translation>Vill du flytta objektet och ta bort tillhörande leder?</translation>
+      <translation>Vill du flytta objektet och ta bort tillhörande fogar?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="982"/>
@@ -902,7 +902,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
       <location filename="../../ViewProviderAssembly.cpp" line="1316"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
-      <translation type="unfinished">ViewProviderAssembly</translation>
+      <translation>ViewProviderAssembly</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1333"/>
@@ -917,12 +917,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1344"/>
       <source>Malformed joints:</source>
-      <translation>Missbildade leder:</translation>
+      <translation>Felformade fogar:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1350"/>
       <source>Redundant joints:</source>
-      <translation>Redundanta leder:</translation>
+      <translation>Redundanta fogar:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1357"/>
@@ -963,18 +963,18 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="358"/>
       <source>Creates a screw joint that links a part with a sliding joint to a part with a revolute joint</source>
-      <translation>Skapar en skruvförband som länkar en del med en glidande led till en del med en revolverande led</translation>
+      <translation>Skapar ett skruvförband som länkar en del med en glidfog till en del med en vridfog</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="363"/>
       <source>Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.</source>
-      <translation>Välj samma koordinatsystem som för revolver- och glidlederna. Stigningsradien definierar rörelseförhållandet mellan den roterande skruven och den glidande delen.</translation>
+      <translation>Välj samma koordinatsystem som för vrid- och glidfogar. Stigningsradien definierar rörelseförhållandet mellan den roterande skruven och den glidande delen.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="393"/>
       <location filename="../../../CommandCreateJoint.py" line="423"/>
       <source>Select the same coordinate systems as the revolute joints.</source>
-      <translation>Välj samma koordinatsystem som för de roterande lederna.</translation>
+      <translation>Välj samma koordinatsystem som för vridfogarna.</translation>
     </message>
   </context>
   <context>
@@ -982,17 +982,17 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="442"/>
       <source>Gears/Belt Joint</source>
-      <translation>Växlar/remskarv</translation>
+      <translation>Kugghjul/remfog</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="448"/>
       <source>Creates a gears or belt joint that links 2 rotating gears together</source>
-      <translation>Skapar en kugghjuls- eller remkoppling som kopplar ihop 2 roterande kugghjul</translation>
+      <translation>Skapar en kugghjuls- eller remfog som kopplar ihop 2 roterande kugghjul</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="453"/>
       <source>Select the same coordinate systems as the revolute joints.</source>
-      <translation>Välj samma koordinatsystem som för de roterande lederna.</translation>
+      <translation>Välj samma koordinatsystem som för vridfogarna.</translation>
     </message>
   </context>
   <context>
@@ -1127,7 +1127,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="54"/>
       <source>New Part</source>
-      <translation>Ny Artikel</translation>
+      <translation>Ny artikel</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="61"/>
@@ -1312,12 +1312,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="111"/>
       <source>Revolute Joint</source>
-      <translation>Revolverled</translation>
+      <translation>Vridfog</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="118"/>
       <source>Creates a revolute joint allowing rotation around a single axis between selected parts</source>
-      <translation>Skapar en revolverande led som möjliggör rotation runt en enda axel mellan valda delar</translation>
+      <translation>Skapar en vridfog som möjliggör rotation runt en enda axel mellan valda delar</translation>
     </message>
   </context>
   <context>
@@ -1325,12 +1325,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="136"/>
       <source>Cylindrical Joint</source>
-      <translation>Cylindrisk led</translation>
+      <translation>Cylindrisk fog</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="143"/>
       <source>Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</source>
-      <translation>Skapar en cylindrisk led som tillåter rotation runt och translation längs en enda axel mellan monterade delar</translation>
+      <translation>Skapar en cylindrisk fog som tillåter rotation runt och translation längs en enda axel mellan monterade delar</translation>
     </message>
   </context>
   <context>
@@ -1338,12 +1338,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="161"/>
       <source>Slider Joint</source>
-      <translation type="unfinished">Slider Joint</translation>
+      <translation>Glidfog</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="168"/>
       <source>Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</source>
-      <translation>Skapar en skjutled som tillåter linjär rörelse längs en enda axel, men begränsar rotationen mellan valda delar</translation>
+      <translation>Skapar en glidfog som tillåter linjär rörelse längs en enda axel, men begränsar rotationen mellan valda delar</translation>
     </message>
   </context>
   <context>
@@ -1364,7 +1364,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="211"/>
       <source>Distance Joint</source>
-      <translation>Avstånd Fog</translation>
+      <translation>Distansfog</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="218"/>
@@ -1382,12 +1382,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="242"/>
       <source>Parallel Joint</source>
-      <translation>Parallell led</translation>
+      <translation>Parallellfog</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="249"/>
       <source>Creates a parallel joint that makes the Z-axis of the selected coordinate systems parallel</source>
-      <translation>Skapar en parallell led som gör Z-axeln i de valda koordinatsystemen parallella</translation>
+      <translation>Skapar en parallellfog som gör Z-axeln i de valda koordinatsystemen parallella</translation>
     </message>
   </context>
   <context>
@@ -1400,7 +1400,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="276"/>
       <source>Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</source>
-      <translation>Skapar en vinkelrät led som gör Z-axeln i de valda koordinatsystemen vinkelräta</translation>
+      <translation>Skapar en vinkelrät fog som gör Z-axeln i de valda koordinatsystemen vinkelräta</translation>
     </message>
   </context>
   <context>
@@ -1421,17 +1421,17 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="321"/>
       <source>Rack and Pinion Joint</source>
-      <translation>Led för kuggstång och kugghjul</translation>
+      <translation>Fog för kuggstång och kugghjul</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="328"/>
       <source>Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint</source>
-      <translation>Skapar en kuggstångsled som kopplar en del med en glidande led till en del med en roterande led</translation>
+      <translation>Skapar en kuggstångsled som kopplar en del med en glidfog till en del med en vridfog</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="333"/>
       <source>Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.</source>
-      <translation>Väljer samma koordinatsystem som revolver- och glidlederna. Delningsradien definierar rörelseförhållandet mellan kuggstången och pinnen.</translation>
+      <translation>Väljer samma koordinatsystem som vrid- och glidfogarna. Stigningsradien definierar rörelseförhållandet mellan kuggstången och kugghjulet.</translation>
     </message>
   </context>
   <context>
@@ -1439,12 +1439,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="381"/>
       <source>Gears Joint</source>
-      <translation>Växlar Led</translation>
+      <translation>Kugghjulsfog</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="388"/>
       <source>Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.</source>
-      <translation>Skapar en kugghjulslänk som kopplar ihop 2 roterande kugghjul. De kommer att ha omvänd rotationsriktning.</translation>
+      <translation>Skapar en kugghjulsfog som kopplar ihop 2 roterande kugghjul. De kommer att ha omvänd rotationsriktning.</translation>
     </message>
   </context>
   <context>
@@ -1452,12 +1452,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="411"/>
       <source>Belt Joint</source>
-      <translation>Bältesled</translation>
+      <translation>Bältesfog</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="418"/>
       <source>Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.</source>
-      <translation>Skapar en remled som kopplar ihop 2 roterande objekt. De kommer att ha samma rotationsriktning.</translation>
+      <translation>Skapar en bältesfog som kopplar ihop 2 roterande objekt. De kommer att ha samma rotationsriktning.</translation>
     </message>
   </context>
   <context>
@@ -1465,7 +1465,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateJoint.py" line="486"/>
       <source>Toggle Grounded</source>
-      <translation>Toggle Jordad</translation>
+      <translation>Växla jordad</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="493"/>
@@ -1519,12 +1519,12 @@ Genom att jorda en del låses dess position permanent i monteringen, vilket för
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
       <source>Click to select these conflicting joints.</source>
-      <translation>Klicka för att välja dessa motstridiga leder.</translation>
+      <translation>Klicka för att välja dessa motstridiga fogar.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
       <source>Click to select these redundant joints.</source>
-      <translation>Klicka för att välja dessa överflödiga leder.</translation>
+      <translation>Klicka för att välja dessa överflödiga fogar.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="64"/>
@@ -1534,7 +1534,7 @@ Genom att jorda en del låses dess position permanent i monteringen, vilket för
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="68"/>
       <source>Click to select these malformed joints.</source>
-      <translation>Klicka för att markera dessa missbildade leder.</translation>
+      <translation>Klicka för att markera dessa felformade fogar.</translation>
     </message>
   </context>
 </TS>

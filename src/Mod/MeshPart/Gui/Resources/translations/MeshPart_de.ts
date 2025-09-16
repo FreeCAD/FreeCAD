@@ -494,9 +494,9 @@ Ein Wert im Bereich von 0.2-10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="279"/>
       <source>Error: body without a tip selected.
-Either set the tip of the body or select a different shapee.</source>
-      <translation>Fehler: Körper ohne Spitze ausgewählt.
-Legen Sie entweder die Spitze des Körpers fest oder wählen Sie eine andere Form.</translation>
+Either set the tip of the body or select a different shape.</source>
+      <translation type="unfinished">Error: body without a tip selected.
+Either set the tip of the body or select a different shape.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="285"/>

@@ -614,8 +614,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="87"/>
-      <source>Unites the selected meshes</source>
-      <translation>Unifie les maillages sélectionnés.</translation>
+      <source>Unifies the selected meshes</source>
+      <translation type="unfinished">Unifies the selected meshes</translation>
     </message>
   </context>
   <context>
@@ -846,123 +846,123 @@
   <context>
     <name>MeshGui::DlgEvaluateMesh</name>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="14"/>
-      <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Évaluer et réparer un maillage</translation>
-    </message>
-    <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="69"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="102"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="135"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="211"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="291"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="371"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="451"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="531"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="611"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="691"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="753"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="61"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="141"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="221"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="301"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="381"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="461"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="541"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="603"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="795"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="828"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="861"/>
       <source>No information</source>
       <translation>Aucune information</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="23"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="745"/>
       <source>Mesh Information</source>
       <translation>Informations du maillage</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="46"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="772"/>
       <source>Number of faces</source>
       <translation>Nombre de faces</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="79"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="805"/>
       <source>Number of edges</source>
       <translation>Nombre d'arêtes</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="112"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="838"/>
       <source>Number of points</source>
       <translation>Nombre de points</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="147"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="754"/>
       <source>Refresh</source>
       <translation>Rafraîchir</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="187"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="14"/>
+      <source>Evaluate and Repair Mesh</source>
+      <translation type="unfinished">Evaluate and Repair Mesh</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMesh.ui" line="37"/>
       <source>Orientation</source>
       <translation>Orientation</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="234"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="314"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="394"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="474"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="554"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="634"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="714"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="773"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="853"/>
-      <source>Analyze</source>
-      <translation>Analyser</translation>
-    </message>
-    <message>
+      <location filename="../../DlgEvaluateMesh.ui" line="84"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="164"/>
       <location filename="../../DlgEvaluateMesh.ui" line="244"/>
       <location filename="../../DlgEvaluateMesh.ui" line="324"/>
       <location filename="../../DlgEvaluateMesh.ui" line="404"/>
       <location filename="../../DlgEvaluateMesh.ui" line="484"/>
       <location filename="../../DlgEvaluateMesh.ui" line="564"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="644"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="724"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="783"/>
-      <location filename="../../DlgEvaluateMesh.ui" line="863"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="623"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="703"/>
+      <source>Analyze</source>
+      <translation>Analyser</translation>
+    </message>
+    <message>
+      <location filename="../../DlgEvaluateMesh.ui" line="94"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="174"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="254"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="334"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="414"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="494"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="574"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="633"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="713"/>
       <source>Repair</source>
       <translation>Réparer</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="267"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="117"/>
       <source>Duplicated faces</source>
       <translation>Faces dupliquées</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="347"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="197"/>
       <source>Duplicated points</source>
       <translation>Points dupliqués</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="427"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="277"/>
       <source>Non-manifolds</source>
       <translation>Non-manifolds</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="507"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="357"/>
       <source>Degenerated faces</source>
       <translation>Faces dégénérées</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="587"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="437"/>
       <source>Face indices</source>
       <translation>Indices des faces</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="667"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="517"/>
       <source>Self-intersections</source>
       <translation>Collisions internes</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="735"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="585"/>
       <source>Folds on surface</source>
       <translation>Plis sur la surface</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="806"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="656"/>
       <source>All above tests together</source>
       <translation>Tous les tests ci-dessus combinés</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMesh.ui" line="830"/>
+      <location filename="../../DlgEvaluateMesh.ui" line="680"/>
       <source>Repetitive repair</source>
       <translation>Réparation répétitive</translation>
     </message>
@@ -1971,13 +1971,13 @@ Avec l'ombrage plat, les normales de la surface ne sont pas définies par les so
     </message>
     <message>
       <location filename="../../Selection.ui" line="53"/>
-      <source>Respect only visible triangles</source>
-      <translation>Prendre en compte uniquement les triangles visibles</translation>
+      <source>Accept only visible triangles</source>
+      <translation type="unfinished">Accept only visible triangles</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="63"/>
-      <source>Respect only triangles with screen-facing normals</source>
-      <translation>Prendre en compte uniquement les triangles avec des normales orientées vers l'écran</translation>
+      <source>Accept only triangles with screen-facing normals</source>
+      <translation type="unfinished">Accept only triangles with screen-facing normals</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="86"/>

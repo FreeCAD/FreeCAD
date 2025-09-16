@@ -2127,7 +2127,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="300"/>
       <source>New View</source>
-      <translation type="unfinished">New View</translation>
+      <translation>Új nézet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="301"/>
@@ -2471,7 +2471,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Dimenzió húzása</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="611"/>
+      <location filename="../../QGSPage.cpp" line="612"/>
       <source>Create Balloon</source>
       <translation>Ballon létrehozása</translation>
     </message>
@@ -3486,7 +3486,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="2194"/>
       <location filename="../../CommandDecorate.cpp" line="334"/>
       <location filename="../../CommandDecorate.cpp" line="340"/>
-      <location filename="../../TaskDimension.cpp" line="464"/>
+      <location filename="../../TaskDimension.cpp" line="552"/>
       <source>Incorrect Selection</source>
       <translation>Hibás kijelölés</translation>
     </message>
@@ -4097,19 +4097,19 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Háromnál kevesebb kiválasztott kör</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="168"/>
-      <location filename="../../TaskDimension.cpp" line="183"/>
+      <location filename="../../TaskDimension.cpp" line="198"/>
+      <location filename="../../TaskDimension.cpp" line="213"/>
       <source>Missing Dimension</source>
       <translation>Hiányzó méret</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="169"/>
-      <location filename="../../TaskDimension.cpp" line="184"/>
+      <location filename="../../TaskDimension.cpp" line="199"/>
+      <location filename="../../TaskDimension.cpp" line="214"/>
       <source>Dimension not found. Was it deleted? Cannot continue.</source>
       <translation type="unfinished">Dimension not found. Was it deleted? Cannot continue.</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="465"/>
+      <location filename="../../TaskDimension.cpp" line="553"/>
       <source>Select 2 vertices or 1 edge</source>
       <translation type="unfinished">Select 2 vertices or 1 edge</translation>
     </message>
@@ -4234,7 +4234,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../TaskProjGroup.cpp" line="189"/>
       <source>New View</source>
-      <translation type="unfinished">New View</translation>
+      <translation>Új nézet</translation>
     </message>
     <message>
       <location filename="../../CommandHelpers.cpp" line="91"/>
@@ -7216,81 +7216,77 @@ Egyedi: egyedi lépték használata</translation>
     <name>TechDrawGui::TaskDimension</name>
     <message>
       <location filename="../../TaskDimension.ui" line="14"/>
+      <location filename="../../TaskDimension.ui" line="20"/>
       <source>Dimension</source>
       <translation>Dimenzió</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="20"/>
+      <location filename="../../TaskDimension.ui" line="87"/>
       <source>Tolerancing</source>
       <translation>Tűrés</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="198"/>
+      <location filename="../../TaskDimension.ui" line="222"/>
       <source>Reverses usual direction of dimension line terminators</source>
       <translation>Megfordítja a méretvonal végeinek szokásos irányát</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="38"/>
+      <location filename="../../TaskDimension.ui" line="95"/>
       <source>Assign same value to over and under tolerance</source>
       <translation>Ugyanazt az értéket rendelje hozzá a felső és az alsó tűréshez</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="115"/>
-      <source>Formatting</source>
-      <translation>Formázás</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.ui" line="130"/>
+      <location filename="../../TaskDimension.ui" line="35"/>
       <source>Text to be displayed</source>
       <translation>Megjelenítendő szöveg</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="154"/>
+      <location filename="../../TaskDimension.ui" line="105"/>
       <source>Specifies the overtolerance format in printf() style, or arbitrary text</source>
       <translation>Megadja a felső tűrés formátumát printf() stílusban, vagy bármilyen szöveget</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="168"/>
+      <location filename="../../TaskDimension.ui" line="146"/>
       <source>Specifies the undertolerance format in printf() style, or arbitrary text</source>
       <translation>Megadja a alsó tűrés formátumát printf() stílusban, vagy bármilyen szöveget</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="190"/>
+      <location filename="../../TaskDimension.ui" line="214"/>
       <source>Display Style</source>
       <translation>Megjelenítési stílus</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="215"/>
+      <location filename="../../TaskDimension.ui" line="239"/>
       <source>Color of the dimension</source>
       <translation>Méretezés színe</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="277"/>
+      <location filename="../../TaskDimension.ui" line="298"/>
       <source>Standard and style according to which dimension is drawn</source>
       <translation>Szabvány és stílus, amely szerint a méretet megrajzolták</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="28"/>
+      <location filename="../../TaskDimension.ui" line="136"/>
       <source>If theoretically exact (basic) dimension</source>
       <translation type="unfinished">If theoretically exact (basic) dimension</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="31"/>
+      <location filename="../../TaskDimension.ui" line="139"/>
       <source>Theoretically exact</source>
       <translation type="unfinished">Theoretically exact</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="41"/>
+      <location filename="../../TaskDimension.ui" line="98"/>
       <source>Equal tolerance</source>
       <translation type="unfinished">Equal tolerance</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="48"/>
+      <location filename="../../TaskDimension.ui" line="153"/>
       <source>Overtolerance</source>
       <translation type="unfinished">Overtolerance</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="61"/>
+      <location filename="../../TaskDimension.ui" line="166"/>
       <source>Overtolerance value
 If &apos;Equal tolerance&apos; is checked this is also
 the negated value for &apos;Undertolerance&apos;.</source>
@@ -7299,12 +7295,12 @@ If &apos;Equal tolerance&apos; is checked this is also
 the negated value for &apos;Undertolerance&apos;.</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="79"/>
+      <location filename="../../TaskDimension.ui" line="181"/>
       <source>Undertolerance</source>
       <translation type="unfinished">Undertolerance</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="92"/>
+      <location filename="../../TaskDimension.ui" line="194"/>
       <source>Undertolerance value
 If &apos;Equal tolerance&apos; is checked it will be replaced
 by negative value of &apos;Overtolerance&apos;.</source>
@@ -7313,149 +7309,169 @@ If &apos;Equal tolerance&apos; is checked it will be replaced
 by negative value of &apos;Overtolerance&apos;.</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="123"/>
+      <location filename="../../TaskDimension.ui" line="28"/>
       <source>Format specifier</source>
       <translation type="unfinished">Format specifier</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="137"/>
+      <location filename="../../TaskDimension.ui" line="42"/>
       <source>Sets use of &apos;Format spec&apos; instead of the dimension value</source>
       <translation type="unfinished">Sets use of &apos;Format spec&apos; instead of the dimension value</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="140"/>
+      <location filename="../../TaskDimension.ui" line="45"/>
       <source>Arbitrary text</source>
       <translation type="unfinished">Arbitrary text</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="147"/>
+      <location filename="../../TaskDimension.ui" line="129"/>
       <source>Overtolerance format specifier</source>
       <translation type="unfinished">Overtolerance format specifier</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="161"/>
+      <location filename="../../TaskDimension.ui" line="122"/>
       <source>Undertolerance format specifier</source>
       <translation type="unfinished">Undertolerance format specifier</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="175"/>
+      <location filename="../../TaskDimension.ui" line="52"/>
+      <source>Number of decimals</source>
+      <translation>Tizedesjegyek száma</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="65"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Increments the number of decimals of the selected dimenesion&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Increments the number of decimals of the selected dimenesion&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="72"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Encloses the dimension value in parentheses () to indicate it is for reference only&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Encloses the dimension value in parentheses () to indicate it is for reference only&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="75"/>
+      <source>Reference</source>
+      <translation>Referencia</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="112"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Uses the tolerance format spec&lt;/p&gt;&lt;p&gt;instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Uses the tolerance format spec&lt;/p&gt;&lt;p&gt;instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="178"/>
+      <location filename="../../TaskDimension.ui" line="115"/>
       <source>Arbitrary tolerance text</source>
       <translation type="unfinished">Arbitrary tolerance text</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="201"/>
+      <location filename="../../TaskDimension.ui" line="225"/>
       <source>Flip arrowheads</source>
       <translation type="unfinished">Flip arrowheads</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="208"/>
+      <location filename="../../TaskDimension.ui" line="232"/>
       <source>Color</source>
       <translation>Szín</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="229"/>
+      <location filename="../../TaskDimension.ui" line="253"/>
       <source>Font size</source>
       <translation>Betűméret</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="248"/>
+      <location filename="../../TaskDimension.ui" line="272"/>
       <source>Font size for text</source>
       <translation type="unfinished">Font size for text</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="270"/>
+      <location filename="../../TaskDimension.ui" line="291"/>
       <source>Drawing style</source>
       <translation type="unfinished">Drawing style</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="281"/>
+      <location filename="../../TaskDimension.ui" line="302"/>
       <source>ISO oriented</source>
       <translation type="unfinished">ISO oriented</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="286"/>
+      <location filename="../../TaskDimension.ui" line="307"/>
       <source>ISO referencing</source>
       <translation type="unfinished">ISO referencing</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="291"/>
+      <location filename="../../TaskDimension.ui" line="312"/>
       <source>ASME inlined</source>
       <translation type="unfinished">ASME inlined</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="296"/>
+      <location filename="../../TaskDimension.ui" line="317"/>
       <source>ASME referencing</source>
       <translation type="unfinished">ASME referencing</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="309"/>
+      <location filename="../../TaskDimension.ui" line="330"/>
       <source>Lines</source>
       <translation>Vonalak</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="317"/>
+      <location filename="../../TaskDimension.ui" line="338"/>
       <source>Use override angles if checked. Use default angles if unchecked.</source>
       <translation>Használja a szög felülbírálatot, ha ez a lehetőség bejelölt. Ellenkező esetben az alapértelmezett szögeket használja.</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="320"/>
+      <location filename="../../TaskDimension.ui" line="341"/>
       <source>Override angles</source>
       <translation>Szögek cseréje</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="327"/>
+      <location filename="../../TaskDimension.ui" line="348"/>
       <source>Dimension line angle</source>
       <translation>Méretvonal szöge</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="334"/>
+      <location filename="../../TaskDimension.ui" line="355"/>
       <source>Angle of dimension line with drawing X axis (degrees)</source>
       <translation>Méretvonal szöge a rajz X tengelyéhez képest (fokban)</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="350"/>
+      <location filename="../../TaskDimension.ui" line="371"/>
       <source>Set dimension line angle to default (orthographic view)</source>
       <translation type="unfinished">Set dimension line angle to default (orthographic view)</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="353"/>
-      <location filename="../../TaskDimension.ui" line="396"/>
+      <location filename="../../TaskDimension.ui" line="374"/>
+      <location filename="../../TaskDimension.ui" line="417"/>
       <source>Use Default</source>
       <translation type="unfinished">Use Default</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="360"/>
+      <location filename="../../TaskDimension.ui" line="381"/>
       <source>Set dimension line angle to match selected edge or vertices</source>
       <translation type="unfinished">Set dimension line angle to match selected edge or vertices</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="363"/>
-      <location filename="../../TaskDimension.ui" line="406"/>
+      <location filename="../../TaskDimension.ui" line="384"/>
+      <location filename="../../TaskDimension.ui" line="427"/>
       <source>Use Selection</source>
       <translation>Kijelölés használata</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="393"/>
+      <location filename="../../TaskDimension.ui" line="414"/>
       <source>Set extension line angle to default (orthographic)</source>
       <translation type="unfinished">Set extension line angle to default (orthographic)</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="403"/>
+      <location filename="../../TaskDimension.ui" line="424"/>
       <source>Set extension line angle to match selected edge or vertices</source>
       <translation type="unfinished">Set extension line angle to match selected edge or vertices</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="370"/>
+      <location filename="../../TaskDimension.ui" line="391"/>
       <source>Extension line angle</source>
       <translation>Meghosszabbító vonal szöge</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="377"/>
+      <location filename="../../TaskDimension.ui" line="398"/>
       <source>Angle of extension lines with drawing X axis (degrees)</source>
       <translation>Meghosszabbító vonalak szöge a rajz X tengelyéhez képest (fokban)</translation>
     </message>

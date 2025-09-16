@@ -6780,7 +6780,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2322"/>
       <source>Datum Line</source>
-      <translation type="unfinished">Datum Line</translation>
+      <translation>基准线</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2323"/>

@@ -903,8 +903,8 @@
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="160"/>
-      <source>Don not change position &amp; orientation</source>
-      <translation>Nie zmieniaj pozycji i orientacji</translation>
+      <source>Do not change position &amp; orientation</source>
+      <translation type="unfinished">Do not change position &amp; orientation</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="165"/>

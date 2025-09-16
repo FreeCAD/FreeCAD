@@ -3005,48 +3005,48 @@ si coincideixen amb l'eix X, Y o Z del sistema de coordenades global</translatio
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../DraftGui.py" line="549"/>
+      <location filename="../../DraftGui.py" line="554"/>
       <source>Relative</source>
       <translation>Relatiu</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="554"/>
+      <location filename="../../DraftGui.py" line="559"/>
       <source>Global</source>
       <translation>Global</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="568"/>
-      <location filename="../../DraftGui.py" line="859"/>
+      <location filename="../../DraftGui.py" line="573"/>
+      <location filename="../../DraftGui.py" line="864"/>
       <source>Continue</source>
       <translation>Continua</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="571"/>
+      <location filename="../../DraftGui.py" line="576"/>
       <source>If checked, the command will not finish until pressing the command button again</source>
       <translation>Si està marcat, la comanda no finalitzarà fins que es premi de nou el botó de la comanda</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="574"/>
+      <location filename="../../DraftGui.py" line="579"/>
       <source>If checked, the next dimension will be placed in a chain with the previously placed Dimension</source>
       <translation>Si està marcat, la següent cota es col·locarà en cadena amb la cota col·locada prèviament</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="581"/>
+      <location filename="../../DraftGui.py" line="586"/>
       <source>Close</source>
       <translation>Tanca</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="585"/>
+      <location filename="../../DraftGui.py" line="590"/>
       <source>Set Working Plane</source>
       <translation>Estableix el pla de treball</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="587"/>
+      <location filename="../../DraftGui.py" line="592"/>
       <source>Select Edge</source>
       <translation>Seleccioneu una aresta</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="592"/>
+      <location filename="../../DraftGui.py" line="597"/>
       <location filename="../../draftguitools/gui_move.py" line="200"/>
       <location filename="../../draftguitools/gui_rotate.py" line="267"/>
       <location filename="../../draftguitools/gui_scale.py" line="211"/>
@@ -3054,7 +3054,7 @@ si coincideixen amb l'eix X, Y o Z del sistema de coordenades global</translatio
       <translation>Copia</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="583"/>
+      <location filename="../../DraftGui.py" line="588"/>
       <source>Wipe</source>
       <translation>Neteja</translation>
     </message>
@@ -3132,286 +3132,286 @@ si coincideixen amb l'eix X, Y o Z del sistema de coordenades global</translatio
       <translation>Posició:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="500"/>
-      <location filename="../../DraftGui.py" line="528"/>
-      <location filename="../../DraftGui.py" line="1497"/>
-      <location filename="../../DraftGui.py" line="1512"/>
+      <location filename="../../DraftGui.py" line="505"/>
+      <location filename="../../DraftGui.py" line="533"/>
+      <location filename="../../DraftGui.py" line="1502"/>
+      <location filename="../../DraftGui.py" line="1517"/>
       <location filename="../../draftguitools/gui_groups.py" line="254"/>
       <source>None</source>
       <translation>Cap</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="527"/>
+      <location filename="../../DraftGui.py" line="532"/>
       <source>active command:</source>
       <translation>comanda activa:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="529"/>
+      <location filename="../../DraftGui.py" line="534"/>
       <source>Active Draft command</source>
       <translation>Comanda activa d'esbós</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="530"/>
+      <location filename="../../DraftGui.py" line="535"/>
       <source>X coordinate of the point</source>
       <translation>Coordenada X del punt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="531"/>
+      <location filename="../../DraftGui.py" line="536"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="532"/>
+      <location filename="../../DraftGui.py" line="537"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="533"/>
+      <location filename="../../DraftGui.py" line="538"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="539"/>
+      <location filename="../../DraftGui.py" line="544"/>
       <source>Length</source>
       <translation>Longitud</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="540"/>
+      <location filename="../../DraftGui.py" line="545"/>
       <location filename="../../draftguitools/gui_trimex.py" line="229"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="546"/>
-      <location filename="../../DraftGui.py" line="842"/>
+      <location filename="../../DraftGui.py" line="551"/>
+      <location filename="../../DraftGui.py" line="847"/>
       <source>Radius</source>
       <translation>Radi</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="597"/>
+      <location filename="../../DraftGui.py" line="602"/>
       <source>Creates the text object and finishes the command</source>
       <translation>Crea l'objecte de text i finalitza la comanda</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="619"/>
+      <location filename="../../DraftGui.py" line="624"/>
       <source>Changes the default style for new objects</source>
       <translation>Canvia l'estil per defecte dels nous objectes</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="620"/>
+      <location filename="../../DraftGui.py" line="625"/>
       <source>Toggles construction mode</source>
       <translation>Commuta el mode de construcció</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="797"/>
+      <location filename="../../DraftGui.py" line="802"/>
       <source>Label Type</source>
       <translation>Tipus d'etiqueta</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="843"/>
+      <location filename="../../DraftGui.py" line="848"/>
       <source>Radius of Circle</source>
       <translation>Radi del Cercle</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="552"/>
+      <location filename="../../DraftGui.py" line="557"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
       <translation>Coordenades relatives a l'últim punt o a l'origen del sistema de coordenades si es tracta del primer punt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="534"/>
+      <location filename="../../DraftGui.py" line="539"/>
       <source>Y coordinate of the point</source>
       <translation>Coordenada Y del punt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="535"/>
+      <location filename="../../DraftGui.py" line="540"/>
       <source>Z coordinate of the point</source>
       <translation>Coordenada Z del punt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="536"/>
+      <location filename="../../DraftGui.py" line="541"/>
       <source>Enter Point</source>
       <translation>Introdueix punt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="541"/>
+      <location filename="../../DraftGui.py" line="546"/>
       <source>Length of the current segment</source>
       <translation>Longitud del segment actual</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="542"/>
+      <location filename="../../DraftGui.py" line="547"/>
       <source>Angle of the current segment</source>
       <translation>Angle del segment actual</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="545"/>
+      <location filename="../../DraftGui.py" line="550"/>
       <source>Locks the current angle</source>
       <translation>Bloca l'angle actual</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="547"/>
+      <location filename="../../DraftGui.py" line="552"/>
       <source>Radius of the circle</source>
       <translation>Radi del cercle</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="557"/>
+      <location filename="../../DraftGui.py" line="562"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation>Coordenades relatives al sistema de coordenades global. Desmarqui per utilitzar el sistema de coordenades del pla de treball</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="564"/>
+      <location filename="../../DraftGui.py" line="569"/>
       <source>Finish</source>
       <translation>Finalitza</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="566"/>
+      <location filename="../../DraftGui.py" line="571"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>Termina el dibuix o l'operació d'edició actual</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1694"/>
+      <location filename="../../DraftGui.py" line="1699"/>
       <source>Modify Objects</source>
       <translation>Modifica objectes</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1848"/>
+      <location filename="../../DraftGui.py" line="1853"/>
       <source>Facebinder Elements</source>
       <translation>Elements de Facebinder</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="578"/>
+      <location filename="../../DraftGui.py" line="583"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
       <translation>Si s'activa, es realitzarà una equidistància d'estil OCC en comptes de l'equidistància clàssica</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="575"/>
+      <location filename="../../DraftGui.py" line="580"/>
       <source>OCC-style offset</source>
       <translation>Equidistància d'estil OCC</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="579"/>
+      <location filename="../../DraftGui.py" line="584"/>
       <source>Undo</source>
       <translation>Desfés</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="593"/>
+      <location filename="../../DraftGui.py" line="598"/>
       <source>If checked, objects will be copied instead of moved</source>
       <translation>Si està marcada, es copiarà objectes en lloc de ser moguts</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="580"/>
+      <location filename="../../DraftGui.py" line="585"/>
       <source>Undo the last segment</source>
       <translation>Desfà l'últim segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="538"/>
+      <location filename="../../DraftGui.py" line="543"/>
       <source>Enter a point with given coordinates</source>
       <translation>Entra un punt amb les coordenades donades</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="559"/>
+      <location filename="../../DraftGui.py" line="564"/>
       <source>Make face</source>
       <translation>Fer cara</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="562"/>
+      <location filename="../../DraftGui.py" line="567"/>
       <source>If checked, the object will be filled with a face.
 Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>Si està marcat, l'objecte s'omplirà amb una cara.
 No disponible si la preferència "Utilitza primitives de peça" està habilitada</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="572"/>
+      <location filename="../../DraftGui.py" line="577"/>
       <source>Chained mode</source>
       <translation>Mode encadenat</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="582"/>
+      <location filename="../../DraftGui.py" line="587"/>
       <source>Finishes and closes the current line</source>
       <translation>Termina i tanca la línia actual</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="584"/>
+      <location filename="../../DraftGui.py" line="589"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
       <translation>Esborra els segments existents d'aquesta línia i comença de nou des de l'últim punt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="586"/>
+      <location filename="../../DraftGui.py" line="591"/>
       <source>Reorients the working plane on the last segment</source>
       <translation>Reorienta el pla de treball sobre l'últim segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="588"/>
+      <location filename="../../DraftGui.py" line="593"/>
       <source>Selects an existing edge to be measured by this dimension</source>
       <translation>Selecciona una aresta existent per a mesurar-la amb aquesta cota</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="589"/>
+      <location filename="../../DraftGui.py" line="594"/>
       <source>Sides</source>
       <translation>Costats</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="590"/>
+      <location filename="../../DraftGui.py" line="595"/>
       <source>Number of sides</source>
       <translation>Nombre de costats</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="594"/>
+      <location filename="../../DraftGui.py" line="599"/>
       <source>Modify subelements</source>
       <translation>Modifica els subelements</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="595"/>
+      <location filename="../../DraftGui.py" line="600"/>
       <source>If checked, subelements will be modified instead of entire objects</source>
       <translation>Si està marcat, els subelements es modificaran en lloc dels objectes sencers</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="621"/>
-      <location filename="../../DraftGui.py" line="1500"/>
-      <location filename="../../DraftGui.py" line="1515"/>
+      <location filename="../../DraftGui.py" line="626"/>
+      <location filename="../../DraftGui.py" line="1505"/>
+      <location filename="../../DraftGui.py" line="1520"/>
       <source>Autogroup off</source>
       <translation>Desactivar Autoagrupar</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="726"/>
+      <location filename="../../DraftGui.py" line="731"/>
       <location filename="../../draftguitools/gui_lines.py" line="66"/>
       <source>Line</source>
       <translation>Línia</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="734"/>
+      <location filename="../../DraftGui.py" line="739"/>
       <source>DWire</source>
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="752"/>
+      <location filename="../../DraftGui.py" line="757"/>
       <source>Circle</source>
       <translation>Cercle</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="757"/>
+      <location filename="../../DraftGui.py" line="762"/>
       <source>Arc</source>
       <translation>Arc</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="762"/>
+      <location filename="../../DraftGui.py" line="767"/>
       <location filename="../../draftguitools/gui_rotate.py" line="269"/>
       <source>Rotate</source>
       <translation>Rotació</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="766"/>
+      <location filename="../../DraftGui.py" line="771"/>
       <source>Point</source>
       <translation>Punt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="795"/>
+      <location filename="../../DraftGui.py" line="800"/>
       <source>Label</source>
       <translation>Etiqueta</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="813"/>
+      <location filename="../../DraftGui.py" line="818"/>
       <location filename="../../draftguitools/gui_offset.py" line="242"/>
       <location filename="../../draftguitools/gui_offset.py" line="259"/>
       <location filename="../../draftguitools/gui_offset.py" line="324"/>
@@ -3419,31 +3419,31 @@ No disponible si la preferència "Utilitza primitives de peça" està habilitada
       <translation>Equidistància</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="818"/>
-      <location filename="../../DraftGui.py" line="835"/>
+      <location filename="../../DraftGui.py" line="823"/>
+      <location filename="../../DraftGui.py" line="840"/>
       <location filename="../../draftguitools/gui_trimex.py" line="224"/>
       <source>Distance</source>
       <translation>Distància</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="819"/>
-      <location filename="../../DraftGui.py" line="836"/>
+      <location filename="../../DraftGui.py" line="824"/>
+      <location filename="../../DraftGui.py" line="841"/>
       <location filename="../../draftguitools/gui_trimex.py" line="226"/>
       <source>Offset distance</source>
       <translation>Distància de desplaçament</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="832"/>
+      <location filename="../../DraftGui.py" line="837"/>
       <source>Trimex</source>
       <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="908"/>
-      <location filename="../../DraftGui.py" line="909"/>
-      <location filename="../../DraftGui.py" line="910"/>
-      <location filename="../../DraftGui.py" line="912"/>
       <location filename="../../DraftGui.py" line="913"/>
       <location filename="../../DraftGui.py" line="914"/>
+      <location filename="../../DraftGui.py" line="915"/>
+      <location filename="../../DraftGui.py" line="917"/>
+      <location filename="../../DraftGui.py" line="918"/>
+      <location filename="../../DraftGui.py" line="919"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="121"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="122"/>
@@ -3451,12 +3451,12 @@ No disponible si la preferència "Utilitza primitives de peça" està habilitada
       <translation>Local {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="916"/>
-      <location filename="../../DraftGui.py" line="917"/>
-      <location filename="../../DraftGui.py" line="918"/>
-      <location filename="../../DraftGui.py" line="920"/>
       <location filename="../../DraftGui.py" line="921"/>
       <location filename="../../DraftGui.py" line="922"/>
+      <location filename="../../DraftGui.py" line="923"/>
+      <location filename="../../DraftGui.py" line="925"/>
+      <location filename="../../DraftGui.py" line="926"/>
+      <location filename="../../DraftGui.py" line="927"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="116"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="117"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="118"/>
@@ -3464,22 +3464,22 @@ No disponible si la preferència "Utilitza primitives de peça" està habilitada
       <translation>Global {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1508"/>
+      <location filename="../../DraftGui.py" line="1513"/>
       <source>Autogroup:</source>
       <translation>Autoagrupar:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1845"/>
+      <location filename="../../DraftGui.py" line="1850"/>
       <source>Faces</source>
       <translation>Cares</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1846"/>
+      <location filename="../../DraftGui.py" line="1851"/>
       <source>Remove</source>
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1847"/>
+      <location filename="../../DraftGui.py" line="1852"/>
       <source>Add</source>
       <translation>Afegeix</translation>
     </message>
@@ -3833,7 +3833,7 @@ or try saving to a lower DWG version.</source>
       <translation>Tria el punt de localització</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="596"/>
+      <location filename="../../DraftGui.py" line="601"/>
       <location filename="../../draftguitools/gui_texts.py" line="126"/>
       <source>Create Text</source>
       <translation>Crear Text</translation>

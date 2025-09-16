@@ -2837,7 +2837,8 @@ Si les dues longituds són zero, s'utilitza la magnitud de la direcció.</transl
       <location filename="../../DlgExtrusion.cpp" line="521"/>
       <source>Creating Extrusion failed.
 %1</source>
-      <translation>No s'ha pogut crear l'extrusió</translation>
+      <translation>No s'ha pogut crear l'extrusió.
+%1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="588"/>
@@ -3030,7 +3031,7 @@ Si les dues longituds són zero, s'utilitza la magnitud de la direcció.</transl
       <location filename="../../DlgFilletEdges.cpp" line="763"/>
       <location filename="../../DlgFilletEdges.cpp" line="823"/>
       <source>Edge%1</source>
-      <translation>Vora% 1</translation>
+      <translation>Vora%1</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="906"/>

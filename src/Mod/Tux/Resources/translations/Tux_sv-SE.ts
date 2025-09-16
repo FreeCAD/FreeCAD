@@ -81,12 +81,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="655"/>
       <source>Turntable</source>
-      <translation>Vridskiva</translation>
+      <translation>Snurrplatta</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="656"/>
       <source>Free Turntable</source>
-      <translation>Gratis skivspelare</translation>
+      <translation>Fri snurrplatta</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="657"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="658"/>
       <source>Trackball Classic</source>
-      <translation type="unfinished">Trackball Classic</translation>
+      <translation>Trackball Classic</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="659"/>

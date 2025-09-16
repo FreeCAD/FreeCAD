@@ -28,8 +28,7 @@ Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
       <translation>Ange en anpassad URL eller den mapp där hjälpfilerna finns.
-Du kan enkelt ladda ner dokumentationen för offline-användning genom att använda Addon
-Manager och installera tillägget &quot;offline-documentation&quot;. Om detta
+Du kan enkelt ladda ner dokumentationen för offline-användning genom att använda Tilläggshanterare och installera tillägget &quot;offline-documentation&quot;. Om detta
 fältet lämnas tomt, kommer FreeCAD automatiskt att söka efter hjälpfilerna på
 standardplatsen ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>

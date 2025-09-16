@@ -890,12 +890,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="307"/>
       <source>Initial time increment</source>
-      <translation type="unfinished">Initial time increment</translation>
+      <translation>Increment de temps inicial</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="314"/>
       <source>Time period</source>
-      <translation type="unfinished">Time period</translation>
+      <translation>Període de temps</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="360"/>
@@ -910,17 +910,17 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="521"/>
       <source>Maximum number of increments</source>
-      <translation type="unfinished">Maximum number of increments</translation>
+      <translation>Nombre màxim d'increments</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="528"/>
       <source>Minimum time increment</source>
-      <translation type="unfinished">Minimum time increment</translation>
+      <translation>Increment de temps mínim</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="658"/>
       <source>Maximum time increment</source>
-      <translation type="unfinished">Maximum time increment</translation>
+      <translation>Increment de temps màxim</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="724"/>
@@ -1285,7 +1285,10 @@ que no pertanyen a cares i cares que no pertanyen a volums.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="46"/>
       <source>element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
-      <translation type="unfinished">element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</translation>
+      <translation>Paràmetres dels elements:
+- Tots: tots els elements
+- Més alts: només els elements més alts
+- FEM: només els elements FEM (només vores que no pertanyen a cares i cares que no pertanyen a volums)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="81"/>
@@ -1293,10 +1296,10 @@ que no pertanyen a cares i cares que no pertanyen a volums.</translation>
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups - faces and nodes where
 the constraint or material is applied.</source>
-      <translation type="unfinished">Mesh groups are exported too.
-Every analysis feature and, if there are different materials,
-material consists of two mesh groups - faces and nodes where
-the constraint or material is applied.</translation>
+      <translation>També s'exporten els grups de malles.
+Cada característica d'anàlisi i, si hi ha materials diferents,
+el material consta de dos grups de malla - cares i nodes on
+s'aplica la restricció o el material.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="56"/>
@@ -1500,7 +1503,7 @@ afegir un contenidor d'anàlisis</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="91"/>
       <source>Not an executable binary</source>
-      <translation type="unfinished">Not an executable binary</translation>
+      <translation>No és un fitxer binari executable</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="92"/>
@@ -1508,10 +1511,8 @@ afegir un contenidor d'anàlisis</translation>
 '%1'
  does not exist or is not executable.
 Specify another file.</source>
-      <translation type="unfinished">The specified file
-'%1'
- does not exist or is not executable.
-Specify another file.</translation>
+      <translation>El fitxer especificat '%1' no existeix o no és executable.
+Especifiqueu un altre fitxer.</translation>
     </message>
   </context>
   <context>
@@ -6788,14 +6789,14 @@ No s'ha trobat cap mòdul coincident al camí actual de Python.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="54"/>
       <source>Python path</source>
-      <translation type="unfinished">Python path</translation>
+      <translation>Ruta de Python</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
       <source>Python executable for which Netgen Python bindings are installed.
 Leave blank to use default Python executable</source>
-      <translation type="unfinished">Python executable for which Netgen Python bindings are installed.
-Leave blank to use default Python executable</translation>
+      <translation>L'executable de Python pels enllaços Python Netgen està instal·lat.
+Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="102"/>
@@ -7897,7 +7898,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../fempreferencepages/dlg_settings_netgen.py" line="84"/>
       <source>Executable '{}' not found</source>
-      <translation type="unfinished">Executable '{}' not found</translation>
+      <translation>No s'ha trobat l'executable '{}'</translation>
     </message>
   </context>
   <context>
@@ -7905,7 +7906,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_centrif.py" line="67"/>
       <source>Axis Reference Selector</source>
-      <translation type="unfinished">Axis Reference Selector</translation>
+      <translation>Seleccioneu la referència de l'eix</translation>
     </message>
   </context>
 </TS>

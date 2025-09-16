@@ -344,7 +344,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="205"/>
       <source>Wrong selection</source>
-      <translation>Sélection invalide</translation>
+      <translation>Sélection non valide</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="206"/>
@@ -392,7 +392,7 @@
       <location filename="../../Command.cpp" line="121"/>
       <location filename="../../Command.cpp" line="614"/>
       <source>Wrong selection</source>
-      <translation>Sélection invalide</translation>
+      <translation>Sélection non valide</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>

@@ -943,7 +943,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1357"/>
       <source>Partially redundant:</source>
-      <translation>Часткова залішнія:</translation>
+      <translation>Часткова залішнія абмежаванні:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1363"/>

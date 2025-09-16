@@ -71,13 +71,13 @@ dvs. moturs när den rör sig längs sin axel.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="107"/>
       <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
-      <translation>Om den är inställd blir resultatet skärningspunkten mellan profilen och den redan existerande kroppen.</translation>
+      <translation>Om den är inställd blir resultatet snittet mellan profilen och den redan befintliga kroppen.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="109"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation>Om false, kommer verktyget att föreslå ett initialt värde för pitch baserat på profilens bounding box,
+      <translation>Om false, kommer verktyget att föreslå ett initialt värde för pitch baserat på profilens avgränsningsruta,
 så att självskärning undviks.</translation>
     </message>
     <message>
@@ -136,12 +136,12 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="1498"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1499"/>
       <source>Additive Helix</source>
-      <translation>Additiv Helix</translation>
+      <translation>Additiv spiral</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1500"/>
@@ -290,7 +290,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="1809"/>
       <source>Applies a draft to the selected faces</source>
-      <translation>Applicerar ett utkast på de markerade ytorna</translation>
+      <translation>Tillämpar en släppning på de markerade ytorna</translation>
     </message>
   </context>
   <context>
@@ -303,7 +303,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="615"/>
       <source>Duplicate &amp;Object</source>
-      <translation>Duplicera &amp;Objekt</translation>
+      <translation>Duplicera &amp;objekt</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="616"/>
@@ -375,12 +375,12 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Datum Line</source>
-      <translation>Datumlinje</translation>
+      <translation>Referenspunktslinje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
       <source>Creates a new datum line</source>
-      <translation>Skapar en ny datumlinje</translation>
+      <translation>Skapar en ny referenspunktslinje</translation>
     </message>
   </context>
   <context>
@@ -501,7 +501,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="2195"/>
       <source>Multi-Transform</source>
-      <translation type="unfinished">Multi-Transform</translation>
+      <translation>Flera transformationer</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2196"/>
@@ -555,7 +555,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="164"/>
       <source>Datum Plane</source>
-      <translation>Datum Plan</translation>
+      <translation>Referenspunktsplan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="165"/>
@@ -591,7 +591,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="220"/>
       <source>Datum Point</source>
-      <translation>Datumpunkt</translation>
+      <translation>Referenspunkt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
@@ -658,17 +658,17 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="279"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="280"/>
       <source>Shape Binder</source>
-      <translation>Formad pärm</translation>
+      <translation>Formbindare</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="281"/>
       <source>Creates a new shape binder</source>
-      <translation>Skapar en ny formpärm</translation>
+      <translation>Skapar en ny formbindare</translation>
     </message>
   </context>
   <context>
@@ -676,12 +676,12 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="345"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="346"/>
       <source>Sub-Shape Binder</source>
-      <translation>Underformad pärm</translation>
+      <translation>Underformbindare</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="347"/>
@@ -694,7 +694,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="1570"/>
       <source>PartDesign</source>
-      <translation>Del design</translation>
+      <translation>PartDesign</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1571"/>
@@ -771,7 +771,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="69"/>
       <source>Additive Primitive</source>
-      <translation>Additiv Primitiv</translation>
+      <translation>Additiv primitiv</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="70"/>
@@ -829,7 +829,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="242"/>
       <source>Subtractive Primitive</source>
-      <translation>Subtraktiv Primitiv</translation>
+      <translation>Subtraktiv primitiv</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="243"/>
@@ -882,17 +882,17 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="300"/>
       <source>Edit Shape Binder</source>
-      <translation>Edit Shape Pärm</translation>
+      <translation>Redigera formbindare</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="309"/>
       <source>Create Shape Binder</source>
-      <translation>Skapa Shape-pärm</translation>
+      <translation>Skapa formbindare</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="392"/>
       <source>Create Sub-Shape Binder</source>
-      <translation>Skapa underformad pärm</translation>
+      <translation>Skapa underformbindare</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
@@ -907,12 +907,12 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Command.cpp" line="2239"/>
       <source>Convert to Multi-Transform feature</source>
-      <translation>Konvertera till Multi-Transform-funktion</translation>
+      <translation>Konvertera till flertransformativ funktion</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="258"/>
       <source>Sketch on Face</source>
-      <translation>Skiss på ansikte</translation>
+      <translation>Skissa på yta</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="317"/>
@@ -920,8 +920,8 @@ så att självskärning undviks.</translation>
       <translation>Gör en kopia</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="515"/>
-      <location filename="../../SketchWorkflow.cpp" line="743"/>
+      <location filename="../../SketchWorkflow.cpp" line="514"/>
+      <location filename="../../SketchWorkflow.cpp" line="742"/>
       <source>New Sketch</source>
       <translation>Ny skiss</translation>
     </message>
@@ -939,7 +939,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="438"/>
       <source>Migrate legacy Part Design features to bodies</source>
-      <translation>Migrera äldre funktioner för artikeldesign till kroppar</translation>
+      <translation>Migrera äldre funktioner för Part Design till kroppar</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="628"/>
@@ -1025,7 +1025,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Face Tools</source>
-      <translation>Verktyg för ansikten</translation>
+      <translation>Ytverktyg</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
@@ -1123,7 +1123,7 @@ så att självskärning undviks.</translation>
     <message>
       <location filename="../../DlgActiveBody.ui" line="14"/>
       <source>Active Body Required</source>
-      <translation>Aktivt organ krävs</translation>
+      <translation>Aktiv kropp krävs</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.ui" line="20"/>
@@ -1140,7 +1140,7 @@ Välj en kropp från nedan eller skapa en ny kropp.</translation>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="55"/>
       <source>Please select</source>
-      <translation>Vänligen välj</translation>
+      <translation>Välj</translation>
     </message>
   </context>
   <context>
@@ -1286,32 +1286,32 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1353"/>
       <source>X min/max</source>
-      <translation type="unfinished">X min/max</translation>
+      <translation>X min/max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1383"/>
       <source>Y min/max</source>
-      <translation type="unfinished">Y min/max</translation>
+      <translation>Y min/max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1413"/>
       <source>Z min/max</source>
-      <translation type="unfinished">Z min/max</translation>
+      <translation>Z min/max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1443"/>
       <source>X2 min/max</source>
-      <translation type="unfinished">X2 min/max</translation>
+      <translation>X2 min/max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1476"/>
       <source>Z2 min/max</source>
-      <translation type="unfinished">Z2 min/max</translation>
+      <translation>Z2 min/max</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1560"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>Stigning</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1637"/>
@@ -1407,7 +1407,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</source>
-      <translation>Du har valt geometrier som inte är en del av den aktiva kroppen. Vänligen definiera hur dessa val ska hanteras. Om du inte vill ha dessa referenser, avbryt kommandot.</translation>
+      <translation>Du har valt geometrier som inte är en del av den aktiva kroppen. Definiera hur dessa val ska hanteras. Om du inte vill ha dessa referenser, avbryt kommandot.</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
@@ -1511,7 +1511,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="20"/>
       <source>Toggles between selection and preview mode</source>
-      <translation>Växlar mellan urvals- och förhandsgranskningsläge</translation>
+      <translation>Växlar mellan markerings- och förhandsgranskningsläge</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="23"/>
@@ -1630,7 +1630,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="20"/>
       <source>Toggles between selection and preview mode</source>
-      <translation>Växlar mellan urvals- och förhandsgranskningsläge</translation>
+      <translation>Växlar mellan markerings- och förhandsgranskningsläge</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="23"/>
@@ -1642,7 +1642,7 @@ Om noll, är den lika med Radius2</translation>
       <source>- select an item to highlight it
 - double-click on an item to see the drafts</source>
       <translation>- markera ett objekt för att lyfta fram det
-- dubbelklicka på ett objekt för att se utkasten</translation>
+- dubbelklicka på ett objekt för att se släppningen</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="46"/>
@@ -1668,7 +1668,7 @@ Om noll, är den lika med Radius2</translation>
       <location filename="../../TaskDraftParameters.cpp" line="289"/>
       <source>Empty draft created!
 </source>
-      <translation>Tomt utkast skapat!
+      <translation>Tom släppning skapad!
 </translation>
     </message>
   </context>
@@ -1705,7 +1705,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1360"/>
       <source>No face selected</source>
-      <translation>Inget yta vald</translation>
+      <translation>Ingen yta markerad</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="163"/>
@@ -1726,7 +1726,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="355"/>
       <source>Select Faces</source>
-      <translation>Välj ansikten</translation>
+      <translation>Välj ytor</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="690"/>
@@ -1746,7 +1746,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="686"/>
       <source>Face normal</source>
-      <translation>Ansikte normalt</translation>
+      <translation>Yta normal</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="694"/>
@@ -1777,7 +1777,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1355"/>
       <source>Click on a face in the model</source>
-      <translation>Klicka på ett ansikte i modellen</translation>
+      <translation>Klicka på en yta i modellen</translation>
     </message>
   </context>
   <context>
@@ -1865,7 +1865,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="95"/>
       <source>Select attachment</source>
-      <translation>Välj bifogad fil</translation>
+      <translation>Välj bilaga</translation>
     </message>
   </context>
   <context>
@@ -1873,7 +1873,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="20"/>
       <source>Toggles between selection and preview mode</source>
-      <translation>Växlar mellan urvals- och förhandsgranskningsläge</translation>
+      <translation>Växlar mellan markerings- och förhandsgranskningsläge</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="23"/>
@@ -1970,27 +1970,27 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="98"/>
       <source>Pitch-Height-Angle</source>
-      <translation>Pitch-Höjd-Vinkel</translation>
+      <translation>Stigning-Höjd-Vinkel</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="103"/>
       <source>Pitch-Turns-Angle</source>
-      <translation>Lutning-Vändningar-Vinkel</translation>
+      <translation>Lutning-Varv-Vinkel</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="108"/>
       <source>Height-Turns-Angle</source>
-      <translation>Höjd-Vändningar-Vinkel</translation>
+      <translation>Höjd-Varv-Vinkel</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="113"/>
       <source>Height-Turns-Growth</source>
-      <translation>Höjd-omvandlar-tillväxt</translation>
+      <translation>Höjd-Varv-Växt</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="125"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>Stigning</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="152"/>
@@ -2000,7 +2000,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="179"/>
       <source>Turns</source>
-      <translation>Svängar</translation>
+      <translation>Varv</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="203"/>
@@ -2035,7 +2035,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="60"/>
       <source>Helix Parameters</source>
-      <translation>Helix Parametrar</translation>
+      <translation>Helix-parametrar</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="229"/>
@@ -2073,7 +2073,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="55"/>
       <source>Counterdrill</source>
-      <translation type="unfinished">Counterdrill</translation>
+      <translation>Försänkning</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="59"/>
@@ -2354,7 +2354,7 @@ Om noll, är den lika med Radius2</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="76"/>
       <source>Up to face</source>
-      <translation>Upp till ansiktet</translation>
+      <translation>Upp till yta</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="77"/>
@@ -2391,7 +2391,7 @@ Om noll, är den lika med Radius2</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="192"/>
       <location filename="../../TaskPadPocketParameters.ui" line="421"/>
       <source>Select all faces</source>
-      <translation>Välj alla ansikten</translation>
+      <translation>Välj alla ytor</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="217"/>
@@ -2403,7 +2403,7 @@ Om noll, är den lika med Radius2</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="255"/>
       <location filename="../../TaskPadPocketParameters.ui" line="484"/>
       <source>Select Face</source>
-      <translation>Välj ansikte</translation>
+      <translation>Välj yta</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="281"/>
@@ -2460,7 +2460,7 @@ mätas längs den angivna riktningen</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="214"/>
       <location filename="../../TaskPadPocketParameters.ui" line="443"/>
       <source>Toggles between selection and preview mode</source>
-      <translation>Växlar mellan urvals- och förhandsgranskningsläge</translation>
+      <translation>Växlar mellan markerings- och förhandsgranskningsläge</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="505"/>
@@ -2758,12 +2758,12 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="42"/>
       <source>Offset from the selected face at which the pocket will end on side 1</source>
-      <translation>Offset från den valda framsidan där fickan kommer att sluta på sida 1</translation>
+      <translation>Förskjutning från den valda ytan där fickan kommer att sluta på sida 1</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="43"/>
       <source>Offset from the selected face at which the pocket will end on side 2</source>
-      <translation>Offset från den valda framsidan där fickan kommer att sluta på sida 2</translation>
+      <translation>Förskjutning från den valda ytan där fickan kommer att sluta på sida 2</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="44"/>
@@ -2788,7 +2788,7 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="76"/>
       <source>Up to face</source>
-      <translation>Upp till ansiktet</translation>
+      <translation>Upp till yta</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="77"/>
@@ -2873,7 +2873,7 @@ mätas längs den angivna riktningen</translation>
       <location filename="../../TaskRevolutionParameters.cpp" line="157"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="475"/>
       <source>Face</source>
-      <translation>Ansikte</translation>
+      <translation>Yta</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="192"/>
@@ -2898,7 +2898,7 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="201"/>
       <source>Up to face</source>
-      <translation>Upp till ansiktet</translation>
+      <translation>Upp till yta</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="202"/>
@@ -2908,7 +2908,7 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="462"/>
       <source>No face selected</source>
-      <translation>Inget ansikte valt</translation>
+      <translation>Ingen yta vald</translation>
     </message>
   </context>
   <context>
@@ -2944,7 +2944,7 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="61"/>
       <source>Shape Binder Parameters</source>
-      <translation>Form Bindemedelsparametrar</translation>
+      <translation>Parametrar för formbindare</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="131"/>
@@ -2957,7 +2957,7 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="189"/>
       <source>Face</source>
-      <translation>Ansikte</translation>
+      <translation>Yta</translation>
     </message>
   </context>
   <context>
@@ -2965,7 +2965,7 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="20"/>
       <source>Toggles between selection and preview mode</source>
-      <translation>Växlar mellan urvals- och förhandsgranskningsläge</translation>
+      <translation>Växlar mellan markerings- och förhandsgranskningsläge</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="23"/>
@@ -3189,48 +3189,48 @@ mätas längs den angivna riktningen</translation>
       <translation>Fel</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="778"/>
+      <location filename="../../SketchWorkflow.cpp" line="775"/>
       <source>Several sub-elements selected</source>
       <translation>Flera underelement valda</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="779"/>
+      <location filename="../../SketchWorkflow.cpp" line="776"/>
       <source>Select a single face as support for a sketch!</source>
-      <translation>Välj ett enda ansikte som stöd för en skiss!</translation>
+      <translation>Välj en enda yta som stöd för en skiss!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="783"/>
+      <location filename="../../SketchWorkflow.cpp" line="780"/>
       <source>Select a face as support for a sketch!</source>
-      <translation>Välj ett ansikte som stöd för en skiss!</translation>
+      <translation>Välj en yta som stöd för en skiss!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="787"/>
+      <location filename="../../SketchWorkflow.cpp" line="784"/>
       <source>Need a planar face as support for a sketch!</source>
-      <translation>Behöver ett plant ansikte som stöd för en skiss!</translation>
+      <translation>Behöver en plan yta som stöd för en skiss!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="791"/>
+      <location filename="../../SketchWorkflow.cpp" line="788"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation>Skapa först ett plan eller välj en yta att skissa på</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="782"/>
+      <location filename="../../SketchWorkflow.cpp" line="779"/>
       <source>No support face selected</source>
       <translation>Ingen stödyta vald</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="786"/>
+      <location filename="../../SketchWorkflow.cpp" line="783"/>
       <source>No planar support</source>
       <translation>Inget planärt stöd</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="790"/>
+      <location filename="../../SketchWorkflow.cpp" line="787"/>
       <source>No valid planes in this document</source>
       <translation>Inga giltiga plan i detta dokument</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1014"/>
-      <location filename="../../SketchWorkflow.cpp" line="703"/>
+      <location filename="../../SketchWorkflow.cpp" line="702"/>
       <location filename="../../ViewProvider.cpp" line="139"/>
       <location filename="../../ViewProviderDatum.cpp" line="250"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
@@ -3255,12 +3255,12 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../Command.cpp" line="146"/>
       <source>There is no active body. Please activate a body before inserting a datum entity.</source>
-      <translation>Det finns ingen aktiv kropp. Aktivera en kropp innan du infogar en datumenhet.</translation>
+      <translation>Det finns ingen aktiv kropp. Aktivera en kropp innan du infogar en referenspunktsentitet.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="410"/>
       <source>Sub-shape binder</source>
-      <translation>Pärm för underformar</translation>
+      <translation>Underformbindare</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="939"/>
@@ -3274,7 +3274,7 @@ mätas längs den angivna riktningen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../SketchWorkflow.cpp" line="704"/>
+      <location filename="../../SketchWorkflow.cpp" line="703"/>
       <location filename="../../ViewProvider.cpp" line="140"/>
       <location filename="../../ViewProviderDatum.cpp" line="251"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
@@ -3290,13 +3290,13 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../Command.cpp" line="1634"/>
       <source>Select an edge, face, or body from a single body.</source>
-      <translation>Välj en kant, ett ansikte eller en kropp från en enda kropp.</translation>
+      <translation>Välj en kant, en yta eller en kropp från en enda kropp.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1638"/>
       <location filename="../../Command.cpp" line="1970"/>
       <source>Selection is not in the active body</source>
-      <translation>Urvalet är inte i den aktiva kroppen</translation>
+      <translation>Markering är inte i den aktiva kroppen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1660"/>
@@ -3306,7 +3306,7 @@ mätas längs den angivna riktningen</translation>
     <message>
       <location filename="../../Command.cpp" line="1639"/>
       <source>Select an edge, face, or body from an active body.</source>
-      <translation>Välj en kant, ett ansikte eller en kropp från en aktiv kropp.</translation>
+      <translation>Välj en kant, en yta eller en kropp från en aktiv kropp.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="917"/>
@@ -3434,7 +3434,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="501"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Redigera "%1" och omdefiniera den så att den använder ett bas- eller datumplan som skissplan.</translation>
+      <translation>Redigera "%1" och omdefiniera den så att den använder ett bas- eller referenspunktsplan som skissplan.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="563"/>
@@ -3443,7 +3443,7 @@ This may lead to unexpected results.</source>
       <location filename="../../CommandBody.cpp" line="869"/>
       <location filename="../../CommandBody.cpp" line="876"/>
       <source>Selection error</source>
-      <translation>Fel vid urval</translation>
+      <translation>Markeringsfel</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="573"/>
@@ -3526,12 +3526,12 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="80"/>
       <source>Face</source>
-      <translation>Ansikte</translation>
+      <translation>Yta</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="187"/>
       <source>Active Body Required</source>
-      <translation>Aktivt organ krävs</translation>
+      <translation>Aktiv kropp krävs</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="140"/>
@@ -3578,7 +3578,7 @@ För äldre dokument med Part Design-objekt som saknar en kropp kan du använda 
     <message>
       <location filename="../../ViewProvider.cpp" line="109"/>
       <source>Set Face Colors</source>
-      <translation>Ställ in ansiktsfärger</translation>
+      <translation>Ställ in ytfärger</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="114"/>
@@ -3590,13 +3590,13 @@ För äldre dokument med Part Design-objekt som saknar en kropp kan du använda 
       <location filename="../../ViewProviderDatum.cpp" line="119"/>
       <location filename="../../ViewProviderDatum.cpp" line="204"/>
       <source>Line</source>
-      <translation>Rad</translation>
+      <translation>Linje</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="124"/>
       <location filename="../../ViewProviderDatum.cpp" line="212"/>
       <source>Point</source>
-      <translation>Poäng</translation>
+      <translation>Punkt</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="129"/>
@@ -3606,7 +3606,7 @@ För äldre dokument med Part Design-objekt som saknar en kropp kan du använda 
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="229"/>
       <source>Edit Datum</source>
-      <translation>Ändra datum</translation>
+      <translation>Ändra referenspunkt</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="89"/>
@@ -3623,7 +3623,7 @@ Den här funktionen är trasig och kan inte redigeras.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="205"/>
       <source>Edit Shape Binder</source>
-      <translation>Edit Shape Pärm</translation>
+      <translation>Redigera formbindare</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="317"/>
@@ -3643,7 +3643,7 @@ Den här funktionen är trasig och kan inte redigeras.</translation>
     <message>
       <location filename="../../WorkflowManager.cpp" line="143"/>
       <source>Migrate in order to use modern Part Design features?</source>
-      <translation>Migrera för att kunna använda moderna funktioner för artikeldesign?</translation>
+      <translation>Migrera för att kunna använda moderna funktioner för Part Design?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="146"/>
@@ -3682,7 +3682,7 @@ Om du vägrar att migrera kommer du inte att kunna använda nya PartDesign-funkt
     <message>
       <location filename="../../ViewProviderDraft.cpp" line="42"/>
       <source>Edit Draft</source>
-      <translation>Redigera utkast</translation>
+      <translation>Redigera släppning</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFillet.cpp" line="41"/>
@@ -3697,7 +3697,7 @@ Om du vägrar att migrera kommer du inte att kunna använda nya PartDesign-funkt
     <message>
       <location filename="../../ViewProviderHelix.cpp" line="51"/>
       <source>Edit Helix</source>
-      <translation>Redigera Helix</translation>
+      <translation>Redigera helix</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="66"/>
@@ -3722,7 +3722,7 @@ Om du vägrar att migrera kommer du inte att kunna använda nya PartDesign-funkt
     <message>
       <location filename="../../ViewProviderMultiTransform.cpp" line="48"/>
       <source>Edit Multi-Transform</source>
-      <translation>Redigera Multi-Transform</translation>
+      <translation>Redigera flertransformativ</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="46"/>
@@ -4113,7 +4113,7 @@ Endast tillgängligt för hål utan gänga</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="136"/>
       <source>Points</source>
-      <translation>Poäng</translation>
+      <translation>Punkter</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="170"/>
@@ -4151,7 +4151,7 @@ Endast tillgängligt för hål utan gänga</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="662"/>
       <source>&lt;b&gt;Threading&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Threading&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Trådning&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="783"/>
@@ -4247,7 +4247,7 @@ under 90: mindre hålradie i botten
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>&amp;Sketch</source>
-      <translation>&amp;Skiss</translation>
+      <translation>&amp;Sketch</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
@@ -4257,7 +4257,7 @@ under 90: mindre hålradie i botten
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Datums</source>
-      <translation>Datum</translation>
+      <translation>Referenspunkter</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
@@ -4272,7 +4272,7 @@ under 90: mindre hålradie i botten
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Dress-Up Features</source>
-      <translation>Utklädningsfunktioner</translation>
+      <translation>Försköningsfunktioner</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
@@ -4282,7 +4282,7 @@ under 90: mindre hålradie i botten
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Sprocket…</source>
-      <translation>Sprocket..</translation>
+      <translation>Kedjehjul…</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
@@ -4649,7 +4649,7 @@ under 90: mindre hålradie i botten
       <location filename="../../../App/FeatureGroove.cpp" line="129"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="137"/>
       <source>Creating a face from sketch failed</source>
-      <translation>Skapa ett ansikte från en misslyckad skiss</translation>
+      <translation>Skapa en yta från skiss misslyckades</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="151"/>
@@ -4668,13 +4668,13 @@ under 90: mindre hålradie i botten
       <location filename="../../../App/FeatureRevolution.cpp" line="252"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
-      <translation>Det gick inte att skapa ett ansikte från en skiss.
-Det är inte tillåtet att korsa skissenheter i en skiss.</translation>
+      <translation>Det gick inte att skapa en yta från en skiss.
+Det är inte tillåtet att korsa skissentiteter i en skiss.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="137"/>
       <source>Error: Pitch too small!</source>
-      <translation>Fel på plats: Pitch för liten!</translation>
+      <translation>Fel: Stigning för liten!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="139"/>
@@ -4685,7 +4685,7 @@ Det är inte tillåtet att korsa skissenheter i en skiss.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="145"/>
       <source>Error: pitch too small!</source>
-      <translation>Fel: Tonhöjden är för liten!</translation>
+      <translation>Fel: stigningen är för liten!</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="147"/>
@@ -4707,19 +4707,19 @@ Det är inte tillåtet att korsa skissenheter i en skiss.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="191"/>
       <source>Error: No valid sketch or face</source>
-      <translation>Felmeddelande: Ingen giltig skiss eller ansikte</translation>
+      <translation>Fel: Ingen giltig skiss eller yta</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="200"/>
       <source>Error: Face must be planar</source>
-      <translation>Fel: Ansiktet måste vara plant</translation>
+      <translation>Fel: Ytan måste vara plan</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="299"/>
       <location filename="../../../App/FeatureHelix.cpp" line="331"/>
       <location filename="../../../App/FeatureHole.cpp" line="2529"/>
       <source>Error: Result is not a solid</source>
-      <translation>Fel: Resultatet är inte ett fast ämne</translation>
+      <translation>Fel: Resultatet är inte en solid</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="275"/>
@@ -4731,12 +4731,12 @@ Det är inte tillåtet att korsa skissenheter i en skiss.</translation>
       <location filename="../../../App/FeatureHelix.cpp" line="303"/>
       <location filename="../../../App/FeatureHelix.cpp" line="334"/>
       <source>Error: Result has multiple solids</source>
-      <translation>Fel: Resultatet har flera fasta ämnen</translation>
+      <translation>Fel: Resultatet har flera solider</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="292"/>
       <source>Error: Adding the helix failed</source>
-      <translation>Fel på helixen: Att lägga till helixen misslyckades</translation>
+      <translation>Fel: Lägga till helixen misslyckades</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="318"/>
@@ -4751,7 +4751,7 @@ Det är inte tillåtet att korsa skissenheter i en skiss.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="348"/>
       <source>Error: Could not create face from sketch</source>
-      <translation>Felmeddelande: Kunde inte skapa ett ansikte från en skiss</translation>
+      <translation>Fel: Kunde inte skapa en yta från en skiss</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="1419"/>
@@ -4838,8 +4838,8 @@ Det är inte tillåtet att korsa skissenheter i en skiss.</translation>
       <location filename="../../../App/FeatureHole.cpp" line="2195"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
-      <translation>Kunde inte skapa ett ansikte från skissen.
-Korsande skissenheter eller flera ansikten i en skiss är inte tillåtna för att skapa en ficka upp till ett ansikte.</translation>
+      <translation>Kunde inte skapa en yta från skissen.
+Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna för att skapa en ficka upp till en yta.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2345"/>
@@ -4869,7 +4869,7 @@ Korsande skissenheter eller flera ansikten i en skiss är inte tillåtna för at
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="207"/>
       <source>Loft: Creating a face from sketch failed</source>
-      <translation>Loft: Skapa ett ansikte från en misslyckad skiss</translation>
+      <translation>Loft: Skapa en yta från en skiss misslyckades</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="256"/>
@@ -4880,8 +4880,8 @@ Korsande skissenheter eller flera ansikten i en skiss är inte tillåtna för at
       <location filename="../../../App/FeatureExtrude.cpp" line="611"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
-      <translation>Det gick inte att skapa ett ansikte från en skiss.
-Korsande skissentiteter eller flera ansikten i en skiss är inte tillåtna.</translation>
+      <translation>Det gick inte att skapa en yta från en skiss.
+Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="178"/>
@@ -5151,7 +5151,7 @@ Korsande skissentiteter eller flera ansikten i en skiss är inte tillåtna.</tra
     <message>
       <location filename="../../../App/FeatureThickness.cpp" line="103"/>
       <source>Invalid face reference</source>
-      <translation>Ogiltig referens för ansikte</translation>
+      <translation>Ogiltig referens för yta</translation>
     </message>
   </context>
   <context>
@@ -5172,7 +5172,7 @@ Korsande skissentiteter eller flera ansikten i en skiss är inte tillåtna.</tra
     <message>
       <location filename="../../../SprocketFeature.py" line="62"/>
       <source>Sprocket</source>
-      <translation type="unfinished">Sprocket</translation>
+      <translation>Kedjehjul</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.py" line="66"/>
@@ -5229,12 +5229,12 @@ Korsande skissentiteter eller flera ansikten i en skiss är inte tillåtna.</tra
     <message>
       <location filename="../../Command.cpp" line="2372"/>
       <source>Create Datum</source>
-      <translation>Skapa datum</translation>
+      <translation>Skapa referenspunkt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2373"/>
       <source>Creates a datum object or local coordinate system</source>
-      <translation>Skapar ett datumobjekt eller ett lokalt koordinatsystem</translation>
+      <translation>Skapar ett referenspunktsobjekt eller ett lokalt koordinatsystem</translation>
     </message>
   </context>
   <context>
@@ -5242,12 +5242,12 @@ Korsande skissentiteter eller flera ansikten i en skiss är inte tillåtna.</tra
     <message>
       <location filename="../../Command.cpp" line="2407"/>
       <source>Create Datum</source>
-      <translation>Skapa datum</translation>
+      <translation>Skapa referenspunkt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2408"/>
       <source>Creates a datum object or local coordinate system</source>
-      <translation>Skapar ett datumobjekt eller ett lokalt koordinatsystem</translation>
+      <translation>Skapar ett referenspunktsobjekt eller ett lokalt koordinatsystem</translation>
     </message>
   </context>
   <context>
@@ -5260,7 +5260,7 @@ Korsande skissentiteter eller flera ansikten i en skiss är inte tillåtna.</tra
     <message>
       <location filename="../../CommandPrimitive.cpp" line="202"/>
       <source>Creates an additive cylinder by its radius, height, and angle</source>
-      <translation>Skapar en additiv cylinder genom dess radie, höjd och vinkel</translation>
+      <translation>Skapar en additiv cylinder med dess radie, höjd och vinkel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="206"/>
@@ -5303,7 +5303,7 @@ Korsande skissentiteter eller flera ansikten i en skiss är inte tillåtna.</tra
     <message>
       <location filename="../../CommandPrimitive.cpp" line="354"/>
       <source>Creates a subtractive cylinder by its radius, height and angle</source>
-      <translation>Skapar en subtraktiv cylinder genom dess radie, höjd och vinkel</translation>
+      <translation>Skapar en subtraktiv cylinder med dess radie, höjd och vinkel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="358"/>
@@ -5389,12 +5389,12 @@ Korsande skissentiteter eller flera ansikten i en skiss är inte tillåtna.</tra
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="115"/>
       <source>Datum Plane Parameters</source>
-      <translation>Parametrar för nollpunktsplanet</translation>
+      <translation>Parametrar för referenspunktsplan</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="120"/>
       <source>Datum Line Parameters</source>
-      <translation>Parametrar för datumlinje</translation>
+      <translation>Parametrar för referenspunktslinje</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="125"/>
@@ -5412,7 +5412,7 @@ Korsande skissentiteter eller flera ansikten i en skiss är inte tillåtna.</tra
     <message>
       <location filename="../../ViewProviderDraft.h" line="42"/>
       <source>Draft Parameters</source>
-      <translation>Utkast till parametrar</translation>
+      <translation>Släppningsparametrar</translation>
     </message>
   </context>
   <context>
@@ -5444,7 +5444,7 @@ Korsande skissentiteter eller flera ansikten i en skiss är inte tillåtna.</tra
     <message>
       <location filename="../../ViewProviderMultiTransform.h" line="37"/>
       <source>Multi-Transform Parameters</source>
-      <translation>Parametrar för flera omvandlingar</translation>
+      <translation>Parametrar för flera transformationer</translation>
     </message>
   </context>
   <context>
@@ -5481,7 +5481,7 @@ Korsande skissentiteter eller flera ansikten i en skiss är inte tillåtna.</tra
     <message>
       <location filename="../../TaskPatternParameters.cpp" line="219"/>
       <source>Select a direction reference (edge, face, datum line)</source>
-      <translation>Välj en riktningsreferens (kant, yta, datumlinje)</translation>
+      <translation>Välj en riktningsreferens (kant, yta, referenspunktslinje)</translation>
     </message>
     <message>
       <location filename="../../TaskPatternParameters.cpp" line="299"/>

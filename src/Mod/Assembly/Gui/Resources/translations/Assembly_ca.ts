@@ -931,9 +931,7 @@ Els fitxers s'anomenen "runPreDrag.asmt" i "dragging.log" i es troben al directo
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1363"/>
       <source>Solver failed to converge</source>
-      <translation>
-
-El solucionador no ha pogut convergir</translation>
+      <translation>El solucionador no ha pogut convergir</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1369"/>

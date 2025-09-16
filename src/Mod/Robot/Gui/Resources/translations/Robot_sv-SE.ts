@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="164"/>
       <source>Place Robot</source>
-      <translation>Plats Robot</translation>
+      <translation>Placera robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="165"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="57"/>
       <source>Creates a new empty trajectory</source>
-      <translation>Skapar en ny tom bana</translation>
+      <translation>Skapar en ny tom rörelsebana</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="361"/>
       <source>Edge to Trajectory</source>
-      <translation>Kant till bana</translation>
+      <translation>Kant till rörelsebana</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="362"/>
       <source>Generates a trajectory from the selected edges</source>
-      <translation>Skapar en bana från de valda kanterna</translation>
+      <translation>Skapar en rörelsebana från de valda kanterna</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../CommandExport.cpp" line="47"/>
       <source>Kuka Compact Subroutine</source>
-      <translation>Kuka Compact Underrutin</translation>
+      <translation>Kompakt Kuka-underrutin</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="48"/>
       <source>Exports the trajectory as a compact KRL subroutine</source>
-      <translation>Exporterar banan som en kompakt KRL-underrutin</translation>
+      <translation>Exporterar rörelsebanan som en kompakt KRL-underrutin</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../CommandExport.cpp" line="122"/>
       <source>Kuka Full Subroutine</source>
-      <translation type="unfinished">Kuka Full Subroutine</translation>
+      <translation>Fullständig Kuka-underrutin</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="123"/>
       <source>Exports the trajectory as a full KRL subroutine</source>
-      <translation>Exporterar banan som en fullständig KRL-underrutin</translation>
+      <translation>Exporterar rörelsebanan som en fullständig KRL-underrutin</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="90"/>
       <source>Insert in Trajectory</source>
-      <translation>Infoga i Trajectory</translation>
+      <translation>Infoga i rörelsebana</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="91"/>
       <source>Inserts the robot tool location into the trajectory</source>
-      <translation>Infogar robotverktygets position i banan</translation>
+      <translation>Infogar robotverktygets position i rörelsebanan</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="159"/>
       <source>Insert in Trajectory</source>
-      <translation>Infoga i Trajectory</translation>
+      <translation>Infoga i rörelsebana</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="160"/>
       <source>Inserts the preselection position into the trajectory (W)</source>
-      <translation>Infogar förvalspositionen i banan (W)</translation>
+      <translation>Infogar förvalspositionen i rörelsebanan (W)</translation>
     </message>
   </context>
   <context>
@@ -299,12 +299,12 @@
     <message>
       <location filename="../../Command.cpp" line="213"/>
       <source>Simulate Trajectory</source>
-      <translation>Simulera bana</translation>
+      <translation>Simulera rörelsebana</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="214"/>
       <source>Simulates robot movement along a selected trajectory</source>
-      <translation>Simulerar robotens rörelse längs en vald bana</translation>
+      <translation>Simulerar robotens rörelse längs en vald rörelsebana</translation>
     </message>
   </context>
   <context>
@@ -317,7 +317,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="483"/>
       <source>Trajectory Compound</source>
-      <translation>Trajektoriet sammansatt</translation>
+      <translation>Rörelsebana sammansatt</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="484"/>
@@ -335,12 +335,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="427"/>
       <source>Dress-Up Trajectory</source>
-      <translation type="unfinished">Dress-Up Trajectory</translation>
+      <translation>Försköna rörelsebana</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="428"/>
       <source>Creates a dress-up object that overrides aspects of a trajectory</source>
-      <translation>Skapar ett dress-up-objekt som åsidosätter aspekter av en bana</translation>
+      <translation>Skapar ett försköningsobjekt som åsidosätter aspekter av en rörelsebana</translation>
     </message>
   </context>
   <context>
@@ -348,7 +348,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Trajectory Tools</source>
-      <translation>Verktyg för banor</translation>
+      <translation>Verktyg för rörelsebanor</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
@@ -393,17 +393,17 @@
       <location filename="../../CommandExport.cpp" line="138"/>
       <location filename="../../CommandTrajectory.cpp" line="107"/>
       <source>Select one Robot and one Trajectory object.</source>
-      <translation>Välj en robot och ett banobjekt.</translation>
+      <translation>Välj en robot och ett rörelsebanobjekt.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Trajectory not valid</source>
-      <translation>Banan inte giltig</translation>
+      <translation>Rörelsebanan inte giltig</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="245"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
-      <translation>Du behöver minst två waypoints i en bana för att simulera.</translation>
+      <translation>Du behöver minst två waypoints i en rörelsebana för att simulera.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="89"/>
@@ -432,7 +432,7 @@
       <location filename="../../CommandTrajectory.cpp" line="174"/>
       <location filename="../../CommandTrajectory.cpp" line="193"/>
       <source>Select one Trajectory object.</source>
-      <translation>Välj ett banobjekt.</translation>
+      <translation>Välj ett rörelsebanobjekt.</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="201"/>
@@ -462,7 +462,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="309"/>
       <source>continuous ?</source>
-      <translation>Kontinuerlig?</translation>
+      <translation>kontinuerlig?</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="322"/>
@@ -477,7 +477,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="464"/>
       <source>Select the Trajectory which you want to dress up.</source>
-      <translation>Markera banan som du vill klä upp.</translation>
+      <translation>Markera rörelsebanan som du vill försköna.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTrajectory.cpp" line="145"/>
@@ -850,7 +850,7 @@
     <message>
       <location filename="../../TaskTrajectory.cpp" line="39"/>
       <source>Trajectory</source>
-      <translation>Trajektoria</translation>
+      <translation>Rörelsebana</translation>
     </message>
   </context>
   <context>
@@ -858,7 +858,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.cpp" line="42"/>
       <source>Dress Up Parameter</source>
-      <translation>Klä upp Parameter</translation>
+      <translation>Försköningsparameter</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="55"/>
@@ -879,7 +879,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="66"/>
       <source>Acceleration</source>
-      <translation type="unfinished">Acceleration</translation>
+      <translation>Acceleration</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="102"/>
@@ -903,13 +903,13 @@
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="160"/>
-      <source>Don not change position &amp; orientation</source>
-      <translation>Ändra inte position och orientering</translation>
+      <source>Do not change position &amp; orientation</source>
+      <translation type="unfinished">Do not change position &amp; orientation</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="165"/>
       <source>Use orientation</source>
-      <translation>Användningsorientering</translation>
+      <translation>Använd orientering</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="170"/>
@@ -937,7 +937,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Export Trajectory</source>
-      <translation>Exportbana</translation>
+      <translation>Exportera rörelsebana</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>

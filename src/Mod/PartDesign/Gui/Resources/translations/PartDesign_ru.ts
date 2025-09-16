@@ -93,7 +93,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="104"/>
       <source>Pressure angle of gear teeth</source>
-      <translation>Угол давления зубов передач</translation>
+      <translation>Угол давления зубьев передачи</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="101"/>
@@ -136,17 +136,17 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1498"/>
       <source>PartDesign</source>
-      <translation>Проектирование детали</translation>
+      <translation>ПроектнаяДеталь</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1499"/>
       <source>Additive Helix</source>
-      <translation type="unfinished">Additive Helix</translation>
+      <translation>Аддитивная спираль</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1500"/>
       <source>Sweeps the selected sketch or profile along a helix and adds it to the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a helix and adds it to the body</translation>
+      <translation>Перемещает выбранный эскиз или профиль по спирали и добавляет его к телу</translation>
     </message>
   </context>
   <context>
@@ -154,17 +154,17 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1405"/>
       <source>PartDesign</source>
-      <translation>Проектирование детали</translation>
+      <translation>ПроектнаяДеталь</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1406"/>
       <source>Additive Loft</source>
-      <translation type="unfinished">Additive Loft</translation>
+      <translation>Аддитивный профиль по сечениям</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1407"/>
       <source>Lofts the selected sketch or profile along a path and adds it to the body</source>
-      <translation type="unfinished">Lofts the selected sketch or profile along a path and adds it to the body</translation>
+      <translation>Сращивает выбранные эскизы между собой и добавляет результат к телу</translation>
     </message>
   </context>
   <context>
@@ -172,17 +172,17 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1311"/>
       <source>PartDesign</source>
-      <translation>Проектирование детали</translation>
+      <translation>ПроектнаяДеталь</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1312"/>
       <source>Additive Pipe</source>
-      <translation type="unfinished">Additive Pipe</translation>
+      <translation>Аддитивная труба</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1313"/>
       <source>Sweeps the selected sketch or profile along a path and adds it to the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a path and adds it to the body</translation>
+      <translation>Перемещает выбранный эскиз или профиль вдоль траектории и добавляет результат к телу</translation>
     </message>
   </context>
   <context>
@@ -190,12 +190,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="87"/>
       <source>PartDesign</source>
-      <translation>Проектирование детали</translation>
+      <translation>ПроектнаяДеталь</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="88"/>
       <source>New Body</source>
-      <translation type="unfinished">New Body</translation>
+      <translation>Новое тело</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="89"/>
@@ -824,7 +824,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="241"/>
       <source>PartDesign</source>
-      <translation>Проектирование детали</translation>
+      <translation>ПроектнаяДеталь</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="242"/>
@@ -920,8 +920,8 @@ so that self intersection is avoided.</source>
       <translation>Сделать копию</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="515"/>
-      <location filename="../../SketchWorkflow.cpp" line="743"/>
+      <location filename="../../SketchWorkflow.cpp" line="514"/>
+      <location filename="../../SketchWorkflow.cpp" line="742"/>
       <source>New Sketch</source>
       <translation type="unfinished">New Sketch</translation>
     </message>
@@ -1206,14 +1206,14 @@ Select a body from below, or create a new body.</translation>
       <location filename="../../TaskPrimitiveParameters.ui" line="797"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1016"/>
       <source>Radius 1</source>
-      <translation>Радиус колеса 1</translation>
+      <translation>Радиус 1</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="485"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="820"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="1039"/>
       <source>Radius 2</source>
-      <translation>Радиус колеса 2</translation>
+      <translation>Радиус 2</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="551"/>
@@ -2175,7 +2175,7 @@ If zero, it is equal to Radius2</translation>
       <location filename="../../TaskHoleParameters.cpp" line="683"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall</comment>
-      <translation>Обычные</translation>
+      <translation>Основная</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="684"/>
@@ -3187,48 +3187,48 @@ measured along the specified direction</source>
       <translation>Ошибка</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="778"/>
+      <location filename="../../SketchWorkflow.cpp" line="775"/>
       <source>Several sub-elements selected</source>
       <translation>Неправильное выделение</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="779"/>
+      <location filename="../../SketchWorkflow.cpp" line="776"/>
       <source>Select a single face as support for a sketch!</source>
       <translation type="unfinished">Select a single face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="783"/>
+      <location filename="../../SketchWorkflow.cpp" line="780"/>
       <source>Select a face as support for a sketch!</source>
       <translation type="unfinished">Select a face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="787"/>
+      <location filename="../../SketchWorkflow.cpp" line="784"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation type="unfinished">Need a planar face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="791"/>
+      <location filename="../../SketchWorkflow.cpp" line="788"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation type="unfinished">Create a plane first or select a face to sketch on</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="782"/>
+      <location filename="../../SketchWorkflow.cpp" line="779"/>
       <source>No support face selected</source>
       <translation>Не выбрана грань</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="786"/>
+      <location filename="../../SketchWorkflow.cpp" line="783"/>
       <source>No planar support</source>
       <translation>Неплоская грань</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="790"/>
+      <location filename="../../SketchWorkflow.cpp" line="787"/>
       <source>No valid planes in this document</source>
       <translation>В документе нет корректных плоскостей</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1014"/>
-      <location filename="../../SketchWorkflow.cpp" line="703"/>
+      <location filename="../../SketchWorkflow.cpp" line="702"/>
       <location filename="../../ViewProvider.cpp" line="139"/>
       <location filename="../../ViewProviderDatum.cpp" line="250"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
@@ -3272,7 +3272,7 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../SketchWorkflow.cpp" line="704"/>
+      <location filename="../../SketchWorkflow.cpp" line="703"/>
       <location filename="../../ViewProvider.cpp" line="140"/>
       <location filename="../../ViewProviderDatum.cpp" line="251"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>

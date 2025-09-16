@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="946"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylark</translation>
+      <translation>Kalkylblad</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="947"/>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="122"/>
       <source>Sp&amp;lit Cell</source>
-      <translation type="unfinished">Sp&amp;lit Cell</translation>
+      <translation>D&amp;ela cell</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
@@ -691,11 +691,6 @@ dynamiskt byta designkonfiguration. Egenskapen kommer att skapas om den inte fin
       <translation>Importera fil</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="816"/>
-      <source>Copy &amp; Paste failed</source>
-      <translation>Kopiera och klistra in misslyckades</translation>
-    </message>
-    <message>
       <location filename="../../SpreadsheetView.cpp" line="495"/>
       <source>Alias contains invalid characters!</source>
       <translation>Alias innehåller ogiltiga tecken!</translation>
@@ -743,6 +738,11 @@ Kalkylblad.mitt_alias_namn istället för Kalkylblad.B1</translation>
       <location filename="../../Workbench.cpp" line="116"/>
       <source>Sets the spreadsheet cells background color</source>
       <translation>Ställer in bakgrundsfärgen för kalkylbladets celler</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="816"/>
+      <source>Copy &amp; Paste Failed</source>
+      <translation type="unfinished">Copy &amp; Paste Failed</translation>
     </message>
   </context>
   <context>
@@ -866,7 +866,7 @@ Kalkylblad.mitt_alias_namn istället för Kalkylblad.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="39"/>
       <source>&amp;Alias</source>
-      <translation type="unfinished">&amp;Alias</translation>
+      <translation>&amp;Alias</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="52"/>
@@ -895,8 +895,8 @@ Kalkylblad.mitt_alias_namn istället för Kalkylblad.B1</translation>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="223"/>
-      <source>Bind cells</source>
-      <translation>Binda celler</translation>
+      <source>Bind Cells</source>
+      <translation type="unfinished">Bind Cells</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="224"/>
@@ -921,8 +921,8 @@ Fortsätta?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="300"/>
-      <source>Unbind cells</source>
-      <translation>Lösgör celler</translation>
+      <source>Unbind Cells</source>
+      <translation type="unfinished">Unbind Cells</translation>
     </message>
   </context>
   <context>
@@ -1017,19 +1017,6 @@ Standardvärde: %V = %A
     </message>
   </context>
   <context>
-    <name>SpreadsheetGui::DlgSheetConf</name>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="280"/>
-      <source>Setup configuration table</source>
-      <translation>Tabell för konfiguration av inställningar</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="338"/>
-      <source>Unsetup configuration table</source>
-      <translation>Ta bort konfigurationstabell</translation>
-    </message>
-  </context>
-  <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
       <location filename="../../SheetTableView.cpp" line="202"/>
@@ -1111,7 +1098,7 @@ Standardvärde: %V = %A
       <location filename="../../SheetTableView.cpp" line="203"/>
       <location filename="../../SheetTableView.cpp" line="673"/>
       <source>Bind…</source>
-      <translation type="unfinished">Bind…</translation>
+      <translation>Bind…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="204"/>
@@ -1128,8 +1115,8 @@ Standardvärde: %V = %A
     <message>
       <location filename="../../SheetTableView.cpp" line="210"/>
       <location filename="../../SheetTableView.cpp" line="668"/>
-      <source>Split Cells</source>
-      <translation>Delade celler</translation>
+      <source>Split Cell</source>
+      <translation type="unfinished">Split Cell</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="213"/>
@@ -1212,6 +1199,19 @@ Standardvärde: %V = %A
       <location filename="../../ZoomableView.cpp" line="112"/>
       <source>Zoom Level</source>
       <translation>Zoom Nivå</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::DlgSheetConf</name>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="280"/>
+      <source>Setup Configuration Table</source>
+      <translation>Tabell för konfiguration av inställningar</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="338"/>
+      <source>Unsetup Configuration Table</source>
+      <translation type="unfinished">Unsetup Configuration Table</translation>
     </message>
   </context>
 </TS>

@@ -39,7 +39,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="89"/>
       <source>Component</source>
-      <translation>Sestavina</translation>
+      <translation>Komponenta</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="57"/>
       <source>Solves the currently active assembly.</source>
-      <translation type="unfinished">Solves the currently active assembly.</translation>
+      <translation>Preračuna trenutno aktiven sestav.</translation>
     </message>
   </context>
   <context>
@@ -203,7 +203,7 @@
     <message>
       <location filename="../../../JointObject.py" line="1566"/>
       <source>Thread pitch</source>
-      <translation type="unfinished">Thread pitch</translation>
+      <translation>Korak navoja</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1568"/>
@@ -1162,7 +1162,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="89"/>
       <source>Simulation Settings</source>
-      <translation type="unfinished">Simulation Settings</translation>
+      <translation>Nastavitve simulacije</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="95"/>
@@ -1195,7 +1195,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="132"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="139"/>
       <source>Time step</source>
-      <translation type="unfinished">Time step</translation>
+      <translation>Časovni korak</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="149"/>
@@ -1211,7 +1211,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="212"/>
       <source>Frames per second</source>
-      <translation type="unfinished">Frames per second</translation>
+      <translation>Število sličic na sekundo</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="146"/>
@@ -1487,7 +1487,7 @@ Grounding a part permanently locks its position in the assembly, preventing any 
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="74"/>
       <source>Creates a new simulation of the current assembly</source>
-      <translation type="unfinished">Creates a new simulation of the current assembly</translation>
+      <translation>Ustvari novo simulacijo trenutnega sestava</translation>
     </message>
   </context>
   <context>

@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="249"/>
       <source>Reverse Engineering</source>
-      <translation>Reverse Engineering</translation>
+      <translation>Rekonstruktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="250"/>
@@ -119,7 +119,7 @@
     <message>
       <location filename="../../Command.cpp" line="601"/>
       <source>Poisson…</source>
-      <translation type="unfinished">Poisson…</translation>
+      <translation>Poisson…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="602"/>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="227"/>
       <source>Fit plane</source>
-      <translation>Passningsplan</translation>
+      <translation>Passa plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="259"/>
@@ -219,12 +219,12 @@
     <message>
       <location filename="../../Command.cpp" line="327"/>
       <source>Fit sphere</source>
-      <translation>Passa sfären</translation>
+      <translation>Passa sfär</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="376"/>
       <source>Fit polynomial surface</source>
-      <translation>Anpassa polynomytan</translation>
+      <translation>Anpassa polynomyta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="646"/>
@@ -377,7 +377,7 @@
     <message>
       <location filename="../../Poisson.ui" line="66"/>
       <source>Samples per node</source>
-      <translation>Prover per nod</translation>
+      <translation>Samplingar per nod</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="90"/>
@@ -448,7 +448,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="80"/>
       <source>Minimum number of faces</source>
-      <translation>Minsta antal ansikten</translation>
+      <translation>Minsta antal ytor</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="100"/>
@@ -532,7 +532,7 @@
       <location filename="../../SegmentationManual.ui" line="208"/>
       <location filename="../../SegmentationManual.ui" line="261"/>
       <source>Minimum number of faces</source>
-      <translation>Minsta antal ansikten</translation>
+      <translation>Minsta antal ytor</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
@@ -616,7 +616,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="42"/>
       <source>Centripetal</source>
-      <translation type="unfinished">Centripetal</translation>
+      <translation>Centripetal</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>

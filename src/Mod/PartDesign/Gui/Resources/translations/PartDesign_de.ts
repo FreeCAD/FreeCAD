@@ -417,7 +417,7 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="322"/>
       <source>Migrates the document to the modern Part Design workflow</source>
-      <translation type="unfinished">Migrates the document to the modern Part Design workflow</translation>
+      <translation>Migriert das Dokument in den modernen PartDesign-Arbeitsablauf</translation>
     </message>
   </context>
   <context>
@@ -628,7 +628,7 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
     <message>
       <location filename="../../Command.cpp" line="1194"/>
       <source>Revolve</source>
-      <translation>Umdrehung</translation>
+      <translation>Drehteil</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1195"/>
@@ -921,8 +921,8 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
       <translation>Kopie erstellen</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="515"/>
-      <location filename="../../SketchWorkflow.cpp" line="743"/>
+      <location filename="../../SketchWorkflow.cpp" line="514"/>
+      <location filename="../../SketchWorkflow.cpp" line="742"/>
       <source>New Sketch</source>
       <translation>Neue Skizze</translation>
     </message>
@@ -1074,7 +1074,7 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="84"/>
       <source>Pressure angle</source>
-      <translation type="unfinished">Pressure angle</translation>
+      <translation>Eingriffswinkel</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="125"/>
@@ -1349,12 +1349,12 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1907"/>
       <source>Major radius</source>
-      <translation type="unfinished">Major radius</translation>
+      <translation>Größter Radius</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1927"/>
       <source>Minor radius</source>
-      <translation type="unfinished">Minor radius</translation>
+      <translation>Kleinster Radius</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="2005"/>
@@ -3003,7 +3003,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="93"/>
       <source>Recto verso</source>
-      <translation type="unfinished">Recto verso</translation>
+      <translation>Vorder- und Rückseite</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="101"/>
@@ -3030,7 +3030,7 @@ entlang der angegebenen Richtung gemessen</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="269"/>
       <source>Empty thickness created!
 </source>
-      <translation type="unfinished">Empty thickness created!
+      <translation>Leere Dicke erzeugt!
 </translation>
     </message>
   </context>
@@ -3190,48 +3190,48 @@ entlang der angegebenen Richtung gemessen</translation>
       <translation>Fehlermeldungen</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="778"/>
+      <location filename="../../SketchWorkflow.cpp" line="775"/>
       <source>Several sub-elements selected</source>
       <translation>Mehrere Unter-Elemente selektiert</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="779"/>
+      <location filename="../../SketchWorkflow.cpp" line="776"/>
       <source>Select a single face as support for a sketch!</source>
       <translation>Eine einzelne Fläche als Auflage für eine Skizze auswählen!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="783"/>
+      <location filename="../../SketchWorkflow.cpp" line="780"/>
       <source>Select a face as support for a sketch!</source>
       <translation>Eine Fläche als Auflage für eine Skizze auswählen!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="787"/>
+      <location filename="../../SketchWorkflow.cpp" line="784"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation>Benötigt eine ebene Fläche als Auflage für eine Skizze!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="791"/>
+      <location filename="../../SketchWorkflow.cpp" line="788"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation>Zuerst eine Ebene erstellen oder eine Fläche auswählen, um darauf eine Skizze zu erstellen</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="782"/>
+      <location filename="../../SketchWorkflow.cpp" line="779"/>
       <source>No support face selected</source>
       <translation>Keine Fläche als Auflage selektiert</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="786"/>
+      <location filename="../../SketchWorkflow.cpp" line="783"/>
       <source>No planar support</source>
       <translation>Keine ebene Auflage</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="790"/>
+      <location filename="../../SketchWorkflow.cpp" line="787"/>
       <source>No valid planes in this document</source>
       <translation>Keine gültigen Ebenen in diesem Dokument</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1014"/>
-      <location filename="../../SketchWorkflow.cpp" line="703"/>
+      <location filename="../../SketchWorkflow.cpp" line="702"/>
       <location filename="../../ViewProvider.cpp" line="139"/>
       <location filename="../../ViewProviderDatum.cpp" line="250"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
@@ -3275,7 +3275,7 @@ entlang der angegebenen Richtung gemessen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../SketchWorkflow.cpp" line="704"/>
+      <location filename="../../SketchWorkflow.cpp" line="703"/>
       <location filename="../../ViewProvider.cpp" line="140"/>
       <location filename="../../ViewProviderDatum.cpp" line="251"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
@@ -3350,7 +3350,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="120"/>
       <source>A body cannot be based on a Part Design feature.</source>
-      <translation type="unfinished">A body cannot be based on a Part Design feature.</translation>
+      <translation>Ein Körper kann nicht auf einem Part Design-Formelement basieren.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="125"/>
@@ -3635,7 +3635,7 @@ Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="319"/>
       <source>Select Bound Object</source>
-      <translation type="unfinished">Select Bound Object</translation>
+      <translation>Gebundenes Objekt wählen</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="140"/>
@@ -3669,7 +3669,7 @@ Es kann später jederzeit mit 'Part Design -&gt; Migrieren...' migriert werden.<
     <message>
       <location filename="../../WorkflowManager.cpp" line="161"/>
       <source>Migrate Manually</source>
-      <translation type="unfinished">Migrate Manually</translation>
+      <translation>Manuell migrieren</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="72"/>
@@ -3759,7 +3759,7 @@ Es kann später jederzeit mit 'Part Design -&gt; Migrieren...' migriert werden.<
     <message>
       <location filename="../../ViewProviderScaled.cpp" line="39"/>
       <source>Edit Scale</source>
-      <translation type="unfinished">Edit Scale</translation>
+      <translation>Maßstab bearbeiten</translation>
     </message>
     <message>
       <location filename="../../ViewProviderThickness.cpp" line="41"/>
@@ -4153,7 +4153,7 @@ Steht nur für Durchgangsbohrungen (Bohrungen ohne Gewinde) zur Verfügung</tran
     <message>
       <location filename="../../TaskHoleParameters.ui" line="662"/>
       <source>&lt;b&gt;Threading&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Threading&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Gewindebohrung&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="783"/>
@@ -5486,7 +5486,7 @@ Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind
     <message>
       <location filename="../../TaskPatternParameters.cpp" line="299"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
-      <translation type="unfinished">Invalid selection. Select an edge, planar face, or datum line.</translation>
+      <translation>Ungültige Auswahl. Wählen Sie eine Kante, eine flache Fläche oder eine Bezugslinie.</translation>
     </message>
   </context>
 </TS>

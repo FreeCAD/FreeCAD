@@ -13,7 +13,7 @@
       <location filename="../../AttacherTexts.cpp" line="321"/>
       <source>Vertex</source>
       <comment>Attacher reference type</comment>
-      <translation>Hörn</translation>
+      <translation>Hörnpunkt</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="322"/>
@@ -232,7 +232,7 @@
       <location filename="../../AttacherTexts.cpp" line="302"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Sätt Datumpunkt sammanfallande med ett annat vertex.</translation>
+      <translation>Sätt referenspunkt sammanfallande med ett annat vertex.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="304"/>
@@ -522,7 +522,7 @@
       <location filename="../../AttacherTexts.cpp" line="133"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Översätt ursprung</translation>
+      <translation>Translationsorigo</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="134"/>
@@ -656,7 +656,7 @@
       <location filename="../../AttacherTexts.cpp" line="169"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Revolutionssektionen</translation>
+      <translation>Varvssektion</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="170"/>
@@ -668,7 +668,7 @@
       <location filename="../../AttacherTexts.cpp" line="172"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Flygplan med 3 poäng</translation>
+      <translation>Plan utifrån tre punkter</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="173"/>
@@ -680,7 +680,7 @@
       <location filename="../../AttacherTexts.cpp" line="175"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Normal till 3 poäng</translation>
+      <translation>Normal till tre punkter</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="176"/>
@@ -731,7 +731,7 @@
       <location filename="../../AttacherTexts.cpp" line="55"/>
       <source>Translate origin</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Översätt ursprung</translation>
+      <translation>Translationsorigo</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="56"/>
@@ -1119,7 +1119,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="135"/>
       <source>Selection</source>
-      <translation>Urval</translation>
+      <translation>Markering</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="181"/>
@@ -1181,7 +1181,7 @@
     <message>
       <location filename="../../Command.cpp" line="2134"/>
       <source>Box Selection</source>
-      <translation>Val av box</translation>
+      <translation>Lådmarkering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2135"/>
@@ -1222,12 +1222,12 @@
     <message>
       <location filename="../../Command.cpp" line="2097"/>
       <source>Appearance per &amp;Face</source>
-      <translation>Utseende per &amp;Face</translation>
+      <translation>Utseende per &amp;yta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2098"/>
       <source>Sets the appearance of individual faces of the selected object</source>
-      <translation>Ställer in utseendet på enskilda ansikten på det valda objektet</translation>
+      <translation>Ställer in utseendet på enskilda ytan på det valda objektet</translation>
     </message>
   </context>
   <context>
@@ -1696,12 +1696,12 @@
     <message>
       <location filename="../../Command.cpp" line="1324"/>
       <source>Face From Wires</source>
-      <translation>Ansikte från kablar</translation>
+      <translation>Yta från trådar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1325"/>
       <source>Creates a face from the selected wires (e.g. from a sketch)</source>
-      <translation>Skapar ett ansikte från de valda trådarna (t.ex. från en skiss)</translation>
+      <translation>Skapar en yta från de valda trådarna (t.ex. från en skiss)</translation>
     </message>
   </context>
   <context>
@@ -2153,7 +2153,7 @@ för projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="1337"/>
       <source>Make face</source>
-      <translation>Gör ansikte</translation>
+      <translation>Skapa yta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1638"/>
@@ -2188,7 +2188,7 @@ för projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="2333"/>
       <source>Add datum line</source>
-      <translation>Lägg till datumlinje</translation>
+      <translation>Lägg till referenspunktslinje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2366"/>
@@ -2223,12 +2223,12 @@ för projektionen.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1292"/>
       <source>Edit attachment</source>
-      <translation>Redigera bifogad fil</translation>
+      <translation>Redigera bilaga</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.cpp" line="455"/>
       <source>Change face colors</source>
-      <translation>Ändra ansiktsfärger</translation>
+      <translation>Ändra ytfärger</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="202"/>
@@ -2249,7 +2249,7 @@ för projektionen.</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="352"/>
       <location filename="../../TaskShapeBuilder.cpp" line="404"/>
       <source>Face</source>
-      <translation>Ansikte</translation>
+      <translation>Yta</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="465"/>
@@ -2282,7 +2282,7 @@ för projektionen.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="20"/>
       <source>Selection accepted</source>
-      <translation>Valet accepterat</translation>
+      <translation>Markering accepterad</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="35"/>
@@ -2355,7 +2355,7 @@ Anmärkning: Placeringen uttrycks i det lokala utrymmet för det objekt som fäs
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="190"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="222"/>
       <source>Note: The placement is expressed in local space of object being attached.</source>
-      <translation>Obs: Placeringen uttrycks i det lokala utrymmet för det föremål som fästs.</translation>
+      <translation>Obs: Placeringen uttrycks i det lokala utrymmet för det objekt som fästs.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
@@ -2726,7 +2726,7 @@ Om båda längderna är noll används riktningens magnitud.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
       <source>Starts the selection of edges in the 3D view</source>
-      <translation>Startar urvalet av kanter i 3D-vyn</translation>
+      <translation>Startar markering av kanter i 3D-vyn</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="78"/>
@@ -2821,7 +2821,7 @@ Om båda längderna är noll används riktningens magnitud.</translation>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="216"/>
       <source>Selecting…</source>
-      <translation>Välja..</translation>
+      <translation>Väljer…</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="464"/>
@@ -2921,7 +2921,7 @@ Om båda längderna är noll används riktningens magnitud.</translation>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="57"/>
       <source>Selection</source>
-      <translation>Urval</translation>
+      <translation>Markering</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="63"/>
@@ -3052,7 +3052,7 @@ Välj först en giltig form i rullgardinsmenyn.</translation>
       <source>No edge entity is checked to fillet.
 Check one or more edge entities first.</source>
       <translation>Ingen kantenhet kontrolleras för att falsa.
-Kontrollera först en eller flera kantenheter.</translation>
+Kontrollera först en eller flera kantentiteter.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="142"/>
@@ -3288,7 +3288,7 @@ Kontrollera först en eller flera kantenheter.</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="14"/>
       <source>Cylinder Definition</source>
-      <translation type="unfinished">Cylinder Definition</translation>
+      <translation>Cylinderdefinition</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="20"/>
@@ -3588,32 +3588,32 @@ Kontrollera först en eller flera kantenheter.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1518"/>
       <source>X min/max</source>
-      <translation type="unfinished">X min/max</translation>
+      <translation>X min/max</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1548"/>
       <source>Y min/max</source>
-      <translation type="unfinished">Y min/max</translation>
+      <translation>Y min/max</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1578"/>
       <source>Z min/max</source>
-      <translation type="unfinished">Z min/max</translation>
+      <translation>Z min/max</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1608"/>
       <source>X2 min/max</source>
-      <translation type="unfinished">X2 min/max</translation>
+      <translation>X2 min/max</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1641"/>
       <source>Z2 min/max</source>
-      <translation type="unfinished">Z2 min/max</translation>
+      <translation>Z2 min/max</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1725"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>Stigning</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1802"/>
@@ -3745,7 +3745,7 @@ Kontrollera först en eller flera kantenheter.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="66"/>
       <source>Show faces</source>
-      <translation>Visa ansikten</translation>
+      <translation>Visa ytor</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="14"/>
@@ -3760,7 +3760,7 @@ Kontrollera först en eller flera kantenheter.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="31"/>
       <source>Add Face</source>
-      <translation>Lägg till ansikte</translation>
+      <translation>Lägg till yta</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="38"/>
@@ -3843,7 +3843,7 @@ Kontrollera först en eller flera kantenheter.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="56"/>
       <source>Revolution Axis</source>
-      <translation type="unfinished">Revolution Axis</translation>
+      <translation>Revolutionsaxel</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="64"/>
@@ -3965,7 +3965,7 @@ Kontrollera först en eller flera kantenheter.</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="470"/>
       <source>Selecting… (line or arc)</source>
-      <translation>Välja... (linje eller båge)</translation>
+      <translation>Väljer... (linje eller båge)</translation>
     </message>
   </context>
   <context>
@@ -4081,7 +4081,7 @@ Kontrollera först en eller flera kantenheter.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="162"/>
       <source>Points</source>
-      <translation>Poäng</translation>
+      <translation>Punkter</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="175"/>
@@ -4144,7 +4144,7 @@ Kontrollera först en eller flera kantenheter.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="14"/>
       <source>Shape Appearance</source>
-      <translation>Form Utseende</translation>
+      <translation>Formutseende</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
@@ -4480,7 +4480,7 @@ kommer skissplanets normalvektor att användas</translation>
       <location filename="../../Mirroring.ui" line="150"/>
       <location filename="../../Mirroring.cpp" line="220"/>
       <source>Selecting</source>
-      <translation>Välja</translation>
+      <translation>Väljer</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="166"/>
@@ -4546,7 +4546,7 @@ kommer skissplanets normalvektor att användas</translation>
       <location filename="../../SectionCutting.ui" line="118"/>
       <location filename="../../SectionCutting.ui" line="186"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Förskjutning</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="71"/>
@@ -4568,7 +4568,7 @@ kommer skissplanets normalvektor att användas</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="242"/>
       <source>Cut Face</source>
-      <translation>Klippt ansikte</translation>
+      <translation>Klipp yta</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="254"/>
@@ -4697,7 +4697,7 @@ kommer endast skapade snitt att vara synliga</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="419"/>
       <source>Select at least 2 faces</source>
-      <translation>Välj minst 2 ansikten</translation>
+      <translation>Välj minst 2 ytor</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="480"/>
@@ -4945,7 +4945,7 @@ för det objekt som fästs.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="363"/>
       <source>Not attached</source>
-      <translation>Ej bifogad</translation>
+      <translation>Inte bifogad</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="368"/>
@@ -4960,17 +4960,17 @@ för det objekt som fästs.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="372"/>
       <source>Attachment offset (inactive - not attached):</source>
-      <translation>Bifogad offset (inaktiv - ej bifogad):</translation>
+      <translation>Bilageförskjutning (inaktiv - inte bifogad):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="907"/>
       <source>Selecting…</source>
-      <translation>Välja..</translation>
+      <translation>Väljer…</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="827"/>
       <source>Face</source>
-      <translation>Ansikte</translation>
+      <translation>Yta</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="834"/>
@@ -5121,7 +5121,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1194"/>
       <source>Incompatibility of face</source>
-      <translation>Inkompatibilitet mellan ansikten</translation>
+      <translation>Inkompatibilitet mellan ytor</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1202"/>
@@ -5166,7 +5166,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1179"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
-      <translation>Kontrollera om ansikten inte kan återställas.  Standard: true</translation>
+      <translation>Kontrollera om ytor inte kan återställas.  Standard: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1187"/>
@@ -5176,7 +5176,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1195"/>
       <source>Check for incompatible faces.  Default: true</source>
-      <translation>Kontrollera om det finns inkompatibla ansikten.  Standard: true</translation>
+      <translation>Kontrollera om det finns inkompatibla ytor.  Standard: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1203"/>
@@ -5311,7 +5311,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1335"/>
       <source>Datum dialog: input error</source>
-      <translation>Datumdialog: inmatningsfel</translation>
+      <translation>Referenspunktsdialog: inmatningsfel</translation>
     </message>
   </context>
   <context>
@@ -5343,7 +5343,7 @@ Individuella booleska operationskontroller:</translation>
       <location filename="../../TaskOffset.ui" line="14"/>
       <location filename="../../TaskOffset.ui" line="20"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Förskjutning</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="34"/>
@@ -5399,7 +5399,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="114"/>
       <source>Faces</source>
-      <translation>Ansikten</translation>
+      <translation>Ytor</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="144"/>
@@ -5428,7 +5428,7 @@ Individuella booleska operationskontroller:</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="40"/>
       <source>Face from vertices</source>
-      <translation>Ansikte från hörn</translation>
+      <translation>Yta från hörnpunkter</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="47"/>
@@ -5653,7 +5653,7 @@ Fortsättning?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="82"/>
       <source>Face</source>
-      <translation>Ansikte</translation>
+      <translation>Yta</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
@@ -5823,7 +5823,7 @@ Fortsättning?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="126"/>
       <source>Redundant face</source>
-      <translation>Redundant ansikte</translation>
+      <translation>Redundant yta</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="127"/>
@@ -5898,7 +5898,7 @@ Fortsättning?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>Boolean operation: non-recoverable face</source>
-      <translation>Boolesk operation: ej återvinningsbart ansikte</translation>
+      <translation>Boolesk operation: ej återhämtningsbar yta</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
@@ -5913,7 +5913,7 @@ Fortsättning?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>Boolean operation: incompatibility of face</source>
-      <translation>Boolesk operation: oförenlighet mellan ansikte</translation>
+      <translation>Boolesk operation: inkompatibla ytor</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
@@ -5983,12 +5983,12 @@ Fortsättning?</translation>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="101"/>
       <source>Attachment Editor</source>
-      <translation>Redaktör för bifogad fil</translation>
+      <translation>Redigerare för bilaga</translation>
     </message>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="894"/>
       <source>Appearance per Face</source>
-      <translation>Utseende per ansikte</translation>
+      <translation>Utseende per yta</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjectOnSurface.cpp" line="54"/>
@@ -6090,7 +6090,7 @@ Fortsättning?</translation>
       <location filename="../../../BOPTools/JoinFeatures.py" line="295"/>
       <location filename="../../../BOPTools/JoinFeatures.py" line="389"/>
       <source>Bad Selection</source>
-      <translation>Dåligt urval</translation>
+      <translation>Dålig markering</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="82"/>
@@ -6138,7 +6138,7 @@ Fortsättning?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="487"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="527"/>
       <source>Bad Selection</source>
-      <translation>Dåligt urval</translation>
+      <translation>Dålig markering</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="159"/>
@@ -6239,7 +6239,7 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
       <source>Object {} is neither movable nor attachable, can't edit attachment</source>
-      <translation>Objekt {} är varken rörligt eller bifogat, kan inte redigera bifogad fil</translation>
+      <translation>Objektet {} är varken flyttbart eller bifogat, kan inte redigera bilaga</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="214"/>
@@ -6261,7 +6261,7 @@ för kollisions- eller avståndsfiltrering.</translation>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="272"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="317"/>
       <source>Edit attachment of {}</source>
-      <translation>Redigera bifogad fil av {}</translation>
+      <translation>Redigera bilaga för {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="362"/>
@@ -6296,7 +6296,7 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="557"/>
       <source>Selecting…</source>
-      <translation>Välja..</translation>
+      <translation>Väljer…</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="581"/>
@@ -6306,7 +6306,7 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="589"/>
       <source>Not attached</source>
-      <translation>Ej bifogad</translation>
+      <translation>Inte bifogad</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
@@ -6354,7 +6354,7 @@ för kollisions- eller avståndsfiltrering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="53"/>
       <source>Faces</source>
-      <translation>Ansikten</translation>
+      <translation>Ytor</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="59"/>
@@ -6623,17 +6623,17 @@ eller med formerna i en förening.
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="14"/>
       <source>Appearance per Face</source>
-      <translation>Utseende per ansikte</translation>
+      <translation>Utseende per yta</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="20"/>
       <source>Select the faces in the 3D view</source>
-      <translation>Välj ansikten i 3D-vyn</translation>
+      <translation>Välj ytorna i 3D-vyn</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="41"/>
       <source>Faces</source>
-      <translation>Ansikten</translation>
+      <translation>Ytor</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="66"/>
@@ -6740,12 +6740,12 @@ eller med formerna i en förening.
     <message>
       <location filename="../../Command.cpp" line="2390"/>
       <source>Datums</source>
-      <translation>Datum</translation>
+      <translation>Referenspunkter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2391"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
-      <translation>Skapar ett datumobjekt (koordinatsystem, plan, linje eller punkt) som kan kopplas till andra objekt</translation>
+      <translation>Skapar ett referenspunktsobjekt (koordinatsystem, plan, linje eller punkt) som kan kopplas till andra objekt</translation>
     </message>
   </context>
   <context>
@@ -6766,12 +6766,12 @@ eller med formerna i en förening.
     <message>
       <location filename="../../Command.cpp" line="2289"/>
       <source>Datum Plane</source>
-      <translation>Datum Plan</translation>
+      <translation>Referenspunktsplan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2290"/>
       <source>Creates a datum plane that can be attached to other objects</source>
-      <translation>Skapar ett datumplan som kan kopplas till andra objekt</translation>
+      <translation>Skapar ett referenspunktsplan som kan kopplas till andra objekt</translation>
     </message>
   </context>
   <context>
@@ -6784,12 +6784,12 @@ eller med formerna i en förening.
     <message>
       <location filename="../../Command.cpp" line="2322"/>
       <source>Datum Line</source>
-      <translation>Datumlinje</translation>
+      <translation>Referenspunktslinje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2323"/>
       <source>Creates a datum line that can be attached to other objects</source>
-      <translation>Skapar en datumlinje som kan fästas på andra objekt</translation>
+      <translation>Skapar en referenspunktslinje som kan fästas på andra objekt</translation>
     </message>
   </context>
   <context>
@@ -6802,7 +6802,7 @@ eller med formerna i en förening.
     <message>
       <location filename="../../Command.cpp" line="2355"/>
       <source>Datum Point</source>
-      <translation>Datumpunkt</translation>
+      <translation>Referenspunkt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2356"/>
@@ -7003,12 +7003,12 @@ eller med formerna i en förening.
     <message>
       <location filename="../../CommandFilter.cpp" line="46"/>
       <source>Selection Filter</source>
-      <translation>Urval Filter</translation>
+      <translation>Markeringsfilter</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="47"/>
       <source>Changes the selection filter</source>
-      <translation>Ändrar urvalsfiltret</translation>
+      <translation>Ändrar markeringsfiltret</translation>
     </message>
   </context>
   <context>
@@ -7042,12 +7042,12 @@ eller med formerna i en förening.
     <message>
       <location filename="../../CommandFilter.cpp" line="223"/>
       <source>Face Selection</source>
-      <translation>Val av ansikte</translation>
+      <translation>Val av yta</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="224"/>
       <source>Only allows the selection of faces</source>
-      <translation>Tillåter endast val av ansikten</translation>
+      <translation>Tillåter endast val av ytor</translation>
     </message>
   </context>
   <context>
@@ -7055,12 +7055,12 @@ eller med formerna i en förening.
     <message>
       <location filename="../../CommandFilter.cpp" line="248"/>
       <source>No Selection Filters</source>
-      <translation>Inga urvalsfilter</translation>
+      <translation>Inga markeringsfilter</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="249"/>
       <source>Clears all selection filters</source>
-      <translation>Rensar alla urvalsfilter</translation>
+      <translation>Rensar alla markeringsfilter</translation>
     </message>
   </context>
   <context>

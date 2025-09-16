@@ -1209,7 +1209,7 @@
     <message>
       <location filename="../../Command.cpp" line="2065"/>
       <source>Analyzes the selected shapes for errors</source>
-      <translation type="unfinished">Analyzes the selected shapes for errors</translation>
+      <translation>Analysiert die ausgewählten Formen auf Fehler</translation>
     </message>
   </context>
   <context>
@@ -1314,7 +1314,7 @@
     <message>
       <location filename="../../Command.cpp" line="1527"/>
       <source>Shape Builder</source>
-      <translation type="unfinished">Shape Builder</translation>
+      <translation>Formgenerator</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1529"/>
@@ -1368,12 +1368,12 @@
     <message>
       <location filename="../../Command.cpp" line="724"/>
       <source>Compound Tools</source>
-      <translation type="unfinished">Compound Tools</translation>
+      <translation>Verbund-Werkzeuge</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="725"/>
       <source>Compound tools for working with multiple shapes</source>
-      <translation type="unfinished">Compound tools for working with multiple shapes</translation>
+      <translation>Verbund-Werkzeug zum arbeiten mit mehreren Formen</translation>
     </message>
   </context>
   <context>
@@ -1445,7 +1445,7 @@
     <message>
       <location filename="../../Command.cpp" line="832"/>
       <source>Compounds the selected shapes</source>
-      <translation type="unfinished">Compounds the selected shapes</translation>
+      <translation>Fügt die ausgewählten Formen zusammen</translation>
     </message>
   </context>
   <context>
@@ -1629,7 +1629,7 @@
     <message>
       <location filename="../../Command.cpp" line="420"/>
       <source>Unites the selected shapes</source>
-      <translation type="unfinished">Unites the selected shapes</translation>
+      <translation>Vereinigt die ausgewählten Formen</translation>
     </message>
   </context>
   <context>
@@ -1696,7 +1696,7 @@
     <message>
       <location filename="../../Command.cpp" line="1324"/>
       <source>Face From Wires</source>
-      <translation type="unfinished">Face From Wires</translation>
+      <translation>Fläche aus Kanten</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1325"/>
@@ -1737,7 +1737,7 @@
     <message>
       <location filename="../../Command.cpp" line="1461"/>
       <source>Mirrors the selected shape</source>
-      <translation type="unfinished">Mirrors the selected shape</translation>
+      <translation>Spiegelt die ausgewählte Form</translation>
     </message>
   </context>
   <context>
@@ -1804,7 +1804,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="134"/>
       <source>Points From Shape</source>
-      <translation type="unfinished">Points From Shape</translation>
+      <translation>Punkte aus Form</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="135"/>
@@ -1840,7 +1840,7 @@
     <message>
       <location filename="../../Command.cpp" line="2164"/>
       <source>Project on Surface</source>
-      <translation type="unfinished">Project on Surface</translation>
+      <translation>Auf Oberfläche projizieren</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2165"/>
@@ -1864,7 +1864,7 @@ of the projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="351"/>
       <source>Refine Shape</source>
-      <translation type="unfinished">Refine Shape</translation>
+      <translation>Form verfeinern</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="352"/>
@@ -1882,7 +1882,7 @@ of the projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1174"/>
       <source>Reverse Shapes</source>
-      <translation type="unfinished">Reverse Shapes</translation>
+      <translation>Umgekehrte Formen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1175"/>
@@ -1900,7 +1900,7 @@ of the projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1376"/>
       <source>Revolve</source>
-      <translation>Umdrehung</translation>
+      <translation>Drehen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1377"/>
@@ -1954,7 +1954,7 @@ of the projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="106"/>
       <source>Shape From Mesh</source>
-      <translation type="unfinished">Shape From Mesh</translation>
+      <translation>Form aus Netz</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="107"/>
@@ -2094,7 +2094,7 @@ of the projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="295"/>
       <source>Transformed Copy</source>
-      <translation type="unfinished">Transformed Copy</translation>
+      <translation>Transformierte Kopie</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="296"/>
@@ -2178,22 +2178,22 @@ of the projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="2266"/>
       <source>Add coordinate system</source>
-      <translation type="unfinished">Add coordinate system</translation>
+      <translation>Koordinatensystem hinzufügen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2300"/>
       <source>Add datum plane</source>
-      <translation type="unfinished">Add datum plane</translation>
+      <translation>Bezugsebene hinzufügen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2333"/>
       <source>Add datum line</source>
-      <translation type="unfinished">Add datum line</translation>
+      <translation>Bezugslinie hinzufügen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2366"/>
       <source>Add datum point</source>
-      <translation type="unfinished">Add datum point</translation>
+      <translation>Bezugspunkt hinzufügen</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="70"/>
@@ -2274,7 +2274,7 @@ of the projection.</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="210"/>
       <source>Edit mirror</source>
-      <translation type="unfinished">Edit mirror</translation>
+      <translation>Spiegel bearbeiten</translation>
     </message>
   </context>
   <context>
@@ -2716,7 +2716,7 @@ Wenn beide Längen Null sind, wird die Länge der Richtung verwendet.</translati
     <message>
       <location filename="../../DlgExtrusion.ui" line="48"/>
       <source>Along edge</source>
-      <translation type="unfinished">Along edge</translation>
+      <translation>Entlang der Kante</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="55"/>
@@ -2756,12 +2756,12 @@ Wenn beide Längen Null sind, wird die Länge der Richtung verwendet.</translati
     <message>
       <location filename="../../DlgExtrusion.ui" line="185"/>
       <source>Along</source>
-      <translation type="unfinished">Along</translation>
+      <translation>Entlang</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="224"/>
       <source>Against</source>
-      <translation type="unfinished">Against</translation>
+      <translation>Gegen</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="243"/>
@@ -2821,7 +2821,7 @@ Wenn beide Längen Null sind, wird die Länge der Richtung verwendet.</translati
     <message>
       <location filename="../../DlgExtrusion.cpp" line="216"/>
       <source>Selecting…</source>
-      <translation type="unfinished">Selecting…</translation>
+      <translation>Auswählen…</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="464"/>
@@ -2911,7 +2911,7 @@ Wenn beide Längen Null sind, wird die Länge der Richtung verwendet.</translati
     <message>
       <location filename="../../DlgFilletEdges.ui" line="32"/>
       <source>Selected shape</source>
-      <translation type="unfinished">Selected shape</translation>
+      <translation>Form auswählen</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
@@ -2986,7 +2986,7 @@ Wenn beide Längen Null sind, wird die Länge der Richtung verwendet.</translati
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
       <source>Chamfer parameters</source>
-      <translation type="unfinished">Chamfer parameters</translation>
+      <translation>Parameter der Fase</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="274"/>
@@ -3006,7 +3006,7 @@ Wenn beide Längen Null sind, wird die Länge der Richtung verwendet.</translati
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="281"/>
       <source>Fillet parameter</source>
-      <translation type="unfinished">Fillet parameter</translation>
+      <translation>Parameter der Rundung</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="282"/>
@@ -3288,7 +3288,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="14"/>
       <source>Cylinder Definition</source>
-      <translation type="unfinished">Cylinder Definition</translation>
+      <translation>Zylinder-Definition</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="20"/>
@@ -3336,7 +3336,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="14"/>
       <source>IGES Input File</source>
-      <translation type="unfinished">IGES Input File</translation>
+      <translation>IGES-Eingabedatei</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="20"/>
@@ -3346,7 +3346,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="54"/>
       <source>Search File</source>
-      <translation type="unfinished">Search File</translation>
+      <translation>Datei suchen</translation>
     </message>
   </context>
   <context>
@@ -3367,7 +3367,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="14"/>
       <source>STEP Input File</source>
-      <translation type="unfinished">STEP Input File</translation>
+      <translation>STEP-Eingabedatei</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
@@ -3377,7 +3377,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="54"/>
       <source>Search File</source>
-      <translation type="unfinished">Search File</translation>
+      <translation>Datei suchen</translation>
     </message>
   </context>
   <context>
@@ -3650,12 +3650,12 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2072"/>
       <source>Major radius</source>
-      <translation type="unfinished">Major radius</translation>
+      <translation>Größter Radius</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2092"/>
       <source>Minor radius</source>
-      <translation type="unfinished">Minor radius</translation>
+      <translation>Kleinster Radius</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2170"/>
@@ -3750,7 +3750,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="14"/>
       <source>Project on Surface</source>
-      <translation type="unfinished">Project on Surface</translation>
+      <translation>Auf Oberfläche projizieren</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="20"/>
@@ -3760,12 +3760,12 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="31"/>
       <source>Add Face</source>
-      <translation type="unfinished">Add Face</translation>
+      <translation>Fläche hinzufügen</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="38"/>
       <source>Add Wire</source>
-      <translation type="unfinished">Add Wire</translation>
+      <translation>Kantenzug hinzufügen</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="45"/>
@@ -3775,7 +3775,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="76"/>
       <source>Show edges</source>
-      <translation type="unfinished">Show edges</translation>
+      <translation>Kanten anzeigen</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="92"/>
@@ -3833,7 +3833,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="20"/>
       <source>Revolve</source>
-      <translation>Umdrehung</translation>
+      <translation>Drehen</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="42"/>
@@ -3848,17 +3848,17 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="64"/>
       <source>Center X</source>
-      <translation type="unfinished">Center X</translation>
+      <translation>Mittelpunkt X</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="84"/>
       <source>Center Y</source>
-      <translation type="unfinished">Center Y</translation>
+      <translation>Mittelpunkt Y</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="104"/>
       <source>Center Z</source>
-      <translation type="unfinished">Center Z</translation>
+      <translation>Mittelpunkt Z</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="146"/>
@@ -4068,7 +4068,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="152"/>
       <source>Circles and arcs</source>
-      <translation type="unfinished">Circles and arcs</translation>
+      <translation>Kreise und Bögen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="157"/>
@@ -4348,7 +4348,7 @@ oder Schwarz verwendet werden.</translation>
     <message>
       <location filename="../../Location.ui" line="110"/>
       <source>Rotation Axis</source>
-      <translation type="unfinished">Rotation Axis</translation>
+      <translation>Rotationsachse</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="125"/>
@@ -4599,7 +4599,7 @@ have the same values.</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="514"/>
       <source>Refresh View</source>
-      <translation type="unfinished">Refresh View</translation>
+      <translation>Ansicht aktualisieren</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="257"/>
@@ -4962,7 +4962,7 @@ des befestigten Objekts dargestellt.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="907"/>
       <source>Selecting…</source>
-      <translation type="unfinished">Selecting…</translation>
+      <translation>Auswählen…</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="827"/>
@@ -5208,12 +5208,12 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="399"/>
       <source>Check is running…</source>
-      <translation type="unfinished">Check is running…</translation>
+      <translation>Prüfung wird ausgeführt…</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="424"/>
       <source>Boolean operation check…</source>
-      <translation type="unfinished">Boolean operation check…</translation>
+      <translation>Boolesche Operation prüfen…</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="426"/>
@@ -5234,7 +5234,7 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="468"/>
       <source>Infinite shape</source>
-      <translation type="unfinished">Infinite shape</translation>
+      <translation>Unendliche Form</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="495"/>
@@ -5272,17 +5272,17 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="669"/>
       <source>Global minimum</source>
-      <translation type="unfinished">Global minimum</translation>
+      <translation>Globales Minimum</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="674"/>
       <source>Global average</source>
-      <translation type="unfinished">Global average</translation>
+      <translation>Globaler Durchschnitt</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="679"/>
       <source>Global maximum</source>
-      <translation type="unfinished">Global maximum</translation>
+      <translation>Globales Maximum</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="647"/>
@@ -5357,7 +5357,7 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="52"/>
       <source>Recto verso</source>
-      <translation type="unfinished">Recto verso</translation>
+      <translation>Vorder- und Rückseite</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="60"/>
@@ -5597,7 +5597,7 @@ für die Spine-Kurve in der 3D-Ansicht auswählen.</translation>
       <location filename="../../Command.cpp" line="316"/>
       <location filename="../../Command.cpp" line="900"/>
       <source>Select 2 shapes</source>
-      <translation type="unfinished">Select 2 shapes</translation>
+      <translation>Zwei Formen auswählen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="327"/>
@@ -5692,7 +5692,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="101"/>
       <source>No error</source>
-      <translation type="unfinished">No error</translation>
+      <translation>Kein Fehler</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="102"/>
@@ -5712,7 +5712,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="105"/>
       <source>No 3D curve</source>
-      <translation type="unfinished">No 3D curve</translation>
+      <translation>Keine 3D-Kurve</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="106"/>
@@ -5757,7 +5757,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="114"/>
       <source>Free edge</source>
-      <translation type="unfinished">Free edge</translation>
+      <translation>Freie Kante</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="115"/>
@@ -5772,7 +5772,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="117"/>
       <source>Empty wire</source>
-      <translation type="unfinished">Empty wire</translation>
+      <translation>Leerer Kantenzug</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="118"/>
@@ -5787,7 +5787,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>No surface</source>
-      <translation type="unfinished">No surface</translation>
+      <translation>Keine Oberfläche</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="121"/>
@@ -5827,12 +5827,12 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="128"/>
       <source>Not closed</source>
-      <translation type="unfinished">Not closed</translation>
+      <translation>Nicht geschlossen</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="129"/>
       <source>Not connected</source>
-      <translation type="unfinished">Not connected</translation>
+      <translation>Nicht verbunden</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="130"/>
@@ -5857,12 +5857,12 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="134"/>
       <source>Check failed</source>
-      <translation type="unfinished">Check failed</translation>
+      <translation>Prüfung fehlgeschlagen</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="144"/>
       <source>No result</source>
-      <translation type="unfinished">No result</translation>
+      <translation>Kein Ergebnis</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="148"/>
@@ -5987,12 +5987,12 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderProjectOnSurface.cpp" line="54"/>
       <source>Edit Projection</source>
-      <translation type="unfinished">Edit Projection</translation>
+      <translation>Projektion bearbeiten</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSpline.cpp" line="94"/>
       <source>Show Control Points</source>
-      <translation type="unfinished">Show Control Points</translation>
+      <translation>Kontrollpunkte anzeigen</translation>
     </message>
   </context>
   <context>
@@ -6290,7 +6290,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="557"/>
       <source>Selecting…</source>
-      <translation type="unfinished">Selecting…</translation>
+      <translation>Auswählen…</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="581"/>
@@ -6478,7 +6478,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="64"/>
       <source>Z factor</source>
-      <translation type="unfinished">Z factor</translation>
+      <translation>Z-Faktor</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="71"/>
@@ -6493,7 +6493,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
       <source>Y factor</source>
-      <translation type="unfinished">Y factor</translation>
+      <translation>Y-Faktor</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="119"/>
@@ -6647,7 +6647,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="91"/>
       <source>Set to Default</source>
-      <translation type="unfinished">Set to Default</translation>
+      <translation>Auf Vorgabewerte zurücksetzen</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="98"/>
@@ -6675,7 +6675,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="72"/>
       <source>Bad Selection</source>
-      <translation type="unfinished">Bad Selection</translation>
+      <translation>Ungültige Auswahl</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="74"/>
@@ -6698,7 +6698,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="205"/>
       <source>Bad Selection</source>
-      <translation type="unfinished">Bad Selection</translation>
+      <translation>Ungültige Auswahl</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="204"/>
@@ -6822,7 +6822,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
       <source>Connect Shapes</source>
-      <translation type="unfinished">Connect Shapes</translation>
+      <translation>Formen verbinden</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="191"/>
@@ -6835,7 +6835,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="282"/>
       <source>Embed Shapes</source>
-      <translation type="unfinished">Embed Shapes</translation>
+      <translation>Formen einbetten</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="287"/>
@@ -6953,7 +6953,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="14"/>
       <source>Shape From Mesh</source>
-      <translation type="unfinished">Shape From Mesh</translation>
+      <translation>Form aus Netz</translation>
     </message>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="20"/>
@@ -6997,12 +6997,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="46"/>
       <source>Selection Filter</source>
-      <translation type="unfinished">Selection Filter</translation>
+      <translation>Auswahlfilter</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="47"/>
       <source>Changes the selection filter</source>
-      <translation type="unfinished">Changes the selection filter</translation>
+      <translation>Auswahlfilter wechseln</translation>
     </message>
   </context>
   <context>
@@ -7010,12 +7010,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="173"/>
       <source>Vertex Selection</source>
-      <translation type="unfinished">Vertex Selection</translation>
+      <translation>Knotenauswahl</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="174"/>
       <source>Only allows the selection of vertices</source>
-      <translation type="unfinished">Only allows the selection of vertices</translation>
+      <translation>Lässt nur die Auswahl von Knoten zu</translation>
     </message>
   </context>
   <context>
@@ -7023,12 +7023,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="198"/>
       <source>Edge Selection</source>
-      <translation type="unfinished">Edge Selection</translation>
+      <translation>Kantenauswahl</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="199"/>
       <source>Only allows the selection of edges</source>
-      <translation type="unfinished">Only allows the selection of edges</translation>
+      <translation>Lässt nur die Auswahl von Kanten zu</translation>
     </message>
   </context>
   <context>
@@ -7036,12 +7036,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="223"/>
       <source>Face Selection</source>
-      <translation type="unfinished">Face Selection</translation>
+      <translation>Flächenauswahl</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="224"/>
       <source>Only allows the selection of faces</source>
-      <translation type="unfinished">Only allows the selection of faces</translation>
+      <translation>Lässt nur die Auswahl von Flächen zu</translation>
     </message>
   </context>
   <context>
@@ -7049,12 +7049,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="248"/>
       <source>No Selection Filters</source>
-      <translation type="unfinished">No Selection Filters</translation>
+      <translation>Keine Auswahlfilter</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="249"/>
       <source>Clears all selection filters</source>
-      <translation type="unfinished">Clears all selection filters</translation>
+      <translation>Löscht alle Selektionsfilter</translation>
     </message>
   </context>
   <context>
@@ -7083,7 +7083,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="43"/>
       <source>Reverse the direction of the pattern.</source>
-      <translation type="unfinished">Reverse the direction of the pattern.</translation>
+      <translation>Die Richtung des Musters umkehren.</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="61"/>
@@ -7099,7 +7099,7 @@ Overlapping volumes of the shapes will be removed.</translation>
       <location filename="../../PatternParametersWidget.ui" line="74"/>
       <location filename="../../PatternParametersWidget.ui" line="96"/>
       <source>Spacing</source>
-      <translation>Weite</translation>
+      <translation>Abstand</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="82"/>

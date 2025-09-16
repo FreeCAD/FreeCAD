@@ -890,12 +890,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="307"/>
       <source>Initial time increment</source>
-      <translation type="unfinished">Initial time increment</translation>
+      <translation>Początkowy przyrost czasowy</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="314"/>
       <source>Time period</source>
-      <translation type="unfinished">Time period</translation>
+      <translation>Czas kroku</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="360"/>
@@ -910,17 +910,17 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="521"/>
       <source>Maximum number of increments</source>
-      <translation type="unfinished">Maximum number of increments</translation>
+      <translation>Maksymalna liczba przyrostów</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="528"/>
       <source>Minimum time increment</source>
-      <translation type="unfinished">Minimum time increment</translation>
+      <translation>Minimalny przyrost czasowy</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="658"/>
       <source>Maximum time increment</source>
-      <translation type="unfinished">Maximum time increment</translation>
+      <translation>Maksymalny przyrost czasowy</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="724"/>
@@ -1284,7 +1284,7 @@ MES: Tylko elementy MES zostaną wyeksportowane. Oznacza to tylko krawędzie nie
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="46"/>
       <source>element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
-      <translation type="unfinished">element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</translation>
+      <translation>parametr elementu: Wszystkie: wszystkie elementy, Najwyższe: tylko najwyższe elementy, MES: tylko elementy MES (tylko krawędzie nie należące do ścianek i ścianki nie należące do objętości)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="81"/>
@@ -1292,10 +1292,10 @@ MES: Tylko elementy MES zostaną wyeksportowane. Oznacza to tylko krawędzie nie
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups - faces and nodes where
 the constraint or material is applied.</source>
-      <translation type="unfinished">Mesh groups are exported too.
-Every analysis feature and, if there are different materials,
-material consists of two mesh groups - faces and nodes where
-the constraint or material is applied.</translation>
+      <translation>Grupy siatek są również eksportowane.
+Każda cecha analizy i, jeśli są różne materiały,
+każdy materiał składa się z dwóch grup siatek - ścian i węzłów,
+dla których wiązanie lub materiał jest zdefiniowany.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="56"/>
@@ -1500,7 +1500,7 @@ tworzeniu nowej analizy</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="91"/>
       <source>Not an executable binary</source>
-      <translation type="unfinished">Not an executable binary</translation>
+      <translation>Brak binarnego pliku wykonywalnego</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="92"/>
@@ -1508,10 +1508,10 @@ tworzeniu nowej analizy</translation>
 '%1'
  does not exist or is not executable.
 Specify another file.</source>
-      <translation type="unfinished">The specified file
+      <translation>Wskazany plik
 '%1'
- does not exist or is not executable.
-Specify another file.</translation>
+ nie istnieje lub nie jest wykonywalny.
+Wskaż inny plik.</translation>
     </message>
   </context>
   <context>
@@ -6788,14 +6788,14 @@ Nie znaleziono pasującego modułu w obecnej ścieżce Pythona.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="54"/>
       <source>Python path</source>
-      <translation type="unfinished">Python path</translation>
+      <translation>Ścieżka Pythona</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
       <source>Python executable for which Netgen Python bindings are installed.
 Leave blank to use default Python executable</source>
-      <translation type="unfinished">Python executable for which Netgen Python bindings are installed.
-Leave blank to use default Python executable</translation>
+      <translation>Plik wykonywalny Pythona, dla którego zainstalowane są powiązania Pythona dla Netgen.
+Pozostaw puste, aby użyć domyślnego pliku wykonywalnego Pythona</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="102"/>
@@ -7897,7 +7897,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../fempreferencepages/dlg_settings_netgen.py" line="84"/>
       <source>Executable '{}' not found</source>
-      <translation type="unfinished">Executable '{}' not found</translation>
+      <translation>Nie znaleziono pliku wykonywalnego '{}'</translation>
     </message>
   </context>
   <context>
@@ -7905,7 +7905,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_centrif.py" line="67"/>
       <source>Axis Reference Selector</source>
-      <translation type="unfinished">Axis Reference Selector</translation>
+      <translation>Wybór osi odniesienia</translation>
     </message>
   </context>
 </TS>

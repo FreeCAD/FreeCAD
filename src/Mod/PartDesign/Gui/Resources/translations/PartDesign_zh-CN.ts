@@ -140,12 +140,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1499"/>
       <source>Additive Helix</source>
-      <translation type="unfinished">Additive Helix</translation>
+      <translation>添加式螺旋</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1500"/>
       <source>Sweeps the selected sketch or profile along a helix and adds it to the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a helix and adds it to the body</translation>
+      <translation>沿着螺旋线扫描选定的草图或轮廓，并将其添加到主体中</translation>
     </message>
   </context>
   <context>
@@ -158,12 +158,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1406"/>
       <source>Additive Loft</source>
-      <translation type="unfinished">Additive Loft</translation>
+      <translation>添加式放样</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1407"/>
       <source>Lofts the selected sketch or profile along a path and adds it to the body</source>
-      <translation type="unfinished">Lofts the selected sketch or profile along a path and adds it to the body</translation>
+      <translation>沿着路径放样选定的草图或轮廓，并将其添加到主体中</translation>
     </message>
   </context>
   <context>
@@ -176,12 +176,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1312"/>
       <source>Additive Pipe</source>
-      <translation type="unfinished">Additive Pipe</translation>
+      <translation>添加式管道</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1313"/>
       <source>Sweeps the selected sketch or profile along a path and adds it to the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a path and adds it to the body</translation>
+      <translation>沿着路径扫描选定的草图或轮廓，并将其添加到主体中</translation>
     </message>
   </context>
   <context>
@@ -194,12 +194,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="88"/>
       <source>New Body</source>
-      <translation type="unfinished">New Body</translation>
+      <translation>新建主体</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="89"/>
       <source>Creates a new body and activates it</source>
-      <translation type="unfinished">Creates a new body and activates it</translation>
+      <translation>创建一个新主体并激活它</translation>
     </message>
   </context>
   <context>
@@ -217,7 +217,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2311"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
-      <translation type="unfinished">Applies boolean operations with the selected objects and the active body</translation>
+      <translation>对选定的对象和激活的主体应用布尔运算</translation>
     </message>
   </context>
   <context>
@@ -235,7 +235,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="249"/>
       <source>Creates a new local coordinate system</source>
-      <translation type="unfinished">Creates a new local coordinate system</translation>
+      <translation>创建一个新的局部坐标系</translation>
     </message>
   </context>
   <context>
@@ -253,7 +253,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1780"/>
       <source>Applies a chamfer to the selected edges or faces</source>
-      <translation type="unfinished">Applies a chamfer to the selected edges or faces</translation>
+      <translation>对选定的边或面应用倒角</translation>
     </message>
   </context>
   <context>
@@ -271,7 +271,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="431"/>
       <source>Copies a solid object parametrically as the base feature of a new body</source>
-      <translation type="unfinished">Copies a solid object parametrically as the base feature of a new body</translation>
+      <translation>将一个实体对象参数化地复制为一个新主体的主体特征</translation>
     </message>
   </context>
   <context>
@@ -289,7 +289,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1809"/>
       <source>Applies a draft to the selected faces</source>
-      <translation type="unfinished">Applies a draft to the selected faces</translation>
+      <translation>对选定的面应用拔模</translation>
     </message>
   </context>
   <context>
@@ -325,7 +325,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1752"/>
       <source>Applies a fillet to the selected edges or faces</source>
-      <translation type="unfinished">Applies a fillet to the selected edges or faces</translation>
+      <translation>对选定的边或面应用圆角</translation>
     </message>
   </context>
   <context>
@@ -343,7 +343,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1250"/>
       <source>Revolves the sketch or profile around a line or axis and removes it from the body</source>
-      <translation type="unfinished">Revolves the sketch or profile around a line or axis and removes it from the body</translation>
+      <translation>围绕一条线或一个轴线旋转选定的草图或轮廓，并将其从主体中移除</translation>
     </message>
   </context>
   <context>
@@ -361,7 +361,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1152"/>
       <source>Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile</source>
-      <translation type="unfinished">Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile</translation>
+      <translation>在选定草图或轮廓中圆或圆弧的中心点处，在激活的主体上创建孔</translation>
     </message>
   </context>
   <context>
@@ -374,12 +374,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Datum Line</source>
-      <translation type="unfinished">Datum Line</translation>
+      <translation>基准线</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
       <source>Creates a new datum line</source>
-      <translation type="unfinished">Creates a new datum line</translation>
+      <translation>创建一个新的基准线</translation>
     </message>
   </context>
   <context>
@@ -392,12 +392,12 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="2044"/>
       <source>Linear Pattern</source>
-      <translation type="unfinished">Linear Pattern</translation>
+      <translation>线性阵列</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2045"/>
       <source>Duplicates the selected features or the active body in a linear pattern</source>
-      <translation type="unfinished">Duplicates the selected features or the active body in a linear pattern</translation>
+      <translation>以线性阵列的方式，复制选定的特征或激活的主体</translation>
     </message>
   </context>
   <context>
@@ -415,7 +415,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="322"/>
       <source>Migrates the document to the modern Part Design workflow</source>
-      <translation type="unfinished">Migrates the document to the modern Part Design workflow</translation>
+      <translation>将文档迁移到现代零件设计工作流</translation>
     </message>
   </context>
   <context>
@@ -433,7 +433,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1994"/>
       <source>Mirrors the selected features or active body</source>
-      <translation type="unfinished">Mirrors the selected features or active body</translation>
+      <translation>镜像选定的特征或激活的主体</translation>
     </message>
   </context>
   <context>
@@ -919,8 +919,8 @@ so that self intersection is avoided.</source>
       <translation>制作副本</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="515"/>
-      <location filename="../../SketchWorkflow.cpp" line="743"/>
+      <location filename="../../SketchWorkflow.cpp" line="514"/>
+      <location filename="../../SketchWorkflow.cpp" line="742"/>
       <source>New Sketch</source>
       <translation type="unfinished">New Sketch</translation>
     </message>
@@ -968,7 +968,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="301"/>
       <source>Linear Pattern</source>
-      <translation type="unfinished">Linear Pattern</translation>
+      <translation>线性阵列</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="345"/>
@@ -3187,48 +3187,48 @@ measured along the specified direction</source>
       <translation>错误</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="778"/>
+      <location filename="../../SketchWorkflow.cpp" line="775"/>
       <source>Several sub-elements selected</source>
       <translation>若干子元素被选择</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="779"/>
+      <location filename="../../SketchWorkflow.cpp" line="776"/>
       <source>Select a single face as support for a sketch!</source>
       <translation type="unfinished">Select a single face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="783"/>
+      <location filename="../../SketchWorkflow.cpp" line="780"/>
       <source>Select a face as support for a sketch!</source>
       <translation type="unfinished">Select a face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="787"/>
+      <location filename="../../SketchWorkflow.cpp" line="784"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation type="unfinished">Need a planar face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="791"/>
+      <location filename="../../SketchWorkflow.cpp" line="788"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation type="unfinished">Create a plane first or select a face to sketch on</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="782"/>
+      <location filename="../../SketchWorkflow.cpp" line="779"/>
       <source>No support face selected</source>
       <translation>未选中支持面</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="786"/>
+      <location filename="../../SketchWorkflow.cpp" line="783"/>
       <source>No planar support</source>
       <translation>无支持平面</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="790"/>
+      <location filename="../../SketchWorkflow.cpp" line="787"/>
       <source>No valid planes in this document</source>
       <translation>文档中无有效平面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1014"/>
-      <location filename="../../SketchWorkflow.cpp" line="703"/>
+      <location filename="../../SketchWorkflow.cpp" line="702"/>
       <location filename="../../ViewProvider.cpp" line="139"/>
       <location filename="../../ViewProviderDatum.cpp" line="250"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
@@ -3272,7 +3272,7 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../SketchWorkflow.cpp" line="704"/>
+      <location filename="../../SketchWorkflow.cpp" line="703"/>
       <location filename="../../ViewProvider.cpp" line="140"/>
       <location filename="../../ViewProviderDatum.cpp" line="251"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>

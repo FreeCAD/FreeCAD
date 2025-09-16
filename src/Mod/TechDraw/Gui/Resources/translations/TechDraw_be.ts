@@ -2501,7 +2501,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Перацягнуць вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="611"/>
+      <location filename="../../QGSPage.cpp" line="612"/>
       <source>Create Balloon</source>
       <translation>Стварыць пазіцыйную зноску</translation>
     </message>
@@ -3518,7 +3518,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../CommandCreateDims.cpp" line="2194"/>
       <location filename="../../CommandDecorate.cpp" line="334"/>
       <location filename="../../CommandDecorate.cpp" line="340"/>
-      <location filename="../../TaskDimension.cpp" line="464"/>
+      <location filename="../../TaskDimension.cpp" line="552"/>
       <source>Incorrect Selection</source>
       <translation>Няправільны выбар</translation>
     </message>
@@ -4135,21 +4135,21 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Абрана менш чым тры акружнасці</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="168"/>
-      <location filename="../../TaskDimension.cpp" line="183"/>
+      <location filename="../../TaskDimension.cpp" line="198"/>
+      <location filename="../../TaskDimension.cpp" line="213"/>
       <source>Missing Dimension</source>
       <translation>Вымярэнне адсутнічае</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="169"/>
-      <location filename="../../TaskDimension.cpp" line="184"/>
+      <location filename="../../TaskDimension.cpp" line="199"/>
+      <location filename="../../TaskDimension.cpp" line="214"/>
       <source>Dimension not found. Was it deleted? Cannot continue.</source>
       <translation>Вымярэнне не знойдзена.
 Ці было яно выдаленае?
 Не атрымалася працягнуць.</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="465"/>
+      <location filename="../../TaskDimension.cpp" line="553"/>
       <source>Select 2 vertices or 1 edge</source>
       <translation>Абраць дзве вяршыні альбо адно рабро</translation>
     </message>
@@ -7267,81 +7267,77 @@ Custom: custom scale factor is used</source>
     <name>TechDrawGui::TaskDimension</name>
     <message>
       <location filename="../../TaskDimension.ui" line="14"/>
+      <location filename="../../TaskDimension.ui" line="20"/>
       <source>Dimension</source>
       <translation>Вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="20"/>
+      <location filename="../../TaskDimension.ui" line="87"/>
       <source>Tolerancing</source>
       <translation>Дакладнасць</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="198"/>
+      <location filename="../../TaskDimension.ui" line="222"/>
       <source>Reverses usual direction of dimension line terminators</source>
       <translation>Змяняе звычайны напрамак абмежавальнікаў ліній вымярэння на супрацьлеглае</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="38"/>
+      <location filename="../../TaskDimension.ui" line="95"/>
       <source>Assign same value to over and under tolerance</source>
       <translation>Назначыць аднолькавае значэнне верхняй і ніжняй мяжы дакладнасці</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="115"/>
-      <source>Formatting</source>
-      <translation>Фарматаванне</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.ui" line="130"/>
+      <location filename="../../TaskDimension.ui" line="35"/>
       <source>Text to be displayed</source>
       <translation>Тэкст для адлюстравання</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="154"/>
+      <location filename="../../TaskDimension.ui" line="105"/>
       <source>Specifies the overtolerance format in printf() style, or arbitrary text</source>
       <translation>Задае фарматаванне верхняй мяжы дакладнасці ў стылі printf(), альбо адвольны тэкст</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="168"/>
+      <location filename="../../TaskDimension.ui" line="146"/>
       <source>Specifies the undertolerance format in printf() style, or arbitrary text</source>
       <translation>Задае фарматаванне ніжняй мяжы дакладнасці ў стылі printf(), альбо адвольны тэкст</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="190"/>
+      <location filename="../../TaskDimension.ui" line="214"/>
       <source>Display Style</source>
       <translation>Стыль адлюстравання</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="215"/>
+      <location filename="../../TaskDimension.ui" line="239"/>
       <source>Color of the dimension</source>
       <translation>Колер вымярэння</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="277"/>
+      <location filename="../../TaskDimension.ui" line="298"/>
       <source>Standard and style according to which dimension is drawn</source>
       <translation>Стандарт і стыль, у адпаведнасці з якім чэрціцца вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="28"/>
+      <location filename="../../TaskDimension.ui" line="136"/>
       <source>If theoretically exact (basic) dimension</source>
       <translation>Калі намінальнае дакладнае (асноўнае) вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="31"/>
+      <location filename="../../TaskDimension.ui" line="139"/>
       <source>Theoretically exact</source>
       <translation>Намінальнае вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="41"/>
+      <location filename="../../TaskDimension.ui" line="98"/>
       <source>Equal tolerance</source>
       <translation>Сіметрычная дакладнасць</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="48"/>
+      <location filename="../../TaskDimension.ui" line="153"/>
       <source>Overtolerance</source>
       <translation>Верхняя мяжа дакладнасці</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="61"/>
+      <location filename="../../TaskDimension.ui" line="166"/>
       <source>Overtolerance value
 If &apos;Equal tolerance&apos; is checked this is also
 the negated value for &apos;Undertolerance&apos;.</source>
@@ -7349,12 +7345,12 @@ the negated value for &apos;Undertolerance&apos;.</source>
 Калі 'Сіметрычная дакладнасць', гэта таксама адмоўнае значэнне для 'Ніжняй мяжы дакладнасці'.</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="79"/>
+      <location filename="../../TaskDimension.ui" line="181"/>
       <source>Undertolerance</source>
       <translation>Ніжняя мяжа дакладнасці</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="92"/>
+      <location filename="../../TaskDimension.ui" line="194"/>
       <source>Undertolerance value
 If &apos;Equal tolerance&apos; is checked it will be replaced
 by negative value of &apos;Overtolerance&apos;.</source>
@@ -7362,150 +7358,170 @@ by negative value of &apos;Overtolerance&apos;.</source>
 Калі 'Сіметрычная дакладнасць', ён будзе заменены адмоўным значэннем 'Верхняй мяжы дакладнасці'.</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="123"/>
+      <location filename="../../TaskDimension.ui" line="28"/>
       <source>Format specifier</source>
       <translation>Колькасць дзесятковых знакаў</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="137"/>
+      <location filename="../../TaskDimension.ui" line="42"/>
       <source>Sets use of &apos;Format spec&apos; instead of the dimension value</source>
       <translation>Задае ўжыванне 'Спецыфікацыі фармату' замест значэння вымярэння</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="140"/>
+      <location filename="../../TaskDimension.ui" line="45"/>
       <source>Arbitrary text</source>
       <translation>Адвольны тэкст</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="147"/>
+      <location filename="../../TaskDimension.ui" line="129"/>
       <source>Overtolerance format specifier</source>
       <translation>Вызначэнне фармату верхняй мяжы дакладнасці</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="161"/>
+      <location filename="../../TaskDimension.ui" line="122"/>
       <source>Undertolerance format specifier</source>
       <translation>Вызначэнне фармату ніжняй мяжы дакладнасці</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="175"/>
+      <location filename="../../TaskDimension.ui" line="52"/>
+      <source>Number of decimals</source>
+      <translation>Колькасць дзесятковых знакаў</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="65"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Increments the number of decimals of the selected dimenesion&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Increments the number of decimals of the selected dimenesion&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="72"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Encloses the dimension value in parentheses () to indicate it is for reference only&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Encloses the dimension value in parentheses () to indicate it is for reference only&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="75"/>
+      <source>Reference</source>
+      <translation>Адносіны</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.ui" line="112"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Uses the tolerance format spec&lt;/p&gt;&lt;p&gt;instead of the tolerance value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Ужывае змест спецыфікацыі фармату дакладнасці замест значэння дакладнасці</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="178"/>
+      <location filename="../../TaskDimension.ui" line="115"/>
       <source>Arbitrary tolerance text</source>
       <translation>Тэкст адвольнай дакладнасці</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="201"/>
+      <location filename="../../TaskDimension.ui" line="225"/>
       <source>Flip arrowheads</source>
       <translation>Перавярнуць напрамак наканечнікаў стрэлак</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="208"/>
+      <location filename="../../TaskDimension.ui" line="232"/>
       <source>Color</source>
       <translation>Колер</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="229"/>
+      <location filename="../../TaskDimension.ui" line="253"/>
       <source>Font size</source>
       <translation>Памер шрыфту</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="248"/>
+      <location filename="../../TaskDimension.ui" line="272"/>
       <source>Font size for text</source>
       <translation>Памер шрыфту для тэксту</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="270"/>
+      <location filename="../../TaskDimension.ui" line="291"/>
       <source>Drawing style</source>
       <translation>Стыль чарчэння</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="281"/>
+      <location filename="../../TaskDimension.ui" line="302"/>
       <source>ISO oriented</source>
       <translation>Арыентаваны на ISO</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="286"/>
+      <location filename="../../TaskDimension.ui" line="307"/>
       <source>ISO referencing</source>
       <translation>Спасылак на ISO</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="291"/>
+      <location filename="../../TaskDimension.ui" line="312"/>
       <source>ASME inlined</source>
       <translation>Убудаваны ASME</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="296"/>
+      <location filename="../../TaskDimension.ui" line="317"/>
       <source>ASME referencing</source>
       <translation>Спасылак на ASME</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="309"/>
+      <location filename="../../TaskDimension.ui" line="330"/>
       <source>Lines</source>
       <translation>Лініі</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="317"/>
+      <location filename="../../TaskDimension.ui" line="338"/>
       <source>Use override angles if checked. Use default angles if unchecked.</source>
       <translation>Ужывайце перавызначаныя вуглы, калі птушка.
 Ужывайце першапачатковыя вуглы, калі не птушка.</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="320"/>
+      <location filename="../../TaskDimension.ui" line="341"/>
       <source>Override angles</source>
       <translation>Перавызначыць вуглы</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="327"/>
+      <location filename="../../TaskDimension.ui" line="348"/>
       <source>Dimension line angle</source>
       <translation>Вугал лініі вымярэння</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="334"/>
+      <location filename="../../TaskDimension.ui" line="355"/>
       <source>Angle of dimension line with drawing X axis (degrees)</source>
       <translation>Вугал паміж лініяй вымярэння з воссю X чарцяжа (градусы)</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="350"/>
+      <location filename="../../TaskDimension.ui" line="371"/>
       <source>Set dimension line angle to default (orthographic view)</source>
       <translation>Задаць першапачатковы вугал лініі вымярэння (артаганальны выгляд)</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="353"/>
-      <location filename="../../TaskDimension.ui" line="396"/>
+      <location filename="../../TaskDimension.ui" line="374"/>
+      <location filename="../../TaskDimension.ui" line="417"/>
       <source>Use Default</source>
       <translation>Ужыць першапачатковы</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="360"/>
+      <location filename="../../TaskDimension.ui" line="381"/>
       <source>Set dimension line angle to match selected edge or vertices</source>
       <translation>Задаць вугал лініі вымярэння так, каб ён адпавядаў абраным рэбрам ці вяршыням</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="363"/>
-      <location filename="../../TaskDimension.ui" line="406"/>
+      <location filename="../../TaskDimension.ui" line="384"/>
+      <location filename="../../TaskDimension.ui" line="427"/>
       <source>Use Selection</source>
       <translation>Ужываць выбар</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="393"/>
+      <location filename="../../TaskDimension.ui" line="414"/>
       <source>Set extension line angle to default (orthographic)</source>
       <translation>Задаць першапачатковы вугал вынасной лініі (артаганальны выгляд)</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="403"/>
+      <location filename="../../TaskDimension.ui" line="424"/>
       <source>Set extension line angle to match selected edge or vertices</source>
       <translation>Задаць вугал вынасной лініі, каб ён адпавядаў абраным рэбрам ці вяршыням</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="370"/>
+      <location filename="../../TaskDimension.ui" line="391"/>
       <source>Extension line angle</source>
       <translation>Вугал вынасной лініі</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.ui" line="377"/>
+      <location filename="../../TaskDimension.ui" line="398"/>
       <source>Angle of extension lines with drawing X axis (degrees)</source>
       <translation>Вугал паміж вынасной лініяй з воссю X чарцяжа (градусы)</translation>
     </message>

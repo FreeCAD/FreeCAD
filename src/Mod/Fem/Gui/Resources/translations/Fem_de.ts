@@ -245,7 +245,7 @@
     <message>
       <location filename="../../Command.cpp" line="993"/>
       <source>Temperature Boundary Condition</source>
-      <translation type="unfinished">Temperature Boundary Condition</translation>
+      <translation>Temperatur-Randbedingung</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="994"/>
@@ -296,12 +296,12 @@
     <message>
       <location filename="../../Command.cpp" line="1228"/>
       <source>Select a single FEM mesh or nodes set.</source>
-      <translation type="unfinished">Select a single FEM mesh or nodes set.</translation>
+      <translation>Ein einzelnes FEM-Netz oder einen Knotensatz auswählen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>Select a single FEM Mesh.</source>
-      <translation type="unfinished">Select a single FEM Mesh.</translation>
+      <translation>Ein einzelnes FEM-Netz auswählen.</translation>
     </message>
   </context>
   <context>
@@ -551,7 +551,7 @@
     <message>
       <location filename="../../Command.cpp" line="2742"/>
       <source>Select a result object.</source>
-      <translation type="unfinished">Select a result object.</translation>
+      <translation>Ein Ergebnis-Objekt auswählen.</translation>
     </message>
   </context>
   <context>
@@ -761,7 +761,7 @@
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="26"/>
       <source>Select the vertices, lines and surfaces</source>
-      <translation type="unfinished">Select the vertices, lines and surfaces</translation>
+      <translation>Knotenpunkte, Linien und Oberflächen auswählen</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
@@ -825,7 +825,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="40"/>
       <source>CalculiX binary</source>
-      <translation>CalculiX-Binärdatei</translation>
+      <translation>CalculiX-Programm</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="47"/>
@@ -835,7 +835,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="106"/>
       <source>Leave blank to use default CalculiX ccx binary file</source>
-      <translation>Freilassen, um die Standard-CalculiX ccx-Binärdatei zu verwenden</translation>
+      <translation>Freilassen, um das Standard-CalculiX ccx-Programm zu verwenden</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="126"/>
@@ -895,7 +895,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="314"/>
       <source>Time period</source>
-      <translation type="unfinished">Time period</translation>
+      <translation>Zeitraum</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="360"/>
@@ -930,7 +930,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="760"/>
       <source>Frequency Defaults</source>
-      <translation type="unfinished">Frequency Defaults</translation>
+      <translation>Frequenz-Vorgabewerte</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="870"/>
@@ -965,7 +965,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="286"/>
       <source>Solver Defaults</source>
-      <translation type="unfinished">Solver Defaults</translation>
+      <translation>Löser-Standardwerte</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="337"/>
@@ -1124,17 +1124,17 @@ Specify another file.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="205"/>
       <source>Multithreading</source>
-      <translation type="unfinished">Multithreading</translation>
+      <translation>Multithreading</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="217"/>
       <source>CPU cores to be used</source>
-      <translation type="unfinished">CPU cores to be used</translation>
+      <translation>Zu verwendende CPU-Kerne</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="261"/>
       <source>Multi-core CPU support</source>
-      <translation type="unfinished">Multi-core CPU support</translation>
+      <translation>Multi-Core-CPU-Unterstützung</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="268"/>
@@ -1181,7 +1181,7 @@ werden zusammengeführt, um die Volumengrenzen unsichtbar zu machen.</translatio
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="189"/>
       <source>ElmerSolver binary path</source>
-      <translation>Pfad der ElmerSolver-Binärdatei</translation>
+      <translation>Pfad der Elmer-Löser-Binärdatei</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="72"/>
@@ -1191,7 +1191,7 @@ werden zusammengeführt, um die Volumengrenzen unsichtbar zu machen.</translatio
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="29"/>
       <source>Elmer Binaries</source>
-      <translation type="unfinished">Elmer Binaries</translation>
+      <translation>Elmer-Programm</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="38"/>
@@ -1459,7 +1459,7 @@ ein Analysebehälter angelegt wird</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="29"/>
       <source>Gmsh Binary</source>
-      <translation type="unfinished">Gmsh Binary</translation>
+      <translation>Gmsh-Programm</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="89"/>
@@ -1489,17 +1489,17 @@ ein Analysebehälter angelegt wird</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="135"/>
       <source>Number of threads</source>
-      <translation type="unfinished">Number of threads</translation>
+      <translation>Anzahl der Threads</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="145"/>
       <source>Number of threads used for meshing</source>
-      <translation type="unfinished">Number of threads used for meshing</translation>
+      <translation>Anzahl der Threads für die Vermaschung</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="91"/>
       <source>Not an executable binary</source>
-      <translation type="unfinished">Not an executable binary</translation>
+      <translation>Kein ausführbares Programm</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="92"/>
@@ -1594,7 +1594,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="29"/>
       <source>Mystran Binary</source>
-      <translation type="unfinished">Mystran Binary</translation>
+      <translation>Mystran-Programm</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="40"/>
@@ -1663,12 +1663,12 @@ Specify another file.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="29"/>
       <source>Z88 Binary</source>
-      <translation type="unfinished">Z88 Binary</translation>
+      <translation>Z88-Programm</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="138"/>
       <source>Solver Settings</source>
-      <translation type="unfinished">Solver Settings</translation>
+      <translation>Löser-Einstellungen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="149"/>
@@ -1706,10 +1706,10 @@ Specify another file.</translation>
 You might need to increase this when using the
 Cholesky solver and getting the error message
 that "MAXGS" needs to be increased.</source>
-      <translation type="unfinished">Maximum places in the stiffness matrix.
-You might need to increase this when using the
-Cholesky solver and getting the error message
-that "MAXGS" needs to be increased.</translation>
+      <translation>Maximale Anzahl von Plätzen in der Steifigkeitsmatrix.
+Möglicherweise muss der Wert erhöhen werden, wenn der
+Cholesky-Löser verwenden wird und die Fehlermeldung erscheint,
+dass „MAXGS“ erhöht werden muss.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="240"/>
@@ -2630,7 +2630,7 @@ Specify another file.</translation>
     <message>
       <location filename="../ui/Material.ui" line="40"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Dichte</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="91"/>
@@ -2908,7 +2908,7 @@ Specify another file.</translation>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="34"/>
       <source>Rotation frequency</source>
-      <translation type="unfinished">Rotation frequency</translation>
+      <translation>Rotationsfrequenz</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="41"/>
@@ -3188,7 +3188,7 @@ Hinweis: Hat keine Auswirkung, wenn ein Festkörper ausgewählt wurde</translati
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="141"/>
       <source>Outer diameter</source>
-      <translation type="unfinished">Outer diameter</translation>
+      <translation>Außendurchmesser</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="167"/>
@@ -3350,7 +3350,7 @@ with harmonic/oscillating driving current</translation>
       <location filename="../ui/ElectricChargeDensity.ui" line="55"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="98"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Dichte</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="93"/>
@@ -3477,7 +3477,7 @@ with harmonic/oscillating driving current</translation>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
       <source>Index</source>
-      <translation type="unfinished">Index</translation>
+      <translation>Index</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
@@ -3536,7 +3536,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="198"/>
       <source>Gmsh Version</source>
-      <translation type="unfinished">Gmsh Version</translation>
+      <translation>Gmsh-Version</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="57"/>
@@ -3946,7 +3946,7 @@ Siehe das nachfolgende Beschreibungsfeld für mögliche Variablen.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="14"/>
       <source>Mechanical Analysis</source>
-      <translation type="unfinished">Mechanical Analysis</translation>
+      <translation>Mechanische Analyse</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="20"/>
@@ -3956,7 +3956,7 @@ Siehe das nachfolgende Beschreibungsfeld für mögliche Variablen.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="55"/>
       <source>Analysis Type</source>
-      <translation type="unfinished">Analysis Type</translation>
+      <translation>Analyseart</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="67"/>
@@ -3986,12 +3986,12 @@ Siehe das nachfolgende Beschreibungsfeld für mögliche Variablen.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="110"/>
       <source>Write .inp File</source>
-      <translation type="unfinished">Write .inp File</translation>
+      <translation>.Inp-Datei schreiben</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="120"/>
       <source>Edit .inp File</source>
-      <translation type="unfinished">Edit .inp File</translation>
+      <translation>.Inp-Datei bearbeiten</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="151"/>
@@ -4359,17 +4359,17 @@ zu ermitteln, die durch der Strömung erzeugt wurde
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="245"/>
       <source>Rotation X</source>
-      <translation type="unfinished">Rotation X</translation>
+      <translation>Drehung X</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="264"/>
       <source>Rotation Y</source>
-      <translation type="unfinished">Rotation Y</translation>
+      <translation>Drehung Y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="283"/>
       <source>Rotation Z</source>
-      <translation type="unfinished">Rotation Z</translation>
+      <translation>Drehung Z</translation>
     </message>
   </context>
   <context>
@@ -4688,7 +4688,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="122"/>
       <source>Stiffness used for the Elmer solver</source>
-      <translation type="unfinished">Stiffness used for the Elmer solver</translation>
+      <translation>Steifigkeit für den Elmer-Löser</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="82"/>
@@ -5252,22 +5252,22 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Analysis Features Without Solver</source>
-      <translation type="unfinished">Analysis Features Without Solver</translation>
+      <translation>Analysefunktionen ohne Löser</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="63"/>
       <source>&amp;Analysis Features Without Solver</source>
-      <translation type="unfinished">&amp;Analysis Features Without Solver</translation>
+      <translation>&amp;Analysefunktionen ohne Löser</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="75"/>
       <source>Filter Functions</source>
-      <translation type="unfinished">Filter Functions</translation>
+      <translation>Filterfunktionen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="76"/>
       <source>&amp;Filter Functions</source>
-      <translation type="unfinished">&amp;Filter Functions</translation>
+      <translation>&amp;Filterfunktionen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="64"/>
@@ -5349,7 +5349,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="61"/>
       <source>New Analysis</source>
-      <translation type="unfinished">New Analysis</translation>
+      <translation>Neue Analyse</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="65"/>
@@ -5375,7 +5375,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="551"/>
       <source>FEM Examples</source>
-      <translation type="unfinished">FEM Examples</translation>
+      <translation>FEM-Beispiele</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="552"/>
@@ -5479,7 +5479,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1101"/>
       <source>Solver Job Control</source>
-      <translation type="unfinished">Solver Job Control</translation>
+      <translation>Löser-Auftragssteuerung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1106"/>
@@ -5518,7 +5518,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1169"/>
       <source>Run Solver</source>
-      <translation type="unfinished">Run Solver</translation>
+      <translation>Löser ausführen</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1173"/>
@@ -5852,7 +5852,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="541"/>
       <source>Add data to</source>
-      <translation type="unfinished">Add data to</translation>
+      <translation>Daten hinzufügen zu</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="546"/>
@@ -5862,12 +5862,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="553"/>
       <source>Add data from</source>
-      <translation type="unfinished">Add data from</translation>
+      <translation>Daten hinzufügen von</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/post_visualization.py" line="109"/>
       <source>Data Visualizations</source>
-      <translation type="unfinished">Data Visualizations</translation>
+      <translation>Datenvisualisierung</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/post_visualization.py" line="112"/>
@@ -5877,17 +5877,17 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="175"/>
       <source>Export to CSV</source>
-      <translation type="unfinished">Export to CSV</translation>
+      <translation>Als CSV exportieren</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="213"/>
       <source>Save as csv file</source>
-      <translation type="unfinished">Save as csv file</translation>
+      <translation>Als CSV-Datei speichern</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="218"/>
       <source>CSV file export aborted: no filename selected</source>
-      <translation type="unfinished">CSV file export aborted: no filename selected</translation>
+      <translation>CSV-Datei Export abgebrochen: kein Dateiname ausgewählt</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="87"/>
@@ -5944,7 +5944,7 @@ No matching module was found in the current Python path.</translation>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
       <source>Show Plot</source>
-      <translation type="unfinished">Show Plot</translation>
+      <translation>Diagramm anzeigen</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
@@ -5975,7 +5975,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femtaskpanels/task_post_table.py" line="54"/>
       <source>Show Table</source>
-      <translation type="unfinished">Show Table</translation>
+      <translation>Tabelle anzeigen</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_table.py" line="64"/>
@@ -6719,7 +6719,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="47"/>
       <source>Maximum size</source>
-      <translation type="unfinished">Maximum size</translation>
+      <translation>Maximale Größe</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="82"/>
@@ -6783,7 +6783,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="54"/>
       <source>Python path</source>
-      <translation type="unfinished">Python path</translation>
+      <translation>Python-Pfad</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
@@ -6828,7 +6828,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1076"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+      <translation>Erstellt einen FEM-Löser CalculiX</translation>
     </message>
   </context>
   <context>
@@ -6851,7 +6851,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="62"/>
       <source>Scalars</source>
-      <translation type="unfinished">Scalars</translation>
+      <translation>Skalare</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="72"/>
@@ -6861,12 +6861,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="82"/>
       <source>Operators</source>
-      <translation type="unfinished">Operators</translation>
+      <translation>Operatoren</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="102"/>
       <source>Replace invalid data</source>
-      <translation type="unfinished">Replace invalid data</translation>
+      <translation>Ungültige Daten ersetzen</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="105"/>
@@ -6915,7 +6915,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostBranch.ui" line="82"/>
       <source>Append</source>
-      <translation type="unfinished">Append</translation>
+      <translation>Anhängen</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="93"/>
@@ -6956,7 +6956,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="14"/>
       <source>Solver CalculiX Control</source>
-      <translation type="unfinished">Solver CalculiX Control</translation>
+      <translation>CalculiX-Löser-Steuerung</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="20"/>
@@ -7222,7 +7222,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <location filename="../ui/TaskPostLineplot.ui" line="64"/>
       <source>Legend</source>
-      <translation type="unfinished">Legend</translation>
+      <translation>Legende</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="112"/>
@@ -7246,7 +7246,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="169"/>
       <source>X Axis</source>
-      <translation type="unfinished">X Axis</translation>
+      <translation>X-Achse</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="179"/>
@@ -7716,7 +7716,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="92"/>
       <source>Add data to</source>
-      <translation type="unfinished">Add data to</translation>
+      <translation>Daten hinzufügen zu</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="107"/>
@@ -7778,7 +7778,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
       <source>Legend</source>
-      <translation type="unfinished">Legend</translation>
+      <translation>Legende</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="135"/>
@@ -7892,7 +7892,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../fempreferencepages/dlg_settings_netgen.py" line="84"/>
       <source>Executable '{}' not found</source>
-      <translation type="unfinished">Executable '{}' not found</translation>
+      <translation>Ausführbare Datei '{}' nicht gefunden</translation>
     </message>
   </context>
   <context>
@@ -7900,7 +7900,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_centrif.py" line="67"/>
       <source>Axis Reference Selector</source>
-      <translation type="unfinished">Axis Reference Selector</translation>
+      <translation>Achsenreferenzauswahl</translation>
     </message>
   </context>
 </TS>
