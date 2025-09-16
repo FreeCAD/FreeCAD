@@ -2415,10 +2415,11 @@ def makeReport(name=None):
     if not report_obj:
         return None
 
-    # Initialize spreadsheet if the proxy requests it (mirrors makeSchedule)
+    # Initialize a spreadsheet if the report requests one. The report is responsible for how the
+    # association is stored (we use a non-dependent ``ReportName`` on the sheet and persist the
+    # report's ``Target`` link when the report creates the sheet).
     if hasattr(report_obj, 'Proxy') and hasattr(report_obj.Proxy, 'getSpreadSheet'):
-        # Let exceptions propagate here instead of masking them so failures are visible
-        report_obj.Proxy.getSpreadSheet(report_obj, force=True)
+        sheet = report_obj.Proxy.getSpreadSheet(report_obj, force=True)
 
     return report_obj
 

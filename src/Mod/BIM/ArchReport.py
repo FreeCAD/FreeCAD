@@ -43,6 +43,7 @@ class _ArchReport:
         self.Type = 'ArchReport'
         # --- FIX: Initialize self.spreadsheet ---
         self.spreadsheet = None
+        self.docObserver = None # It will be re-attached by onChanged
 
     def onDocumentRestored(self, obj):
         self.setProperties(obj)
@@ -60,20 +61,38 @@ class _ArchReport:
         self.onChanged(obj, 'AutoUpdate')
 
     def setReportPropertySpreadsheet(self, sp, obj):
-        if not hasattr(sp, 'Report'):
-            sp.addProperty('App::PropertyLink', 'Report', 'Arch', QT_TRANSLATE_NOOP('App::Property', 'The BIM Report that uses this spreadsheet'))
-        sp.Report = obj
+        """Associate a spreadsheet with a report.
+
+        Ensures the spreadsheet has a non-dependent string property
+        ``ReportName`` with the report's object name, and sets the
+        report's ``Target`` link to the spreadsheet for future writes.
+
+        Parameters
+        - sp: the Spreadsheet::Sheet object to associate
+        - obj: the report object (proxy owner)
+        """
+        if not hasattr(sp, 'ReportName'):
+            sp.addProperty('App::PropertyString', 'ReportName', 'Arch', QT_TRANSLATE_NOOP('App::Property', 'The name of the BIM Report that uses this spreadsheet'))
+        sp.ReportName = obj.Name
+        obj.Target = sp
 
     def getSpreadSheet(self, obj, force=False):
-        """Return or create the spreadsheet used by this report.
+        """Find or (optionally) create the spreadsheet associated with a report.
 
-        Behaviour intentionally mirrors ArchSchedule.getSpreadSheet.
+        The association is persisted via the sheet's ``ReportName`` string.
+
+        Parameters
+        - obj: the report object
+        - force: if True, create a new spreadsheet when none is found
         """
-        if getattr(self, 'spreadsheet', None) is not None and getattr(self.spreadsheet, 'Report', None) == obj:
-            return self.spreadsheet
+        # Return cached sheet when it matches the report name
+        sp = getattr(self, 'spreadsheet', None)
+        if sp and getattr(sp, 'ReportName', None) == obj.Name:
+            return sp
 
+        # Search document for a sheet whose ReportName matches the report
         for o in FreeCAD.ActiveDocument.Objects:
-            if o.TypeId == 'Spreadsheet::Sheet' and getattr(o, 'Report', None) == obj:
+            if o.TypeId == 'Spreadsheet::Sheet' and getattr(o, 'ReportName', None) == obj.Name:
                 self.spreadsheet = o
                 return self.spreadsheet
 
@@ -97,10 +116,30 @@ class _ArchReport:
                     self.docObserver = None
 
     def setSpreadsheetData(self, obj, headers, data_rows, force=False):
-        """Write header and rows into the spreadsheet, then recompute and purgeTouched."""
-        if not (getattr(obj, 'Target', None) or force):
-            return
-        sp = self.getSpreadSheet(obj, force=True)
+        """Write headers and rows into the report's spreadsheet.
+
+        The method prefers an explicit ``obj.Target`` if present. If no valid
+        target exists, it will look up a spreadsheet by the sheet's
+        ``ReportName`` (matching ``obj.Name``) and, when ``force=True``, create
+        a new sheet and associate it.
+
+        Parameters
+        - obj: report object
+        - headers: list of column header strings
+        - data_rows: list of row lists (each row is a list of cell values)
+        - force: if True, create the spreadsheet when none is found
+        """
+        # Prefer the explicit Target spreadsheet selected by the user.
+        # If no valid Target is provided, fall back to the named spreadsheet
+        # (ReportName) or create one when forced.
+        target = getattr(obj, 'Target', None)
+        sp = None
+        if target and getattr(target, 'TypeId', '') == 'Spreadsheet::Sheet':
+            sp = target
+        else:
+            if not (getattr(obj, 'Target', None) or force):
+                return
+            sp = self.getSpreadSheet(obj, force=force)
         if not sp:
             return
 
@@ -134,6 +173,30 @@ class _ArchReport:
         # setSpreadsheetData expects (headers, list_of_lists_of_values)
         self.setSpreadsheetData(obj, headers, results_data, force=True)
 
+    def onDelete(self, obj, subelements):
+        """
+        Clean up the associated spreadsheet on deletion
+        This method is called by FreeCAD when the Report object is about to be deleted.
+        It ensures the linked spreadsheet is also removed, preventing orphaned objects.
+        """
+        if obj.Target:
+            try:
+                # Remove the linked spreadsheet from the document.
+                FreeCAD.ActiveDocument.removeObject(obj.Target.Name)
+            except Exception as e:
+                FreeCAD.Console.PrintWarning(f"Failed to delete spreadsheet '{obj.Target.Label}' linked to Report '{obj.Label}': {e}\n")
+        return True # Return True to allow the Report object itself to be deleted.
+
+    def dumps(self):
+        # Explicitly *omits self.docObserver
+        # Only return 'self.Type', which is a simple string and serializable.
+        if hasattr(self,"Type"):
+            return self.Type
+
+    def loads(self,state):
+        if state:
+            self.Type = state
+        # The docObserver is NOT restored here; it's handled by onDocumentRestored -> setProperties -> onChanged.
 
 class Report(_ArchReport):
     """Public alias class so Arch._initializeArchObject can find 'Report'.
@@ -174,22 +237,19 @@ class ViewProviderReport:
             return True
         return False
 
+    def attach(self, vobj):
+        # Called by the C++ loader when the view provider is rehydrated.
+        # Ensure we keep a reference to the view object for later callbacks.
+        self.vobj = vobj
+
     def claimChildren(self):
-        vobj = getattr(self, 'vobj', None)
-        if vobj is None:
-            return []
-        obj = getattr(vobj, 'Object', None)
-        if obj is None:
-            return []
-        target = getattr(obj, 'Target', None)
-        if target is not None and getattr(target, 'TypeId', '') == 'Spreadsheet::Sheet':
-            return [target]
-        doc = getattr(obj, 'Document', FreeCAD.ActiveDocument)
-        children = []
-        for o in getattr(doc, 'Objects', []):
-            if getattr(o, 'TypeId', '') == 'Spreadsheet::Sheet' and getattr(o, 'Report', None) == obj:
-                children.append(o)
-        return children
+        """
+        Makes the Target spreadsheet appear as a child in the Tree view,
+        by relying on the proxy's getSpreadSheet method for robust lookup.
+        """
+        obj = self.vobj.Object
+        spreadsheet = obj.Proxy.getSpreadSheet(obj)
+        return [spreadsheet] if spreadsheet else []
 
     def dumps(self):
         return None
