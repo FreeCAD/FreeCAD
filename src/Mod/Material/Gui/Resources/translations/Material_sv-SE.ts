@@ -506,7 +506,7 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="72"/>
       <source>Use materials from the Materials preference directory</source>
-      <translation>Använd material från katalogen Materialpreferenser</translation>
+      <translation>Använd material från inställningskatalogen Material</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="88"/>
@@ -583,7 +583,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="285"/>
       <source>Material Editor</source>
-      <translation>Materialredaktör</translation>
+      <translation>Materialredigerare</translation>
     </message>
   </context>
   <context>
@@ -1041,7 +1041,7 @@ Om det inte är markerat kommer de att sorteras efter sitt namn.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="14"/>
       <source>Material Editor</source>
-      <translation>Materialredaktör</translation>
+      <translation>Materialredigerare</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>

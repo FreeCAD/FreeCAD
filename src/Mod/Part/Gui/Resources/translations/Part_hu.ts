@@ -1314,7 +1314,7 @@
     <message>
       <location filename="../../Command.cpp" line="1527"/>
       <source>Shape Builder</source>
-      <translation type="unfinished">Shape Builder</translation>
+      <translation>Alakzat építő</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1529"/>
@@ -1768,7 +1768,7 @@
     <message>
       <location filename="../../Command.cpp" line="1670"/>
       <source>2D Offset</source>
-      <translation type="unfinished">2D Offset</translation>
+      <translation>2D eltolás</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1671"/>
