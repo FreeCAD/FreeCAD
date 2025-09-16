@@ -20,7 +20,7 @@ import sys
 import subprocess
 import os
 from pathlib import Path
-
+from __future__ import annotations
 
 def find_executable(arg: str | None) -> str:
     """Return the FreeCAD executable path to use.
