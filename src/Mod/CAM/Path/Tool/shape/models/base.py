@@ -133,7 +133,9 @@ class ToolBitShape(Asset):
         shape_classes = {c.name: c for c in ToolBitShape.__subclasses__()}
         shape_class = shape_classes.get(body_obj.Label)
         if not shape_class:
-            return ToolBitShape.get_subclass_by_name("Custom")
+            custom = ToolBitShape.get_subclass_by_name("Custom")
+            assert custom is not None, "BUG: Custom tool class not found"
+            return custom
         return shape_class
 
     @classmethod
@@ -228,7 +230,13 @@ class ToolBitShape(Asset):
 
             # Find the correct subclass based on the body label
             shape_class = cls.get_subclass_by_name(body_label)
-            return shape_class or ToolBitShape.get_subclass_by_name("Custom")
+            if shape_class:
+                return shape_class
+
+            # All else fails, treat the shape as a custom shape.
+            custom = ToolBitShape.get_subclass_by_name("Custom")
+            assert custom is not None, "BUG: Custom tool class not found"
+            return custom
 
         except zipfile.BadZipFile:
             raise ValueError("Invalid FCStd file data (not a valid zip archive)")

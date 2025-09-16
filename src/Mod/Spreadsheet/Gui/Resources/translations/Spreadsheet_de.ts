@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>&amp;New Spreadsheet</source>
-      <translation type="unfinished">&amp;New Spreadsheet</translation>
+      <translation>&amp;Neue Kalkulationstabelle</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
       <source>Creates a new spreadsheet</source>
-      <translation type="unfinished">Creates a new spreadsheet</translation>
+      <translation>Eine neue Kalkulationstabelle erstellen</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="510"/>
       <source>Align &amp;Bottom</source>
-      <translation type="unfinished">Align &amp;Bottom</translation>
+      <translation>Unten &amp;ausrichten</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Aligns cell contents to the bottom</source>
-      <translation type="unfinished">Aligns cell contents to the bottom</translation>
+      <translation>Zellinhalt unten ausrichten</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="339"/>
       <source>Align Horizontal &amp;Center</source>
-      <translation type="unfinished">Align Horizontal &amp;Center</translation>
+      <translation>Horizontal &amp;zentriert ausrichten</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="340"/>
       <source>Aligns cell contents to the horizontal center</source>
-      <translation type="unfinished">Aligns cell contents to the horizontal center</translation>
+      <translation>Zellinhalt horizontal zentriert ausrichten</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="282"/>
       <source>Align &amp;Left</source>
-      <translation type="unfinished">Align &amp;Left</translation>
+      <translation>&amp;Links ausrichten</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="283"/>
       <source>Aligns cell contents to the left</source>
-      <translation type="unfinished">Aligns cell contents to the left</translation>
+      <translation>Zellinhalt links ausrichten</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="396"/>
       <source>Align &amp;Right</source>
-      <translation type="unfinished">Align &amp;Right</translation>
+      <translation>&amp;Rechts ausrichten</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="397"/>
       <source>Aligns cell contents to the right</source>
-      <translation type="unfinished">Aligns cell contents to the right</translation>
+      <translation>Zellinhalt rechts ausrichten</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Align &amp;Top</source>
-      <translation type="unfinished">Align &amp;Top</translation>
+      <translation>&amp;Oben ausrichten</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="454"/>
       <source>Aligns cell contents to the top</source>
-      <translation type="unfinished">Aligns cell contents to the top</translation>
+      <translation>Zellinhalt oben ausrichten</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="567"/>
       <source>Align &amp;Vertical Center</source>
-      <translation type="unfinished">Align &amp;Vertical Center</translation>
+      <translation>&amp;Vertikal zentriert ausrichten</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="568"/>
       <source>Aligns cell contents to the vertical center</source>
-      <translation type="unfinished">Aligns cell contents to the vertical center</translation>
+      <translation>Zellinhalt vertikal zentrieren</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="236"/>
       <source>&amp;Export Spreadsheet</source>
-      <translation type="unfinished">&amp;Export Spreadsheet</translation>
+      <translation>Tabellenblatt &amp;exportieren</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="237"/>
       <source>Exports the spreadsheet to a CSV file</source>
-      <translation type="unfinished">Exports the spreadsheet to a CSV file</translation>
+      <translation>Exportiert das Tabellenblatt in eine CSV-Datei</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>&amp;Merge Cells</source>
-      <translation type="unfinished">&amp;Merge Cells</translation>
+      <translation>&amp;Zellen verbinden</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="62"/>
       <source>Merges the selected cells</source>
-      <translation type="unfinished">Merges the selected cells</translation>
+      <translation>Verbindet die ausgewählten Zellen</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="876"/>
       <source>Set Alias</source>
-      <translation type="unfinished">Set Alias</translation>
+      <translation>Alias setzen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="877"/>
       <source>Sets an alias for the selected cell</source>
-      <translation type="unfinished">Sets an alias for the selected cell</translation>
+      <translation>Setzt einen Alias für die ausgewählte Zelle</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="122"/>
       <source>Sp&amp;lit Cell</source>
-      <translation type="unfinished">Sp&amp;lit Cell</translation>
+      <translation>Zelle tei&amp;len</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
       <source>Splits a previously merged cell</source>
-      <translation type="unfinished">Splits a previously merged cell</translation>
+      <translation>Zuvor verbundene Zellen trennen</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="624"/>
       <source>&amp;Bold Text</source>
-      <translation type="unfinished">&amp;Bold Text</translation>
+      <translation>&amp;Fettgedruckter Text</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="625"/>
       <source>Sets the text in the selected cells bold</source>
-      <translation type="unfinished">Sets the text in the selected cells bold</translation>
+      <translation>Text in den ausgewählten Zellen fett formatieren</translation>
     </message>
   </context>
   <context>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../Command.cpp" line="708"/>
       <source>&amp;Italic Text</source>
-      <translation type="unfinished">&amp;Italic Text</translation>
+      <translation>&amp;Kursiver Text</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="709"/>
       <source>Sets the text in the selected cells italic</source>
-      <translation type="unfinished">Sets the text in the selected cells italic</translation>
+      <translation>Text in den ausgewählten Zellen kursiv formatieren</translation>
     </message>
   </context>
   <context>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../Command.cpp" line="792"/>
       <source>&amp;Underline Text</source>
-      <translation type="unfinished">&amp;Underline Text</translation>
+      <translation>Text &amp;unterstreichen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="793"/>
       <source>Underlines the text in the selected cells</source>
-      <translation type="unfinished">Underlines the text in the selected cells</translation>
+      <translation>Text in den ausgewählten Zellen unterstreichen</translation>
     </message>
   </context>
   <context>
@@ -365,25 +365,25 @@
       <location filename="../../SheetTableView.cpp" line="348"/>
       <location filename="../../SheetTableView.cpp" line="381"/>
       <source>Insert Rows</source>
-      <translation type="unfinished">Insert Rows</translation>
+      <translation>Zeilen einfügen</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="401"/>
       <location filename="../../SheetTableView.cpp" line="479"/>
       <source>Remove Rows</source>
-      <translation type="unfinished">Remove Rows</translation>
+      <translation>Zeilen entfernen</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="423"/>
       <location filename="../../SheetTableView.cpp" line="456"/>
       <source>Insert Columns</source>
-      <translation type="unfinished">Insert Columns</translation>
+      <translation>Spalten einfügen</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="683"/>
       <location filename="../../SpreadsheetView.cpp" line="192"/>
       <source>Clear Cells</source>
-      <translation type="unfinished">Clear Cells</translation>
+      <translation>Zellen löschen</translation>
     </message>
   </context>
   <context>
@@ -430,16 +430,16 @@ Der Ausdruck muss eine Zeichenkette mit einer Zellenadresse auswerten.</translat
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells</source>
-      <translation type="unfinished">To cells</translation>
+      <translation>An Zellen</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
 Type '=' to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">End cell address to bind to.
-Type '=' to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Endadresse der zu bindenden Zelle.
+Tippe '=' zur Verwendung eines Ausdrucks.
+Der Ausdruck muss eine Zeichenkette mit einer Zellenadresse auswerten.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
@@ -449,7 +449,7 @@ The expression must evaluate to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet</source>
-      <translation type="unfinished">Sheet</translation>
+      <translation>Tabellenblatt</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
@@ -537,7 +537,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range</source>
-      <translation type="unfinished">Cell range</translation>
+      <translation>Zellbereich</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
@@ -552,7 +552,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name</source>
-      <translation type="unfinished">Optional property group name</translation>
+      <translation>Optionaler Eigenschaftsgruppenname</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
@@ -575,7 +575,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="14"/>
       <source>Cell Properties</source>
-      <translation type="unfinished">Cell Properties</translation>
+      <translation>Zellen-Eigenschaften</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="27"/>
@@ -688,11 +688,6 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Datei importieren</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="816"/>
-      <source>Copy &amp; Paste failed</source>
-      <translation>Kopieren &amp; Einfügen fehlgeschlagen</translation>
-    </message>
-    <message>
       <location filename="../../SpreadsheetView.cpp" line="495"/>
       <source>Alias contains invalid characters!</source>
       <translation>Alias enthält ungültige Zeichen!</translation>
@@ -712,34 +707,39 @@ Tabelle.mein_Alias_name anstelle von Tabelle.B1</translation>
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
       <source>Export File</source>
-      <translation type="unfinished">Export File</translation>
+      <translation>Datei exportieren</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="134"/>
       <source>Show Spreadsheet</source>
-      <translation type="unfinished">Show Spreadsheet</translation>
+      <translation>Tabellenblatt anzeigen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="94"/>
       <source>Sets the text color of cells</source>
-      <translation type="unfinished">Sets the text color of cells</translation>
+      <translation>Setzt die Textfarbe der Zellen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="95"/>
       <location filename="../../Workbench.cpp" line="96"/>
       <source>Sets the text color of spreadsheet cells</source>
-      <translation type="unfinished">Sets the text color of spreadsheet cells</translation>
+      <translation>Legt die Textfarbe der Tabellenblatt-Zellen fest</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="114"/>
       <location filename="../../Workbench.cpp" line="117"/>
       <source>Sets the background color of cells</source>
-      <translation type="unfinished">Sets the background color of cells</translation>
+      <translation>Legt die Hintergrundfarbe der Zellen fest</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="116"/>
       <source>Sets the spreadsheet cells background color</source>
-      <translation type="unfinished">Sets the spreadsheet cells background color</translation>
+      <translation>Legt die Hintergrundfarbe der Tabellenblatt-Zellen fest</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="816"/>
+      <source>Copy &amp; Paste Failed</source>
+      <translation type="unfinished">Copy &amp; Paste Failed</translation>
     </message>
   </context>
   <context>
@@ -858,12 +858,12 @@ Tabelle.mein_Alias_name anstelle von Tabelle.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="22"/>
       <source>&amp;Content</source>
-      <translation type="unfinished">&amp;Content</translation>
+      <translation>&amp;Inhalt</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="39"/>
       <source>&amp;Alias</source>
-      <translation type="unfinished">&amp;Alias</translation>
+      <translation>&amp;Alias</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="52"/>
@@ -892,8 +892,8 @@ Tabelle.mein_Alias_name anstelle von Tabelle.B1</translation>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="223"/>
-      <source>Bind cells</source>
-      <translation>Binde Zellen</translation>
+      <source>Bind Cells</source>
+      <translation type="unfinished">Bind Cells</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="224"/>
@@ -918,8 +918,8 @@ Möchten Sie fortfahren?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="300"/>
-      <source>Unbind cells</source>
-      <translation>Zellverbindungen lösen</translation>
+      <source>Unbind Cells</source>
+      <translation type="unfinished">Unbind Cells</translation>
     </message>
   </context>
   <context>
@@ -1011,19 +1011,6 @@ Standard: %V = %A
       <location filename="../../DlgSettings.ui" line="230"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape-Zeichen, typischerweise der Backslash (\), verwendet um spezielle nicht druckbare Zeichen anzugeben, z.B. \t = tab. Muss ein einzelnes Zeichen sein.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-  </context>
-  <context>
-    <name>SpreadsheetGui::DlgSheetConf</name>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="280"/>
-      <source>Setup configuration table</source>
-      <translation>Konfigurationstabelle einrichten</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="338"/>
-      <source>Unsetup configuration table</source>
-      <translation>Konfigurationstabelle aufheben</translation>
     </message>
   </context>
   <context>
@@ -1125,8 +1112,8 @@ Standard: %V = %A
     <message>
       <location filename="../../SheetTableView.cpp" line="210"/>
       <location filename="../../SheetTableView.cpp" line="668"/>
-      <source>Split Cells</source>
-      <translation>Zellen teilen</translation>
+      <source>Split Cell</source>
+      <translation type="unfinished">Split Cell</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="213"/>
@@ -1208,7 +1195,20 @@ Standard: %V = %A
     <message>
       <location filename="../../ZoomableView.cpp" line="112"/>
       <source>Zoom Level</source>
-      <translation type="unfinished">Zoom Level</translation>
+      <translation>Zoomstufe</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::DlgSheetConf</name>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="280"/>
+      <source>Setup Configuration Table</source>
+      <translation>Konfigurationstabelle einrichten</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="338"/>
+      <source>Unsetup Configuration Table</source>
+      <translation type="unfinished">Unsetup Configuration Table</translation>
     </message>
   </context>
 </TS>

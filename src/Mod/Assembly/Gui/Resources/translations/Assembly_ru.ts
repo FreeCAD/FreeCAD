@@ -198,7 +198,7 @@
     <message>
       <location filename="../../../JointObject.py" line="1564"/>
       <source>Radius 1</source>
-      <translation>Радиус колеса 1</translation>
+      <translation>Радиус 1</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1566"/>
@@ -707,7 +707,7 @@ H2 — высота в точке T2 в конце ската.
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="65"/>
       <source>Radius 2</source>
-      <translation>Радиус колеса 2</translation>
+      <translation>Радиус 2</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="89"/>
@@ -932,7 +932,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1363"/>
       <source>Solver failed to converge</source>
-      <translation>Решатель не смог сместиться</translation>
+      <translation>Решатель не смог свести решение</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="1369"/>
@@ -1037,7 +1037,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="42"/>
       <source>Parts children</source>
-      <translation>Дочерние части Деталей</translation>
+      <translation>Дочерняя деталь</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="14"/>

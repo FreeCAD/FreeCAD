@@ -54,6 +54,7 @@ PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 ToolGroup = PreferencesGroup + "/Tools"
 ToolPath = "ToolPath"
 LastToolLibrary = "LastToolLibrary"
+LastToolLibrarySortKey = "LastToolLibrarySortKey"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
 GeometryTolerance = "GeometryTolerance"
@@ -123,22 +124,38 @@ def getDefaultAssetPath() -> Path:
 
 def getAssetPath() -> pathlib.Path:
     pref = tool_preferences()
+
+    # Check if we have a CamAssets path already set
+    cam_assets_path = pref.GetString(ToolPath, "")
+    if cam_assets_path:
+        return pathlib.Path(cam_assets_path)
+
+    # Migration: Check for legacy DefaultFilePath and use it for CamAssets
+    legacy_path = defaultFilePath()
+    if legacy_path:
+        legacy_path_obj = pathlib.Path(legacy_path)
+        if legacy_path_obj.exists() and legacy_path_obj.is_dir():
+            # Migrate: Set the legacy path as the new CamAssets path
+            setAssetPath(legacy_path_obj)
+            return legacy_path_obj
+
+    # Fallback to default if no legacy path found
     default = getDefaultAssetPath()
-    path = pref.GetString(ToolPath, str(default))
-    return pathlib.Path(path or default)
+    return pathlib.Path(default)
 
 
 def setAssetPath(path: pathlib.Path):
     assert path.is_dir(), f"Cannot put a non-initialized asset directory into preferences: {path}"
-    if str(path) == str(getAssetPath()):
-        return
     pref = tool_preferences()
+    current_path = pref.GetString(ToolPath, "")
+    if str(path) == current_path:
+        return
     pref.SetString(ToolPath, str(path))
     _emit_change(ToolGroup, ToolPath, path)
 
 
 def getToolBitPath() -> pathlib.Path:
-    return getAssetPath() / "Bit"
+    return getAssetPath() / "Tools" / "Bit"
 
 
 def getLastToolLibrary() -> Optional[str]:
@@ -150,6 +167,16 @@ def setLastToolLibrary(name: str):
     assert isinstance(name, str), f"Library name '{name}' is not a string"
     pref = tool_preferences()
     pref.SetString(LastToolLibrary, name)
+
+
+def getLastToolLibrarySortKey() -> Optional[str]:
+    pref = tool_preferences()
+    return pref.GetString(LastToolLibrarySortKey) or None
+
+
+def setLastToolLibrarySortKey(name: str):
+    pref = tool_preferences()
+    pref.SetString(LastToolLibrarySortKey, name)
 
 
 def allAvailablePostProcessors():
@@ -201,7 +228,7 @@ def defaultFilePath():
 def filePath():
     path = defaultFilePath()
     if not path:
-        path = macroFilePath()
+        path = getAssetPath()
     return path
 
 
@@ -237,13 +264,9 @@ def defaultJobTemplate():
     return ""
 
 
-def setJobDefaults(fileName, jobTemplate, geometryTolerance, curveAccuracy):
-    Path.Log.track(
-        "(%s='%s', %s, %s, %s)"
-        % (DefaultFilePath, fileName, jobTemplate, geometryTolerance, curveAccuracy)
-    )
+def setJobDefaults(jobTemplate, geometryTolerance, curveAccuracy):
+    Path.Log.track("(%s, %s, %s)" % (jobTemplate, geometryTolerance, curveAccuracy))
     pref = preferences()
-    pref.SetString(DefaultFilePath, fileName)
     pref.SetString(DefaultJobTemplate, jobTemplate)
     pref.SetFloat(GeometryTolerance, geometryTolerance)
     pref.SetFloat(LibAreaCurveAccuracy, curveAccuracy)

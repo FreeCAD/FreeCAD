@@ -153,8 +153,8 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         self.assertEqual(ToolBitShape.resolve_name("ballend").asset_id, "ballend")
         self.assertEqual(ToolBitShape.resolve_name("v-bit").asset_id, "v-bit")
         self.assertEqual(ToolBitShape.resolve_name("vbit").asset_id, "vbit")
-        self.assertEqual(ToolBitShape.resolve_name("torus").asset_id, "torus")
-        self.assertEqual(ToolBitShape.resolve_name("torus.fcstd").asset_id, "torus")
+        self.assertEqual(ToolBitShape.resolve_name("bullnose").asset_id, "bullnose")
+        self.assertEqual(ToolBitShape.resolve_name("bullnose.fcstd").asset_id, "bullnose")
         self.assertEqual(ToolBitShape.resolve_name("SlittingSaw").asset_id, "SlittingSaw")
         # Test unknown name - should return the input name
         self.assertEqual(ToolBitShape.resolve_name("nonexistent").asset_id, "nonexistent")
@@ -336,12 +336,12 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         shape = self._test_shape_common("bullnose")
         self.assertEqual(shape["Diameter"].Value, 5.0)
         self.assertEqual(unit(shape["Diameter"]), "mm")
-        self.assertEqual(shape["FlatRadius"].Value, 1.5)
-        self.assertEqual(unit(shape["FlatRadius"]), "mm")
+        self.assertEqual(shape["CornerRadius"].Value, 1.5)
+        self.assertEqual(unit(shape["CornerRadius"]), "mm")
         # Need an instance to get parameter labels, get it from the asset manager
         uri = ToolBitShape.resolve_name("bullnose")
         instance = self.assets.get(uri)
-        self.assertEqual(instance.get_parameter_label("FlatRadius"), "Torus radius")
+        self.assertEqual(instance.get_parameter_label("CornerRadius"), "Corner radius")
 
     def test_toolbitshapevbit_defaults(self):
         """Test ToolBitShapeVBit default parameters and labels."""

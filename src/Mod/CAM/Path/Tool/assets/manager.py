@@ -46,7 +46,7 @@ from .cache import AssetCache, CacheKey
 
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.ERROR)
 
 
 @dataclass
@@ -107,6 +107,12 @@ class AssetManager:
         visited_uris: Set[AssetUri],
         depth: Optional[int] = None,
     ) -> Optional[_AssetConstructionData]:
+        # Log library fetch details
+        if uri.asset_type == "library":
+            logger.info(
+                f"LIBRARY FETCH: Loading library '{uri.asset_id}' with depth={depth} from stores {store_names}"
+            )
+
         logger.debug(
             f"_fetch_asset_construction_data_recursive_async called {store_names} {uri} {depth}"
         )
@@ -126,29 +132,59 @@ class AssetManager:
         # Fetch the requested asset, trying each store in order
         raw_data = None
         found_store_name = None
+
+        # Log toolbit search details
+        if uri.asset_type == "toolbit":
+            logger.info(
+                f"TOOLBIT SEARCH: Looking for toolbit '{uri.asset_id}' in stores: {store_names}"
+            )
+
         for current_store_name in store_names:
             store = self.stores.get(current_store_name)
             if not store:
                 logger.warning(f"Store '{current_store_name}' not registered. Skipping.")
                 continue
 
+            # Log store search path for toolbits
+            if uri.asset_type == "toolbit":
+                store_path = getattr(store, "base_path", "unknown")
+                logger.info(
+                    f"TOOLBIT SEARCH: Checking store '{current_store_name}' at path: {store_path}"
+                )
+
             try:
                 raw_data = await store.get(uri)
                 found_store_name = current_store_name
+                if uri.asset_type == "toolbit":
+                    logger.info(
+                        f"TOOLBIT FOUND: '{uri.asset_id}' found in store '{found_store_name}'"
+                    )
                 logger.debug(
                     f"_fetch_asset_construction_data_recursive_async: Asset {uri} found in store {found_store_name}"
                 )
                 break  # Asset found, no need to check other stores
             except FileNotFoundError:
+                if uri.asset_type == "toolbit":
+                    logger.info(
+                        f"TOOLBIT SEARCH: '{uri.asset_id}' NOT found in store '{current_store_name}'"
+                    )
                 logger.debug(
                     f"_fetch_asset_construction_data_recursive_async: Asset {uri} not found in store {current_store_name}"
                 )
                 continue  # Try next store
 
-        if raw_data is None:
+        if raw_data is None or not found_store_name:
+            if uri.asset_type == "toolbit":
+                logger.warning(
+                    f"TOOLBIT NOT FOUND: '{uri.asset_id}' not found in any of the stores: {store_names}"
+                )
             return None  # Asset not found in any store
 
         if depth == 0:
+            if uri.asset_type == "library":
+                logger.warning(
+                    f"LIBRARY SHALLOW: Library '{uri.asset_id}' loaded with depth=0 - no dependencies will be resolved"
+                )
             return _AssetConstructionData(
                 store=found_store_name,
                 uri=uri,
@@ -194,7 +230,6 @@ class AssetManager:
     def _calculate_cache_key_from_construction_data(
         self,
         construction_data: _AssetConstructionData,
-        store_name_for_cache: str,
     ) -> Optional[CacheKey]:
         if not construction_data or not construction_data.raw_data:
             return None
@@ -209,7 +244,7 @@ class AssetManager:
         raw_data_hash = int(hashlib.sha256(construction_data.raw_data).hexdigest(), 16)
 
         return CacheKey(
-            store_name=store_name_for_cache,
+            store_name=construction_data.store,
             asset_uri_str=str(construction_data.uri),
             raw_data_hash=raw_data_hash,
             dependency_signature=deps_signature_tuple,
@@ -218,8 +253,7 @@ class AssetManager:
     def _build_asset_tree_from_data_sync(
         self,
         construction_data: Optional[_AssetConstructionData],
-        store_name_for_cache: str,
-    ) -> Asset | None:
+    ) -> Optional[Asset]:
         """
         Synchronously and recursively builds an asset instance.
         Integrates caching logic.
@@ -228,10 +262,8 @@ class AssetManager:
             return None
 
         cache_key: Optional[CacheKey] = None
-        if store_name_for_cache in self._cacheable_stores:
-            cache_key = self._calculate_cache_key_from_construction_data(
-                construction_data, store_name_for_cache
-            )
+        if construction_data.store in self._cacheable_stores:
+            cache_key = self._calculate_cache_key_from_construction_data(construction_data)
             if cache_key:
                 cached_asset = self.asset_cache.get(cache_key)
                 if cached_asset is not None:
@@ -245,18 +277,42 @@ class AssetManager:
         resolved_dependencies: Optional[Mapping[AssetUri, Any]] = None
         if construction_data.dependencies_data is not None:
             resolved_dependencies = {}
+
+            # Log dependency resolution for libraries
+            if construction_data.uri.asset_type == "library":
+                logger.info(
+                    f"LIBRARY DEPS: Resolving {len(construction_data.dependencies_data)} dependencies for library '{construction_data.uri.asset_id}'"
+                )
+
             for (
                 dep_uri,
                 dep_data_node,
             ) in construction_data.dependencies_data.items():
+                # Log toolbit dependency resolution
+                if dep_uri.asset_type == "toolbit":
+                    logger.info(
+                        f"TOOLBIT DEP: Resolving dependency '{dep_uri.asset_id}' for library '{construction_data.uri.asset_id}'"
+                    )
+
                 # Assuming dependencies are fetched from the same store context
                 # for caching purposes. If a dependency *could* be from a
                 # different store and that store has different cacheability,
                 # this would need more complex store_name propagation.
                 # For now, use the parent's store_name_for_cache.
                 try:
-                    dep = self._build_asset_tree_from_data_sync(dep_data_node, store_name_for_cache)
+                    dep = self._build_asset_tree_from_data_sync(dep_data_node)
+                    if dep_uri.asset_type == "toolbit":
+                        if dep:
+                            logger.info(
+                                f"TOOLBIT DEP: Successfully resolved '{dep_uri.asset_id}' -> {type(dep).__name__}"
+                            )
+                        else:
+                            logger.warning(
+                                f"TOOLBIT DEP: Dependency '{dep_uri.asset_id}' resolved to None"
+                            )
                 except Exception as e:
+                    if dep_uri.asset_type == "toolbit":
+                        logger.error(f"TOOLBIT DEP: Error resolving '{dep_uri.asset_id}': {e}")
                     logger.error(
                         f"Error building dependency '{dep_uri}' for asset '{construction_data.uri}': {e}",
                         exc_info=True,
@@ -264,9 +320,31 @@ class AssetManager:
                 else:
                     resolved_dependencies[dep_uri] = dep
 
+            # Log final dependency count for libraries
+            if construction_data.uri.asset_type == "library":
+                toolbit_deps = [
+                    uri for uri in resolved_dependencies.keys() if uri.asset_type == "toolbit"
+                ]
+                logger.info(
+                    f"LIBRARY DEPS: Resolved {len(resolved_dependencies)} total dependencies ({len(toolbit_deps)} toolbits) for library '{construction_data.uri.asset_id}'"
+                )
+        else:
+            # Log when dependencies_data is None
+            if construction_data.uri.asset_type == "library":
+                logger.warning(
+                    f"LIBRARY NO DEPS: Library '{construction_data.uri.asset_id}' has dependencies_data=None - was loaded with depth=0"
+                )
+
         asset_class = construction_data.asset_class
         serializer = self.get_serializer_for_class(asset_class)
         try:
+            # Log library instantiation with dependency info
+            if construction_data.uri.asset_type == "library":
+                dep_count = len(resolved_dependencies) if resolved_dependencies else 0
+                logger.info(
+                    f"LIBRARY INSTANTIATE: Creating library '{construction_data.uri.asset_id}' with {dep_count} dependencies"
+                )
+
             final_asset = asset_class.from_bytes(
                 construction_data.raw_data,
                 construction_data.uri.asset_id,
@@ -311,6 +389,24 @@ class AssetManager:
         # Log entry with thread info for verification
         calling_thread_name = threading.current_thread().name
         stores_list = [store] if isinstance(store, str) else store
+
+        # Log all asset get requests
+        asset_uri_obj = AssetUri(uri) if isinstance(uri, str) else uri
+        if asset_uri_obj.asset_type == "library":
+            logger.info(
+                f"LIBRARY GET: Request for library '{asset_uri_obj.asset_id}' with depth={depth}"
+            )
+        elif asset_uri_obj.asset_type == "toolbit":
+            logger.info(
+                f"TOOLBIT GET: Direct request for toolbit '{asset_uri_obj.asset_id}' with depth={depth} from stores {stores_list}"
+            )
+            # Add stack trace to see who's calling this
+            import traceback
+
+            stack = traceback.format_stack()
+            caller_info = "".join(stack[-3:-1])  # Get the 2 frames before this one
+            logger.info(f"TOOLBIT GET CALLER:\n{caller_info}")
+
         logger.debug(
             f"AssetManager.get(uri='{uri}', stores='{stores_list}', depth='{depth}') called from thread: {calling_thread_name}"
         )
@@ -365,10 +461,9 @@ class AssetManager:
             f"and {deps_count} dependencies ({found_deps_count} resolved)."
         )
         # Use the first store from the list for caching purposes
-        store_name_for_cache = stores_list[0] if stores_list else "local"
-        final_asset = self._build_asset_tree_from_data_sync(
-            all_construction_data, store_name_for_cache=store_name_for_cache
-        )
+        final_asset = self._build_asset_tree_from_data_sync(all_construction_data)
+        if not final_asset:
+            raise ValueError(f"failed to build asset {uri}")
         logger.debug(f"Get: Synchronous asset tree build for '{asset_uri_obj}' completed.")
         return final_asset
 
@@ -377,7 +472,7 @@ class AssetManager:
         uri: Union[AssetUri, str],
         store: Union[str, Sequence[str]] = "local",
         depth: Optional[int] = None,
-    ) -> Asset | None:
+    ) -> Optional[Asset]:
         """
         Convenience wrapper for get() that does not raise FileNotFoundError; returns
         None instead
@@ -423,9 +518,7 @@ class AssetManager:
         logger.debug(
             f"get_async: Building asset tree for '{asset_uri_obj}', depth {depth} in current async context."
         )
-        return self._build_asset_tree_from_data_sync(
-            all_construction_data, store_name_for_cache=store
-        )
+        return self._build_asset_tree_from_data_sync(all_construction_data)
 
     def get_raw(
         self,
@@ -438,31 +531,8 @@ class AssetManager:
             f"AssetManager.get_raw(uri='{uri}', stores='{stores_list}') from T:{threading.current_thread().name}"
         )
 
-        async def _fetch_raw_async(stores_list: Sequence[str]):
-            asset_uri_obj = AssetUri(uri) if isinstance(uri, str) else uri
-            logger.debug(
-                f"GetRawAsync (internal): Trying stores '{stores_list}'. Available stores: {list(self.stores.keys())}"
-            )
-            for current_store_name in stores_list:
-                store = self.stores.get(current_store_name)
-                if not store:
-                    logger.warning(f"Store '{current_store_name}' not registered. Skipping.")
-                    continue
-                try:
-                    raw_data = await store.get(asset_uri_obj)
-                    logger.debug(
-                        f"GetRawAsync: Asset {asset_uri_obj} found in store {current_store_name}"
-                    )
-                    return raw_data
-                except FileNotFoundError:
-                    logger.debug(
-                        f"GetRawAsync: Asset {asset_uri_obj} not found in store {current_store_name}"
-                    )
-                    continue
-            raise FileNotFoundError(f"Asset '{asset_uri_obj}' not found in stores '{stores_list}'")
-
         try:
-            return asyncio.run(_fetch_raw_async(stores_list))
+            return asyncio.run(self.get_raw_async(uri, stores_list))
         except Exception as e:
             logger.error(
                 f"GetRaw: Error during asyncio.run for '{uri}': {e}",
@@ -483,12 +553,12 @@ class AssetManager:
         asset_uri_obj = AssetUri(uri) if isinstance(uri, str) else uri
 
         for current_store_name in stores_list:
-            store = self.stores.get(current_store_name)
-            if not store:
+            thestore = self.stores.get(current_store_name)
+            if not thestore:
                 logger.warning(f"Store '{current_store_name}' not registered. Skipping.")
                 continue
             try:
-                raw_data = await store.get(asset_uri_obj)
+                raw_data = await thestore.get(asset_uri_obj)
                 logger.debug(
                     f"GetRawAsync: Asset {asset_uri_obj} found in store {current_store_name}"
                 )
@@ -551,12 +621,7 @@ class AssetManager:
             elif isinstance(data_or_exc, _AssetConstructionData):
                 # Build asset instance synchronously. Exceptions during build should propagate.
                 # Use the first store from the list for caching purposes in build_asset_tree
-                store_name_for_cache = stores_list[0] if stores_list else "local"
-                assets.append(
-                    self._build_asset_tree_from_data_sync(
-                        data_or_exc, store_name_for_cache=store_name_for_cache
-                    )
-                )
+                assets.append(self._build_asset_tree_from_data_sync(data_or_exc))
             elif data_or_exc is None:  # From _fetch_... returning None for not found
                 logger.debug(f"GetBulk: Asset '{original_uri_input}' not found")
                 assets.append(None)
@@ -596,12 +661,8 @@ class AssetManager:
         for i, data_or_exc in enumerate(all_construction_data_list):
             if isinstance(data_or_exc, _AssetConstructionData):
                 # Use the first store from the list for caching purposes in build_asset_tree
-                store_name_for_cache = stores_list[0] if stores_list else "local"
-                assets.append(
-                    self._build_asset_tree_from_data_sync(
-                        data_or_exc, store_name_for_cache=store_name_for_cache
-                    )
-                )
+                asset = self._build_asset_tree_from_data_sync(data_or_exc)
+                assets.append(asset)
             elif isinstance(data_or_exc, FileNotFoundError) or data_or_exc is None:
                 assets.append(None)
             elif isinstance(data_or_exc, Exception):
@@ -625,8 +686,8 @@ class AssetManager:
             for current_store_name in stores_list:
                 store = self.stores.get(current_store_name)
                 if not store:
-                    logger.warning(f"Store '{current_store_name}' not registered. Skipping.")
-                    continue
+                    logger.error(f"Store '{current_store_name}' not registered. Skipping.")
+                    raise ValueError(f"No store registered for name: {store}")
                 try:
                     exists = await store.exists(asset_uri_obj)
                     if exists:
@@ -840,12 +901,191 @@ class AssetManager:
             )
             raise
 
+    async def copy_async(
+        self,
+        src: AssetUri,
+        dest_store: str,
+        store: str = "local",
+        dest: Optional[AssetUri] = None,
+    ) -> AssetUri:
+        """
+        Copies an asset from one location to another asynchronously.
+
+        Performs a shallow copy by wrapping get_raw_async and add_raw_async.
+        If dest is None, it defaults to the uri given in src.
+        An assertion is raised if src and store are the same as dest and
+        dest_store.
+        If the destination already exists it should be silently overwritten.
+        """
+        if dest is None:
+            dest = src
+
+        if src == dest and store == dest_store:
+            raise ValueError("Source and destination cannot be the same asset in the same store.")
+
+        raw_data = await self.get_raw_async(src, store)
+        return await self.add_raw_async(dest.asset_type, dest.asset_id, raw_data, dest_store)
+
+    def copy(
+        self,
+        src: AssetUri,
+        dest_store: str,
+        store: str = "local",
+        dest: Optional[AssetUri] = None,
+    ) -> AssetUri:
+        """
+        Copies an asset from one location to another synchronously.
+
+        Performs a shallow copy by wrapping get_raw and add_raw.
+        If dest is None, it defaults to the uri given in src.
+        An assertion is raised if src and store are the same as dest and
+        dest_store.
+        If the destination already exists it should be silently overwritten.
+        """
+        return asyncio.run(self.copy_async(src, dest_store, store, dest))
+
+    async def deepcopy_async(
+        self,
+        src: AssetUri,
+        dest_store: str,
+        store: str = "local",
+        dest: Optional[AssetUri] = None,
+    ) -> AssetUri:
+        """
+        Asynchronously deep copies an asset and its dependencies from a source store
+        to a destination store.
+
+        Args:
+            src: The AssetUri of the source asset.
+            dest_store: The name of the destination store.
+            store: The name of the source store (defaults to "local").
+            dest: Optional. The new AssetUri for the top-level asset in the
+                  destination store. If None, the original URI is used.
+
+        Returns:
+            The AssetUri of the copied top-level asset in the destination store.
+
+        Raises:
+            ValueError: If the source or destination store is not registered.
+            FileNotFoundError: If the source asset is not found.
+            RuntimeError: If a cyclic dependency is detected.
+        """
+        logger.debug(
+            f"DeepcopyAsync URI '{src}' from store '{store}' to '{dest_store}'"
+            f" with dest '{dest}'"
+        )
+        if dest is None:
+            dest = src
+
+        if store not in self.stores:
+            raise ValueError(f"Source store '{store}' not registered.")
+        if dest_store not in self.stores:
+            raise ValueError(f"Destination store '{dest_store}' not registered.")
+        if store == dest_store and src == dest:
+            raise ValueError(f"File '{src}' cannot be copied to itself.")
+
+        # Fetch the source asset and its dependencies recursively
+        # Use a new set for visited_uris for this deepcopy operation
+        construction_data = await self._fetch_asset_construction_data_recursive_async(
+            src, [store], set(), depth=None
+        )
+        if construction_data is None:
+            raise FileNotFoundError(f"Source asset '{src}' not found in store '{store}'.")
+
+        # Collect all assets (including dependencies) in a flat list,
+        # ensuring dependencies are processed before the assets that depend on them.
+        assets_to_copy: List[_AssetConstructionData] = []
+
+        def collect_assets(data: _AssetConstructionData):
+            if data.dependencies_data is not None:
+                for dep_data in data.dependencies_data.values():
+                    if dep_data:  # Only collect if dependency data was successfully fetched
+                        collect_assets(dep_data)
+            assets_to_copy.append(data)
+
+        collect_assets(construction_data)
+
+        # Process assets in the collected order (dependencies first)
+        dest_store: AssetStore = self.stores[dest_store]
+        copied_uris: Set[AssetUri] = set()
+        for asset_data in assets_to_copy:
+            # Prevent duplicate processing of the same asset
+            asset_uri = dest if asset_data.uri == src else asset_data.uri
+            if asset_uri in copied_uris:
+                logger.debug(
+                    f"Dependency '{asset_uri}' already added to '{dest_store}'," " skipping copy."
+                )
+                continue
+            copied_uris.add(asset_uri)
+
+            # Check if the dependency already exists in the destination store
+            # Dependencies should be skipped if they exist, top-level should be overwritten.
+            exists_in_dest = await dest_store.exists(asset_uri)
+            if exists_in_dest and asset_uri != src:
+                logger.debug(
+                    f"Dependency '{asset_uri}' already exists in '{dest_store}'," " skipping copy."
+                )
+                continue
+
+            # Put the asset (or dependency) into the destination store
+            # Pass the dependency_uri_map to the store's put method.
+            if exists_in_dest:
+                # If it was not skipped above, this is the top-level asset. Update it.
+                logger.debug(f"Updating asset '{asset_uri}' in '{dest_store}'")
+                dest = await dest_store.update(
+                    asset_uri,
+                    asset_data.raw_data,
+                )
+            else:
+                # If it doesn't exist, or if it's a dependency that doesn't exist, create it
+                logger.debug(f"Creating asset '{asset_uri}' in '{dest_store}'")
+                logger.debug(f"Raw data before writing: {asset_data.raw_data}")  # Added log
+                await dest_store.create(
+                    asset_uri.asset_type,
+                    asset_uri.asset_id,
+                    asset_data.raw_data,
+                )
+
+        logger.debug(f"DeepcopyAsync completed for '{src}' to '{dest}'")
+        return dest
+
+    def deepcopy(
+        self,
+        src: AssetUri,
+        dest_store: str,
+        store: str = "local",
+        dest: Optional[AssetUri] = None,
+    ) -> AssetUri:
+        """
+        Synchronously deep copies an asset and its dependencies from a source store
+        to a destination store.
+
+        Args:
+            src: The AssetUri of the source asset.
+            dest_store: The name of the destination store.
+            store: The name of the source store (defaults to "local").
+            dest: Optional. The new AssetUri for the top-level asset in the
+                  destination store. If None, the original URI is used.
+
+        Returns:
+            The AssetUri of the copied top-level asset in the destination store.
+
+        Raises:
+            ValueError: If the source or destination store is not registered.
+            FileNotFoundError: If the source asset is not found.
+            RuntimeError: If a cyclic dependency is detected.
+        """
+        logger.debug(
+            f"Deepcopy URI '{src}' from store '{store}' to '{dest_store}'" f" with dest '{dest}'"
+        )
+        return asyncio.run(self.deepcopy_async(src, dest_store, store, dest))
+
     def add_file(
         self,
         asset_type: str,
         path: pathlib.Path,
         store: str = "local",
-        asset_id: str | None = None,
+        asset_id: Optional[str] = None,
     ) -> AssetUri:
         """
         Convenience wrapper around add_raw().
