@@ -192,11 +192,19 @@ void Constraint::Save(Writer& writer) const
         auto posIds = elements
             | std::views::transform([](const GeoElementId& e) { return e.posIdAsInt(); });
 
-        const std::string ids = fmt::format("{}", fmt::join(geoIds, " "));
-        const std::string positions = fmt::format("{}", fmt::join(posIds, " "));
+        auto writeOut = [&](const auto& name, const auto& ids) {
+            if (!ids.empty()) {
+                auto id = ids.begin();
+                writer.Stream() << name << "=\"" << *id;
+                while (ids.end() != ++id) {
+                    writer.Stream() << " " << *id;
+                }
+                writer.Stream() << "\" ";
+            }
+        };
 
-        writer.Stream() << "ElementIds=\"" << ids << "\" "
-                        << "ElementPositions=\"" << positions << "\" ";
+        writeOut("ElementIds", geoIds);
+        writeOut("ElementPositions", posIds);
     }
 
     writer.Stream() << "/>\n";
