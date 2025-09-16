@@ -16,7 +16,7 @@
 
 Name:           freecad
 Epoch:          1
-Version:        weekly.2025.09.10
+Version:        weekly.2025.09.12
 Release:        1%{?dist}
 
 Summary:        A general purpose 3D CAD modeler
@@ -44,14 +44,14 @@ Source0:        freecad-sources.tar.gz
 # Utilities
 BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils tbb-devel ninja-build
 %if %{with tests}
-BuildRequires:  xorg-x11-server-Xvfb python3-typing-extensions
+BuildRequires:  xorg-x11-server-Xvfb python3-typing-extensions 
 %if %{without bundled_gtest}
 BuildRequires: gtest-devel gmock-devel
 %endif
 %endif
 
 # Development Libraries
-BuildRequires:boost-devel Coin4-devel eigen3-devel freeimage-devel fmt-devel libglvnd-devel libicu-devel libspnav-devel libXmu-devel med-devel mesa-libEGL-devel mesa-libGLU-devel netgen-mesher-devel netgen-mesher-devel-private opencascade-devel openmpi-devel python3 python3-devel python3-matplotlib python3-pivy python3-pybind11 python3-pyside6-devel python3-shiboken6-devel pyside6-tools qt6-qttools-static qt6-qtsvg-devel vtk-devel xerces-c-devel yaml-cpp-devel
+BuildRequires:boost-devel Coin4-devel eigen3-devel freeimage-devel fmt-devel libglvnd-devel libicu-devel libspnav-devel libXmu-devel med-devel mesa-libEGL-devel mesa-libGLU-devel netgen-mesher-devel netgen-mesher-devel-private opencascade-devel openmpi-devel python3 python3-devel python3-matplotlib python3-pivy python3-pybind11 python3-pyside6-devel python3-shiboken6-devel pyside6-tools qt6-qttools-static qt6-qtsvg-devel vtk-devel xerces-c-devel yaml-cpp-devel qt6-assistant
 #pcl-devel
 %if %{without bundled_smesh}
 BuildRequires:  smesh-devel
