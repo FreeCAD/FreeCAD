@@ -345,7 +345,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("Fillet/Chamfer parameters"));
+        return QString(tr("Fillet/Chamfer Parameters"));
     }
 
     bool canGoToNextMode() override
