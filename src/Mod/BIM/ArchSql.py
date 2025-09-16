@@ -37,15 +37,40 @@ def get_property(obj, prop_name):
 
 # Query Object Model
 class SelectStatement:
-    def __init__(self, columns, from_clause, where_clause):
-        self.columns = columns
+    def __init__(self, columns_info, from_clause, where_clause): # Now receives column_info
+        self.columns_info = columns_info # Stores (extractor_object, display_name) tuples
         self.from_clause = from_clause
         self.where_clause = where_clause
+
     def execute(self):
         objects = self.from_clause.get_objects()
-        if self.where_clause:
-            return [o for o in objects if self.where_clause.matches(o)]
-        return objects
+
+        # Filter objects based on where_clause
+        filtered_objects = [o for o in objects if self.where_clause is None or self.where_clause.matches(o)]
+
+        headers = []
+        results_data = []
+
+        # Determine headers and extract data values for each object
+        for extractor, display_name in self.columns_info:
+            headers.append(display_name)
+
+        for obj in filtered_objects:
+            row = []
+            for extractor, _ in self.columns_info:
+                if extractor == '*': # Handle SELECT * - always return Label for this simple case
+                    value = obj.Label if hasattr(obj, 'Label') else getattr(obj, 'Name', '')
+                else:
+                    value = extractor.get_value(obj)
+
+                # Format value for display
+                if isinstance(value, FreeCAD.Units.Quantity):
+                    row.append(value.UserString)
+                else:
+                    row.append(str(value) if value is not None else '')
+            results_data.append(row)
+
+        return headers, results_data # Always return both headers and data
 
 class FromClause:
     def __init__(self, reference):
@@ -81,7 +106,11 @@ class BooleanComparison:
         right_val = self.right.get_value(obj)
         if self.op == 'is': return left_val is right_val
         if self.op == 'is_not': return left_val is not right_val
-        if left_val is None or right_val is None: return False
+        # Strict SQL-like NULL semantics: any comparison (except IS / IS NOT)
+        # with a None (NULL) operand evaluates to False. Use IS / IS NOT for
+        # explicit NULL checks.
+        if left_val is None or right_val is None:
+            return False
         if isinstance(left_val, FreeCAD.Units.Quantity): left_val = left_val.Value
         if isinstance(right_val, FreeCAD.Units.Quantity): right_val = right_val.Value
 
@@ -97,7 +126,7 @@ class BooleanComparison:
         }
 
         try:
-            if self.op in ['=', '!=', 'like']:
+            if self.op in ['=', '!=', 'like', '>', '<', '>=', '<=']: # Explicitly list ops that need str conversion
                 left_val, right_val = str(left_val), str(right_val)
         except: return False
 
@@ -111,19 +140,39 @@ class StaticExtractor:
     def __init__(self, value): self.value = value
     def get_value(self, obj): return self.value
 
-# Lark Transformer (with no runtime dependency on the lark library)
+# Lark Transformer (with no runtime dependency on the the lark library)
 class SqlTreeTransformer:
     def start(self, i): return i[0]
     def statement(self, children):
-        cols = next((c for c in children if c.__class__ == list), None)
+        # The 'columns' rule now produces a list of (extractor, display_name) tuples
+        columns_info = next((c for c in children if c.__class__ == list), None)
         from_c = next((c for c in children if isinstance(c, FromClause)), None)
         where_c = next((c for c in children if isinstance(c, WhereClause)), None)
-        return SelectStatement(cols, from_c, where_c)
+        return SelectStatement(columns_info, from_c, where_c)
 
     def from_clause(self, i): return FromClause(i[1])
     def where_clause(self, i): return WhereClause(i[1])
-    def columns(self, i): return i
-    def column(self, i): return i[0]
+
+    # --- Columns Transformer ---
+    def columns(self, items):
+        # `items` is a list of results from `column` rules, which are (extractor, display_name) tuples
+        return items
+
+    def column(self, items):
+        # Each item in `items` is either '*' (for SELECT *) or an extractor object.
+        # We need to return a (extractor, display_name) tuple.
+        extractor = items[0]
+        if extractor == '*':
+            return ('*', 'Object Label') # Default label for SELECT *
+        elif isinstance(extractor, ReferenceExtractor):
+            return (extractor, extractor.value) # Use property name as display name
+        elif isinstance(extractor, StaticExtractor):
+            # For static values, use their string representation as display name
+            return (extractor, str(extractor.get_value(None)))
+        else: # Fallback, should not happen with current grammar
+            return (extractor, "Unknown Column")
+    # --- END Columns Transformer ---
+
     def asterisk(self, _): return "*"
 
     def boolean_expression_recursive(self, items):
@@ -186,16 +235,11 @@ def _get_query_object(query_string):
 def run_query_for_count(query_string):
     """Public interface for the Task Panel to get a result count."""
 
-    # First, do a quick pre-flight check for unclosed quotes. This is a clear
-    # sign the user is still typing a string literal.
     if (query_string.count("'") % 2 != 0) or (query_string.count('"') % 2 != 0):
         return -1, "INCOMPLETE"
 
     statement, error = _get_query_object(query_string)
     if error:
-        # A query is "incomplete" if the parser fails because it reached the end
-        # of the file unexpectedly. This can be either an UnexpectedEOF or an
-        # UnexpectedToken where the token is the special '$END' token.
         is_incomplete = isinstance(error, UnexpectedEOF) or \
                         (isinstance(error, UnexpectedToken) and error.token.type == '$END')
 
@@ -204,15 +248,18 @@ def run_query_for_count(query_string):
 
         return -1, f"Syntax Error: Invalid token near '{error.token}'" if isinstance(error, UnexpectedToken) else "Syntax Error"
     try:
-        results = statement.execute()
-        return len(results), None
+        # The execute method now returns (headers, data_rows). We only need count.
+        headers, results_data = statement.execute()
+        return len(results_data), None
     except Exception as e:
         return -1, f"Execution Error: {e}"
 
 def run_query_for_objects(query_string):
-    """Public interface for the Report object to get the resulting objects."""
+    """Public interface for the Report object to get the resulting objects (headers, data_rows)."""
     statement, error = _get_query_object(query_string)
     if error:
         FreeCAD.Console.PrintError(f"BIM Report Execution Error: A {type(error).__name__} occurred.\n")
-        return []
-    return statement.execute()
+        return [], [] # Return empty headers and data on error.
+
+    headers, results_data = statement.execute()
+    return headers, results_data
