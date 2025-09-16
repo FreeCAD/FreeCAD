@@ -302,7 +302,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("Arc Slot parameters"));
+        return QString(tr("Arc Slot Parameters"));
     }
 
     bool canGoToNextMode() override
