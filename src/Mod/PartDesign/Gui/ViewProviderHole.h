@@ -61,6 +61,7 @@ class PartDesignGuiExport ViewProviderHole : public ViewProvider
 
     SoClipPlane* m_endThreadClipper {nullptr};
     SoTexture2Transform*  m_textureTransform {nullptr};
+    SoSeparator* m_endThreadRing {nullptr};
 
 public:
     /// constructor
@@ -114,6 +115,9 @@ private:
         std::vector<SbVec2f>& uvs,
         std::array<int,3>& triIndices
     );
+
+    void updateEndThreadRing(const PartDesign::Hole* pcHole);
+
 };
 
 } // namespace PartDesignGui

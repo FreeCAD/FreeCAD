@@ -29,11 +29,17 @@
 
 #include <gp_Ax1.hxx>
 #include <gp_Dir.hxx>
+#include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
 #include <Poly_Triangle.hxx>
 
 #include <BRep_Tool.hxx>
+#include <BRepAlgoAPI_Section.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <GCPnts_QuasiUniformDeflection.hxx>
+#include <GeomAdaptor_Curve.hxx>
+#include <Geom_Circle.hxx>
 #include <Geom_ConicalSurface.hxx>
 #include <Geom_CylindricalSurface.hxx>
 #include <Geom_RectangularTrimmedSurface.hxx>
@@ -71,6 +77,9 @@
 #include <Inventor/nodes/SoTexture2Transform.h>
 #include <Inventor/nodes/SoTextureCoordinate2.h>
 #include <Inventor/nodes/SoTransparencyType.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoTranslation.h>
 
 #include "ViewProviderHole.h"
 #include "TaskHoleParameters.h"
@@ -179,6 +188,11 @@ SoSeparator* ViewProviderHole::createThreadTextureSeparator()
     auto* tt = new SoTransparencyType();
     tt->value = SoTransparencyType::DELAYED_BLEND;
     threadSep->addChild(tt);
+
+    // End thread ring
+    m_endThreadRing = new SoSeparator();
+    m_endThreadRing->ref();
+    threadSep->addChild(m_endThreadRing);
 
     // End Clipping plane
     m_endThreadClipper = new SoClipPlane();
@@ -299,6 +313,114 @@ void ViewProviderHole::updateThreadClipper(const PartDesign::Hole* pcHole)
 
     // Update the end thread clipper plane
     m_endThreadClipper->plane.setValue(SbPlane(endPlaneNormal, endPlanePoint));
+
+    updateEndThreadRing(pcHole);
+}
+
+void ViewProviderHole::updateEndThreadRing(const PartDesign::Hole* pcHole)
+{
+    if (!pcHole || !m_endThreadRing) {return;}
+
+    m_endThreadRing->removeAllChildren();
+
+    auto holeNormalOpt = getHoleNormal(pcHole);
+    if (!holeNormalOpt.has_value()) {return;}
+    gp_Dir holeNormalAxis = *holeNormalOpt;
+
+    auto holeOriginOpt = getHoleOrigin(pcHole);
+    if (!holeOriginOpt.has_value()) {return;}
+    gp_Pnt holeOriginPnt = *holeOriginOpt;
+
+    // Get the effective depth for the ring
+    const double threadDepth = pcHole->ThreadDepth.getValue();
+    const double throughLength = pcHole->getThroughAllLength();
+    const double effectiveDepth = std::min(threadDepth, throughLength);
+
+    // Compute ring position at the end of the threaded portion
+    gp_Pnt ringPnt = holeOriginPnt.Translated(
+        gp_Vec(holeNormalAxis) * (-effectiveDepth)
+    );
+
+    // Bore faces
+    auto boreFaces = collectBoreFaces(pcHole);
+    if (boreFaces.empty()) {return;}
+
+    auto* mat = new SoMaterial();
+    mat->diffuseColor.setValue(0.0F, 0.0F, 0.0F);
+    constexpr float transparency = 0.5F;
+    mat->transparency.setValue(transparency);
+    m_endThreadRing->addChild(mat);
+
+    auto* drawStyle = new SoDrawStyle();
+    constexpr float thickness = 4.0F;
+    drawStyle->lineWidth = thickness;
+    m_endThreadRing->addChild(drawStyle);
+
+    // Create a translation node to position the ring's geometry
+    auto* trans = new SoTranslation();
+    trans->translation.setValue(
+        static_cast<float>(ringPnt.X()),
+        static_cast<float>(ringPnt.Y()),
+        static_cast<float>(ringPnt.Z())
+    );
+    m_endThreadRing->addChild(trans);
+
+    // Create and add the geometry for each circular segment
+    for (const auto& boreFace : boreFaces) {
+        gp_Pln cuttingPlane(ringPnt, holeNormalAxis);
+        TopoDS_Face planeFace = BRepBuilderAPI_MakeFace(cuttingPlane);
+
+        BRepAlgoAPI_Section sectionAlgo(boreFace, planeFace, Standard_False);
+        sectionAlgo.Build();
+        if (!sectionAlgo.IsDone()) {continue;}
+
+        for (TopExp_Explorer exp(sectionAlgo.Shape(), TopAbs_EDGE); exp.More(); exp.Next()) {
+            TopoDS_Edge edge = TopoDS::Edge(exp.Current());
+            Standard_Real f = NAN;
+            Standard_Real l = NAN;
+            Handle(Geom_Curve) curve = BRep_Tool::Curve(edge, f, l);
+            if (curve.IsNull()) {continue;}
+
+            // Check for circular geometry. This will filter out any straight line edges.
+            if (curve->DynamicType() == STANDARD_TYPE(Geom_Circle)) {
+                Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(curve);
+                gp_Ax2 axis = circle->Position();
+
+                const double nominalRadius = circle->Radius();
+
+                // Slightly shirnk to avoid colliding with geometry
+                constexpr double shrinkOffset = 0.01;
+                const double radius = nominalRadius - shrinkOffset;
+                GeomAdaptor_Curve adaptor(new Geom_Circle(axis, radius), f, l);
+                double deflection = (this->Deviation.getValue() / 100.0) * std::numbers::sqrt2 * radius;
+                GCPnts_QuasiUniformDeflection sampler(adaptor, deflection);
+
+                std::vector<SbVec3f> vertices;
+                for (int i = 1; i <= sampler.NbPoints(); i++) {
+                    gp_Pnt p = sampler.Value(i);
+                    // Vertices are relative to the ringPnt, so we subtract its coordinates
+                    vertices.emplace_back(
+                        (float)(p.X() - ringPnt.X()),
+                        (float)(p.Y() - ringPnt.Y()),
+                        (float)(p.Z() - ringPnt.Z())
+                    );
+                }
+
+                if (!vertices.empty()) {
+                    auto* coords = new SoCoordinate3();
+                    coords->point.setValues(0, (int)vertices.size(), vertices.data());
+
+                    auto* lineSet = new SoLineSet();
+                    lineSet->numVertices.set1Value(0, (int)vertices.size());
+
+                    auto* sep = new SoSeparator();
+                    sep->addChild(coords);
+                    sep->addChild(lineSet);
+                    m_endThreadRing->addChild(sep);
+                }
+            }
+        }
+    }
 }
 
 std::optional<gp_Dir> ViewProviderHole::getHoleNormal(const PartDesign::Hole* pcHole) const
