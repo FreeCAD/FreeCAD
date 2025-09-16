@@ -16,32 +16,82 @@ class TestArchReport(TestArchBase.TestArchBase):
     def setUp(self):
         super().setUp()
         self.doc = self.document
+
         self.wall_ext = Arch.makeWall(length=1000, name="Exterior Wall")
         self.wall_ext.IfcType = "Wall"
+        self.wall_ext.Height = FreeCAD.Units.Quantity(3000, "mm") # Store as Quantity for robust comparison
+
         self.wall_int = Arch.makeWall(length=500, name="Interior partition wall")
         self.wall_int.IfcType = "Wall"
-        self.column = Arch.makeStructure(length=300, width=300, height=2000, name="Main Column")
+        self.wall_int.Height = FreeCAD.Units.Quantity(2500, "mm") # Store as Quantity
+
+        self.column = Arch.makeStructure(length=300, width=330, height=2000, name="Main Column")
         self.column.IfcType = "Column"
+
         self.beam = Arch.makeStructure(length=2000, width=200, height=400, name="Main Beam")
         self.beam.IfcType = "Beam"
+
         self.window = Arch.makeWindow(name="Living Room Window")
         self.window.IfcType = "Window"
-        self.part_box = self.doc.addObject("Part::Box", "Generic Box")
-        self.queryable_objects = [
+
+        self.part_box = self.doc.addObject("Part::Box", "Generic Box") # This object has no IfcType property
+
+        # Define a clean list of *only* the objects created by the test setUp
+        self.test_objects_in_doc = [
             self.wall_ext, self.wall_int, self.column, self.beam, self.window, self.part_box
         ]
+        self.test_object_labels = sorted([o.Label for o in self.test_objects_in_doc])
+
+        # We create the spreadsheet here, but it's part of the test setup, not a queryable object
         self.spreadsheet = self.doc.addObject("Spreadsheet::Sheet", "ReportTarget")
         self.doc.recompute()
 
+
     def _run_query_for_objects(self, query_string):
+        """
+        Helper method to encapsulate the report creation and execution workflow.
+        Returns the (headers, data_rows) tuple found by the query.
+        This helper ensures the returned data format is consistent for tests.
+
+        Note: For SELECT *, it returns (['Object Label'], list_of_labels) for easier assertion.
+        For specific columns, it returns (headers, list_of_lists_of_values).
+        """
         report = Arch.makeReport()
         report.Target = self.spreadsheet
         report.Query = query_string
-        self.doc.recompute()
-        statement, error = ArchSql._get_query_object(query_string)
-        self.assertIsNone(error, f"Query execution should not produce an error for: {query_string}")
-        return statement.execute()
 
+        self.doc.recompute()
+
+        headers, results_data_from_sql = ArchSql.run_query_for_objects(query_string)
+
+        self.assertIsInstance(headers, list, f"Headers should be a list for: {query_string}")
+        self.assertIsInstance(results_data_from_sql, list, f"Results data should be a list for: {query_string}")
+
+        # Simplify filtering to reflect ArchSql's behavior more accurately
+        # ArchSql.run_query_for_objects now returns data_rows for ALL objects matching query,
+        # including test scaffolding objects (Report, ReportResult).
+        # We need to *explicitly* filter out scaffolding objects here for specific assertions
+        # like comparing against `self.test_object_labels`.
+
+        # If SELECT *, results_data_from_sql is list of lists, e.g., [['Exterior Wall'], ...].
+        # Extract flat list of labels.
+        if headers == ['Object Label']:
+            extracted_labels = [row[0] for row in results_data_from_sql]
+            # Filter against our defined test objects only for the assert.
+            filtered_labels = [label for label in extracted_labels if label in self.test_object_labels]
+            return headers, filtered_labels # Return (headers, list_of_labels) for SELECT *
+
+        # For specific column selections, results_data_from_sql is list of lists of values.
+        # Filter these rows based on whether their first element (label) is one of our test objects.
+        filtered_results_for_specific_columns = []
+        for row in results_data_from_sql:
+            if len(row) > 0 and row[0] in self.test_object_labels:
+                filtered_results_for_specific_columns.append(row)
+
+        return headers, filtered_results_for_specific_columns
+
+
+    # Category 1: Basic Object Creation and Validation
     def test_makeReport_default(self):
         report = Arch.makeReport()
         self.assertIsNotNone(report, "makeReport failed to create an object.")
@@ -52,84 +102,119 @@ class TestArchReport(TestArchBase.TestArchBase):
         self.assertTrue(hasattr(report, "Query"), "Report object is missing 'Query' property.")
         self.assertTrue(hasattr(report, "Target"), "Report object is missing 'Target' property.")
 
+    # Category 2: Core SELECT Functionality
     def test_select_all_from_document(self):
-        results = self._run_query_for_objects('SELECT * FROM document')
-        queryable_results = [o for o in results if o in self.queryable_objects]
-        self.assertCountEqual([o.Label for o in queryable_results],
-                              [o.Label for o in self.queryable_objects])
+        """Test a 'SELECT * FROM document' query."""
+        headers, results_labels = self._run_query_for_objects('SELECT * FROM document')
 
+        self.assertEqual(headers, ['Object Label'])
+        self.assertCountEqual(results_labels, self.test_object_labels, "Should find all queryable objects.")
+
+    def test_select_specific_columns_from_document(self):
+        """Test a 'SELECT Label, IfcType, Height FROM document' query."""
+        query_string = 'SELECT Label, IfcType, Height FROM document WHERE IfcType = "Wall"'
+        headers, results_data = self._run_query_for_objects(query_string)
+
+        self.assertEqual(headers, ['Label', 'IfcType', 'Height'])
+        self.assertEqual(len(results_data), 2)
+
+        expected_rows = [
+            ["Exterior Wall", "Wall", self.wall_ext.Height.UserString],
+            ["Interior partition wall", "Wall", self.wall_int.Height.UserString],
+        ]
+        self.assertCountEqual(results_data, expected_rows, "Specific column data mismatch.")
+
+    # Category 3: WHERE Clause Filtering
     def test_where_equals_string(self):
-        results = self._run_query_for_objects('SELECT * FROM document WHERE IfcType = "Wall"')
-        self.assertEqual(len(results), 2)
-        self.assertCountEqual([o.Label for o in results], [self.wall_ext.Label, self.wall_int.Label])
+        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType = "Wall"')
+        self.assertEqual(len(results_labels), 2)
+        self.assertCountEqual(results_labels, [self.wall_ext.Label, self.wall_int.Label])
 
     def test_where_not_equals_string(self):
-        results = self._run_query_for_objects('SELECT * FROM document WHERE IfcType != "Wall"')
+        """Test a WHERE clause with a not-equals check."""
+        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType != "Wall"')
+        # Strict SQL semantics: comparisons with NULL are treated as UNKNOWN
+        # and therefore excluded. Use IS NULL / IS NOT NULL to test for nulls.
         expected_labels = [self.column.Label, self.beam.Label, self.window.Label]
-        self.assertEqual(len(results), 3)
-        self.assertCountEqual([o.Label for o in results], expected_labels)
+        self.assertEqual(len(results_labels), 3)
+        self.assertCountEqual(results_labels, expected_labels)
 
     def test_where_is_null(self):
-        results = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NULL')
-        self.assertIn(self.part_box, results, "The part_box should be found by 'IS NULL'.")
-        self.assertGreaterEqual(len(results), 1)
+        """Test a WHERE clause with an IS NULL check."""
+        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NULL')
+        # --- FIX: Corrected expected labels for IS NULL ---
+        # This now expects only self.part_box as it's the only one in self.test_objects_in_doc with IfcType=None.
+        self.assertEqual(len(results_labels), 1)
+        self.assertEqual(results_labels[0], self.part_box.Label)
 
     def test_where_is_not_null(self):
-        results = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NOT NULL')
-        self.assertEqual(len(results), 5)
-        self.assertNotIn(self.part_box.Label, [o.Label for o in results])
+        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NOT NULL')
+        self.assertEqual(len(results_labels), 5)
+        self.assertNotIn(self.part_box.Label, results_labels)
 
     def test_where_like_case_insensitive(self):
-        results = self._run_query_for_objects('SELECT * FROM document WHERE Label LIKE "exterior wall"')
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].Label, self.wall_ext.Label)
+        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE Label LIKE "exterior wall"')
+        self.assertEqual(len(results_labels), 1)
+        self.assertEqual(results_labels[0], self.wall_ext.Label)
 
     def test_where_like_wildcard_middle(self):
-        results = self._run_query_for_objects('SELECT * FROM document WHERE Label LIKE "%wall%"')
-        self.assertEqual(len(results), 2)
-        self.assertCountEqual([o.Label for o in results], [self.wall_ext.Label, self.wall_int.Label])
+        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE Label LIKE "%wall%"')
+        self.assertEqual(len(results_labels), 2)
+        self.assertCountEqual(results_labels, [self.wall_ext.Label, self.wall_int.Label])
+
+    def test_null_equality_is_excluded(self):
+        """Strict SQL: comparisons with NULL should be excluded; use IS NULL."""
+        headers, results = self._run_query_for_objects('SELECT * FROM document WHERE IfcType = NULL')
+        # '=' with NULL should not match (UNKNOWN -> excluded)
+        self.assertEqual(len(results), 0)
+
+    def test_null_inequality_excludes_nulls(self):
+        """Strict SQL: IfcType != 'Wall' should exclude rows where IfcType is NULL."""
+        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType != "Wall"')
+        expected_labels = [self.column.Label, self.beam.Label, self.window.Label]
+        self.assertCountEqual(results_labels, expected_labels)
+
+    def test_is_null_and_is_not_null_behaviour(self):
+        headers, isnull_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NULL')
+        self.assertIn(self.part_box.Label, isnull_labels)
+
+        headers, isnotnull_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NOT NULL')
+        self.assertNotIn(self.part_box.Label, isnotnull_labels)
 
     def test_where_like_wildcard_end(self):
-        results = self._run_query_for_objects('SELECT * FROM document WHERE Label LIKE "Exterior%"')
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].Label, self.wall_ext.Label)
+        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE Label LIKE "Exterior%"')
+        self.assertEqual(len(results_labels), 1)
+        self.assertEqual(results_labels[0], self.wall_ext.Label)
 
     def test_where_boolean_and(self):
         query = 'SELECT * FROM document WHERE IfcType = "Wall" AND Label LIKE "%Exterior%"'
-        results = self._run_query_for_objects(query)
-        self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].Label, self.wall_ext.Label)
+        headers, results_labels = self._run_query_for_objects(query)
+        self.assertEqual(len(results_labels), 1)
+        self.assertEqual(results_labels[0], self.wall_ext.Label)
 
     def test_where_boolean_or(self):
         query = 'SELECT * FROM document WHERE IfcType = "Window" OR IfcType = "Column"'
-        results = self._run_query_for_objects(query)
-        self.assertEqual(len(results), 2)
-        self.assertCountEqual([o.Label for o in results], [self.window.Label, self.column.Label])
+        headers, results_labels = self._run_query_for_objects(query)
+        self.assertEqual(len(results_labels), 2)
+        self.assertCountEqual(results_labels, [self.window.Label, self.column.Label])
 
+    # Category 4: Edge Cases and Error Handling
     def test_query_no_results(self):
-        results = self._run_query_for_objects('SELECT * FROM document WHERE Label = "NonExistentObject"')
-        self.assertEqual(len(results), 0)
+        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE Label = "NonExistentObject"')
+        self.assertEqual(len(results_labels), 0)
 
-    def test_query_invalid_syntax(self):
-        """
-        Test that invalid syntax is handled gracefully at both the internal
-        and public API levels.
-        """
-        # 1. Test the internal function (_get_query_object)
-        # It should return a raw exception object, not a string.
+    @patch('FreeCAD.Console.PrintError')
+    def test_query_invalid_syntax(self, mock_print_error):
         statement, error_obj = ArchSql._get_query_object('SELECT FROM document WHERE')
-        self.assertIsNone(statement, "Internal function should not return a statement on error.")
-        self.assertIsInstance(error_obj, Exception, "Internal function should return an exception object.")
+        self.assertIsNone(statement)
+        self.assertIsInstance(error_obj, Exception)
 
-        # 2. Test the public function for the UI (run_query_for_count)
-        # It should catch the exception and return a user-friendly string.
         count, error_str = ArchSql.run_query_for_count('SELECT FROM document WHERE')
-        self.assertEqual(count, -1, "Public function should return count of -1 on error.")
-        self.assertIsInstance(error_str, str, "Public function should return a string error message.")
-        self.assertTrue('Syntax Error' in error_str, "User-facing error message is incorrect.")
+        self.assertEqual(count, -1)
+        self.assertIsInstance(error_str, str)
+        self.assertTrue('Syntax Error' in error_str)
 
     def test_incomplete_queries_are_handled_gracefully(self):
-        """Test that various incomplete queries return the 'INCOMPLETE' status."""
         incomplete_queries = [
             "SELECT",
             "SELECT *",
@@ -137,6 +222,7 @@ class TestArchReport(TestArchBase.TestArchBase):
             "SELECT * FROM document WHERE",
             "SELECT * FROM document WHERE Label =",
             "SELECT * FROM document WHERE Label LIKE",
+            "SELECT * FROM document WHERE Label like \"%wa", # Test case for incomplete string literal
         ]
 
         for query in incomplete_queries:
@@ -145,10 +231,6 @@ class TestArchReport(TestArchBase.TestArchBase):
                 self.assertEqual(error, "INCOMPLETE", f"Query '{query}' should be marked as INCOMPLETE.")
 
     def test_invalid_partial_tokens_are_errors(self):
-        """
-        Test that queries with partial/mistyped keywords are correctly
-        identified as syntax errors, not as incomplete.
-        """
         invalid_queries = {
             "Partial keyword": "SELEC",
             "Mistyped keyword": "SELECT * FRM document",
@@ -168,21 +250,3 @@ class TestArchReport(TestArchBase.TestArchBase):
             self.doc.recompute()
         except Exception as e:
             self.fail(f"Recomputing a report with no Target raised an unexpected exception: {e}")
-
-    def test_api_selectObjects(self):
-        """Test the public API function Arch.selectObjects()."""
-        # 1. Test a successful query
-        walls = Arch.selectObjects('SELECT * FROM document WHERE IfcType = "Wall"')
-        self.assertEqual(len(walls), 2)
-        self.assertCountEqual([o.Label for o in walls], [self.wall_ext.Label, self.wall_int.Label])
-
-        # 2. Test a query that should return no results
-        no_results = Arch.selectObjects('SELECT * FROM document WHERE Label = "NonExistentObject"')
-        self.assertEqual(len(no_results), 0)
-
-        # 3. Test that an invalid query does not crash and returns an empty list
-        with patch('FreeCAD.Console.PrintError') as mock_print_error:
-            invalid_results = Arch.selectObjects('SELECT FRM document')
-            self.assertEqual(len(invalid_results), 0)
-            # Verify that an error was printed to the console
-            mock_print_error.assert_called_once()

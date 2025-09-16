@@ -41,6 +41,8 @@ class _ArchReport:
         self.setProperties(obj)
         obj.Proxy = self
         self.Type = 'ArchReport'
+        # --- FIX: Initialize self.spreadsheet ---
+        self.spreadsheet = None
 
     def onDocumentRestored(self, obj):
         self.setProperties(obj)
@@ -67,9 +69,6 @@ class _ArchReport:
 
         Behaviour intentionally mirrors ArchSchedule.getSpreadSheet.
         """
-        # If we cached a spreadsheet, check it still belongs to this report.
-        # If the attribute access raises, let the exception propagate so the
-        # caller can handle it (don't silently swallow deletions).
         if getattr(self, 'spreadsheet', None) is not None and getattr(self.spreadsheet, 'Report', None) == obj:
             return self.spreadsheet
 
@@ -79,8 +78,9 @@ class _ArchReport:
                 return self.spreadsheet
 
         if force:
-            self.spreadsheet = FreeCAD.ActiveDocument.addObject('Spreadsheet::Sheet', 'ReportResult')
-            self.setReportPropertySpreadsheet(self.spreadsheet, obj)
+            sheet = FreeCAD.ActiveDocument.addObject('Spreadsheet::Sheet', 'ReportResult')
+            self.setReportPropertySpreadsheet(sheet, obj)
+            self.spreadsheet = sheet
             return self.spreadsheet
         else:
             return None
@@ -96,44 +96,43 @@ class _ArchReport:
                     FreeCAD.removeDocumentObserver(self.docObserver)
                     self.docObserver = None
 
-    def setSpreadsheetData(self, obj, labels, force=False):
+    def setSpreadsheetData(self, obj, headers, data_rows, force=False):
         """Write header and rows into the spreadsheet, then recompute and purgeTouched."""
-        if not hasattr(self, 'data'):
-            self.data = labels
-        if not self.data:
-            return
         if not (getattr(obj, 'Target', None) or force):
             return
         sp = self.getSpreadSheet(obj, force=True)
-        # preserve widths
-        widths = [sp.getColumnWidth(col) for col in ('A', 'B', 'C')]
+        if not sp:
+            return
+
+        widths = [sp.getColumnWidth(col) for col in ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H')]
         sp.clearAll()
-        for col, width in zip(('A', 'B', 'C'), widths):
-            sp.setColumnWidth(col, width)
-        sp.set('A1', 'Object Label')
-        sp.setStyle('A1', 'bold', 'add')
-        for k, v in enumerate(self.data, start=2):
-            sp.set('A%d' % k, v)
+        for i, width in enumerate(widths):
+            sp.setColumnWidth(chr(ord('A') + i), width)
+
+        for col_idx, header_text in enumerate(headers):
+            sp.set(f"{chr(ord('A') + col_idx)}1", f"'{header_text}'")
+        sp.setStyle('A1:%s1' % chr(ord('A') + len(headers) - 1), 'bold', 'add')
+
+        for row_idx, row_data in enumerate(data_rows, start=2):
+            for col_idx, cell_value in enumerate(row_data):
+                sp.set(f"{chr(ord('A') + col_idx)}{row_idx}", f"'{cell_value}'")
+
         sp.recompute()
         sp.purgeTouched()
 
     def execute(self, obj):
         if not getattr(obj, 'Query', None):
             return
-        results = ArchSql.run_query_for_objects(obj.Query)
-        if results is None:
+
+        # --- FIX: run_query_for_objects now consistently returns (headers, data_rows) ---
+        headers, results_data = ArchSql.run_query_for_objects(obj.Query)
+
+        if results_data is None: # This should now be an empty list, not None, if no results
             FreeCAD.Console.PrintError("Report '%s': Error executing query.\n" % getattr(obj, 'Label', ''))
             return
-        labels = []
-        for o in results:
-            if o is None:
-                continue
-            if getattr(o, 'TypeId', '') == 'Spreadsheet::Sheet':
-                continue
-            if hasattr(o, 'Proxy') and getattr(o.Proxy, 'Type', None) in ('Schedule', 'ArchReport'):
-                continue
-            labels.append(getattr(o, 'Label', getattr(o, 'Name', '')))
-        self.setSpreadsheetData(obj, labels, force=True)
+
+        # setSpreadsheetData expects (headers, list_of_lists_of_values)
+        self.setSpreadsheetData(obj, headers, results_data, force=True)
 
 
 class Report(_ArchReport):
@@ -158,18 +157,20 @@ class ViewProviderReport:
         return ":/icons/Arch_Schedule.svg"
 
     def doubleClicked(self, vobj):
-        # Delegate to setEdit, which is the primary and standard entry point.
         return self.setEdit(vobj, 0)
 
     def setEdit(self, vobj, mode):
-        # This is the primary entry point for all edit operations.
-        # Mode 0 is the default edit mode (double-click, F2, context menu).
         if mode == 0:
             if not hasattr(vobj.Object, "Query"):
                 return False
             if FreeCAD.GuiUp:
                 panel = ReportTaskPanel(vobj.Object)
-                FreeCADGui.Control.showDialog(panel)
+                try:
+                    FreeCADGui.Control.showDialog(panel)
+                except RuntimeError as e:
+                    # Avoid raising into the caller (e.g., double click handler)
+                    FreeCAD.Console.PrintError(f"Could not open Report editor: {e}\n")
+                    return False
             return True
         return False
 
@@ -191,11 +192,9 @@ class ViewProviderReport:
         return children
 
     def dumps(self):
-        """Tells FreeCAD not to save any state for this view provider."""
         return None
 
     def loads(self, state):
-        """Tells FreeCAD not to restore any state for this view provider."""
         return None
 
 
@@ -248,18 +247,14 @@ class ReportTaskPanel:
         count, error = ArchSql.run_query_for_count(query)
 
         try:
-            # Handle the "incomplete" case first and exit.
             if error == "INCOMPLETE":
-                return  # Do nothing and wait for the user to finish typing.
+                return
 
-            # Handle any actual syntax errors and exit.
             if error:
                 self.status_label.setText(f"❌ {error}")
                 self.status_label.setStyleSheet("color: red;")
                 return
 
-            # If we reach this point, the query is valid (error is None).
-            # We now only need to distinguish between zero and non-zero results.
             if count == 0:
                 message = "⚠️ Query is valid, but found 0 objects."
                 color = "orange"
@@ -271,7 +266,6 @@ class ReportTaskPanel:
             self.status_label.setStyleSheet(f"color: {color};")
 
         except Exception:
-            # If any other unexpected error happens, catch it and print the full traceback
             import traceback
             self.status_label.setText("❌ An unexpected error occurred. See Report View.")
             self.status_label.setStyleSheet("color: red;")
