@@ -494,7 +494,8 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("B-spline Parameters"));
+        return QString(tr("B-Spline Parameters"));
+
     }
 
     bool canGoToNextMode() override
