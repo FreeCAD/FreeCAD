@@ -114,6 +114,16 @@ bool ViewProviderFemPostPipeline::onDelete(const std::vector<std::string>& objs)
     return ViewProviderFemPostObject::onDelete(objs);
 }
 
+void ViewProviderFemPostPipeline::beforeDelete()
+{
+    ViewProviderFemAnalysis* analyzeView = getAnalyzeView(this->getObject());
+    if (analyzeView) {
+        analyzeView->removeView(this);
+    }
+
+    return ViewProviderFemPostObject::beforeDelete();
+}
+
 void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges& sel)
 {
     // If a FemPostObject is selected in the document tree we must refresh its
