@@ -158,6 +158,13 @@ def getToolBitPath() -> pathlib.Path:
     return getAssetPath() / "Tools" / "Bit"
 
 
+def getTemplateDirectory() -> pathlib.Path:
+    """Returns the directory where job templates should be saved."""
+    template_path = getAssetPath() / "Templates"
+    template_path.mkdir(parents=True, exist_ok=True)
+    return template_path
+
+
 def getLastToolLibrary() -> Optional[str]:
     pref = tool_preferences()
     return pref.GetString(LastToolLibrary) or None
@@ -239,6 +246,9 @@ def macroFilePath():
 
 def searchPaths():
     paths = []
+    # Add new CamAssets/Templates directory first (highest priority)
+    paths.append(str(getTemplateDirectory()))
+    # Add legacy locations for backward compatibility
     p = defaultFilePath()
     if p:
         paths.append(p)
