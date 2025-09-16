@@ -42,7 +42,7 @@ Source0:        freecad-sources.tar.gz
 %global bundled_ondsel_solver_version 1.0.1
 
 # Utilities
-BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils tbb-devel ninja-build
+BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils tbb-devel ninja-build strace
 %if %{with tests}
 BuildRequires:  xorg-x11-server-Xvfb python3-typing-extensions 
 %if %{without bundled_gtest}
@@ -51,7 +51,7 @@ BuildRequires: gtest-devel gmock-devel
 %endif
 
 # Development Libraries
-BuildRequires:boost-devel Coin4-devel eigen3-devel freeimage-devel fmt-devel libglvnd-devel libicu-devel libspnav-devel libXmu-devel med-devel mesa-libEGL-devel mesa-libGLU-devel netgen-mesher-devel netgen-mesher-devel-private opencascade-devel openmpi-devel python3 python3-devel python3-matplotlib python3-pivy python3-pybind11 python3-pyside6-devel python3-shiboken6-devel pyside6-tools qt6-qttools-static qt6-qtsvg-devel vtk-devel xerces-c-devel yaml-cpp-devel qt6-assistant
+BuildRequires:boost-devel Coin4-devel eigen3-devel freeimage-devel fmt-devel libglvnd-devel libicu-devel libspnav-devel libXmu-devel med-devel mesa-libEGL-devel mesa-libGLU-devel netgen-mesher-devel netgen-mesher-devel-private opencascade-devel openmpi-devel python3 python3-devel python3-matplotlib python3-pivy python3-pybind11 python3-pyside6-devel python3-shiboken6-devel pyside6-tools qt6-qttools-static qt6-qtsvg-devel vtk-devel xerces-c-devel yaml-cpp-devel
 #pcl-devel
 %if %{without bundled_smesh}
 BuildRequires:  smesh-devel
@@ -219,7 +219,7 @@ Development file for OndselSolver
 
 %if %{with tests}
     mkdir -p %{buildroot}%tests_resultdir
-    if %ctest &> %{buildroot}%tests_resultdir/ctest.result ; then
+    if %ctest -E 'QuantitySpinBox_Tests_run' &> %{buildroot}%tests_resultdir/ctest.result ; then
         echo "ctest OK"
     else
         echo "**** Failed ctest ****"
@@ -233,6 +233,14 @@ Development file for OndselSolver
             cat %{buildroot}%tests_resultdir/ctest.result
         fi
     fi
+
+    if xvfb-run %ctest -R 'QuantitySpinBox_Tests_run' &>> %{buildroot}%tests_resultdir/ctest.result ; then
+        echo "ctest OK"
+    else
+        echo "**** Failed ctest ****"
+        touch %{buildroot}%tests_resultdir/ctest.failed
+    fi
+
 %endif
 
     desktop-file-validate %{buildroot}%{_datadir}/applications/org.freecad.FreeCAD.desktop
