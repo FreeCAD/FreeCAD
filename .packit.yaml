@@ -26,9 +26,11 @@ jobs:
   branch: main
   additional_repos:
     - copr://bpostle/IfcOpenShell
-
   targets:
     fedora-stable:
+      without_opts:
+      - debug_info
+    fedora-development:
       without_opts:
       - debug_info
 
