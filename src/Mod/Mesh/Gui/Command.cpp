@@ -84,7 +84,7 @@ CmdMeshUnion::CmdMeshUnion()
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
     sMenuText = QT_TR_NOOP("Union");
-    sToolTipText = QT_TR_NOOP("Unites the selected meshes");
+    sToolTipText = QT_TR_NOOP("Unifies the selected meshes");
     sWhatsThis = "Mesh_Union";
     sStatusTip = sToolTipText;
     sPixmap = "Mesh_Union";

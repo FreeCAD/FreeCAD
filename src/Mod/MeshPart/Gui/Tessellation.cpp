@@ -277,7 +277,7 @@ bool Tessellation::accept()
                 this,
                 windowTitle(),
                 tr("Error: body without a tip selected.\n"
-                   "Either set the tip of the body or select a different shapee."));
+                   "Either set the tip of the body or select a different shape."));
         }
         else if (partWithNoFace) {
             QMessageBox::critical(this,
