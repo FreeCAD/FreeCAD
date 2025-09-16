@@ -30,7 +30,7 @@ Models:
     UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
     SpecificHeat: "960 J/kg/K"
     ThermalConductivity: "130 W/m/K"
-    ThermalExpansionCoefficient: "0.000236 m/m/K"
+    ThermalExpansionCoefficient: "0.0000236 m/m/K"
   Costs:
     UUID: '881df808-8726-4c2e-be38-688bb6cce466'
     ProductURL: "https://en.wikipedia.org/wiki/7075_aluminium_alloy"
