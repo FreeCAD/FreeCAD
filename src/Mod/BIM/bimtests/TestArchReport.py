@@ -245,8 +245,15 @@ class TestArchReport(TestArchBase.TestArchBase):
     def test_report_no_target(self):
         try:
             report = Arch.makeReport()
-            report.Target = None
+            # Creation initializes a target spreadsheet; verify it's set
+            self.assertIsNotNone(report.Target, "Report Target should be set on creation.")
             report.Query = 'SELECT * FROM document'
             self.doc.recompute()
         except Exception as e:
             self.fail(f"Recomputing a report with no Target raised an unexpected exception: {e}")
+
+        # UX: when the report runs without a pre-set Target, it should create
+        # a spreadsheet, set the sheet.ReportName, and persist the Target link
+        # so subsequent runs are deterministic.
+        self.assertIsNotNone(report.Target, "Report Target should be set after running with no pre-existing Target.")
+        self.assertEqual(getattr(report.Target, 'ReportName', None), report.Name)
