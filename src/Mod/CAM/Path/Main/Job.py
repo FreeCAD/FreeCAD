@@ -144,12 +144,13 @@ class ObjectJob:
         )
         obj.setEditorMode("LastPostProcessOutput", 2)  # Hide
 
-        obj.addProperty(
-            "App::PropertyString",
-            "Description",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "An optional description for this job"),
-        )
+        if "Description" not in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyString",
+                "Description",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "An optional description for this job"),
+            )
         obj.addProperty(
             "App::PropertyString",
             "CycleTime",
