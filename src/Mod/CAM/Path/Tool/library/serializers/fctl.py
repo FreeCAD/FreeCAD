@@ -181,3 +181,88 @@ class FCTLSerializer(AssetSerializer):
 
         # Now deserialize with the resolved dependencies
         return cls.deserialize(data, library_id, resolved_dependencies)
+
+    @classmethod
+    def deep_deserialize_with_context(cls, data: bytes, file_path: "pathlib.Path"):
+        """Deep deserialize a library with file path context for external dependencies."""
+        import uuid
+        import pathlib
+        from ...camassets import cam_assets
+        from ...toolbit.serializers import all_serializers as toolbit_serializers
+
+        # Generate a unique ID for this library instance
+        library_id = str(uuid.uuid4())
+
+        Path.Log.info(
+            f"FCTL DEEP_DESERIALIZE_WITH_CONTEXT: Starting deep deserialization for library from {file_path}"
+        )
+
+        # Extract dependency URIs from the library data
+        dependency_uris = cls.extract_dependencies(data)
+        Path.Log.info(
+            f"FCTL DEEP_DESERIALIZE_WITH_CONTEXT: Found {len(dependency_uris)} toolbit dependencies: {[uri.asset_id for uri in dependency_uris]}"
+        )
+
+        # Fetch all toolbit dependencies
+        resolved_dependencies = {}
+        for dep_uri in dependency_uris:
+            try:
+                # First try to get from asset manager stores
+                Path.Log.info(
+                    f"FCTL EXTERNAL: Trying to fetch toolbit '{dep_uri.asset_id}' from stores ['local', 'builtin']"
+                )
+                toolbit = cam_assets.get(dep_uri, store=["local", "builtin"], depth=0)
+                resolved_dependencies[dep_uri] = toolbit
+                Path.Log.info(
+                    f"FCTL EXTERNAL: Successfully fetched toolbit '{dep_uri.asset_id}' from stores"
+                )
+            except Exception as e:
+                # If not in stores, try to load from parallel Bit directory
+                Path.Log.info(
+                    f"FCTL EXTERNAL: Toolbit '{dep_uri.asset_id}' not in stores, trying external file: {e}"
+                )
+                
+                # Look for toolbit files in parallel Bit directory
+                library_dir = file_path.parent  # e.g., /path/to/Library/
+                tools_dir = library_dir.parent  # e.g., /path/to/
+                bit_dir = tools_dir / "Bit"     # e.g., /path/to/Bit/
+                
+                toolbit_loaded = False
+                if bit_dir.exists():
+                    possible_extensions = [".fctb", ".json", ".yaml", ".yml"]
+                    for ext in possible_extensions:
+                        toolbit_file = bit_dir / f"{dep_uri.asset_id}{ext}"
+                        if toolbit_file.exists():
+                            try:
+                                # Find appropriate serializer for the file
+                                from ...assets.ui.util import get_serializer_from_extension
+                                serializer_class = get_serializer_from_extension(
+                                    toolbit_serializers, ext, for_import=True
+                                )
+                                if serializer_class:
+                                    # Load and deserialize the toolbit
+                                    raw_toolbit_data = toolbit_file.read_bytes()
+                                    toolbit = serializer_class.deep_deserialize(raw_toolbit_data)
+                                    resolved_dependencies[dep_uri] = toolbit
+                                    toolbit_loaded = True
+                                    Path.Log.info(
+                                        f"FCTL EXTERNAL: Successfully loaded toolbit '{dep_uri.asset_id}' from {toolbit_file}"
+                                    )
+                                    break
+                            except Exception as load_error:
+                                Path.Log.warning(
+                                    f"FCTL EXTERNAL: Failed to load toolbit from {toolbit_file}: {load_error}"
+                                )
+                                continue
+                
+                if not toolbit_loaded:
+                    Path.Log.warning(
+                        f"FCTL EXTERNAL: Could not load toolbit '{dep_uri.asset_id}' from external files"
+                    )
+
+        Path.Log.info(
+            f"FCTL EXTERNAL: Resolved {len(resolved_dependencies)} of {len(dependency_uris)} dependencies"
+        )
+
+        # Now deserialize with the resolved dependencies
+        return cls.deserialize(data, library_id, resolved_dependencies)
