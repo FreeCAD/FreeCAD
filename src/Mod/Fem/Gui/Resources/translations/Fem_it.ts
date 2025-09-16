@@ -890,12 +890,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="307"/>
       <source>Initial time increment</source>
-      <translation type="unfinished">Initial time increment</translation>
+      <translation>Incremento tempo iniziale</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="314"/>
       <source>Time period</source>
-      <translation type="unfinished">Time period</translation>
+      <translation>Periodo temporale</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="360"/>
@@ -910,17 +910,17 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="521"/>
       <source>Maximum number of increments</source>
-      <translation type="unfinished">Maximum number of increments</translation>
+      <translation>Numero massimo di incrementi</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="528"/>
       <source>Minimum time increment</source>
-      <translation type="unfinished">Minimum time increment</translation>
+      <translation>Incremento minimo di tempo</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="658"/>
       <source>Maximum time increment</source>
-      <translation type="unfinished">Maximum time increment</translation>
+      <translation>Incremento massimo di tempo</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="724"/>
@@ -1293,10 +1293,10 @@ not belonging to faces and faces not belonging to volumes.</translation>
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups - faces and nodes where
 the constraint or material is applied.</source>
-      <translation type="unfinished">Mesh groups are exported too.
-Every analysis feature and, if there are different materials,
-material consists of two mesh groups - faces and nodes where
-the constraint or material is applied.</translation>
+      <translation>Anche i gruppi di mesh sono esportati.
+Ogni funzionalità di analisi e, se ci sono materiali diversi, il materiale
+costituito da due gruppi di mesh, facce e nodi dove
+è applicato il vincolo o il materiale.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="56"/>
@@ -1500,7 +1500,7 @@ si aggiunge un contenitore di analisi</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="91"/>
       <source>Not an executable binary</source>
-      <translation type="unfinished">Not an executable binary</translation>
+      <translation>Non è un binario eseguibile</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="92"/>
@@ -1508,10 +1508,10 @@ si aggiunge un contenitore di analisi</translation>
 '%1'
  does not exist or is not executable.
 Specify another file.</source>
-      <translation type="unfinished">The specified file
+      <translation>Il file specificato
 '%1'
- does not exist or is not executable.
-Specify another file.</translation>
+ non esiste o non è eseguibile.
+Specifica un altro file.</translation>
     </message>
   </context>
   <context>
@@ -6789,14 +6789,14 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="54"/>
       <source>Python path</source>
-      <translation type="unfinished">Python path</translation>
+      <translation>Percorso di Python</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
       <source>Python executable for which Netgen Python bindings are installed.
 Leave blank to use default Python executable</source>
-      <translation type="unfinished">Python executable for which Netgen Python bindings are installed.
-Leave blank to use default Python executable</translation>
+      <translation>Eseguibile Python per il quale sono installati i binding di Netgen Python.
+Lascia vuoto per usare l'eseguibile Python predefinito</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="102"/>
@@ -7898,7 +7898,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../fempreferencepages/dlg_settings_netgen.py" line="84"/>
       <source>Executable '{}' not found</source>
-      <translation type="unfinished">Executable '{}' not found</translation>
+      <translation>Eseguibile '{}' non trovato</translation>
     </message>
   </context>
   <context>
@@ -7906,7 +7906,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_centrif.py" line="67"/>
       <source>Axis Reference Selector</source>
-      <translation type="unfinished">Axis Reference Selector</translation>
+      <translation>Selettore di riferimento asse</translation>
     </message>
   </context>
 </TS>

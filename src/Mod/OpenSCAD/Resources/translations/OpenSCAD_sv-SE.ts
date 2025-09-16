@@ -174,7 +174,7 @@
       <location filename="../../InitGui.py" line="135"/>
       <location filename="../../InitGui.py" line="148"/>
       <source>If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</source>
-      <translation>Om OpenSCAD-körningen inte lyckas ladda den temporära filen, använd FreeCADs OpenSCAD Workbench Preferences för att ändra överföringsmekanismen.</translation>
+      <translation>Om OpenSCAD-körningen inte lyckas läsa in den temporära filen, använd FreeCADs arbetsbänksinställningar för OpenSCAD för att ändra överföringsmekanismen.</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="143"/>
@@ -200,7 +200,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="365"/>
       <source>Load</source>
-      <translation>Ladda</translation>
+      <translation>Läs in</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="366"/>

@@ -685,11 +685,6 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>导入文件</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="816"/>
-      <source>Copy &amp; Paste failed</source>
-      <translation>复制粘贴失败</translation>
-    </message>
-    <message>
       <location filename="../../SpreadsheetView.cpp" line="495"/>
       <source>Alias contains invalid characters!</source>
       <translation>别名包含无效字符！</translation>
@@ -737,6 +732,11 @@ Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
       <location filename="../../Workbench.cpp" line="116"/>
       <source>Sets the spreadsheet cells background color</source>
       <translation>设置电子表格单元格的背景颜色</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="816"/>
+      <source>Copy &amp; Paste Failed</source>
+      <translation type="unfinished">Copy &amp; Paste Failed</translation>
     </message>
   </context>
   <context>
@@ -889,8 +889,8 @@ Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="223"/>
-      <source>Bind cells</source>
-      <translation>绑定单元格：</translation>
+      <source>Bind Cells</source>
+      <translation type="unfinished">Bind Cells</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="224"/>
@@ -915,8 +915,8 @@ Continue?</source>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="300"/>
-      <source>Unbind cells</source>
-      <translation>取消绑定单元格</translation>
+      <source>Unbind Cells</source>
+      <translation type="unfinished">Unbind Cells</translation>
     </message>
   </context>
   <context>
@@ -1011,19 +1011,6 @@ Defaults to: %V = %A
     </message>
   </context>
   <context>
-    <name>SpreadsheetGui::DlgSheetConf</name>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="280"/>
-      <source>Setup configuration table</source>
-      <translation>设置配置表</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="338"/>
-      <source>Unsetup configuration table</source>
-      <translation>取消配置表格</translation>
-    </message>
-  </context>
-  <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
       <location filename="../../SheetTableView.cpp" line="202"/>
@@ -1114,8 +1101,8 @@ Defaults to: %V = %A
     <message>
       <location filename="../../SheetTableView.cpp" line="210"/>
       <location filename="../../SheetTableView.cpp" line="668"/>
-      <source>Split Cells</source>
-      <translation>拆分单元格</translation>
+      <source>Split Cell</source>
+      <translation type="unfinished">Split Cell</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="213"/>
@@ -1198,6 +1185,19 @@ Defaults to: %V = %A
       <location filename="../../ZoomableView.cpp" line="112"/>
       <source>Zoom Level</source>
       <translation>缩放级别</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::DlgSheetConf</name>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="280"/>
+      <source>Setup Configuration Table</source>
+      <translation>设置配置表</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="338"/>
+      <source>Unsetup Configuration Table</source>
+      <translation type="unfinished">Unsetup Configuration Table</translation>
     </message>
   </context>
 </TS>

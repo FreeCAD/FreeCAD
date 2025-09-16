@@ -488,7 +488,7 @@ A value in the range of 0.2-10.</source>
     <message>
         <location filename="../../Tessellation.cpp" line="279"/>
         <source>Error: body without a tip selected.
-Either set the tip of the body or select a different shapee.</source>
+Either set the tip of the body or select a different shape.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
