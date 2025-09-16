@@ -5,7 +5,7 @@ General:
   License: "CC-BY-4.0"
   Name: "Aluminum 6061-T6"
   Description: "Precipitation-hardened, Nonferrous Aluminum alloy"
-  SourceURL: "https://asm.matweb.com/search/SpecificMaterial.asp?bassnum=ma6061t4"
+  SourceURL: "https://asm.matweb.com/search/SpecificMaterial.asp?bassnum=ma6061t6"
 Inherits:
   Aluminum:
     UUID: "d1f317f0-5ffa-4798-8ab3-af2ff0b5182c"
@@ -23,14 +23,14 @@ Models:
     Density: "2700 kg/m^3"
     PoissonRatio: "0.33"
     ShearModulus: "26.0 GPa"
-    UltimateTensileStrength: "241 MPa"
-    YieldStrength: "145 MPa"
+    UltimateTensileStrength: "310 MPa"
+    YieldStrength: "276 MPa"
     YoungsModulus: "68900 MPa"
   Thermal:
     UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
     SpecificHeat: "896 J/kg/K"
-    ThermalConductivity: "154 W/m/K"
-    ThermalExpansionCoefficient: "0.000236 m/m/K"
+    ThermalConductivity: "167 W/m/K"
+    ThermalExpansionCoefficient: "0.0000236 m/m/K"
   Costs:
     UUID: '881df808-8726-4c2e-be38-688bb6cce466'
     ProductURL: "https://en.wikipedia.org/wiki/6061_aluminium_alloy"
