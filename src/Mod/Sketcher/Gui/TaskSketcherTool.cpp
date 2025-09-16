@@ -45,7 +45,7 @@ using namespace SketcherGui;
 using namespace Gui::TaskView;
 
 TaskSketcherTool::TaskSketcherTool(ViewProviderSketch* sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Tool parameters"), true, nullptr)
+    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Tool Parameters"), true, nullptr)
     , sketchView(sketchView)
 {}
 

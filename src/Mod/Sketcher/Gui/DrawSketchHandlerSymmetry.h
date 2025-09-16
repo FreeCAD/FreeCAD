@@ -191,7 +191,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("Symmetry parameters"));
+        return QString(tr("Symmetry Parameters"));
     }
 
     void activated() override
