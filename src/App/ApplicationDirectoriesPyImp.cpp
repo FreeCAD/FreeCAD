@@ -18,13 +18,10 @@
  *                                                                                                 *
  **************************************************************************************************/
 
-#include "PreCompiled.h"  // NOLINT
-#ifndef _PreComp_
 #include <Python.h>
 #include <filesystem>
 #include <string>
 #include <vector>
-#endif
 
 
 #include "Application.h"
