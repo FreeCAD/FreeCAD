@@ -77,6 +77,38 @@ class SelectStatement:
 
         return headers, results_data
 
+    def validate(self):
+        """
+        Validates the select statement against SQL rules, such as those for GROUP BY.
+        Raises ValueError on failure with a user-friendly message.
+        """
+        if self.group_by_clause:
+            # Rule: Every column in the SELECT list must either be an aggregate function,
+            # a static value, or be part of the GROUP BY clause.
+            group_by_col_names = {ex.value for ex in self.group_by_clause.columns}
+
+            for extractor, _ in self.columns_info:
+                if extractor.__class__.__name__ in ['AggregateFunction', 'StaticExtractor']:
+                    continue  # Valid cases
+
+                if extractor == '*':
+                    raise ValueError("Cannot use '*' in a SELECT statement with a GROUP BY clause.")
+
+                if extractor.__class__.__name__ == 'ReferenceExtractor':
+                    if extractor.value not in group_by_col_names:
+                        raise ValueError(
+                            f"Column '{extractor.value}' must appear in the GROUP BY clause "
+                            "or be used in an aggregate function."
+                        )
+            return
+
+        # Rule: If there is no GROUP BY, you cannot mix aggregate and non-aggregate columns.
+        has_aggregate = any(ex.__class__.__name__ == 'AggregateFunction' for ex, _ in self.columns_info)
+        has_non_aggregate = any(ex.__class__.__name__ != 'AggregateFunction' for ex, _ in self.columns_info)
+
+        if has_aggregate and has_non_aggregate:
+            raise ValueError("Cannot mix aggregate functions and regular columns without a GROUP BY clause.")
+
     def _get_grouping_key(self, obj, group_by_extractors):
         """Generates a tuple key for an object based on the GROUP BY columns."""
         key_parts = []
@@ -193,9 +225,8 @@ class SelectStatement:
                         else:
                             value = f"'{extractor.function_name}' NOT_IMPL"
                 else:
-                    # This is an invalid query (mixing aggregate and non-aggregate without GROUP BY).
-                    # This will be caught by validation in a later step. For now, return None.
-                    value = None
+                    # This case is handled by the validate() method and should not be reached.
+                    value = "VALIDATION_ERROR"
 
                 row.append(str(value) if value is not None else 'None')
             results_data.append(row)
@@ -290,7 +321,7 @@ class StaticExtractor:
 class SqlTreeTransformer:
     def start(self, i): return i[0]
     def statement(self, children):
-        # The 'columns' rule now produces a list of (extractor, display_name) tuples
+        # The 'columns' rule produces a list of (extractor, display_name) tuples
         columns_info = next((c for c in children if c.__class__ == list), None)
         from_c = next((c for c in children if isinstance(c, FromClause)), None)
         where_c = next((c for c in children if isinstance(c, WhereClause)), None)
@@ -385,7 +416,11 @@ def _get_query_object(query_string):
     try:
         tree = _parser.parse(query_string)
         statement = _transformer.transform(tree)
+        statement.validate()
         return statement, None
+    except ValueError as e:
+        # Catch validation errors from the validate() method.
+        return None, str(e)
     except Exception as e:
         return None, e
 
@@ -405,7 +440,7 @@ def run_query_for_count(query_string):
 
         return -1, f"Syntax Error: Invalid token near '{error.token}'" if isinstance(error, UnexpectedToken) else "Syntax Error"
     try:
-        # The execute method now returns (headers, data_rows). We only need count.
+        # The execute method returns (headers, data_rows). We only need count.
         headers, results_data = statement.execute()
         return len(results_data), None
     except Exception as e:
