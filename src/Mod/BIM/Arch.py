@@ -2399,6 +2399,7 @@ def makeReport(name=None):
     App::FeaturePython
         The created report object.
     """
+    import ArchReport
 
     # Use the helper to create the main object. Note that we pass the
     # correct class and module names.
@@ -2414,6 +2415,12 @@ def makeReport(name=None):
     # The helper returns None if there's no document, so we can exit early.
     if not report_obj:
         return None
+
+    # Initialize the Statements property
+    # Report object proxy needs its Statements list initialized before getSpreadSheet is called,
+    # as getSpreadSheet calls execute() which now relies on obj.Statements.
+    # Initialize with one default statement to provide a starting point for the user.
+    report_obj.Statements = [ArchReport.ReportStatement(description=translate("Arch", "New Statement"))]
 
     # Initialize a spreadsheet if the report requests one. The report is responsible for how the
     # association is stored (we use a non-dependent ``ReportName`` on the sheet and persist the
