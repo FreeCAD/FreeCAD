@@ -105,7 +105,7 @@ void SoArrowGeometry::notify(SoNotList* notList)
         auto translation = SO_GET_ANY_PART(this, "_arrowTipTranslation", SoTranslation);
         translation->translation = SbVec3f(0, (cylinderHeight.getValue() + coneHeight.getValue()) / 2.0f, 0);
 
-        tipPosition = {0, cylinderHeight.getValue() + 1.5f * coneHeight.getValue(), 0};
+        tipPosition = {0, cylinderHeight.getValue() + coneHeight.getValue(), 0};
     }
 }
 

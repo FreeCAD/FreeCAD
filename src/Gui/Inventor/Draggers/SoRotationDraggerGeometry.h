@@ -44,8 +44,8 @@ class GuiExport SoRotatorGeometryKit: public SoBaseKit
 public:
     static void initClass();
 
-    SoSFVec3f pivotPosition;
-    SoSFVec3f geometryScale;
+    SoSFVec3f pivotPosition; //!< should be set in the subclasses depending on the geometry
+    SoSFVec3f geometryScale; //!< set from the parent dragger
 
 protected:
     SoRotatorGeometryKit();
