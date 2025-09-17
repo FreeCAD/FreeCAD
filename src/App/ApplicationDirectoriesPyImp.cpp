@@ -70,17 +70,16 @@ std::string ApplicationDirectoriesPy::representation() const
 
         for (Py::Sequence::size_type i = 0; i < size; i++) {
             Py::Object item = seq[i];
-            if (PyUnicode_Check(item.ptr())) {
-                const char* s = PyUnicode_AsUTF8(item.ptr());
-                if (!s) {
-                    return nullptr; // PyUnicode_AsUTF8 sets an error
-                }
-                paths[i] = Base::FileInfo::stringToPath(s);
-            }
-            else {
+
+            if (!PyUnicode_Check(item.ptr())) {
                 PyErr_SetString(PyExc_RuntimeError, "path was not a string");
                 return nullptr;
             }
+            const char* s = PyUnicode_AsUTF8(item.ptr());
+            if (!s) {
+                return nullptr; // PyUnicode_AsUTF8 sets an error
+            }
+            paths[i] = Base::FileInfo::stringToPath(s);
         }
         App::Application::directories()->migrateAllPaths(paths);
     }
