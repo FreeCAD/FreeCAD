@@ -73,6 +73,9 @@ public:
     void drawBorder() override;
     void updateView(bool update = false) override;
 
+    // leaders are not draggable
+    void dragFinished() override { };
+
     virtual TechDraw::DrawLeaderLine* getLeaderFeature();
 
     void startPathEdit();
