@@ -2429,6 +2429,10 @@ def makeReport(name=None):
     if hasattr(report_obj, 'Proxy') and hasattr(report_obj.Proxy, 'getSpreadSheet'):
         sheet = report_obj.Proxy.getSpreadSheet(report_obj, force=True)
 
+    if FreeCAD.GuiUp:
+        # Automatically open the task panel for the new report
+        FreeCADGui.ActiveDocument.setEdit(report_obj.Name, 0)
+
     return report_obj
 
 def selectObjects(query_string):
