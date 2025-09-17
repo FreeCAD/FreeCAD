@@ -4,7 +4,7 @@ General:
   Name: "PMMA-Generic"
   Author: "FreeCAD"
   License: "CC-BY-SA-4.0"
-  Description: "Poly(methyl methacrylate) (PMMA) is a synthetic polymer derived from methyl methacrylate. It is a transparent thermoplastic, used as an engineering plastic. If you need a more precise material definition use the more specialised POM-blend cards."
+  Description: "Poly(methyl methacrylate) (PMMA) is a synthetic polymer derived from methyl methacrylate. It is a transparent thermoplastic, used as an engineering plastic. If you need a more precise material definition use the more specialised PMMA-blend cards."
   SourceURL: "https://www.matweb.com/search/DataSheet.aspx?MatGUID=3cb08da2a0054447a3790015b7214d07"
 Models:
   Father:
