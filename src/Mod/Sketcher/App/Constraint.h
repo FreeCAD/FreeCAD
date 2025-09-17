@@ -68,6 +68,7 @@ enum ConstraintType : int
     Block = 17,
     Diameter = 18,
     Weight = 19,
+    PointOnSegment = 20,
     NumConstraintTypes  // must be the last item!
 };
 
