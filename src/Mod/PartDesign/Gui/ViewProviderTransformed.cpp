@@ -36,6 +36,8 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Mod/Part/App/Tools.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 
@@ -176,4 +178,15 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
     updatePreview();
 
     handleTransformedResult(pcTransformed);
+}
+
+
+Gui::View3DInventorViewer* ViewProviderTransformed::getViewer()
+{
+    Gui::MDIView* view = getActiveView();
+    if (!view) {
+        return nullptr;
+    }
+
+    return dynamic_cast<Gui::View3DInventor*>(view)->getViewer();
 }

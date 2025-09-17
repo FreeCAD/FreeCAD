@@ -151,37 +151,6 @@ private:
 
     int nOnViewParameter = OnViewParametersT::defaultMethodSize();
 
-    /// Class to keep track of colors used by the on-view parameters
-    class ColorManager
-    {
-    public:
-        SbColor dimConstrColor, dimConstrDeactivatedColor;
-
-        ColorManager()
-        {
-            init();
-        }
-
-    private:
-        void init()
-        {
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/View");
-
-            dimConstrColor = SbColor(1.0f, 0.149f, 0.0f);           // NOLINT
-            dimConstrDeactivatedColor = SbColor(0.5f, 0.5f, 0.5f);  // NOLINT
-
-            float transparency = 0.f;
-            unsigned long color = (unsigned long)(dimConstrColor.getPackedValue());
-            color = hGrp->GetUnsigned("ConstrainedDimColor", color);
-            dimConstrColor.setPackedValue((uint32_t)color, transparency);
-
-            color = (unsigned long)(dimConstrDeactivatedColor.getPackedValue());
-            color = hGrp->GetUnsigned("DeactivatedConstrDimColor", color);
-            dimConstrDeactivatedColor.setPackedValue((uint32_t)color, transparency);
-        }
-    };
-
     class OnViewParameterVisibilityManager
     {
     public:
@@ -661,7 +630,6 @@ protected:
                                  .emplace_back(std::make_unique<Gui::EditableDatumLabel>(
                                      viewer,
                                      placement,
-                                     colorManager.dimConstrDeactivatedColor,
                                      /*autoDistance = */ true,
                                      /*avoidMouseCursor = */ true))
                                  .get();
@@ -669,7 +637,7 @@ protected:
             QObject::connect(parameter,
                              &Gui::EditableDatumLabel::valueChanged,
                              [this, parameter, i](double value) {
-                                 parameter->setColor(colorManager.dimConstrColor);
+                                 parameter->setActivatedColor();
                                  onViewValueChanged(i, value);
                              });
 
@@ -695,7 +663,7 @@ protected:
     {
         onViewParameter->isSet = false;
         onViewParameter->hasFinishedEditing = false;
-        onViewParameter->setColor(colorManager.dimConstrDeactivatedColor);
+        onViewParameter->setDeactivatedColor();
     }
 
     void setOnViewParameterValue(OnViewParameter index,
@@ -853,7 +821,6 @@ private:
 
 private:
     OnViewParameterVisibilityManager ovpVisibilityManager;
-    ColorManager colorManager;
     std::unique_ptr<DrawSketchKeyboardManager> keymanager;
 
     bool firstMoveInit = false;  // true if first mouse movement not yet performed (resets)

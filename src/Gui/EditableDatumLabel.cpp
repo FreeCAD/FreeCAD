@@ -27,6 +27,11 @@
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoTransform.h>
 # include <Inventor/nodes/SoSwitch.h>
+# include <Inventor/nodes/SoEventCallback.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/SoPath.h>
 
 #include <QEvent>
 #include <QKeyEvent>
@@ -53,7 +58,6 @@ struct NodeData {
 
 EditableDatumLabel::EditableDatumLabel(View3DInventorViewer* view,
                                        const Base::Placement& plc,
-                                       SbColor color,
                                        bool autoDistance,
                                        bool avoidMouseCursor)
     : isSet(false)
@@ -66,9 +70,13 @@ EditableDatumLabel::EditableDatumLabel(View3DInventorViewer* view,
     , spinBox(nullptr)
     , lockIconLabel(nullptr)
     , cameraSensor(nullptr)
+    , pickStyle(nullptr)
     , function(Function::Positioning)
+    , originalValue(0.0)
 {
     // NOLINTBEGIN
+    initColors();
+
     root = new SoSwitch;
     root->ref();
 
@@ -81,10 +89,19 @@ EditableDatumLabel::EditableDatumLabel(View3DInventorViewer* view,
     transform->ref();
     annotation->addChild(transform);
 
+    eventCallback = new SoEventCallback;
+    eventCallback->ref();
+    eventCallback->addEventCallback(SoMouseButtonEvent::getClassTypeId(), eventCallbackF, this);
+    annotation->addChild(eventCallback);
+    pickStyle = new SoPickStyle;
+    pickStyle->ref();
+    pickStyle->style = SoPickStyle::UNPICKABLE;
+    annotation->addChild(pickStyle);
+
     label = new SoDatumLabel();
     label->ref();
     label->string = " ";
-    label->textColor = color;
+    setDeactivatedColor();
     label->size.setValue(17);
     label->lineWidth = 2.0;
     label->useAntialiasing = false;
@@ -108,6 +125,8 @@ EditableDatumLabel::~EditableDatumLabel()
     deactivate();
     transform->unref();
     annotation->unref();
+    eventCallback->unref();
+    pickStyle->unref();
     root->unref();
     label->unref();
 }
@@ -159,6 +178,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
 
     QWidget* mdi = viewer->parentWidget();
 
+    originalValue = val;
     label->string = " ";
 
     spinBox = new QuantitySpinBox(mdi);
@@ -249,21 +269,29 @@ bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
             return false;
         }
     }
+    else if (event->type() == QEvent::FocusOut) {
+        if (watched == spinBox) {
+            Q_EMIT focusLost();
+            return true;
+        }
+    }
 
     return QObject::eventFilter(watched, event);
 }
 
-void EditableDatumLabel::stopEdit()
+void EditableDatumLabel::stopEdit(bool writeChanges)
 {
     if (spinBox) {
-        // write the spinbox value in the label.
-        Base::Quantity quantity = spinBox->value();
-
-        double factor{};
-        std::string unitStr;
-        std::string valueStr;
-        valueStr = quantity.getUserString(factor, unitStr);
-        label->string = SbString(valueStr.c_str());
+        if (writeChanges) {
+            // write the spinbox value in the label.
+            Base::Quantity quantity = spinBox->value();
+            std::string valueStr = quantity.getUserString();
+            label->string = SbString(valueStr.c_str());
+        }
+        else {
+            Base::Quantity quantity(originalValue, spinBox->unit());
+            label->string = quantity.getUserString().c_str();
+        }
 
         spinBox->deleteLater();
         spinBox = nullptr;
@@ -415,6 +443,77 @@ void EditableDatumLabel::setPlacement(const Base::Placement& plc)
 void EditableDatumLabel::setColor(SbColor color)
 {
     label->textColor = color;
+}
+
+void EditableDatumLabel::setActivatedColor()
+{
+    label->textColor = dimConstrColor;
+}
+
+void EditableDatumLabel::setDeactivatedColor()
+{
+    label->textColor = dimConstrDeactivatedColor;
+}
+
+void EditableDatumLabel::initColors()
+{
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+
+    dimConstrColor = SbColor(1.0f, 0.149f, 0.0f);           // NOLINT
+    dimConstrDeactivatedColor = SbColor(0.5f, 0.5f, 0.5f);  // NOLINT
+
+    float transparency = 0.f;
+    unsigned long color = (unsigned long)(dimConstrColor.getPackedValue());
+    color = hGrp->GetUnsigned("ConstrainedDimColor", color);
+    dimConstrColor.setPackedValue((uint32_t)color, transparency);
+
+    color = (unsigned long)(dimConstrDeactivatedColor.getPackedValue());
+    color = hGrp->GetUnsigned("DeactivatedConstrDimColor", color);
+    dimConstrDeactivatedColor.setPackedValue((uint32_t)color, transparency);
+}
+
+void EditableDatumLabel::eventCallbackF(void* userData, SoEventCallback* cb)
+{
+    auto* self = static_cast<EditableDatumLabel*>(userData);
+    self->handleEvent(cb);
+}
+
+void EditableDatumLabel::handleEvent(SoEventCallback* cb)
+{
+    // The callback is registered only for SoMouseButtonEvent, so we can rely on the type.
+    const auto* mouseEvent = static_cast<const SoMouseButtonEvent*>(cb->getEvent());
+
+    // Check for a left mouse button press (DOWN state).
+    if (mouseEvent->getButton() == SoMouseButtonEvent::BUTTON1
+        && mouseEvent->getState() == SoMouseButtonEvent::DOWN) {
+        // Get the information about what was picked.
+        const SoPickedPoint* pickedPoint = cb->getPickedPoint();
+
+        // If nothing was under the cursor, do nothing.
+        if (!pickedPoint) {
+            return;
+        }
+
+        // Get the scene graph path to the object that was actually picked.
+        const SoPath* path = pickedPoint->getPath();
+        if (!path) {
+            return;
+        }
+
+        if (path->containsNode(this->annotation)) {
+            // The click was on our label! Handle the event and emit the signal.
+            cb->setHandled();
+            Q_EMIT clicked(this);
+        }
+        // If the click was on other geometry, the 'if' condition fails,
+        // and we do nothing, which is the correct behavior.
+    }
+}
+
+void EditableDatumLabel::setPickable(bool val)
+{
+    pickStyle->style = val ? SoPickStyle::SHAPE_ON_TOP : SoPickStyle::UNPICKABLE;
 }
 
 void EditableDatumLabel::setFocus()
