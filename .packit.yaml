@@ -19,13 +19,13 @@ jobs:
 - job: copr_build
   identifier: pull_request
   trigger: pull_request
-  manual_trigger: true
   notifications:
     pull_request:
       successful_build: True
   branch: main
   additional_repos:
     - copr://bpostle/IfcOpenShell
+  manual_trigger: true
   targets:
     fedora-stable:
       without_opts:
@@ -37,15 +37,12 @@ jobs:
 - job: tests
   identifier: pull_request
   trigger: pull_request
-  manual_trigger: true
   branch: main
+  manual_trigger: true
   targets:
     fedora-latest-stable:
       without_opts:
       - debug_info
-  tf_post_install_script: |
-    sudo dnf copr enable bpostle/IfcOpenShell
-    sudo dnf install IfcOpenShell-python3
   fmf_path: package/fedora/tests
 
 - job: copr_build
