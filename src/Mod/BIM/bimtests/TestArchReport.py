@@ -377,3 +377,19 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         self.assertAlmostEqual(min_length, 500.0)
         self.assertAlmostEqual(max_length, 1000.0)
+
+    def test_invalid_group_by_raises_error(self):
+        """A SELECT column not in GROUP BY and not in an aggregate should fail validation."""
+        # 'Label' is not aggregated and not in the 'GROUP BY' clause, making this query invalid.
+        query = 'SELECT Label, COUNT(*) FROM document GROUP BY IfcType'
+
+        # We expect the validation step, which is part of _get_query_object, to catch this.
+        # It should return an error message, not a valid statement object.
+        statement, error = ArchSql._get_query_object(query)
+
+        self.assertIsNone(statement, "A statement object should not be created for an invalid query.")
+        self.assertIsNotNone(error, "An error message should have been returned.")
+
+        # Check for a specific, user-friendly error message.
+        self.assertIn("must appear in the GROUP BY clause", str(error),
+                      "The error message is not descriptive enough.")
