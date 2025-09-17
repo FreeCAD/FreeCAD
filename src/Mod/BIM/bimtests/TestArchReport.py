@@ -99,7 +99,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # For aggregate queries (e.g., containing COUNT, GROUP BY), the results are summaries,
         # not direct object properties. The filtering logic below is incorrect for them.
         # We can detect an aggregate query if the headers contain typical aggregate function names.
-        is_aggregate_query = any('COUNT' in h or 'SUM' in h for h in headers)
+        is_aggregate_query = is_aggregate_query = any(agg in h for h in headers for agg in ['COUNT', 'SUM', 'MIN', 'MAX'])
         if is_aggregate_query:
             return headers, results_data_from_sql
 
@@ -342,3 +342,38 @@ class TestArchReport(TestArchBase.TestArchBase):
         self.assertEqual(len(results_data), 1, "Non-grouped aggregate should return a single row.")
         self.assertEqual(int(results_data[0][0]), len(self.test_objects_in_doc), "COUNT(*) did not return the total number of test objects.")
 
+    def test_group_by_with_sum(self):
+        """Test GROUP BY with SUM() on a numeric property."""
+        # Note: We filter for objects that are likely to have a Height property to get a clean sum.
+        query = "SELECT IfcType, SUM(Height) FROM document " \
+                "WHERE IfcType = 'Wall' OR IfcType = 'Column' " \
+                "GROUP BY IfcType"
+        headers, results_data = self._run_query_for_objects(query)
+
+        self.assertEqual(headers, ['IfcType', 'SUM(Height)'])
+        results_dict = {row[0]: float(row[1]) for row in results_data}
+
+        # Expected sums:
+        # Walls: Exterior (3000) + Interior (2500) = 5500
+        # Columns: Main Column (2000)
+        expected_sums = {
+            "Wall": 5500.0,
+            "Column": 2000.0,
+        }
+        self.assertDictEqual(results_dict, expected_sums)
+        self.assertNotIn("Window", results_dict, "Groups excluded by WHERE should not appear.")
+
+    def test_min_and_max_functions(self):
+        """Test MIN() and MAX() functions on a numeric property."""
+        query = "SELECT MIN(Length), MAX(Length) FROM document WHERE IfcType = 'Wall'"
+        headers, results_data = self._run_query_for_objects(query)
+
+        self.assertEqual(headers, ['MIN(Length)', 'MAX(Length)'])
+        self.assertEqual(len(results_data), 1, "Aggregate query without GROUP BY should return one row.")
+
+        # Expected: Interior wall is 500, Exterior wall is 1000
+        min_length = float(results_data[0][0])
+        max_length = float(results_data[0][1])
+
+        self.assertAlmostEqual(min_length, 500.0)
+        self.assertAlmostEqual(max_length, 1000.0)

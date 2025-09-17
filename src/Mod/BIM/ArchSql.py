@@ -113,9 +113,31 @@ class SelectStatement:
                 if isinstance(extractor, AggregateFunction):
                     if extractor.function_name == 'count':
                         value = len(object_list)
-                    # Placeholder for future aggregate functions (SUM, etc.)
                     else:
-                        value = f"'{extractor.function_name}' NOT_IMPL"
+                        # For other aggregates, extract the relevant property from all objects in the group
+                        arg_extractor = extractor.argument
+                        values = []
+                        for obj in object_list:
+                            prop_val = arg_extractor.get_value(obj)
+                            # Ensure we only aggregate numeric, non-null values
+                            if prop_val is not None:
+                                # Handle FreeCAD.Quantity by using its value
+                                if isinstance(prop_val, FreeCAD.Units.Quantity):
+                                    prop_val = prop_val.Value
+                                if isinstance(prop_val, (int, float)):
+                                    values.append(prop_val)
+
+                        if not values:
+                            value = None # Return None if no valid numeric values were found
+                        elif extractor.function_name == 'sum':
+                            value = sum(values)
+                        elif extractor.function_name == 'min':
+                            value = min(values)
+                        elif extractor.function_name == 'max':
+                            value = max(values)
+                        else:
+                            value = f"'{extractor.function_name}' NOT_IMPL"
+
                 else:
                     # This must be a column from the GROUP BY clause. We find which part
                     # of the key corresponds to this column.
@@ -147,9 +169,29 @@ class SelectStatement:
                 if isinstance(extractor, AggregateFunction):
                     if extractor.function_name == 'count':
                         value = len(objects)
-                    # Placeholder for future aggregate functions (SUM, etc.) on the whole set
                     else:
-                        value = f"'{extractor.function_name}' NOT_IMPL"
+                        # For other aggregates, extract the relevant property from all objects
+                        arg_extractor = extractor.argument
+                        values = []
+                        for obj in objects:
+                            prop_val = arg_extractor.get_value(obj)
+                            # Ensure we only aggregate numeric, non-null values
+                            if prop_val is not None:
+                                if isinstance(prop_val, FreeCAD.Units.Quantity):
+                                    prop_val = prop_val.Value
+                                if isinstance(prop_val, (int, float)):
+                                    values.append(prop_val)
+
+                        if not values:
+                            value = None
+                        elif extractor.function_name == 'sum':
+                            value = sum(values)
+                        elif extractor.function_name == 'min':
+                            value = min(values)
+                        elif extractor.function_name == 'max':
+                            value = max(values)
+                        else:
+                            value = f"'{extractor.function_name}' NOT_IMPL"
                 else:
                     # This is an invalid query (mixing aggregate and non-aggregate without GROUP BY).
                     # This will be caught by validation in a later step. For now, return None.
