@@ -568,7 +568,7 @@ void ApplicationDirectories::migrateAllPaths(const std::vector<fs::path> &paths)
             newPath = path / versionStringForPath(major, minor);
         }
         if (fs::exists(newPath)) {
-            throw Base::RuntimeError("Cannot migrate config - path already exists: " + Base::FileInfo::pathToString(newPath));
+            continue;  // Ignore an existing path: not an error, just a migration that was already done
         }
         fs::create_directories(newPath);
         migrateConfig(path, newPath);
