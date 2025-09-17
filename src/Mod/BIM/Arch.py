@@ -2420,7 +2420,8 @@ def makeReport(name=None):
     # Report object proxy needs its Statements list initialized before getSpreadSheet is called,
     # as getSpreadSheet calls execute() which now relies on obj.Statements.
     # Initialize with one default statement to provide a starting point for the user.
-    report_obj.Statements = [ArchReport.ReportStatement(description=translate("Arch", "New Statement"))]
+    default_stmt = ArchReport.ReportStatement(description=translate("Arch", "New Statement"))
+    report_obj.Statements = [default_stmt.dumps()]
 
     # Initialize a spreadsheet if the report requests one. The report is responsible for how the
     # association is stored (we use a non-dependent ``ReportName`` on the sheet and persist the
