@@ -552,16 +552,18 @@ TEST_F(ApplicationDirectoriesTest, migrateAllPathsNonVersionedInputAppendsCurren
 }
 
 // Pre-existing destination -> throws Base::RuntimeError
-TEST_F(ApplicationDirectoriesTest, migrateAllPathsThrowsIfDestinationAlreadyExists_NonVersioned)
+TEST_F(ApplicationDirectoriesTest, migrateAllPathsIgnoresIfDestinationAlreadyExists_NonVersioned)
 {
     auto appDirs = makeAppDirsForVersion(5, 4);
 
     fs::path base = tempDir() / "exists_case";
     fs::create_directories(base);
-    fs::create_directories(versionedPath(base, 5, 4));  // destination already exists
+    fs::path dest = versionedPath(base, 5, 4);
+    fs::create_directories(dest);  // destination already exists
 
     std::vector<fs::path> inputs {base};
-    EXPECT_THROW(appDirs->migrateAllPaths(inputs), Base::RuntimeError);
+
+    ASSERT_NO_THROW(appDirs->migrateAllPaths(inputs));
 }
 
 // Multiple inputs: one versioned, one non-versioned -> both destinations created
