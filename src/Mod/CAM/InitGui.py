@@ -22,9 +22,47 @@
 # *                                                                         *
 # ***************************************************************************
 import FreeCAD
+import Path.Preferences
 
+import shutil
+import pathlib
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from FreeCADGui import Workbench
+    from PySide.QtWidgets import QMessageBox
+else:
+    # Provide a dummy Workbench class when GUI is not available
+    class Workbench:
+        pass
 
 FreeCAD.__unit_test__ += ["TestCAMGui"]
+
+
+
+# if FreeCAD.GuiUp:
+#     import FreeCADGui
+#     import Path.Base.Gui.PreferencesAdvanced as PathPreferencesAdvanced
+#     import Path.Base.Gui.PreferencesJob as PathPreferencesPathJob
+#     import Path.Dressup.Gui.Preferences as PathPreferencesPathDressup
+#     import Path.Tool.assets.ui.preferences as AssetPreferences
+
+#     FreeCADGui.addPreferencePage(
+#         PathPreferencesPathJob.JobPreferencesPage,
+#         QT_TRANSLATE_NOOP("QObject", "CAM"),
+#     )
+#     FreeCADGui.addPreferencePage(
+#         AssetPreferences.AssetPreferencesPage,
+#         QT_TRANSLATE_NOOP("QObject", "CAM"),
+#     )
+#     FreeCADGui.addPreferencePage(
+#         PathPreferencesPathDressup.DressupPreferencesPage,
+#         QT_TRANSLATE_NOOP("QObject", "CAM"),
+#     )
+#     FreeCADGui.addPreferencePage(
+#         PathPreferencesAdvanced.AdvancedPreferencesPage,
+#         QT_TRANSLATE_NOOP("QObject", "CAM"),
+#     )
 
 
 class PathCommandGroup:
@@ -58,6 +96,94 @@ class CAMWorkbench(Workbench):
         self.__class__.MenuText = "CAM"
         self.__class__.ToolTip = "CAM workbench"
 
+    def _migrate_cam_assets(self, current_version, cam_asset_path):
+        """
+        Migrate CAM assets to a versioned directory.
+        """
+        try:
+            # Create versioned directory name
+            cam_asset_path = pathlib.Path(cam_asset_path)
+            parent_dir = cam_asset_path.parent
+            versioned_name = f"{cam_asset_path.name}_{current_version}"
+            versioned_path = parent_dir / versioned_name
+            
+            # Copy the existing assets to the versioned directory
+            if cam_asset_path.exists():
+                shutil.copytree(cam_asset_path, versioned_path, dirs_exist_ok=True)
+                
+                # Update the CAM asset preference to point to the new location
+                Path.Preferences.setAssetPath(str(versioned_path))
+                
+                Path.Log.info(f"CAM assets migrated to versioned directory: {versioned_path}")
+            else:
+                Path.Log.warning(f"CAM asset path does not exist: {cam_asset_path}")
+                
+        except Exception as e:
+            Path.Log.error(f"Failed to migrate CAM assets: {e}")
+            if FreeCAD.GuiUp:
+                QMessageBox.critical(
+                    FreeCADGui.getMainWindow(),
+                    "CAM Asset Migration Failed",
+                    f"Failed to migrate CAM assets: {str(e)}"
+                )
+
+    def _offer_cam_asset_migration(self, current_version, cam_asset_path, pref_group, known_versions):
+        """
+        Offer CAM asset migration to the user.
+        """
+        if not FreeCAD.GuiUp:
+            return
+            
+        result = QMessageBox.question(
+            FreeCADGui.getMainWindow(),
+            "CAM Asset Migration",
+            f"CAM Assets are stored in a custom location:\n{cam_asset_path}\n\n"
+            f"Would you like to create a versioned copy for FreeCAD v{current_version}?",
+            QMessageBox.Yes | QMessageBox.No
+        )
+        
+        # Record that we offered migration for this version
+        known_versions.add(current_version)
+        pref_group.SetASCII("OfferedToMigrateCAMAssets", ','.join(known_versions))
+        
+        if result == QMessageBox.Yes:
+            self._migrate_cam_assets(current_version, cam_asset_path)
+
+    def _check_cam_asset_migration(self):
+        """
+        Check if CAM asset migration is needed for version upgrade.
+        """
+        try:
+            # Only proceed if not using custom directories (same as main system)
+            if FreeCAD.Application.directories().usingCustomDirectories():
+                return
+            
+            # Get the current CAM asset path
+            cam_asset_path = Path.Preferences.getAssetPath()
+            user_app_data_dir = pathlib.Path(FreeCAD.getUserAppDataDir())
+            
+            # Only migrate if CamAssets is outside the standard user data directory
+            if pathlib.Path(cam_asset_path).is_relative_to(user_app_data_dir):
+                return  # CamAssets is in default location, no custom migration needed
+            
+            # Check if we've already offered migration for this version
+            pref_group = FreeCAD.GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/CAM/Migration")
+            
+            major = int(FreeCAD.Application.Config()["BuildVersionMajor"])
+            minor = int(FreeCAD.Application.Config()["BuildVersionMinor"])
+            current_version = FreeCAD.ApplicationDirectories.versionStringForPath(major, minor)
+            
+            offered_versions = pref_group.GetASCII("OfferedToMigrateCAMAssets", "")
+            known_versions = set(offered_versions.split(',')) if offered_versions else set()
+            
+            if current_version not in known_versions:
+                # Offer migration
+                self._offer_cam_asset_migration(current_version, cam_asset_path, pref_group, known_versions)
+                
+        except Exception as e:
+            Path.Log.error(f"Error checking CAM asset migration: {e}")
+
     def Initialize(self):
         global PathCommandGroup
 
@@ -82,6 +208,13 @@ class CAMWorkbench(Workbench):
         from Path.Main.Gui import SanityCmd as SanityCmd
         from Path.Tool.toolbit.ui import cmd as PathToolBitCmd
         from Path.Tool.library.ui import cmd as PathToolBitLibraryCmd
+
+        from Path.Tool.camassets import cam_assets
+
+        cam_assets.setup()
+
+        # Check if CAM asset migration is needed for version upgrade
+        self._check_cam_asset_migration()
 
         from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -339,6 +472,7 @@ class CAMWorkbench(Workbench):
                     "Profile" in selectedName
                     or "Contour" in selectedName
                     or "Dressup" in selectedName
+                    or "Pocket" in selectedName
                 ):
                     self.appendContextMenu("", "Separator")
                     # self.appendContextMenu("", ["Set_StartPoint"])
