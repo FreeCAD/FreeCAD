@@ -37,6 +37,7 @@
 #include "DockWindowManager.h"
 #include "MainWindow.h"
 #include "OverlayManager.h"
+#include "OverlayWidgets.h"
 
 
 using namespace Gui;
@@ -148,6 +149,7 @@ struct DockWindowManagerP
     DockWindowItems _dockWindowItems;
     ParameterGrp::handle _hPref;
     boost::signals2::scoped_connection _connParam;
+    boost::signals2::scoped_connection _connOverlayPref;
     QTimer _timer;
     DockWidgetEventFilter _dockWidgetEventFilter;
     QPointer<OverlayManager> overlayManager;
@@ -169,6 +171,10 @@ void DockWindowManager::destruct()
     _instance = nullptr;
 }
 
+// Forward declarations: helpers for restoring and forcing redock of dock widgets.
+static void restoreNativeTitleBarIfOverlay(QDockWidget *dw);
+static void forceRedockDockWidget(QDockWidget *dw);
+
 DockWindowManager::DockWindowManager()
 {
     d = new DockWindowManagerP;
@@ -178,6 +184,93 @@ DockWindowManager::DockWindowManager()
     if (grp->GetBool("ActivateOverlay", true)) {
         setupOverlayManagement();
     }
+
+    // Listen to ActivateOverlay changes at runtime so we can enable/disable
+    // overlay management immediately when the user toggles the setting.
+    d->_connOverlayPref = grp->Manager()->signalParamChanged.connect(
+        [this, grp](ParameterGrp *Param, ParameterGrp::ParamType Type, const char *name, const char *) {
+            if (Param != grp)
+                return;
+            if (!name || strcmp(name, "ActivateOverlay") != 0)
+                return;
+            bool enabled = grp->GetBool("ActivateOverlay", true);
+            if (!enabled) {
+                // Disable overlays immediately
+                if (d->overlayManager) {
+                    // First, force-redock any dock that currently uses an OverlayTitleBar so
+                    // the native titlebar gets recreated properly.
+                    for (auto dw : d->_dockedWindows) {
+                        if (!dw)
+                            continue;
+                        QWidget *tb = dw->titleBarWidget();
+                        if (qobject_cast<OverlayTitleBar*>(tb)) {
+                            forceRedockDockWidget(dw);
+                        }
+                    }
+                    d->overlayManager->setOverlayMode(OverlayManager::OverlayMode::DisableAll);
+                    OverlayManager::destruct();
+                    d->overlayManager = nullptr;
+                }
+                // Ensure any overlay titlebars are replaced with native ones
+                for (auto dw : d->_dockedWindows)
+                    restoreNativeTitleBarIfOverlay(dw);
+            } else {
+                // Enable overlay management
+                if (!d->overlayManager)
+                    setupOverlayManagement();
+            }
+    });
+}
+
+// Helper: if the dock has an overlay titlebar installed but overlays are disabled,
+// restore the native titlebar and window flags.
+static void restoreNativeTitleBarIfOverlay(QDockWidget *dw)
+{
+    if (!dw)
+        return;
+    QWidget *tb = dw->titleBarWidget();
+    if (!tb)
+        return;
+    // Only remove OverlayTitleBar instances to avoid touching other custom titlebars
+    if (qobject_cast<OverlayTitleBar*>(tb)) {
+        tb->deleteLater();
+        dw->setTitleBarWidget(nullptr);
+        // remove frameless/translucent flags that overlay code may have set
+        dw->setWindowFlags(dw->windowFlags() & ~Qt::FramelessWindowHint);
+        dw->setAttribute(Qt::WA_TranslucentBackground, false);
+        dw->show();
+    }
+}
+
+// Force a dock widget to temporarily float and re-dock to its current area so the
+// native titlebar and window flags are recreated. This mirrors the approach used
+// in OverlayManager to recreate titlebars without relying on the overlay manager.
+static void forceRedockDockWidget(QDockWidget *dw)
+{
+    if (!dw)
+        return;
+    // Record current state
+    bool wasVisible = dw->isVisible();
+    bool wasFloating = dw->isFloating();
+    QWidget *parent = dw->parentWidget();
+
+    // Determine current dock area if parent is MainWindow
+    MainWindow *mw = getMainWindow();
+    Qt::DockWidgetArea area = mw->dockWidgetArea(dw);
+
+    // Make it float and show briefly to force native decoration recreation
+    dw->setFloating(true);
+    dw->show();
+
+    // Return to docked state
+    dw->setFloating(false);
+    mw->addDockWidget(area, dw);
+
+    // Restore visibility as before
+    dw->setVisible(wasVisible);
+
+    // Ensure no overlay titlebar remains
+    restoreNativeTitleBarIfOverlay(dw);
 }
 
 DockWindowManager::~DockWindowManager()
@@ -243,10 +336,15 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
     // creates the dock widget as container to embed this widget
     MainWindow* mw = getMainWindow();
     dw = new QDockWidget(mw);
-
+    // If overlay manager exists, let it do its cleanup; otherwise ensure
+    // any overlay titlebar is replaced with native titlebar so widgets
+    // won't keep overlay decorations when ActivateOverlay is off.
     if (d->overlayManager) {
-        d->overlayManager->setupTitleBar(dw);
+        d->overlayManager->cleanupDockWidget(dw);
+    } else {
+        restoreNativeTitleBarIfOverlay(dw);
     }
+
 
     // Note: By default all dock widgets are hidden but the user can show them manually in the view menu.
     // First, hide immediately the dock widget to avoid flickering, after setting up the dock widgets
@@ -280,7 +378,14 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
     d->_dockedWindows.push_back(dw);
 
     if (d->overlayManager) {
-        d->overlayManager->initDockWidget(dw);
+        d->overlayManager->initializeDockForOverlay(dw);
+    }
+    else {
+        // If overlays are globally disabled, ensure no overlay state remains
+        auto grp = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/DockWindows");
+        if (grp && !grp->GetBool("ActivateOverlay", true)) {
+            restoreNativeTitleBarIfOverlay(dw);
+        }
     }
 
     connect(dw->toggleViewAction(), &QAction::triggered, [this, dw](){
@@ -346,7 +451,10 @@ QWidget* DockWindowManager::removeDockWindow(const char* name)
             d->_dockedWindows.erase(it);
 
             if (d->overlayManager) {
-                d->overlayManager->unsetupDockWidget(dw);
+                d->overlayManager->cleanupDockWidget(dw);
+            }
+            else {
+                restoreNativeTitleBarIfOverlay(dw);
             }
 
             getMainWindow()->removeDockWidget(dw);
@@ -379,7 +487,10 @@ void DockWindowManager::removeDockWindow(QWidget* widget)
             QDockWidget* dw = *it;
             d->_dockedWindows.erase(it);
             if (d->overlayManager) {
-                d->overlayManager->unsetupDockWidget(dw);
+                d->overlayManager->cleanupDockWidget(dw);
+            }
+            else {
+                restoreNativeTitleBarIfOverlay(dw);
             }
             getMainWindow()->removeDockWidget(dw);
             // avoid to destruct the embedded widget

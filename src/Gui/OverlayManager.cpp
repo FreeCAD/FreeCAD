@@ -67,7 +67,12 @@ FC_LOG_LEVEL_INIT("Dock", true, true);
 
 using namespace Gui;
 
+// Use project's FC_MSG logging macro directly.
+
 static std::array<OverlayTabWidget*, 4> _Overlays;
+
+// Forward-declare free helper so member functions and lambdas can call it.
+QWidget *createTitleBar(QWidget *parent);
 
 static inline OverlayTabWidget *findTabWidget(QWidget *widget=nullptr, bool filterDialog=false)
 {
@@ -85,6 +90,7 @@ static inline OverlayTabWidget *findTabWidget(QWidget *widget=nullptr, bool filt
     }
     return nullptr;
 }
+
 
 class OverlayStyleSheet: public ParameterGrp::ObserverType {
 public:
@@ -401,13 +407,12 @@ public:
 
     void refreshIcons()
     {
-        _actFloat.setIcon(BitmapFactory().pixmap("qss:overlay/icons/float.svg"));
-        _actOverlay.setIcon(BitmapFactory().pixmap("qss:overlay/icons/overlay.svg"));
-        _actClose.setIcon(BitmapFactory().pixmap("qss:overlay/icons/close.svg"));
+    _actFloat.setIcon(BitmapFactory().pixmap("qss:images_classic/float-black.svg"));
+    _actOverlay.setIcon(BitmapFactory().pixmap("qss:images_classic/overlay-black.svg"));
+    _actClose.setIcon(BitmapFactory().pixmap("qss:images_classic/close-black.svg"));
         for (OverlayTabWidget *tabWidget : _Overlays) {
-            tabWidget->refreshIcons();
-            for (auto handle : tabWidget->findChildren<OverlaySplitterHandle*>())
-                handle->refreshIcons();
+            tabWidget->setIcons();
+            // No setIcons() for OverlaySplitterHandle
         }
     }
 
@@ -446,6 +451,24 @@ public:
             case ToggleMode::Toggle:
                 _overlayMap.erase(it);
                 o->tabWidget->removeWidget(dock);
+
+                // If the dock is docked after removal, try a quick undock+redock
+                // sequence to force the window system / Qt to recreate the
+                // titlebar/native decorations immediately.
+                if (dock && !dock->isFloating()) {
+                    FC_LOG("toggleOverlay: undock/redock to restore titlebar for '" << dock->objectName().toUtf8().constData() << "'");
+                    // temporarily make it floating then re-dock it
+                    dock->setFloating(true);
+                    dock->show();
+                    QApplication::processEvents();
+                    dock->setFloating(false);
+                    getMainWindow()->addDockWidget(o->dockArea, dock);
+                    dock->show();
+                    QApplication::processEvents();
+
+                    // Ensure our overlay titlebar is installed for the docked state.
+                }
+
                 return false;
             default:
                 break;
@@ -683,126 +706,6 @@ public:
         _top.tabWidget->setRect(QRect(rectLeft.width()-ofs.width(),ofs.height(),tw,rect.height()));
     }
 
-    void setOverlayMode(OverlayMode mode)
-    {
-        switch(mode) {
-        case OverlayManager::OverlayMode::DisableAll:
-        case OverlayManager::OverlayMode::EnableAll: {
-            auto docks = getMainWindow()->findChildren<QDockWidget*>();
-            // put visible dock widget first
-            std::sort(docks.begin(),docks.end(),
-                [](const QDockWidget *a, const QDockWidget *b) {
-                    return !a->visibleRegion().isEmpty() && b->visibleRegion().isEmpty();
-                });
-            for(auto dock : docks) {
-                if(mode == OverlayManager::OverlayMode::DisableAll)
-                    toggleOverlay(dock, ToggleMode::Unset);
-                else
-                    toggleOverlay(dock, ToggleMode::Set);
-            }
-            return;
-        }
-        case OverlayManager::OverlayMode::ToggleAll:
-            for(auto o : _overlayInfos) {
-                if(o->tabWidget->count()) {
-                    setOverlayMode(OverlayManager::OverlayMode::DisableAll);
-                    return;
-                }
-            }
-            setOverlayMode(OverlayManager::OverlayMode::EnableAll);
-            return;
-        case OverlayManager::OverlayMode::TransparentAll: {
-            bool found = false;
-            for(auto o : _overlayInfos) {
-                if(o->tabWidget->count())
-                    found = true;
-            }
-            if(!found)
-                setOverlayMode(OverlayManager::OverlayMode::EnableAll);
-        }
-        // fall through
-        case OverlayManager::OverlayMode::TransparentNone:
-            for(auto o : _overlayInfos)
-                o->tabWidget->setTransparent(mode == OverlayManager::OverlayMode::TransparentAll);
-            refresh();
-            return;
-        case OverlayManager::OverlayMode::ToggleTransparentAll:
-            for(auto o : _overlayInfos) {
-                if(o->tabWidget->count() && o->tabWidget->isTransparent()) {
-                    setOverlayMode(OverlayManager::OverlayMode::TransparentNone);
-                    return;
-                }
-            }
-            setOverlayMode(OverlayManager::OverlayMode::TransparentAll);
-            return;
-        case OverlayManager::OverlayMode::ToggleLeft:
-            if (OverlayTabWidget::_LeftOverlay->isVisible())
-                OverlayTabWidget::_LeftOverlay->setState(OverlayTabWidget::State::Hidden);
-            else
-                OverlayTabWidget::_LeftOverlay->setState(OverlayTabWidget::State::Showing);
-            break;
-        case OverlayManager::OverlayMode::ToggleRight:
-            if (OverlayTabWidget::_RightOverlay->isVisible())
-                OverlayTabWidget::_RightOverlay->setState(OverlayTabWidget::State::Hidden);
-            else
-                OverlayTabWidget::_RightOverlay->setState(OverlayTabWidget::State::Showing);
-            break;
-        case OverlayManager::OverlayMode::ToggleTop:
-            if (OverlayTabWidget::_TopOverlay->isVisible())
-                OverlayTabWidget::_TopOverlay->setState(OverlayTabWidget::State::Hidden);
-            else
-                OverlayTabWidget::_TopOverlay->setState(OverlayTabWidget::State::Showing);
-            break;
-        case OverlayManager::OverlayMode::ToggleBottom:
-            if (OverlayTabWidget::_BottomOverlay->isVisible())
-                OverlayTabWidget::_BottomOverlay->setState(OverlayTabWidget::State::Hidden);
-            else
-                OverlayTabWidget::_BottomOverlay->setState(OverlayTabWidget::State::Showing);
-            break;
-        default:
-            break;
-        }
-
-        ToggleMode m;
-        QDockWidget *dock = nullptr;
-        for(auto w=qApp->widgetAt(QCursor::pos()); w; w=w->parentWidget()) {
-            dock = qobject_cast<QDockWidget*>(w);
-            if(dock)
-                break;
-            auto tabWidget = qobject_cast<OverlayTabWidget*>(w);
-            if(tabWidget) {
-                dock = tabWidget->currentDockWidget();
-                if(dock)
-                    break;
-            }
-        }
-        if(!dock) {
-            for(auto w=qApp->focusWidget(); w; w=w->parentWidget()) {
-                dock = qobject_cast<QDockWidget*>(w);
-                if(dock)
-                    break;
-            }
-        }
-
-        switch(mode) {
-        case OverlayManager::OverlayMode::ToggleActive:
-            m = ToggleMode::Toggle;
-            break;
-        case OverlayManager::OverlayMode::ToggleTransparent:
-            m = ToggleMode::Transparent;
-            break;
-        case OverlayManager::OverlayMode::EnableActive:
-            m = ToggleMode::Set;
-            break;
-        case OverlayManager::OverlayMode::DisableActive:
-            m = ToggleMode::Unset;
-            break;
-        default:
-            return;
-        }
-        toggleOverlay(dock, m);
-    }
-
     void onToggleDockWidget(QDockWidget *dock, int checked)
     {
         if(!dock)
@@ -816,6 +719,7 @@ public:
         int index = tabWidget->dockWidgetIndex(dock);
         if(index < 0)
             return;
+
         auto sizes = tabWidget->getSplitter()->sizes();
         while(index >= sizes.size())
             sizes.append(0);
@@ -828,12 +732,8 @@ public:
         } else if (checked <= 1) {
             if (sizes[index] != 0 && tabWidget->isHidden())
                 checked = 1;
-            else {
-                // child widget inside splitter by right shouldn't been hidden, so
-                // we ignore the given toggle bit, but rely on its splitter size to
-                // decide.
+            else
                 checked = sizes[index] == 0 ? 1 : 0;
-            }
         }
         if(sizes[index]==0) {
             if (!checked)
@@ -898,40 +798,167 @@ public:
         refresh();
     }
 
+    void setOverlayMode(OverlayMode mode)
+    {
+        {
+            std::ostringstream os; os << "setOverlayMode called with mode: " << static_cast<int>(mode);
+            FC_MSG(os.str().c_str());
+        }
+        switch(mode) {
+        case OverlayManager::OverlayMode::DisableAll:
+        case OverlayManager::OverlayMode::EnableAll: {
+            {
+                std::ostringstream os; os << "setOverlayMode: " << (mode == OverlayManager::OverlayMode::DisableAll ? "Disabling" : "Enabling") << " all overlays";
+                FC_MSG(os.str().c_str());
+            }
+            auto docks = getMainWindow()->findChildren<QDockWidget*>();
+            // put visible dock widget first
+            std::sort(docks.begin(),docks.end(),
+                [](const QDockWidget *a, const QDockWidget *b) {
+                    return !a->visibleRegion().isEmpty() && b->visibleRegion().isEmpty();
+                });
+            for(auto dock : docks) {
+                {
+                    std::ostringstream os; os << "setOverlayMode: processing dock '" << dock->objectName().toUtf8().constData() << "'";
+                    FC_MSG(os.str().c_str());
+                }
+                if(mode == OverlayManager::OverlayMode::DisableAll)
+                    toggleOverlay(dock, ToggleMode::Unset);
+                else
+                    toggleOverlay(dock, ToggleMode::Set);
+            }
+            FC_MSG("setOverlayMode: finished processing all docks");
+            return;
+        }
+        case OverlayManager::OverlayMode::ToggleAll:
+            FC_MSG("setOverlayMode: ToggleAll");
+            for(auto o : _overlayInfos) {
+                if(o->tabWidget->count()) {
+                    setOverlayMode(OverlayManager::OverlayMode::DisableAll);
+                    return;
+                }
+            }
+            setOverlayMode(OverlayManager::OverlayMode::EnableAll);
+            return;
+        case OverlayManager::OverlayMode::TransparentAll: {
+            FC_MSG("setOverlayMode: TransparentAll");
+            bool found = false;
+            for(auto o : _overlayInfos) {
+                if(o->tabWidget->count())
+                    found = true;
+            }
+            if(!found)
+                setOverlayMode(OverlayManager::OverlayMode::EnableAll);
+        }
+        // fall through
+        case OverlayManager::OverlayMode::TransparentNone:
+            FC_MSG("setOverlayMode: TransparentNone or TransparentAll");
+            for(auto o : _overlayInfos)
+                o->tabWidget->setTransparent(mode == OverlayManager::OverlayMode::TransparentAll);
+            refresh();
+            return;
+        case OverlayManager::OverlayMode::ToggleTransparentAll:
+            FC_MSG("setOverlayMode: ToggleTransparentAll");
+            for(auto o : _overlayInfos) {
+                if(o->tabWidget->count() && o->tabWidget->isTransparent()) {
+                    setOverlayMode(OverlayManager::OverlayMode::TransparentNone);
+                    return;
+                }
+            }
+            setOverlayMode(OverlayManager::OverlayMode::TransparentAll);
+            return;
+        case OverlayManager::OverlayMode::ToggleLeft:
+            FC_MSG("setOverlayMode: ToggleLeft");
+            if (OverlayTabWidget::_LeftOverlay->isVisible())
+                OverlayTabWidget::_LeftOverlay->setState(OverlayTabWidget::State::Hidden);
+            else
+                OverlayTabWidget::_LeftOverlay->setState(OverlayTabWidget::State::Showing);
+            break;
+        case OverlayManager::OverlayMode::ToggleRight:
+            FC_MSG("setOverlayMode: ToggleRight");
+            if (OverlayTabWidget::_RightOverlay->isVisible())
+                OverlayTabWidget::_RightOverlay->setState(OverlayTabWidget::State::Hidden);
+            else
+                OverlayTabWidget::_RightOverlay->setState(OverlayTabWidget::State::Showing);
+            break;
+        case OverlayManager::OverlayMode::ToggleTop:
+            FC_MSG("setOverlayMode: ToggleTop");
+            if (OverlayTabWidget::_TopOverlay->isVisible())
+                OverlayTabWidget::_TopOverlay->setState(OverlayTabWidget::State::Hidden);
+            else
+                OverlayTabWidget::_TopOverlay->setState(OverlayTabWidget::State::Showing);
+            break;
+        case OverlayManager::OverlayMode::ToggleBottom:
+            FC_MSG("setOverlayMode: ToggleBottom");
+            if (OverlayTabWidget::_BottomOverlay->isVisible())
+                OverlayTabWidget::_BottomOverlay->setState(OverlayTabWidget::State::Hidden);
+            else
+                OverlayTabWidget::_BottomOverlay->setState(OverlayTabWidget::State::Showing);
+            break;
+        default:
+            FC_MSG("setOverlayMode: default case");
+            break;
+        }
+
+        ToggleMode m = ToggleMode::Unset;
+        QDockWidget *dock = nullptr;
+
+        for (auto w = qApp->widgetAt(QCursor::pos()); w; w = w->parentWidget()) {
+            dock = qobject_cast<QDockWidget*>(w);
+            if (dock)
+                break;
+            auto tabWidget = qobject_cast<OverlayTabWidget*>(w);
+            if (tabWidget) {
+                dock = tabWidget->currentDockWidget();
+                if (dock)
+                    break;
+            }
+        }
+        if (!dock) {
+            for (auto w = qApp->focusWidget(); w; w = w->parentWidget()) {
+                dock = qobject_cast<QDockWidget*>(w);
+                if (dock)
+                    break;
+            }
+        }
+
+        switch (mode) {
+        case OverlayManager::OverlayMode::ToggleActive:
+            FC_MSG("setOverlayMode: ToggleActive");
+            m = ToggleMode::Toggle;
+            break;
+        case OverlayManager::OverlayMode::ToggleTransparent:
+            FC_MSG("setOverlayMode: ToggleTransparent");
+            m = ToggleMode::Transparent;
+            break;
+        case OverlayManager::OverlayMode::EnableActive:
+            FC_MSG("setOverlayMode: EnableActive");
+            m = ToggleMode::Set;
+            break;
+        case OverlayManager::OverlayMode::DisableActive:
+            FC_MSG("setOverlayMode: DisableActive");
+            m = ToggleMode::Unset;
+            break;
+        default:
+            FC_MSG("setOverlayMode: default case (active)");
+            return;
+        }
+
+        if (!dock)
+            FC_MSG("setOverlayMode: no dock found for active operation");
+            return;
+
+        {
+            std::ostringstream os; os << "setOverlayMode: toggling overlay for dock '" << dock->objectName().toUtf8().constData() << "' with mode " << static_cast<int>(m);
+            FC_MSG(os.str().c_str());
+        }
+        toggleOverlay(dock, m);
+    }
+
     void onFocusChanged(QWidget *, QWidget *) {
         refresh();
     }
 
-    void setupTitleBar(QDockWidget *dock)
-    {
-        if(!dock->titleBarWidget())
-            dock->setTitleBarWidget(createTitleBar(dock));
-    }
-
-    QWidget *createTitleBar(QWidget *parent)
-    {
-        OverlayTitleBar *widget = new OverlayTitleBar(parent);
-        widget->setObjectName(QStringLiteral("OverlayTitle"));
-
-        QList<QAction*> actions;
-        if (auto tabWidget = qobject_cast<OverlayTabWidget*>(parent))
-            actions = tabWidget->actions();
-        else if (auto dockWidget = qobject_cast<QDockWidget*>(parent))
-        {
-            const QDockWidget::DockWidgetFeatures features = dockWidget->features();
-
-            actions.append(&_actOverlay);
-            if (features.testFlag(QDockWidget::DockWidgetFloatable))
-                actions.append(&_actFloat);
-            if (features.testFlag(QDockWidget::DockWidgetClosable))
-                actions.append(&_actClose);
-        }
-        else
-            actions = _actions;
-
-        widget->setTitleItem(OverlayTabWidget::prepareTitleWidget(widget, actions));
-        return widget;
-    }
 
     void onAction(QAction *action) {
         if(action == &_actOverlay) {
@@ -952,9 +979,13 @@ public:
                         _overlayMap.erase(it);
                         dock->show();
                         dock->setFloating(true);
+                        if (auto tb = qobject_cast<OverlayTitleBar*>(dock->titleBarWidget()))
+                            tb->setMinimal(true);
                         refresh();
                     } else
                         dock->setFloating(!dock->isFloating());
+                        if (auto tb = qobject_cast<OverlayTitleBar*>(dock->titleBarWidget()))
+                            tb->setMinimal(dock->isFloating());
                 }
                 return;
             }
@@ -975,12 +1006,17 @@ public:
     void floatDockWidget(QDockWidget *dock)
     {
         setFocusView();
-        auto it = _overlayMap.find(dock);
-        if (it != _overlayMap.end()) {
+        // Remove the dock from all overlays it may be present in
+        while (true) {
+            auto it = _overlayMap.find(dock);
+            if (it == _overlayMap.end())
+                break;
             it->second->tabWidget->removeWidget(dock);
             _overlayMap.erase(it);
         }
         dock->setFloating(true);
+        if (auto tb = qobject_cast<OverlayTitleBar*>(dock->titleBarWidget()))
+            tb->setMinimal(true);
         dock->show();
     }
 
@@ -1207,18 +1243,22 @@ public:
                     }
                     setFocusView();
                     dock->setFloating(true);
+                    if (auto tb = qobject_cast<OverlayTitleBar*>(dock->titleBarWidget()))
+                        tb->setMinimal(true);
                     dock->move(pos - dragOffset);
                     dock->show();
                 }
-                if (OverlayTabWidget::_DragFloating)
+                if (OverlayTabWidget::_DragFloating) {
                     OverlayTabWidget::_DragFloating->hide();
+                    OverlayTabWidget::_DragFloating->deleteLater();
+                    OverlayTabWidget::_DragFloating = nullptr;
+                }
             } else if (!dock->isFloating()) {
                 if (!OverlayTabWidget::_DragFloating) {
-                    OverlayTabWidget::_DragFloating = new QDockWidget(getMainWindow());
-                    OverlayTabWidget::_DragFloating->setFloating(true);
+                    OverlayTabWidget::_DragFloating = new OverlayDragFrame(getMainWindow());
+                    OverlayTabWidget::_DragFloating->setAttribute(Qt::WA_TranslucentBackground, true);
                 }
                 OverlayTabWidget::_DragFloating->resize(dock->size());
-                OverlayTabWidget::_DragFloating->setWindowTitle(dock->windowTitle());
                 OverlayTabWidget::_DragFloating->show();
                 OverlayTabWidget::_DragFloating->move(pos - dragOffset);
             }
@@ -1229,8 +1269,11 @@ public:
         } else if (!drop && OverlayTabWidget::_DragFrame && !OverlayTabWidget::_DragFrame->isVisible()) {
             OverlayTabWidget::_DragFrame->raise();
             OverlayTabWidget::_DragFrame->show();
-            if (OverlayTabWidget::_DragFloating)
+            if (OverlayTabWidget::_DragFloating) {
                 OverlayTabWidget::_DragFloating->hide();
+                OverlayTabWidget::_DragFloating->deleteLater();
+                OverlayTabWidget::_DragFloating = nullptr;
+            }
         }
 
         int insertDock = 0; // 0: tabify, -1: insert before, 1: insert after
@@ -1456,8 +1499,22 @@ void OverlayManager::setOverlayMode(OverlayMode mode)
     d->setOverlayMode(mode);
 }
 
+QList<QAction*> OverlayManager::getActionsForDock(QDockWidget *dock) const
+{
+    QList<QAction*> actions;
+    if (!dock)
+        return actions;
+    const QDockWidget::DockWidgetFeatures features = dock->features();
+    actions.append(&d->_actOverlay);
+    if (features.testFlag(QDockWidget::DockWidgetFloatable))
+        actions.append(&d->_actFloat);
+    if (features.testFlag(QDockWidget::DockWidgetClosable))
+        actions.append(&d->_actClose);
+    return actions;
+}
 
-void OverlayManager::initDockWidget(QDockWidget *dw)
+
+void OverlayManager::initializeDockForOverlay(QDockWidget *dw)
 {
     QObject::connect(dw->toggleViewAction(), &QAction::triggered,
             this, &OverlayManager::onToggleDockWidget);
@@ -1465,6 +1522,72 @@ void OverlayManager::initDockWidget(QDockWidget *dw)
             this, &OverlayManager::onDockVisibleChange);
     QObject::connect(dw, &QDockWidget::featuresChanged,
             this, &OverlayManager::onDockFeaturesChange);
+    // Ensure titlebar is created/updated when the dock becomes floating or docked.
+    // For floating docks we install our custom minimal OverlayTitleBar and make
+    // the window frameless so the OS titlebar is not shown. When docked we
+    // restore the regular overlay titlebar via setupTitleBar.
+    QObject::connect(dw, &QDockWidget::topLevelChanged, this, [this, dw](bool floating){
+        if (floating) {
+            // Replace any existing titlebar with our custom overlay titlebar
+            if (dw->titleBarWidget()) {
+                dw->titleBarWidget()->deleteLater();
+            }
+            QWidget *tb = ::createTitleBar(dw);
+            dw->setTitleBarWidget(tb);
+            if (auto ot = qobject_cast<OverlayTitleBar*>(tb))
+                ot->setMinimal(true);
+
+            // Use native window decorations to avoid compositor/translucency bugs.
+            // Do not set FramelessWindowHint or WA_TranslucentBackground here.
+            dw->show();
+        } else {
+            // Restore native decorations and ensure titlebar is present for docked state
+            dw->setWindowFlags(dw->windowFlags() & ~Qt::FramelessWindowHint);
+            dw->setAttribute(Qt::WA_TranslucentBackground, false);
+            if (dw->titleBarWidget())
+                dw->titleBarWidget()->deleteLater();
+            QWidget *tb = ::createTitleBar(dw);
+            dw->setTitleBarWidget(tb);
+            dw->show();
+        }
+    });
+
+    // Ensure titlebar is present when the dock is re-docked to a different area
+    // Listen to this dock widget's own location changes so we can recreate
+    // or show the overlay titlebar when it is re-docked elsewhere.
+    QObject::connect(dw, &QDockWidget::dockLocationChanged, this,
+        [this, dw](Qt::DockWidgetArea area) {
+            // Always recreate the titlebar for docked state to ensure it is present
+            if (!dw->isFloating()) {
+                if (dw->titleBarWidget()) {
+                    dw->titleBarWidget()->deleteLater();
+                }
+                QWidget *tb = ::createTitleBar(dw);
+                dw->setTitleBarWidget(tb);
+                dw->show();
+            }
+        });
+
+    // Ensure initial state matches current floating status.
+        if (dw->isFloating()) {
+            // Install custom minimal titlebar for already-floating docks
+            if (dw->titleBarWidget())
+                dw->titleBarWidget()->deleteLater();
+            QWidget *tb = ::createTitleBar(dw);
+            dw->setTitleBarWidget(tb);
+            if (auto ot = qobject_cast<OverlayTitleBar*>(tb))
+                ot->setMinimal(true);
+            // Keep native decorations for floating docks for stability
+            dw->show();
+        } else {
+            // For docked state, always recreate the overlay titlebar to ensure
+            // the proper title widget is installed and visible.
+            if (dw->titleBarWidget())
+                dw->titleBarWidget()->deleteLater();
+            QWidget *tb = ::createTitleBar(dw);
+            dw->setTitleBarWidget(tb);
+            dw->show();
+        }
     if (auto widget = dw->widget()) {
         QObject::connect(widget, &QWidget::windowTitleChanged,
                 this, &OverlayManager::onDockWidgetTitleChange);
@@ -1486,30 +1609,97 @@ void OverlayManager::initDockWidget(QDockWidget *dw)
     }
 }
 
+// Global helper that creates an OverlayTitleBar for a given parent.
+// This is a free function (not a member of OverlayManager::Private)
+// so it can be referenced from multiple translation units without
+// requiring access to the Private type. It uses the public
+// OverlayManager::actionsForDock helper to obtain appropriate actions
+// for a dock widget parent.
+QWidget *createTitleBar(QWidget *parent)
+{
+    OverlayTitleBar *widget = new OverlayTitleBar(parent);
+    widget->setObjectName(QStringLiteral("OverlayTitle"));
+
+    // Find the QDockWidget ancestor
+    QDockWidget* dockWidget = nullptr;
+    QWidget* w = parent;
+    while (w && !dockWidget)
+        dockWidget = qobject_cast<QDockWidget*>(w), w = w->parentWidget();
+
+    // Do not connect to the dock's topLevelChanged here. Titlebar
+    // creation/removal for floating vs docked is handled in
+    // OverlayManager::initDockWidget so floating windows will keep
+    // the native OS titlebar when desired.
+    Q_UNUSED(dockWidget);
+
+    QList<QAction*> actions;
+    if (auto tabWidget = qobject_cast<OverlayTabWidget*>(parent))
+        actions = tabWidget->actions();
+    else if (auto dock = qobject_cast<QDockWidget*>(parent))
+        actions = OverlayManager::instance()->getActionsForDock(dock);
+    else
+        actions = OverlayManager::instance()->getActionsForDock(nullptr);
+
+    widget->setTitleItem(OverlayTabWidget::prepareTitleWidget(widget, actions));
+    return widget;
+}
+
 void OverlayManager::setupDockWidget(QDockWidget *dw, int dockArea)
 {
     (void)dockArea;
-    d->setupTitleBar(dw);
 }
 
-void OverlayManager::unsetupDockWidget(QDockWidget *dw)
+void OverlayManager::cleanupDockWidget(QDockWidget *dw)
 {
+    {
+        std::ostringstream os; os << "cleanupDockWidget called for dock: " << (dw ? dw->objectName().toStdString() : std::string("nullptr"));
+        FC_MSG(os.str().c_str());
+    }
     d->toggleOverlay(dw, ToggleMode::Unset);
+    if (dw) {
+        if (dw->titleBarWidget()) {
+            {
+                std::ostringstream os; os << "Deleting custom title bar for dock: " << dw->objectName().toStdString();
+                FC_MSG(os.str().c_str());
+            }
+            dw->titleBarWidget()->deleteLater();
+            dw->setTitleBarWidget(nullptr); // This restores the default native title bar
+            {
+                std::ostringstream os; os << "Restored native title bar for dock: " << dw->objectName().toStdString();
+                FC_MSG(os.str().c_str());
+            }
+        } else {
+            {
+                std::ostringstream os; os << "No custom title bar to delete for dock: " << dw->objectName().toStdString();
+                FC_MSG(os.str().c_str());
+            }
+        }
+    } else {
+    FC_MSG("cleanupDockWidget called with nullptr");
+    }
 }
 
 void OverlayManager::onToggleDockWidget(bool checked)
 {
     auto action = qobject_cast<QAction*>(sender());
-    if(!action)
+    FC_LOG("onToggleDockWidget called. checked: " << checked << ", sender: " << (action ? action->objectName().toStdString() : std::string("nullptr")));
+    if(!action) {
+        FC_LOG("onToggleDockWidget: sender is not a QAction");
         return;
-    d->onToggleDockWidget(qobject_cast<QDockWidget*>(action->parent()), checked);
+    }
+    QDockWidget* dock = qobject_cast<QDockWidget*>(action->parent());
+    FC_LOG("onToggleDockWidget: dock: " << (dock ? dock->objectName().toStdString() : std::string("nullptr")));
+    d->onToggleDockWidget(dock, checked);
 }
 
 void OverlayManager::onDockVisibleChange(bool visible)
 {
     auto dock = qobject_cast<QDockWidget*>(sender());
-    if(!dock)
+    FC_LOG("onDockVisibleChange called. visible: " << visible << ", sender: " << (dock ? dock->objectName().toStdString() : std::string("nullptr")));
+    if(!dock) {
+    FC_LOG("onDockVisibleChange: sender is not a QDockWidget");
         return;
+    }
     FC_TRACE("dock " << dock->objectName().toUtf8().constData()
             << " visible change " << visible << ", " << dock->isVisible());
 }
@@ -1519,58 +1709,104 @@ void OverlayManager::onDockFeaturesChange(QDockWidget::DockWidgetFeatures featur
     Q_UNUSED(features);
 
     auto dw = qobject_cast<QDockWidget*>(sender());
-
+    FC_LOG("onDockFeaturesChange called. features: " << (int)features << ", sender: " << (dw ? dw->objectName().toStdString() : std::string("nullptr")));
     if (!dw) {
+    FC_LOG("onDockFeaturesChange: sender is not a QDockWidget");
         return;
     }
 
-    // Rebuild the title widget as it may have a different set of buttons shown.
+    // Rebuild the title widget contents in-place to avoid destroying the
+    // widget (which causes layout relayout and visible movement).
     if (auto *titleBarWidget = qobject_cast<OverlayTitleBar*>(dw->titleBarWidget())) {
-        dw->setTitleBarWidget(nullptr);
-        delete titleBarWidget;
+    FC_LOG("onDockFeaturesChange: rebuilding title bar for dock: " << dw->objectName().toStdString());
+        dw->setUpdatesEnabled(false);
+        // Clear old layout and child widgets
+        if (auto oldLayout = titleBarWidget->layout()) {
+            QLayoutItem *it;
+            while ((it = oldLayout->takeAt(0)) != nullptr) {
+                if (auto w = it->widget()) {
+                    w->setParent(nullptr);
+                    w->deleteLater();
+                }
+                delete it;
+            }
+            delete oldLayout;
+        }
+        // Recompute actions same as in createTitleBar for dock parents
+        QList<QAction*> actions;
+        const QDockWidget::DockWidgetFeatures features = dw->features();
+        actions.append(&d->_actOverlay);
+        if (features.testFlag(QDockWidget::DockWidgetFloatable))
+            actions.append(&d->_actFloat);
+        if (features.testFlag(QDockWidget::DockWidgetClosable))
+            actions.append(&d->_actClose);
+        // Build new contents on the existing title bar widget
+        QLayoutItem *titleItem = OverlayTabWidget::prepareTitleWidget(titleBarWidget, actions);
+        titleBarWidget->setTitleItem(titleItem);
+        dw->setUpdatesEnabled(true);
+        titleBarWidget->update();
+    } else {
+    FC_LOG("onDockFeaturesChange: no OverlayTitleBar present for dock: " << dw->objectName().toStdString());
     }
-
-    setupTitleBar(dw);
 }
 
 void OverlayManager::onTaskViewUpdate()
 {
     auto taskview = qobject_cast<TaskView::TaskView*>(sender());
-    if (!taskview)
+    FC_LOG("onTaskViewUpdate called. sender: " << (taskview ? taskview->objectName().toStdString() : std::string("nullptr")));
+    if (!taskview) {
+    FC_LOG("onTaskViewUpdate: sender is not a TaskView::TaskView");
         return;
+    }
     QDockWidget *dock = nullptr;
     for (QWidget *w=taskview; w; w=w->parentWidget()) {
         if ((dock = qobject_cast<QDockWidget*>(w)))
             break;
     }
+    FC_LOG("onTaskViewUpdate: found dock: " << (dock ? dock->objectName().toStdString() : std::string("nullptr")));
     if (dock) {
         auto it = d->_overlayMap.find(dock);
         if (it == d->_overlayMap.end()
                 || it->second->tabWidget->count() < 2
-                || it->second->tabWidget->getAutoMode() != OverlayTabWidget::AutoMode::TaskShow)
+                || it->second->tabWidget->getAutoMode() != OverlayTabWidget::AutoMode::TaskShow) {
+            FC_LOG("onTaskViewUpdate: dock not in overlay map or not in TaskShow mode");
             return;
+        }
+    FC_LOG("onTaskViewUpdate: toggling dock overlay for dock: " << dock->objectName().toStdString() << ", isEmpty: " << taskview->isEmpty());
         d->onToggleDockWidget(dock, taskview->isEmpty() ? -2 : 2);
     }
 }
 
 void OverlayManager::onDockWidgetTitleChange(const QString &title)
 {
-    if (title.isEmpty())
+    FC_LOG("onDockWidgetTitleChange called. title: " << title.toStdString());
+    if (title.isEmpty()) {
+    FC_LOG("onDockWidgetTitleChange: title is empty");
         return;
+    }
     auto widget = qobject_cast<QWidget*>(sender());
     QDockWidget *dock = nullptr;
     for (QWidget *w=widget; w; w=w->parentWidget()) {
         if ((dock = qobject_cast<QDockWidget*>(w)))
             break;
     }
-    if(!dock)
+    FC_LOG("onDockWidgetTitleChange: found dock: " << (dock ? dock->objectName().toStdString() : std::string("nullptr")));
+    if(!dock) {
+    FC_LOG("onDockWidgetTitleChange: no QDockWidget found in parent chain");
         return;
+    }
     auto tabWidget = findTabWidget(dock);
-    if (!tabWidget)
+    if (!tabWidget) {
+    FC_LOG("onDockWidgetTitleChange: no OverlayTabWidget found for dock: " << dock->objectName().toStdString());
         return;
+    }
     int index = tabWidget->dockWidgetIndex(dock);
-    if (index >= 0)
+    if (index >= 0) {
+    FC_LOG("onDockWidgetTitleChange: setting tab text for dock: " << dock->objectName().toStdString() << ", index: " << index << ", title: " << title.toStdString());
         tabWidget->setTabText(index, title);
+    } else {
+    FC_LOG("onDockWidgetTitleChange: dock index not found in tabWidget for dock: " << dock->objectName().toStdString());
+    }
 }
 
 void OverlayManager::retranslate()
@@ -1940,15 +2176,22 @@ void OverlayManager::Private::interceptEvent(QWidget *widget, QEvent *ev)
     }
 }
 
-void OverlayManager::refresh(QWidget *widget, bool refreshStyle)
+void OverlayManager::refreshOverlays(QWidget *widget, bool refreshStyle)
 {
     d->refresh(widget, refreshStyle);
 }
 
-void OverlayManager::setMouseTransparent(bool enabled)
+// Backwards-compatible wrapper (deprecated): refresh() -> refreshOverlays()
+void OverlayManager::refresh(QWidget *widget, bool refreshStyle)
+{
+    refreshOverlays(widget, refreshStyle);
+}
+
+void OverlayManager::setMousePassthroughEnabled(bool enabled)
 {
     d->setMouseTransparent(enabled);
 }
+
 
 bool OverlayManager::isMouseTransparent() const
 {
@@ -1975,10 +2218,7 @@ void OverlayManager::restore()
                 this, &OverlayManager::onTaskViewUpdate);
 }
 
-void OverlayManager::setupTitleBar(QDockWidget *dock)
-{
-    d->setupTitleBar(dock);
-}
+
 
 void OverlayManager::onFocusChanged(QWidget *old, QWidget *now)
 {
