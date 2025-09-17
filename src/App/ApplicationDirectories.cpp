@@ -19,15 +19,12 @@
  *                                                                                                 *
  **************************************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <fmt/format.h>
 #include <utility>
 #include <QDir>
 #include <QProcessEnvironment>
 #include <QStandardPaths>
 #include <QCoreApplication>
-#endif
 
 #include "ApplicationDirectories.h"
 
