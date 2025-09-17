@@ -1,8 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(ImportGui_LIBS
     FreeCADGui
     PartGui
@@ -30,7 +25,18 @@ SET(ImportGui_SRCS
 )
 
 add_library(ImportGui SHARED ${ImportGui_SRCS})
+target_include_directories(
+    ImportGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 target_link_libraries(ImportGui ${ImportGui_LIBS})
+
+if (MSVC)
+    target_compile_options(ImportGui PRIVATE /wd4251)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(ImportGui)
 endif()

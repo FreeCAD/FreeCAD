@@ -21,15 +21,12 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <limits>
 # include <Inventor/sensors/SoNodeSensor.h>
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoTransform.h>
 # include <Inventor/nodes/SoSwitch.h>
-#endif // _PreComp_
 
 #include <QEvent>
 #include <QKeyEvent>
@@ -205,6 +202,11 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
         value = spinBox->rawValue();
 
         isSet = true;
+
+        if (this->hasFinishedEditing) {
+            this->setLockedAppearance(true);
+        }
+
         Q_EMIT this->valueChanged(value);
     };
 
@@ -237,12 +239,6 @@ bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
                     // regular enter
                     this->hasFinishedEditing = true;
                     Q_EMIT this->spinBox->valueChanged(this->value);
-
-                    // only set lock state if it passed validation
-                    // (validation can unset isSet if value didn't pass
-                    // confusion point for example)
-                    if (this->isSet)
-                        this->setLockedAppearance(true);
                     return true;
                 }
             }
@@ -271,7 +267,7 @@ void EditableDatumLabel::stopEdit()
 
         spinBox->deleteLater();
         spinBox = nullptr;
-        
+
         // Lock icon will be automatically destroyed as it's a child of spinbox
         lockIconLabel = nullptr;
     }
@@ -352,7 +348,7 @@ void EditableDatumLabel::positionSpinbox()
     pxCoord.setX(posX);
     pxCoord.setY(posY);
     spinBox->move(pxCoord);
-    
+
     // Update lock icon position inside the spinbox if it exists and is visible
     if (lockIconLabel && lockIconLabel->isVisible()) {
         int iconSize = 14;
@@ -499,7 +495,7 @@ void EditableDatumLabel::setLockedAppearance(bool locked)
 {
     if (locked) {
         if (spinBox) {
-            
+
             // create lock icon label it it doesn't exist, if it does - show it
             if (!lockIconLabel) {
                 lockIconLabel = new QLabel(spinBox);
@@ -537,7 +533,7 @@ void EditableDatumLabel::setLockedAppearance(bool locked)
         // if spinbox exists, reset its appearance
         if (spinBox) {
             spinBox->setStyleSheet(QString());
-            
+
             // hide lock icon if it exists for later reuse
             if (lockIconLabel) {
                 lockIconLabel->hide();

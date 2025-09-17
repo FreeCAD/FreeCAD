@@ -2,11 +2,6 @@ if(WIN32)
     add_definitions(-DFCAppSpreadsheet)
 endif(WIN32)
 
-include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(Spreadsheet_LIBS
     FreeCADApp
 )
@@ -19,19 +14,19 @@ set(Spreadsheet_SRCS
     PreCompiled.h
     PropertySheet.cpp
     PropertySheet.h
-    PropertySheetPy.xml
+    PropertySheet.pyi
     PropertySheetPyImp.cpp
     PropertyColumnWidths.cpp
     PropertyColumnWidths.h
-    PropertyColumnWidthsPy.xml
+    PropertyColumnWidths.pyi
     PropertyColumnWidthsPyImp.cpp
     PropertyRowHeights.cpp
     PropertyRowHeights.h
-    PropertyRowHeightsPy.xml
+    PropertyRowHeights.pyi
     PropertyRowHeightsPyImp.cpp
     Sheet.cpp
     Sheet.h
-    SheetPy.xml
+    Sheet.pyi
     SheetPyImp.cpp
     SheetObserver.cpp
     SheetObserver.h
@@ -40,15 +35,10 @@ set(Spreadsheet_SRCS
     AppSpreadsheet.cpp
 )
 
-generate_from_xml(SheetPy)
-generate_from_xml(PropertySheetPy)
-generate_from_xml(PropertyColumnWidthsPy)
-generate_from_xml(PropertyRowHeightsPy)
-
-generate_from_py_(SheetPy)
-generate_from_py_(PropertySheetPy)
-generate_from_py_(PropertyColumnWidthsPy)
-generate_from_py_(PropertyRowHeightsPy)
+generate_from_py(Sheet)
+generate_from_py(PropertySheet)
+generate_from_py(PropertyColumnWidths)
+generate_from_py(PropertyRowHeights)
 
 if(FREECAD_USE_PCH)
     add_definitions(-D_PreComp_)
@@ -57,7 +47,20 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 add_library(Spreadsheet SHARED ${Spreadsheet_SRCS})
+
+target_include_directories(
+    Spreadsheet
+    PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 target_link_libraries(Spreadsheet ${Spreadsheet_LIBS})
+
+if (MSVC)
+    target_compile_options(Spreadsheet PRIVATE /wd4251 /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Spreadsheet)
 endif()

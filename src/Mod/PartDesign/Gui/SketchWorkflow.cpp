@@ -55,6 +55,8 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/ViewParams.h>
+#include <Gui/ViewProviderPlane.h>
 #include <Gui/Selection/SelectionFilter.h>
 
 using namespace PartDesignGui;
@@ -141,7 +143,7 @@ public:
             throw WrongSupportException();
         }
 
-        if (!subshape.isPlanar()) {
+        if (!subshape.isPlanar(Attacher::AttachEnginePlane::planarPrecision())) {
             throw SupportNotPlanarException();
         }
     }
@@ -197,17 +199,18 @@ class SketchPreselection
 {
 public:
     SketchPreselection(Gui::Document* guidocument, PartDesign::Body* activeBody,
-                       std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> filter)
+                       std::tuple<Gui::SelectionFilter, Gui::SelectionFilter, Gui::SelectionFilter> filter)
         : guidocument(guidocument)
         , activeBody(activeBody)
         , faceFilter(std::get<0>(filter))
         , planeFilter(std::get<1>(filter))
+        , sketchFilter(std::get<2>(filter))
     {
     }
 
     bool matches()
     {
-        return faceFilter.match() || planeFilter.match();
+        return faceFilter.match() || planeFilter.match() || sketchFilter.match();
     }
 
     std::string getSupport() const
@@ -231,10 +234,16 @@ public:
             selectedObject = validator.getObject();
             supportString = validator.getSupport();
         }
-        else {
+        else if (planeFilter.match()) {
             SupportPlaneValidator validator(planeFilter.Result[0][0]);
             selectedObject = validator.getObject();
             supportString = validator.getSupport();
+        }
+        else {
+            // For a sketch, the support is the object itself with no sub-element.
+            Gui::SelectionObject sketchSelObject = sketchFilter.Result[0][0];
+            selectedObject = sketchSelObject.getObject();
+            supportString = sketchSelObject.getAsPropertyLinkSubString();
         }
 
         handleIfSupportOutOfBody(selectedObject);
@@ -250,7 +259,16 @@ public:
         FCMD_OBJ_CMD(activeBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto Feat = activeBody->getDocument()->getObject(FeatName.c_str());
         FCMD_OBJ_CMD(Feat, "AttachmentSupport = " << supportString);
-        FCMD_OBJ_CMD(Feat, "MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)<<"'");
+        if (sketchFilter.match()) {
+            FCMD_OBJ_CMD(Feat,
+                         "MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmObjectXY)
+                                       << "'");
+        }
+        else {  // For Face or Plane
+            FCMD_OBJ_CMD(Feat,
+                         "MapMode = '" << Attacher::AttachEngine::getModeName(Attacher::mmFlatFace)
+                                       << "'");
+        }
         Gui::Command::updateActive();
         PartDesignGui::setEdit(Feat, activeBody);
     }
@@ -346,6 +364,7 @@ private:
     PartDesign::Body* activeBody;
     Gui::SelectionFilter faceFilter;
     Gui::SelectionFilter planeFilter;
+    Gui::SelectionFilter sketchFilter;
     std::string supportString;
 };
 
@@ -550,7 +569,6 @@ private:
             Gui::Application::Instance->getViewProvider(origin));
         if (vpo) {
             vpo->setTemporaryVisibility(Gui::DatumElement::Planes | Gui::DatumElement::Axes);
-            vpo->setTemporaryScale(3.0);  // NOLINT
             vpo->setPlaneLabelVisibility(true);
         }
     }
@@ -567,14 +585,14 @@ private:
 
         PartDesign::Body* partDesignBody = activeBody;
         auto onAccept = [partDesignBody, sketch]() {
-            SketchRequestSelection::resetOriginVisibility(partDesignBody);
+            resetOriginVisibility(partDesignBody);
 
             Gui::Selection().clearSelection();
 
             PartDesignGui::setEdit(sketch, partDesignBody);
         };
         auto onReject = [partDesignBody]() {
-            SketchRequestSelection::resetOriginVisibility(partDesignBody);
+            resetOriginVisibility(partDesignBody);
         };
 
         Gui::Selection().clearSelection();
@@ -599,7 +617,8 @@ private:
     void findAndSelectPlane()
     {
         App::Document* appdocument = guidocument->getDocument();
-        PlaneFinder planeFinder{appdocument, activeBody};
+        PlaneFinder planeFinder {appdocument, activeBody};
+
         planeFinder.findBasePlanes();
         planeFinder.findDatumPlanes();
         planeFinder.findShapeBinderPlanes();
@@ -608,14 +627,35 @@ private:
         std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status = planeFinder.getStatus();
         unsigned validPlaneCount = planeFinder.countValidPlanes();
 
+        for (auto& plane : planes) {
+            auto* planeViewProvider = Gui::Application::Instance->getViewProvider<Gui::ViewProviderPlane>(plane);
+
+            // skip updating planes from coordinate systems
+            if (!planeViewProvider->getRole().empty()) {
+                continue;
+            }
+
+            planeViewProvider->setLabelVisibility(true);
+            planeViewProvider->setTemporaryScale(Gui::ViewParams::instance()->getDatumTemporaryScaleFactor());
+        }
+
         //
         // Lambda definitions
         //
         App::Document* documentOfBody = appdocument;
         PartDesign::Body* partDesignBody = activeBody;
 
+        auto restorePlaneVisibility = [planes]() {
+            for (auto& plane : planes) {
+                auto* planeViewProvider = Gui::Application::Instance->getViewProvider<Gui::ViewProviderPlane>(plane);
+                planeViewProvider->resetTemporarySize();
+                planeViewProvider->setLabelVisibility(false);
+            }
+        };
+
         // Determines if user made a valid selection in dialog
-        auto acceptFunction = [](const std::vector<App::DocumentObject*>& features) -> bool {
+        auto acceptFunction = [restorePlaneVisibility](const std::vector<App::DocumentObject*>& features) -> bool {
+            restorePlaneVisibility();
             return !features.empty();
         };
 
@@ -626,7 +666,8 @@ private:
 
         // Called by dialog for "Cancel", or "OK" if accepter returns false
         std::string docname = documentOfBody->getName();
-        auto rejectFunction = [docname]() {
+        auto rejectFunction = [docname, restorePlaneVisibility]() {
+            restorePlaneVisibility();
             Gui::Document* document = Gui::Application::Instance->getDocument(docname.c_str());
             if (document)
                 document->abortCommand();
@@ -757,8 +798,8 @@ void SketchWorkflow::tryCreateSketch()
         return;
     }
 
-    auto faceOrPlaneFilter = getFaceAndPlaneFilter();
-    SketchPreselection sketchOnFace{ guidocument, activeBody, faceOrPlaneFilter };
+    auto filters = getFilters();
+    SketchPreselection sketchOnFace {guidocument, activeBody, filters};
 
     if (sketchOnFace.matches()) {
         // create Sketch on Face or Plane
@@ -804,7 +845,7 @@ bool SketchWorkflow::shouldAbort(bool shouldMakeBody) const
     return !shouldMakeBody && !activeBody;
 }
 
-std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> SketchWorkflow::getFaceAndPlaneFilter() const
+std::tuple<Gui::SelectionFilter, Gui::SelectionFilter, Gui::SelectionFilter> SketchWorkflow::getFilters() const
 {
     // Hint:
     // The behaviour of this command has changed with respect to a selected sketch:
@@ -815,9 +856,11 @@ std::tuple<Gui::SelectionFilter, Gui::SelectionFilter> SketchWorkflow::getFaceAn
     Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1");
     Gui::SelectionFilter PlaneFilter ("SELECT App::Plane COUNT 1", activeBody);
     Gui::SelectionFilter PlaneFilter2("SELECT PartDesign::Plane COUNT 1", activeBody);
+    Gui::SelectionFilter SketchFilter("SELECT Part::Part2DObject COUNT 1", activeBody);
 
     if (PlaneFilter2.match()) {
         PlaneFilter = PlaneFilter2;
     }
-    return std::make_tuple(FaceFilter, PlaneFilter);
+
+    return std::make_tuple(FaceFilter, PlaneFilter, SketchFilter);
 }

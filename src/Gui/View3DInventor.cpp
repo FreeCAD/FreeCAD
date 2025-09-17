@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <string>
 # include <QApplication>
 # include <QKeyEvent>
@@ -48,7 +47,7 @@
 # include <Inventor/nodes/SoPerspectiveCamera.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/SoPickedPoint.h>
-#endif
+
 
 
 #include <App/Application.h>

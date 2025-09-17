@@ -120,6 +120,7 @@ void positionDimText(DrawViewDimension* dim, int indexOffset = 0);
 
 void activateHandler(TechDrawHandler* newHandler)
 {
+    std::unique_ptr<TechDrawHandler> ptr(newHandler);
     auto* mdi = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
     if (!mdi) {
         return;
@@ -134,7 +135,7 @@ void activateHandler(TechDrawHandler* newHandler)
     if (!viewPage) {
         return;
     }
-    viewPage->activateHandler(newHandler);
+    viewPage->activateHandler(ptr.release());
 }
 
 //===========================================================================
@@ -427,7 +428,6 @@ public:
 
     void mouseReleaseEvent(QMouseEvent* event) override
     {
-        // Base::Console().warning("mouseReleaseEvent TH\n");
         if (event->button() == Qt::RightButton) {
             if (!dims.empty()) {
                 Gui::Selection().clearSelection();
@@ -446,8 +446,7 @@ public:
 
             if (removedRef.hasGeometry()) {
                 finalize = false;
-                //Base::Console().warning("RmvSelection \n");
-                // Remove the reference from the vector
+
                 ReferenceVector& selVector = getSelectionVector(removedRef);
                 selVector.erase(std::remove(selVector.begin(), selVector.end(), removedRef), selVector.end());
 
@@ -463,7 +462,6 @@ public:
 
             if (addedRef.hasGeometry()) {
                 finalize = false;
-                //Base::Console().warning("AddSelection\n");
                 //add the geometry to its type vector. Temporarily if not selAllowed
                 if (addedRef.getSubName() == "") {
                     // Behavior deactivated for now because I found it annoying.
@@ -510,32 +508,21 @@ public:
 
     void onSelectionChanged(const Gui::SelectionChanges& msg) override
     {
-        //Base::Console().warning("onSelectionChanged %d - --%s--\n", (int)msg.Type, msg.pSubName);
-
         if (msg.Type == Gui::SelectionChanges::ClrSelection) {
-            //clearAndRestartCommand();
             return;
         }
 
+        App::Document* pageDoc = nullptr;
+        if (auto page = getPage()) {
+            pageDoc = page->getDocument();
+        }
         if (msg.Object.getObjectName().empty()
-            || msg.Object.getDocument() != getPage()->getDocument()) {
+            || (msg.Object.getDocument() != pageDoc)) {
             if (msg.Type == Gui::SelectionChanges::AddSelection) {
                 Gui::Selection().rmvSelection(msg.pDocName, msg.pObjectName, msg.pSubName);
             }
             return;
         }
-
-        /*if (msg.Type == Gui::SelectionChanges::SetPreselect) {
-            Base::Console().warning("SetPreselect\n");
-            std::string geomName = DrawUtil::getGeomTypeFromName(msg.pSubName);
-            edgeOrPointPreselected = geomName == "Edge" || geomName == "Vertex";
-            return;
-        }
-        else if (msg.Type == Gui::SelectionChanges::RmvPreselect) {
-            Base::Console().warning("RmvPreselect\n");
-            edgeOrPointPreselected = false;
-            return;
-        }*/
 
         App::DocumentObject* obj = msg.Object.getObject();
         if (!obj) {
@@ -633,8 +620,6 @@ protected:
 
     void finalizeCommand()
     {
-        //Base::Console().warning("finalizeCommand \n");
-
         finishDimensionMove();
 
         // Ask for the value of datum dimensions
@@ -683,7 +668,6 @@ protected:
                     return emptyVector;
                 }
                 return selLine;
-                //Base::Vector3d line = gen1->points.at(1) - gen1->points.at(0);
             }
             else if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
                 return selCircleArc;
@@ -692,12 +676,6 @@ protected:
                 return selEllipseArc;
             }
             else if (geom->getGeomType() == GeomType::BSPLINE) {
-                //TechDraw::BSplinePtr spline = std::static_pointer_cast<TechDraw::BSpline>(geom);
-                //if (spline->isCircle()) {
-                //    return isBSplineCircle;
-                //}
-                //else {
-                //}
                 return selSplineAndCo;
             }
         }
@@ -707,26 +685,6 @@ protected:
 
         return emptyVector;
     }
-
-    /*
-    bool notSelectedYet(const ReferenceEntry& elem)
-    {
-        auto contains = [&](const ReferenceVector& vec, const ReferenceEntry& elem) {
-            for (const auto& x : vec)
-            {
-                if (x == elem){
-                    return true;
-                }
-            }
-            return false;
-        };
-
-        return !contains(selPoints, elem)
-            && !contains(selLine, elem)
-            && !contains(selCircleArc, elem)
-            && !contains(selEllipseArc, elem)
-            && !contains(selFaces, elem);
-    }*/
 
     bool selectionEmpty()
     {
@@ -752,7 +710,6 @@ protected:
 
     bool makeAppropriateDimension() {
         bool selAllowed = false;
-        //Base::Console().warning("makeAppropriateDimension %d %d %d %d %d %d\n", selPoints.size(), selLine.size(), selCircleArc.size(), selEllipseArc.size(), selSplineAndCo.size(), selFaces.size());
 
         GeomSelectionSizes selection(selPoints.size(), selLine.size(), selCircleArc.size(), selEllipseArc.size(), selSplineAndCo.size(), selFaces.size());
         if (selection.hasFaces()) {
@@ -1868,89 +1825,6 @@ void execArea(Gui::Command* cmd)
 }
 
 
-// TechDraw_LinkDimension is DEPRECATED.  Use TechDraw_DimensionRepair instead.
-//! link 3D geometry to Dimension(s) on a Page
-//TODO: should we present all potential Dimensions from all Pages?
-//===========================================================================
-// TechDraw_LinkDimension
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDrawLinkDimension)
-
-CmdTechDrawLinkDimension::CmdTechDrawLinkDimension()
-    : Command("TechDraw_LinkDimension")
-{
-    sAppModule = "TechDraw";
-    sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Link Dimension to 3D Geometry");
-    sToolTipText = QT_TR_NOOP("Links the selected TechDraw dimensions to 3D geometry");
-    sWhatsThis = "TechDraw_LinkDimension";
-    sStatusTip = sToolTipText;
-    sPixmap = "TechDraw_LinkDimension";
-}
-
-void CmdTechDrawLinkDimension::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-
-    bool result = _checkSelection(this, 2);
-    if (!result) {
-        return;
-    }
-
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(
-        nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::NoResolve);
-
-    App::DocumentObject* obj3D = nullptr;
-    std::vector<App::DocumentObject*> parts;
-    std::vector<std::string> subs;
-
-    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
-    for (; itSel != selection.end(); itSel++) {
-        obj3D = ((*itSel).getObject());
-        std::vector<std::string> subList = (*itSel).getSubNames();
-        for (auto& s : subList) {
-            parts.push_back(obj3D);
-            subs.push_back(s);
-        }
-    }
-
-    if (!obj3D) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
-                             QObject::tr("There is no 3D object in your selection"));
-        return;
-    }
-
-    if (subs.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect selection"),
-                             QObject::tr("There are no 3D edges or vertices in your selection"));
-        return;
-    }
-
-
-    // dialog to select the Dimension to link
-    Gui::Control().showDialog(new TaskDlgLinkDim(parts, subs, page));
-
-    page->getDocument()->recompute();//still need to recompute in Gui. why?
-}
-
-bool CmdTechDrawLinkDimension::isActive()
-{
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    bool taskInProgress = false;
-    if (havePage) {
-        taskInProgress = Gui::Control().activeDialog();
-    }
-    return (havePage && haveView && !taskInProgress);
-}
-
 //===========================================================================
 // TechDraw_ExtentGroup
 //===========================================================================
@@ -1971,7 +1845,6 @@ CmdTechDrawExtentGroup::CmdTechDrawExtentGroup()
 
 void CmdTechDrawExtentGroup::activated(int iMsg)
 {
-    //    Base::Console().message("CMD::ExtentGrp - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -2256,113 +2129,6 @@ bool CmdTechDrawDimensionRepair::isActive(void)
     return (havePage && haveView && !taskInProgress);
 }
 
-//NOTE: to be deprecated.  revisions to the basic dimension allows it to handle
-//everything that the Landmark Dimension was created to handle.
-//===========================================================================
-// TechDraw_LandmarkDimension
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDrawLandmarkDimension)
-
-CmdTechDrawLandmarkDimension::CmdTechDrawLandmarkDimension()
-    : Command("TechDraw_LandmarkDimension")
-{
-    sAppModule = "TechDraw";
-    sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Landmark Dimension");
-    sToolTipText = QT_TR_NOOP("Inserts a landmark dimension (experimental feature). Use with caution.");
-    sWhatsThis = "TechDraw_LandmarkDimension";
-    sStatusTip = sToolTipText;
-    sPixmap = "TechDraw_LandmarkDimension";
-}
-
-void CmdTechDrawLandmarkDimension::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    bool result = _checkSelection(this, 3);
-    if (!result) {
-        return;
-    }
-
-    const std::vector<App::DocumentObject*> objects =
-        getSelection().getObjectsOfType(Part::Feature::getClassTypeId());//??
-    if (objects.size() != 2) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select 2 point objects and 1 view. (1)"));
-        return;
-    }
-
-    const std::vector<App::DocumentObject*> views =
-        getSelection().getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
-    if (views.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Wrong selection"),
-                             QObject::tr("Select 2 point objects and 1 view. (2)"));
-        return;
-    }
-
-    TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(views.front());
-
-    std::vector<App::DocumentObject*> refs2d;
-
-    std::vector<std::string> subs;
-    subs.emplace_back("Vertex1");
-    subs.emplace_back("Vertex1");
-    TechDraw::DrawPage* page = dvp->findParentPage();
-    std::string parentName = dvp->getNameInDocument();
-    std::string PageName = page->getNameInDocument();
-
-    TechDraw::LandmarkDimension* dim = nullptr;
-    std::string FeatName = getUniqueObjectName("LandmarkDim");
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
-    doCommand(Doc,
-              "App.activeDocument().addObject('TechDraw::LandmarkDimension', '%s')",
-              FeatName.c_str());
-    doCommand(Doc, "App.activeDocument().%s.translateLabel('LandmarkDimension', 'LandmarkDim', '%s')",
-              FeatName.c_str(), FeatName.c_str());
-
-    if (objects.size() == 2) {
-        //what about distanceX and distanceY??
-        doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str(), "Distance");
-        refs2d.push_back(dvp);
-        refs2d.push_back(dvp);
-    }
-    //    } else if (objects.size() == 3) {             //not implemented yet
-    //        doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str(), "Angle3Pt");
-    //        refs2d.push_back(dvp);
-    //        refs2d.push_back(dvp);
-    //        refs2d.push_back(dvp);
-    //        //subs.push_back("Vertex1");
-    //        //subs.push_back("Vertex1");
-    //        //subs.push_back("Vertex1");
-    //    }
-
-    dim = dynamic_cast<TechDraw::LandmarkDimension*>(getDocument()->getObject(FeatName.c_str()));
-    if (!dim) {
-        throw Base::TypeError("CmdTechDrawLandmarkDimension - dim not found\n");
-    }
-    dim->References2D.setValues(refs2d, subs);
-    dim->References3D.setValues(objects, subs);
-    doCommand(Doc,
-              "App.activeDocument().%s.addView(App.activeDocument().%s)",
-              PageName.c_str(),
-              FeatName.c_str());
-
-    commitCommand();
-
-    // Touch the parent feature so the dimension in tree view appears as a child
-    dvp->touch(true);
-
-    dim->recomputeFeature();
-}
-
-bool CmdTechDrawLandmarkDimension::isActive()
-{
-    return isDimCmdActive(this);
-}
-
 //------------------------------------------------------------------------------
 
 void CreateTechDrawCommandsDims()
@@ -2381,8 +2147,6 @@ void CreateTechDrawCommandsDims()
     rcCmdMgr.addCommand(new CmdTechDrawExtentGroup());
     rcCmdMgr.addCommand(new CmdTechDrawVerticalExtentDimension());
     rcCmdMgr.addCommand(new CmdTechDrawHorizontalExtentDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawLinkDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawLandmarkDimension());
     rcCmdMgr.addCommand(new CmdTechDrawDimensionRepair());
     rcCmdMgr.addCommand(new CmdTechDrawCompDimensionTools());
 }
@@ -2532,7 +2296,6 @@ DrawViewDimension* dimMaker(TechDraw::DrawViewPart* dvp, std::string dimType,
                             "App.activeDocument().%s.addView(App.activeDocument().%s)",
                             PageName.c_str(),
                             dimName.c_str());
-
 
     dim->recomputeFeature();
 

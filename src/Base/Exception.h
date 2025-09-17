@@ -24,6 +24,8 @@
 #ifndef BASE_EXCEPTION_H
 #define BASE_EXCEPTION_H
 
+#include <FCConfig.h>
+
 #include <csignal>
 #include <source_location>
 #include <string>

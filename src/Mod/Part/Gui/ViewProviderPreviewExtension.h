@@ -27,15 +27,15 @@
 #include "SoBrepEdgeSet.h"
 #include "SoBrepFaceSet.h"
 #include "SoBrepPointSet.h"
+#include "SoFCShapeObject.h"
 
 #include <QtCore>
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoNormal.h>
-#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoMatrixTransform.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoSFMatrix.h>
 
 #include <App/PropertyStandard.h>
 #include <Gui/ViewProvider.h>
@@ -43,12 +43,11 @@
 #include <Gui/ViewProviderExtension.h>
 #include <Gui/ViewProviderExtensionPython.h>
 #include <Mod/Part/App/TopoShape.h>
-#include <Mod/PartDesign/App/Feature.h>
 
 namespace PartGui {
 
-class PartGuiExport SoPreviewShape : public SoSeparator {
-    using inherited = SoSeparator;
+class PartGuiExport SoPreviewShape : public SoFCShape {
+    using inherited = SoFCShape;
     SO_NODE_HEADER(SoPreviewShape);
 
 public:
@@ -62,17 +61,14 @@ public:
     SoSFColor color;
     SoSFFloat transparency;
     SoSFFloat lineWidth;
+    SoSFMatrix transform;
 
-    SoCoordinate3* coords;
-    SoNormal* norm;
-
-    SoBrepFaceSet* faceset;
-    SoBrepEdgeSet* lineset;
-    SoBrepPointSet* nodeset;
+private:
+    SoMatrixTransform* pcTransform;
 };
 
 class PartGuiExport ViewProviderPreviewExtension : public Gui::ViewProviderExtension {
-    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderPreviewExtension)
+    Q_DECLARE_TR_FUNCTIONS(PartGui::ViewProviderPreviewExtension)
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderPreviewExtension);
 
 public:

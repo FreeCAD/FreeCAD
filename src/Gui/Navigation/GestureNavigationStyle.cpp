@@ -60,16 +60,17 @@
  *
  */
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <Inventor/SoFullPath.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoRayPickAction.h>
 # include <Inventor/draggers/SoDragger.h>
 # include <QApplication>
-#endif
+
 
 #include <QTapAndHoldGesture>
+
+#include <FCConfig.h>
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
@@ -860,7 +861,7 @@ const char* GestureNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::DRAGGING:
         return QT_TR_NOOP("Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.");
+        return QT_TR_NOOP("Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.");
     default:
         return "No description";
     }

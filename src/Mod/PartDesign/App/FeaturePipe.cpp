@@ -235,7 +235,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
             for (auto& subSet : multisections) {
                 if (!subSet.first->isDerivedFrom<Part::Feature>())
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                                                                               "Pipe: All sections need to be part features"));
+                                                                               "Pipe: All sections need to be Part features"));
 
                 // if the section is an object's face then take just the face
                 TopoDS_Shape shape = getSectionShape(subSet.first, subSet.second);
@@ -402,7 +402,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
 
             if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                                                                           "Result has multiple solids: that is not currently supported."));
+                                                                           "Result has multiple solids: enable 'Allow Compound' in the active body."));
             }
 
             // store shape before refinement
@@ -423,7 +423,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
 
             if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                                                                           "Result has multiple solids: that is not currently supported."));
+                                                                           "Result has multiple solids: enable 'Allow Compound' in the active body."));
             }
 
             // store shape before refinement
@@ -637,3 +637,5 @@ void Pipe::handleChangedPropertyName(Base::XMLReader& reader,
         ProfileBased::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }
+
+

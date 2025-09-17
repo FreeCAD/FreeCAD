@@ -67,7 +67,7 @@ namespace {
         // No attribute and no parent nodes left? Defaulting:
         return QFont(QStringLiteral("sans"));
     }
-    
+
     std::vector<QDomElement> getFCElements(QDomDocument& doc) {
         QDomNodeList textElements = doc.elementsByTagName(QStringLiteral("text"));
         std::vector<QDomElement> filteredTextElements;
@@ -247,7 +247,7 @@ std::vector<TemplateTextField*> QGISVGTemplate::getTextFields()
 void QGISVGTemplate::clearClickHandles()
 {
     prepareGeometryChange();
-    std::vector<TemplateTextField*> textFields = getTextFields(); 
+    std::vector<TemplateTextField*> textFields = getTextFields();
     for (auto& textField : textFields) {
         textField->hide();
         scene()->removeItem(textField);
@@ -284,7 +284,7 @@ void QGISVGTemplate::createClickHandles()
         // Get elements bounding box of text
         QString id = textElement.attribute(QStringLiteral("id"));
         QRectF textRect = m_svgRender->boundsOnElement(id);
-        
+
         // Get tight bounding box of text
         QDomElement tspan = textElement.firstChildElement();
         QFont font = getFont(tspan);
@@ -300,7 +300,7 @@ void QGISVGTemplate::createClickHandles()
         // and both be in style attribute and native attribute
         font.setPointSizeF(1.5);
         fm = QFontMetricsF(font);
-        
+
         if (tightTextRect.height() < fm.capHeight()) {
             tightTextRect.setTop(tightTextRect.bottom() - fm.capHeight());
         }

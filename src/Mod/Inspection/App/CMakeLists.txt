@@ -1,9 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
 set(Inspection_LIBS
     FreeCADApp
     Mesh
@@ -30,7 +24,20 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 add_library(Inspection SHARED ${Inspection_SRCS} ${Inspection_Scripts})
+target_include_directories(
+    Inspection
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
 target_link_libraries(Inspection ${Inspection_LIBS})
+
+if (MSVC)
+    target_compile_options(Inspection PRIVATE /wd4251)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Inspection)
 endif()

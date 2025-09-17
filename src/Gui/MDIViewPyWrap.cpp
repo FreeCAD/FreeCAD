@@ -20,11 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <unordered_map>
 # include <stdexcept>
-#endif
+
 
 #include <Base/Interpreter.h>
 #include <App/Document.h>

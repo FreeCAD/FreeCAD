@@ -39,8 +39,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import DraftVecUtils
 
-from draftutils.messages import _wrn
-from draftutils.translate import translate
+from draftutils.messages import _log
 
 from draftobjects.draftlink import DraftLink
 
@@ -71,9 +70,9 @@ class Array(DraftLink):
             return
 
         if not hasattr(obj, "Count"):
-            _wrn("v0.21, " + obj.Label + ", " + translate("draft", "added property 'Count'"))
+            _log("v0.21, " + obj.Name + ", added property 'Count'")
         if not hasattr(obj, "PlacementList"):
-            _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added hidden property 'PlacementList'"))
+            _log("v1.1, " + obj.Name + ", added hidden property 'PlacementList'")
 
         self.set_general_properties(obj)
         self.execute(obj) # Required to update Count and/or PlacementList.
@@ -111,7 +110,7 @@ class Array(DraftLink):
                                      "angle, and with certain orientation "
                                      "defined by a center and an axis.\n"
                                      "- Circular: places the copies "
-                                     "in concentric circular layers "
+                                     "in concentric circles "
                                      "around the base object.")
             obj.addProperty("App::PropertyEnumeration",
                             "ArrayType",
@@ -164,7 +163,7 @@ class Array(DraftLink):
 
         if "NumberX" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Number of copies in X direction")
+                                     "Number of copies in X-direction")
             obj.addProperty("App::PropertyInteger",
                             "NumberX",
                             "Orthogonal array",
@@ -174,7 +173,7 @@ class Array(DraftLink):
 
         if "NumberY" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Number of copies in Y direction")
+                                     "Number of copies in Y-direction")
             obj.addProperty("App::PropertyInteger",
                             "NumberY",
                             "Orthogonal array",
@@ -184,7 +183,7 @@ class Array(DraftLink):
 
         if "NumberZ" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Number of copies in Z direction")
+                                     "Number of copies in Z-direction")
             obj.addProperty("App::PropertyInteger",
                             "NumberZ",
                             "Orthogonal array",
@@ -195,7 +194,7 @@ class Array(DraftLink):
         if "IntervalX" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Distance and orientation "
-                                     "of intervals in X direction")
+                                     "of intervals in X-direction")
             obj.addProperty("App::PropertyVectorDistance",
                             "IntervalX",
                             "Orthogonal array",
@@ -206,7 +205,7 @@ class Array(DraftLink):
         if "IntervalY" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Distance and orientation "
-                                     "of intervals in Y direction")
+                                     "of intervals in Y-direction")
             obj.addProperty("App::PropertyVectorDistance",
                             "IntervalY",
                             "Orthogonal array",
@@ -217,7 +216,7 @@ class Array(DraftLink):
         if "IntervalZ" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Distance and orientation "
-                                     "of intervals in Z direction")
+                                     "of intervals in Z-direction")
             obj.addProperty("App::PropertyVectorDistance",
                             "IntervalZ",
                             "Orthogonal array",
@@ -314,7 +313,7 @@ class Array(DraftLink):
 
         if "RadialDistance" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Distance between circular layers")
+                                     "Distance between concentric circles")
             obj.addProperty("App::PropertyDistance",
                             "RadialDistance",
                             "Circular array",
@@ -325,7 +324,7 @@ class Array(DraftLink):
         if "TangentialDistance" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Distance between copies "
-                                     "in the same circular layer")
+                                     "in the same circle")
             obj.addProperty("App::PropertyDistance",
                             "TangentialDistance",
                             "Circular array",
@@ -335,8 +334,8 @@ class Array(DraftLink):
 
         if "NumberCircles" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                                     "Number of circular layers. "
-                                     "The 'Base' object counts as one layer.")
+                                     "Number of concentric circle. "
+                                     "The 'Base' object counts as one circle.")
             obj.addProperty("App::PropertyInteger",
                             "NumberCircles",
                             "Circular array",
@@ -348,7 +347,7 @@ class Array(DraftLink):
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "A parameter that determines "
                                      "how many symmetry planes "
-                                     "the circular array will have.")
+                                     "the circular array will have")
             obj.addProperty("App::PropertyInteger",
                             "Symmetry",
                             "Circular array",

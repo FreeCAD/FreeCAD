@@ -36,7 +36,7 @@ class Quantity;
 /**
  * An individual schema object
  */
-class UnitsSchema
+class BaseExport UnitsSchema
 {
 public:
     explicit UnitsSchema(UnitsSchemaSpec spec);

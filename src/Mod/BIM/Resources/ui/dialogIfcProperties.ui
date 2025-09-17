@@ -179,7 +179,7 @@
       <item>
        <widget class="QPushButton" name="buttonIFCPropertiesDelete">
         <property name="text">
-         <string>Delete Selected Property/Set</string>
+         <string>Delete Selected Property/Property Set</string>
         </property>
         <property name="icon">
          <iconset theme="gtk-delete">

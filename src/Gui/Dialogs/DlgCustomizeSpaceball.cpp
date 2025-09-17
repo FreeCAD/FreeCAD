@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <QComboBox>
 #include <QHBoxLayout>
 #include <QHeaderView>
@@ -34,7 +31,6 @@
 #include <QSplitter>
 #include <QTableView>
 #include <QVBoxLayout>
-#endif
 
 #include "Base/Console.h"
 

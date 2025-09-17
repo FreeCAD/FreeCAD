@@ -20,10 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
+#include <algorithm>
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
 #include <QClipboard>
@@ -31,7 +28,6 @@
 #include <QHeaderView>
 #include <QMenu>
 #include <QPainter>
-#endif
 
 #include <App/Application.h>
 #include <App/AutoTransaction.h>
@@ -39,6 +35,8 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
+#include "Document.h"
+#include "Tree.h"
 #include "PropertyEditor.h"
 #include "Dialogs/DlgAddProperty.h"
 #include "MainWindow.h"
@@ -72,6 +70,8 @@ PropertyEditor::PropertyEditor(QWidget* parent)
     delegate = new PropertyItemDelegate(this);
     delegate->setItemEditorFactory(new PropertyItemEditorFactory);
     setItemDelegate(delegate);
+    // prevent a non-persistent editor when pressing an edit key
+    setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     setAlternatingRowColors(true);
     setRootIsDecorated(false);
@@ -220,6 +220,67 @@ bool PropertyEditor::event(QEvent* event)
         }
     }
     return QTreeView::event(event);
+}
+
+bool PropertyEditor::removeSelectedDynamicProperties()
+{
+    std::unordered_set<App::Property*> props = acquireSelectedProperties();
+    if (props.empty()) {
+        return false;
+    }
+
+    bool canRemove = std::ranges::all_of(props, [](auto prop) {
+        return prop->testStatus(App::Property::PropDynamic)
+            && !prop->testStatus(App::Property::LockDynamic);
+    });
+    if (!canRemove) {
+        return false;
+    }
+
+    removeProperties(props);
+    return true;
+}
+
+void PropertyEditor::keyPressEvent(QKeyEvent* event)
+{
+    if (state() == QAbstractItemView::EditingState) {
+        QTreeView::keyPressEvent(event);
+        return;
+    }
+
+    const auto key = event->key();
+    const auto mods = event->modifiers();
+
+    const bool allowedDeleteModifiers =
+        mods == Qt::NoModifier ||
+        mods == Qt::KeypadModifier;
+
+#if defined(Q_OS_MACOS) || defined(Q_OS_MAC)
+    const bool isDeleteKey = key == Qt::Key_Backspace || key == Qt::Key_Delete;
+    const bool isEditKey = (mods == Qt::NoModifier) &&
+        (key == Qt::Key_Return || key == Qt::Key_Enter);
+#else
+    const bool isDeleteKey = key == Qt::Key_Delete;
+    const bool isEditKey = (mods == Qt::NoModifier) && (key == Qt::Key_F2);
+#endif
+
+    if (allowedDeleteModifiers && isDeleteKey) {
+        if (removeSelectedDynamicProperties()) {
+            event->accept();
+            return;
+        }
+    }
+    else if (isEditKey) {
+        // open a persistent editor when an edit key is pressed
+        event->accept();
+        auto index = model() ? model()->buddy(currentIndex()) : QModelIndex();
+        if (index.isValid()) {
+            openEditor(index);
+        }
+        return;
+    }
+
+    QTreeView::keyPressEvent(event);
 }
 
 void PropertyEditor::commitData(QWidget* editor)
@@ -714,6 +775,7 @@ enum MenuAction
     MA_RemoveProp,
     MA_RenameProp,
     MA_AddProp,
+    MA_EditPropTooltip,
     MA_EditPropGroup,
     MA_Transient,
     MA_Output,
@@ -726,14 +788,21 @@ enum MenuAction
     MA_Copy,
 };
 
-void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
+static App::PropertyContainer* getSelectedPropertyContainer()
 {
-    QMenu menu;
-    QAction* autoExpand = nullptr;
+    auto sels = Gui::Selection().getSelection("*");
+    if (sels.size() == 1) {
+        return sels[0].pObject;
+    }
+    std::vector<Gui::Document*> docs = Gui::TreeWidget::getSelectedDocuments();
+    if (docs.size() == 1) {
+        return docs[0]->getDocument();
+    }
+    return nullptr;
+}
 
-    auto contextIndex = currentIndex();
-
-    // acquiring the selected properties
+std::unordered_set<App::Property*> PropertyEditor::acquireSelectedProperties() const
+{
     std::unordered_set<App::Property*> props;
     const auto indexes = selectedIndexes();
     for (const auto& index : indexes) {
@@ -751,6 +820,34 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         if (index.column() > 0) {
             continue;
         }
+    }
+    return props;
+}
+
+void PropertyEditor::removeProperties(const std::unordered_set<App::Property*>& props)
+{
+    App::AutoTransaction committer("Remove property");
+    for (auto prop : props) {
+        try {
+            prop->getContainer()->removeDynamicProperty(prop->getName());
+        }
+        catch (Base::Exception& e) {
+            e.reportException();
+        }
+    }
+}
+
+void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
+{
+    QMenu menu;
+    QAction* autoExpand = nullptr;
+
+    auto contextIndex = currentIndex();
+
+    std::unordered_set<App::Property*> props = acquireSelectedProperties();
+
+    // copy value to clipboard
+    if (props.size() == 1) {
         const QVariant valueToCopy = contextIndex.data(Qt::DisplayRole);
         if (valueToCopy.isValid()) {
             QAction* copyAction = menu.addAction(tr("Copy"));
@@ -760,7 +857,11 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
     }
 
     // add property
-    menu.addAction(tr("Add Property"))->setData(QVariant(MA_AddProp));
+    if (getSelectedPropertyContainer()) {
+        menu.addAction(tr("Add Property"))->setData(QVariant(MA_AddProp));
+    }
+
+    // rename property group
     if (!props.empty() && std::all_of(props.begin(), props.end(), [](auto prop) {
             return prop->testStatus(App::Property::PropDynamic)
                 && !boost::starts_with(prop->getName(), prop->getGroup());
@@ -773,7 +874,8 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         auto prop = *props.begin();
         if (prop->testStatus(App::Property::PropDynamic)
             && !prop->testStatus(App::Property::LockDynamic)) {
-            menu.addAction(tr("Rename property"))->setData(QVariant(MA_RenameProp));
+            menu.addAction(tr("Rename Property"))->setData(QVariant(MA_RenameProp));
+            menu.addAction(tr("Edit Property Tooltip"))->setData(QVariant(MA_EditPropTooltip));
         }
     }
 
@@ -790,7 +892,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         }
     }
     if (canRemove) {
-        menu.addAction(tr("Remove Property"))->setData(QVariant(MA_RemoveProp));
+        menu.addAction(tr("Delete Property"))->setData(QVariant(MA_RemoveProp));
     }
 
     // add a separator between adding/removing properties and the rest
@@ -918,20 +1020,41 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             }
             break;
         case MA_AddProp: {
+            App::PropertyContainer* container = getSelectedPropertyContainer();
+            if (container == nullptr) {
+                return;
+            }
             App::AutoTransaction committer("Add property");
-            std::unordered_set<App::PropertyContainer*> containers;
-            auto sels = Gui::Selection().getSelection("*");
-            if (sels.size() == 1) {
-                containers.insert(sels[0].pObject);
-            }
-            else {
-                for (auto prop : props) {
-                    containers.insert(prop->getContainer());
-                }
-            }
-            Gui::Dialog::DlgAddProperty dlg(Gui::getMainWindow(), std::move(containers));
+            Gui::Dialog::DlgAddProperty dlg(Gui::getMainWindow(), container);
             dlg.exec();
             return;
+        }
+        case MA_EditPropTooltip: {
+            if (props.size() != 1) {
+                break;
+            }
+
+            App::Property* prop = *props.begin();
+            if (!prop->testStatus(App::Property::PropDynamic)
+                || prop->testStatus(App::Property::LockDynamic)) {
+                break;
+            }
+
+            bool ok = false;
+            const QString currentTooltip = QString::fromUtf8(prop->getDocumentation());
+            QString newTooltip = QInputDialog::getMultiLineText(Gui::getMainWindow(),
+                                                         tr("Edit Property Tooltip"),
+                                                         tr("Tooltip"),
+                                                         currentTooltip,
+                                                         &ok);
+            if (!ok || newTooltip == currentTooltip) {
+                break;
+            }
+
+            prop->getContainer()->changeDynamicProperty(prop,
+                                                        prop->getGroup(),
+                                                        newTooltip.toUtf8().constData());
+            break;
         }
         case MA_RenameProp: {
             if (props.size() != 1) {
@@ -986,15 +1109,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             return;
         }
         case MA_RemoveProp: {
-            App::AutoTransaction committer("Remove property");
-            for (auto prop : props) {
-                try {
-                    prop->getContainer()->removeDynamicProperty(prop->getName());
-                }
-                catch (Base::Exception& e) {
-                    e.reportException();
-                }
-            }
+            removeProperties(props);
             break;
         }
         default:

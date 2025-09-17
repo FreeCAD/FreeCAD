@@ -39,7 +39,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 from draftutils import gui_utils
-from draftutils.messages import _wrn
+from draftutils.messages import _log
 
 from draftobjects.base import DraftObject
 
@@ -167,8 +167,7 @@ class DraftLink(DraftObject):
             # all models should use 'use_link' by default
             # and this won't be run.
             self.use_link = bool(self.useLink)
-            _wrn("v0.19, {}, 'useLink' will be migrated "
-                 "to 'use_link'".format(obj.Label))
+            _log("v0.19, {}, 'useLink' will be migrated to 'use_link'".format(obj.Name))
             del self.useLink
 
     def onDocumentRestored(self, obj):

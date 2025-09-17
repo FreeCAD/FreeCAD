@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
 #include "Exception.h"
 #include "ProgressIndicatorPy.h"
 
@@ -71,8 +68,7 @@ ProgressIndicatorPy::~ProgressIndicatorPy() = default;
 
 Py::Object ProgressIndicatorPy::repr()
 {
-    std::string s = "Base.ProgressIndicator";
-    return Py::String(s);  // NOLINT
+    return Py::String("Base.ProgressIndicator");
 }
 
 Py::Object ProgressIndicatorPy::start(const Py::Tuple& args)

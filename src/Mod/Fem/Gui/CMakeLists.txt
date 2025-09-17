@@ -13,48 +13,29 @@ if(BUILD_FEM_NETGEN)
     add_definitions(-DFCWithNetgen)
 endif(BUILD_FEM_NETGEN)
 
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-include_directories(
-    SYSTEM
-    ${SMESH_INCLUDE_DIR}
-    ${VTK_INCLUDE_DIRS}
-)
-
-link_directories(${SMESH_LIB_PATH})
-
 set(FemGui_LIBS
     Fem
     FreeCADGui
     PartGui
 )
 
-generate_from_xml(ViewProviderFemConstraintPy)
-generate_from_xml(ViewProviderFemMeshPy)
-generate_from_xml(ViewProviderFemPostPipelinePy)
-generate_from_xml(ViewProviderFemPostFilterPy)
-
-generate_from_py_(ViewProviderFemConstraintPy)
-generate_from_py_(ViewProviderFemMeshPy)
-generate_from_py_(ViewProviderFemPostPipelinePy)
-generate_from_py_(ViewProviderFemPostFilterPy)
+generate_from_py(ViewProviderFemConstraint)
+generate_from_py(ViewProviderFemMesh)
+generate_from_py(ViewProviderFemPostPipeline)
+generate_from_py(ViewProviderFemPostFilter)
 
 SET(Python_SRCS
-    ViewProviderFemConstraintPy.xml
+    ViewProviderFemConstraint.pyi
     ViewProviderFemConstraintPyImp.cpp
-    ViewProviderFemMeshPy.xml
+    ViewProviderFemMesh.pyi
     ViewProviderFemMeshPyImp.cpp
 )
 if(BUILD_FEM_VTK)
     set(Python_SRCS
         ${Python_SRCS}
-        ViewProviderFemPostPipelinePy.xml
+        ViewProviderFemPostPipeline.pyi
         ViewProviderFemPostPipelinePyImp.cpp
-        ViewProviderFemPostFilterPy.xml
+        ViewProviderFemPostFilter.pyi
         ViewProviderFemPostFilterPyImp.cpp
     )
 endif(BUILD_FEM_VTK)
@@ -404,7 +385,30 @@ SET(FemGuiSymbol_IV
 )
 
 add_library(FemGui SHARED ${FemGui_SRCS} ${FemGuiIcon_SVG} ${FemGuiSymbol_IV})
+
+target_include_directories(
+    FemGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+target_include_directories(
+    FemGui
+    SYSTEM
+    PUBLIC
+    ${SMESH_INCLUDE_DIR}
+    ${VTK_INCLUDE_DIRS}
+)
+
+target_link_directories(FemGui PUBLIC ${SMESH_LIB_PATH})
 target_link_libraries(FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
+
+if (MSVC)
+    target_compile_definitions(FemGui PRIVATE WIN32_LEAN_AND_MEAN)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(FemGui)
 endif()

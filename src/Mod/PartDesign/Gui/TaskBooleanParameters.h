@@ -24,6 +24,9 @@
 #ifndef GUI_TASKVIEW_TaskBooleanParameters_H
 #define GUI_TASKVIEW_TaskBooleanParameters_H
 
+#include "TaskFeatureParameters.h"
+
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
@@ -78,7 +81,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgBooleanParameters : public Gui::TaskView::TaskDialog
+class TaskDlgBooleanParameters : public TaskDlgFeatureParameters
 {
     Q_OBJECT
 

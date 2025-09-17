@@ -19,12 +19,12 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="8698"/>
       <source>Radius/Diameter Dimension</source>
-      <translation type="unfinished">Radius/Diameter Dimension</translation>
+      <translation>Вымярэнне радыуса/дыяметру</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8699"/>
       <source>Constrains the radius or diameter of an arc or a circle</source>
-      <translation type="unfinished">Constrains the radius or diameter of an arc or a circle</translation>
+      <translation>Абмяжоўвае радыус ці дыяметр дугі ці акружнасці</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8809"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="633"/>
       <source>Modify Knot Multiplicity</source>
-      <translation type="unfinished">Modify Knot Multiplicity</translation>
+      <translation>Змяніць кратнасці вузлоў</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
@@ -83,11 +83,11 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="114"/>
       <source>Geometry to B-Spline</source>
-      <translation type="unfinished">Geometry to B-Spline</translation>
+      <translation>Пераўтварыць геаметрыю ў B-сплайн</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="115"/>
-      <source>Converts the selected geometry to a B-spline</source>
+      <source>Converts the selected geometry to B-splines</source>
       <translation>Пераўтварыць абраную геаметрыю ў B-сплайн</translation>
     </message>
   </context>
@@ -109,7 +109,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="267"/>
       <source>Decrease B-Spline Degree</source>
-      <translation type="unfinished">Decrease B-Spline Degree</translation>
+      <translation>Паменшыць ступень B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="268"/>
@@ -122,7 +122,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="496"/>
       <source>Decrease Knot Multiplicity</source>
-      <translation type="unfinished">Decrease Knot Multiplicity</translation>
+      <translation>Паменшыць кратнасць вузлоў</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="497"/>
@@ -135,7 +135,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="190"/>
       <source>Increase B-Spline Degree</source>
-      <translation type="unfinished">Increase B-Spline Degree</translation>
+      <translation>Павялічыць ступень B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="191"/>
@@ -148,7 +148,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="349"/>
       <source>Increase Knot Multiplicity</source>
-      <translation type="unfinished">Increase Knot Multiplicity</translation>
+      <translation>Павялічыць кратнасць вузлоў</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="350"/>
@@ -161,12 +161,12 @@
     <message>
       <location filename="../../Command.cpp" line="578"/>
       <source>Attach Sketch</source>
-      <translation type="unfinished">Attach Sketch</translation>
+      <translation>Прымацаваць эскіз</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="579"/>
       <source>Attaches a sketch to the selected geometry element</source>
-      <translation type="unfinished">Attaches a sketch to the selected geometry element</translation>
+      <translation>Прымацоўвае эскіз да абранага элементу геаметрыі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="670"/>
@@ -179,12 +179,12 @@
     <message>
       <location filename="../../Command.cpp" line="1001"/>
       <source>Merge Sketches</source>
-      <translation type="unfinished">Merge Sketches</translation>
+      <translation>Аб'яднаць эскізы</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1002"/>
       <source>Creates a new sketch by merging at least 2 selected sketches</source>
-      <translation type="unfinished">Creates a new sketch by merging at least 2 selected sketches</translation>
+      <translation>Сварае новы эскіз шляхам зліцця па меншай меры двух абраных эскізаў</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1017"/>
@@ -194,7 +194,7 @@
     <message>
       <location filename="../../Command.cpp" line="1018"/>
       <source>Select at least 2 sketches</source>
-      <translation type="unfinished">Select at least 2 sketches</translation>
+      <translation>Абраць па меншай меры два эскіза</translation>
     </message>
   </context>
   <context>
@@ -202,16 +202,14 @@
     <message>
       <location filename="../../Command.cpp" line="874"/>
       <source>Mirror Sketch</source>
-      <translation type="unfinished">Mirror Sketch</translation>
+      <translation>Сіметрычна адлюстраваць эскіз</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="875"/>
       <source>Creates a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference</source>
-      <translation type="unfinished">Creates a new mirrored sketch for each selected sketch
-by using the X or Y axes, or the origin point,
-as mirroring reference</translation>
+      <translation>Стварае новы сіметрычны эскіз для кожнага абранага эскіза, ужываючы восі X ці Y у якасці пачатку каардынат</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="892"/>
@@ -221,7 +219,7 @@ as mirroring reference</translation>
     <message>
       <location filename="../../Command.cpp" line="893"/>
       <source>Select at least 1 sketch</source>
-      <translation type="unfinished">Select at least 1 sketch</translation>
+      <translation>Абраць па меншай меры адзін эскіз</translation>
     </message>
   </context>
   <context>
@@ -242,7 +240,7 @@ as mirroring reference</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1922"/>
       <source>Rectangular Array</source>
-      <translation type="unfinished">Rectangular Array</translation>
+      <translation>Прастакутны масіў</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1923"/>
@@ -255,7 +253,7 @@ as mirroring reference</translation>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="94"/>
       <source>Switch Virtual Space</source>
-      <translation type="unfinished">Switch Virtual Space</translation>
+      <translation>Пераключыць віртуальную прастору</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="96"/>
@@ -268,14 +266,13 @@ as mirroring reference</translation>
     <message>
       <location filename="../../Command.cpp" line="834"/>
       <source>Validate Sketch</source>
-      <translation type="unfinished">Validate Sketch</translation>
+      <translation>Праверыць эскіз</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="835"/>
       <source>Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</source>
-      <translation type="unfinished">Validates a sketch by checking for missing coincidences,
-invalid constraints, and degenerate geometry</translation>
+      <translation>Правярае эскіз пры наяўнасці прапушчаных супадзенняў, хібныя абмежаванні і выраджаную геаметрыяю</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="851"/>
@@ -285,7 +282,7 @@ invalid constraints, and degenerate geometry</translation>
     <message>
       <location filename="../../Command.cpp" line="852"/>
       <source>Select only 1 sketch.</source>
-      <translation type="unfinished">Select only 1 sketch.</translation>
+      <translation>Абраць толькі адзін эскіз.</translation>
     </message>
   </context>
   <context>
@@ -304,11 +301,6 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../CommandConstraints.cpp" line="3701"/>
       <source>Add fixed constraint</source>
       <translation>Дадаць фіксаванае абмежаванне</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="3872"/>
-      <source>Add 'Block' constraint</source>
-      <translation>Дадаць абмежаванне 'Абмежаванне'</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3921"/>
@@ -434,6 +426,7 @@ invalid constraints, and degenerate geometry</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2205"/>
+      <location filename="../../CommandConstraints.cpp" line="3872"/>
       <source>Add Block constraint</source>
       <translation>Дадаць абмежаванне блакавання</translation>
     </message>
@@ -497,12 +490,12 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../CommandConstraints.cpp" line="4742"/>
       <location filename="../../CommandConstraints.cpp" line="5119"/>
       <source>Add point to line distance constraint</source>
-      <translation type="unfinished">Add point to line distance constraint</translation>
+      <translation>Дадаць абмежаванне кропкі да адлегласці лініі</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4772"/>
       <source>Add point to circle distance constraint</source>
-      <translation type="unfinished">Add point to circle distance constraint</translation>
+      <translation>Дадаць абмежаванне кропкі да адлегласці акружнасці</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5360"/>
@@ -690,7 +683,7 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Дадаць эскіз лініі</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="461"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="496"/>
       <source>Add sketch box</source>
       <translation>Дадаць эскіз каробкі</translation>
     </message>
@@ -842,15 +835,9 @@ invalid constraints, and degenerate geometry</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="176"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1521"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1526"/>
       <source>Update constraint's virtual space</source>
       <translation>Абнавіць абмежаванне віртуальнай прасторы</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="892"/>
-      <location filename="../../DrawSketchHandler.cpp" line="763"/>
-      <source>Add auto constraints</source>
-      <translation>Дадаць аўтаматычныя абмежаванні</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="708"/>
@@ -863,27 +850,27 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Пераназваць абмежаванні эскізу</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1678"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1768"/>
       <source>Drag Point</source>
       <translation>Перацягнуць кропку</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1678"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1768"/>
       <source>Drag Curve</source>
       <translation>Перацягнуць крывую</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1679"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1769"/>
       <source>Drag geometries</source>
       <translation>Перацягнуць геаметрыю</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1060"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1118"/>
       <source>Drag Constraint</source>
       <translation>Перацягнуць абмежаванні</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1259"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1333"/>
       <source>Modify sketch constraints</source>
       <translation>Змяніць абмежаванні эскізу</translation>
     </message>
@@ -893,7 +880,7 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Стварыць дакладную копію</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="386"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="398"/>
       <source>Offset</source>
       <translation>Зрушэнне</translation>
     </message>
@@ -903,22 +890,22 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Дадаць шматкутнік</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="202"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="208"/>
       <source>Add sketch arc slot</source>
       <translation>Дадаць эскіз дугі паза</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="144"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="145"/>
       <source>Rotate geometries</source>
       <translation>Павярнуць геаметрыі</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="105"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="121"/>
       <source>Scale geometries</source>
       <translation>Маштабаваць геаметрыю</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="116"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="118"/>
       <source>Translate geometries</source>
       <translation>Геаметрыя пераносу</translation>
     </message>
@@ -926,17 +913,6 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="134"/>
       <source>Symmetry geometries</source>
       <translation>Геаметрыя сіметрыі</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="94"/>
-      <source>Add sketch bSpline</source>
-      <translation>Дадаць эскіз В-сплайна</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="598"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="736"/>
-      <source>Add sketch B-spline</source>
-      <translation>Дадаць эскіз В-сплайна</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="457"/>
@@ -953,6 +929,19 @@ invalid constraints, and degenerate geometry</translation>
       <source>Toggle construction geometry</source>
       <translation>Пераключыць будаўнічую геаметрыю</translation>
     </message>
+    <message>
+      <location filename="../../DrawSketchDefaultHandler.h" line="912"/>
+      <location filename="../../DrawSketchHandler.cpp" line="763"/>
+      <source>Add Auto-Constraints</source>
+      <translation>Дадаць аўтаматычныя абмежаванні</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="94"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="610"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="748"/>
+      <source>Add Sketch B-Spline</source>
+      <translation>Дадаць эскіз В-сплайна</translation>
+    </message>
   </context>
   <context>
     <name>CommandGroup</name>
@@ -965,54 +954,54 @@ invalid constraints, and degenerate geometry</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6557"/>
+      <location filename="../../../App/SketchObject.cpp" line="6567"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Вы не запытваеце аніякіх зменах у кратнасці вузлоў.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6550"/>
-      <location filename="../../../App/SketchObject.cpp" line="6712"/>
+      <location filename="../../../App/SketchObject.cpp" line="6560"/>
+      <location filename="../../../App/SketchObject.cpp" line="6722"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Ідэнтыфікатар геаметрыі B-сплайна (GeoID) знаходзіцца за межамі дапушчальных значэнняў.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6564"/>
-      <location filename="../../../App/SketchObject.cpp" line="6724"/>
+      <location filename="../../../App/SketchObject.cpp" line="6574"/>
+      <location filename="../../../App/SketchObject.cpp" line="6734"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Ідэнтыфікатар геаметрыі (GeoId) не з'яўляецца крывой B-сплайна.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6575"/>
+      <location filename="../../../App/SketchObject.cpp" line="6585"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Індэкс вузла знаходзіцца за межамі дапушчальных значэнняў. Звярніце ўвагу, што ў адпаведнасці з назначэннем OCC першы вузел мае індэкс 1, а не 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6587"/>
+      <location filename="../../../App/SketchObject.cpp" line="6597"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Кратнасць не можа быць павялічана звыш ступені B-сплайна.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6596"/>
+      <location filename="../../../App/SketchObject.cpp" line="6606"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Кратнасць не можа быць паменшана ніжэй за 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6610"/>
+      <location filename="../../../App/SketchObject.cpp" line="6620"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OpenCASCADE не можа паменшыць кратнасць у межах найбольшай дакладнасці.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6717"/>
+      <location filename="../../../App/SketchObject.cpp" line="6727"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Вузел не можа мець нулявую кратнасць.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6736"/>
+      <location filename="../../../App/SketchObject.cpp" line="6746"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Кратнасць вузла не можа быць вышэй ступені B-сплайна.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6743"/>
+      <location filename="../../../App/SketchObject.cpp" line="6753"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Вузел не можа быць устаўлены за межы дыяпазону наладаў B-сплайна.</translation>
     </message>
@@ -1077,10 +1066,10 @@ invalid constraints, and degenerate geometry</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppSketcherGui.cpp" line="141"/>
-      <location filename="../../AppSketcherGui.cpp" line="143"/>
-      <location filename="../../AppSketcherGui.cpp" line="145"/>
-      <location filename="../../AppSketcherGui.cpp" line="147"/>
+      <location filename="../../AppSketcherGui.cpp" line="142"/>
+      <location filename="../../AppSketcherGui.cpp" line="144"/>
+      <location filename="../../AppSketcherGui.cpp" line="146"/>
+      <location filename="../../AppSketcherGui.cpp" line="148"/>
       <source>Sketcher</source>
       <translation>Варштат эскізу</translation>
     </message>
@@ -1128,16 +1117,13 @@ invalid constraints, and degenerate geometry</translation>
     <message>
       <location filename="../../Command.cpp" line="196"/>
       <source>Cannot map the sketch to the selected object. %1.</source>
-      <translation type="unfinished">Cannot map the sketch to the selected object. %1.</translation>
+      <translation>Не атрымалася супаставіць карту эскіза з абраным аб'ектам.
+%1.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="203"/>
-      <source>Do not attach</source>
-      <translation type="unfinished">Do not attach</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="699"/>
-      <source>Don't attach</source>
+      <source>Do not attach</source>
       <translation>Не прымацаваць</translation>
     </message>
     <message>
@@ -1272,7 +1258,6 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../CommandSketcherBSpline.cpp" line="573"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="936"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1046"/>
-      <location filename="../../CommandSketcherTools.cpp" line="86"/>
       <location filename="../../CommandSketcherTools.cpp" line="369"/>
       <location filename="../../CommandSketcherTools.cpp" line="1013"/>
       <location filename="../../CommandSketcherTools.cpp" line="1339"/>
@@ -1295,7 +1280,7 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../CommandAlterGeometry.cpp" line="170"/>
       <location filename="../../CommandAlterGeometry.cpp" line="179"/>
       <source>Select edges from the sketch</source>
-      <translation type="unfinished">Select edges from the sketch</translation>
+      <translation>Абраць рэбры на эскізе</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="104"/>
@@ -1659,32 +1644,33 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="229"/>
       <source>One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</source>
-      <translation type="unfinished">One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</translation>
+      <translation>Адно або два абмежаванні кропкі на аб'екце былі выдаленыя, паколькі апошняе абмежаванне, якое ўжываецца ўнутры, таксама прымяняецца кропкай на аб'екце.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="761"/>
       <source>Keep notifying about constraint substitutions</source>
-      <translation type="unfinished">Keep notifying about constraint substitutions</translation>
+      <translation>Працягнуць апавяшчаць пра змены абмежаванняў</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="787"/>
       <source>Unexpected error. More information may be available in the report view.</source>
-      <translation type="unfinished">Unexpected error. More information may be available in the report view.</translation>
+      <translation>Нечаканая памылка.
+Больш падрабязная інфармацыя можа быць даступная ў Праглядзе справаздачы.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="839"/>
       <source>Only the sketch and its support are allowed to be selected</source>
-      <translation type="unfinished">Only the sketch and its support are allowed to be selected</translation>
+      <translation>Дазволена абіраць толькі эскіз і яго падтрымку</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="850"/>
       <source>Only the sketch and its support may be selected</source>
-      <translation type="unfinished">Only the sketch and its support may be selected</translation>
+      <translation>Дазволена абраць толькі эскіз і яго падтрымку</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="862"/>
       <source>Only the sketch and its support  may be selected</source>
-      <translation type="unfinished">Only the sketch and its support  may be selected</translation>
+      <translation>Дазволена абраць толькі эскіз і яго падтрымку</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1120"/>
@@ -1693,7 +1679,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="1169"/>
       <location filename="../../CommandConstraints.cpp" line="1295"/>
       <source>%1 pick point or edge</source>
-      <translation type="unfinished">%1 pick point or edge</translation>
+      <translation>Выбраць кропку ці рабро %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1123"/>
@@ -1701,13 +1687,13 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="1260"/>
       <location filename="../../CommandConstraints.cpp" line="1273"/>
       <source>%1 pick edge</source>
-      <translation type="unfinished">%1 pick edge</translation>
+      <translation>Выбраць рабро %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1125"/>
       <location filename="../../CommandConstraints.cpp" line="1247"/>
       <source>%1 pick point</source>
-      <translation type="unfinished">%1 pick point</translation>
+      <translation>Выбраць кропку %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1156"/>
@@ -1715,14 +1701,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="1173"/>
       <location filename="../../CommandConstraints.cpp" line="1299"/>
       <source>%1 pick second point or edge</source>
-      <translation type="unfinished">%1 pick second point or edge</translation>
+      <translation>Выбраць другую кропку ці рабро %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1178"/>
       <location filename="../../CommandConstraints.cpp" line="1186"/>
       <location filename="../../CommandConstraints.cpp" line="1194"/>
       <source>%1 pick edge or first point</source>
-      <translation type="unfinished">%1 pick edge or first point</translation>
+      <translation>Выбраць рабро ці першую кропку %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1182"/>
@@ -1730,99 +1716,99 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="1198"/>
       <location filename="../../CommandConstraints.cpp" line="1251"/>
       <source>%1 pick second point</source>
-      <translation type="unfinished">%1 pick second point</translation>
+      <translation>Выбраць другую кропку %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1203"/>
       <source>%1 pick edge to block</source>
-      <translation type="unfinished">%1 pick edge to block</translation>
+      <translation>Выбраць рабро для абмежавання %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1207"/>
       <source>%1 pick point to lock</source>
-      <translation type="unfinished">%1 pick point to lock</translation>
+      <translation>Выбраць кропку для заблакавання %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1212"/>
       <source>%1 pick point or curve</source>
-      <translation type="unfinished">%1 pick point or curve</translation>
+      <translation>Выбраць кропку ці крывую %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1216"/>
       <source>%1 pick second point or curve</source>
-      <translation type="unfinished">%1 pick second point or curve</translation>
+      <translation>Выбраць другую кропку ці крывую %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1224"/>
       <location filename="../../CommandConstraints.cpp" line="1264"/>
       <location filename="../../CommandConstraints.cpp" line="1277"/>
       <source>%1 pick second edge</source>
-      <translation type="unfinished">%1 pick second edge</translation>
+      <translation>Выбраць другое рабро %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1229"/>
       <location filename="../../CommandConstraints.cpp" line="1233"/>
       <source>%1 pick circle or arc</source>
-      <translation type="unfinished">%1 pick circle or arc</translation>
+      <translation>Выбраць акружнасць ці дугу %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1238"/>
       <location filename="../../CommandConstraints.cpp" line="1286"/>
       <source>%1 pick line</source>
-      <translation type="unfinished">%1 pick line</translation>
+      <translation>Выбраць лінію %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1242"/>
       <location filename="../../CommandConstraints.cpp" line="1290"/>
       <source>%1 pick second line</source>
-      <translation type="unfinished">%1 pick second line</translation>
+      <translation>Выбраць другую лінію %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1255"/>
       <source>%1 pick symmetry line</source>
-      <translation type="unfinished">%1 pick symmetry line</translation>
+      <translation>Выбраць сіметрычную лінію %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1268"/>
       <source>%1 pick optional tangent point</source>
-      <translation type="unfinished">%1 pick optional tangent point</translation>
+      <translation>Выбраць неабавязковую кропку датычнай %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1281"/>
       <source>%1 pick optional perpendicular point</source>
-      <translation type="unfinished">%1 pick optional perpendicular point</translation>
+      <translation>Выбраць неабавязковую кропку перпендыкуляра %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1827"/>
       <source>%1 pick geometry</source>
-      <translation type="unfinished">%1 pick geometry</translation>
+      <translation>Выбраць геаметрыю %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1829"/>
       <source>%1 pick second point or geometry</source>
-      <translation type="unfinished">%1 pick second point or geometry</translation>
+      <translation>Выбраць другую кропку ці геаметрыю %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1831"/>
       <source>%1 place dimension</source>
-      <translation type="unfinished">%1 place dimension</translation>
+      <translation>Вымярэнне месца %1</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3095"/>
       <location filename="../../CommandConstraints.cpp" line="3863"/>
       <location filename="../../CommandConstraints.cpp" line="3916"/>
       <source>The selected edge already has a block constraint!</source>
-      <translation type="unfinished">The selected edge already has a block constraint!</translation>
+      <translation>Абранае рабро ўжо мае абмежаванае абмежаванне!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3171"/>
       <source>The selected items cannot be constrained horizontally or vertically!</source>
-      <translation type="unfinished">The selected items cannot be constrained horizontally or vertically!</translation>
+      <translation>Абраныя элементы не могуць быць абмежаваныя ні па гарызанталі, ні па вертыкалі!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3827"/>
       <source>A block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
-      <translation type="unfinished">A block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</translation>
+      <translation>Абмежаванае абмежаванне не можа быць дададзена, калі эскіз не вырашаны, альбо мае залішнія і абмежаванні, якія канфліктуюць.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4096"/>
@@ -2001,22 +1987,26 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="527"/>
       <source>The selection comprises more than one item. Select just one knot.</source>
-      <translation type="unfinished">The selection comprises more than one item. Select just one knot.</translation>
+      <translation>Абрана больш аднаго элемента.
+Абярыце толькі адзін вузел.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="919"/>
       <source>Nothing is selected. Select a B-spline.</source>
-      <translation type="unfinished">Nothing is selected. Select a B-spline.</translation>
+      <translation>Нічога на абрана.
+Абярыце B-сплайн.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="937"/>
       <source>Select a B-spline to insert a knot (not a knot on it). If the curve is not a B-spline, convert it into one first.</source>
-      <translation type="unfinished">Select a B-spline to insert a knot (not a knot on it). If the curve is not a B-spline, convert it into one first.</translation>
+      <translation>Абярыце крывую B-сплайна, каб уставіць вузел (вузел не на ім).
+Калі крывая не з'яўляецца B-сплайнам, спачатку пераўтварыце яе.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="992"/>
       <source>Nothing is selected. Select end points of curves.</source>
-      <translation type="unfinished">Nothing is selected. Select end points of curves.</translation>
+      <translation>Нічога не абрана.
+Абярыце канчатковыя кропкі крывых.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1019"/>
@@ -2038,6 +2028,11 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandSketcherBSpline.cpp" line="1047"/>
       <source>Two end points, or coincident point should be selected.</source>
       <translation>Варта выбраць дзве канчатковыя кропкі альбо супадальную кропку.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="86"/>
+      <source>Wrong Selection</source>
+      <translation>Няправільны выбар</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="87"/>
@@ -2071,23 +2066,23 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2090"/>
-      <source>Delete all geometry</source>
-      <translation>Выдаліць усю геаметрыю</translation>
+      <source>Delete All Geometry</source>
+      <translation>Выдаліць усю Геаметрыю</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="2154"/>
+      <source>Delete All Constraints</source>
+      <translation>Выдаліць усе абмежаванні</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2091"/>
       <source>Delete all geometry and constraints?</source>
-      <translation type="unfinished">Delete all geometry and constraints?</translation>
-    </message>
-    <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2154"/>
-      <source>Delete all constraints</source>
-      <translation>Выдаліць усе абмежаванні</translation>
+      <translation>Ці выдаліць усю геаметрыю і абмежаванні?</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2155"/>
       <source>Delete all the constraints in the sketch?</source>
-      <translation type="unfinished">Delete all the constraints in the sketch?</translation>
+      <translation>Ці выдаліць усе абмежаванні на эскізе?</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2284"/>
@@ -2293,12 +2288,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="563"/>
       <source>Change Value</source>
-      <translation type="unfinished">Change Value</translation>
+      <translation>Змяніць значэнне</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="568"/>
       <source>Toggle Driving/Reference</source>
-      <translation type="unfinished">Toggle Driving/Reference</translation>
+      <translation>Пераключыць кіруючы/апорны</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="572"/>
@@ -2313,22 +2308,22 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="576"/>
       <source>Show Constraints</source>
-      <translation type="unfinished">Show Constraints</translation>
+      <translation>Паказаць абмежаванні</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="578"/>
       <source>Hide Constraints</source>
-      <translation type="unfinished">Hide Constraints</translation>
+      <translation>Схаваць абмежаванні</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="595"/>
       <source>Center Sketch</source>
-      <translation type="unfinished">Center Sketch</translation>
+      <translation>Па цэнтру эскіза</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="603"/>
       <source>Swap Constraint Names</source>
-      <translation type="unfinished">Swap Constraint Names</translation>
+      <translation>Памяняць назвы абмежаванняў</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="588"/>
@@ -2356,7 +2351,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../EditDatumDialog.cpp" line="121"/>
       <source>Insert Angle</source>
-      <translation type="unfinished">Insert Angle</translation>
+      <translation>Уставіць вугал</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="123"/>
@@ -2366,28 +2361,28 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../EditDatumDialog.cpp" line="128"/>
       <source>Insert Radius</source>
-      <translation type="unfinished">Insert Radius</translation>
+      <translation>Уставіць радыус</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="135"/>
       <source>Insert Diameter</source>
-      <translation type="unfinished">Insert Diameter</translation>
+      <translation>Уставіць дыяметр</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="142"/>
       <source>Insert Weight</source>
-      <translation type="unfinished">Insert Weight</translation>
+      <translation>Уставіць вагу</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="148"/>
       <source>Refractive Index Ratio</source>
       <comment>Constraint_SnellsLaw</comment>
-      <translation type="unfinished">Refractive Index Ratio</translation>
+      <translation>Суадносіны каэфіцыента праламлення</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="155"/>
       <source>Insert Length</source>
-      <translation type="unfinished">Insert Length</translation>
+      <translation>Уставіць даўжыню</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="130"/>
@@ -2418,7 +2413,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="10005"/>
       <source>Refractive Index Ratio</source>
-      <translation type="unfinished">Refractive Index Ratio</translation>
+      <translation>Суадносіны каэфіцыента праламлення</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10006"/>
@@ -2544,57 +2539,57 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="78"/>
       <source>Equal Constraint</source>
-      <translation type="unfinished">Equal Constraint</translation>
+      <translation>Абмежаванне роўнасці</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="80"/>
       <source>Symmetric Constraint</source>
-      <translation type="unfinished">Symmetric Constraint</translation>
+      <translation>Абмежаванне сіметрычнасці</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="84"/>
       <source>Lock Position</source>
-      <translation type="unfinished">Lock Position</translation>
+      <translation>Заблакаваць становішча</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="86"/>
       <source>Horizontal Dimension</source>
-      <translation type="unfinished">Horizontal Dimension</translation>
+      <translation>Гарызантальнае вымярэнне</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="88"/>
       <source>Vertical Dimension</source>
-      <translation type="unfinished">Vertical Dimension</translation>
+      <translation>Вертыкальнае вымярэнне</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="90"/>
       <source>Length Dimension</source>
-      <translation type="unfinished">Length Dimension</translation>
+      <translation>Вымярэнне даўжыні</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="92"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>Вымярэнне радыуса</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="94"/>
       <source>Diameter Dimension</source>
-      <translation type="unfinished">Diameter Dimension</translation>
+      <translation>Вымярэнне дыяметру</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="96"/>
       <source>Radius or Diameter Dimension</source>
-      <translation type="unfinished">Radius or Diameter Dimension</translation>
+      <translation>Вымярэнне радыуса ці дыяметра</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="98"/>
       <source>Angle Dimension</source>
-      <translation type="unfinished">Angle Dimension</translation>
+      <translation>Вымярэнне вугла</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="100"/>
-      <source>Construction Geometry</source>
-      <translation>Будаўнічая геаметрыя</translation>
+      <source>Toggle Construction Geometry</source>
+      <translation type="unfinished">Toggle Construction Geometry</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="102"/>
@@ -2670,12 +2665,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../InsertDatum.ui" line="23"/>
       <source>Insert Datum</source>
-      <translation type="unfinished">Insert Datum</translation>
+      <translation>Уставіць велічыню</translation>
     </message>
     <message>
       <location filename="../../InsertDatum.ui" line="31"/>
       <source>Datum</source>
-      <translation type="unfinished">Datum</translation>
+      <translation>Велічыня</translation>
     </message>
     <message>
       <location filename="../../InsertDatum.ui" line="48"/>
@@ -2713,7 +2708,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../SketchMirrorDialog.ui" line="14"/>
       <location filename="../../SketchMirrorDialog.ui" line="20"/>
       <source>Select Mirror Axis or Point</source>
-      <translation type="unfinished">Select Mirror Axis or Point</translation>
+      <translation>Абраць вось ці кропку для сіметрычнай выявы</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="26"/>
@@ -2736,12 +2731,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="14"/>
       <source>Choose Orientation</source>
-      <translation type="unfinished">Choose Orientation</translation>
+      <translation>Абраць арыентацыю</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="20"/>
       <source>Sketch Orientation</source>
-      <translation type="unfinished">Sketch Orientation</translation>
+      <translation>Арыентацыя эскізу</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="26"/>
@@ -2779,7 +2774,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="17"/>
       <source>Create Array</source>
-      <translation type="unfinished">Create Array</translation>
+      <translation>Стварыць масіў</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="25"/>
@@ -2809,14 +2804,13 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="93"/>
       <source>Constrains each element in the array with respect to the others using construction lines</source>
-      <translation type="unfinished">Constrains each element in the array with respect to the others using construction lines</translation>
+      <translation>Абмяжоўвае кожны элемент у масіве па адносінах да іншых з дапамогай будаўнічых ліній</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="115"/>
       <source>Substitutes dimensional constraints by geometric constraints
 in the copies, so that a change in the original element is reflected on copies</source>
-      <translation type="unfinished">Substitutes dimensional constraints by geometric constraints
-in the copies, so that a change in the original element is reflected on copies</translation>
+      <translation>Замяняе памерныя абмежаванні на геаметрычныя абмежаванні ў копіях, так што змена зыходнага элемента адлюстроўваецца на копіях</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="99"/>
@@ -2834,7 +2828,7 @@ in the copies, so that a change in the original element is reflected on copies</
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="17"/>
       <source>Create Regular Polygon</source>
-      <translation type="unfinished">Create Regular Polygon</translation>
+      <translation>Стварыць правільны шматкутнік</translation>
     </message>
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="25"/>
@@ -2863,17 +2857,12 @@ in the copies, so that a change in the original element is reflected on copies</
     <message>
       <location filename="../../SketcherSettings.ui" line="20"/>
       <source>Task Panel Widgets</source>
-      <translation type="unfinished">Task Panel Widgets</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettings.ui" line="26"/>
-      <source>Displays the additional section 'Advanced solver control' to adjust solver settings in the task view</source>
-      <translation type="unfinished">Displays the additional section 'Advanced solver control' to adjust solver settings in the task view</translation>
+      <translation>Фішкі панэлі задач</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="45"/>
       <source>Dragging Performance</source>
-      <translation type="unfinished">Dragging Performance</translation>
+      <translation>Эфектыўнасць перацягвання</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="51"/>
@@ -2890,103 +2879,115 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="107"/>
       <source>Automatically removes newly added redundant constraints</source>
-      <translation type="unfinished">Automatically removes newly added redundant constraints</translation>
+      <translation>Аўтаматычна выдаляе зноў дададзеныя залішнія абмежаванні</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="110"/>
       <source>Auto remove redundant constraints</source>
-      <translation type="unfinished">Auto remove redundant constraints</translation>
+      <translation>Аўтаматычна выдаляць залішнія абмежаванні</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="126"/>
       <source>Allows to leave the sketch edit mode by pressing the Esc key</source>
-      <translation type="unfinished">Allows to leave the sketch edit mode by pressing the Esc key</translation>
+      <translation>Дазваляе выйсці з рэжыму праўкі эскіза націскам клавішы &lt;Esc&gt;</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="129"/>
       <source>Esc key can leave sketch edit mode</source>
-      <translation type="unfinished">Esc key can leave sketch edit mode</translation>
+      <translation>Па клавішы &lt;Esc&gt; можна выйсці з рэжыму праўкі эскіза</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="148"/>
       <source>Notify about automatic constraint substitutions</source>
-      <translation type="unfinished">Notify about automatic constraint substitutions</translation>
+      <translation>Апавясціць пра аўтаматычныя змяненні абмежаванняў</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="164"/>
       <source>Unifies the coincident and point-on-object constraints in a single tool</source>
-      <translation type="unfinished">Unifies the coincident and point-on-object constraints in a single tool</translation>
+      <translation>Аб'ядноўвае супадаючыя і кропкавыя абмежаванні на аб'екце ў адным інструменце</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="167"/>
       <source>Unify coincident and point-on-object constraints</source>
-      <translation type="unfinished">Unify coincident and point-on-object constraints</translation>
+      <translation>Аб'яднаць супадаючыя абмежаванні і абмежаванні 'кропка на аб'екце'</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="183"/>
       <source>Unifies the horizontal and vertical constraints to an automatic command</source>
-      <translation type="unfinished">Unifies the horizontal and vertical constraints to an automatic command</translation>
+      <translation>Аб'ядноўвае гарызантальныя і вертыкальныя абмежаванні ў аўтаматычную каманду</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="186"/>
       <source>Unified tool for automatic horizontal/vertical constraints</source>
-      <translation type="unfinished">Unified tool for automatic horizontal/vertical constraints</translation>
+      <translation>Адзіны інструмент для аўтаматычнага вызначэння гарызантальных/вертыкальных абмежаванняў</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="202"/>
       <source>Shows a command group button that contains both the polyline and line commands. Otherwise, each command has its own separate button.</source>
-      <translation type="unfinished">Shows a command group button that contains both the polyline and line commands. Otherwise, each command has its own separate button.</translation>
+      <translation>Паказвае, ці адлюструецца кнопка суполкі каманд, якая змяшчае каманды "ломаная лінія" і "прамая".
+У адваротным выпадку для кожнай каманды будзе свая асобная кнопка.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="221"/>
       <source>Always adds external geometry as construction geometry. Otherwise, it is added according to the current construction mode.</source>
-      <translation type="unfinished">Always adds external geometry as construction geometry. Otherwise, it is added according to the current construction mode.</translation>
+      <translation>Заўсёды дадае вонкавую геаметрыю ў якасці будаўнічай геаметрыі.
+У адваротным выпадку яна дадаецца ў адпаведнасці з бягучым будаўнічым рэжыме.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="224"/>
       <source>Always add external geometry as construction</source>
-      <translation type="unfinished">Always add external geometry as construction</translation>
+      <translation>Заўсёды дадаваць вонкавую геаметрыю ў якасці канструкцыі</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="249"/>
+      <location filename="../../SketcherSettings.ui" line="240"/>
+      <source>Closed loops will automatically generate internal faces which are selectable to be used with other tools</source>
+      <translation>Замкнёныя контуры аўтаматычна ствараюць унутраныя грані, якія можна выбраць для ўжывання з іншымі інструментамі</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="243"/>
+      <source>Generate internal faces</source>
+      <translation>Стварыць унутраныя грані</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="265"/>
       <source>Dimension Constraint</source>
-      <translation type="unfinished">Dimension Constraint</translation>
+      <translation>Абмежаванне вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="276"/>
+      <location filename="../../SketcherSettings.ui" line="292"/>
       <source>Dimension tool diameter/radius mode</source>
-      <translation type="unfinished">Dimension tool diameter/radius mode</translation>
+      <translation>Рэжым вымярэння дыяметра/радыуса інструменту</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="283"/>
+      <location filename="../../SketcherSettings.ui" line="299"/>
       <source>Dimensioning constraints</source>
-      <translation type="unfinished">Dimensioning constraints</translation>
+      <translation>Абмежаванні вымярэнняў</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="290"/>
+      <location filename="../../SketcherSettings.ui" line="306"/>
       <source>Scale upon first constraint</source>
-      <translation type="unfinished">Scale upon first constraint</translation>
+      <translation>Маштабаванне пры першым абмежаванні</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="297"/>
+      <location filename="../../SketcherSettings.ui" line="313"/>
       <source>Select the mode of automatic geometry scaling upon first dimension:
 'Always': Automatic scaling upon first dimension is always performed.
 'Never': Automatic scaling upon first dimension is never performed.
 'When no scale feature is visible': Automatic scaling upon first dimension is only performed if there are no visible objects in the 3D view.</source>
-      <translation type="unfinished">Select the mode of automatic geometry scaling upon first dimension:
-'Always': Automatic scaling upon first dimension is always performed.
-'Never': Automatic scaling upon first dimension is never performed.
-'When no scale feature is visible': Automatic scaling upon first dimension is only performed if there are no visible objects in the 3D view.</translation>
+      <translation>Абраць рэжым аўтаматычнага маштабавання геаметрыі па першым вымярэнні:
+'Заўсёды': аўтаматычнае маштабаванне па першым вымярэнні выконваецца заўсёды.
+'Ніколі': аўтаматычнае маштабаванне па першым вымярэнні ніколі не выконваецца.
+'Калі аб'ект маштабу не бачны': аўтаматычнае маштабаванне па першым вымярэнні выконваецца толькі ў тым выпадку, калі на трохмерным прадстаўленні няма бачных аб'ектаў.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="316"/>
+      <location filename="../../SketcherSettings.ui" line="332"/>
       <source>Tool Parameters</source>
-      <translation type="unfinished">Tool Parameters</translation>
+      <translation>Налады інструменту</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="322"/>
+      <location filename="../../SketcherSettings.ui" line="338"/>
       <source>On-view-parameters (OVP)</source>
-      <translation type="unfinished">On-view-parameters (OVP)</translation>
+      <translation>Налады пры праглядзе (OVP)</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="145"/>
@@ -2994,12 +2995,17 @@ Requires to re-enter edit mode to take effect.</source>
       <translation>Апавяшчае пра аўтаматычныя змяненні абмежаванняў</translation>
     </message>
     <message>
+      <location filename="../../SketcherSettings.ui" line="26"/>
+      <source>Displays the additional section 'Advanced Solver Controls' to adjust solver settings in the task view</source>
+      <translation type="unfinished">Displays the additional section 'Advanced Solver Controls' to adjust solver settings in the task view</translation>
+    </message>
+    <message>
       <location filename="../../SketcherSettings.ui" line="205"/>
       <source>Group the polyline and line commands</source>
       <translation>Згрупаваць каманды "ломаная лінія" і "прамая"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="265"/>
+      <location filename="../../SketcherSettings.ui" line="281"/>
       <source>Select the type of dimensioning constraints for your toolbar:
 'Single tool': A single tool for all dimensioning constraints in the toolbar: Distance, Distance X / Y, Angle, Radius. (Others in dropdown)
 'Separated tools': Individual tools for each dimensioning constraint.
@@ -3012,7 +3018,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 Гэтая налада прызначаная толькі для панэлі інструментаў. Што б вы ні абралі, усе інструменты заўсёды даступныя ў меню і з дапамогай спалучэнняў.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="255"/>
+      <location filename="../../SketcherSettings.ui" line="271"/>
       <source>While using the Dimension tool you may choose how to handle circles and arcs:
 'Auto': The tool will apply radius to arcs and diameter to circles.
 'Diameter': The tool will apply diameter to both arcs and circles.
@@ -3023,7 +3029,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 'Радыус': інструмент прыменіць радыус як да дугі, так і да акружнасці.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="329"/>
+      <location filename="../../SketcherSettings.ui" line="345"/>
       <source>Choose a visibility mode for the On-View-Parameters:
 'Disabled': On-View-Parameters are completely disabled.
 'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
@@ -3076,7 +3082,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     <message>
       <location filename="../../SketcherSettings.cpp" line="233"/>
       <source>When no scale feature is visible</source>
-      <translation type="unfinished">When no scale feature is visible</translation>
+      <translation>Калі маштабны элемент не бачны</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="240"/>
@@ -3102,171 +3108,177 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
       <translation>Праецыраванне</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="211"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="248"/>
       <source>Font size</source>
       <translation>Памер шрыфту</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="166"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="40"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="202"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="32"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="68"/>
       <source>View scale ratio</source>
       <translation>Паказаць маштабны каэфіцыент</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="188"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="225"/>
       <source>Base length units will not be displayed in constraints or cursor coordinates.
 Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
       <translation>Адзінкі вымярэння асноўнай даўжыні не будуць адлюстроўвацца ў абмежаваннях ці каардынатах паказальніка.
 Падтрымліваюцца ўсе сістэмы адзінак вымярэння, акрамя 'US customary' і 'Building US/Euro'.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="134"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="170"/>
       <source>Segments per geometry</source>
       <translation>Адрэзкі для геаметрыі</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="262"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="299"/>
       <source>Ask for value after creating a dimensional constraint</source>
       <translation>Запытаць значэнне пасля стварэння памернага абмежавання</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="147"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="183"/>
       <source>Geometry creation "Continue Mode"</source>
       <translation>Стварэнне геаметрыі "Бесперапынны рэжым"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="224"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="261"/>
       <source>Constraint creation "Continue Mode"</source>
       <translation>Стварэнне абмежавання "Бесперапынны рэжым"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="192"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="229"/>
       <source>Hide base length units for supported unit systems</source>
       <translation>Схаваць асноўныя адзінкі вымярэння даўжыні для сістэм адзінак вымярэння, якія падтрымліваюцца</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="20"/>
       <source>Sketch Editing</source>
-      <translation type="unfinished">Sketch Editing</translation>
+      <translation>Змена эскізу</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="42"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="37"/>
+      <source>Pixel size used to render constraint symbols</source>
+      <translation>Памер пікселя, які ўжываецца для адлюстравання знакаў абмежаванняў</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="78"/>
       <source>Scales the 3D view based on this factor</source>
-      <translation type="unfinished">Scales the 3D view based on this factor</translation>
+      <translation>Маштабаванне трохмернага прадстаўлення на аснове каэфіцыента</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="73"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="109"/>
       <source>The number of polygons used for geometry approximation</source>
-      <translation type="unfinished">The number of polygons used for geometry approximation</translation>
+      <translation>Колькасць шматкутнікаў, якія ўжываюцца для набліжэння геаметрыі</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="92"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="128"/>
       <source>Displays names of dimensional constraints, if they exist</source>
-      <translation type="unfinished">Displays names of dimensional constraints, if they exist</translation>
+      <translation>Адлюстроўвае назвы памерных абмежаванняў, калі яны існуюць</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="95"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="131"/>
       <source>Show dimensional constraint name with format</source>
       <translation>Паказаць імя памернага абмежавання ў фармаце</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="121"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="157"/>
       <source>%N = %V</source>
       <translation>%N = %V</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="180"/>
       <source>Keeps the current Sketcher tool active after creating geometry</source>
-      <translation type="unfinished">Keeps the current Sketcher tool active after creating geometry</translation>
+      <translation>Пакінуць бягучы інструмент сродку эскіза актыўным пасля стварэння геаметрыі</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="199"/>
       <source>Font size used for labels and constraints</source>
-      <translation type="unfinished">Font size used for labels and constraints</translation>
+      <translation>Памер шрыфту, які ўжываецца для метак і абмежаванняў</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="221"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="258"/>
       <source>Keeps the current Sketcher constraint tool active after creating geometry</source>
-      <translation type="unfinished">Keeps the current Sketcher constraint tool active after creating geometry</translation>
+      <translation>Пакінуць бягучы інструмент абмежавання сродку эскіза актыўным пасля стварэння геаметрыі</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="277"/>
       <source>Displays cursor position coordinates next to the cursor while editing a sketch</source>
-      <translation type="unfinished">Displays cursor position coordinates next to the cursor while editing a sketch</translation>
+      <translation>Адлюстроўвае каардынаты становішча паказальніка побач з паказальнікам пры змяненні эскізу</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="243"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="280"/>
       <source>Displays coordinates next to the cursor while editing</source>
-      <translation type="unfinished">Displays coordinates next to the cursor while editing</translation>
+      <translation>Адлюстроўвае каардынаты побач з паказальнікам падчас змянення</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="259"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="296"/>
       <source>Opens a dialog to input a value for new dimensional constraints after creation</source>
-      <translation type="unfinished">Opens a dialog to input a value for new dimensional constraints after creation</translation>
+      <translation>Адчыняе дыялогавае акно для ўводу значэння для новых памерных абмежаванняў пасля стварэння</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="278"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
       <source>Cursor coordinates will use the system decimals setting instead of the short form</source>
-      <translation type="unfinished">Cursor coordinates will use the system decimals setting instead of the short form</translation>
+      <translation>Каардынаты паказальніка будуць ужываць сістэмныя налады для дзесятковых знакаў замест кароткай формы</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="324"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="361"/>
       <source>Visibility Automation</source>
-      <translation type="unfinished">Visibility Automation</translation>
+      <translation>Аўтаматызацыя бачнасці</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="330"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="367"/>
       <source>Hides all object features that depend on the opened sketch</source>
-      <translation type="unfinished">Hides all object features that depend on the opened sketch</translation>
+      <translation>Хавае ўсе элементы аб'екту, якія залежаць ад адчыненага эскізу</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="349"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="386"/>
       <source>Shows source objects which are used for external geometry in the opened sketch</source>
-      <translation type="unfinished">Shows source objects which are used for external geometry in the opened sketch</translation>
+      <translation>Паказвае зыходныя аб'екты, якія ўжываюцца для вонкавай геаметрыі ў адчыненым эскізе</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="368"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="405"/>
       <source>Shows objects the opened sketch is attached to</source>
-      <translation type="unfinished">Shows objects the opened sketch is attached to</translation>
+      <translation>Паказвае аб'екты, да якіх прымацаваны адчынены эскіз</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="387"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="424"/>
       <source>Restores the camera position after closing the sketch</source>
-      <translation type="unfinished">Restores the camera position after closing the sketch</translation>
+      <translation>Аднаўляе становішча камеры пасля закрыцця эскіза</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="406"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="443"/>
       <source>Forces the camera to an orthographic view when editing a sketch.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation type="unfinished">Forces the camera to an orthographic view when editing a sketch.
-Works only when "Restore camera position after editing" is enabled.</translation>
+      <translation>Пры змяненні эскізу камера пераходзіць да артаганальнага выгляду.
+Працуе, толькі калі ўключана налада 'Аднавіць становішча камеры пасля праўкі'.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="426"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="463"/>
       <source>Opens a sketch in section view mode, showing only objects behind the sketch plane</source>
-      <translation type="unfinished">Opens a sketch in section view mode, showing only objects behind the sketch plane</translation>
+      <translation>Адчыняе эскіз у рэжыме выгляду перасеку, калі адлюстроўваюцца толькі аб'екты, якія размешчаныя за плоскасцю эскіза</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="429"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="466"/>
       <source>Open sketch in section view mode</source>
-      <translation type="unfinished">Open sketch in section view mode</translation>
+      <translation>Адчыніць эскіз у рэжыме выгляду перасеку</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="470"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="507"/>
       <source>Applies current visibility automation settings to all sketches in the open documents</source>
-      <translation type="unfinished">Applies current visibility automation settings to all sketches in the open documents</translation>
+      <translation>Ужыць бягучыя налады аўтаматызацыі бачнасці да ўсіх эскізах у адчыненых дакументах</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="473"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="510"/>
       <source>Apply to Existing Sketches</source>
-      <translation type="unfinished">Apply to Existing Sketches</translation>
+      <translation>Ужыць да існуючых эскізах</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="111"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="147"/>
       <source>The format of the dimensional constraint string presentation.
 Defaults to: %N = %V
 
@@ -3279,47 +3291,52 @@ Defaults to: %N = %V
 %V - значэнне вымярэння</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="281"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="27"/>
+      <source>Constraint symbol size</source>
+      <translation>Памер знака абмежавання</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="318"/>
       <source>Use system decimals setting for cursor coordinates</source>
       <translation>Ужыць сістэмную наладу для дзесятковых знакаў для каардынатаў паказальніка</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="333"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="370"/>
       <source>Hide all objects that depend on the sketch</source>
       <translation>Схаваць усе аб'екты, якія залежаць ад эскіза</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="352"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="389"/>
       <source>Show objects used for external geometry</source>
       <translation>Паказаць аб'екты, якія ўжываюцца для вонкавай геаметрыі</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="371"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
       <source>Show objects that the sketch is attached to</source>
       <translation>Паказаць аб'екты, да якіх прымацаваны эскіз</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="390"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="427"/>
       <source>Restore camera position after editing</source>
       <translation>Аднавіць становішча камеры пасля змены</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="410"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="447"/>
       <source>Force orthographic camera when entering edit</source>
       <translation>Прымусова ўжыць артаганальную камеру пры ўводзе змены</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="451"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="488"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>Заўвага: першапачатковыя налады ўжываюцца на новых эскізах. Паводзіны запамінаюцца для кожнага эскіза паасобку як уласцівасці на ўкладцы Выгляд.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="514"/>
+      <location filename="../../SketcherSettings.cpp" line="516"/>
       <source>Unexpected C++ exception</source>
       <translation>Нечаканае выключэнне C++</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="517"/>
+      <location filename="../../SketcherSettings.cpp" line="519"/>
       <source>Sketcher</source>
       <translation>Варштат эскізу</translation>
     </message>
@@ -3381,40 +3398,41 @@ Defaults to: %N = %V
 %2 constraints are linking to the endpoints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation type="unfinished">%1 reversed external geometry arcs were found. Their endpoints are encircled in the 3D view.
+      <translation>Выяўлена %1 зваротныя дугі вонкавай геаметрыі.
+Іх канчатковыя кропкі абведзеныя ў трохмерным прадстаўленні.
 
-%2 constraints are linking to the endpoints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).
+%2 абмежаванняў звязана з канчатковымі кропкамі.
+Дадзеныя абмежаванні пералічаныя ў праглядзе справаздачы (меню Від -&gt; Панэлі -&gt; Прагляд справаздачы).
 
-Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+Націсніце кнопку "Памяняць месцамі канчатковыя кропкі ў абмежаваннях", каб памяняць месцамі канчатковыя кропкі.
+Зрабіце гэта толькі адзін раз для эскізаў, якія створаны ў FreeCAD версіі старэй за 0.15</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="304"/>
       <source>%1 reversed external geometry arcs were found. Their endpoints are encircled in the 3D view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation type="unfinished">%1 reversed external geometry arcs were found. Their endpoints are encircled in the 3D view.
+      <translation>Выяўлена %1 зваротныя дугі вонкавай геаметрыі.
+Іх канчатковыя кропкі абведзеныя ў трохмерным прадстаўленні.
 
-However, no constraints linking to the endpoints were found.</translation>
+Аднак ніякіх абмежаванняў, якія звязаныя з канчатковымі кропкамі, выяўлена не было.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="315"/>
       <source>No reversed external geometry arcs were found.</source>
-      <translation type="unfinished">No reversed external geometry arcs were found.</translation>
+      <translation>Зваротныя дугі вонкавай не выяўлены.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="353"/>
-      <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).</source>
-      <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="374"/>
-      <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-      <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
+      <location filename="../../TaskSketcherValidation.cpp" line="391"/>
+      <source>Delete Constraints to External Geometry</source>
+      <translation type="unfinished">Delete Constraints to External Geometry</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="392"/>
       <source>This will delete all constraints that deal with external geometry. This is useful to rescue a sketch with broken or changed links to external geometry. Delete the constraints?</source>
-      <translation type="unfinished">This will delete all constraints that deal with external geometry. This is useful to rescue a sketch with broken or changed links to external geometry. Delete the constraints?</translation>
+      <translation>Гэта прывядзе да выдалення ўсіх абмежаванняў, якія звязаныя з вонкавай геаметрыяй.
+Карысна для аднаўлення эскіза з пашкоджанымі/змененымі сувязямі на вонкавую геаметрыю.
+Ці выдаліць абмежаванні?</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="332"/>
@@ -3428,7 +3446,19 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>Блакаванне арыентацыі абмежавання</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="391"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="353"/>
+      <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view).</source>
+      <translation>Блакаванне арыентацыі было ўключана і пералічана для %1 абмежаванняў.
+Абмежаванні пералічаныя ў праглядзе справаздачы (меню Від → Панэлі → Прагляд справаздачы).</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.cpp" line="374"/>
+      <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view). Note that for all future constraints, the locking still defaults to ON.</source>
+      <translation>Блакаванне арыентацыі была адключаная для %1 абмежаванняў.
+Абмежаванні пералічаныя ў праглядзе справаздачы (меню Від → Панэлі → Прагляд справаздачы).
+Звярніце ўвагу, што для ўсіх будучых абмежаванняў блакіроўка па-ранейшаму першапачаткова ўключана.</translation>
+    </message>
+    <message>
       <location filename="../../TaskSketcherValidation.cpp" line="410"/>
       <source>Delete constraints to external geom.</source>
       <translation>Выдаліць абмежаванні да вонкавай геаметрыі.</translation>
@@ -3464,12 +3494,12 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="40"/>
       <source>Toggles the chosen constraint filters</source>
-      <translation type="unfinished">Toggles the chosen constraint filters</translation>
+      <translation>Пераключае абраныя фільтры абмежаванняў</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="59"/>
       <source>Filters constraints by type</source>
-      <translation type="unfinished">Filters constraints by type</translation>
+      <translation>Фільтруе абмежаванні па тыпу</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="65"/>
@@ -3479,7 +3509,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="87"/>
       <source>Toggles the visibility of all listed constraints from the 3D view</source>
-      <translation type="unfinished">Toggles the visibility of all listed constraints from the 3D view</translation>
+      <translation>Перамыкае бачнасць усіх пералічаных абмежаванняў у трохмерным прадстаўленні</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="107"/>
@@ -3499,12 +3529,12 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="850"/>
       <source>Auto remove redundant constraints</source>
-      <translation type="unfinished">Auto remove redundant constraints</translation>
+      <translation>Аўтаматычна выдаляць залішнія абмежаванні</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="851"/>
       <source>Display only filtered constraints</source>
-      <translation type="unfinished">Display only filtered constraints</translation>
+      <translation>Адлюстраваць толькі фільтраваныя абмежаванні</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="852"/>
@@ -3517,12 +3547,12 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>Схаваць унутранае выраўноўванне (у віджэце)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1533"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1538"/>
       <source>Error</source>
       <translation>Памылка</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1533"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1538"/>
       <source>Impossible to update visibility tracking:</source>
       <translation>Немагчыма абнавіць адсочванне бачнасці:</translation>
     </message>
@@ -3532,12 +3562,12 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="40"/>
       <source>Toggles the chosen element filters</source>
-      <translation type="unfinished">Toggles the chosen element filters</translation>
+      <translation>Пераключае абраныя фільтры элемента</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="59"/>
       <source>Filters elements by type</source>
-      <translation type="unfinished">Filters elements by type</translation>
+      <translation>Фільтруе элементы па тыпу</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="65"/>
@@ -3550,16 +3580,16 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>Налады</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1886"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1893"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1900"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1907"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1914"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1921"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1928"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1935"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1942"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1948"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1891"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1898"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1905"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1912"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1919"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1926"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1933"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1940"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1947"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1953"/>
       <source>Construction</source>
       <translation>Будаўнічы</translation>
     </message>
@@ -3569,113 +3599,113 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>Элементы</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1884"/>
       <location filename="../../TaskSketcherElements.cpp" line="1889"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2025"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2026"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1894"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2030"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2031"/>
       <source>Point</source>
       <translation>Кропка</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1887"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1894"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1901"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1908"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1915"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1922"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1929"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1936"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1943"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1949"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1892"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1899"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1906"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1913"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1920"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1927"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1934"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1941"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1948"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1954"/>
       <source>Internal</source>
       <translation>Унутраны</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1891"/>
       <location filename="../../TaskSketcherElements.cpp" line="1896"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2028"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2029"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1901"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2033"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2034"/>
       <source>Line</source>
       <translation>Лінія</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1898"/>
       <location filename="../../TaskSketcherElements.cpp" line="1903"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2031"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2032"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1908"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2036"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2037"/>
       <source>Arc</source>
       <translation>Дуга</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1905"/>
       <location filename="../../TaskSketcherElements.cpp" line="1910"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2034"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2035"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1915"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2039"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2040"/>
       <source>Circle</source>
       <translation>Акружнасць</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1912"/>
       <location filename="../../TaskSketcherElements.cpp" line="1917"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2037"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2038"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1922"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2042"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2043"/>
       <source>Ellipse</source>
       <translation>Эліпс</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1919"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2041"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1924"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2046"/>
       <source>Elliptical Arc</source>
       <translation>Эліптычная дуга</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1924"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2042"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1929"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2047"/>
       <source>Elliptical arc</source>
-      <translation type="unfinished">Elliptical arc</translation>
+      <translation>Эліптычная дуга</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1926"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2045"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1931"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2050"/>
       <source>Hyperbolic Arc</source>
       <translation>Гіпербалічная дуга</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1931"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2046"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1936"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2051"/>
       <source>Hyperbolic arc</source>
-      <translation type="unfinished">Hyperbolic arc</translation>
+      <translation>Гіпербалічная дуга</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1933"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2049"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1938"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2054"/>
       <source>Parabolic Arc</source>
       <translation>Парабалічная дуга</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1938"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2050"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1943"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2055"/>
       <source>Parabolic arc</source>
-      <translation type="unfinished">Parabolic arc</translation>
+      <translation>Парабалічная дуга</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1940"/>
       <location filename="../../TaskSketcherElements.cpp" line="1945"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2052"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2053"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1950"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2057"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2058"/>
       <source>B-spline</source>
       <translation>B-сплайн</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1946"/>
       <location filename="../../TaskSketcherElements.cpp" line="1951"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2054"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2055"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1956"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2059"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2060"/>
       <source>Other</source>
       <translation>Іншы</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2095"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2100"/>
       <source>Extended information</source>
       <translation>Пашыраная інфармацыя</translation>
     </message>
@@ -3695,7 +3725,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="46"/>
       <source>Sketch Edit</source>
-      <translation type="unfinished">Sketch Edit</translation>
+      <translation>Змена эскізу</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="68"/>
@@ -3720,7 +3750,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="118"/>
       <source>Auto-update</source>
-      <translation type="unfinished">Auto-update</translation>
+      <translation>Аўтаматычнае абнаўленне</translation>
     </message>
   </context>
   <context>
@@ -3728,32 +3758,33 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="14"/>
       <source>Sketch Validation</source>
-      <translation type="unfinished">Sketch Validation</translation>
+      <translation>Праверка правільнасці эскіза</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
       <source>Open and Non-Manifold Vertices</source>
-      <translation type="unfinished">Open and Non-Manifold Vertices</translation>
+      <translation>Разамкнутыя і аднастайныя вяршыні</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="38"/>
       <source>Highlights open and non-manifold vertices that could lead to errors if the sketch is used to generate solids. This is purely based on the topological shape of the sketch and not on its geometry/constraint set.</source>
-      <translation type="unfinished">Highlights open and non-manifold vertices that could lead to errors if the sketch is used to generate solids. This is purely based on the topological shape of the sketch and not on its geometry/constraint set.</translation>
+      <translation>Вылучае разамкнутыя і аднастайныя вяршыні, якія могуць прывесці да памылак, калі эскіз ужываецца для стварэння суцэльных цел.
+Заснавана выключна на тапалагічнай форме эскіза, а не на яго геаметрыі/наборы абмежаванняў.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="41"/>
       <source>Highlight Troublesome Vertices</source>
-      <translation type="unfinished">Highlight Troublesome Vertices</translation>
+      <translation>Вылучыць праблемныя вяршыні</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="51"/>
       <source>Fixes missing coincidences by adding extra coincident constraints</source>
-      <translation type="unfinished">Fixes missing coincidences by adding extra coincident constraints</translation>
+      <translation>Выправіць супадзенні, якія адсутнічаюць, дадаючы дадатковыя абмежаванні супадзення</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="54"/>
       <source>Missing Coincidences</source>
-      <translation type="unfinished">Missing Coincidences</translation>
+      <translation>Супадзенні, якія адсутнічаюць</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="60"/>
@@ -3763,12 +3794,12 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="67"/>
       <source>Defines the X/Y tolerance within which missing coincidences are detected</source>
-      <translation type="unfinished">Defines the X/Y tolerance within which missing coincidences are detected</translation>
+      <translation>Вызначае дакладнасць X/Y з якой выконваецца пошук супадзенняў, якія выяўленыя</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="74"/>
       <source>Ignores construction geometry in the search</source>
-      <translation type="unfinished">Ignores construction geometry in the search</translation>
+      <translation>Ігнаруе будаўнічая геаметрыя пры пошуку</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="77"/>
@@ -3800,32 +3831,32 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="108"/>
       <source>Invalid Constraints</source>
-      <translation type="unfinished">Invalid Constraints</translation>
+      <translation>Хібныя абмежаванні</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="137"/>
       <source>Delete Constraints Linked to External Geometry</source>
-      <translation type="unfinished">Delete Constraints Linked to External Geometry</translation>
+      <translation>Выдаліць абмежаванні, якія злучаныя з вонкавай геаметрыяй</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="147"/>
       <source>Degenerate Geometry</source>
-      <translation type="unfinished">Degenerate Geometry</translation>
+      <translation>Выраджаная геаметрыя</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="176"/>
       <source>Reversed External Geometry</source>
-      <translation type="unfinished">Reversed External Geometry</translation>
+      <translation>Зваротная вонкавая геаметрыя</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="195"/>
       <source>Swap Endpoints in Constraints</source>
-      <translation type="unfinished">Swap Endpoints in Constraints</translation>
+      <translation>Памяняць месцамі канчатковыя кропкі ў абмежаваннях</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="205"/>
       <source>Constraint Orientation Locking</source>
-      <translation type="unfinished">Constraint Orientation Locking</translation>
+      <translation>Блакаванне арыентацыі абмежавання</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="114"/>
@@ -3886,122 +3917,122 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3016"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3290"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3038"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3312"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Эскіз хібны і не можа быць зменены.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3196"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3470"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Наступнае абмежаванне часткова залішняе:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3197"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3471"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Наступныя абмежаванні часткова залішнія:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2999"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3273"/>
       <source>Edit Sketch</source>
-      <translation type="unfinished">Edit Sketch</translation>
+      <translation>Змяніць эскіз</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3017"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3291"/>
       <source>Close this dialog?</source>
-      <translation type="unfinished">Close this dialog?</translation>
+      <translation>Ці зачыніць дыялогавае акно?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3036"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3310"/>
       <source>Invalid Sketch</source>
-      <translation type="unfinished">Invalid Sketch</translation>
+      <translation>Хібны эскіз</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3037"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3311"/>
       <source>Open the sketch validation tool?</source>
-      <translation type="unfinished">Open the sketch validation tool?</translation>
+      <translation>Ці адчыніць інструмент праверкі эскіза?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3182"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3456"/>
       <source>Remove the following constraint:</source>
-      <translation type="unfinished">Remove the following constraint:</translation>
+      <translation>Выдаліць наступнае абмежаванне:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3183"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3457"/>
       <source>Remove at least one of the following constraints:</source>
-      <translation type="unfinished">Remove at least one of the following constraints:</translation>
+      <translation>Выдаліць, прынамсі, адное з наступных абмежаванняў:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3189"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3463"/>
       <source>Remove the following redundant constraint:</source>
-      <translation type="unfinished">Remove the following redundant constraint:</translation>
+      <translation>Выдаліць наступнае залішняе абмежаванне:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3190"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3464"/>
       <source>Remove the following redundant constraints:</source>
-      <translation type="unfinished">Remove the following redundant constraints:</translation>
+      <translation>Выдаліць наступныя залішнія абмежаванні:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3203"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3477"/>
       <source>Remove the following malformed constraint:</source>
-      <translation type="unfinished">Remove the following malformed constraint:</translation>
+      <translation>Выдаліць наступнае скажонае абмежаванне:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3204"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3478"/>
       <source>Remove the following malformed constraints:</source>
-      <translation type="unfinished">Remove the following malformed constraints:</translation>
+      <translation>Выдаліць наступныя скажоныя абмежаванні:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3262"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3536"/>
       <source>Empty sketch</source>
       <translation>Пусты эскіз</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3267"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3541"/>
       <source>Over-constrained:</source>
       <translation>Празмерна-абмежаваны:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3273"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3547"/>
       <source>Malformed constraints:</source>
       <translation>Скажоныя абмежаванні:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3281"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3555"/>
       <source>Redundant constraints:</source>
       <translation>Залішнія абмежаванні:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3287"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3561"/>
       <source>Partially redundant:</source>
-      <translation>Часткова залішнія:</translation>
+      <translation>Часткова залішнія абмежаванні:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3294"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3568"/>
       <source>Solver failed to converge</source>
       <translation>Сродку рашэння не атрымалася сысціся</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3300"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3574"/>
       <source>Under-constrained:</source>
       <translation>Недастаткова абмежаваны:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3302"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3576"/>
       <source>%n Degrees of Freedom</source>
-      <translation type="unfinished">
-        <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
+      <translation>
+        <numerusform>%n ступень свабоды</numerusform>
+        <numerusform>%n ступені свабоды</numerusform>
+        <numerusform>%n ступеняў свабоды</numerusform>
+        <numerusform>%n ступеняў свабоды</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3306"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3580"/>
       <source>Fully constrained</source>
       <translation>Цалкам абмежаваны</translation>
     </message>
@@ -4070,19 +4101,6 @@ This is done by analyzing the sketch geometries and constraints.</source>
     </message>
   </context>
   <context>
-    <name>Sketcher_CreateBSpline</name>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="889"/>
-      <source>By control points</source>
-      <translation>Па кантрольных кропках</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="890"/>
-      <source>By knots</source>
-      <translation>Па вузлах</translation>
-    </message>
-  </context>
-  <context>
     <name>Sketcher_CreateCircle</name>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="399"/>
@@ -4092,7 +4110,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="400"/>
       <source>3 rim points</source>
-      <translation>Па трох кропках на перыметры</translation>
+      <translation>Па трох кропках перыметра</translation>
     </message>
   </context>
   <context>
@@ -4110,12 +4128,12 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../Command.cpp" line="627"/>
       <source>The document does not contain a sketch</source>
-      <translation type="unfinished">The document does not contain a sketch</translation>
+      <translation>Дакумент не змяшчае эскіз</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="643"/>
-      <source>Select sketch</source>
-      <translation>Абраць эскіз</translation>
+      <source>Select Sketch</source>
+      <translation type="unfinished">Select Sketch</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="645"/>
@@ -4144,8 +4162,8 @@ This is done by analyzing the sketch geometries and constraints.</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="728"/>
-      <source>Sketch attachment</source>
-      <translation>Прымацаваны эскіз</translation>
+      <source>Sketch Attachment</source>
+      <translation type="unfinished">Sketch Attachment</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="730"/>
@@ -4185,8 +4203,8 @@ Select the method to attach this sketch to selected objects.</source>
     <name>Sketcher_NewSketch</name>
     <message>
       <location filename="../../Command.cpp" line="214"/>
-      <source>Sketch attachment</source>
-      <translation>Прымацаваны эскіз</translation>
+      <source>Sketch Attachment</source>
+      <translation type="unfinished">Sketch Attachment</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
@@ -4198,15 +4216,15 @@ Select the method to attach this sketch to selected objects.</source>
     <name>Sketcher_ReorientSketch</name>
     <message>
       <location filename="../../Command.cpp" line="457"/>
-      <source>Sketch has support</source>
-      <translation>Эскіз мае падтрымку</translation>
+      <source>Sketch Has Support</source>
+      <translation type="unfinished">Sketch Has Support</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="458"/>
       <source>Sketch with a support face cannot be reoriented.
 Detach it from the support?</source>
-      <translation type="unfinished">Sketch with a support face cannot be reoriented.
-Detach it from the support?</translation>
+      <translation>Эскіз з падтрымкай граняў не можа быць пераарыентаваным.
+Ці адлучыць яго ад падтрымкі?</translation>
     </message>
   </context>
   <context>
@@ -4257,12 +4275,12 @@ Detach it from the support?</translation>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="114"/>
       <source>Maximum number of iterations of the default algorithm</source>
-      <translation>Найбольшая колькасць ітэрацый першапачатковага алгарытму</translation>
+      <translation>Найбольшая колькасць крокаў першапачатковага алгарытму</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="124"/>
       <source>Maximum iterations to find convergence before solver is stopped</source>
-      <translation>Найбольшая колькасць ітэрацый для знаходжання збежнасці перад спыненнем сродку рашэння</translation>
+      <translation>Найбольшая колькасць крокаў для знаходжання збежнасці перад спыненнем сродку рашэння</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="189"/>
@@ -4284,7 +4302,7 @@ to determine whether a solution converges or not</source>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="22"/>
       <source>Default algorithm used for solving the sketch</source>
-      <translation type="unfinished">Default algorithm used for solving the sketch</translation>
+      <translation>Першапачатковы алгарытм, які ўжываецца для вырашэння эскіза</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="25"/>
@@ -4296,44 +4314,44 @@ to determine whether a solution converges or not</source>
       <source>Solver used for solving the geometry.
 LevenbergMarquardt and DogLeg are trust region optimization algorithms.
 BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</source>
-      <translation type="unfinished">Solver used for solving the geometry.
-LevenbergMarquardt and DogLeg are trust region optimization algorithms.
-BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</translation>
+      <translation>Сродак рашэння ўжываецца для вырашэння геаметрыі.
+LevenbergMarquardt і DogLeg - алгарытмы аптымізацыі давернай вобласці.
+Сродак рашэння BFGS ужывае алгарытм Бройдэна–Флетчара–Голдфарба–Шанно.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="72"/>
       <source>DogLeg Gauss step</source>
-      <translation type="unfinished">DogLeg Gauss step</translation>
+      <translation>Крок Гаўса на DogLeg</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="117"/>
       <source>Maximum iterations</source>
-      <translation type="unfinished">Maximum iterations</translation>
+      <translation>Найбольшая колькасць крокаў</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="150"/>
       <source>Scales the maximum iteration count based on the sketch size</source>
-      <translation type="unfinished">Scales the maximum iteration count based on the sketch size</translation>
+      <translation>Маштабуе найбольшую колькасць крокаў у залежнасці ад памеру эскіза</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="153"/>
       <source>Sketch size multiplier</source>
-      <translation type="unfinished">Sketch size multiplier</translation>
+      <translation>Множнік памеру эскіза</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="166"/>
       <source>Scales the maximum iteration count based on the number of parameters</source>
-      <translation type="unfinished">Scales the maximum iteration count based on the number of parameters</translation>
+      <translation>Маштабуе найбольшую колькасць крокаў у залежнасці ад колькасці налад</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="192"/>
       <source>Convergence</source>
-      <translation type="unfinished">Convergence</translation>
+      <translation>Збежнасць</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="301"/>
       <source>QR algorithm</source>
-      <translation type="unfinished">QR algorithm</translation>
+      <translation>Алгарытм QR</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="308"/>
@@ -4372,42 +4390,42 @@ Eigen Sparse QR - аптымізаваны для разрэджаных мат�
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="370"/>
       <source>Solving algorithm used to detect redundant constraints</source>
-      <translation type="unfinished">Solving algorithm used to detect redundant constraints</translation>
+      <translation>Алгарытм рашэння, які ўжываецца для выяўлення залішніх абмежаванняў</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="373"/>
       <source>Redundant solver</source>
-      <translation type="unfinished">Redundant solver</translation>
+      <translation>Сродак рашэння залішніх абмежаванняў</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="415"/>
       <source>Maximum number of iterations of the solver used to detect redundant constraints</source>
-      <translation type="unfinished">Maximum number of iterations of the solver used to detect redundant constraints</translation>
+      <translation>Найбольшая колькасць крокаў сродку рашэння, які ўжываецца для выяўлення залішніх абмежаванняў</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="418"/>
       <source>Maximum redundant solver iterations</source>
-      <translation type="unfinished">Maximum redundant solver iterations</translation>
+      <translation>Найбольшая колькасць крокаў залішніх абмежаванняў сродку рашэння</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="451"/>
       <source>Multiplies the maximum iterations value for the redundant algorithm by the sketch size</source>
-      <translation type="unfinished">Multiplies the maximum iterations value for the redundant algorithm by the sketch size</translation>
+      <translation>Памнажае найбольшае значэнне крокаў алгарытму залішніх абмежаванняў на памер эскіза</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="454"/>
       <source>Redundant sketch size multiplier</source>
-      <translation type="unfinished">Redundant sketch size multiplier</translation>
+      <translation>Множнік памеру эскізу залішніх абмежаванняў</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="592"/>
       <source>Console debug mode</source>
-      <translation type="unfinished">Console debug mode</translation>
+      <translation>Рэжым адладкі кансолі</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="622"/>
       <source>Iteration level</source>
-      <translation type="unfinished">Iteration level</translation>
+      <translation>Узровень крокаў</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="380"/>
@@ -4417,7 +4435,7 @@ Eigen Sparse QR - аптымізаваны для разрэджаных мат�
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="425"/>
       <source>Same as 'Maximum iterations', but for redundant solving</source>
-      <translation>Тое ж самае, што і 'Найбольшая колькасць ітэрацый', але для залішняга рашэння</translation>
+      <translation>Тое ж самае, што і налада 'Найбольшая колькасць крокаў', але для залішняга рашэння</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="461"/>
@@ -4483,7 +4501,7 @@ Eigen Sparse QR - аптымізаваны для разрэджаных мат�
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3246"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3520"/>
       <source>and %1 more</source>
       <translation>і яшчэ %1</translation>
     </message>
@@ -4508,42 +4526,42 @@ Eigen Sparse QR - аптымізаваны для разрэджаных мат�
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Edit Mode</source>
-      <translation type="unfinished">Edit Mode</translation>
+      <translation>Рэжым праўкі</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Geometries</source>
-      <translation type="unfinished">Geometries</translation>
+      <translation>Геаметрыі</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
       <source>Constraints</source>
-      <translation type="unfinished">Constraints</translation>
+      <translation>Абмежаванні</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Sketcher Helpers</source>
-      <translation type="unfinished">Sketcher Helpers</translation>
+      <translation>Памочнік варштату эскіза</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>B-Spline Tools</source>
-      <translation type="unfinished">B-Spline Tools</translation>
+      <translation>Інструменты B-сплайну</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Visual Tools</source>
-      <translation type="unfinished">Visual Tools</translation>
+      <translation>Візуальныя інструменты</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Virtual Space</source>
-      <translation type="unfinished">Virtual Space</translation>
+      <translation>Віртуальная прастора</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Sketcher Edit Tools</source>
-      <translation type="unfinished">Sketcher Edit Tools</translation>
+      <translation>Інструменты змены варштата эскізу</translation>
     </message>
   </context>
   <context>
@@ -4586,51 +4604,51 @@ Eigen Sparse QR - аптымізаваны для разрэджаных мат�
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="20"/>
       <source>Grid Settings</source>
-      <translation type="unfinished">Grid Settings</translation>
+      <translation>Налады сеткі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="35"/>
       <source>Displays a grid in the active sketch</source>
-      <translation type="unfinished">Displays a grid in the active sketch</translation>
+      <translation>Адлюстроўвае сетку ў бягучым эскізе</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="57"/>
       <source>Automatically adapts grid spacing based on the viewer dimensions</source>
-      <translation type="unfinished">Automatically adapts grid spacing based on the viewer dimensions</translation>
+      <translation>Аўтаматычна адаптуе адлегласць паміж сеткамі ў залежнасці ад вымярэнняў сродку прагляду</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="60"/>
       <source>Grid auto-spacing</source>
-      <translation type="unfinished">Grid auto-spacing</translation>
+      <translation>Аўтаматычная адлегласць паміж лініямі сеткі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="83"/>
       <source>Distance between two subsequent grid lines.
 If 'Grid auto-apacing' is enabled, it will be used as the base value</source>
-      <translation type="unfinished">Distance between two subsequent grid lines.
-If 'Grid auto-apacing' is enabled, it will be used as the base value</translation>
+      <translation>Адлегласць паміж дзвюма суседнімі лініямі сеткі.
+Калі ўключана налада 'Аўтаматычная адлегласць паміж лініямі сеткі', яна будзе ўжывацца ў якасці асноўнага значэння</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="125"/>
       <source>While using 'Grid auto-spacing', this sets a pixel threshold for grid spacing.
 The grid spacing changes if it becomes smaller than the specified pixel size.</source>
-      <translation type="unfinished">While using 'Grid auto-spacing', this sets a pixel threshold for grid spacing.
-The grid spacing changes if it becomes smaller than the specified pixel size.</translation>
+      <translation>Пры ўжыванні налады 'Аўтаматычная адлегласць паміж лініямі сеткі', задаецца парогавае значэнне ў пікселях для адлегласці паміж лініямі сеткі.
+Адлегласць паміж лініямі сеткі змяняецца, калі яна становіцца менш названай колькасці пікселяў.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="154"/>
       <source>Grid Display</source>
-      <translation type="unfinished">Grid Display</translation>
+      <translation>Адлюстраваць сетку</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="166"/>
       <source>Minor Grid Lines</source>
-      <translation type="unfinished">Minor Grid Lines</translation>
+      <translation>Нязначныя лініі сеткі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="188"/>
       <source>Line pattern used for grid lines</source>
-      <translation type="unfinished">Line pattern used for grid lines</translation>
+      <translation>Лінейны шаблон, які ўжываецца для ліній сеткі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="198"/>
@@ -4652,22 +4670,23 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="272"/>
       <source>Major Grid Lines</source>
-      <translation type="unfinished">Major Grid Lines</translation>
+      <translation>Галоўныя лініі сеткі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="284"/>
       <source>Major grid line interval</source>
-      <translation type="unfinished">Major grid line interval</translation>
+      <translation>Адлегласці галоўнай лініі сеткі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="294"/>
       <source>Displays a major grid line every 'n' minor lines. Enter 1 to disable major lines</source>
-      <translation type="unfinished">Displays a major grid line every 'n' minor lines. Enter 1 to disable major lines</translation>
+      <translation>Адлюстроўвае галоўную лінію сеткі праз кожныя 'n' нязначных ліній.
+Увядзіце 1, каб адключыць галоўныя лініі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="326"/>
       <source>Line pattern used for grid division</source>
-      <translation type="unfinished">Line pattern used for grid division</translation>
+      <translation>Лінейны наблон, які ўжываецца для падзелаў сеткі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="346"/>
@@ -4688,17 +4707,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Эскіз мае часткова залішнія абмежаванні!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9958"/>
+      <location filename="../../../App/SketchObject.cpp" line="9969"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
       <translation>Некіраваная змена ўласцівасці геаметрыі прыводзіць да недапушчальных індэксах абмежаванняў</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9989"/>
+      <location filename="../../../App/SketchObject.cpp" line="10000"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>Некіраваная змена ўласцівасці абмежавання прыводзіць да недапушчальных індэксах абмежаванняў</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10612"/>
+      <location filename="../../../App/SketchObject.cpp" line="10623"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Парабалы былі перанесены. Перанесеныя файлы не будуць адчыняцца ў папярэдніх версіях FreeCAD!!
@@ -4712,10 +4731,10 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="254"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="333"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="256"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="210"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="216"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="377"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="649"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="719"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="661"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="731"/>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="187"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="213"/>
       <location filename="../../DrawSketchHandlerEllipse.h" line="227"/>
@@ -4726,13 +4745,13 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <location filename="../../DrawSketchHandlerLineSet.h" line="500"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="105"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="469"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="159"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="121"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="504"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="168"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="140"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
       <location filename="../../DrawSketchHandlerSplitting.h" line="165"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="131"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="141"/>
       <location filename="../../DrawSketchHandlerTrimming.h" line="187"/>
       <source>Error</source>
       <translation>Памылка</translation>
@@ -4765,7 +4784,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Выбар не мае дапушчальнай геаметрыі.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectPyImp.cpp" line="414"/>
+      <location filename="../../../App/SketchObjectPyImp.cpp" line="421"/>
       <source>The constraint has invalid index information and is malformed.</source>
       <translation>Абмежаванне змяшчае недапушчальную інфармацыю аб індэксе і з'яўляецца скажоным.</translation>
     </message>
@@ -4786,7 +4805,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../CommandConstraints.cpp" line="775"/>
       <source>Invalid constraint</source>
-      <translation type="unfinished">Invalid constraint</translation>
+      <translation>Хібнае абмежаванне</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="501"/>
@@ -4819,12 +4838,12 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Памылка стварэння B-сплайну</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="650"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="662"/>
       <source>Error deleting last pole/knot</source>
       <translation>Памылка выдалення апошняга полюсу/вузла</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="720"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="732"/>
       <source>Error adding B-spline pole/knot</source>
       <translation>Памылка дадання полюса/вузла B-сплайна</translation>
     </message>
@@ -4861,17 +4880,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="298"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="215"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="221"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="218"/>
       <location filename="../../DrawSketchHandlerEllipse.h" line="232"/>
       <location filename="../../DrawSketchHandlerLine.h" line="143"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="137"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="474"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="164"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="128"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="509"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="147"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="191"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="155"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="136"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="146"/>
       <source>Tool execution aborted</source>
       <translation>Выкананне інструмента перапынена</translation>
     </message>
@@ -4886,7 +4905,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Немагчыма дадаць шматкутнік</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="470"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="505"/>
       <source>Failed to add box</source>
       <translation>Не атрымалася дадаць паралелепіпед</translation>
     </message>
@@ -4913,36 +4932,46 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Памылка значэння</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="950"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="970"/>
       <source>Autoconstraints cause redundancy. Removing them</source>
       <translation>Аўтаматычныя абмежаванні прыводзяць да празмернай залішнасці.
 Будуць выдаленыя</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="969"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="989"/>
       <source>Redundant constraint is not an autoconstraint. No autoconstraints or additional constraints were added. Please report!</source>
       <translation>Залішнія абмежаванні не з'яўляюцца аўтаматычнымі абмежаваннямі.
 Аніякіх аўтаматычных абмежаванняў ці дадатковых абмежаванняў не было дададзена.
 Калі ласка, паведаміце!</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="1017"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="1037"/>
       <source>Unexpected Redundancy/Conflicting constraint. Check the constraints and autoconstraints of this operation.</source>
       <translation>Непрадбачаная залішнасць / Абмежаванне, якое канфліктуе.
 Праверце абмежаванні і аўтаматычныя абмежаванні аперацыі.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1144"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="393"/>
+      <source>Offset Error</source>
+      <translation type="unfinished">Offset Error</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerOffset.h" line="394"/>
+      <source>Offset could not be created.</source>
+      <translation type="unfinished">Offset could not be created.</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1159"/>
       <source>Invalid Value</source>
       <translation>Хібнае значэнне</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1145"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1160"/>
       <source>Offset value can't be 0.</source>
       <translation>Значэнне зрушэння не можа быць 0.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="211"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="217"/>
       <source>Failed to add arc slot</source>
       <translation>Немагчыма дадаць дугу паза</translation>
     </message>
@@ -4952,17 +4981,23 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Немагчыма дадаць эліпс</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="160"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="169"/>
       <source>Failed to rotate</source>
       <translation>Не атрымалася павярнуць</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="122"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="116"/>
+      <source>Invalid scale factor. Scale factor must be a positive number.</source>
+      <translation>Хібны маштабны каэфіцыент.
+Каэфіцыент маштабавання павінен быць станоўчым лікам.</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerScale.h" line="141"/>
       <source>Failed to scale</source>
       <translation>Не атрымалася маштабаваць</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="132"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="142"/>
       <source>Failed to translate</source>
       <translation>Не атрымалася перанесці</translation>
     </message>
@@ -4987,7 +5022,8 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../CommandConstraints.cpp" line="2987"/>
       <source>Constrains contextually based on the selection. The type can be changed with the M key.</source>
-      <translation type="unfinished">Constrains contextually based on the selection. The type can be changed with the M key.</translation>
+      <translation>Вызначае кантэкст у залежнасці ад абранай налады.
+Тып можа быць зменены з дапамогай клавішы &lt;M&gt;.</translation>
     </message>
   </context>
   <context>
@@ -5000,7 +5036,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../CommandConstraints.cpp" line="1405"/>
       <source>Dimension tools</source>
-      <translation type="unfinished">Dimension tools</translation>
+      <translation>Інструменты для вызначэння вымярэнняў</translation>
     </message>
   </context>
   <context>
@@ -5115,17 +5151,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
   <context>
     <name>TaskSketcherTool_c1_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1121"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1136"/>
       <source>Delete original geometries (U)</source>
       <translation>Выдаліць зыходныя геаметрыі (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="526"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="537"/>
       <source>Apply equal constraints</source>
       <translation>Прымяніць аднолькавыя абмежаванні</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="530"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="541"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>Калі абрана, памерныя абмежаванні выключаюцца з аперацыі.
@@ -5135,7 +5171,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c2_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1125"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1140"/>
       <source>Add offset constraint (J)</source>
       <translation>Дадаць абмежаванне зрушэння (J)</translation>
     </message>
@@ -5143,32 +5179,32 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1786"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1821"/>
       <source>Corner, width, height</source>
       <translation>Кут, шырыня, вышыня</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1787"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1822"/>
       <source>Center, width, height</source>
       <translation>Цэнтральная кропка, шырыня, вышыня</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1788"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1823"/>
       <source>3 corners</source>
       <translation>Тры кута</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1789"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1824"/>
       <source>Center, 2 corners</source>
       <translation>Цэнтральная кропка, два кута</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1794"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1829"/>
       <source>Rounded corners (U)</source>
       <translation>Закруглены куты (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1797"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1832"/>
       <source>Create a rectangle with rounded corners.</source>
       <translation>Стварыць прастакутнік з закругленымі кутамі.</translation>
     </message>
@@ -5176,12 +5212,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c2_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1803"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1838"/>
       <source>Frame (J)</source>
       <translation>Каркас (J)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1806"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1841"/>
       <source>Create two rectangles with a constant offset.</source>
       <translation>Стварыце два прастакутніка з пастаянным зрушэннем.</translation>
     </message>
@@ -5229,17 +5265,17 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="20"/>
       <source>Working Colors</source>
-      <translation type="unfinished">Working Colors</translation>
+      <translation>Працоўныя колеры</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="114"/>
       <source>Color of the crosshair cursor</source>
-      <translation type="unfinished">Color of the crosshair cursor</translation>
+      <translation>Колер перакрыжаванага паказальніка</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="139"/>
       <source>Geometric Element Colors</source>
-      <translation type="unfinished">Geometric Element Colors</translation>
+      <translation>Колер геаметрычнага элемента</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="151"/>
@@ -5250,11 +5286,6 @@ Instead equal constraints are applied between the original objects and their cop
       <location filename="../../SketcherSettingsAppearance.ui" line="164"/>
       <source>Unconstrained</source>
       <translation>Неабмежаваны</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="171"/>
-      <source>Pattern</source>
-      <translation>Шаблон</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="178"/>
@@ -5274,12 +5305,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="257"/>
       <source>Line pattern of normal edges</source>
-      <translation type="unfinished">Line pattern of normal edges</translation>
+      <translation>Лінейны ўзор нармалі рэбраў</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="267"/>
       <source>Width of normal edges</source>
-      <translation type="unfinished">Width of normal edges</translation>
+      <translation>Шырыня нармалі рэбраў</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="308"/>
@@ -5289,12 +5320,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="354"/>
       <source>Line pattern of construction edges</source>
-      <translation type="unfinished">Line pattern of construction edges</translation>
+      <translation>Лінейны ўзор рэбраў канструкцыі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="364"/>
       <source>Width of construction edges</source>
-      <translation type="unfinished">Width of construction edges</translation>
+      <translation>Шырыня рэбраў канструкцыі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="392"/>
@@ -5314,12 +5345,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="451"/>
       <source>Line pattern of internal aligned edges</source>
-      <translation type="unfinished">Line pattern of internal aligned edges</translation>
+      <translation>Лінейны ўзор унутраных выраўнаваных рэбраў</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="461"/>
       <source>Width of internal aligned edges</source>
-      <translation type="unfinished">Width of internal aligned edges</translation>
+      <translation>Шырыня ўнутраных выраўнаваных рэбраў</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="489"/>
@@ -5327,14 +5358,9 @@ Instead equal constraints are applied between the original objects and their cop
       <translation>Вонкавая апорная геаметрыя</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="522"/>
-      <source>Line pattern of external edges</source>
-      <translation type="unfinished">Line pattern of external edges</translation>
-    </message>
-    <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="532"/>
       <source>Width of external edges</source>
-      <translation type="unfinished">Width of external edges</translation>
+      <translation>Шырыня вонкавых рэбраў</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="560"/>
@@ -5349,12 +5375,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="593"/>
       <source>Line pattern of external defining edges</source>
-      <translation type="unfinished">Line pattern of external defining edges</translation>
+      <translation>Лінейны ўзор вонкавых вызначальных рэбраў</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="603"/>
       <source>Width of external defining edges</source>
-      <translation type="unfinished">Width of external defining edges</translation>
+      <translation>Шырыня вонкавых вызначальных рэбраў</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="637"/>
@@ -5374,12 +5400,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="706"/>
       <source>Constraint Colors</source>
-      <translation type="unfinished">Constraint Colors</translation>
+      <translation>Колеры абмежавання</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="747"/>
       <source>Dimensional constraints</source>
-      <translation type="unfinished">Dimensional constraints</translation>
+      <translation>Памерныя абмежаванні</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="754"/>
@@ -5389,42 +5415,57 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="774"/>
       <source>Reference constraints</source>
-      <translation type="unfinished">Reference constraints</translation>
+      <translation>Апорныя абмежаванні</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="828"/>
       <source>Deactivated constraints</source>
-      <translation type="unfinished">Deactivated constraints</translation>
+      <translation>Адключыць абмежаванні</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="873"/>
       <source>Colors Outside Sketcher</source>
-      <translation type="unfinished">Colors Outside Sketcher</translation>
+      <translation>Колер па-за варштата эскіза</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="881"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="879"/>
       <source>Vertex</source>
       <translation>Вяршыня</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="888"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="886"/>
       <source>Color of vertices outside edit mode</source>
       <translation>Колер вяршынь па-за рэжыму праўкі</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="927"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="925"/>
       <source>Edge</source>
       <translation>Рабро</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="934"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="932"/>
       <source>Color of edges outside edit mode</source>
       <translation>Колер рэбраў па-за рэжыму праўкі</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="952"/>
+      <source>Face</source>
+      <translation>Грань</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="965"/>
+      <source>Color of internal faces formed by intersecting geometry or closed loops in the sketch</source>
+      <translation>Колер унутраных граняў, якія ўтвораныя перасякальнай геаметрыяй ці замкнёнымі контурамі на эскізе</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="198"/>
       <source>Geometry</source>
       <translation>Геаметрыя</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="171"/>
+      <source>Line Type</source>
+      <translation>Тып лініі</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="295"/>
@@ -5440,6 +5481,11 @@ Instead equal constraints are applied between the original objects and their cop
       <location filename="../../SketcherSettingsAppearance.ui" line="502"/>
       <source>Color of external geometry in edit mode</source>
       <translation>Колер вонкавай геаметрыі ў рэжыме праўкі</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="522"/>
+      <source>Line pattern of external reference edges</source>
+      <translation>Лінейны ўзор вонкавых апорных рэбраў</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="683"/>
@@ -5480,7 +5526,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_p4_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="549"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="560"/>
       <source>Copies (+'U'/ -'J')</source>
       <translation>Копіі (+'U'/-'J')</translation>
     </message>
@@ -5493,7 +5539,7 @@ Instead equal constraints are applied between the original objects and their cop
       <translation>Бакі (+'U'/-'J')</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="930"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="952"/>
       <source>Degree (+'U'/ -'J')</source>
       <translation>Ступень (+'U'/ -'J')</translation>
     </message>
@@ -5501,7 +5547,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="515"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="588"/>
       <source>Keep original geometries (U)</source>
       <translation>Пакінуць зыходныя геаметрыі (U)</translation>
     </message>
@@ -5516,13 +5562,13 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandConstraints.cpp" line="1478"/>
       <source>Constrain tools</source>
-      <translation type="unfinished">Constrain tools</translation>
+      <translation>Інструменты абмежавання</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherTool_p3_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="535"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="548"/>
       <source>Copies (+'U'/-'J')</source>
       <translation>Копіі (+'U'/-'J')</translation>
     </message>
@@ -5530,7 +5576,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_p5_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="538"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="551"/>
       <source>Rows (+'R'/-'F')</source>
       <translation>Радкі (+'R'/-'F')</translation>
     </message>
@@ -5538,25 +5584,25 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="513"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="516"/>
       <source>Center</source>
       <translation>Па цэнтры</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="514"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="517"/>
       <source>3 rim points</source>
-      <translation>Па трох кропках на перыметры</translation>
+      <translation>Па трох кропках перыметра</translation>
     </message>
   </context>
   <context>
     <name>Sketcher_CreateArcSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="578"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="584"/>
       <source>Arc ends</source>
       <translation>Канцы дугі</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="579"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="585"/>
       <source>Flat ends</source>
       <translation>Плоскія канцы</translation>
     </message>
@@ -5577,12 +5623,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_fillet</name>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="450"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="458"/>
       <source>Preserve corner (U)</source>
       <translation>Захаваць кут (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="453"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="461"/>
       <source>Preserves intersection point and most constraints</source>
       <translation>Захоўвае кропка скрыжавання і большасць абмежаванняў</translation>
     </message>
@@ -5608,12 +5654,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_CreateOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1108"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1123"/>
       <source>Arc</source>
       <translation>Дуга</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1109"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1124"/>
       <source>Intersection</source>
       <translation>Перасячэнне</translation>
     </message>
@@ -5627,27 +5673,19 @@ Instead equal constraints are applied between the original objects and their cop
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_c2_symmetry</name>
-    <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="276"/>
-      <source>Create Symmetry Constraints (J)</source>
-      <translation>Стварыць абмежаванні сіметрыі (J)</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskSketcherTool_c1_bspline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="887"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="908"/>
       <source>Press F to undo last point.</source>
       <translation>Націсніце &lt;F&gt;, каб адмяніць апошнюю кропку.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="895"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="917"/>
       <source>Periodic (R)</source>
       <translation>Перыядычны (R)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="898"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="920"/>
       <source>Create a periodic B-spline.</source>
       <translation>Стварыць перыядычны B-сплайн.</translation>
     </message>
@@ -5673,12 +5711,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="507"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="520"/>
       <source>Apply equal constraints</source>
       <translation>Прымяніць аднолькавыя абмежаванні</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="510"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="523"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>Калі абрана, памерныя абмежаванні выключаюцца з аперацыі.
@@ -5690,12 +5728,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../Command.cpp" line="157"/>
       <source>New Sketch</source>
-      <translation type="unfinished">New Sketch</translation>
+      <translation>Новы эскіз</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="158"/>
       <source>Creates a new sketch</source>
-      <translation type="unfinished">Creates a new sketch</translation>
+      <translation>Стварае новы эскіз</translation>
     </message>
   </context>
   <context>
@@ -5703,12 +5741,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../Command.cpp" line="336"/>
       <source>Edit Sketch</source>
-      <translation type="unfinished">Edit Sketch</translation>
+      <translation>Змяніць эскіз</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="337"/>
       <source>Opens the selected sketch for editing</source>
-      <translation type="unfinished">Opens the selected sketch for editing</translation>
+      <translation>Адчыняе абраны эскіз для праўкі</translation>
     </message>
   </context>
   <context>
@@ -5716,12 +5754,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../Command.cpp" line="367"/>
       <source>Leave Sketch</source>
-      <translation type="unfinished">Leave Sketch</translation>
+      <translation>Пакінуць эскіз</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="368"/>
       <source>Exits the active sketch</source>
-      <translation type="unfinished">Exits the active sketch</translation>
+      <translation>Завяршае працу з бягучым эскізам</translation>
     </message>
   </context>
   <context>
@@ -5729,12 +5767,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../Command.cpp" line="405"/>
       <source>Stop Operation</source>
-      <translation type="unfinished">Stop Operation</translation>
+      <translation>Спыніць аперацыю</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="406"/>
       <source>Stops the active operation while in edit mode</source>
-      <translation type="unfinished">Stops the active operation while in edit mode</translation>
+      <translation>Спыняе бягучую аперацыю ў рэжыме праўкі</translation>
     </message>
   </context>
   <context>
@@ -5742,14 +5780,14 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>Reorient Sketch</source>
-      <translation type="unfinished">Reorient Sketch</translation>
+      <translation>Пераарыентаваць эскіз</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="442"/>
       <source>Places the selected sketch on one of the global coordinate planes.
 This will clear the AttachmentSupport property.</source>
-      <translation type="unfinished">Places the selected sketch on one of the global coordinate planes.
-This will clear the AttachmentSupport property.</translation>
+      <translation>Змяшчае абраны эскіз на адну з глабальных каардынатных плоскасцяў.
+Ачысціць уласцівасць 'Падтрымка прымацавання', калі такая маецца.</translation>
     </message>
   </context>
   <context>
@@ -5757,12 +5795,12 @@ This will clear the AttachmentSupport property.</translation>
     <message>
       <location filename="../../Command.cpp" line="800"/>
       <source>Align View to Sketch</source>
-      <translation type="unfinished">Align View to Sketch</translation>
+      <translation>Выраўнаваць выгляд да эскізу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="801"/>
       <source>Aligns the camera orientation perpendicular to the active sketch plane</source>
-      <translation type="unfinished">Aligns the camera orientation perpendicular to the active sketch plane</translation>
+      <translation>Выраўноўвае арыентацыю камеры перпендыкулярна бягучай плоскасці эскіза</translation>
     </message>
   </context>
   <context>
@@ -5770,12 +5808,12 @@ This will clear the AttachmentSupport property.</translation>
     <message>
       <location filename="../../Command.cpp" line="1101"/>
       <source>Toggle Section View</source>
-      <translation type="unfinished">Toggle Section View</translation>
+      <translation>Пераключыць выгляд перасеку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1102"/>
       <source>Toggles between section view and full view</source>
-      <translation type="unfinished">Toggles between section view and full view</translation>
+      <translation>Пераключае паміж выглядам перасеку і поўным выглядам</translation>
     </message>
   </context>
   <context>
@@ -5783,22 +5821,22 @@ This will clear the AttachmentSupport property.</translation>
     <message>
       <location filename="../../Command.cpp" line="1175"/>
       <source>Display grid</source>
-      <translation type="unfinished">Display grid</translation>
+      <translation>Адлюстраваць сетку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1176"/>
       <source>Toggles the visibility of the grid in the active sketch</source>
-      <translation type="unfinished">Toggles the visibility of the grid in the active sketch</translation>
+      <translation>Пераключае бачнасць сеткі ў бягучым эскізе</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1179"/>
       <source>Grid auto-spacing</source>
-      <translation type="unfinished">Grid auto-spacing</translation>
+      <translation>Аўтаматычная адлегласць паміж лініямі сеткі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1180"/>
       <source>Automatically adjusts the grid spacing based on the zoom level</source>
-      <translation type="unfinished">Automatically adjusts the grid spacing based on the zoom level</translation>
+      <translation>Аўтаматычна рэгулюе адлегласць паміж асноўнымі адлегласцямі сеткамі ад узроўню маштабавання</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1183"/>
@@ -5828,12 +5866,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1317"/>
       <source>Toggle Grid</source>
-      <translation type="unfinished">Toggle Grid</translation>
+      <translation>Пераключыць сетку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1319"/>
       <source>Toggles the grid display in the active sketch</source>
-      <translation type="unfinished">Toggles the grid display in the active sketch</translation>
+      <translation>Пераключае адлюстраванне сеткі ў бягучым эскізе</translation>
     </message>
   </context>
   <context>
@@ -5856,7 +5894,9 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1460"/>
       <source>Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</translation>
+      <translation>Вуглавы крок для інструментаў, якія ўжываюць наладу 'Прывязаць да вугла'.
+Утрымлівайце клавішу &lt;Ctrl&gt;, каб уключыць наладу 'Прывязаць да вугла'.
+Вугал пачынаецца ад станоўчай восі X.</translation>
     </message>
   </context>
   <context>
@@ -5864,12 +5904,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1548"/>
       <source>Toggle Snap</source>
-      <translation type="unfinished">Toggle Snap</translation>
+      <translation>Пераключыць прывязку</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1550"/>
       <source>Toggles snapping</source>
-      <translation type="unfinished">Toggles snapping</translation>
+      <translation>Пераключае прывязку</translation>
     </message>
   </context>
   <context>
@@ -5877,7 +5917,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1674"/>
       <source>Normal geometry</source>
-      <translation type="unfinished">Normal geometry</translation>
+      <translation>Звычайная геаметрыя</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1676"/>
@@ -5887,17 +5927,17 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1678"/>
       <source>External geometry</source>
-      <translation type="unfinished">External geometry</translation>
+      <translation>Вонкавая геаметрыя</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1681"/>
       <source>Unknown geometry</source>
-      <translation type="unfinished">Unknown geometry</translation>
+      <translation>Невядомая геаметрыя</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1722"/>
       <source>Rendering order</source>
-      <translation type="unfinished">Rendering order</translation>
+      <translation>Парадак візуалізацыі</translation>
     </message>
   </context>
   <context>
@@ -5905,25 +5945,25 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1809"/>
       <source>Rendering Order</source>
-      <translation type="unfinished">Rendering Order</translation>
+      <translation>Парадак візуалізацыі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1810"/>
       <source>Reorders items in the rendering order</source>
-      <translation type="unfinished">Reorders items in the rendering order</translation>
+      <translation>Змяняе парадак элементаў у парадку візуалізацыі</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherToggleConstruction</name>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="73"/>
-      <source>Construction Geometry</source>
-      <translation>Будаўнічая геаметрыя</translation>
+      <source>Toggle Construction Geometry</source>
+      <translation type="unfinished">Toggle Construction Geometry</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="74"/>
       <source>Toggles between defining geometry and construction geometry modes</source>
-      <translation type="unfinished">Toggles between defining geometry and construction geometry modes</translation>
+      <translation>Пераключае паміж рэжымамі вызначэння геаметрыі і будаўнічай геаметрыі</translation>
     </message>
   </context>
   <context>
@@ -5931,12 +5971,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="1508"/>
       <source>Toggle Constraints</source>
-      <translation type="unfinished">Toggle Constraints</translation>
+      <translation>Пераключыць абмежаванні</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1509"/>
       <source>Toggle constrain tools</source>
-      <translation type="unfinished">Toggle constrain tools</translation>
+      <translation>Пераключыць інструменты абмежавання</translation>
     </message>
   </context>
   <context>
@@ -5944,12 +5984,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="3041"/>
       <source>Horizontal/Vertical Constraint</source>
-      <translation type="unfinished">Horizontal/Vertical Constraint</translation>
+      <translation>Гарызантальнае/вертыкальнае абмежаванне</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3042"/>
       <source>Constrains the selected elements either horizontally or vertically</source>
-      <translation type="unfinished">Constrains the selected elements either horizontally or vertically</translation>
+      <translation>Абмяжоўвае абраныя элементы па гарызанталі ці вертыкалі</translation>
     </message>
   </context>
   <context>
@@ -5957,12 +5997,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="3359"/>
       <source>Horizontal/Vertical Constraint</source>
-      <translation type="unfinished">Horizontal/Vertical Constraint</translation>
+      <translation>Гарызантальнае/вертыкальнае абмежаванне</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3360"/>
       <source>Constrains the selected elements either horizontally or vertically, based on their closest alignment</source>
-      <translation type="unfinished">Constrains the selected elements either horizontally or vertically, based on their closest alignment</translation>
+      <translation>Абмяжоўвае абраныя элементы па гарызанталі ці вертыкалі ў залежнасці ад іх найбольш блізкага выраўноўвання</translation>
     </message>
   </context>
   <context>
@@ -5975,7 +6015,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="3406"/>
       <source>Constrains the selected elements horizontally</source>
-      <translation type="unfinished">Constrains the selected elements horizontally</translation>
+      <translation>Абмяжоўвае абраныя элементы па гарызанталі</translation>
     </message>
   </context>
   <context>
@@ -5988,7 +6028,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="3451"/>
       <source>Constrains the selected elements vertically</source>
-      <translation type="unfinished">Constrains the selected elements vertically</translation>
+      <translation>Абмяжоўвае абраныя элементы па вертыкалі</translation>
     </message>
   </context>
   <context>
@@ -5996,12 +6036,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="3496"/>
       <source>Lock Position</source>
-      <translation type="unfinished">Lock Position</translation>
+      <translation>Заблакаваць становішча</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3497"/>
       <source>Constrains the selected vertices by adding horizontal and vertical distance constraints</source>
-      <translation type="unfinished">Constrains the selected vertices by adding horizontal and vertical distance constraints</translation>
+      <translation>Абмяжоўвае абраныя вяршыні, дадаючы абмежаванні адлегласці па гарызанталі і вертыкалі</translation>
     </message>
   </context>
   <context>
@@ -6014,7 +6054,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="3782"/>
       <source>Constrains the selected edges as fixed</source>
-      <translation type="unfinished">Constrains the selected edges as fixed</translation>
+      <translation>Абмяжоўвае абраныя рэбры як выпраўленыя</translation>
     </message>
   </context>
   <context>
@@ -6022,12 +6062,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="3981"/>
       <source>Coincident Constraint</source>
-      <translation type="unfinished">Coincident Constraint</translation>
+      <translation>Абмежаванне супадзення</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3982"/>
       <source>Constrains the selected elements to be coincident</source>
-      <translation type="unfinished">Constrains the selected elements to be coincident</translation>
+      <translation>Абмяжоўвае абраныя элементы па супадзенню</translation>
     </message>
   </context>
   <context>
@@ -6035,12 +6075,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="4493"/>
       <source>Coincident Constraint</source>
-      <translation type="unfinished">Coincident Constraint</translation>
+      <translation>Абмежаванне супадзення</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4494"/>
       <source>Constrains the selected elements to be coincident</source>
-      <translation type="unfinished">Constrains the selected elements to be coincident</translation>
+      <translation>Абмяжоўвае супадаючыя абраныя элементы</translation>
     </message>
   </context>
   <context>
@@ -6048,12 +6088,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="4543"/>
       <source>Point-On-Object Constraint</source>
-      <translation type="unfinished">Point-On-Object Constraint</translation>
+      <translation>Абмежаванне кропка на аб'екце</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4544"/>
       <source>Constrains the selected point onto the selected object</source>
-      <translation type="unfinished">Constrains the selected point onto the selected object</translation>
+      <translation>Абмяжоўвае абраную кропку абраным аб'ектам</translation>
     </message>
   </context>
   <context>
@@ -6061,12 +6101,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="4595"/>
       <source>Distance Dimension</source>
-      <translation type="unfinished">Distance Dimension</translation>
+      <translation>Вымярэнне адлегласці</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4596"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if one is selected</source>
-      <translation type="unfinished">Constrains the vertical distance between two points, or from a point to the origin if one is selected</translation>
+      <translation>Абмяжоўвае адлегласць па вертыкалі паміж дзвюма кропкамі, альбо ад кропкі да пачатку каардынат, калі абраная адна з іх</translation>
     </message>
   </context>
   <context>
@@ -6074,12 +6114,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="5249"/>
       <source>Horizontal Dimension</source>
-      <translation type="unfinished">Horizontal Dimension</translation>
+      <translation>Гарызантальнае вымярэнне</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5250"/>
       <source>Constrains the horizontal distance between two points, or from a point to the origin if one is selected</source>
-      <translation type="unfinished">Constrains the horizontal distance between two points, or from a point to the origin if one is selected</translation>
+      <translation>Абмяжоўвае адлегласць па гарызанталі паміж дзвюма кропкамі, альбо ад кропкі да пачатку каардынат, калі абраная адна з іх</translation>
     </message>
   </context>
   <context>
@@ -6087,12 +6127,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="5550"/>
       <source>Vertical Dimension</source>
-      <translation type="unfinished">Vertical Dimension</translation>
+      <translation>Вертыкальнае вымярэнне</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5551"/>
       <source>Constrains the vertical distance between the selected elements</source>
-      <translation type="unfinished">Constrains the vertical distance between the selected elements</translation>
+      <translation>Абмяжоўвае адлегласць па вертыкалі паміж абранымі элементамі</translation>
     </message>
   </context>
   <context>
@@ -6105,7 +6145,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="5847"/>
       <source>Constrains the selected lines to be parallel</source>
-      <translation type="unfinished">Constrains the selected lines to be parallel</translation>
+      <translation>Абмяжоўвае паралельныя абраныя лініі</translation>
     </message>
   </context>
   <context>
@@ -6118,7 +6158,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="6010"/>
       <source>Constrains the selected lines to be perpendicular</source>
-      <translation type="unfinished">Constrains the selected lines to be perpendicular</translation>
+      <translation>Абмяжоўвае перпендыкулярныя абраныя лініі</translation>
     </message>
   </context>
   <context>
@@ -6126,12 +6166,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="6774"/>
       <source>Tangent/Collinear Constraint</source>
-      <translation type="unfinished">Tangent/Collinear Constraint</translation>
+      <translation>Датычнае/калінеарнае абмежаванне</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6775"/>
       <source>Constrains the selected elements to be tangent or collinear</source>
-      <translation type="unfinished">Constrains the selected elements to be tangent or collinear</translation>
+      <translation>Абмяжоўвае датычныя ці калінеарныя абраныя элементы</translation>
     </message>
   </context>
   <context>
@@ -6139,12 +6179,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="7649"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>Вымярэнне радыуса</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7650"/>
       <source>Constrains the radius of the selected circle or arc</source>
-      <translation type="unfinished">Constrains the radius of the selected circle or arc</translation>
+      <translation>Абмяжоўвае радыус абранай акружнасці ці дугі</translation>
     </message>
   </context>
   <context>
@@ -6152,12 +6192,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="8012"/>
       <source>Diameter Dimension</source>
-      <translation type="unfinished">Diameter Dimension</translation>
+      <translation>Вымярэнне дыяметру</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8013"/>
       <source>Constrains the diameter of the selected circle or arc</source>
-      <translation type="unfinished">Constrains the diameter of the selected circle or arc</translation>
+      <translation>Абмяжоўвае дыяметр абранай акружнасці ці дугі</translation>
     </message>
   </context>
   <context>
@@ -6165,12 +6205,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="8330"/>
       <source>Radius/Diameter Dimension</source>
-      <translation type="unfinished">Radius/Diameter Dimension</translation>
+      <translation>Вымярэнне радыуса/дыяметру</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8331"/>
       <source>Constrains the radius of the selected arc or the diameter of the selected circle</source>
-      <translation type="unfinished">Constrains the radius of the selected arc or the diameter of the selected circle</translation>
+      <translation>Абмяжоўвае радыус абранай дугі ці дыяметр абранай акружнасці</translation>
     </message>
   </context>
   <context>
@@ -6178,12 +6218,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="8858"/>
       <source>Angle Dimension</source>
-      <translation type="unfinished">Angle Dimension</translation>
+      <translation>Вымярэнне вугла</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8859"/>
       <source>Constrains the angle of the selected elements</source>
-      <translation type="unfinished">Constrains the angle of the selected elements</translation>
+      <translation>Абмяжоўвае вугал нахілу абраных элементаў</translation>
     </message>
   </context>
   <context>
@@ -6191,12 +6231,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="9311"/>
       <source>Equal Constraint</source>
-      <translation type="unfinished">Equal Constraint</translation>
+      <translation>Абмежаванне роўнасці</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9313"/>
       <source>Constrains the selected edges or circles to be equal</source>
-      <translation type="unfinished">Constrains the selected edges or circles to be equal</translation>
+      <translation>Абмяжоўвае роўнасць абраных ліній ці акружнасцяў</translation>
     </message>
   </context>
   <context>
@@ -6204,12 +6244,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="9553"/>
       <source>Symmetric Constraint</source>
-      <translation type="unfinished">Symmetric Constraint</translation>
+      <translation>Абмежаванне сіметрычнасці</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9554"/>
       <source>Constrains the selected elements to be symmetric</source>
-      <translation type="unfinished">Constrains the selected elements to be symmetric</translation>
+      <translation>Абмяжоўвае сіметрычныя абраныя элементы</translation>
     </message>
   </context>
   <context>
@@ -6217,12 +6257,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="9896"/>
       <source>Refraction Constraint</source>
-      <translation type="unfinished">Refraction Constraint</translation>
+      <translation>Абмежаванне праламлення</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9897"/>
       <source>Constrains the selected elements based on the refraction law (Snell's Law)</source>
-      <translation type="unfinished">Constrains the selected elements based on the refraction law (Snell's Law)</translation>
+      <translation>Абмяжоўвае абраныя элементы на аснове закона праламлення (закон Снелла)</translation>
     </message>
   </context>
   <context>
@@ -6230,12 +6270,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="10093"/>
       <source>Edit Value</source>
-      <translation type="unfinished">Edit Value</translation>
+      <translation>Змяніць значэнне</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10094"/>
       <source>Edits the value of a dimensional constraint</source>
-      <translation type="unfinished">Edits the value of a dimensional constraint</translation>
+      <translation>Змяняе значэнне памернага абмежавання</translation>
     </message>
   </context>
   <context>
@@ -6243,12 +6283,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="10147"/>
       <source>Toggle Driving/Reference Constraints</source>
-      <translation type="unfinished">Toggle Driving/Reference Constraints</translation>
+      <translation>Пераключыць кіруючае/апорнае абмежаванне</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10148"/>
       <source>Toggles between driving and reference mode of the selected constraints and commands</source>
-      <translation type="unfinished">Toggles between driving and reference mode of the selected constraints and commands</translation>
+      <translation>Пераключае паміж рэжымам руху і рэжымам прывязкі абраных абмежаванняў і каманд</translation>
     </message>
   </context>
   <context>
@@ -6256,12 +6296,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="10302"/>
       <source>Toggle Constraints</source>
-      <translation type="unfinished">Toggle Constraints</translation>
+      <translation>Пераключыць абмежаванні</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10303"/>
       <source>Toggles the state of the selected constraints</source>
-      <translation type="unfinished">Toggles the state of the selected constraints</translation>
+      <translation>Пераключае стан абраных абмежаванняў</translation>
     </message>
   </context>
   <context>
@@ -6274,7 +6314,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="115"/>
       <source>Creates a point</source>
-      <translation type="unfinished">Creates a point</translation>
+      <translation>Стварае кропку</translation>
     </message>
   </context>
   <context>
@@ -6287,7 +6327,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="146"/>
       <source>Creates a continuous polyline</source>
-      <translation type="unfinished">Creates a continuous polyline</translation>
+      <translation>Стварае бесперапынную ломаную лінію</translation>
     </message>
   </context>
   <context>
@@ -6300,7 +6340,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="203"/>
       <source>Creates a line</source>
-      <translation type="unfinished">Creates a line</translation>
+      <translation>Стварае лінію</translation>
     </message>
   </context>
   <context>
@@ -6313,7 +6353,8 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="235"/>
       <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
-      <translation type="unfinished">Creates a continuous polyline. Press the 'M' key to switch segment modes</translation>
+      <translation>Стварае бесперапынную ламаную лінію.
+Націсніце клавішу &lt;M&gt; для пераключэння рэжымаў адрэзкаў</translation>
     </message>
   </context>
   <context>
@@ -6326,7 +6367,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="268"/>
       <source>Creates an arc</source>
-      <translation type="unfinished">Creates an arc</translation>
+      <translation>Стварае дугу</translation>
     </message>
   </context>
   <context>
@@ -6334,12 +6375,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="335"/>
       <source>Arc From Center</source>
-      <translation type="unfinished">Arc From Center</translation>
+      <translation>Дуга ад цэнтра</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="336"/>
       <source>Creates an arc defined by a center point and an end point</source>
-      <translation type="unfinished">Creates an arc defined by a center point and an end point</translation>
+      <translation>Стварае дугу, якая вызначаная цэнтрам і канцавымі кропкамі</translation>
     </message>
   </context>
   <context>
@@ -6347,12 +6388,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="367"/>
       <source>Arc From 3 Points</source>
-      <translation type="unfinished">Arc From 3 Points</translation>
+      <translation>Дуга з трох кропак</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="368"/>
       <source>Creates an arc defined by 2 end points and 1 point on the arc</source>
-      <translation type="unfinished">Creates an arc defined by 2 end points and 1 point on the arc</translation>
+      <translation>Стварае дугу, якая вызначаная дзвюма канчатковымі кропкамі і кропку дугі</translation>
     </message>
   </context>
   <context>
@@ -6365,7 +6406,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="401"/>
       <source>Creates an elliptical arc</source>
-      <translation type="unfinished">Creates an elliptical arc</translation>
+      <translation>Стварае эліптычную дугу</translation>
     </message>
   </context>
   <context>
@@ -6378,7 +6419,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="432"/>
       <source>Creates a hyperbolic arc</source>
-      <translation type="unfinished">Creates a hyperbolic arc</translation>
+      <translation>Стварае гіпербалічную дугу</translation>
     </message>
   </context>
   <context>
@@ -6391,7 +6432,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="462"/>
       <source>Creates a parabolic arc</source>
-      <translation type="unfinished">Creates a parabolic arc</translation>
+      <translation>Стварае парабалічную дугу</translation>
     </message>
   </context>
   <context>
@@ -6404,7 +6445,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="494"/>
       <source>Creates a conic</source>
-      <translation type="unfinished">Creates a conic</translation>
+      <translation>Стварае канічную крывую</translation>
     </message>
   </context>
   <context>
@@ -6412,12 +6453,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="559"/>
       <source>Circle From Center</source>
-      <translation type="unfinished">Circle From Center</translation>
+      <translation>Акружнасць ад цэнтра</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="560"/>
       <source>Creates a circle from a center and rim point</source>
-      <translation type="unfinished">Creates a circle from a center and rim point</translation>
+      <translation>Стварае акружнасць з цэнтральнай кропкі і кропкі перыметра</translation>
     </message>
   </context>
   <context>
@@ -6425,12 +6466,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="590"/>
       <source>Circle From 3 Points</source>
-      <translation type="unfinished">Circle From 3 Points</translation>
+      <translation>Акружнасць з трох кропак</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="591"/>
       <source>Creates a circle from 3 perimeter points</source>
-      <translation type="unfinished">Creates a circle from 3 perimeter points</translation>
+      <translation>Стварае акружнасць з трох кропак перыметра</translation>
     </message>
   </context>
   <context>
@@ -6438,12 +6479,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="627"/>
       <source>Ellipse From Center</source>
-      <translation type="unfinished">Ellipse From Center</translation>
+      <translation>Эліпс ад цэнтра</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="628"/>
       <source>Creates an ellipse from a center and rim point</source>
-      <translation type="unfinished">Creates an ellipse from a center and rim point</translation>
+      <translation>Стварае эліпс з цэнтральнай кропкі і кропкі перыметра</translation>
     </message>
   </context>
   <context>
@@ -6451,12 +6492,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="662"/>
       <source>Ellipse From 3 Points</source>
-      <translation type="unfinished">Ellipse From 3 Points</translation>
+      <translation>Эліпс з трох кропак</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="663"/>
       <source>Creates an ellipse from 3 points on its perimeter</source>
-      <translation type="unfinished">Creates an ellipse from 3 points on its perimeter</translation>
+      <translation>Стварае эліпс з трох кропак яе перыметра</translation>
     </message>
   </context>
   <context>
@@ -6469,7 +6510,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="698"/>
       <source>Creates a rectangle</source>
-      <translation type="unfinished">Creates a rectangle</translation>
+      <translation>Стварае прастакутнік</translation>
     </message>
   </context>
   <context>
@@ -6482,7 +6523,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="759"/>
       <source>Creates a rectangle from 2 corner points</source>
-      <translation type="unfinished">Creates a rectangle from 2 corner points</translation>
+      <translation>Стварае прастакутнік з дзвюх кропак кута</translation>
     </message>
   </context>
   <context>
@@ -6490,12 +6531,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="791"/>
       <source>Centered Rectangle</source>
-      <translation type="unfinished">Centered Rectangle</translation>
+      <translation>Цэнтраваны прастакутнік</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="792"/>
       <source>Creates a centered rectangle from a center and a corner point</source>
-      <translation type="unfinished">Creates a centered rectangle from a center and a corner point</translation>
+      <translation>Стварае цэнтраваны прастакутнік з цэнтра і кропкі кута</translation>
     </message>
   </context>
   <context>
@@ -6503,12 +6544,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="825"/>
       <source>Rounded Rectangle</source>
-      <translation type="unfinished">Rounded Rectangle</translation>
+      <translation>Скруглены прамавугольнік</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="826"/>
       <source>Creates a rounded rectangle from 2 corner points</source>
-      <translation type="unfinished">Creates a rounded rectangle from 2 corner points</translation>
+      <translation>Стварае скруглены прастакутнік з дзвюх кропак кута</translation>
     </message>
   </context>
   <context>
@@ -6521,7 +6562,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="862"/>
       <source>Creates a regular polygon from a center and corner point</source>
-      <translation type="unfinished">Creates a regular polygon from a center and corner point</translation>
+      <translation>Стварае правільны шматкутнік з цэнтра і кропкі кута</translation>
     </message>
   </context>
   <context>
@@ -6534,7 +6575,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="936"/>
       <source>Creates an equilateral triangle from a center and corner point</source>
-      <translation type="unfinished">Creates an equilateral triangle from a center and corner point</translation>
+      <translation>Стварае роўнабаковы трыкутнік з цэнтра і кропкі кута</translation>
     </message>
   </context>
   <context>
@@ -6547,7 +6588,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="967"/>
       <source>Creates a square from a center and corner point</source>
-      <translation type="unfinished">Creates a square from a center and corner point</translation>
+      <translation>Стварае квадрат з цэнтра і кропкі кута</translation>
     </message>
   </context>
   <context>
@@ -6555,12 +6596,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="997"/>
       <source>Pentagon</source>
-      <translation type="unfinished">Pentagon</translation>
+      <translation>Пяцікутнік</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="998"/>
       <source>Creates a pentagon from a center and corner point</source>
-      <translation type="unfinished">Creates a pentagon from a center and corner point</translation>
+      <translation>Стварае пяцікутнік з цэнтра і кропкі кута</translation>
     </message>
   </context>
   <context>
@@ -6573,7 +6614,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1029"/>
       <source>Creates a hexagon from a center and corner point</source>
-      <translation type="unfinished">Creates a hexagon from a center and corner point</translation>
+      <translation>Стварае шасцікутнік з цэнтра і кропкі кута</translation>
     </message>
   </context>
   <context>
@@ -6581,12 +6622,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1059"/>
       <source>Heptagon</source>
-      <translation type="unfinished">Heptagon</translation>
+      <translation>Сямікутнік</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1060"/>
       <source>Creates a heptagon from a center and corner point</source>
-      <translation type="unfinished">Creates a heptagon from a center and corner point</translation>
+      <translation>Стварае сямікутнік з цэнтра і кропкі кута</translation>
     </message>
   </context>
   <context>
@@ -6594,12 +6635,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1090"/>
       <source>Octagon</source>
-      <translation type="unfinished">Octagon</translation>
+      <translation>Васьмікутнік</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1091"/>
       <source>Creates an octagon from a center and corner point</source>
-      <translation type="unfinished">Creates an octagon from a center and corner point</translation>
+      <translation>Стварае васьмікутнік з цэнтра і кропкі кута</translation>
     </message>
   </context>
   <context>
@@ -6612,7 +6653,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1122"/>
       <source>Creates a regular polygon from a center and corner point</source>
-      <translation type="unfinished">Creates a regular polygon from a center and corner point</translation>
+      <translation>Стварае правільны шматкутнік з цэнтра і кропкі кута</translation>
     </message>
   </context>
   <context>
@@ -6625,7 +6666,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1161"/>
       <source>Slot tools</source>
-      <translation type="unfinished">Slot tools</translation>
+      <translation>Інструменты паза</translation>
     </message>
   </context>
   <context>
@@ -6638,7 +6679,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1217"/>
       <source>Creates a slot</source>
-      <translation type="unfinished">Creates a slot</translation>
+      <translation>Стварае паз</translation>
     </message>
   </context>
   <context>
@@ -6646,12 +6687,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1247"/>
       <source>Arc Slot</source>
-      <translation type="unfinished">Arc Slot</translation>
+      <translation>Дугавы паз</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1248"/>
       <source>Creates an arc slot</source>
-      <translation type="unfinished">Creates an arc slot</translation>
+      <translation>Стварае дугавы паз</translation>
     </message>
   </context>
   <context>
@@ -6664,7 +6705,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1281"/>
       <source>Creates a B-spline curve defined by control points</source>
-      <translation type="unfinished">Creates a B-spline curve defined by control points</translation>
+      <translation>Стварае крывую B-сплайна, якая вызначаная па кантрольных кропках</translation>
     </message>
   </context>
   <context>
@@ -6677,7 +6718,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1347"/>
       <source>Creates a B-spline curve defined by control points</source>
-      <translation type="unfinished">Creates a B-spline curve defined by control points</translation>
+      <translation>Стварае крывую B-сплайна, якая вызначаная па кантрольных кропках</translation>
     </message>
   </context>
   <context>
@@ -6685,12 +6726,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1383"/>
       <source>Periodic B-Spline</source>
-      <translation type="unfinished">Periodic B-Spline</translation>
+      <translation>Перыядычны B-сплайн</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1384"/>
       <source>Creates a periodic B-spline curve defined by control points</source>
-      <translation type="unfinished">Creates a periodic B-spline curve defined by control points</translation>
+      <translation>Стварае перыядычную крывую B-сплайн, якая вызначаная па кантрольных кропках</translation>
     </message>
   </context>
   <context>
@@ -6698,12 +6739,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1419"/>
       <source>B-Spline From Knots</source>
-      <translation type="unfinished">B-Spline From Knots</translation>
+      <translation>B-сплайн па вузллах</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1420"/>
       <source>Creates a B-spline from knots, i.e. from interpolation</source>
-      <translation type="unfinished">Creates a B-spline from knots, i.e. from interpolation</translation>
+      <translation>Стварае B-сплайн з вузлоў, гэта значыць з інтэрпаляцыі</translation>
     </message>
   </context>
   <context>
@@ -6711,12 +6752,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1456"/>
       <source>Periodic B-Spline From Knots</source>
-      <translation type="unfinished">Periodic B-Spline From Knots</translation>
+      <translation>Перыядычны B-сплайн па вузлах</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1457"/>
       <source>Creates a periodic B-spline defined by knots using interpolation</source>
-      <translation type="unfinished">Creates a periodic B-spline defined by knots using interpolation</translation>
+      <translation>Стварае перыядычны B-сплайн, які вызначаны вузламі, ужываючы інтэрпаляцыю</translation>
     </message>
   </context>
   <context>
@@ -6724,12 +6765,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1494"/>
       <source>Fillet/Chamfer</source>
-      <translation type="unfinished">Fillet/Chamfer</translation>
+      <translation>Акругленне/фаска</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1495"/>
       <source>Creates a fillet or chamfer between 2 lines</source>
-      <translation type="unfinished">Creates a fillet or chamfer between 2 lines</translation>
+      <translation>Сварае акругленне ці фаску паміж дзвюма лініямі</translation>
     </message>
   </context>
   <context>
@@ -6742,7 +6783,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1529"/>
       <source>Creates a fillet between 2 selected lines or 1 coincident point</source>
-      <translation type="unfinished">Creates a fillet between 2 selected lines or 1 coincident point</translation>
+      <translation>Стварае скругленне паміж дзвюма абранымі лініямі альбо адной супадальнай кропкай</translation>
     </message>
   </context>
   <context>
@@ -6755,7 +6796,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1560"/>
       <source>Creates a chamfer between 2 selected lines or 1 coincident point</source>
-      <translation type="unfinished">Creates a chamfer between 2 selected lines or 1 coincident point</translation>
+      <translation>Стварае фаску паміж дзвюма абранымі лініямі альбо адной супадальнай кропкай</translation>
     </message>
   </context>
   <context>
@@ -6763,12 +6804,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1592"/>
       <source>Edit Edges</source>
-      <translation type="unfinished">Edit Edges</translation>
+      <translation>Змяніць рэбры</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1593"/>
       <source>Edge editing tools</source>
-      <translation type="unfinished">Edge editing tools</translation>
+      <translation>Інструменты праўкі рэбраў</translation>
     </message>
   </context>
   <context>
@@ -6776,12 +6817,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1626"/>
       <source>Trim Edge</source>
-      <translation type="unfinished">Trim Edge</translation>
+      <translation>Абрэзаць рабро</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1627"/>
       <source>Trims an edge with respect to the selected position</source>
-      <translation type="unfinished">Trims an edge with respect to the selected position</translation>
+      <translation>Абразае рабро адносна абранага становішча</translation>
     </message>
   </context>
   <context>
@@ -6789,12 +6830,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1656"/>
       <source>Extend Edge</source>
-      <translation type="unfinished">Extend Edge</translation>
+      <translation>Выцягнуць рабро</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1657"/>
       <source>Extends an edge with respect to the selected position</source>
-      <translation type="unfinished">Extends an edge with respect to the selected position</translation>
+      <translation>Выцягвае рабро адносна абранага становішча</translation>
     </message>
   </context>
   <context>
@@ -6802,12 +6843,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1686"/>
       <source>Split Edge</source>
-      <translation type="unfinished">Split Edge</translation>
+      <translation>Падзяліць рабро</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1687"/>
       <source>Splits an edge into 2 segments while preserving constraints</source>
-      <translation type="unfinished">Splits an edge into 2 segments while preserving constraints</translation>
+      <translation>Падзяляе рабро на два адрэзка з захаваннем абмежаванняў</translation>
     </message>
   </context>
   <context>
@@ -6820,7 +6861,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1719"/>
       <source>Creates sketch elements linked to geometry defined outside the sketch</source>
-      <translation type="unfinished">Creates sketch elements linked to geometry defined outside the sketch</translation>
+      <translation>Стварае элементы эскіза, якія звязаныя з геаметрыяй, якая вызначанай па-за эскізу</translation>
     </message>
   </context>
   <context>
@@ -6828,12 +6869,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1774"/>
       <source>External Projection</source>
-      <translation type="unfinished">External Projection</translation>
+      <translation>Вонкавая праекцыя</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1775"/>
       <source>Creates the projection of external geometry in the sketch plane</source>
-      <translation type="unfinished">Creates the projection of external geometry in the sketch plane</translation>
+      <translation>Стварае праекцыю вонкавай геаметрыі на плоскасць эскіза</translation>
     </message>
   </context>
   <context>
@@ -6841,12 +6882,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1809"/>
       <source>External Intersection</source>
-      <translation type="unfinished">External Intersection</translation>
+      <translation>Вонкавае перасячэнне</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1811"/>
       <source>Creates the intersection of external geometry with the sketch plane</source>
-      <translation type="unfinished">Creates the intersection of external geometry with the sketch plane</translation>
+      <translation>Стварае скрыжаванне вонкавай геаметрыі з плоскасцю эскіза</translation>
     </message>
   </context>
   <context>
@@ -6854,12 +6895,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1846"/>
       <source>Carbon Copy</source>
-      <translation type="unfinished">Carbon Copy</translation>
+      <translation>Дакладная копія</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1847"/>
       <source>Copies the geometry of another sketch</source>
-      <translation type="unfinished">Copies the geometry of another sketch</translation>
+      <translation>Капіруе геаметрыю іншага эскіза</translation>
     </message>
   </context>
   <context>
@@ -6867,12 +6908,13 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="887"/>
       <source>Insert Knot</source>
-      <translation type="unfinished">Insert Knot</translation>
+      <translation>Уставіць вузел</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="889"/>
       <source>Inserts a knot at a given parameter. If a knot already exists at that parameter, its multiplicity is increased by 1.</source>
-      <translation type="unfinished">Inserts a knot at a given parameter. If a knot already exists at that parameter, its multiplicity is increased by 1.</translation>
+      <translation>Уставіць вузел па зададзеных наладах.
+Калі вузел ужо існуе з дадзенымі наладамі, яго кратнасць павялічваецца на адзінку.</translation>
     </message>
   </context>
   <context>
@@ -6885,7 +6927,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="957"/>
       <source>Joins 2 curves at selected end points</source>
-      <translation type="unfinished">Joins 2 curves at selected end points</translation>
+      <translation>Аб'ядноўвае дзве крывыя ў абраных канчатковых кропках</translation>
     </message>
   </context>
   <context>
@@ -6893,12 +6935,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="67"/>
       <source>Toggle B-Spline Degree</source>
-      <translation type="unfinished">Toggle B-Spline Degree</translation>
+      <translation>Пераключыць ступень B-сплайну</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="68"/>
       <source>Toggles the visibility of the degree for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the degree for all B-splines</translation>
+      <translation>Пераключае бачнасць ступеняў для ўсіх B-сплайнах</translation>
     </message>
   </context>
   <context>
@@ -6906,12 +6948,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="96"/>
       <source>Toggle B-Spline Control Polygon</source>
-      <translation type="unfinished">Toggle B-Spline Control Polygon</translation>
+      <translation>Пераключыць палігон кіравання B-сплайну</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="97"/>
       <source>Toggles the visibility of the control polygons for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the control polygons for all B-splines</translation>
+      <translation>Пераключае бачнасць палігону кіравання для ўсіх B-сплайнах</translation>
     </message>
   </context>
   <context>
@@ -6919,12 +6961,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="125"/>
       <source>Toggle B-Spline Curvature Comb</source>
-      <translation type="unfinished">Toggle B-Spline Curvature Comb</translation>
+      <translation>Пераключыць грэбень крывізны B-сплайну</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="126"/>
       <source>Toggles the visibility of the curvature comb for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the curvature comb for all B-splines</translation>
+      <translation>Пераключае бачнасць грабяні крывізны для ўсіх B-сплайнах</translation>
     </message>
   </context>
   <context>
@@ -6932,12 +6974,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="154"/>
       <source>Toggle B-spline knot multiplicity</source>
-      <translation type="unfinished">Toggle B-spline knot multiplicity</translation>
+      <translation>Пераключыць кратнасць вузлоў B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="155"/>
       <source>Toggles the visibility of the knot multiplicity for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the knot multiplicity for all B-splines</translation>
+      <translation>Пераключае бачнасць кратнасці вузлоў для ўсіх B-сплайнах</translation>
     </message>
   </context>
   <context>
@@ -6945,12 +6987,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="183"/>
       <source>Toggle B-Spline Control Point Weight</source>
-      <translation type="unfinished">Toggle B-Spline Control Point Weight</translation>
+      <translation>Пераключыць вагу кантрольных кропак B-сплайну</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="184"/>
       <source>Toggles the visibility of control point weights for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of control point weights for all B-splines</translation>
+      <translation>Пераключае бачнасць вагі кантрольных кропак для ўсіх B-сплайнах</translation>
     </message>
   </context>
   <context>
@@ -6958,37 +7000,37 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="213"/>
       <source>Toggle B-Spline Information Layer</source>
-      <translation type="unfinished">Toggle B-Spline Information Layer</translation>
+      <translation>Пераключыць інфармацыйны пласт B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="214"/>
       <source>Toggles the visibility of the information layer for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the information layer for all B-splines</translation>
+      <translation>Пераключае бачнасць інфармацыйнага пласта для ўсіх B-сплайнах</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="295"/>
       <source>Toggle B-Spline Degree</source>
-      <translation type="unfinished">Toggle B-Spline Degree</translation>
+      <translation>Пераключыць ступень B-сплайну</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="304"/>
       <source>Toggle B-Spline Control Polygon</source>
-      <translation type="unfinished">Toggle B-Spline Control Polygon</translation>
+      <translation>Пераключыць палігон кіравання B-сплайну</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="313"/>
       <source>Toggle B-Spline Curvature Comb</source>
-      <translation type="unfinished">Toggle B-Spline Curvature Comb</translation>
+      <translation>Пераключыць грэбень крывізны B-сплайну</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="322"/>
       <source>Toggle B-Spline Knot Multiplicity</source>
-      <translation type="unfinished">Toggle B-Spline Knot Multiplicity</translation>
+      <translation>Пераключыць кратнасць вузлоў B-сплайна</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="332"/>
       <source>Toggle B-Spline Control Point Weight</source>
-      <translation type="unfinished">Toggle B-Spline Control Point Weight</translation>
+      <translation>Пераключыць вагу кантрольных кропак B-сплайну</translation>
     </message>
   </context>
   <context>
@@ -6997,7 +7039,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../CommandSketcherOverlay.cpp" line="298"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="301"/>
       <source>Toggles the visibility of the degree for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the degree for all B-splines</translation>
+      <translation>Пераключае бачнасць ступеняў для ўсіх B-сплайнах</translation>
     </message>
   </context>
   <context>
@@ -7006,7 +7048,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../CommandSketcherOverlay.cpp" line="306"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="309"/>
       <source>Toggles the visibility of the control polygons for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the control polygons for all B-splines</translation>
+      <translation>Пераключае бачнасць палігону кіравання для ўсіх B-сплайнах</translation>
     </message>
   </context>
   <context>
@@ -7015,7 +7057,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../CommandSketcherOverlay.cpp" line="316"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="319"/>
       <source>Toggles the visibility of the curvature comb for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the curvature comb for all B-splines</translation>
+      <translation>Пераключае бачнасць грабяні крывізны для ўсіх B-сплайнах</translation>
     </message>
   </context>
   <context>
@@ -7024,7 +7066,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../CommandSketcherOverlay.cpp" line="324"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="327"/>
       <source>Toggles the visibility of the knot multiplicity for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the knot multiplicity for all B-splines</translation>
+      <translation>Пераключае бачнасць кратнасці вузлоў для ўсіх B-сплайнах</translation>
     </message>
   </context>
   <context>
@@ -7033,7 +7075,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../CommandSketcherOverlay.cpp" line="334"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="337"/>
       <source>Toggles the visibility of the control point weight for all B-splines</source>
-      <translation type="unfinished">Toggles the visibility of the control point weight for all B-splines</translation>
+      <translation>Пераключае бачнасць вагі кантрольных кропак для ўсіх B-сплайнах</translation>
     </message>
   </context>
   <context>
@@ -7041,12 +7083,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="358"/>
       <source>Toggle Circular Helper for Arcs</source>
-      <translation type="unfinished">Toggle Circular Helper for Arcs</translation>
+      <translation>Пераключыць кругавы памочнік для дуг</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="359"/>
       <source>Toggles the visibility of the circular helpers for all arcs</source>
-      <translation type="unfinished">Toggles the visibility of the circular helpers for all arcs</translation>
+      <translation>Пераключае бачнасць кругавых дапаможных элементаў для ўсіх дуг</translation>
     </message>
   </context>
   <context>
@@ -7054,12 +7096,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="225"/>
       <source>C&amp;opy Elements</source>
-      <translation type="unfinished">C&amp;opy Elements</translation>
+      <translation>&amp;Капіраваць элементы</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="226"/>
       <source>Copies the selected geometries and constraints to the clipboard</source>
-      <translation type="unfinished">Copies the selected geometries and constraints to the clipboard</translation>
+      <translation>Капіруе абраныя геаметрыі і абмежаванні ў буфер абмену</translation>
     </message>
   </context>
   <context>
@@ -7067,12 +7109,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="256"/>
       <source>C&amp;ut Elements</source>
-      <translation type="unfinished">C&amp;ut Elements</translation>
+      <translation>&amp;Выразаць элементы</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="257"/>
       <source>Cuts the selected geometries and constraints to the clipboard</source>
-      <translation type="unfinished">Cuts the selected geometries and constraints to the clipboard</translation>
+      <translation>Выразае абраныя геаметрыі і абмежаванні ў буфер абмену</translation>
     </message>
   </context>
   <context>
@@ -7080,12 +7122,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="296"/>
       <source>P&amp;aste Elements</source>
-      <translation type="unfinished">P&amp;aste Elements</translation>
+      <translation>&amp;Уставіць элементы</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="297"/>
       <source>Pastes the geometries and constraints from the clipboard into the sketch</source>
-      <translation type="unfinished">Pastes the geometries and constraints from the clipboard into the sketch</translation>
+      <translation>Устаўляе геаметрыю і абмежаванні з буфера абмену ў эскіз</translation>
     </message>
   </context>
   <context>
@@ -7093,12 +7135,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="344"/>
       <source>Select Associated Constraints</source>
-      <translation type="unfinished">Select Associated Constraints</translation>
+      <translation>Абраць звязаныя абмежаванні</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="346"/>
       <source>Selects the constraints associated with the selected geometrical elements</source>
-      <translation type="unfinished">Selects the constraints associated with the selected geometrical elements</translation>
+      <translation>Абірае абмежаванні, якія звязаныя з абранымі геаметрычнымі элементамі</translation>
     </message>
   </context>
   <context>
@@ -7111,7 +7153,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="429"/>
       <source>Selects the local origin point of the sketch</source>
-      <translation type="unfinished">Selects the local origin point of the sketch</translation>
+      <translation>Абірае лакальную кропку пачатак каардынат эскізу</translation>
     </message>
   </context>
   <context>
@@ -7124,7 +7166,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="473"/>
       <source>Selects the local vertical axis of the sketch</source>
-      <translation type="unfinished">Selects the local vertical axis of the sketch</translation>
+      <translation>Абірае лакальную вертыкальную вось эскізу</translation>
     </message>
   </context>
   <context>
@@ -7137,7 +7179,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="514"/>
       <source>Selects the local horizontal axis of the sketch</source>
-      <translation type="unfinished">Selects the local horizontal axis of the sketch</translation>
+      <translation>Абірае лакальную гарызантальную вось эскізу</translation>
     </message>
   </context>
   <context>
@@ -7145,12 +7187,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="553"/>
       <source>Select Redundant Constraints</source>
-      <translation type="unfinished">Select Redundant Constraints</translation>
+      <translation>Абраць залішнія абмежаванні</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="554"/>
       <source>Selects all redundant constraints</source>
-      <translation type="unfinished">Selects all redundant constraints</translation>
+      <translation>Абраць усе залішнія абмежаванні</translation>
     </message>
   </context>
   <context>
@@ -7158,12 +7200,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="611"/>
       <source>Select Malformed Constraints</source>
-      <translation type="unfinished">Select Malformed Constraints</translation>
+      <translation>Абраць скажоныя абмежаванні</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="612"/>
       <source>Selects all malformed constraints</source>
-      <translation type="unfinished">Selects all malformed constraints</translation>
+      <translation>Абраць усе скажоныя абмежаванні</translation>
     </message>
   </context>
   <context>
@@ -7171,12 +7213,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="666"/>
       <source>Select Partially Redundant Constraints</source>
-      <translation type="unfinished">Select Partially Redundant Constraints</translation>
+      <translation>Абраць часткова залішнія абмежаванні</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="667"/>
       <source>Selects all partially redundant constraints</source>
-      <translation type="unfinished">Selects all partially redundant constraints</translation>
+      <translation>Абраць усе часткова залішнія абмежаванні</translation>
     </message>
   </context>
   <context>
@@ -7184,12 +7226,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="722"/>
       <source>Select Conflicting Constraints</source>
-      <translation type="unfinished">Select Conflicting Constraints</translation>
+      <translation>Абраць абмежаванні, які канфліктуюць</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="723"/>
       <source>Selects all conflicting constraints</source>
-      <translation type="unfinished">Selects all conflicting constraints</translation>
+      <translation>Абірае ўсе абмежаванні, які канфліктуюць</translation>
     </message>
   </context>
   <context>
@@ -7197,12 +7239,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="780"/>
       <source>Select Associated Geometry</source>
-      <translation type="unfinished">Select Associated Geometry</translation>
+      <translation>Абраць звязаную геаметрыю</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="782"/>
       <source>Selects the geometrical elements associated with the selected constraints</source>
-      <translation type="unfinished">Selects the geometrical elements associated with the selected constraints</translation>
+      <translation>Абірае геаметрычныя элементы, якія звязаныя з абранымі абмежаваннямі</translation>
     </message>
   </context>
   <context>
@@ -7210,12 +7252,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="900"/>
       <source>Select Under-Constrained Elements</source>
-      <translation type="unfinished">Select Under-Constrained Elements</translation>
+      <translation>Абраць недастаткова абмежаваныя элементы</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="901"/>
       <source>Selects geometrical elements where the solver still detects unconstrained degrees of freedom</source>
-      <translation type="unfinished">Selects geometrical elements where the solver still detects unconstrained degrees of freedom</translation>
+      <translation>Абірае геаметрычныя элементы, у якіх сродак рашэння ўсё яшчэ выяўляе неабмежаваныя ступені свабоды</translation>
     </message>
   </context>
   <context>
@@ -7223,12 +7265,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="989"/>
       <source>Toggle Internal Geometry</source>
-      <translation type="unfinished">Toggle Internal Geometry</translation>
+      <translation>Пераключае ўнутраную геаметрыю</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="990"/>
       <source>Toggles the visibility of all internal geometry</source>
-      <translation type="unfinished">Toggles the visibility of all internal geometry</translation>
+      <translation>Пераключае бачнасць усёй унутранай геаметрыі</translation>
     </message>
   </context>
   <context>
@@ -7241,7 +7283,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1106"/>
       <source>Creates a mirrored copy of the selected geometry</source>
-      <translation type="unfinished">Creates a mirrored copy of the selected geometry</translation>
+      <translation>Стварае сіметрычную копію абранай геаметрыі</translation>
     </message>
   </context>
   <context>
@@ -7254,7 +7296,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2075"/>
       <source>Deletes all geometry and their constraints in the current sketch, with the exception of external geometry</source>
-      <translation type="unfinished">Deletes all geometry and their constraints in the current sketch, with the exception of external geometry</translation>
+      <translation>Выдаляе ўсю геаметрыю і звязаныя з ёй абмежаванні на бягучым эскізе, за выключэннем вонкавай геаметрыі</translation>
     </message>
   </context>
   <context>
@@ -7267,7 +7309,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2140"/>
       <source>Deletes all constraints in the sketch</source>
-      <translation type="unfinished">Deletes all constraints in the sketch</translation>
+      <translation>Выдаляе ўсе абмежаванні на эскізе</translation>
     </message>
   </context>
   <context>
@@ -7280,7 +7322,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2207"/>
       <source>Modifies the constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</source>
-      <translation type="unfinished">Modifies the constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</translation>
+      <translation>Змяняе абмежаванні, каб выдаліць выраўноўванне восяў, спрабуючы захаваць адносіны абмежавання для выбару</translation>
     </message>
   </context>
   <context>
@@ -7293,7 +7335,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2327"/>
       <source>Offsets the selected geometry: positive values offset outward, negative values inward</source>
-      <translation type="unfinished">Offsets the selected geometry: positive values offset outward, negative values inward</translation>
+      <translation>Рухае абраную геаметрыю: станоўчыя значэнні рухаюцца вонкі, адмоўныя - унутр</translation>
     </message>
   </context>
   <context>
@@ -7301,12 +7343,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2409"/>
       <source>Rotate / Polar Transform</source>
-      <translation type="unfinished">Rotate / Polar Transform</translation>
+      <translation>Павярнуць / палярна пераўтварыць</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2410"/>
       <source>Rotates the selected geometry by creating 'n' copies, enabling circular pattern creation</source>
-      <translation type="unfinished">Rotates the selected geometry by creating 'n' copies, enabling circular pattern creation</translation>
+      <translation>Паварочвае абраную геаметрыю, ствараючы 'n' копій, што дазваляе ствараць кругавы шаблон</translation>
     </message>
   </context>
   <context>
@@ -7319,7 +7361,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2444"/>
       <source>Scales the selected geometries</source>
-      <translation type="unfinished">Scales the selected geometries</translation>
+      <translation>Маштабуе абраныя геаметрыі</translation>
     </message>
   </context>
   <context>
@@ -7327,12 +7369,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2477"/>
       <source>Move / Array Transform</source>
-      <translation type="unfinished">Move / Array Transform</translation>
+      <translation>Перамясціць / пераўтварыць масіщ</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2478"/>
       <source>Translates the selected geometries and enables the creation of 'i' * 'j' copies</source>
-      <translation type="unfinished">Translates the selected geometries and enables the creation of 'i' * 'j' copies</translation>
+      <translation>Перанос абранай геаметрыі і ўключэнне стварэння 'i' * 'j' копій</translation>
     </message>
   </context>
   <context>
@@ -7340,37 +7382,37 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="96"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>Пераключыць рэжым %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="105"/>
       <source>%1 pick arc center</source>
-      <translation type="unfinished">%1 pick arc center</translation>
+      <translation>Выбраць цэнтр дугі %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="111"/>
       <source>%1 pick arc start point</source>
-      <translation type="unfinished">%1 pick arc start point</translation>
+      <translation>Выбраць пачатковую кропку дугі %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="117"/>
       <source>%1 pick arc end point</source>
-      <translation type="unfinished">%1 pick arc end point</translation>
+      <translation>Выбраць канцавую кропку дугі %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="125"/>
       <source>%1 pick first arc point</source>
-      <translation type="unfinished">%1 pick first arc point</translation>
+      <translation>Выбраць першую кропку дугі %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="131"/>
       <source>%1 pick second arc point</source>
-      <translation type="unfinished">%1 pick second arc point</translation>
+      <translation>Выбраць другую кропку дугі %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="137"/>
       <source>%1 pick third arc point</source>
-      <translation type="unfinished">%1 pick third arc point</translation>
+      <translation>Выбраць трэццю кропку дугі %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="392"/>
@@ -7383,22 +7425,22 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="418"/>
       <source>%1 pick ellipse center</source>
-      <translation type="unfinished">%1 pick ellipse center</translation>
+      <translation>Выбраць цэнтр эліпсу %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="423"/>
       <source>%1 pick axis point</source>
-      <translation type="unfinished">%1 pick axis point</translation>
+      <translation>Выбраць кропку восі %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="428"/>
       <source>%1 pick arc start point</source>
-      <translation type="unfinished">%1 pick arc start point</translation>
+      <translation>Выбраць пачатковую кропку дугі %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="433"/>
       <source>%1 pick arc end point</source>
-      <translation type="unfinished">%1 pick arc end point</translation>
+      <translation>Выбраць канцавую кропку дугі %1</translation>
     </message>
   </context>
   <context>
@@ -7406,22 +7448,22 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="417"/>
       <source>%1 pick center point</source>
-      <translation type="unfinished">%1 pick center point</translation>
+      <translation>Выбраць цэнтральную кропку %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="422"/>
       <source>%1 pick axis point</source>
-      <translation type="unfinished">%1 pick axis point</translation>
+      <translation>Выбраць кропку восі %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="427"/>
       <source>%1 pick arc start point</source>
-      <translation type="unfinished">%1 pick arc start point</translation>
+      <translation>Выбраць пачатковую кропку дугі %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="432"/>
       <source>%1 pick arc end point</source>
-      <translation type="unfinished">%1 pick arc end point</translation>
+      <translation>Выбраць канцавую кропку дугі %1</translation>
     </message>
   </context>
   <context>
@@ -7429,48 +7471,53 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="347"/>
       <source>%1 pick focus point</source>
-      <translation type="unfinished">%1 pick focus point</translation>
+      <translation>Выбраць кропку фокуса %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="352"/>
       <source>%1 pick axis point</source>
-      <translation type="unfinished">%1 pick axis point</translation>
+      <translation>Выбраць кропку восі %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="357"/>
       <source>%1 pick starting point</source>
-      <translation type="unfinished">%1 pick starting point</translation>
+      <translation>Выбраць пачатковую кропку %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="362"/>
       <source>%1 pick end point</source>
-      <translation type="unfinished">%1 pick end point</translation>
+      <translation>Выбраць канечную кропку %1</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerArcSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="105"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="100"/>
+      <source>%1 switch mode</source>
+      <translation>Пераключыць рэжым %1</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="107"/>
       <source>%1 pick slot center</source>
-      <translation type="unfinished">%1 pick slot center</translation>
+      <translation>Выбраць цэнтр пазу %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="110"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="113"/>
       <source>%1 pick slot radius</source>
-      <translation type="unfinished">%1 pick slot radius</translation>
+      <translation>Выбраць радыус пазу %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="115"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="119"/>
       <source>%1 pick slot angle</source>
-      <translation type="unfinished">%1 pick slot angle</translation>
+      <translation>Выбраць вугал пазу %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="120"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="125"/>
       <source>%1 pick slot width</source>
-      <translation type="unfinished">%1 pick slot width</translation>
+      <translation>Выбраць шырыню пазу %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="299"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="305"/>
       <source>Arc Slot parameters</source>
       <translation>Налады дугі паза</translation>
     </message>
@@ -7480,36 +7527,54 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="412"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>Пераключыць рэжым %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="421"/>
       <source>%1 pick first control point</source>
-      <translation type="unfinished">%1 pick first control point</translation>
+      <translation>Выбраць першую кантрольную кропку %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="427"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="423"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="432"/>
+      <source>%1 + degree</source>
+      <translation type="unfinished">%1 + degree</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="424"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="433"/>
+      <source>%1 - degree</source>
+      <translation type="unfinished">%1 - degree</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="429"/>
       <source>%1 pick next control point</source>
-      <translation type="unfinished">%1 pick next control point</translation>
+      <translation>Выбраць наступную кантрольную кропку %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="428"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="443"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="430"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="448"/>
       <source>%1 finish B-spline</source>
-      <translation type="unfinished">%1 finish B-spline</translation>
+      <translation>Завяршыць B-сплайн %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="436"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="440"/>
       <source>%1 pick first knot</source>
-      <translation type="unfinished">%1 pick first knot</translation>
+      <translation>Выбраць першы вузел %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="442"/>
-      <source>%1 pick next knot</source>
-      <translation type="unfinished">%1 pick next knot</translation>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="450"/>
+      <source>%1 toggle periodic</source>
+      <translation type="unfinished">%1 toggle periodic</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="491"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="447"/>
+      <source>%1 pick next knot</source>
+      <translation>Выбраць наступны вузел %1</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="497"/>
       <source>B-spline parameters</source>
       <translation>Налады B-сплайна</translation>
     </message>
@@ -7520,7 +7585,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="227"/>
       <source>%1 pick sketch to copy</source>
       <comment>Sketcher CarbonCopy: hint</comment>
-      <translation type="unfinished">%1 pick sketch to copy</translation>
+      <translation>Выбраць эскіз для капіравання %1</translation>
     </message>
   </context>
   <context>
@@ -7528,32 +7593,32 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="86"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>Пераключыць рэжым %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="95"/>
       <source>%1 pick circle center</source>
-      <translation type="unfinished">%1 pick circle center</translation>
+      <translation>Выбраць цэнтр акружнасці %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="101"/>
       <source>%1 pick rim point</source>
-      <translation type="unfinished">%1 pick rim point</translation>
+      <translation>Выбраць кропку перыметра %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="109"/>
       <source>%1 pick first rim point</source>
-      <translation type="unfinished">%1 pick first rim point</translation>
+      <translation>Выбраць першую кропку перыметра %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="115"/>
       <source>%1 pick second rim point</source>
-      <translation type="unfinished">%1 pick second rim point</translation>
+      <translation>Выбраць другую кропку перыметра %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="121"/>
       <source>%1 pick third rim point</source>
-      <translation type="unfinished">%1 pick third rim point</translation>
+      <translation>Выбраць трэццю кропку перыметра %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="310"/>
@@ -7566,37 +7631,37 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="92"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>Пераключыць рэжым %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="101"/>
       <source>%1 pick ellipse center</source>
-      <translation type="unfinished">%1 pick ellipse center</translation>
+      <translation>Выбраць цэнтр эліпсу %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="107"/>
       <source>%1 pick axis endpoint</source>
-      <translation type="unfinished">%1 pick axis endpoint</translation>
+      <translation>Выбраць канчатковую кропку восі %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="113"/>
       <source>%1 pick minor axis endpoint</source>
-      <translation type="unfinished">%1 pick minor axis endpoint</translation>
+      <translation>Выбраць канчатковую кропку нязначнай восі %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="121"/>
       <source>%1 pick first rim point</source>
-      <translation type="unfinished">%1 pick first rim point</translation>
+      <translation>Выбраць першую кропку перыметра %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="127"/>
       <source>%1 pick second rim point</source>
-      <translation type="unfinished">%1 pick second rim point</translation>
+      <translation>Выбраць другую кропку перыметра %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="133"/>
       <source>%1 pick third rim point</source>
-      <translation type="unfinished">%1 pick third rim point</translation>
+      <translation>Выбраць трэццю кропку перыметра %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="328"/>
@@ -7610,13 +7675,13 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../DrawSketchHandlerExtend.h" line="387"/>
       <source>%1 pick edge to extend</source>
       <comment>Sketcher Extend: hint</comment>
-      <translation type="unfinished">%1 pick edge to extend</translation>
+      <translation>Выбраць рабро для выцягвання %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerExtend.h" line="392"/>
       <source>%1 set extension length</source>
       <comment>Sketcher Extend: hint</comment>
-      <translation type="unfinished">%1 set extension length</translation>
+      <translation>Задаць даўжыню пашырэння %1</translation>
     </message>
   </context>
   <context>
@@ -7625,7 +7690,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../DrawSketchHandlerExternal.h" line="252"/>
       <source>%1 pick external geometry</source>
       <comment>Sketcher External: hint</comment>
-      <translation type="unfinished">%1 pick external geometry</translation>
+      <translation>Выбраць вонкавую геаметрыю %1</translation>
     </message>
   </context>
   <context>
@@ -7646,22 +7711,29 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <translation>Налады акруглення/фаскі</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="421"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="417"/>
+      <source>%1 switch mode</source>
+      <translation>Пераключыць рэжым %1</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerFillet.h" line="418"/>
+      <source>%1 toggle preserve corner</source>
+      <translation type="unfinished">%1 toggle preserve corner</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerFillet.h" line="425"/>
       <source>%1 pick first edge or point</source>
-      <comment>Sketcher Fillet/Chamfer: hint</comment>
-      <translation type="unfinished">%1 pick first edge or point</translation>
+      <translation>Выбраць першую рабро ці кропку %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="424"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="429"/>
       <source>%1 pick second edge</source>
-      <comment>Sketcher Fillet/Chamfer: hint</comment>
-      <translation type="unfinished">%1 pick second edge</translation>
+      <translation>Выбраць другое рабро %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="427"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="433"/>
       <source>%1 create fillet</source>
-      <comment>Sketcher Fillet/Chamfer: hint</comment>
-      <translation type="unfinished">%1 create fillet</translation>
+      <translation>Стварыць акругленне %1</translation>
     </message>
   </context>
   <context>
@@ -7674,21 +7746,21 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="264"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>Пераключыць рэжым %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="273"/>
       <location filename="../../DrawSketchHandlerLine.h" line="287"/>
       <location filename="../../DrawSketchHandlerLine.h" line="301"/>
       <source>%1 pick first point</source>
-      <translation type="unfinished">%1 pick first point</translation>
+      <translation>Выбраць першую кропку %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="279"/>
       <location filename="../../DrawSketchHandlerLine.h" line="293"/>
       <location filename="../../DrawSketchHandlerLine.h" line="307"/>
       <source>%1 pick second point</source>
-      <translation type="unfinished">%1 pick second point</translation>
+      <translation>Выбраць другую кропку %1</translation>
     </message>
   </context>
   <context>
@@ -7696,22 +7768,22 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="779"/>
       <source>%1 pick first point</source>
-      <translation type="unfinished">%1 pick first point</translation>
+      <translation>Выбраць першую кропку %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="784"/>
       <source>%1 pick next point</source>
-      <translation type="unfinished">%1 pick next point</translation>
+      <translation>Выбраць наступную кропку %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="785"/>
       <source>%1 finish</source>
-      <translation type="unfinished">%1 finish</translation>
+      <translation>Скончыць %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="786"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>Пераключыць рэжым %1</translation>
     </message>
   </context>
   <context>
@@ -7725,7 +7797,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../DrawSketchHandlerOffset.h" line="200"/>
       <source>%1 set offset direction and distance</source>
       <comment>Sketcher Offset: hint</comment>
-      <translation type="unfinished">%1 set offset direction and distance</translation>
+      <translation>Задаць напрамак зрушэння і адлегласць %1</translation>
     </message>
   </context>
   <context>
@@ -7734,7 +7806,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../DrawSketchHandlerPoint.h" line="70"/>
       <source>%1 place a point</source>
       <comment>Sketcher Point: hint</comment>
-      <translation type="unfinished">%1 place a point</translation>
+      <translation>Паставіць кропку %1</translation>
     </message>
   </context>
   <context>
@@ -7747,23 +7819,23 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="276"/>
       <source>%1 pick polygon center</source>
-      <translation>%1 выбраць цэнтр палігону</translation>
+      <translation>Выбраць цэнтр палігону %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="277"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="284"/>
       <source>%1/%2 increase / decrease number of sides</source>
-      <translation>%1/%2 павялічыць/памяншыць колькасць бакоў</translation>
+      <translation>Павялічыць/памяншыць колькасць бакоў %1/%2</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="282"/>
       <source>%1 pick rotation and size</source>
-      <translation>%1 выбраць вярчэнне і памер</translation>
+      <translation>Выбраць вярчэнне і памер %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="283"/>
       <source>%1 confirm</source>
-      <translation>%1 пацвердзіць</translation>
+      <translation>Пацвердзіць %1</translation>
     </message>
   </context>
   <context>
@@ -7771,58 +7843,68 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="117"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>Пераключыць рэжым %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="126"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="178"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="210"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="118"/>
+      <source>%1 toggle rounded corners</source>
+      <translation type="unfinished">%1 toggle rounded corners</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="120"/>
+      <source>%1 toggle frame</source>
+      <translation type="unfinished">%1 toggle frame</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="129"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="197"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="239"/>
       <source>%1 pick first corner</source>
-      <translation type="unfinished">%1 pick first corner</translation>
+      <translation>Выбраць першы кут %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="132"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="137"/>
       <source>%1 pick opposite corner</source>
-      <translation type="unfinished">%1 pick opposite corner</translation>
+      <translation>Выбраць супрацьлеглы кут %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="138"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="164"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="196"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="222"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="145"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="179"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="221"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="255"/>
       <source>%1 set corner radius or frame thickness</source>
-      <translation type="unfinished">%1 set corner radius or frame thickness</translation>
+      <translation>Задаць радыус кута ці таўшчыню каркасу %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="144"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="170"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="153"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="187"/>
       <source>%1 set frame thickness</source>
-      <translation type="unfinished">%1 set frame thickness</translation>
+      <translation>Задаць таўшчыню каркасу %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="152"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="204"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="163"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="231"/>
       <source>%1 pick center</source>
-      <translation>%1 выбраць цэнтр</translation>
+      <translation>Выбраць цэнтр %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="158"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="171"/>
       <source>%1 pick corner</source>
-      <translation type="unfinished">%1 pick corner</translation>
+      <translation>Выбраць кут %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="184"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="216"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="205"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="247"/>
       <source>%1 pick second corner</source>
-      <translation type="unfinished">%1 pick second corner</translation>
+      <translation>Выбраць другі кут %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="190"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="213"/>
       <source>%1 pick third corner</source>
-      <translation type="unfinished">%1 pick third corner</translation>
+      <translation>Выбраць трэці кут %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="706"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="741"/>
       <source>Rectangle parameters</source>
       <translation>Налады прастакутніка</translation>
     </message>
@@ -7830,25 +7912,25 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerRotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="96"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="97"/>
       <source>%1 pick center point</source>
       <comment>Sketcher Rotate: hint</comment>
-      <translation type="unfinished">%1 pick center point</translation>
+      <translation>Выбраць цэнтральную кропку %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="101"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="102"/>
       <source>%1 set start angle</source>
       <comment>Sketcher Rotate: hint</comment>
-      <translation type="unfinished">%1 set start angle</translation>
+      <translation>Задаць пачатковы вугал %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="106"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="107"/>
       <source>%1 set rotation angle</source>
       <comment>Sketcher Rotate: hint</comment>
-      <translation type="unfinished">%1 set rotation angle</translation>
+      <translation>Задаць вугал вярчэння %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="203"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="212"/>
       <source>Rotate parameters</source>
       <translation>Налады павароту</translation>
     </message>
@@ -7856,17 +7938,17 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerScale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="146"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="165"/>
       <source>%1 pick reference point</source>
-      <translation type="unfinished">%1 pick reference point</translation>
+      <translation>Выбраць апорную кропку %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="170"/>
       <source>%1 set scale factor</source>
-      <translation type="unfinished">%1 set scale factor</translation>
+      <translation>Задаць маштабны каэфіцыент %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="214"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="233"/>
       <source>Scale parameters</source>
       <translation>Налады маштабавання</translation>
     </message>
@@ -7876,17 +7958,17 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="94"/>
       <source>%1 pick slot start point</source>
-      <translation type="unfinished">%1 pick slot start point</translation>
+      <translation>Выбраць пачатковую кропку паза %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="99"/>
       <source>%1 pick slot end point</source>
-      <translation type="unfinished">%1 pick slot end point</translation>
+      <translation>Выбраць канцавую кропку паза %1</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="104"/>
       <source>%1 pick slot width</source>
-      <translation type="unfinished">%1 pick slot width</translation>
+      <translation>Выбраць шырыню пазу %1</translation>
     </message>
   </context>
   <context>
@@ -7895,7 +7977,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../DrawSketchHandlerSplitting.h" line="204"/>
       <source>%1 pick location on edge to split</source>
       <comment>Sketcher Splitting: hint</comment>
-      <translation type="unfinished">%1 pick location on edge to split</translation>
+      <translation>Выбраць месцазнаходжанне на рэбры для падзелу %1</translation>
     </message>
   </context>
   <context>
@@ -7909,33 +7991,33 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../DrawSketchHandlerSymmetry.h" line="224"/>
       <source>%1 pick axis, edge, or point</source>
       <comment>Sketcher Symmetry: hint</comment>
-      <translation type="unfinished">%1 pick axis, edge, or point</translation>
+      <translation>Выбраць вось, рабро ці кропку %1</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerTranslate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="175"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="185"/>
       <source>Translate parameters</source>
       <translation>Налады пераносу</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="438"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="451"/>
       <source>%1 pick reference point</source>
       <comment>Sketcher Translate: hint</comment>
-      <translation type="unfinished">%1 pick reference point</translation>
+      <translation>Выбраць апорную кропку %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="440"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="453"/>
       <source>%1 set translation vector</source>
       <comment>Sketcher Translate: hint</comment>
-      <translation type="unfinished">%1 set translation vector</translation>
+      <translation>Задаць вектар пераносу %1</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="443"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="456"/>
       <source>%1 set second translation vector</source>
       <comment>Sketcher Translate: hint</comment>
-      <translation type="unfinished">%1 set second translation vector</translation>
+      <translation>Задаць другі вектар пераносу %1</translation>
     </message>
   </context>
   <context>
@@ -7944,7 +8026,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../DrawSketchHandlerTrimming.h" line="216"/>
       <source>%1 pick edge to trim</source>
       <comment>Sketcher Trimming: hint</comment>
-      <translation type="unfinished">%1 pick edge to trim</translation>
+      <translation>Выбраць рабро для абрэзкі %1</translation>
     </message>
   </context>
   <context>
@@ -7952,7 +8034,28 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.cpp" line="58"/>
       <source>Advanced Solver Controls</source>
-      <translation type="unfinished">Advanced Solver Controls</translation>
+      <translation>Пашыранае кіраванне сродкам рашэння</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_CreateBSpline</name>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="911"/>
+      <source>From control points</source>
+      <translation type="unfinished">From control points</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="912"/>
+      <source>From knots</source>
+      <translation type="unfinished">From knots</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c2_symmetry</name>
+    <message>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="276"/>
+      <source>Create symmetry constraints (J)</source>
+      <translation type="unfinished">Create symmetry constraints (J)</translation>
     </message>
   </context>
 </TS>

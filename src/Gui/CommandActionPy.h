@@ -29,6 +29,7 @@
 
 namespace Gui
 {
+class Command;
 
 class CommandActionPy : public Py::PythonClass<CommandActionPy>
 {

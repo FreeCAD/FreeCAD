@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Inventor/nodes/SoCamera.h>
 # include <QApplication>
-#endif
 
 #include "Navigation/NavigationStyle.h"
 #include "View3DInventorViewer.h"
@@ -54,7 +51,7 @@ const char* CADNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::DRAGGING:
         return QT_TR_NOOP("Press middle+left or middle+right mouse button");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Scroll middle mouse button or keep middle button depressed\n"
+        return QT_TR_NOOP("Scroll mouse wheel or keep middle button depressed\n"
                           "while doing a left or right click and move the mouse up or down");
     default:
         return "No description";
@@ -315,6 +312,13 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
         processed = false;
     }
 
+    // Reset flags when newmode is IDLE and the buttons are released
+    if (newmode == IDLE && !button1down && !button2down && !button3down) {
+        hasPanned = false;
+        hasDragged = false;
+        hasZoomed = false;
+    }
+    
     if (newmode != curmode) {
         this->setViewingMode(newmode);
     }

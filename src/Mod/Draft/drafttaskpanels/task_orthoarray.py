@@ -429,7 +429,7 @@ class TaskPanelOrthoArray:
             # check radiobutton based on current cfg
             self.update_axis_ui()
 
-            # For linear mode we're hiding all group boxes for X, Y, Z axis and the one
+            # For linear mode we're hiding all group boxes for X-, Y-, Z-Axis and the one
             # with number of elements as we will reparent those spinboxes under newly
             # created group
             self._set_orthomode_groups_visibility(hide=True)
@@ -438,7 +438,14 @@ class TaskPanelOrthoArray:
             # Set the appropriate title for the group (we flip it back and forth after changing mode)
             # and show the group
             self.form.group_linearmode.show()
-            self.form.group_linearmode.setTitle(f"{self.active_axis} Axis")
+            match self.active_axis:
+                case "X":
+                    title = translate("draft", "X-Axis")
+                case "Y":
+                    title = translate("draft", "Y-Axis")
+                case "Z":
+                    title = translate("draft", "Z-Axis")
+            self.form.group_linearmode.setTitle(title)
         else: # ortho mode
             self.form.button_linear_mode.setText(translate("draft", "Switch to Linear Mode"))
 
@@ -467,7 +474,14 @@ class TaskPanelOrthoArray:
                 self.active_axis = axis
                 params.set_param("AxisSelected", self.active_axis, "Mod/Draft/OrthoArrayLinearMode")
                 self._setup_linear_mode_layout()
-                self.form.group_linearmode.setTitle(f"{self.active_axis} Axis")
+                match self.active_axis:
+                    case "X":
+                        title = translate("draft", "X-Axis")
+                    case "Y":
+                        title = translate("draft", "Y-Axis")
+                    case "Z":
+                        title = translate("draft", "Z-Axis")
+                self.form.group_linearmode.setTitle(title)
 
 
     def update_axis_ui(self):

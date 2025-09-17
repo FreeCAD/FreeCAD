@@ -235,7 +235,7 @@ class Arch_CloseHoles:
     def GetResources(self):
         return {'Pixmap'  : 'Arch_CloseHoles',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_CloseHoles","Close Holes"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_CloseHoles","Closes holes in open shapes, turning them solids")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_CloseHoles","Closes holes in open shapes, turning them into solids")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -471,7 +471,7 @@ class Arch_MergeWalls:
                     FreeCAD.ActiveDocument.commitTransaction()
                     return
                 else:
-                    FreeCAD.Console.PrintWarning(translate("Arch","The selected wall contains no subwall to merge"))
+                    FreeCAD.Console.PrintWarning(translate("Arch","The selected wall contains no subwalls to merge"))
                     return
             else:
                 FreeCAD.Console.PrintWarning(translate("Arch","Select only wall objects"))

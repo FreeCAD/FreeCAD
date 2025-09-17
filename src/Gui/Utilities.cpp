@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <Inventor/SbTesselator.h>
 # include <QAbstractItemModel>
 # include <QAbstractItemView>
 # include <QItemSelection>
 # include <QItemSelectionModel>
-#endif
+
 
 #include <App/DocumentObject.h>
 

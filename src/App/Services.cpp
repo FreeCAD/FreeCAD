@@ -21,8 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "Services.h"
 
 std::optional<Base::Vector3d>

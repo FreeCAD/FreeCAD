@@ -344,7 +344,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="205"/>
       <source>Wrong selection</source>
-      <translation>Sélection invalide</translation>
+      <translation>Sélection non valide</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="206"/>
@@ -392,7 +392,7 @@
       <location filename="../../Command.cpp" line="121"/>
       <location filename="../../Command.cpp" line="614"/>
       <source>Wrong selection</source>
-      <translation>Sélection invalide</translation>
+      <translation>Sélection non valide</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -496,7 +496,7 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
       <source>Pick Triangle</source>
-      <translation type="unfinished">Pick Triangle</translation>
+      <translation>Choisir un triangle</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="105"/>
@@ -552,12 +552,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with screen-facing normals</source>
-      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
+      <translation>Prendre en compte uniquement les triangles avec des normales orientées vers l'écran</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
       <source>Respect only visible triangles</source>
-      <translation>Respecter uniquement les triangles visibles</translation>
+      <translation>Prendre en compte uniquement les triangles visibles</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="310"/>

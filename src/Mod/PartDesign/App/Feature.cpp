@@ -352,6 +352,9 @@ Part::TopoShape Feature::getBaseTopoShape(bool silent) const
             throw Base::ValueError("Base feature's shape is not a solid");
         }
     }
+    else if (!result.hasSubShape(TopAbs_SOLID)) {
+        result.setShape(TopoDS_Shape());
+    }
     return result;
 }
 

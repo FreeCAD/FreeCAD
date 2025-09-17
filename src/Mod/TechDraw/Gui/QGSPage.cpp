@@ -140,6 +140,7 @@ bool QGSPage::itemClearsSelection(int itemTypeIn)
     const std::vector<int> ClearingTypes {
         13,  // MysteryType
         UserType::QGITemplate,
+        UserType::QGIProjGroup,
         UserType::QGIDrawingTemplate,
         UserType::QGISVGTemplate
     };
@@ -560,7 +561,7 @@ QGIView* QGSPage::addDrawViewClip(TechDraw::DrawViewClip* view)
     qview->setViewFeature(view);
     addItemToScene(qview);
     qview->setPosition(Rez::guiX(view->X.getValue()), Rez::guiX(view->Y.getValue()));
-
+    qview->installSceneEventFilter(qview);
     return qview;
 }
 

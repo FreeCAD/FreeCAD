@@ -216,10 +216,10 @@
       <location filename="../../TaskCurveOnMesh.ui" line="23"/>
       <source>Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
-This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
+This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</source>
       <translation type="unfinished">Press 'Start', then pick points on the mesh; when enough points have been set, right-click and choose 'Create'. Repeat this process to create more splines. Close this task panel to complete the operation.
 
-This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</translation>
+This command only works with a Mesh object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh workbench.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -494,9 +494,9 @@ A value in the range of 0.2-10.</source>
     <message>
       <location filename="../../Tessellation.cpp" line="279"/>
       <source>Error: body without a tip selected.
-Either set the tip of the body or select a different shapee.</source>
+Either set the tip of the body or select a different shape.</source>
       <translation type="unfinished">Error: body without a tip selected.
-Either set the tip of the body or select a different shapee.</translation>
+Either set the tip of the body or select a different shape.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="285"/>
@@ -532,19 +532,19 @@ Select a different shape.</translation>
       <translation>Bir düzlem seçin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="104"/>
-      <source>Trim by plane</source>
-      <translation>Düzlemden Kırp</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="98"/>
       <source>Select a plane to trim the mesh with.</source>
       <translation type="unfinished">Select a plane to trim the mesh with.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="104"/>
+      <source>Trim With Plane</source>
+      <translation type="unfinished">Trim With Plane</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="105"/>
-      <source>Select the side to keep.</source>
-      <translation type="unfinished">Select the side to keep.</translation>
+      <source>Select the side to keep</source>
+      <translation type="unfinished">Select the side to keep</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>

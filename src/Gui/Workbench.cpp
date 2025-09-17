@@ -21,11 +21,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QDockWidget>
 # include <QStatusBar>
-#endif
+
 
 #include "Workbench.h"
 #include "WorkbenchManipulator.h"
@@ -723,6 +722,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Separator";
 #endif
     *tool << "Std_Measure"
+          << "Std_ClarifySelection"
+          << "Std_QuickMeasure"
           << "Std_UnitsCalculator"
           << "Separator"
           << "Std_ViewLoadImage"

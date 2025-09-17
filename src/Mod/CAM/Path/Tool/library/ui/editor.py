@@ -21,17 +21,21 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-
-
+import yaml
+import pathlib
 import FreeCAD
 import FreeCADGui
 import Path
-import PySide
-from PySide.QtGui import QStandardItem, QStandardItemModel, QPixmap
-from PySide.QtCore import Qt
-import os
-import uuid as UUID
-from typing import List, cast
+from PySide.QtGui import (
+    QStandardItem,
+    QStandardItemModel,
+    QPixmap,
+    QDialog,
+    QMessageBox,
+    QWidget,
+)
+from PySide.QtCore import Qt, QEvent
+from typing import List, cast, Tuple, Optional
 from ...assets import AssetUri
 from ...assets.ui import AssetOpenDialog, AssetSaveDialog
 from ...camassets import cam_assets, ensure_assets_initialized
@@ -39,8 +43,12 @@ from ...shape.ui.shapeselector import ShapeSelector
 from ...toolbit import ToolBit
 from ...toolbit.serializers import all_serializers as toolbit_serializers
 from ...toolbit.ui import ToolBitEditor
-from ...library import Library
-from ...library.serializers import all_serializers as library_serializers
+from ...toolbit.ui.toollist import ToolBitUriListMimeType
+from ...toolbit.ui.util import natural_sort_key
+from ..serializers import all_serializers as library_serializers
+from ..models import Library
+from .browser import LibraryBrowserWidget
+from .properties import LibraryPropertyDialog
 
 
 if False:
@@ -50,99 +58,244 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-_UuidRole = PySide.QtCore.Qt.UserRole + 1
-_PathRole = PySide.QtCore.Qt.UserRole + 2
-_LibraryRole = PySide.QtCore.Qt.UserRole + 3
-
-
+_LibraryRole = Qt.UserRole + 1
 translate = FreeCAD.Qt.translate
 
 
-class _TableView(PySide.QtGui.QTableView):
-    """Subclass of QTableView to support rearrange and copying of ToolBits"""
+class LibraryEditor(QWidget):
+    """LibraryEditor is the controller for
+    displaying/selecting/creating/editing a collection of ToolBits."""
 
-    def __init__(self, parent):
-        PySide.QtGui.QTableView.__init__(self, parent)
-        self.setDragEnabled(False)
-        self.setAcceptDrops(False)
-        self.setDropIndicatorShown(False)
-        self.setDragDropMode(PySide.QtGui.QAbstractItemView.DragOnly)
-        self.setDefaultDropAction(PySide.QtCore.Qt.IgnoreAction)
-        self.setSortingEnabled(True)
-        self.setSelectionBehavior(PySide.QtGui.QAbstractItemView.SelectRows)
-        self.verticalHeader().hide()
-
-    def supportedDropActions(self):
-        return [PySide.QtCore.Qt.CopyAction, PySide.QtCore.Qt.MoveAction]
-
-    def _uuidOfRow(self, row):
-        model = self.toolModel()
-        return model.data(model.index(row, 0), _UuidRole)
-
-    def _rowWithUuid(self, uuid):
-        model = self.toolModel()
-        for row in range(model.rowCount()):
-            if self._uuidOfRow(row) == uuid:
-                return row
-        return None
-
-    def _copyTool(self, uuid_, dstRow):
-        model = self.toolModel()
-        model.insertRow(dstRow)
-        srcRow = self._rowWithUuid(uuid_)
-        for col in range(model.columnCount()):
-            srcItem = model.item(srcRow, col)
-
-            model.setData(
-                model.index(dstRow, col),
-                srcItem.data(PySide.QtCore.Qt.EditRole),
-                PySide.QtCore.Qt.EditRole,
-            )
-            if col == 0:
-                model.setData(model.index(dstRow, col), srcItem.data(_PathRole), _PathRole)
-                # Even a clone of a tool gets its own uuid so it can be identified when
-                # rearranging the order or inserting/deleting rows
-                model.setData(model.index(dstRow, col), UUID.uuid4(), _UuidRole)
-            else:
-                model.item(dstRow, col).setEditable(False)
-
-    def _copyTools(self, uuids, dst):
-        for i, uuid in enumerate(uuids):
-            self._copyTool(uuid, dst + i)
-
-    def dropEvent(self, event):
-        """Handle drop events on the tool table"""
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
         Path.Log.track()
-        mime = event.mimeData()
-        data = mime.data("application/x-qstandarditemmodeldatalist")
-        stream = PySide.QtCore.QDataStream(data)
-        srcRows = []
-        while not stream.atEnd():
-            row = stream.readInt32()
-            srcRows.append(row)
+        ensure_assets_initialized(cam_assets)
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitLibraryEdit.ui")
+        self.form.installEventFilter(self)  # to forward keypress events
+        self._base_title = self.form.windowTitle()
 
-        # get the uuids of all srcRows
-        model = self.toolModel()
-        srcUuids = [self._uuidOfRow(row) for row in set(srcRows)]
-        destRow = self.rowAt(event.pos().y())
+        # Create the library list.
+        self.listModel = QStandardItemModel()
+        self.form.TableList.setModel(self.listModel)
+        self.form.TableList.clicked.connect(self._on_library_selected)
 
-        self._copyTools(srcUuids, destRow)
-        if PySide.QtCore.Qt.DropAction.MoveAction == event.proposedAction():
-            for uuid in srcUuids:
-                model.removeRow(self._rowWithUuid(uuid))
+        # Enable drop support for the library list
+        self.form.TableList.viewport().installEventFilter(self)  # Also on viewport
 
+        # Create the LibraryBrowserWidget
+        self.browser = LibraryBrowserWidget(
+            asset_manager=cam_assets,
+            parent=self,
+        )
+        self.browser.setDragEnabled(True)
+        self.form.verticalLayout_2.layout().replaceWidget(self.form.toolTable, self.browser)
+        self.form.toolTable.hide()
 
-class ModelFactory:
-    """Helper class to generate qtdata models for toolbit libraries"""
+        # Connect signals.
+        self.browser.itemDoubleClicked.connect(self.browser._on_edit_requested)
 
-    @staticmethod
-    def find_libraries(model) -> QStandardItemModel:
-        """
-        Finds all the fctl files in a location.
-        Returns a QStandardItemModel.
-        """
+        self.form.addLibraryButton.clicked.connect(self._on_add_library_requested)
+        self.form.removeLibraryButton.clicked.connect(self._on_remove_library_requested)
+        self.form.renameLibraryButton.clicked.connect(self._on_rename_library_requested)
+        self.form.importLibraryButton.clicked.connect(self._on_import_library_requested)
+        self.form.exportLibraryButton.clicked.connect(self._on_export_library_requested)
+
+        self.form.addToolBitButton.clicked.connect(self._on_add_toolbit_requested)
+        self.form.importToolBitButton.clicked.connect(self._on_import_toolbit_requested)
+        self.form.exportToolBitButton.clicked.connect(self._on_export_toolbit_requested)
+
+        # Populate the UI.
+        self._refresh_library_list()
+        self._select_last_library()
+        self._update_button_states()
+
+    def _highlight_row(self, index):
+        """Highlights the row at the given index using the selection model."""
+        if not index.isValid():
+            return
+        self.form.TableList.setCurrentIndex(index)
+
+    def _clear_highlight(self):
+        """Clears the highlighting from the previously highlighted row."""
+        self.form.TableList.selectionModel().clear()
+
+    def eventFilter(self, obj, event):
+        if event.type() == QEvent.KeyPress and self.form.TableList.hasFocus():
+            if event.key() == Qt.Key_F2:
+                Path.Log.debug("F2 pressed on library list.")
+                self._on_rename_library_requested()
+                return True
+            elif event.key() == Qt.Key_Delete:
+                Path.Log.debug("Del pressed on library list.")
+                self._on_remove_library_requested()
+                return True
+        if obj == self.form.TableList.viewport():
+            if event.type() == QEvent.DragEnter or event.type() == QEvent.DragMove:
+                return self._handle_drag_enter(event)
+            elif event.type() == QEvent.DragLeave:
+                self._handle_drag_leave(event)
+                return True
+            elif event.type() == QEvent.Drop:
+                return self._handle_drop(event)
+        return super().eventFilter(obj, event)
+
+    def _handle_drag_enter(self, event):
+        """Handle drag enter and move events for the library list."""
+        mime_data = event.mimeData()
+        Path.Log.debug(f"_handle_drag_enter: MIME formats: {mime_data.formats()}")
+        if not mime_data.hasFormat(ToolBitUriListMimeType):
+            Path.Log.debug("_handle_drag_enter: Invalid MIME type, ignoring")
+            return True
+
+        # Get the row being hovered.
+        pos = event.pos()
+        event.acceptProposedAction()
+        index = self.form.TableList.indexAt(pos)
+        if not index.isValid():
+            self._clear_highlight()
+            return True
+
+        # Prevent drop into "All Toolbits"
+        item = self.listModel.itemFromIndex(index)
+        if not item or item.data(_LibraryRole) == "all_tools":
+            self._clear_highlight()
+            return True
+
+        self._highlight_row(index)
+        return True
+
+    def _handle_drag_leave(self, event):
+        """Handle drag leave event for the library list."""
+        self._clear_highlight()
+
+    def _handle_drop(self, event):
+        """Handle drop events to move or copy toolbits to the target library."""
+        mime_data = event.mimeData()
+        if not (mime_data.hasFormat(ToolBitUriListMimeType)):
+            event.ignore()
+            return True
+
+        self._clear_highlight()
+        pos = event.pos()
+        index = self.form.TableList.indexAt(pos)
+        if not index.isValid():
+            event.ignore()
+            return True
+
+        item = self.listModel.itemFromIndex(index)
+        if not item or item.data(_LibraryRole) == "all_tools":
+            event.ignore()
+            return True
+
+        target_library_id = item.data(_LibraryRole)
+        target_library_uri = f"toolbitlibrary://{target_library_id}"
+        target_library = cast(Library, cam_assets.get(target_library_uri, depth=1))
+
+        try:
+            clipboard_content_yaml = mime_data.data(ToolBitUriListMimeType).data().decode("utf-8")
+            clipboard_data_dict = yaml.safe_load(clipboard_content_yaml)
+
+            if not isinstance(clipboard_data_dict, dict) or "toolbits" not in clipboard_data_dict:
+                event.ignore()
+                return True
+
+            uris = clipboard_data_dict["toolbits"]
+            new_uris = set()
+
+            # Get the current library from the browser
+            current_library = self.browser.get_current_library()
+
+            for uri in uris:
+                try:
+                    toolbit = cast(ToolBit, cam_assets.get(AssetUri(uri), depth=0))
+                    if toolbit:
+                        added_toolbit = target_library.add_bit(toolbit)
+                        if added_toolbit:
+                            new_uris.add(str(toolbit.get_uri()))
+
+                            # Remove the toolbit from the current library if it exists and
+                            # it's not "all_tools"
+                            if current_library and current_library.get_id() != "all_tools":
+                                current_library.remove_bit(toolbit)
+                except Exception as e:
+                    Path.Log.error(f"Failed to load toolbit from URI {uri}: {e}")
+                    continue
+
+            if new_uris:
+                cam_assets.add(target_library)
+                # Save the current library if it was modified
+                if current_library and current_library.get_id() != "all_tools":
+                    cam_assets.add(current_library)
+                self.browser.refresh()
+                self.browser.select_by_uri(list(new_uris))
+                self._update_button_states()
+
+            event.acceptProposedAction()
+        except Exception as e:
+            Path.Log.error(f"Failed to process drop event: {e}")
+            event.ignore()
+        return True
+
+    def get_selected_library_id(self) -> Optional[str]:
+        index = self.form.TableList.currentIndex()
+        if not index.isValid():
+            return None
+        item = self.listModel.itemFromIndex(index)
+        if not item:
+            return None
+        return item.data(_LibraryRole)
+
+    def get_selected_library(self, depth=1) -> Optional[Library]:
+        library_id = self.get_selected_library_id()
+        if not library_id:
+            return None
+        uri = f"toolbitlibrary://{library_id}"
+        return cast(Library, cam_assets.get(uri, depth=depth))
+
+    def select_library_by_uri(self, uri: AssetUri):
+        # Find it in the list.
+        index = 0
+        for i in range(self.listModel.rowCount()):
+            item = self.listModel.item(i)
+            if item and item.data(_LibraryRole) == uri.asset_id:
+                index = i
+                break
+        else:
+            return
+
+        # Select it.
+        if index <= self.listModel.rowCount():
+            item = self.listModel.item(index)
+            if item:  # Should always be true, but...
+                self.form.TableList.setCurrentIndex(self.listModel.index(index, 0))
+                self._on_library_selected()
+
+    def _select_last_library(self):
+        # Find the last used library.
+        last_used_lib_identifier = Path.Preferences.getLastToolLibrary()
+        if last_used_lib_identifier:
+            uri = Library.resolve_name(last_used_lib_identifier)
+            self.select_library_by_uri(uri)
+
+    def open(self):
         Path.Log.track()
-        model.clear()
+        return self.form.exec_()
+
+    def _refresh_library_list(self):
+        """Clears and repopulates the self.listModel with available libraries."""
+        Path.Log.track()
+        self.listModel.clear()
+
+        # Add "All Toolbits" item
+        all_tools_item = QStandardItem(translate("CAM", "All Toolbits"))
+        all_tools_item.setData("all_tools", _LibraryRole)
+        # all_tools_item.setIcon(QPixmap(":/icons/CAM_ToolTable.svg"))
+        # Make the "All Toolbits" item bold and italic
+        font = all_tools_item.font()
+        font.setBold(True)
+        font.setItalic(True)
+        all_tools_item.setFont(font)
+        self.listModel.appendRow(all_tools_item)
 
         # Use AssetManager to fetch library assets (depth=0 for shallow fetch)
         try:
@@ -152,140 +305,186 @@ class ModelFactory:
             libraries = cast(List[Library], cam_assets.fetch(asset_type="toolbitlibrary", depth=0))
         except Exception as e:
             Path.Log.error(f"Failed to fetch toolbit libraries: {e}")
-            return model  # Return empty model on error
+            return
 
         # Sort by label for consistent ordering, falling back to asset_id if label is missing
-        def get_sort_key(library):
-            label = getattr(library, "label", None)
-            return label if label else library.get_id()
-
-        for library in sorted(libraries, key=get_sort_key):
+        for library in sorted(
+            libraries,
+            key=lambda library: natural_sort_key(library.label or library.get_id()),
+        ):
             lib_uri_str = str(library.get_uri())
             libItem = QStandardItem(library.label or library.get_id())
             libItem.setToolTip(f"ID: {library.get_id()}\nURI: {lib_uri_str}")
-            libItem.setData(lib_uri_str, _LibraryRole)  # Store the URI string
+            libItem.setData(library.get_id(), _LibraryRole)  # Store the library ID
             libItem.setIcon(QPixmap(":/icons/CAM_ToolTable.svg"))
-            model.appendRow(libItem)
+            self.listModel.appendRow(libItem)
 
-        Path.Log.debug("model rows: {}".format(model.rowCount()))
-        return model
+        Path.Log.debug("model rows: {}".format(self.listModel.rowCount()))
 
-    @staticmethod
-    def __library_load(library_uri: str, data_model: QStandardItemModel):
-        Path.Log.track(library_uri)
+        self.listModel.setHorizontalHeaderLabels(["Library"])
 
-        if library_uri:
-            # Store the AssetUri string, not just the name
-            Path.Preferences.setLastToolLibrary(library_uri)
+    def _on_library_selected(self):
+        """Sets the current library in the browser when a library is selected."""
+        Path.Log.debug("_on_library_selected: Called.")
+        index = self.form.TableList.currentIndex()
+        item = self.listModel.itemFromIndex(index)
+        if not item:
+            return
+        if item.data(_LibraryRole) == "all_tools":
+            selected_library = None
+        else:
+            selected_library = self.get_selected_library()
+        self.browser.set_current_library(selected_library)
+        self._update_window_title()
+        self._update_button_states()
 
+    def _update_window_title(self):
+        """Updates the window title with the current library name."""
+        current_library = self.browser.get_current_library()
+        if current_library:
+            title = f"{self._base_title} - {current_library.label}"
+        else:
+            title = self._base_title
+        self.form.setWindowTitle(title)
+
+    def _update_button_states(self):
+        """Updates the enabled state of library management buttons."""
+        library_selected = self.browser.get_current_library() is not None
+        self.form.addLibraryButton.setEnabled(True)
+        self.form.removeLibraryButton.setEnabled(library_selected)
+        self.form.renameLibraryButton.setEnabled(library_selected)
+        self.form.exportLibraryButton.setEnabled(library_selected)
+        self.form.importLibraryButton.setEnabled(True)
+        self.form.addToolBitButton.setEnabled(
+            True
+        )  # Always enabled - can create standalone toolbits
+        # TODO: self.form.exportToolBitButton.setEnabled(toolbit_selected)
+
+    def _save_library(self):
+        """Internal method to save the current tool library asset"""
+        Path.Log.track()
+        library = self.browser.get_current_library()
+        if not library:
+            return
+
+        # Save the modified library asset.
         try:
-            # Load the library asset using AssetManager
-            loaded_library = cam_assets.get(AssetUri(library_uri), depth=1)
+            cam_assets.add(library)
+            Path.Log.debug(f"Library {library.get_uri()} saved")
         except Exception as e:
-            Path.Log.error(f"Failed to load library from {library_uri}: {e}")
+            Path.Log.error(f"Failed to save library {library.get_uri()}: {e}")
+            QMessageBox.critical(
+                self.form,
+                translate("CAM_ToolBit", "Error Saving Library"),
+                str(e),
+            )
             raise
 
-        # Iterate over the loaded ToolBit asset instances
-        for tool_no, tool_bit in sorted(loaded_library._bit_nos.items()):
-            data_model.appendRow(
-                ModelFactory._tool_add(tool_no, tool_bit.to_dict(), str(tool_bit.get_uri()))
-            )
-
-    @staticmethod
-    def _generate_tooltip(toolbit: dict) -> str:
-        """
-        Generate an HTML tooltip for a given toolbit dictionary.
-
-        Args:
-        toolbit (dict): A dictionary containing toolbit information.
-
-        Returns:
-        str: An HTML string representing the tooltip.
-        """
-        tooltip = f"<b>Name:</b> {toolbit['name']}<br>"
-        tooltip += f"<b>Shape File:</b> {toolbit['shape']}<br>"
-        tooltip += "<b>Parameters:</b><br>"
-        parameters = toolbit.get("parameter", {})
-        if parameters:
-            for key, value in parameters.items():
-                tooltip += f"  <b>{key}:</b> {value}<br>"
-        else:
-            tooltip += "  No parameters provided.<br>"
-
-        attributes = toolbit.get("attribute", {})
-        if attributes:
-            tooltip += "<b>Attributes:</b><br>"
-            for key, value in attributes.items():
-                tooltip += f"  <b>{key}:</b> {value}<br>"
-
-        return tooltip
-
-    @staticmethod
-    def _tool_add(nr: int, tool: dict, path: str):
-        str_shape = os.path.splitext(os.path.basename(tool["shape"]))[0]
-        tooltip = ModelFactory._generate_tooltip(tool)
-
-        tool_nr = QStandardItem()
-        tool_nr.setData(nr, Qt.EditRole)
-        tool_nr.setData(path, _PathRole)
-        tool_nr.setData(UUID.uuid4(), _UuidRole)
-        tool_nr.setToolTip(tooltip)
-
-        tool_name = QStandardItem()
-        tool_name.setData(tool["name"], Qt.EditRole)
-        tool_name.setEditable(False)
-        tool_name.setToolTip(tooltip)
-
-        tool_shape = QStandardItem()
-        tool_shape.setData(str_shape, Qt.EditRole)
-        tool_shape.setEditable(False)
-
-        return [tool_nr, tool_name, tool_shape]
-
-    @staticmethod
-    def library_open(model: QStandardItemModel, library_uri: str) -> QStandardItemModel:
-        """
-        Opens the tools in a library using its AssetUri.
-        Returns a QStandardItemModel.
-        """
-        Path.Log.track(library_uri)
-        ModelFactory.__library_load(library_uri, model)
-        Path.Log.debug("model rows: {}".format(model.rowCount()))
-        return model
-
-
-class LibraryEditor(object):
-    """LibraryEditor is the controller for
-    displaying/selecting/creating/editing a collection of ToolBits."""
-
-    def __init__(self):
-        Path.Log.track()
-        ensure_assets_initialized(cam_assets)
-        self.factory = ModelFactory()
-        self.toolModel = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()))
-        self.listModel = PySide.QtGui.QStandardItemModel()
-        self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitLibraryEdit.ui")
-        self.toolTableView = _TableView(self.form.toolTableGroup)
-        self.form.toolTableGroup.layout().replaceWidget(self.form.toolTable, self.toolTableView)
-        self.form.toolTable.hide()
-
-        self.setupUI()
-        self.title = self.form.windowTitle()
-
-        # Connect signals for tool editing
-        self.toolTableView.doubleClicked.connect(self.toolEdit)
-
-    def toolBitNew(self):
-        """Create a new toolbit asset and add it to the current library"""
-        Path.Log.track()
-
-        if not self.current_library:
-            PySide.QtGui.QMessageBox.warning(
-                self.form,
-                translate("CAM_ToolBit", "No Library Loaded"),
-                translate("CAM_ToolBit", "Load or create a tool library first."),
-            )
+    def _on_add_library_requested(self):
+        Path.Log.debug("_on_add_library_requested: Called.")
+        new_library = Library(FreeCAD.Qt.translate("CAM", "New Library"))
+        dialog = LibraryPropertyDialog(new_library, new=True, parent=self)
+        if dialog.exec_() != QDialog.Accepted:
             return
+
+        uri = cam_assets.add(new_library)
+        Path.Log.debug(f"_on_add_library_requested: New library URI = {uri}")
+        self._refresh_library_list()
+        self.select_library_by_uri(uri)
+        self._update_button_states()
+
+    def _on_remove_library_requested(self):
+        """Handles request to remove the selected library."""
+        Path.Log.debug("_on_remove_library_requested: Called.")
+        current_library = self.browser.get_current_library()
+        if not current_library:
+            return
+
+        reply = QMessageBox.question(
+            self,
+            FreeCAD.Qt.translate("CAM", "Confirm Library Removal"),
+            FreeCAD.Qt.translate(
+                "CAM",
+                "Are you sure you want to remove the library '{0}'?\n"
+                "This will not delete the toolbits contained within it.",
+            ).format(current_library.label),
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No,
+        )
+
+        if reply != QMessageBox.Yes:
+            return
+
+        try:
+            library_uri = current_library.get_uri()
+            cam_assets.delete(library_uri)
+            Path.Log.info(f"Library {current_library.label} deleted.")
+            self._refresh_library_list()
+            self.browser.refresh()
+            self._update_button_states()
+        except FileNotFoundError as e:
+            Path.Log.error(f"Failed to delete library {current_library.label}: {e}")
+            QMessageBox.critical(
+                self,
+                FreeCAD.Qt.translate("CAM", "Error"),
+                FreeCAD.Qt.translate("CAM", "Failed to delete library '{0}': {1}").format(
+                    current_library.label, str(e)
+                ),
+            )
+
+    def _on_rename_library_requested(self):
+        """Handles request to rename the selected library."""
+        Path.Log.debug("_on_rename_library_requested: Called.")
+        current_library = self.browser.get_current_library()
+        if not current_library:
+            return
+
+        dialog = LibraryPropertyDialog(current_library, new=False, parent=self)
+        if dialog.exec_() != QDialog.Accepted:
+            return
+
+        cam_assets.add(current_library)
+        self._refresh_library_list()
+        self._update_button_states()
+
+    def _on_import_library_requested(self):
+        """Handles request to import a library."""
+        Path.Log.debug("_on_import_library_requested: Called.")
+        dialog = AssetOpenDialog(
+            cam_assets, asset_class=Library, serializers=library_serializers, parent=self
+        )
+        response = dialog.exec_()
+        if not response:
+            return
+        file_path, library = cast(Tuple[pathlib.Path, Library], response)
+
+        try:
+            cam_assets.add(library)
+            self._refresh_library_list()
+            self._update_button_states()
+        except Exception as e:
+            Path.Log.error(f"Failed to import library: {file_path} {e}")
+            QMessageBox.critical(
+                self,
+                FreeCAD.Qt.translate("CAM", "Error"),
+                FreeCAD.Qt.translate("CAM", f"Failed to import library: {file_path} {e}"),
+            )
+
+    def _on_export_library_requested(self):
+        """Handles request to export the selected library."""
+        Path.Log.debug("_on_export_library_requested: Called.")
+        current_library = self.browser.get_current_library()
+        if not current_library:
+            return
+
+        dialog = AssetSaveDialog(asset_class=Library, serializers=library_serializers, parent=self)
+        dialog.exec_(current_library)
+        self._update_button_states()
+
+    def _on_add_toolbit_requested(self):
+        """Handles request to add a new toolbit to the current library or create standalone."""
+        Path.Log.debug("_on_add_toolbit_requested: Called.")
+        current_library = self.browser.get_current_library()
 
         # Select the shape for the new toolbit
         selector = ShapeSelector()
@@ -297,380 +496,142 @@ class LibraryEditor(object):
             # Find the appropriate ToolBit subclass based on the shape name
             tool_bit_classes = {b.SHAPE_CLASS.name: b for b in ToolBit.__subclasses__()}
             tool_bit_class = tool_bit_classes.get(shape.name)
-
             if not tool_bit_class:
                 raise ValueError(f"No ToolBit subclass found for shape '{shape.name}'")
 
-            # Create a new ToolBit instance using the subclass constructor
-            # The constructor will generate a UUID
-            toolbit = tool_bit_class(shape)
+            # Create a new ToolBit instance
+            new_toolbit = tool_bit_class(shape)
+            new_toolbit.label = FreeCAD.Qt.translate("CAM", "New Toolbit")
 
-            # 1. Save the individual toolbit asset first.
-            tool_asset_uri = cam_assets.add(toolbit)
-            Path.Log.debug(f"toolBitNew: Saved tool with URI: {tool_asset_uri}")
+            # Save the individual toolbit asset first
+            tool_asset_uri = cam_assets.add(new_toolbit)
+            Path.Log.debug(f"_on_add_toolbit_requested: Saved tool with URI: {tool_asset_uri}")
 
-            # 2. Add the toolbit (which now has a persisted URI) to the current library's model
-            tool_no = self.current_library.add_bit(toolbit)
-            Path.Log.debug(
-                f"toolBitNew: Added toolbit {toolbit.get_id()} (URI: {toolbit.get_uri()}) "
-                f"to current_library with tool number {tool_no}."
-            )
-
-            # 3. Add the new tool directly to the UI model
-            new_row_items = ModelFactory._tool_add(
-                tool_no, toolbit.to_dict(), str(toolbit.get_uri())  # URI of the persisted toolbit
-            )
-            self.toolModel.appendRow(new_row_items)
-
-            # 4. Save the library (which now references the saved toolbit)
-            self.saveLibrary()
+            # Add the toolbit to the current library if one is selected
+            if current_library:
+                toolno = current_library.add_bit(new_toolbit)
+                Path.Log.debug(
+                    f"_on_add_toolbit_requested: Added toolbit {new_toolbit.get_id()} (URI: {new_toolbit.get_uri()}) "
+                    f"to current_library with number {toolno}."
+                )
+                # Save the library
+                cam_assets.add(current_library)
+            else:
+                Path.Log.debug(
+                    f"_on_add_toolbit_requested: Created standalone toolbit {new_toolbit.get_id()} (URI: {new_toolbit.get_uri()})"
+                )
 
         except Exception as e:
             Path.Log.error(f"Failed to create or add new toolbit: {e}")
-            PySide.QtGui.QMessageBox.critical(
-                self.form,
-                translate("CAM_ToolBit", "Error Creating Toolbit"),
+            QMessageBox.critical(
+                self,
+                FreeCAD.Qt.translate("CAM", "Error Creating Toolbit"),
                 str(e),
             )
             raise
 
-    def toolBitExisting(self):
-        """Add an existing toolbit asset to the current library"""
-        Path.Log.track()
+        self.browser.refresh()
+        self.browser.select_by_uri([str(new_toolbit.get_uri())])
+        self._update_button_states()
 
-        if not self.current_library:
-            PySide.QtGui.QMessageBox.warning(
-                self.form,
-                translate("CAM_ToolBit", "No Library Loaded"),
-                translate("CAM_ToolBit", "Load or create a tool library first."),
+    def _on_import_toolbit_requested(self):
+        """Handles request to import a toolbit."""
+        Path.Log.debug("_on_import_toolbit_requested: Called.")
+        current_library = self.browser.get_current_library()
+        if not current_library:
+            Path.Log.warning("Cannot import toolbit: No library selected.")
+            QMessageBox.warning(
+                self,
+                FreeCAD.Qt.translate("CAM", "Warning"),
+                FreeCAD.Qt.translate("CAM", "Please select a library first."),
             )
             return
 
-        # Open the file dialog
-        dialog = AssetOpenDialog(ToolBit, toolbit_serializers, self.form)
-        dialog_result = dialog.exec_()
-        if not dialog_result:
-            return  # User canceled or error
-        file_path, toolbit = dialog_result
-        toolbit = cast(ToolBit, toolbit)
-
-        try:
-            # Add the existing toolbit to the current library's model
-            # The add_bit method handles assigning a tool number and returns it.
-            cam_assets.add(toolbit)
-            tool_no = self.current_library.add_bit(toolbit)
-
-            # Add the new tool directly to the UI model
-            new_row_items = ModelFactory._tool_add(
-                tool_no, toolbit.to_dict(), str(toolbit.get_uri())  # URI of the persisted toolbit
-            )
-            self.toolModel.appendRow(new_row_items)
-
-            # Save the library (which now references the added toolbit)
-            # Use cam_assets.add directly for internal save on existing toolbit
-            self.saveLibrary()
-
-        except Exception as e:
-            Path.Log.error(
-                f"Failed to add imported toolbit {toolbit.get_id()} "
-                f"from {file_path} to library: {e}"
-            )
-            PySide.QtGui.QMessageBox.critical(
-                self.form,
-                translate("CAM_ToolBit", "Error Adding Imported Toolbit"),
-                str(e),
-            )
-            raise
-
-    def toolDelete(self):
-        """Delete a tool"""
-        Path.Log.track()
-        selected_indices = self.toolTableView.selectedIndexes()
-        if not selected_indices:
-            return
-
-        if not self.current_library:
-            Path.Log.error("toolDelete: No current_library loaded. Cannot delete tools.")
-            return
-
-        # Collect unique rows to process, as selectedIndexes can return multiple indices per row
-        selected_rows = sorted(list(set(index.row() for index in selected_indices)), reverse=True)
-
-        # Remove the rows from the library model.
-        for row in selected_rows:
-            item_tool_nr_or_uri = self.toolModel.item(row, 0)  # Column 0 stores _PathRole
-            tool_uri_string = item_tool_nr_or_uri.data(_PathRole)
-            tool_uri = AssetUri(tool_uri_string)
-            bit = self.current_library.get_tool_by_uri(tool_uri)
-            self.current_library.remove_bit(bit)
-            self.toolModel.removeRows(row, 1)
-
-        Path.Log.info(f"toolDelete: Removed {len(selected_rows)} rows from UI model.")
-
-        # Save the library after deleting a tool
-        self.saveLibrary()
-
-    def toolSelect(self, selected, deselected):
-        sel = len(self.toolTableView.selectedIndexes()) > 0
-        self.form.toolDelete.setEnabled(sel)
-
-    def tableSelected(self, index):
-        """loads the tools for the selected tool table"""
-        Path.Log.track()
-        item = index.model().itemFromIndex(index)
-        library_uri_string = item.data(_LibraryRole)
-        self._loadSelectedLibraryTools(library_uri_string)
-
-    def open(self):
-        Path.Log.track()
-        return self.form.exec_()
-
-    def toolEdit(self, selected):
-        """Edit the selected tool bit asset"""
-        Path.Log.track()
-        item = self.toolModel.item(selected.row(), 0)
-
-        if selected.column() == 0:
-            return  # Assuming tool number editing is handled directly in the table model
-
-        toolbit_uri_string = item.data(_PathRole)
-        if not toolbit_uri_string:
-            Path.Log.error("No toolbit URI found for selected item.")
-            return
-        toolbit_uri = AssetUri(toolbit_uri_string)
-
-        # Load the toolbit asset for editing
-        try:
-            bit = cast(ToolBit, cam_assets.get(toolbit_uri))
-            editor_dialog = ToolBitEditor(bit, self.form)  # Create dialog instance
-            result = editor_dialog.show()  # Show as modal dialog
-
-            if result == PySide.QtGui.QDialog.Accepted:
-                # The editor updates the toolbit directly, so we just need to save
-                cam_assets.add(bit)
-                Path.Log.info(f"Toolbit {bit.get_id()} saved.")
-                # Refresh the display and save the library
-                self._loadSelectedLibraryTools(
-                    self.current_library.get_uri() if self.current_library else None
-                )
-                # Save the library after editing a toolbit
-                self.saveLibrary()
-
-        except Exception as e:
-            Path.Log.error(f"Failed to load or edit toolbit asset {toolbit_uri_string}: {e}")
-            PySide.QtGui.QMessageBox.critical(
-                self.form,
-                translate("CAM_ToolBit", "Error Editing Toolbit"),
-                str(e),
-            )
-            raise
-
-    def libraryNew(self):
-        """Create a new tool library asset"""
-        Path.Log.track()
-
-        # Get the desired library name (label) from the user
-        library_label, ok = PySide.QtGui.QInputDialog.getText(
-            self.form,
-            translate("CAM_ToolBit", "New Tool Library"),
-            translate("CAM_ToolBit", "Enter a name for the new library:"),
+        dialog = AssetOpenDialog(
+            cam_assets, asset_class=ToolBit, serializers=toolbit_serializers, parent=self
         )
-        if not ok or not library_label:
+        response = dialog.exec_()
+        if not response:
             return
+        file_path, toolbit = cast(Tuple[pathlib.Path, ToolBit], response)
 
-        # Create a new Library asset instance, UUID will be auto-generated
-        new_library = Library(library_label)
-        uri = cam_assets.add(new_library)
-        Path.Log.info(f"New library created: {uri}")
-
-        # Refresh the list of libraries in the UI
-        self._refreshLibraryListModel()
-        self._loadSelectedLibraryTools(uri)
-
-        # Attempt to select the newly added library in the list
-        for i in range(self.listModel.rowCount()):
-            item = self.listModel.item(i)
-            if item and item.data(_LibraryRole) == str(uri):
-                curIndex = self.listModel.indexFromItem(item)
-                self.form.TableList.setCurrentIndex(curIndex)
-                Path.Log.debug(f"libraryNew: Selected new library '{str(uri)}' in TableList.")
-                break
-
-    def _refreshLibraryListModel(self):
-        """Clears and repopulates the self.listModel with available libraries."""
-        Path.Log.track()
-        self.listModel.clear()
-        self.factory.find_libraries(self.listModel)
-        self.listModel.setHorizontalHeaderLabels(["Library"])
-
-    def saveLibrary(self):
-        """Internal method to save the current tool library asset"""
-        Path.Log.track()
-        if not self.current_library:
-            Path.Log.warning("saveLibrary: No library asset loaded to save.")
-            return
-
-        # Create a new dictionary to hold the updated tool numbers and bits
-        for row in range(self.toolModel.rowCount()):
-            tool_nr_item = self.toolModel.item(row, 0)
-            tool_uri_item = self.toolModel.item(
-                row, 0
-            )  # Tool URI is stored in column 0 with _PathRole
-
-            tool_nr = tool_nr_item.data(Qt.EditRole)
-            tool_uri_string = tool_uri_item.data(_PathRole)
-
-            if tool_nr is not None and tool_uri_string:
-                try:
-                    tool_uri = AssetUri(tool_uri_string)
-                    # Retrieve the toolbit using the public method
-                    found_bit = self.current_library.get_tool_by_uri(tool_uri)
-
-                    if found_bit:
-                        # Use assign_new_bit_no to update the tool number
-                        # This method modifies the library in place
-                        self.current_library.assign_new_bit_no(found_bit, int(tool_nr))
-                        Path.Log.debug(f"Assigned tool number {tool_nr} to {tool_uri_string}")
-                    else:
-                        Path.Log.warning(
-                            f"Toolbit with URI {tool_uri_string} not found in current library."
-                        )
-                except Exception as e:
-                    Path.Log.error(
-                        f"Error processing row {row} (tool_nr: {tool_nr}, uri: {tool_uri_string}): {e}"
-                    )
-                    # Continue processing other rows even if one fails
-                    continue
-            else:
-                Path.Log.warning(f"Skipping row {row}: Invalid tool number or URI.")
-
-        # The current_library object has been modified in the loop by assign_new_bit_no
-        # Now save the modified library asset
-        try:
-            cam_assets.add(self.current_library)
-            Path.Log.debug(f"saveLibrary: Library " f"{self.current_library.get_uri()} saved.")
-        except Exception as e:
-            Path.Log.error(
-                f"saveLibrary: Failed to save library " f"{self.current_library.get_uri()}: {e}"
-            )
-            PySide.QtGui.QMessageBox.critical(
-                self.form,
-                translate("CAM_ToolBit", "Error Saving Library"),
-                str(e),
-            )
-            raise
-
-    def exportLibrary(self):
-        """Export the current tool library asset to a file"""
-        Path.Log.track()
-        if not self.current_library:
-            PySide.QtGui.QMessageBox.warning(
-                self.form,
-                translate("CAM_ToolBit", "No Library Loaded"),
-                translate("CAM_ToolBit", "Load or create a tool library first."),
-            )
-            return
-
-        dialog = AssetSaveDialog(Library, library_serializers, self.form)
-        dialog_result = dialog.exec_(self.current_library)
-        if not dialog_result:
-            return  # User canceled or error
-
-        file_path, serializer_class = dialog_result
-
+        # Debug logging for imported toolbit
         Path.Log.info(
-            f"Exported library {self.current_library.label} "
-            f"to {file_path} using serializer {serializer_class.__name__}"
+            f"IMPORT TOOLBIT: file_path={file_path}, toolbit.id={toolbit.id}, toolbit.label={toolbit.label}"
         )
+        import traceback
 
-    def columnNames(self):
-        return [
-            "Tn",
-            translate("CAM_ToolBit", "Tool"),
-            translate("CAM_ToolBit", "Shape"),
-        ]
+        stack = traceback.format_stack()
+        caller_info = "".join(stack[-3:-1])
+        Path.Log.info(f"IMPORT TOOLBIT CALLER:\n{caller_info}")
 
-    def _loadSelectedLibraryTools(self, library_uri: AssetUri | str | None = None):
-        """Loads tools for the given library_uri into self.toolModel and selects it in the list."""
-        Path.Log.track(library_uri)
-        self.toolModel.clear()
-        # library_uri is now expected to be a string URI or None when called from setupUI/tableSelected.
-        # AssetUri object conversion is handled by cam_assets.get() if needed.
-
-        self.current_library = None  # Reset current_library before loading
-
-        if not library_uri:
-            self.form.setWindowTitle("Tool Library Editor - No Library Selected")
-            return
-
-        # Fetch the library from the asset manager
+        # Check if toolbit already exists in asset manager
+        toolbit_uri = toolbit.get_uri()
+        Path.Log.info(f"IMPORT CHECK: toolbit_uri={toolbit_uri}")
+        existing_toolbit = None
         try:
-            self.current_library = cam_assets.get(library_uri, depth=1)
-        except Exception as e:
-            Path.Log.error(f"Failed to load library asset {library_uri}: {e}")
-            self.form.setWindowTitle("Tool Library Editor - Error")
-            return
+            existing_toolbit = cam_assets.get(toolbit_uri, store=["local", "builtin"], depth=0)
+            Path.Log.info(
+                f"IMPORT CHECK: Toolbit {toolbit.id} already exists, using existing reference"
+            )
+            Path.Log.info(
+                f"IMPORT CHECK: existing_toolbit.id={existing_toolbit.id}, existing_toolbit.label={existing_toolbit.label}"
+            )
+        except FileNotFoundError:
+            # Toolbit doesn't exist, save it as new
+            Path.Log.info(f"IMPORT CHECK: Toolbit {toolbit.id} is new, saving to disk")
+            new_uri = cam_assets.add(toolbit)
+            Path.Log.info(f"IMPORT CHECK: Toolbit saved with new URI: {new_uri}")
+            existing_toolbit = toolbit
 
-        # Success! Add the tools to the toolModel.
-        self.toolTableView.setUpdatesEnabled(False)
-        self.form.setWindowTitle(f"Tool Library Editor - {self.current_library.label}")
-        for tool_no, tool_bit in sorted(self.current_library._bit_nos.items()):
-            self.toolModel.appendRow(
-                ModelFactory._tool_add(tool_no, tool_bit.to_dict(), str(tool_bit.get_uri()))
+        # Add the toolbit (existing or new) to the current library
+        Path.Log.info(
+            f"IMPORT ADD: Adding toolbit {existing_toolbit.id} to library {current_library.label}"
+        )
+        added_toolbit = current_library.add_bit(existing_toolbit)
+        if added_toolbit:
+            Path.Log.info(f"IMPORT ADD: Successfully added toolbit to library")
+            cam_assets.add(current_library)  # Save the modified library
+            self.browser.refresh()
+            self.browser.select_by_uri([str(existing_toolbit.get_uri())])
+            self._update_button_states()
+        else:
+            Path.Log.warning(f"IMPORT ADD: Failed to add toolbit {existing_toolbit.id} to library")
+            Path.Log.warning(
+                f"IMPORT FAILED: Failed to import toolbit from {file_path} to library {current_library.label}."
+            )
+            QMessageBox.warning(
+                self,
+                FreeCAD.Qt.translate("CAM", "Warning"),
+                FreeCAD.Qt.translate(
+                    "CAM",
+                    f"Failed to import toolbit from '{file_path}' to library '{current_library.label}'.",
+                ),
             )
 
-        self.toolModel.setHorizontalHeaderLabels(self.columnNames())
-        self.toolTableView.setUpdatesEnabled(True)
+    def _on_export_toolbit_requested(self):
+        """Handles request to export the selected toolbit."""
+        Path.Log.debug("_on_export_toolbit_requested: Called.")
+        selected_toolbits = self.browser.get_selected_bits()
+        if not selected_toolbits:
+            Path.Log.warning("Cannot export toolbit: No toolbit selected.")
+            QMessageBox.warning(
+                self,
+                FreeCAD.Qt.translate("CAM", "Warning"),
+                FreeCAD.Qt.translate("CAM", "Please select a toolbit to export."),
+            )
+            return
 
-    def setupUI(self):
-        """Setup the form and load the tool library data"""
-        Path.Log.track()
+        if len(selected_toolbits) > 1:
+            Path.Log.warning("Cannot export multiple toolbits: Please select only one.")
+            QMessageBox.warning(
+                self,
+                FreeCAD.Qt.translate("CAM", "Warning"),
+                FreeCAD.Qt.translate("CAM", "Please select only one toolbit to export."),
+            )
+            return
 
-        self.form.TableList.setModel(self.listModel)
-        self._refreshLibraryListModel()
-
-        self.toolTableView.setModel(self.toolModel)
-
-        # Find the last used library.
-        last_used_lib_identifier = Path.Preferences.getLastToolLibrary()
-        Path.Log.debug(
-            f"setupUI: Last used library identifier from prefs: '{last_used_lib_identifier}'"
-        )
-        last_used_lib_uri = None
-        if last_used_lib_identifier:
-            last_used_lib_uri = Library.resolve_name(last_used_lib_identifier)
-
-        # Find it in the list.
-        index = 0
-        for i in range(self.listModel.rowCount()):
-            item = self.listModel.item(i)
-            if item and item.data(_LibraryRole) == str(last_used_lib_uri):
-                index = i
-                break
-
-        # Select it.
-        if index <= self.listModel.rowCount():
-            item = self.listModel.item(index)
-            if item:  # Should always be true, but...
-                library_uri_str = item.data(_LibraryRole)
-                self.form.TableList.setCurrentIndex(self.listModel.index(index, 0))
-
-                # Load tools for the selected library.
-                self._loadSelectedLibraryTools(library_uri_str)
-
-        self.toolTableView.resizeColumnsToContents()
-        self.toolTableView.selectionModel().selectionChanged.connect(self.toolSelect)
-
-        self.form.TableList.clicked.connect(self.tableSelected)
-
-        self.form.toolAdd.clicked.connect(self.toolBitExisting)
-        self.form.toolDelete.clicked.connect(self.toolDelete)
-        self.form.toolCreate.clicked.connect(self.toolBitNew)
-
-        self.form.addLibrary.clicked.connect(self.libraryNew)
-        self.form.exportLibrary.clicked.connect(self.exportLibrary)
-        self.form.saveLibrary.clicked.connect(self.saveLibrary)
-
-        self.form.okButton.clicked.connect(self.form.close)
-
-        self.toolSelect([], [])
+        toolbit_to_export = selected_toolbits[0]
+        dialog = AssetSaveDialog(asset_class=ToolBit, serializers=toolbit_serializers, parent=self)
+        dialog.exec_(toolbit_to_export)  # This will open the save dialog and handle the export
+        self._update_button_states()

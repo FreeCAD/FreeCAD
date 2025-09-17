@@ -428,10 +428,20 @@ class _BaseSolverCalculix:
                 "App::PropertyBool",
                 "ExcludeBendingStiffness",
                 "Fem",
-                "Exclude bending stiffness to replace shells with membranes",
+                "Exclude bending stiffness to replace shells with membranes or beams with trusses",
                 locked=True,
             )
             obj.ExcludeBendingStiffness = False
+
+        if not hasattr(obj, "PastixMixedPrecision"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "PastixMixedPrecision",
+                "Fem",
+                "Mixed precision for the PaStiX matrix solver",
+                locked=True,
+            )
+            obj.PastixMixedPrecision = False
 
 
 class Proxy(solverbase.Proxy, _BaseSolverCalculix):

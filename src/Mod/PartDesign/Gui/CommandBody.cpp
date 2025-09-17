@@ -104,6 +104,11 @@ void CmdPartDesignBody::activated(int iMsg)
     App::DocumentObject* baseFeature = nullptr;
     bool addtogroup = false;
 
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+        .GetUserParameter()
+        .GetGroup("BaseApp/Preferences/Mod/PartDesign");
+
+    bool allowCompound = hGrp->GetBool("AllowCompoundDefault", true);
 
     if (!features.empty()) {
         if (features.size() == 1) {
@@ -196,6 +201,7 @@ void CmdPartDesignBody::activated(int iMsg)
     std::string labelString = QObject::tr("Body").toUtf8().toStdString();
     labelString = Base::Tools::escapeEncodeString(labelString);
     doCommand(Doc,"App.ActiveDocument.getObject('%s').Label = '%s'", bodyString, labelString.c_str());
+    doCommand(Doc,"App.ActiveDocument.getObject('%s').AllowCompound = %s", bodyString, allowCompound ? "True" : "False");
     if (baseFeature) {
         if (partOfBaseFeature){
             //withdraw base feature from Part, otherwise visibility madness results
@@ -343,7 +349,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
         } else {
             // Huh? nothing to migrate?
             QMessageBox::warning ( nullptr, QObject::tr ( "Nothing to migrate" ),
-                    QObject::tr ( "No Part Design features found that do not belong to a body."
+                    QObject::tr ( "No Part Design features without body found"
                         " Nothing to migrate." ) );
         }
         return;
@@ -735,7 +741,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
         items.push_back(QString::fromUtf8(body->Label.getValue()));
     }
     QString text = QInputDialog::getItem(Gui::getMainWindow(),
-        qApp->translate("PartDesign_MoveFeature", "Select body"),
+        qApp->translate("PartDesign_MoveFeature", "Select Body"),
         qApp->translate("PartDesign_MoveFeature", "Select a body from the list"),
         items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok)

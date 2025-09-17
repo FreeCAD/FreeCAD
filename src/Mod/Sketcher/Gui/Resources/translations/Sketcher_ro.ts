@@ -87,8 +87,8 @@
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="115"/>
-      <source>Converts the selected geometry to a B-spline</source>
-      <translation>Converteşte geometria selectată într-o curbă B-spline</translation>
+      <source>Converts the selected geometry to B-splines</source>
+      <translation type="unfinished">Converts the selected geometry to B-splines</translation>
     </message>
   </context>
   <context>
@@ -306,11 +306,6 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Adaugă o constrângere fixă</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3872"/>
-      <source>Add 'Block' constraint</source>
-      <translation>Adaugă constrângere 'Blocare'</translation>
-    </message>
-    <message>
       <location filename="../../CommandConstraints.cpp" line="3921"/>
       <source>Add block constraint</source>
       <translation>Adaugă constrângere 'Blocare'</translation>
@@ -434,6 +429,7 @@ invalid constraints, and degenerate geometry</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2205"/>
+      <location filename="../../CommandConstraints.cpp" line="3872"/>
       <source>Add Block constraint</source>
       <translation>Adaugă constrângere blocului</translation>
     </message>
@@ -690,7 +686,7 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Adaugă linie schiță</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="461"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="496"/>
       <source>Add sketch box</source>
       <translation>Adaugă căsuța de schițe</translation>
     </message>
@@ -842,15 +838,9 @@ invalid constraints, and degenerate geometry</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="176"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1521"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1526"/>
       <source>Update constraint's virtual space</source>
       <translation>Actualizează spațiul virtual al constrângerilor</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="892"/>
-      <location filename="../../DrawSketchHandler.cpp" line="763"/>
-      <source>Add auto constraints</source>
-      <translation>Adaugă Auto-Constrângeri</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="708"/>
@@ -863,27 +853,27 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Redenumește constrângerea schiței</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1678"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1768"/>
       <source>Drag Point</source>
       <translation>Trage punctul</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1678"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1768"/>
       <source>Drag Curve</source>
       <translation>Trage Curba</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1679"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1769"/>
       <source>Drag geometries</source>
       <translation type="unfinished">Drag geometries</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1060"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1118"/>
       <source>Drag Constraint</source>
       <translation>Constrângere Drag</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1259"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1333"/>
       <source>Modify sketch constraints</source>
       <translation>Modifică constrângerile schiței</translation>
     </message>
@@ -893,7 +883,7 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Creează o copie de carbon</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="386"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="398"/>
       <source>Offset</source>
       <translation>Compensare</translation>
     </message>
@@ -903,22 +893,22 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Adaugă poligon</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="202"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="208"/>
       <source>Add sketch arc slot</source>
       <translation>Adaugă slot arc de schiță</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="144"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="145"/>
       <source>Rotate geometries</source>
       <translation>Rotire geometrie</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="105"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="121"/>
       <source>Scale geometries</source>
       <translation>Scalare geometrie</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="116"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="118"/>
       <source>Translate geometries</source>
       <translation>Tradu geometrii</translation>
     </message>
@@ -926,17 +916,6 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="134"/>
       <source>Symmetry geometries</source>
       <translation>Geometrii de simetrie</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="94"/>
-      <source>Add sketch bSpline</source>
-      <translation type="unfinished">Add sketch bSpline</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="598"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="736"/>
-      <source>Add sketch B-spline</source>
-      <translation type="unfinished">Add sketch B-spline</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="457"/>
@@ -953,6 +932,19 @@ invalid constraints, and degenerate geometry</translation>
       <source>Toggle construction geometry</source>
       <translation>Activează/dezactivează construcția geometrică</translation>
     </message>
+    <message>
+      <location filename="../../DrawSketchDefaultHandler.h" line="912"/>
+      <location filename="../../DrawSketchHandler.cpp" line="763"/>
+      <source>Add Auto-Constraints</source>
+      <translation type="unfinished">Add Auto-Constraints</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="94"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="610"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="748"/>
+      <source>Add Sketch B-Spline</source>
+      <translation type="unfinished">Add Sketch B-Spline</translation>
+    </message>
   </context>
   <context>
     <name>CommandGroup</name>
@@ -965,54 +957,54 @@ invalid constraints, and degenerate geometry</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6557"/>
+      <location filename="../../../App/SketchObject.cpp" line="6567"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Nu cereți nicio schimbare în multiplicitatea nodului.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6550"/>
-      <location filename="../../../App/SketchObject.cpp" line="6712"/>
+      <location filename="../../../App/SketchObject.cpp" line="6560"/>
+      <location filename="../../../App/SketchObject.cpp" line="6722"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation type="unfinished">B-spline Geometry Index (GeoID) is out of bounds.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6564"/>
-      <location filename="../../../App/SketchObject.cpp" line="6724"/>
+      <location filename="../../../App/SketchObject.cpp" line="6574"/>
+      <location filename="../../../App/SketchObject.cpp" line="6734"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6575"/>
+      <location filename="../../../App/SketchObject.cpp" line="6585"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Indexul nod este în afara limitelor. Reţineţi că în conformitate cu notaţia OCC, primul nod are indexul 1 şi nu zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6587"/>
+      <location filename="../../../App/SketchObject.cpp" line="6597"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Multiplicitatea nu poate fi crescută dincolo de gradul curbei B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6596"/>
+      <location filename="../../../App/SketchObject.cpp" line="6606"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Multiplicitatea nu poate fi diminuată sub zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6610"/>
+      <location filename="../../../App/SketchObject.cpp" line="6620"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC este în imposibilitatea de a reduce multiplicarea în limitele toleranței maxime.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6717"/>
+      <location filename="../../../App/SketchObject.cpp" line="6727"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Nu poate avea multiplicitate zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6736"/>
+      <location filename="../../../App/SketchObject.cpp" line="6746"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6743"/>
+      <location filename="../../../App/SketchObject.cpp" line="6753"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation type="unfinished">Knot cannot be inserted outside the B-spline parameter range.</translation>
     </message>
@@ -1077,10 +1069,10 @@ invalid constraints, and degenerate geometry</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppSketcherGui.cpp" line="141"/>
-      <location filename="../../AppSketcherGui.cpp" line="143"/>
-      <location filename="../../AppSketcherGui.cpp" line="145"/>
-      <location filename="../../AppSketcherGui.cpp" line="147"/>
+      <location filename="../../AppSketcherGui.cpp" line="142"/>
+      <location filename="../../AppSketcherGui.cpp" line="144"/>
+      <location filename="../../AppSketcherGui.cpp" line="146"/>
+      <location filename="../../AppSketcherGui.cpp" line="148"/>
       <source>Sketcher</source>
       <translation>Schiță</translation>
     </message>
@@ -1132,13 +1124,9 @@ invalid constraints, and degenerate geometry</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="203"/>
+      <location filename="../../Command.cpp" line="699"/>
       <source>Do not attach</source>
       <translation type="unfinished">Do not attach</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="699"/>
-      <source>Don't attach</source>
-      <translation>A nu se atașa</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="169"/>
@@ -1272,7 +1260,6 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../CommandSketcherBSpline.cpp" line="573"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="936"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1046"/>
-      <location filename="../../CommandSketcherTools.cpp" line="86"/>
       <location filename="../../CommandSketcherTools.cpp" line="369"/>
       <location filename="../../CommandSketcherTools.cpp" line="1013"/>
       <location filename="../../CommandSketcherTools.cpp" line="1339"/>
@@ -2037,6 +2024,11 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Trebuie selectate două puncte finale sau punctul de incident.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherTools.cpp" line="86"/>
+      <source>Wrong Selection</source>
+      <translation type="unfinished">Wrong Selection</translation>
+    </message>
+    <message>
       <location filename="../../CommandSketcherTools.cpp" line="87"/>
       <location filename="../../CommandSketcherTools.cpp" line="370"/>
       <location filename="../../CommandSketcherTools.cpp" line="1014"/>
@@ -2068,18 +2060,18 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2090"/>
-      <source>Delete all geometry</source>
-      <translation>Şterge toate geometria</translation>
+      <source>Delete All Geometry</source>
+      <translation>Ștergeți toate elementele de geometrie</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="2154"/>
+      <source>Delete All Constraints</source>
+      <translation>Șterge toate constrângerile</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2091"/>
       <source>Delete all geometry and constraints?</source>
       <translation type="unfinished">Delete all geometry and constraints?</translation>
-    </message>
-    <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2154"/>
-      <source>Delete all constraints</source>
-      <translation>Șterge toate constrângerile</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2155"/>
@@ -2590,8 +2582,8 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="100"/>
-      <source>Construction Geometry</source>
-      <translation>Geometria construcției</translation>
+      <source>Toggle Construction Geometry</source>
+      <translation type="unfinished">Toggle Construction Geometry</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="102"/>
@@ -2863,11 +2855,6 @@ in the copies, so that a change in the original element is reflected on copies</
       <translation type="unfinished">Task Panel Widgets</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="26"/>
-      <source>Displays the additional section 'Advanced solver control' to adjust solver settings in the task view</source>
-      <translation type="unfinished">Displays the additional section 'Advanced solver control' to adjust solver settings in the task view</translation>
-    </message>
-    <message>
       <location filename="../../SketcherSettings.ui" line="45"/>
       <source>Dragging Performance</source>
       <translation type="unfinished">Dragging Performance</translation>
@@ -2945,27 +2932,37 @@ Necesită reintroducerea modului de editare pentru a avea efect.</translation>
       <translation type="unfinished">Always add external geometry as construction</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="249"/>
+      <location filename="../../SketcherSettings.ui" line="240"/>
+      <source>Closed loops will automatically generate internal faces which are selectable to be used with other tools</source>
+      <translation type="unfinished">Closed loops will automatically generate internal faces which are selectable to be used with other tools</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="243"/>
+      <source>Generate internal faces</source>
+      <translation type="unfinished">Generate internal faces</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="265"/>
       <source>Dimension Constraint</source>
       <translation type="unfinished">Dimension Constraint</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="276"/>
+      <location filename="../../SketcherSettings.ui" line="292"/>
       <source>Dimension tool diameter/radius mode</source>
       <translation type="unfinished">Dimension tool diameter/radius mode</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="283"/>
+      <location filename="../../SketcherSettings.ui" line="299"/>
       <source>Dimensioning constraints</source>
       <translation type="unfinished">Dimensioning constraints</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="290"/>
+      <location filename="../../SketcherSettings.ui" line="306"/>
       <source>Scale upon first constraint</source>
       <translation type="unfinished">Scale upon first constraint</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="297"/>
+      <location filename="../../SketcherSettings.ui" line="313"/>
       <source>Select the mode of automatic geometry scaling upon first dimension:
 'Always': Automatic scaling upon first dimension is always performed.
 'Never': Automatic scaling upon first dimension is never performed.
@@ -2976,12 +2973,12 @@ Necesită reintroducerea modului de editare pentru a avea efect.</translation>
 'When no scale feature is visible': Automatic scaling upon first dimension is only performed if there are no visible objects in the 3D view.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="316"/>
+      <location filename="../../SketcherSettings.ui" line="332"/>
       <source>Tool Parameters</source>
       <translation type="unfinished">Tool Parameters</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="322"/>
+      <location filename="../../SketcherSettings.ui" line="338"/>
       <source>On-view-parameters (OVP)</source>
       <translation type="unfinished">On-view-parameters (OVP)</translation>
     </message>
@@ -2991,12 +2988,17 @@ Necesită reintroducerea modului de editare pentru a avea efect.</translation>
       <translation>Notificări despre substituțiile automate ale constrângerilor</translation>
     </message>
     <message>
+      <location filename="../../SketcherSettings.ui" line="26"/>
+      <source>Displays the additional section 'Advanced Solver Controls' to adjust solver settings in the task view</source>
+      <translation type="unfinished">Displays the additional section 'Advanced Solver Controls' to adjust solver settings in the task view</translation>
+    </message>
+    <message>
       <location filename="../../SketcherSettings.ui" line="205"/>
       <source>Group the polyline and line commands</source>
       <translation type="unfinished">Group the polyline and line commands</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="265"/>
+      <location filename="../../SketcherSettings.ui" line="281"/>
       <source>Select the type of dimensioning constraints for your toolbar:
 'Single tool': A single tool for all dimensioning constraints in the toolbar: Distance, Distance X / Y, Angle, Radius. (Others in dropdown)
 'Separated tools': Individual tools for each dimensioning constraint.
@@ -3009,7 +3011,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 Această setare este doar pentru bara de instrumente. Indiferent ce alegi, toate uneltele sunt întotdeauna disponibile în meniu și prin scurtături.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="255"/>
+      <location filename="../../SketcherSettings.ui" line="271"/>
       <source>While using the Dimension tool you may choose how to handle circles and arcs:
 'Auto': The tool will apply radius to arcs and diameter to circles.
 'Diameter': The tool will apply diameter to both arcs and circles.
@@ -3020,7 +3022,7 @@ Această setare este doar pentru bara de instrumente. Indiferent ce alegi, toate
 'Radius': Instrumentul va aplica raza atât pentru arcuri cât şi cercuri.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="329"/>
+      <location filename="../../SketcherSettings.ui" line="345"/>
       <source>Choose a visibility mode for the On-View-Parameters:
 'Disabled': On-View-Parameters are completely disabled.
 'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
@@ -3099,49 +3101,50 @@ Această setare este doar pentru bara de instrumente. Indiferent ce alegi, toate
       <translation>Afișare</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="211"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="248"/>
       <source>Font size</source>
       <translation>Dimensiunea fontului</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="166"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="40"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="202"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="32"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="68"/>
       <source>View scale ratio</source>
       <translation>Vezi raportul scalei</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="188"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="225"/>
       <source>Base length units will not be displayed in constraints or cursor coordinates.
 Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
       <translation>Unitățile de lungime de bază nu vor fi afișate în constrângeri sau coordonatele cursorului.
 Suportă toate sistemele de unități cu excepția 'obiceiul SUA' și 'Construirea SUA/EUR'.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="134"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="170"/>
       <source>Segments per geometry</source>
       <translation>Segmente pentru fiecare geometrie</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="262"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="299"/>
       <source>Ask for value after creating a dimensional constraint</source>
       <translation>Cereți valoarea după crearea unei constrângeri de dimensiune</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="147"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="183"/>
       <source>Geometry creation "Continue Mode"</source>
       <translation>Crearea geometriei "Modul continuu"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="224"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="261"/>
       <source>Constraint creation "Continue Mode"</source>
       <translation>Crearea de constrângeri "Modul continuu"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="192"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="229"/>
       <source>Hide base length units for supported unit systems</source>
       <translation>Acunde untățile de măsură de bază suportate de către sistemul de unități de măsură</translation>
     </message>
@@ -3151,119 +3154,124 @@ Suportă toate sistemele de unități cu excepția 'obiceiul SUA' și 'Construir
       <translation type="unfinished">Sketch Editing</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="42"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="37"/>
+      <source>Pixel size used to render constraint symbols</source>
+      <translation type="unfinished">Pixel size used to render constraint symbols</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="78"/>
       <source>Scales the 3D view based on this factor</source>
       <translation type="unfinished">Scales the 3D view based on this factor</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="73"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="109"/>
       <source>The number of polygons used for geometry approximation</source>
       <translation type="unfinished">The number of polygons used for geometry approximation</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="92"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="128"/>
       <source>Displays names of dimensional constraints, if they exist</source>
       <translation type="unfinished">Displays names of dimensional constraints, if they exist</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="95"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="131"/>
       <source>Show dimensional constraint name with format</source>
       <translation>Arată numele constrângerii dimensionale cu format</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="121"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="157"/>
       <source>%N = %V</source>
       <translation>%N = %V</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="180"/>
       <source>Keeps the current Sketcher tool active after creating geometry</source>
       <translation type="unfinished">Keeps the current Sketcher tool active after creating geometry</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="199"/>
       <source>Font size used for labels and constraints</source>
       <translation type="unfinished">Font size used for labels and constraints</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="221"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="258"/>
       <source>Keeps the current Sketcher constraint tool active after creating geometry</source>
       <translation type="unfinished">Keeps the current Sketcher constraint tool active after creating geometry</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="277"/>
       <source>Displays cursor position coordinates next to the cursor while editing a sketch</source>
       <translation type="unfinished">Displays cursor position coordinates next to the cursor while editing a sketch</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="243"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="280"/>
       <source>Displays coordinates next to the cursor while editing</source>
       <translation type="unfinished">Displays coordinates next to the cursor while editing</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="259"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="296"/>
       <source>Opens a dialog to input a value for new dimensional constraints after creation</source>
       <translation type="unfinished">Opens a dialog to input a value for new dimensional constraints after creation</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="278"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
       <source>Cursor coordinates will use the system decimals setting instead of the short form</source>
       <translation type="unfinished">Cursor coordinates will use the system decimals setting instead of the short form</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="324"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="361"/>
       <source>Visibility Automation</source>
       <translation type="unfinished">Visibility Automation</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="330"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="367"/>
       <source>Hides all object features that depend on the opened sketch</source>
       <translation type="unfinished">Hides all object features that depend on the opened sketch</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="349"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="386"/>
       <source>Shows source objects which are used for external geometry in the opened sketch</source>
       <translation type="unfinished">Shows source objects which are used for external geometry in the opened sketch</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="368"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="405"/>
       <source>Shows objects the opened sketch is attached to</source>
       <translation type="unfinished">Shows objects the opened sketch is attached to</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="387"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="424"/>
       <source>Restores the camera position after closing the sketch</source>
       <translation type="unfinished">Restores the camera position after closing the sketch</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="406"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="443"/>
       <source>Forces the camera to an orthographic view when editing a sketch.
 Works only when "Restore camera position after editing" is enabled.</source>
       <translation type="unfinished">Forces the camera to an orthographic view when editing a sketch.
 Works only when "Restore camera position after editing" is enabled.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="426"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="463"/>
       <source>Opens a sketch in section view mode, showing only objects behind the sketch plane</source>
       <translation type="unfinished">Opens a sketch in section view mode, showing only objects behind the sketch plane</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="429"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="466"/>
       <source>Open sketch in section view mode</source>
       <translation type="unfinished">Open sketch in section view mode</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="470"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="507"/>
       <source>Applies current visibility automation settings to all sketches in the open documents</source>
       <translation type="unfinished">Applies current visibility automation settings to all sketches in the open documents</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="473"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="510"/>
       <source>Apply to Existing Sketches</source>
       <translation type="unfinished">Apply to Existing Sketches</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="111"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="147"/>
       <source>The format of the dimensional constraint string presentation.
 Defaults to: %N = %V
 
@@ -3276,47 +3284,52 @@ Implicit la: %N = %V
 %V - valoare dimensiune</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="281"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="27"/>
+      <source>Constraint symbol size</source>
+      <translation type="unfinished">Constraint symbol size</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="318"/>
       <source>Use system decimals setting for cursor coordinates</source>
       <translation>Folosește setarea de zecimale pentru coordonatele cursorului</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="333"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="370"/>
       <source>Hide all objects that depend on the sketch</source>
       <translation>Ascunde toate obiectele care depind de schiță</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="352"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="389"/>
       <source>Show objects used for external geometry</source>
       <translation>Arată obiectele folosite pentru geometria externă</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="371"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
       <source>Show objects that the sketch is attached to</source>
       <translation>Arată obiectele la care schița este atașată</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="390"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="427"/>
       <source>Restore camera position after editing</source>
       <translation>Restabili poziţia camerei după editare</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="410"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="447"/>
       <source>Force orthographic camera when entering edit</source>
       <translation>Forțează camera ortogonală la introducerea editării</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="451"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="488"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>Notă: aceste setări implicite sunt aplicate schițelor noi. Comportamentul este amintit individual pentru fiecare schiță ca proprietăți în fila Vizualizare.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="514"/>
+      <location filename="../../SketcherSettings.cpp" line="516"/>
       <source>Unexpected C++ exception</source>
       <translation>Excepție neașteptată de C++</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="517"/>
+      <location filename="../../SketcherSettings.cpp" line="519"/>
       <source>Sketcher</source>
       <translation>Schiță</translation>
     </message>
@@ -3399,14 +3412,9 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation type="unfinished">No reversed external geometry arcs were found.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="353"/>
-      <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).</source>
-      <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="374"/>
-      <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-      <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
+      <location filename="../../TaskSketcherValidation.cpp" line="391"/>
+      <source>Delete Constraints to External Geometry</source>
+      <translation type="unfinished">Delete Constraints to External Geometry</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="392"/>
@@ -3425,7 +3433,16 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>Constrângeri de zăvorâre a orientării</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="391"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="353"/>
+      <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view).</source>
+      <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view).</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.cpp" line="374"/>
+      <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view). Note that for all future constraints, the locking still defaults to ON.</source>
+      <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
+    </message>
+    <message>
       <location filename="../../TaskSketcherValidation.cpp" line="410"/>
       <source>Delete constraints to external geom.</source>
       <translation>Elimină constrângerile privind geometria externă.</translation>
@@ -3514,12 +3531,12 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>Ascunde aliniere internă (în widget)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1533"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1538"/>
       <source>Error</source>
       <translation>Eroare</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1533"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1538"/>
       <source>Impossible to update visibility tracking:</source>
       <translation>Nu se poate actualiza monitorizarea vizibilității:</translation>
     </message>
@@ -3547,16 +3564,16 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>Setari</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1886"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1893"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1900"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1907"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1914"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1921"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1928"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1935"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1942"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1948"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1891"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1898"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1905"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1912"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1919"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1926"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1933"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1940"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1947"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1953"/>
       <source>Construction</source>
       <translation>Construcție</translation>
     </message>
@@ -3566,113 +3583,113 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>Elemente</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1884"/>
       <location filename="../../TaskSketcherElements.cpp" line="1889"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2025"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2026"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1894"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2030"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2031"/>
       <source>Point</source>
       <translation>Punct</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1887"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1894"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1901"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1908"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1915"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1922"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1929"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1936"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1943"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1949"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1892"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1899"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1906"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1913"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1920"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1927"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1934"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1941"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1948"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1954"/>
       <source>Internal</source>
       <translation>Intern</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1891"/>
       <location filename="../../TaskSketcherElements.cpp" line="1896"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2028"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2029"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1901"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2033"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2034"/>
       <source>Line</source>
       <translation>Linie</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1898"/>
       <location filename="../../TaskSketcherElements.cpp" line="1903"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2031"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2032"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1908"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2036"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2037"/>
       <source>Arc</source>
       <translation>Arc</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1905"/>
       <location filename="../../TaskSketcherElements.cpp" line="1910"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2034"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2035"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1915"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2039"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2040"/>
       <source>Circle</source>
       <translation>Cerc</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1912"/>
       <location filename="../../TaskSketcherElements.cpp" line="1917"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2037"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2038"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1922"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2042"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2043"/>
       <source>Ellipse</source>
       <translation>Elipsa</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1919"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2041"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1924"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2046"/>
       <source>Elliptical Arc</source>
       <translation>Arc eliptic</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1924"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2042"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1929"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2047"/>
       <source>Elliptical arc</source>
       <translation type="unfinished">Elliptical arc</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1926"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2045"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1931"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2050"/>
       <source>Hyperbolic Arc</source>
       <translation>Arc hiperbolic</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1931"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2046"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1936"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2051"/>
       <source>Hyperbolic arc</source>
       <translation type="unfinished">Hyperbolic arc</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1933"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2049"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1938"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2054"/>
       <source>Parabolic Arc</source>
       <translation>Arc parabolic</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1938"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2050"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1943"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2055"/>
       <source>Parabolic arc</source>
       <translation type="unfinished">Parabolic arc</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1940"/>
       <location filename="../../TaskSketcherElements.cpp" line="1945"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2052"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2053"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1950"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2057"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2058"/>
       <source>B-spline</source>
       <translation>Linie curbă</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1946"/>
       <location filename="../../TaskSketcherElements.cpp" line="1951"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2054"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2055"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1956"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2059"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2060"/>
       <source>Other</source>
       <translation>Altceva</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2095"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2100"/>
       <source>Extended information</source>
       <translation>Informații suplimentare</translation>
     </message>
@@ -3883,112 +3900,112 @@ Acest lucru se realizează prin analizarea geometrelor și constrângerilor schi
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3016"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3290"/>
       <source>A dialog is already open in the task panel</source>
       <translation>O fereastră de dialog este deja deschisă în fereastra de sarcini</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3038"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3312"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Schița nu este validă și nu poate fi editată.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3196"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3470"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Următoarea constrângere este parțial redundantă:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3197"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3471"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Următoarele constrângeri sunt parțial redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2999"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3273"/>
       <source>Edit Sketch</source>
       <translation type="unfinished">Edit Sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3017"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3291"/>
       <source>Close this dialog?</source>
       <translation type="unfinished">Close this dialog?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3036"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3310"/>
       <source>Invalid Sketch</source>
       <translation type="unfinished">Invalid Sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3037"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3311"/>
       <source>Open the sketch validation tool?</source>
       <translation type="unfinished">Open the sketch validation tool?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3182"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3456"/>
       <source>Remove the following constraint:</source>
       <translation type="unfinished">Remove the following constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3183"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3457"/>
       <source>Remove at least one of the following constraints:</source>
       <translation type="unfinished">Remove at least one of the following constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3189"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3463"/>
       <source>Remove the following redundant constraint:</source>
       <translation type="unfinished">Remove the following redundant constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3190"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3464"/>
       <source>Remove the following redundant constraints:</source>
       <translation type="unfinished">Remove the following redundant constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3203"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3477"/>
       <source>Remove the following malformed constraint:</source>
       <translation type="unfinished">Remove the following malformed constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3204"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3478"/>
       <source>Remove the following malformed constraints:</source>
       <translation type="unfinished">Remove the following malformed constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3262"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3536"/>
       <source>Empty sketch</source>
       <translation>Schita goala</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3267"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3541"/>
       <source>Over-constrained:</source>
       <translation>Supraconstrânse:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3273"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3547"/>
       <source>Malformed constraints:</source>
       <translation>Constrângeri incorecte:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3281"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3555"/>
       <source>Redundant constraints:</source>
       <translation>Constrângeri redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3287"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3561"/>
       <source>Partially redundant:</source>
       <translation>Parţial redundant:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3294"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3568"/>
       <source>Solver failed to converge</source>
       <translation>Rezolvitorul nu a putut converge</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3300"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3574"/>
       <source>Under-constrained:</source>
       <translation type="unfinished">Under-constrained:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3302"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3576"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
@@ -3997,7 +4014,7 @@ Acest lucru se realizează prin analizarea geometrelor și constrângerilor schi
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3306"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3580"/>
       <source>Fully constrained</source>
       <translation>Complet constrâns</translation>
     </message>
@@ -4066,19 +4083,6 @@ Acest lucru se realizează prin analizarea geometrelor și constrângerilor schi
     </message>
   </context>
   <context>
-    <name>Sketcher_CreateBSpline</name>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="889"/>
-      <source>By control points</source>
-      <translation type="unfinished">By control points</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="890"/>
-      <source>By knots</source>
-      <translation type="unfinished">By knots</translation>
-    </message>
-  </context>
-  <context>
     <name>Sketcher_CreateCircle</name>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="399"/>
@@ -4110,8 +4114,8 @@ Acest lucru se realizează prin analizarea geometrelor și constrângerilor schi
     </message>
     <message>
       <location filename="../../Command.cpp" line="643"/>
-      <source>Select sketch</source>
-      <translation>Selecționați o schiță</translation>
+      <source>Select Sketch</source>
+      <translation type="unfinished">Select Sketch</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="645"/>
@@ -4140,8 +4144,8 @@ Acest lucru se realizează prin analizarea geometrelor și constrângerilor schi
     </message>
     <message>
       <location filename="../../Command.cpp" line="728"/>
-      <source>Sketch attachment</source>
-      <translation>Atașamentul schiței</translation>
+      <source>Sketch Attachment</source>
+      <translation type="unfinished">Sketch Attachment</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="730"/>
@@ -4180,8 +4184,8 @@ Selectați metoda pentru a atașa această schiță la obiectele selectate.</tra
     <name>Sketcher_NewSketch</name>
     <message>
       <location filename="../../Command.cpp" line="214"/>
-      <source>Sketch attachment</source>
-      <translation>Atașamentul schiței</translation>
+      <source>Sketch Attachment</source>
+      <translation type="unfinished">Sketch Attachment</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
@@ -4193,8 +4197,8 @@ Selectați metoda pentru a atașa această schiță la obiectele selectate.</tra
     <name>Sketcher_ReorientSketch</name>
     <message>
       <location filename="../../Command.cpp" line="457"/>
-      <source>Sketch has support</source>
-      <translation>Schița are suport</translation>
+      <source>Sketch Has Support</source>
+      <translation type="unfinished">Sketch Has Support</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="458"/>
@@ -4478,7 +4482,7 @@ Algoritmul QR Eigen Sparse este optimizat pentru matrici dispersați; de obicei 
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3246"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3520"/>
       <source>and %1 more</source>
       <translation>și încă %1</translation>
     </message>
@@ -4683,17 +4687,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Schița are constrângeri parțial redundante!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9958"/>
+      <location filename="../../../App/SketchObject.cpp" line="9969"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
       <translation type="unfinished">Unmanaged change of Geometry Property results in invalid constraint indices</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9989"/>
+      <location filename="../../../App/SketchObject.cpp" line="10000"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation type="unfinished">Unmanaged change of Constraint Property results in invalid constraint indices</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10612"/>
+      <location filename="../../../App/SketchObject.cpp" line="10623"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabolele au fost migrate. Fișierele migrate nu vor fi deschise în versiunile anterioare de FreeCAD!
@@ -4707,10 +4711,10 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="254"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="333"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="256"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="210"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="216"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="377"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="649"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="719"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="661"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="731"/>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="187"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="213"/>
       <location filename="../../DrawSketchHandlerEllipse.h" line="227"/>
@@ -4721,13 +4725,13 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <location filename="../../DrawSketchHandlerLineSet.h" line="500"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="105"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="469"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="159"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="121"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="504"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="168"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="140"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
       <location filename="../../DrawSketchHandlerSplitting.h" line="165"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="131"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="141"/>
       <location filename="../../DrawSketchHandlerTrimming.h" line="187"/>
       <source>Error</source>
       <translation>Eroare</translation>
@@ -4759,7 +4763,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Selecţia nu are geometrii valabile.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectPyImp.cpp" line="414"/>
+      <location filename="../../../App/SketchObjectPyImp.cpp" line="421"/>
       <source>The constraint has invalid index information and is malformed.</source>
       <translation>Constrângerea are informații invalide despre index și este formatată incorect.</translation>
     </message>
@@ -4813,12 +4817,12 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Eroare la crearea B-spline</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="650"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="662"/>
       <source>Error deleting last pole/knot</source>
       <translation type="unfinished">Error deleting last pole/knot</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="720"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="732"/>
       <source>Error adding B-spline pole/knot</source>
       <translation type="unfinished">Error adding B-spline pole/knot</translation>
     </message>
@@ -4855,17 +4859,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="298"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="215"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="221"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="218"/>
       <location filename="../../DrawSketchHandlerEllipse.h" line="232"/>
       <location filename="../../DrawSketchHandlerLine.h" line="143"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="137"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="474"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="164"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="128"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="509"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="147"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="191"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="155"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="136"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="146"/>
       <source>Tool execution aborted</source>
       <translation>Executarea uneltei anulată</translation>
     </message>
@@ -4880,7 +4884,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Adăugarea de poligon a eșuat</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="470"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="505"/>
       <source>Failed to add box</source>
       <translation>Nu s-a reușit adăugarea casetei</translation>
     </message>
@@ -4907,32 +4911,42 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Eroare de valoare</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="950"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="970"/>
       <source>Autoconstraints cause redundancy. Removing them</source>
       <translation>Autoconstrângerile cauzează redundanță. Eliminarea lor</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="969"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="989"/>
       <source>Redundant constraint is not an autoconstraint. No autoconstraints or additional constraints were added. Please report!</source>
       <translation>Constrângerea redundantă nu este o autoconstrângere. Nu au fost adăugate autoconstrângeri sau constrângeri suplimentare. Vă rugăm să raportați!</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="1017"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="1037"/>
       <source>Unexpected Redundancy/Conflicting constraint. Check the constraints and autoconstraints of this operation.</source>
       <translation>Constrângeri neașteptate/contradictorii. Verifică constrângerile și autoconstrângerile acestei operațiuni.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1144"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="393"/>
+      <source>Offset Error</source>
+      <translation type="unfinished">Offset Error</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerOffset.h" line="394"/>
+      <source>Offset could not be created.</source>
+      <translation type="unfinished">Offset could not be created.</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1159"/>
       <source>Invalid Value</source>
       <translation>Valoare nevalidă</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1145"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1160"/>
       <source>Offset value can't be 0.</source>
       <translation>Valoarea compensată nu poate fi 0.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="211"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="217"/>
       <source>Failed to add arc slot</source>
       <translation>Adăugarea slotului arc a eșuat</translation>
     </message>
@@ -4942,17 +4956,22 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Adăugarea elipsei a eșuat</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="160"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="169"/>
       <source>Failed to rotate</source>
       <translation>Rotirea a esuat</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="122"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="116"/>
+      <source>Invalid scale factor. Scale factor must be a positive number.</source>
+      <translation type="unfinished">Invalid scale factor. Scale factor must be a positive number.</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerScale.h" line="141"/>
       <source>Failed to scale</source>
       <translation>Scalarea a eșuat</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="132"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="142"/>
       <source>Failed to translate</source>
       <translation>Traducerea a eșuat</translation>
     </message>
@@ -5105,17 +5124,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
   <context>
     <name>TaskSketcherTool_c1_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1121"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1136"/>
       <source>Delete original geometries (U)</source>
       <translation>Ştergeţi geometriile originale (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="526"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="537"/>
       <source>Apply equal constraints</source>
       <translation type="unfinished">Apply equal constraints</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="530"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="541"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation type="unfinished">If this option is selected dimensional constraints are excluded from the operation.
@@ -5125,7 +5144,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c2_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1125"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1140"/>
       <source>Add offset constraint (J)</source>
       <translation>Adaugă constrângere de compensare (J)</translation>
     </message>
@@ -5133,32 +5152,32 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1786"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1821"/>
       <source>Corner, width, height</source>
       <translation>Colţ, lăţime, înălţime</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1787"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1822"/>
       <source>Center, width, height</source>
       <translation>Centru, lățime, înălțime</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1788"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1823"/>
       <source>3 corners</source>
       <translation>3 colţuri</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1789"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1824"/>
       <source>Center, 2 corners</source>
       <translation>Centru, 2 colțuri</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1794"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1829"/>
       <source>Rounded corners (U)</source>
       <translation>Colţuri rotunjite (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1797"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1832"/>
       <source>Create a rectangle with rounded corners.</source>
       <translation>Creați un dreptunghi cu colțuri rotunjite.</translation>
     </message>
@@ -5166,12 +5185,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c2_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1803"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1838"/>
       <source>Frame (J)</source>
       <translation>Frame (J)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1806"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1841"/>
       <source>Create two rectangles with a constant offset.</source>
       <translation>Creează două dreptunghiuri cu o compensare constantă.</translation>
     </message>
@@ -5240,11 +5259,6 @@ Instead equal constraints are applied between the original objects and their cop
       <location filename="../../SketcherSettingsAppearance.ui" line="164"/>
       <source>Unconstrained</source>
       <translation>Fără constrângeri</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="171"/>
-      <source>Pattern</source>
-      <translation>Model</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="178"/>
@@ -5317,11 +5331,6 @@ Instead equal constraints are applied between the original objects and their cop
       <translation type="unfinished">External reference geometry</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="522"/>
-      <source>Line pattern of external edges</source>
-      <translation type="unfinished">Line pattern of external edges</translation>
-    </message>
-    <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="532"/>
       <source>Width of external edges</source>
       <translation type="unfinished">Width of external edges</translation>
@@ -5392,29 +5401,44 @@ Instead equal constraints are applied between the original objects and their cop
       <translation type="unfinished">Colors Outside Sketcher</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="881"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="879"/>
       <source>Vertex</source>
       <translation>Vertex</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="888"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="886"/>
       <source>Color of vertices outside edit mode</source>
       <translation type="unfinished">Color of vertices outside edit mode</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="927"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="925"/>
       <source>Edge</source>
       <translation>Margine</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="934"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="932"/>
       <source>Color of edges outside edit mode</source>
       <translation type="unfinished">Color of edges outside edit mode</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="952"/>
+      <source>Face</source>
+      <translation>Faţă</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="965"/>
+      <source>Color of internal faces formed by intersecting geometry or closed loops in the sketch</source>
+      <translation type="unfinished">Color of internal faces formed by intersecting geometry or closed loops in the sketch</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="198"/>
       <source>Geometry</source>
       <translation>Geometrie</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="171"/>
+      <source>Line Type</source>
+      <translation type="unfinished">Line Type</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="295"/>
@@ -5430,6 +5454,11 @@ Instead equal constraints are applied between the original objects and their cop
       <location filename="../../SketcherSettingsAppearance.ui" line="502"/>
       <source>Color of external geometry in edit mode</source>
       <translation>Culoarea geometriei externe în modul de editare</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="522"/>
+      <source>Line pattern of external reference edges</source>
+      <translation type="unfinished">Line pattern of external reference edges</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="683"/>
@@ -5470,7 +5499,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_p4_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="549"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="560"/>
       <source>Copies (+'U'/ -'J')</source>
       <translation>Copii (+'U'/ -'J')</translation>
     </message>
@@ -5483,7 +5512,7 @@ Instead equal constraints are applied between the original objects and their cop
       <translation>Sides (+'U'/ -'J')</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="930"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="952"/>
       <source>Degree (+'U'/ -'J')</source>
       <translation type="unfinished">Degree (+'U'/ -'J')</translation>
     </message>
@@ -5491,7 +5520,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="515"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="588"/>
       <source>Keep original geometries (U)</source>
       <translation>Păstraţi geometriile originale (U)</translation>
     </message>
@@ -5512,7 +5541,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_p3_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="535"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="548"/>
       <source>Copies (+'U'/-'J')</source>
       <translation>Copii (+'U'/-'J')</translation>
     </message>
@@ -5520,7 +5549,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_p5_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="538"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="551"/>
       <source>Rows (+'R'/-'F')</source>
       <translation>Rânduri (+'R'/-'F')</translation>
     </message>
@@ -5528,12 +5557,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="513"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="516"/>
       <source>Center</source>
       <translation>Centru</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="514"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="517"/>
       <source>3 rim points</source>
       <translation>Cerc definit prin 3 puncte</translation>
     </message>
@@ -5541,12 +5570,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_CreateArcSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="578"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="584"/>
       <source>Arc ends</source>
       <translation>Sfârșit Arc</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="579"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="585"/>
       <source>Flat ends</source>
       <translation>Fixare</translation>
     </message>
@@ -5567,12 +5596,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_fillet</name>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="450"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="458"/>
       <source>Preserve corner (U)</source>
       <translation>Păstraţi colţul (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="453"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="461"/>
       <source>Preserves intersection point and most constraints</source>
       <translation>Conservează punctul de intersecție și majoritatea constrângerilor</translation>
     </message>
@@ -5598,12 +5627,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_CreateOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1108"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1123"/>
       <source>Arc</source>
       <translation>Arc</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1109"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1124"/>
       <source>Intersection</source>
       <translation>Intersecţie</translation>
     </message>
@@ -5617,27 +5646,19 @@ Instead equal constraints are applied between the original objects and their cop
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_c2_symmetry</name>
-    <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="276"/>
-      <source>Create Symmetry Constraints (J)</source>
-      <translation>Crează constrângeri de simetrie (J)</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskSketcherTool_c1_bspline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="887"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="908"/>
       <source>Press F to undo last point.</source>
       <translation type="unfinished">Press F to undo last point.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="895"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="917"/>
       <source>Periodic (R)</source>
       <translation type="unfinished">Periodic (R)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="898"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="920"/>
       <source>Create a periodic B-spline.</source>
       <translation type="unfinished">Create a periodic B-spline.</translation>
     </message>
@@ -5663,12 +5684,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="507"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="520"/>
       <source>Apply equal constraints</source>
       <translation type="unfinished">Apply equal constraints</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="510"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="523"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation type="unfinished">If this option is selected dimensional constraints are excluded from the operation.
@@ -5907,8 +5928,8 @@ Punctele trebuie să fie mai apropiate de o cincime din spațierea grilei de o l
     <name>CmdSketcherToggleConstruction</name>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="73"/>
-      <source>Construction Geometry</source>
-      <translation>Geometria construcției</translation>
+      <source>Toggle Construction Geometry</source>
+      <translation type="unfinished">Toggle Construction Geometry</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="74"/>
@@ -7440,27 +7461,32 @@ Punctele trebuie să fie mai apropiate de o cincime din spațierea grilei de o l
   <context>
     <name>SketcherGui::DrawSketchHandlerArcSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="105"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="100"/>
+      <source>%1 switch mode</source>
+      <translation type="unfinished">%1 switch mode</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="107"/>
       <source>%1 pick slot center</source>
       <translation type="unfinished">%1 pick slot center</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="110"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="113"/>
       <source>%1 pick slot radius</source>
       <translation type="unfinished">%1 pick slot radius</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="115"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="119"/>
       <source>%1 pick slot angle</source>
       <translation type="unfinished">%1 pick slot angle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="120"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="125"/>
       <source>%1 pick slot width</source>
       <translation type="unfinished">%1 pick slot width</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="299"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="305"/>
       <source>Arc Slot parameters</source>
       <translation>Parametrii Slot Arc</translation>
     </message>
@@ -7478,28 +7504,46 @@ Punctele trebuie să fie mai apropiate de o cincime din spațierea grilei de o l
       <translation type="unfinished">%1 pick first control point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="427"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="423"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="432"/>
+      <source>%1 + degree</source>
+      <translation type="unfinished">%1 + degree</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="424"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="433"/>
+      <source>%1 - degree</source>
+      <translation type="unfinished">%1 - degree</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="429"/>
       <source>%1 pick next control point</source>
       <translation type="unfinished">%1 pick next control point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="428"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="443"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="430"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="448"/>
       <source>%1 finish B-spline</source>
       <translation type="unfinished">%1 finish B-spline</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="436"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="440"/>
       <source>%1 pick first knot</source>
       <translation type="unfinished">%1 pick first knot</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="442"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="450"/>
+      <source>%1 toggle periodic</source>
+      <translation type="unfinished">%1 toggle periodic</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="447"/>
       <source>%1 pick next knot</source>
       <translation type="unfinished">%1 pick next knot</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="491"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="497"/>
       <source>B-spline parameters</source>
       <translation type="unfinished">B-spline parameters</translation>
     </message>
@@ -7636,21 +7680,28 @@ Punctele trebuie să fie mai apropiate de o cincime din spațierea grilei de o l
       <translation>Parametrii Fillet/Chamfer</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="421"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="417"/>
+      <source>%1 switch mode</source>
+      <translation type="unfinished">%1 switch mode</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerFillet.h" line="418"/>
+      <source>%1 toggle preserve corner</source>
+      <translation type="unfinished">%1 toggle preserve corner</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerFillet.h" line="425"/>
       <source>%1 pick first edge or point</source>
-      <comment>Sketcher Fillet/Chamfer: hint</comment>
       <translation type="unfinished">%1 pick first edge or point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="424"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="429"/>
       <source>%1 pick second edge</source>
-      <comment>Sketcher Fillet/Chamfer: hint</comment>
       <translation type="unfinished">%1 pick second edge</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="427"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="433"/>
       <source>%1 create fillet</source>
-      <comment>Sketcher Fillet/Chamfer: hint</comment>
       <translation type="unfinished">%1 create fillet</translation>
     </message>
   </context>
@@ -7764,55 +7815,65 @@ Punctele trebuie să fie mai apropiate de o cincime din spațierea grilei de o l
       <translation type="unfinished">%1 switch mode</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="126"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="178"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="210"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="118"/>
+      <source>%1 toggle rounded corners</source>
+      <translation type="unfinished">%1 toggle rounded corners</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="120"/>
+      <source>%1 toggle frame</source>
+      <translation type="unfinished">%1 toggle frame</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="129"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="197"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="239"/>
       <source>%1 pick first corner</source>
       <translation type="unfinished">%1 pick first corner</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="132"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="137"/>
       <source>%1 pick opposite corner</source>
       <translation type="unfinished">%1 pick opposite corner</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="138"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="164"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="196"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="222"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="145"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="179"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="221"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="255"/>
       <source>%1 set corner radius or frame thickness</source>
       <translation type="unfinished">%1 set corner radius or frame thickness</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="144"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="170"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="153"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="187"/>
       <source>%1 set frame thickness</source>
       <translation type="unfinished">%1 set frame thickness</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="152"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="204"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="163"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="231"/>
       <source>%1 pick center</source>
       <translation>%1 pick center</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="158"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="171"/>
       <source>%1 pick corner</source>
       <translation type="unfinished">%1 pick corner</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="184"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="216"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="205"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="247"/>
       <source>%1 pick second corner</source>
       <translation type="unfinished">%1 pick second corner</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="190"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="213"/>
       <source>%1 pick third corner</source>
       <translation type="unfinished">%1 pick third corner</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="706"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="741"/>
       <source>Rectangle parameters</source>
       <translation>Parametri dreptunghi</translation>
     </message>
@@ -7820,25 +7881,25 @@ Punctele trebuie să fie mai apropiate de o cincime din spațierea grilei de o l
   <context>
     <name>SketcherGui::DrawSketchHandlerRotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="96"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="97"/>
       <source>%1 pick center point</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation type="unfinished">%1 pick center point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="101"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="102"/>
       <source>%1 set start angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation type="unfinished">%1 set start angle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="106"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="107"/>
       <source>%1 set rotation angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation type="unfinished">%1 set rotation angle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="203"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="212"/>
       <source>Rotate parameters</source>
       <translation>Parametri de rotaţie</translation>
     </message>
@@ -7846,17 +7907,17 @@ Punctele trebuie să fie mai apropiate de o cincime din spațierea grilei de o l
   <context>
     <name>SketcherGui::DrawSketchHandlerScale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="146"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="165"/>
       <source>%1 pick reference point</source>
       <translation type="unfinished">%1 pick reference point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="170"/>
       <source>%1 set scale factor</source>
       <translation type="unfinished">%1 set scale factor</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="214"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="233"/>
       <source>Scale parameters</source>
       <translation>Parametrii de scară</translation>
     </message>
@@ -7905,24 +7966,24 @@ Punctele trebuie să fie mai apropiate de o cincime din spațierea grilei de o l
   <context>
     <name>SketcherGui::DrawSketchHandlerTranslate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="175"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="185"/>
       <source>Translate parameters</source>
       <translation>Tradu parametrii</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="438"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="451"/>
       <source>%1 pick reference point</source>
       <comment>Sketcher Translate: hint</comment>
       <translation type="unfinished">%1 pick reference point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="440"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="453"/>
       <source>%1 set translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation type="unfinished">%1 set translation vector</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="443"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="456"/>
       <source>%1 set second translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation type="unfinished">%1 set second translation vector</translation>
@@ -7943,6 +8004,27 @@ Punctele trebuie să fie mai apropiate de o cincime din spațierea grilei de o l
       <location filename="../../TaskSketcherSolverAdvanced.cpp" line="58"/>
       <source>Advanced Solver Controls</source>
       <translation type="unfinished">Advanced Solver Controls</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_CreateBSpline</name>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="911"/>
+      <source>From control points</source>
+      <translation type="unfinished">From control points</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="912"/>
+      <source>From knots</source>
+      <translation type="unfinished">From knots</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c2_symmetry</name>
+    <message>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="276"/>
+      <source>Create symmetry constraints (J)</source>
+      <translation type="unfinished">Create symmetry constraints (J)</translation>
     </message>
   </context>
 </TS>

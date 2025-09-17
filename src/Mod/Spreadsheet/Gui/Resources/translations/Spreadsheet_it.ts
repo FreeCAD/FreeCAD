@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="947"/>
       <source>&amp;New Spreadsheet</source>
-      <translation type="unfinished">&amp;New Spreadsheet</translation>
+      <translation>&amp;Nuovo Foglio di calcolo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="948"/>
       <source>Creates a new spreadsheet</source>
-      <translation type="unfinished">Creates a new spreadsheet</translation>
+      <translation>Crea un nuovo foglio di calcolo</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="510"/>
       <source>Align &amp;Bottom</source>
-      <translation type="unfinished">Align &amp;Bottom</translation>
+      <translation>Allinea in &amp;Basso</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Aligns cell contents to the bottom</source>
-      <translation type="unfinished">Aligns cell contents to the bottom</translation>
+      <translation>Allinea il contenuto delle celle in basso</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="282"/>
       <source>Align &amp;Left</source>
-      <translation type="unfinished">Align &amp;Left</translation>
+      <translation>Allinea a &amp;Sinistra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="283"/>
       <source>Aligns cell contents to the left</source>
-      <translation type="unfinished">Aligns cell contents to the left</translation>
+      <translation>Allinea il contenuto delle celle a sinistra</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="396"/>
       <source>Align &amp;Right</source>
-      <translation type="unfinished">Align &amp;Right</translation>
+      <translation>Allinea a &amp;Destra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="397"/>
       <source>Aligns cell contents to the right</source>
-      <translation type="unfinished">Aligns cell contents to the right</translation>
+      <translation>Allinea il contenuto delle celle a destra</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Align &amp;Top</source>
-      <translation type="unfinished">Align &amp;Top</translation>
+      <translation>Allinea in &amp;Alto</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="454"/>
       <source>Aligns cell contents to the top</source>
-      <translation type="unfinished">Aligns cell contents to the top</translation>
+      <translation>Allinea il contenuto delle celle in alto</translation>
     </message>
   </context>
   <context>
@@ -342,7 +342,7 @@
       <translation>Crea folgio di calcolo</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="260"/>
+      <location filename="../../PropertiesDialog.cpp" line="267"/>
       <source>Set cell properties</source>
       <translation>Imposta proprieta cella</translation>
     </message>
@@ -449,7 +449,7 @@ The expression must evaluate to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet</source>
-      <translation type="unfinished">Sheet</translation>
+      <translation>Foglio</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
@@ -689,11 +689,6 @@ cambiare dinamicamente la configurazione del progetto. La proprietà verrà crea
       <translation>Importa file</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="816"/>
-      <source>Copy &amp; Paste failed</source>
-      <translation>Copia &amp; Incolla fallita</translation>
-    </message>
-    <message>
       <location filename="../../SpreadsheetView.cpp" line="495"/>
       <source>Alias contains invalid characters!</source>
       <translation>L'alias contiene dei caratteri non validi!</translation>
@@ -713,7 +708,7 @@ Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
       <source>Export File</source>
-      <translation type="unfinished">Export File</translation>
+      <translation>Esporta File</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="134"/>
@@ -741,6 +736,11 @@ Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
       <location filename="../../Workbench.cpp" line="116"/>
       <source>Sets the spreadsheet cells background color</source>
       <translation type="unfinished">Sets the spreadsheet cells background color</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="816"/>
+      <source>Copy &amp; Paste Failed</source>
+      <translation type="unfinished">Copy &amp; Paste Failed</translation>
     </message>
   </context>
   <context>
@@ -881,20 +881,20 @@ Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="147"/>
       <source>-</source>
-      <translation type="unfinished">-</translation>
+      <translation>-</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="197"/>
       <source>+</source>
-      <translation type="unfinished">+</translation>
+      <translation>+</translation>
     </message>
   </context>
   <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="223"/>
-      <source>Bind cells</source>
-      <translation>Collega celle</translation>
+      <source>Bind Cells</source>
+      <translation type="unfinished">Bind Cells</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="224"/>
@@ -919,8 +919,8 @@ Continue?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="300"/>
-      <source>Unbind cells</source>
-      <translation>Scollega le celle</translation>
+      <source>Unbind Cells</source>
+      <translation type="unfinished">Unbind Cells</translation>
     </message>
   </context>
   <context>
@@ -1006,25 +1006,12 @@ Predefinito a: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="223"/>
       <source>Escape character</source>
-      <translation type="unfinished">Escape character</translation>
+      <translation>Carattere di escape</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="230"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Il carattere Escape, tipicamente il backslash (\), utilizzato per indicare caratteri speciali non stampabili, e.. \t = tab. Deve essere un singolo carattere.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-  </context>
-  <context>
-    <name>SpreadsheetGui::DlgSheetConf</name>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="280"/>
-      <source>Setup configuration table</source>
-      <translation>Imposta tabella di configurazione</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="338"/>
-      <source>Unsetup configuration table</source>
-      <translation>Disimposta tabella di configurazione</translation>
     </message>
   </context>
   <context>
@@ -1063,7 +1050,7 @@ Predefinito a: %V = %A
       <location filename="../../SheetTableView.cpp" line="155"/>
       <source>Remove Rows</source>
       <translation type="unfinished">
-        <numerusform>Remove Rows</numerusform>
+        <numerusform>Rimuovi Righe</numerusform>
         <numerusform>Remove Rows</numerusform>
       </translation>
     </message>
@@ -1095,7 +1082,7 @@ Predefinito a: %V = %A
       <location filename="../../SheetTableView.cpp" line="186"/>
       <source>Remove Column(s)</source>
       <translation type="unfinished">
-        <numerusform>Remove Column(s)</numerusform>
+        <numerusform>Rimuovi Colonne</numerusform>
         <numerusform>Remove Column(s)</numerusform>
       </translation>
     </message>
@@ -1103,7 +1090,7 @@ Predefinito a: %V = %A
       <location filename="../../SheetTableView.cpp" line="199"/>
       <location filename="../../SheetTableView.cpp" line="664"/>
       <source>Properties…</source>
-      <translation type="unfinished">Properties…</translation>
+      <translation>Proprietà…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="203"/>
@@ -1126,8 +1113,8 @@ Predefinito a: %V = %A
     <message>
       <location filename="../../SheetTableView.cpp" line="210"/>
       <location filename="../../SheetTableView.cpp" line="668"/>
-      <source>Split Cells</source>
-      <translation type="unfinished">Split Cells</translation>
+      <source>Split Cell</source>
+      <translation type="unfinished">Split Cell</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="213"/>
@@ -1210,6 +1197,19 @@ Predefinito a: %V = %A
       <location filename="../../ZoomableView.cpp" line="112"/>
       <source>Zoom Level</source>
       <translation type="unfinished">Zoom Level</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::DlgSheetConf</name>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="280"/>
+      <source>Setup Configuration Table</source>
+      <translation>Imposta Tabella di Configurazione</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="338"/>
+      <source>Unsetup Configuration Table</source>
+      <translation type="unfinished">Unsetup Configuration Table</translation>
     </message>
   </context>
 </TS>

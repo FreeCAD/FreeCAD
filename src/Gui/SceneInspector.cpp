@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <QHeaderView>
 # include <QTextStream>
-#endif
+
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 

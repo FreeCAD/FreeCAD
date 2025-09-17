@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <memory>
 #include <string>
 #include <QAction>
@@ -30,7 +27,6 @@
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoTransform.h>
-#endif
 
 #include <App/GeoFeature.h>
 #include <Base/Placement.h>
@@ -43,6 +39,7 @@
 #include "Control.h"
 #include "Document.h"
 #include "Inventor/Draggers/SoTransformDragger.h"
+#include "Inventor/Draggers/Gizmo.h"
 #include "Inventor/SoFCPlacementIndicatorKit.h"
 #include "SoFCUnifiedSelection.h"
 #include "TaskTransform.h"
@@ -96,6 +93,12 @@ void ViewProviderDragger::setTransformOrigin(const Base::Placement& placement)
 void ViewProviderDragger::resetTransformOrigin()
 {
     setTransformOrigin({});
+}
+
+
+void ViewProviderDragger::setGizmoContainer(Gui::GizmoContainer* gizmoContainer)
+{
+    this->gizmoContainer = gizmoContainer;
 }
 
 void ViewProviderDragger::onChanged(const App::Property* property)
@@ -225,7 +228,11 @@ void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int M
 {
     Q_UNUSED(ModNum);
 
-    if (transformDragger && viewer) {
+    if (!viewer) {
+        return;
+    }
+
+    if (transformDragger) {
         transformDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
 
         auto originPlacement = App::GeoFeature::getGlobalPlacement(getObject()) * getObjectPlacement().inverse();
@@ -233,6 +240,12 @@ void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int M
 
         viewer->getDocument()->setEditingTransform(mat);
         viewer->setupEditingRoot(transformDragger, &mat);
+    }
+
+    if (gizmoContainer) {
+        auto originPlacement = App::GeoFeature::getGlobalPlacement(getObject())
+            * getObjectPlacement().inverse();
+        gizmoContainer->attachViewer(viewer, originPlacement);
     }
 }
 

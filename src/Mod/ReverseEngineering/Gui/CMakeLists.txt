@@ -1,9 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(ReenGui_LIBS
     ReverseEngineering
     MeshGui
@@ -61,8 +55,25 @@ if(FREECAD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(ReverseEngineeringGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif(FREECAD_USE_PCH)
 
-add_library(ReverseEngineeringGui SHARED ${ReenGui_SRCS} ${ReverseEngineeringGuiIcon_SVG})
+add_library(ReverseEngineeringGui SHARED
+    ${ReenGui_SRCS}
+    ${ReverseEngineeringGuiIcon_SVG}
+)
+
+target_include_directories(
+    ReverseEngineeringGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 target_link_libraries(ReverseEngineeringGui ${ReenGui_LIBS})
+
+if (MSVC)
+    target_compile_options(ReverseEngineeringGui PRIVATE /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(ReverseEngineeringGui)
 endif()

@@ -190,7 +190,7 @@
     </message>
     <message>
         <location filename="../../CommandTrajectory.cpp" line="90"/>
-        <source>Insert in trajectory</source>
+        <source>Insert in Trajectory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -903,7 +903,7 @@
     </message>
     <message>
         <location filename="../../TaskTrajectoryDressUpParameter.ui" line="160"/>
-        <source>Don not change position &amp; orientation</source>
+        <source>Do not change position &amp; orientation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

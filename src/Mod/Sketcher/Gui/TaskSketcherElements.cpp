@@ -61,9 +61,9 @@ using namespace Gui::TaskView;
 
 // Translation block for context menu: do not remove
 #if 0
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Point Coincidence");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Coincident Constraint");
 
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Point on Object");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Point-On-Object Constraint");
 
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Vertical Constraint");
 
@@ -87,17 +87,17 @@ QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Horizontal Dimension");
 
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Vertical Dimension");
 
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Length Dimension");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Distance Dimension");
 
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Radius Dimension");
 
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Diameter Dimension");
 
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Radius or Diameter Dimension");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Radius/Diameter Dimension");
 
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Angle Dimension");
 
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Construction Geometry");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Toggle Construction Geometry");
 
 QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Constraints");
 
@@ -690,95 +690,95 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
 
     // CONTEXT_ITEM(ICONSTR,NAMESTR,CMDSTR,FUNC,ACTSONSELECTION)
     CONTEXT_ITEM("Constraint_PointOnPoint",
-                 "Point coincidence",
+                 "Coincident Constraint",
                  "Sketcher_ConstrainCoincident",
                  doPointCoincidence,
                  true)
     CONTEXT_ITEM("Constraint_PointOnObject",
-                 "Point on object",
+                 "Point-On-Object Constraint",
                  "Sketcher_ConstrainPointOnObject",
                  doPointOnObjectConstraint,
                  true)
     CONTEXT_ITEM("Constraint_Horizontal",
-                 "Horizontal constraint",
+                 "Horizontal Constraint",
                  "Sketcher_ConstrainHorizontal",
                  doHorizontalConstraint,
                  true)
     CONTEXT_ITEM("Constraint_Vertical",
-                 "Vertical constraint",
+                 "Vertical Constraint",
                  "Sketcher_ConstrainVertical",
                  doVerticalConstraint,
                  true)
     CONTEXT_ITEM("Constraint_Parallel",
-                 "Parallel constraint",
+                 "Parallel Constraint",
                  "Sketcher_ConstrainParallel",
                  doParallelConstraint,
                  true)
     CONTEXT_ITEM("Constraint_Perpendicular",
-                 "Perpendicular constraint",
+                 "Perpendicular Constraint",
                  "Sketcher_ConstrainPerpendicular",
                  doPerpendicularConstraint,
                  true)
     CONTEXT_ITEM("Constraint_Tangent",
-                 "Tangent constraint",
+                 "Tangent Constraint",
                  "Sketcher_ConstrainTangent",
                  doTangentConstraint,
                  true)
     CONTEXT_ITEM("Constraint_EqualLength",
-                 "Equal constraint",
+                 "Equal Constraint",
                  "Sketcher_ConstrainEqual",
                  doEqualConstraint,
                  true)
     CONTEXT_ITEM("Constraint_Symmetric",
-                 "Symmetric constraint",
+                 "Symmetric Constraint",
                  "Sketcher_ConstrainSymmetric",
                  doSymmetricConstraint,
                  true)
     CONTEXT_ITEM(
-        "Constraint_Block", "Block constraint", "Sketcher_ConstrainBlock", doBlockConstraint, true)
+        "Constraint_Block", "Block Constraint", "Sketcher_ConstrainBlock", doBlockConstraint, true)
 
     CONTEXT_ITEM("Constraint_HorizontalDistance",
-                 "Horizontal dimension",
+                 "Horizontal Dimension",
                  "Sketcher_ConstrainDistanceX",
                  doHorizontalDistance,
                  true)
     CONTEXT_ITEM("Constraint_VerticalDistance",
-                 "Vertical dimension",
+                 "Vertical Dimension",
                  "Sketcher_ConstrainDistanceY",
                  doVerticalDistance,
                  true)
     CONTEXT_ITEM("Constraint_Length",
-                 "Length dimension",
+                 "Distance Dimension",
                  "Sketcher_ConstrainDistance",
                  doLengthConstraint,
                  true)
     CONTEXT_ITEM("Constraint_Radiam",
-                 "Radius or diameter",
+                 "Radius/Diameter Dimension",
                  "Sketcher_ConstrainRadiam",
                  doRadiamConstraint,
                  true)
     CONTEXT_ITEM("Constraint_Radius",
-                 "Radius",
+                 "Radius Dimension",
                  "Sketcher_ConstrainRadius",
                  doRadiusConstraint,
                  true)
     CONTEXT_ITEM("Constraint_Diameter",
-                 "Diameter",
+                 "Diameter Dimension",
                  "Sketcher_ConstrainDiameter",
                  doDiameterConstraint,
                  true)
     CONTEXT_ITEM("Constraint_InternalAngle",
-                 "Angle",
+                 "Angle Dimension",
                  "Sketcher_ConstrainAngle",
                  doAngleConstraint,
                  true)
     CONTEXT_ITEM(
-        "Constraint_Lock", "Lock", "Sketcher_ConstrainLock", doLockConstraint, true)
+        "Constraint_Lock", "Lock Position", "Sketcher_ConstrainLock", doLockConstraint, true)
 
     menu.addSeparator();
 
     CONTEXT_ITEM("Sketcher_ToggleConstruction",
-                 "Toggle construction geometry",
+                 "Toggle Construction Geometry",
                  "Sketcher_ToggleConstruction",
                  doToggleConstruction,
                  true)
@@ -786,19 +786,19 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
     menu.addSeparator();
 
     CONTEXT_ITEM("Sketcher_SelectConstraints",
-                 "Select constraints",
+                 "Select Constraints",
                  "Sketcher_SelectConstraints",
                  doSelectConstraints,
                  true)
     CONTEXT_ITEM(
         "Sketcher_SelectOrigin", "Select Origin", "Sketcher_SelectOrigin", doSelectOrigin, false)
     CONTEXT_ITEM("Sketcher_SelectHorizontalAxis",
-                 "Select horizontal axis",
+                 "Select Horizontal Axis",
                  "Sketcher_SelectHorizontalAxis",
                  doSelectHAxis,
                  false)
     CONTEXT_ITEM("Sketcher_SelectVerticalAxis",
-                 "Select vertical axis",
+                 "Select Vertical Axis",
                  "Sketcher_SelectVerticalAxis",
                  doSelectVAxis,
                  false)
@@ -1735,6 +1735,11 @@ void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
         previouslySelectedItemIndex = focusItemIndex;
 
     ui->listWidgetElements->repaint();
+
+    // it seems that addSelections gives back the focus to the view, and not immediately.
+    QTimer::singleShot(200, [this]() {
+        ui->listWidgetElements->setFocus();
+    });
 }
 
 bool TaskSketcherElements::hasInputWidgetFocused()

@@ -8,6 +8,7 @@ add_executable(Base_tests_run
         CoordinateSystem.cpp
         DualNumber.cpp
         DualQuaternion.cpp
+        FileInfo.cpp
         Handle.cpp
         Matrix.cpp
         Parameter.cpp
@@ -37,4 +38,5 @@ target_link_libraries(Base_tests_run PRIVATE
     GTest::gmock_main
     ${Google_Tests_LIBS}
     FreeCADApp
+    ICU::uc ICU::i18n
 )

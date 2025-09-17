@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <QMenu>
 # include <QPlainTextEdit>
-#endif
+
 
 #include <App/Application.h>
 #include <Base/Type.h>

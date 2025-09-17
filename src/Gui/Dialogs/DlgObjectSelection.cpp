@@ -20,12 +20,9 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QPushButton>
 # include <QTreeWidget>
 # include <QCheckBox>
-#endif
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -154,8 +151,8 @@ void DlgObjectSelection::init(const std::vector<App::DocumentObject*> &objs,
      * tried adding to .ui file, but could never get the
      * formatting exactly the way I wanted it. -- <TheMarkster>
      */
-    useOriginalsBtn = new QPushButton(tr("&Use Original Selections"));
-    useOriginalsBtn->setToolTip(tr("Ignore dependencies and proceed with objects\noriginally selected prior to opening this dialog"));
+    useOriginalsBtn = new QPushButton(tr("&Use Original Selection"));
+    useOriginalsBtn->setToolTip(tr("Ignore dependencies and proceed with the objects\noriginally selected prior to opening this dialog"));
     ui->buttonBox->addButton(useOriginalsBtn, QDialogButtonBox::ResetRole);
 
     connect(ui->treeWidget, &QTreeWidget::itemChanged, this, &DlgObjectSelection::onObjItemChanged);

@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoError.h>
@@ -41,10 +38,13 @@
 #include <QTextStream>
 #include <QTimer>
 #include <QWindow>
-#endif
 
 #include <QLoggingCategory>
 #include <fmt/format.h>
+#include <list>
+#include <ranges>
+
+#include <FCConfig.h>
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -141,6 +141,7 @@
 #include "QtWidgets.h"
 
 #include <OverlayManager.h>
+#include <ParamHandler.h>
 #include <Base/ServiceProvider.h>
 
 #ifdef BUILD_TRACY_FRAME_PROFILER
@@ -152,6 +153,7 @@ using namespace Gui::DockWnd;
 using namespace std;
 namespace sp = std::placeholders;
 
+FC_LOG_LEVEL_INIT("Gui")
 
 Application* Application::Instance = nullptr;
 
@@ -381,24 +383,54 @@ struct PyMethodDef FreeCADGui_methods[] = {
 
 void Application::initStyleParameterManager()
 {
+    static ParamHandlers handlers;
+
+    const auto deduceParametersFilePath = []() -> std::string {
+        const auto hMainWindowGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+
+        if (const std::string& path = hMainWindowGrp->GetASCII("ThemeStyleParametersFile");
+            !path.empty()) {
+            return path;
+        }
+
+        return fmt::format("qss:parameters/{}.yaml", hMainWindowGrp->GetASCII("Theme", "Classic"));
+    };
+
+    auto themeParametersSource = new StyleParameters::YamlParameterSource(
+        deduceParametersFilePath(),
+        {.name = QT_TR_NOOP("Theme Parameters"),
+         .options = StyleParameters::ParameterSourceOption::UserEditable});
+
+    handlers.addDelayedHandler(
+        "BaseApp/Preferences/MainWindow",
+        {"ThemeStyleParametersFiles", "Theme"},
+        [themeParametersSource, deduceParametersFilePath, this](ParameterGrp::handle) {
+            themeParametersSource->changeFilePath(deduceParametersFilePath());
+            reloadStyleSheet();
+        });
+
     Base::registerServiceImplementation<StyleParameters::ParameterSource>(
         new StyleParameters::BuiltInParameterSource({.name = QT_TR_NOOP("Built-in Parameters")}));
 
-    Base::registerServiceImplementation<StyleParameters::ParameterSource>(
-        new StyleParameters::UserParameterSource(
-            App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Themes/Tokens"),
-            {.name = QT_TR_NOOP("Theme Parameters"),
-             .options = StyleParameters::ParameterSourceOption::UserEditable}));
-
+    // todo: left for compatibility with older theme versions, to be removed before release
     Base::registerServiceImplementation<StyleParameters::ParameterSource>(
         new StyleParameters::UserParameterSource(
             App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/Themes/UserTokens"),
+            {.name = QT_TR_NOOP("Theme Parameters - Fallback"),
+             .options = StyleParameters::ParameterSourceOption::ReadOnly}));
+
+    Base::registerServiceImplementation<StyleParameters::ParameterSource>(themeParametersSource);
+
+    Base::registerServiceImplementation<StyleParameters::ParameterSource>(
+        new StyleParameters::UserParameterSource(
+            App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Themes/UserParameters"),
             {.name = QT_TR_NOOP("User Parameters"),
              .options = StyleParameters::ParameterSource::UserEditable}));
 
-    for (auto* source : Base::provideServiceImplementations<StyleParameters::ParameterSource>()) {
+    const auto sources = Base::provideServiceImplementations<StyleParameters::ParameterSource>();
+    for (auto* source : std::views::all(sources) | std::views::reverse) {
         d->styleParameterManager->addSource(source);
     }
 
@@ -858,6 +890,10 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
     std::string te = File.extension();
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
     unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
+
+    if (strcmp(Module, "Part") == 0) {
+        FC_WARN("Exporting with 'Part' is deprecated, use 'ImportGui' instead");
+    }
 
     if (Module) {
         try {

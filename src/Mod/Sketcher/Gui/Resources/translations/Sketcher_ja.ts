@@ -19,12 +19,12 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="8698"/>
       <source>Radius/Diameter Dimension</source>
-      <translation type="unfinished">Radius/Diameter Dimension</translation>
+      <translation>半径/直径寸法</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8699"/>
       <source>Constrains the radius or diameter of an arc or a circle</source>
-      <translation type="unfinished">Constrains the radius or diameter of an arc or a circle</translation>
+      <translation>円弧または円の半径・直径を拘束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8809"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="633"/>
       <source>Modify Knot Multiplicity</source>
-      <translation type="unfinished">Modify Knot Multiplicity</translation>
+      <translation>ノット多重度を変更</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="114"/>
       <source>Geometry to B-Spline</source>
-      <translation type="unfinished">Geometry to B-Spline</translation>
+      <translation>ジオメトリーをB-スプラインへ</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="115"/>
-      <source>Converts the selected geometry to a B-spline</source>
-      <translation>選択されたジオメトリをB-スプラインに変換</translation>
+      <source>Converts the selected geometry to B-splines</source>
+      <translation type="unfinished">Converts the selected geometry to B-splines</translation>
     </message>
   </context>
   <context>
@@ -109,7 +109,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="267"/>
       <source>Decrease B-Spline Degree</source>
-      <translation type="unfinished">Decrease B-Spline Degree</translation>
+      <translation>B-スプラインの次数を減らす</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="268"/>
@@ -122,7 +122,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="496"/>
       <source>Decrease Knot Multiplicity</source>
-      <translation type="unfinished">Decrease Knot Multiplicity</translation>
+      <translation>ノット多重度を減らす</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="497"/>
@@ -135,7 +135,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="190"/>
       <source>Increase B-Spline Degree</source>
-      <translation type="unfinished">Increase B-Spline Degree</translation>
+      <translation>B-スプラインの次数を増やす</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="191"/>
@@ -148,7 +148,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="349"/>
       <source>Increase Knot Multiplicity</source>
-      <translation type="unfinished">Increase Knot Multiplicity</translation>
+      <translation>ノット多重度を増やす</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="350"/>
@@ -161,12 +161,12 @@
     <message>
       <location filename="../../Command.cpp" line="578"/>
       <source>Attach Sketch</source>
-      <translation type="unfinished">Attach Sketch</translation>
+      <translation>スケッチをアタッチ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="579"/>
       <source>Attaches a sketch to the selected geometry element</source>
-      <translation type="unfinished">Attaches a sketch to the selected geometry element</translation>
+      <translation>選択したジオメトリー要素にスケッチをアタッチする</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="670"/>
@@ -179,12 +179,12 @@
     <message>
       <location filename="../../Command.cpp" line="1001"/>
       <source>Merge Sketches</source>
-      <translation type="unfinished">Merge Sketches</translation>
+      <translation>スケッチをマージ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1002"/>
       <source>Creates a new sketch by merging at least 2 selected sketches</source>
-      <translation type="unfinished">Creates a new sketch by merging at least 2 selected sketches</translation>
+      <translation>2つ以上の選択したスケッチをマージすることで、新しいスケッチを作成</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1017"/>
@@ -194,7 +194,7 @@
     <message>
       <location filename="../../Command.cpp" line="1018"/>
       <source>Select at least 2 sketches</source>
-      <translation type="unfinished">Select at least 2 sketches</translation>
+      <translation>少なくとも 2 つのスケッチを選択してください</translation>
     </message>
   </context>
   <context>
@@ -202,16 +202,14 @@
     <message>
       <location filename="../../Command.cpp" line="874"/>
       <source>Mirror Sketch</source>
-      <translation type="unfinished">Mirror Sketch</translation>
+      <translation>スケッチを鏡像化</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="875"/>
       <source>Creates a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference</source>
-      <translation type="unfinished">Creates a new mirrored sketch for each selected sketch
-by using the X or Y axes, or the origin point,
-as mirroring reference</translation>
+      <translation>選択した各スケッチに対してX軸、Y軸、または原点を鏡像参照として新しい鏡像スケッチを作成します</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="892"/>
@@ -221,7 +219,7 @@ as mirroring reference</translation>
     <message>
       <location filename="../../Command.cpp" line="893"/>
       <source>Select at least 1 sketch</source>
-      <translation type="unfinished">Select at least 1 sketch</translation>
+      <translation>少なくとも 1 つのスケッチを選択してください</translation>
     </message>
   </context>
   <context>
@@ -242,7 +240,7 @@ as mirroring reference</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1922"/>
       <source>Rectangular Array</source>
-      <translation type="unfinished">Rectangular Array</translation>
+      <translation>格子状配列</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1923"/>
@@ -255,7 +253,7 @@ as mirroring reference</translation>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="94"/>
       <source>Switch Virtual Space</source>
-      <translation type="unfinished">Switch Virtual Space</translation>
+      <translation>仮想スペースの切り替え</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="96"/>
@@ -268,14 +266,13 @@ as mirroring reference</translation>
     <message>
       <location filename="../../Command.cpp" line="834"/>
       <source>Validate Sketch</source>
-      <translation type="unfinished">Validate Sketch</translation>
+      <translation>スケッチを検証</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="835"/>
       <source>Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</source>
-      <translation type="unfinished">Validates a sketch by checking for missing coincidences,
-invalid constraints, and degenerate geometry</translation>
+      <translation>見落とされた一致、無効な拘束、縮退ジオメトリーを確認してスケッチを検証</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="851"/>
@@ -285,7 +282,7 @@ invalid constraints, and degenerate geometry</translation>
     <message>
       <location filename="../../Command.cpp" line="852"/>
       <source>Select only 1 sketch.</source>
-      <translation type="unfinished">Select only 1 sketch.</translation>
+      <translation>スケッチを1つだけ選択してください。</translation>
     </message>
   </context>
   <context>
@@ -304,11 +301,6 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../CommandConstraints.cpp" line="3701"/>
       <source>Add fixed constraint</source>
       <translation>固定拘束を追加</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="3872"/>
-      <source>Add 'Block' constraint</source>
-      <translation>「固定」拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3921"/>
@@ -434,6 +426,7 @@ invalid constraints, and degenerate geometry</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2205"/>
+      <location filename="../../CommandConstraints.cpp" line="3872"/>
       <source>Add Block constraint</source>
       <translation>固定拘束を追加</translation>
     </message>
@@ -497,12 +490,12 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../CommandConstraints.cpp" line="4742"/>
       <location filename="../../CommandConstraints.cpp" line="5119"/>
       <source>Add point to line distance constraint</source>
-      <translation type="unfinished">Add point to line distance constraint</translation>
+      <translation>点と線の間の距離拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4772"/>
       <source>Add point to circle distance constraint</source>
-      <translation type="unfinished">Add point to circle distance constraint</translation>
+      <translation>点と円の間の距離拘束を追加</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5360"/>
@@ -690,7 +683,7 @@ invalid constraints, and degenerate geometry</translation>
       <translation>スケッチ線を追加</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="461"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="496"/>
       <source>Add sketch box</source>
       <translation>スケッチ長方形を追加</translation>
     </message>
@@ -842,15 +835,9 @@ invalid constraints, and degenerate geometry</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="176"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1521"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1526"/>
       <source>Update constraint's virtual space</source>
       <translation>拘束の仮想スペースを更新</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="892"/>
-      <location filename="../../DrawSketchHandler.cpp" line="763"/>
-      <source>Add auto constraints</source>
-      <translation>自動拘束を追加</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="708"/>
@@ -863,27 +850,27 @@ invalid constraints, and degenerate geometry</translation>
       <translation>スケッチ拘束の名前を変更</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1678"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1768"/>
       <source>Drag Point</source>
       <translation>点をドラッグ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1678"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1768"/>
       <source>Drag Curve</source>
       <translation>曲線をドラッグ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1679"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1769"/>
       <source>Drag geometries</source>
       <translation>ジオメトリーをドラッグ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1060"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1118"/>
       <source>Drag Constraint</source>
       <translation>拘束をドラッグ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1259"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1333"/>
       <source>Modify sketch constraints</source>
       <translation>スケッチ拘束を変更</translation>
     </message>
@@ -893,7 +880,7 @@ invalid constraints, and degenerate geometry</translation>
       <translation>カーボンコピーを作成</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="386"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="398"/>
       <source>Offset</source>
       <translation>オフセット</translation>
     </message>
@@ -903,22 +890,22 @@ invalid constraints, and degenerate geometry</translation>
       <translation>多角形を追加</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="202"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="208"/>
       <source>Add sketch arc slot</source>
       <translation>スケッチに円弧状の長円形を追加</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="144"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="145"/>
       <source>Rotate geometries</source>
       <translation>ジオメトリを回転</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="105"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="121"/>
       <source>Scale geometries</source>
       <translation>ジオメトリの拡大縮小</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="116"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="118"/>
       <source>Translate geometries</source>
       <translation>ジオメトリを移動</translation>
     </message>
@@ -926,17 +913,6 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="134"/>
       <source>Symmetry geometries</source>
       <translation>対称ジオメトリ</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="94"/>
-      <source>Add sketch bSpline</source>
-      <translation>スケッチB-スプラインを追加</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="598"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="736"/>
-      <source>Add sketch B-spline</source>
-      <translation>スケッチ・Bスプラインを追加</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="457"/>
@@ -953,6 +929,19 @@ invalid constraints, and degenerate geometry</translation>
       <source>Toggle construction geometry</source>
       <translation>構築ジオメトリの切り替え</translation>
     </message>
+    <message>
+      <location filename="../../DrawSketchDefaultHandler.h" line="912"/>
+      <location filename="../../DrawSketchHandler.cpp" line="763"/>
+      <source>Add Auto-Constraints</source>
+      <translation type="unfinished">Add Auto-Constraints</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="94"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="610"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="748"/>
+      <source>Add Sketch B-Spline</source>
+      <translation type="unfinished">Add Sketch B-Spline</translation>
+    </message>
   </context>
   <context>
     <name>CommandGroup</name>
@@ -965,54 +954,54 @@ invalid constraints, and degenerate geometry</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6557"/>
+      <location filename="../../../App/SketchObject.cpp" line="6567"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>ノット多重度で変更が起きないように要求しています。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6550"/>
-      <location filename="../../../App/SketchObject.cpp" line="6712"/>
+      <location filename="../../../App/SketchObject.cpp" line="6560"/>
+      <location filename="../../../App/SketchObject.cpp" line="6722"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Bスプラインのジオメトリー番号（GeoID）が範囲外です。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6564"/>
-      <location filename="../../../App/SketchObject.cpp" line="6724"/>
+      <location filename="../../../App/SketchObject.cpp" line="6574"/>
+      <location filename="../../../App/SketchObject.cpp" line="6734"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>入力されたジオメトリー番号（GeoID）はBスプラインではありません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6575"/>
+      <location filename="../../../App/SketchObject.cpp" line="6585"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>ノット・インデックスが境界外です。OCCの記法に従うと最初のノットは1と非ゼロのインデックスを持ちます。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6587"/>
+      <location filename="../../../App/SketchObject.cpp" line="6597"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Bスプラインの次数を越えて多重度を増やすことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6596"/>
+      <location filename="../../../App/SketchObject.cpp" line="6606"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>0を越えて多重度を減らすことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6610"/>
+      <location filename="../../../App/SketchObject.cpp" line="6620"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCCは最大許容範囲内で多重度を減らすことができまぜん。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6717"/>
+      <location filename="../../../App/SketchObject.cpp" line="6727"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>ノットがゼロ多重性を持つことはでいません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6736"/>
+      <location filename="../../../App/SketchObject.cpp" line="6746"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Bスプラインの次数を超えてノット多重度を増やすことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6743"/>
+      <location filename="../../../App/SketchObject.cpp" line="6753"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Bスプラインパラメーターの範囲外にノットを挿入することはできません。</translation>
     </message>
@@ -1077,10 +1066,10 @@ invalid constraints, and degenerate geometry</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppSketcherGui.cpp" line="141"/>
-      <location filename="../../AppSketcherGui.cpp" line="143"/>
-      <location filename="../../AppSketcherGui.cpp" line="145"/>
-      <location filename="../../AppSketcherGui.cpp" line="147"/>
+      <location filename="../../AppSketcherGui.cpp" line="142"/>
+      <location filename="../../AppSketcherGui.cpp" line="144"/>
+      <location filename="../../AppSketcherGui.cpp" line="146"/>
+      <location filename="../../AppSketcherGui.cpp" line="148"/>
       <source>Sketcher</source>
       <translation>スケッチャー</translation>
     </message>
@@ -1128,16 +1117,12 @@ invalid constraints, and degenerate geometry</translation>
     <message>
       <location filename="../../Command.cpp" line="196"/>
       <source>Cannot map the sketch to the selected object. %1.</source>
-      <translation type="unfinished">Cannot map the sketch to the selected object. %1.</translation>
+      <translation>選択したオブジェクトにスケッチをマッピングできません。%1。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="203"/>
-      <source>Do not attach</source>
-      <translation type="unfinished">Do not attach</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="699"/>
-      <source>Don't attach</source>
+      <source>Do not attach</source>
       <translation>アタッチしない</translation>
     </message>
     <message>
@@ -1272,7 +1257,6 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../CommandSketcherBSpline.cpp" line="573"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="936"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1046"/>
-      <location filename="../../CommandSketcherTools.cpp" line="86"/>
       <location filename="../../CommandSketcherTools.cpp" line="369"/>
       <location filename="../../CommandSketcherTools.cpp" line="1013"/>
       <location filename="../../CommandSketcherTools.cpp" line="1339"/>
@@ -1295,7 +1279,7 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../CommandAlterGeometry.cpp" line="170"/>
       <location filename="../../CommandAlterGeometry.cpp" line="179"/>
       <source>Select edges from the sketch</source>
-      <translation type="unfinished">Select edges from the sketch</translation>
+      <translation>スケッチからエッジを選択</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="104"/>
@@ -1659,32 +1643,32 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="229"/>
       <source>One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</source>
-      <translation type="unfinished">One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</translation>
+      <translation>内部適用される最新の拘束でもオブジェクト上への点拘束が適用されるため、オブジェクト上への点拘束のうち1つまたは2つが削除されました。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="761"/>
       <source>Keep notifying about constraint substitutions</source>
-      <translation type="unfinished">Keep notifying about constraint substitutions</translation>
+      <translation>拘束置き換えの通知を継続</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="787"/>
       <source>Unexpected error. More information may be available in the report view.</source>
-      <translation type="unfinished">Unexpected error. More information may be available in the report view.</translation>
+      <translation>予期しないエラーです。詳細についてはレポートビューで確認できます。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="839"/>
       <source>Only the sketch and its support are allowed to be selected</source>
-      <translation type="unfinished">Only the sketch and its support are allowed to be selected</translation>
+      <translation>スケッチとそのサポートのみが選択可能です</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="850"/>
       <source>Only the sketch and its support may be selected</source>
-      <translation type="unfinished">Only the sketch and its support may be selected</translation>
+      <translation>スケッチとそのサポートのみが選択可能です</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="862"/>
       <source>Only the sketch and its support  may be selected</source>
-      <translation type="unfinished">Only the sketch and its support  may be selected</translation>
+      <translation>スケッチとそのサポートのみが選択可能です</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1120"/>
@@ -1812,7 +1796,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="3863"/>
       <location filename="../../CommandConstraints.cpp" line="3916"/>
       <source>The selected edge already has a block constraint!</source>
-      <translation type="unfinished">The selected edge already has a block constraint!</translation>
+      <translation>選択されたエッジにはすでにブロック拘束が設定されています！</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3171"/>
@@ -1822,7 +1806,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="3827"/>
       <source>A block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
-      <translation type="unfinished">A block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</translation>
+      <translation>スケッチが求解されていない場合や冗長/競合する拘束がある場合はブロック拘束を追加できません。</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4096"/>
@@ -2001,22 +1985,22 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="527"/>
       <source>The selection comprises more than one item. Select just one knot.</source>
-      <translation type="unfinished">The selection comprises more than one item. Select just one knot.</translation>
+      <translation>複数のアイテムが選択されています。ノットをひとつだけ選択してください。</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="919"/>
       <source>Nothing is selected. Select a B-spline.</source>
-      <translation type="unfinished">Nothing is selected. Select a B-spline.</translation>
+      <translation>何も選択されていません。B-スプラインを選択してください。</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="937"/>
       <source>Select a B-spline to insert a knot (not a knot on it). If the curve is not a B-spline, convert it into one first.</source>
-      <translation type="unfinished">Select a B-spline to insert a knot (not a knot on it). If the curve is not a B-spline, convert it into one first.</translation>
+      <translation>ノットを挿入するには (ノットではなく) B-スプラインを選択してください。 曲線がB-スプラインでない場合は、まず曲線をB-スプラインに変換してください。</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="992"/>
       <source>Nothing is selected. Select end points of curves.</source>
-      <translation type="unfinished">Nothing is selected. Select end points of curves.</translation>
+      <translation>何も選択されていません。曲線の端点を選択してください。</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1019"/>
@@ -2038,6 +2022,11 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandSketcherBSpline.cpp" line="1047"/>
       <source>Two end points, or coincident point should be selected.</source>
       <translation>2端点、または一致点を選択する必要があります。</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="86"/>
+      <source>Wrong Selection</source>
+      <translation>間違った選択</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="87"/>
@@ -2071,23 +2060,23 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2090"/>
-      <source>Delete all geometry</source>
+      <source>Delete All Geometry</source>
       <translation>すべてのジオメトリーを削除</translation>
+    </message>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="2154"/>
+      <source>Delete All Constraints</source>
+      <translation>すべての拘束を削除</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2091"/>
       <source>Delete all geometry and constraints?</source>
-      <translation type="unfinished">Delete all geometry and constraints?</translation>
-    </message>
-    <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2154"/>
-      <source>Delete all constraints</source>
-      <translation>すべての拘束を削除</translation>
+      <translation>ジオメトリーと拘束を全て削除しますか？</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2155"/>
       <source>Delete all the constraints in the sketch?</source>
-      <translation type="unfinished">Delete all the constraints in the sketch?</translation>
+      <translation>スケッチ内の拘束を全て削除しますか？</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2284"/>
@@ -2293,12 +2282,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="563"/>
       <source>Change Value</source>
-      <translation type="unfinished">Change Value</translation>
+      <translation>値を変更</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="568"/>
       <source>Toggle Driving/Reference</source>
-      <translation type="unfinished">Toggle Driving/Reference</translation>
+      <translation>駆動/参照を切り替え</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="572"/>
@@ -2313,22 +2302,22 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="576"/>
       <source>Show Constraints</source>
-      <translation type="unfinished">Show Constraints</translation>
+      <translation>拘束を表示</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="578"/>
       <source>Hide Constraints</source>
-      <translation type="unfinished">Hide Constraints</translation>
+      <translation>拘束を非表示</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="595"/>
       <source>Center Sketch</source>
-      <translation type="unfinished">Center Sketch</translation>
+      <translation>スケッチを中央に配置</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="603"/>
       <source>Swap Constraint Names</source>
-      <translation type="unfinished">Swap Constraint Names</translation>
+      <translation>拘束の名前を入れ替え</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="588"/>
@@ -2356,7 +2345,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../EditDatumDialog.cpp" line="121"/>
       <source>Insert Angle</source>
-      <translation type="unfinished">Insert Angle</translation>
+      <translation>角度を挿入</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="123"/>
@@ -2366,28 +2355,28 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../EditDatumDialog.cpp" line="128"/>
       <source>Insert Radius</source>
-      <translation type="unfinished">Insert Radius</translation>
+      <translation>半径を挿入</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="135"/>
       <source>Insert Diameter</source>
-      <translation type="unfinished">Insert Diameter</translation>
+      <translation>直径を挿入</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="142"/>
       <source>Insert Weight</source>
-      <translation type="unfinished">Insert Weight</translation>
+      <translation>重みを挿入</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="148"/>
       <source>Refractive Index Ratio</source>
       <comment>Constraint_SnellsLaw</comment>
-      <translation type="unfinished">Refractive Index Ratio</translation>
+      <translation>屈折率</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="155"/>
       <source>Insert Length</source>
-      <translation type="unfinished">Insert Length</translation>
+      <translation>長さを挿入</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="130"/>
@@ -2418,7 +2407,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="10005"/>
       <source>Refractive Index Ratio</source>
-      <translation type="unfinished">Refractive Index Ratio</translation>
+      <translation>屈折率</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10006"/>
@@ -2544,57 +2533,57 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="78"/>
       <source>Equal Constraint</source>
-      <translation type="unfinished">Equal Constraint</translation>
+      <translation>等値拘束</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="80"/>
       <source>Symmetric Constraint</source>
-      <translation type="unfinished">Symmetric Constraint</translation>
+      <translation>対称拘束</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="84"/>
       <source>Lock Position</source>
-      <translation type="unfinished">Lock Position</translation>
+      <translation>位置をロック</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="86"/>
       <source>Horizontal Dimension</source>
-      <translation type="unfinished">Horizontal Dimension</translation>
+      <translation>水平寸法</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="88"/>
       <source>Vertical Dimension</source>
-      <translation type="unfinished">Vertical Dimension</translation>
+      <translation>垂直寸法</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="90"/>
       <source>Length Dimension</source>
-      <translation type="unfinished">Length Dimension</translation>
+      <translation>長さ寸法</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="92"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>半径寸法</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="94"/>
       <source>Diameter Dimension</source>
-      <translation type="unfinished">Diameter Dimension</translation>
+      <translation>直径寸法</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="96"/>
       <source>Radius or Diameter Dimension</source>
-      <translation type="unfinished">Radius or Diameter Dimension</translation>
+      <translation>半径または直径の寸法</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="98"/>
       <source>Angle Dimension</source>
-      <translation type="unfinished">Angle Dimension</translation>
+      <translation>角度寸法</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="100"/>
-      <source>Construction Geometry</source>
-      <translation>構築ジオメトリ</translation>
+      <source>Toggle Construction Geometry</source>
+      <translation type="unfinished">Toggle Construction Geometry</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="102"/>
@@ -2670,12 +2659,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../InsertDatum.ui" line="23"/>
       <source>Insert Datum</source>
-      <translation type="unfinished">Insert Datum</translation>
+      <translation>データムを挿入</translation>
     </message>
     <message>
       <location filename="../../InsertDatum.ui" line="31"/>
       <source>Datum</source>
-      <translation type="unfinished">Datum</translation>
+      <translation>データム</translation>
     </message>
     <message>
       <location filename="../../InsertDatum.ui" line="48"/>
@@ -2713,7 +2702,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../SketchMirrorDialog.ui" line="14"/>
       <location filename="../../SketchMirrorDialog.ui" line="20"/>
       <source>Select Mirror Axis or Point</source>
-      <translation type="unfinished">Select Mirror Axis or Point</translation>
+      <translation>鏡像化の軸または点を選択</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="26"/>
@@ -2736,12 +2725,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="14"/>
       <source>Choose Orientation</source>
-      <translation type="unfinished">Choose Orientation</translation>
+      <translation>方向を選択</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="20"/>
       <source>Sketch Orientation</source>
-      <translation type="unfinished">Sketch Orientation</translation>
+      <translation>スケッチの向き</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="26"/>
@@ -2779,7 +2768,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="17"/>
       <source>Create Array</source>
-      <translation type="unfinished">Create Array</translation>
+      <translation>配列を作成</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="25"/>
@@ -2834,7 +2823,7 @@ in the copies, so that a change in the original element is reflected on copies</
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="17"/>
       <source>Create Regular Polygon</source>
-      <translation type="unfinished">Create Regular Polygon</translation>
+      <translation>正多角形を作成</translation>
     </message>
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="25"/>
@@ -2863,12 +2852,7 @@ in the copies, so that a change in the original element is reflected on copies</
     <message>
       <location filename="../../SketcherSettings.ui" line="20"/>
       <source>Task Panel Widgets</source>
-      <translation type="unfinished">Task Panel Widgets</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettings.ui" line="26"/>
-      <source>Displays the additional section 'Advanced solver control' to adjust solver settings in the task view</source>
-      <translation type="unfinished">Displays the additional section 'Advanced solver control' to adjust solver settings in the task view</translation>
+      <translation>タスクパネルウィジェット</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="45"/>
@@ -2909,7 +2893,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="148"/>
       <source>Notify about automatic constraint substitutions</source>
-      <translation type="unfinished">Notify about automatic constraint substitutions</translation>
+      <translation>自動的な拘束置き換えを通知</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="164"/>
@@ -2947,27 +2931,37 @@ Requires to re-enter edit mode to take effect.</source>
       <translation type="unfinished">Always add external geometry as construction</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="249"/>
+      <location filename="../../SketcherSettings.ui" line="240"/>
+      <source>Closed loops will automatically generate internal faces which are selectable to be used with other tools</source>
+      <translation type="unfinished">Closed loops will automatically generate internal faces which are selectable to be used with other tools</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="243"/>
+      <source>Generate internal faces</source>
+      <translation type="unfinished">Generate internal faces</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="265"/>
       <source>Dimension Constraint</source>
-      <translation type="unfinished">Dimension Constraint</translation>
+      <translation>寸法拘束</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="276"/>
+      <location filename="../../SketcherSettings.ui" line="292"/>
       <source>Dimension tool diameter/radius mode</source>
-      <translation type="unfinished">Dimension tool diameter/radius mode</translation>
+      <translation>寸法ツール 直径/半径モード</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="283"/>
+      <location filename="../../SketcherSettings.ui" line="299"/>
       <source>Dimensioning constraints</source>
-      <translation type="unfinished">Dimensioning constraints</translation>
+      <translation>寸法拘束</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="290"/>
+      <location filename="../../SketcherSettings.ui" line="306"/>
       <source>Scale upon first constraint</source>
       <translation type="unfinished">Scale upon first constraint</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="297"/>
+      <location filename="../../SketcherSettings.ui" line="313"/>
       <source>Select the mode of automatic geometry scaling upon first dimension:
 'Always': Automatic scaling upon first dimension is always performed.
 'Never': Automatic scaling upon first dimension is never performed.
@@ -2978,19 +2972,24 @@ Requires to re-enter edit mode to take effect.</source>
 'When no scale feature is visible': Automatic scaling upon first dimension is only performed if there are no visible objects in the 3D view.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="316"/>
+      <location filename="../../SketcherSettings.ui" line="332"/>
       <source>Tool Parameters</source>
-      <translation type="unfinished">Tool Parameters</translation>
+      <translation>ツールパラメーター</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="322"/>
+      <location filename="../../SketcherSettings.ui" line="338"/>
       <source>On-view-parameters (OVP)</source>
       <translation type="unfinished">On-view-parameters (OVP)</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="145"/>
       <source>Notifies about automatic constraint substitutions</source>
-      <translation>自動的な拘束代入を通知</translation>
+      <translation>自動的な拘束置き換えを通知</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettings.ui" line="26"/>
+      <source>Displays the additional section 'Advanced Solver Controls' to adjust solver settings in the task view</source>
+      <translation type="unfinished">Displays the additional section 'Advanced Solver Controls' to adjust solver settings in the task view</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="205"/>
@@ -2998,7 +2997,7 @@ Requires to re-enter edit mode to take effect.</source>
       <translation>ポリラインと線のコマンドをグループ化</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="265"/>
+      <location filename="../../SketcherSettings.ui" line="281"/>
       <source>Select the type of dimensioning constraints for your toolbar:
 'Single tool': A single tool for all dimensioning constraints in the toolbar: Distance, Distance X / Y, Angle, Radius. (Others in dropdown)
 'Separated tools': Individual tools for each dimensioning constraint.
@@ -3011,7 +3010,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 この設定はツールバーに対してだけのものです。どの設定を選んでも、全てのツールがメニューとショートカットで常に利用できます。</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="255"/>
+      <location filename="../../SketcherSettings.ui" line="271"/>
       <source>While using the Dimension tool you may choose how to handle circles and arcs:
 'Auto': The tool will apply radius to arcs and diameter to circles.
 'Diameter': The tool will apply diameter to both arcs and circles.
@@ -3022,7 +3021,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 半径：円弧と円の両方に半径を適用します。</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.ui" line="329"/>
+      <location filename="../../SketcherSettings.ui" line="345"/>
       <source>Choose a visibility mode for the On-View-Parameters:
 'Disabled': On-View-Parameters are completely disabled.
 'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
@@ -3070,7 +3069,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
     <message>
       <location filename="../../SketcherSettings.cpp" line="232"/>
       <source>Never</source>
-      <translation>常にしない</translation>
+      <translation>なし</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="233"/>
@@ -3101,171 +3100,177 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
       <translation>表示</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="211"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="248"/>
       <source>Font size</source>
       <translation>フォントサイズ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="166"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="40"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="202"/>
       <source>px</source>
       <translation>px</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="32"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="68"/>
       <source>View scale ratio</source>
       <translation>表示の拡大縮小率</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="188"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="225"/>
       <source>Base length units will not be displayed in constraints or cursor coordinates.
 Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
       <translation>拘束やカーソル座標には基本長さ単位は表示されません。
 「米ヤード・ポンド法」と「建築 US/ユーロ」を除く全ての単位系をサポートしています。</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="134"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="170"/>
       <source>Segments per geometry</source>
       <translation>ジオメトリーあたりのセグメント</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="262"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="299"/>
       <source>Ask for value after creating a dimensional constraint</source>
       <translation>寸法拘束を作成した後に値を入力</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="147"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="183"/>
       <source>Geometry creation "Continue Mode"</source>
       <translation>ジオメトリ作成「続行モード」</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="224"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="261"/>
       <source>Constraint creation "Continue Mode"</source>
       <translation>拘束作成「続行モード」</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="192"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="229"/>
       <source>Hide base length units for supported unit systems</source>
       <translation>サポートされている単位系の基本単位を非表示</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="20"/>
       <source>Sketch Editing</source>
-      <translation type="unfinished">Sketch Editing</translation>
+      <translation>スケッチ編集</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="42"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="37"/>
+      <source>Pixel size used to render constraint symbols</source>
+      <translation type="unfinished">Pixel size used to render constraint symbols</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="78"/>
       <source>Scales the 3D view based on this factor</source>
       <translation type="unfinished">Scales the 3D view based on this factor</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="73"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="109"/>
       <source>The number of polygons used for geometry approximation</source>
-      <translation type="unfinished">The number of polygons used for geometry approximation</translation>
+      <translation>ジオメトリー近似で使用されるポリゴン数</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="92"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="128"/>
       <source>Displays names of dimensional constraints, if they exist</source>
-      <translation type="unfinished">Displays names of dimensional constraints, if they exist</translation>
+      <translation>寸法拘束の名前が存在する場合は表示</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="95"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="131"/>
       <source>Show dimensional constraint name with format</source>
       <translation>フォーマットで寸法拘束名を表示する</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="121"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="157"/>
       <source>%N = %V</source>
       <translation>%N = %V</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="144"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="180"/>
       <source>Keeps the current Sketcher tool active after creating geometry</source>
       <translation type="unfinished">Keeps the current Sketcher tool active after creating geometry</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="163"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="199"/>
       <source>Font size used for labels and constraints</source>
-      <translation type="unfinished">Font size used for labels and constraints</translation>
+      <translation>ラベルと拘束で使用されるフォントサイズ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="221"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="258"/>
       <source>Keeps the current Sketcher constraint tool active after creating geometry</source>
       <translation type="unfinished">Keeps the current Sketcher constraint tool active after creating geometry</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="240"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="277"/>
       <source>Displays cursor position coordinates next to the cursor while editing a sketch</source>
       <translation type="unfinished">Displays cursor position coordinates next to the cursor while editing a sketch</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="243"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="280"/>
       <source>Displays coordinates next to the cursor while editing</source>
       <translation type="unfinished">Displays coordinates next to the cursor while editing</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="259"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="296"/>
       <source>Opens a dialog to input a value for new dimensional constraints after creation</source>
       <translation type="unfinished">Opens a dialog to input a value for new dimensional constraints after creation</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="278"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
       <source>Cursor coordinates will use the system decimals setting instead of the short form</source>
       <translation type="unfinished">Cursor coordinates will use the system decimals setting instead of the short form</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="324"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="361"/>
       <source>Visibility Automation</source>
-      <translation type="unfinished">Visibility Automation</translation>
+      <translation>表示の自動化</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="330"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="367"/>
       <source>Hides all object features that depend on the opened sketch</source>
       <translation type="unfinished">Hides all object features that depend on the opened sketch</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="349"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="386"/>
       <source>Shows source objects which are used for external geometry in the opened sketch</source>
       <translation type="unfinished">Shows source objects which are used for external geometry in the opened sketch</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="368"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="405"/>
       <source>Shows objects the opened sketch is attached to</source>
       <translation type="unfinished">Shows objects the opened sketch is attached to</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="387"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="424"/>
       <source>Restores the camera position after closing the sketch</source>
-      <translation type="unfinished">Restores the camera position after closing the sketch</translation>
+      <translation>スケッチを閉じた後にカメラ位置を復元</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="406"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="443"/>
       <source>Forces the camera to an orthographic view when editing a sketch.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation type="unfinished">Forces the camera to an orthographic view when editing a sketch.
-Works only when "Restore camera position after editing" is enabled.</translation>
+      <translation>スケッチを編集時にカメラを強制的に正投影表示にします。
+「編集後にカメラ位置を復元」が有効な場合にのみ動作します。</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="426"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="463"/>
       <source>Opens a sketch in section view mode, showing only objects behind the sketch plane</source>
-      <translation type="unfinished">Opens a sketch in section view mode, showing only objects behind the sketch plane</translation>
+      <translation>スケッチの背後にあるオブジェクトのみを表示する断面ビューモードでスケッチを開く</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="429"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="466"/>
       <source>Open sketch in section view mode</source>
-      <translation type="unfinished">Open sketch in section view mode</translation>
+      <translation>断面ビューモードでスケッチを開く</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="470"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="507"/>
       <source>Applies current visibility automation settings to all sketches in the open documents</source>
       <translation type="unfinished">Applies current visibility automation settings to all sketches in the open documents</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="473"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="510"/>
       <source>Apply to Existing Sketches</source>
-      <translation type="unfinished">Apply to Existing Sketches</translation>
+      <translation>既存のスケッチに適用</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="111"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="147"/>
       <source>The format of the dimensional constraint string presentation.
 Defaults to: %N = %V
 
@@ -3278,47 +3283,52 @@ Defaults to: %N = %V
 %V - 寸法値</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="281"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="27"/>
+      <source>Constraint symbol size</source>
+      <translation type="unfinished">Constraint symbol size</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="318"/>
       <source>Use system decimals setting for cursor coordinates</source>
       <translation>カーソル座標にシステムの小数点設定を使用</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="333"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="370"/>
       <source>Hide all objects that depend on the sketch</source>
       <translation>スケッチに依存している全てのオブジェクトを非表示</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="352"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="389"/>
       <source>Show objects used for external geometry</source>
       <translation>外部ジオメトリで使用されているオブジェクトを表示</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="371"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
       <source>Show objects that the sketch is attached to</source>
       <translation>スケッチがアタッチされているオブジェクトを表示</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="390"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="427"/>
       <source>Restore camera position after editing</source>
       <translation>編集後にカメラ位置を元に戻す</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="410"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="447"/>
       <source>Force orthographic camera when entering edit</source>
       <translation>編集開始時に正投影カメラを設定</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="451"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="488"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>注意: これらの設定は新しいスケッチへ適用されるデフォルトです。動作は各スケッチごとにビュータブのプロパティーとして記憶されます。</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="514"/>
+      <location filename="../../SketcherSettings.cpp" line="516"/>
       <source>Unexpected C++ exception</source>
       <translation>予期しない C++ 例外</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="517"/>
+      <location filename="../../SketcherSettings.cpp" line="519"/>
       <source>Sketcher</source>
       <translation>スケッチャー</translation>
     </message>
@@ -3401,14 +3411,9 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation type="unfinished">No reversed external geometry arcs were found.</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="353"/>
-      <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).</source>
-      <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="374"/>
-      <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-      <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
+      <location filename="../../TaskSketcherValidation.cpp" line="391"/>
+      <source>Delete Constraints to External Geometry</source>
+      <translation type="unfinished">Delete Constraints to External Geometry</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="392"/>
@@ -3427,7 +3432,16 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>方向のロック拘束</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="391"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="353"/>
+      <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view).</source>
+      <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view).</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherValidation.cpp" line="374"/>
+      <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view). Note that for all future constraints, the locking still defaults to ON.</source>
+      <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in the report view (menu View → Panels → Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
+    </message>
+    <message>
       <location filename="../../TaskSketcherValidation.cpp" line="410"/>
       <source>Delete constraints to external geom.</source>
       <translation>外部ジオメトリへの拘束を削除</translation>
@@ -3463,12 +3477,12 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="40"/>
       <source>Toggles the chosen constraint filters</source>
-      <translation type="unfinished">Toggles the chosen constraint filters</translation>
+      <translation>選択した拘束フィルターを切り替え</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="59"/>
       <source>Filters constraints by type</source>
-      <translation type="unfinished">Filters constraints by type</translation>
+      <translation>拘束を種類でフィルター</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="65"/>
@@ -3498,12 +3512,12 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="850"/>
       <source>Auto remove redundant constraints</source>
-      <translation type="unfinished">Auto remove redundant constraints</translation>
+      <translation>冗長な拘束を自動削除</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="851"/>
       <source>Display only filtered constraints</source>
-      <translation type="unfinished">Display only filtered constraints</translation>
+      <translation>フィルターされた拘束のみを表示</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="852"/>
@@ -3516,12 +3530,12 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>内部配置を非表示 (ウィジェット内)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1533"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1538"/>
       <source>Error</source>
       <translation>エラー</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1533"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1538"/>
       <source>Impossible to update visibility tracking:</source>
       <translation>表示トラッキングを更新できません:</translation>
     </message>
@@ -3531,12 +3545,12 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="40"/>
       <source>Toggles the chosen element filters</source>
-      <translation type="unfinished">Toggles the chosen element filters</translation>
+      <translation>選択した要素フィルターを切り替え</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="59"/>
       <source>Filters elements by type</source>
-      <translation type="unfinished">Filters elements by type</translation>
+      <translation>要素を種類でフィルター</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="65"/>
@@ -3549,16 +3563,16 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>設定</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1886"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1893"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1900"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1907"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1914"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1921"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1928"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1935"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1942"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1948"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1891"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1898"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1905"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1912"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1919"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1926"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1933"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1940"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1947"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1953"/>
       <source>Construction</source>
       <translation>構築</translation>
     </message>
@@ -3568,113 +3582,113 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation>要素</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1884"/>
       <location filename="../../TaskSketcherElements.cpp" line="1889"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2025"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2026"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1894"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2030"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2031"/>
       <source>Point</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1887"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1894"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1901"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1908"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1915"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1922"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1929"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1936"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1943"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1949"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1892"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1899"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1906"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1913"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1920"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1927"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1934"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1941"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1948"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1954"/>
       <source>Internal</source>
       <translation>内部</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1891"/>
       <location filename="../../TaskSketcherElements.cpp" line="1896"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2028"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2029"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1901"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2033"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2034"/>
       <source>Line</source>
       <translation>直線</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1898"/>
       <location filename="../../TaskSketcherElements.cpp" line="1903"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2031"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2032"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1908"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2036"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2037"/>
       <source>Arc</source>
       <translation>円弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1905"/>
       <location filename="../../TaskSketcherElements.cpp" line="1910"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2034"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2035"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1915"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2039"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2040"/>
       <source>Circle</source>
       <translation>円</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1912"/>
       <location filename="../../TaskSketcherElements.cpp" line="1917"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2037"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2038"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1922"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2042"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2043"/>
       <source>Ellipse</source>
       <translation>楕円</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1919"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2041"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1924"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2046"/>
       <source>Elliptical Arc</source>
       <translation>楕円弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1924"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2042"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1929"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2047"/>
       <source>Elliptical arc</source>
-      <translation type="unfinished">Elliptical arc</translation>
+      <translation>楕円形の円弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1926"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2045"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1931"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2050"/>
       <source>Hyperbolic Arc</source>
       <translation>双曲線の円弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1931"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2046"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1936"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2051"/>
       <source>Hyperbolic arc</source>
-      <translation type="unfinished">Hyperbolic arc</translation>
+      <translation>双曲線の円弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1933"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2049"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1938"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2054"/>
       <source>Parabolic Arc</source>
       <translation>放物線の円弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1938"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2050"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1943"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2055"/>
       <source>Parabolic arc</source>
-      <translation type="unfinished">Parabolic arc</translation>
+      <translation>放物線の円弧</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1940"/>
       <location filename="../../TaskSketcherElements.cpp" line="1945"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2052"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2053"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1950"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2057"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2058"/>
       <source>B-spline</source>
       <translation>Bスプライン</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1946"/>
       <location filename="../../TaskSketcherElements.cpp" line="1951"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2054"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2055"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1956"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2059"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2060"/>
       <source>Other</source>
       <translation>その他</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2095"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2100"/>
       <source>Extended information</source>
       <translation>拡張情報</translation>
     </message>
@@ -3694,7 +3708,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="46"/>
       <source>Sketch Edit</source>
-      <translation type="unfinished">Sketch Edit</translation>
+      <translation>スケッチ編集</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="68"/>
@@ -3719,7 +3733,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="118"/>
       <source>Auto-update</source>
-      <translation type="unfinished">Auto-update</translation>
+      <translation>自動更新</translation>
     </message>
   </context>
   <context>
@@ -3727,12 +3741,12 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="14"/>
       <source>Sketch Validation</source>
-      <translation type="unfinished">Sketch Validation</translation>
+      <translation>スケッチの検証</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
       <source>Open and Non-Manifold Vertices</source>
-      <translation type="unfinished">Open and Non-Manifold Vertices</translation>
+      <translation>開放頂点と非多様体頂点</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="38"/>
@@ -3742,17 +3756,17 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="41"/>
       <source>Highlight Troublesome Vertices</source>
-      <translation type="unfinished">Highlight Troublesome Vertices</translation>
+      <translation>問題のある頂点を強調表示</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="51"/>
       <source>Fixes missing coincidences by adding extra coincident constraints</source>
-      <translation type="unfinished">Fixes missing coincidences by adding extra coincident constraints</translation>
+      <translation>追加の一致拘束を追加することにより、不足している一致点を修正</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="54"/>
       <source>Missing Coincidences</source>
-      <translation type="unfinished">Missing Coincidences</translation>
+      <translation>一致点の不足</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="60"/>
@@ -3767,7 +3781,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="74"/>
       <source>Ignores construction geometry in the search</source>
-      <translation type="unfinished">Ignores construction geometry in the search</translation>
+      <translation>検索で補助ジオメトリーを無視</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="77"/>
@@ -3799,27 +3813,27 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="108"/>
       <source>Invalid Constraints</source>
-      <translation type="unfinished">Invalid Constraints</translation>
+      <translation>無効な拘束</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="137"/>
       <source>Delete Constraints Linked to External Geometry</source>
-      <translation type="unfinished">Delete Constraints Linked to External Geometry</translation>
+      <translation>外部ジオメトリーにリンクされている拘束を削除</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="147"/>
       <source>Degenerate Geometry</source>
-      <translation type="unfinished">Degenerate Geometry</translation>
+      <translation>縮退したジオメトリー</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="176"/>
       <source>Reversed External Geometry</source>
-      <translation type="unfinished">Reversed External Geometry</translation>
+      <translation>反転された外部ジオメトリー</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="195"/>
       <source>Swap Endpoints in Constraints</source>
-      <translation type="unfinished">Swap Endpoints in Constraints</translation>
+      <translation>拘束内の端点を交換</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="205"/>
@@ -3885,119 +3899,119 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3016"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3290"/>
       <source>A dialog is already open in the task panel</source>
       <translation>タスクパネルで既にダイアログが開かれています</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3038"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3312"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>スケッチが不正で、編集できません。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3196"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3470"/>
       <source>The following constraint is partially redundant:</source>
       <translation>以下の拘束は一部が冗長です:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3197"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3471"/>
       <source>The following constraints are partially redundant:</source>
       <translation>以下の拘束は一部が冗長です:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2999"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3273"/>
       <source>Edit Sketch</source>
-      <translation type="unfinished">Edit Sketch</translation>
+      <translation>スケッチを編集</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3017"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3291"/>
       <source>Close this dialog?</source>
-      <translation type="unfinished">Close this dialog?</translation>
+      <translation>このダイアログを閉じますか？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3036"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3310"/>
       <source>Invalid Sketch</source>
-      <translation type="unfinished">Invalid Sketch</translation>
+      <translation>無効なスケッチ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3037"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3311"/>
       <source>Open the sketch validation tool?</source>
-      <translation type="unfinished">Open the sketch validation tool?</translation>
+      <translation>スケッチ検証ツールを開きますか？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3182"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3456"/>
       <source>Remove the following constraint:</source>
-      <translation type="unfinished">Remove the following constraint:</translation>
+      <translation>以下の拘束を削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3183"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3457"/>
       <source>Remove at least one of the following constraints:</source>
-      <translation type="unfinished">Remove at least one of the following constraints:</translation>
+      <translation>以下の拘束から少なくとも1つを削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3189"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3463"/>
       <source>Remove the following redundant constraint:</source>
-      <translation type="unfinished">Remove the following redundant constraint:</translation>
+      <translation>以下の冗長な拘束を削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3190"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3464"/>
       <source>Remove the following redundant constraints:</source>
-      <translation type="unfinished">Remove the following redundant constraints:</translation>
+      <translation>以下の冗長な拘束を削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3203"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3477"/>
       <source>Remove the following malformed constraint:</source>
-      <translation type="unfinished">Remove the following malformed constraint:</translation>
+      <translation>以下の不正な拘束を削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3204"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3478"/>
       <source>Remove the following malformed constraints:</source>
-      <translation type="unfinished">Remove the following malformed constraints:</translation>
+      <translation>以下の不正な拘束を削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3262"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3536"/>
       <source>Empty sketch</source>
       <translation>スケッチが空です</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3267"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3541"/>
       <source>Over-constrained:</source>
       <translation>過剰拘束:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3273"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3547"/>
       <source>Malformed constraints:</source>
       <translation>不正な拘束:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3281"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3555"/>
       <source>Redundant constraints:</source>
       <translation>冗長な拘束:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3287"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3561"/>
       <source>Partially redundant:</source>
       <translation>部分的に冗長:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3294"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3568"/>
       <source>Solver failed to converge</source>
       <translation>ソルバーの収束に失敗</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3300"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3574"/>
       <source>Under-constrained:</source>
       <translation>未拘束:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3302"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3576"/>
       <source>%n Degrees of Freedom</source>
-      <translation type="unfinished">
-        <numerusform>%n Degrees of Freedom</numerusform>
+      <translation>
+        <numerusform>%n 自由度</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3306"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3580"/>
       <source>Fully constrained</source>
       <translation>完全拘束</translation>
     </message>
@@ -4066,19 +4080,6 @@ This is done by analyzing the sketch geometries and constraints.</source>
     </message>
   </context>
   <context>
-    <name>Sketcher_CreateBSpline</name>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="889"/>
-      <source>By control points</source>
-      <translation>制御点を使用</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="890"/>
-      <source>By knots</source>
-      <translation>ノットを使用</translation>
-    </message>
-  </context>
-  <context>
     <name>Sketcher_CreateCircle</name>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="399"/>
@@ -4106,12 +4107,12 @@ This is done by analyzing the sketch geometries and constraints.</source>
     <message>
       <location filename="../../Command.cpp" line="627"/>
       <source>The document does not contain a sketch</source>
-      <translation type="unfinished">The document does not contain a sketch</translation>
+      <translation>ドキュメントにスケッチが存在しません。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="643"/>
-      <source>Select sketch</source>
-      <translation>スケッチを選択</translation>
+      <source>Select Sketch</source>
+      <translation type="unfinished">Select Sketch</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="645"/>
@@ -4140,8 +4141,8 @@ This is done by analyzing the sketch geometries and constraints.</source>
     </message>
     <message>
       <location filename="../../Command.cpp" line="728"/>
-      <source>Sketch attachment</source>
-      <translation>スケッチのアタッチ</translation>
+      <source>Sketch Attachment</source>
+      <translation type="unfinished">Sketch Attachment</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="730"/>
@@ -4180,8 +4181,8 @@ Select the method to attach this sketch to selected objects.</source>
     <name>Sketcher_NewSketch</name>
     <message>
       <location filename="../../Command.cpp" line="214"/>
-      <source>Sketch attachment</source>
-      <translation>スケッチのアタッチ</translation>
+      <source>Sketch Attachment</source>
+      <translation type="unfinished">Sketch Attachment</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
@@ -4193,15 +4194,14 @@ Select the method to attach this sketch to selected objects.</source>
     <name>Sketcher_ReorientSketch</name>
     <message>
       <location filename="../../Command.cpp" line="457"/>
-      <source>Sketch has support</source>
-      <translation>スケッチには支持オブジェクトが設定されています</translation>
+      <source>Sketch Has Support</source>
+      <translation type="unfinished">Sketch Has Support</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="458"/>
       <source>Sketch with a support face cannot be reoriented.
 Detach it from the support?</source>
-      <translation type="unfinished">Sketch with a support face cannot be reoriented.
-Detach it from the support?</translation>
+      <translation>サポート面が設定されているスケッチでは方向を変更できません。スケッチとサポートを切り離しますか？</translation>
     </message>
   </context>
   <context>
@@ -4297,12 +4297,12 @@ BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</translat
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="72"/>
       <source>DogLeg Gauss step</source>
-      <translation type="unfinished">DogLeg Gauss step</translation>
+      <translation>ドッグレッグ法 ガウスステップ</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="117"/>
       <source>Maximum iterations</source>
-      <translation type="unfinished">Maximum iterations</translation>
+      <translation>最大反復数</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="150"/>
@@ -4322,12 +4322,12 @@ BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</translat
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="192"/>
       <source>Convergence</source>
-      <translation type="unfinished">Convergence</translation>
+      <translation>収束</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="301"/>
       <source>QR algorithm</source>
-      <translation type="unfinished">QR algorithm</translation>
+      <translation>QR アルゴリズム</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="308"/>
@@ -4396,12 +4396,12 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="592"/>
       <source>Console debug mode</source>
-      <translation type="unfinished">Console debug mode</translation>
+      <translation>コンソールデバッグモード</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="622"/>
       <source>Iteration level</source>
-      <translation type="unfinished">Iteration level</translation>
+      <translation>反復レベル</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="380"/>
@@ -4477,7 +4477,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3246"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3520"/>
       <source>and %1 more</source>
       <translation>%1 以上</translation>
     </message>
@@ -4502,12 +4502,12 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Edit Mode</source>
-      <translation type="unfinished">Edit Mode</translation>
+      <translation>編集モード</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Geometries</source>
-      <translation type="unfinished">Geometries</translation>
+      <translation>ジオメトリー</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -4522,7 +4522,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>B-Spline Tools</source>
-      <translation type="unfinished">B-Spline Tools</translation>
+      <translation>B-スプラインツール</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
@@ -4532,12 +4532,12 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Virtual Space</source>
-      <translation type="unfinished">Virtual Space</translation>
+      <translation>仮想スペース</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Sketcher Edit Tools</source>
-      <translation type="unfinished">Sketcher Edit Tools</translation>
+      <translation>スケッチャー編集ツール</translation>
     </message>
   </context>
   <context>
@@ -4580,51 +4580,51 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="20"/>
       <source>Grid Settings</source>
-      <translation type="unfinished">Grid Settings</translation>
+      <translation>グリッド設定</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="35"/>
       <source>Displays a grid in the active sketch</source>
-      <translation type="unfinished">Displays a grid in the active sketch</translation>
+      <translation>アクティブなスケッチにグリッドを表示</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="57"/>
       <source>Automatically adapts grid spacing based on the viewer dimensions</source>
-      <translation type="unfinished">Automatically adapts grid spacing based on the viewer dimensions</translation>
+      <translation>ビューアー寸法に基づいてグリッド間隔を自動で調整</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="60"/>
       <source>Grid auto-spacing</source>
-      <translation type="unfinished">Grid auto-spacing</translation>
+      <translation>グリッド間隔を自動調整</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="83"/>
       <source>Distance between two subsequent grid lines.
 If 'Grid auto-apacing' is enabled, it will be used as the base value</source>
-      <translation type="unfinished">Distance between two subsequent grid lines.
-If 'Grid auto-apacing' is enabled, it will be used as the base value</translation>
+      <translation>2本のグリッド線の間隔。
+「グリッド間隔を自動調整」が有効の場合、基本値として使用されます。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="125"/>
       <source>While using 'Grid auto-spacing', this sets a pixel threshold for grid spacing.
 The grid spacing changes if it becomes smaller than the specified pixel size.</source>
-      <translation type="unfinished">While using 'Grid auto-spacing', this sets a pixel threshold for grid spacing.
-The grid spacing changes if it becomes smaller than the specified pixel size.</translation>
+      <translation>「グリッド間隔を自動調整」を使用すると、グリッド間隔にピクセル単位のしきい値が設定されます。
+指定されたピクセルサイズより小さくなるとグリッド間隔が変化します。</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="154"/>
       <source>Grid Display</source>
-      <translation type="unfinished">Grid Display</translation>
+      <translation>グリッド表示</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="166"/>
       <source>Minor Grid Lines</source>
-      <translation type="unfinished">Minor Grid Lines</translation>
+      <translation>補助グリッド線</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="188"/>
       <source>Line pattern used for grid lines</source>
-      <translation type="unfinished">Line pattern used for grid lines</translation>
+      <translation>グリッド線に使用される線種</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="198"/>
@@ -4646,7 +4646,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="272"/>
       <source>Major Grid Lines</source>
-      <translation type="unfinished">Major Grid Lines</translation>
+      <translation>主グリッド線</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="284"/>
@@ -4682,17 +4682,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>スケッチに一部が冗長な拘束があります!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9958"/>
+      <location filename="../../../App/SketchObject.cpp" line="9969"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
       <translation>ジオメトリープロパティーの管理されていない変更は無効な拘束インデックスを引き起こします。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="9989"/>
+      <location filename="../../../App/SketchObject.cpp" line="10000"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>拘束プロパティーの管理されていない変更は無効な拘束インデックスを引き起こします。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10612"/>
+      <location filename="../../../App/SketchObject.cpp" line="10623"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>放物線がバージョン変換されました。変換されたファイルは以前のバージョンのFreeCADでは開けません!!
@@ -4706,10 +4706,10 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="254"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="333"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="256"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="210"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="216"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="377"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="649"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="719"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="661"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="731"/>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="187"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="213"/>
       <location filename="../../DrawSketchHandlerEllipse.h" line="227"/>
@@ -4720,13 +4720,13 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <location filename="../../DrawSketchHandlerLineSet.h" line="500"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="105"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="469"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="159"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="121"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="504"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="168"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="140"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
       <location filename="../../DrawSketchHandlerSplitting.h" line="165"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="150"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="131"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="141"/>
       <location filename="../../DrawSketchHandlerTrimming.h" line="187"/>
       <source>Error</source>
       <translation>エラー</translation>
@@ -4758,7 +4758,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>選択したジオメトリが有効ではありません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectPyImp.cpp" line="414"/>
+      <location filename="../../../App/SketchObjectPyImp.cpp" line="421"/>
       <source>The constraint has invalid index information and is malformed.</source>
       <translation>この拘束には無効なインデックス情報が含まれており、形式が正しくありません。</translation>
     </message>
@@ -4779,7 +4779,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../CommandConstraints.cpp" line="775"/>
       <source>Invalid constraint</source>
-      <translation type="unfinished">Invalid constraint</translation>
+      <translation>無効な拘束</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="501"/>
@@ -4812,12 +4812,12 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Bスプラインの作成エラー</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="650"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="662"/>
       <source>Error deleting last pole/knot</source>
       <translation>最後の極/ノットの削除でエラー</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="720"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="732"/>
       <source>Error adding B-spline pole/knot</source>
       <translation>Bスプラインの極/ノットの追加でエラー</translation>
     </message>
@@ -4854,17 +4854,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="298"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="215"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="221"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="218"/>
       <location filename="../../DrawSketchHandlerEllipse.h" line="232"/>
       <location filename="../../DrawSketchHandlerLine.h" line="143"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="137"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="474"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="164"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="128"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="509"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="147"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="191"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="155"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="136"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="146"/>
       <source>Tool execution aborted</source>
       <translation>ツールの実行が中止されました。</translation>
     </message>
@@ -4879,7 +4879,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>多角形を追加できませんでした。</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="470"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="505"/>
       <source>Failed to add box</source>
       <translation>長方形を追加できませんでした。</translation>
     </message>
@@ -4906,32 +4906,42 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>値エラー</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="950"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="970"/>
       <source>Autoconstraints cause redundancy. Removing them</source>
       <translation>自動拘束によって冗長が生じました。削除します。</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="969"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="989"/>
       <source>Redundant constraint is not an autoconstraint. No autoconstraints or additional constraints were added. Please report!</source>
       <translation>冗長拘束は自動拘束によるものではありません。非自動拘束または追加拘束が追加されました。問題を報告してください！</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="1017"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="1037"/>
       <source>Unexpected Redundancy/Conflicting constraint. Check the constraints and autoconstraints of this operation.</source>
       <translation>予期しない冗長/矛盾した拘束が起きました。この操作での拘束と自動拘束を確認してください。</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1144"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="393"/>
+      <source>Offset Error</source>
+      <translation type="unfinished">Offset Error</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerOffset.h" line="394"/>
+      <source>Offset could not be created.</source>
+      <translation type="unfinished">Offset could not be created.</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1159"/>
       <source>Invalid Value</source>
       <translation>無効な値です。</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1145"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1160"/>
       <source>Offset value can't be 0.</source>
       <translation>オフセット値は 0 にすることはできません。</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="211"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="217"/>
       <source>Failed to add arc slot</source>
       <translation>円弧状の長円形を追加できませんでした。</translation>
     </message>
@@ -4941,17 +4951,22 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>楕円を追加できませんでした。</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="160"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="169"/>
       <source>Failed to rotate</source>
       <translation>回転に失敗しました。</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="122"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="116"/>
+      <source>Invalid scale factor. Scale factor must be a positive number.</source>
+      <translation type="unfinished">Invalid scale factor. Scale factor must be a positive number.</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerScale.h" line="141"/>
       <source>Failed to scale</source>
       <translation>拡大縮小に失敗しました。</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="132"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="142"/>
       <source>Failed to translate</source>
       <translation>移動に失敗しました。</translation>
     </message>
@@ -4989,7 +5004,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../CommandConstraints.cpp" line="1405"/>
       <source>Dimension tools</source>
-      <translation type="unfinished">Dimension tools</translation>
+      <translation>寸法ツール</translation>
     </message>
   </context>
   <context>
@@ -5104,17 +5119,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
   <context>
     <name>TaskSketcherTool_c1_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1121"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1136"/>
       <source>Delete original geometries (U)</source>
       <translation>元のジオメトリを削除 (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="526"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="537"/>
       <source>Apply equal constraints</source>
       <translation>等値拘束を適用</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="530"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="541"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>このオプションが選択されている場合、寸法拘束は操作から除外されます。
@@ -5124,7 +5139,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c2_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1125"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1140"/>
       <source>Add offset constraint (J)</source>
       <translation>オフセット拘束を追加(J)</translation>
     </message>
@@ -5132,32 +5147,32 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1786"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1821"/>
       <source>Corner, width, height</source>
       <translation>角、幅、高さ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1787"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1822"/>
       <source>Center, width, height</source>
       <translation>中心、幅、高さ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1788"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1823"/>
       <source>3 corners</source>
       <translation>3角</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1789"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1824"/>
       <source>Center, 2 corners</source>
       <translation>中心、2角</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1794"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1829"/>
       <source>Rounded corners (U)</source>
       <translation>角の丸め(U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1797"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1832"/>
       <source>Create a rectangle with rounded corners.</source>
       <translation>角丸の長方形を作成</translation>
     </message>
@@ -5165,12 +5180,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c2_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1803"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1838"/>
       <source>Frame (J)</source>
       <translation>フレーム(J)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="1806"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="1841"/>
       <source>Create two rectangles with a constant offset.</source>
       <translation>一定のオフセットで 2 つの長方形を作成</translation>
     </message>
@@ -5218,12 +5233,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="20"/>
       <source>Working Colors</source>
-      <translation type="unfinished">Working Colors</translation>
+      <translation>作業中の色</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="114"/>
       <source>Color of the crosshair cursor</source>
-      <translation type="unfinished">Color of the crosshair cursor</translation>
+      <translation>十字カーソルの色</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="139"/>
@@ -5239,11 +5254,6 @@ Instead equal constraints are applied between the original objects and their cop
       <location filename="../../SketcherSettingsAppearance.ui" line="164"/>
       <source>Unconstrained</source>
       <translation>非拘束</translation>
-    </message>
-    <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="171"/>
-      <source>Pattern</source>
-      <translation>パターン</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="178"/>
@@ -5316,11 +5326,6 @@ Instead equal constraints are applied between the original objects and their cop
       <translation>外部参照ジオメトリー</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="522"/>
-      <source>Line pattern of external edges</source>
-      <translation type="unfinished">Line pattern of external edges</translation>
-    </message>
-    <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="532"/>
       <source>Width of external edges</source>
       <translation type="unfinished">Width of external edges</translation>
@@ -5378,42 +5383,57 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="774"/>
       <source>Reference constraints</source>
-      <translation type="unfinished">Reference constraints</translation>
+      <translation>参照拘束</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="828"/>
       <source>Deactivated constraints</source>
-      <translation type="unfinished">Deactivated constraints</translation>
+      <translation>非アクティブな拘束</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="873"/>
       <source>Colors Outside Sketcher</source>
-      <translation type="unfinished">Colors Outside Sketcher</translation>
+      <translation>スケッチャー外部の色</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="881"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="879"/>
       <source>Vertex</source>
       <translation>頂点</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="888"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="886"/>
       <source>Color of vertices outside edit mode</source>
       <translation>編集モード外での頂点の色</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="927"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="925"/>
       <source>Edge</source>
       <translation>エッジ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="934"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="932"/>
       <source>Color of edges outside edit mode</source>
       <translation>編集モード外でのエッジの色</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="952"/>
+      <source>Face</source>
+      <translation>面</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="965"/>
+      <source>Color of internal faces formed by intersecting geometry or closed loops in the sketch</source>
+      <translation type="unfinished">Color of internal faces formed by intersecting geometry or closed loops in the sketch</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="198"/>
       <source>Geometry</source>
       <translation>ジオメトリ</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="171"/>
+      <source>Line Type</source>
+      <translation type="unfinished">Line Type</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="295"/>
@@ -5429,6 +5449,11 @@ Instead equal constraints are applied between the original objects and their cop
       <location filename="../../SketcherSettingsAppearance.ui" line="502"/>
       <source>Color of external geometry in edit mode</source>
       <translation>編集モードでの外部ジオメトリの色</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="522"/>
+      <source>Line pattern of external reference edges</source>
+      <translation type="unfinished">Line pattern of external reference edges</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="683"/>
@@ -5469,7 +5494,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_p4_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="549"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="560"/>
       <source>Copies (+'U'/ -'J')</source>
       <translation>コピー (+'U'/ -'J')</translation>
     </message>
@@ -5482,7 +5507,7 @@ Instead equal constraints are applied between the original objects and their cop
       <translation>辺 (+'U'/ -'J')</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="930"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="952"/>
       <source>Degree (+'U'/ -'J')</source>
       <translation>次数 (+'U'/ -'J')</translation>
     </message>
@@ -5490,7 +5515,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="515"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="588"/>
       <source>Keep original geometries (U)</source>
       <translation>元のジオメトリを保持 (U)</translation>
     </message>
@@ -5505,13 +5530,13 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../CommandConstraints.cpp" line="1478"/>
       <source>Constrain tools</source>
-      <translation type="unfinished">Constrain tools</translation>
+      <translation>拘束ツール</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherTool_p3_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="535"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="548"/>
       <source>Copies (+'U'/-'J')</source>
       <translation>コピー (+'U'/ -'J')</translation>
     </message>
@@ -5519,7 +5544,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_p5_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="538"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="551"/>
       <source>Rows (+'R'/-'F')</source>
       <translation>行 (+'R'/-'F')</translation>
     </message>
@@ -5527,12 +5552,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="513"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="516"/>
       <source>Center</source>
       <translation>中心</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="514"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="517"/>
       <source>3 rim points</source>
       <translation>円上の3点</translation>
     </message>
@@ -5540,12 +5565,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_CreateArcSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="578"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="584"/>
       <source>Arc ends</source>
       <translation>円弧状の終端</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="579"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="585"/>
       <source>Flat ends</source>
       <translation>平坦な終端</translation>
     </message>
@@ -5566,12 +5591,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_fillet</name>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="450"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="458"/>
       <source>Preserve corner (U)</source>
       <translation>角を維持(U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="453"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="461"/>
       <source>Preserves intersection point and most constraints</source>
       <translation>交差点とほとんどの拘束を維持</translation>
     </message>
@@ -5597,12 +5622,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>Sketcher_CreateOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1108"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1123"/>
       <source>Arc</source>
       <translation>円弧</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1109"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1124"/>
       <source>Intersection</source>
       <translation>共通集合</translation>
     </message>
@@ -5616,27 +5641,19 @@ Instead equal constraints are applied between the original objects and their cop
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_c2_symmetry</name>
-    <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="276"/>
-      <source>Create Symmetry Constraints (J)</source>
-      <translation>対称拘束を作成(J)</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskSketcherTool_c1_bspline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="887"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="908"/>
       <source>Press F to undo last point.</source>
       <translation>最後の点を元に戻すには F キーを押してください。</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="895"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="917"/>
       <source>Periodic (R)</source>
       <translation>周期的 (R)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="898"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="920"/>
       <source>Create a periodic B-spline.</source>
       <translation>周期的なBスプラインを作成</translation>
     </message>
@@ -5662,12 +5679,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="507"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="520"/>
       <source>Apply equal constraints</source>
       <translation>等値拘束を適用</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="510"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="523"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>このオプションが選択されている場合、寸法拘束は操作から除外されます。
@@ -5679,12 +5696,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../Command.cpp" line="157"/>
       <source>New Sketch</source>
-      <translation type="unfinished">New Sketch</translation>
+      <translation>新しいスケッチ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="158"/>
       <source>Creates a new sketch</source>
-      <translation type="unfinished">Creates a new sketch</translation>
+      <translation>新しいスケッチを作成</translation>
     </message>
   </context>
   <context>
@@ -5692,12 +5709,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../Command.cpp" line="336"/>
       <source>Edit Sketch</source>
-      <translation type="unfinished">Edit Sketch</translation>
+      <translation>スケッチを編集</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="337"/>
       <source>Opens the selected sketch for editing</source>
-      <translation type="unfinished">Opens the selected sketch for editing</translation>
+      <translation>選択したスケッチを編集用に開く</translation>
     </message>
   </context>
   <context>
@@ -5705,12 +5722,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../Command.cpp" line="367"/>
       <source>Leave Sketch</source>
-      <translation type="unfinished">Leave Sketch</translation>
+      <translation>スケッチを終了</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="368"/>
       <source>Exits the active sketch</source>
-      <translation type="unfinished">Exits the active sketch</translation>
+      <translation>アクティブなスケッチを終了</translation>
     </message>
   </context>
   <context>
@@ -5718,12 +5735,12 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../Command.cpp" line="405"/>
       <source>Stop Operation</source>
-      <translation type="unfinished">Stop Operation</translation>
+      <translation>操作を停止</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="406"/>
       <source>Stops the active operation while in edit mode</source>
-      <translation type="unfinished">Stops the active operation while in edit mode</translation>
+      <translation>編集モード中にアクティブな操作を停止</translation>
     </message>
   </context>
   <context>
@@ -5731,14 +5748,14 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>Reorient Sketch</source>
-      <translation type="unfinished">Reorient Sketch</translation>
+      <translation>スケッチの方向を変更</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="442"/>
       <source>Places the selected sketch on one of the global coordinate planes.
 This will clear the AttachmentSupport property.</source>
-      <translation type="unfinished">Places the selected sketch on one of the global coordinate planes.
-This will clear the AttachmentSupport property.</translation>
+      <translation>選択したスケッチをグローバル座標面の1つの上に配置します。
+存在する場合はAttachmentSupportプロパティーが消去されます。</translation>
     </message>
   </context>
   <context>
@@ -5746,12 +5763,12 @@ This will clear the AttachmentSupport property.</translation>
     <message>
       <location filename="../../Command.cpp" line="800"/>
       <source>Align View to Sketch</source>
-      <translation type="unfinished">Align View to Sketch</translation>
+      <translation>視点をスケッチに合わせる</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="801"/>
       <source>Aligns the camera orientation perpendicular to the active sketch plane</source>
-      <translation type="unfinished">Aligns the camera orientation perpendicular to the active sketch plane</translation>
+      <translation>カメラ方向をアクティブなスケッチ面に垂直に揃えます。</translation>
     </message>
   </context>
   <context>
@@ -5759,12 +5776,12 @@ This will clear the AttachmentSupport property.</translation>
     <message>
       <location filename="../../Command.cpp" line="1101"/>
       <source>Toggle Section View</source>
-      <translation type="unfinished">Toggle Section View</translation>
+      <translation>断面ビューの切り替え</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1102"/>
       <source>Toggles between section view and full view</source>
-      <translation type="unfinished">Toggles between section view and full view</translation>
+      <translation>断面表示と全体表示を切り替え</translation>
     </message>
   </context>
   <context>
@@ -5772,22 +5789,22 @@ This will clear the AttachmentSupport property.</translation>
     <message>
       <location filename="../../Command.cpp" line="1175"/>
       <source>Display grid</source>
-      <translation type="unfinished">Display grid</translation>
+      <translation>グリッドを表示</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1176"/>
       <source>Toggles the visibility of the grid in the active sketch</source>
-      <translation type="unfinished">Toggles the visibility of the grid in the active sketch</translation>
+      <translation>アクティブなスケッチでのグリッド表示を切り替え</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1179"/>
       <source>Grid auto-spacing</source>
-      <translation type="unfinished">Grid auto-spacing</translation>
+      <translation>グリッド間隔を自動調整</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1180"/>
       <source>Automatically adjusts the grid spacing based on the zoom level</source>
-      <translation type="unfinished">Automatically adjusts the grid spacing based on the zoom level</translation>
+      <translation>ズームの度合に基づいてグリッド間隔を自動調整</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1183"/>
@@ -5817,12 +5834,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1317"/>
       <source>Toggle Grid</source>
-      <translation type="unfinished">Toggle Grid</translation>
+      <translation>グリッドを切り替え</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1319"/>
       <source>Toggles the grid display in the active sketch</source>
-      <translation type="unfinished">Toggles the grid display in the active sketch</translation>
+      <translation>アクティブなスケッチでのグリッド表示を切り替え</translation>
     </message>
   </context>
   <context>
@@ -5845,7 +5862,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1460"/>
       <source>Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</translation>
+      <translation>「角度でスナップ」を使用するツールの角度ステップ。 Ctrlキーを押していると「角度でスナップ」が有効になります。角度はスケッチのX軸正の向きから開始します。</translation>
     </message>
   </context>
   <context>
@@ -5853,12 +5870,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1548"/>
       <source>Toggle Snap</source>
-      <translation type="unfinished">Toggle Snap</translation>
+      <translation>スナップを切り替え</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1550"/>
       <source>Toggles snapping</source>
-      <translation type="unfinished">Toggles snapping</translation>
+      <translation>スナップを切り替え</translation>
     </message>
   </context>
   <context>
@@ -5906,8 +5923,8 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <name>CmdSketcherToggleConstruction</name>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="73"/>
-      <source>Construction Geometry</source>
-      <translation>構築ジオメトリ</translation>
+      <source>Toggle Construction Geometry</source>
+      <translation type="unfinished">Toggle Construction Geometry</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="74"/>
@@ -5920,12 +5937,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="1508"/>
       <source>Toggle Constraints</source>
-      <translation type="unfinished">Toggle Constraints</translation>
+      <translation>拘束を切り替え</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1509"/>
       <source>Toggle constrain tools</source>
-      <translation type="unfinished">Toggle constrain tools</translation>
+      <translation>拘束ツールを切り替え</translation>
     </message>
   </context>
   <context>
@@ -5933,12 +5950,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="3041"/>
       <source>Horizontal/Vertical Constraint</source>
-      <translation type="unfinished">Horizontal/Vertical Constraint</translation>
+      <translation>水平/垂直拘束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3042"/>
       <source>Constrains the selected elements either horizontally or vertically</source>
-      <translation type="unfinished">Constrains the selected elements either horizontally or vertically</translation>
+      <translation>選択した要素を水平または垂直に拘束</translation>
     </message>
   </context>
   <context>
@@ -5946,7 +5963,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="3359"/>
       <source>Horizontal/Vertical Constraint</source>
-      <translation type="unfinished">Horizontal/Vertical Constraint</translation>
+      <translation>水平/垂直拘束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3360"/>
@@ -5985,7 +6002,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="3496"/>
       <source>Lock Position</source>
-      <translation type="unfinished">Lock Position</translation>
+      <translation>位置をロック</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3497"/>
@@ -6011,12 +6028,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="3981"/>
       <source>Coincident Constraint</source>
-      <translation type="unfinished">Coincident Constraint</translation>
+      <translation>一致拘束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3982"/>
       <source>Constrains the selected elements to be coincident</source>
-      <translation type="unfinished">Constrains the selected elements to be coincident</translation>
+      <translation>選択した要素が一致するように拘束</translation>
     </message>
   </context>
   <context>
@@ -6024,12 +6041,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="4493"/>
       <source>Coincident Constraint</source>
-      <translation type="unfinished">Coincident Constraint</translation>
+      <translation>一致拘束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4494"/>
       <source>Constrains the selected elements to be coincident</source>
-      <translation type="unfinished">Constrains the selected elements to be coincident</translation>
+      <translation>選択した要素が一致するように拘束</translation>
     </message>
   </context>
   <context>
@@ -6037,12 +6054,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="4543"/>
       <source>Point-On-Object Constraint</source>
-      <translation type="unfinished">Point-On-Object Constraint</translation>
+      <translation>点をオブジェクト上へ拘束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4544"/>
       <source>Constrains the selected point onto the selected object</source>
-      <translation type="unfinished">Constrains the selected point onto the selected object</translation>
+      <translation>選択した点を選択したオブジェクト上に拘束</translation>
     </message>
   </context>
   <context>
@@ -6063,7 +6080,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="5249"/>
       <source>Horizontal Dimension</source>
-      <translation type="unfinished">Horizontal Dimension</translation>
+      <translation>水平寸法</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5250"/>
@@ -6076,7 +6093,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="5550"/>
       <source>Vertical Dimension</source>
-      <translation type="unfinished">Vertical Dimension</translation>
+      <translation>垂直寸法</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5551"/>
@@ -6128,7 +6145,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="7649"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>半径寸法</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7650"/>
@@ -6141,7 +6158,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="8012"/>
       <source>Diameter Dimension</source>
-      <translation type="unfinished">Diameter Dimension</translation>
+      <translation>直径寸法</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8013"/>
@@ -6154,7 +6171,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="8330"/>
       <source>Radius/Diameter Dimension</source>
-      <translation type="unfinished">Radius/Diameter Dimension</translation>
+      <translation>半径/直径寸法</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8331"/>
@@ -6167,7 +6184,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="8858"/>
       <source>Angle Dimension</source>
-      <translation type="unfinished">Angle Dimension</translation>
+      <translation>角度寸法</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8859"/>
@@ -6180,7 +6197,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="9311"/>
       <source>Equal Constraint</source>
-      <translation type="unfinished">Equal Constraint</translation>
+      <translation>等値拘束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9313"/>
@@ -6193,7 +6210,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="9553"/>
       <source>Symmetric Constraint</source>
-      <translation type="unfinished">Symmetric Constraint</translation>
+      <translation>対称拘束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9554"/>
@@ -6206,12 +6223,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="9896"/>
       <source>Refraction Constraint</source>
-      <translation type="unfinished">Refraction Constraint</translation>
+      <translation>屈折拘束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9897"/>
       <source>Constrains the selected elements based on the refraction law (Snell's Law)</source>
-      <translation type="unfinished">Constrains the selected elements based on the refraction law (Snell's Law)</translation>
+      <translation>屈折の法則（スネルの法則）に基づいて選択した要素を拘束</translation>
     </message>
   </context>
   <context>
@@ -6245,12 +6262,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandConstraints.cpp" line="10302"/>
       <source>Toggle Constraints</source>
-      <translation type="unfinished">Toggle Constraints</translation>
+      <translation>拘束を切り替え</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10303"/>
       <source>Toggles the state of the selected constraints</source>
-      <translation type="unfinished">Toggles the state of the selected constraints</translation>
+      <translation>選択した拘束の状態を切り替え</translation>
     </message>
   </context>
   <context>
@@ -6263,7 +6280,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="115"/>
       <source>Creates a point</source>
-      <translation type="unfinished">Creates a point</translation>
+      <translation>点を作成</translation>
     </message>
   </context>
   <context>
@@ -6289,7 +6306,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="203"/>
       <source>Creates a line</source>
-      <translation type="unfinished">Creates a line</translation>
+      <translation>線を作成</translation>
     </message>
   </context>
   <context>
@@ -6315,7 +6332,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="268"/>
       <source>Creates an arc</source>
-      <translation type="unfinished">Creates an arc</translation>
+      <translation>円弧を作成</translation>
     </message>
   </context>
   <context>
@@ -6609,12 +6626,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1160"/>
       <source>Slot</source>
-      <translation type="unfinished">Slot</translation>
+      <translation>長円形</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1161"/>
       <source>Slot tools</source>
-      <translation type="unfinished">Slot tools</translation>
+      <translation>長円形ツール</translation>
     </message>
   </context>
   <context>
@@ -6622,12 +6639,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1216"/>
       <source>Slot</source>
-      <translation type="unfinished">Slot</translation>
+      <translation>長円形</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1217"/>
       <source>Creates a slot</source>
-      <translation type="unfinished">Creates a slot</translation>
+      <translation>長円形を作成</translation>
     </message>
   </context>
   <context>
@@ -6635,12 +6652,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1247"/>
       <source>Arc Slot</source>
-      <translation type="unfinished">Arc Slot</translation>
+      <translation>円弧状の長円形</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1248"/>
       <source>Creates an arc slot</source>
-      <translation type="unfinished">Creates an arc slot</translation>
+      <translation>円弧状の長円形を作成</translation>
     </message>
   </context>
   <context>
@@ -7439,27 +7456,32 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerArcSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="105"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="100"/>
+      <source>%1 switch mode</source>
+      <translation type="unfinished">%1 switch mode</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="107"/>
       <source>%1 pick slot center</source>
       <translation type="unfinished">%1 pick slot center</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="110"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="113"/>
       <source>%1 pick slot radius</source>
       <translation type="unfinished">%1 pick slot radius</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="115"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="119"/>
       <source>%1 pick slot angle</source>
       <translation type="unfinished">%1 pick slot angle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="120"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="125"/>
       <source>%1 pick slot width</source>
       <translation type="unfinished">%1 pick slot width</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="299"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="305"/>
       <source>Arc Slot parameters</source>
       <translation>円弧状の長円形のパラメーター</translation>
     </message>
@@ -7477,28 +7499,46 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <translation type="unfinished">%1 pick first control point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="427"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="423"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="432"/>
+      <source>%1 + degree</source>
+      <translation type="unfinished">%1 + degree</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="424"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="433"/>
+      <source>%1 - degree</source>
+      <translation type="unfinished">%1 - degree</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="429"/>
       <source>%1 pick next control point</source>
       <translation type="unfinished">%1 pick next control point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="428"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="443"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="430"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="448"/>
       <source>%1 finish B-spline</source>
       <translation type="unfinished">%1 finish B-spline</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="436"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="440"/>
       <source>%1 pick first knot</source>
       <translation type="unfinished">%1 pick first knot</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="442"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="450"/>
+      <source>%1 toggle periodic</source>
+      <translation type="unfinished">%1 toggle periodic</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="447"/>
       <source>%1 pick next knot</source>
       <translation type="unfinished">%1 pick next knot</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="491"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="497"/>
       <source>B-spline parameters</source>
       <translation>Bスプラインパラメーター</translation>
     </message>
@@ -7635,21 +7675,28 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <translation>フィレット/面取りパラメーター</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="421"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="417"/>
+      <source>%1 switch mode</source>
+      <translation type="unfinished">%1 switch mode</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerFillet.h" line="418"/>
+      <source>%1 toggle preserve corner</source>
+      <translation type="unfinished">%1 toggle preserve corner</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerFillet.h" line="425"/>
       <source>%1 pick first edge or point</source>
-      <comment>Sketcher Fillet/Chamfer: hint</comment>
       <translation type="unfinished">%1 pick first edge or point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="424"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="429"/>
       <source>%1 pick second edge</source>
-      <comment>Sketcher Fillet/Chamfer: hint</comment>
       <translation type="unfinished">%1 pick second edge</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="427"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="433"/>
       <source>%1 create fillet</source>
-      <comment>Sketcher Fillet/Chamfer: hint</comment>
       <translation type="unfinished">%1 create fillet</translation>
     </message>
   </context>
@@ -7763,55 +7810,65 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <translation type="unfinished">%1 switch mode</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="126"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="178"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="210"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="118"/>
+      <source>%1 toggle rounded corners</source>
+      <translation type="unfinished">%1 toggle rounded corners</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="120"/>
+      <source>%1 toggle frame</source>
+      <translation type="unfinished">%1 toggle frame</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="129"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="197"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="239"/>
       <source>%1 pick first corner</source>
       <translation type="unfinished">%1 pick first corner</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="132"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="137"/>
       <source>%1 pick opposite corner</source>
       <translation type="unfinished">%1 pick opposite corner</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="138"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="164"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="196"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="222"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="145"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="179"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="221"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="255"/>
       <source>%1 set corner radius or frame thickness</source>
       <translation type="unfinished">%1 set corner radius or frame thickness</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="144"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="170"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="153"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="187"/>
       <source>%1 set frame thickness</source>
       <translation type="unfinished">%1 set frame thickness</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="152"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="204"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="163"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="231"/>
       <source>%1 pick center</source>
       <translation>%1 中心を選択</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="158"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="171"/>
       <source>%1 pick corner</source>
       <translation type="unfinished">%1 pick corner</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="184"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="216"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="205"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="247"/>
       <source>%1 pick second corner</source>
       <translation type="unfinished">%1 pick second corner</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="190"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="213"/>
       <source>%1 pick third corner</source>
       <translation type="unfinished">%1 pick third corner</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="706"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="741"/>
       <source>Rectangle parameters</source>
       <translation>長方形パラメーター</translation>
     </message>
@@ -7819,25 +7876,25 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerRotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="96"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="97"/>
       <source>%1 pick center point</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation type="unfinished">%1 pick center point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="101"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="102"/>
       <source>%1 set start angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation type="unfinished">%1 set start angle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="106"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="107"/>
       <source>%1 set rotation angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation type="unfinished">%1 set rotation angle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="203"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="212"/>
       <source>Rotate parameters</source>
       <translation>回転パラメーター</translation>
     </message>
@@ -7845,17 +7902,17 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerScale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="146"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="165"/>
       <source>%1 pick reference point</source>
       <translation type="unfinished">%1 pick reference point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="170"/>
       <source>%1 set scale factor</source>
       <translation type="unfinished">%1 set scale factor</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="214"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="233"/>
       <source>Scale parameters</source>
       <translation>拡大縮小パラメーター</translation>
     </message>
@@ -7904,24 +7961,24 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerTranslate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="175"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="185"/>
       <source>Translate parameters</source>
       <translation>移動パラメーター</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="438"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="451"/>
       <source>%1 pick reference point</source>
       <comment>Sketcher Translate: hint</comment>
       <translation type="unfinished">%1 pick reference point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="440"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="453"/>
       <source>%1 set translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation type="unfinished">%1 set translation vector</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="443"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="456"/>
       <source>%1 set second translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation type="unfinished">%1 set second translation vector</translation>
@@ -7941,7 +7998,28 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.cpp" line="58"/>
       <source>Advanced Solver Controls</source>
-      <translation type="unfinished">Advanced Solver Controls</translation>
+      <translation>高度なソルバー制御</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_CreateBSpline</name>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="911"/>
+      <source>From control points</source>
+      <translation type="unfinished">From control points</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="912"/>
+      <source>From knots</source>
+      <translation type="unfinished">From knots</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c2_symmetry</name>
+    <message>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="276"/>
+      <source>Create symmetry constraints (J)</source>
+      <translation type="unfinished">Create symmetry constraints (J)</translation>
     </message>
   </context>
 </TS>

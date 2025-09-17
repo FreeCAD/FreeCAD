@@ -67,19 +67,19 @@ public:
     App::PropertyPercent FaceTransparency;
 
     void attach(App::DocumentObject *) override;
-    bool useNewSelectionModel(void) const override {return false;}
+    bool useNewSelectionModel() const override {return false;}
     bool onDelete(const std::vector<std::string> &) override;
     bool canDelete(App::DocumentObject* obj) const override;
     bool setEdit(int ModNum) override;
     bool setDetailEdit(int ModNum, TechDraw::DrawViewDetail* dvd);
-    bool doubleClicked(void) override;
+    bool doubleClicked() override;
     void onChanged(const App::Property *prop) override;
     void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
-    Base::Color prefSectionColor(void);
-    Base::Color prefHighlightColor(void);
-    int prefHighlightStyle(void);
+    Base::Color prefSectionColor();
+    Base::Color prefHighlightColor();
+    int prefHighlightStyle();
 
-    std::vector<App::DocumentObject*> claimChildren(void) const override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
     void fixSceneDependencies() override;
 
     TechDraw::DrawViewPart* getViewObject() const override;

@@ -21,9 +21,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <QAction>
 # include <QActionGroup>
 # include <QApplication>
@@ -41,7 +40,7 @@
 # include <QTimer>
 # include <QToolTip>
 # include <QVBoxLayout>
-#endif
+
 
 #include <Base/Console.h>
 #include <Base/Reader.h>
@@ -683,8 +682,8 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     connect(this->recomputeObjectAction, &QAction::triggered,
             this, &TreeWidget::onRecomputeObject);
     this->searchObjectsAction = new QAction(this);
-    this->searchObjectsAction->setText(tr("Search..."));
-    this->searchObjectsAction->setStatusTip(tr("Search for objects"));
+    this->searchObjectsAction->setText(tr("Search Objects"));
+    this->searchObjectsAction->setStatusTip(tr("Searches for objects in the tree"));
     connect(this->searchObjectsAction, &QAction::triggered,
             this, &TreeWidget::onSearchObjects);
 
@@ -1512,10 +1511,8 @@ void TreeWidget::setupResizableColumn(TreeWidget *tree) {
     }
 }
 
-std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
+TreeWidget* TreeWidget::getTreeForSelection()
 {
-    std::vector<SelInfo> ret;
-
     TreeWidget* tree = instance();
     if (!tree || !tree->isSelectionAttached()) {
         for (auto pTree : Instances)
@@ -1524,13 +1521,52 @@ std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
                 break;
             }
     }
-    if (!tree)
-        return ret;
+    if (!tree) {
+        return nullptr;
+    }
 
-    if (tree->selectTimer->isActive())
+    if (tree->selectTimer->isActive()) {
         tree->onSelectTimer();
-    else
+    }
+    else {
         tree->_updateStatus(false);
+    }
+
+    return tree;
+}
+
+std::vector<Document*> TreeWidget::getSelectedDocuments()
+{
+    std::vector<Document*> ret;
+    TreeWidget* tree = getTreeForSelection();
+
+    if (!tree) {
+        return ret;
+    }
+
+    const auto items = tree->selectedItems();
+    for (auto ti : items) {
+        if (ti->type() != DocumentType)
+            continue;
+        auto item = static_cast<DocumentItem*>(ti);
+        auto doc = item->document();
+        if (!doc || !doc->getDocument()) {
+            FC_WARN("skip invalid document");
+            continue;
+        }
+        ret.push_back(doc);
+    }
+    return ret;
+}
+
+std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
+{
+    std::vector<SelInfo> ret;
+    TreeWidget* tree = getTreeForSelection();
+
+    if (!tree) {
+        return ret;
+    }
 
     const auto items = tree->selectedItems();
     for (auto ti : items) {

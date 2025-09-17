@@ -1,9 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
 
 set(CAMSimulator_LIBS
     Path
@@ -16,7 +10,7 @@ set(CAMSimulator_LIBS
 )
 
 SET(CAMSimulator_SRCS_Python
-    CAMSimPy.xml
+    CAMSim.pyi
     CAMSimPyImp.cpp
 )
 
@@ -66,9 +60,7 @@ SET(CAMSimulator_SRCS_Core
     TextureLoader.h
 )
 
-
-generate_from_xml(CAMSimPy)
-
+generate_from_py(CAMSim)
 
 SOURCE_GROUP("Module" FILES ${CAMSimulator_SRCS_Module})
 SOURCE_GROUP("Python" FILES ${CAMSimulator_SRCS_Python})
@@ -91,6 +83,14 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 add_library(CAMSimulator SHARED ${CAMSimulator_SRCS})
+target_include_directories(
+    CAMSimulator
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 target_link_libraries(CAMSimulator ${CAMSimulator_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(CAMSimulator)

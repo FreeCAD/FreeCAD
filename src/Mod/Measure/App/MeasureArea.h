@@ -79,6 +79,7 @@ public:
 
 
 private:
+    static bool isSupported(App::MeasureElementType type);
     void onChanged(const App::Property* prop) override;
 };
 

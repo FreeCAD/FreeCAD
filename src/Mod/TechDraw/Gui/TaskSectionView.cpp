@@ -757,10 +757,6 @@ TaskDlgSectionView::TaskDlgSectionView(TechDraw::DrawViewSection* section) : Tas
 }
 TaskDlgSectionView::~TaskDlgSectionView() {}
 
-void TaskDlgSectionView::update()
-{
-    //widget->updateTask();
-}
 
 //==== calls from the TaskView ===============================================================
 void TaskDlgSectionView::open() {}

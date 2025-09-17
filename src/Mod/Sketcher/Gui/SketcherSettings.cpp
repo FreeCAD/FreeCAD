@@ -113,6 +113,7 @@ void SketcherSettings::saveSettings()
     ui->checkBoxHorVerAuto->onSave();
     ui->checkBoxLineGroup->onSave();
     ui->checkBoxAddExtGeo->onSave();
+    ui->checkBoxMakeInternals->onSave();
 
     enum
     {
@@ -190,8 +191,7 @@ void SketcherSettings::loadSettings()
     ui->checkBoxHorVerAuto->onRestore();
     setProperty("checkBoxHorVerAuto", ui->checkBoxHorVerAuto->isChecked());
     ui->checkBoxAddExtGeo->onRestore();
-    setProperty("checkBoxLineGroup", ui->checkBoxLineGroup->isChecked());
-    ui->checkBoxAddExtGeo->onRestore();
+    ui->checkBoxMakeInternals->onRestore();
 
     // Dimensioning constraints mode
     ui->dimensioningMode->clear();
@@ -432,6 +432,7 @@ SketcherSettingsDisplay::~SketcherSettingsDisplay()
 void SketcherSettingsDisplay::saveSettings()
 {
     ui->EditSketcherFontSize->onSave();
+    ui->ConstraintSymbolSize->onSave();
     ui->viewScalingFactor->onSave();
     ui->SegmentsPerGeometry->onSave();
     ui->dialogOnDistanceConstraint->onSave();
@@ -453,6 +454,7 @@ void SketcherSettingsDisplay::saveSettings()
 void SketcherSettingsDisplay::loadSettings()
 {
     ui->EditSketcherFontSize->onRestore();
+    ui->ConstraintSymbolSize->onRestore();
     ui->viewScalingFactor->onRestore();
     ui->SegmentsPerGeometry->onRestore();
     ui->dialogOnDistanceConstraint->onRestore();
@@ -597,6 +599,8 @@ void SketcherSettingsAppearance::saveSettings()
     ui->ExternalWidth->onSave();
     ui->ExternalDefiningWidth->onSave();
 
+    ui->InternalFaceColor->onSave();
+
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/View");
     QVariant data = ui->EdgePattern->itemData(ui->EdgePattern->currentIndex());
@@ -651,6 +655,9 @@ void SketcherSettingsAppearance::loadSettings()
     ui->InternalWidth->onRestore();
     ui->ExternalWidth->onRestore();
     ui->ExternalDefiningWidth->onRestore();
+
+    ui->InternalFaceColor->setAllowTransparency(true);
+    ui->InternalFaceColor->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/View");

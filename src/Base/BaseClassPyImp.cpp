@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "Type.h"
 
 // generated out of BaseClass.pyi

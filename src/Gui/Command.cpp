@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Inventor/SbSphere.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
@@ -32,9 +29,10 @@
 # include <QDir>
 # include <QKeySequence>
 # include <QMessageBox>
-#endif
 
 #include <boost/algorithm/string/replace.hpp>
+
+#include <FCConfig.h>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -294,6 +292,12 @@ Application *Command::getGuiApplication()
     return Application::Instance;
 }
 
+App::Document* Command::getActiveDocument() const
+{
+    Gui::Document* doc = getActiveGuiDocument();
+    return doc ? doc->getDocument() : nullptr;
+}
+
 Gui::Document* Command::getActiveGuiDocument() const
 {
     return getGuiApplication()->activeDocument();
@@ -304,22 +308,14 @@ App::Document* Command::getDocument(const char* Name) const
     if (Name) {
         return App::GetApplication().getDocument(Name);
     }
-    else {
-        Gui::Document * pcDoc = getGuiApplication()->activeDocument();
-        if (pcDoc)
-            return pcDoc->getDocument();
-        else
-            return nullptr;
-    }
+
+    return getActiveDocument();
 }
 
 App::DocumentObject* Command::getObject(const char* Name) const
 {
-    App::Document*pDoc = getDocument();
-    if (pDoc)
-        return pDoc->getObject(Name);
-    else
-        return nullptr;
+    App::Document* pDoc = getDocument();
+    return pDoc ? pDoc->getObject(Name) : nullptr;
 }
 
 int Command::_busy;

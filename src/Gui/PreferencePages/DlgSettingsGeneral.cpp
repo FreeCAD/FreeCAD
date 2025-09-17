@@ -23,8 +23,6 @@
   ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 # include <limits>
 # include <QApplication>
@@ -33,7 +31,6 @@
 # include <QMessageBox>
 # include <QString>
 # include <algorithm>
-#endif
 
 #include <App/Document.h>
 #include <Base/Parameter.h>
@@ -200,7 +197,7 @@ void DlgSettingsGeneral::saveUnitSystemSettings()
     hGrpu->SetInt("FracInch", FracInch);
 
     // Set the actual format value
-    QuantityFormat::setDefaultDenominator(FracInch);
+    UnitsApi::setDenominator(FracInch);
 
     // Set and save the Unit System
     if (ui->checkBox_projectUnitSystemIgnore->isChecked()) {
@@ -272,7 +269,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkBox_projectUnitSystemIgnore->setChecked(hGrpu->GetBool("IgnoreProjectSchema", false));
 
     // Get the current user setting for the minimum fractional inch
-    FracInch = hGrpu->GetInt("FracInch", QuantityFormat::getDefaultDenominator());
+    FracInch = hGrpu->GetInt("FracInch", UnitsApi::getDenominator());
 
     // Convert fractional inch to the corresponding combobox index using this
     // handy little equation.
@@ -749,7 +746,8 @@ void DlgSettingsGeneral::onUnitSystemIndexChanged(const int index)
     }
 
     // Enable/disable the fractional inch option depending on system
-    const auto visible = UnitsApi::isMultiUnitLength();
+    const auto schema = UnitsApi::createSchema(index);
+    const auto visible = schema->isMultiUnitLength();
     ui->comboBox_FracInch->setVisible(visible);
     ui->fractionalInchLabel->setVisible(visible);
 }

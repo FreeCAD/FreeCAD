@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QAction>
 # include <QActionGroup>
 # include <QCoreApplication>
@@ -29,7 +28,7 @@
 # include <QFile>
 # include <QLayout>
 # include <QTextStream>
-#endif
+
 
 #include <functional>
 #include <Base/Interpreter.h>
@@ -561,10 +560,7 @@ UiLoaderPy::~UiLoaderPy() = default;
 
 Py::Object UiLoaderPy::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "Ui loader";
-    return Py::String(s_out.str());
+    return Py::String("Ui loader");
 }
 
 Py::Object UiLoaderPy::load(const Py::Tuple& args)

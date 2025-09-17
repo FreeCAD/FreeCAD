@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cassert>
 #include <numbers>
 
@@ -48,7 +46,6 @@
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoFontStyle.h>
-#endif
 
 #include <Base/Quantity.h>
 

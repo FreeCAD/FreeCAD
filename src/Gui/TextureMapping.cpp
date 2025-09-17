@@ -20,16 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <Inventor/nodes/SoGroup.h>
 # include <Inventor/nodes/SoTexture2.h>
 # include <QImage>
 # include <QImageReader>
 # include <QKeyEvent>
 # include <QMessageBox>
-#endif
+
 
 #include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
 

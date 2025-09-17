@@ -21,12 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <cassert>
 # include <algorithm>
-#endif
+
 
 #include "ViewProviderExtension.h"
 #include "ViewProviderExtensionPy.h"

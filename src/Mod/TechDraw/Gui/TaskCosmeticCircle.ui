@@ -98,7 +98,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string notr="true">X:</string>
+        <string notr="true">X</string>
        </property>
       </widget>
      </item>
@@ -112,7 +112,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string notr="true">Y:</string>
+        <string notr="true">Y</string>
        </property>
       </widget>
      </item>
@@ -126,7 +126,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string notr="true">Z:</string>
+        <string notr="true">Z</string>
        </property>
       </widget>
      </item>
@@ -144,7 +144,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_9">
        <property name="text">
-        <string>Radius:</string>
+        <string>Radius</string>
        </property>
       </widget>
      </item>
@@ -178,7 +178,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>End angle:</string>
+        <string>End angle</string>
        </property>
       </widget>
      </item>

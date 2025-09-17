@@ -11,12 +11,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD Unit Test</source>
-      <translation type="unfinished">FreeCAD Unit Test</translation>
+      <translation>FreeCAD UnitTest</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="44"/>
       <source>Select test name</source>
-      <translation type="unfinished">Select test name</translation>
+      <translation>Izaberi naziv testa</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="96"/>
@@ -66,12 +66,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="188"/>
       <source>Run</source>
-      <translation type="unfinished">Run</translation>
+      <translation>Pokreni</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="205"/>
       <source>Failures</source>
-      <translation type="unfinished">Failures</translation>
+      <translation>Nepravilnosti</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="222"/>
@@ -81,12 +81,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="239"/>
       <source>Remaining</source>
-      <translation type="unfinished">Remaining</translation>
+      <translation>Preostalo</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="259"/>
       <source>Failures and Errors</source>
-      <translation type="unfinished">Failures and Errors</translation>
+      <translation>Nepravilnosti i greške</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="275"/>

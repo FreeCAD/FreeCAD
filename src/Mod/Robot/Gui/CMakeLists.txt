@@ -1,9 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(RobotGui_LIBS
     Robot
     FreeCADGui
@@ -118,7 +112,21 @@ SET(RobotGuiIcon_SVG
 )
 
 add_library(RobotGui SHARED ${RobotGui_SRCS} ${RobotGuiIcon_SVG})
+
+target_include_directories(
+    RobotGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 target_link_libraries(RobotGui ${RobotGui_LIBS})
+
+if (MSVC)
+    target_compile_options(RobotGui PRIVATE /wd4273)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(RobotGui)
 endif()

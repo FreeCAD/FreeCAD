@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="75"/>
       <source>Inspection…</source>
-      <translation type="unfinished">Inspection…</translation>
+      <translation>ინსპექცია…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Inspects distance information</source>
-      <translation type="unfinished">Inspects distance information</translation>
+      <translation>ამოწმებს მანძილის ინფორმაციას</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="49"/>
       <source>Visual Inspection…</source>
-      <translation type="unfinished">Visual Inspection…</translation>
+      <translation>ვიზუალური ინსპექცია…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
       <source>Inspects the objects visually</source>
-      <translation type="unfinished">Inspects the objects visually</translation>
+      <translation>ამოწმებს ობიექტებს ვიზუალურად</translation>
     </message>
   </context>
   <context>
@@ -110,7 +110,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="564"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>ინფორმაციის რეჟიმიდან გასვლა</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="695"/>

@@ -108,7 +108,6 @@ public:
     //PAT fill parms & methods
     void setLineWeight(double weight);
 
-    [[deprecated]] void clearLineSets();
     void addLineSet(TechDraw::LineSet& ls);
 
     void lineSetToFillItems(TechDraw::LineSet& ls);

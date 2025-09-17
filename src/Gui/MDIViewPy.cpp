@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
@@ -91,12 +91,10 @@ MDIViewPy::~MDIViewPy()
 
 Py::Object MDIViewPy::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
     if (!_view)
         throw Py::RuntimeError("Cannot print representation of deleted object");
-    s_out << _view->getTypeId().getName();
-    return Py::String(s_out.str());
+
+    return Py::String(_view->getTypeId().getName());
 }
 
 Py::Object MDIViewPy::printView(const Py::Tuple& args)

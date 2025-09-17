@@ -30,6 +30,8 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Gui/CommandT.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include "ViewProvider.h"
 

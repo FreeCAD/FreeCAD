@@ -203,6 +203,12 @@ public:
     void hideViewProvider(const App::DocumentObject*);
     /// Get the view provider of the given object
     Gui::ViewProvider* getViewProvider(const App::DocumentObject*) const;
+    /// Get the type safe view provider of the given object
+    template <typename T>
+    T* getViewProvider(const App::DocumentObject* obj) const
+    {
+        return freecad_cast<T*>(getViewProvider(obj));
+    }
     //@}
 
     /// true when the application shutting down
@@ -292,7 +298,7 @@ protected:
          std::make_pair(QT_TRANSLATE_NOOP("EditMode", "&Color"),
                         QT_TRANSLATE_NOOP("EditMode",
                                           "The object will have the color of its individual faces "
-                                          "editable with the Part FaceAppearances command"))},
+                                          "editable with the Appearance per Face command"))},
     };
     int userEditMode = userEditModes.begin()->first;
 

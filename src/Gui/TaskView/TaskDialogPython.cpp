@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
 # include <QEvent>
 # include <QFile>
 # include <QPointer>
-#endif
+
 
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
@@ -104,10 +102,7 @@ ControlPy::~ControlPy() = default;
 
 Py::Object ControlPy::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "Control Task Dialog";
-    return Py::String(s_out.str());
+    return Py::String("Control Task Dialog");
 }
 
 Py::Object ControlPy::showDialog(const Py::Tuple& args)
@@ -369,10 +364,7 @@ TaskDialogPy::~TaskDialogPy() = default;
 
 Py::Object TaskDialogPy::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "Task Dialog";
-    return Py::String(s_out.str());
+    return Py::String("Task Dialog");
 }
 
 Py::Object TaskDialogPy::getattr(const char * attr)
@@ -634,6 +626,7 @@ void TaskDialogPython::appendForm(QWidget* form, const QPixmap& icon)
 
 void TaskDialogPython::clearForm()
 {
+    Base::PyGILStateLocker lock;
     try {
         // The widgets stored in the 'form' attribute will be deleted.
         // Thus, set this attribute to None to make sure that when using

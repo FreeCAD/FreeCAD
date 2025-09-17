@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>366</width>
-    <height>924</height>
+    <width>414</width>
+    <height>945</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -33,14 +33,89 @@
     <number>6</number>
    </property>
    <item>
-    <layout class="QGridLayout" name="TopLayout" columnstretch="2,5">
+    <layout class="QGridLayout" name="TopLayout" columnstretch="2,2">
      <property name="topMargin">
       <number>10</number>
      </property>
+     <item row="2" column="0">
+      <widget class="Gui::ElideLabel" name="labelSize">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Size</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="Gui::ElideLabel" name="labelHeadType">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LayoutDirection::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string>Head type</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="ThreadType">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="Gui::ElideLabel" name="labelThreadType">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Standard</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="Gui::ElideLabel" name="labelProfileType">
        <property name="text">
         <string>Base profile types</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="ThreadSize">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="HoleCutType">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Cut type for screw heads</string>
        </property>
       </widget>
      </item>
@@ -63,8 +138,8 @@
        </item>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="Gui::ElideLabel" name="labelHeadType">
+     <item row="4" column="0">
+      <widget class="Gui::ElideLabel" name="labelDepthType">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -72,14 +147,14 @@
         </sizepolicy>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::LayoutDirection::RightToLeft</enum>
+        <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>Head type</string>
+        <string>Depth type</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
+     <item row="4" column="1">
       <widget class="QComboBox" name="DepthType">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
@@ -100,35 +175,6 @@
          <string>Through all</string>
         </property>
        </item>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="Gui::ElideLabel" name="labelDepthType">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::LayoutDirection::LeftToRight</enum>
-       </property>
-       <property name="text">
-        <string>Depth type</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="HoleCutType">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>Cut type for screw heads</string>
-       </property>
       </widget>
      </item>
     </layout>
@@ -214,14 +260,14 @@
              <property name="keyboardTracking">
               <bool>false</bool>
              </property>
+             <property name="unit" stdset="0">
+              <string notr="true">mm</string>
+             </property>
              <property name="minimum">
               <double>0.000000000000000</double>
              </property>
              <property name="singleStep">
               <double>0.100000000000000</double>
-             </property>
-             <property name="unit" stdset="0">
-              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -263,14 +309,14 @@ the screw's top below the surface</string>
              <property name="keyboardTracking">
               <bool>false</bool>
              </property>
+             <property name="unit" stdset="0">
+              <string notr="true">mm</string>
+             </property>
              <property name="minimum">
               <double>0.000000000000000</double>
              </property>
              <property name="singleStep">
               <double>0.100000000000000</double>
-             </property>
-             <property name="unit" stdset="0">
-              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -333,11 +379,11 @@ the screw's top below the surface</string>
               <property name="keyboardTracking">
                <bool>false</bool>
               </property>
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
+              </property>
+              <property name="minimum">
+               <double>0.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -431,11 +477,11 @@ account for the depth of blind holes</string>
              <property name="keyboardTracking">
               <bool>false</bool>
              </property>
-             <property name="minimum">
-              <double>0.000000000000000</double>
-             </property>
              <property name="unit" stdset="0">
               <string notr="true">deg</string>
+             </property>
+             <property name="minimum">
+              <double>0.000000000000000</double>
              </property>
             </widget>
            </item>
@@ -530,11 +576,11 @@ account for the depth of blind holes</string>
              <property name="keyboardTracking">
               <bool>false</bool>
              </property>
-             <property name="minimum">
-              <double>0.000000000000000</double>
-             </property>
              <property name="unit" stdset="0">
               <string notr="true">mm</string>
+             </property>
+             <property name="minimum">
+              <double>0.000000000000000</double>
              </property>
             </widget>
            </item>
@@ -598,11 +644,11 @@ over 90: larger hole radius at the bottom</string>
          <property name="keyboardTracking">
           <bool>false</bool>
          </property>
-         <property name="minimum">
-          <double>0.000000000000000</double>
-         </property>
          <property name="unit" stdset="0">
           <string notr="true">deg</string>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -611,57 +657,21 @@ over 90: larger hole radius at the bottom</string>
     </layout>
    </item>
    <item>
-    <layout class="QGridLayout" name="profileLayout" rowstretch="0,0,0" columnstretch="2,5">
+    <widget class="QLabel" name="labelThreading">
+     <property name="text">
+      <string>&lt;b&gt;Threading&lt;/b&gt;</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::TextFormat::RichText</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="profileLayout" rowstretch="0,0" columnstretch="2,2">
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="0" column="0">
-      <widget class="Gui::ElideLabel" name="labelThreadType">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Standard</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
-      <widget class="QComboBox" name="ThreadType">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="Gui::ElideLabel" name="labelSize">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Size</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="ThreadSize">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
       <widget class="QComboBox" name="HoleType">
        <item>
         <property name="text">
@@ -680,11 +690,53 @@ over 90: larger hole radius at the bottom</string>
        </item>
       </widget>
      </item>
-     <item row="2" column="0">
+     <item row="0" column="0">
       <widget class="Gui::ElideLabel" name="labelHoleType">
        <property name="text">
         <string>Hole type</string>
        </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="Gui::ElideLabel" name="labelThreadClearance">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Clearance</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="ThreadFit">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Hole clearance
+Only available for holes without thread</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Standard</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Close</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Wide</string>
+        </property>
+       </item>
       </widget>
      </item>
     </layout>
@@ -697,7 +749,7 @@ over 90: larger hole radius at the bottom</string>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="2,5">
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -710,48 +762,6 @@ over 90: larger hole radius at the bottom</string>
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item>
-       <widget class="Gui::ElideLabel" name="labelThreadClearance">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Clearance</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="ThreadFit">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Hole clearance
-Only available for holes without thread</string>
-        </property>
-        <item>
-         <property name="text">
-          <string>Standard</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Close</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Wide</string>
-         </property>
-        </item>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
@@ -770,7 +780,7 @@ Only available for holes without thread</string>
       <string notr="true"/>
      </property>
      <property name="title">
-      <string/>
+      <string>Thread</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <property name="spacing">
@@ -1070,11 +1080,11 @@ Note that the calculation can take some time</string>
            <property name="keyboardTracking">
             <bool>false</bool>
            </property>
-           <property name="singleStep">
-            <double>0.100000000000000</double>
-           </property>
            <property name="unit" stdset="0">
             <string notr="true">mm</string>
+           </property>
+           <property name="singleStep">
+            <double>0.100000000000000</double>
            </property>
           </widget>
          </item>
@@ -1089,7 +1099,7 @@ Note that the calculation can take some time</string>
  <customwidgets>
   <customwidget>
    <class>Gui::QuantitySpinBox</class>
-   <extends>QDoubleSpinBox</extends>
+   <extends>QAbstractSpinBox</extends>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
   <customwidget>

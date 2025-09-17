@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="35"/>
       <source>General OpenSCAD Settings</source>
-      <translation>Configuració General de OpenSCAD</translation>
+      <translation>Configuració General d'OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="43"/>
@@ -27,11 +27,6 @@
       <location filename="../ui/openscadprefs-base.ui" line="99"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
       <translation>Si està marcat, Característiques mostrarà els seus fills en la llista d'arbre</translation>
-    </message>
-    <message>
-      <location filename="../ui/openscadprefs-base.ui" line="102"/>
-      <source>Use ViewProvider in Tree View</source>
-      <translation>Utilitzar ViewProvider en Vista d'Arbre</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="119"/>
@@ -113,17 +108,22 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="74"/>
       <source>OpenSCAD Import</source>
-      <translation type="unfinished">OpenSCAD Import</translation>
+      <translation>Importar OpenSCAD</translation>
+    </message>
+    <message>
+      <location filename="../ui/openscadprefs-base.ui" line="102"/>
+      <source>Use ViewProviders in Tree View</source>
+      <translation>Utilitzar ViewProviders a la Vista d'Arbre</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>
       <source>Send to OpenSCAD via</source>
-      <translation type="unfinished">Send to OpenSCAD via</translation>
+      <translation>Enviar a OpenSCAD via</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="261"/>
       <source>OpenSCAD Export</source>
-      <translation type="unfinished">OpenSCAD Export</translation>
+      <translation>Exportació d'OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="331"/>
@@ -227,32 +227,32 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="139"/>
       <source>Converts edges to faces</source>
-      <translation type="unfinished">Converts edges to faces</translation>
+      <translation>Convertir les vores en cares</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="301"/>
       <source>Select 3 objects first</source>
-      <translation type="unfinished">Select 3 objects first</translation>
+      <translation>Seleccioneu 3 objectes primer</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="335"/>
       <source>Clear Code</source>
-      <translation type="unfinished">Clear Code</translation>
+      <translation>Netejar codi</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="336"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>Obrir…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="337"/>
       <source>Save…</source>
-      <translation type="unfinished">Save…</translation>
+      <translation>Desar…</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>
       <source>as mesh</source>
-      <translation type="unfinished">as mesh</translation>
+      <translation>com a malla</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="427"/>
@@ -288,12 +288,12 @@
       <translation>Suma Minkowski</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="653"/>
+      <location filename="../../OpenSCADUtils.py" line="649"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
       <translation>El fitxer OpenSCAD conté formes 2D i 3D. Això no és compatible amb aquest importador, totes les formes han de tenir la mateixa dimensionalitat.</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="664"/>
+      <location filename="../../OpenSCADUtils.py" line="660"/>
       <source>Error: either all shapes must be 2D or all shapes must be 3D</source>
       <translation>Error: o totes les formes han de ser 2D o totes les formes han de ser 3D</translation>
     </message>
@@ -319,8 +319,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="103"/>
-      <source>Removes fusion and applies placement to children, and color randomly</source>
-      <translation type="unfinished">Removes fusion and applies placement to children, and color randomly</translation>
+      <source>Explodes a fusion or compound and applies random colors</source>
+      <translation>Descompon una fusió o un compost i aplica colors aleatoris</translation>
     </message>
   </context>
   <context>
@@ -333,7 +333,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="119"/>
       <source>Colors shapes by validity and type</source>
-      <translation type="unfinished">Colors shapes by validity and type</translation>
+      <translation>Acolorir les formes per validesa i tipus</translation>
     </message>
   </context>
   <context>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="159"/>
       <source>Creates a refined shape</source>
-      <translation type="unfinished">Creates a refined shape</translation>
+      <translation>Crea una forma refinada</translation>
     </message>
   </context>
   <context>
@@ -358,8 +358,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="269"/>
-      <source>Creates a feature that allows increasing the tolerance</source>
-      <translation type="unfinished">Creates a feature that allows increasing the tolerance</translation>
+      <source>Creates a feature to increase the tolerance</source>
+      <translation>Crea una característica per a incrementar la tolerància</translation>
     </message>
   </context>
   <context>
@@ -371,8 +371,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="286"/>
-      <source>Expands all placements downwards in the tree view</source>
-      <translation type="unfinished">Expands all placements downwards in the tree view</translation>
+      <source>Expands all placements downwards in the Tree View</source>
+      <translation>Expandeix totes les col·locacions cap avall a la vista en arbre</translation>
     </message>
   </context>
   <context>
@@ -384,8 +384,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>
-      <source>Replaces an object in the tree view. Select old, new, and parent object</source>
-      <translation type="unfinished">Replaces an object in the tree view. Select old, new, and parent object</translation>
+      <source>Replaces an object in the Tree View</source>
+      <translation>Substitueix un objecte a la vista en arbre</translation>
     </message>
   </context>
   <context>
@@ -393,12 +393,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="317"/>
       <source>Remove Objects and Children</source>
-      <translation type="unfinished">Remove Objects and Children</translation>
+      <translation>Eliminar objectes i els seus fills</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="320"/>
-      <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>Elimina els objectes seleccionats i tots els fills que no facin referència a altres objectes</translation>
+      <source>Removes the selected objects and all children that are not referenced by other objects</source>
+      <translation>Elimina els objectes seleccionats i tots els fills que no són referenciats per a altres objectes</translation>
     </message>
   </context>
   <context>
@@ -411,7 +411,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="568"/>
       <source>Creates a hull</source>
-      <translation type="unfinished">Creates a hull</translation>
+      <translation>Crea una closca</translation>
     </message>
   </context>
   <context>
@@ -432,7 +432,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="136"/>
       <source>Convert Edges to Faces</source>
-      <translation type="unfinished">Convert Edges to Faces</translation>
+      <translation>Converteix les vores en cares</translation>
     </message>
   </context>
   <context>
@@ -445,7 +445,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="189"/>
       <source>Mirrors the mesh</source>
-      <translation type="unfinished">Mirrors the mesh</translation>
+      <translation>Reflecteix la malla</translation>
     </message>
   </context>
   <context>
@@ -453,12 +453,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="215"/>
       <source>Scale Mesh Feature</source>
-      <translation type="unfinished">Scale Mesh Feature</translation>
+      <translation>Escalat de la malla</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="219"/>
       <source>Scales the mesh</source>
-      <translation type="unfinished">Scales the mesh</translation>
+      <translation>Escala la malla</translation>
     </message>
   </context>
   <context>
@@ -466,12 +466,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="245"/>
       <source>Resize Mesh Feature</source>
-      <translation type="unfinished">Resize Mesh Feature</translation>
+      <translation>Redimensionat de la malla</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="249"/>
       <source>Resizes the mesh</source>
-      <translation type="unfinished">Resizes the mesh</translation>
+      <translation>Redimensiona la malla</translation>
     </message>
   </context>
   <context>
@@ -483,8 +483,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="533"/>
-      <source>Adds an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation type="unfinished">Adds an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</translation>
+      <source>Adds an OpenSCAD element based on entered OpenSCAD code using the OpenSCAD binary</source>
+      <translation>Afegeix un element OpenSCAD basat en el codi d'OpenSCAD entrat, utilitzant el binari d'OpenSCAD</translation>
     </message>
   </context>
   <context>
@@ -496,8 +496,8 @@
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="548"/>
-      <source>Exports objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation type="unfinished">Exports objects as meshes and use OpenSCAD to perform a boolean operation</translation>
+      <source>Performs a boolean operation using the OpenSCAD binary</source>
+      <translation>Realitza una operació binària utilitzant el binari d'OpenSCAD</translation>
     </message>
   </context>
   <context>
@@ -505,12 +505,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="585"/>
       <source>Minkowski Sum</source>
-      <translation type="unfinished">Minkowski Sum</translation>
+      <translation>Suma Minkowski</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="588"/>
       <source>Creates a Minkowski sum</source>
-      <translation type="unfinished">Creates a Minkowski sum</translation>
+      <translation>Crea una suma Minkowski</translation>
     </message>
   </context>
 </TS>

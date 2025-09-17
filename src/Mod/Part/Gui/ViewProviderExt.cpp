@@ -191,6 +191,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     coords = new SoCoordinate3();
     coords->ref();
     faceset = new SoBrepFaceSet();
+    faceset->setViewProvider(this);
     faceset->ref();
     norm = new SoNormal;
     norm->ref();
@@ -198,8 +199,10 @@ ViewProviderPartExt::ViewProviderPartExt()
     normb->value = SoNormalBinding::PER_VERTEX_INDEXED;
     normb->ref();
     lineset = new SoBrepEdgeSet();
+    lineset->setViewProvider(this);
     lineset->ref();
     nodeset = new SoBrepPointSet();
+    nodeset->setViewProvider(this);
     nodeset->ref();
 
     pcFaceBind = new SoMaterialBinding();
@@ -447,9 +450,9 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
 
     // normal viewing with edges and points
     pcNormalRoot->addChild(pcPointsRoot);
-    pcNormalRoot->addChild(wireframe);
     pcNormalRoot->addChild(offset);
     pcNormalRoot->addChild(pcFlatRoot);
+    pcNormalRoot->addChild(wireframe);
 
     // just faces with no edges or points
     pcFlatRoot->addChild(pShapeHints);
@@ -1309,6 +1312,23 @@ void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
     Base::Console().log("ViewProvider update time: %f s\n",Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
     Base::Console().log("Shape mesh info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",numFaces,numEdges,numNodes,numTriangles,numLines);
 #   endif
+}
+
+void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
+                                            SoFCShape* node,
+                                            double deviation,
+                                            double angularDeflection,
+                                            bool normalsFromUV)
+{
+    setupCoinGeometry(shape,
+                      node->coords,
+                      node->faceset,
+                      node->norm,
+                      node->lineset,
+                      node->nodeset,
+                      deviation,
+                      angularDeflection,
+                      normalsFromUV);
 }
 
 void ViewProviderPartExt::updateVisual()

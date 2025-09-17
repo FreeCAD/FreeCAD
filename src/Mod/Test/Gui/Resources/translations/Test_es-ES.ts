@@ -11,12 +11,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD Unit Test</source>
-      <translation type="unfinished">FreeCAD Unit Test</translation>
+      <translation>FreeCAD Unit Test</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="44"/>
       <source>Select test name</source>
-      <translation type="unfinished">Select test name</translation>
+      <translation>Seleccione el nombre de la prueba</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="96"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="205"/>
       <source>Failures</source>
-      <translation type="unfinished">Failures</translation>
+      <translation>Fallos</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="222"/>
@@ -81,12 +81,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="239"/>
       <source>Remaining</source>
-      <translation type="unfinished">Remaining</translation>
+      <translation>Restantes</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="259"/>
       <source>Failures and Errors</source>
-      <translation type="unfinished">Failures and Errors</translation>
+      <translation>Fallos y errores</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="275"/>
@@ -112,8 +112,8 @@
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation>Introduzca el nombre de un objeto llamable que, cuando sea llamado, devolverá un TestCase.
-Haga clic en 'Inicio', y se llevará a cabo la prueba ya.
+      <translation>Introduzca el nombre de un objeto llamable que, al ser llamado, devolverá un caso de prueba.
+Haga clic en "Inicio", y se llevará a cabo la prueba producida.
 
 Haga doble clic en un error en la vista de árbol para ver más información sobre él, incluyendo el seguimiento de la pila.</translation>
     </message>
@@ -129,7 +129,7 @@ Haga doble clic en un error en la vista de árbol para ver más información sob
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
       <translation>Copyright (c) Werner Mayer
 
-FreeCAD UnitTest es parte de FreeCAD y soporta escribir pruebas unitarias para los propios módulos.</translation>
+FreeCAD UnitTest es parte de FreeCAD y soporta la escritura de pruebas unitarias para módulos propios.</translation>
     </message>
   </context>
 </TS>

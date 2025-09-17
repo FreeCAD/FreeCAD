@@ -146,8 +146,8 @@ private:
             case SelectMode::SeekSecond: {
                 if (constructionMethod() == ConstructionMethod::ThreeRim) {
                     centerPoint = (onSketchPos - firstPoint) / 2 + firstPoint;
-                    secondPoint = onSketchPos;
                 }
+                secondPoint = onSketchPos;
 
                 radius = (onSketchPos - centerPoint).Length();
 
@@ -307,7 +307,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("Circle parameters"));
+        return QString(tr("Circle Parameters"));
     }
 
     bool canGoToNextMode() override
@@ -624,7 +624,7 @@ void DSHCircleController::adaptParameters(Base::Vector2d onSketchPos)
 }
 
 template<>
-void DSHCircleController::doChangeDrawSketchHandlerMode()
+void DSHCircleController::computeNextDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
@@ -632,7 +632,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
             auto& secondParam = onViewParameters[OnViewParameter::Second];
 
             if (firstParam->hasFinishedEditing && secondParam->hasFinishedEditing) {
-                handler->setState(SelectMode::SeekSecond);
+                handler->setNextState(SelectMode::SeekSecond);
             }
         } break;
         case SelectMode::SeekSecond: {
@@ -642,7 +642,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
                 && handler->constructionMethod()
                     == DrawSketchHandlerCircle::ConstructionMethod::Center) {
 
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
             else if (onViewParameters.size() > 3) {
                 auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
@@ -650,7 +650,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
                     && handler->constructionMethod()
                         == DrawSketchHandlerCircle::ConstructionMethod::ThreeRim) {
 
-                    handler->setState(SelectMode::SeekThird);
+                    handler->setNextState(SelectMode::SeekThird);
                 }
             }
         } break;
@@ -659,7 +659,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
             auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
 
             if (fifthParam->hasFinishedEditing && sixthParam->hasFinishedEditing) {
-                handler->setState(SelectMode::End);
+                handler->setNextState(SelectMode::End);
             }
         } break;
         default:
@@ -716,6 +716,13 @@ void DSHCircleController::addConstraints()
                                       firstCurve,
                                       handler->radius);
             }
+
+            const std::vector<Sketcher::Constraint*>& ConStr =
+                handler->sketchgui->getSketchObject()->Constraints.getValues();
+            int index = static_cast<int>(ConStr.size()) - 1;
+            Base::Vector2d dir = handler->secondPoint - handler->centerPoint;
+            Base::Vector2d toPnt = handler->secondPoint + dir * 0.3;
+            handler->moveConstraint(index, toPnt);
         };
 
         // NOTE: if AutoConstraints is empty, we can add constraints directly without any diagnose.

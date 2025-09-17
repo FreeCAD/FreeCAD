@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QColor>
 # include <QDir>
 # include <QFileInfo>
@@ -35,7 +32,6 @@
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -254,12 +250,10 @@ View3DInventor* View3DInventorPy::getView3DInventorPtr()
 
 Py::Object View3DInventorPy::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
     if (!getView3DInventorPtr())
         throw Py::RuntimeError("Cannot print representation of deleted object");
-    s_out << "View3DInventor";
-    return Py::String(s_out.str());
+
+    return Py::String("View3DInventor");
 }
 
 View3DInventorPy::method_varargs_handler View3DInventorPy::pycxx_handler = nullptr;

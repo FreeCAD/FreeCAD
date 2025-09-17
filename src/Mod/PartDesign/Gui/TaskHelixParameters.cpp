@@ -27,13 +27,17 @@
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/WaitCursor.h>
+#include <Mod/Part/App/Tools.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
+#include <Gui/Inventor/Draggers/GizmoHelper.h>
+#include <Gui/Inventor/Draggers/SoLinearDragger.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureHelix.h>
 
@@ -74,6 +78,8 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix* Helix
     connectSlots();
     setFocus();
     showCoordinateAxes();
+
+    setupGizmos(HelixView);
 }
 
 void TaskHelixParameters::initializeHelix()
@@ -234,9 +240,9 @@ void TaskHelixParameters::addPartAxes()
     if (PartDesign::Body* body = PartDesign::Body::findBodyOf(profile)) {
         try {
             App::Origin* orig = body->getOrigin();
-            addAxisToCombo(orig->getX(), "", tr("Base x-axis"));
-            addAxisToCombo(orig->getY(), "", tr("Base y-axis"));
-            addAxisToCombo(orig->getZ(), "", tr("Base z-axis"));
+            addAxisToCombo(orig->getX(), "", tr("Base X-axis"));
+            addAxisToCombo(orig->getY(), "", tr("Base Y-axis"));
+            addAxisToCombo(orig->getZ(), "", tr("Base Z-axis"));
         }
         catch (const Base::Exception& ex) {
             ex.reportException();
@@ -526,6 +532,8 @@ void TaskHelixParameters::onAxisChanged(int num)
 
         recomputeFeature();
         updateStatus();
+
+        setGizmoPositions();
     }
     catch (const Base::Exception& e) {
         e.reportException();
@@ -561,6 +569,8 @@ void TaskHelixParameters::onReversedChanged(bool on)
         propReversed->setValue(on);
         recomputeFeature();
         updateUI();
+
+        setGizmoPositions();
     }
 }
 
@@ -701,6 +711,46 @@ void TaskHelixParameters::apply()  // NOLINT
     FCMD_OBJ_CMD(tobj, "Growth = " << propGrowth->getValue());
     FCMD_OBJ_CMD(tobj, "LeftHanded = " << (propLeftHanded->getValue() ? 1 : 0));
     FCMD_OBJ_CMD(tobj, "Reversed = " << (propReversed->getValue() ? 1 : 0));
+}
+
+void TaskHelixParameters::setupGizmos(ViewProviderHelix* vp)
+{
+    if (!GizmoContainer::isEnabled()) {
+        return;
+    }
+
+    heightGizmo = new Gui::LinearGizmo(ui->height);
+
+    connect(ui->inputMode, qOverload<int>(&QComboBox::currentIndexChanged), [this] (int index) {
+        bool isPitchTurnsAngle = index == static_cast<int>(HelixMode::pitch_turns_angle);
+        heightGizmo->setVisibility(!isPitchTurnsAngle);
+    });
+
+    gizmoContainer = GizmoContainer::create({heightGizmo}, vp);
+
+    setGizmoPositions();
+
+    ui->inputMode->currentIndexChanged(ui->inputMode->currentIndex());
+}
+
+void TaskHelixParameters::setGizmoPositions()
+{
+    if (!gizmoContainer) {
+        return;
+    }
+
+    auto helix = getObject<PartDesign::Helix>();
+    Part::TopoShape profileShape = helix->getProfileShape();
+    double reversed = propReversed->getValue()? -1.0 : 1.0;
+    auto profileCentre = getMidPointFromProfile(profileShape);
+    Base::Vector3d axisDir = helix->Axis.getValue() * reversed;
+    Base::Vector3d basePos = helix->Base.getValue();
+
+    // Project the centre point of the helix to a plane passing through the com of the profile
+    // and along the helix axis
+    Base::Vector3d pos = basePos + axisDir.Dot(profileCentre - basePos) * axisDir;
+
+    heightGizmo->Gizmo::setDraggerPlacement(pos, axisDir);
 }
 
 

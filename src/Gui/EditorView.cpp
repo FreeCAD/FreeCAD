@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QCheckBox>
 #include <QClipboard>
@@ -42,7 +39,6 @@
 #include <QTextStream>
 #include <QTimer>
 #include <QToolButton>
-#endif
 
 #include "EditorView.h"
 #include "Application.h"

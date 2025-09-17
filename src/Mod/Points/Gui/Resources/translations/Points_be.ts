@@ -4,36 +4,36 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="239"/>
+      <location filename="../../Command.cpp" line="236"/>
       <source>Points</source>
       <translation>Кропкі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="240"/>
+      <location filename="../../Command.cpp" line="237"/>
       <source>Convert to Points</source>
-      <translation type="unfinished">Convert to Points</translation>
+      <translation>Пераўтварыць у кропкі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="241"/>
+      <location filename="../../Command.cpp" line="238"/>
       <source>Converts to points</source>
-      <translation type="unfinished">Converts to points</translation>
+      <translation>Пераўтварае ў кропкі</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsExport</name>
     <message>
-      <location filename="../../Command.cpp" line="153"/>
+      <location filename="../../Command.cpp" line="150"/>
       <source>Points</source>
       <translation>Кропкі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="154"/>
+      <location filename="../../Command.cpp" line="151"/>
       <source>Export Points…</source>
-      <translation type="unfinished">Export Points…</translation>
+      <translation>Экспартаваць кропкі…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="155"/>
-      <location filename="../../Command.cpp" line="157"/>
+      <location filename="../../Command.cpp" line="152"/>
+      <location filename="../../Command.cpp" line="154"/>
       <source>Exports a point cloud</source>
       <translation>Экспарт воблака кропак</translation>
     </message>
@@ -48,7 +48,7 @@
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <source>Import Points…</source>
-      <translation type="unfinished">Import Points…</translation>
+      <translation>Імпартаваць кропкі…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="70"/>
@@ -59,73 +59,73 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="375"/>
+      <location filename="../../Command.cpp" line="372"/>
       <source>Points</source>
       <translation>Кропкі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="376"/>
+      <location filename="../../Command.cpp" line="373"/>
       <source>Merge Point Clouds</source>
-      <translation type="unfinished">Merge Point Clouds</translation>
+      <translation>Аб'яднаць воблака кропак</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="377"/>
+      <location filename="../../Command.cpp" line="374"/>
       <source>Merges several point clouds into one</source>
-      <translation type="unfinished">Merges several point clouds into one</translation>
+      <translation>Аб'ядноўвае некалькі воблакаў кропак у адно воблака</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="327"/>
+      <location filename="../../Command.cpp" line="324"/>
       <source>Points</source>
       <translation>Кропкі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="328"/>
+      <location filename="../../Command.cpp" line="325"/>
       <source>Cut Point Cloud</source>
-      <translation type="unfinished">Cut Point Cloud</translation>
+      <translation>Выразаць воблака кропак</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="329"/>
+      <location filename="../../Command.cpp" line="326"/>
       <source>Cuts a point cloud with a selected polygon</source>
-      <translation type="unfinished">Cuts a point cloud with a selected polygon</translation>
+      <translation>Выразаць воблака кропак, якое абмежавана абраным шматкутнікам</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="437"/>
+      <location filename="../../Command.cpp" line="434"/>
       <source>Points</source>
       <translation>Кропкі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="438"/>
+      <location filename="../../Command.cpp" line="435"/>
       <source>Structured Point Cloud</source>
-      <translation type="unfinished">Structured Point Cloud</translation>
+      <translation>Воблакі структураваных кропак</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="439"/>
+      <location filename="../../Command.cpp" line="436"/>
       <source>Converts points to a structured point cloud</source>
-      <translation type="unfinished">Converts points to a structured point cloud</translation>
+      <translation>Пераўтварае кропкі ў воблака структураваных кропак</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="200"/>
+      <location filename="../../Command.cpp" line="197"/>
       <source>Points</source>
       <translation>Кропкі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>Transform Points</source>
       <translation>Пераўтварэнне Кропак</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="202"/>
+      <location filename="../../Command.cpp" line="199"/>
       <source>Performs tests to transform a point cloud</source>
-      <translation type="unfinished">Performs tests to transform a point cloud</translation>
+      <translation>Выконвае тэсты для пераўтварэння воблака кропак</translation>
     </message>
   </context>
   <context>
@@ -136,12 +136,12 @@
       <translation>Імпарт кропак</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="216"/>
+      <location filename="../../Command.cpp" line="213"/>
       <source>Transform points</source>
       <translation>Пераўтварэнне кропак</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="270"/>
       <source>Convert to points</source>
       <translation>Пераўтварыць у кропкі</translation>
     </message>
@@ -187,7 +187,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="14"/>
       <source>ASCII Points Import</source>
-      <translation type="unfinished">ASCII Points Import</translation>
+      <translation>Імпартаваць кропкі ASCII</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="34"/>
@@ -197,44 +197,44 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="46"/>
       <source>Special Lines</source>
-      <translation type="unfinished">Special Lines</translation>
+      <translation>Спецыяльныя лініі</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="58"/>
       <source>First Line</source>
-      <translation type="unfinished">First Line</translation>
+      <translation>Першая лінія</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="101"/>
       <source>Cluster by lines starting with</source>
-      <translation type="unfinished">Cluster by lines starting with</translation>
+      <translation>Групавана па лініі, якія пачынаюцца з</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="111"/>
       <source>Ignore lines starting with</source>
-      <translation type="unfinished">Ignore lines starting with</translation>
+      <translation>Прапускаць лініі, якія пачынаецца з</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="126"/>
       <source>Point Format</source>
-      <translation type="unfinished">Point Format</translation>
+      <translation>Фармат кропкі</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="146"/>
       <source>Number separator</source>
-      <translation type="unfinished">Number separator</translation>
+      <translation>Падзельнік лічбаў</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="180"/>
       <source>Points format</source>
-      <translation type="unfinished">Points format</translation>
+      <translation>Фармат кропак</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="201"/>
       <location filename="../../DlgPointsRead.ui" line="237"/>
       <location filename="../../DlgPointsRead.ui" line="273"/>
       <source>Next block</source>
-      <translation type="unfinished">Next block</translation>
+      <translation>Наступны блок</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="209"/>
@@ -269,12 +269,12 @@
       <location filename="../../DlgPointsRead.ui" line="265"/>
       <location filename="../../DlgPointsRead.ui" line="301"/>
       <source>I (gray value)</source>
-      <translation type="unfinished">I (gray value)</translation>
+      <translation>I (значэнне Шэрага)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="341"/>
       <source>Number of previewed lines</source>
-      <translation type="unfinished">Number of previewed lines</translation>
+      <translation>Колькасць радкоў для папярэдняга выгляду</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="314"/>
@@ -286,33 +286,34 @@
     <name>QObject</name>
     <message>
       <location filename="../../Command.cpp" line="85"/>
-      <location filename="../../Command.cpp" line="174"/>
+      <location filename="../../Command.cpp" line="171"/>
       <source>Point formats</source>
       <translation>Фарматы кропкі</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
-      <location filename="../../Command.cpp" line="174"/>
+      <location filename="../../Command.cpp" line="171"/>
       <source>All Files</source>
       <translation>Усе файлы</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="117"/>
+      <location filename="../../Command.cpp" line="116"/>
       <source>Points not at Origin</source>
       <translation>Кропкі, якія не знаходзяцца ў пачатку каардынат</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="118"/>
+      <location filename="../../Command.cpp" line="117"/>
       <source>The bounding box of the imported points does not contain the origin. Translate it to the origin?</source>
-      <translation type="unfinished">The bounding box of the imported points does not contain the origin. Translate it to the origin?</translation>
+      <translation>Габарыты імпартаваных кропак не змяшчаюць кропку пачатка каардынат.
+Ці перанесці яе ў пачатак каардынат?</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="257"/>
       <source>Distance</source>
       <translation>Адлегласць</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="261"/>
+      <location filename="../../Command.cpp" line="258"/>
       <source>Enter maximum distance:</source>
       <translation>Увядзіце найбольшую адлегласць:</translation>
     </message>
@@ -322,7 +323,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Points Tools</source>
-      <translation type="unfinished">Points Tools</translation>
+      <translation>Інструменты кропак</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="35"/>

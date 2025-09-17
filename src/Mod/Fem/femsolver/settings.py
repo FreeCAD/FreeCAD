@@ -168,9 +168,9 @@ def get_dir_setting():
 
 def get_default_solver():
     """Return default solver name."""
-    solver_map = {0: "None"}
+    solver_map = {0: None}
     if get_binary("Calculix", True):
-        solver_map[1] = "CalculiXCcxTools"
+        solver_map[1] = "CalculiX"
     if get_binary("ElmerSolver", True):
         solver_map[len(solver_map)] = "Elmer"
     if get_binary("Mystran", True):

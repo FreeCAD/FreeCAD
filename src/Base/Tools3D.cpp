@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
 #include "BoundBox.h"
 #include "Placement.h"
 #include "Tools3D.h"

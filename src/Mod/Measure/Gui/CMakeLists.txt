@@ -1,10 +1,3 @@
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(MeasureGui_LIBS
     Measure
     #Part
@@ -28,8 +21,7 @@ SET(MeasureGui_UIC_SRCS
     DlgPrefsMeasureAppearanceImp.ui
 )
 
-generate_from_xml(QuickMeasurePy)
-generate_from_py_(QuickMeasurePy)
+generate_from_py(QuickMeasure)
 
 SET(MeasureGui_SRCS
     ${CMAKE_SOURCE_DIR}/src/Mod/Measure/InitGui.py
@@ -39,7 +31,7 @@ SET(MeasureGui_SRCS
     Resources/Measure.qrc
     PreCompiled.cpp
     PreCompiled.h
-    QuickMeasurePy.xml
+    QuickMeasure.pyi
     QuickMeasurePyImp.cpp
     QuickMeasure.cpp
     QuickMeasure.h
@@ -77,7 +69,20 @@ SET(MeasureGuiIcon_SVG
 )
 
 add_library(MeasureGui SHARED ${MeasureGui_SRCS} ${MeasureGuiIcon_SVG})
+target_include_directories(
+    MeasureGui
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 target_link_libraries(MeasureGui ${MeasureGui_LIBS})
+
+if (MSVC)
+    target_compile_options(MeasureGui PRIVATE /wd4251 /wd4273)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(MeasureGui)
 endif()

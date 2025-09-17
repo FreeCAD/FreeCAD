@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QActionGroup>
 # include <QApplication>
 # include <QByteArray>
@@ -55,7 +54,7 @@
 # include <QWhatsThis>
 # include <QWindow>
 # include <QPushButton>
-#endif
+
 
 #if defined(Q_OS_WIN)
     #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))

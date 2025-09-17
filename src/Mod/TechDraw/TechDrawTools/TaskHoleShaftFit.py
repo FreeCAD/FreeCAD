@@ -94,7 +94,7 @@ class TaskHoleShaftFit:
         self.form.rbHoleBase.clicked.connect(partial(self.on_HoleShaftChanged, True))
         self.form.rbShaftBase.clicked.connect(partial(self.on_HoleShaftChanged, False))
         self.form.cbField.currentIndexChanged.connect(self.on_FieldChanged)
-        
+
         App.setActiveTransaction("Add hole or shaft fit")
 
     def setHoleFields(self):

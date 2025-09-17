@@ -758,13 +758,13 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="313"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="537"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="534"/>
       <source>Favorites</source>
       <translation>Favoritos</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="313"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="544"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="541"/>
       <source>Recent</source>
       <translation>Recientes</translation>
     </message>

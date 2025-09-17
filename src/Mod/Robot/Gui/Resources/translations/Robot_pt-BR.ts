@@ -190,8 +190,8 @@
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="90"/>
-      <source>Insert in trajectory</source>
-      <translation>Inserir na trajetória</translation>
+      <source>Insert in Trajectory</source>
+      <translation type="unfinished">Insert in Trajectory</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="91"/>
@@ -903,8 +903,8 @@
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="160"/>
-      <source>Don not change position &amp; orientation</source>
-      <translation type="unfinished">Don not change position &amp; orientation</translation>
+      <source>Do not change position &amp; orientation</source>
+      <translation type="unfinished">Do not change position &amp; orientation</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="165"/>

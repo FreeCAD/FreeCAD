@@ -21,12 +21,14 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
 #ifndef FC_OS_WIN32
 # ifndef GL_GLEXT_PROTOTYPES
 # define GL_GLEXT_PROTOTYPES 1
 # endif
+#else
+#include <windows.h>
 #endif
 
 #ifdef FC_OS_MACOSX

@@ -3,13 +3,6 @@ if(MSVC)
 endif(MSVC)
 
 
-include_directories(
-    ${CMAKE_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_BINARY_DIR}/src
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
-
 set(DraftUtils_LIBS
     Part
     FreeCADApp
@@ -23,7 +16,20 @@ SET(DraftUtils_SRCS
 )
 
 add_library(DraftUtils SHARED ${DraftUtils_SRCS})
+target_include_directories(
+    DraftUtils
+    PRIVATE
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 target_link_libraries(DraftUtils ${DraftUtils_LIBS})
+
+if (MSVC)
+    target_compile_options(DraftUtils PRIVATE /wd4275)
+endif()
+
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(DraftUtils)
 endif()

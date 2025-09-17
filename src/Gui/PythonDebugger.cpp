@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QCoreApplication>
 # include <QEventLoop>
-#endif
+
+#include <FCConfig.h>
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -167,10 +167,7 @@ PythonDebugStdout::~PythonDebugStdout() = default;
 
 Py::Object PythonDebugStdout::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "PythonDebugStdout";
-    return Py::String(s_out.str());
+    return Py::String("PythonDebugStdout");
 }
 
 Py::Object PythonDebugStdout::write(const Py::Tuple& args)
@@ -210,10 +207,7 @@ PythonDebugStderr::~PythonDebugStderr() = default;
 
 Py::Object PythonDebugStderr::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "PythonDebugStderr";
-    return Py::String(s_out.str());
+    return Py::String("PythonDebugStderr");
 }
 
 Py::Object PythonDebugStderr::write(const Py::Tuple& args)
@@ -248,10 +242,7 @@ PythonDebugExcept::~PythonDebugExcept() = default;
 
 Py::Object PythonDebugExcept::repr()
 {
-    std::string s;
-    std::ostringstream s_out;
-    s_out << "PythonDebugExcept";
-    return Py::String(s_out.str());
+    return Py::String("PythonDebugExcept");
 }
 
 Py::Object PythonDebugExcept::excepthook(const Py::Tuple& args)

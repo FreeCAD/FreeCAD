@@ -100,15 +100,19 @@ class FCTBSerializer(AssetSerializer):
                 f"is not a ToolBitShape instance. {dependencies}"
             )
 
-        # Find the correct ToolBit subclass for the shape
-        Path.Log.debug(
-            f"FCTBSerializer.deserialize: shape = {shape!r}, id = {id!r},"
-            f" params = {shape.get_parameters()}, attrs = {attrs!r}"
-        )
         return ToolBit.from_shape(shape, attrs, id)
 
     @classmethod
     def deep_deserialize(cls, data: bytes) -> ToolBit:
+        """Deep deserialize preserving the original toolbit ID."""
+
         attrs_map = json.loads(data)
+        original_id = attrs_map.get("id")
+
         asset_class = cast(ToolBit, cls.for_class)
-        return asset_class.from_dict(attrs_map)
+        toolbit = asset_class.from_dict(attrs_map)
+
+        if original_id:
+            toolbit.id = original_id  # Preserve the original ID
+
+        return toolbit

@@ -23,8 +23,6 @@
 
 // This custom widget adds the missing ellipsize functionality in QT5
 
-#include "PreCompiled.h"
-
 #include "ElideCheckBox.h"
 
 namespace Gui {

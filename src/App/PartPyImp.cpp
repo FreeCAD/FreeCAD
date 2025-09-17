@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 // inclusion of the generated files (generated out of PartPy.xml)
 #include "PartPy.h"

@@ -42,7 +42,11 @@ public:
 
     // Temperature parameters
     App::PropertyTemperature initialTemperature;
+    App::PropertyBool EnableFinalTemperature;
+    App::PropertyTemperature FinalTemperature;
 
+    App::PropertyBool EnableAmplitude;
+    App::PropertyStringList AmplitudeValues;
 
     /// recalculate the object
     App::DocumentObjectExecReturn* execute() override;

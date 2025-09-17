@@ -1,9 +1,6 @@
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <unordered_map>
 #ifndef FC_DEBUG
 #include <random>
-#endif
 #endif
 
 #include "ElementMap.h"

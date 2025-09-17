@@ -178,7 +178,7 @@ class TestPad(unittest.TestCase):
         self.Pad1 = self.Doc.addObject("PartDesign::Pad", "Pad1")
         self.Body.addObject(self.Pad1)
         self.Pad1.Profile = self.PadSketch1
-        self.Pad1.Type = 4
+        self.Pad1.SideType = 1
         self.Pad1.Length = 1.0
         self.Pad1.Length2 = 2.0
         self.Pad1.Reversed = 1

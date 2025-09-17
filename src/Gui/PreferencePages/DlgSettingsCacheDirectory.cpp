@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <cmath>
 # include <limits>
 # include <vector>
@@ -34,7 +31,6 @@
 # include <QMessageBox>
 # include <QSettings>
 # include <QUrl>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>

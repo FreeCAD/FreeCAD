@@ -37,14 +37,18 @@ def write_mesh(ccxwriter):
     element_param = 1  # highest element order only
     group_param = False  # do not write mesh group data
 
-    # Use reduced integration beam elements if this option is enabled in ccx solver settings
+    # Use reduced integration beam elements or truss elements if this is enabled in ccx solver settings
     vol_variant = "standard"
-    edge_variant = "beam"
-    if ccxwriter.solver_obj.BeamReducedIntegration:
-        edge_variant = "beam reduced"
-    # Check to see if fluid sections are in analysis and use D network element type
-    if ccxwriter.member.geos_fluidsection:
-        edge_variant = "network"
+    if ccxwriter.solver_obj.ExcludeBendingStiffness:
+        edge_variant = "truss"
+    else:
+        if ccxwriter.solver_obj.BeamReducedIntegration:
+            edge_variant = "beam reduced"
+        else:
+            edge_variant = "beam"
+        # Check to see if fluid sections are in analysis and use D network element type
+        if ccxwriter.member.geos_fluidsection:
+            edge_variant = "network"
 
     # Use 2D elements if model space is not set to 3D
     if ccxwriter.solver_obj.ModelSpace == "3D":

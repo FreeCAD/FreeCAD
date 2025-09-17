@@ -365,6 +365,14 @@ class Component(ArchIFC.IfcProduct):
             elif hasattr(o,"Host"):
                 if obj == o.Host:
                     ilist.append(o)
+
+        # Stairs railings should be considered as children
+        # (RailingLeft and RailingRight property)
+        if hasattr(obj, "RailingLeft") and obj.RailingLeft:
+            ilist.append(obj.RailingLeft)
+        if hasattr(obj, "RailingRight") and obj.RailingRight:
+            ilist.append(obj.RailingRight)
+
         ilist2 = []
         for o in ilist:
             if hasattr(o,"MoveWithHost"):
@@ -727,14 +735,25 @@ class Component(ArchIFC.IfcProduct):
         # treat additions
         for o in obj.Additions:
 
-            if not base:
+            # Arch Objects can have no Base, but Additions only
+            # If there is no base/base isNull, 1st Addition becomes 'base',
+            # placement should be treated as rest of Additions.
+            #if not base:
+            if not base or base.isNull():
                 if hasattr(o,'Shape'):
-                    base = o.Shape
+                    base = Part.Shape(o.Shape)  #base = o.Shape
+                    # Base is first Addition, treat placement as other Additions
+                    if placement:
+                        # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
+                        base.Placement = placement.multiply(base.Placement)
             else:
-                if base.isNull():
-                    if hasattr(o,'Shape'):
-                        base = o.Shape
-                else:
+                # base.isNull() case grouped into if condition above, no need
+                # if/else below.  Remarked out 2025.9.2
+                #
+                #if base.isNull():
+                #    if hasattr(o,'Shape'):
+                #        base = o.Shape
+                #else:
                     # special case, both walls with coinciding endpoints
                     import ArchWall
                     js = ArchWall.mergeShapes(o,obj)
@@ -746,7 +765,7 @@ class Component(ArchIFC.IfcProduct):
                         base = base.fuse(add)
                     elif hasattr(o,'Shape'):
                         if o.Shape and not o.Shape.isNull() and o.Shape.Solids:
-                            ## TODO use Part.Shape() instead?
+                            # TODO use Part.Shape() instead?
                             s = o.Shape.copy()
                             if placement:
                                 # see https://forum.freecad.org/viewtopic.php?p=579754#p579754
@@ -1355,6 +1374,9 @@ class ViewProviderComponent:
                         c = tuple([float(f) for f in obj.Material.Material["DiffuseColor"].strip("()").strip("[]").split(",")])
                         if obj.ViewObject.ShapeColor != c:
                             obj.ViewObject.ShapeColor = c
+                        # Overwrite DiffuseColor (required if it does not match number of faces):
+                        if obj.ViewObject.DiffuseColor != [c]:
+                            obj.ViewObject.DiffuseColor = [c]
                     if "Transparency" in obj.Material.Material:
                         t = int(obj.Material.Material["Transparency"])
                         if obj.ViewObject.Transparency != t:
@@ -1655,7 +1677,7 @@ class ViewProviderComponent:
 
     def contextMenuAddToggleSubcomponents(self, menu):
         actionToggleSubcomponents = QtGui.QAction(QtGui.QIcon(":/icons/Arch_ToggleSubs.svg"),
-                                                  translate("Arch", "Toggle subcomponents"),
+                                                  translate("Arch", "Toggle Subcomponents"),
                                                   menu)
         QtCore.QObject.connect(actionToggleSubcomponents,
                                QtCore.SIGNAL("triggered()"),
@@ -2092,7 +2114,7 @@ class ComponentTaskPanel:
         self.baseform.setWindowTitle(QtGui.QApplication.translate("Arch", "Component", None))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None))
         self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None))
-        self.title.setText(QtGui.QApplication.translate("Arch", "Components of this object", None))
+        self.title.setText(QtGui.QApplication.translate("Arch", "Components of This Object", None))
         self.treeBase.setText(0,QtGui.QApplication.translate("Arch", "Base component", None))
         self.treeAdditions.setText(0,QtGui.QApplication.translate("Arch", "Additions", None))
         self.treeSubtractions.setText(0,QtGui.QApplication.translate("Arch", "Subtractions", None))
@@ -2102,8 +2124,8 @@ class ComponentTaskPanel:
         self.treeFixtures.setText(0,QtGui.QApplication.translate("Arch", "Fixtures", None))
         self.treeGroup.setText(0,QtGui.QApplication.translate("Arch", "Group", None))
         self.treeHosts.setText(0,QtGui.QApplication.translate("Arch", "Hosts", None))
-        self.ifcButton.setText(QtGui.QApplication.translate("Arch", "Edit IFC properties", None))
-        self.classButton.setText(QtGui.QApplication.translate("Arch", "Edit standard code", None))
+        self.ifcButton.setText(QtGui.QApplication.translate("Arch", "Edit IFC Properties", None))
+        self.classButton.setText(QtGui.QApplication.translate("Arch", "Edit Standard Code", None))
 
     def editIfcProperties(self):
         """Open the IFC editor dialog box.

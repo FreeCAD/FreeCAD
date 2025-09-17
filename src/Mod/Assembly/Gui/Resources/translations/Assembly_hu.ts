@@ -19,7 +19,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="51"/>
       <source>Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;</source>
-      <translation type="unfinished">Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;</translation>
+      <translation>Egy összetevőt helyez el az aktív összeállításba. Ez dinamikus hivatkozásokat hoz létre az alkatrészekre, testekre, alaptestekre és szerelvényekre. Külső összetevő behelyezéséhez győződjön meg arról, hogy a fájl &lt;b&gt;nyitva van a jelenlegi munkamenetben&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="53"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="57"/>
       <source>Solves the currently active assembly.</source>
-      <translation type="unfinished">Solves the currently active assembly.</translation>
+      <translation>Megoldja a jelenleg aktív összeállítást.</translation>
     </message>
   </context>
   <context>
@@ -63,7 +63,7 @@
       <translation>Összeállítás</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="127"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="129"/>
       <source>Active object</source>
       <translation>Aktív objektum</translation>
     </message>
@@ -90,12 +90,12 @@
     <message>
       <location filename="../../../App/BomObject.cpp" line="272"/>
       <source>N/A</source>
-      <translation type="unfinished">N/A</translation>
+      <translation>N/A</translation>
     </message>
     <message>
       <location filename="../../../App/BomObject.cpp" line="296"/>
       <source>Not supported</source>
-      <translation type="unfinished">Not supported</translation>
+      <translation>Nem támogatott</translation>
     </message>
   </context>
   <context>
@@ -145,7 +145,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1550"/>
+      <location filename="../../../JointObject.py" line="1560"/>
       <source>Distance</source>
       <translation>Távolság</translation>
     </message>
@@ -161,7 +161,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="58"/>
-      <location filename="../../../JointObject.py" line="1552"/>
+      <location filename="../../../JointObject.py" line="1562"/>
       <source>Angle</source>
       <translation>Szög</translation>
     </message>
@@ -186,22 +186,27 @@
       <translation>Szíj</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="634"/>
+      <location filename="../../../JointObject.py" line="641"/>
       <source>Broken link in: </source>
-      <translation type="unfinished">Broken link in: </translation>
+      <translation>Hibás kapcsolat itt </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1394"/>
-      <source>You need to select 2 elements from 2 separate parts.</source>
-      <translation>2 elemet kell kiválasztania 2 különálló részből.</translation>
+      <location filename="../../../JointObject.py" line="1404"/>
+      <source>Select 2 elements from 2 separate parts</source>
+      <translation>2 elemet kiválasztása 2 különálló részből</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1554"/>
+      <location filename="../../../JointObject.py" line="1564"/>
       <source>Radius 1</source>
       <translation>Sugár 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1556"/>
+      <location filename="../../../JointObject.py" line="1566"/>
+      <source>Thread pitch</source>
+      <translation>Menetemelkedés</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1568"/>
       <source>Pitch radius</source>
       <translation>Meredekség sugara</translation>
     </message>
@@ -246,159 +251,164 @@
       <translation>Mennyiség (automatikus)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="197"/>
+      <location filename="../../../CommandCreateBom.py" line="200"/>
       <source>Default</source>
       <translation>Alapértelmezett</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="293"/>
+      <location filename="../../../CommandCreateBom.py" line="296"/>
       <source>Duplicate Name</source>
       <translation>Ismételt név</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="294"/>
+      <location filename="../../../CommandCreateBom.py" line="297"/>
       <source>This name is already used. Please choose a different name.</source>
       <translation>Ez a név már használatban van. Kérjük, válasszon másik nevet.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="373"/>
+      <location filename="../../../CommandCreateBom.py" line="376"/>
       <source>Options</source>
       <translation>Beállítások</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="380"/>
+      <location filename="../../../CommandCreateBom.py" line="383"/>
       <source>Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</source>
-      <translation type="unfinished">Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</translation>
+      <translation>Alkatrészek alpontjai: a felosztás alkatrészek alpontjait be fognak kerülni az anyagjegyzékbe</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="386"/>
+      <location filename="../../../CommandCreateBom.py" line="389"/>
       <source>Parts children: the children of parts will be added to the bill of materials</source>
-      <translation type="unfinished">Parts children: the children of parts will be added to the bill of materials</translation>
+      <translation>Alkatrészek alpontjai: az Alkatrészek alpontjai hozzáadásra kerülnek az anyagjegyzékhez</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="392"/>
+      <location filename="../../../CommandCreateBom.py" line="395"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
-      <translation type="unfinished">Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</translation>
+      <translation>Csak alkatrészek: csak alkatrész-tárolók és összetevőket ad hozzá az anyagjegyzékhez. Az olyan szilárd testek, mint az alkatrész tervetés testei, rögzítők vagy az alkatrész munkafelület alaptestjei figyelmen kívül maradnak.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="394"/>
+      <location filename="../../../CommandCreateBom.py" line="397"/>
       <source>Columns</source>
       <translation>Oszlopok</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="407"/>
+      <location filename="../../../CommandCreateBom.py" line="410"/>
       <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).</source>
-      <translation type="unfinished">Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).</translation>
+      <translation>Személyre szabott oszlopok: a 'Leírás' és más személyre szabott oszlopok, amelyeket az 'Oszlop hozzáadása' gombra kattintva ad hozzá, nem fognak felülíródni. Ha egy oszlop neve '.'-kal kezdődik, amelyet egy tulajdonság neve követ (pl. '.Hossz'), akkor automatikusan kitöltődik az adott tulajdonság értékével. Ezeket az oszlopokat átnevezheti dupla kattintással vagy az F2 billentyű megnyomásával (egy oszlop átnevezése jelenleg az adatainak elvesztésével jár).</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="413"/>
+      <location filename="../../../CommandCreateBom.py" line="416"/>
       <source>Any column (custom or not), can be deleted by pressing the Delete key</source>
-      <translation type="unfinished">Any column (custom or not), can be deleted by pressing the Delete key</translation>
+      <translation>Bármelyik oszlop (akár személyre szabott, akár nem) törölhető a Töröl gomb megnyomásával</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="415"/>
+      <location filename="../../../CommandCreateBom.py" line="418"/>
       <source>Export</source>
       <translation>Export</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="422"/>
+      <location filename="../../../CommandCreateBom.py" line="425"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences</source>
-      <translation type="unfinished">The exported file format can be customized in the Spreadsheet workbench preferences</translation>
+      <translation>Az exportált fájlformátum testreszabható a Táblázatkezelő munkafelület beállításaiban</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="401"/>
+      <location filename="../../../CommandCreateBom.py" line="404"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
       <translation>Automatikus oszlopok : (Index, mennyiség, név...) automatikusan feltöltődnek. Bármely módosítás, amelyet végez, felülírásra kerül. Ezeket az oszlopokat nem lehet átnevezni.</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="84"/>
+      <location filename="../../../CommandInsertNewPart.py" line="87"/>
       <source>Part name</source>
       <translation>Alkatrész neve</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="89"/>
+      <location filename="../../../CommandInsertNewPart.py" line="92"/>
       <source>Part</source>
       <translation>Alkatrész</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="94"/>
+      <location filename="../../../CommandInsertNewPart.py" line="97"/>
       <source>Create part in new file</source>
       <translation>Alkatrész létrehozása új fájlban</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="101"/>
+      <location filename="../../../CommandInsertNewPart.py" line="104"/>
       <source>Joint new part origin</source>
       <translation>Közös új alkatrész eredete</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="135"/>
+      <location filename="../../../CommandInsertNewPart.py" line="140"/>
+      <source>If the new document is not saved the new part cannot be linked in the assembly.</source>
+      <translation>Ha az új dokumentum nincs mentve, az új rész nem kapcsolható össze a összeállításban.</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandInsertNewPart.py" line="141"/>
       <source>Save Document</source>
       <translation>Dokumentum mentése</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="137"/>
+      <location filename="../../../CommandInsertNewPart.py" line="143"/>
       <source>Save</source>
       <translation>Mentés</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="140"/>
-      <source>Do not link</source>
-      <translation type="unfinished">Do not link</translation>
+      <location filename="../../../CommandInsertNewPart.py" line="146"/>
+      <source>Do not Link</source>
+      <translation>Ne kösd össze</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="477"/>
+      <location filename="../../../CommandCreateSimulation.py" line="483"/>
       <source>Enter your formula...</source>
       <translation>Adja meg a képletet...</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="530"/>
-      <source>In capital are variables that you need to replace with actual values. More details about each example in it's tooltip.</source>
-      <translation>A táblázatban nagybetűs változók vannak, amelyeket tényleges értékekkel kell helyettesíteni. További részletek az egyes példákról a szerszámcsúcsokban.</translation>
+      <location filename="../../../CommandCreateSimulation.py" line="536"/>
+      <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
+      <translation>A táblázatban nagybetűs változók vannak, amelyeket tényleges értékekkel kell helyettesíteni. További részletek minden példáról az információs ablakában.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="533"/>
+      <location filename="../../../CommandCreateSimulation.py" line="539"/>
       <source> - Linear: C + VEL*time</source>
       <translation> - Lineáris: C + VEL*idő</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="535"/>
+      <location filename="../../../CommandCreateSimulation.py" line="541"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
       <translation> - Kvadratikus: C + VEL*idő + ACC*idő^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="538"/>
+      <location filename="../../../CommandCreateSimulation.py" line="544"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
       <translation> - Harmonikus: C + AMP*sin(VEL*idő - FÁZIS)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="541"/>
+      <location filename="../../../CommandCreateSimulation.py" line="547"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
       <translation> - Exponenciális: C*exp(idő/TIMEC)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="547"/>
+      <location filename="../../../CommandCreateSimulation.py" line="553"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
       <translation> - Sima lépés: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(LEJTŐ*(idő - T0)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="554"/>
+      <location filename="../../../CommandCreateSimulation.py" line="560"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
       <translation> - Sima kvadratikus impulzus: (H/pi)*(arctan(dőlésszög*(idő - T1)) - arctan(dőlésszög*(idő - T2)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="561"/>
+      <location filename="../../../CommandCreateSimulation.py" line="567"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
       <translation> - Sima rámpa csúcsimpulzusok: ((1/pi)*(arctan(1000*(idő - T1)) - arctan(1000*(idő - T2))))*(((H2 - H1)/(T2 - T1))*(idő - T1) + H1)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="571"/>
+      <location filename="../../../CommandCreateSimulation.py" line="577"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation>C egy állandó eltolás.
 VEL egy sebesség, vagy egy meredekség, vagy az egyenes meredeksége.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="579"/>
+      <location filename="../../../CommandCreateSimulation.py" line="585"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
@@ -407,7 +417,7 @@ VEL a sebesség, vagy meredekség, vagy az egyenes meredeksége.
 ACC a gyorsulás vagy a másodrendű együttható. A függvény egy parabola.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="588"/>
+      <location filename="../../../CommandCreateSimulation.py" line="594"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
@@ -418,14 +428,14 @@ VEL a szögsebesség radián/másodpercben.
 PHASE a szinuszhullám fázisa.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="595"/>
+      <location filename="../../../CommandCreateSimulation.py" line="601"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
       <translation>C egy állandó.
 TIMEC az exponenciális függvény időállandója.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="603"/>
+      <location filename="../../../CommandCreateSimulation.py" line="609"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
@@ -434,7 +444,7 @@ L2 a léocsőfok szintje az idő = T0 után.
 SLOPE az L1 és L2 közötti átmenet meredekségét határozza meg T0-nál. A nagyobb értékek élesebb lépcsőfokokat adnak. A SLOPE értékek ≥ 1000 megfelelőek.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="612"/>
+      <location filename="../../../CommandCreateSimulation.py" line="618"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -445,7 +455,7 @@ T2 az impulzus vége.
 A SLOPE a 0 és H közötti átmenet meredekségét határozza meg a = T1 és T2 időpontban. Nagyobb értékek élesebb sarkos impulzusokat adnak. SLOPE = 1000 vagy nagyobb értékek megfelelőek.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="623"/>
+      <location filename="../../../CommandCreateSimulation.py" line="629"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -460,13 +470,13 @@ H2 a magasság a T2-nél a rámpa végén.
 A SLOPE határozza meg a 0 és H1, illetve H2 és 0 közötti átmenet meredekségét a T1 és T2 idő körül. Nagyobb értékek élesebb sarkos impulzusokat adnak. SLOPE = 1000 vagy nagyobb értékek megfelelőek.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="661"/>
-      <location filename="../../../CommandCreateSimulation.py" line="678"/>
+      <location filename="../../../CommandCreateSimulation.py" line="667"/>
+      <location filename="../../../CommandCreateSimulation.py" line="684"/>
       <source>Help</source>
       <translation>Súgó</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="676"/>
+      <location filename="../../../CommandCreateSimulation.py" line="682"/>
       <source>Hide help</source>
       <translation>Súgó elrejtése</translation>
     </message>
@@ -488,7 +498,7 @@ A SLOPE határozza meg a 0 és H1, illetve H2 és 0 közötti átmenet meredeks�
     <message>
       <location filename="../../../InitGui.py" line="203"/>
       <source>Grounding</source>
-      <translation type="unfinished">Grounding</translation>
+      <translation>Rögzítés</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="230"/>
@@ -520,14 +530,75 @@ A SLOPE határozza meg a 0 és H1, illetve H2 és 0 közötti átmenet meredeks�
     </message>
     <message>
       <location filename="../../../JointObject.py" line="221"/>
-      <source>This is the local coordinate system within Reference1's object that will be used for the joint.</source>
-      <translation>Ez a Referencia1 tárgyon belüli helyi koordináta-rendszer, amelyet a csatlakoztatáshoz használni fogunk.</translation>
+      <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
+      <translation>Ez a helyi koordináta rendszer a Referencia1 objektumon belül, amelyet a csatlakozáshoz használ</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="233"/>
+      <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
+      <translation>Ez megakadályozza a Beillesztés1 újraszámítását, lehetővé téve az elhelyezés testreszabását</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="245"/>
       <location filename="../../../JointObject.py" line="516"/>
-      <source>This is the attachment offset of the first connector of the joint.</source>
-      <translation>Ez az első közös csatlakozó rögzítésének eltolódása.</translation>
+      <source>This is the attachment offset of the first connector of the joint</source>
+      <translation>Ez az első csatlakozó rögzítésének eltolása</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="267"/>
+      <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
+      <translation>Ez a helyi koordináta rendszer a Referencia2 objektumon belül, amelyet a csatlakozáshoz használnak</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="279"/>
+      <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
+      <translation>Ez megakadályozza a Beillesztés2 újraszámítását, lehetővé téve az elhelyezés egyéni pozicionálását</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="291"/>
+      <location filename="../../../JointObject.py" line="527"/>
+      <source>This is the attachment offset of the second connector of the joint</source>
+      <translation>Ez az második csatlakozó rögzítésének eltolása</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="328"/>
+      <source>Enable the minimum length limit of the joint</source>
+      <translation>Engedélyezi a csatlakozás minimális hosszhatárát</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="341"/>
+      <source>Enable the maximum length limit of the joint</source>
+      <translation>Engedélyezi a csatlakozás maximális hosszhatárát</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="354"/>
+      <source>Enable the minimum angle limit of the joint</source>
+      <translation>Engedélyezi a csatlakozás minimális szöghatárát</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="367"/>
+      <source>Enable the maximum angle limit of the joint</source>
+      <translation>Engedélyezi a csatlakozás maximális szöghatárát</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="380"/>
+      <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
+      <translation>Ez a két koordinátarendszer közötti legkisebb hosszhatár (a z-tengelyük mentén)</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="392"/>
+      <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
+      <translation>Ez a két koordinátarendszer közötti legnagyobb hosszhatár (a z-tengelyük mentén)</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="404"/>
+      <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
+      <translation>Ez a két koordinátarendszer (x-tengelyük) közötti szög minimális határa</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="416"/>
+      <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
+      <translation>Ez a két koordinátarendszer (x-tengelyük) közötti szög maximális határa</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="255"/>
@@ -535,35 +606,14 @@ A SLOPE határozza meg a 0 és H1, illetve H2 és 0 közötti átmenet meredeks�
       <translation>Csatlakozás második referencia pontja</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="267"/>
-      <source>This is the local coordinate system within Reference2's object that will be used for the joint.</source>
-      <translation>Ez a Referencia2 tárgyon belüli helyi koordináta-rendszer, amelyet a csatlakoztatáshoz használni fogunk.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="291"/>
-      <location filename="../../../JointObject.py" line="527"/>
-      <source>This is the attachment offset of the second connector of the joint.</source>
-      <translation>Ez a második közös csatlakozó rögzítésének eltolódása.</translation>
-    </message>
-    <message>
       <location filename="../../../JointObject.py" line="435"/>
       <source>The first object of the joint</source>
       <translation>Csatlakozás első objektuma</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="233"/>
-      <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement.</source>
-      <translation>Ez megakadályozza a Beillesztés1 újraszámítását, lehetővé téve az elhelyezés egyéni pozicionálását.</translation>
-    </message>
-    <message>
       <location filename="../../../JointObject.py" line="455"/>
       <source>The second object of the joint</source>
       <translation>Csatlakozás második objektuma</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="279"/>
-      <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement.</source>
-      <translation>Ez megakadályozza a Beillesztés2 újraszámítását, lehetővé téve az elhelyezés egyéni pozicionálását.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="304"/>
@@ -577,113 +627,73 @@ A SLOPE határozza meg a 0 és H1, illetve H2 és 0 közötti átmenet meredeks�
 Ezt csak a fogaskerék csatlakozás használja a második sugár megtartására.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="328"/>
-      <source>Enable the minimum length limit of the joint.</source>
-      <translation>Engedélyezi a csatlakozás minimális hosszhatárát.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="341"/>
-      <source>Enable the maximum length limit of the joint.</source>
-      <translation>Engedélyezi a csatlakozás maximális hosszhatárát.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="354"/>
-      <source>Enable the minimum angle limit of the joint.</source>
-      <translation>Engedélyezi a csatlakozás minimális szöghatárát.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="367"/>
-      <source>Enable the minimum length of the joint.</source>
-      <translation>Engedélyezi a csatlakozás minimális hosszát.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="380"/>
-      <source>This is the minimum limit for the length between both coordinate systems (along their Z axis).</source>
-      <translation>Ez a két koordinátarendszer közötti legkisebb hosszhatár (a Z tengelyük mentén).</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="392"/>
-      <source>This is the maximum limit for the length between both coordinate systems (along their Z axis).</source>
-      <translation>Ez a két koordinátarendszer közötti legnagyobb hosszhatár (a Z tengelyük mentén).</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="404"/>
-      <source>This is the minimum limit for the angle between both coordinate systems (between their X axis).</source>
-      <translation>Ez a két koordinátarendszer (X-tengelyük) közötti szög minimális határa.</translation>
-    </message>
-    <message>
-      <location filename="../../../JointObject.py" line="416"/>
-      <source>This is the maximum limit for the angle between both coordinate systems (between their X axis).</source>
-      <translation>Ez a két koordinátarendszer (X-tengelyük) közötti szög maximum határa.</translation>
-    </message>
-    <message>
       <location filename="../../../JointObject.py" line="469"/>
       <source>The {order} reference of the joint</source>
-      <translation type="unfinished">The {order} reference of the joint</translation>
+      <translation>Csatlakozás {order} hivatkozása</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1027"/>
+      <location filename="../../../JointObject.py" line="1035"/>
       <source>The object to ground</source>
       <translation>A rögzitendő objektum</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="254"/>
-      <location filename="../../../CommandCreateView.py" line="291"/>
+      <location filename="../../../CommandCreateView.py" line="261"/>
+      <location filename="../../../CommandCreateView.py" line="298"/>
       <source>The objects moved by the move</source>
       <translation>Az elmozdulás által mozgatott objektumok</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="266"/>
+      <location filename="../../../CommandCreateView.py" line="273"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>Ez a mozgás a mozgás mozdulata. A véghelyzet a kezdőhelyzet * ennek a helyzetnek az eredménye.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="275"/>
+      <location filename="../../../CommandCreateView.py" line="282"/>
       <source>The type of the move</source>
       <translation>A mozgás típusa</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="110"/>
+      <location filename="../../../CommandCreateSimulation.py" line="113"/>
       <source>Simulation start time.</source>
       <translation>Szimulációs kezdő idő.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="122"/>
+      <location filename="../../../CommandCreateSimulation.py" line="125"/>
       <source>Simulation end time.</source>
       <translation>Szimulációs befejező idő.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="134"/>
+      <location filename="../../../CommandCreateSimulation.py" line="137"/>
       <source>Simulation time step for output.</source>
       <translation>Szimulációs időlépés a kimenethez.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="146"/>
+      <location filename="../../../CommandCreateSimulation.py" line="149"/>
       <source>Integration global error tolerance.</source>
       <translation>Integrációs globális hibatűrés.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="158"/>
+      <location filename="../../../CommandCreateSimulation.py" line="161"/>
       <source>Frames Per Second.</source>
       <translation>Képkockák másodpercenként.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="210"/>
+      <location filename="../../../CommandCreateSimulation.py" line="213"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>A számításhoz használt szövegek tizedesjegyek száma</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="307"/>
+      <location filename="../../../CommandCreateSimulation.py" line="313"/>
       <source>The joint that is moved by the motion</source>
       <translation>A mozgás által mozgatott csatlakozás</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="319"/>
+      <location filename="../../../CommandCreateSimulation.py" line="325"/>
       <source>This is the formula of the motion. For example '1.0*time'.</source>
       <translation>Mozgásképlet, például: '1.0*idő'.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="328"/>
+      <location filename="../../../CommandCreateSimulation.py" line="334"/>
       <source>The type of the motion</source>
       <translation>A mozgás típusa</translation>
     </message>
@@ -728,22 +738,22 @@ Ezt csak a fogaskerék csatlakozás használja a második sugár megtartására.
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="14"/>
       <source>Joint</source>
-      <translation type="unfinished">Joint</translation>
+      <translation>Csatlakozás</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="144"/>
       <source>Sets the attachment offset of the joint’s first marker (coordinate system)</source>
-      <translation type="unfinished">Sets the attachment offset of the joint’s first marker (coordinate system)</translation>
+      <translation>Beállítja a csatlakozás első jelölésének rögzítési eltolását (koordináta rendszer)</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="165"/>
       <source>Sets the attachment offset of the second marker (coordinate system) of the joint</source>
-      <translation type="unfinished">Sets the attachment offset of the second marker (coordinate system) of the joint</translation>
+      <translation>Beállítja a csatlakozás második jelölésének rögzítési eltérését (koordináta rendszer)</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="193"/>
       <source>Reverse the direction of the joint</source>
-      <translation type="unfinished">Reverse the direction of the joint</translation>
+      <translation>Fordítsd meg a csatlakozás irányát</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="196"/>
@@ -791,12 +801,12 @@ Ezt csak a fogaskerék csatlakozás használja a második sugár megtartására.
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="20"/>
       <source>Search parts…</source>
-      <translation type="unfinished">Search parts…</translation>
+      <translation>Tárgyak keresése…</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>
       <source>Cannot find the part? </source>
-      <translation type="unfinished">Cannot find the part? </translation>
+      <translation>Nem található alkatrész? </translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="46"/>
@@ -806,7 +816,7 @@ Ezt csak a fogaskerék csatlakozás használja a második sugár megtartására.
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="55"/>
       <source>Shows only parts in the list</source>
-      <translation type="unfinished">Shows only parts in the list</translation>
+      <translation>Csak a lista egyes részeit mutatja</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="58"/>
@@ -820,11 +830,10 @@ Rigid means that the added sub-assembly will be considered as a solid unit withi
 Flexible means that the added sub-assembly will allow movement of its individual components' joints within the parent assembly.
 You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
 'Turn rigid'/'Turn flexible' command there, or by editing its Rigid property in the property editor.</source>
-      <translation type="unfinished">Sets whether the inserted sub-assemblies will be rigid or flexible.
-Rigid means that the added sub-assembly will be considered as a solid unit within the parent assembly.
-Flexible means that the added sub-assembly will allow movement of its individual components' joints within the parent assembly.
-You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
-'Turn rigid'/'Turn flexible' command there, or by editing its Rigid property in the property editor.</translation>
+      <translation>Beállítja, hogy a beszúrt részegységek merevek vagy rugalmasak legyenek.
+A merev azt jelenti, hogy a hozzáadott részegységek szilárd egységként kezeljük a szülő összeszerelésen belül.
+A rugalmas azt jelenti, hogy a hozzáadott részegységek lehetővé teszik az egyes komponensek csatlakozásainak mozgását a szülő összeszerelésen belül.
+Ezt a viselkedést bármikor megváltoztathatja, vagy úgy, hogy jobb gombbal rákattint a részegységekre a dokumentumfán, és ott átkapcsolja a 'Merevvé alakítás'/'Rugalmassá alakítás' parancsot, vagy úgy, hogy szerkeszti a merev tulajdonságot a tulajdonságszerkesztőben.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="81"/>
@@ -842,24 +851,24 @@ You can change this behavior at any time by either right-clicking the sub-assemb
     <message>
       <location filename="../preferences/Assembly.ui" line="20"/>
       <source>Allows leaving edit mode when pressing the Esc key</source>
-      <translation type="unfinished">Allows leaving edit mode when pressing the Esc key</translation>
+      <translation>Lehetővé teszi a szerkesztőmód elhagyását az Esc gomb megnyomásával</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="39"/>
       <source>Log the dragging steps of the solver. Useful to report a bug.
 The files are named "runPreDrag.asmt" and "dragging.log" and are located in the default directory of std::ofstream (on Windows it's the desktop)</source>
-      <translation type="unfinished">Log the dragging steps of the solver. Useful to report a bug.
-The files are named "runPreDrag.asmt" and "dragging.log" and are located in the default directory of std::ofstream (on Windows it's the desktop)</translation>
+      <translation>Naplózza a megoldó húzási lépéseit. Hibajelentéshez hasznos.
+A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapértelmezett könyvtárában találhatók (Windowson ez az asztal)</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="59"/>
       <source>Ground first part</source>
-      <translation type="unfinished">Ground first part</translation>
+      <translation>Első alkatrész zárolása</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="66"/>
       <source>When inserting the first part in the assembly, it can be grounded automatically</source>
-      <translation type="unfinished">When inserting the first part in the assembly, it can be grounded automatically</translation>
+      <translation>Amikor az első részt behelyezik az összeállításba, akkor automatikusan zárolni lehet</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
@@ -875,41 +884,95 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="196"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="198"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Az objektum egy vagy több csatlakozással rendelkezik.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="198"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="200"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>El akarja mozgatni az objektumot és törölni a hozzá tartozó csatlakozásokat?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="960"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="982"/>
       <source>Move part</source>
       <translation>Mozgassa a részt</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1316"/>
+      <source>ViewProviderAssembly</source>
+      <comment>and %1 more</comment>
+      <translation>A szerkesztő néző szolgáltatója</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1333"/>
+      <source>Empty Assembly</source>
+      <translation>Üres összeállítás</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1337"/>
+      <source>Over-constrained:</source>
+      <translation>Eltúlzott kényszer:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1344"/>
+      <source>Malformed joints:</source>
+      <translation>Hibás csatlakozás:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1350"/>
+      <source>Redundant joints:</source>
+      <translation>Felesleges csatlakozás:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1357"/>
+      <source>Partially redundant:</source>
+      <translation>Részben felesleges:</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1363"/>
+      <source>Solver failed to converge</source>
+      <translation>A megoldó nem tudott hasonlítani</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1369"/>
+      <source>Under-constrained:</source>
+      <translation>Nem eléggé kényszerített:</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="../../ViewProviderAssembly.cpp" line="1371"/>
+      <source>%n Degrees of Freedom</source>
+      <translation>
+        <numerusform>%n Szabadsági fok</numerusform>
+        <numerusform>%n Szabadsági fok</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAssembly.cpp" line="1375"/>
+      <source>Fully constrained</source>
+      <translation>Teljesen kényszertett</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointScrew</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="350"/>
+      <location filename="../../../CommandCreateJoint.py" line="351"/>
       <source>Screw Joint</source>
       <translation>Csavarkötés</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="357"/>
+      <location filename="../../../CommandCreateJoint.py" line="358"/>
       <source>Creates a screw joint that links a part with a sliding joint to a part with a revolute joint</source>
-      <translation type="unfinished">Creates a screw joint that links a part with a sliding joint to a part with a revolute joint</translation>
+      <translation>Olyan csavarkötést hoz létre, amely összekapcsolja a csúszó kötésű részt egy forgó kötésű résszel</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="362"/>
+      <location filename="../../../CommandCreateJoint.py" line="363"/>
       <source>Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.</source>
       <translation>Válassza ki ugyanazokat a koordináta rendszereket, mint a forgás- és csúszó csatlakozásoké. Az osztási sugár határozza meg a forgó csavar és a csúszó rész közötti mozgási arányt.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="392"/>
-      <location filename="../../../CommandCreateJoint.py" line="422"/>
+      <location filename="../../../CommandCreateJoint.py" line="393"/>
+      <location filename="../../../CommandCreateJoint.py" line="423"/>
       <source>Select the same coordinate systems as the revolute joints.</source>
       <translation>Válassza ugyanazokat a koordináta rendszereket, mint a forgó csatlakozások esetében.</translation>
     </message>
@@ -917,17 +980,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointGearBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="441"/>
+      <location filename="../../../CommandCreateJoint.py" line="442"/>
       <source>Gears/Belt Joint</source>
-      <translation type="unfinished">Gears/Belt Joint</translation>
+      <translation>Fogaskerék-/szíj csatlakozás</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="447"/>
+      <location filename="../../../CommandCreateJoint.py" line="448"/>
       <source>Creates a gears or belt joint that links 2 rotating gears together</source>
-      <translation type="unfinished">Creates a gears or belt joint that links 2 rotating gears together</translation>
+      <translation>Létrehoz egy fogaskerék vagy szíjhajtás csatlakozót, amely összeköti a két forgó fogaskereket</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="452"/>
+      <location filename="../../../CommandCreateJoint.py" line="453"/>
       <source>Select the same coordinate systems as the revolute joints.</source>
       <translation>Válassza ugyanazokat a koordináta rendszereket, mint a forgó csatlakozások esetében.</translation>
     </message>
@@ -937,12 +1000,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="14"/>
       <source>Exploded View</source>
-      <translation type="unfinished">Exploded View</translation>
+      <translation>Robbantott nézet</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="20"/>
       <source>If checked, parts will be selected as a single solid</source>
-      <translation type="unfinished">If checked, parts will be selected as a single solid</translation>
+      <translation>Ha bejelölt, a részeket egyetlen szilárdtestként választják ki</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="23"/>
@@ -952,17 +1015,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="42"/>
       <source>Align Dragger</source>
-      <translation type="unfinished">Align Dragger</translation>
+      <translation>Húzás igazítás</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="49"/>
       <source>Select a feature to align. Press Esc to cancel.</source>
-      <translation type="unfinished">Select a feature to align. Press Esc to cancel.</translation>
+      <translation>Válasszon ki egy tulajdonságot az igazításhoz. Nyomja meg az Esc billentyűt a törléshez.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="56"/>
       <source>Explode Radially</source>
-      <translation type="unfinished">Explode Radially</translation>
+      <translation>Sugárirányban szétterít</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="23"/>
@@ -982,17 +1045,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="20"/>
       <source>Includes children of sub-assemblies in the bill of materials</source>
-      <translation type="unfinished">Includes children of sub-assemblies in the bill of materials</translation>
+      <translation>Alkatrész emeket ad a szerkezeti egységhez az anyagjegyzékben</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="39"/>
       <source>Include child parts in the bill of materials</source>
-      <translation type="unfinished">Include child parts in the bill of materials</translation>
+      <translation>Tartalmazza az atrész alpontokat az anyagjegyzékben</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="58"/>
       <source>Adds only part containers and sub-assemblies to the bill of materials. Solids (e.g. bodies, fasteners, primitives) are excluded.</source>
-      <translation type="unfinished">Adds only part containers and sub-assemblies to the bill of materials. Solids (e.g. bodies, fasteners, primitives) are excluded.</translation>
+      <translation>Csak a részegységek és alkatrészek tárolóit adja hozzá az anyagjegyzékhez. A szilárd test (pl. test, kapcsolódó elemek, alaptestek) kivételek.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="61"/>
@@ -1007,7 +1070,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="86"/>
       <source>Add Column</source>
-      <translation type="unfinished">Add Column</translation>
+      <translation>Oszlop hozzáadása</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="96"/>
@@ -1030,12 +1093,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateBom.py" line="76"/>
       <source>Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.</source>
-      <translation type="unfinished">Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.</translation>
+      <translation>Létrehoz egy anyagjegyzéket az aktuális összeállításból. Ha egy összeállítás aktív, akkor ennek az összeállításnak a darabjegyzéke lesz. Ellenkező esetben a teljes dokumentum darabjegyzéke lesz.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="81"/>
       <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
-      <translation type="unfinished">The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.</translation>
+      <translation>A darabjegyzék objektum egy dokumentumtárgy, amely a darabjegyzék beállításait tárolja. Ez egyben egy táblázatkezelő objektum is, így könnyen megjelenítheti a BOM-ot, darabjegyzéket. Ha nincs szükség arra, hogy a BOM objektumot dokumentumtárgyként mentse, egyszerűen exportálhatja és törölheti a feladatot.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="86"/>
@@ -1064,7 +1127,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="54"/>
       <source>New Part</source>
-      <translation type="unfinished">New Part</translation>
+      <translation>Új alkatrész</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="61"/>
@@ -1229,17 +1292,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointFixed</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="76"/>
+      <location filename="../../../CommandCreateJoint.py" line="77"/>
       <source>Fixed Joint</source>
       <translation type="unfinished">Fixed Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="83"/>
+      <location filename="../../../CommandCreateJoint.py" line="84"/>
       <source>1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation</source>
       <translation type="unfinished">1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="89"/>
+      <location filename="../../../CommandCreateJoint.py" line="90"/>
       <source>2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.</source>
       <translation type="unfinished">2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.</translation>
     </message>
@@ -1247,12 +1310,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointRevolute</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="110"/>
+      <location filename="../../../CommandCreateJoint.py" line="111"/>
       <source>Revolute Joint</source>
       <translation type="unfinished">Revolute Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="117"/>
+      <location filename="../../../CommandCreateJoint.py" line="118"/>
       <source>Creates a revolute joint allowing rotation around a single axis between selected parts</source>
       <translation type="unfinished">Creates a revolute joint allowing rotation around a single axis between selected parts</translation>
     </message>
@@ -1260,12 +1323,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointCylindrical</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="135"/>
+      <location filename="../../../CommandCreateJoint.py" line="136"/>
       <source>Cylindrical Joint</source>
       <translation>Hengeres csatlakozás</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="142"/>
+      <location filename="../../../CommandCreateJoint.py" line="143"/>
       <source>Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</source>
       <translation type="unfinished">Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</translation>
     </message>
@@ -1273,12 +1336,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointSlider</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="160"/>
+      <location filename="../../../CommandCreateJoint.py" line="161"/>
       <source>Slider Joint</source>
       <translation>Csúszó csatlakozás</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="167"/>
+      <location filename="../../../CommandCreateJoint.py" line="168"/>
       <source>Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</source>
       <translation type="unfinished">Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</translation>
     </message>
@@ -1286,12 +1349,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointBall</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="185"/>
+      <location filename="../../../CommandCreateJoint.py" line="186"/>
       <source>Ball Joint</source>
       <translation>Gömb csatlakozás</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="192"/>
+      <location filename="../../../CommandCreateJoint.py" line="193"/>
       <source>Creates a ball joint that connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact</source>
       <translation type="unfinished">Creates a ball joint that connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact</translation>
     </message>
@@ -1299,17 +1362,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointDistance</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="210"/>
+      <location filename="../../../CommandCreateJoint.py" line="211"/>
       <source>Distance Joint</source>
       <translation>Távolsági csatlakozás</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="217"/>
+      <location filename="../../../CommandCreateJoint.py" line="218"/>
       <source>Creates a distance joint that fixes the distance between the selected objects</source>
       <translation type="unfinished">Creates a distance joint that fixes the distance between the selected objects</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="223"/>
+      <location filename="../../../CommandCreateJoint.py" line="224"/>
       <source>Creates one of several different joints based on the selectionFor example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</source>
       <translation type="unfinished">Creates one of several different joints based on the selectionFor example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</translation>
     </message>
@@ -1317,12 +1380,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointParallel</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="241"/>
+      <location filename="../../../CommandCreateJoint.py" line="242"/>
       <source>Parallel Joint</source>
       <translation type="unfinished">Parallel Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="248"/>
+      <location filename="../../../CommandCreateJoint.py" line="249"/>
       <source>Creates a parallel joint that makes the Z-axis of the selected coordinate systems parallel</source>
       <translation type="unfinished">Creates a parallel joint that makes the Z-axis of the selected coordinate systems parallel</translation>
     </message>
@@ -1330,12 +1393,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointPerpendicular</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="268"/>
+      <location filename="../../../CommandCreateJoint.py" line="269"/>
       <source>Perpendicular Joint</source>
       <translation>Merőleges csatlakozás</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="275"/>
+      <location filename="../../../CommandCreateJoint.py" line="276"/>
       <source>Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</source>
       <translation type="unfinished">Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</translation>
     </message>
@@ -1343,12 +1406,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointAngle</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="293"/>
+      <location filename="../../../CommandCreateJoint.py" line="294"/>
       <source>Angle Joint</source>
       <translation type="unfinished">Angle Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="300"/>
+      <location filename="../../../CommandCreateJoint.py" line="301"/>
       <source>Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</source>
       <translation type="unfinished">Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</translation>
     </message>
@@ -1356,17 +1419,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointRackPinion</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="320"/>
+      <location filename="../../../CommandCreateJoint.py" line="321"/>
       <source>Rack and Pinion Joint</source>
       <translation type="unfinished">Rack and Pinion Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="327"/>
+      <location filename="../../../CommandCreateJoint.py" line="328"/>
       <source>Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint</source>
       <translation type="unfinished">Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="332"/>
+      <location filename="../../../CommandCreateJoint.py" line="333"/>
       <source>Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.</source>
       <translation type="unfinished">Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.</translation>
     </message>
@@ -1374,12 +1437,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointGears</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="380"/>
+      <location filename="../../../CommandCreateJoint.py" line="381"/>
       <source>Gears Joint</source>
       <translation type="unfinished">Gears Joint</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="387"/>
+      <location filename="../../../CommandCreateJoint.py" line="388"/>
       <source>Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.</source>
       <translation type="unfinished">Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.</translation>
     </message>
@@ -1387,12 +1450,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="410"/>
+      <location filename="../../../CommandCreateJoint.py" line="411"/>
       <source>Belt Joint</source>
       <translation>Öv csatlakozás</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="417"/>
+      <location filename="../../../CommandCreateJoint.py" line="418"/>
       <source>Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.</source>
       <translation type="unfinished">Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.</translation>
     </message>
@@ -1400,12 +1463,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="485"/>
+      <location filename="../../../CommandCreateJoint.py" line="486"/>
       <source>Toggle Grounded</source>
       <translation type="unfinished">Toggle Grounded</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="492"/>
+      <location filename="../../../CommandCreateJoint.py" line="493"/>
       <source>Toggles the grounding of a part.
 Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
       <translation type="unfinished">Toggles the grounding of a part.
@@ -1430,7 +1493,7 @@ Grounding a part permanently locks its position in the assembly, preventing any 
     <message>
       <location filename="../../../CommandCreateView.py" line="54"/>
       <source>Exploded View</source>
-      <translation type="unfinished">Exploded View</translation>
+      <translation>Robbantott nézet</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="61"/>
@@ -1444,6 +1507,34 @@ Grounding a part permanently locks its position in the assembly, preventing any 
       <location filename="../../../CommandInsertLink.py" line="73"/>
       <source>Insert Component</source>
       <translation>Összetevő beszúrás</translation>
+    </message>
+  </context>
+  <context>
+    <name>AssemblyGui::TaskAssemblyMessages</name>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="41"/>
+      <source>Solver messages</source>
+      <translation type="unfinished">Solver messages</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
+      <source>Click to select these conflicting joints.</source>
+      <translation type="unfinished">Click to select these conflicting joints.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
+      <source>Click to select these redundant joints.</source>
+      <translation type="unfinished">Click to select these redundant joints.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="64"/>
+      <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
+      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAssemblyMessages.cpp" line="68"/>
+      <source>Click to select these malformed joints.</source>
+      <translation type="unfinished">Click to select these malformed joints.</translation>
     </message>
   </context>
 </TS>

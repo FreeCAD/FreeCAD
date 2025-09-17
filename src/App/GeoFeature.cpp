@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
 #include <App/GeoFeaturePy.h>
 
 #include <Base/Tools.h>
