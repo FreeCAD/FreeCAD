@@ -885,6 +885,12 @@ void Command::applyCommandData(const char* context, Action* action)
     else
         action->setStatusTip(QCoreApplication::translate(
             context, getToolTipText()));
+
+    // Default to QAction::NoRole instead of QAction::TextHeuristicRole to stop collisions with
+    // e.g. "Preferences" and "Copy"
+    if (action->action()->menuRole() == QAction::TextHeuristicRole) {
+        action->setMenuRole(QAction::NoRole);
+    }
 }
 
 
