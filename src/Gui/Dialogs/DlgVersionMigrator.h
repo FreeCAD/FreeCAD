@@ -61,7 +61,7 @@ namespace Gui {
             QThread* sizeCalculationWorkerThread;
             std::unique_ptr<class Ui_DlgVersionMigrator> ui;
 
-            void restart();
+            void restart(const QString &message);
         };
 
     }
