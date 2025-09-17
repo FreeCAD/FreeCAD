@@ -276,15 +276,15 @@ void CmdTechDrawCosmeticVertexGroup::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdTechDrawCosmeticVertexGroup", "Cosmetic vertex"));
+    arc1->setText(QApplication::translate("CmdTechDrawCosmeticVertexGroup", "Cosmetic Vertex"));
     arc1->setToolTip(QApplication::translate("TechDraw_CosmeticVertex", "Inserts a cosmetic vertex into a view"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdMidpoints", "Midpoint vertices"));
+    arc2->setText(QApplication::translate("CmdMidpoints", "Midpoint Vertices"));
     arc2->setToolTip(QApplication::translate("TechDraw_Midpoints", "Inserts cosmetic vertices at the midpoint of the selected edges"));
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
-    arc3->setText(QApplication::translate("CmdQuadrants", "Quadrant vertices"));
+    arc3->setText(QApplication::translate("CmdQuadrants", "Quadrant Vertices"));
     arc3->setToolTip(QApplication::translate("TechDraw_Quadrants", "Inserts cosmetic vertices at the quadrant points of the selected circles"));
     arc3->setStatusTip(arc3->toolTip());
 }
@@ -650,15 +650,15 @@ void CmdTechDrawCenterLineGroup::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdTechDrawCenterLineGroup", "Centerline faces"));
+    arc1->setText(QApplication::translate("CmdTechDrawCenterLineGroup", "Centerline Faces"));
     arc1->setToolTip(QApplication::translate("TechDraw_FaceCenterLine", "Adds a centerline to selected faces"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("Cmd2LineCenterLine", "Centerline 2 lines"));
+    arc2->setText(QApplication::translate("Cmd2LineCenterLine", "Centerline 2 Lines"));
     arc2->setToolTip(QApplication::translate("TechDraw_2LineCenterLine", "Adds a centerline between 2 selected lines"));
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
-    arc3->setText(QApplication::translate("Cmd2PointCenterLine", "Centerline 2 points"));
+    arc3->setText(QApplication::translate("Cmd2PointCenterLine", "Centerline 2 Points"));
     arc3->setToolTip(QApplication::translate("TechDraw_2PointCenterLine", "Adds a centerline between 2 selected points"));
     arc3->setStatusTip(arc3->toolTip());
 }
