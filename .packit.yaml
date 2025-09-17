@@ -19,7 +19,6 @@ jobs:
 - job: copr_build
   identifier: pull_request
   trigger: pull_request
-  manual_trigger: true
   notifications:
     pull_request:
       successful_build: True
@@ -37,7 +36,6 @@ jobs:
 - job: tests
   identifier: pull_request
   trigger: pull_request
-  manual_trigger: true
   branch: main
   targets:
     fedora-latest-stable:
