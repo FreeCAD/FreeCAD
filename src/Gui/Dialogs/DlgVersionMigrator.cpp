@@ -287,7 +287,7 @@ void DlgVersionMigrator::migrate() {
     migrationRunning->exec();
 
     if (migrationRunning->result() == QDialog::Accepted) {
-        restart();
+        restart(tr("Migration complete"));
     } else {
         QMessageBox::critical(mainWindow, QObject::tr("Migration failed"),
                               QObject::tr("Migration failed. See the Report View for details."));
@@ -320,7 +320,7 @@ void DlgVersionMigrator::freshStart()
         }
         fs::create_directory(versionDir);
     }
-    restart();
+    restart(tr("New default configuration created"));
 }
 
 void DlgVersionMigrator::help()
@@ -329,12 +329,12 @@ void DlgVersionMigrator::help()
     QDesktopServices::openUrl(QUrl(helpPage));
 }
 
-void DlgVersionMigrator::restart()
+void DlgVersionMigrator::restart(const QString &message)
 {
     App::GetApplication().GetUserParameter().SaveDocument(); // Flush to disk before restarting
     auto *restarting = new QMessageBox(this);
     restarting->setText(
-        QObject::tr("Migration complete. Restarting…"));
+        message + QObject::tr(" → Restarting…"));
     restarting->setWindowTitle(QObject::tr("Restarting"));
     restarting->setStandardButtons(QMessageBox::NoButton);
     auto closeNotice = [restarting]() {
