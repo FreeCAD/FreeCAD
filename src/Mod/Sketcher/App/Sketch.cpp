@@ -2468,6 +2468,12 @@ int Sketch::addConstraint(const Constraint* constraint)
                 c.driving
             );
         } break;
+        case PointOnSegment: {
+            rtn = addPointOnSegmentConstraint(constraint->First,
+                                              constraint->FirstPos,
+                                              constraint->Second,
+                                              c.driving);
+        } break;
         case Sketcher::None:   // ambiguous enum value
         case Sketcher::Block:  // handled separately while adding geometry
         case NumConstraintTypes:
@@ -3659,6 +3665,28 @@ int Sketch::addAngleConstraint(int geoId1, PointPos pos1, int geoId2, PointPos p
     return ConstraintsCounter;
 }
 
+// point on segment constraint
+int Sketch::addPointOnSegmentConstraint(int geoId1, PointPos pos1, int geoId2, bool driving)
+{
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    if (Geoms[geoId2].type != Line) {
+        return -1;
+    }
+    GCS::Line l = Lines[Geoms[geoId2].index];
+
+    int pointId = getPointId(geoId1, pos1);
+
+    if (pointId >= 0 && pointId < int(Points.size())) {
+        GCS::Point p = Points[pointId];
+
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintPointOnSegment(p, l, tag, driving);
+        return ConstraintsCounter;
+    }
+    return -1;
+}
 
 int Sketch::addEqualConstraint(int geoId1, int geoId2)
 {

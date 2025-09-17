@@ -85,6 +85,7 @@ enum ConstraintType
     AngleViaPointAndTwoParams = 34,
     AngleViaTwoPoints = 35,
     ArcLength = 36,
+    PointOnSegment = 37,
 };
 
 enum InternalAlignmentType
@@ -209,6 +210,7 @@ public:
     // Returns -1 if not found.
     int findParamInPvec(double* param);
 };
+
 
 // Equal
 class ConstraintEqual: public Constraint
@@ -1355,6 +1357,22 @@ private:
 public:
     ConstraintArcLength(Arc& a, double* d);
     ConstraintType getTypeId() override;
+};
+
+// PointOnSegment
+class ConstraintPointOnSegment: public Constraint
+{
+    Point point;
+    Line line;
+    void ReconstructGeomPointers();  // writes pointers in pvec to the parameters of p and l
+    void errorgrad(double* err, double* grad, double* param) override;
+
+public:
+    ConstraintPointOnSegment(Point& p, Line& l);
+    ConstraintType getTypeId() override
+    {
+        return PointOnSegment;
+    };
 };
 
 }  // namespace GCS
