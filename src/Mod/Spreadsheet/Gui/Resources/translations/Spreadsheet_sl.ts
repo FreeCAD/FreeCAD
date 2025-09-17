@@ -689,11 +689,6 @@ nastavitve oblikovanja. Če še ne obstaja, bo lastnost ustvarjena.</translation
       <translation>Uvozi datoteko</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="816"/>
-      <source>Copy &amp; Paste failed</source>
-      <translation>Kopiranje in Lepljenje spodletelo</translation>
-    </message>
-    <message>
       <location filename="../../SpreadsheetView.cpp" line="495"/>
       <source>Alias contains invalid characters!</source>
       <translation>Vzdevek vsebuje neveljavne znake!</translation>
@@ -741,6 +736,11 @@ Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
       <location filename="../../Workbench.cpp" line="116"/>
       <source>Sets the spreadsheet cells background color</source>
       <translation type="unfinished">Sets the spreadsheet cells background color</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="816"/>
+      <source>Copy &amp; Paste Failed</source>
+      <translation type="unfinished">Copy &amp; Paste Failed</translation>
     </message>
   </context>
   <context>
@@ -893,8 +893,8 @@ Preglednica.ime_ki_sem_ga_določil namesto Preglednica.B1</translation>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="223"/>
-      <source>Bind cells</source>
-      <translation>Poveži polja</translation>
+      <source>Bind Cells</source>
+      <translation type="unfinished">Bind Cells</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="224"/>
@@ -919,8 +919,8 @@ Continue?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="300"/>
-      <source>Unbind cells</source>
-      <translation>Razveži polja</translation>
+      <source>Unbind Cells</source>
+      <translation type="unfinished">Unbind Cells</translation>
     </message>
   </context>
   <context>
@@ -1012,19 +1012,6 @@ Privzeto: %V = %A
       <location filename="../../DlgSettings.ui" line="230"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Izogibajte se znakom, navadno leva poševnica (\), ki navadno označuje posebne, nenatisljive znake npr. \t = tab. Biti pa mora le en znak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-  </context>
-  <context>
-    <name>SpreadsheetGui::DlgSheetConf</name>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="280"/>
-      <source>Setup configuration table</source>
-      <translation>Nastavi nastavitveno preglednico</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="338"/>
-      <source>Unsetup configuration table</source>
-      <translation>Razveljavi nastavitveno preglednico</translation>
     </message>
   </context>
   <context>
@@ -1142,8 +1129,8 @@ Privzeto: %V = %A
     <message>
       <location filename="../../SheetTableView.cpp" line="210"/>
       <location filename="../../SheetTableView.cpp" line="668"/>
-      <source>Split Cells</source>
-      <translation type="unfinished">Split Cells</translation>
+      <source>Split Cell</source>
+      <translation type="unfinished">Split Cell</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="213"/>
@@ -1226,6 +1213,19 @@ Privzeto: %V = %A
       <location filename="../../ZoomableView.cpp" line="112"/>
       <source>Zoom Level</source>
       <translation type="unfinished">Zoom Level</translation>
+    </message>
+  </context>
+  <context>
+    <name>SpreadsheetGui::DlgSheetConf</name>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="280"/>
+      <source>Setup Configuration Table</source>
+      <translation>Nastavi nastavitveno preglednico</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="338"/>
+      <source>Unsetup Configuration Table</source>
+      <translation type="unfinished">Unsetup Configuration Table</translation>
     </message>
   </context>
 </TS>

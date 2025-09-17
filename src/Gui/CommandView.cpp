@@ -20,10 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <sstream>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
@@ -42,7 +38,6 @@
 # include <QPainter>
 # include <QPointer>
 # include <QTextStream>
-#endif
 
 #include <App/ComplexGeoDataPy.h>
 #include <App/Document.h>

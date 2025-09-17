@@ -20,18 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <array>
 #include <boost/math/constants/constants.hpp>
 #include <cmath>
 #include <numbers>
+
+#include <FCConfig.h>
+
+#ifdef FC_OS_WIN32
+#include <windows.h>
+#endif
+
 #ifdef FC_OS_MACOSX
 #include <OpenGL/gl.h>
 #else
 #include <GL/gl.h>
-#endif
 #endif
 
 #include "SoFCBackgroundGradient.h"

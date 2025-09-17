@@ -858,7 +858,7 @@ def makeProfile(profile=[0, 'REC', 'REC100x100', 'R', 100, 100]):
             ArchProfile._ProfileL(obj, profile)
         case "T":
             ArchProfile._ProfileT(obj, profile)
-        case "T-s":
+        case "TSLOT":
             ArchProfile._ProfileTSLOT(obj, profile)
         case _:
             print("Profile not supported")
@@ -1490,12 +1490,29 @@ def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, n
             else:
                 stepsI = 20
             setProperty(stairs[i], None, width, height, stepsI)
-            if i > 1:
+
+            if lenSelection > 1:  # More than 1 segment
+                # All semgments in a complex stairs moved together by default
+                # regardless MoveWithHost setting in system setting
+                stair.MoveWithHost = True
+
+            # All segment goes to Additions (rather than previously 1st segment
+            # went to Base) - for consistent in MoveWithHost behaviour
+            if i > 0:
                 additions.append(stairs[i])
-                stairs[i].LastSegment = stairs[i - 1]
-            else:
-                if len(stairs) > 1: # i.e. length >1, have a 'master' staircase created
-                    stairs[0].Base = stairs[1]
+                if i > 1:
+                    stairs[i].LastSegment = stairs[i - 1]
+            #else:
+                # Below made '1st segment' of a complex stairs went to Base
+                # Remarked below out, 2025.8.31.
+                # Seems no other Arch object create an Arch object as its Base
+                # and use a 'master' Arch(Stairs) object like Stairs.  Base is
+                # not moved together with host upon onChanged(), unlike
+                # behaviour in objects of Additions.
+                #
+                #if len(stairs) > 1: # i.e. length >1, have a 'master' staircase created
+                #    stairs[0].Base = stairs[1]
+
             i += 1
         if lenSelection > 1:
             stairs[0].Additions = additions
@@ -1554,6 +1571,9 @@ def makeRailing(stairs):
                     baseobj=None, diameter=0, length=0, placement=None,
                     name=translate("Arch", "Railing")
                 )
+                # All semgments in a complex stairs moved together by default
+                # regardless Move With Host setting in system setting
+                lrRail.MoveWithHost = True
                 if outlineLRAll:
                     setattr(stair, stairRailingLR, lrRail)
                     break

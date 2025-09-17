@@ -24,6 +24,8 @@
 #ifndef GUI_GLPAINTER_H
 #define GUI_GLPAINTER_H
 
+#include <FCConfig.h>
+
 #ifdef FC_OS_WIN32
 #include <windows.h>
 #endif

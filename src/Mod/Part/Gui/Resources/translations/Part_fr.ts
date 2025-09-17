@@ -2087,7 +2087,7 @@ La vue de la caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1866"/>
       <source>Wrong selection</source>
-      <translation>Sélection invalide</translation>
+      <translation>Sélection non valide</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1867"/>
@@ -4796,7 +4796,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="347"/>
       <source>Wrong selection</source>
-      <translation>Sélection invalide</translation>
+      <translation>Sélection non valide</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="347"/>
@@ -5622,7 +5622,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="899"/>
       <location filename="../../Command.cpp" line="2033"/>
       <source>Wrong selection</source>
-      <translation>Sélection invalide</translation>
+      <translation>Sélection non valide</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="326"/>

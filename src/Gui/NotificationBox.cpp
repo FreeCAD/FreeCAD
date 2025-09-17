@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 #include <QApplication>
 #include <QEvent>
 #include <QLabel>
@@ -32,7 +31,7 @@
 #include <QTimer>
 #include <memory>
 #include <mutex>
-#endif
+
 
 #include "NotificationBox.h"
 

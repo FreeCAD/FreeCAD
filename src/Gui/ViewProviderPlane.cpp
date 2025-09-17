@@ -21,9 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <Inventor/nodes/SoAsciiText.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoFaceSet.h>
@@ -35,7 +32,6 @@
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/SbColor.h>
-#endif
 
 #include <App/Datums.h>
 #include <Gui/ViewParams.h>

@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <sstream>
 # include <QApplication>
 # include <QEvent>
@@ -31,7 +30,7 @@
 # include <QPixmap>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/details/SoDetail.h>
-#endif
+
 
 #include <App/DocumentObjectPy.h>
 #include <Base/Interpreter.h>

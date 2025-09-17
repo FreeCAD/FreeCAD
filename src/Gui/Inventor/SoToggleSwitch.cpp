@@ -21,8 +21,6 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "SoToggleSwitch.h"
 
 SO_NODE_SOURCE(SoToggleSwitch)

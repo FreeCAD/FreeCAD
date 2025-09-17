@@ -21,11 +21,10 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QBuffer>
 # include <QPainter>
-#endif
+
+#include <FCConfig.h>
 
 #include <BitmapFactory.h>
 

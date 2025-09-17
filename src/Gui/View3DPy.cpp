@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QColor>
 # include <QDir>
 # include <QFileInfo>
@@ -35,7 +32,6 @@
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>

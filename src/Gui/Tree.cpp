@@ -21,9 +21,8 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <QAction>
 # include <QActionGroup>
 # include <QApplication>
@@ -41,7 +40,7 @@
 # include <QTimer>
 # include <QToolTip>
 # include <QVBoxLayout>
-#endif
+
 
 #include <Base/Console.h>
 #include <Base/Reader.h>

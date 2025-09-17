@@ -678,6 +678,7 @@ class _ViewProviderArchSchedule:
 
     def doubleClicked(self, vobj):
         self.edit()
+        return True
 
     def setupContextMenu(self, vobj, menu):
 

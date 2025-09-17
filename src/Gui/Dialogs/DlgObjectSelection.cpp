@@ -20,12 +20,9 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QPushButton>
 # include <QTreeWidget>
 # include <QCheckBox>
-#endif
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>

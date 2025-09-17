@@ -20,9 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
+#if defined(FC_OS_WIN32)
+#include <windows.h>
+#endif
+
 # ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
 # else
@@ -50,7 +53,6 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoText2.h>
 # include <Inventor/nodes/SoTranslation.h>
-#endif
 
 #include <Base/Color.h>
 #include <Gui/ViewParams.h>

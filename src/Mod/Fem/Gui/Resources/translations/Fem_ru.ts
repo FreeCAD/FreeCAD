@@ -890,12 +890,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="307"/>
       <source>Initial time increment</source>
-      <translation type="unfinished">Initial time increment</translation>
+      <translation>Начальное время приращения</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="314"/>
       <source>Time period</source>
-      <translation type="unfinished">Time period</translation>
+      <translation>Период времени</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="360"/>
@@ -910,17 +910,17 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="521"/>
       <source>Maximum number of increments</source>
-      <translation type="unfinished">Maximum number of increments</translation>
+      <translation>Максимальное количество приращений</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="528"/>
       <source>Minimum time increment</source>
-      <translation type="unfinished">Minimum time increment</translation>
+      <translation>Минимальное время увеличения</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="658"/>
       <source>Maximum time increment</source>
-      <translation type="unfinished">Maximum time increment</translation>
+      <translation>Максимальный прирост времени</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="724"/>
@@ -1285,7 +1285,7 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="46"/>
       <source>element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</source>
-      <translation type="unfinished">element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</translation>
+      <translation>параметр элемента: Все — все элементы; Самые высокие — только самые высокие элементы; МКЭ — только элементы МКЭ (только ребра, не принадлежащие граням, и грани, не принадлежащие объемам)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="81"/>
@@ -1293,10 +1293,10 @@ not belonging to faces and faces not belonging to volumes.</translation>
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups - faces and nodes where
 the constraint or material is applied.</source>
-      <translation type="unfinished">Mesh groups are exported too.
-Every analysis feature and, if there are different materials,
-material consists of two mesh groups - faces and nodes where
-the constraint or material is applied.</translation>
+      <translation>Группы сеток также экспортируются.
+Каждый объект анализа и, если имеются разные материалы,
+материал состоит из двух групп ячеек, граней и узлов, к которым
+применяется ограничение или материал.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="56"/>
@@ -1500,7 +1500,7 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="91"/>
       <source>Not an executable binary</source>
-      <translation type="unfinished">Not an executable binary</translation>
+      <translation>Не исполняемый бинарный файл</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="92"/>
@@ -3579,7 +3579,7 @@ with harmonic/oscillating driving current</source>
     <message>
       <location filename="../../PlaneWidget.ui" line="80"/>
       <source>Normal</source>
-      <translation>Обычные</translation>
+      <translation>Основная</translation>
     </message>
   </context>
   <context>
@@ -6782,7 +6782,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="54"/>
       <source>Python path</source>
-      <translation type="unfinished">Python path</translation>
+      <translation>Python path</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>

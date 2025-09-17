@@ -56,10 +56,9 @@
  * This style wasn't tested with space during development (I don't have one).
  */
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+
 # include <QApplication>
-#endif
+
 
 #include <Base/Console.h>
 
@@ -95,7 +94,7 @@ const char* MayaGestureNavigationStyle::mouseButtons(ViewerMode mode)
     case NavigationStyle::PANNING:
         return QT_TR_NOOP("Drag screen with two fingers OR press Alt + middle mouse button.");
     case NavigationStyle::DRAGGING:
-        return QT_TR_NOOP("Drag screen with one finger OR press Alr + left mouse button. In Sketcher and other edit modes, hold Alt in addition.");
+        return QT_TR_NOOP("Drag screen with one finger OR press Alt + left mouse button. In Sketcher and other edit modes, hold Alt in addition.");
     case NavigationStyle::ZOOMING:
         return QT_TR_NOOP("Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR press Alt + right mouse button OR PgUp/PgDown on keyboard.");
     default:

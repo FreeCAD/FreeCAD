@@ -21,10 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 #include "SmartPtrPy.h"
 #include "Interpreter.h"
 #include <CXX/Objects.hxx>

@@ -1374,6 +1374,9 @@ class ViewProviderComponent:
                         c = tuple([float(f) for f in obj.Material.Material["DiffuseColor"].strip("()").strip("[]").split(",")])
                         if obj.ViewObject.ShapeColor != c:
                             obj.ViewObject.ShapeColor = c
+                        # Overwrite DiffuseColor (required if it does not match number of faces):
+                        if obj.ViewObject.DiffuseColor != [c]:
+                            obj.ViewObject.DiffuseColor = [c]
                     if "Transparency" in obj.Material.Material:
                         t = int(obj.Material.Material["Transparency"])
                         if obj.ViewObject.Transparency != t:

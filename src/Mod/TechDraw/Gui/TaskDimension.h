@@ -69,12 +69,17 @@ private Q_SLOTS:
     void onDimUseSelectionClicked();
     void onExtUseDefaultClicked();
     void onExtUseSelectionClicked();
+    void onNumDecChanged(int decimals);
+    void onReferenceChanged();
 
 private:
     std::unique_ptr<Ui_TaskDimension> ui;
     QGIViewDimension *m_parent;
     Gui::WeakPtrT<ViewProviderDimension> m_dimensionVP;
     std::pair<double, bool> getAngleFromSelection();
+    std::string m_originalFormatChar;
+    std::string m_formatPrefix;
+    std::string m_formatSuffix;
 };
 
 class TaskDlgDimension : public Gui::TaskView::TaskDialog

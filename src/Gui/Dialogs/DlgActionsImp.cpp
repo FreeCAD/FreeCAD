@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDialogButtonBox>
 #include <QDir>
 #include <QFileDialog>
@@ -31,7 +29,6 @@
 #include <QKeySequence>
 #include <QLineEdit>
 #include <QMessageBox>
-#endif
 
 #include "Dialogs/DlgActionsImp.h"
 #include "ui_DlgActions.h"

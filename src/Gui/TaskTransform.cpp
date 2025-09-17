@@ -20,12 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cassert>
 #include <limits>
 #include <QApplication>
-#endif
 
 #include <View3DInventorViewer.h>
 #include <Utilities.h>

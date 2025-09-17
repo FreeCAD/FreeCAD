@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cassert>
 #include <numbers>
 
@@ -32,7 +30,6 @@
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/engines/SoCalculator.h>
 #include <Inventor/nodes/SoTransform.h>
-#endif
 
 #include "SoRotationDragger.h"
 

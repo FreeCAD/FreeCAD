@@ -148,6 +148,21 @@ class ToolController:
         return data
 
     def onDocumentRestored(self, obj):
+        self.ensureToolBit(obj)
+        if not obj.Tool.Proxy:
+            if hasattr(obj.Tool, "ShapeName") or hasattr(obj.Tool, "ShapeType"):
+                # Old tool file; perform migration
+                shape_name = (
+                    obj.Tool.ShapeType if hasattr(obj.Tool, "ShapeType") else obj.Tool.ShapeName
+                ).lower()
+                tool_data = {
+                    "name": obj.Tool.Label,
+                    "shape": shape_name,
+                    "shape-type": shape_name,
+                }
+                toolbit_instance = ToolBit.from_dict(tool_data)
+                toolbit_instance.onDocumentRestored(obj.Tool)
+
         obj.setEditorMode("Placement", 2)
 
     def onDelete(self, obj, arg2=None):

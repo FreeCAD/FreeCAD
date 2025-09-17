@@ -21,9 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
 #include <algorithm>
 #include <codecvt>
 #include <cstring>
@@ -33,7 +32,6 @@
 #include <Windows.h>
 #else
 #include <unistd.h>
-#endif
 #endif
 
 #include "FileInfo.h"

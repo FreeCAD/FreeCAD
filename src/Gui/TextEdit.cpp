@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
+
 # include <QApplication>
 # include <QKeyEvent>
 # include <QPainter>
@@ -30,7 +29,8 @@
 # include <QRegularExpressionMatch>
 # include <QShortcut>
 # include <QTextCursor>
-#endif
+
+#include <FCConfig.h>
 
 #include "CallTips.h"
 #include "TextEdit.h"

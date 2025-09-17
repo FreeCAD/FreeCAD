@@ -21,18 +21,14 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include "Gizmo.h"
 
-#ifndef _PreComp_
 #include <cmath>
 
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/nodes/SoPickStyle.h>
 #include <algorithm>
-#endif
 
 #include <App/Application.h>
 #include <Base/Converter.h>
@@ -44,6 +40,7 @@
 #include <Gui/Inventor/Draggers/GizmoStyleParameters.h>
 #include <Gui/Inventor/So3DAnnotation.h>
 #include <Gui/Inventor/SoToggleSwitch.h>
+#include <Gui/ViewProviderDragger.h>
 #include <Gui/QuantitySpinBox.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventorViewer.h>
@@ -657,6 +654,8 @@ GizmoContainer::~GizmoContainer()
     cameraPositionSensor.detach();
 
     uninitGizmos();
+
+    viewProvider->setGizmoContainer(nullptr);
 }
 
 void GizmoContainer::initGizmos()
@@ -697,6 +696,8 @@ void GizmoContainer::attachViewer(Gui::View3DInventorViewer* viewer, Base::Place
     if (!viewer) {
         return;
     }
+
+    setUpAutoScale(viewer->getSoRenderManager()->getCamera());
 
     auto mat = origin.toMatrix();
 
@@ -769,4 +770,18 @@ bool GizmoContainer::isEnabled()
         .GetGroup("BaseApp/Preferences/Mod/PartDesign");
 
     return hGrp->GetBool("EnableGizmos", true);
+}
+
+std::unique_ptr<GizmoContainer> GizmoContainer::create(
+    std::initializer_list<Gui::Gizmo*> gizmos,
+    ViewProviderDragger* vp
+)
+{
+    auto gizmoContainer = std::make_unique<GizmoContainer>();
+    gizmoContainer->addGizmos(gizmos);
+    gizmoContainer->viewProvider = vp;
+
+    vp->setGizmoContainer(gizmoContainer.get());
+
+    return gizmoContainer;
 }
