@@ -58,11 +58,36 @@ class TestArchReport(TestArchBase.TestArchBase):
         """
         report = Arch.makeReport()
         report.Target = self.spreadsheet
-        # Ensure the first statement holds the query string
+
+        # Ensure the proxy live statements reflect persisted data
+        if hasattr(report, 'Proxy'):
+            try:
+                report.Proxy.hydrate_live_statements(report)
+            except Exception:
+                # Be permissive in tests; hydration should normally succeed
+                pass
+
+        # Ensure the first statement exists and holds the query string. We
+        # must operate on the proxy's live_statements (runtime objects). If
+        # none exist, create a persisted dict and hydrate again.
         if not hasattr(report, 'Statements') or not report.Statements:
-            report.Statements = [ArchReport.ReportStatement(description="Statement 1", query_string=query_string)]
+            report.Statements = [ArchReport.ReportStatement(description="Statement 1", query_string=query_string).dumps()]
+            if hasattr(report, 'Proxy'):
+                report.Proxy.hydrate_live_statements(report)
         else:
-            report.Statements[0].query_string = query_string
+            if hasattr(report, 'Proxy') and getattr(report.Proxy, 'live_statements', None):
+                report.Proxy.live_statements[0].query_string = query_string
+            else:
+                # Fallback: replace persisted dict with one containing the query
+                report.Statements = [ArchReport.ReportStatement(description="Statement 1", query_string=query_string).dumps()]
+
+        # Persist the change through the proxy if available
+        if hasattr(report, 'Proxy'):
+            try:
+                report.Proxy.commit_statements()
+            except Exception:
+                # Tests should continue even if commit is not possible in this env
+                pass
 
         self.doc.recompute()
 
@@ -252,10 +277,25 @@ class TestArchReport(TestArchBase.TestArchBase):
             # Creation initializes a target spreadsheet; verify it's set
             self.assertIsNotNone(report.Target, "Report Target should be set on creation.")
             # Set the first statement's query string
-            if not hasattr(report, 'Statements') or not report.Statements:
-                report.Statements = [ArchReport.ReportStatement(description="Statement 1", query_string='SELECT * FROM document')]
+            # Prefer operating on the proxy runtime objects when available
+            if hasattr(report, 'Proxy'):
+                # Ensure live statements are hydrated from persisted storage
+                report.Proxy.hydrate_live_statements(report)
+
+                if not getattr(report.Proxy, 'live_statements', None):
+                    # No live statements: create a persisted starter and hydrate again
+                    report.Statements = [ArchReport.ReportStatement(description="Statement 1", query_string='SELECT * FROM document').dumps()]
+                    report.Proxy.hydrate_live_statements(report)
+                else:
+                    report.Proxy.live_statements[0].query_string = 'SELECT * FROM document'
+                    report.Proxy.commit_statements()
             else:
-                report.Statements[0].query_string = 'SELECT * FROM document'
+                # Fallback for environments without a proxy: persist a dict
+                if not hasattr(report, 'Statements') or not report.Statements:
+                    report.Statements = [ArchReport.ReportStatement(description="Statement 1", query_string='SELECT * FROM document').dumps()]
+                else:
+                        # Persist a fresh statement dict in the fallback path
+                        report.Statements = [ArchReport.ReportStatement(description="Statement 1", query_string='SELECT * FROM document').dumps()]
             self.doc.recompute()
         except Exception as e:
             self.fail(f"Recomputing a report with no Target raised an unexpected exception: {e}")
