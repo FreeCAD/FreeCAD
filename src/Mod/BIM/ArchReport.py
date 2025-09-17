@@ -20,15 +20,15 @@ else:
 
 import ArchSql
 
-# --- New: Icons for Status and Edit buttons ---
-ICON_STATUS_OK = FreeCADGui.getIcon(":/icons/Task_Ok.svg")
-ICON_STATUS_WARN = FreeCADGui.getIcon(":/icons/Task_Warning.svg")
-ICON_STATUS_ERROR = FreeCADGui.getIcon(":/icons/Task_Error.svg")
-ICON_STATUS_INCOMPLETE = FreeCADGui.getIcon(":/icons/Task_Incomplete.svg")
-ICON_EDIT = FreeCADGui.getIcon(":/icons/Draft_Edit.svg")
-ICON_ADD = FreeCADGui.getIcon(":/icons/list-add.svg")
-ICON_REMOVE = FreeCADGui.getIcon(":/icons/list-remove.svg")
-ICON_DUPLICATE = FreeCADGui.getIcon(":/icons/copy.svg")
+if FreeCAD.GuiUp:
+    ICON_STATUS_OK = FreeCADGui.getIcon(":/icons/Task_Ok.svg")
+    ICON_STATUS_WARN = FreeCADGui.getIcon(":/icons/Task_Warning.svg")
+    ICON_STATUS_ERROR = FreeCADGui.getIcon(":/icons/Task_Error.svg")
+    ICON_STATUS_INCOMPLETE = FreeCADGui.getIcon(":/icons/Task_Incomplete.svg")
+    ICON_EDIT = FreeCADGui.getIcon(":/icons/Draft_Edit.svg")
+    ICON_ADD = FreeCADGui.getIcon(":/icons/list-add.svg")
+    ICON_REMOVE = FreeCADGui.getIcon(":/icons/list-remove.svg")
+    ICON_DUPLICATE = FreeCADGui.getIcon(":/icons/copy.svg")
 
 
 class ReportStatement:
@@ -119,31 +119,60 @@ class _ArchReport:
 
     def __init__(self, obj):
         self.setProperties(obj)
+        # Keep a reference to the host object so helper methods can persist data
+        self.obj = obj
         obj.Proxy = self
         self.Type = 'ArchReport'
         self.spreadsheet = None
         self.docObserver = None
         self.spreadsheet_current_row = 1 # Internal state for multi-statement reports
+        # This list holds the "live" ReportStatement objects for runtime use (UI, execute)
+        self.live_statements = []
+        # On creation, immediately hydrate the live list from the persistent property
+        self.hydrate_live_statements(obj)
+        # If no persisted statements were present, create one default statement
+        # so the UI shows a starter entry (matching previous behavior).
+        if not self.live_statements:
+            default_stmt = ReportStatement(description=translate("Arch", "New Statement"))
+            self.live_statements.append(default_stmt)
+            # Persist the default starter statement so future loads see it
+            try:
+                self.commit_statements()
+            except Exception:
+                # Be resilient during early initialization when document context
+                # may not be fully available; ignore commit failure.
+                pass
 
     def onDocumentRestored(self, obj):
-        # This is called AFTER properties are set.
-        # Now we need to properly deserialize the Statements list.
-        # The temporary list from __setstate__ needs to be converted.
-        if hasattr(self, '_temp_statements_on_load') and self._temp_statements_on_load:
-            statements = []
-            for s_data in self._temp_statements_on_load:
-                statement = ReportStatement()
-                statement.loads(s_data)
-                statements.append(statement)
-            obj.Statements = statements
-            del self._temp_statements_on_load # Clean up temporary attribute
-
+        """Called after the object properties are restored from a file."""
+        # Rebuild the live list of objects from the newly loaded persistent data
+        self.hydrate_live_statements(obj)
         self.setProperties(obj) # This will ensure observer is re-attached
+
+    def hydrate_live_statements(self, obj):
+        """(Re)builds the live list of objects from the stored list of dicts."""
+        self.live_statements = []
+        if hasattr(obj, 'Statements') and obj.Statements:
+            for s_data in obj.Statements:
+                statement = ReportStatement()
+                statement.loads(s_data) # Use existing loads method
+                self.live_statements.append(statement)
+
+    def commit_statements(self):
+        """
+        Persists the live statements to the document object.
+
+        This method serializes the list of live ReportStatement objects
+        (self.live_statements) into a list of dictionaries and saves it
+        to the persistent obj.Statements property. This is the official
+        programmatic way to commit changes.
+        """
+        self.obj.Statements = [s.dumps() for s in self.live_statements]
 
     def setProperties(self, obj):
         # Ensure the `Statements` property exists (list of ReportStatement objects)
         if not 'Statements' in obj.PropertiesList:
-            obj.addProperty('App::PropertyPythonObject', 'Statements', 'Report', QT_TRANSLATE_NOOP('App::Property', 'The list of SQL statements to execute'), locked=True)
+            obj.addProperty('App::PropertyPythonObject', 'Statements', 'Report', QT_TRANSLATE_NOOP('App::Property', 'The list of SQL statements to execute (managed by the Task Panel)'), locked=True)
             obj.Statements = [] # Initialize with an empty list
 
         if not 'Target' in obj.PropertiesList:
@@ -153,6 +182,10 @@ class _ArchReport:
             obj.AutoUpdate = True
 
         self.onChanged(obj, 'AutoUpdate')
+        # Make the Statements property read-only in the GUI to guide users to the TaskPanel.
+        # Mode 1: Read-Only. It does not affect scripting access.
+        if FreeCAD.GuiUp:
+            obj.setEditorMode("Statements", 1)
 
     def setReportPropertySpreadsheet(self, sp, obj):
         """Associate a spreadsheet with a report.
@@ -207,26 +240,21 @@ class _ArchReport:
                     FreeCAD.removeDocumentObserver(self.docObserver)
                     self.docObserver = None
 
+            if prop == 'Statements':
+                # If the persistent data is changed externally (e.g., by a script),
+                # re-hydrate the live list to ensure consistency.
+                self.hydrate_live_statements(obj)
+
     def __getstate__(self):
-        """Returns the internal state of the _ArchReport object for serialization."""
-        state = {
+        """Returns minimal internal state of the proxy for serialization."""
+        # The main 'Statements' data is persisted on the obj property, not here.
+        return {
             'Type': self.Type,
-            # --- PHASE 1.5 FIX: Serialize Statements list ---
-            'Statements': [s.dumps() for s in getattr(self.obj, 'Statements', [])],
-            'spreadsheet_name': getattr(getattr(self, 'spreadsheet', None), 'Name', None),
         }
-        return state
 
     def __setstate__(self, state):
-        """Restores the internal state of the _ArchReport object from serialized data."""
+        """Restores minimal internal state of the proxy from serialized data."""
         self.Type = state.get('Type', 'ArchReport')
-        # Store statements data temporarily as obj is not available yet
-        self._temp_statements_on_load = []
-        for s_data in state.get('Statements', []):
-            statement = ReportStatement()
-            statement.loads(s_data)
-            self._temp_statements_on_load.append(statement)
-
         self.spreadsheet = None
         self.docObserver = None
 
@@ -276,8 +304,8 @@ class _ArchReport:
         return current_row # Return the next available row
 
     def execute(self, obj):
-        # --- PHASE 1.5 FIX: Handle Statements list ---
-        if not hasattr(obj, 'Statements') or not obj.Statements:
+        # Execute using the live list of objects, managed by the proxy
+        if not self.live_statements:
             return
 
         sp = obj.Target # Ensure we use the explicitly linked Target
@@ -288,7 +316,11 @@ class _ArchReport:
 
         self.spreadsheet_current_row = 1 # Reset row counter for a new report build
 
-        for statement in obj.Statements:
+        for statement in self.live_statements:
+            # Skip empty queries (user may have an empty placeholder statement)
+            if not statement.query_string or not statement.query_string.strip():
+                continue
+
             headers, results_data = ArchSql.run_query_for_objects(statement.query_string)
 
             if results_data is None:
@@ -386,6 +418,7 @@ class ReportTaskPanel:
         # Box 2 (editor) contains the query editor and options.
         self.obj = report_obj
         self.current_edited_statement_index = -1  # To track which statement is in editor
+        self.is_dirty = False # To track uncommitted changes
 
         # Overview widget (TaskBox 1)
         self.overview_widget = QtWidgets.QWidget()
@@ -488,8 +521,8 @@ class ReportTaskPanel:
     # --- Statement Management (Buttons and Table Interaction) ---
     def _populate_table_from_statements(self):
         self.table_statements.setRowCount(0) # Clear existing rows
-        statements = self.obj.Statements
-        for row_idx, statement in enumerate(statements):
+        # The UI always interacts with the live list of objects from the proxy
+        for row_idx, statement in enumerate(self.obj.Proxy.live_statements):
             self.table_statements.insertRow(row_idx)
             self.table_statements.setItem(row_idx, 0, QtWidgets.QTableWidgetItem(statement.description))
 
@@ -515,11 +548,13 @@ class ReportTaskPanel:
             statement.validate_and_update_status()
 
     def _add_statement(self):
-        new_statement = ReportStatement(description=translate("Arch", f"New Statement {len(self.obj.Statements) + 1}"))
-        self.obj.Statements.append(new_statement)
+        # Modify the live list; changes will be committed to the object property on accept()
+        new_statement = ReportStatement(description=translate("Arch", f"New Statement {len(self.obj.Proxy.live_statements) + 1}"))
+        self.obj.Proxy.live_statements.append(new_statement)
         self._populate_table_from_statements() # Refresh the table
         new_statement.validate_and_update_status() # Validate immediately
-        self._select_statement_in_table(len(self.obj.Statements) - 1) # Select and open new statement
+        self._select_statement_in_table(len(self.obj.Proxy.live_statements) - 1)
+        self._set_dirty(True)
 
     def _remove_selected_statement(self):
         selected_rows = self.table_statements.selectionModel().selectedRows()
@@ -532,7 +567,8 @@ class ReportTaskPanel:
         if QtWidgets.QMessageBox.question(None, translate("Arch", "Remove Statement"),
                                           translate("Arch", f"Are you sure you want to remove statement '{description_to_remove}'?"),
                                           QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No) == QtWidgets.QMessageBox.Yes:
-            self.obj.Statements.pop(row_to_remove)
+            self.obj.Proxy.live_statements.pop(row_to_remove)
+            self._set_dirty(True)
             self._populate_table_from_statements()
             self._select_first_statement_if_available()
 
@@ -542,19 +578,20 @@ class ReportTaskPanel:
             return
 
         row_to_duplicate = selected_rows[0].row()
-        original_statement = self.obj.Statements[row_to_duplicate]
+        original_statement = self.obj.Proxy.live_statements[row_to_duplicate]
 
         duplicated_statement = ReportStatement()
         duplicated_statement.loads(original_statement.dumps()) # Use serialization to deep copy
         duplicated_statement.description = translate("Arch", f"Copy of {original_statement.description}")
 
-        self.obj.Statements.insert(row_to_duplicate + 1, duplicated_statement)
+        self.obj.Proxy.live_statements.insert(row_to_duplicate + 1, duplicated_statement)
+        self._set_dirty(True)
         self._populate_table_from_statements()
         duplicated_statement.validate_and_update_status()
         self._select_statement_in_table(row_to_duplicate + 1)
 
     def _select_first_statement_if_available(self):
-        if self.obj.Statements:
+        if self.obj.Proxy.live_statements:
             self._select_statement_in_table(0)
         else:
             self._update_editor_visibility(False) # Hide editor if no statements
@@ -574,8 +611,8 @@ class ReportTaskPanel:
             if new_index != self.current_edited_statement_index:
                 self._save_current_editor_state_to_statement() # Save old state
                 self.current_edited_statement_index = new_index
-                self._load_statement_to_editor(self.obj.Statements[new_index])
-                self._update_editor_title(self.obj.Statements[new_index].description)
+                self._load_statement_to_editor(self.obj.Proxy.live_statements[new_index])
+                self._update_editor_title(self.obj.Proxy.live_statements[new_index].description)
                 self._run_live_validation_for_editor() # Validate the loaded query
                 self._update_editor_visibility(True) # Ensure editor is visible
         else:
@@ -594,8 +631,8 @@ class ReportTaskPanel:
         self._update_editor_status_display(statement)
 
     def _save_current_editor_state_to_statement(self):
-        if self.current_edited_statement_index != -1 and self.current_edited_statement_index < len(self.obj.Statements):
-            statement = self.obj.Statements[self.current_edited_statement_index]
+        if self.current_edited_statement_index != -1 and self.current_edited_statement_index < len(self.obj.Proxy.live_statements):
+            statement = self.obj.Proxy.live_statements[self.current_edited_statement_index]
             statement.description = self.description_edit.text()
             statement.query_string = self.sql_query_edit.toPlainText()
             statement.use_description_as_header = self.chk_use_description_as_header.isChecked()
@@ -614,15 +651,18 @@ class ReportTaskPanel:
             self._update_editor_title(self.description_edit.text())
         # Re-trigger validation for other fields potentially (e.g. if query uses description)
         self.validation_timer.start(500) # (Re)start timer for live validation
+        self._set_dirty(True)
 
     def _on_editor_sql_changed(self):
         self.sql_query_status_label.setText(translate("Arch", "<i>Typing...</i>"))
         self.sql_query_status_label.setStyleSheet("color: gray;")
         self.validation_timer.start(500) # (Re)start timer for live validation
+        self._set_dirty(True)
 
     def _on_editor_checkbox_changed(self):
         # Checkboxes are saved when editor state is saved, but ensure live validation for status icon
         self.validation_timer.start(500) # (Re)start timer for live validation
+        self._set_dirty(True)
 
 
     def _run_live_validation_for_editor(self):
@@ -633,7 +673,7 @@ class ReportTaskPanel:
 
         # Also update table if this is the currently edited statement
         if self.current_edited_statement_index != -1:
-            statement_obj = self.obj.Statements[self.current_edited_statement_index]
+            statement_obj = self.obj.Proxy.live_statements[self.current_edited_statement_index]
             statement_obj.query_string = temp_statement.query_string # Keep statement object's query updated for validation.
             statement_obj.validate_and_update_status()
             self._update_table_row_status(self.current_edited_statement_index, statement_obj)
@@ -697,28 +737,48 @@ class ReportTaskPanel:
         # Change arrow indicator (Qt handles this if QGroupBox is collapsible,
         # but we control visibility directly here.)
 
+    def _set_dirty(self, dirty_state):
+        """Updates the UI to show if there are uncommitted changes."""
+        if self.is_dirty == dirty_state:
+            return
+        self.is_dirty = dirty_state
+        title = translate("Arch", "Report Statements")
+        if self.is_dirty:
+            title += " *"
+        self.overview_widget.setWindowTitle(title)
+
 
     # --- Dialog Acceptance / Rejection ---
     def accept(self):
         """Saves changes from UI to Report object and triggers recompute."""
         # Ensure the currently edited statement's state is saved before final accept
         self._save_current_editor_state_to_statement()
-        # Trigger a recompute to persist changes and refresh report
+        # First, ensure the currently edited statement's state is saved to the live list
+
+        # This is the "commit" step: convert the live list of objects into a
+        # Delegate to proxy helper to persist the live statements
+        self.obj.Proxy.commit_statements()
+
+        # Trigger a recompute to run the report and mark the document as modified
         try:
             FreeCAD.ActiveDocument.recompute()
         except Exception:
             # In headless/static checks FreeCAD.ActiveDocument may be unavailable
             pass
-        # Close the task panel via FreeCADGui if available
+        # Close the task panel via FreeCADGui when GUI is available
         try:
             FreeCADGui.Control.closeDialog()
         except Exception:
             pass
+        self._set_dirty(False)
 
     def reject(self):
         """Closes dialog without saving changes to the Report object."""
         # Revert changes by not writing to self.obj.Statements
-        # Close the task panel without saving
+        # Discard live changes by re-hydrating from the persisted property
+        self.obj.Proxy.hydrate_live_statements(self.obj)
+        self._set_dirty(False)
+        # Close the task panel when GUI is available
         try:
             FreeCADGui.Control.closeDialog()
         except Exception:
