@@ -762,6 +762,10 @@ void TaskRevolutionParameters::setGizmoPositions()
 
     if (isGroove) {
         auto groove = getObject<PartDesign::Groove>();
+        if (!groove || groove->isError()) {
+            gizmoContainer->visible = false;
+            return;
+        }
         Part::TopoShape profile = groove->getProfileShape();
         
         profile.getCenterOfGravity(profileCog);
@@ -769,12 +773,17 @@ void TaskRevolutionParameters::setGizmoPositions()
         axisDir = groove->Axis.getValue();
     } else {
         auto revolution = getObject<PartDesign::Revolution>();
+        if (!revolution || revolution->isError()) {
+            gizmoContainer->visible = false;
+            return;
+        }
         Part::TopoShape profile = revolution->getProfileShape();
         
         profile.getCenterOfGravity(profileCog);
         basePos = revolution->Base.getValue();
         axisDir = revolution->Axis.getValue();
     }
+    gizmoContainer->visible = true;
 
     auto diff = profileCog - basePos;
     axisDir.Normalize();

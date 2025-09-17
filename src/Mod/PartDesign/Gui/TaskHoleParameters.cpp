@@ -1233,6 +1233,10 @@ void TaskHoleParameters::setGizmoPositions()
     }
 
     auto hole = getObject<PartDesign::Hole>();
+    if (!hole || hole->isError()) {
+        gizmoContainer->visible = false;
+        return;
+    }
     Part::TopoShape profileShape = hole->getProfileShape(
         Part::ShapeOption::NeedSubElement |
         Part::ShapeOption::ResolveLink |

@@ -228,11 +228,11 @@ void TaskFilletParameters::setGizmoPositions()
     }
 
     auto fillet = getObject<PartDesign::Fillet>();
-    if (!fillet) {
+    if (!fillet || fillet->isError()) {
         gizmoContainer->visible = false;
         return;
     }
-    Part::TopoShape baseShape = fillet->getBaseTopoShape();
+    Part::TopoShape baseShape = fillet->getBaseTopoShape(true);
     std::vector<Part::TopoShape> shapes = fillet->getContinuousEdges(baseShape);
 
     if (shapes.size() == 0) {
