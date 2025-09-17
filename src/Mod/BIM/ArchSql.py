@@ -36,41 +36,145 @@ def get_property(obj, prop_name):
     return current_val
 
 # Query Object Model
+class GroupByClause:
+    """Represents the GROUP BY clause of a SQL statement."""
+    def __init__(self, columns):
+        # columns is a list of ReferenceExtractor objects
+        self.columns = columns
+
+class AggregateFunction:
+    """Represents an aggregate function call like COUNT(*) or SUM(Height)."""
+    def __init__(self, function_name, argument):
+        self.function_name = function_name.lower()
+        # argument can be the string "*" or another extractor (e.g., ReferenceExtractor)
+        self.argument = argument
+
+    def get_value(self, obj):
+        # This method is a placeholder. The actual calculation will happen
+        # during the grouped execution phase, not on a single object.
+        return None
+
 class SelectStatement:
-    def __init__(self, columns_info, from_clause, where_clause): # Now receives column_info
+    def __init__(self, columns_info, from_clause, where_clause, group_by_clause):
         self.columns_info = columns_info # Stores (extractor_object, display_name) tuples
         self.from_clause = from_clause
         self.where_clause = where_clause
+        self.group_by_clause = group_by_clause
 
     def execute(self):
-        objects = self.from_clause.get_objects()
+        # 1. Get and filter the initial object list from the document
+        all_objects = self.from_clause.get_objects()
+        filtered_objects = [o for o in all_objects if self.where_clause is None or self.where_clause.matches(o)]
 
-        # Filter objects based on where_clause
-        filtered_objects = [o for o in objects if self.where_clause is None or self.where_clause.matches(o)]
+        # 2. Determine the column headers from the parsed statement
+        headers = [display_name for _, display_name in self.columns_info]
 
-        headers = []
+        # 3. Decide which execution path to take based on the query structure
+        if self.group_by_clause:
+            results_data = self._execute_grouped_query(filtered_objects)
+        else:
+            results_data = self._execute_non_grouped_query(filtered_objects)
+
+        return headers, results_data
+
+    def _get_grouping_key(self, obj, group_by_extractors):
+        """Generates a tuple key for an object based on the GROUP BY columns."""
+        key_parts = []
+        for extractor in group_by_extractors:
+            value = extractor.get_value(obj)
+            # We must ensure the key part is hashable. Converting to string is a
+            # safe fallback for unhashable types like lists, while preserving
+            # the original value for common hashable types (str, int, None, etc.).
+            if value is not None and not isinstance(value, (str, int, float, bool, tuple)):
+                key_parts.append(str(value))
+            else:
+                key_parts.append(value)
+        return tuple(key_parts)
+
+    def _execute_grouped_query(self, objects):
+        """Executes a query that contains a GROUP BY clause."""
         results_data = []
+        groups = {}  # A dictionary to partition objects by their group key
 
-        # Determine headers and extract data values for each object
-        for extractor, display_name in self.columns_info:
-            headers.append(display_name)
+        group_by_extractors = self.group_by_clause.columns
 
-        for obj in filtered_objects:
+        # 1. Partition all filtered objects into groups
+        for obj in objects:
+            key = self._get_grouping_key(obj, group_by_extractors)
+            if key not in groups:
+                groups[key] = []
+            groups[key].append(obj)
+
+        # 2. Process each group to generate one summary row
+        for key, object_list in groups.items():
             row = []
             for extractor, _ in self.columns_info:
-                if extractor == '*': # Handle SELECT * - always return Label for this simple case
-                    value = obj.Label if hasattr(obj, 'Label') else getattr(obj, 'Name', '')
+                value = None
+                if isinstance(extractor, AggregateFunction):
+                    if extractor.function_name == 'count':
+                        value = len(object_list)
+                    # Placeholder for future aggregate functions (SUM, etc.)
+                    else:
+                        value = f"'{extractor.function_name}' NOT_IMPL"
                 else:
-                    value = extractor.get_value(obj)
+                    # This must be a column from the GROUP BY clause. We find which part
+                    # of the key corresponds to this column.
+                    key_index = -1
+                    for i, gb_extractor in enumerate(group_by_extractors):
+                        if gb_extractor.value == extractor.value:
+                           key_index = i
+                           break
+                    if key_index != -1:
+                        value = key[key_index]
 
-                # Format value for display
-                if isinstance(value, FreeCAD.Units.Quantity):
-                    row.append(value.UserString)
-                else:
-                    row.append(str(value) if value is not None else '')
+                row.append(str(value) if value is not None else 'None')
             results_data.append(row)
 
-        return headers, results_data # Always return both headers and data
+        return results_data
+
+    def _execute_non_grouped_query(self, objects):
+        """Executes a simple query without a GROUP BY clause."""
+        results_data = []
+
+        # Check if this is a query with only aggregate functions (e.g., SELECT COUNT(*))
+        is_aggregate_query = any(isinstance(ex, AggregateFunction) for ex, _ in self.columns_info)
+
+        if is_aggregate_query:
+            # An aggregate query without a GROUP BY always returns a single row.
+            row = []
+            for extractor, _ in self.columns_info:
+                value = None
+                if isinstance(extractor, AggregateFunction):
+                    if extractor.function_name == 'count':
+                        value = len(objects)
+                    # Placeholder for future aggregate functions (SUM, etc.) on the whole set
+                    else:
+                        value = f"'{extractor.function_name}' NOT_IMPL"
+                else:
+                    # This is an invalid query (mixing aggregate and non-aggregate without GROUP BY).
+                    # This will be caught by validation in a later step. For now, return None.
+                    value = None
+
+                row.append(str(value) if value is not None else 'None')
+            results_data.append(row)
+        else:
+            # This is a standard row-by-row query.
+            for obj in objects:
+                row = []
+                for extractor, _ in self.columns_info:
+                    if extractor == '*':
+                        value = obj.Label if hasattr(obj, 'Label') else getattr(obj, 'Name', '')
+                    else:
+                        value = extractor.get_value(obj)
+
+                    # Format the value for spreadsheet display
+                    if isinstance(value, FreeCAD.Units.Quantity):
+                        row.append(value.UserString)
+                    else:
+                        row.append(str(value) if value is not None else '')
+                results_data.append(row)
+
+        return results_data
 
 class FromClause:
     def __init__(self, reference):
@@ -148,10 +252,16 @@ class SqlTreeTransformer:
         columns_info = next((c for c in children if c.__class__ == list), None)
         from_c = next((c for c in children if isinstance(c, FromClause)), None)
         where_c = next((c for c in children if isinstance(c, WhereClause)), None)
-        return SelectStatement(columns_info, from_c, where_c)
+        group_by_c = next((c for c in children if isinstance(c, GroupByClause)), None)
+
+        return SelectStatement(columns_info, from_c, where_c, group_by_c)
 
     def from_clause(self, i): return FromClause(i[1])
     def where_clause(self, i): return WhereClause(i[1])
+
+    def group_by_clause(self, items):
+        references = [item for item in items if isinstance(item, ReferenceExtractor)]
+        return GroupByClause(references)
 
     # --- Columns Transformer ---
     def columns(self, items):
@@ -169,6 +279,10 @@ class SqlTreeTransformer:
         elif isinstance(extractor, StaticExtractor):
             # For static values, use their string representation as display name
             return (extractor, str(extractor.get_value(None)))
+        elif isinstance(extractor, AggregateFunction):
+            arg_display = "*" if extractor.argument == "*" else extractor.argument.value
+            display_name = f"{extractor.function_name.upper()}({arg_display})"
+            return (extractor, display_name)
         else: # Fallback, should not happen with current grammar
             return (extractor, "Unknown Column")
     # --- END Columns Transformer ---
@@ -202,8 +316,9 @@ class SqlTreeTransformer:
     def literal(self, items): return StaticExtractor(items[0].value[1:-1])
     def null(self, _): return StaticExtractor(None)
 
-    def function(self, i): return StaticExtractor("FUNC_NOT_IMPL")
-    def multi_param_function(self, i): return StaticExtractor("FUNC_NOT_IMPL")
+    def function(self, items):
+        function_name, argument = str(items[0]), items[1]
+        return AggregateFunction(function_name, argument)
 
 
 def _get_query_object(query_string):

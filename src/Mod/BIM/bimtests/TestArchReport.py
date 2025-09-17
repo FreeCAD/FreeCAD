@@ -96,11 +96,12 @@ class TestArchReport(TestArchBase.TestArchBase):
         self.assertIsInstance(headers, list, f"Headers should be a list for: {query_string}")
         self.assertIsInstance(results_data_from_sql, list, f"Results data should be a list for: {query_string}")
 
-        # Simplify filtering to reflect ArchSql's behavior more accurately
-        # ArchSql.run_query_for_objects now returns data_rows for ALL objects matching query,
-        # including test scaffolding objects (Report, ReportResult).
-        # We need to *explicitly* filter out scaffolding objects here for specific assertions
-        # like comparing against `self.test_object_labels`.
+        # For aggregate queries (e.g., containing COUNT, GROUP BY), the results are summaries,
+        # not direct object properties. The filtering logic below is incorrect for them.
+        # We can detect an aggregate query if the headers contain typical aggregate function names.
+        is_aggregate_query = any('COUNT' in h or 'SUM' in h for h in headers)
+        if is_aggregate_query:
+            return headers, results_data_from_sql
 
         # If SELECT *, results_data_from_sql is list of lists, e.g., [['Exterior Wall'], ...].
         # Extract flat list of labels.
@@ -112,6 +113,7 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         # For specific column selections, results_data_from_sql is list of lists of values.
         # Filter these rows based on whether their first element (label) is one of our test objects.
+        # This assumes the first column is always the object's label for non-aggregate queries.
         filtered_results_for_specific_columns = []
         for row in results_data_from_sql:
             if len(row) > 0 and row[0] in self.test_object_labels:
@@ -305,3 +307,38 @@ class TestArchReport(TestArchBase.TestArchBase):
         # so subsequent runs are deterministic.
         self.assertIsNotNone(report.Target, "Report Target should be set after running with no pre-existing Target.")
         self.assertEqual(getattr(report.Target, 'ReportName', None), report.Name)
+
+    def test_group_by_ifctype_with_count(self):
+        """Test GROUP BY with COUNT(*) to summarize objects by type."""
+        # Add a WHERE clause to exclude test scaffolding objects from the count.
+        query = "SELECT IfcType, COUNT(*) FROM document " \
+                "WHERE TypeId != 'App::FeaturePython' AND TypeId != 'Spreadsheet::Sheet' " \
+                "GROUP BY IfcType"
+        headers, results_data = self._run_query_for_objects(query)
+
+        self.assertEqual(headers, ['IfcType', 'COUNT(*)'])
+
+        # Convert results to a dict for easy, order-independent comparison.
+        # Handle the case where IfcType is None, which becomes a key in the dict.
+        results_dict = {row[0] if row[0] != 'None' else None: int(row[1]) for row in results_data}
+
+        expected_counts = {
+            "Wall": 2,
+            "Column": 1,
+            "Beam": 1,
+            "Window": 1,
+            None: 1  # The Part::Box has a NULL IfcType, which forms its own group
+        }
+        self.assertDictEqual(results_dict, expected_counts, "The object counts per IfcType are incorrect.")
+
+    def test_count_all_without_group_by(self):
+        """Test COUNT(*) on the whole dataset without grouping."""
+        # Add a WHERE clause to exclude test scaffolding objects from the count.
+        query = "SELECT COUNT(*) FROM document " \
+                "WHERE TypeId != 'App::FeaturePython' AND TypeId != 'Spreadsheet::Sheet'"
+        headers, results_data = self._run_query_for_objects(query)
+
+        self.assertEqual(headers, ['COUNT(*)'])
+        self.assertEqual(len(results_data), 1, "Non-grouped aggregate should return a single row.")
+        self.assertEqual(int(results_data[0][0]), len(self.test_objects_in_doc), "COUNT(*) did not return the total number of test objects.")
+
