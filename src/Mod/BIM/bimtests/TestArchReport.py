@@ -58,7 +58,11 @@ class TestArchReport(TestArchBase.TestArchBase):
         """
         report = Arch.makeReport()
         report.Target = self.spreadsheet
-        report.Query = query_string
+        # Ensure the first statement holds the query string
+        if not hasattr(report, 'Statements') or not report.Statements:
+            report.Statements = [ArchReport.ReportStatement(description="Statement 1", query_string=query_string)]
+        else:
+            report.Statements[0].query_string = query_string
 
         self.doc.recompute()
 
@@ -99,7 +103,7 @@ class TestArchReport(TestArchBase.TestArchBase):
 
     def test_report_properties(self):
         report = Arch.makeReport()
-        self.assertTrue(hasattr(report, "Query"), "Report object is missing 'Query' property.")
+        self.assertTrue(hasattr(report, "Statements"), "Report object is missing 'Statements' property.")
         self.assertTrue(hasattr(report, "Target"), "Report object is missing 'Target' property.")
 
     # Category 2: Core SELECT Functionality
@@ -247,7 +251,11 @@ class TestArchReport(TestArchBase.TestArchBase):
             report = Arch.makeReport()
             # Creation initializes a target spreadsheet; verify it's set
             self.assertIsNotNone(report.Target, "Report Target should be set on creation.")
-            report.Query = 'SELECT * FROM document'
+            # Set the first statement's query string
+            if not hasattr(report, 'Statements') or not report.Statements:
+                report.Statements = [ArchReport.ReportStatement(description="Statement 1", query_string='SELECT * FROM document')]
+            else:
+                report.Statements[0].query_string = 'SELECT * FROM document'
             self.doc.recompute()
         except Exception as e:
             self.fail(f"Recomputing a report with no Target raised an unexpected exception: {e}")
