@@ -486,7 +486,7 @@
       <item row="9" column="0">
        <widget class="QLabel" name="label_20">
         <property name="text">
-         <string>External reference geometry</string>
+         <string>External construction geometry</string>
         </property>
        </widget>
       </item>
@@ -499,7 +499,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Color of external geometry in edit mode</string>
+         <string>Color of external construction geometry in edit mode</string>
         </property>
         <property name="color" stdset="0">
          <color>
@@ -519,7 +519,7 @@
       <item row="9" column="3">
        <widget class="QComboBox" name="ExternalPattern">
         <property name="toolTip">
-         <string>Line pattern of external reference edges</string>
+         <string>Line pattern of external construction edges</string>
         </property>
         <property name="currentIndex">
          <number>-1</number>
@@ -529,7 +529,7 @@
       <item row="9" column="4">
        <widget class="Gui::PrefSpinBox" name="ExternalWidth">
         <property name="toolTip">
-         <string>Width of external edges</string>
+         <string>Width of external construction edges</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">px</string>
