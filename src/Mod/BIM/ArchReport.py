@@ -3,9 +3,7 @@
 # Copyright (c) 2025 The FreeCAD Project
 
 import FreeCAD
-import json # For ReportStatement serialization/deserialization
 
-from draftutils import params
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtWidgets, QtGui
@@ -199,7 +197,7 @@ class _ArchReport:
         - obj: the report object (proxy owner)
         """
         if not hasattr(sp, 'ReportName'):
-            sp.addProperty('App::PropertyString', 'ReportName', 'Arch', QT_TRANSLATE_NOOP('App::Property', 'The name of the BIM Report that uses this spreadsheet'))
+            sp.addProperty('App::PropertyString', 'ReportName', 'Report', QT_TRANSLATE_NOOP('App::Property', 'The name of the BIM Report that uses this spreadsheet'))
         sp.ReportName = obj.Name
         obj.Target = sp
 
@@ -428,15 +426,13 @@ class ReportTaskPanel:
 
         # Table for statements
         self.table_statements = QtWidgets.QTableWidget()
-        self.table_statements.setColumnCount(3)  # Description, Status, Edit
+        self.table_statements.setColumnCount(2)  # Description, Status
         self.table_statements.setHorizontalHeaderLabels([
             translate("Arch", "Description"),
             translate("Arch", "Status"),
-            translate("Arch", "Edit"),
         ])
         self.table_statements.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         self.table_statements.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
-        self.table_statements.horizontalHeader().setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         self.table_statements.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.table_statements.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.table_statements.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
@@ -445,8 +441,11 @@ class ReportTaskPanel:
         # Statement Management Buttons
         self.statement_buttons_layout = QtWidgets.QHBoxLayout()
         self.btn_add_statement = QtWidgets.QPushButton(ICON_ADD, translate("Arch", "Add Statement"))
+        self.btn_add_statement.setToolTip(translate("Arch", "Add a new blank statement to the report."))
         self.btn_remove_statement = QtWidgets.QPushButton(ICON_REMOVE, translate("Arch", "Remove Selected"))
+        self.btn_remove_statement.setToolTip(translate("Arch", "Remove the selected statement from the report."))
         self.btn_duplicate_statement = QtWidgets.QPushButton(ICON_DUPLICATE, translate("Arch", "Duplicate Selected"))
+        self.btn_duplicate_statement.setToolTip(translate("Arch", "Create a copy of the selected statement."))
 
         self.statement_buttons_layout.addWidget(self.btn_add_statement)
         self.statement_buttons_layout.addWidget(self.btn_remove_statement)
@@ -455,19 +454,23 @@ class ReportTaskPanel:
 
         # Editor widget (TaskBox 2) -- starts collapsed until a statement is selected
         self.editor_widget = QtWidgets.QWidget()
-        self.editor_widget.setWindowTitle(translate("Arch", "Edit Statement: (None Selected)"))
+        # Use a neutral title; the specific statement is displayed when selected
+        self.editor_widget.setWindowTitle(translate("Arch", "Edit Statement"))
         # Keep compatibility name used elsewhere
         self.editor_box = self.editor_widget
         self.editor_layout = QtWidgets.QVBoxLayout(self.editor_box)
 
-        # Description for edited statement
+        # Description for edited statement (label and edit on same row)
         self.description_label = QtWidgets.QLabel(translate("Arch", "Description:"))
         self.description_edit = QtWidgets.QLineEdit()
-        self.editor_layout.addWidget(self.description_label)
-        self.editor_layout.addWidget(self.description_edit)
+        desc_row = QtWidgets.QHBoxLayout()
+        desc_row.addWidget(self.description_label)
+        desc_row.addWidget(self.description_edit)
+        self.editor_layout.addLayout(desc_row)
 
         # Use Description as Section Header checkbox
         self.chk_use_description_as_header = QtWidgets.QCheckBox(translate("Arch", "Use Description as Section Header"))
+        self.chk_use_description_as_header.setToolTip(translate("Arch", "When checked, the statement's description will be written as a merged header row before its results."))
         self.editor_layout.addWidget(self.chk_use_description_as_header)
 
         # SQL Query editor
@@ -480,14 +483,23 @@ class ReportTaskPanel:
         self.editor_layout.addWidget(self.sql_query_edit)
         self.editor_layout.addWidget(self.sql_query_status_label)
 
-        # Display Options for edited statement
-        self.chk_include_column_names = QtWidgets.QCheckBox(translate("Arch", "Include Column Names"))
-        self.chk_add_empty_row_after = QtWidgets.QCheckBox(translate("Arch", "Add Empty Row After"))
-        self.chk_print_results_in_bold = QtWidgets.QCheckBox(translate("Arch", "Print Results in Bold"))
+        # Display Options GroupBox
+        self.display_options_group = QtWidgets.QGroupBox(translate("Arch", "Display Options"))
+        self.display_options_layout = QtWidgets.QVBoxLayout(self.display_options_group)
 
-        self.editor_layout.addWidget(self.chk_include_column_names)
-        self.editor_layout.addWidget(self.chk_add_empty_row_after)
-        self.editor_layout.addWidget(self.chk_print_results_in_bold)
+        self.chk_use_description_as_header = QtWidgets.QCheckBox(translate("Arch", "Use Description as Section Header"))
+        self.chk_use_description_as_header.setToolTip(translate("Arch", "When checked, the statement's description will be written as a merged header row before its results."))
+        self.chk_include_column_names = QtWidgets.QCheckBox(translate("Arch", "Include Column Names"))
+        self.chk_include_column_names.setToolTip(translate("Arch", "Include the column headers (Label, IfcType, ...) in the spreadsheet output."))
+        self.chk_add_empty_row_after = QtWidgets.QCheckBox(translate("Arch", "Add Empty Row After"))
+        self.chk_add_empty_row_after.setToolTip(translate("Arch", "Insert one empty row after this statement's results."))
+        self.chk_print_results_in_bold = QtWidgets.QCheckBox(translate("Arch", "Print Results in Bold"))
+        self.chk_print_results_in_bold.setToolTip(translate("Arch", "Render the result cells in bold font for emphasis."))
+        self.display_options_layout.addWidget(self.chk_use_description_as_header)
+        self.display_options_layout.addWidget(self.chk_include_column_names)
+        self.display_options_layout.addWidget(self.chk_add_empty_row_after)
+        self.display_options_layout.addWidget(self.chk_print_results_in_bold)
+        self.editor_layout.addWidget(self.display_options_group)
 
         # Expose form as a list of the two top-level widgets so FreeCAD creates
         # two built-in TaskBox sections. The overview goes first, editor second.
@@ -498,6 +510,8 @@ class ReportTaskPanel:
         self.btn_remove_statement.clicked.connect(self._remove_selected_statement)
         self.btn_duplicate_statement.clicked.connect(self._duplicate_selected_statement)
         self.table_statements.itemSelectionChanged.connect(self._on_table_selection_changed)
+        # Keep table edits in sync with the runtime statements
+        self.table_statements.itemChanged.connect(self._on_table_item_changed)
         self.description_edit.textChanged.connect(self._on_editor_description_changed)
         self.sql_query_edit.textChanged.connect(self._on_editor_sql_changed)
         self.chk_use_description_as_header.stateChanged.connect(self._on_editor_checkbox_changed)
@@ -520,11 +534,14 @@ class ReportTaskPanel:
 
     # --- Statement Management (Buttons and Table Interaction) ---
     def _populate_table_from_statements(self):
+        # Avoid emitting itemChanged while we repopulate programmatically
+        self.table_statements.blockSignals(True)
         self.table_statements.setRowCount(0) # Clear existing rows
         # The UI always interacts with the live list of objects from the proxy
         for row_idx, statement in enumerate(self.obj.Proxy.live_statements):
             self.table_statements.insertRow(row_idx)
-            self.table_statements.setItem(row_idx, 0, QtWidgets.QTableWidgetItem(statement.description))
+            desc_item = QtWidgets.QTableWidgetItem(statement.description)
+            self.table_statements.setItem(row_idx, 0, desc_item)
 
             # Status Item (Icon + Tooltip)
             status_icon, status_tooltip = self._get_status_icon_and_tooltip(statement)
@@ -534,18 +551,35 @@ class ReportTaskPanel:
             status_item.setFlags(status_item.flags() & ~QtCore.Qt.ItemIsEditable) # Make read-only
             self.table_statements.setItem(row_idx, 1, status_item)
 
-            # Edit Button Item
-            edit_button = QtWidgets.QToolButton()
-            edit_button.setIcon(ICON_EDIT)
-            edit_button.setToolTip(translate("Arch", "Edit statement details"))
-            edit_button.clicked.connect(lambda _, r=row_idx: self._select_statement_in_table(r)) # Use lambda to pass row_idx
-            self.table_statements.setCellWidget(row_idx, 2, edit_button)
-
             # Make description editable directly in table
-            self.table_statements.item(row_idx, 0).setFlags(self.table_statements.item(row_idx, 0).flags() | QtCore.Qt.ItemIsEditable)
+            desc_item.setFlags(desc_item.flags() | QtCore.Qt.ItemIsEditable)
 
             # Recalculate status for each statement (important on load)
             statement.validate_and_update_status()
+        # Re-enable signals after population so user edits are handled
+        self.table_statements.blockSignals(False)
+
+    def _on_table_item_changed(self, item):
+        # Synchronize direct table edits back into the runtime statement
+        if item.column() != 0:
+            return
+        row = item.row()
+        if row < 0 or row >= len(self.obj.Proxy.live_statements):
+            return
+        new_text = item.text()
+        stmt = self.obj.Proxy.live_statements[row]
+        # Update underlying model and editor if this row is currently selected
+        stmt.description = new_text
+        stmt.validate_and_update_status()
+        self._update_table_row_status(row, stmt)
+        if row == self.current_edited_statement_index:
+            # Prevent echo loops by blocking editor signals briefly
+            try:
+                self.description_edit.blockSignals(True)
+                self.description_edit.setText(new_text)
+            finally:
+                self.description_edit.blockSignals(False)
+        self._set_dirty(True)
 
     def _add_statement(self):
         # Modify the live list; changes will be committed to the object property on accept()
@@ -712,7 +746,6 @@ class ReportTaskPanel:
         # Helper to get appropriate icon and tooltip for table status column
         status = statement._validation_status
         message = statement._validation_message
-        count = statement._validation_count
 
         if status == "OK":
             return ICON_STATUS_OK, message
@@ -760,11 +793,13 @@ class ReportTaskPanel:
         self.obj.Proxy.commit_statements()
 
         # Trigger a recompute to run the report and mark the document as modified
-        try:
-            FreeCAD.ActiveDocument.recompute()
-        except Exception:
-            # In headless/static checks FreeCAD.ActiveDocument may be unavailable
-            pass
+        FreeCAD.ActiveDocument.recompute()
+
+        # Quality of life: open the target spreadsheet to show the results upon manual accept
+        spreadsheet = self.obj.Target
+        if spreadsheet:
+            FreeCADGui.ActiveDocument.setEdit(spreadsheet.Name, 0)
+
         # Close the task panel via FreeCADGui when GUI is available
         try:
             FreeCADGui.Control.closeDialog()
