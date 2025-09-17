@@ -16,7 +16,7 @@
 
 Name:           freecad
 Epoch:          1
-Version:        weekly.2025.09.12
+Version:        1.1.0~dev
 Release:        1%{?dist}
 
 Summary:        A general purpose 3D CAD modeler
@@ -140,12 +140,8 @@ Development file for OndselSolver
      # Deal with cmake projects that tend to link excessively.
     LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
 
-#         -DCMAKE_INSTALL_PREFIX=%{_libdir}/%{name} \
 #         -DCMAKE_INSTALL_DATADIR=%{_datadir}/%{name} \
-#         -DCMAKE_INSTALL_DOCDIR=%{_docdir}/%{name} \
-#         -DCMAKE_INSTALL_INCLUDEDIR=%{_includedir} \
 #         -DCMAKE_INSTALL_DATAROOTDIR=%{_datadir} \
-#         -DRESOURCEDIR=%{_datadir}/%{name} \
 
     %cmake \
         -DCMAKE_INSTALL_PREFIX=%{_libdir}/%{name} \
@@ -219,28 +215,19 @@ Development file for OndselSolver
 
 %if %{with tests}
     mkdir -p %{buildroot}%tests_resultdir
-    if %ctest -E 'QuantitySpinBox_Tests_run' &> %{buildroot}%tests_resultdir/ctest.result ; then
-        echo "ctest OK"
-    else
-        echo "**** Failed ctest ****"
-        touch %{buildroot}%tests_resultdir/ctest.failed
-
-        # show only failed tests
-        if %ctest -VV --rerun-failed &> %{buildroot}%tests_resultdir/ctest.result; then
-            echo "Now OK"
-            rm %{buildroot}%tests_resultdir/ctest.failed
-        else
-            cat %{buildroot}%tests_resultdir/ctest.result
-        fi
-    fi
-
-    if xvfb-run %ctest -R 'QuantitySpinBox_Tests_run' &>> %{buildroot}%tests_resultdir/ctest.result ; then
+    if %ctest -E '^QuantitySpinBox_Tests_run$' &> %{buildroot}%tests_resultdir/ctest.result ; then
         echo "ctest OK"
     else
         echo "**** Failed ctest ****"
         touch %{buildroot}%tests_resultdir/ctest.failed
     fi
 
+    if xvfb-run \%ctest -R '^QuantitySpinBox_Tests_run$' &>> %{buildroot}%tests_resultdir/ctest_gui.result ; then
+        echo "ctest gui OK"
+    else
+        echo "**** Failed ctest gui ****"
+        touch %{buildroot}%tests_resultdir/ctest_gui.failed
+    fi
 %endif
 
     desktop-file-validate %{buildroot}%{_datadir}/applications/org.freecad.FreeCAD.desktop

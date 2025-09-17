@@ -315,6 +315,10 @@
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/build/rpm",
             "cacheVariables": {
+                "CMAKE_INSTALL_DATAROOTDIR": {
+                  "type": "PATH",
+                  "value": "/usr/share"
+                },
                 "CMAKE_C_FLAGS_RELEASE": {
                     "type": "STRING",
                     "value": "-DNDEBUG"
