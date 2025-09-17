@@ -135,7 +135,12 @@ DlgVersionMigrator::DlgVersionMigrator(MainWindow *mw) :
         tr("Share configuration between versions") + QStringLiteral("</a>");
 
     setWindowTitle(programNameString);
+#ifdef Q_OS_MACOS
+    // macOS does not show the window title on modals, so add the extra label
     ui->welcomeLabel->setText(welcomeString);
+#else
+    ui->welcomeLabel->hide();
+#endif
     ui->sizeLabel->setText(calculatingSizeString);
 
     connect(ui->copyButton, &QPushButton::clicked, this, &DlgVersionMigrator::migrate);
@@ -148,6 +153,7 @@ DlgVersionMigrator::DlgVersionMigrator(MainWindow *mw) :
     ui->menuButton->setMenu(menu);
     ui->menuButton->setPopupMode(QToolButton::InstantPopup);
     ui->menuButton->setStyleSheet(QStringLiteral("QToolButton::menu-indicator { image: none; width: 0px; }"));
+    ui->menuButton->setProperty("flat", true);
     connect(share, &QAction::triggered, this, &DlgVersionMigrator::share);
     connect(reset, &QAction::triggered, this, &DlgVersionMigrator::freshStart);
 }
