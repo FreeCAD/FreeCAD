@@ -101,7 +101,7 @@ void TaskPatternParameters::setupParameterUI(QWidget* widget)
         PartGui::PatternType::Linear : PartGui::PatternType::Polar;
 
     // Set first direction widget
-    auto* viewer = TransformedView->getViewer();
+    auto* viewer = getTopTransformedView()->getViewer();
     parametersWidget = new PartGui::PatternParametersWidget(type, viewer, widget);
 
     auto* placeholderLayout = new QVBoxLayout(ui->parametersWidgetPlaceholder);
@@ -526,6 +526,7 @@ TaskDlgLinearPatternParameters::TaskDlgLinearPatternParameters(
 }
 
 #include "moc_TaskPatternParameters.cpp"
+
 
 
 
