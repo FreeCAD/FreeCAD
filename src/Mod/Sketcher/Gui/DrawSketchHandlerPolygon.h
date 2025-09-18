@@ -200,7 +200,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("Polygon parameters"));
+        return QString(tr("Polygon Parameters"));
     }
 
     bool canGoToNextMode() override

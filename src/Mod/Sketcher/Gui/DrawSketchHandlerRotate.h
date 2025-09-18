@@ -209,7 +209,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(tr("Rotate parameters"));
+        return QString(tr("Rotate Parameters"));
     }
 
     void activated() override

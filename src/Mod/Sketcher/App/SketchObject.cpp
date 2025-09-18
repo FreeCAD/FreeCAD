@@ -2534,7 +2534,7 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
                 }
             }
         }
-        delConstraints(std::move(deleteme), DeleteOption::UpdateGeometry);
+        delConstraints(std::move(deleteme), DeleteOption::NoFlag);
         return;
     }
 
@@ -3496,7 +3496,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         addConstraint(std::move(newConstr));
     };
 
-    delConstraints(std::move(idsOfOldConstraints), DeleteOption::UpdateGeometry);
+    delConstraints(std::move(idsOfOldConstraints), DeleteOption::NoFlag);
 
     if (!isOriginalCurvePeriodic) {
         transferConstraints(GeoId, PointPos::start, newIds.front(), PointPos::start, true);

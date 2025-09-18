@@ -60,8 +60,6 @@ public:
     ~ViewProviderPart() override;
     bool doubleClicked() override;
 
-    void setGizmoContainer(Gui::GizmoContainer* gizmoContainer);
-
 protected:
     void applyColor(const Part::ShapeHistory& hist,
                     const std::vector<Base::Color>& colBase,
@@ -71,11 +69,6 @@ protected:
                        std::vector<App::Material>& colBool);
     void applyTransparency(float transparency, std::vector<Base::Color>& colors);
     void applyTransparency(float transparency, std::vector<App::Material>& colors);
-
-    void setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum) override;
-
-private:
-    Gui::GizmoContainer* gizmoContainer = nullptr;
 };
 
 } // namespace PartGui

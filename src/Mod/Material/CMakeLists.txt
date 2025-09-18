@@ -35,6 +35,7 @@ SET(MaterialLib_Files
     Resources/Materials/Standard/Metal/Aluminum/AlMg3F24.FCMat
     Resources/Materials/Standard/Metal/Aluminum/AlMgSi1F31.FCMat
     Resources/Materials/Standard/Metal/Aluminum/Aluminum-6061-T6.FCMat
+    Resources/Materials/Standard/Metal/Aluminum/Aluminum-7075-T6.FCMat
     Resources/Materials/Standard/Metal/Aluminum/Aluminum-Generic.FCMat
     Resources/Materials/Standard/Metal/Aluminum/AlZn4-5Mg1F35.FCMat
     Resources/Materials/Standard/Metal/Copper/Copper-Generic.FCMat
@@ -139,6 +140,7 @@ SET(MaterialLib_Files
     Resources/Materials/Standard/Thermoplast/PEEK-Generic.FCMat
     Resources/Materials/Standard/Thermoplast/PET-Generic.FCMat
     Resources/Materials/Standard/Thermoplast/PLA-Generic.FCMat
+    Resources/Materials/Standard/Thermoplast/PMMA-Generic.FCMat
     Resources/Materials/Standard/Thermoplast/POM-Homopolymer-Generic.FCMat
     Resources/Materials/Standard/Thermoplast/POM-Copolymer-Generic.FCMat
     Resources/Materials/Standard/Thermoplast/PP-Generic.FCMat
