@@ -406,6 +406,7 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/dogboneII.py
     Path/Base/Generator/drill.py
     Path/Base/Generator/helix.py
+    Path/Base/Generator/linking.py
     Path/Base/Generator/rotation.py
     Path/Base/Generator/tapping.py
     Path/Base/Generator/threadmilling.py
@@ -490,6 +491,7 @@ SET(Tests_SRCS
     CAMTests/TestCentroidPost.py
     CAMTests/TestGrblPost.py
     CAMTests/TestLinuxCNCPost.py
+    CAMTests/TestLinkingGenerator.py
     CAMTests/TestMach3Mach4Post.py
     CAMTests/TestPathAdaptive.py
     CAMTests/TestPathCore.py
