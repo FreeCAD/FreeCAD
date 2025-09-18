@@ -3771,6 +3771,51 @@ int Sketch::addSymmetricConstraint(int geoId1,
     return -1;
 }
 
+// Geom symmetry to point
+int Sketch::addSymmetricConstraint(int geoId1, int geoId2, int geoId3, PointPos pos3)
+{
+    /// TODO
+    return -1;
+}
+
+// Geom symmetry to line
+int Sketch::addSymmetricConstraint(int geoId1, int geoId2, int geoId3)
+{
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+    geoId3 = checkGeoId(geoId3);
+
+    GCS::Line& l = Lines[Geoms[geoId3].index];
+    auto g1 = Geoms[geoId1];
+    auto g2 = Geoms[geoId2];
+
+    if (g1.type != g2.type) {
+        return -1;
+    }
+
+    GCS::Point& p1 = Points[g1.startPointId];
+    GCS::Point& p2 = Points[g1.midPointId];
+    GCS::Point& p3 = Points[g1.endPointId];
+
+    GCS::Point& p4 = Points[g1.startPointId];
+    GCS::Point& p5 = Points[g1.midPointId];
+    GCS::Point& p6 = Points[g1.endPointId];
+
+    int tag;
+    tag = ++ConstraintsCounter;
+    GCSsys.addConstraintP2PSymmetric(p1, p4, l, tag);
+    tag = ++ConstraintsCounter;
+    GCSsys.addConstraintP2PSymmetric(p2, p5, l, tag);
+    tag = ++ConstraintsCounter;
+    GCSsys.addConstraintP2PSymmetric(p3, p6, l, tag);
+
+    if (g1.type == GeoType::Circle) {
+        tag = ++ConstraintsCounter;
+        GCSsys.addConstraintEqualRadius(Circles[geoId1], Circles[geoId2], tag);
+    }
+    return ConstraintsCounter;
+}
+
 int Sketch::addSnellsLawConstraint(int geoIdRay1,
                                    PointPos posRay1,
                                    int geoIdRay2,
