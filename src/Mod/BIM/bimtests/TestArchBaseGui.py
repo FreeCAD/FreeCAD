@@ -22,28 +22,50 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""Defines the base class for Arch module unit tests."""
-
 import unittest
 import FreeCAD
+import FreeCADGui
+from bimtests.TestArchBase import TestArchBase
 
-class TestArchBase(unittest.TestCase):
+class TestArchBaseGui(TestArchBase):
+    """
+    The base class for all Arch/BIM GUI unit tests.
+    It inherits from TestArchBase to handle document setup and adds
+    GUI-specific initialization by activating the BIM workbench.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        """
+        Ensure the GUI is available and activate the BIM workbench once
+        before any tests in the inheriting class are run.
+        """
+        if not FreeCAD.GuiUp:
+            raise unittest.SkipTest("Cannot run GUI tests in a CLI environment.")
+
+        # Activating the workbench ensures all GUI commands are loaded and ready.
+        FreeCADGui.activateWorkbench("BIMWorkbench")
 
     def setUp(self):
-        self.document = FreeCAD.newDocument(self.__class__.__name__)
+        """
+        Run the parent's setup to create the uniquely named document.
+        The workbench is already activated by setUpClass.
+        """
+        super().setUp()
 
-    def tearDown(self):
+    def pump_gui_events(self, timeout_ms=200):
+        """Run the Qt event loop briefly so queued GUI callbacks execute.
+
+        This helper starts a QEventLoop and quits it after `timeout_ms` milliseconds using
+        QTimer.singleShot. Any exception (e.g. missing Qt in the environment) is silently ignored so
+        tests can still run in pure-CLI environments where the GUI isn't available.
+        """
         try:
-            FreeCAD.closeDocument(self.document.Name)
-        except ReferenceError:
-            # The document was already deleted by a queued callback or other
-            # teardown activity; ignore it to not interrupt testing.
+            from PySide import QtCore
+            loop = QtCore.QEventLoop()
+            QtCore.QTimer.singleShot(int(timeout_ms), loop.quit)
+            loop.exec_()
+        except Exception:
+            # Best-effort: if Qt isn't present or event pumping fails, continue.
             pass
 
-    def printTestMessage(self, text, prepend_text="Test ", end="\n"):
-        """Write messages to the console including the line ending.
-
-        Messages will be prepended with "Test ", unless an empty string is
-        passed as the prepend_text argument
-        """
-        FreeCAD.Console.PrintMessage(prepend_text + text + end)
