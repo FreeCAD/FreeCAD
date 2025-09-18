@@ -1566,7 +1566,7 @@ double Adaptive2d::CalcCutArea(Clipper& clip,
             maxFi += 2 * std::numbers::pi;
         }
 
-        if (preventConventional && interPathLen >= RESOLUTION_FACTOR) {
+        if (preventConventional && interPathLen >= MIN_STEP_CLIPPER) {
             // detect conventional mode cut - we want only climb mode
             IntPoint midPoint(long(c2.X + toolRadiusScaled * cos(0.5 * (maxFi + minFi))),
                               long(c2.Y + toolRadiusScaled * sin(0.5 * (maxFi + minFi))));
@@ -1582,7 +1582,7 @@ double Adaptive2d::CalcCutArea(Clipper& clip,
 
         double scanDistance = 2.5 * toolRadiusScaled;
         // stepping through path discretized to stepDistance
-        double stepDistance = min(double(RESOLUTION_FACTOR), interPathLen / 24) + 1;
+        double stepDistance = min(double(MIN_STEP_CLIPPER), interPathLen / 24) + 1;
         const IntPoint* prevPt = &interPath->front();
         double distance = 0;
         for (size_t j = 1; j < ipc2_size; j++) {
@@ -1733,29 +1733,16 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths& stockPaths,
     //**********************************
 
     // keep the tolerance in workable range
-    if (tolerance < 0.01) {
-        tolerance = 0.01;
-    }
-    if (tolerance > 0.2) {
-        tolerance = 0.2;
-    }
+    tolerance = max(tolerance, 0.01);
+    tolerance = min(tolerance, 1.0);
 
-    scaleFactor = RESOLUTION_FACTOR / tolerance;
-    long maxScaleFactor = toolDiameter < 1.0 ? 10000 : 1000;
-
-    if (stepOverFactor * toolDiameter < 1.0) {
-        scaleFactor *= 1.0 / (stepOverFactor * toolDiameter);
-    }
-
-
-    if (scaleFactor > maxScaleFactor) {
-        scaleFactor = maxScaleFactor;
-    }
-    // scaleFactor = round(scaleFactor);
+    // 1/"tolerance" = number of min-size adaptive steps per stepover
+    scaleFactor = MIN_STEP_CLIPPER / tolerance / (stepOverFactor * toolDiameter);
 
     current_region = 0;
     cout << "Tool Diameter: " << toolDiameter << endl;
-    cout << "Accuracy: " << round(10000.0 / scaleFactor) / 10 << " um" << endl;
+    cout << "Min step size: " << round(MIN_STEP_CLIPPER / scaleFactor * 1000 * 10) / 10 << " um"
+         << endl;
     cout << flush;
 
     toolRadiusScaled = long(toolDiameter * scaleFactor / 2);
@@ -1904,8 +1891,8 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths& stockPaths,
 
     if (opType == OperationType::otProfilingInside || opType == OperationType::otProfilingOutside) {
         double offset = opType == OperationType::otProfilingInside
-            ? -2 * (helixRampRadiusScaled + toolRadiusScaled) - RESOLUTION_FACTOR
-            : 2 * (helixRampRadiusScaled + toolRadiusScaled) + RESOLUTION_FACTOR;
+            ? -2 * (helixRampRadiusScaled + toolRadiusScaled) - MIN_STEP_CLIPPER
+            : 2 * (helixRampRadiusScaled + toolRadiusScaled) + MIN_STEP_CLIPPER;
         for (const auto& current : inputPaths) {
             int nesting = getPathNestingLevel(current, inputPaths);
             if (nesting % 2 != 0
@@ -1980,7 +1967,7 @@ bool Adaptive2d::FindEntryPoint(TPaths& progressPaths,
     for (int iter = 0; iter < 10; iter++) {
         clipof.Clear();
         clipof.AddPaths(checkPaths, JoinType::jtSquare, EndType::etClosedPolygon);
-        double step = RESOLUTION_FACTOR;
+        double step = MIN_STEP_CLIPPER;
         double currentDelta = -1;
         clipof.Execute(incOffset, currentDelta);
         while (!incOffset.empty()) {
@@ -2161,7 +2148,7 @@ bool Adaptive2d::IsAllowedToCutTrough(const IntPoint& p1,
     else {
         Clipper clip;
         double distance = sqrt(DistanceSqrd(p1, p2));
-        double stepSize = min(0.5 * stepOverScaled, 8 * RESOLUTION_FACTOR);
+        double stepSize = min(0.5 * stepOverScaled, 8 * MIN_STEP_CLIPPER);
         if (distance < stepSize / 2) {  // not significant cut
             Perf_IsAllowedToCutTrough.Stop();
             return true;
@@ -2207,7 +2194,7 @@ bool Adaptive2d::ResolveLinkPath(const IntPoint& startPoint,
     double directDistance = sqrt(DistanceSqrd(startPoint, endPoint));
     Paths linkPaths;
 
-    double scanStep = 2 * RESOLUTION_FACTOR;
+    double scanStep = 2 * MIN_STEP_CLIPPER;
     if (scanStep > scaleFactor * 0.1) {
         scanStep = scaleFactor * 0.1;
     }
@@ -2384,8 +2371,8 @@ bool Adaptive2d::MakeLeadPath(bool leadIn,
     double pathLen = 0;
     checkPath.push_back(nextPoint);
     for (int i = 0; i < 10000; i++) {
-        if (IsAllowedToCutTrough(IntPoint(currentPoint.X + RESOLUTION_FACTOR * nextDir.X,
-                                          currentPoint.Y + RESOLUTION_FACTOR * nextDir.Y),
+        if (IsAllowedToCutTrough(IntPoint(currentPoint.X + MIN_STEP_CLIPPER * nextDir.X,
+                                          currentPoint.Y + MIN_STEP_CLIPPER * nextDir.Y),
                                  nextPoint,
                                  clearedArea,
                                  toolBoundPaths)) {
@@ -2790,14 +2777,14 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             Perf_ProcessPolyNode.Stop();
             return;
         }
-        fout << "Helix entry " << entryPoint << endl;
+        fout << "Helix entry " << entryPoint << "\n";
     }
 
     EngagePoint engage(engageBounds);  // engage point stepping instance
 
     if (outsideEntry) {
-        engage.moveToClosestPoint(toolPos, 2 * RESOLUTION_FACTOR);
-        engage.moveForward(RESOLUTION_FACTOR);
+        engage.moveToClosestPoint(toolPos, 2 * MIN_STEP_CLIPPER);
+        engage.moveForward(MIN_STEP_CLIPPER);
         toolPos = engage.getCurrentPoint();
         toolDir = engage.getCurrentDir();
         entryPoint = toolPos;
@@ -2811,7 +2798,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
     output.HelixCenterPoint.first = double(entryPoint.X) / scaleFactor;
     output.HelixCenterPoint.second = double(entryPoint.Y) / scaleFactor;
 
-    long stepScaled = long(RESOLUTION_FACTOR);
+    long stepScaled = long(MIN_STEP_CLIPPER);
     IntPoint engagePoint;
 
     IntPoint newToolPos;
