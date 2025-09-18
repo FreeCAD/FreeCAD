@@ -543,31 +543,25 @@ class ReportTaskPanel:
         self.editor_box = self.editor_widget
         self.editor_layout = QtWidgets.QVBoxLayout(self.editor_box)
 
-        # Description for edited statement (label and edit on same row)
-        self.description_label = QtWidgets.QLabel(translate("Arch", "Description:"))
+        # --- Form Layout for Aligned Inputs ---
+        self.form_layout = QtWidgets.QFormLayout()
+        self.form_layout.setContentsMargins(0, 0, 0, 0) # Use the main layout's margins
+
+        # Description Row
         self.description_edit = QtWidgets.QLineEdit()
-        desc_row = QtWidgets.QHBoxLayout()
-        desc_row.addWidget(self.description_label)
-        desc_row.addWidget(self.description_edit)
-        self.editor_layout.addLayout(desc_row)
+        self.form_layout.addRow(translate("Arch", "Description:"), self.description_edit)
 
-        # Use Description as Section Header checkbox
-        self.chk_use_description_as_header = QtWidgets.QCheckBox(translate("Arch", "Use Description as Section Header"))
-        self.chk_use_description_as_header.setToolTip(translate("Arch", "When checked, the statement's description will be written as a merged header row before its results."))
-        self.editor_layout.addWidget(self.chk_use_description_as_header)
-
-        # Preset controls for single queries
-        self.query_preset_layout = QtWidgets.QHBoxLayout()
+        # Preset Controls Row (widgets are placed in a QHBoxLayout for the second column)
+        self.preset_controls_layout = QtWidgets.QHBoxLayout()
         self.query_preset_dropdown = NoScrollHijackComboBox()
         self.query_preset_dropdown.setToolTip(translate("Arch", "Load a saved query preset into the editor."))
-        self.btn_save_query_preset = QtWidgets.QPushButton(translate("Arch", "Save as Preset..."))
+        self.btn_save_query_preset = QtWidgets.QPushButton(translate("Arch", "Save..."))
         self.btn_save_query_preset.setToolTip(translate("Arch", "Save the current query as a new preset."))
-        self.btn_save_query_preset.setIcon(FreeCADGui.getIcon(":/icons/document-save.svg"))
-        self.query_preset_layout.addWidget(self.query_preset_dropdown)
-        self.query_preset_layout.addWidget(self.btn_save_query_preset)
-        preset_label = QtWidgets.QLabel(translate("Arch", "Query Presets:"))
-        self.editor_layout.addWidget(preset_label)
-        self.editor_layout.addLayout(self.query_preset_layout)
+        self.preset_controls_layout.addWidget(self.query_preset_dropdown)
+        self.preset_controls_layout.addWidget(self.btn_save_query_preset)
+        self.form_layout.addRow(translate("Arch", "Query Presets:"), self.preset_controls_layout)
+
+        self.editor_layout.addLayout(self.form_layout)
 
         # SQL Query editor
         self.sql_label = QtWidgets.QLabel(translate("Arch", "SQL Query:"))
