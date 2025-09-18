@@ -621,10 +621,7 @@ def Execute(op, obj):
             "orderCutsByRegion": obj.OrderCutsByRegion,
         }
 
-        import random
-
         insideInputStateObject = {
-            "TODO TESTING": random.random(),
             "tool": op.tool.Diameter.Value,
             "tolerance": obj.Tolerance,
             "geometry": [
