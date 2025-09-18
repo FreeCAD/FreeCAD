@@ -1871,4 +1871,3 @@ def getPlacementFromFace(face, rotated=False):
     """
     utils.use_instead("DraftGeomUtils.placement_from_face")
     return DraftGeomUtils.placement_from_face(face, rotated=rotated)
-    
