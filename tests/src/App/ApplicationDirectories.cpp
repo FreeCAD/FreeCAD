@@ -52,6 +52,11 @@ public:
     {
         return extractVersionFromConfigMap(config);
     }
+
+    static std::filesystem::path wrapSanitizePath(const std::string& pathAsString)
+    {
+        return sanitizePath(pathAsString);
+    }
 };
 
 class ApplicationDirectoriesTest: public ::testing::Test
@@ -745,6 +750,25 @@ TEST_F(ApplicationDirectoriesTest, extractVersionNegativeNumbersPassThrough)
     auto [maj, min] = appDirs->wrapExtractVersionFromConfigMap(m);
     EXPECT_EQ(maj, -2);
     EXPECT_EQ(min, -7);
+}
+
+
+TEST_F(ApplicationDirectoriesTest, sanitizeRemovesNullCharacterAtEnd)
+{
+    std::string input = std::string("valid_path") + '\0' + "junk_after";
+    std::filesystem::path result = ApplicationDirectoriesTestClass::wrapSanitizePath(input);
+
+    EXPECT_EQ(result.string(), "valid_path");
+    EXPECT_EQ(result.string().find('\0'), std::string::npos);
+}
+
+TEST_F(ApplicationDirectoriesTest, sanitizeReturnsUnchangedIfNoNullCharacter)
+{
+    std::string input = "clean_path/without_nulls";
+    std::filesystem::path result = ApplicationDirectoriesTestClass::wrapSanitizePath(input);
+
+    EXPECT_EQ(result.string(), input);
+    EXPECT_EQ(result.string().find('\0'), std::string::npos);
 }
 
 /* NOLINTEND(
