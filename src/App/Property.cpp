@@ -247,10 +247,22 @@ void Property::destroy(Property* p)
     }
 }
 
+bool Property::enableNotify(bool on)
+{
+    bool isNotify = isNotifyEnabled();
+    on ? StatusBits.reset(DisableNotify) : StatusBits.set(DisableNotify);
+    return isNotify;
+}
+
+bool Property::isNotifyEnabled() const
+{
+    return !StatusBits.test(DisableNotify);
+}
+
 void Property::touch()
 {
     PropertyCleaner guard(this);
-    if (father) {
+    if (father && isNotifyEnabled()) {
         father->onEarlyChange(this);
         father->onChanged(this);
     }
@@ -266,7 +278,9 @@ void Property::hasSetValue()
 {
     PropertyCleaner guard(this);
     if (father) {
-        father->onChanged(this);
+        if (isNotifyEnabled()) {
+            father->onChanged(this);
+        }
         if (!testStatus(Busy)) {
             Base::BitsetLocker<decltype(StatusBits)> guard(StatusBits, Busy);
             signalChanged(*this);
