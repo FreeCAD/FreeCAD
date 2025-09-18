@@ -23,11 +23,13 @@
 import FreeCAD
 import Path
 from Path.Main.Sanity import ReportGenerator, Sanity
+from Path.Main.Sanity.Squawk import Squawk, SquawkType
 from Path.Main.Sanity.ImageBuilder import (
     DummyImageBuilder,
     ImageBuilderFactory,
     ImageBuilder,
 )
+from pathlib import Path
 import os
 import Path.Post.Command as PathPost
 from Path.Post.Processor import PostProcessor
@@ -225,6 +227,22 @@ class TestCAMSanity(PathTestBase):
         self.assertIn("stockImage", data)
         self.assertIn("squawkData", data)
 
+    def test115(self):
+        """Test squawk class data"""
+
+        operator = "CAMSanity"
+        note = "Test Message"
+        squawk_type = SquawkType.TIP
+
+        data = Squawk(
+            operator=operator,
+            note=note,
+            squawk_type=squawk_type,
+        )
+        self.assertIsNotNone("date", data.date)
+        self.assertIsNotNone(data.icon)
+        self.assertTrue(Path(data.icon).is_file)
+
     def test120(self):
         """Test squawk data"""
         with patch(
@@ -239,11 +257,11 @@ class TestCAMSanity(PathTestBase):
             squawkType="TIP",
         )
         self.assertIsInstance(data, dict)
-        self.assertIn("Date", data)
-        self.assertIn("Operator", data)
-        self.assertIn("Note", data)
+        self.assertIn("date", data)
+        self.assertIn("operator", data)
+        self.assertIn("note", data)
         self.assertIn("squawkType", data)
-        self.assertIn("squawkIcon", data)
+        self.assertIn("icon", data)
 
     def test130(self):
         """Test tool data"""
