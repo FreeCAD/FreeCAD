@@ -197,15 +197,12 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     }
 
     if (change == ItemSelectedHasChanged && scene()) {
-        bool thisViewIsSelected = value.toBool();
-        bool anyChildSelected = false;
-        if (!thisViewIsSelected) { // Only check children if this view is becoming unselected
-            anyChildSelected =
-                std::ranges::any_of(childItems(), [](QGraphicsItem* child) {
-                    return child->isSelected();
-                });
-        }
-        if(thisViewIsSelected || anyChildSelected || isSelected()) {
+        std::vector<Gui::SelectionObject> currentSelection = Gui::Selection().getSelectionEx();
+        bool isViewObjectSelected = Gui::Selection().isSelected(getViewObject());
+        bool hasSelectedSubElements =
+            !DrawGuiUtil::getSubsForSelectedObject(currentSelection, getViewObject()).empty();
+
+        if (isViewObjectSelected || hasSelectedSubElements) {
             m_colCurrent = getSelectColor();
             m_border->show();
             m_label->show();
