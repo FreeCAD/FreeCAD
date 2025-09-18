@@ -631,7 +631,7 @@ private:
             auto* planeViewProvider = Gui::Application::Instance->getViewProvider<Gui::ViewProviderPlane>(plane);
 
             // skip updating planes from coordinate systems
-            if (!planeViewProvider->getRole().empty()) {
+            if (!planeViewProvider || !planeViewProvider->getRole().empty()) {
                 continue;
             }
 
@@ -648,6 +648,10 @@ private:
         auto restorePlaneVisibility = [planes]() {
             for (auto& plane : planes) {
                 auto* planeViewProvider = Gui::Application::Instance->getViewProvider<Gui::ViewProviderPlane>(plane);
+                if (!planeViewProvider) {
+                    continue;
+                }
+
                 planeViewProvider->resetTemporarySize();
                 planeViewProvider->setLabelVisibility(false);
             }
