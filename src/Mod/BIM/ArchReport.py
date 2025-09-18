@@ -3,7 +3,8 @@
 # Copyright (c) 2025 The FreeCAD Project
 
 import FreeCAD
-
+import os
+import json
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtWidgets, QtGui
@@ -27,6 +28,75 @@ if FreeCAD.GuiUp:
     ICON_ADD = FreeCADGui.getIcon(":/icons/list-add.svg")
     ICON_REMOVE = FreeCADGui.getIcon(":/icons/list-remove.svg")
     ICON_DUPLICATE = FreeCADGui.getIcon(":/icons/copy.svg")
+
+
+def _get_preset_paths(preset_type):
+    """Gets the file paths for bundled and user presets."""
+    if preset_type == 'query':
+        filename = "query_presets.json"
+    elif preset_type == 'template':
+        filename = "report_templates.json"
+    else:
+        return None, None
+
+    resource_path = os.path.join(FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "ArchReport", filename)
+    user_path = os.path.join(FreeCAD.getUserAppDataDir(), "BIM", "ArchReport", f"user_{filename}")
+    return resource_path, user_path
+
+def _get_presets(preset_type):
+    """Loads bundled and user presets, with user presets overriding bundled ones."""
+    resource_path, user_path = _get_preset_paths(preset_type)
+    presets = {}
+
+    # 1. Load bundled presets first
+    if resource_path and os.path.exists(resource_path):
+        try:
+            with open(resource_path, 'r', encoding='utf8') as f:
+                presets.update(json.load(f))
+        except Exception as e:
+            FreeCAD.Console.PrintError(f"BIM Report: Could not load bundled presets from {resource_path}: {e}\n")
+
+    # 2. Load user presets, which will override any bundled presets with the same name
+    if user_path and os.path.exists(user_path):
+        try:
+            with open(user_path, 'r', encoding='utf8') as f:
+                presets.update(json.load(f))
+        except Exception as e:
+            FreeCAD.Console.PrintError(f"BIM Report: Could not load user presets from {user_path}: {e}\n")
+
+    return presets
+
+def _save_preset(preset_type, name, data):
+    """Saves a single preset or template to the user's preset file."""
+    _, user_path = _get_preset_paths(preset_type)
+    if not user_path:
+        return
+
+    user_dir = os.path.dirname(user_path)
+    os.makedirs(user_dir, exist_ok=True)
+
+    # Load existing user presets to avoid overwriting them
+    user_presets = {}
+    if os.path.exists(user_path):
+        try:
+            with open(user_path, 'r', encoding='utf8') as f:
+                # Handle case where file might be empty
+                content = f.read()
+                if content:
+                    user_presets = json.loads(content)
+        except Exception as e:
+            FreeCAD.Console.PrintError(f"BIM Report: Could not read user presets file at {user_path}: {e}\n")
+
+    # Add or update the new preset
+    user_presets[name] = data
+
+    # Write the entire collection back to the file
+    try:
+        with open(user_path, 'w', encoding='utf8') as f:
+            json.dump(user_presets, f, indent=2)
+        FreeCAD.Console.PrintMessage(f"BIM Report: Preset '{name}' saved successfully.\n")
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"BIM Report: Could not save preset to {user_path}: {e}\n")
 
 
 class ReportStatement:
@@ -438,6 +508,19 @@ class ReportTaskPanel:
         self.table_statements.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
         self.statements_overview_layout.addWidget(self.table_statements)
 
+        # Template controls for full reports
+        self.template_layout = QtWidgets.QHBoxLayout()
+        self.template_dropdown = NoScrollHijackComboBox()
+        self.template_dropdown.setToolTip(translate("Arch", "Load a full report template, replacing all current statements."))
+        self.btn_save_template = QtWidgets.QPushButton(translate("Arch", "Save as Template..."))
+        self.btn_save_template.setToolTip(translate("Arch", "Save the current set of statements as a new report template."))
+        self.btn_save_template.setIcon(FreeCADGui.getIcon(":/icons/document-save.svg"))
+        self.template_layout.addWidget(self.template_dropdown)
+        self.template_layout.addWidget(self.btn_save_template)
+        template_label = QtWidgets.QLabel(translate("Arch", "Report Templates:"))
+        self.statements_overview_layout.addWidget(template_label)
+        self.statements_overview_layout.addLayout(self.template_layout)
+
         # Statement Management Buttons
         self.statement_buttons_layout = QtWidgets.QHBoxLayout()
         self.btn_add_statement = QtWidgets.QPushButton(ICON_ADD, translate("Arch", "Add Statement"))
@@ -472,6 +555,19 @@ class ReportTaskPanel:
         self.chk_use_description_as_header = QtWidgets.QCheckBox(translate("Arch", "Use Description as Section Header"))
         self.chk_use_description_as_header.setToolTip(translate("Arch", "When checked, the statement's description will be written as a merged header row before its results."))
         self.editor_layout.addWidget(self.chk_use_description_as_header)
+
+        # Preset controls for single queries
+        self.query_preset_layout = QtWidgets.QHBoxLayout()
+        self.query_preset_dropdown = NoScrollHijackComboBox()
+        self.query_preset_dropdown.setToolTip(translate("Arch", "Load a saved query preset into the editor."))
+        self.btn_save_query_preset = QtWidgets.QPushButton(translate("Arch", "Save as Preset..."))
+        self.btn_save_query_preset.setToolTip(translate("Arch", "Save the current query as a new preset."))
+        self.btn_save_query_preset.setIcon(FreeCADGui.getIcon(":/icons/document-save.svg"))
+        self.query_preset_layout.addWidget(self.query_preset_dropdown)
+        self.query_preset_layout.addWidget(self.btn_save_query_preset)
+        preset_label = QtWidgets.QLabel(translate("Arch", "Query Presets:"))
+        self.editor_layout.addWidget(preset_label)
+        self.editor_layout.addLayout(self.query_preset_layout)
 
         # SQL Query editor
         self.sql_label = QtWidgets.QLabel(translate("Arch", "SQL Query:"))
@@ -510,6 +606,8 @@ class ReportTaskPanel:
         self.btn_remove_statement.clicked.connect(self._remove_selected_statement)
         self.btn_duplicate_statement.clicked.connect(self._duplicate_selected_statement)
         self.table_statements.itemSelectionChanged.connect(self._on_table_selection_changed)
+        self.template_dropdown.activated.connect(self._on_load_report_template)
+        self.btn_save_template.clicked.connect(self._on_save_report_template)
         # Keep table edits in sync with the runtime statements
         self.table_statements.itemChanged.connect(self._on_table_item_changed)
         self.description_edit.textChanged.connect(self._on_editor_description_changed)
@@ -518,6 +616,8 @@ class ReportTaskPanel:
         self.chk_include_column_names.stateChanged.connect(self._on_editor_checkbox_changed)
         self.chk_add_empty_row_after.stateChanged.connect(self._on_editor_checkbox_changed)
         self.chk_print_results_in_bold.stateChanged.connect(self._on_editor_checkbox_changed)
+        self.query_preset_dropdown.activated.connect(self._on_load_query_preset)
+        self.btn_save_query_preset.clicked.connect(self._on_save_query_preset)
 
         # Validation Timer for live SQL preview
         # Timer doesn't need a specific QWidget parent here; use no parent.
@@ -526,11 +626,22 @@ class ReportTaskPanel:
         self.validation_timer.timeout.connect(self._run_live_validation_for_editor)
 
         # Initial UI setup
+        self._load_and_populate_presets()
         self._populate_table_from_statements()
         self._update_editor_visibility(False)  # Start with editor collapsed/hidden
         # Do not auto-select the first statement; leave editor collapsed until user selects
 
+    def _load_and_populate_presets(self):
+        """Loads all presets from disk and populates the UI dropdowns."""
+        self.query_presets = _get_presets('query')
+        self.query_preset_dropdown.clear()
+        self.query_preset_dropdown.addItem(translate("Arch", "--- Select a Query Preset ---"))
+        self.query_preset_dropdown.addItems(sorted(self.query_presets.keys()))
 
+        self.report_templates = _get_presets('template')
+        self.template_dropdown.clear()
+        self.template_dropdown.addItem(translate("Arch", "--- Load a Report Template ---"))
+        self.template_dropdown.addItems(sorted(self.report_templates.keys()))
 
     # --- Statement Management (Buttons and Table Interaction) ---
     def _populate_table_from_statements(self):
@@ -698,6 +809,78 @@ class ReportTaskPanel:
         self.validation_timer.start(500) # (Re)start timer for live validation
         self._set_dirty(True)
 
+    def _on_load_query_preset(self, index):
+        """Handles the selection of a query preset from the dropdown."""
+        if index == 0: # Ignore the placeholder item
+            return
+
+        preset_name = self.query_preset_dropdown.itemText(index)
+
+        # Confirm before overwriting existing text
+        if self.sql_query_edit.toPlainText().strip():
+            reply = QtWidgets.QMessageBox.question(None, translate("Arch", "Overwrite Query?"),
+                                                   translate("Arch", "Loading a preset will overwrite the current text in the query editor. Continue?"),
+                                                   QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
+            if reply == QtWidgets.QMessageBox.No:
+                self.query_preset_dropdown.setCurrentIndex(0) # Reset dropdown
+                return
+
+        preset_data = self.query_presets.get(preset_name)
+        if preset_data and 'query' in preset_data:
+            self.sql_query_edit.setPlainText(preset_data['query'])
+
+        self.query_preset_dropdown.setCurrentIndex(0) # Reset dropdown to act as a one-shot button
+
+    def _on_save_query_preset(self):
+        """Saves the current query text as a new user preset."""
+        current_query = self.sql_query_edit.toPlainText().strip()
+        if not current_query:
+            QtWidgets.QMessageBox.warning(None, translate("Arch", "Empty Query"), translate("Arch", "Cannot save an empty query as a preset."))
+            return
+
+        preset_name, ok = QtWidgets.QInputDialog.getText(None, translate("Arch", "Save Query Preset"), translate("Arch", "Preset Name:"))
+        if ok and preset_name:
+            preset_data = {"description": "User-defined preset.", "query": current_query}
+            _save_preset('query', preset_name, preset_data)
+            self._load_and_populate_presets() # Refresh the dropdown with the new preset
+
+    def _on_load_report_template(self, index):
+        """Handles the selection of a full report template from the dropdown."""
+        if index == 0:
+            return
+
+        template_name = self.template_dropdown.itemText(index)
+
+        if self.obj.Proxy.live_statements:
+            reply = QtWidgets.QMessageBox.question(None, translate("Arch", "Overwrite Report?"),
+                                                   translate("Arch", "Loading a template will replace all current statements in this report. Continue?"),
+                                                   QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
+            if reply == QtWidgets.QMessageBox.No:
+                self.template_dropdown.setCurrentIndex(0)
+                return
+
+        template_data = self.report_templates.get(template_name)
+        if template_data and 'statements' in template_data:
+            # Rebuild the live list from the template data
+            self.obj.Proxy.live_statements = []
+            for s_data in template_data['statements']:
+                statement = ReportStatement()
+                statement.loads(s_data)
+                self.obj.Proxy.live_statements.append(statement)
+
+            self._populate_table_from_statements()
+            self._update_editor_visibility(False)
+            self._set_dirty(True)
+
+        self.template_dropdown.setCurrentIndex(0)
+
+    def _on_save_report_template(self):
+        """Saves the current set of statements as a new report template."""
+        template_name, ok = QtWidgets.QInputDialog.getText(None, translate("Arch", "Save Report Template"), translate("Arch", "Template Name:"))
+        if ok and template_name:
+            template_data = {"description": "User-defined report template.", "statements": [s.dumps() for s in self.obj.Proxy.live_statements]}
+            _save_preset('template', template_name, template_data)
+            self._load_and_populate_presets() # Refresh the template dropdown
 
     def _run_live_validation_for_editor(self):
         # Validate the query currently in the editor's text area
@@ -818,3 +1001,21 @@ class ReportTaskPanel:
             FreeCADGui.Control.closeDialog()
         except Exception:
             pass
+
+if FreeCAD.GuiUp:
+    class NoScrollHijackComboBox(QtWidgets.QComboBox):
+        """
+        A custom QComboBox that only processes wheel events when its popup view is visible.
+        This prevents it from "hijacking" the scroll wheel from a parent QScrollArea.
+        """
+        def wheelEvent(self, event):
+            if self.view().isVisible():
+                # If the widget has focus, perform the default scrolling action.
+                super().wheelEvent(event)
+            else:
+                # If the popup is not visible, ignore the event. This allows
+                # the event to propagate to the parent widget (the scroll area).
+                event.ignore()
+else:
+    # In headless mode, we don't need the GUI classes.
+    pass

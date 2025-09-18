@@ -100,6 +100,8 @@ SET(Arch_presets
     Presets/ifc_contexts_IFC2X3.json
     Presets/ifc_contexts_IFC4.json
     Presets/properties_conversion.csv
+	Presets/ArchReport/query_presets.json
+	Presets/ArchReport/report_templates.json
 )
 
 SET(bimcommands_SRCS
