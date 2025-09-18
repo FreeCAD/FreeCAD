@@ -3153,8 +3153,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             prevDistTrend = distanceTrend;
             prevDistFromStart = distFromStart;
 
-            if (area > 0.5 * MIN_CUT_AREA_FACTOR * optimalCutAreaPD
-                    * RESOLUTION_FACTOR) {  // cut is ok - record it
+            if (area > 0.5 * MIN_CUT_AREA_FACTOR * optimalCutAreaPD) {  // cut is ok - record it
                 fout << "\tFinal cut acceptance" << endl;
                 noCutDistance = 0;
                 if (toClearPath.empty()) {
@@ -3220,7 +3219,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             cleared.ExpandCleared(toClearPath);
             toClearPath.clear();
         }
-        if (cumulativeCutArea > MIN_CUT_AREA_FACTOR * optimalCutAreaPD * RESOLUTION_FACTOR) {
+        if (cumulativeCutArea > MIN_CUT_AREA_FACTOR * optimalCutAreaPD) {
             Path cleaned;
             CleanPath(passToolPath, cleaned, CLEAN_PATH_TOLERANCE);
             total_output_points += long(cleaned.size());
@@ -3250,7 +3249,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                     this,
                     cleared,
                     moveDistance,
-                    ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * RESOLUTION_FACTOR,
+                    ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD,
                     4 * referenceCutArea * stepOverFactor
                 )) {
                 // check if there are any uncleared area left
@@ -3288,7 +3287,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                         this,
                         cleared,
                         moveDistance,
-                        ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * RESOLUTION_FACTOR,
+                        ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD,
                         4 * referenceCutArea * stepOverFactor
                     )) {
                     break;

@@ -208,9 +208,9 @@ private:  // constants for fine tuning
     const int DIRECTION_SMOOTHING_BUFLEN = 3;  // gyro points - used for angle smoothing
 
 
-    const double MIN_CUT_AREA_FACTOR = 0.1;  // used for filtering out of insignificant cuts (should
-                                             // be < ENGAGE_AREA_THR_FACTOR)
-    const double ENGAGE_AREA_THR_FACTOR = 0.5;       // influences minimal engage area
+    const double MIN_CUT_AREA_FACTOR = 0.1
+        * 16;  // used for filtering out of insignificant cuts (should be < ENGAGE_AREA_THR_FACTOR)
+    const double ENGAGE_AREA_THR_FACTOR = 0.5 * 16;  // influences minimal engage area
     const double ENGAGE_SCAN_DISTANCE_FACTOR = 0.2;  // influences the engage scan/stepping distance
 
     const double CLEAN_PATH_TOLERANCE = 1.41;            // should be >1
