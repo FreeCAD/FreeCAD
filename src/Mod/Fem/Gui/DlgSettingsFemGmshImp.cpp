@@ -83,15 +83,10 @@ void DlgSettingsFemGmshImp::changeEvent(QEvent* e)
     }
 }
 
-void DlgSettingsFemGmshImp::onfileNameSelected(QString FileName)
+void DlgSettingsFemGmshImp::onfileNameSelected(const QString& fileName)
 {
-    if (!FileName.isEmpty() && QStandardPaths::findExecutable(FileName).isEmpty()) {
-        QMessageBox::critical(
-            this,
-            tr("Not an executable binary"),
-            tr("The specified file \n'%1'\n does not exist or is not executable.\n"
-               "Specify another file.")
-                .arg(FileName));
+    if (!fileName.isEmpty() && QStandardPaths::findExecutable(fileName).isEmpty()) {
+        QMessageBox::critical(this, tr("Gmsh"), tr("Executable '%1' not found").arg(fileName));
     }
 }
 

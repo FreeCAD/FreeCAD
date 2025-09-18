@@ -86,7 +86,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Gmsh binary path</string>
+           <string>Gmsh path</string>
           </property>
          </widget>
         </item>
