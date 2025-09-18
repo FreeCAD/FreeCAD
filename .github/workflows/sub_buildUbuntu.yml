@@ -173,7 +173,8 @@ jobs:
         uses: ./.github/workflows/actions/runPythonTests
         with:
           testDescription: "GUI tests on build dir"
-          testCommand: xvfb-run ${{ env.builddir }}/bin/FreeCAD -t 0
+          # Use Python wrapper to run only GUI-registered tests with the built FreeCAD executable
+          testCommand: xvfb-run python3 ./.github/scripts/run_gui_tests.py "${{ env.builddir }}"
           logFile: ${{ env.logdir }}TestGUIBuild.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
 
@@ -207,7 +208,8 @@ jobs:
         uses: ./.github/workflows/actions/runPythonTests
         with:
           testDescription: "GUI tests on install"
-          testCommand: xvfb-run FreeCAD -t 0
+          # Use Python wrapper to run only GUI-registered tests using the installed FreeCAD
+          testCommand: xvfb-run python3 ./.github/scripts/run_gui_tests.py "FreeCAD"
           logFile: ${{ env.logdir }}TestGUIInstall.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
 
