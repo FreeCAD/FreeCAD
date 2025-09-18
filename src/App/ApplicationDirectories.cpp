@@ -286,7 +286,7 @@ std::filesystem::path ApplicationDirectories::sanitizePath(const std::string& pa
 void ApplicationDirectories::configureResourceDirectory(const std::map<std::string,std::string>& mConfig) {
 #ifdef RESOURCEDIR
     // #6892: Conda may inject null characters
-    fs::path path = sanitizePath (RESOURCEDIR);
+    fs::path path = sanitizePath(RESOURCEDIR);
     if (path.is_absolute()) {
         _resource = path;
     } else {
@@ -300,7 +300,7 @@ void ApplicationDirectories::configureResourceDirectory(const std::map<std::stri
 void ApplicationDirectories::configureLibraryDirectory(const std::map<std::string,std::string>& mConfig) {
 #ifdef LIBRARYDIR
     // #6892: Conda may inject null characters
-    fs::path path = sanitizePath (LIBRARYDIR);
+    fs::path path = sanitizePath(LIBRARYDIR);
     if (path.is_absolute()) {
         _library = path;
     } else {
@@ -316,7 +316,7 @@ void ApplicationDirectories::configureHelpDirectory(const std::map<std::string,s
 {
 #ifdef DOCDIR
     // #6892: Conda may inject null characters
-    fs::path path = sanitizePath (DOCDIR);
+    fs::path path = sanitizePath(DOCDIR);
     if (path.is_absolute()) {
         _help = path;
     } else {
