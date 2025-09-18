@@ -90,7 +90,7 @@ public:
         : Command("Std_QuickMeasure")
     {
         sGroup = "Measure";
-        sMenuText = QT_TR_NOOP("&Quick measure");
+        sMenuText = QT_TR_NOOP("&Quick Measure");
         sToolTipText = QT_TR_NOOP("Toggle quick measure");
         sWhatsThis = "Std_QuickMeasure";
         sStatusTip = QT_TR_NOOP("Toggle quick measure");
