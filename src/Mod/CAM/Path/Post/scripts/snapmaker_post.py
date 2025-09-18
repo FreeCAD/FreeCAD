@@ -320,6 +320,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         self.values["SPINDLE_WAIT"] = 4.0
         self.values["TOOL_CHANGE"] = "M76"  # handle tool change by inserting an HMI pause
         self.values["TRANSLATE_DRILL_CYCLES"] = True  # drill cycle gcode must be translated
+        self.values["TRANSLATE_ARC_CYCLES"] = True  # arc cycle gcode must be translated
         self.values["USE_TLO"] = False  # G43 is not handled.
 
         # snapmaker values
@@ -339,6 +340,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
         self.argument_defaults["tlo"] = False
         self.argument_defaults["translate-drill"] = True
+        self.argument_defaults["translate-arc"] = True
 
         # snapmaker arguments
         self.argument_defaults["thumbnail"] = True
