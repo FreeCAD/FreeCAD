@@ -912,8 +912,6 @@ std::vector< App::DocumentObject* > ViewProvider::claimChildren3D() const
 }
 
 bool ViewProvider::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
-    if(!isSelectable())
-        return false;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector) {
         if(ext->extensionGetElementPicked(pp,subname))
@@ -1080,3 +1078,4 @@ void ViewProvider::setLinkVisible(bool visible) {
     if(ext)
         ext->setLinkVisible(visible);
 }
+
