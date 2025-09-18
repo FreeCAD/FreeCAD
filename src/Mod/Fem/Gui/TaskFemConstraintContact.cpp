@@ -215,9 +215,16 @@ void TaskFemConstraintContact::addToSelectionSlave()
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it.getSubNames();
-        App::DocumentObject* obj = it.getObject();
 
+        App::DocumentObject* obj = it.getObject();
+        if (obj->getDocument() != pcConstraint->getDocument()) {
+            QMessageBox::warning(this,
+                                 tr("Selection error"),
+                                 tr("External object selection is not supported"));
+            return;
+        }
+
+        const std::vector<std::string>& subNames = it.getSubNames();
         if (subNames.size() != 1) {
             QMessageBox::warning(this,
                                  tr("Selection error"),
@@ -276,9 +283,9 @@ void TaskFemConstraintContact::removeFromSelectionSlave()
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
+
         const std::vector<std::string>& subNames = it.getSubNames();
         const App::DocumentObject* obj = it.getObject();
-
         for (const auto& subName : subNames) {  // for every selected sub element
             for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
@@ -343,8 +350,15 @@ void TaskFemConstraintContact::addToSelectionMaster()
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it.getSubNames();
         App::DocumentObject* obj = it.getObject();
+        if (obj->getDocument() != pcConstraint->getDocument()) {
+            QMessageBox::warning(this,
+                                 tr("Selection error"),
+                                 tr("External object selection is not supported"));
+            return;
+        }
+
+        const std::vector<std::string>& subNames = it.getSubNames();
         if (subNames.size() != 1) {
             QMessageBox::warning(this,
                                  tr("Selection error"),

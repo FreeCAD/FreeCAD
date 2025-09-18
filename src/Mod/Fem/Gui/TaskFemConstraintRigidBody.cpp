@@ -279,15 +279,21 @@ void TaskFemConstraintRigidBody::addToSelection()
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end();
-         ++it) {  // for every selected object
-        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
+    for (auto& it : selection) {  // for every selected object
+        if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        std::vector<std::string> subNames = it->getSubNames();
-        App::DocumentObject* obj =
-            ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
+
+        App::DocumentObject* obj = it.getObject();
+        if (obj->getDocument() != pcConstraint->getDocument()) {
+            QMessageBox::warning(this,
+                                 tr("Selection error"),
+                                 tr("External object selection is not supported"));
+            return;
+        }
+
+        const std::vector<std::string>& subNames = it.getSubNames();
         for (size_t subIt = 0; subIt < (subNames.size());
              ++subIt) {  // for every selected sub element
             bool addMe = true;

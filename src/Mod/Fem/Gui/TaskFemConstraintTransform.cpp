@@ -323,8 +323,16 @@ void TaskFemConstraintTransform::addToSelection()
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it.getSubNames();
+
         App::DocumentObject* obj = it.getObject();
+        if (obj->getDocument() != pcConstraint->getDocument()) {
+            QMessageBox::warning(this,
+                                 tr("Selection error"),
+                                 tr("External object selection is not supported"));
+            return;
+        }
+
+        const std::vector<std::string>& subNames = it.getSubNames();
         if (subNames.size() != 1) {
             QMessageBox::warning(this,
                                  tr("Selection error"),
