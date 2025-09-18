@@ -106,6 +106,7 @@ private Q_SLOTS:
     void taperedChanged();
     void taperedAngleChanged(double value);
     void reversedChanged();
+    void modelThreadChanged();
     void useCustomThreadClearanceChanged();
     void customThreadClearanceChanged(double value);
     void updateViewChanged(bool isChecked);
@@ -126,8 +127,7 @@ private:
     enum HoleTypeIndex : int {
         Clearance = 0,
         TapDrill = 1,
-        ModeledThread = 2,
-        Threaded = 3
+        Threaded = 2
     };
 
 protected:
