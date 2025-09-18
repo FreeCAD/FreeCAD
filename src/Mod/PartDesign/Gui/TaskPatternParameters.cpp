@@ -28,6 +28,10 @@
 #include <QVBoxLayout>
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Vec.hxx>
+#include <gp_Pnt.hxx>
 #endif
 
 #include <BRep_Builder.hxx>
@@ -522,5 +526,6 @@ TaskDlgLinearPatternParameters::TaskDlgLinearPatternParameters(
 }
 
 #include "moc_TaskPatternParameters.cpp"
+
 
 
