@@ -1127,13 +1127,13 @@ public:
         return m_min && m_max && m_min->second < 0 && m_max->second >= 0;
     }
     // adds point keeping the incremental order of areas for interpolation to work correctly
-    void addPoint(double area, double angle)
+    void addPoint(double error, double angle, bool allowSkip = false)
     {
         if (!m_min) {
-            m_min = {angle, area};
+            m_min = {angle, error};
         }
         else if (!m_max) {
-            m_max = {angle, area};
+            m_max = {angle, error};
             if (m_min->second > m_max->second) {
                 auto tmp = m_min;
                 m_min = m_max;
@@ -1141,21 +1141,24 @@ public:
             }
         }
         else if (bothSides()) {
-            if (area < 0) {
-                m_min = {angle, area};
+            if (error < 0) {
+                m_min = {angle, error};
             }
             else {
-                m_max = {angle, area};
+                m_max = {angle, error};
             }
         }
         else {
+            if (allowSkip && abs(error) > abs(m_min->second) && abs(error) > abs(m_max->second)) {
+                return;
+            }
             if (abs(m_min->second) > abs(m_max->second)) {
                 m_min.reset();
             }
             else {
                 m_max.reset();
             }
-            addPoint(area, angle);
+            addPoint(error, angle);
         }
     }
 
@@ -1172,6 +1175,14 @@ public:
         fout << "(" << m_min->first << ", " << m_min->second << ") ~ (" << m_max->first << ", "
              << m_max->second << ") ";
         double p = (0 - m_min->second) / (m_max->second - m_min->second);
+
+        // Ensure search is sufficiently efficient -- this is a compromise
+        // between binary search (p = 0.5, guaranteed search completion in log
+        // time) and following linear interpolation completely (often faster
+        // since area cut is locally linear in movement angle)
+        const double minInterp = .2;
+        p = max(min(p, 1 - minInterp), minInterp);
+
         return m_min->first * (1 - p) + m_max->first * p;
     }
 
@@ -2899,6 +2910,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 #endif
     ClearedArea clearedBeforePass(toolRadiusScaled);
     clearedBeforePass.SetClearedPaths(cleared.GetCleared());
+    fout << "Tool radius scaled: " << toolRadiusScaled << "\n";
 
     //*******************************
     // LOOP - PASSES
@@ -2997,33 +3009,40 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             Perf_PointIterations.Start();
             int iteration;
             double prev_error = __DBL_MAX__;
+            bool pointNotInterp;
             for (iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
                 total_iterations++;
                 fout << "It " << iteration << " ";
                 if (iteration == 0) {
                     angle = predictedAngle;
+                    pointNotInterp = true;
                     fout << "case predicted ";
                 }
                 else if (iteration == 1) {
                     angle = interp.MIN_ANGLE;  // max engage
+                    pointNotInterp = true;
                     fout << "case minimum ";
                 }
                 else if (iteration == 2) {
                     if (interp.bothSides()) {
                         angle = interp.interpolateAngle(fout);
+                        pointNotInterp = false;
                         fout << "case interp ";
                     }
                     else {
                         angle = interp.MAX_ANGLE;  // min engage
                         fout << "case maximum ";
+                        pointNotInterp = true;
                     }
                 }
-                else if (interp.getPointCount() < 2) {
+                else if (!interp.bothSides()) {
                     angle = interp.getRandomAngle();
                     fout << "case random ";
+                    pointNotInterp = true;
                 }
                 else {
                     angle = interp.interpolateAngle(fout);
+                    pointNotInterp = false;
                     fout << "case interp ";
                 }
                 fout << "raw " << angle << " ";
@@ -3042,7 +3061,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                 areaPD = area / double(stepScaled);  // area per distance
                 fout << "addPoint " << areaPD << " " << angle << " ";
                 double error = areaPD - targetAreaPD;
-                interp.addPoint(error, angle);
+                interp.addPoint(error, angle, pointNotInterp);
                 fout << "areaPD " << areaPD << " error " << error << " ";
                 // cout << " iter:" << iteration << " angle:" << angle << " area:" << areaPD
                 //      << " target:" << targetAreaPD << " error:" << error << " max:" << maxError
@@ -3066,6 +3085,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                 fout << endl;
                 prev_error = error;
             }
+            fout << "Iterations: " << iteration << endl;
             Perf_PointIterations.Stop();
 
             recalcArea = false;
@@ -3188,6 +3208,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 #endif
                 // cout<<"Break: no cut @" << point_index << endl;
                 if (noCutDistance > stepOverScaled) {
+                    fout << "Points: " << point_index << "\n";
                     break;
                 }
                 noCutDistance += stepScaled;
