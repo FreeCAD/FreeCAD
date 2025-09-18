@@ -24,7 +24,6 @@
 
 #include "Adaptive.hpp"
 #include <iostream>
-#include <fstream>
 #include <cmath>
 #include <cstring>
 #include <ctime>
@@ -927,7 +926,6 @@ public:
     }
     inline void Start()
     {
-#define DEV_MODE
 #ifdef DEV_MODE
         start_ticks = clock();
         if (running) {
@@ -1189,17 +1187,13 @@ public:
         return max(min(angle, MAX_ANGLE), MIN_ANGLE);
     }
 
-    double getRandomAngle()
-    {
-        return MIN_ANGLE + (MAX_ANGLE - MIN_ANGLE) * double(rand()) / double(RAND_MAX);
-    }
     size_t getPointCount()
     {
         return (m_min ? 1 : 0) + (m_max ? 1 : 0);
     }
 
 public:
-    //{{angle, clipper point}, error}
+    // {{angle, clipper point}, error}
     std::optional<std::pair<std::pair<double, IntPoint>, double>> m_min;
     std::optional<std::pair<std::pair<double, IntPoint>, double>> m_max;
 };
@@ -2774,30 +2768,8 @@ void Adaptive2d::AddPathToProgress(TPaths& progressPaths, const Path pth, Motion
     }
 }
 
-struct nostream
-{
-    nostream(string a)
-    {}
-    nostream operator<<(string a)
-    {
-        return *this;
-    }
-    nostream operator<<(double a)
-    {
-        return *this;
-    }
-    nostream operator<<(IntPoint a)
-    {
-        return *this;
-    }
-};
-
 void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 {
-    ofstream fout("adaptive_debug.txt");
-    // nostream fout("adaptive_debug.txt");
-    fout << "\n" << "\n" << "----------------------" << "\n";
-    fout << "Start ProcessPolyNode" << "\n";
     Perf_ProcessPolyNode.Start();
     current_region++;
     cout << "** Processing region: " << current_region << endl;
@@ -2850,14 +2822,12 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             engageBounds.push_back(p);
         }
         outsideEntry = true;
-        fout << "Outside entry " << entryPoint << "\n";
     }
     else {
         if (!FindEntryPoint(progressPaths, toolBoundPaths, boundPaths, cleared, entryPoint, toolPos, toolDir)) {
             Perf_ProcessPolyNode.Stop();
             return;
         }
-        fout << "Helix entry " << entryPoint << "\n";
     }
 
     EngagePoint engage(engageBounds);  // engage point stepping instance
@@ -2914,13 +2884,11 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 #endif
     ClearedArea clearedBeforePass(toolRadiusScaled);
     clearedBeforePass.SetClearedPaths(cleared.GetCleared());
-    fout << "Tool radius scaled: " << toolRadiusScaled << "\n";
 
     //*******************************
     // LOOP - PASSES
     //*******************************
     for (long pass = 0; pass < PASSES_LIMIT; pass++) {
-        fout << "New pass! " << pass << "\n";
         if (stopProcessing) {
             break;
         }
@@ -2959,7 +2927,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
         // LOOP - POINTS
         //*******************************
         for (long point_index = 0; point_index < POINTS_PER_PASS_LIMIT; point_index++) {
-            fout << "\n" << "Point " << point_index << "\n";
             if (stopProcessing) {
                 break;
             }
@@ -2998,14 +2965,12 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             if (stepScaled < MIN_STEP_CLIPPER) {
                 stepScaled = long(MIN_STEP_CLIPPER);
             }
-            fout << "\tstepScaled " << stepScaled << "\n";
 
             //*****************************
             // ANGLE vs AREA ITERATIONS
             //*****************************
             double predictedAngle = averageDV(angleHistory);
             double maxError = AREA_ERROR_FACTOR * optimalCutAreaPD;
-            fout << "optimal area " << optimalCutAreaPD << " maxError " << maxError << "\n";
             double area = 0;
             double areaPD = 0;
             interp.clear();
@@ -3016,50 +2981,35 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             bool pointNotInterp;
             for (iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
                 total_iterations++;
-                fout << "It " << iteration << " ";
                 if (iteration == 0) {
                     angle = predictedAngle;
                     pointNotInterp = true;
-                    fout << "case predicted ";
                 }
                 else if (iteration == 1) {
                     angle = interp.MIN_ANGLE;  // max engage
                     pointNotInterp = true;
-                    fout << "case minimum ";
                 }
                 else if (iteration == 2) {
                     if (interp.bothSides()) {
                         angle = interp.interpolateAngle();
-                        fout << "(" << interp.m_min->first.first << ", " << interp.m_min->second
-                             << ") ~ (" << interp.m_max->first.first << ", " << interp.m_max->second
-                             << ") ";
                         pointNotInterp = false;
-                        fout << "case interp ";
                     }
                     else {
                         angle = interp.MAX_ANGLE;  // min engage
-                        fout << "case maximum ";
                         pointNotInterp = true;
                     }
                 }
                 else {
                     angle = interp.interpolateAngle();
-                    fout << "(" << interp.m_min->first.first << ", " << interp.m_min->second
-                         << ") ~ (" << interp.m_max->first.first << ", " << interp.m_max->second
-                         << ") ";
                     pointNotInterp = false;
-                    fout << "case interp ";
                 }
-                fout << "raw " << angle << " ";
                 angle = interp.clampAngle(angle);
-                fout << "clamped " << angle << " ";
 
                 newToolDir = rotate(toolDir, angle);
                 newToolPos = IntPoint(
                     long(toolPos.X + newToolDir.X * stepScaled),
                     long(toolPos.Y + newToolDir.Y * stepScaled)
                 );
-                fout << "int pos " << newToolPos << " ";
 
                 // Skip iteration if this IntPoint has already been processed
                 bool intRepeat = false;
@@ -3082,7 +3032,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                             // integers
                             continue;
                         }
-                        fout << "hit integer floor" << "\n";
                         // exit early, selecting the better of the two adjacent integers
                         if (abs(interp.m_min->second) < abs(interp.m_max->second)) {
                             newToolDir = rotate(toolDir, interp.m_min->first.first);
@@ -3094,17 +3043,14 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                         }
                         break;
                     }
-                    fout << "skip area calc " << "\n";
                     continue;
                 }
 
                 area = CalcCutArea(clip, toolPos, newToolPos, cleared);
 
                 areaPD = area / double(stepScaled);  // area per distance
-                fout << "addPoint " << areaPD << " " << angle << " ";
                 double error = areaPD - targetAreaPD;
                 interp.addPoint(error, {angle, newToolPos}, pointNotInterp);
-                fout << "areaPD " << areaPD << " error " << error << " ";
                 // cout << " iter:" << iteration << " angle:" << angle << " area:" << areaPD
                 //      << " target:" << targetAreaPD << " error:" << error << " max:" << maxError
                 //      << endl;
@@ -3113,22 +3059,14 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                     if (angleHistory.size() > ANGLE_HISTORY_POINTS) {
                         angleHistory.erase(angleHistory.begin());
                     }
-                    fout << "small enough" << "\n";
-                    break;
-                }
-                if (iteration > 5 && fabs(error - prev_error) < 0.001) {
-                    fout << "no change" << "\n";
                     break;
                 }
                 if (iteration == MAX_ITERATIONS - 1) {
-                    fout << "too many iterations!" << "\n";
                     total_exceeded++;
                 }
-                fout << "\n";
                 prev_error = error;
             }
             Perf_PointIterations.Stop();
-            fout << "Iterations: " << iteration << "\n";
 
             recalcArea = false;
             // approach end boundary tangentially
@@ -3147,7 +3085,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                     long(toolPos.Y + newToolDir.Y * stepScaled)
                 );
                 recalcArea = true;
-                fout << "\tRewrote tooldir/toolpos for boundary approach" << "\n";
             }
 
             //**********************************************
@@ -3163,7 +3100,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                     long(toolPos.X + newToolDir.X * stepScaled),
                     long(toolPos.Y + newToolDir.Y * stepScaled)
                 );
-                fout << "\tMoving tool back within boundary..." << "\n";
             }
             if (rotateStep >= 180) {
 #ifdef DEV_MODE
@@ -3179,7 +3115,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             // safety condition
             if (area > stepScaled * optimalCutAreaPD && areaPD > 2 * optimalCutAreaPD) {
                 over_cut_count++;
-                fout << "\tCut area too big!!!" << "\n";
                 break;
             }
 
@@ -3196,7 +3131,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             prevDistFromStart = distFromStart;
 
             if (area > 0.5 * MIN_CUT_AREA_FACTOR * optimalCutAreaPD) {  // cut is ok - record it
-                fout << "\tFinal cut acceptance" << "\n";
                 noCutDistance = 0;
                 if (toClearPath.empty()) {
                     toClearPath.push_back(toolPos);
@@ -3249,11 +3183,9 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 #endif
                 // cout<<"Break: no cut @" << point_index << endl;
                 if (noCutDistance > stepOverScaled) {
-                    fout << "Points: " << point_index << "\n";
                     break;
                 }
                 noCutDistance += stepScaled;
-                fout << "\tFailed to accept point??" << "\n";
             }
         } /* end of points loop*/
 
