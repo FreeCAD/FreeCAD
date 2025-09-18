@@ -27,6 +27,7 @@
 #include <set>
 #include <vector>
 #include <string>
+#include <cstring>
 
 #include <Base/Console.h>
 #include <Base/Matrix.h>
@@ -1586,5 +1587,23 @@ void DocumentObject::onPropertyStatusChanged(const Property& prop, unsigned long
     (void)oldStatus;
     if (!Document::isAnyRestoring() && isAttachedToDocument() && getDocument()) {
         getDocument()->signalChangePropertyEditor(*getDocument(), prop);
+    }
+}
+
+void DocumentObject::handleChangedPropertyName(Base::XMLReader& reader,
+                                               const char* typeName,
+                                               const char* propName)
+{
+    if (strcmp(propName, "Label2") == 0) {
+        Property* prop = getPropertyByName("Description");
+        if (prop) {
+            prop->Restore(reader);
+        }
+        else {
+            ExtensionContainer::handleChangedPropertyName(reader, typeName, propName);
+        }
+    }
+    else {
+        ExtensionContainer::handleChangedPropertyName(reader, typeName, propName);
     }
 }

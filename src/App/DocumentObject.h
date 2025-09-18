@@ -768,6 +768,10 @@ protected:
     /// get called when a property status has changed
     void onPropertyStatusChanged(const Property& prop, unsigned long oldStatus) override;
 
+    void handleChangedPropertyName(Base::XMLReader& reader,
+                                   const char* typeName,
+                                   const char* propName) override;
+
 private:
     void printInvalidLinks() const;
 
