@@ -526,6 +526,7 @@ public:
     App::PropertyBool ShowSupport;
     App::PropertyBool RestoreCamera;
     App::PropertyBool ForceOrtho;
+    App::PropertyBool AlignView;
     App::PropertyBool SectionView;
     App::PropertyBool AutoColor;
     App::PropertyString EditingWorkbench;
