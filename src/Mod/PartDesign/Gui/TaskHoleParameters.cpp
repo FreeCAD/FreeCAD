@@ -83,7 +83,6 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     bool isNone = std::string(pcHole->ThreadType.getValueAsString()) == "None";
     bool isThreaded = pcHole->Threaded.getValue();
 
-    ui->labelThreading->setHidden(isNone);
     ui->labelHoleType->setHidden(isNone);
     ui->HoleType->setHidden(isNone);
     ui->ThreadSize->setHidden(isNone);
@@ -170,6 +169,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->Reversed->setChecked(pcHole->Reversed.getValue());
 
     bool isModeled = pcHole->ModelThread.getValue();
+    ui->ModelThread->setChecked(isModeled);
     ui->ThreadGroupBox->setVisible(isThreaded);
     ui->UseCustomThreadClearance->setChecked(pcHole->UseCustomThreadClearance.getValue());
     ui->CustomThreadClearance->setValue(pcHole->CustomThreadClearance.getValue());
@@ -233,6 +233,8 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
             this, &TaskHoleParameters::taperedChanged);
     connect(ui->Reversed, &QCheckBox::clicked,
             this, &TaskHoleParameters::reversedChanged);
+    connect(ui->ModelThread, &QCheckBox::clicked,
+            this, &TaskHoleParameters::modelThreadChanged);
     connect(ui->TaperedAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskHoleParameters::taperedAngleChanged);
     connect(ui->UpdateView, &QCheckBox::toggled,
@@ -271,6 +273,37 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
 
 TaskHoleParameters::~TaskHoleParameters() = default;
 
+void TaskHoleParameters::modelThreadChanged()
+{
+    auto pcHole = getObject<PartDesign::Hole>();
+    bool isThreaded = pcHole->Threaded.getValue();
+    if (!isThreaded) {
+        ui->ModelThread->setChecked(false);
+    }
+    bool isModeled = isThreaded && ui->ModelThread->isChecked();
+    if (ui->HoleType->currentIndex() == Threaded) {
+        pcHole->CosmeticThread.setValue(true);
+        ui->ModelThread->setVisible(true);
+    } else {
+        ui->ModelThread->setVisible(false);
+    }
+    pcHole->ModelThread.setValue(isModeled);
+
+    // update view not active if modeling threads
+    // this will also ensure that the feature is recomputed.
+    ui->UpdateView->setVisible(isModeled);
+    setUpdateBlocked(isModeled && !(ui->UpdateView->isChecked()));
+
+    // conditional enabling of thread modeling options
+    ui->CustomClearanceWidget->setVisible(isModeled);
+
+    ui->ThreadDepthWidget->setVisible(isThreaded && isModeled);
+    ui->ThreadDepthDimensionWidget->setVisible(
+        std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension"
+    );
+    recomputeFeature();
+}
+
 void TaskHoleParameters::holeTypeChanged(int index)
 {
     if (index < 0) {
@@ -283,12 +316,16 @@ void TaskHoleParameters::holeTypeChanged(int index)
     bool isThreaded = getThreaded();
     bool isModeled = getModelThread();
     bool isCosmetic = getCosmeticThreaded();
+    bool isNone = std::string(pcHole->ThreadType.getValueAsString()) == "None";
 
     pcHole->Threaded.setValue(isThreaded);
     pcHole->ModelThread.setValue(isModeled);
     pcHole->CosmeticThread.setValue(isCosmetic);
 
-    ui->ThreadGroupBox->setVisible(isThreaded);
+    ui->ThreadFit->setHidden(isNone || isThreaded);
+    ui->labelThreadClearance->setHidden(isNone || isThreaded);
+
+    ui->ThreadGroupBox->setVisible(isModeled || isCosmetic);
     // update view not active if modeling threads
     // this will also ensure that the feature is recomputed.
     ui->UpdateView->setVisible(isModeled);
@@ -298,7 +335,7 @@ void TaskHoleParameters::holeTypeChanged(int index)
     ui->CustomClearanceWidget->setVisible(isModeled);
     ui->CustomThreadClearance->setEnabled(pcHole->UseCustomThreadClearance.getValue());
 
-    ui->ThreadDepthWidget->setVisible(isThreaded);
+    ui->ThreadDepthWidget->setVisible(isModeled || isCosmetic);
     ui->ThreadDepthDimensionWidget->setVisible(
         std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension"
     );
@@ -659,7 +696,6 @@ void TaskHoleParameters::threadTypeChanged(int index)
     ui->ThreadGroupBox->setHidden(isNone || !isThreaded);
     ui->ThreadSize->setHidden(isNone);
     ui->labelSize->setHidden(isNone);
-    ui->labelThreading->setHidden(isNone);
     ui->labelHoleType->setHidden(isNone);
     ui->HoleType->setHidden(isNone);
     ui->ThreadFit->setHidden(isNone || isThreaded);
@@ -813,6 +849,10 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
     ) {
         updateHoleTypeCombo();
     }
+    else if (&Prop == &hole->ModelThread) {
+        ui->ModelThread->setEnabled(true);
+        updateCheckable(ui->ModelThread, hole->ModelThread.getValue());
+    }
     else if (&Prop == &hole->ThreadType) {
         ui->ThreadType->setEnabled(true);
         updateComboBox(ui->ThreadType, hole->ThreadType.getValue());
@@ -929,12 +969,12 @@ void TaskHoleParameters::updateHoleTypeCombo()
     }
     [[maybe_unused]] QSignalBlocker blocker(ui->HoleType);
     if (hole->Threaded.getValue()) {
-        if (hole->ModelThread.getValue()) {
-            ui->HoleType->setCurrentIndex(ModeledThread);
-        } else if (hole->CosmeticThread.getValue()) {
+        if (hole->ModelThread.getValue() || hole->CosmeticThread.getValue()) {
             ui->HoleType->setCurrentIndex(Threaded);
+                ui->ModelThread->setVisible(true);
         } else {
             ui->HoleType->setCurrentIndex(TapDrill);
+            ui->ModelThread->setVisible(false);
         }
     } else {
         ui->HoleType->setCurrentIndex(Clearance);
@@ -953,14 +993,13 @@ bool TaskHoleParameters::getThreaded() const
 
 bool TaskHoleParameters::getModelThread() const
 {
-    return ui->HoleType->currentIndex() == ModeledThread;
+    return ui->HoleType->currentIndex() == Threaded && ui->ModelThread->isChecked();
 }
 
 bool TaskHoleParameters::getCosmeticThreaded() const
 {
-    return ui->HoleType->currentIndex() == Threaded;
+    return ui->HoleType->currentIndex() == Threaded && !ui->ModelThread->isChecked();
 }
-
 
 long TaskHoleParameters::getThreadType() const
 {
