@@ -200,7 +200,7 @@ private:
     void ApplyStockToLeave(Paths& inputPaths);
 
 private:  // constants for fine tuning
-    const double RESOLUTION_FACTOR = 16.0;
+    const double MIN_STEP_CLIPPER = 16.0;
     const int MAX_ITERATIONS = 10;
     const double AREA_ERROR_FACTOR = 0.05;     /* how precise to match the cut area to optimal,
                                                   reasonable value: 0.05 = 5%*/
