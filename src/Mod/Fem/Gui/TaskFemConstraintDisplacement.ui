@@ -38,7 +38,7 @@
    <item>
     <widget class="QLabel" name="lbl_info">
      <property name="text">
-      <string>Click Add or Remove and select geometric elements</string>
+        <string>Select geometry of type: &lt;b&gt;Vertex, Edge, Face&lt;/b&gt;</string>
      </property>
     </widget>
    </item>
