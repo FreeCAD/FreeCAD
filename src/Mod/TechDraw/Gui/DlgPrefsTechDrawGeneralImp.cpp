@@ -42,6 +42,10 @@ DlgPrefsTechDrawGeneralImp::DlgPrefsTechDrawGeneralImp( QWidget* parent )
 
     ui->psb_GridSpacing->setUnit(Base::Unit::Length);
     ui->psb_GridSpacing->setMinimum(0);
+
+    ui->pfc_DefDir->setMode(Gui::FileChooser::Mode::Directory);
+    ui->pfc_Welding->setMode(Gui::FileChooser::Mode::Directory);
+    ui->fcSymbolDir->setMode(Gui::FileChooser::Mode::Directory);
 }
 
 DlgPrefsTechDrawGeneralImp::~DlgPrefsTechDrawGeneralImp()
@@ -95,7 +99,6 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
     ui->plsb_LabelSize->setValue(labelDefault);
     QFont prefFont(Preferences::labelFontQString());
     ui->pfb_LabelFont->setCurrentFont(prefFont);
-    //    ui->pfb_LabelFont->setCurrentText(Preferences::labelFontQString());   //only works in Qt5
 
     ui->pfb_LabelFont->onRestore();
     ui->plsb_LabelSize->onRestore();
