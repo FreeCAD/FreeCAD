@@ -261,6 +261,8 @@ public:
     boost::signals2::signal<void ()> signalStartOpenDocument;
     /// signal on finished opening document(s)
     boost::signals2::signal<void ()> signalFinishOpenDocument;
+    /// signal when a transaction is being opened
+    boost::signals2::signal<void(const char*)> signalAboutToOpenTransaction;
     //@}
 
 
