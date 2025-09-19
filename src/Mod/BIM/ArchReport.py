@@ -328,13 +328,17 @@ class _ArchReport:
 
     def _write_cell(self, spreadsheet, cell_address, value):
         """Intelligently writes a value to a spreadsheet cell based on its type."""
-        if isinstance(value, (int, float)):
-            # Write numbers directly without quotes for calculations
+        # Handle FreeCAD Quantity objects by extracting their raw numerical value.
+        if isinstance(value, FreeCAD.Units.Quantity):
+            spreadsheet.set(cell_address, str(value.Value))
+        elif isinstance(value, (int, float)):
+            # Write other numbers directly without quotes for calculations.
             spreadsheet.set(cell_address, str(value))
         elif value is None:
-            spreadsheet.set(cell_address, "''") # Write an empty literal string
+            # Write an empty literal string for None.
+            spreadsheet.set(cell_address, "''")
         else:
-            # Write all other types as literal strings with a prepended quote
+            # Write all other types (e.g., strings) as literal strings.
             spreadsheet.set(cell_address, f"'{value}")
 
     def setSpreadsheetData(self, obj, headers, data_rows, start_row,
@@ -351,27 +355,28 @@ class _ArchReport:
         # Determine the effective starting row for this block of data
         current_row = start_row
 
-        # --- Dynamic Header and Column Generation for Quantities ---
-        final_headers = []
-        quantity_columns = [] # Store indices of columns that contain Quantities
+        # --- "Analyst-First" Header Generation ---
+        # Pre-scan the first data row to find the common unit for each column.
+        unit_map = {} # e.g., {1: 'mm', 2: 'mm'}
 
         if data_rows:
-            # Pre-scan the first data row to identify Quantity columns
             for i, cell_value in enumerate(data_rows[0]):
                 if isinstance(cell_value, FreeCAD.Units.Quantity):
-                    quantity_columns.append(i)
-                    final_headers.append(headers[i])
-                    final_headers.append(translate("Arch", "Unit"))
-                else:
-                    final_headers.append(headers[i])
-        else:
-            final_headers = headers # No data, use original headers
+                    unit_map[i] = cell_value.getUserPreferred()[2]
+
+        # Create the final headers, appending units where found.
+        final_headers = []
+        for i, header_text in enumerate(headers):
+            if i in unit_map:
+                final_headers.append(f"{header_text} ({unit_map[i]})")
+            else:
+                final_headers.append(header_text)
 
         # Add header for this statement if requested
         if use_description_as_header and description_text.strip():
             # Merging the header across columns (A to last data column)
             last_col_char = chr(ord('A') + len(final_headers) - 1) if final_headers else 'A'
-            self._write_cell(sp, f"A{current_row}", description_text)
+            sp.set(f"A{current_row}", f"'{description_text}")
             sp.mergeCells(f"A{current_row}:{last_col_char}{current_row}")
             sp.setStyle(f"A{current_row}", 'bold', 'add')
             current_row += 1 # Advance row for data or column names
@@ -379,32 +384,17 @@ class _ArchReport:
         # Write column names if requested
         if include_column_names and final_headers:
             for col_idx, header_text in enumerate(final_headers):
-                self._write_cell(sp, f"{chr(ord('A') + col_idx)}{current_row}", header_text)
+                sp.set(f"{chr(ord('A') + col_idx)}{current_row}", f"'{header_text}")
             sp.setStyle(f'A{current_row}:{chr(ord("A") + len(final_headers) - 1)}{current_row}', 'bold', 'add')
             current_row += 1 # Advance row for data
 
         # Write data rows
         for row_data in data_rows:
-            col_idx = 0
             for col_idx, cell_value in enumerate(row_data):
-                if i in quantity_columns and isinstance(cell_value, FreeCAD.Units.Quantity):
-                    # Split Quantity into two cells: Value and Unit
-                    val_cell = f"{chr(ord('A') + col_idx)}{current_row}"
-                    unit_cell = f"{chr(ord('A') + col_idx + 1)}{current_row}"
-                    self._write_cell(sp, val_cell, cell_value.Value)
-                    # Extract the unit symbol from the UserString representation
-                    user_string_parts = cell_value.UserString.split(' ', 1)
-                    unit_symbol = user_string_parts[1] if len(user_string_parts) > 1 else str(cell_value.Unit)
-                    self._write_cell(sp, unit_cell, unit_symbol)
-                    if print_results_in_bold:
-                        sp.setStyle(f"{val_cell}:{unit_cell}", 'bold', 'add')
-                    col_idx += 2
-                else:
-                    cell_address = f"{chr(ord('A') + col_idx)}{current_row}"
-                    self._write_cell(sp, cell_address, cell_value)
-                    if print_results_in_bold:
-                        sp.setStyle(cell_address, 'bold', 'add')
-                    col_idx += 1
+                cell_address = f"{chr(ord('A') + col_idx)}{current_row}"
+                self._write_cell(sp, cell_address, cell_value)
+                if print_results_in_bold:
+                    sp.setStyle(cell_address, 'bold', 'add')
             current_row += 1 # Advance row for next data row
 
         # Add empty row if specified
