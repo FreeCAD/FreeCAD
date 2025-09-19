@@ -526,15 +526,20 @@ class ReportTaskPanel:
         self.statements_overview_widget = self.overview_widget  # preserve older name
         self.statements_overview_layout = QtWidgets.QVBoxLayout(self.statements_overview_widget)
 
-        # Table for statements
+        # Table for statements: Description | Header | Cols | Status
         self.table_statements = QtWidgets.QTableWidget()
-        self.table_statements.setColumnCount(2)  # Description, Status
+        self.table_statements.setColumnCount(4)  # Description, Header, Cols, Status
         self.table_statements.setHorizontalHeaderLabels([
             translate("Arch", "Description"),
+            translate("Arch", "Header"),
+            translate("Arch", "Cols"),
             translate("Arch", "Status"),
         ])
+        # Description stretches, others sized to contents
         self.table_statements.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         self.table_statements.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        self.table_statements.horizontalHeader().setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+        self.table_statements.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
         self.table_statements.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.table_statements.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.table_statements.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
@@ -677,19 +682,30 @@ class ReportTaskPanel:
         # The UI always interacts with the live list of objects from the proxy
         for row_idx, statement in enumerate(self.obj.Proxy.live_statements):
             self.table_statements.insertRow(row_idx)
+            # Description (editable text)
             desc_item = QtWidgets.QTableWidgetItem(statement.description)
+            desc_item.setFlags(desc_item.flags() | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
             self.table_statements.setItem(row_idx, 0, desc_item)
 
-            # Status Item (Icon + Tooltip)
+            # Header checkbox
+            header_item = QtWidgets.QTableWidgetItem()
+            header_item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            header_item.setCheckState(QtCore.Qt.Checked if statement.use_description_as_header else QtCore.Qt.Unchecked)
+            self.table_statements.setItem(row_idx, 1, header_item)
+
+            # Cols checkbox (Include Column Names)
+            cols_item = QtWidgets.QTableWidgetItem()
+            cols_item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            cols_item.setCheckState(QtCore.Qt.Checked if statement.include_column_names else QtCore.Qt.Unchecked)
+            self.table_statements.setItem(row_idx, 2, cols_item)
+
+            # Status Item (Icon + Tooltip) - read-only
             status_icon, status_tooltip = self._get_status_icon_and_tooltip(statement)
             status_item = QtWidgets.QTableWidgetItem()
             status_item.setIcon(status_icon)
             status_item.setToolTip(status_tooltip)
             status_item.setFlags(status_item.flags() & ~QtCore.Qt.ItemIsEditable) # Make read-only
-            self.table_statements.setItem(row_idx, 1, status_item)
-
-            # Make description editable directly in table
-            desc_item.setFlags(desc_item.flags() | QtCore.Qt.ItemIsEditable)
+            self.table_statements.setItem(row_idx, 3, status_item)
 
             # Recalculate status for each statement (important on load)
             statement.validate_and_update_status()
@@ -697,25 +713,42 @@ class ReportTaskPanel:
         self.table_statements.blockSignals(False)
 
     def _on_table_item_changed(self, item):
-        # Synchronize direct table edits back into the runtime statement
-        if item.column() != 0:
-            return
+        # Synchronize direct table edits (description and checkboxes) back into the runtime statement
         row = item.row()
+        col = item.column()
         if row < 0 or row >= len(self.obj.Proxy.live_statements):
             return
-        new_text = item.text()
         stmt = self.obj.Proxy.live_statements[row]
-        # Update underlying model and editor if this row is currently selected
-        stmt.description = new_text
-        stmt.validate_and_update_status()
-        self._update_table_row_status(row, stmt)
-        if row == self.current_edited_statement_index:
-            # Prevent echo loops by blocking editor signals briefly
-            try:
-                self.description_edit.blockSignals(True)
-                self.description_edit.setText(new_text)
-            finally:
-                self.description_edit.blockSignals(False)
+
+        if col == 0:
+            # Description text edited
+            new_text = item.text()
+            stmt.description = new_text
+            stmt.validate_and_update_status()
+            self._update_table_row_status(row, stmt)
+            if row == self.current_edited_statement_index:
+                # Prevent echo loops by blocking editor signals briefly
+                try:
+                    self.description_edit.blockSignals(True)
+                    self.description_edit.setText(new_text)
+                finally:
+                    self.description_edit.blockSignals(False)
+        elif col == 1:
+            # Header checkbox toggled
+            stmt.use_description_as_header = (item.checkState() == QtCore.Qt.Checked)
+            stmt.validate_and_update_status()
+            self._update_table_row_status(row, stmt)
+            # If this row is currently edited, update the editor checkbox to match
+            if row == self.current_edited_statement_index:
+                self.chk_use_description_as_header.setChecked(stmt.use_description_as_header)
+        elif col == 2:
+            # Cols checkbox toggled -> include_column_names
+            stmt.include_column_names = (item.checkState() == QtCore.Qt.Checked)
+            stmt.validate_and_update_status()
+            self._update_table_row_status(row, stmt)
+            if row == self.current_edited_statement_index:
+                self.chk_include_column_names.setChecked(stmt.include_column_names)
+
         self._set_dirty(True)
 
     def _add_statement(self):
@@ -832,7 +865,23 @@ class ReportTaskPanel:
 
     def _on_editor_checkbox_changed(self):
         # Checkboxes are saved when editor state is saved, but ensure live validation for status icon
+        # When editor checkboxes change, update the selected table row to reflect new state
         self.validation_timer.start(500) # (Re)start timer for live validation
+        # If a statement is currently selected in the table, mirror the editor state to the table
+        if self.current_edited_statement_index != -1:
+            row = self.current_edited_statement_index
+            header_item = self.table_statements.item(row, 1)
+            if header_item:
+                header_item.setCheckState(QtCore.Qt.Checked if self.chk_use_description_as_header.isChecked() else QtCore.Qt.Unchecked)
+            cols_item = self.table_statements.item(row, 2)
+            if cols_item:
+                cols_item.setCheckState(QtCore.Qt.Checked if self.chk_include_column_names.isChecked() else QtCore.Qt.Unchecked)
+            # Also update the underlying statement object to keep model consistent
+            stmt = self.obj.Proxy.live_statements[row]
+            stmt.use_description_as_header = self.chk_use_description_as_header.isChecked()
+            stmt.include_column_names = self.chk_include_column_names.isChecked()
+            stmt.validate_and_update_status()
+            self._update_table_row_status(row, stmt)
         self._set_dirty(True)
 
     def _on_load_query_preset(self, index):
@@ -939,7 +988,8 @@ class ReportTaskPanel:
 
     def _update_table_row_status(self, row_idx, statement: ReportStatement):
         # Update the status icon/tooltip in the QTableWidget (Box 1)
-        status_item = self.table_statements.item(row_idx, 1)
+        # Status column moved to index 3
+        status_item = self.table_statements.item(row_idx, 3)
         if status_item:
             status_icon, status_tooltip = self._get_status_icon_and_tooltip(statement)
             status_item.setIcon(status_icon)
@@ -949,6 +999,14 @@ class ReportTaskPanel:
         desc_item = self.table_statements.item(row_idx, 0)
         if desc_item:
             desc_item.setText(statement.description)
+
+        # Update checkbox columns to reflect current statement state
+        header_item = self.table_statements.item(row_idx, 1)
+        if header_item:
+            header_item.setCheckState(QtCore.Qt.Checked if statement.use_description_as_header else QtCore.Qt.Unchecked)
+        cols_item = self.table_statements.item(row_idx, 2)
+        if cols_item:
+            cols_item.setCheckState(QtCore.Qt.Checked if statement.include_column_names else QtCore.Qt.Unchecked)
 
 
     def _get_status_icon_and_tooltip(self, statement: ReportStatement):
