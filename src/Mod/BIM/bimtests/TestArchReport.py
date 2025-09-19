@@ -133,16 +133,12 @@ class TestArchReport(TestArchBase.TestArchBase):
         # Note: A self-correction was made here from a previous version.
         # The path is relative to the *test file's* location.
         build_path = os.path.join(os.path.dirname(__file__), "..", "Presets", "ArchReport", filename)
-        print(f"\n[DIAGNOSTIC] Attempting to find template file in build directory: {build_path}")
         if os.path.exists(build_path):
-            print(f"\n[DIAGNOSTIC] Found template file in build directory: {build_path}")
             return build_path
 
         # Fallback to the final installed resource directory
         install_path = os.path.join(FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "ArchReport", filename)
-        print(f"\n[DIAGNOSTIC] Attempting to find template file in install directory: {install_path}")
         if os.path.exists(install_path):
-            print(f"\n[DIAGNOSTIC] Found template file in install directory: {install_path}")
             return install_path
 
         # If neither is found, the test will fail below.
