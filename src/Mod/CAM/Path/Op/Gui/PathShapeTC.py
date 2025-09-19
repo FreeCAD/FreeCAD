@@ -65,29 +65,26 @@ class ObjectPathShape:
             "Active",
             "Base",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Make False, to prevent operation from generating code"
+                "App::Property", "Make 'False' to prevent operation from generating code"
             ),
         )
         obj.addProperty(
             "App::PropertyString",
             "Comment",
             "Base",
-            QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Operation"),
+            QT_TRANSLATE_NOOP("App::Property", "An optional comment for this operation"),
         )
         obj.addProperty(
             "App::PropertyString",
             "CycleTime",
             "Base",
-            QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
+            QT_TRANSLATE_NOOP("App::Property", "Operations cycle time estimation"),
         )
         obj.addProperty(
             "App::PropertyLinkList",
             "Sources",
             "Base",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Sources of the shapes",
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Sources of the shapes"),
         )
 
         # Tool properties group
@@ -147,13 +144,13 @@ class ObjectPathShape:
             "Curves",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                """Arc drawing plane, corresponding to G17, G18, and G19.
-If not 'None', the output wires will be transformed to align with the selected plane,
-and the corresponding GCode will be inserted.
-\n'Auto' means the plane is determined by the first encountered arc plane.
-If the found plane does not align to any GCode plane, XY plane is used.
-\n'Variable' means the arc plane can be changed during operation to align to the
-arc encountered.""",
+                "Arc drawing plane, corresponding to G17, G18 and G19.\n"
+                "\nIf not 'None', the output wires will be transformed to align with the selected plane,\n"
+                "and the corresponding GCode will be inserted.\n"
+                "\n'Auto' means the plane is determined by the first encountered arc plane.\n"
+                "If the found plane does not align to any GCode plane, XY plane is used.\n"
+                "\n'Variable' means the arc plane can be changed during operation\n"
+                "to align to the arc encountered.",
             ),
         )
         obj.addProperty(
@@ -162,8 +159,9 @@ arc encountered.""",
             "Curves",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                """Break long curves into segments of this length.
-One use case is for PCB autolevel, so that more correction points can be inserted""",
+                "Break long curves into segments of this length.\n"
+                "One use case is for PCB autolevel,\n"
+                "so that more correction points can be inserted.",
             ),
         )
         obj.addProperty(
@@ -172,9 +170,9 @@ One use case is for PCB autolevel, so that more correction points can be inserte
             "Curves",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                """Deflection for non circular curve discretization.
-It also also used for discretizing circular wires,
-when you 'Explode' the shape for wire operations""",
+                "Deflection for non circular curve discretization.\n"
+                "\nIt also also used for discretizing circular wires,\n"
+                "when you 'Explode' the shape for wire operations",
             ),
         )
         obj.addProperty(
@@ -183,9 +181,9 @@ when you 'Explode' the shape for wire operations""",
             "Curves",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                """Minimum distance for the generated new wires.
-Wires maybe broken if the algorithm see fits.
-Set to zero to disable wire breaking.""",
+                "Minimum distance for the generated new wires.\n"
+                "Wires maybe broken if the algorithm see fits.\n"
+                "\nSet zero to disable wire breaking.",
             ),
         )
 
@@ -196,10 +194,10 @@ Set to zero to disable wire breaking.""",
             "Path",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                """Enforce loop orientation.
-\n'Normal' means CCW for outer wires when looking against the positive axis direction,
-and CW for inner wires.
-\n'Reversed' means the other way round""",
+                "Enforce loop orientation.\n"
+                "\n'Normal' means CCW for outer wires when looking against\n"
+                "the positive axis direction and CW for inner wires.\n"
+                "\n'Reversed' means the other way round.",
             ),
         )
         obj.addProperty(
@@ -214,7 +212,8 @@ and CW for inner wires.
             "Path",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Invert direction on each step down\nOnly if HandleMultipleFeatures is Individually",
+                "Invert direction on each step down.\n"
+                "Only if 'HandleMultipleFeatures' is 'Individually'.",
             ),
         )
         obj.addProperty(
@@ -223,8 +222,9 @@ and CW for inner wires.
             "Path",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                """If two wire's end points are separated within this threshold, they are consider as connected.
-You may want to set this to the tool diameter to keep the tool down.""",
+                "If two wire's end points are separated within this threshold,\n"
+                "they are consider as connected.\n"
+                "You may want to set this to the tool diameter to keep the tool down.",
             ),
         )
         obj.addProperty(
@@ -244,7 +244,7 @@ You may want to set this to the tool diameter to keep the tool down.""",
             "HandleMultipleFeatures",
             "Path",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Choose how to process multiple Base Geometry features."
+                "App::Property", "Choose how to process multiple Base Geometry features"
             ),
         )
 
@@ -255,14 +255,13 @@ You may want to set this to the tool diameter to keep the tool down.""",
             "Sorting",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                """"Wire sorting mode to optimize travel distance.
-\n'2D5' explode shapes into wires, and groups the shapes by its plane.
-The 'start' position chooses the first plane to start.
-The algorithm will then sort within the plane and then move on to the next nearest plane.
-\n'3D' makes no assumption of planarity. The sorting is done across 3D space.
-\n'Greedy' like '2D5' but will try to minimize travel by searching for nearest path below
-the current milling layer. The path in lower layer is only selected if the moving "distance
-is within the value given in 'threshold'.""",
+                "Wire sorting mode to optimize travel distance.\n"
+                "\n'2D5' explode shapes into wires, and groups the shapes by its plane.\n"
+                "The 'start' position chooses the first plane to start.\n"
+                "The algorithm will then sort within the plane and then move on to the next nearest plane.\n"
+                "\n'3D' makes no assumption of planarity. The sorting is done across 3D space.\n"
+                "\n'Greedy' like '2D5' but will try to minimize travel by searching for nearest path below the current milling layer.\n"
+                "The path in lower layer is only selected if the moving distance is within the value given in 'threshold'.",
             ),
         )
         obj.addProperty(
@@ -271,8 +270,8 @@ is within the value given in 'threshold'.""",
             "Sorting",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                """Controls vertex sampling on wire for nearest point searching.
-The sampling is dong using OCC GCPnts_UniformAbscissa""",
+                "Controls vertex sampling on wire for nearest point searching.\n"
+                "The sampling is dong using OCC GCPnts_UniformAbscissa.",
             ),
         )
         obj.addProperty(
@@ -301,8 +300,9 @@ The sampling is dong using OCC GCPnts_UniformAbscissa""",
             "Gcode",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                """Emit preambles G90.1 G17 G18 G19
-Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers""",
+                "Emit preambles G90.1 G17 G18 G19\n"
+                "\nNote that emitting preambles between moves breaks some dressups\n"
+                "and prevents path optimization on some controllers",
             ),
         )
 
@@ -317,13 +317,17 @@ Note that emitting preambles between moves breaks some dressups and prevents pat
             "App::PropertyDistance",
             "StartDepth",
             "Depth",
-            QT_TRANSLATE_NOOP("App::Property", "Start depth"),
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Start height with step down.\nUsing with 'EnableStepDown'."
+            ),
         )
         obj.addProperty(
             "App::PropertyLength",
             "StepDown",
             "Depth",
-            QT_TRANSLATE_NOOP("App::Property", "Step down"),
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Max height of each step down.\nUsing only with 'EnableStepDown'."
+            ),
         )
         obj.addProperty(
             "App::PropertyLength",
@@ -331,7 +335,7 @@ Note that emitting preambles between moves breaks some dressups and prevents pat
             "Depth",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Retraction\nTool retraction absolute coordinate along retraction axis",
+                "Retraction\n" "\nTool retraction absolute coordinate along retraction axis",
             ),
         )
         obj.addProperty(
@@ -340,8 +344,9 @@ Note that emitting preambles between moves breaks some dressups and prevents pat
             "Depth",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                """Resume Height\nWhen return from last retraction,
-this gives the pause height relative to the Z value of the next move""",
+                "Resume Height\n"
+                "\nWhen return from last retraction,\n"
+                "this gives the pause height relative to the Z value of the next move",
             ),
         )
 
@@ -358,9 +363,9 @@ this gives the pause height relative to the Z value of the next move""",
             "Offset",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                """The output wires will be transformed by offset function
-\n'makeOffset2D' use Part.Wire.makeOffset2D() directly
-\n'offsetWire' use Path.Op.Util.offsetWire()""",
+                "The output wires will be transformed by offset function."
+                "\n'makeOffset2D' use Part.Wire.makeOffset2D() directly"
+                "\n'offsetWire' use Path.Op.Util.offsetWire()",
             ),
         )
         obj.addProperty(
@@ -393,9 +398,10 @@ this gives the pause height relative to the Z value of the next move""",
             "Offset",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                """Affects the way open wires are processed.
-If False, an open wire is made.
-If True, a closed wire is made from a double-sided offset, with rounds around open vertices""",
+                "Affects the way open wires are processed.\n"
+                "If False, an open wire is made.\n"
+                "If True, a closed wire is made from a double-sided offset,\n"
+                "with rounds around open vertices.",
             ),
         )
 
@@ -689,7 +695,7 @@ Returns a Path object from a list of shapes
                     skipZ
                     and cmd.x is None
                     and cmd.y is None
-                    and (cmd.z == obj.ClearanceHeight or obj.SafeHeight)
+                    and (cmd.z == obj.ClearanceHeight or cmd.z == obj.SafeHeight)
                 ):
                     # skip start move for closed profile
                     continue

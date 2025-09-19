@@ -218,7 +218,10 @@ class _CopyOperation:
             return False
         try:
             for sel in FreeCADGui.Selection.getSelectionEx():
-                if not isinstance(sel.Object.Proxy, Path.Op.Base.ObjectOp):
+                if (
+                    not isinstance(sel.Object.Proxy, Path.Op.Base.ObjectOp)
+                    and "PathShape" not in sel.Object.Name
+                ):
                     return False
             return True
         except (IndexError, AttributeError):
