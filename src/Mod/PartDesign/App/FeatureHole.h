@@ -76,6 +76,7 @@ public:
     App::PropertyBool           UseCustomThreadClearance;
     App::PropertyLength         CustomThreadClearance;
     App::PropertyInteger        BaseProfileType;
+    App::PropertyLength         ManualDeflection;
 
     enum BaseProfileTypeOptions {
         OnPoints    = 1 << 0,

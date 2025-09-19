@@ -851,6 +851,7 @@ Hole::Hole()
     // Defaults to circles & arcs so that older files are kept intact
     // while new file get points, circles and arcs set in setupObject()
     ADD_PROPERTY_TYPE(BaseProfileType, (BaseProfileTypeOptions::OnCirclesArcs), "Hole", App::Prop_None, "Which profile feature to base the holes on");
+    ADD_PROPERTY_TYPE(ManualDeflection, (0.01), "Hole", App::Prop_None, "Thread end marker deflection");
 }
 
 void Hole::updateHoleCutParams()

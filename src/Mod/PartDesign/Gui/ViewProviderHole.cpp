@@ -142,6 +142,7 @@ void ViewProviderHole::updateData(const App::Property* prop)
     }
     if (prop == &pcHole->ThreadDepth
         || prop == &pcHole->ThreadDepthType
+        || prop == &pcHole->ManualDeflection
     ) {
         updateThreadClipper(pcHole);
         return;
@@ -393,7 +394,10 @@ void ViewProviderHole::updateEndThreadRing(const PartDesign::Hole* pcHole)
                 const double radius = nominalRadius - shrinkOffset;
                 GeomAdaptor_Curve adaptor(new Geom_Circle(axis, radius), f, l);
                 double deflection = (this->Deviation.getValue() / 100.0) * std::numbers::sqrt2 * radius;
-                GCPnts_QuasiUniformDeflection sampler(adaptor, deflection);
+                double manualDeflection = pcHole->ManualDeflection.getValue();
+                Base::Console().message("Calculated deflection %f\n", deflection);
+                Base::Console().message("Used manual deflection %f\n", manualDeflection);
+                GCPnts_QuasiUniformDeflection sampler(adaptor, manualDeflection);
 
                 std::vector<SbVec3f> vertices;
                 for (int i = 1; i <= sampler.NbPoints(); i++) {
