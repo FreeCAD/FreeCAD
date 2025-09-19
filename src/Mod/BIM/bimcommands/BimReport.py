@@ -10,7 +10,7 @@ class BIM_Report:
 
     def GetResources(self):
         return {
-            "Pixmap": "Arch_Schedule",
+            "Pixmap": "BIM_Report",
             "MenuText": "BIM Report",
             "ToolTip": "Create a new BIM Report to query model data with SQL"
         }
