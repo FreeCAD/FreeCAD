@@ -150,8 +150,8 @@ class TestArchReport(TestArchBase.TestArchBase):
         self.assertEqual(len(results_data), 2)
 
         expected_rows = [
-            ["Exterior Wall", "Wall", self.wall_ext.Height.UserString],
-            ["Interior partition wall", "Wall", self.wall_int.Height.UserString],
+            ["Exterior Wall", "Wall", self.wall_ext.Height],
+            ["Interior partition wall", "Wall", self.wall_int.Height],
         ]
         self.assertCountEqual(results_data, expected_rows, "Specific column data mismatch.")
 
