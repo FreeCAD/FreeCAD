@@ -453,3 +453,13 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
         }
     }
 }
+bool ViewProviderBody::canDragObjectToTarget(App::DocumentObject* obj,
+                                             App::DocumentObject* target) const
+{
+    if (obj->isDerivedFrom<PartDesign::Feature>()) {
+        return target && target->is<PartDesign::Body>();
+    }
+
+    return ViewProviderPart::canDragObjectToTarget(obj, target);
+}
+
