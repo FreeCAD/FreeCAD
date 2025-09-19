@@ -1125,8 +1125,6 @@ class TaskDressupLeadInOut(SimpleEditPanel):
         self.connectWidget("RapidPlunge", self.form.chkRapidPlunge)
         self.setFields()
 
-        styleEnum = self.obj.getEnumerationsOfProperty("StyleIn")
-
         def handleGroupBoxCheck():
             self.obj.LeadIn = self.form.groupBoxIn.isChecked()
             self.obj.LeadOut = self.form.groupBoxOut.isChecked()
