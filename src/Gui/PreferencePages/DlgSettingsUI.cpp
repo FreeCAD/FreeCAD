@@ -205,32 +205,5 @@ void DlgSettingsUI::changeEvent(QEvent *e)
     }
 }
 
-namespace {
-
-void applyStyleSheet(ParameterGrp *hGrp)
-{
-    if (auto parameterManager = Base::provideService<Gui::StyleParameters::ParameterManager>()) {
-        parameterManager->reload();
-    }
-
-    auto sheet = hGrp->GetASCII("StyleSheet");
-    bool tiledBG = hGrp->GetBool("TiledBackground", false);
-    Gui::Application::Instance->setStyleSheet(QString::fromUtf8(sheet.c_str()), tiledBG);
-}
-
-} // anonymous namespace
-
-void DlgSettingsUI::attachObserver()
-{
-    static ParamHandlers handlers;
-
-    auto handler = handlers.addDelayedHandler("BaseApp/Preferences/MainWindow",
-                               {"StyleSheet", "TiledBackground"},
-                               applyStyleSheet);
-    handlers.addHandler("BaseApp/Preferences/Themes",
-                        {"ThemeAccentColor1", "ThemeAccentColor2", "ThemeAccentColor2"},
-                        handler);
-}
-
 #include "moc_DlgSettingsUI.cpp"
 
