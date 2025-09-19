@@ -160,7 +160,14 @@ class SelectStatement:
                 value = None
                 if isinstance(extractor, AggregateFunction):
                     if extractor.function_name == 'count':
-                        value = len(object_list)
+                        # Distinguish between COUNT(*) and COUNT(property)
+                        if extractor.argument == '*':
+                            value = len(object_list)
+                        else:
+                            # Count only objects where the specified property is not None
+                            prop_name = extractor.argument.value
+                            count = sum(1 for obj in object_list if get_property(obj, prop_name) is not None)
+                            value = count
                     else:
                         # For other aggregates, extract the relevant property from all objects in the group
                         arg_extractor = extractor.argument
@@ -219,7 +226,13 @@ class SelectStatement:
                     value = extractor.get_value(None)
                 elif isinstance(extractor, AggregateFunction):
                     if extractor.function_name == 'count':
-                        value = len(objects)
+                        if extractor.argument == '*':
+                            value = len(objects)
+                        else:
+                            # Count only objects where the specified property is not None
+                            prop_name = extractor.argument.value
+                            count = sum(1 for obj in objects if get_property(obj, prop_name) is not None)
+                            value = count
                     else:
                         # For other aggregates, they must have a property to act on.
                         if isinstance(extractor.argument, ReferenceExtractor):
