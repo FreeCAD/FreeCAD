@@ -1595,13 +1595,7 @@ void DocumentObject::handleChangedPropertyName(Base::XMLReader& reader,
                                                const char* propName)
 {
     if (strcmp(propName, "Label2") == 0) {
-        Property* prop = getPropertyByName("Description");
-        if (prop) {
-            prop->Restore(reader);
-        }
-        else {
-            ExtensionContainer::handleChangedPropertyName(reader, typeName, propName);
-        }
+        Description.Restore(reader);
     }
     else {
         ExtensionContainer::handleChangedPropertyName(reader, typeName, propName);
