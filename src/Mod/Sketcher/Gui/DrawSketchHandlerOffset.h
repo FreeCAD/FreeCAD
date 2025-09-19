@@ -1274,4 +1274,3 @@ void DSHOffsetController::computeNextDrawSketchHandlerMode()
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerOffset_H
-
