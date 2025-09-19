@@ -71,15 +71,52 @@ class JobCreate:
         self.index = None
         self.model = None
 
+    def _getMinuteBasedSchemas(self):
+        """Dynamically discover which unit schemas support velocity in minutes."""
+        internal_names = FreeCAD.Units.listSchemas()
+        minute_based_schemes = []
+        
+        # Create a test velocity quantity
+        q = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity)
+        
+        for i, key in enumerate(internal_names):
+            try:
+                label = FreeCAD.Units.listSchemas(i)
+                r = FreeCAD.Units.schemaTranslate(q, i)
+                if '/min' in r[2]:
+                    minute_based_schemes.append({'id': i, 'label': label})
+            except (IndexError, TypeError):
+                # Skip invalid schema indices
+                continue
+        
+        return minute_based_schemes
+
+    def _currentSchemaUsesMinutes(self):
+        """Test if the current unit schema uses minutes for velocity."""
+        try:
+            # Create a test velocity quantity
+            q = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity)
+            
+            # Get current schema's representation of velocity
+            current_representation =   q.getUserPreferred()[2]
+            
+            # Check if the current representation contains '/min'
+            return '/min' in current_representation
+        except Exception:
+            # If we can't determine, assume it doesn't use minutes
+            return False
+
     def _warnUserIfNotUsingMinutes(self):
         # Warn user if current schema doesn't use minute for time in velocity
         if Path.Preferences.suppressVelocity():
             return
 
-        # schemas in order of preference -- the first ones get proposed to the user
-        minute_based_schemes = list(map(FreeCAD.Units.listSchemas, [6, 3, 2]))
-        if FreeCAD.ActiveDocument.UnitSystem in minute_based_schemes:
+        # Test if current schema uses minutes for velocity
+        if self._currentSchemaUsesMinutes():
             return
+
+        # Get all minute-based schemas for the dialog
+        minute_based_schemes = self._getMinuteBasedSchemas()
 
         # Create custom dialog with unit schema selection
         dialog = QtGui.QDialog()
@@ -124,7 +161,8 @@ class JobCreate:
         
         self.schema_buttons = []
         for i, schema in enumerate(minute_based_schemes):
-            radio = QtGui.QRadioButton(schema)
+            radio = QtGui.QRadioButton(schema['label'])
+            radio.setProperty('schema_id', schema['id'])  # Store the schema ID
             if i == 0:  # Select first (most preferred) by default
                 radio.setChecked(True)
             self.schema_buttons.append(radio)
@@ -168,22 +206,24 @@ class JobCreate:
     
     def _applyUnitSchema(self, dialog):
         """Apply the selected unit schema to the document."""
-        selected_schema = None
+        selected_schema_id = None
+        selected_schema_label = None
         for button in self.schema_buttons:
             if button.isChecked():
-                selected_schema = button.text()
+                selected_schema_id = button.property('schema_id')
+                selected_schema_label = button.text()
                 break
         
-        if selected_schema:
+        if selected_schema_id is not None:
             try:
-                FreeCAD.ActiveDocument.UnitSystem = selected_schema
+                FreeCAD.ActiveDocument.UnitSystem = selected_schema_id
                 FreeCAD.ActiveDocument.recompute()
                 
                 # Show success message
                 QtGui.QMessageBox.information(
                     dialog,
                     translate("CAM_Job", "Unit Schema Changed"),
-                    translate("CAM_Job", "Unit schema successfully changed to '{}'.").format(selected_schema)
+                    translate("CAM_Job", "Unit schema successfully changed to '{}'.").format(selected_schema_label)
                 )
                 dialog.accept()
             except Exception as e:
