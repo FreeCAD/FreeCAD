@@ -393,3 +393,98 @@ class TestArchReport(TestArchBase.TestArchBase):
         # Check for a specific, user-friendly error message.
         self.assertIn("must appear in the GROUP BY clause", str(error),
                       "The error message is not descriptive enough.")
+
+    def test_non_grouped_sum_calculates_correctly(self):
+        """
+        Tests the SUM() aggregate function without a GROUP BY clause in isolation.
+        This test calls the SQL engine directly to ensure the summing logic is correct.
+        """
+        # The query sums the Height of the two wall objects created in setUp().
+        # Expected result: 3000mm + 2500mm = 5500mm.
+        query = "SELECT SUM(Height) FROM document WHERE IfcType = 'Wall'"
+
+        # We call the engine directly, bypassing the _run_query_for_objects helper.
+        headers, results_data = ArchSql.run_query_for_objects(query)
+
+        # --- Assertions ---
+        # 1. An aggregate query without a GROUP BY should always return exactly one row.
+        self.assertEqual(len(results_data), 1, "A non-grouped aggregate query should return exactly one row.")
+
+        # 2. The result in that row should be the correct sum.
+        actual_sum = float(results_data[0][0])
+        expected_sum = 5500.0
+        self.assertAlmostEqual(
+            actual_sum,
+            expected_sum,
+            "The SUM() result is incorrect. The engine is not accumulating the values correctly."
+        )
+
+    def test_non_grouped_query_with_mixed_extractors(self):
+        """
+        Tests a non-grouped query with both a static value and a SUM() aggregate.
+        """
+        query = "SELECT 'Total Height', SUM(Height) FROM document WHERE IfcType = 'Wall'"
+
+        # We call the engine directly to isolate its behavior.
+        headers, results_data = ArchSql.run_query_for_objects(query)
+
+        # --- Assertions ---
+        # 1. The query should still return exactly one row.
+        self.assertEqual(len(results_data), 1, "A non-grouped mixed query should return exactly one row.")
+
+        # 2. Check the content of the single row.
+        #    The first column should be the static string.
+        self.assertEqual(results_data[0][0], "Total Height")
+        #    The second column should be the correct sum (3000 + 2500 = 5500).
+        actual_sum = float(results_data[0][1])
+        expected_sum = 5500.0
+        self.assertAlmostEqual(
+            actual_sum,
+            expected_sum,
+            "The SUM() result in a mixed non-grouped query is incorrect."
+        )
+
+    def test_sum_of_space_area_is_correct_and_returns_float(self):
+        """
+        Tests that SUM() on the 'Area' property of Arch.Space objects
+        returns the correct numerical sum as a float.
+        """
+        # --- Test Setup: Create two Arch.Space objects with discernible areas ---
+
+        # Space 1: Base is a 1000x2000 box, resulting in 2,000,000 mm^2 floor area
+        base_box1 = self.doc.addObject("Part::Box", "BaseBox1")
+        base_box1.Length = 1000
+        base_box1.Width = 2000
+        space1 = Arch.makeSpace(base_box1, name="Office")
+
+        # Space 2: Base is a 3000x1500 box, resulting in 4,500,000 mm^2 floor area
+        base_box2 = self.doc.addObject("Part::Box", "BaseBox2")
+        base_box2.Length = 3000
+        base_box2.Width = 1500
+        space2 = Arch.makeSpace(base_box2, name="Workshop")
+
+        self.doc.recompute() # Ensure space areas are calculated
+
+        query = "SELECT SUM(Area) FROM document WHERE IfcType = 'Space'"
+
+        # Call the engine directly to isolate its behavior
+        headers, results_data = ArchSql.run_query_for_objects(query)
+
+        # --- Assertions ---
+        # 1. An aggregate query should return exactly one row.
+        self.assertEqual(len(results_data), 1, "A non-grouped aggregate query should return exactly one row.")
+
+        # 2. The result in the row should be a float. This verifies the engine's
+        #    design to return raw numbers for aggregates.
+        self.assertIsInstance(results_data[0][0], float, "The result of a SUM() should be a float.")
+
+        # 3. The value of the float should be the correct sum.
+        actual_sum = results_data[0][0]
+        expected_sum = 6500000.0  # 2,000,000 + 4,500,000
+
+        self.assertAlmostEqual(
+            actual_sum,
+            expected_sum,
+            "The SUM(Area) for Space objects is incorrect."
+        )
+
