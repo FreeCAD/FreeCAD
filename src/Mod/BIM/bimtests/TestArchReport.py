@@ -4,6 +4,7 @@
 
 """Unit tests for the ArchReport and ArchSql modules."""
 
+import os
 from unittest.mock import patch
 import FreeCAD
 import Arch
@@ -121,6 +122,31 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         return headers, filtered_results_for_specific_columns
 
+    def _find_preset_file(self, filename):
+        """
+        Finds a test resource file by searching in the build tree first,
+        then falling back to the final install directory. This makes the
+        test robust for both development and post-install testing.
+        """
+        # Path for running tests from a standard build directory (most common)
+        # This navigates from .../bimtests/ up to the BIM module root
+        # Note: A self-correction was made here from a previous version.
+        # The path is relative to the *test file's* location.
+        build_path = os.path.join(os.path.dirname(__file__), "..", "Presets", "ArchReport", filename)
+        print(f"\n[DIAGNOSTIC] Attempting to find template file in build directory: {build_path}")
+        if os.path.exists(build_path):
+            print(f"\n[DIAGNOSTIC] Found template file in build directory: {build_path}")
+            return build_path
+
+        # Fallback to the final installed resource directory
+        install_path = os.path.join(FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "ArchReport", filename)
+        print(f"\n[DIAGNOSTIC] Attempting to find template file in install directory: {install_path}")
+        if os.path.exists(install_path):
+            print(f"\n[DIAGNOSTIC] Found template file in install directory: {install_path}")
+            return install_path
+
+        # If neither is found, the test will fail below.
+        return None
 
     # Category 1: Basic Object Creation and Validation
     def test_makeReport_default(self):
@@ -488,3 +514,133 @@ class TestArchReport(TestArchBase.TestArchBase):
             "The SUM(Area) for Space objects is incorrect."
         )
 
+    def test_min_and_max_aggregates(self):
+        """
+        Tests the MIN() and MAX() aggregate functions on a numeric property.
+        """
+        # Note: The test setup already includes two walls with different lengths.
+        # Exterior Wall: Length = 1000mm
+        # Interior Wall: Length = 500mm
+        query = "SELECT MIN(Length), MAX(Length) FROM document WHERE IfcType = 'Wall'"
+
+        headers, results_data = ArchSql.run_query_for_objects(query)
+
+        self.assertEqual(len(results_data), 1, "Aggregate query should return a single row.")
+        self.assertIsInstance(results_data[0][0], float, "MIN() should return a float.")
+        self.assertIsInstance(results_data[0][1], float, "MAX() should return a float.")
+
+        min_length = results_data[0][0]
+        max_length = results_data[0][1]
+
+        self.assertAlmostEqual(min_length, 500.0)
+        self.assertAlmostEqual(max_length, 1000.0)
+
+    def test_count_property_vs_count_star(self):
+        """
+        Tests that COUNT(property) correctly counts only non-null values,
+        while COUNT(*) counts all rows.
+        """
+        # --- Test Setup ---
+        # Use a unique property name that is guaranteed not to exist on any other object.
+        # This ensures the test is perfectly isolated.
+        unique_prop_name = "TestSpecificTag"
+
+        # Add the unique property to exactly two objects.
+        self.wall_ext.addProperty("App::PropertyString", unique_prop_name, "BIM")
+        setattr(self.wall_ext, unique_prop_name, "Exterior")
+
+        self.column.addProperty("App::PropertyString", unique_prop_name, "BIM")
+        setattr(self.column, unique_prop_name, "Structural")
+
+        self.doc.recompute()
+
+        # --- Test COUNT(TestSpecificTag) ---
+        # This query should now only find the two objects we explicitly modified.
+        query_count_prop = f"SELECT COUNT({unique_prop_name}) FROM document"
+        headers_prop, results_prop = ArchSql.run_query_for_objects(query_count_prop)
+        self.assertEqual(int(results_prop[0][0]), 2,
+                         f"COUNT({unique_prop_name}) should count exactly the 2 objects where the property was added.")
+
+        # --- Test COUNT(*) ---
+        # Build the WHERE clause dynamically from the actual object labels.
+        # This is the most robust way to ensure the test is correct and not
+        # dependent on FreeCAD's internal naming schemes.
+        labels_to_count = [
+            self.wall_ext.Label,
+            self.wall_int.Label,
+            self.column.Label,
+            self.beam.Label,
+            self.window.Label,
+            self.part_box.Label
+        ]
+
+        # Create a chain of "Label = '...'" conditions
+        where_conditions = " OR ".join([f"Label = '{label}'" for label in labels_to_count])
+        query_count_star = f"SELECT COUNT(*) FROM document WHERE {where_conditions}"
+
+        headers_star, results_star = ArchSql.run_query_for_objects(query_count_star)
+        self.assertEqual(int(results_star[0][0]), 6, "COUNT(*) should count all 6 test objects.")
+
+    def test_bundled_report_templates_are_valid(self):
+        """
+        Performs an integration test to ensure all bundled report templates
+        can be parsed and executed without errors against a sample model.
+        """
+        import os
+        import json
+
+        # Find the bundled templates file using the helper
+        template_path = self._find_preset_file("report_templates.json")
+        self.assertIsNotNone(template_path, "Bundled report_templates.json not found in build or install directories. Check CMakeLists.txt.")
+
+        with open(template_path, 'r', encoding='utf8') as f:
+            templates = json.load(f)
+
+        self.assertIn("Room and Area Schedule", templates)
+        self.assertIn("Wall Quantities", templates)
+
+        # Execute every query in every statement of every template
+        for template_name, template_data in templates.items():
+            for i, statement_data in enumerate(template_data["statements"]):
+                query = statement_data["query_string"]
+
+                with self.subTest(template=template_name, statement_index=i):
+                    # We only care that the query executes without raising an exception.
+                    # This verifies syntax and compatibility with the sample model.
+                    try:
+                        headers, results_data = ArchSql.run_query_for_objects(query)
+                        # A successful query returns a list of headers (even if empty)
+                        self.assertIsInstance(headers, list)
+                    except Exception as e:
+                        self.fail(f"Query '{query}' from template '{template_name}' failed with an exception: {e}")
+
+    def test_bundled_query_presets_are_valid(self):
+        """
+        Performs an integration test to ensure all bundled single-query presets
+        are syntactically valid and executable.
+        """
+        import os
+        import json
+
+        # Find the bundled presets file using the robust helper
+        preset_path = self._find_preset_file("query_presets.json")
+        self.assertIsNotNone(preset_path, "Bundled query_presets.json not found in build or install directories. Check CMakeLists.txt.")
+
+        with open(preset_path, 'r', encoding='utf8') as f:
+            presets = json.load(f)
+
+        # Sanity check that the expected presets are present
+        self.assertIn("All Walls", presets)
+        self.assertIn("Count by IfcType", presets)
+
+        # Execute every query in the presets file
+        for preset_name, preset_data in presets.items():
+            query = preset_data["query"]
+
+            with self.subTest(preset=preset_name):
+                # We only care that the query executes without raising an exception.
+                try:
+                    headers, results_data = ArchSql.run_query_for_objects(query)
+                    self.assertIsInstance(headers, list)
+                except Exception as e:
+                    self.fail(f"Query '{query}' from preset '{preset_name}' failed with an exception: {e}")
