@@ -42,11 +42,12 @@ operand: function | reference | literal | NUMBER | null
 // Boolean Logic
 boolean_expression: boolean_or
 boolean_or: boolean_or OR boolean_and -> boolean_expression_recursive
-          | boolean_and
+            | boolean_and
 boolean_and: boolean_and AND boolean_term -> boolean_expression_recursive
-           | boolean_term
-boolean_term: boolean_comparison | "(" boolean_expression ")"
+            | boolean_term
+boolean_term: boolean_comparison | in_expression | "(" boolean_expression ")"
 boolean_comparison: operand comparison_operator operand
+in_expression: reference IN "(" literal ("," literal)* ")"
 
 // Comparison Operator
 comparison_operator: eq_op | neq_op | gt_op | lt_op | gte_op | lte_op | is_not_op | is_op | like_op
@@ -78,6 +79,7 @@ OR:     "OR"i
 AND:    "AND"i
 IS:     "IS"i
 NOT:    "NOT"i
+IN:     "IN"i
 LIKE:   "LIKE"i
 GROUP:  "GROUP"i
 BY:     "BY"i
