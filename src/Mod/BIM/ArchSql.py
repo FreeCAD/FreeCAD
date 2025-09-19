@@ -340,6 +340,18 @@ class BooleanComparison:
 
         return ops[self.op](left_val, right_val) if self.op in ops else False
 
+class InComparison:
+    """Represents a SQL 'IN (values...)' comparison."""
+    def __init__(self, reference_extractor, literal_extractors):
+        self.reference_extractor = reference_extractor
+        # Eagerly extract the static string values for efficient lookup
+        self.values_set = {ex.get_value(None) for ex in literal_extractors}
+
+    def evaluate(self, obj):
+        property_value = self.reference_extractor.get_value(obj)
+        # The check is a simple Python 'in' against the pre-calculated set
+        return property_value in self.values_set
+
 class ReferenceExtractor:
     def __init__(self, value): self.value = value
     def get_value(self, obj): return get_property(obj, self.value)
@@ -403,6 +415,11 @@ class SqlTreeTransformer:
 
     def boolean_comparison(self, items):
         return BooleanComparison(items[0], items[1], items[2])
+
+    def in_expression(self, items):
+        reference_extractor = items[0]
+        literal_extractors = [item for item in items[1:] if isinstance(item, StaticExtractor)]
+        return InComparison(reference_extractor, literal_extractors)
 
     def comparison_operator(self, i): return i[0]
     def eq_op(self, _): return "="

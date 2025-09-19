@@ -644,3 +644,23 @@ class TestArchReport(TestArchBase.TestArchBase):
                     self.assertIsInstance(headers, list)
                 except Exception as e:
                     self.fail(f"Query '{query}' from preset '{preset_name}' failed with an exception: {e}")
+
+    def test_where_in_clause(self):
+        """
+        Tests the SQL 'IN' clause for filtering against a list of values.
+        """
+        # This query should select only the two wall objects from the setup.
+        query = "SELECT * FROM document WHERE Label IN ('Exterior Wall', 'Interior partition wall')"
+
+        # This will fail at the parsing stage until the 'IN' keyword is implemented.
+        headers, results_data = ArchSql.run_query_for_objects(query)
+
+        # --- Assertions ---
+        # 1. The query should return exactly two rows.
+        self.assertEqual(len(results_data), 2, "The IN clause should have found exactly two matching objects.")
+
+        # 2. Verify the labels of the returned objects.
+        returned_labels = sorted([row[0] for row in results_data])
+        expected_labels = sorted([self.wall_ext.Label, self.wall_int.Label])
+        self.assertListEqual(returned_labels, expected_labels, "The objects returned by the IN clause are incorrect.")
+
