@@ -27,13 +27,25 @@ _transformer = None
 
 def get_property(obj, prop_name):
     """Gets a property from a FreeCAD object, including sub-properties."""
-    current_val = obj
-    for part in prop_name.split('.'):
-        if hasattr(current_val, part):
-            current_val = getattr(current_val, part)
-        else:
-            return None
-    return current_val
+
+    # The property name implies sub-property access (e.g., 'Placement.Base.x')
+    is_nested_property = lambda prop_name: '.' in prop_name
+
+    if not is_nested_property(prop_name):
+        # Handle simple, direct properties first, which is the most common case.
+        if hasattr(obj, prop_name):
+            return getattr(obj, prop_name)
+        return None
+    else:
+        # Handle nested properties (e.g., Placement.Base.x)
+        current_obj = obj
+        parts = prop_name.split('.')
+        for part in parts:
+            if hasattr(current_obj, part):
+                current_obj = getattr(current_obj, part)
+            else:
+                return None
+        return current_obj
 
 # Query Object Model
 class GroupByClause:
@@ -88,13 +100,13 @@ class SelectStatement:
             group_by_col_names = {ex.value for ex in self.group_by_clause.columns}
 
             for extractor, _ in self.columns_info:
-                if extractor.__class__.__name__ in ['AggregateFunction', 'StaticExtractor']:
+                if isinstance(extractor, (AggregateFunction, StaticExtractor)):
                     continue  # Valid cases
 
                 if extractor == '*':
                     raise ValueError("Cannot use '*' in a SELECT statement with a GROUP BY clause.")
 
-                if extractor.__class__.__name__ == 'ReferenceExtractor':
+                if isinstance(extractor, ReferenceExtractor):
                     if extractor.value not in group_by_col_names:
                         raise ValueError(
                             f"Column '{extractor.value}' must appear in the GROUP BY clause "
@@ -103,11 +115,15 @@ class SelectStatement:
             return
 
         # Rule: If there is no GROUP BY, you cannot mix aggregate and non-aggregate columns.
-        has_aggregate = any(ex.__class__.__name__ == 'AggregateFunction' for ex, _ in self.columns_info)
-        has_non_aggregate = any(ex.__class__.__name__ != 'AggregateFunction' for ex, _ in self.columns_info)
+        has_aggregate = any(isinstance(ex, AggregateFunction) for ex, _ in self.columns_info)
+        # A non-aggregate is a ReferenceExtractor. StaticExtractors are allowed.
+        has_non_aggregate_reference = any(isinstance(ex, ReferenceExtractor) for ex, _ in self.columns_info)
 
-        if has_aggregate and has_non_aggregate:
-            raise ValueError("Cannot mix aggregate functions and regular columns without a GROUP BY clause.")
+        if has_aggregate and has_non_aggregate_reference:
+            raise ValueError(
+                "Cannot mix aggregate functions and object properties (e.g., 'Label') "
+                "without a GROUP BY clause."
+            )
 
     def _get_grouping_key(self, obj, group_by_extractors):
         """Generates a tuple key for an object based on the GROUP BY columns."""
@@ -181,7 +197,7 @@ class SelectStatement:
                     if key_index != -1:
                         value = key[key_index]
 
-                row.append(str(value) if value is not None else 'None')
+                row.append(value)
             results_data.append(row)
 
         return results_data
@@ -198,37 +214,42 @@ class SelectStatement:
             row = []
             for extractor, _ in self.columns_info:
                 value = None
-                if isinstance(extractor, AggregateFunction):
+
+                if isinstance(extractor, StaticExtractor):
+                    value = extractor.get_value(None)
+                elif isinstance(extractor, AggregateFunction):
                     if extractor.function_name == 'count':
                         value = len(objects)
                     else:
-                        # For other aggregates, extract the relevant property from all objects
-                        arg_extractor = extractor.argument
-                        values = []
-                        for obj in objects:
-                            prop_val = arg_extractor.get_value(obj)
-                            # Ensure we only aggregate numeric, non-null values
-                            if prop_val is not None:
-                                if isinstance(prop_val, FreeCAD.Units.Quantity):
-                                    prop_val = prop_val.Value
-                                if isinstance(prop_val, (int, float)):
-                                    values.append(prop_val)
+                        # For other aggregates, they must have a property to act on.
+                        if isinstance(extractor.argument, ReferenceExtractor):
+                            arg_extractor = extractor.argument
+                            values = []
+                            for obj in objects:
+                                prop_val = arg_extractor.get_value(obj)
+                                # Ensure we only aggregate numeric, non-null values
+                                if prop_val is not None:
+                                    if isinstance(prop_val, FreeCAD.Units.Quantity):
+                                        prop_val = prop_val.Value
+                                    if isinstance(prop_val, (int, float)):
+                                        values.append(prop_val)
 
-                        if not values:
-                            value = None
-                        elif extractor.function_name == 'sum':
-                            value = sum(values)
-                        elif extractor.function_name == 'min':
-                            value = min(values)
-                        elif extractor.function_name == 'max':
-                            value = max(values)
-                        else:
-                            value = f"'{extractor.function_name}' NOT_IMPL"
+                            if not values:
+                                value = None
+                            elif extractor.function_name == 'sum':
+                                value = sum(values)
+                            elif extractor.function_name == 'min':
+                                value = min(values)
+                            elif extractor.function_name == 'max':
+                                value = max(values)
+                            else:
+                                value = f"'{extractor.function_name}' NOT_IMPL"
                 else:
-                    # This case is handled by the validate() method and should not be reached.
-                    value = "VALIDATION_ERROR"
+                    # This case (a ReferenceExtractor) is correctly blocked by the
+                    # validate() method and should not be reached.
+                    value = "INVALID_MIX"
 
-                row.append(str(value) if value is not None else 'None')
+                row.append(value)
             results_data.append(row)
         else:
             # This is a standard row-by-row query.
@@ -240,11 +261,8 @@ class SelectStatement:
                     else:
                         value = extractor.get_value(obj)
 
-                    # Format the value for spreadsheet display
-                    if isinstance(value, FreeCAD.Units.Quantity):
-                        row.append(value.UserString)
-                    else:
-                        row.append(str(value) if value is not None else '')
+                    # Append the raw value; formatting is the writer's responsibility
+                    row.append(value)
                 results_data.append(row)
 
         return results_data
@@ -450,7 +468,10 @@ def run_query_for_objects(query_string):
     """Public interface for the Report object to get the resulting objects (headers, data_rows)."""
     statement, error = _get_query_object(query_string)
     if error:
-        FreeCAD.Console.PrintError(f"BIM Report Execution Error: A {type(error).__name__} occurred.\n")
+        if isinstance(error, str):
+            FreeCAD.Console.PrintError(f"BIM Report Validation Error: {error}\n")
+        else:
+            FreeCAD.Console.PrintError(f"BIM Report Execution Error: A {type(error).__name__} occurred.\n")
         return [], [] # Return empty headers and data on error.
 
     headers, results_data = statement.execute()
