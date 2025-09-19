@@ -233,6 +233,12 @@ namespace App {
         /// \return The version tuple.
         static std::tuple<int, int> extractVersionFromConfigMap(const std::map<std::string,std::string> &config);
 
+        /// A utility method to remove any stray null characters from a path (Conda sometimes
+        /// injects these for unknown reasons -- see #6892 in the bug tracker).
+        /// \param pathAsString The std::string path to sanitize
+        /// \returns A path with any stray nulls removed
+        static std::filesystem::path sanitizePath(const std::string& pathAsString);
+
     private:
         std::tuple<int, int> _currentVersion;
         std::filesystem::path _home;
