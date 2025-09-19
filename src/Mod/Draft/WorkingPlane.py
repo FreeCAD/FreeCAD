@@ -1226,7 +1226,7 @@ class PlaneGui(PlaneBase):
                  auto=True,
                  icon=":/icons/view-axonometric.svg",
                  label=QT_TRANSLATE_NOOP("draft", "Auto"),
-                 tip=QT_TRANSLATE_NOOP("draft", "Current working plane:") + " " + QT_TRANSLATE_NOOP("draft", "Auto")):
+                 tip=QT_TRANSLATE_NOOP("draft", "Current working plane: Auto")):
 
         if isinstance(u, PlaneGui):
             self.match(u)
