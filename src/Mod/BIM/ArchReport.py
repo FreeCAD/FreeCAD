@@ -20,14 +20,14 @@ else:
 import ArchSql
 
 if FreeCAD.GuiUp:
-    ICON_STATUS_OK = FreeCADGui.getIcon(":/icons/Task_Ok.svg")
-    ICON_STATUS_WARN = FreeCADGui.getIcon(":/icons/Task_Warning.svg")
-    ICON_STATUS_ERROR = FreeCADGui.getIcon(":/icons/Task_Error.svg")
-    ICON_STATUS_INCOMPLETE = FreeCADGui.getIcon(":/icons/Task_Incomplete.svg")
+    ICON_STATUS_OK = FreeCADGui.getIcon(":/icons/edit_OK.svg")
+    ICON_STATUS_WARN = FreeCADGui.getIcon(":/icons/Warning.svg")
+    ICON_STATUS_ERROR = FreeCADGui.getIcon(":/icons/delete.svg")
+    ICON_STATUS_INCOMPLETE = FreeCADGui.getIcon(":/icons/button_invalid.svg")
     ICON_EDIT = FreeCADGui.getIcon(":/icons/Draft_Edit.svg")
     ICON_ADD = FreeCADGui.getIcon(":/icons/list-add.svg")
     ICON_REMOVE = FreeCADGui.getIcon(":/icons/list-remove.svg")
-    ICON_DUPLICATE = FreeCADGui.getIcon(":/icons/copy.svg")
+    ICON_DUPLICATE = FreeCADGui.getIcon(":/icons/edit-copy.svg")
 
 
 def _get_preset_paths(preset_type):
