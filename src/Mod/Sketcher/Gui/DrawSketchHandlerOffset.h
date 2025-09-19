@@ -290,7 +290,8 @@ private:
         GeometryFacade::setConstruction(line, false);
         return line;
     }
-    Part::Geometry* curveToCircleOrArc(BRepAdaptor_Curve curve)
+
+    Part::Geometry* curveToCircleOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& edge)
     {
         gp_Circ circle = curve.Circle();
         gp_Pnt cnt = circle.Location();
@@ -302,39 +303,71 @@ private:
             gCircle->setRadius(circle.Radius());
             gCircle->setCenter(Base::Vector3d(cnt.X(), cnt.Y(), cnt.Z()));
 
+            if (edge.Orientation() == TopAbs_REVERSED) {
+                Handle(Geom_Circle) hCircle = Handle(Geom_Circle)::DownCast(gCircle->handle());
+                hCircle->Reverse();
+            }
+
             GeometryFacade::setConstruction(gCircle, false);
             return gCircle;
         }
         else {
+            Handle(Geom_Circle) hCircle = new Geom_Circle(circle);
+
+            double u1 = curve.FirstParameter();
+            double u2 = curve.LastParameter();
+
+            if (edge.Orientation() == TopAbs_REVERSED) {
+                hCircle->Reverse();  // Reverses the axis of the underlying circle
+                std::swap(u1, u2);
+                u1 = -u1;
+                u2 = -u2;
+            }
+
             auto* gArc = new Part::GeomArcOfCircle();
-            Handle(Geom_Curve) hCircle = new Geom_Circle(circle);
-            Handle(Geom_TrimmedCurve) tCurve =
-                new Geom_TrimmedCurve(hCircle, curve.FirstParameter(), curve.LastParameter());
+            Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(hCircle, u1, u2);
             gArc->setHandle(tCurve);
+
             GeometryFacade::setConstruction(gArc, false);
             return gArc;
         }
     }
-    Part::Geometry* curveToEllipseOrArc(BRepAdaptor_Curve curve)
+
+    Part::Geometry* curveToEllipseOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& edge)
     {
         gp_Elips ellipse = curve.Ellipse();
-        // gp_Pnt cnt = ellipse.Location();
         gp_Pnt beg = curve.Value(curve.FirstParameter());
         gp_Pnt end = curve.Value(curve.LastParameter());
 
         if (beg.SquareDistance(end) < Precision::Confusion()) {
             auto* gEllipse = new Part::GeomEllipse();
             Handle(Geom_Ellipse) hEllipse = new Geom_Ellipse(ellipse);
+
+            if (edge.Orientation() == TopAbs_REVERSED) {
+                hEllipse->Reverse();
+            }
+
             gEllipse->setHandle(hEllipse);
             GeometryFacade::setConstruction(gEllipse, false);
             return gEllipse;
         }
         else {
-            Handle(Geom_Curve) hEllipse = new Geom_Ellipse(ellipse);
-            Handle(Geom_TrimmedCurve) tCurve =
-                new Geom_TrimmedCurve(hEllipse, curve.FirstParameter(), curve.LastParameter());
+            Handle(Geom_Ellipse) hEllipse = new Geom_Ellipse(ellipse);
+
+            double u1 = curve.FirstParameter();
+            double u2 = curve.LastParameter();
+
+            if (edge.Orientation() == TopAbs_REVERSED) {
+                hEllipse->Reverse();  // Reverses the axis of the underlying ellipse
+                std::swap(u1, u2);
+                u1 = -u1;
+                u2 = -u2;
+            }
+
+            Handle(Geom_TrimmedCurve) tCurve = new Geom_TrimmedCurve(hEllipse, u1, u2);
             auto* gArc = new Part::GeomArcOfEllipse();
             gArc->setHandle(tCurve);
+
             GeometryFacade::setConstruction(gArc, false);
             return gArc;
         }
@@ -359,11 +392,11 @@ private:
                 listOfOffsetGeoIds.push_back(geoIdToAdd);
             }
             else if (curve.GetType() == GeomAbs_Circle) {
-                geometriesToAdd.push_back(curveToCircleOrArc(curve));
+                geometriesToAdd.push_back(curveToCircleOrArc(curve, edge));
                 listOfOffsetGeoIds.push_back(geoIdToAdd);
             }
             else if (curve.GetType() == GeomAbs_Ellipse) {
-                geometriesToAdd.push_back(curveToEllipseOrArc(curve));
+                geometriesToAdd.push_back(curveToEllipseOrArc(curve, edge));
                 listOfOffsetGeoIds.push_back(geoIdToAdd);
             }
             // TODO Bspline support
