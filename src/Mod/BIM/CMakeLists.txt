@@ -267,6 +267,13 @@ add_custom_command(
 
 add_custom_target(ArchSqlParser ALL DEPENDS ${BIM_GENERATED_PARSER})
 
+# Copy ArchReport presets to the build directory to make them available for testing.
+# This is separate from the INSTALL command, which handles the final installation.
+file(COPY
+    ${CMAKE_CURRENT_SOURCE_DIR}/Presets/ArchReport/
+    DESTINATION ${CMAKE_BINARY_DIR}/Mod/BIM/Presets/ArchReport/
+)
+
 fc_target_copy_resource(BIM
     ${CMAKE_SOURCE_DIR}/src/Mod/BIM
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM
