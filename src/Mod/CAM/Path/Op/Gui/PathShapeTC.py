@@ -689,7 +689,7 @@ Returns a Path object from a list of shapes
                     skipZ
                     and cmd.x is None
                     and cmd.y is None
-                    and (cmd.z == obj.ClearanceHeight or obj.SafeHeight)
+                    and (cmd.z == obj.ClearanceHeight or cmd.z == obj.SafeHeight)
                 ):
                     # skip start move for closed profile
                     continue
