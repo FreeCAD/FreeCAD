@@ -481,9 +481,8 @@ def copyTC(tc, job):
         try:
             if prop not in ["Label", "Label2"]:
                 setattr(newtc, prop, getattr(tc, prop))
-        except:
-            # ignore failure; it will succeed for all attributes that are meant
-            # to be assigned
+        except RuntimeError:
+            # Ignore errors for read-only properties
             pass
     for attr, expr in tc.ExpressionEngine:
         newtc.setExpression(attr, expr)
