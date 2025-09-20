@@ -25,6 +25,7 @@
 
 #include "DlgSettingsViewColor.h"
 #include "ui_DlgSettingsViewColor.h"
+#include "TreeParams.h"
 
 
 using namespace Gui::Dialog;
@@ -55,6 +56,8 @@ DlgSettingsViewColor::DlgSettingsViewColor(QWidget* parent)
 
     connect(ui->checkMidColor, &QCheckBox::toggled, this,
         &DlgSettingsViewColor::onCheckMidColorToggled);
+    connect(ui->checkOverlayActiveEnabled, &QCheckBox::toggled, this,
+        &DlgSettingsViewColor::onCheckOverlayActiveEnabledToggled);
     // clang-format on
 }
 
@@ -77,6 +80,13 @@ void DlgSettingsViewColor::saveSettings()
     ui->TreeActiveColor->onSave();
     ui->CbLabelColor->onSave();
     ui->CbLabelTextSize->onSave();
+    // overlay active color settings
+    ui->checkOverlayActiveEnabled->onSave();
+    ui->TreeOverlayActiveColor->onSave();
+    // ensure tree views update to reflect overlay preference changes
+    TreeParams::refreshTreeViews();
+    // TreeParams::refreshTreeViews() handles scheduling and viewport updates
+    // for all TreeWidget instances.
 }
 
 void DlgSettingsViewColor::loadSettings()
@@ -93,6 +103,9 @@ void DlgSettingsViewColor::loadSettings()
     ui->TreeActiveColor->onRestore();
     ui->CbLabelColor->onRestore();
     ui->CbLabelTextSize->onRestore();
+    // overlay active color settings
+    ui->checkOverlayActiveEnabled->onRestore();
+    ui->TreeOverlayActiveColor->onRestore();
 
     if (ui->radioButtonSimple->isChecked()) {
         onRadioButtonSimpleToggled(true);
@@ -103,6 +116,9 @@ void DlgSettingsViewColor::loadSettings()
     else {
         onRadioButtonRadialGradientToggled(true);
     }
+
+    // Ensure overlay color button enabled state follows the checkbox
+    onCheckOverlayActiveEnabledToggled(ui->checkOverlayActiveEnabled->isChecked());
 }
 
 /**
@@ -129,6 +145,13 @@ void DlgSettingsViewColor::onCheckMidColorToggled(bool val)
 {
     ui->color2Label->setEnabled(val);
     ui->backgroundColorMid->setEnabled(val);
+}
+
+void DlgSettingsViewColor::onCheckOverlayActiveEnabledToggled(bool val)
+{
+    ui->TreeOverlayActiveColor->setEnabled(val);
+    // live update the tree so the overlay setting applies immediately
+    TreeParams::refreshTreeViews();
 }
 
 void DlgSettingsViewColor::onRadioButtonSimpleToggled(bool val)

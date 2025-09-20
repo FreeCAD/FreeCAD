@@ -56,6 +56,7 @@ protected Q_SLOTS:
   void onRadioButtonGradientToggled(bool val);
   void onRadioButtonRadialGradientToggled(bool val);
   void onCheckMidColorToggled(bool val);
+  void onCheckOverlayActiveEnabledToggled(bool val);
 
 private:
 	void setGradientColorVisibility(bool val);
