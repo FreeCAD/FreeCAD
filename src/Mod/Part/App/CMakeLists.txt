@@ -603,14 +603,6 @@ if(FREECAD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(Part PreCompiled.h PreCompiled.cpp PCH_SRCS)
 endif(FREECAD_USE_PCH)
 
-# Suppress some very long Eigen3 warnings of older versions
-if(EIGEN3_NO_DEPRECATED_COPY)
-    set_source_files_properties(
-        GeometryCurvePyImp.cpp
-        GeometrySurfacePyImp.cpp
-        PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
-endif()
-
 target_sources(Part PRIVATE ${Part_SRCS} ${FCBRepAlgoAPI_SRCS})
 target_link_libraries(Part ${Part_LIBS})
 

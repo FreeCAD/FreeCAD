@@ -83,7 +83,7 @@ target_include_directories(
     FreeCADGui
     SYSTEM
     PRIVATE
-    ${EIGEN3_INCLUDE_DIR}
+    ${Eigen3_INCLUDE_DIR}
     ${3DCONNEXION_INCLUDE_DIR}
 )
 
@@ -1514,26 +1514,6 @@ endif(FREECAD_USE_PCH)
 if (FREECAD_USE_QT_FILEDIALOG)
     set_source_files_properties(FileDialog.cpp PROPERTIES COMPILE_FLAGS -DUSE_QT_FILEDIALOG)
 endif()
-
-# Suppress some very long Eigen3 warnings of older versions and
-# suppress this warning for the SbMatrix class
-if (EIGEN3_NO_DEPRECATED_COPY)
-    set_source_files_properties(
-        NaviCube.cpp
-        Inventor/SoAutoZoomTranslation.cpp
-        Inventor/Draggers/SoTransformDragger.cpp
-        Inventor/Draggers/SoLinearDragger.cpp
-        Inventor/Draggers/SoLinearDraggerGeometry.cpp
-        Inventor/Draggers/SoPlanarDragger.cpp
-        Inventor/Draggers/SoRotationDragger.cpp
-        Inventor/Draggers/SoRotationDraggerGeometry.cpp
-        Inventor/Draggers/Gizmo.cpp
-        SoFCOffscreenRenderer.cpp
-        Selection/SoFCSelectionAction.cpp
-        Quarter/QuarterWidget.cpp
-        View3DInventorViewer.cpp
-        PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
-endif ()
 
 target_sources(FreeCADGui PRIVATE ${FreeCADGui_SRCS})
 target_link_libraries(FreeCADGui PUBLIC ${FreeCADGui_LIBS})

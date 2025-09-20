@@ -16,7 +16,7 @@ target_include_directories(
     SYSTEM
     PUBLIC
     ${CMAKE_SOURCE_DIR}/src/3rdParty/libkdtree
-    ${EIGEN3_INCLUDE_DIR}
+    ${Eigen3_INCLUDE_DIR}
     ${QtConcurrent_INCLUDE_DIRS}
 )
 
@@ -401,16 +401,6 @@ if(FREECAD_USE_PCH)
             $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
     )
 endif(FREECAD_USE_PCH)
-
-# Suppress some very long Eigen3 warnings of older versions
-if (EIGEN3_NO_DEPRECATED_COPY)
-    set_source_files_properties(
-        Core/Approximation.cpp
-        Core/CylinderFit.cpp
-        Core/SphereFit.cpp
-        Core/KDTree.cpp
-        PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
-endif ()
 
 target_sources(Mesh PRIVATE ${Core_SRCS} ${WildMagic4_SRCS} ${Mesh_SRCS})
 target_link_libraries(Mesh ${Mesh_LIBS})

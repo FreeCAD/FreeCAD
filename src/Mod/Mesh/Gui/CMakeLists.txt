@@ -143,14 +143,6 @@ SET(MeshGuiIcon_SVG
     Resources/icons/MeshWorkbench.svg
 )
 
-# Suppress this warning for the SbMatrix class
-if (EIGEN3_NO_DEPRECATED_COPY)
-    set_source_files_properties(
-        SoFCIndexedFaceSet.cpp
-        ViewProvider.cpp
-        PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
-endif ()
-
 add_library(MeshGui SHARED ${MeshGui_SRCS} ${MeshGuiIcon_SVG})
 
 if(FREECAD_USE_PCH)

@@ -119,7 +119,7 @@ target_include_directories(
     SYSTEM
     PUBLIC
     ${OCC_INCLUDE_DIR}
-    ${EIGEN3_INCLUDE_DIR}
+    ${Eigen3_INCLUDE_DIR}
 )
 target_link_libraries(Path ${Path_LIBS})
 if (FREECAD_WARN_ERROR)

@@ -13,7 +13,7 @@ target_include_directories(
     Robot
     SYSTEM
     PUBLIC
-    ${EIGEN3_INCLUDE_DIR}
+    ${Eigen3_INCLUDE_DIR}
 )
 
 set(Robot_LIBS

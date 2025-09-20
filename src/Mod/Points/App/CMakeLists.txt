@@ -15,7 +15,7 @@ target_include_directories(
     Points
     SYSTEM
     PUBLIC
-    ${EIGEN3_INCLUDE_DIR}
+    ${Eigen3_INCLUDE_DIR}
     ${QtConcurrent_INCLUDE_DIRS}
 )
 
