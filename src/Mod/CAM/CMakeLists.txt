@@ -128,6 +128,11 @@ SET(PathPythonToolsAssets_SRCS
     Path/Tool/assets/uri.py
 )
 
+SET(PathPythonToolsMigration_SRCS
+    Path/Tool/migration/__init__.py
+    Path/Tool/migration/migration.py
+)
+
 SET(PathPythonToolsAssetsStore_SRCS
     Path/Tool/assets/store/__init__.py
     Path/Tool/assets/store/base.py
@@ -600,6 +605,7 @@ SET(all_files
     ${PathPythonPostScripts_SRCS}
     ${PathPythonTools_SRCS}
     ${PathPythonToolsAssets_SRCS}
+    ${PathPythonToolsMigration_SRCS}
     ${PathPythonToolsAssetsStore_SRCS}
     ${PathPythonToolsAssetsUi_SRCS}
     ${PathPythonToolsDocObject_SRCS}
@@ -753,6 +759,13 @@ INSTALL(
         ${PathPythonToolsAssets_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/assets
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsMigration_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/migration
 )
 
 INSTALL(

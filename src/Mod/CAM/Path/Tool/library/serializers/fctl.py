@@ -72,7 +72,11 @@ class FCTLSerializer(AssetSerializer):
         # for the asset being deserialized. We should use this ID for the library
         # instance, overriding any 'id' that might be in the data_dict (which
         # is from an older version of the format).
-        library = Library(data_dict.get("label", id or "Unnamed Library"), id=id)
+        
+        # For the label, prefer data_dict["label"], then "name", then fallback to "Unnamed Library"
+        # Avoid using the UUID as the library name
+        label = data_dict.get("label") or data_dict.get("name") or "Unnamed Library"
+        library = Library(label, id=id)
 
         if dependencies is None:
             Path.Log.debug(
