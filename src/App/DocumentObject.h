@@ -703,6 +703,23 @@ public:
     /// Check if the subname reference ends with hidden marker.
     static const char* hasHiddenMarker(const char* subname);
 
+    /** Check whether a property can be referenced in an expression.
+     *
+     * @param prop: the property to check
+     *
+     * @return Return true if the property can be referenced in expressions.
+     */
+    static bool canPropBeReferenced(const App::Property* prop);
+
+    /** Get the object identifiers that reference the given property.
+     *
+     * @param prop: the property to check
+     *
+     * @return Return a set of object identifiers that reference the given
+     * property.
+     */
+    static std::set<ObjectIdentifier> getPropertyUses(const App::Property* prop);
+
 protected:
     /// recompute only this object
     virtual App::DocumentObjectExecReturn* recompute();
