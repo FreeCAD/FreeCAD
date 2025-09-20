@@ -100,8 +100,8 @@ std::string ApplicationDirectoriesPy::representation() const
     if (!PyArg_ParseTuple(args, "s", &path)) {
         return nullptr;
     }
-    App::Application::directories()->isVersionedPath(Base::FileInfo::stringToPath(path));
-    Py_Return;
+    bool result = App::Application::directories()->isVersionedPath(Base::FileInfo::stringToPath(path));
+    return Py::new_reference_to(Py::Boolean(result));
 }
 
 [[maybe_unused]] PyObject* ApplicationDirectoriesPy::mostRecentAvailableConfigVersion(PyObject* args)
