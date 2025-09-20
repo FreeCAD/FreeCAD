@@ -615,7 +615,7 @@ def _get_param_dictionary():
         "BackgroundColor":             ("unsigned",  336897023),
         "BackgroundColor2":            ("unsigned",  859006463),
         "BackgroundColor3":            ("unsigned",  2543299327),
-        "DefaultAmbientColor":         ("unsigned",  1431655935),
+        "DefaultAmbientColor":         ("unsigned",  3873892095),
         "DefaultEmissiveColor":        ("unsigned",  255),
         "DefaultShapeColor":           ("unsigned",  3435980543),
         "DefaultShapeLineColor":       ("unsigned",  421075455),
