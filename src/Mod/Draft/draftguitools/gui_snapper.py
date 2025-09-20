@@ -162,7 +162,11 @@ class Snapper:
 
 
     def _get_wp(self):
-        return WorkingPlane.get_working_plane()
+        # WorkingPlane.get_working_plane() is too slow for this function
+        # which gets called repeatedly when moving the mouse
+        # See: https://github.com/FreeCAD/FreeCAD/issues/24013
+        # return WorkingPlane.get_working_plane()
+        return App.DraftWorkingPlane
 
 
     def init_active_snaps(self):
