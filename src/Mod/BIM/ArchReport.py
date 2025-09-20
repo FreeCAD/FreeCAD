@@ -606,6 +606,9 @@ class ReportTaskPanel:
         self.sql_query_status_label = QtWidgets.QLabel(translate("Arch", "Ready"))
         self.sql_query_status_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
 
+        # --- Attach Syntax Highlighter ---
+        self.sql_highlighter = SqlSyntaxHighlighter(self.sql_query_edit.document())
+
         self.editor_layout.addWidget(self.sql_label)
         self.editor_layout.addWidget(self.sql_query_edit)
         self.editor_layout.addWidget(self.sql_query_status_label)
@@ -1100,6 +1103,105 @@ if FreeCAD.GuiUp:
                 # If the popup is not visible, ignore the event. This allows
                 # the event to propagate to the parent widget (the scroll area).
                 event.ignore()
+
+    class SqlSyntaxHighlighter(QtGui.QSyntaxHighlighter):
+        """
+        Custom QSyntaxHighlighter for SQL syntax.
+        """
+        def __init__(self, parent_text_document):
+            super().__init__(parent_text_document)
+
+            # --- Define Formatting Rules ---
+            keyword_format = QtGui.QTextCharFormat()
+            keyword_format.setForeground(QtGui.QColor("#0070C0")) # Dark Blue
+            keyword_format.setFontWeight(QtGui.QFont.Bold)
+
+            function_format = QtGui.QTextCharFormat()
+            function_format.setForeground(QtGui.QColor("#800080")) # Purple
+            function_format.setFontItalic(True)
+
+            string_format = QtGui.QTextCharFormat()
+            string_format.setForeground(QtGui.QColor("#A31515")) # Dark Red
+
+            comment_format = QtGui.QTextCharFormat()
+            comment_format.setForeground(QtGui.QColor("#008000")) # Green
+            comment_format.setFontItalic(True)
+
+            # --- Build Rules List ---
+            self.highlighting_rules = []
+
+            # Keywords (case-insensitive regex)
+            keywords = [
+                "SELECT", "FROM", "WHERE", "GROUP", "BY", "AND", "OR",
+                "IS", "NOT", "IN", "LIKE", "AS", "NULL"
+            ]
+            for word in keywords:
+                pattern = QtCore.QRegExp(r"\b" + word + r"\b", QtCore.Qt.CaseInsensitive)
+                rule = {"pattern": pattern, "format": keyword_format}
+                self.highlighting_rules.append(rule)
+
+            # Aggregate Functions (case-insensitive regex)
+            functions = ["COUNT", "SUM", "MIN", "MAX"]
+            for word in functions:
+                pattern = QtCore.QRegExp(r"\b" + word + r"\b", QtCore.Qt.CaseInsensitive)
+                rule = {"pattern": pattern, "format": function_format}
+                self.highlighting_rules.append(rule)
+
+            # String Literals (single quotes)
+            # This regex captures everything between single quotes, allowing for escaped quotes
+            string_pattern = QtCore.QRegExp(r"'[^'\\]*(\\.[^'\\]*)*'")
+            self.highlighting_rules.append({"pattern": string_pattern, "format": string_format})
+            # Also support double-quoted string literals (some SQL dialects use double quotes)
+            double_string_pattern = QtCore.QRegExp(r'"[^"\\]*(\\.[^"\\]*)*"')
+            self.highlighting_rules.append({"pattern": double_string_pattern, "format": string_format})
+
+            # Single-line comments (starting with -- or #)
+            comment_single_line_pattern = QtCore.QRegExp(r"--[^\n]*|\#[^\n]*")
+            self.highlighting_rules.append({"pattern": comment_single_line_pattern, "format": comment_format})
+
+            # Multi-line comments (/* ... */) - requires special handling in highlightBlock
+            self.multi_line_comment_start_pattern = QtCore.QRegExp(r"/\*")
+            self.multi_line_comment_end_pattern = QtCore.QRegExp(r"\*/")
+            self.multi_line_comment_format = comment_format
+
+        def highlightBlock(self, text):
+            """
+            Applies highlighting rules to the given text block.
+            This method is called automatically by Qt for each visible text block.
+            """
+            # Reset format for the current block
+            for rule in self.highlighting_rules:
+                pattern = rule["pattern"]
+                format = rule["format"]
+                index = pattern.indexIn(text)
+                while index >= 0:
+                    length = pattern.matchedLength()
+                    self.setFormat(index, length, format)
+                    index = pattern.indexIn(text, index + length)
+
+            # Handle multi-line comments
+            self.setCurrentBlockState(0) # Default state (no comment)
+
+            # Start from the correct index depending on whether the previous block
+            # ended inside a multi-line comment. If the previous block was inside
+            # a comment we continue scanning from the start of this block (0).
+            # Otherwise, search for the opening comment marker in this block.
+            if self.previousBlockState() == 1:  # State 1 means "inside multi-line comment"
+                start_index = 0
+            else:
+                start_index = self.multi_line_comment_start_pattern.indexIn(text)
+
+            while start_index >= 0:
+                end_index = self.multi_line_comment_end_pattern.indexIn(text, start_index)
+                comment_length = 0
+                if end_index == -1: # No end tag found, so comment continues to end of block
+                    self.setCurrentBlockState(1)
+                    comment_length = len(text) - start_index
+                else: # End tag found
+                    comment_length = end_index - start_index + self.multi_line_comment_end_pattern.matchedLength()
+
+                self.setFormat(start_index, comment_length, self.multi_line_comment_format)
+                start_index = self.multi_line_comment_start_pattern.indexIn(text, start_index + comment_length)
 else:
     # In headless mode, we don't need the GUI classes.
     pass
