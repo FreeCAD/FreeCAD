@@ -35,6 +35,7 @@
 #include <QMetaObject>
 
 #include <Base/Placement.h>
+#include <Gui/DocumentObserver.h>
 
 #include <FCGlobal.h>
 
@@ -245,7 +246,7 @@ private:
     std::vector<Gizmo*> gizmos;
     SoFieldSensor cameraSensor;
     SoFieldSensor cameraPositionSensor;
-    ViewProviderDragger* viewProvider = nullptr;
+    WeakPtrT<ViewProviderDragger> viewProvider;
 
     void addGizmo(Gizmo* gizmo);
 
