@@ -2565,14 +2565,6 @@ Gui--NotificationLabel {
 }
 
 /* overlay */
-Gui--OverlayToolButton{
-  image: url(qss:@IconsLocationFolderName/close-lightgray.svg);
-}
-
-Gui--OverlayToolButton:hover {
-  image: url(qss:@IconsLocationFolderName/close-red.svg);
-}
-
 Gui--OverlayToolButton[objectName="OBTN Float"] {
   image: url(qss:@IconsLocationFolderName/float-lightgray.svg);
 }

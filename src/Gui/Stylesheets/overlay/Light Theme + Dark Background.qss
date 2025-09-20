@@ -121,15 +121,6 @@ Gui--OverlayToolButton:checked:hover {
   border: 0.5px solid #ffffff;
   background-color: #ffffff;
 }
-
-Gui--OverlayToolButton{
-  image: url(qss:images_classic/close-lightgray.png);
-}
-
-Gui--OverlayToolButton:hover {
-  image: url(qss:images_classic/close-red.png);
-}
-
 Gui--OverlayToolButton[objectName="OBTN Transparent"] {
   image: url(qss:images_classic/transparent-lightgray.png);
   }
