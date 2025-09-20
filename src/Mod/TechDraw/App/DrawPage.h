@@ -109,6 +109,10 @@ public:
 
     void translateLabel(std::string context, std::string baseName, std::string uniqueName);
 
+    // Headless export methods (Phase 1 implementation)
+    bool exportToPDF(const std::string& filePath) const;
+    bool exportToSVG(const std::string& filePath) const;
+    std::string renderToSVGString() const;
 
 protected:
     void onBeforeChange(const App::Property* prop) override;
