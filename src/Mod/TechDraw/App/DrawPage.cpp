@@ -43,6 +43,7 @@
 #include "DrawViewPart.h"
 #include "Preferences.h"
 #include "DrawUtil.h"
+#include "PageRenderer.h"
 
 
 using namespace TechDraw;
@@ -522,6 +523,25 @@ bool DrawPage::AllowPageOverride(void)
 void DrawPage::translateLabel(std::string context, std::string baseName, std::string uniqueName)
 {
     Label.setValue(DrawUtil::translateArbitrary(context, baseName, uniqueName));
+}
+
+// Headless export methods (Phase 1 implementation)
+bool DrawPage::exportToPDF(const std::string& filePath) const
+{
+    PageRenderer renderer(this);
+    return renderer.renderToPDF(filePath);
+}
+
+bool DrawPage::exportToSVG(const std::string& filePath) const
+{
+    PageRenderer renderer(this);
+    return renderer.renderToSVG(filePath);
+}
+
+std::string DrawPage::renderToSVGString() const
+{
+    PageRenderer renderer(this);
+    return renderer.renderToSVGString();
 }
 
 

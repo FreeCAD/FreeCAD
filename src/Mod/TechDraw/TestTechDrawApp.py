@@ -21,10 +21,23 @@
 # **************************************************************************
 
 #tests that do not require Gui
-from TDTest.DrawHatchTest import DrawHatchTest  # noqa: F401
-from TDTest.DrawViewAnnotationTest import DrawViewAnnotationTest  # noqa: F401
-from TDTest.DrawViewBalloonTest import DrawViewBalloonTest  # noqa: F401
-from TDTest.DrawViewImageTest import DrawViewImageTest  # noqa: F401
-from TDTest.DrawViewSymbolTest import DrawViewSymbolTest  # noqa: F401
-from TDTest.DrawProjectionGroupTest import DrawProjectionGroupTest  # noqa: F401
+from TDTest.DrawHatchTest import DrawHatchTest
+from TDTest.DrawViewAnnotationTest import DrawViewAnnotationTest
+from TDTest.DrawViewBalloonTest import DrawViewBalloonTest
+from TDTest.DrawViewImageTest import DrawViewImageTest
+from TDTest.DrawViewSymbolTest import DrawViewSymbolTest
+from TDTest.DrawProjectionGroupTest import DrawProjectionGroupTest
+from TDTest.DrawHeadlessExportTest import DrawHeadlessExportTest
+
+# Explicit list keeps import side effects discoverable during static analysis.
+_NON_GUI_TESTS = (
+    DrawHatchTest,
+    DrawViewAnnotationTest,
+    DrawViewBalloonTest,
+    DrawViewImageTest,
+    DrawViewSymbolTest,
+    DrawProjectionGroupTest,
+    DrawHeadlessExportTest,
+)
+
 

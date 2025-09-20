@@ -13,6 +13,8 @@ list(APPEND TechDrawLIBS
     ${QtConcurrent_LIBRARIES}
     ${QtCore_LIBRARIES}
     ${QtWidgets_LIBRARIES}
+    ${QtSvg_LIBRARIES}
+    ${QtPrintSupport_LIBRARIES}
 )
 
 generate_from_py(DrawHatch)
@@ -46,6 +48,8 @@ generate_from_py(DrawBrokenView)
 SET(Draw_SRCS
     DrawPage.cpp
     DrawPage.h
+    PageRenderer.cpp
+    PageRenderer.h
     DrawComplexSection.cpp
     DrawComplexSection.h
     DrawView.cpp
