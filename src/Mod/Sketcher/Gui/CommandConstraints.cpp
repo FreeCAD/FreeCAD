@@ -1266,7 +1266,7 @@ public:
         } else if (selectionStep == 2 && !selSeq.empty()) {
             if (isVertex(selSeq[0].GeoId, selSeq[0].PosId) && isVertex(selSeq[1].GeoId, selSeq[1].PosId)) {
                 // Point + Point + Edge workflow
-                return {{QObject::tr(PICK_SYMMETRY_LINE), {Gui::InputHint::UserInput::MouseLeft}}};
+                return {{QObject::tr(PICK_SYMMETRY_LINE_OR_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
             } else if (isVertex(selSeq[0].GeoId, selSeq[0].PosId) && !isVertex(selSeq[1].GeoId, selSeq[1].PosId)) {
                 // Point + Edge + Point workflow
                 return {{QObject::tr(PICK_SYMMETRY_POINT), {Gui::InputHint::UserInput::MouseLeft}}};
@@ -9734,7 +9734,8 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
                            {SelVertex, SelEdgeOrAxis, SelVertex},
                            {SelVertexOrRoot, SelVertexOrRoot, SelEdge},
                            {SelVertexOrRoot, SelVertexOrRoot, SelExternalEdge},
-                           {SelVertex, SelVertex, SelEdgeOrAxis}};
+                           {SelVertex, SelVertex, SelEdgeOrAxis},
+                           {SelVertexOrRoot, SelVertexOrRoot, SelVertexOrRoot}};
 }
 
 void CmdSketcherConstrainSymmetric::activated(int iMsg)
@@ -10010,6 +10011,39 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair>& selS
                                 "two points and a symmetry point "
                                 "or a line and a symmetry point from the sketch."));
             }
+            return;
+        }
+        case 8:// {SelVertexOrRoot, SelVertexOrRoot, SelVertexOrRoot}
+        {
+            // Simple point + point + point symmetry
+            GeoId1 = selSeq.at(0).GeoId;
+            GeoId2 = selSeq.at(1).GeoId;
+            GeoId3 = selSeq.at(2).GeoId;
+            PosId1 = selSeq.at(0).PosId;
+            PosId2 = selSeq.at(1).PosId;
+            PosId3 = selSeq.at(2).PosId;
+
+            if (areAllPointsOrSegmentsFixed(Obj, GeoId1, GeoId2, GeoId3)) {
+                showNoConstraintBetweenFixedGeometry(Obj);
+                return;
+            }
+
+            // undo command open
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add symmetric constraint"));
+            Gui::cmdAppObjectArgs(
+                Obj,
+                "addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d))",
+                GeoId1,
+                static_cast<int>(PosId1),
+                GeoId2,
+                static_cast<int>(PosId2),
+                GeoId3,
+                static_cast<int>(PosId3));
+
+            // finish the transaction and update
+            commitCommand();
+            tryAutoRecompute(Obj);
+            getSelection().clearSelection();
             return;
         }
         default:
