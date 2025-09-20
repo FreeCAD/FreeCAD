@@ -1306,8 +1306,26 @@ QToolButton:hover {
   background-color: @GeneralBackgroundHoverColor;
 }
 
+/*
+ * Hover state: Add a visible border to create the frame effect.
+ * This rule is more specific than the theme's general QToolButton:hover, so it will apply only to
+ * toolbar buttons.
+ */
+QToolBar QToolButton:hover {
+    border: 1px solid @ButtonBorderColor;
+}
+
 QToolButton:pressed {
   background-color: @GeneralBackgroundHoverColor;
+}
+
+/*
+ * Pressed state: Add an "inset" border style and gradient to create the "pushed in" look.
+ */
+QToolBar QToolButton:hover:pressed {
+    border: 1px solid @ButtonBorderColor;
+    border-style: inset;
+    background-color: @PrimaryColorDarken2;
 }
 
 QToolButton:selected {
