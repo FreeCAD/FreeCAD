@@ -1472,37 +1472,37 @@ void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter(bool filterEna
     const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
     const std::vector<Sketcher::Constraint*>& vals = sketch->Constraints.getValues();
 
-    std::vector<int> constrIdsToVirtualSpace;
-    std::vector<int> constrIdsToCurrentSpace;
+    std::vector<int> constrIdsToSetVisible;
+    std::vector<int> constrIdsToSetHidden;
 
     for (std::size_t i = 0; i < vals.size(); ++i) {
         ConstraintItem* it = static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
         bool visible = !filterEnabled || !isConstraintFiltered(it);
 
         // If the constraint is filteredout and it was previously shown in 3D view
-        if (!visible && it->isInVirtualSpace() == sketchView->getIsShownVirtualSpace()) {
-            constrIdsToVirtualSpace.push_back(it->ConstraintNbr);
+        if (!visible) {
+            constrIdsToSetHidden.push_back(it->ConstraintNbr);
         }
-        else if (visible && it->isInVirtualSpace() != sketchView->getIsShownVirtualSpace()) {
-            constrIdsToCurrentSpace.push_back(it->ConstraintNbr);
+        else if (visible) {
+            constrIdsToSetVisible.push_back(it->ConstraintNbr);
         }
     }
-    if (!constrIdsToVirtualSpace.empty()) {
-        bool ret = doSetVirtualSpace(constrIdsToVirtualSpace, true);
+    if (!constrIdsToSetVisible.empty()) {
+        bool ret = doSetVisible(constrIdsToSetVisible, true);
         if (!ret) {
             return;
         }
     }
 
-    if (!constrIdsToCurrentSpace.empty()) {
-        bool ret = doSetVirtualSpace(constrIdsToCurrentSpace, false);
+    if (!constrIdsToSetHidden.empty()) {
+        bool ret = doSetVisible(constrIdsToSetHidden, false);
 
         if (!ret) {
             return;
         }
     }
 
-    if (constrIdsToVirtualSpace.empty() && constrIdsToCurrentSpace.empty()) {
+    if (constrIdsToSetVisible.empty() && constrIdsToSetHidden.empty()) {
         slotConstraintsChanged();
     }
 }
@@ -1536,6 +1536,40 @@ bool TaskSketcherConstraints::doSetVirtualSpace(const std::vector<int>& constrId
 
         Gui::TranslatedUserError(
             sketch, tr("Error"), tr("Impossible to update visibility tracking:") + QLatin1String(" ") + QLatin1String(e.what()));
+        return false;
+    }
+    return true;
+}
+
+bool TaskSketcherConstraints::doSetVisible(const std::vector<int>& constrIds, bool isVisible) {
+    assert(sketchView);
+    const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
+
+    std::stringstream stream;
+
+    stream << '[';
+
+    for (size_t i = 0; i < constrIds.size() - 1; i++) {
+        stream << constrIds[i] << ",";
+    }
+    stream << constrIds[constrIds.size() - 1] << ']';
+
+    std::string constrIdList = stream.str();
+
+    Gui::Command::openCommand(
+            QT_TRANSLATE_NOOP("Command", "Update constraint's visibility"));
+    try {
+        Gui::cmdAppObjectArgs(sketch,
+            "setVisibility(%s, %s)",
+            constrIdList,
+            isVisible ? "True" : "False");
+        Gui::Command::commitCommand();
+    }
+    catch (const Base::Exception& e) {
+        Gui::Command::abortCommand();
+
+        Gui::TranslatedUserError(
+            sketch, tr("Error"), tr("Impossible to update visibility:") + QLatin1String(" ") + QLatin1String(e.what()));
         return false;
     }
     return true;

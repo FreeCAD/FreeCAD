@@ -1051,6 +1051,57 @@ PyObject* SketchObjectPy::setVirtualSpace(PyObject* args)
     throw Py::TypeError(error);
 }
 
+PyObject* SketchObjectPy::setVisibility(PyObject* args)
+{
+    PyObject* isVisible;
+    PyObject* id_or_ids;
+
+    if (!PyArg_ParseTuple(args, "OO!", &id_or_ids, &PyBool_Type, &isVisible)) {
+        return nullptr;
+    }
+
+    if (PyObject_TypeCheck(id_or_ids, &(PyList_Type))
+        || PyObject_TypeCheck(id_or_ids, &(PyTuple_Type))) {
+        std::vector<int> constrIds;
+        Py::Sequence list(id_or_ids);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            if (PyLong_Check((*it).ptr())) {
+                constrIds.push_back(PyLong_AsLong((*it).ptr()));
+            }
+        }
+
+        try {
+            int ret =
+                this->getSketchObjectPtr()->setVisibility(constrIds, Base::asBoolean(isVisible));
+
+            if (ret == -1) {
+                throw Py::TypeError("Impossible to set visibility!");
+            }
+        }
+        catch (const Base::ValueError& e) {
+            throw Py::ValueError(e.getMessage());
+        }
+
+        Py_Return;
+    }
+    else if (PyLong_Check(id_or_ids)) {
+        if (this->getSketchObjectPtr()->setVisibility(PyLong_AsLong(id_or_ids),
+                                                      Base::asBoolean(isVisible))) {
+            std::stringstream str;
+            str << "Not able set visibility for constraint with the given index: "
+                << PyLong_AsLong(id_or_ids);
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            return nullptr;
+        }
+
+        Py_Return;
+    }
+
+    std::string error = std::string("type must be list of Constraint Ids, not ");
+    error += id_or_ids->ob_type->tp_name;
+    throw Py::TypeError(error);
+}
+
 PyObject* SketchObjectPy::getVirtualSpace(PyObject* args)
 {
     int constrid;
