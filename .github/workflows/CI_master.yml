@@ -26,7 +26,16 @@
 
 name: FreeCAD master CI
 
-on: [workflow_dispatch, push, pull_request, merge_group]
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+  merge_group:
 
 concurrency:
   group: FC-CI-${{ github.head_ref || github.run_id }}
@@ -35,29 +44,34 @@ concurrency:
 jobs:
 
   Prepare:
+    if: ${{ !github.event.pull_request.draft }}
     uses: ./.github/workflows/sub_prepare.yml
     with:
       artifactBasename: Prepare-${{ github.run_id }}
 
   Pixi:
+    if: ${{ !github.event.pull_request.draft }}
     needs: [Prepare]
     uses: ./.github/workflows/sub_buildPixi.yml
     with:
       artifactBasename: Pixi-${{ github.run_id }}
 
   Ubuntu:
+    if: ${{ !github.event.pull_request.draft }}
     needs: [Prepare]
     uses: ./.github/workflows/sub_buildUbuntu.yml
     with:
       artifactBasename: Ubuntu-${{ github.run_id }}
 
   Windows:
+    if: ${{ !github.event.pull_request.draft }}
     needs: [Prepare]
     uses: ./.github/workflows/sub_buildWindows.yml
     with:
       artifactBasename: Windows-${{ github.run_id }}
 
   Lint:
+    if: ${{ !github.event.pull_request.draft }}
     needs: [Prepare]
     uses: ./.github/workflows/sub_lint.yml
     with:
@@ -70,6 +84,7 @@ jobs:
       changedPythonLines: ${{ needs.Prepare.outputs.changedPythonLines }}
 
   WrapUp:
+    if: always()
     needs: [
         Prepare,
         Pixi,
@@ -77,7 +92,6 @@ jobs:
         Windows,
         Lint
       ]
-    if: always()
     uses: ./.github/workflows/sub_wrapup.yml
     with:
       previousSteps: ${{ toJSON(needs) }}
