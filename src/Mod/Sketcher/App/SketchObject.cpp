@@ -4021,25 +4021,10 @@ bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* p
         return true;// prohibiting this reference won't remove the problem anyway...
     }
 
-
-    // Note: Checking for the body of the support doesn't work when the support are the three base
-    // planes
-    Part::BodyBase* body_this = Part::BodyBase::findBodyOf(this);
-    Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
-    App::Part* part_this = App::Part::getPartOfObject(this);
-    App::Part* part_obj = App::Part::getPartOfObject(pObj);
-    if (part_this == part_obj) {// either in the same part, or in the root of document
-        if (!body_this) {
-            return true;
-        }
-        else if (body_this == body_obj) {
-            return true;
-        }
-        else {
-            if (rsn)
-                *rsn = rlOtherBody;
-            return false;
-        }
+    auto group_this = App::GeoFeatureGroupExtension::getBoundaryGroupOfObject(this);
+    auto group_obj = App::GeoFeatureGroupExtension::getBoundaryGroupOfObject(pObj);
+    if (group_this == group_obj) {// either in the same part, or in the root of document
+        return true;
     }
     else {
         // cross-part link. Disallow, should be done via shapebinders only

@@ -818,6 +818,24 @@ bool CmdPartCompCompoundTools::isActive()
 
 
 
+namespace {
+    QString getAutoGroupCommandStr()
+        // Helper function to get the python code to add the newly created object to the active Part/Body object if present
+    {
+        App::GeoFeature* activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PDBODYKEY);
+        if (!activeObj) {
+            activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PARTKEY);
+        }
+
+        if (activeObj) {
+            QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
+            return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n").arg(activeName);
+        }
+
+        return QStringLiteral("# Object created at document root.");
+    }
+}
+
 //===========================================================================
 // Part_Compound
 //===========================================================================
@@ -862,7 +880,8 @@ void CmdPartCompound::activated(int iMsg)
     str << "]";
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Compound"));
-    doCommand(Doc,"App.activeDocument().addObject(\"Part::Compound\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"obj = App.activeDocument().addObject(\"Part::Compound\",\"%s\")",FeatName.c_str());
+    doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     runCommand(Doc,str.str().c_str());
     updateActive();
     commitCommand();
@@ -2227,24 +2246,6 @@ bool CmdPartSectionCut::isActive()
 //===========================================================================
 // Part_CoordinateSystem
 //===========================================================================
-
-namespace {
-    QString getAutoGroupCommandStr()
-        // Helper function to get the python code to add the newly created object to the active Part/Body object if present
-    {
-        App::GeoFeature* activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PDBODYKEY);
-        if (!activeObj) {
-            activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PARTKEY);
-        }
-
-        if (activeObj) {
-            QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
-            return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n").arg(activeName);
-        }
-
-        return QStringLiteral("# Object created at document root.");
-    }
-}
 
 DEF_STD_CMD_A(CmdPartCoordinateSystem)
 

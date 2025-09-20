@@ -26,6 +26,8 @@
 #include <Base/Interpreter.h>
 #include <Base/VectorPy.h>
 #include <Base/Tools.h>
+#include <App/DocumentPy.h>
+#include "ResetBodyPlacement.h"
 
 
 namespace PartDesign {
@@ -36,6 +38,9 @@ public:
     {
         add_varargs_method("makeFilletArc",&Module::makeFilletArc,
             "makeFilletArc(...) -- Fillet arc."
+        );
+        add_varargs_method("resetBodiesPlacements",&Module::resetBodiesPlacements,
+            "resetBodiesPlacements(doc)\nRun PartDesign body-placement reset on the given App.Document."
         );
         initialize("This module is the PartDesign module."); // register with Python
     }
@@ -104,6 +109,31 @@ private:
 
         return tuple;
     }
+
+    Py::Object resetBodiesPlacements(const Py::Tuple& args)
+    {
+        if (args.size() != 1) {
+            throw Py::TypeError("expected 1 argument: App.Document");
+        }
+        PyObject* obj = args[0].ptr();
+        if (!PyObject_TypeCheck(obj, &App::DocumentPy::Type)) {
+            throw Py::TypeError("argument must be an App.Document");
+        }
+        auto* pydoc = static_cast<App::DocumentPy*>(obj);
+        App::Document* doc = pydoc->getDocumentPtr();
+        if (!doc) {
+            throw Py::RuntimeError("null document");
+        }
+        try {
+	   PartDesign::resetBodiesPlacements(doc);
+        } catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        } catch (...) {
+            throw Py::RuntimeError("unknown error in resetBodiesPlacements()");
+        }
+        return Py::None();
+    }
+
 };
 
 PyObject* initModule()

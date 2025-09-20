@@ -44,8 +44,14 @@ PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 Body::Body()
 {
     ADD_PROPERTY_TYPE(AllowCompound, (false), "Experimental", App::Prop_None, "Allow multiple solids in Body (experimental)");
+    Placement.setStatus(App::Property::Hidden, true);
+    Placement.setStatus(App::Property::ReadOnly, false);
 
     _GroupTouched.setStatus(App::Property::Output, true);
+
+    if (auto* gext = this->getExtensionByType<App::GeoFeatureGroupExtension>()) {
+        gext->setActsAsGroupBoundary(false); // Bodies are transparent boundaries
+    }
 }
 
 /*
@@ -487,6 +493,14 @@ void Body::onChanged(const App::Property* prop) {
 
 void Body::setupObject () {
     Part::BodyBase::setupObject ();
+    try {
+        if (auto* origin = this->getOrigin()) {
+                origin->Placement.setStatus(App::Property::Hidden, false);
+                origin->Placement.setStatus(App::Property::ReadOnly, false);
+        }
+    } catch (const Base::Exception&) {
+            // Origin not yet present in very early group changes — ignore
+    }
 }
 
 void Body::unsetupObject () {
@@ -579,7 +593,20 @@ void Body::onDocumentRestored()
     // trigger ViewProviderBody::copyColorsfromTip
     if (Tip.getValue())
         Tip.touch();
+    // Hide & lock Body.Placement in the UI
+    Placement.setStatus(App::Property::Hidden, true);
+    Placement.setStatus(App::Property::ReadOnly, false);
 
+    // Ensure Origins under *this* Body keep their Placement visible/editable
+    {
+	auto* origin = this->getOrigin();
+        origin->Placement.setStatus(App::Property::Hidden, false);
+        origin->Placement.setStatus(App::Property::ReadOnly, false);
+    }
+
+    if (auto* gext = this->getExtensionByType<App::GeoFeatureGroupExtension>()) {
+        gext->setActsAsGroupBoundary(false); // Bodies are transparent boundaries
+    }
     DocumentObject::onDocumentRestored();
 }
 
