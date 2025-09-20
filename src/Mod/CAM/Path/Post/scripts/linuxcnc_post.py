@@ -77,7 +77,9 @@ parser.add_argument(
     action="store_true",
     help="suppress tool length offset (G43) following tool changes",
 )
-parser.add_argument("--tool-retraction", action="store_true", help="Retract tool in Z-axis for every tool change")
+parser.add_argument(
+    "--tool-retraction", action="store_true", help="Retract tool in Z-axis for every tool change"
+)
 
 TOOLTIP_ARGS = parser.format_help()
 
@@ -160,7 +162,7 @@ def processArguments(argstring):
             PRECISION = 4
         if args.tool_retraction:
             TOOL_CHANGE += "G30 Z0\n"
-            POSTAMBLE += "G30 Z0\n"            
+            POSTAMBLE += "G30 Z0\n"
         if args.modal:
             MODAL = True
         if args.no_tlo:
