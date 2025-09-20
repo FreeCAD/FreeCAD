@@ -1627,11 +1627,11 @@ class TaskPanel:
         self.updateSelection()
 
         # set active page
-        if activate in ["General", "Model"]:
-            self.form.setCurrentIndex(0)
-        if activate in ["Output", "Post Processor"]:
-            self.form.setCurrentIndex(1)
         if activate in ["Layout", "Stock"]:
+            self.form.setCurrentIndex(0)
+        if activate in ["General", "Model"]:
+            self.form.setCurrentIndex(1)
+        if activate in ["Output", "Post Processor"]:
             self.form.setCurrentIndex(2)
         if activate in ["Tools", "Tool Controller"]:
             self.form.setCurrentIndex(3)
@@ -1670,7 +1670,7 @@ class TaskPanel:
 
         # Check if at least on base model is present
         if len(self.obj.Model.Group) == 0:
-            self.form.setCurrentIndex(0)  # Change tab to General tab
+            self.form.setCurrentIndex(1)  # Change tab to General tab
             no_model_txt = translate("CAM_Job", "This job has no base model.")
             if _displayWarningWindow(no_model_txt) == 1:
                 self.jobModelEdit()
