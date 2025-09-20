@@ -455,6 +455,7 @@ class Arch_MergeWalls:
         """
 
         import Draft
+        import ArchWall
         walls = FreeCADGui.Selection.getSelection()
         if len(walls) == 1:
             if Draft.getType(walls[0]) == "Wall":
@@ -480,6 +481,11 @@ class Arch_MergeWalls:
             if Draft.getType(w) != "Wall":
                 FreeCAD.Console.PrintMessage(translate("Arch","Select only wall objects"))
                 return
+        if not ArchWall.areSameWallTypes(walls):
+            FreeCAD.Console.PrintMessage(
+                translate("Arch","Walls with different 'Width', 'Height' and 'Align' properties cannot be merged")
+            )
+            return
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Merge Walls"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand("Arch.joinWalls(FreeCADGui.Selection.getSelection(),delete=True)")
