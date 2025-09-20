@@ -215,7 +215,7 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Slovenian"             )] = "sl";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish"               )] = "es-ES";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Spanish (Argentina)"   )] = "es-AR";
-    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish"               )] = "sv-SE";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Swedish"               )] = "sv";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Turkish"               )] = "tr";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Ukrainian"             )] = "uk";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"             )] = "val-ES";
