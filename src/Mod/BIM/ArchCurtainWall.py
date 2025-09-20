@@ -287,7 +287,8 @@ class CurtainWall(ArchComponent.Component):
             # Fix issue in 'Curtain wall vertical/horizontal mullion mix-up'
             # https://github.com/FreeCAD/FreeCAD/issues/21845
             #
-            face_plane = face.findPlane()  # Curve face (surface) seems return no Plane
+            face_plane = face.findPlane()
+
             if face_plane:
                 if -0.001 < face_plane.Axis[2] < 0.001:  # i.e. face is vertical (normal pointing horizon)
                     faceVert = True
@@ -302,6 +303,9 @@ class CurtainWall(ArchComponent.Component):
                         horizsec = obj.HorizontalSections
                 else:
                     faceVert = False
+            else:
+                # Curve extruded face (surface) seems return no Plane - need more robust algorithm
+                faceVert = False
 
             # Guess algorithm if face is not vertical
             if not faceVert:
