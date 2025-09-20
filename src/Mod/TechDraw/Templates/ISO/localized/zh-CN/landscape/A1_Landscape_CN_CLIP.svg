@@ -172,7 +172,7 @@
   <path d="m769 556v19"/>
   <!-- middle down 5th vertical line  Titleblock -->
  </g>
- <g id="titleblock-text-non-editable" font-family="HYSWLongFangSong" font-size="5" xml:space="preserv e">
+ <g id="titleblock-text-non-editable" font-family="HYSWLongFangSong" font-size="5" xml:space="preserve">
   <text x="653" y="561">设计</text>
   <text x="664" y="561">(签名)</text>
   <text x="676" y="561">(年月日)</text>
