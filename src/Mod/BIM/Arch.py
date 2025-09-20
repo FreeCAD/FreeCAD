@@ -1991,3 +1991,79 @@ def _initializeArchObject(
         return None
 
     return obj
+
+def makeReport(name=None):
+    """
+    Creates a BIM Report object in the active document.
+
+    Parameters
+    ----------
+    name : str, optional
+        The name to assign to the created report object. Defaults to None.
+
+    Returns
+    -------
+    App::FeaturePython
+        The created report object.
+    """
+    import ArchReport
+
+    # Use the helper to create the main object. Note that we pass the
+    # correct class and module names.
+    report_obj = _initializeArchObject(
+        objectType="App::FeaturePython",
+        baseClassName="Report",
+        internalName="ArchReport",
+        defaultLabel=name if name else translate("Arch", "Report"),
+        moduleName="ArchReport",
+        viewProviderName="ViewProviderReport"
+    )
+
+    # The helper returns None if there's no document, so we can exit early.
+    if not report_obj:
+        return None
+
+    # Initialize the Statements property
+    # Report object proxy needs its Statements list initialized before getSpreadSheet is called,
+    # as getSpreadSheet calls execute() which now relies on obj.Statements.
+    # Initialize with one default statement to provide a starting point for the user.
+    default_stmt = ArchReport.ReportStatement(description=translate("Arch", "New Statement"))
+    report_obj.Statements = [default_stmt.dumps()]
+
+    # Initialize a spreadsheet if the report requests one. The report is responsible for how the
+    # association is stored (we use a non-dependent ``ReportName`` on the sheet and persist the
+    # report's ``Target`` link when the report creates the sheet).
+    if hasattr(report_obj, 'Proxy') and hasattr(report_obj.Proxy, 'getSpreadSheet'):
+        sheet = report_obj.Proxy.getSpreadSheet(report_obj, force=True)
+
+    if FreeCAD.GuiUp:
+        # Automatically open the task panel for the new report
+        FreeCADGui.ActiveDocument.setEdit(report_obj.Name, 0)
+
+    return report_obj
+
+def selectObjects(query_string):
+    """
+    Selects objects from the active document using a SQL-like query.
+
+    This provides a powerful, declarative way to select BIM objects
+    based on their properties.
+
+    Parameters
+    ----------
+    query_string : str
+        The SQL query to execute. For example:
+        'SELECT * FROM document WHERE IfcType = "Wall" AND Label LIKE "%exterior%"'
+
+    Returns
+    -------
+    list of App::DocumentObject
+        A list of the FreeCAD document objects that match the query.
+        Returns an empty list if the query is invalid or finds no objects.
+    """
+    # Use a local import to follow Arch.py conventions (lazy loading).
+    import ArchSql
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("Arch.selectObjects() requires an active document.\n")
+        return []
+    return ArchSql.run_query_for_objects(query_string)
