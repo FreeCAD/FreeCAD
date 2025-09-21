@@ -20,11 +20,9 @@
 // *                                                                         *
 // ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <BRepAdaptor_Curve.hxx>
 #include <TopoDS.hxx>
-#endif
+
 
 // clang-format off
 #include "Blending/BlendPoint.h"
