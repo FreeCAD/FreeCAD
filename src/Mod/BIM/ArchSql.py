@@ -47,12 +47,23 @@ def get_property(obj, prop_name):
                 return None
         return current_obj
 
-# Query Object Model
-class GroupByClause:
-    """Represents the GROUP BY clause of a SQL statement."""
-    def __init__(self, columns):
-        # columns is a list of ReferenceExtractor objects
-        self.columns = columns
+class FunctionRegistry:
+    """A simple class to manage the registration of SQL functions."""
+    def __init__(self):
+        self._functions = {}
+
+    def register(self, name, function_class):
+        """Registers a class to handle a function with the given name."""
+        self._functions[name.upper()] = function_class
+
+    def get_class(self, name):
+        """Retrieves the class registered for a given function name."""
+        return self._functions.get(name.upper())
+
+# --- Module-level Registries ---
+# These act as the central "plugin" managers for all SQL functions.
+select_function_registry = FunctionRegistry()
+from_function_registry = FunctionRegistry()
 
 class AggregateFunction:
     """Represents an aggregate function call like COUNT(*) or SUM(Height)."""
@@ -65,6 +76,33 @@ class AggregateFunction:
         # This method is a placeholder. The actual calculation will happen
         # during the grouped execution phase, not on a single object.
         return None
+
+class TypeFunction:
+    """Represents a call to the TYPE() function."""
+    def __init__(self, name, argument):
+        self.argument = argument
+        self.function_name = name.lower()
+
+    def get_value(self, obj):
+        """Returns the canonical type name of an object using Draft.get_type()."""
+        import Draft
+
+        return Draft.get_type(obj)
+
+# Populate the registries with the engine's built-in functions.
+# This is done once at the module level.
+select_function_registry.register('COUNT', AggregateFunction)
+select_function_registry.register('SUM', AggregateFunction)
+select_function_registry.register('MIN', AggregateFunction)
+select_function_registry.register('MAX', AggregateFunction)
+select_function_registry.register('TYPE', TypeFunction)
+
+# Query Object Model
+class GroupByClause:
+    """Represents the GROUP BY clause of a SQL statement."""
+    def __init__(self, columns):
+        # columns is a list of ReferenceExtractor objects
+        self.columns = columns
 
 class SelectStatement:
     def __init__(self, columns_info, from_clause, where_clause, group_by_clause):
@@ -352,18 +390,6 @@ class InComparison:
         # The check is a simple Python 'in' against the pre-calculated set
         return property_value in self.values_set
 
-class TypeFunction:
-    """Represents a call to the TYPE() function."""
-    def __init__(self, name, argument):
-        self.argument = argument
-        self.function_name = name.lower()
-
-    def get_value(self, obj):
-        """Returns the canonical type name of an object using Draft.get_type()."""
-        import Draft
-
-        return Draft.get_type(obj)
-
 class ReferenceExtractor:
     def __init__(self, value): self.value = value
     def get_value(self, obj): return get_property(obj, self.value)
@@ -373,7 +399,11 @@ class StaticExtractor:
     def get_value(self, obj): return self.value
 
 # Lark Transformer (with no runtime dependency on the the lark library)
-class SqlTreeTransformer:
+class SqlTransformerMixin:
+    """
+    A mixin class containing all our custom transformation logic for SQL rules.
+    It has no __init__ to avoid conflicts in a multiple inheritance scenario.
+    """
     def start(self, i): return i[0]
     def statement(self, children):
         # The 'columns' rule produces a list of (extractor, display_name) tuples
@@ -386,6 +416,14 @@ class SqlTreeTransformer:
 
     def from_clause(self, i): return FromClause(i[1])
     def where_clause(self, i): return WhereClause(i[1])
+
+    def from_function(self, items):
+        function_name_token, substatement = items[0], items[1]
+        function_name = str(function_name_token).upper()
+        function_class = self.from_function_registry.get_class(function_name)
+        if not function_class:
+            raise ValueError(f"Unknown FROM function: {function_name}")
+        return function_class(substatement)
 
     def group_by_clause(self, items):
         references = [item for item in items if isinstance(item, ReferenceExtractor)]
@@ -449,24 +487,12 @@ class SqlTreeTransformer:
     def literal(self, items): return StaticExtractor(items[0].value[1:-1])
     def null(self, _): return StaticExtractor(None)
 
-    # --- Function Handling with a Registry ---
-    # This registry maps upper-case SQL function names to their class constructors.
-    FUNCTION_REGISTRY = {
-        # Aggregate Functions
-        'COUNT': AggregateFunction,
-        'SUM':   AggregateFunction,
-        'MIN':   AggregateFunction,
-        'MAX':   AggregateFunction,
-        # Utility Functions
-        'TYPE':  TypeFunction,
-    }
-
     def function(self, items):
         function_name_token, argument = items[0], items[1]
         function_name = str(function_name_token).upper()
 
-        # Look up the function in the registry to get its class
-        function_class = self.FUNCTION_REGISTRY.get(function_name)
+        # Look up the function in the injected SELECT function registry
+        function_class = self.select_function_registry.get_class(function_name)
 
         if function_class:
             return function_class(function_name, argument)
@@ -484,11 +510,25 @@ def _get_query_object(query_string):
         try:
             import generated_sql_parser
 
-            class FinalTransformer(generated_sql_parser.Transformer, SqlTreeTransformer):
-                pass
-
+            # The transformer class definition must be inside this try-block
+            # because it inherits from the generated parser's Transformer.
+            class FinalTransformer(generated_sql_parser.Transformer, SqlTransformerMixin):
+                """
+                The final transformer class that combines the Lark-generated base
+                with our custom mixin logic. It is responsible for initialization.
+                """
+                def __init__(self, select_functions, from_functions):
+                    # The Lark-generated Transformer has an empty __init__, so we don't
+                    # need to call super().__init__() here. We simply store our
+                    # injected dependencies.
+                    self.select_function_registry = select_functions
+                    self.from_function_registry = from_functions
             _parser = generated_sql_parser.Lark_StandAlone()
-            _transformer = FinalTransformer()
+            # Instantiate the transformer, injecting the registries.
+            _transformer = FinalTransformer(
+                select_functions=select_function_registry,
+                from_functions=from_function_registry
+            )
         except ImportError:
             return None, "Parser not generated. Please rebuild FreeCAD."
         except Exception as e:
