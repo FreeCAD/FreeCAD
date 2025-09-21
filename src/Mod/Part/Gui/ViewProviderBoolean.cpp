@@ -68,7 +68,7 @@ namespace {
                     .arg(objectLabel)
                     .arg(inputDescription),
                 QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, 
-                QMessageBox::Yes
+                QMessageBox::No
             );
             
             if (choice == QMessageBox::Cancel) {

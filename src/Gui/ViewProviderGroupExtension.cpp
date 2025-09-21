@@ -254,7 +254,7 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::strin
         QObject::tr("Delete group contents recursively?"),
         message,
         QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
-        QMessageBox::Yes
+        QMessageBox::No
     );
     
     if (choice == QMessageBox::Cancel) {

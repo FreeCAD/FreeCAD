@@ -75,7 +75,7 @@ bool ViewProviderCompound::onDelete(const std::vector<std::string> &subNames)
                     .arg(QString::fromUtf8(pComp->Label.getValue()))
                     .arg(pLinks.size()),
                 QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, 
-                QMessageBox::Yes
+                QMessageBox::No
             );
             
             if (choice == QMessageBox::Cancel) {
