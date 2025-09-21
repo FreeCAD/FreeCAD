@@ -30,7 +30,6 @@
 #define BOOST_BIND_GLOBAL_PLACEHOLDERS
 #endif
 
-#ifdef _PreComp_
 
 // standard
 #include <map>
@@ -50,5 +49,4 @@
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
 
-#endif  // _PreComp_
 #endif
