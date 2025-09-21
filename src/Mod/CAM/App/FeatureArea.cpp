@@ -20,12 +20,10 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <BRep_Builder.hxx>
 #include <Precision.hxx>
 #include <TopoDS_Compound.hxx>
-#endif
+
 
 #include <Base/Console.h>  // for FC_LOG_LEVEL_INIT
 #include <Base/Placement.h>
