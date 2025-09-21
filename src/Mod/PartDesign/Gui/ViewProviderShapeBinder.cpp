@@ -21,15 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QApplication>
 # include <QMenu>
 # include <QMessageBox>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-#endif
+
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <App/Document.h>

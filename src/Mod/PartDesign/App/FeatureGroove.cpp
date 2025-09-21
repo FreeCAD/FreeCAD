@@ -21,8 +21,6 @@
  ******************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 # include <BRepPrimAPI_MakeRevol.hxx>
 # include <BRepFeat_MakeRevol.hxx>
@@ -30,7 +28,7 @@
 # include <TopoDS.hxx>
 # include <TopExp_Explorer.hxx>
 # include <Precision.hxx>
-#endif
+
 
 #include <Base/Exception.h>
 #include <Base/Tools.h>

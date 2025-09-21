@@ -25,8 +25,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 #ifdef FC_OS_WIN32
 #include <windows.h>
 #endif
@@ -57,5 +55,4 @@
 // Inventor
 # include <Gui/InventorAll.h>
 
-#endif // _PreComp_
 #endif // PART_DESIGN_PRECOMPILED_H

@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QSignalBlocker>
 #include <QAction>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/Tools.h>

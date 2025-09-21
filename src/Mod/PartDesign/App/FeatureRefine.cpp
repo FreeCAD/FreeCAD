@@ -21,11 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Standard_Failure.hxx>
-#endif
 
 #include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>

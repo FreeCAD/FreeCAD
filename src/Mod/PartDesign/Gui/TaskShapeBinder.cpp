@@ -21,13 +21,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <boost/core/ignore_unused.hpp>
 # include <QAction>
 # include <QMessageBox>
-#endif
+
 
 #include <App/Document.h>
 #include <Gui/Application.h>

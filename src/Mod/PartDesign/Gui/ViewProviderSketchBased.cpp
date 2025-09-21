@@ -20,12 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <Inventor/nodes/SoAnnotation.h>
-#endif
 
 #include <App/Document.h>
 #include <Base/ServiceProvider.h>

@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
@@ -763,14 +761,14 @@ void TaskRevolutionParameters::setGizmoPositions()
     if (isGroove) {
         auto groove = getObject<PartDesign::Groove>();
         Part::TopoShape profile = groove->getProfileShape();
-        
+
         profile.getCenterOfGravity(profileCog);
         basePos = groove->Base.getValue();
         axisDir = groove->Axis.getValue();
     } else {
         auto revolution = getObject<PartDesign::Revolution>();
         Part::TopoShape profile = revolution->getProfileShape();
-        
+
         profile.getCenterOfGravity(profileCog);
         basePos = revolution->Base.getValue();
         axisDir = revolution->Axis.getValue();

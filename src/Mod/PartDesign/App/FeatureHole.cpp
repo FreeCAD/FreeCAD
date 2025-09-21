@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <limits>
 # include <gp_Circ.hxx>
 # include <gp_Dir.hxx>
@@ -49,7 +47,6 @@
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
 # include <TopExp.hxx>
-#endif
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
@@ -2278,7 +2275,7 @@ Base::Vector3d Hole::guessNormalDirection(const TopoShape& profileshape) const
     // the middle of the face
     if (profileshape.hasSubShape(TopAbs_FACE)) {
         BRepAdaptor_Surface sf(TopoDS::Face(profileshape.getSubShape(TopAbs_FACE, 1)));
-        
+
         if (sf.GetType() == GeomAbs_Cylinder) {
             return Base::convertTo<Base::Vector3d>(sf.Cylinder().Axis().Direction());
         }

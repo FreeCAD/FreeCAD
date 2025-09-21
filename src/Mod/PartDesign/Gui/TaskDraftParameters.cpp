@@ -22,14 +22,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QKeyEvent>
 #include <QListWidget>
 #include <QMessageBox>
-#endif
+
 
 #include <Base/Interpreter.h>
 #include <App/Document.h>

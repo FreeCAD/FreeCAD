@@ -22,13 +22,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
 # include <QTextStream>
-#endif
+
 
 #include <App/Document.h>
 #include <App/Origin.h>

@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QApplication>
 # include <QInputDialog>
 # include <QMessageBox>
 # include <TopExp_Explorer.hxx>
-#endif
+
 
 #include <App/Document.h>
 #include <App/GeoFeatureGroupExtension.h>

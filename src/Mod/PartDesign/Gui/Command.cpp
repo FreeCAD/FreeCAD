@@ -21,9 +21,7 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <GeomLib_IsPlanarSurface.hxx>
@@ -32,7 +30,7 @@
 # include <TopLoc_Location.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
-#endif
+
 
 #include <App/Origin.h>
 #include <App/Part.h>

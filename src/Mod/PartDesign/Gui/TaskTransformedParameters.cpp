@@ -20,12 +20,10 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QListWidget>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
