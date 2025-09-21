@@ -1735,6 +1735,7 @@ public:
     static constexpr const char* PICK_EDGE = "%1 pick edge";
     static constexpr const char* PICK_POINT_OR_EDGE = "%1 pick point or edge";
     static constexpr const char* PICK_SECOND_POINT_OR_EDGE = "%1 pick second point or edge";
+    static constexpr const char* PICK_SECOND_POINT_OR_EDGE_OR_CLICK_TO_FINISH = "%1 pick second point or edge, or click to finish";
     static constexpr const char* PLACE_DIMENSION = "%1 place dimension";
     static constexpr const char* MODE_HINT = "%1 switch mode";
     explicit DrawSketchHandlerDimension(std::vector<std::string> SubNames)
@@ -1990,20 +1991,20 @@ std::list<Gui::InputHint> getToolHints() const override {
                 {QObject::tr(MODE_HINT), {Gui::InputHint::UserInput::KeyM}}};
     } else if (selPoints.size() == 1 && selLine.empty() && selCircleArc.empty() && selEllipseAndCo.empty() && selSplineAndCo.empty()) {
         // Single point - can add more points, lines, circles, etc.
-        return {{QObject::tr(PICK_SECOND_POINT_OR_EDGE), {Gui::InputHint::UserInput::MouseLeft}},
+        return {{QObject::tr(PICK_SECOND_POINT_OR_EDGE_OR_CLICK_TO_FINISH), {Gui::InputHint::UserInput::MouseLeft}},
                 {QObject::tr(MODE_HINT), {Gui::InputHint::UserInput::KeyM}}};
     } else if (selLine.size() == 1 && selPoints.empty() && selCircleArc.empty() && selEllipseAndCo.empty() && selSplineAndCo.empty()) {
         // Single line - can add more points, lines, circles, etc.
-        return {{QObject::tr(PICK_SECOND_POINT_OR_EDGE), {Gui::InputHint::UserInput::MouseLeft}},
+        return {{QObject::tr(PICK_SECOND_POINT_OR_EDGE_OR_CLICK_TO_FINISH), {Gui::InputHint::UserInput::MouseLeft}},
                 {QObject::tr(MODE_HINT), {Gui::InputHint::UserInput::KeyM}}};
     } else if (selCircleArc.size() == 1 && selPoints.empty() && selLine.empty() && selEllipseAndCo.empty() && selSplineAndCo.empty()) {
         // Single circle/arc - can add more points, lines, circles, etc.
-        return {{QObject::tr(PICK_SECOND_POINT_OR_EDGE), {Gui::InputHint::UserInput::MouseLeft}},
+        return {{QObject::tr(PICK_SECOND_POINT_OR_EDGE_OR_CLICK_TO_FINISH), {Gui::InputHint::UserInput::MouseLeft}},
                 {QObject::tr(MODE_HINT), {Gui::InputHint::UserInput::KeyM}}};
     } else {
         // Multiple selections or complex combinations - check if more selections are possible
         // For now, assume more selections are possible unless we have a complete constraint
-        return {{QObject::tr(PICK_SECOND_POINT_OR_EDGE), {Gui::InputHint::UserInput::MouseLeft}},
+        return {{QObject::tr(PICK_SECOND_POINT_OR_EDGE_OR_CLICK_TO_FINISH), {Gui::InputHint::UserInput::MouseLeft}},
                 {QObject::tr(MODE_HINT), {Gui::InputHint::UserInput::KeyM}}};
     }
 }
