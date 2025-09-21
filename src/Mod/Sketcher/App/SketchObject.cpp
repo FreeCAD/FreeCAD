@@ -173,8 +173,7 @@ SketchObject::SketchObject() : geoLastId(0)
                       (false),
                       "Internal Geometry",
                       App::Prop_None,
-                      "Enables selection of closed profiles within a sketch as input for operations.");
-
+                      "Enables selection of closed profiles within a sketch as input for operations");
 
     Geometry.setOrderRelevant(true);
 
