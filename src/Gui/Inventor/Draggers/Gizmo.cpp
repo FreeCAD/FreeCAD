@@ -613,7 +613,7 @@ void GizmoContainer::initClass()
     SO_KIT_INIT_CLASS(GizmoContainer, SoBaseKit, "BaseKit");
 }
 
-GizmoContainer::GizmoContainer(): viewProvider(nullptr)
+GizmoContainer::GizmoContainer()
 {
     SO_KIT_CONSTRUCTOR(GizmoContainer);
 
@@ -655,9 +655,7 @@ GizmoContainer::~GizmoContainer()
 
     uninitGizmos();
 
-    if (!viewProvider.expired()) {
-        viewProvider->setGizmoContainer(nullptr);
-    }
+    viewProvider->setGizmoContainer(nullptr);
 }
 
 void GizmoContainer::initGizmos()
