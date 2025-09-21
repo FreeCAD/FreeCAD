@@ -21,12 +21,10 @@
  ****************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <TDataStd_Name.hxx>
 #include <TDF_ChildIterator.hxx>
 #include <TDF_Tool.hxx>
-#endif
+
 
 #include <boost/algorithm/string.hpp>
 #include <boost/format.hpp>
