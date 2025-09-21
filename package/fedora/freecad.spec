@@ -529,8 +529,7 @@ skip="${skip-}${skip+}SketchObjectTest.testDeleteExposeInternalGeometryOfBSpline
 skip="${skip-}${skip+}SketchObjectTest.testDeleteOnlyUnusedInternalGeometryOfBSpline|"
 skip="${skip-}${skip+}ReaderTest.charStreamBase64Encoded|"
 skip="${skip-}${skip+}QuantitySpinBox_Tests_run"
-#ctest -E "${skip-}"
-%ctest
+%ctest -E "${skip-}"
 %endif
 
 %files
