@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QMessageBox>
 #include <QPushButton>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
