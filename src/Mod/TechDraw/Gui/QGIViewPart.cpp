@@ -473,7 +473,7 @@ void QGIViewPart::drawAllVertexes()
                 cmItem->setSize(getVertexSize() * vp->CenterScale.getValue());
                 cmItem->setPrettyNormal();
                 cmItem->setZValue(ZVALUE::VERTEX);
-                cmItem->setVisible(false);
+                cmItem->setVisible(m_isHovered);
             }
         } else {
             //regular Vertex
@@ -486,7 +486,7 @@ void QGIViewPart::drawAllVertexes()
                 item->setRadius(getVertexSize());
                 item->setPrettyNormal();
                 item->setZValue(ZVALUE::VERTEX);
-                item->setVisible(false);
+                item->setVisible(m_isHovered);
             }
         }
     }
