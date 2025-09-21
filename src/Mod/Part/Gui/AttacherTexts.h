@@ -33,6 +33,7 @@
 #include <QStringList>
 #include <Mod/Part/App/Attacher.h>
 
+#include <Mod/Part/PartGlobal.h>
 
 namespace AttacherGui {
 

@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <Mod/Part/PartGlobal.h>
+
 # include <memory>
 # include <Standard_Failure.hxx>
 
 // Needed for OCCT 7.5.2
 #include <TopoDS_Edge.hxx>
-#endif
 
 #include <Base/PyWrapParseTupleAndKeywords.h>
 

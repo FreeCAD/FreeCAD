@@ -21,11 +21,9 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QApplication>
-#endif
+
 
 #include <App/Part.h>
 #include <Gui/Application.h>

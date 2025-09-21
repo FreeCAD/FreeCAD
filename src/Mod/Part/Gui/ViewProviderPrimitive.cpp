@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QAction>
 # include <QMenu>
-#endif
+
 
 #include <Gui/ActionFunction.h>
 #include <Gui/Control.h>

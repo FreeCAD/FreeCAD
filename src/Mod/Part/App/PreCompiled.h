@@ -27,8 +27,6 @@
 
 #include <Mod/Part/PartGlobal.h>
 
-#ifdef _PreComp_
-
 // standard
 #include <cassert>
 #include <cmath>
@@ -66,9 +64,8 @@
 // OpenCasCade
 #include "OpenCascadeAll.h"
 
-#elif defined(FC_OS_WIN32)
+#if defined(FC_OS_WIN32)
 #include <Windows.h>
-#include <io.h>
 #endif
 
 #ifndef _Standard_Version_HeaderFile

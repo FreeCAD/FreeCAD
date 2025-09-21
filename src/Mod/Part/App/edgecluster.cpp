@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRep_Tool.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <TopExp.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Vertex.hxx>
-#endif
+
 
 #include "edgecluster.h"
 

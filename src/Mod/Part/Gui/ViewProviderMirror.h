@@ -24,6 +24,8 @@
 #ifndef PARTGUI_VIEWPROVIDERMIRROR_H
 #define PARTGUI_VIEWPROVIDERMIRROR_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include <Mod/Part/Gui/ViewProvider.h>
 
 namespace PartGui {

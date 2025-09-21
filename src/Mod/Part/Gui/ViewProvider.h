@@ -28,6 +28,7 @@
 
 #include <Gui/ViewProviderBuilder.h>
 #include <Mod/Part/Gui/ViewProviderExt.h>
+#include <Mod/Part/PartGlobal.h>
 
 class SoSeparator;
 

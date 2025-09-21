@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <Bnd_Box.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepBndLib.hxx>
@@ -68,7 +65,6 @@
 # include <Inventor/nodes/SoShapeHints.h>
 
 # include <boost/algorithm/string/predicate.hpp>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>

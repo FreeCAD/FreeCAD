@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
 # ifdef FC_OS_WIN32
 #  include <windows.h>
 # endif
@@ -46,7 +45,6 @@
 # include <Inventor/misc/SoState.h>
 # include <Inventor/nodes/SoGroup.h>
 # include <Inventor/actions/SoSearchAction.h>
-#endif
 
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/Selection/Selection.h>
@@ -92,7 +90,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
     bool hasContextHighlight = ctx && !ctx->hl.empty();
     bool hasFaceHighlight = viewProvider && viewProvider->isFaceHighlightActive();
     bool hasAnyHighlight = hasContextHighlight || hasFaceHighlight;
-    
+
     if (Gui::Selection().isClarifySelectionActive()
         && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths
         && hasAnyHighlight) {
@@ -106,7 +104,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action)
                                                         200);
         return;
     }
-    
+
     if(selContext2->checkGlobal(ctx)) {
         if(selContext2->isSelectAll()) {
             selContext2->sl.clear();

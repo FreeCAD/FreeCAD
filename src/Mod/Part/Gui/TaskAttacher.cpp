@@ -21,15 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
 # include <QMessageBox>
 # include <QRegularExpression>
 # include <QRegularExpressionMatch>
 # include <Standard_Failure.hxx>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

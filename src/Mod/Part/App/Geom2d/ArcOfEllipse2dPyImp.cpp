@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <GCE2d_MakeArcOfEllipse.hxx>
 # include <Geom2d_Ellipse.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
 # include <gp_Elips2d.hxx>
-#endif
+
 
 #include "Geom2d/ArcOfEllipse2dPy.h"
 #include "Geom2d/ArcOfEllipse2dPy.cpp"
