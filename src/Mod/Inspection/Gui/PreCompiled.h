@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PRECOMPILED_H
-#define GUI_PRECOMPILED_H
+#ifndef INSPECTION_GUI_PRECOMPILED_H
+#define INSPECTION_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 

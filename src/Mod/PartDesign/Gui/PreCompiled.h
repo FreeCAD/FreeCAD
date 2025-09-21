@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED_GUI__
-#define __PRECOMPILED_GUI__
+#ifndef PART_DESIGN_PRECOMPILED_H
+#define PART_DESIGN_PRECOMPILED_H
 
 #include <FCConfig.h>
 
@@ -58,4 +58,4 @@
 # include <Gui/InventorAll.h>
 
 #endif // _PreComp_
-#endif // __PRECOMPILED_GUI__
+#endif // PART_DESIGN_PRECOMPILED_H

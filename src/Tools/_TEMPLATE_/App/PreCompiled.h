@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef APP_PRECOMPILED_H
-#define APP_PRECOMPILED_H
+#ifndef TEMPLATE_APP_PRECOMPILED_H
+#define TEMPLATE_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 

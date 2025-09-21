@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+#ifndef REVERSE_ENGINEERING_APP_PRECOMPILED_H
+#define REVERSE_ENGINEERING_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 

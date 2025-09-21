@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+#ifndef MESH_PART_APP_PRECOMPILED_H
+#define MESH_PART_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 

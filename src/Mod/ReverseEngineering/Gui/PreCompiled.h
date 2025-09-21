@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED_GUI__
-#define __PRECOMPILED_GUI__
+#ifndef REVERSE_ENGINEERING_GUI_PRECOMPILED_H
+#define REVERSE_ENGINEERING_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 

@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED_GUI__
-#define __PRECOMPILED_GUI__
+#ifndef MESH_PART_GUI_PRECOMPILED_H
+#define MESH_PART_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 

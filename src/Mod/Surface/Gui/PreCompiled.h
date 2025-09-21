@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PRECOMPILED_H
-#define GUI_PRECOMPILED_H
+#ifndef SURFACE_GUI_PRECOMPILED_H
+#define SURFACE_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 

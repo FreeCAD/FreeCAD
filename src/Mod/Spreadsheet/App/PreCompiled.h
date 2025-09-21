@@ -21,8 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SPREADSHEET_PRECOMPILED_H
-#define SPREADSHEET_PRECOMPILED_H
+#ifndef SPREADSHEET_APP_PRECOMPILED_H
+#define SPREADSHEET_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 
@@ -46,4 +46,4 @@
 // Qt
 #include <QLocale>
 
-#endif  // SPREADSHEET_PRECOMPILED_H
+#endif  // SPREADSHEET_APP_PRECOMPILED_H

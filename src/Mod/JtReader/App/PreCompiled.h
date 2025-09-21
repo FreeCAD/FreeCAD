@@ -3,9 +3,8 @@
  *   LGPL                                                                  *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED__
-
-#define __PRECOMPILED__
+#ifndef JTREADER_APP_PRECOMPILED_H
+#define JTREADER_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 

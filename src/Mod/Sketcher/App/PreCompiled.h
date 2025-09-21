@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+#ifndef SKETCHER_APP_PRECOMPILED_H
+#define SKETCHER_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 

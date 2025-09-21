@@ -21,8 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SPREADSHEET_PRECOMPILED_H
-#define SPREADSHEET_PRECOMPILED_H
+#ifndef SPREADSHEET_GUI_PRECOMPILED_H
+#define SPREADSHEET_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 
@@ -40,4 +40,4 @@
 // Qt Toolkit
 #include <Gui/QtAll.h>
 
-#endif  // SPREADSHEET_PRECOMPILED_H
+#endif  // SPREADSHEET_GUI_PRECOMPILED_H

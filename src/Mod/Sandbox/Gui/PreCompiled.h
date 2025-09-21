@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef GUI_PRECOMPILED_H
-#define GUI_PRECOMPILED_H
+#ifndef SANDBOX_GUI_PRECOMPILED_H
+#define SANDBOX_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 

@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_PRECOMPILED_H
-#define APP_PRECOMPILED_H
+#ifndef INSPECTION_APP_PRECOMPILED_H
+#define INSPECTION_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 

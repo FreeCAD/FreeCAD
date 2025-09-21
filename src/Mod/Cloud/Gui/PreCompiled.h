@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef GUI_PRECOMPILED_H
-#define GUI_PRECOMPILED_H
+#ifndef CLOUD_GUI_PRECOMPILED_H
+#define CLOUD_GUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 
