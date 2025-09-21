@@ -26,17 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-#define CloudAppExport __declspec(dllimport)
-#define CloudGuiExport __declspec(dllexport)
-#else  // for Linux
-#define CloudAppExport
-#define CloudGuiExport
-#endif
-
-#ifdef _PreComp_
-
 // standard
 #include <cassert>
 #include <cstdio>
@@ -59,7 +48,5 @@
 
 // Qt Toolkit
 #include <Gui/QtAll.h>
-
-#endif  //_PreComp_
 
 #endif  // GUI_PRECOMPILED_H
