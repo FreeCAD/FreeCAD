@@ -56,8 +56,8 @@ class GroupByClause:
 
 class AggregateFunction:
     """Represents an aggregate function call like COUNT(*) or SUM(Height)."""
-    def __init__(self, function_name, argument):
-        self.function_name = function_name.lower()
+    def __init__(self, name, argument):
+        self.function_name = name.lower()
         # argument can be the string "*" or another extractor (e.g., ReferenceExtractor)
         self.argument = argument
 
@@ -352,6 +352,18 @@ class InComparison:
         # The check is a simple Python 'in' against the pre-calculated set
         return property_value in self.values_set
 
+class TypeFunction:
+    """Represents a call to the TYPE() function."""
+    def __init__(self, name, argument):
+        self.argument = argument
+        self.function_name = name.lower()
+
+    def get_value(self, obj):
+        """Returns the canonical type name of an object using Draft.get_type()."""
+        import Draft
+
+        return Draft.get_type(obj)
+
 class ReferenceExtractor:
     def __init__(self, value): self.value = value
     def get_value(self, obj): return get_property(obj, self.value)
@@ -437,9 +449,30 @@ class SqlTreeTransformer:
     def literal(self, items): return StaticExtractor(items[0].value[1:-1])
     def null(self, _): return StaticExtractor(None)
 
+    # --- Function Handling with a Registry ---
+    # This registry maps upper-case SQL function names to their class constructors.
+    FUNCTION_REGISTRY = {
+        # Aggregate Functions
+        'COUNT': AggregateFunction,
+        'SUM':   AggregateFunction,
+        'MIN':   AggregateFunction,
+        'MAX':   AggregateFunction,
+        # Utility Functions
+        'TYPE':  TypeFunction,
+    }
+
     def function(self, items):
-        function_name, argument = str(items[0]), items[1]
-        return AggregateFunction(function_name, argument)
+        function_name_token, argument = items[0], items[1]
+        function_name = str(function_name_token).upper()
+
+        # Look up the function in the registry to get its class
+        function_class = self.FUNCTION_REGISTRY.get(function_name)
+
+        if function_class:
+            return function_class(function_name, argument)
+
+        # If the function is not in our registry, it's a validation error.
+        raise ValueError(f"Unknown function: {function_name}")
 
 
 def _get_query_object(query_string):

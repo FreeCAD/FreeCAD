@@ -660,3 +660,29 @@ class TestArchReport(TestArchBase.TestArchBase):
         expected_labels = sorted([self.wall_ext.Label, self.wall_int.Label])
         self.assertListEqual(returned_labels, expected_labels, "The objects returned by the IN clause are incorrect.")
 
+    def test_type_function(self):
+        """
+        Tests the custom TYPE() function to ensure it returns the correct
+        programmatic class name for both simple and proxy-based objects.
+        """
+        # --- Query and Execution ---
+        # We want the type of the Part::Box and one of the Arch Walls.
+        query = "SELECT TYPE(*) FROM document WHERE Name IN ('Generic_Box', 'Wall')"
+
+        headers, results_data = ArchSql.run_query_for_objects(query)
+
+        # --- Assertions ---
+        # The query should return two rows, one for each object.
+        self.assertEqual(len(results_data), 2, "Query should have found the two target objects.")
+
+        # Convert the results to a simple list for easier checking.
+        # The result from the engine is a list of lists, e.g., [['Part.Box'], ['Arch.ArchWall']]
+        type_names = sorted([row[0] for row in results_data])
+
+        # 1. Verify the type of the Part::Box.
+        #    The expected value is the C++ class name.
+        self.assertIn('Part::Box', type_names, "TYPE() failed to identify the Part::Box.")
+
+        # 2. Verify the type of the Arch Wall.
+        #    Draft.get_type() returns the user-facing 'Wall' type from the proxy.
+        self.assertIn('Wall', type_names, "TYPE() failed to identify the ArchWall proxy class.")
