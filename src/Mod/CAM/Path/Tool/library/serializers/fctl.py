@@ -73,9 +73,9 @@ class FCTLSerializer(AssetSerializer):
         # instance, overriding any 'id' that might be in the data_dict (which
         # is from an older version of the format).
         
-        # For the label, prefer data_dict["label"], then "name", then fallback to "Unnamed Library"
-        # Avoid using the UUID as the library name
-        label = data_dict.get("label") or data_dict.get("name") or "Unnamed Library"
+        # For the label, prefer data_dict["label"], then "name", then fallback to using the id as filename
+        # The id parameter often contains the filename stem when importing from files
+        label = data_dict.get("label") or data_dict.get("name") or id or "Unnamed Library"
         library = Library(label, id=id)
 
         if dependencies is None:
@@ -194,8 +194,8 @@ class FCTLSerializer(AssetSerializer):
         from ...camassets import cam_assets
         from ...toolbit.serializers import all_serializers as toolbit_serializers
 
-        # Generate a unique ID for this library instance
-        library_id = str(uuid.uuid4())
+        # Use filename stem as library ID for meaningful names
+        library_id = file_path.stem
 
         Path.Log.info(
             f"FCTL DEEP_DESERIALIZE_WITH_CONTEXT: Starting deep deserialization for library from {file_path}"

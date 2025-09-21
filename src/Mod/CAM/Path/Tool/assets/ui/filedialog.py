@@ -139,12 +139,12 @@ class AssetOpenDialog(QFileDialog):
 
         # Load and return the asset.
         try:
-            # Choose deserialization method based on whether toolbits were imported
-            if use_context_deserialize and hasattr(serializer_class, 'deep_deserialize_with_context'):
-                # Pass file path context for external dependency resolution
+            # Always use context-aware deserialization for libraries to get meaningful names
+            if hasattr(serializer_class, 'deep_deserialize_with_context'):
+                # Pass file path context for meaningful library names and external dependency resolution
                 asset = serializer_class.deep_deserialize_with_context(raw_data, file_path)
             else:
-                # Use regular deserialization - toolbits should be in stores now
+                # Fallback to regular deserialization
                 asset = serializer_class.deep_deserialize(raw_data)
             
             if not isinstance(asset, self.asset_class):
