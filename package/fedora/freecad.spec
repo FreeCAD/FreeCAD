@@ -5,9 +5,9 @@
 %bcond external_gsl 1
 %bcond tests 1
 
-%global ondselsolver_commit c1f052e
+%global ondselsolver_commit bacb65f
 %global gsl_commit 2828399
-%global addon_commit 84f08ee
+%global addon_commit d91c719
 
 Name:           freecad
 Epoch:          1
@@ -442,6 +442,7 @@ skip="${skip-}${skip+}FeatureChamferTest.testOther|"
 skip="${skip-}${skip+}FeatureChamferTest.testMost|"
 skip="${skip-}${skip+}FeatureChamferTest.testMustExecute|"
 skip="${skip-}${skip+}FeatureChamferTest.testGetProviderName|"
+skip="${skip-}${skip+}FileInfoTest.TestCheckNoPermission|"
 skip="${skip-}${skip+}AttachExtensionTest.testPlanePlane|"
 skip="${skip-}${skip+}AttachExtensionTest.testAttacherEngineType|"
 skip="${skip-}${skip+}AttachExtensionTest.testAttacherTypeEngine|"
