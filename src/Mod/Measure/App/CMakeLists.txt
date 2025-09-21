@@ -15,7 +15,6 @@ SET(Python_SRCS
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 SET(MeasureModule_SRCS
-    PreCompiled.cpp
     PreCompiled.h
     AppMeasure.cpp
     AppMeasurePy.cpp
@@ -56,13 +55,13 @@ SET(Measure_SRCS
     ${Python_SRCS}
 )
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Measure_CPP_SRCS ${Measure_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(Measure PreCompiled.h PreCompiled.cpp Measure_CPP_SRCS)
-endif(FREECAD_USE_PCH)
-
 add_library(Measure SHARED ${Measure_SRCS})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(Measure PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
 
 target_include_directories(
     Measure

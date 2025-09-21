@@ -19,10 +19,8 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <string>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Material.h>

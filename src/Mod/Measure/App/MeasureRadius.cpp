@@ -19,8 +19,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-
 
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
