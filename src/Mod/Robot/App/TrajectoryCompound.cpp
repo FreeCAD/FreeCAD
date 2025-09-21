@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "TrajectoryCompound.h"
 #include "Waypoint.h"

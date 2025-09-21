@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include "kdl_cp/chainfksolverpos_recursive.hpp"
 #include "kdl_cp/chainiksolverpos_nr.hpp"
 #include "kdl_cp/chainiksolvervel_pinv.hpp"
 #include "kdl_cp/frames_io.hpp"
-#endif
+
 
 #include "RobotAlgos.h"
 
