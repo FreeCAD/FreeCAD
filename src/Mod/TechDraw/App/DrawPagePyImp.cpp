@@ -88,7 +88,8 @@ PyObject* DrawPagePy::getViews(PyObject* args)
 
     Py::List ret;
     for (auto v: allViews) {
-        if (v->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
+        auto dvp = freecad_cast<DrawViewPart*>(v);
+        if (dvp && DrawView::isProjGroupItem(dvp)) {
             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(v);
             ret.append(Py::asObject(new TechDraw::DrawProjGroupItemPy(dpgi)));
         }
@@ -120,7 +121,8 @@ PyObject* DrawPagePy::getAllViews(PyObject* args)
 
     Py::List ret;
     for (auto v: allViews) {
-        if (v->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
+        auto dvp = freecad_cast<DrawViewPart*>(v);
+        if (dvp && DrawView::isProjGroupItem(dvp)) {
             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(v);
             ret.append(Py::asObject(new TechDraw::DrawProjGroupItemPy(dpgi)));
         }
