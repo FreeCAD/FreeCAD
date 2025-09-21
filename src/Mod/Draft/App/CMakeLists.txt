@@ -11,11 +11,17 @@ set(DraftUtils_LIBS
 SET(DraftUtils_SRCS
     AppDraftUtils.cpp
     AppDraftUtilsPy.cpp
-    PreCompiled.cpp
     PreCompiled.h
 )
 
 add_library(DraftUtils SHARED ${DraftUtils_SRCS})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(DraftUtils PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
 target_include_directories(
     DraftUtils
     PRIVATE
