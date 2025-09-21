@@ -426,3 +426,10 @@ INSTALL(
     DESTINATION
         "${CMAKE_INSTALL_DATADIR}/Mod/BIM/Resources/templates"
     )
+
+INSTALL(
+    FILES
+        ${BIM_GENERATED_PARSER}
+    DESTINATION
+        Mod/BIM
+)
