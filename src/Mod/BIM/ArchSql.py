@@ -15,18 +15,25 @@ import re
 
 # Import exception types from the generated parser for type-safe handling.
 from generated_sql_parser import UnexpectedEOF, UnexpectedToken, VisitError
-
-# --- Engine Initialization (run once on module import) ---
 import generated_sql_parser
 
 
-# Global variables to cache the parser and transformer for performance
-_parser = None
-_transformer = None
+# --- Custom Exceptions for the SQL Engine ---
 
-# --- SQL Engine Constants ---
+class SqlEngineError(Exception):
+    """Base class for all custom exceptions in this module."""
+    pass
+
+class BimSqlSyntaxError(SqlEngineError):
+    """Raised for any parsing or syntax error."""
+    def __init__(self, message, is_incomplete=False):
+        super().__init__(message)
+        self.is_incomplete = is_incomplete
+
+
+# --- Module-level Constants ---
+
 SELECT_STAR_HEADER = 'Object Label'
-_FRIENDLY_TOKEN_NAMES = None # This will be generated dynamically on first run.
 _CUSTOM_FRIENDLY_TOKEN_NAMES = {
     # This dictionary provides overrides for tokens where the name is not user-friendly.
     # Punctuation
@@ -38,9 +45,11 @@ _CUSTOM_FRIENDLY_TOKEN_NAMES = {
      'CNAME': "a property or function name",
  }
 
-def get_property(obj, prop_name):
-    """Gets a property from a FreeCAD object, including sub-properties."""
 
+# --- Internal Helper Functions ---
+
+def _get_property(obj, prop_name):
+    """Gets a property from a FreeCAD object, including sub-properties."""
     # The property name implies sub-property access (e.g., 'Placement.Base.x')
     is_nested_property = lambda prop_name: '.' in prop_name
 
@@ -60,15 +69,19 @@ def get_property(obj, prop_name):
                 return None
         return current_obj
 
-class SqlEngineError(Exception):
-    """Base class for all custom exceptions in this module."""
-    pass
 
-class BimSqlSyntaxError(SqlEngineError):
-    """Raised for any parsing or syntax error."""
-    def __init__(self, message, is_incomplete=False):
-        super().__init__(message)
-        self.is_incomplete = is_incomplete
+def _generate_friendly_token_names(parser):
+    """Dynamically builds the friendly token name map from the Lark parser instance."""
+    friendly_names = _CUSTOM_FRIENDLY_TOKEN_NAMES.copy()
+    for term in parser.terminals:
+        # Add any keyword/terminal from the grammar that isn't already in our custom map.
+        if term.name not in friendly_names:
+            # By default, the friendly name is the keyword itself in single quotes.
+            friendly_names[term.name] = f"'{term.name}'"
+    return friendly_names
+
+
+# --- Logical Classes for the SQL Statement Object Model ---
 
 class FunctionRegistry:
     """A simple class to manage the registration of SQL functions."""
@@ -83,10 +96,6 @@ class FunctionRegistry:
         """Retrieves the class registered for a given function name."""
         return self._functions.get(name.upper())
 
-# --- Module-level Registries ---
-# These act as the central "plugin" managers for all SQL functions.
-select_function_registry = FunctionRegistry()
-from_function_registry = FunctionRegistry()
 
 class AggregateFunction:
     """Represents an aggregate function call like COUNT(*) or SUM(Height)."""
@@ -104,6 +113,7 @@ class AggregateFunction:
         # during the grouped execution phase, not on a single object.
         return None
 
+
 class FunctionBase:
     """A base class for non-aggregate functions like TYPE, CONCAT, etc."""
     def __init__(self, function_name, arg_extractors):
@@ -113,6 +123,7 @@ class FunctionBase:
     def get_value(self, obj):
         """Calculates the function's value for a single object row."""
         raise NotImplementedError()
+
 
 class TypeFunction(FunctionBase):
     """Implements the TYPE() function."""
@@ -124,8 +135,8 @@ class TypeFunction(FunctionBase):
     def get_value(self, obj):
         # The argument for TYPE is the object itself, represented by '*'.
         import Draft
-
         return Draft.get_type(obj)
+
 
 class LowerFunction(FunctionBase):
     """Implements the LOWER() string function."""
@@ -138,6 +149,7 @@ class LowerFunction(FunctionBase):
         value = self.arg_extractors[0].get_value(obj)
         return str(value).lower() if value is not None else None
 
+
 class UpperFunction(FunctionBase):
     """Implements the UPPER() string function."""
     def __init__(self, function_name, arg_extractors):
@@ -149,6 +161,7 @@ class UpperFunction(FunctionBase):
         value = self.arg_extractors[0].get_value(obj)
         return str(value).upper() if value is not None else None
 
+
 class ConcatFunction(FunctionBase):
     """Implements the CONCAT() string function."""
     def __init__(self, function_name, arg_extractors):
@@ -159,6 +172,7 @@ class ConcatFunction(FunctionBase):
     def get_value(self, obj):
         parts = [str(ex.get_value(obj)) if ex.get_value(obj) is not None else '' for ex in self.arg_extractors]
         return "".join(parts)
+
 
 class FromFunctionBase:
     """Base class for all functions used in a FROM clause."""
@@ -209,6 +223,7 @@ class FromFunctionBase:
                 parent_objects.append(parent)
         return parent_objects
 
+
 class ChildrenFromFunction(FromFunctionBase):
     """Implements the CHILDREN() function."""
 
@@ -250,24 +265,13 @@ class ChildrenFromFunction(FromFunctionBase):
 
         return list(results_set)
 
-# Populate the registries with the engine's built-in functions.
-# This is done once at the module level.
-select_function_registry.register('COUNT', AggregateFunction)
-select_function_registry.register('SUM', AggregateFunction)
-select_function_registry.register('MIN', AggregateFunction)
-select_function_registry.register('MAX', AggregateFunction)
-select_function_registry.register('TYPE', TypeFunction)
-select_function_registry.register('LOWER', LowerFunction)
-select_function_registry.register('UPPER', UpperFunction)
-select_function_registry.register('CONCAT', ConcatFunction)
-from_function_registry.register('CHILDREN', ChildrenFromFunction)
 
-# Query Object Model
 class GroupByClause:
     """Represents the GROUP BY clause of a SQL statement."""
     def __init__(self, columns):
         # columns is a list of ReferenceExtractor objects
         self.columns = columns
+
 
 class OrderByClause:
     """Represents the ORDER BY clause of a SQL statement."""
@@ -278,6 +282,7 @@ class OrderByClause:
     def __repr__(self):
         # Add a __repr__ for clearer debug logs.
         return f"<OrderByClause column='{self.column_name}' dir='{self.direction}'>"
+
 
 class SelectStatement:
     def __init__(self, columns_info, from_clause, where_clause, group_by_clause, order_by_clause):
@@ -346,7 +351,7 @@ class SelectStatement:
             group_by_col_names = {ex.value for ex in self.group_by_clause.columns}
 
             for extractor, _ in self.columns_info:
-                if isinstance(extractor, (AggregateFunction, StaticExtractor)):
+                if isinstance(extractor, (AggregateFunction, StaticExtractor, FunctionBase)):
                     continue  # Valid cases
 
                 if extractor == '*':
@@ -412,7 +417,7 @@ class SelectStatement:
                         else:
                             # Count only objects where the specified property is not None
                             prop_name = extractor.argument.value
-                            count = sum(1 for obj in object_list if get_property(obj, prop_name) is not None)
+                            count = sum(1 for obj in object_list if _get_property(obj, prop_name) is not None)
                             value = count
                     else:
                         # For other aggregates, extract the relevant property from all objects in the group
@@ -439,14 +444,21 @@ class SelectStatement:
                         else:
                             value = f"'{extractor.function_name}' NOT_IMPL"
 
+                elif isinstance(extractor, FunctionBase):
+                    # For non-aggregate functions, just calculate the value based on the first object.
+                    # This is consistent with how non-grouped, non-aggregate columns are handled.
+                    if object_list:
+                        value = extractor.get_value(object_list[0])
+
                 else:
                     # This must be a column from the GROUP BY clause. We find which part
                     # of the key corresponds to this column.
                     key_index = -1
-                    for i, gb_extractor in enumerate(group_by_extractors):
-                        if gb_extractor.value == extractor.value:
-                           key_index = i
-                           break
+                    if isinstance(extractor, ReferenceExtractor):
+                        for i, gb_extractor in enumerate(group_by_extractors):
+                            if gb_extractor.value == extractor.value:
+                               key_index = i
+                               break
                     if key_index != -1:
                         value = key[key_index]
 
@@ -459,11 +471,10 @@ class SelectStatement:
         """Executes a simple query without a GROUP BY clause."""
         results_data = []
 
-        # Check if this is a query with only aggregate functions (e.g., SELECT COUNT(*))
-        is_aggregate_query = any(isinstance(ex, AggregateFunction) for ex, _ in self.columns_info)
-
-        if is_aggregate_query:
-            # An aggregate query without a GROUP BY always returns a single row.
+        # Check if this is a query with only aggregate or non-aggregate functions
+        is_single_row_query = any(isinstance(ex, AggregateFunction) for ex, _ in self.columns_info)
+        if is_single_row_query:
+            # A query with functions but no GROUP BY always returns a single row.
             row = []
             for extractor, _ in self.columns_info:
                 value = None
@@ -477,7 +488,7 @@ class SelectStatement:
                         else:
                             # Count only objects where the specified property is not None
                             prop_name = extractor.argument.value
-                            count = sum(1 for obj in objects if get_property(obj, prop_name) is not None)
+                            count = sum(1 for obj in objects if _get_property(obj, prop_name) is not None)
                             value = count
                     else:
                         # For other aggregates, they must have a property to act on.
@@ -503,6 +514,10 @@ class SelectStatement:
                                 value = max(values)
                             else:
                                 value = f"'{extractor.function_name}' NOT_IMPL"
+                elif isinstance(extractor, FunctionBase):
+                     # For non-aggregate functions, calculate based on the first object if available.
+                     if objects:
+                         value = extractor.get_value(objects[0])
                 else:
                     # This case (a ReferenceExtractor) is correctly blocked by the
                     # validate() method and should not be reached.
@@ -526,6 +541,7 @@ class SelectStatement:
 
         return results_data
 
+
 class FromClause:
     def __init__(self, reference):
         self.reference = reference
@@ -536,11 +552,13 @@ class FromClause:
         """
         return self.reference.get_objects()
 
+
 class WhereClause:
     def __init__(self, expression):
         self.expression = expression
     def matches(self, obj):
         return self.expression.evaluate(obj)
+
 
 class BooleanExpression:
     def __init__(self, left, op, right):
@@ -551,6 +569,7 @@ class BooleanExpression:
         if self.op is None: return self.left.evaluate(obj)
         if self.op == 'and': return self.left.evaluate(obj) and self.right.evaluate(obj)
         if self.op == 'or': return self.left.evaluate(obj) or self.right.evaluate(obj)
+
 
 class BooleanComparison:
     def __init__(self, left, op, right):
@@ -588,6 +607,7 @@ class BooleanComparison:
 
         return ops[self.op](left_val, right_val) if self.op in ops else False
 
+
 class InComparison:
     """Represents a SQL 'IN (values...)' comparison."""
     def __init__(self, reference_extractor, literal_extractors):
@@ -600,20 +620,24 @@ class InComparison:
         # The check is a simple Python 'in' against the pre-calculated set
         return property_value in self.values_set
 
+
 class ReferenceExtractor:
     def __init__(self, value): self.value = value
-    def get_value(self, obj): return get_property(obj, self.value)
+    def get_value(self, obj): return _get_property(obj, self.value)
     def get_objects(self):
         """Provides a consistent interface for the FromClause."""
         if self.value == 'document':
             return FreeCAD.ActiveDocument.Objects
         return []
 
+
 class StaticExtractor:
     def __init__(self, value): self.value = value
     def get_value(self, obj): return self.value
 
-# Lark Transformer (with no runtime dependency on the the lark library)
+
+# --- Lark Transformer ---
+
 class SqlTransformerMixin:
     """
     A mixin class containing all our custom transformation logic for SQL rules.
@@ -651,8 +675,8 @@ class SqlTransformerMixin:
         return GroupByClause(references)
 
     def order_by_clause(self, items):
-        # items[0] = ORDER, items[1] = BY, items[2] = reference
-        column_reference = items[2]
+        # items[0]=ORDER, items[1]=BY, items[2]=reference, items[3]=optional direction
+        column_reference = items[2] # This is a ReferenceExtractor object
         direction = 'ASC'
         # Check if the optional direction token (items[3]) exists and is not None.
         if len(items) > 3 and items[3] is not None:
@@ -661,7 +685,6 @@ class SqlTransformerMixin:
 
         return OrderByClause(column_reference, direction)
 
-    # --- Columns Transformer ---
     def columns(self, items):
         # `items` is a list of results from `column` rules, which are (extractor, display_name) tuples
         return items
@@ -711,9 +734,10 @@ class SqlTransformerMixin:
         # Use the alias if provided, otherwise fall back to the default name.
         final_name = alias if alias is not None else default_name
         return (extractor, final_name)
-    # --- END Columns Transformer ---
 
-    def asterisk(self, _): return "*"
+    def asterisk(self, _):
+        # Return the string '*' to distinguish it from a ReferenceExtractor
+        return "*"
 
     def boolean_expression_recursive(self, items):
         return BooleanExpression(items[0], items[1].value.lower(), items[2])
@@ -764,31 +788,60 @@ class SqlTransformerMixin:
             return function_class(function_name, args)
 
         # If the function is not in our registry, it's a validation error.
-        raise ValueError(f"Unknown function: {function_name}")
+        raise ValueError(f"Unknown SELECT function: {function_name}")
 
-class FinalTransformer(generated_sql_parser.Transformer, SqlTransformerMixin):
-    def __init__(self, select_functions, from_functions):
-        self.select_function_registry = select_functions
-        self.from_function_registry = from_functions
 
-_parser = generated_sql_parser.Lark_StandAlone()
-_transformer = FinalTransformer(
-    select_functions=select_function_registry,
-    from_functions=from_function_registry
-)
+# --- Engine Initialization ---
 
-def _generate_friendly_token_names(parser):
-    """Dynamically builds the friendly token name map from the Lark parser instance."""
-    friendly_names = _CUSTOM_FRIENDLY_TOKEN_NAMES.copy()
-    for term in parser.terminals:
-        # Add any keyword/terminal from the grammar that isn't already in our custom map.
-        if term.name not in friendly_names:
-            # By default, the friendly name is the keyword itself in single quotes.
-            friendly_names[term.name] = f"'{term.name}'"
-    return friendly_names
+def _initialize_engine():
+    """
+    Creates and configures all components of the SQL engine.
+    This is the single source of truth for engine setup.
+    """
+    # 1. Create Registries
+    select_function_registry = FunctionRegistry()
+    from_function_registry = FunctionRegistry()
 
-if _FRIENDLY_TOKEN_NAMES is None:
-    _FRIENDLY_TOKEN_NAMES = _generate_friendly_token_names(_parser)
+    # 2. Register all built-in function classes
+    select_function_registry.register('COUNT', AggregateFunction)
+    select_function_registry.register('SUM', AggregateFunction)
+    select_function_registry.register('MIN', AggregateFunction)
+    select_function_registry.register('MAX', AggregateFunction)
+    select_function_registry.register('TYPE', TypeFunction)
+    select_function_registry.register('LOWER', LowerFunction)
+    select_function_registry.register('UPPER', UpperFunction)
+    select_function_registry.register('CONCAT', ConcatFunction)
+    from_function_registry.register('CHILDREN', ChildrenFromFunction)
+
+    # 3. Define and instantiate the transformer
+    class FinalTransformer(generated_sql_parser.Transformer, SqlTransformerMixin):
+        def __init__(self, select_functions, from_functions):
+            self.select_function_registry = select_functions
+            self.from_function_registry = from_functions
+
+    transformer = FinalTransformer(
+        select_functions=select_function_registry,
+        from_functions=from_function_registry
+    )
+
+    # 4. Instantiate the parser
+    parser = generated_sql_parser.Lark_StandAlone()
+
+    # 5. Generate friendly token names from the initialized parser
+    friendly_token_names = _generate_friendly_token_names(parser)
+
+    return parser, transformer, friendly_token_names
+
+
+# --- Module-level Globals (initialized by the engine) ---
+try:
+    _parser, _transformer, _FRIENDLY_TOKEN_NAMES = _initialize_engine()
+except Exception as e:
+    _parser, _transformer, _FRIENDLY_TOKEN_NAMES = None, None, {}
+    FreeCAD.Console.PrintError(f"BIM SQL engine failed to initialize: {e}\n")
+
+
+# --- Public API Functions ---
 
 def _get_query_object(query_string):
     """
@@ -796,8 +849,6 @@ def _get_query_object(query_string):
     On success, returns the statement object.
     On failure, raises a custom BimSqlSyntaxError or SqlEngineError.
     """
-    global _parser, _transformer
-
     # The parser and transformer are now initialized at the module level.
     # We just check if the initialization was successful.
     if not _parser or not _transformer:
@@ -853,5 +904,3 @@ def run_query_for_objects(query_string):
     except (SqlEngineError, BimSqlSyntaxError) as e:
         FreeCAD.Console.PrintError(f"BIM Report Execution Error: {e}\n")
         return [], []
-
-

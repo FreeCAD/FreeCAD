@@ -797,4 +797,24 @@ class TestArchReport(TestArchBase.TestArchBase):
             expected_string = f"{target_obj_label}: {target_obj_ifctype}"
             self.assertEqual(data[0][0], expected_string)
 
+    def test_meaningful_error_on_transformer_failure(self):
+        """
+        Tests that a low-level VisitError from the transformer is converted
+        into a high-level, user-friendly BimSqlSyntaxError.
+        """
+        # This query is syntactically correct but will fail during transformation
+        # because the TYPE function requires '*' as its argument, not a property.
+        query = "SELECT TYPE(Label) FROM document"
+
+        with self.assertRaises(ArchSql.BimSqlSyntaxError) as cm:
+            ArchSql._get_query_object(query)
+
+        # Assert that the error message is our clean, high-level message
+        # and not a raw, confusing traceback from deep inside the library.
+        # We check that it contains the key parts of our formatted error.
+        error_message = str(cm.exception)
+        self.assertIn("Transformer Error", error_message)
+        self.assertIn("Failed to process rule 'function'", error_message)
+        self.assertIn("requires exactly one argument: '*'", error_message)
+
 
