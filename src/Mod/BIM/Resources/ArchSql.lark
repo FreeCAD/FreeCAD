@@ -73,7 +73,8 @@ literal: STRING
 null: NULL
 
 // Functions
-function: CNAME "(" (asterisk | reference) ")"
+function: CNAME "(" function_args? ")"
+function_args: asterisk | (operand ("," operand)*)
 
 // Terminal Definitions
 SELECT: "SELECT"i
