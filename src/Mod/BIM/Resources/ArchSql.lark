@@ -28,7 +28,7 @@
 
 // Main Rule
 start: statement
-statement: SELECT columns from_clause where_clause? group_by_clause? ";"*
+statement: SELECT columns from_clause where_clause? group_by_clause? order_by_clause? ";"*
 
 // Clauses
 // Allow FROM to accept either a simple reference (e.g., 'document')
@@ -38,6 +38,7 @@ from_source: reference | from_function
 from_function: CNAME "(" statement ")"
 where_clause: WHERE boolean_expression
 group_by_clause: GROUP BY reference ("," reference)*
+order_by_clause: ORDER BY reference (ASC | DESC)?
 columns: (column ("," column)*)
 column: (asterisk | operand) as_clause?
 as_clause: AS literal
@@ -87,6 +88,9 @@ IN:     "IN"i
 LIKE:   "LIKE"i
 GROUP:  "GROUP"i
 BY:     "BY"i
+ORDER:  "ORDER"i
+ASC:    "ASC"i
+DESC:   "DESC"i
 NULL:   "NULL"i
 STRING : /"[^"]*"|'[^']*'/
 CNAME: /[a-zA-Z0-9\._]+/

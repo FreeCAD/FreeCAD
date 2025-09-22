@@ -738,3 +738,19 @@ class TestArchReport(TestArchBase.TestArchBase):
 
             self.assertEqual(len(results), 1)
             self.assertEqual(results[0][0], window.Label)
+
+    def test_order_by_label_desc(self):
+        """Tests the ORDER BY clause to sort results alphabetically."""
+        query = "SELECT Label FROM document WHERE IfcType = 'Wall' ORDER BY Label DESC"
+        headers, results_data = ArchSql.run_query_for_objects(query)
+
+        # The results should be a list of lists, e.g., [['Wall 2'], ['Wall 1']]
+        self.assertEqual(len(results_data), 2)
+        returned_labels = [row[0] for row in results_data]
+
+        # Wall labels from setUp are "Exterior Wall" and "Interior partition wall"
+        # In descending order, "Interior..." should come first.
+        expected_order = sorted([self.wall_ext.Label, self.wall_int.Label], reverse=True)
+
+        self.assertListEqual(returned_labels, expected_order,
+                             "The results were not sorted by Label in descending order.")
