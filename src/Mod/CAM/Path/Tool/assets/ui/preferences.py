@@ -58,7 +58,7 @@ class AssetPreferencesPage:
             translate(
                 "CAM_PreferencesAssets",
                 "Note: Select the directory that will contain the "
-                "Bit/, Shape/, and Library/ subfolders.",
+                "Tool folder with Bit/, Shape/, and Library/ subfolders.",
             )
         )
         self.asset_path_note_label.setWordWrap(True)

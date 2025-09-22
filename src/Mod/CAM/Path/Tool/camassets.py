@@ -27,7 +27,7 @@ from Path import Preferences
 from Path.Preferences import addToolPreferenceObserver
 from .assets import AssetManager, AssetUri, Asset, FileStore
 
-if True:
+if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:

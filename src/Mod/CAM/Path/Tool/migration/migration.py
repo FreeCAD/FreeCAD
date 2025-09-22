@@ -33,7 +33,7 @@ import Path.Preferences
 import pathlib
 
 # Logging setup - same pattern as Job.py
-if True:
+if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
@@ -41,8 +41,8 @@ else:
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide.QtWidgets import QMessageBox
-
+    from PySide.QtWidgets import QApplication, QMessageBox
+    from PySide.QtCore import Qt
 
 class CAMAssetMigrator:
     """
@@ -57,13 +57,8 @@ class CAMAssetMigrator:
     def __init__(self):
         self.pref_group_path = "User parameter:BaseApp/Preferences/Mod/CAM/Migration"
 
-    def check_migration_needed(self):
-        """
-        Public method to check and handle CAM asset migration.
-        """
-        self._check_migration_needed()
     
-    def _check_migration_needed(self):
+    def check_migration_needed(self):
         """
         Check if CAM asset migration is needed for version upgrade.
         

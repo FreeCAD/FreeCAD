@@ -126,13 +126,12 @@ class AssetOpenDialog(QFileDialog):
                     # Import the external toolbits into local store
                     self._import_external_toolbits(external_toolbits)
                     # After importing, use regular deserialization since toolbits are now in local store
-                    use_context_deserialize = False
                 else:
                     # User declined import, use context-aware deserialization for external loading
-                    use_context_deserialize = True
+                    pass
             else:
                 # No external toolbits found, use regular deserialization
-                use_context_deserialize = False
+                pass
         except Exception as e:
             QMessageBox.critical(self, "Error", f"{file_path}: Failed to check dependencies: {e}")
             return None
@@ -211,7 +210,6 @@ class AssetOpenDialog(QFileDialog):
                     toolbit.id = dependency_uri.asset_id
                 
                 # Import the toolbit into local store
-                imported_uri = self.asset_manager.add(toolbit, store="local")
                 imported_count += 1
                 
             except Exception as e:
