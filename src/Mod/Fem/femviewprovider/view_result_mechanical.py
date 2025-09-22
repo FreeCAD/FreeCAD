@@ -1,1 +1,0 @@
-/home/peter/freecad/view_result_mechanical.py
