@@ -140,7 +140,9 @@ def getAssetPath() -> pathlib.Path:
             # Migrate: Set the legacy path as the new CamAssets path
             setAssetPath(legacy_path_obj)
             # Return the most recent version of the legacy path
-            most_recent_legacy = FreeCAD.ApplicationDirectories.mostRecentConfigFromBase(str(legacy_path_obj))
+            most_recent_legacy = FreeCAD.ApplicationDirectories.mostRecentConfigFromBase(
+                str(legacy_path_obj)
+            )
             return pathlib.Path(most_recent_legacy)
 
     # Fallback to default if no legacy path found

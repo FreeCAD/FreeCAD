@@ -277,8 +277,8 @@ class ToolBitBrowserWidget(QtGui.QWidget):
                 self,
                 FreeCAD.Qt.translate("CAM", "Missing Toolbit"),
                 FreeCAD.Qt.translate(
-                    "CAM", 
-                    "This toolbit is missing from your local store. It may be a placeholder for a toolbit that was not found during library import."
+                    "CAM",
+                    "This toolbit is missing from your local store. It may be a placeholder for a toolbit that was not found during library import.",
                 ),
             )
         except Exception as e:

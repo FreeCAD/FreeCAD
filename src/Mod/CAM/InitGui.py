@@ -31,6 +31,7 @@ else:
     class Workbench:
         pass
 
+
 FreeCAD.__unit_test__ += ["TestCAMGui"]
 
 
@@ -65,7 +66,6 @@ class CAMWorkbench(Workbench):
         self.__class__.MenuText = "CAM"
         self.__class__.ToolTip = "CAM workbench"
 
-
     def Initialize(self):
         global PathCommandGroup
 
@@ -97,6 +97,7 @@ class CAMWorkbench(Workbench):
 
         # Check if CAM asset migration is needed for version upgrade
         from Path.Tool.migration.migration import CAMAssetMigrator
+
         migrator = CAMAssetMigrator()
         migrator.check_migration_needed()
 

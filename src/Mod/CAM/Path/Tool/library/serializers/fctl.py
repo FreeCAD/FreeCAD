@@ -72,7 +72,7 @@ class FCTLSerializer(AssetSerializer):
         # for the asset being deserialized. We should use this ID for the library
         # instance, overriding any 'id' that might be in the data_dict (which
         # is from an older version of the format).
-        
+
         # For the label, prefer data_dict["label"], then "name", then fallback to using the id as filename
         # The id parameter often contains the filename stem when importing from files
         label = data_dict.get("label") or data_dict.get("name") or id or "Unnamed Library"
@@ -225,12 +225,12 @@ class FCTLSerializer(AssetSerializer):
                 Path.Log.info(
                     f"FCTL EXTERNAL: Toolbit '{dep_uri.asset_id}' not in stores, trying external file: {e}"
                 )
-                
+
                 # Look for toolbit files in parallel Bit directory
                 library_dir = file_path.parent  # e.g., /path/to/Library/
                 tools_dir = library_dir.parent  # e.g., /path/to/
-                bit_dir = tools_dir / "Bit"     # e.g., /path/to/Bit/
-                
+                bit_dir = tools_dir / "Bit"  # e.g., /path/to/Bit/
+
                 toolbit_loaded = False
                 if bit_dir.exists():
                     possible_extensions = [".fctb", ".json", ".yaml", ".yml"]
@@ -240,6 +240,7 @@ class FCTLSerializer(AssetSerializer):
                             try:
                                 # Find appropriate serializer for the file
                                 from ...assets.ui.util import get_serializer_from_extension
+
                                 serializer_class = get_serializer_from_extension(
                                     toolbit_serializers, ext, for_import=True
                                 )
@@ -258,7 +259,7 @@ class FCTLSerializer(AssetSerializer):
                                     f"FCTL EXTERNAL: Failed to load toolbit from {toolbit_file}: {load_error}"
                                 )
                                 continue
-                
+
                 if not toolbit_loaded:
                     Path.Log.warning(
                         f"FCTL EXTERNAL: Could not load toolbit '{dep_uri.asset_id}' from external files"

@@ -33,6 +33,7 @@ if False:
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
+
 def ensure_library_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
     """
     Ensures the given store is initialized with built-in library
