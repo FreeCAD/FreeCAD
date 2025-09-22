@@ -101,7 +101,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # For aggregate queries (e.g., containing COUNT, GROUP BY), the results are summaries,
         # not direct object properties. The filtering logic below is incorrect for them.
         # We can detect an aggregate query if the headers contain typical aggregate function names.
-        is_aggregate_query = is_aggregate_query = any(agg in h for h in headers for agg in ['COUNT', 'SUM', 'MIN', 'MAX'])
+        is_aggregate_query  = any(agg in h for h in headers for agg in ['COUNT', 'SUM', 'MIN', 'MAX'])
         if is_aggregate_query:
             return headers, results_data_from_sql
 
@@ -477,13 +477,13 @@ class TestArchReport(TestArchBase.TestArchBase):
         base_box1 = self.doc.addObject("Part::Box", "BaseBox1")
         base_box1.Length = 1000
         base_box1.Width = 2000
-        space1 = Arch.makeSpace(base_box1, name="Office")
+        _ = Arch.makeSpace(base_box1, name="Office")
 
         # Space 2: Base is a 3000x1500 box, resulting in 4,500,000 mm^2 floor area
         base_box2 = self.doc.addObject("Part::Box", "BaseBox2")
         base_box2.Length = 3000
         base_box2.Width = 1500
-        space2 = Arch.makeSpace(base_box2, name="Workshop")
+        _ = Arch.makeSpace(base_box2, name="Workshop")
 
         self.doc.recompute() # Ensure space areas are calculated
 
