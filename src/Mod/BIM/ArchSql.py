@@ -89,6 +89,96 @@ class TypeFunction:
 
         return Draft.get_type(obj)
 
+class FromFunctionBase:
+    """Base class for all functions used in a FROM clause."""
+    def __init__(self, substatement):
+        self.substatement = substatement
+
+    def get_objects(self):
+        """Executes the subquery and returns the final list of objects."""
+        raise NotImplementedError()
+
+    def _get_parent_objects(self):
+        """
+        Helper to execute the subquery and resolve the resulting rows back
+        into a list of FreeCAD document objects.
+        """
+        headers, rows = self.substatement.execute()
+        if not rows:
+            return []
+
+        # Determine which column to use for mapping back to objects
+        label_idx = headers.index('Label') if 'Label' in headers else -1
+        name_idx = headers.index('Name') if 'Name' in headers else -1
+        # Handle the special header name from a 'SELECT *' query
+        if headers == ['Object Label']:
+            label_idx = 0
+
+        if label_idx == -1 and name_idx == -1:
+            raise ValueError(
+                "Subquery for FROM function must return an object identifier column: "
+                "'Name' or 'Label' (or use SELECT *)."
+            )
+
+        # Build lookup maps once for efficient searching
+        objects_by_name = {o.Name: o for o in FreeCAD.ActiveDocument.Objects}
+        objects_by_label = {o.Label: o for o in FreeCAD.ActiveDocument.Objects}
+
+        parent_objects = []
+        for row in rows:
+            parent = None
+            # Prioritize matching by unique Name first
+            if name_idx != -1:
+                parent = objects_by_name.get(row[name_idx])
+            # Fallback to user-facing Label if no match by Name
+            if not parent and label_idx != -1:
+                parent = objects_by_label.get(row[label_idx])
+
+            if parent:
+                parent_objects.append(parent)
+        return parent_objects
+
+class ChildrenFromFunction(FromFunctionBase):
+    """Implements the CHILDREN() function."""
+
+    def _collect_contained_children(self, parent_obj, results_set):
+        """
+        Simple recursive helper to find children in .Group,
+        traversing through any nested groups.
+        """
+        # Use safe getattr to avoid errors on objects without a .Group
+        group_list = getattr(parent_obj, 'Group', None)
+        if not group_list:
+            return
+
+        for member in group_list:
+            # If member is a group, recurse. Otherwise, add it to results.
+            if getattr(member, 'isDerivedFrom', lambda x: False)("App::DocumentObjectGroup"):
+                self._collect_contained_children(member, results_set)
+            else:
+                results_set.add(member)
+
+    def get_objects(self):
+        # Execute the subquery to find parent objects.
+        parent_objects = self._get_parent_objects()
+        if not parent_objects:
+            return []
+
+        parent_set = set(parent_objects)
+        results_set = set()
+
+        # 1. Find HOSTED children in a single pass over the document.
+        for obj in FreeCAD.ActiveDocument.Objects:
+            hosts = getattr(obj, 'Hosts', None)
+            if hosts and any(h in parent_set for h in hosts):
+                results_set.add(obj)
+
+        # 2. Find CONTAINED children by traversing .Group on each parent.
+        for parent in parent_set:
+            self._collect_contained_children(parent, results_set)
+
+        return list(results_set)
+
 # Populate the registries with the engine's built-in functions.
 # This is done once at the module level.
 select_function_registry.register('COUNT', AggregateFunction)
@@ -96,6 +186,7 @@ select_function_registry.register('SUM', AggregateFunction)
 select_function_registry.register('MIN', AggregateFunction)
 select_function_registry.register('MAX', AggregateFunction)
 select_function_registry.register('TYPE', TypeFunction)
+from_function_registry.register('CHILDREN', ChildrenFromFunction)
 
 # Query Object Model
 class GroupByClause:
@@ -322,9 +413,11 @@ class FromClause:
     def __init__(self, reference):
         self.reference = reference
     def get_objects(self):
-        if self.reference.value == 'document':
-            return FreeCAD.ActiveDocument.Objects
-        return []
+        """
+        Delegates the object retrieval to the contained logical object.
+        This works for both ReferenceExtractor and FromFunctionBase children.
+        """
+        return self.reference.get_objects()
 
 class WhereClause:
     def __init__(self, expression):
@@ -393,10 +486,26 @@ class InComparison:
 class ReferenceExtractor:
     def __init__(self, value): self.value = value
     def get_value(self, obj): return get_property(obj, self.value)
+    def get_objects(self):
+        """Provides a consistent interface for the FromClause."""
+        if self.value == 'document':
+            return FreeCAD.ActiveDocument.Objects
+        return []
 
 class StaticExtractor:
     def __init__(self, value): self.value = value
     def get_value(self, obj): return self.value
+
+def debug_transformer_method(func):
+    """A decorator to add verbose logging to transformer methods for debugging."""
+    def wrapper(self, items):
+        print(f"\n>>> ENTERING: {func.__name__}")
+        print(f"    RECEIVED: {repr(items)}")
+        result = func(self, items)
+        print(f"    RETURNING: {repr(result)}")
+        print(f"<<< EXITING:  {func.__name__}")
+        return result
+    return wrapper
 
 # Lark Transformer (with no runtime dependency on the the lark library)
 class SqlTransformerMixin:
@@ -414,7 +523,12 @@ class SqlTransformerMixin:
 
         return SelectStatement(columns_info, from_c, where_c, group_by_c)
 
-    def from_clause(self, i): return FromClause(i[1])
+    def from_clause(self, i):
+        return FromClause(i[1])
+
+    def from_source(self, items):
+        return items[0]
+
     def where_clause(self, i): return WhereClause(i[1])
 
     def from_function(self, items):

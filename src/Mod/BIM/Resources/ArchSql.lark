@@ -31,7 +31,11 @@ start: statement
 statement: SELECT columns from_clause where_clause? group_by_clause? ";"*
 
 // Clauses
-from_clause: FROM reference
+// Allow FROM to accept either a simple reference (e.g., 'document')
+// or a function invocation that returns a set (e.g., CHILDREN(SELECT ...)).
+from_clause: FROM from_source
+from_source: reference | from_function
+from_function: CNAME "(" statement ")"
 where_clause: WHERE boolean_expression
 group_by_clause: GROUP BY reference ("," reference)*
 columns: (column ("," column)*)
