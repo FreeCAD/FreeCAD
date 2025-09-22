@@ -271,8 +271,7 @@ class _TaskPanel:
                     self.result_widget.rb_full_cycle.setChecked(True)
                 else:
                     self.result_widget.rb_half_cycle.setChecked(True)
-                self.result_widget.sb_displacement_factor.setValue(
-                    FreeCAD.FEM_dialog["animate"][4])
+                self.result_widget.sb_displacement_factor.setValue(FreeCAD.FEM_dialog["animate"][4])
         except Exception:
             self.restore_initial_result_dialog()
 
@@ -291,7 +290,7 @@ class _TaskPanel:
             "show_disp": True,  # False,
             "disp_factor": 5.0,
             "disp_factor_max": 100.0,
-            "animate": [-1, -1, -1, -1, -1, -1, -1], # steps, loops, rate, cycle type
+            "animate": [-1, -1, -1, -1, -1, -1, -1],  # steps, loops, rate, cycle type
         }
         self.result_widget.sb_displacement_factor_max.setValue(100.0)  # init non standard values
 
@@ -539,10 +538,43 @@ class _TaskPanel:
         import femtools.tokrules as tokrules
 
         identifiers = [
-            "x", "y", "z", "T", "vM", "Peeq", "P1", "P2", "P3", "sxx",
-            "syy", "szz", "sxy", "sxz", "syz", "exx", "eyy", "ezz", "exy", "exz",
-            "eyz", "MS", "MF", "NP", "rx", "ry", "rz", "mc", "s1x", "s1y",
-            "s1z", "s2x", "s2y", "s2z", "s3x", "s3y", "s3z",
+            "x",
+            "y",
+            "z",
+            "T",
+            "vM",
+            "Peeq",
+            "P1",
+            "P2",
+            "P3",
+            "sxx",
+            "syy",
+            "szz",
+            "sxy",
+            "sxz",
+            "syz",
+            "exx",
+            "eyy",
+            "ezz",
+            "exy",
+            "exz",
+            "eyz",
+            "MS",
+            "MF",
+            "NP",
+            "rx",
+            "ry",
+            "rz",
+            "mc",
+            "s1x",
+            "s1y",
+            "s1z",
+            "s2x",
+            "s2y",
+            "s2z",
+            "s3x",
+            "s3y",
+            "s3z",
         ]
         tokrules.names = {}
         for i in identifiers:
@@ -761,13 +793,12 @@ class _TaskPanel:
         FreeCAD.FEM_dialog["animate"][0] = self.result_widget.steps.value()
         FreeCAD.FEM_dialog["animate"][1] = self.result_widget.loops.value()
         FreeCAD.FEM_dialog["animate"][2] = self.result_widget.framerate.value()
-        FreeCAD.FEM_dialog["animate"][3] = self.result_widget.rb_full_cycle.isChecked(
-        )
+        FreeCAD.FEM_dialog["animate"][3] = self.result_widget.rb_full_cycle.isChecked()
         try:
-            FreeCAD.FEM_dialog["animate"][4] = self.result_widget.sb_displacement_factor.value(
-            )
+            FreeCAD.FEM_dialog["animate"][4] = self.result_widget.sb_displacement_factor.value()
         except:
             FreeCAD.FEM_dialog["animate"][4] = 1
+
     # animation start
 
     def animate_displacement(self):
@@ -789,34 +820,32 @@ class _TaskPanel:
 
         sinc = inc = math.pi / steps_per_cycle * 2.0
         self.set_label(self.result_obj.Label, self.results_name)
-  
+
         done = False
-#        for lo in range(0, number_cycles):
+        #        for lo in range(0, number_cycles):
         loops = max(1, number_cycles) * steps_per_cycle + 1
         st = 0
         for loop in range(0, loops):
             if self.result_widget.rb_half_cycle.isChecked():
-                if number_cycles > 0:   # 0 -> 1 -> 0, repeated
-                    inc = sinc /2
+                if number_cycles > 0:  # 0 -> 1 -> 0, repeated
+                    inc = sinc / 2
                 else:
-                    inc = sinc/4    
+                    inc = sinc / 4
                 # full cycle
             if self.result_widget.rb_full_cycle.isChecked():
                 self.mesh_obj.ViewObject.applyDisplacement(
                     math.sin(st * inc) * self.hsb_displacement_factor
                 )
             elif self.result_widget.rb_half_cycle.isChecked():
-                    # half cycle
-                if number_cycles > 0:   # 0 -> 1 -> 0, repeated
+                # half cycle
+                if number_cycles > 0:  # 0 -> 1 -> 0, repeated
                     self.mesh_obj.ViewObject.applyDisplacement(
-                        abs(math.sin(st * inc)) *
-                        self.hsb_displacement_factor
+                        abs(math.sin(st * inc)) * self.hsb_displacement_factor
                     )
-                elif number_cycles <= 0:   # 0 -> 1, once
+                elif number_cycles <= 0:  # 0 -> 1, once
                     self.mesh_obj.ViewObject.applyDisplacement(
-                        abs(math.sin(st * inc)) *
-                        self.hsb_displacement_factor
-                        )
+                        abs(math.sin(st * inc)) * self.hsb_displacement_factor
+                    )
             else:
                 print("No cycle type selected")
             FreeCADGui.updateGui()
@@ -824,7 +853,7 @@ class _TaskPanel:
                 done = True
                 break
             time.sleep(1.0 / frame_rate)  # modify the time here
-            st+=1
+            st += 1
         # if done:
         #         break
         try:

@@ -57,7 +57,7 @@ class VPResultMechanical(view_base_femconstraint.VPBaseFemConstraint):
     def unsetEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
         # hide the mesh if it was not visible
-        if (not self.visibility):
+        if not self.visibility:
             self.Object.Mesh.ViewObject.hide()
         return True
 
