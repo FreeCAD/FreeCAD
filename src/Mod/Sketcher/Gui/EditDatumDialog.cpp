@@ -426,7 +426,6 @@ void EditDatumDialog::performAutoScale(double newDatum)
             // might change index
             ConstrNbr = sketch->getSingleScaleDefiningConstraint();
 
-
             sketch->setLabelDistance(ConstrNbr, initLabelDistance * scaleFactor);
 
             // Label position or radii and diameters represent an angle, so
