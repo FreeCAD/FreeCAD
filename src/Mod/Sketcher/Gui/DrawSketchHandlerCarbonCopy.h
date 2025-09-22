@@ -93,21 +93,37 @@ public:
                     this->notAllowedReason = QT_TR_NOOP("This object belongs to another part.");
                     break;
                 case Sketcher::SketchObject::rlNonParallel:
-                    this->notAllowedReason = QT_TR_NOOP(
-                        "The selected sketch is not parallel to this sketch. Hold "
-                        "Ctrl+Alt (Cmd+Option on macOS) to allow non-parallel sketches.");
+#if defined(Q_OS_MACOS)
+                    this->notAllowedReason =
+                        QT_TR_NOOP("The selected sketch is not parallel to this sketch. Hold "
+                                   "Cmd+Option to allow non-parallel sketches.");
+#else
+                    this->notAllowedReason =
+                        QT_TR_NOOP("The selected sketch is not parallel to this sketch. Hold "
+                                   "Ctrl+Alt to allow non-parallel sketches.");
+#endif
                     break;
                 case Sketcher::SketchObject::rlAxesMisaligned:
+#if defined(Q_OS_MACOS)
                     this->notAllowedReason =
                         QT_TR_NOOP("The XY axes of the selected sketch do not have the same "
-                                   "direction as this sketch. Hold Ctrl+Alt (Cmd+Option on macOS) "
-                                   "to disregard it.");
+                                   "direction as this sketch. Hold Cmd+Option to disregard it.");
+#else
+                    this->notAllowedReason =
+                        QT_TR_NOOP("The XY axes of the selected sketch do not have the same "
+                                   "direction as this sketch. Hold Ctrl+Alt to disregard it.");
+#endif
                     break;
                 case Sketcher::SketchObject::rlOriginsMisaligned:
+#if defined(Q_OS_MACOS)
                     this->notAllowedReason =
                         QT_TR_NOOP("The origin of the selected sketch is not aligned with the "
-                                   "origin of this sketch. Hold Ctrl+Alt (Cmd+Option on macOS) to "
-                                   "disregard it.");
+                                   "origin of this sketch. Hold Cmd+Option to disregard it.");
+#else
+                    this->notAllowedReason =
+                        QT_TR_NOOP("The origin of the selected sketch is not aligned with the "
+                                   "origin of this sketch. Hold Ctrl+Alt to disregard it.");
+#endif
                     break;
                 default:
                     break;
