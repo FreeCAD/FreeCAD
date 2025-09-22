@@ -26,6 +26,7 @@
 #define GUI_TASKVIEW_TaskAttacher_H
 
 #include <Gui/Selection/Selection.h>
+#include <Gui/DocumentObserver.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -159,7 +160,7 @@ private:
     Connection connectDelObject;
     Connection connectDelDocument;
 
-    std::vector<Gui::ViewProviderPlane*> modifiedPlaneViewProviders;
+    std::vector<Gui::ViewProviderWeakPtrT> modifiedPlaneViewProviders;
 
     App::PropertyOverrideContext overrides;
 };
