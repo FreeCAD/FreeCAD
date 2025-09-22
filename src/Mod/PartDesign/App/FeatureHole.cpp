@@ -781,6 +781,8 @@ Hole::Hole()
 
     ADD_PROPERTY_TYPE(ModelThread, (false), "Hole", App::Prop_None, "Model actual thread");
 
+    ADD_PROPERTY_TYPE(CosmeticThread, (true), "Hole", App::Prop_None, "Texture the thread");
+
     ADD_PROPERTY_TYPE(ThreadType, (0L), "Hole", App::Prop_None, "Thread type");
     ThreadType.setEnums(ThreadTypeEnums);
 
@@ -849,6 +851,7 @@ Hole::Hole()
     // Defaults to circles & arcs so that older files are kept intact
     // while new file get points, circles and arcs set in setupObject()
     ADD_PROPERTY_TYPE(BaseProfileType, (BaseProfileTypeOptions::OnCirclesArcs), "Hole", App::Prop_None, "Which profile feature to base the holes on");
+    ADD_PROPERTY_TYPE(ManualDeflection, (0.01), "Hole", App::Prop_None, "Thread end marker deflection");
 }
 
 void Hole::updateHoleCutParams()
@@ -1590,6 +1593,7 @@ void Hole::onChanged(const App::Property* prop)
         // thread class and direction are only sensible if threaded
         // fit only sensible if not threaded
         if (Threaded.getValue()) {
+            CosmeticThread.setReadOnly(false);
             ThreadClass.setReadOnly(false);
             ThreadDirection.setReadOnly(false);
             ThreadFit.setReadOnly(true);
@@ -1602,6 +1606,8 @@ void Hole::onChanged(const App::Property* prop)
                 TaperedAngle.setValue(getThreadProfileAngle());
         }
         else {
+            CosmeticThread.setValue(false);
+            CosmeticThread.setReadOnly(true);
             ThreadClass.setReadOnly(true);
             ThreadDirection.setReadOnly(true);
             if (type == "None")
@@ -1622,6 +1628,14 @@ void Hole::onChanged(const App::Property* prop)
         // Diameter parameter depends on this
         updateDiameterParam();
         UseCustomThreadClearance.setReadOnly(!ModelThread.getValue());
+        if (CosmeticThread.getValue() && ModelThread.getValue()) {
+            CosmeticThread.setValue(false);
+        }
+    }
+    else if (prop == &CosmeticThread) {
+        if (CosmeticThread.getValue() && ModelThread.getValue()) {
+            ModelThread.setValue(false);
+        }
     }
     else if (prop == &DrillPoint) {
         if (DrillPoint.getValue() == 1) {
@@ -2269,7 +2283,7 @@ Base::Vector3d Hole::guessNormalDirection(const TopoShape& profileshape) const
     // the middle of the face
     if (profileshape.hasSubShape(TopAbs_FACE)) {
         BRepAdaptor_Surface sf(TopoDS::Face(profileshape.getSubShape(TopAbs_FACE, 1)));
-        
+
         if (sf.GetType() == GeomAbs_Cylinder) {
             return Base::convertTo<Base::Vector3d>(sf.Cylinder().Axis().Direction());
         }
