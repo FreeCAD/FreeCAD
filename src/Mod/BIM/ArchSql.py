@@ -329,12 +329,23 @@ class SelectStatement:
 
             # Define a sort key that can handle different data types.
             def sort_key(row):
+                """
+                Returns a consistent tuple (type_priority, value) to ensure stable
+                sorting across different and incompatible data types.
+                """
                 value = row[sort_column_index]
-                if isinstance(value, FreeCAD.Units.Quantity):
-                    return value.Value  # Compare quantities by their numerical value
+                # The key must always be a tuple of the same length to ensure
+                # stable sorting and avoid TypeErrors. We use a 3-element tuple:
+                # (priority, secondary_sort_key, value)
                 if value is None:
-                    return (float('-inf'),) # Ensure None values sort consistently at one end
-                return (type(value).__name__, value) # Group by type, then sort by value
+                    return (0, '', None)  # Nones sort first.
+                if isinstance(value, FreeCAD.Units.Quantity):
+                    return (1, '', value.Value) # Quantities sort as numbers.
+                if isinstance(value, (int, float)):
+                    return (1, '', value) # Other numbers sort with quantities.
+                # All other types (strings, etc.) sort last, alphabetically by type name
+                # first and then by their natural value.
+                return (2, type(value).__name__, value)
 
             results_data.sort(key=sort_key, reverse=is_descending)
 
@@ -566,9 +577,15 @@ class BooleanExpression:
         self.op = op
         self.right = right
     def evaluate(self, obj):
-        if self.op is None: return self.left.evaluate(obj)
-        if self.op == 'and': return self.left.evaluate(obj) and self.right.evaluate(obj)
-        if self.op == 'or': return self.left.evaluate(obj) or self.right.evaluate(obj)
+        if self.op is None:
+            return self.left.evaluate(obj)
+        elif self.op == 'and':
+            return self.left.evaluate(obj) and self.right.evaluate(obj)
+        elif self.op == 'or':
+            return self.left.evaluate(obj) or self.right.evaluate(obj)
+        else:
+            # An unknown operator is an invalid state and should raise an error.
+            raise SqlEngineError(f"Unknown boolean operator: '{self.op}'")
 
 
 class BooleanComparison:
@@ -603,7 +620,10 @@ class BooleanComparison:
         try:
             if self.op in ['=', '!=', 'like', '>', '<', '>=', '<=']: # Explicitly list ops that need str conversion
                 left_val, right_val = str(left_val), str(right_val)
-        except: return False
+        except Exception:
+            # This is a defensive catch. If an object's __str__ method is buggy and raises
+            # an error, we treat the comparison as False rather than crashing the whole query.
+            return False
 
         return ops[self.op](left_val, right_val) if self.op in ops else False
 
