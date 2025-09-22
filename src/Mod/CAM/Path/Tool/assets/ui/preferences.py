@@ -58,7 +58,7 @@ class AssetPreferencesPage:
             translate(
                 "CAM_PreferencesAssets",
                 "Note: Select the directory that will contain the "
-                "Bit/, Shape/, and Library/ subfolders.",
+                "Tool folder with Bit/, Shape/, and Library/ subfolders.",
             )
         )
         self.asset_path_note_label.setWordWrap(True)
@@ -124,6 +124,9 @@ class AssetPreferencesPage:
         return True
 
     def loadSettings(self):
-        # use getAssetPath() to initialize UI
-        asset_path = Path.Preferences.getAssetPath()
-        self.asset_path_edit.setText(str(asset_path))
+        # Get the raw preference value, not the versioned path
+        pref = Path.Preferences.tool_preferences()
+        asset_path = pref.GetString(Path.Preferences.ToolPath, "")
+        if not asset_path:
+            asset_path = str(Path.Preferences.getDefaultAssetPath())
+        self.asset_path_edit.setText(asset_path)

@@ -267,9 +267,27 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         uri_string = item.data(ToolBitUriRole)
         if not uri_string:
             return
-        toolbit = self._asset_manager.get(AssetUri(uri_string))
-        if toolbit:
-            self.itemDoubleClicked.emit(toolbit)
+        try:
+            toolbit = self._asset_manager.get(AssetUri(uri_string))
+            if toolbit:
+                self.itemDoubleClicked.emit(toolbit)
+        except FileNotFoundError:
+            # Handle missing/placeholder toolbits gracefully
+            QMessageBox.warning(
+                self,
+                FreeCAD.Qt.translate("CAM", "Missing Toolbit"),
+                FreeCAD.Qt.translate(
+                    "CAM",
+                    "This toolbit is missing from your local store. It may be a placeholder for a toolbit that was not found during library import.",
+                ),
+            )
+        except Exception as e:
+            # Handle other errors
+            QMessageBox.critical(
+                self,
+                FreeCAD.Qt.translate("CAM", "Error"),
+                FreeCAD.Qt.translate("CAM", f"Failed to load toolbit: {e}"),
+            )
 
     def _on_item_selection_changed(self):
         """Emits toolSelected signal and tracks selected URIs."""
