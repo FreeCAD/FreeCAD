@@ -686,3 +686,55 @@ class TestArchReport(TestArchBase.TestArchBase):
         # 2. Verify the type of the Arch Wall.
         #    Draft.get_type() returns the user-facing 'Wall' type from the proxy.
         self.assertIn('Wall', type_names, "TYPE() failed to identify the ArchWall proxy class.")
+
+    def test_children_function(self):
+        """
+        Tests the unified CHILDREN() function for both direct containment (.Group)
+        and hosting relationships (.Hosts), including traversal of generic groups.
+        """
+        import Draft
+
+        # --- Test Setup: Create a mini-model with all relationship types ---
+        # 1. A parent Floor for direct containment
+        floor = Arch.makeBuildingPart(name="Ground Floor")
+        # Use the canonical enumeration label used by the BIM module.
+        floor.IfcType = "Building Storey"
+
+        # 2. A host Wall for the hosting relationship
+        host_wall = Arch.makeWall(name="Host Wall For Window")
+
+        # 3. Child objects
+        space1 = Arch.makeSpace(name="Living Room")
+        space2 = Arch.makeSpace(name="Kitchen")
+        win_profile = Draft.makeRectangle(length=1000, height=1200)
+        window = Arch.makeWindow(baseobj=win_profile, name="Living Room Window")
+
+        # 4. An intermediate generic group
+        group = self.doc.addObject("App::DocumentObjectGroup", "Room Group")
+
+        # 5. Establish relationships
+        floor.addObject(space1)       # Floor directly contains Space1
+        floor.addObject(group)        # Floor also contains the Group
+        group.addObject(space2)       # The Group contains Space2
+        Arch.addComponents(window, host=host_wall)
+        # Ensure the document is recomputed before running the report query
+        self.doc.recompute()
+
+        # --- Sub-Test 1: Direct containment and group traversal ---
+        with self.subTest(description="Direct containment with group traversal"):
+            query = f"SELECT Label FROM CHILDREN(SELECT * FROM document WHERE Label = '{floor.Label}')"
+            headers, results = ArchSql.run_query_for_objects(query)
+
+            returned_labels = sorted([row[0] for row in results])
+            # The result should contain the spaces, but NOT the intermediate group itself.
+            # Build the expected results from the actual object labels
+            expected_labels = sorted([space1.Label, space2.Label])
+            self.assertListEqual(returned_labels, expected_labels)
+
+        # --- Sub-Test 2: Hosting Relationship (Reverse Lookup) ---
+        with self.subTest(description="Hosting relationship"):
+            query = f"SELECT Label FROM CHILDREN(SELECT * FROM document WHERE Label = '{host_wall.Label}')"
+            headers, results = ArchSql.run_query_for_objects(query)
+
+            self.assertEqual(len(results), 1)
+            self.assertEqual(results[0][0], window.Label)
