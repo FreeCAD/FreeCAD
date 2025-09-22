@@ -13,13 +13,8 @@
 import FreeCAD
 import re
 
-# Import exception types from the generated parser for robust, type-safe handling.
-try:
-    from generated_sql_parser import UnexpectedEOF, UnexpectedToken
-except ImportError:
-    # Provide a dummy class if the parser hasn't been generated yet.
-    class UnexpectedEOF(Exception): pass
-    class UnexpectedToken(Exception): pass
+# Import exception types from the generated parser for type-safe handling.
+from generated_sql_parser import UnexpectedEOF, UnexpectedToken, VisitError
 
 # Global variables to cache the parser and transformer for performance
 _parser = None
@@ -654,8 +649,11 @@ def _get_query_object(query_string):
         statement.validate()
         return statement, None
     except ValueError as e:
-        # Catch validation errors from the validate() method.
+        # Catch our custom validation errors (e.g., from statement.validate())
         return None, str(e)
+    except VisitError as e:
+        # Catch errors from the Lark transformer and point to the root cause
+        return None, f"Transformer Error: Failed to process rule '{e.rule}'. Original error: {e.orig_exc}"
     except Exception as e:
         return None, e
 
