@@ -2116,6 +2116,9 @@ App::DocumentObjectExecReturn* Hole::execute()
         }
         std::vector<TopoShape> holes;
         auto compound = findHoles(holes, profileshape, protoHole);
+        if (holes.empty()) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Hole error: Finding axis failed"));
+        }
 
         TopoShape result(0);
 
