@@ -224,13 +224,9 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
             const Part::Geometry* geo = Obj->getGeometry(GeoId);
 
             if (geo->is<Part::GeomBSplineCurve>()) {
-                Gui::cmdAppObjectArgs(Obj,
-                                      "increaseBSplineDegree(%d) ",
-                                      GeoId);
+                Gui::cmdAppObjectArgs(Obj, "increaseBSplineDegree(%d) ", GeoId);
                 // add new control points
-                Gui::cmdAppObjectArgs(Obj,
-                                      "exposeInternalGeometry(%d)",
-                                      GeoId);
+                Gui::cmdAppObjectArgs(Obj, "exposeInternalGeometry(%d)", GeoId);
             }
             else {
                 ignored = true;
@@ -365,7 +361,7 @@ bool isCommandNeedingBSplineKnotActive(Gui::Document* doc)
 
         bool applied = false;
         return isBsplineKnotOrEndPoint(Obj, geoId, posId)
-                          && findBSplineAndKnotIndex(Obj, geoId, posId, splineGeoId, knotIndexOCC);
+            && findBSplineAndKnotIndex(Obj, geoId, posId, splineGeoId, knotIndexOCC);
     }
     return false;
 }
