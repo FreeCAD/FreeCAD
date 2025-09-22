@@ -488,6 +488,12 @@ private:
                     newConstr->Second = secondIndex;
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
+                else if ((cstr->Type == Distance || cstr->Type == DistanceX
+                          || cstr->Type == DistanceY)
+                         && firstIndex != GeoEnum::GeoUndef && cstr->Second == GeoEnum::GeoUndef) {
+                    newConstr->First = firstIndex;
+                    newConstr->setValue(newConstr->getValue() * scaleFactor);
+                }
                 else if ((cstr->Type == Block || cstr->Type == Weight)
                          && firstIndex != GeoEnum::GeoUndef) {
                     newConstr->First = firstIndex;
