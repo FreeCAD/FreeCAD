@@ -817,4 +817,22 @@ class TestArchReport(TestArchBase.TestArchBase):
         self.assertIn("Failed to process rule 'function'", error_message)
         self.assertIn("requires exactly one argument: '*'", error_message)
 
+    def test_get_sql_keywords(self):
+        """Tests the public API for retrieving all SQL keywords."""
+        keywords = ArchSql.get_sql_keywords()
+        self.assertIsInstance(keywords, list, "get_sql_keywords should return a list.")
+        self.assertGreater(len(keywords), 10, "Should be a significant number of keywords.")
 
+        # Check for the presence of a few key, case-insensitive keywords.
+        self.assertIn("SELECT", keywords)
+        self.assertIn("FROM", keywords)
+        self.assertIn("WHERE", keywords)
+        self.assertIn("ORDER", keywords, "The ORDER keyword should be present.")
+        self.assertIn("BY", keywords, "The BY keyword should be present.")
+        self.assertIn("AS", keywords)
+        self.assertIn("COUNT", keywords, "Function names should be included as keywords.")
+
+        # Check that internal/non-keyword tokens are correctly filtered out.
+        self.assertNotIn("WS", keywords, "Whitespace token should be filtered out.")
+        self.assertNotIn("RPAR", keywords, "Punctuation tokens should be filtered out.")
+        self.assertNotIn("CNAME", keywords, "Regex-based tokens should be filtered out.")
