@@ -190,12 +190,23 @@ class GroupByClause:
         # columns is a list of ReferenceExtractor objects
         self.columns = columns
 
+class OrderByClause:
+    """Represents the ORDER BY clause of a SQL statement."""
+    def __init__(self, column_reference, direction='ASC'):
+        self.column_name = column_reference.value
+        self.direction = direction.upper()
+
+    def __repr__(self):
+        # Add a __repr__ for clearer debug logs.
+        return f"<OrderByClause column='{self.column_name}' dir='{self.direction}'>"
+
 class SelectStatement:
-    def __init__(self, columns_info, from_clause, where_clause, group_by_clause):
+    def __init__(self, columns_info, from_clause, where_clause, group_by_clause, order_by_clause):
         self.columns_info = columns_info # Stores (extractor_object, display_name) tuples
         self.from_clause = from_clause
         self.where_clause = where_clause
         self.group_by_clause = group_by_clause
+        self.order_by_clause = order_by_clause
 
     def execute(self):
         # 1. Get and filter the initial object list from the document
@@ -210,6 +221,29 @@ class SelectStatement:
             results_data = self._execute_grouped_query(filtered_objects)
         else:
             results_data = self._execute_non_grouped_query(filtered_objects)
+
+        # 4. Perform final sorting if an ORDER BY clause was provided.
+        if self.order_by_clause:
+            try:
+                # Find the column index to sort by from the final headers.
+                sort_column_index = headers.index(self.order_by_clause.column_name)
+            except ValueError:
+                raise ValueError(
+                    f"ORDER BY column '{self.order_by_clause.column_name}' is not in the SELECT list."
+                )
+
+            is_descending = self.order_by_clause.direction == 'DESC'
+
+            # Define a sort key that can handle different data types.
+            def sort_key(row):
+                value = row[sort_column_index]
+                if isinstance(value, FreeCAD.Units.Quantity):
+                    return value.Value  # Compare quantities by their numerical value
+                if value is None:
+                    return (float('-inf'),) # Ensure None values sort consistently at one end
+                return (type(value).__name__, value) # Group by type, then sort by value
+
+            results_data.sort(key=sort_key, reverse=is_descending)
 
         return headers, results_data
 
@@ -515,8 +549,9 @@ class SqlTransformerMixin:
         from_c = next((c for c in children if isinstance(c, FromClause)), None)
         where_c = next((c for c in children if isinstance(c, WhereClause)), None)
         group_by_c = next((c for c in children if isinstance(c, GroupByClause)), None)
+        order_by_c = next((c for c in children if isinstance(c, OrderByClause)), None)
 
-        return SelectStatement(columns_info, from_c, where_c, group_by_c)
+        return SelectStatement(columns_info, from_c, where_c, group_by_c, order_by_c)
 
     def from_clause(self, i):
         return FromClause(i[1])
@@ -537,6 +572,17 @@ class SqlTransformerMixin:
     def group_by_clause(self, items):
         references = [item for item in items if isinstance(item, ReferenceExtractor)]
         return GroupByClause(references)
+
+    def order_by_clause(self, items):
+        # items[0] = ORDER, items[1] = BY, items[2] = reference
+        column_reference = items[2]
+        direction = 'ASC'
+        # Check if the optional direction token (items[3]) exists and is not None.
+        if len(items) > 3 and items[3] is not None:
+            # The token itself is the 4th item. e.g. Token('DESC', 'DESC')
+            direction = str(items[3].value).upper()
+
+        return OrderByClause(column_reference, direction)
 
     # --- Columns Transformer ---
     def columns(self, items):
