@@ -176,7 +176,7 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
 
 bool CmdSketcherConvertToNURBS::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+    return isCommandNeedingGeometryActive(getActiveGuiDocument());
 }
 
 // Increase degree of the spline
@@ -211,7 +211,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Increase B-spline degree"));
 
@@ -224,11 +224,11 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
             const Part::Geometry* geo = Obj->getGeometry(GeoId);
 
             if (geo->is<Part::GeomBSplineCurve>()) {
-                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                Gui::cmdAppObjectArgs(Obj,
                                       "increaseBSplineDegree(%d) ",
                                       GeoId);
                 // add new control points
-                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                Gui::cmdAppObjectArgs(Obj,
                                       "exposeInternalGeometry(%d)",
                                       GeoId);
             }
@@ -252,7 +252,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
 
 bool CmdSketcherIncreaseDegree::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+    return isCommandNeedingBSplineActive(getActiveGuiDocument());
 }
 
 
@@ -335,9 +335,40 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
 
 bool CmdSketcherDecreaseDegree::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+    return isCommandNeedingBSplineActive(getActiveGuiDocument());
 }
 
+bool isCommandNeedingBSplineKnotActive(Gui::Document* doc)
+{
+    if (!isCommandActive(doc)) {
+        return false;
+    }
+
+    std::vector<Gui::SelectionObject> sel =
+        Gui::Selection().getSelectionEx(doc->getDocument()->getName(),
+                                        Sketcher::SketchObject::getClassTypeId());
+    if (sel.size() == 1) {
+        const std::vector<std::string>& names = sel[0].getSubNames();
+        if (names.size() != 1) {
+            return false;
+        }
+
+        auto* Obj = static_cast<Sketcher::SketchObject*>(sel[0].getObject());
+        const std::string& name = names[0];
+
+        int geoId;
+        Sketcher::PointPos posId;
+        getIdsFromName(name, Obj, geoId, posId);
+
+        int splineGeoId;
+        int knotIndexOCC;
+
+        bool applied = false;
+        return isBsplineKnotOrEndPoint(Obj, geoId, posId)
+                          && findBSplineAndKnotIndex(Obj, geoId, posId, splineGeoId, knotIndexOCC);
+    }
+    return false;
+}
 
 DEF_STD_CMD_A(CmdSketcherIncreaseKnotMultiplicity)
 
@@ -483,7 +514,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 
 bool CmdSketcherIncreaseKnotMultiplicity::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+    return isCommandNeedingBSplineKnotActive(getActiveGuiDocument());
 }
 
 DEF_STD_CMD_A(CmdSketcherDecreaseKnotMultiplicity)
@@ -618,7 +649,7 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
 
 bool CmdSketcherDecreaseKnotMultiplicity::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+    return isCommandNeedingBSplineKnotActive(getActiveGuiDocument());
 }
 
 
@@ -720,7 +751,7 @@ void CmdSketcherCompModifyKnotMultiplicity::updateAction(int /*mode*/)
 
 bool CmdSketcherCompModifyKnotMultiplicity::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), false);
+    return isCommandNeedingBSplineKnotActive(getActiveGuiDocument());
 }
 
 class DrawSketchHandlerBSplineInsertKnot: public DrawSketchHandler
@@ -943,7 +974,7 @@ void CmdSketcherInsertKnot::activated(int iMsg)
 
 bool CmdSketcherInsertKnot::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+    return isCommandNeedingBSplineActive(getActiveGuiDocument());
 }
 
 DEF_STD_CMD_A(CmdSketcherJoinCurves)
@@ -1099,7 +1130,7 @@ void CmdSketcherJoinCurves::activated(int iMsg)
 
 bool CmdSketcherJoinCurves::isActive()
 {
-    return isSketcherBSplineActive(getActiveGuiDocument(), true);
+    return isCommandNeedingBSplineActive(getActiveGuiDocument());
 }
 
 void CreateSketcherCommandsBSpline()
