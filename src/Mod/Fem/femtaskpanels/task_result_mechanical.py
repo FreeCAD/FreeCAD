@@ -799,8 +799,7 @@ class _TaskPanel:
                 if number_cycles > 0:   # 0 -> 1 -> 0, repeated
                     inc = sinc /2
                 else:
-                    inc = sinc/4     # for lo in range(0, max(1, number_cycles)):
-        #     for st in range(0, steps_per_cycle+1):
+                    inc = sinc/4    
                 # full cycle
             if self.result_widget.rb_full_cycle.isChecked():
                 self.mesh_obj.ViewObject.applyDisplacement(
