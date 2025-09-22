@@ -684,14 +684,14 @@ std::map<std::string,Base::Color> ViewProviderPartExt::getElementColors(const ch
             color.setTransparency(Base::fromPercent(Transparency.getValue()));
             bool singleColor = true;
             for (int i = 0; i < size; ++i) {
-                Base::Color face_color = ShapeAppearance.getDiffuseColor(i);
+                Base::Color faceColor = ShapeAppearance.getDiffuseColor(i);
                 face_color.setTransparency(ShapeAppearance.getTransparency(i));
-                if (face_color != color) {
+                if (faceColor != color) {
                     ret[std::string(element, 4) + std::to_string(i + 1)] = face_color;
                 }
-                Base::Color first_face_color = ShapeAppearance.getDiffuseColor(0);
-                first_face_color.setTransparency(ShapeAppearance.getTransparency(0));
-                singleColor = singleColor && (face_color == first_face_color);
+                Base::Color firstFaceColor = ShapeAppearance.getDiffuseColor(0);
+                firstFaceColor.setTransparency(ShapeAppearance.getTransparency(0));
+                singleColor = singleColor && (faceColor == firstFaceColor);
             }
             if (size > 0 && singleColor) {
                 color = ShapeAppearance.getDiffuseColor(0);
@@ -1402,4 +1402,5 @@ void ViewProviderPartExt::handleChangedPropertyName(Base::XMLReader& reader,
         Gui::ViewProviderGeometryObject::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }
+
 
