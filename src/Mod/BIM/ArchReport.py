@@ -1073,8 +1073,10 @@ class ReportTaskPanel:
         # Close the task panel via FreeCADGui when GUI is available
         try:
             FreeCADGui.Control.closeDialog()
-        except Exception:
-            pass
+        except Exception as e:
+            # This is a defensive catch. If closing the dialog fails for any reason
+            # (e.g., it was already closed), we log the error but do not crash.
+            FreeCAD.Console.PrintLog(f"Could not close Report Task Panel: {e}\n")
         self._set_dirty(False)
 
     def reject(self):
@@ -1086,8 +1088,10 @@ class ReportTaskPanel:
         # Close the task panel when GUI is available
         try:
             FreeCADGui.Control.closeDialog()
-        except Exception:
-            pass
+        except Exception as e:
+            # This is a defensive catch. If closing the dialog fails for any reason
+            # (e.g., it was already closed), we log the error but do not crash.
+            FreeCAD.Console.PrintLog(f"Could not close Report Task Panel: {e}\n")
 
 if FreeCAD.GuiUp:
     class NoScrollHijackComboBox(QtWidgets.QComboBox):
