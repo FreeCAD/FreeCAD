@@ -280,7 +280,12 @@ class ObjectDressup:
                 obj.AngleOut = 90 if styleOff == "Perpendicular" else 0
 
         toolRadius = PathDressup.toolController(obj.Base).Tool.Diameter.Value / 2
-        if hasattr(obj, "Length"):
+        if hasattr(obj, "Length") or hasattr(obj, "LengthIn"):
+            oldLength = obj.LengthIn if hasattr(obj, "LengthIn") else obj.Length
+            for prop in ["Length", "LengthIn"]:
+                if hasattr(obj, prop):
+                    obj.removeProperty(prop)
+
             # Replace Length by PercentageRadiusIn
             obj.addProperty(
                 "App::PropertyInteger",
@@ -288,8 +293,7 @@ class ObjectDressup:
                 "Path Lead-in",
                 QT_TRANSLATE_NOOP("App::Property", "Determine length of the Lead-In"),
             )
-            obj.PercentageRadiusIn = int(obj.Length / toolRadius * 100)
-            obj.removeProperty("Length")
+            obj.PercentageRadiusIn = int(oldLength / toolRadius * 100)
         if hasattr(obj, "LengthOut"):
             # Replace LengthOut by PercentageRadiusOut
             obj.addProperty(

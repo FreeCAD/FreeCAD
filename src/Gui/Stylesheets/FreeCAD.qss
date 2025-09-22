@@ -115,7 +115,9 @@ Main window
 ==================================================================================================*/
 QMainWindow,
 QDockWidget {
-  background-color: @PrimaryColor;/* main background color */}
+  background-color: @PrimaryColor;/* main background color */
+}
+
 QDialog {
   background-color: @DialogBackgroundColor;
 }
@@ -1174,11 +1176,21 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qpushbutton
 
 --------------------------------------------------------------------------- */
 QPushButton {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
   border: 1px solid @ButtonBorderColor;
   border-radius: @InputFieldBorderRadius;
   padding: 3px 12px;
   min-width: 64px;
+}
+
+QPushButton:default {
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @DefaultButtonTopBackgroundColor, stop:1 @DefaultButtonBottomBackgroundColor);
+  border: 1px solid @DefaultButtonBorderColor;
+}
+
+QAbstractButton[flat="true"] {
+  background-color: transparent;
+  border: 1px solid transparent;
 }
 
 #CreateNewRow > QPushButton {
@@ -1199,12 +1211,12 @@ QPushButton:checked {
   background-color: qlineargradient(x1:0, y1:1, x2:0, y2:0, stop:0 @ButtonTopBackgroundColor, stop:0.6 @ButtonBottomBackgroundColor);
 }
 
-QPushButton:focus {
-  border: 1px solid  @AccentColor;
+QPushButton:focus, QAbstractButton[flat="true"]:focus {
+  border: 1px solid @AccentColor;
 }
 
 QPushButton:checked:disabled {
-  border: 1px solid  @AccentColor;
+  border: 1px solid @AccentColor;
   color: @TextDisabledColor;
   outline: none;
 }
@@ -1218,11 +1230,15 @@ QPushButton:hover {
   background-color: @GeneralBackgroundHoverColor;
 }
 
-QPushButton:pressed {
+QAbstractButton[flat="true"]:hover {
+  border: 1px solid @ButtonBorderColor;
+}
+
+QPushButton:pressed, QAbstractButton[flat="true"]:pressed {
   border: 1px solid  @GeneralBorderHoverColor;
 }
 
-QPushButton:selected {
+QPushButton:selected, QAbstractButton[flat="true"]:selected {
   border: 1px solid  @GeneralBorderHoverColor;
 }
 
