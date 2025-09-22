@@ -1,1 +1,0 @@
-/home/peter/freecad/task_result_mechanical.py
