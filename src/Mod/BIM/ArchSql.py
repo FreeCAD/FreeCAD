@@ -23,6 +23,29 @@ _transformer = None
 # --- SQL Engine Constants ---
 SELECT_STAR_HEADER = 'Object Label'
 
+_FRIENDLY_TOKEN_NAMES = None # This will be generated dynamically on first run.
+
+_CUSTOM_FRIENDLY_TOKEN_NAMES = {
+    # This dictionary provides overrides for tokens where the name is not user-friendly.
+    # Punctuation
+     'RPAR': "')'",
+     'LPAR': "'('",
+     'COMMA': "','",
+     'ASTERISK': "'*'",
+    # Other non-keyword tokens
+     'CNAME': "a property or function name",
+ }
+
+def _generate_friendly_token_names(parser):
+    """Dynamically builds the friendly token name map from the Lark parser instance."""
+    friendly_names = _CUSTOM_FRIENDLY_TOKEN_NAMES.copy()
+    for term in parser.terminals:
+        # Add any keyword/terminal from the grammar that isn't already in our custom map.
+        if term.name not in friendly_names:
+            # By default, the friendly name is the keyword itself in single quotes.
+            friendly_names[term.name] = f"'{term.name}'"
+    return friendly_names
+
 def get_property(obj, prop_name):
     """Gets a property from a FreeCAD object, including sub-properties."""
 
@@ -682,6 +705,7 @@ def _get_query_object(query_string):
     Internal function to parse and transform a query string.
     """
     global _parser, _transformer
+    global _FRIENDLY_TOKEN_NAMES
     if _parser is None:
         try:
             import generated_sql_parser
@@ -705,6 +729,9 @@ def _get_query_object(query_string):
                 select_functions=select_function_registry,
                 from_functions=from_function_registry
             )
+            # Dynamically generate the friendly token names map once, after the parser is ready.
+            if _FRIENDLY_TOKEN_NAMES is None:
+                _FRIENDLY_TOKEN_NAMES = _generate_friendly_token_names(_parser)
         except ImportError:
             return None, "Parser not generated. Please rebuild FreeCAD."
         except Exception as e:
@@ -721,6 +748,12 @@ def _get_query_object(query_string):
     except VisitError as e:
         # Catch errors from the Lark transformer and point to the root cause
         return None, f"Transformer Error: Failed to process rule '{e.rule}'. Original error: {e.orig_exc}"
+    except UnexpectedToken as e:
+        # Provide a specific and user-friendly error message, using the dynamically generated map.
+        expected_str = ', '.join([_FRIENDLY_TOKEN_NAMES.get(t, f"'{t}'") for t in e.expected])
+        return None, (f"Syntax Error: Unexpected '{e.token.value}' at line {e.line}, column {e.column}. "
+                      f"Expected {expected_str}.")
+
     except Exception as e:
         return None, e
 
