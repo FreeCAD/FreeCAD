@@ -2079,18 +2079,57 @@ void ViewProviderLink::checkIcon(const App::LinkBaseExtension *ext) {
     }
 }
 
-void ViewProviderLink::applyMaterial() {
-    if(OverrideMaterial.getValue())
-        linkView->setMaterial(-1,&ShapeMaterial.getValue());
+void ViewProviderLink::applyMaterial()
+{
+    if (OverrideMaterial.getValue()) {
+        // Dispatch a generic Coin3D action to the linked object's scene graph.
+        // If the linked object is a Part shape, its SoBrepFaceSet node will
+        // handle this action and apply the color to all its faces.
+        // This is decoupled and respects the core/module architecture.
+
+        // 1. Get the material from our property.
+        const auto& material = ShapeMaterial.getValue();
+
+        // 2. Prepare the color for the rendering action. The action's ultimate
+        // consumer (SoBrepFaceSet) expects a Base::Color where .a is transparency,
+        // so we must perform the conversion here at the boundary.
+        Base::Color renderColor = material.diffuseColor;
+        renderColor.a = 1.0f - material.transparency;
+
+        // 3. Create a map with the "Face" wildcard to signify "all faces".
+        std::map<std::string, Base::Color> colorMap;
+        colorMap["Face"] = renderColor;
+
+        // 4. Create and dispatch the action. We use a secondary context action,
+        // which is the established mechanism for this kind of override.
+        SoSelectionElementAction action(SoSelectionElementAction::Color,
+                                        true);  // true for secondary
+        action.swapColors(colorMap);
+        linkView->getLinkRoot()->doAction(&action);
+
+        // 5. Ensure the old global override mechanism is not used.
+        linkView->setMaterial(-1, nullptr);
+    }
     else {
-        for(int i=0;i<linkView->getSize();++i) {
-            if(MaterialList.getSize()>i &&
-               OverrideMaterialList.getSize()>i && OverrideMaterialList[i])
-                linkView->setMaterial(i,&MaterialList[i]);
-            else
-                linkView->setMaterial(i,nullptr);
+        // OVERRIDE IS DISABLED:
+        // We must clear the per-face override we just applied.
+
+        // 1. Dispatch an empty Color action to clear the secondary context.
+        SoSelectionElementAction action(SoSelectionElementAction::Color, true);
+        linkView->getLinkRoot()->doAction(&action);
+
+        // 2. Re-apply any other material settings (e.g., for array elements,
+        // or clear the old global override if it was set).
+        linkView->setMaterial(-1, nullptr);
+        for (int i = 0; i < linkView->getSize(); ++i) {
+            if (MaterialList.getSize() > i && OverrideMaterialList.getSize() > i
+                && OverrideMaterialList[i]) {
+                linkView->setMaterial(i, &MaterialList[i]);
+            }
+            else {
+                linkView->setMaterial(i, nullptr);
+            }
         }
-        linkView->setMaterial(-1,nullptr);
     }
 }
 
