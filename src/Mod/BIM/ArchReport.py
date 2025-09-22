@@ -1131,11 +1131,8 @@ if FreeCAD.GuiUp:
             self.highlighting_rules = []
 
             # Keywords (case-insensitive regex)
-            keywords = [
-                "SELECT", "FROM", "WHERE", "GROUP", "BY", "AND", "OR",
-                "IS", "NOT", "IN", "LIKE", "AS", "NULL"
-            ]
-            for word in keywords:
+            # Get the list of keywords from the SQL engine.
+            for word in ArchSql.get_sql_keywords():
                 pattern = QtCore.QRegExp(r"\b" + word + r"\b", QtCore.Qt.CaseInsensitive)
                 rule = {"pattern": pattern, "format": keyword_format}
                 self.highlighting_rules.append(rule)
