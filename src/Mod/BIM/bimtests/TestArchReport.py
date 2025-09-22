@@ -754,3 +754,21 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         self.assertListEqual(returned_labels, expected_order,
                              "The results were not sorted by Label in descending order.")
+
+    def test_column_aliasing(self):
+        """Tests renaming columns using the AS keyword."""
+        # This query renames 'Label' to 'Wall Name' and sorts the results for a predictable check.
+        query = "SELECT Label AS 'Wall Name' FROM document WHERE IfcType = 'Wall' ORDER BY Label ASC"
+        headers, results_data = ArchSql.run_query_for_objects(query)
+
+        # 1. Assert that the header is the alias, not the original property name.
+        self.assertEqual(headers, ['Wall Name'])
+
+        # 2. Assert that the data is still correct.
+        self.assertEqual(len(results_data), 2)
+        returned_labels = [row[0] for row in results_data]
+        # Wall labels from setUp: "Exterior Wall", "Interior partition wall". Sorted alphabetically.
+        expected_labels = sorted([self.wall_ext.Label, self.wall_int.Label])
+        self.assertListEqual(returned_labels, expected_labels)
+
+

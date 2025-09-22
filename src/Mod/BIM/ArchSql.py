@@ -20,6 +20,9 @@ from generated_sql_parser import UnexpectedEOF, UnexpectedToken, VisitError
 _parser = None
 _transformer = None
 
+# --- SQL Engine Constants ---
+SELECT_STAR_HEADER = 'Object Label'
+
 def get_property(obj, prop_name):
     """Gets a property from a FreeCAD object, including sub-properties."""
 
@@ -106,7 +109,7 @@ class FromFunctionBase:
         label_idx = headers.index('Label') if 'Label' in headers else -1
         name_idx = headers.index('Name') if 'Name' in headers else -1
         # Handle the special header name from a 'SELECT *' query
-        if headers == ['Object Label']:
+        if headers == [SELECT_STAR_HEADER]:
             label_idx = 0
 
         if label_idx == -1 and name_idx == -1:
@@ -224,12 +227,21 @@ class SelectStatement:
 
         # 4. Perform final sorting if an ORDER BY clause was provided.
         if self.order_by_clause:
+            sort_col_original_name = self.order_by_clause.column_name
+            sort_col_final_name = sort_col_original_name
+
+            # Check if the ORDER BY column was aliased in the SELECT list.
+            for extractor, final_name in self.columns_info:
+                if isinstance(extractor, ReferenceExtractor) and extractor.value == sort_col_original_name:
+                    sort_col_final_name = final_name
+                    break
             try:
                 # Find the column index to sort by from the final headers.
-                sort_column_index = headers.index(self.order_by_clause.column_name)
+                # Use the potentially aliased name for the lookup.
+                sort_column_index = headers.index(sort_col_final_name)
             except ValueError:
                 raise ValueError(
-                    f"ORDER BY column '{self.order_by_clause.column_name}' is not in the SELECT list."
+                    f"ORDER BY column '{sort_col_original_name}' is not in the SELECT list."
                 )
 
             is_descending = self.order_by_clause.direction == 'DESC'
@@ -589,23 +601,32 @@ class SqlTransformerMixin:
         # `items` is a list of results from `column` rules, which are (extractor, display_name) tuples
         return items
 
+    def as_clause(self, items):
+        # items[0]=AS token, items[1]=StaticExtractor from the 'literal' rule.
+        # We must extract the raw string value from the extractor object.
+        return items[1].get_value(None)
+
     def column(self, items):
         # Each item in `items` is either '*' (for SELECT *) or an extractor object.
         # We need to return a (extractor, display_name) tuple.
         extractor = items[0]
+        alias = items[1] if len(items) > 1 else None
+
+        # Determine the default display name first
+        default_name = 'Unknown Column'
         if extractor == '*':
-            return ('*', 'Object Label') # Default label for SELECT *
+            default_name = SELECT_STAR_HEADER
         elif isinstance(extractor, ReferenceExtractor):
-            return (extractor, extractor.value) # Use property name as display name
+            default_name = extractor.value
         elif isinstance(extractor, StaticExtractor):
-            # For static values, use their string representation as display name
-            return (extractor, str(extractor.get_value(None)))
+            default_name = str(extractor.get_value(None))
         elif isinstance(extractor, AggregateFunction):
             arg_display = "*" if extractor.argument == "*" else extractor.argument.value
-            display_name = f"{extractor.function_name.upper()}({arg_display})"
-            return (extractor, display_name)
-        else: # Fallback, should not happen with current grammar
-            return (extractor, "Unknown Column")
+            default_name = f"{extractor.function_name.upper()}({arg_display})"
+
+        # Use the alias if provided, otherwise fall back to the default name.
+        final_name = alias if alias is not None else default_name
+        return (extractor, final_name)
     # --- END Columns Transformer ---
 
     def asterisk(self, _): return "*"
