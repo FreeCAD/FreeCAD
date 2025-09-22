@@ -11,6 +11,7 @@ import Arch
 import ArchReport
 from bimtests import TestArchBase
 import ArchSql
+from ArchSql import BimSqlSyntaxError
 
 class TestArchReport(TestArchBase.TestArchBase):
 
@@ -258,14 +259,16 @@ class TestArchReport(TestArchBase.TestArchBase):
 
     @patch('FreeCAD.Console.PrintError')
     def test_query_invalid_syntax(self, mock_print_error):
-        statement, error_obj = ArchSql._get_query_object('SELECT FROM document WHERE')
-        self.assertIsNone(statement)
-        self.assertIsInstance(error_obj, Exception)
+        # The low-level function now raises an exception on failure.
+        with self.assertRaises(BimSqlSyntaxError) as cm:
+            ArchSql._get_query_object('SELECT FROM document WHERE')
+        self.assertFalse(cm.exception.is_incomplete, "A syntax error should not be marked as incomplete.")
 
+        # The high-level function for the UI catches it and returns a simple string.
         count, error_str = ArchSql.run_query_for_count('SELECT FROM document WHERE')
         self.assertEqual(count, -1)
         self.assertIsInstance(error_str, str)
-        self.assertTrue('Syntax Error' in error_str)
+        self.assertIn('Syntax Error', error_str)
 
     def test_incomplete_queries_are_handled_gracefully(self):
         incomplete_queries = [
@@ -405,16 +408,13 @@ class TestArchReport(TestArchBase.TestArchBase):
         # 'Label' is not aggregated and not in the 'GROUP BY' clause, making this query invalid.
         query = 'SELECT Label, COUNT(*) FROM document GROUP BY IfcType'
 
-        # We expect the validation step, which is part of _get_query_object, to catch this.
-        # It should return an error message, not a valid statement object.
-        statement, error = ArchSql._get_query_object(query)
+        # _get_query_object should raise an exception for validation errors.
+        with self.assertRaises(ArchSql.SqlEngineError) as cm:
+            ArchSql._get_query_object(query)
 
-        self.assertIsNone(statement, "A statement object should not be created for an invalid query.")
-        self.assertIsNotNone(error, "An error message should have been returned.")
-
-        # Check for a specific, user-friendly error message.
-        self.assertIn("must appear in the GROUP BY clause", str(error),
-                      "The error message is not descriptive enough.")
+        # Check for the specific, user-friendly error message within the exception.
+        self.assertIn("must appear in the GROUP BY clause", str(cm.exception),
+                      "The validation error message is not descriptive enough.")
 
     def test_non_grouped_sum_calculates_correctly(self):
         """
@@ -770,5 +770,31 @@ class TestArchReport(TestArchBase.TestArchBase):
         # Wall labels from setUp: "Exterior Wall", "Interior partition wall". Sorted alphabetically.
         expected_labels = sorted([self.wall_ext.Label, self.wall_int.Label])
         self.assertListEqual(returned_labels, expected_labels)
+
+    def test_string_functions(self):
+        """Tests the CONCAT, LOWER, and UPPER string functions."""
+        # Use a predictable object for testing, e.g., the Main Column.
+        target_obj_name = self.column.Name
+        target_obj_label = self.column.Label # "Main Column"
+        target_obj_ifctype = self.column.IfcType # "Column"
+
+        with self.subTest(description="LOWER function"):
+            query = f"SELECT LOWER(Label) FROM document WHERE Name = '{target_obj_name}'"
+            headers, data = ArchSql.run_query_for_objects(query)
+            self.assertEqual(len(data), 1)
+            self.assertEqual(data[0][0], target_obj_label.lower())
+
+        with self.subTest(description="UPPER function"):
+            query = f"SELECT UPPER(Label) FROM document WHERE Name = '{target_obj_name}'"
+            headers, data = ArchSql.run_query_for_objects(query)
+            self.assertEqual(len(data), 1)
+            self.assertEqual(data[0][0], target_obj_label.upper())
+
+        with self.subTest(description="CONCAT function with properties and literals"):
+            query = f"SELECT CONCAT(Label, ': ', IfcType) FROM document WHERE Name = '{target_obj_name}'"
+            headers, data = ArchSql.run_query_for_objects(query)
+            self.assertEqual(len(data), 1)
+            expected_string = f"{target_obj_label}: {target_obj_ifctype}"
+            self.assertEqual(data[0][0], expected_string)
 
 

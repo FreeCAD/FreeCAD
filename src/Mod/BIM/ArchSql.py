@@ -16,15 +16,17 @@ import re
 # Import exception types from the generated parser for type-safe handling.
 from generated_sql_parser import UnexpectedEOF, UnexpectedToken, VisitError
 
+# --- Engine Initialization (run once on module import) ---
+import generated_sql_parser
+
+
 # Global variables to cache the parser and transformer for performance
 _parser = None
 _transformer = None
 
 # --- SQL Engine Constants ---
 SELECT_STAR_HEADER = 'Object Label'
-
 _FRIENDLY_TOKEN_NAMES = None # This will be generated dynamically on first run.
-
 _CUSTOM_FRIENDLY_TOKEN_NAMES = {
     # This dictionary provides overrides for tokens where the name is not user-friendly.
     # Punctuation
@@ -35,16 +37,6 @@ _CUSTOM_FRIENDLY_TOKEN_NAMES = {
     # Other non-keyword tokens
      'CNAME': "a property or function name",
  }
-
-def _generate_friendly_token_names(parser):
-    """Dynamically builds the friendly token name map from the Lark parser instance."""
-    friendly_names = _CUSTOM_FRIENDLY_TOKEN_NAMES.copy()
-    for term in parser.terminals:
-        # Add any keyword/terminal from the grammar that isn't already in our custom map.
-        if term.name not in friendly_names:
-            # By default, the friendly name is the keyword itself in single quotes.
-            friendly_names[term.name] = f"'{term.name}'"
-    return friendly_names
 
 def get_property(obj, prop_name):
     """Gets a property from a FreeCAD object, including sub-properties."""
@@ -68,6 +60,16 @@ def get_property(obj, prop_name):
                 return None
         return current_obj
 
+class SqlEngineError(Exception):
+    """Base class for all custom exceptions in this module."""
+    pass
+
+class BimSqlSyntaxError(SqlEngineError):
+    """Raised for any parsing or syntax error."""
+    def __init__(self, message, is_incomplete=False):
+        super().__init__(message)
+        self.is_incomplete = is_incomplete
+
 class FunctionRegistry:
     """A simple class to manage the registration of SQL functions."""
     def __init__(self):
@@ -88,27 +90,75 @@ from_function_registry = FunctionRegistry()
 
 class AggregateFunction:
     """Represents an aggregate function call like COUNT(*) or SUM(Height)."""
-    def __init__(self, name, argument):
+    def __init__(self, name, arg_extractors):
         self.function_name = name.lower()
-        # argument can be the string "*" or another extractor (e.g., ReferenceExtractor)
-        self.argument = argument
+        self.arg_extractors = arg_extractors
+
+        if len(self.arg_extractors) != 1:
+            raise ValueError(f"Aggregate function {self.function_name.upper()} requires exactly one argument.")
+
+        self.argument = self.arg_extractors[0]
 
     def get_value(self, obj):
         # This method is a placeholder. The actual calculation will happen
         # during the grouped execution phase, not on a single object.
         return None
 
-class TypeFunction:
-    """Represents a call to the TYPE() function."""
-    def __init__(self, name, argument):
-        self.argument = argument
-        self.function_name = name.lower()
+class FunctionBase:
+    """A base class for non-aggregate functions like TYPE, CONCAT, etc."""
+    def __init__(self, function_name, arg_extractors):
+        self.function_name = function_name
+        self.arg_extractors = arg_extractors
+        # Arity (argument count) check is performed by child classes.
+    def get_value(self, obj):
+        """Calculates the function's value for a single object row."""
+        raise NotImplementedError()
+
+class TypeFunction(FunctionBase):
+    """Implements the TYPE() function."""
+    def __init__(self, function_name, arg_extractors):
+        super().__init__(function_name, arg_extractors)
+        if len(self.arg_extractors) != 1 or self.arg_extractors[0] != '*':
+            raise ValueError(f"Function {self.function_name} requires exactly one argument: '*'")
 
     def get_value(self, obj):
-        """Returns the canonical type name of an object using Draft.get_type()."""
+        # The argument for TYPE is the object itself, represented by '*'.
         import Draft
 
         return Draft.get_type(obj)
+
+class LowerFunction(FunctionBase):
+    """Implements the LOWER() string function."""
+    def __init__(self, function_name, arg_extractors):
+        super().__init__(function_name, arg_extractors)
+        if len(self.arg_extractors) != 1:
+            raise ValueError(f"Function {self.function_name} requires exactly one argument.")
+
+    def get_value(self, obj):
+        value = self.arg_extractors[0].get_value(obj)
+        return str(value).lower() if value is not None else None
+
+class UpperFunction(FunctionBase):
+    """Implements the UPPER() string function."""
+    def __init__(self, function_name, arg_extractors):
+        super().__init__(function_name, arg_extractors)
+        if len(self.arg_extractors) != 1:
+            raise ValueError(f"Function {self.function_name} requires exactly one argument.")
+
+    def get_value(self, obj):
+        value = self.arg_extractors[0].get_value(obj)
+        return str(value).upper() if value is not None else None
+
+class ConcatFunction(FunctionBase):
+    """Implements the CONCAT() string function."""
+    def __init__(self, function_name, arg_extractors):
+        super().__init__(function_name, arg_extractors)
+        if not self.arg_extractors:
+            raise ValueError(f"Function {self.function_name} requires at least one argument.")
+
+    def get_value(self, obj):
+        parts = [str(ex.get_value(obj)) if ex.get_value(obj) is not None else '' for ex in self.arg_extractors]
+        return "".join(parts)
 
 class FromFunctionBase:
     """Base class for all functions used in a FROM clause."""
@@ -207,6 +257,9 @@ select_function_registry.register('SUM', AggregateFunction)
 select_function_registry.register('MIN', AggregateFunction)
 select_function_registry.register('MAX', AggregateFunction)
 select_function_registry.register('TYPE', TypeFunction)
+select_function_registry.register('LOWER', LowerFunction)
+select_function_registry.register('UPPER', UpperFunction)
+select_function_registry.register('CONCAT', ConcatFunction)
 from_function_registry.register('CHILDREN', ChildrenFromFunction)
 
 # Query Object Model
@@ -560,17 +613,6 @@ class StaticExtractor:
     def __init__(self, value): self.value = value
     def get_value(self, obj): return self.value
 
-def debug_transformer_method(func):
-    """A decorator to add verbose logging to transformer methods for debugging."""
-    def wrapper(self, items):
-        print(f"\n>>> ENTERING: {func.__name__}")
-        print(f"    RECEIVED: {repr(items)}")
-        result = func(self, items)
-        print(f"    RETURNING: {repr(result)}")
-        print(f"<<< EXITING:  {func.__name__}")
-        return result
-    return wrapper
-
 # Lark Transformer (with no runtime dependency on the the lark library)
 class SqlTransformerMixin:
     """
@@ -644,8 +686,27 @@ class SqlTransformerMixin:
         elif isinstance(extractor, StaticExtractor):
             default_name = str(extractor.get_value(None))
         elif isinstance(extractor, AggregateFunction):
-            arg_display = "*" if extractor.argument == "*" else extractor.argument.value
+            # Correctly handle the argument for default name generation.
+            arg = extractor.argument
+            arg_display = "?" # fallback
+            if arg == '*':
+                arg_display = '*'
+            elif hasattr(arg, 'value'): # It's a ReferenceExtractor
+                arg_display = arg.value
             default_name = f"{extractor.function_name.upper()}({arg_display})"
+        elif isinstance(extractor, FunctionBase):
+            # Create a nice representation for multi-arg functions
+            arg_strings = []
+            for arg_ex in extractor.arg_extractors:
+                if arg_ex == '*':
+                    arg_strings.append('*')
+                elif isinstance(arg_ex, ReferenceExtractor):
+                    arg_strings.append(arg_ex.value)
+                elif isinstance(arg_ex, StaticExtractor):
+                    arg_strings.append(f"'{arg_ex.get_value(None)}'")
+                else:
+                    arg_strings.append('?') # Fallback
+            default_name = f"{extractor.function_name.upper()}({', '.join(arg_strings)})"
 
         # Use the alias if provided, otherwise fall back to the default name.
         final_name = alias if alias is not None else default_name
@@ -686,108 +747,111 @@ class SqlTransformerMixin:
     def literal(self, items): return StaticExtractor(items[0].value[1:-1])
     def null(self, _): return StaticExtractor(None)
 
+    def function_args(self, items):
+        # This method just collects all arguments into a single list.
+        return items
+
     def function(self, items):
-        function_name_token, argument = items[0], items[1]
+        function_name_token = items[0]
         function_name = str(function_name_token).upper()
+        # Arguments are optional (e.g. for a future function).
+        args = items[1] if len(items) > 1 else []
 
         # Look up the function in the injected SELECT function registry
         function_class = self.select_function_registry.get_class(function_name)
 
         if function_class:
-            return function_class(function_name, argument)
+            return function_class(function_name, args)
 
         # If the function is not in our registry, it's a validation error.
         raise ValueError(f"Unknown function: {function_name}")
 
+class FinalTransformer(generated_sql_parser.Transformer, SqlTransformerMixin):
+    def __init__(self, select_functions, from_functions):
+        self.select_function_registry = select_functions
+        self.from_function_registry = from_functions
+
+_parser = generated_sql_parser.Lark_StandAlone()
+_transformer = FinalTransformer(
+    select_functions=select_function_registry,
+    from_functions=from_function_registry
+)
+
+def _generate_friendly_token_names(parser):
+    """Dynamically builds the friendly token name map from the Lark parser instance."""
+    friendly_names = _CUSTOM_FRIENDLY_TOKEN_NAMES.copy()
+    for term in parser.terminals:
+        # Add any keyword/terminal from the grammar that isn't already in our custom map.
+        if term.name not in friendly_names:
+            # By default, the friendly name is the keyword itself in single quotes.
+            friendly_names[term.name] = f"'{term.name}'"
+    return friendly_names
+
+if _FRIENDLY_TOKEN_NAMES is None:
+    _FRIENDLY_TOKEN_NAMES = _generate_friendly_token_names(_parser)
 
 def _get_query_object(query_string):
     """
     Internal function to parse and transform a query string.
+    On success, returns the statement object.
+    On failure, raises a custom BimSqlSyntaxError or SqlEngineError.
     """
     global _parser, _transformer
-    global _FRIENDLY_TOKEN_NAMES
-    if _parser is None:
-        try:
-            import generated_sql_parser
 
-            # The transformer class definition must be inside this try-block
-            # because it inherits from the generated parser's Transformer.
-            class FinalTransformer(generated_sql_parser.Transformer, SqlTransformerMixin):
-                """
-                The final transformer class that combines the Lark-generated base
-                with our custom mixin logic. It is responsible for initialization.
-                """
-                def __init__(self, select_functions, from_functions):
-                    # The Lark-generated Transformer has an empty __init__, so we don't
-                    # need to call super().__init__() here. We simply store our
-                    # injected dependencies.
-                    self.select_function_registry = select_functions
-                    self.from_function_registry = from_functions
-            _parser = generated_sql_parser.Lark_StandAlone()
-            # Instantiate the transformer, injecting the registries.
-            _transformer = FinalTransformer(
-                select_functions=select_function_registry,
-                from_functions=from_function_registry
-            )
-            # Dynamically generate the friendly token names map once, after the parser is ready.
-            if _FRIENDLY_TOKEN_NAMES is None:
-                _FRIENDLY_TOKEN_NAMES = _generate_friendly_token_names(_parser)
-        except ImportError:
-            return None, "Parser not generated. Please rebuild FreeCAD."
-        except Exception as e:
-            return None, f"Initialization Error: {e}"
+    # The parser and transformer are now initialized at the module level.
+    # We just check if the initialization was successful.
+    if not _parser or not _transformer:
+        raise SqlEngineError("BIM SQL engine is not initialized. Check console for errors on startup.")
 
     try:
         tree = _parser.parse(query_string)
         statement = _transformer.transform(tree)
         statement.validate()
-        return statement, None
+        return statement
     except ValueError as e:
-        # Catch our custom validation errors (e.g., from statement.validate())
-        return None, str(e)
+        raise SqlEngineError(str(e))
     except VisitError as e:
-        # Catch errors from the Lark transformer and point to the root cause
-        return None, f"Transformer Error: Failed to process rule '{e.rule}'. Original error: {e.orig_exc}"
+        message = f"Transformer Error: Failed to process rule '{e.rule}'. Original error: {e.orig_exc}"
+        raise BimSqlSyntaxError(message) from e
     except UnexpectedToken as e:
-        # Provide a specific and user-friendly error message, using the dynamically generated map.
+        is_incomplete = e.token.type == '$END'
         expected_str = ', '.join([_FRIENDLY_TOKEN_NAMES.get(t, f"'{t}'") for t in e.expected])
-        return None, (f"Syntax Error: Unexpected '{e.token.value}' at line {e.line}, column {e.column}. "
-                      f"Expected {expected_str}.")
+        message = (f"Syntax Error: Unexpected '{e.token.value}' at line {e.line}, column {e.column}. "
+                   f"Expected {expected_str}.")
+        raise BimSqlSyntaxError(message, is_incomplete=is_incomplete) from e
+    except UnexpectedEOF as e:
+        raise BimSqlSyntaxError("Query is incomplete.", is_incomplete=True) from e
 
-    except Exception as e:
-        return None, e
 
 def run_query_for_count(query_string):
     """Public interface for the Task Panel to get a result count."""
-
     if (query_string.count("'") % 2 != 0) or (query_string.count('"') % 2 != 0):
         return -1, "INCOMPLETE"
 
-    statement, error = _get_query_object(query_string)
-    if error:
-        is_incomplete = isinstance(error, UnexpectedEOF) or \
-                        (isinstance(error, UnexpectedToken) and error.token.type == '$END')
-
-        if is_incomplete:
-            return -1, "INCOMPLETE"
-
-        return -1, f"Syntax Error: Invalid token near '{error.token}'" if isinstance(error, UnexpectedToken) else "Syntax Error"
     try:
-        # The execute method returns (headers, data_rows). We only need count.
+        statement = _get_query_object(query_string)
         headers, results_data = statement.execute()
         return len(results_data), None
-    except Exception as e:
-        return -1, f"Execution Error: {e}"
+    except BimSqlSyntaxError as e:
+        if e.is_incomplete:
+            return -1, "INCOMPLETE"
+        else:
+            return -1, "Syntax Error"
+    except SqlEngineError as e:
+        return -1, str(e)
+
 
 def run_query_for_objects(query_string):
-    """Public interface for the Report object to get the resulting objects (headers, data_rows)."""
-    statement, error = _get_query_object(query_string)
-    if error:
-        if isinstance(error, str):
-            FreeCAD.Console.PrintError(f"BIM Report Validation Error: {error}\n")
-        else:
-            FreeCAD.Console.PrintError(f"BIM Report Execution Error: A {type(error).__name__} occurred.\n")
-        return [], [] # Return empty headers and data on error.
+    """
+    Public interface for the Report object to get the resulting objects.
+    Handles exceptions and prints user-friendly errors to the console.
+    """
+    try:
+        statement = _get_query_object(query_string)
+        headers, results_data = statement.execute()
+        return headers, results_data
+    except (SqlEngineError, BimSqlSyntaxError) as e:
+        FreeCAD.Console.PrintError(f"BIM Report Execution Error: {e}\n")
+        return [], []
 
-    headers, results_data = statement.execute()
-    return headers, results_data
+
