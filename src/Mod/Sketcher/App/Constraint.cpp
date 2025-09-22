@@ -87,6 +87,7 @@ Constraint* Constraint::copy() const
     temp->isDriving = this->isDriving;
     temp->InternalAlignmentIndex = this->InternalAlignmentIndex;
     temp->isInVirtualSpace = this->isInVirtualSpace;
+    temp->isVisible = this->isVisible;
     temp->isActive = this->isActive;
     temp->elements = this->elements;
     // Do not copy tag, otherwise it is considered a clone, and a "rename" by the expression engine.
@@ -161,6 +162,7 @@ void Constraint::Save(Writer& writer) const
                     << "LabelPosition=\"" << LabelPosition << "\" "
                     << "IsDriving=\"" << (int)isDriving << "\" "
                     << "IsInVirtualSpace=\"" << (int)isInVirtualSpace << "\" "
+                    << "IsVisible=\"" << (int)isVisible << "\" "
                     << "IsActive=\"" << (int)isActive << "\" ";
 
     // Save elements
@@ -228,6 +230,10 @@ void Constraint::Restore(XMLReader& reader)
 
     if (reader.hasAttribute("IsInVirtualSpace")) {
         isInVirtualSpace = reader.getAttribute<bool>("IsInVirtualSpace");
+    }
+
+    if (reader.hasAttribute("IsVisible")) {
+        isVisible = reader.getAttribute<bool>("IsVisible");
     }
 
     if (reader.hasAttribute("IsActive")) {
