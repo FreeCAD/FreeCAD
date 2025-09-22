@@ -303,10 +303,35 @@ QPoint DlgExpressionInput::expressionPosition() const
     return ui->expression->pos();
 }
 
+bool DlgExpressionInput::checkCyclicDependencyVarSet(const QString& text)
+{
+     std::shared_ptr<Expression>
+         expr(ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData()));
+
+    if (expr) {
+        DocumentObject* obj = path.getDocumentObject();
+        auto ids = expr->getIdentifiers();
+
+        for (const auto& id : ids) {
+            if (id.first.getDocumentObject() == obj) {
+                // This string is not translated.  It is based on a string that
+                // originates from the expression validator in App that is also
+                // not translated.
+                ui->msg->setText(QString::fromStdString(
+                                         id.first.toString() + " reference causes a cyclic dependency"));
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 void DlgExpressionInput::checkExpression(const QString& text)
 {
     //now handle expression
-    std::shared_ptr<Expression> expr(ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData()));
+    std::shared_ptr<Expression>
+        expr(ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData()));
 
     if (expr) {
         std::string error = path.getDocumentObject()->ExpressionEngine.validateExpression(path, expr);
@@ -525,6 +550,28 @@ static const App::OperatorExpression* toUnitNumberExpr(const App::Expression* ex
     return nullptr;
 }
 
+void DlgExpressionInput::createBindingVarSet(App::Property* propVarSet, App::DocumentObject* varSet)
+{
+    ObjectIdentifier varSetId(*propVarSet);
+
+    // rewrite the identifiers of the expression to be relative to the VarSet
+    std::map<App::ObjectIdentifier, bool> identifiers = expression->getIdentifiers();
+
+    std::map<ObjectIdentifier, ObjectIdentifier> idsFromObjToVarSet;
+    for (const auto& idPair : identifiers) {
+        ObjectIdentifier exprId = idPair.first;
+        ObjectIdentifier relativeId = exprId.relativeTo(varSetId);
+        idsFromObjToVarSet[exprId] = relativeId;
+    }
+
+    Binding binding;
+    binding.bind(*propVarSet);
+    binding.setExpression(expression);
+    binding.apply();
+
+    varSet->renameObjectIdentifiers(idsFromObjToVarSet);
+}
+
 void DlgExpressionInput::acceptWithVarSet()
 {
     // all checks have been performed in updateVarSetInfo and textChanged that
@@ -572,15 +619,11 @@ void DlgExpressionInput::acceptWithVarSet()
                                 prop->getName(), une->toString().c_str());
     }
     else {
-        // the value is an expression: make an expression binding in the variable set.
-        ObjectIdentifier objId(*prop);
-        Binding binding;
-        binding.bind(objId);
-        binding.setExpression(expression);
-        binding.apply();
+        // the value is an expression: make an expression binding in the VarSet
+        createBindingVarSet(prop, obj);
     }
 
-    // Create a new expression that refers to the property in the variable set
+    // Create a new expression that refers to the property in the VarSet
     // for the original property that is the target of this dialog.
     expression.reset(ExpressionParser::parse(path.getDocumentObject(),
                                              prop->getFullName().c_str()));
@@ -727,11 +770,10 @@ QStandardItemModel* DlgExpressionInput::createVarSetModel()
 
 void DlgExpressionInput::setupVarSets()
 {
-    ui->comboBoxVarSet->clear();
-
     QStandardItemModel* model = createVarSetModel();
     {
         QSignalBlocker blocker(ui->comboBoxVarSet);
+        ui->comboBoxVarSet->clear();
         auto* listView = new QListView(this);
         listView->setSelectionMode(QAbstractItemView::SingleSelection);
         listView->setModel(model);
@@ -739,7 +781,6 @@ void DlgExpressionInput::setupVarSets()
         ui->comboBoxVarSet->setModel(model);
         ui->comboBoxVarSet->setItemDelegate(new IndentedItemDelegate(ui->comboBoxVarSet));
     }
-
     preselectVarSet();
 
     okBtn->setEnabled(false);
@@ -757,7 +798,12 @@ void DlgExpressionInput::onCheckVarSets(int state) {
         setupVarSets();
     }
     else {
-        okBtn->setEnabled(true); // normal expression
+        try {
+            checkExpression(ui->expression->toPlainText());
+        }
+        catch (Base::Exception&) {
+            okBtn->setEnabled(false);
+        }
         adjustSize();
     }
 }
@@ -889,6 +935,11 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
     }
 
     if (comboBoxGroup.currentText().isEmpty()) {
+        okBtn->setEnabled(false);
+        return;
+    }
+
+    if (checkCyclicDependencyVarSet(ui->expression->toPlainText())) {
         okBtn->setEnabled(false);
         return;
     }
