@@ -922,3 +922,18 @@ class TestArchReport(TestArchBase.TestArchBase):
         _, data = ArchSql.run_query_for_objects(error_query)
         self.assertEqual(len(data), 0, "An invalid unit conversion should fail gracefully and return no data.")
 
+    def test_get_syntax_cheatsheet(self):
+        """Tests the dynamic generation of the SQL syntax cheatsheet."""
+        cheatsheet = ArchSql.get_syntax_cheatsheet()
+
+        self.assertIsInstance(cheatsheet, str)
+        self.assertIn("# BIM SQL Cheatsheet", cheatsheet)
+        self.assertIn("## Clauses", cheatsheet)
+        self.assertIn("SELECT", cheatsheet)
+        self.assertIn("## Key Functions", cheatsheet)
+        self.assertIn("- **Aggregate:**", cheatsheet)
+        self.assertIn("COUNT", cheatsheet)
+        self.assertIn("- **Hierarchical:**", cheatsheet)
+        self.assertIn("CHILDREN", cheatsheet)
+        self.assertIn("```sql", cheatsheet, "The cheatsheet should contain a formatted example query.")
+

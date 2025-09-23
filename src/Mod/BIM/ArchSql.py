@@ -102,13 +102,18 @@ class FunctionRegistry:
     def __init__(self):
         self._functions = {}
 
-    def register(self, name, function_class):
+    def register(self, name, function_class, category='General', description=''):
         """Registers a class to handle a function with the given name."""
-        self._functions[name.upper()] = function_class
+        self._functions[name.upper()] = {
+            'class': function_class,
+            'category': category,
+            'description': description
+        }
 
     def get_class(self, name):
         """Retrieves the class registered for a given function name."""
-        return self._functions.get(name.upper())
+        data = self._functions.get(name.upper())
+        return data['class'] if data else None
 
 
 class AggregateFunction:
@@ -934,16 +939,19 @@ def _initialize_engine():
     from_function_registry = FunctionRegistry()
 
     # 2. Register all built-in function classes
-    select_function_registry.register('COUNT', AggregateFunction)
-    select_function_registry.register('SUM', AggregateFunction)
-    select_function_registry.register('MIN', AggregateFunction)
-    select_function_registry.register('MAX', AggregateFunction)
-    select_function_registry.register('TYPE', TypeFunction)
-    select_function_registry.register('LOWER', LowerFunction)
-    select_function_registry.register('UPPER', UpperFunction)
-    select_function_registry.register('CONCAT', ConcatFunction)
-    select_function_registry.register('CONVERT', ConvertFunction)
-    from_function_registry.register('CHILDREN', ChildrenFromFunction)
+    # SELECT Functions
+    select_function_registry.register('COUNT', AggregateFunction, category='Aggregate', description='Counts rows that match criteria.')
+    select_function_registry.register('SUM', AggregateFunction, category='Aggregate', description='Calculates the sum of a numerical property.')
+    select_function_registry.register('MIN', AggregateFunction, category='Aggregate', description='Finds the minimum value of a property.')
+    select_function_registry.register('MAX', AggregateFunction, category='Aggregate', description='Finds the maximum value of a property.')
+    select_function_registry.register('LOWER', LowerFunction, category='String', description='Converts text to lowercase.')
+    select_function_registry.register('UPPER', UpperFunction, category='String', description='Converts text to uppercase.')
+    select_function_registry.register('CONCAT', ConcatFunction, category='String', description='Joins multiple strings and properties together.')
+    select_function_registry.register('TYPE', TypeFunction, category='Utility', description="Returns the object's BIM type (e.g., 'Wall').")
+    select_function_registry.register('CONVERT', ConvertFunction, category='Utility', description="Converts a Quantity to a different unit (e.g., CONVERT(Length, 'm')).")
+
+    # FROM Functions
+    from_function_registry.register('CHILDREN', ChildrenFromFunction, category='Hierarchical', description='Selects child objects of a given parent set.')
 
     # 3. Define and instantiate the transformer
     class FinalTransformer(generated_sql_parser.Transformer, SqlTransformerMixin):
@@ -1069,3 +1077,50 @@ def get_sql_keywords():
     keywords.extend(list(_transformer.from_function_registry._functions.keys()))
 
     return sorted(list(set(keywords))) # Return a sorted, unique list.
+
+def get_syntax_cheatsheet():
+    """
+    Generates a Markdown-formatted cheatsheet of the supported SQL dialect.
+    This function is fully dynamic and introspects the live engine configuration.
+    """
+    # Helper to query the registries and format the function lists.
+    def get_functions_by_category(registry, category_name):
+        func_list = []
+        for name, data in registry._functions.items():
+            if data['category'] == category_name:
+                func_list.append(name)
+        return sorted(func_list)
+
+    # Dynamically build function lists by querying the registry metadata.
+    aggregates = get_functions_by_category(_transformer.select_function_registry, 'Aggregate')
+    string_funcs = get_functions_by_category(_transformer.select_function_registry, 'String')
+    utility_funcs = get_functions_by_category(_transformer.select_function_registry, 'Utility')
+    hierarchical_funcs = get_functions_by_category(_transformer.from_function_registry, 'Hierarchical')
+
+    # Dynamically build the clauses list by subtracting known function names.
+    all_function_names = set(_transformer.select_function_registry._functions.keys()) | set(_transformer.from_function_registry._functions.keys())
+    clauses = [k for k in get_sql_keywords() if k not in all_function_names]
+
+    # Assemble the Markdown string.
+    cheatsheet = "# BIM SQL Cheatsheet\n\n"
+    cheatsheet += f"## Clauses\n`{', '.join(sorted(clauses))}`\n\n"
+    cheatsheet += "## Key Functions\n"
+    if aggregates:
+        cheatsheet += f"- **Aggregate:** `{', '.join(aggregates)}`\n"
+    if string_funcs:
+        cheatsheet += f"- **String:** `{', '.join(string_funcs)}`\n"
+    if utility_funcs:
+        cheatsheet += f"- **Utility:** `{', '.join(utility_funcs)}`\n"
+    if hierarchical_funcs:
+        cheatsheet += f"- **Hierarchical:** `{', '.join(hierarchical_funcs)}`\n"
+
+    # Add the static example query to the end of the cheatsheet.
+    cheatsheet += "\n## Example Query\n"
+    cheatsheet += "```sql\n"
+    cheatsheet += "SELECT\n    Label AS 'Object Name',\n    CONVERT(Area, 'm^2')\n"
+    cheatsheet += "FROM CHILDREN(SELECT * FROM document WHERE IfcType = 'Building Storey')\n"
+    cheatsheet += "WHERE TYPE(*) = 'Space'\n"
+    cheatsheet += "ORDER BY Area DESC;\n"
+    cheatsheet += "```\n"
+
+    return cheatsheet
