@@ -49,6 +49,7 @@ def Startup():
         from Path.Dressup.Gui import Boundary
         from Path.Dressup.Gui import RampEntry
         from Path.Dressup.Gui import Tags
+        from Path.Dressup.Gui import Tangential
         from Path.Dressup.Gui import ZCorrect
 
         from Path.Main.Gui import Fixture

@@ -64,6 +64,7 @@ SET(PathPythonDressup_SRCS
     Path/Dressup/Boundary.py
     Path/Dressup/DogboneII.py
     Path/Dressup/Tags.py
+    Path/Dressup/Tangential.py
 )
 
 SET(PathPythonDressupGui_SRCS
@@ -79,6 +80,7 @@ SET(PathPythonDressupGui_SRCS
     Path/Dressup/Gui/RampEntry.py
     Path/Dressup/Gui/Tags.py
     Path/Dressup/Gui/TagPreferences.py
+    Path/Dressup/Gui/Tangential.py
     Path/Dressup/Gui/ZCorrect.py
 )
 
