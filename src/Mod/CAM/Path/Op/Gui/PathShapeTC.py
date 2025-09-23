@@ -34,6 +34,7 @@ import PathScripts.PathUtils as PathUtils
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+import math
 import pprint
 
 __title__ = "CAM Path from Shape with Tool Controller"
@@ -331,6 +332,15 @@ class ObjectPathShape:
         )
         obj.addProperty(
             "App::PropertyLength",
+            "RapidOffset",
+            "Depth",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Offset for rapid move for path which already processed at previous step down",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyLength",
             "ClearanceHeight",
             "Depth",
             QT_TRANSLATE_NOOP(
@@ -463,6 +473,7 @@ class ObjectPathShape:
         obj.setEditorMode("OffsetOpenResult", offsetMode2)
         obj.setEditorMode("StartDepth", stepDownMode)
         obj.setEditorMode("StepDown", stepDownMode)
+        obj.setEditorMode("RapidOffset", stepDownMode)
         obj.setEditorMode("DualDirection", dualDirectionMode)
 
     def dumps(self):
@@ -664,26 +675,45 @@ Returns a Path object from a list of shapes
 
         return False
 
+    def getStepDownRepeats(self, path, startDepth, stepDepth):
+        minDepth = None
+        for cmd in path.Commands:
+            if cmd.z is not None:
+                if minDepth is None:
+                    minDepth = cmd.z
+                elif cmd.z < minDepth:
+                    minDepth = cmd.z
+
+        if minDepth is not None:
+            repeats = math.ceil((startDepth - minDepth) / stepDepth)
+            return repeats
+
+        return 1
+
     # Add several passes with step down
     def processStepDown(self, obj, path, pathReversed):
         commands = []
         startPoint = self.getPoint(path.Commands)
         endPoint = self.getPoint(reversed(path.Commands))
         stepDepth = obj.StepDown.Value
-        limitDepth = obj.StartDepth.Value
-        repeat = True
-        firstStep = True
+        startDepth = obj.StartDepth.Value
+        limitDepth = startDepth
+        iter = 0
         changeDir = False
-        while repeat:
-            repeat = False
+
+        stepDownRepeats = self.getStepDownRepeats(path, startDepth, stepDepth)
+
+        while iter < stepDownRepeats:
+            iter += 1
+            lastStep = True if iter == stepDownRepeats else False
             limitDepth -= stepDepth
 
-            skipZ = not firstStep and (
+            skipRetract = (iter > 1) and (
                 self.isClosedPath(startPoint, endPoint)
                 or (obj.DualDirection and obj.HandleMultipleFeatures == "Individually")
             )
 
-            if not skipZ:
+            if not skipRetract:
                 # add safety moves to start point before next step down
                 commands.append(Path.Command("G0", {"Z": startPoint.z}))
                 commands.append(Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y}))
@@ -692,7 +722,7 @@ Returns a Path object from a list of shapes
 
             for cmd in currentPath.Commands:
                 if (
-                    skipZ
+                    skipRetract
                     and cmd.x is None
                     and cmd.y is None
                     and (cmd.z == obj.ClearanceHeight or cmd.z == obj.SafeHeight)
@@ -700,12 +730,19 @@ Returns a Path object from a list of shapes
                     # skip start move for closed profile
                     continue
 
-                if self.isLower(cmd.z, limitDepth):
-                    repeat = True  # did not get final depth, so repeat step down
-                    cmd.z = limitDepth
-                commands.append(cmd)
+                if cmd.z is not None:
+                    if self.isLower(cmd.z, limitDepth):
+                        cmd.z = limitDepth
+                    elif (
+                        obj.RapidOffset
+                        and not lastStep
+                        and cmd.z - stepDepth > limitDepth
+                        and cmd.Name == "G1"
+                    ):
+                        cmd.Name = "G0"
+                        cmd.z += obj.RapidOffset.Value
 
-            firstStep = False
+                commands.append(cmd)
 
             if obj.DualDirection and obj.HandleMultipleFeatures == "Individually":
                 # change direction after on each step down
