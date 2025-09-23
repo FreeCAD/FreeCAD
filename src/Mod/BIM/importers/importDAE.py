@@ -78,7 +78,7 @@ def import_collada() -> bool:
     try:
         import collada
     except ImportError:
-        FreeCAD.Console.PrintError(translate("BIM", "pycollada not found, collada support is disabled.") + "\n")
+        FreeCAD.Console.PrintError("pycollada not found, collada support is disabled.\n")
         return False
     return True
 
@@ -154,14 +154,14 @@ def read(filename):
                 _read_bound_triangle_set(doc, bound_geom, prim, unit)
             if isinstance(prim, collada.polylist.BoundPolylist):
                 FreeCAD.Console.PrintWarning(
-                    translate("BIM", f"Warning: triangulating polylist primitive in {_name_from_bound_geom(bound_geom)}" + "\n"),
+                    f"Warning: triangulating polylist primitive in {_name_from_bound_geom(bound_geom)}\n",
                 )
                 _read_bound_polylist(doc, bound_geom, prim, unit)
             # e.g. a BoundLineSet, which is not supported yet.
 
     # Print the errors that occurred during reading.
     if col.errors:
-        FreeCAD.Console.PrintWarning(translate("BIM", "File was read but some errors occurred:") + "\n")
+        FreeCAD.Console.PrintWarning("File was read but some errors occurred:\n")
     for e in col.errors:
         FreeCAD.Console.PrintWarning(str(e) + "\n")
     if FreeCAD.GuiUp:
@@ -381,7 +381,7 @@ def export(
     col_mesh.scenes.append(scene)
     col_mesh.scene = scene
     col_mesh.write(filename)
-    FreeCAD.Console.PrintMessage(translate("BIM", f'file "{filename}" successfully created.' + "\n"))
+    FreeCAD.Console.PrintMessage(f'file "{filename}" successfully created.\n')
 
 
 @dataclass
