@@ -176,19 +176,14 @@ void StdCmdToggleFreeze::activated(int iMsg)
     Command::openCommand(QT_TRANSLATE_NOOP("Command", "Toggle freeze"));
     for (Gui::SelectionSingleton::SelObj& sel : sels) {
         App::DocumentObject* obj = sel.pObject;
-        if (!obj)
+        if (!obj) {
             continue;
+        }
 
         if (obj->isFreezed()){
             obj->unfreeze();
-            for (auto child : obj->getInListRecursive())
-                child->unfreeze();
-            for (auto child : obj->getOutListRecursive())
-                child->unfreeze();
         } else {
             obj->freeze();
-            for (auto parent : obj->getOutListRecursive())
-                parent->freeze();
         }
 
     }
