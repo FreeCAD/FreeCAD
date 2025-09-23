@@ -981,13 +981,35 @@ except Exception as e:
     FreeCAD.Console.PrintError(f"BIM SQL engine failed to initialize: {e}\n")
 
 
+from typing import List, Tuple, Any, Optional
+
 # --- Internal API Functions ---
 
-def _get_query_object(query_string):
+def _get_query_object(query_string: str) -> "SelectStatement":
     """
-    Internal function to parse and transform a query string.
-    On success, returns the statement object.
-    On failure, raises a custom BimSqlSyntaxError or SqlEngineError.
+    Parses and transforms a query string into a logical statement object.
+
+    This is the core internal API for the SQL engine. It is an "unsafe"
+    function that is responsible for all parsing and validation.
+
+    Parameters
+    ----------
+    query_string : str
+        The raw SQL query string to be processed.
+
+    Returns
+    -------
+    SelectStatement
+        A fully-formed, validated logical statement object ready for execution.
+
+    Raises
+    ------
+    SqlEngineError
+        For general engine errors, such as initialization failures or
+        validation errors (e.g., mixing aggregates without GROUP BY).
+    BimSqlSyntaxError
+        For any syntax, parsing, or transformation error, with a flag to
+        indicate if the query was simply incomplete.
     """
     # The parser and transformer are now initialized at the module level.
     # We just check if the initialization was successful.
@@ -1016,8 +1038,27 @@ def _get_query_object(query_string):
 
 # --- Public API Functions ---
 
-def run_query_for_count(query_string):
-    """Public interface for the Task Panel to get a result count."""
+def run_query_for_count(query_string: str) -> Tuple[int, Optional[str]]:
+    """
+    Executes a query and returns only the count of resulting rows.
+
+    This is a "safe" public API function intended for UI components like
+    live validation feedback. It catches all exceptions and returns a
+    consistent tuple, making it safe to call with incomplete user input.
+
+    Parameters
+    ----------
+    query_string : str
+        The raw SQL query string.
+
+    Returns
+    -------
+    Tuple[int, Optional[str]]
+        A tuple `(count, error_string)`.
+        On success, `count` is the number of rows and `error_string` is `None`.
+        On failure, `count` is `-1` and `error_string` contains a user-friendly
+        description of the error (e.g., "INCOMPLETE", "Syntax Error").
+    """
     if (query_string.count("'") % 2 != 0) or (query_string.count('"') % 2 != 0):
         return -1, "INCOMPLETE"
 
@@ -1034,10 +1075,26 @@ def run_query_for_count(query_string):
         return -1, str(e)
 
 
-def run_query_for_objects(query_string):
+def run_query_for_objects(query_string: str) -> Tuple[List[str], List[List[Any]]]:
     """
-    Public interface for the Report object to get the resulting objects.
-    Handles exceptions and prints user-friendly errors to the console.
+    Executes a query and returns the full results.
+
+    This is a "safe" public API function intended for primary consumers like
+    the ArchReport object. It catches all exceptions, prints a detailed error
+    to the FreeCAD console, and returns a predictable empty result on failure.
+
+    Parameters
+    ----------
+    query_string : str
+        The raw SQL query string.
+
+    Returns
+    -------
+    Tuple[List[str], List[List[Any]]]
+        A tuple `(headers, data_rows)`.
+        `headers` is a list of strings for the column names.
+        `data_rows` is a list of lists, where each inner list represents a row.
+        On failure, returns `([], [])`.
     """
     try:
         statement = _get_query_object(query_string)
@@ -1047,13 +1104,25 @@ def run_query_for_objects(query_string):
         FreeCAD.Console.PrintError(f"BIM Report Execution Error: {e}\n")
         return [], []
 
-def get_sql_keywords():
+
+def get_sql_keywords() -> List[str]:
     """
-    Returns a list of all keywords and function names for use in syntax highlighters.
-    This is the single source of truth for SQL syntax in the BIM workbench.
+    Returns a list of all keywords and function names for syntax highlighters.
+
+    This function provides the single source of truth for SQL syntax in the
+    BIM workbench. It dynamically introspects the initialized Lark parser and
+    the function registries.
+
+    Returns
+    -------
+    List[str]
+        A sorted, unique list of all keywords and function names (e.g.,
+        ['SELECT', 'FROM', 'COUNT', 'CHILDREN', ...]). Returns an empty list
+        if the engine failed to initialize.
     """
-    # Ensure the engine is initialized before accessing the parser.
-    if not _parser:
+    # The parser and transformer are initialized at the module level.
+    # We just check if the initialization was successful.
+    if not _parser or not _transformer:
         return []
 
     keywords = []
@@ -1078,10 +1147,19 @@ def get_sql_keywords():
 
     return sorted(list(set(keywords))) # Return a sorted, unique list.
 
-def get_syntax_cheatsheet():
+
+def get_syntax_cheatsheet() -> str:
     """
     Generates a Markdown-formatted cheatsheet of the supported SQL dialect.
-    This function is fully dynamic and introspects the live engine configuration.
+
+    This function is fully dynamic and introspects the live engine
+    configuration to build its content.
+
+    Returns
+    -------
+    str
+        A Markdown-formatted string containing a summary of clauses, functions,
+        and an example query.
     """
     # Helper to query the registries and format the function lists.
     def get_functions_by_category(registry, category_name):
