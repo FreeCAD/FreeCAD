@@ -367,7 +367,7 @@ void AccelLineEdit::keyPressEvent(QKeyEvent* e)
 
     setText(txtLine);
     keyPressedCount++;
-    
+
     // Emit signal when key sequence changes
     Q_EMIT keySequenceChanged(QKeySequence(txtLine));
 }
