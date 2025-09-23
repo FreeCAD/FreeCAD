@@ -691,6 +691,3 @@ inline App::Application &GetApplication(){
 
 
 #endif // SRC_APP_APPLICATION_H_
-
-
-
