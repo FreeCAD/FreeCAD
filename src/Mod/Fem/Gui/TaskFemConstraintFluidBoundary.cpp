@@ -370,7 +370,8 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
     ui->buttonDirection->blockSignals(false);
     ui->checkReverse->blockSignals(false);
 
-    ui->lbl_info->setText(tr("Select geometry of type: ") + QString::fromUtf8("<b>%1</b>").arg(tr("Face")));
+    ui->lbl_info->setText(tr("Select geometry of type: ")
+                          + QString::fromUtf8("<b>%1</b>").arg(tr("Face")));
 
     updateUI();
 }

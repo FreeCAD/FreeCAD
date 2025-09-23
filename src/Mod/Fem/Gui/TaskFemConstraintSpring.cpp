@@ -99,7 +99,8 @@ TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
 
-    ui->lbl_info->setText(tr("Select geometry of type: ") + QString::fromUtf8("<b>%1</b>").arg(tr("Face")));
+    ui->lbl_info->setText(tr("Select geometry of type: ")
+                          + QString::fromUtf8("<b>%1</b>").arg(tr("Face")));
 
     // Selection buttons
     buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);

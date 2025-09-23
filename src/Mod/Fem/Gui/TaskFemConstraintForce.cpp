@@ -86,7 +86,8 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce* C
     ui->lineDirection->setText(dir.isEmpty() ? QString() : dir);
     ui->checkReverse->setChecked(reversed);
 
-    ui->lbl_info->setText(tr("Select geometry of type: ") + QString::fromUtf8("<b>%1</b>").arg(tr("Vertex, Edge, Face")));
+    ui->lbl_info->setText(tr("Select geometry of type: ")
+                          + QString::fromUtf8("<b>%1</b>").arg(tr("Vertex, Edge, Face")));
 
     // create a context menu for the listview of the references
     createActions(ui->listReferences);
