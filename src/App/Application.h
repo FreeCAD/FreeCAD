@@ -254,7 +254,7 @@ public:
     /// signal before close/abort active transaction
     boost::signals2::signal<void (bool)> signalBeforeCloseTransaction;
     /// signal before open active transaction
-    boost::signals2::signal<void (bool)> signalBeforeOpenTransaction;
+    boost::signals2::signal<void (const std::string&)> signalBeforeOpenTransaction;
     /// signal after close/abort active transaction
     boost::signals2::signal<void (bool)> signalCloseTransaction;
     /// signal on show hidden items
@@ -691,4 +691,5 @@ inline App::Application &GetApplication(){
 
 
 #endif // SRC_APP_APPLICATION_H_
+
 
