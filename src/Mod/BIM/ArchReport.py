@@ -1107,21 +1107,36 @@ class ReportTaskPanel:
             self.table_preview_results.setVisible(False)
             return
 
-        # Execute the query using the safe Arch.select API
-        headers, data_rows = Arch.select(query)
+        try:
+            # Execute the query using the Arch.select API, which raises on failure
+            headers, data_rows = Arch.select(query)
+            # --- Success Case: Populate the table with results ---
+            self.table_preview_results.clear()
+            self.table_preview_results.setColumnCount(len(headers))
+            self.table_preview_results.setHorizontalHeaderLabels(headers)
+            self.table_preview_results.setRowCount(len(data_rows))
 
-        # Populate the table
-        self.table_preview_results.clear()
-        self.table_preview_results.setColumnCount(len(headers))
-        self.table_preview_results.setHorizontalHeaderLabels(headers)
-        self.table_preview_results.setRowCount(len(data_rows))
+            for row_idx, row_data in enumerate(data_rows):
+                for col_idx, cell_value in enumerate(row_data):
+                    item = QtWidgets.QTableWidgetItem(str(cell_value))
+                    self.table_preview_results.setItem(row_idx, col_idx, item)
 
-        for row_idx, row_data in enumerate(data_rows):
-            for col_idx, cell_value in enumerate(row_data):
-                item = QtWidgets.QTableWidgetItem(str(cell_value))
-                self.table_preview_results.setItem(row_idx, col_idx, item)
+            # Restore default resize mode in case it was changed for error display
+            self.table_preview_results.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
 
-        self.table_preview_results.setVisible(True)
+        except Arch.SqlEngineError as e:
+            # --- Failure Case: Display the error in the preview table ---
+            self.table_preview_results.clear()
+            self.table_preview_results.setRowCount(1)
+            self.table_preview_results.setColumnCount(1)
+            self.table_preview_results.setHorizontalHeaderLabels(["Query Error"])
+            error_item = QtWidgets.QTableWidgetItem(f"❌ {str(e)}")
+            error_item.setForeground(QtGui.QColor("red"))
+            self.table_preview_results.setItem(0, 0, error_item)
+            # Make the single error column stretch to fill the available space
+            self.table_preview_results.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+
+        self.table_preview_results.setVisible(True) # Always show the table for results or errors
 
     # --- Dialog Acceptance / Rejection ---
     def accept(self):
