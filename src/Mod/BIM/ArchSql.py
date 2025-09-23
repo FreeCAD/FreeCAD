@@ -1121,15 +1121,15 @@ def select(query_string: str) -> Tuple[List[str], List[List[Any]]]:
     Raises
     ------
     SqlEngineError
-        Re-raises any SqlEngineError or BimSqlSyntaxError after logging it.
+        Re-raises any SqlEngineError or BimSqlSyntaxError without logging it.
+        The caller is responsible for logging and handling.
     """
-    try:
-        statement = _get_query_object(query_string)
-        headers, results_data = statement.execute()
-        return headers, results_data
-    except (SqlEngineError, BimSqlSyntaxError) as e:
-        FreeCAD.Console.PrintError(f"BIM Report Execution Error: {e}\n")
-        raise e  # Re-raise the exception for the caller to handle.
+    # This is the "unsafe" API. It performs no error handling and lets all
+    # exceptions propagate up to the caller, who is responsible for logging
+    # or handling them as needed.
+    statement = _get_query_object(query_string)
+    headers, results_data = statement.execute()
+    return headers, results_data
 
 
 def getSqlKeywords() -> List[str]:
