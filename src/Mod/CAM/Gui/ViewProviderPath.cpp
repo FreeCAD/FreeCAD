@@ -164,6 +164,7 @@ ViewProviderPath::ViewProviderPath()
     mg = ((mcol >> 16) & 0xff) / 255.0;
     mb = ((mcol >> 8) & 0xff) / 255.0;
     int lwidth = hGrp->GetInt("DefaultPathLineWidth", 1);
+    float arrowScale = hGrp->GetFloat("DefaultArrowScale", 3.0f);
     ADD_PROPERTY_TYPE(NormalColor,
                       (lr, lg, lb),
                       "Path",
@@ -255,7 +256,7 @@ ViewProviderPath::ViewProviderPath()
     pArrow->set("zAxis.appearance.drawStyle", "style INVISIBLE");
     pArrow->set("zHead.transform", "translation 0 0 0");
     pArrowScale->setPart("shape", pArrow);
-    pArrowScale->scaleFactor = 2.0f;
+    pArrowScale->scaleFactor = arrowScale;
     pArrowGroup->addChild(pArrowScale);
 
     pcArrowSwitch->addChild(pArrowGroup);
