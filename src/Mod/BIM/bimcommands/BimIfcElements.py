@@ -48,6 +48,12 @@ class BIM_IfcElements:
         return v
 
     def Activated(self):
+
+        # only raise the dialog if it is already open
+        if getattr(self, "form", None):
+            self.form.raise_()
+            return
+
         import Draft
         from PySide import QtGui
 
@@ -100,6 +106,7 @@ class BIM_IfcElements:
         else: # Qt version < 6.7.0
             self.form.onlyVisible.stateChanged.connect(self.update)
         self.form.buttonBox.accepted.connect(self.accept)
+        self.form.buttonBox.rejected.connect(self.reject)
         self.form.globalMode.currentIndexChanged.connect(self.onObjectTypeChanged)
         self.form.globalMaterial.currentIndexChanged.connect(self.onMaterialChanged)
 
@@ -544,10 +551,15 @@ class BIM_IfcElements:
                                 )
                                 changed = True
                             obj.Material = mobj
-
         if changed:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
+        return self.reject()
+
+    def reject(self):
+        self.form.hide()
+        del self.form
+        return True
 
 
 if FreeCAD.GuiUp:

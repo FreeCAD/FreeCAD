@@ -47,6 +47,11 @@ class BIM_Setup:
 
     def Activated(self):
 
+        # only raise the dialog if it is already open
+        if getattr(self, "form", None):
+            self.form.raise_()
+            return
+
         TARGETVERSION = 0.19
         TECHDRAWDIMFACTOR = (
             0.16  # How many times TechDraw dim arrows are smaller than Draft
@@ -169,6 +174,8 @@ class BIM_Setup:
         result = self.form.exec_()
         del FreeCADGui.BIMSetupDialog
         if not result:
+            self.form.hide()
+            del self.form
             return
 
         # set preference values
@@ -387,6 +394,8 @@ class BIM_Setup:
         FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").SetBool(
             "FirstTime", False
         )
+        self.form.hide()
+        del self.form
 
     def setPreset(self, preset=None):
         from PySide import QtGui
