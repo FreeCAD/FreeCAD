@@ -937,20 +937,32 @@ class TestArchReport(TestArchBase.TestArchBase):
         self.assertIsInstance(error_str, str)
         self.assertIn("Unit conversion failed", error_str)
 
-    def test_get_syntax_cheatsheet(self):
-        """Tests the dynamic generation of the SQL syntax cheatsheet."""
-        cheatsheet = Arch.getSqlCheatsheet()
+    def test_get_sql_api_documentation(self):
+        """Tests the data structure returned by the SQL documentation API."""
+        api_data = Arch.getSqlApiDocumentation()
 
-        self.assertIsInstance(cheatsheet, str)
-        self.assertIn("# BIM SQL Cheatsheet", cheatsheet)
-        self.assertIn("## Clauses", cheatsheet)
-        self.assertIn("SELECT", cheatsheet)
-        self.assertIn("## Key Functions", cheatsheet)
-        self.assertIn("- **Aggregate:**", cheatsheet)
-        self.assertIn("COUNT", cheatsheet)
-        self.assertIn("- **Hierarchical:**", cheatsheet)
-        self.assertIn("CHILDREN", cheatsheet)
-        self.assertIn("```sql", cheatsheet, "The cheatsheet should contain a formatted example query.")
+        self.assertIsInstance(api_data, dict)
+        self.assertIn('clauses', api_data)
+        self.assertIn('functions', api_data)
+
+        # Check for a known clause and a known function category
+        self.assertIn('SELECT', api_data['clauses'])
+        self.assertIn('Aggregate', api_data['functions'])
+
+        # Check for a specific function's data
+        count_func = next((f for f in api_data['functions']['Aggregate'] if f['name'] == 'COUNT'), None)
+        self.assertIsNotNone(count_func)
+        self.assertIn('description', count_func)
+        self.assertGreater(len(count_func['description']), 0)
+
+    def test_cheatsheet_dialog_creation(self):
+        """Tests that the Cheatsheet dialog can be created without errors."""
+        if not FreeCAD.GuiUp:
+            self.skipTest("Cannot test CheatsheetDialog without a GUI.")
+
+        api_data = Arch.getSqlApiDocumentation()
+        dialog = ArchReport.CheatsheetDialog(api_data)
+        self.assertIsNotNone(dialog)
 
     def test_task_panel_on_demand_preview(self):
         """Tests the on-demand 'Preview Results' feature in the ReportTaskPanel."""
