@@ -994,3 +994,35 @@ class TestArchReport(TestArchBase.TestArchBase):
         self.assertEqual(panel.table_preview_results.item(0, 0).text(), self.wall_ext.Label) # First wall, sorted
         self.assertEqual(panel.table_preview_results.item(1, 1).text(), self.wall_int.IfcType) # Second wall, IfcType
 
+    def test_preview_button_handles_errors_gracefully_in_ui(self):
+        """
+        Tests that the 'Preview Results' button catches query exceptions
+        and displays a user-friendly error in the preview table itself,
+        rather than raising an unhandled exception.
+        """
+        if not FreeCAD.GuiUp:
+            self.skipTest("Cannot test ReportTaskPanel UI without a GUI.")
+
+        # 1. Setup: Create a report object and the task panel
+        report_obj = Arch.makeReport(name="PreviewErrorTestReport")
+        panel = ArchReport.ReportTaskPanel(report_obj)
+        panel._select_statement_in_table(0) # Select the first statement to show the editor
+
+        # 2. Action: Set an invalid query and simulate the button click
+        invalid_query = "SELECT Label FRM document" # Deliberate syntax error
+        panel.sql_query_edit.setPlainText(invalid_query)
+
+        # This call should NOT raise an exception. It should be handled internally.
+        try:
+            panel._on_preview_results_clicked()
+        except Exception as e:
+            self.fail(f"_on_preview_results_clicked raised an unhandled exception: {e}")
+
+        # 3. Assertions: Check the state of the UI's preview table
+        self.assertTrue(panel.table_preview_results.isVisible(), "Preview table should be visible to show the error.")
+        self.assertEqual(panel.table_preview_results.rowCount(), 1, "Error display should occupy a single row.")
+
+        # Check that the table item contains the specific error message
+        error_item = panel.table_preview_results.item(0, 0)
+        self.assertIsNotNone(error_item, "An error item should have been placed in the table.")
+        self.assertIn("Syntax Error", error_item.text(), "The error message should indicate a syntax error.")
