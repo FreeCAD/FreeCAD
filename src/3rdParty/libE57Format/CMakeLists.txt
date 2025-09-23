@@ -132,6 +132,12 @@ else()
 	add_library( E57Format STATIC ${E57Format_SOURCES})
 endif()
 
+include(CheckIPOSupported)
+check_ipo_supported(RESULT ipo_ok OUTPUT ipo_msg)
+if(NOT ipo_ok)
+	set(E57_RELEASE_LTO Off)
+endif()
+
 include( E57ExportHeader )
 include( GitUpdate )
 
