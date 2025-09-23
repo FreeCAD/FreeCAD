@@ -43,7 +43,7 @@ class TaskPanel(object):
         self.obj = obj
         self.viewProvider = viewProvider
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DressupTangential.ui")
-        
+
         # Connect UI elements to properties
         self.setupUI()
         self.updateUI()
@@ -55,24 +55,24 @@ class TaskPanel(object):
 
     def updateUI(self):
         """Update UI elements from object properties."""
-        if hasattr(self.form, 'tangentialAngle'):
+        if hasattr(self.form, "tangentialAngle"):
             self.form.tangentialAngle.setValue(self.obj.TangentialAngle)
-        if hasattr(self.form, 'oscillationAngle'):
+        if hasattr(self.form, "oscillationAngle"):
             self.form.oscillationAngle.setValue(self.obj.OscillationAngle)
-        if hasattr(self.form, 'oscillationFrequency'):
+        if hasattr(self.form, "oscillationFrequency"):
             self.form.oscillationFrequency.setValue(self.obj.OscillationFrequency)
-        if hasattr(self.form, 'enableOscillation'):
+        if hasattr(self.form, "enableOscillation"):
             self.form.enableOscillation.setChecked(self.obj.EnableOscillation)
 
     def updateFromUI(self):
         """Update object properties from UI elements."""
-        if hasattr(self.form, 'tangentialAngle'):
+        if hasattr(self.form, "tangentialAngle"):
             self.obj.TangentialAngle = self.form.tangentialAngle.value()
-        if hasattr(self.form, 'oscillationAngle'):
+        if hasattr(self.form, "oscillationAngle"):
             self.obj.OscillationAngle = self.form.oscillationAngle.value()
-        if hasattr(self.form, 'oscillationFrequency'):
+        if hasattr(self.form, "oscillationFrequency"):
             self.obj.OscillationFrequency = self.form.oscillationFrequency.value()
-        if hasattr(self.form, 'enableOscillation'):
+        if hasattr(self.form, "enableOscillation"):
             self.obj.EnableOscillation = self.form.enableOscillation.isChecked()
 
     def accept(self):
@@ -139,8 +139,7 @@ class CommandTangentialDressup:
             "Pixmap": "CAM_Dressup",
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupTangential", "Tangential"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_DressupTangential", 
-                "Create a Tangential Dressup object from a selected path"
+                "CAM_DressupTangential", "Create a Tangential Dressup object from a selected path"
             ),
         }
 
@@ -174,7 +173,13 @@ class CommandTangentialDressup:
         FreeCADGui.doCommand(
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "TangentialDressup")'
         )
-        FreeCADGui.doCommand("dbo = Path.Dressup.Tangential.DressupTangential(obj, FreeCAD.ActiveDocument." + selection[0].Name + ", PathScripts.PathUtils.findParentJob(FreeCAD.ActiveDocument." + selection[0].Name + "))")
+        FreeCADGui.doCommand(
+            "dbo = Path.Dressup.Tangential.DressupTangential(obj, FreeCAD.ActiveDocument."
+            + selection[0].Name
+            + ", PathScripts.PathUtils.findParentJob(FreeCAD.ActiveDocument."
+            + selection[0].Name
+            + "))"
+        )
         FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
         FreeCADGui.doCommand("obj.Base = base")
