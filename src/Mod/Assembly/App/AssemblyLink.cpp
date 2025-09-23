@@ -255,7 +255,7 @@ void AssemblyLink::synchronizeComponents()
                     }
                 }
                 else if (obj->isLinkGroup() && !link2->isLinkGroup()) {
-                    continue; // make sure we migrate sub assemblies that had link to linkgroups
+                    continue;  // make sure we migrate sub assemblies that had link to linkgroups
                 }
                 linkedObj = link2->getLinkedObject(false);  // not recursive
             }
