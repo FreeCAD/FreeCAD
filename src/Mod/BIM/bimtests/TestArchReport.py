@@ -902,4 +902,23 @@ class TestArchReport(TestArchBase.TestArchBase):
             self.assertEqual(len(data), 1)
             self.assertAlmostEqual(data[0][0], 600.0)
 
-            
+    def test_convert_function(self):
+        """Tests the CONVERT(value, 'unit') function."""
+        # Use wall_ext, which has Length = 1000.0 (mm Quantity)
+        target_name = self.wall_ext.Name
+
+        # Test converting mm to meters. Expected result is 1.0.
+        query = f"SELECT CONVERT(Length, 'm') FROM document WHERE Name = '{target_name}'"
+        _, data = ArchSql.run_query_for_objects(query)
+
+        self.assertEqual(len(data), 1, "The query should return exactly one row.")
+        self.assertIsInstance(data[0][0], float, "The result of CONVERT should be a float.")
+        self.assertAlmostEqual(data[0][0], 1.0, msg="1000mm should be converted to 1.0m.")
+
+        # Test an invalid conversion (e.g., a length to a mass unit)
+        error_query = f"SELECT CONVERT(Length, 'kg') FROM document WHERE Name = '{target_name}'"
+        # We expect the underlying FreeCAD API to raise an exception, which our engine
+        # should catch and report. The query should return an empty result.
+        _, data = ArchSql.run_query_for_objects(error_query)
+        self.assertEqual(len(data), 0, "An invalid unit conversion should fail gracefully and return no data.")
+
