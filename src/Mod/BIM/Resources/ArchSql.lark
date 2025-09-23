@@ -42,7 +42,12 @@ order_by_clause: ORDER BY reference (ASC | DESC)?
 columns: (column ("," column)*)
 column: (ASTERISK | operand) as_clause?
 as_clause: AS literal
-operand: function | reference | literal | NUMBER | NULL
+// Arithmetic Expression Parsing with Operator Precedence
+expr: term (ADD term | SUB term)*      // Lowest precedence: Addition/Subtraction
+term: factor (MUL factor | DIV factor)*  // Medium precedence: Multiplication/Division
+factor: function | reference | literal | NUMBER | NULL | "(" expr ")" // Highest precedence: Values and grouping
+//  'operand' is an alias for a full arithmetic expression.
+operand: expr
 
 // Boolean Logic
 boolean_expression: boolean_or
@@ -90,6 +95,10 @@ BY:     "BY"i
 ORDER:  "ORDER"i
 ASC:    "ASC"i
 DESC:   "DESC"i
+ADD:    "+"
+SUB:    "-"
+MUL:    "*"
+DIV:    "/"
 ASTERISK: "*"
 NULL:   "NULL"i
 STRING : /"[^"]*"|'[^']*'/

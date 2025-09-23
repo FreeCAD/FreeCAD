@@ -663,6 +663,38 @@ class InComparison:
         return property_value in self.values_set
 
 
+class ArithmeticOperation:
+    """Represents a recursive arithmetic operation (e.g., a + (b * c))."""
+    def __init__(self, left, op, right):
+        self.left = left
+        self.op = op
+        self.right = right
+
+    def _normalize_value(self, value):
+        """Converts Quantities to floats for calculation."""
+        if isinstance(value, FreeCAD.Units.Quantity):
+            return value.Value
+        if isinstance(value, (int, float)):
+            return value
+        # If a non-numeric type is used, the operation will fail with a TypeError.
+        return value
+
+    def get_value(self, obj):
+        """Recursively evaluates the calculation tree."""
+        left_val = self._normalize_value(self.left.get_value(obj))
+        right_val = self._normalize_value(self.right.get_value(obj))
+
+        if self.op == '+':
+            return left_val + right_val
+        if self.op == '-':
+            return left_val - right_val
+        if self.op == '*':
+            return left_val * right_val
+        if self.op == '/':
+            # Basic division-by-zero protection.
+            return left_val / right_val if right_val != 0 else float('inf')
+
+
 class ReferenceExtractor:
     def __init__(self, value): self.value = value
     def get_value(self, obj): return _get_property(obj, self.value)
@@ -827,6 +859,27 @@ class SqlTransformerMixin:
     def function_args(self, items):
         # This method just collects all arguments into a single list.
         return items
+
+    def _build_left_associative_tree(self, items):
+        """
+        A generic helper to build a left-associative calculation tree from a
+        flat list of [operand, operator, operand, operator, ...].
+        This is used by both the 'expr' and 'term' grammar rules.
+        """
+        tree = items[0]
+        for i in range(1, len(items), 2):
+            op_token = items[i]
+            right = items[i+1]
+            tree = ArithmeticOperation(tree, op_token.value, right)
+        return tree
+
+    # Both 'expr' and 'term' rules use the same tree-building logic.
+    expr = _build_left_associative_tree
+    term = _build_left_associative_tree
+
+    def factor(self, items):
+        # Handles parentheses by simply returning the transformed inner expression.
+        return items[0]
 
     def function(self, items):
         function_name_token = items[0]
