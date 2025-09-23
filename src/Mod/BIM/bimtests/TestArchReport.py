@@ -952,3 +952,33 @@ class TestArchReport(TestArchBase.TestArchBase):
         self.assertIn("CHILDREN", cheatsheet)
         self.assertIn("```sql", cheatsheet, "The cheatsheet should contain a formatted example query.")
 
+    def test_task_panel_on_demand_preview(self):
+        """Tests the on-demand 'Preview Results' feature in the ReportTaskPanel."""
+        if not FreeCAD.GuiUp:
+            self.skipTest("Cannot test ReportTaskPanel without a GUI.")
+
+        # 1. Setup: Create a report object and the task panel
+        report_obj = Arch.makeReport(name="PreviewTestReport")
+        panel = ArchReport.ReportTaskPanel(report_obj)
+        panel._select_statement_in_table(0) # Select the first statement to show the editor
+
+        # 2. Initial State Assertions
+        self.assertTrue(hasattr(panel, 'btn_preview_results'), "Panel should have a preview button.")
+        self.assertTrue(hasattr(panel, 'table_preview_results'), "Panel should have a preview table.")
+        self.assertFalse(panel.table_preview_results.isVisible(), "Preview table should be hidden initially.")
+
+        # 3. Action: Set a valid query and simulate the button click
+        # Use a simple query that is guaranteed to return 2 rows and 2 columns
+        query = "SELECT Label, IfcType FROM document WHERE IfcType = 'Wall' ORDER BY Label"
+        panel.sql_query_edit.setPlainText(query)
+        panel._on_preview_results_clicked()
+
+        # 4. Final State Assertions
+        self.assertTrue(panel.table_preview_results.isVisible(), "Preview table should be visible after click.")
+        self.assertEqual(panel.table_preview_results.columnCount(), 2, "Preview table should have 2 columns.")
+        self.assertEqual(panel.table_preview_results.rowCount(), 2, "Preview table should have 2 rows.")
+
+        # Check a cell value for correctness
+        self.assertEqual(panel.table_preview_results.item(0, 0).text(), self.wall_ext.Label) # First wall, sorted
+        self.assertEqual(panel.table_preview_results.item(1, 1).text(), self.wall_int.IfcType) # Second wall, IfcType
+

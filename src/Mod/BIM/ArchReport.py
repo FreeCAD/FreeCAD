@@ -614,6 +614,13 @@ class ReportTaskPanel:
         self.sql_query_edit = QtWidgets.QPlainTextEdit()
         self.sql_query_status_label = QtWidgets.QLabel(translate("Arch", "Ready"))
         self.sql_query_status_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
+        # Enable word wrapping to prevent long error messages from expanding the panel.
+        self.sql_query_status_label.setWordWrap(True)
+        # Set a dynamic minimum height of 2 lines to prevent layout shifting
+        # when the label's content changes from 1 to 2 lines.
+        font_metrics = QtGui.QFontMetrics(self.sql_query_status_label.font())
+        two_lines_height = 2.5 * font_metrics.height()
+        self.sql_query_status_label.setMinimumHeight(two_lines_height)
 
         # --- Attach Syntax Highlighter ---
         self.sql_highlighter = SqlSyntaxHighlighter(self.sql_query_edit.document())
@@ -621,6 +628,23 @@ class ReportTaskPanel:
         self.editor_layout.addWidget(self.sql_label)
         self.editor_layout.addWidget(self.sql_query_edit)
         self.editor_layout.addWidget(self.sql_query_status_label)
+
+        # --- On-Demand Preview ---
+        self.preview_layout = QtWidgets.QHBoxLayout()
+        self.btn_preview_results = QtWidgets.QPushButton(translate("Arch", "Preview Results"))
+        self.btn_preview_results.setIcon(FreeCADGui.getIcon(":/icons/Std_ToggleVisibility.svg"))
+        self.btn_preview_results.setToolTip(translate("Arch", "Execute the current query and show the results in a table below."))
+        self.preview_layout.addStretch()
+        self.preview_layout.addWidget(self.btn_preview_results)
+        self.preview_layout.addStretch()
+        self.editor_layout.addLayout(self.preview_layout)
+
+        self.table_preview_results = QtWidgets.QTableWidget()
+        self.table_preview_results.setVisible(False) # Start hidden
+        self.table_preview_results.setMinimumHeight(150)
+        self.table_preview_results.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers) # Make read-only
+        self.table_preview_results.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.editor_layout.addWidget(self.table_preview_results)
 
         # Display Options GroupBox
         self.display_options_group = QtWidgets.QGroupBox(translate("Arch", "Display Options"))
@@ -661,6 +685,7 @@ class ReportTaskPanel:
         self.chk_print_results_in_bold.stateChanged.connect(self._on_editor_checkbox_changed)
         self.query_preset_dropdown.activated.connect(self._on_load_query_preset)
         self.btn_save_query_preset.clicked.connect(self._on_save_query_preset)
+        self.btn_preview_results.clicked.connect(self._on_preview_results_clicked)
 
         # Validation Timer for live SQL preview
         # Timer doesn't need a specific QWidget parent here; use no parent.
@@ -1059,6 +1084,33 @@ class ReportTaskPanel:
             title += " *"
         self.overview_widget.setWindowTitle(title)
 
+    def _on_preview_results_clicked(self):
+        """Handles the 'Preview Results' button click."""
+        query = self.sql_query_edit.toPlainText().strip()
+
+        if not query:
+            # If query is empty, just clear and hide the table
+            self.table_preview_results.clear()
+            self.table_preview_results.setRowCount(0)
+            self.table_preview_results.setColumnCount(0)
+            self.table_preview_results.setVisible(False)
+            return
+
+        # Execute the query using the safe Arch.select API
+        headers, data_rows = Arch.select(query)
+
+        # Populate the table
+        self.table_preview_results.clear()
+        self.table_preview_results.setColumnCount(len(headers))
+        self.table_preview_results.setHorizontalHeaderLabels(headers)
+        self.table_preview_results.setRowCount(len(data_rows))
+
+        for row_idx, row_data in enumerate(data_rows):
+            for col_idx, cell_value in enumerate(row_data):
+                item = QtWidgets.QTableWidgetItem(str(cell_value))
+                self.table_preview_results.setItem(row_idx, col_idx, item)
+
+        self.table_preview_results.setVisible(True)
 
     # --- Dialog Acceptance / Rejection ---
     def accept(self):
