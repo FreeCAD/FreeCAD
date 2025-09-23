@@ -189,6 +189,31 @@ class ConcatFunction(FunctionBase):
         return "".join(parts)
 
 
+class ConvertFunction(FunctionBase):
+    """Implements the CONVERT(Quantity, 'unit') function."""
+    def __init__(self, function_name, arg_extractors):
+        super().__init__(function_name, arg_extractors)
+        if len(self.arg_extractors) != 2:
+            raise ValueError(f"Function {self.function_name} requires exactly two arguments: a property and a unit string.")
+
+    def get_value(self, obj):
+        # Evaluate the arguments to get the input value and target unit string.
+        input_value = self.arg_extractors[0].get_value(obj)
+        unit_string = self.arg_extractors[1].get_value(obj)
+
+        # The first argument must be a Quantity object to be convertible.
+        if not isinstance(input_value, FreeCAD.Units.Quantity):
+            raise SqlEngineError(f"CONVERT function requires a Quantity object as the first argument, but got {type(input_value).__name__}.")
+
+        try:
+            # Use the underlying API to perform the conversion.
+            result_quantity = input_value.getValueAs(str(unit_string))
+            return result_quantity.Value
+        except Exception as e:
+            # The API will raise an error for incompatible units (e.g., mm to kg).
+            raise SqlEngineError(f"Unit conversion failed: {e}")
+
+
 class FromFunctionBase:
     """Base class for all functions used in a FROM clause."""
     def __init__(self, substatement):
@@ -917,6 +942,7 @@ def _initialize_engine():
     select_function_registry.register('LOWER', LowerFunction)
     select_function_registry.register('UPPER', UpperFunction)
     select_function_registry.register('CONCAT', ConcatFunction)
+    select_function_registry.register('CONVERT', ConvertFunction)
     from_function_registry.register('CHILDREN', ChildrenFromFunction)
 
     # 3. Define and instantiate the transformer
