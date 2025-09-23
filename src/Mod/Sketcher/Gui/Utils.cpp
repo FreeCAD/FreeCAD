@@ -523,7 +523,7 @@ bool SketcherGui::isCommandNeedingConstraintActive(Gui::Document* doc)
                                         Sketcher::SketchObject::getClassTypeId());
     if (sel.size() == 1) {
         for (const std::string& name : sel[0].getSubNames()) {
-            if (name.rfind("Constraint", 0) == 0) {
+            if (name.starts_with("Constraint")) {
                 return true;
             }
         }
@@ -543,8 +543,8 @@ bool SketcherGui::isCommandNeedingGeometryActive(Gui::Document* doc)
     if (sel.size() == 1) {
         auto* Obj = static_cast<Sketcher::SketchObject*>(sel[0].getObject());
         for (const std::string& name : sel[0].getSubNames()) {
-            int geoId;
-            Sketcher::PointPos posId;
+            int geoId {GeoEnum::GeoUndef};
+            PointPos posId {PointPos::none};
             getIdsFromName(name, Obj, geoId, posId);
 
             if (geoId != GeoEnum::GeoUndef) {
@@ -568,8 +568,8 @@ bool SketcherGui::isCommandNeedingBSplineActive(Gui::Document* doc)
         auto* Obj = static_cast<Sketcher::SketchObject*>(sel[0].getObject());
         for (const std::string& name : sel[0].getSubNames()) {
 
-            int geoId;
-            Sketcher::PointPos posId;
+            int geoId {GeoEnum::GeoUndef};
+            PointPos posId {PointPos::none};
             getIdsFromName(name, Obj, geoId, posId);
 
             if (geoId != GeoEnum::GeoUndef) {

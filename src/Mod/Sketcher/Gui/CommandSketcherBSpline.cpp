@@ -352,14 +352,13 @@ bool isCommandNeedingBSplineKnotActive(Gui::Document* doc)
         auto* Obj = static_cast<Sketcher::SketchObject*>(sel[0].getObject());
         const std::string& name = names[0];
 
-        int geoId;
-        Sketcher::PointPos posId;
+        int geoId {GeoEnum::GeoUndef};
+        PointPos posId {PointPos::none};
         getIdsFromName(name, Obj, geoId, posId);
 
-        int splineGeoId;
-        int knotIndexOCC;
+        int splineGeoId {GeoEnum::GeoUndef};
+        int knotIndexOCC {-1};
 
-        bool applied = false;
         return isBsplineKnotOrEndPoint(Obj, geoId, posId)
             && findBSplineAndKnotIndex(Obj, geoId, posId, splineGeoId, knotIndexOCC);
     }
