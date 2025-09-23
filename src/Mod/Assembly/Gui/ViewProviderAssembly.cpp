@@ -794,6 +794,9 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
 {
     auto addPartsToMove = [&](const std::vector<Assembly::ObjRef>& refs) {
         for (auto& partRef : refs) {
+            if (!partRef.obj) {
+                continue;
+            }
             auto* pPlc =
                 dynamic_cast<App::PropertyPlacement*>(partRef.obj->getPropertyByName("Placement"));
             if (pPlc) {
