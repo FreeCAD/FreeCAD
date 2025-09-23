@@ -1013,55 +1013,61 @@ except Exception as e:
 
 # --- Internal API Functions ---
 
-def _get_query_object(query_string: str) -> "SelectStatement":
+def _run_query(query_string: str) -> Tuple[List[str], List[List[Any]]]:
     """
-    Parses and transforms a query string into a logical statement object.
+    The single, internal entry point for the SQL engine.
 
-    This is the core internal API for the SQL engine. It is an "unsafe"
-    function that is responsible for all parsing and validation.
+    This function encapsulates the entire query process: parsing, transformation,
+    validation, and execution. It is a "silent" function that raises a specific
+    exception on any failure, but performs no logging itself.
 
     Parameters
     ----------
     query_string : str
-        The raw SQL query string to be processed.
+        The raw SQL query string to be executed.
 
     Returns
     -------
-    SelectStatement
-        A fully-formed, validated logical statement object ready for execution.
+    Tuple[List[str], List[List[Any]]]
+        A tuple `(headers, data_rows)`.
 
     Raises
     ------
     SqlEngineError
         For general engine errors, such as initialization failures or
-        validation errors (e.g., mixing aggregates without GROUP BY).
+        validation/execution errors.
     BimSqlSyntaxError
         For any syntax, parsing, or transformation error, with a flag to
         indicate if the query was simply incomplete.
     """
-    # The parser and transformer are now initialized at the module level.
-    # We just check if the initialization was successful.
-    if not _parser or not _transformer:
-        raise SqlEngineError("BIM SQL engine is not initialized. Check console for errors on startup.")
+    def _parse_and_transform(query_string_internal: str) -> "SelectStatement":
+        """Parses and transforms the string into a logical statement object."""
+        if not _parser or not _transformer:
+            raise SqlEngineError("BIM SQL engine is not initialized. Check console for errors on startup.")
 
-    try:
-        tree = _parser.parse(query_string)
-        statement = _transformer.transform(tree)
-        statement.validate()
-        return statement
-    except ValueError as e:
-        raise SqlEngineError(str(e))
-    except VisitError as e:
-        message = f"Transformer Error: Failed to process rule '{e.rule}'. Original error: {e.orig_exc}"
-        raise BimSqlSyntaxError(message) from e
-    except UnexpectedToken as e:
-        is_incomplete = e.token.type == '$END'
-        expected_str = ', '.join([_FRIENDLY_TOKEN_NAMES.get(t, f"'{t}'") for t in e.expected])
-        message = (f"Syntax Error: Unexpected '{e.token.value}' at line {e.line}, column {e.column}. "
-                   f"Expected {expected_str}.")
-        raise BimSqlSyntaxError(message, is_incomplete=is_incomplete) from e
-    except UnexpectedEOF as e:
-        raise BimSqlSyntaxError("Query is incomplete.", is_incomplete=True) from e
+        try:
+            tree = _parser.parse(query_string_internal)
+            statement_obj = _transformer.transform(tree)
+            statement_obj.validate()
+            return statement_obj
+        except ValueError as e:
+            raise SqlEngineError(str(e))
+        except VisitError as e:
+            message = f"Transformer Error: Failed to process rule '{e.rule}'. Original error: {e.orig_exc}"
+            raise BimSqlSyntaxError(message) from e
+        except UnexpectedToken as e:
+            is_incomplete = e.token.type == '$END'
+            expected_str = ', '.join([_FRIENDLY_TOKEN_NAMES.get(t, f"'{t}'") for t in e.expected])
+            message = (f"Syntax Error: Unexpected '{e.token.value}' at line {e.line}, column {e.column}. "
+                       f"Expected {expected_str}.")
+            raise BimSqlSyntaxError(message, is_incomplete=is_incomplete) from e
+        except UnexpectedEOF as e:
+            raise BimSqlSyntaxError("Query is incomplete.", is_incomplete=True) from e
+
+    statement = _parse_and_transform(query_string)
+    headers, results_data = statement.execute()
+
+    return headers, results_data
 
 
 # --- Public API Functions ---
@@ -1091,8 +1097,7 @@ def count(query_string: str) -> Tuple[int, Optional[str]]:
         return -1, "INCOMPLETE"
 
     try:
-        statement = _get_query_object(query_string)
-        _, results_data = statement.execute()
+        _, results_data = _run_query(query_string)
         return len(results_data), None
     except BimSqlSyntaxError as e:
         if e.is_incomplete:
@@ -1127,8 +1132,7 @@ def select(query_string: str) -> Tuple[List[str], List[List[Any]]]:
     # This is the "unsafe" API. It performs no error handling and lets all
     # exceptions propagate up to the caller, who is responsible for logging
     # or handling them as needed.
-    statement = _get_query_object(query_string)
-    headers, results_data = statement.execute()
+    headers, results_data = _run_query(query_string)
     return headers, results_data
 
 
