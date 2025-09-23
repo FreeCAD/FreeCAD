@@ -22,9 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoMultipleCopy.h>
 #include <Inventor/nodes/SoPickStyle.h>
@@ -33,7 +31,7 @@
 #include <Inventor/nodes/SoTransform.h>
 #include <QAction>
 #include <QMenu>
-#endif
+
 
 #include "App/Application.h"
 #include "Gui/Command.h"

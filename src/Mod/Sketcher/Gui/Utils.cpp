@@ -20,13 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-
 #include <QCursor>
 #include <QLocale>
 #include <QRegularExpression>
-#endif
 
 #include <App/Application.h>
 #include <Base/Quantity.h>

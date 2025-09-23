@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <cmath>
 
 #include <Inventor/actions/SoSearchAction.h>
@@ -41,7 +38,6 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QTextStream>
-#endif
 
 #include <App/Document.h>
 #include <Base/UnitsApi.h>

@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <fstream>
 #include <ios>
-#endif
+
 
 #include <Base/Builder3D.h>
 #include <Base/Sequencer.h>

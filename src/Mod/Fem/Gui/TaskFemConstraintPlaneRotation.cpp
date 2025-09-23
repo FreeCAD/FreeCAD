@@ -23,14 +23,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QMessageBox>
 #include <TopoDS.hxx>
 #include <sstream>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Gui/Command.h>

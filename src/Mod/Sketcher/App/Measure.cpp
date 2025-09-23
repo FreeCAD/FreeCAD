@@ -22,7 +22,6 @@
 //! a class for establishing our connection with the unified measurement facility
 //! we are treating sketches like Part objects for now
 
-#include "PreCompiled.h"
 
 #include <App/Application.h>
 #include <App/MeasureManager.h>

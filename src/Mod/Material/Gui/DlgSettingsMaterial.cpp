@@ -19,7 +19,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DlgSettingsMaterial.h"
 #include "ui_DlgSettingsMaterial.h"

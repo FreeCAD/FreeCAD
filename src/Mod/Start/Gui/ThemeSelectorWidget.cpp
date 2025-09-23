@@ -21,21 +21,21 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QGuiApplication>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QString>
 #include <QStyleHints>
 #include <QToolButton>
-#endif
+
 
 #include "ThemeSelectorWidget.h"
 #include <gsl/pointers>
 #include <App/Application.h>
 #include <Gui/Command.h>
 #include <Gui/PreferencePackManager.h>
+
+#include <FCConfig.h>
 
 #ifdef FC_OS_MACOSX
 #include <CoreFoundation/CoreFoundation.h>

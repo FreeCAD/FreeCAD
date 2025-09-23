@@ -21,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRep_Builder.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
 # include <gp_Trsf.hxx>
@@ -32,7 +30,7 @@
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
-#endif
+
 
 #include <boost_regex.hpp>
 

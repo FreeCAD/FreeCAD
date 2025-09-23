@@ -23,14 +23,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <limits>
+#include <sstream>
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QMessageBox>
-#include <sstream>
-#include <limits>
-#endif
 
 #include "Mod/Fem/App/FemConstraintContact.h"
 #include <Gui/Command.h>

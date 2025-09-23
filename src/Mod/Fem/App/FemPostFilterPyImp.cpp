@@ -20,10 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Python.h>
-#endif
 
 #include <Base/FileInfo.h>
 #include <Base/UnitPy.h>

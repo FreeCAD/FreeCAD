@@ -21,15 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QApplication>
 # include <QGraphicsSceneHoverEvent>
 # include <QGraphicsSceneMouseEvent>
 # include <QPainter>
 # include <QStyleOptionGraphicsItem>
 # include <QTransform>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

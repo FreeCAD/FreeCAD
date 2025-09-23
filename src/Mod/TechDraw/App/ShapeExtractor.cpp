@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
 # include <BRep_Builder.hxx>
 # include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
@@ -32,7 +30,7 @@
 # include <TopoDS_Vertex.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 #include <BRepCheck_Analyzer.hxx>
-#endif
+
 
 #include <App/Document.h>
 #include <App/GroupExtension.h>

@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef APP_PRECOMPILED_H
-#define APP_PRECOMPILED_H
+#ifndef CLOUD_APP_PRECOMPILED_H
+#define CLOUD_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 

@@ -21,12 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QToolBar>
 #include <qobject.h>
-#endif
+
 
 #include "Mod/Spreadsheet/App/Sheet.h"
 #include "Mod/Spreadsheet/Gui/SpreadsheetView.h"

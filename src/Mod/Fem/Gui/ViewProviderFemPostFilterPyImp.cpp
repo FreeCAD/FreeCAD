@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
 // clang-format off
 #include <Gui/Control.h>
 #include <Gui/PythonWrapper.h>

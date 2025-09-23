@@ -24,6 +24,8 @@
 #ifndef MESHGUI_DLGREGULARSOLID_IMP_H
 #define MESHGUI_DLGREGULARSOLID_IMP_H
 
+#include <Mod/Mesh/MeshGlobal.h>
+
 #include <QDialog>
 #include <memory>
 

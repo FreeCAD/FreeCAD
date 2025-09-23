@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+#ifndef PART_DESIGN_APP_PRECOMPILED_H
+#define PART_DESIGN_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 

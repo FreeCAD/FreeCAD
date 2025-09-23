@@ -19,15 +19,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QCheckBox>
 #include <QPushButton>
 #include <vector>
-#endif
+
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>

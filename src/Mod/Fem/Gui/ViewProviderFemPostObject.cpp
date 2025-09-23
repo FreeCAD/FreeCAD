@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoDrawStyle.h>
@@ -50,7 +47,6 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QTextStream>
-#endif
 
 #include <App/Document.h>
 #include <Gui/Application.h>

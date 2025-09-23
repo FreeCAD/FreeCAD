@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DlgEvaluateSettings.h"
 #include "ui_DlgEvaluateSettings.h"

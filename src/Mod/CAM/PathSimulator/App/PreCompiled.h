@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_PRECOMPILED_H
-#define APP_PRECOMPILED_H
+#ifndef PATH_SIMULATOR_APP_PRECOMPILED_H
+#define PATH_SIMULATOR_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 

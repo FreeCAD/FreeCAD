@@ -20,14 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cstdlib>
 #include <memory>
 
 #include <QApplication>
 #include <QString>
-#endif
 
 #include <App/Datums.h>
 #include <Gui/Action.h>

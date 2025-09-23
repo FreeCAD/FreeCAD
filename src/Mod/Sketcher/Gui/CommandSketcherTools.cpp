@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <FCConfig.h>
+
 #include <memory>
 
 #include <QApplication>
@@ -29,7 +29,6 @@
 #include <QMessageBox>
 
 #include <Inventor/SbString.h>
-#endif
 
 #include <App/Application.h>
 #include <Base/Console.h>

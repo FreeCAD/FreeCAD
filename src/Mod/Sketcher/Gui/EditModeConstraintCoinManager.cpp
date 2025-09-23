@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
+#include <FCConfig.h>
+
 #include <QPainter>
 #include <QRegularExpression>
 #include <limits>
@@ -40,7 +40,6 @@
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTranslation.h>
-#endif  // #ifndef _PreComp_
 
 #include <Base/Converter.h>
 #include <Base/Exception.h>

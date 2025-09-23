@@ -21,13 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QMessageBox>
 #include <sstream>
-#endif
+
 
 #include <App/Document.h>
 #include <Gui/Command.h>

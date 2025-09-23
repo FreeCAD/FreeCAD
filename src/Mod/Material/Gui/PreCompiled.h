@@ -28,7 +28,6 @@
 #include <windows.h>
 #endif
 
-#ifdef _PreComp_
 
 // standard
 #include <cmath>
@@ -49,6 +48,5 @@
 # include <Gui/InventorAll.h>
 
 
-#endif  //_PreComp_
 
 #endif  // MATGUI_PRECOMPILED_H

@@ -20,14 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QApplication>
 #include <QEvent>
 #include <QKeyEvent>
 #include <QGraphicsProxyWidget>
-#endif
 
 #include "LineEdit.h"
 #include <Gui/MainWindow.h>

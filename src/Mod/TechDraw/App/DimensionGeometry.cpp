@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <gp_Ax3.hxx>
 # include <gp_Trsf.hxx>
 # include <gp_Vec.hxx>
-#endif
+
 
 #include <Base/Console.h>
 #include <Base/Converter.h>

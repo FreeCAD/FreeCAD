@@ -26,8 +26,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // standard
 #include <cinttypes>
 #include <cmath>
@@ -62,5 +60,4 @@
 #include <QTimer>
 #include <QUrl>
 
-#endif  // _PreComp_
 #endif  // START_PRECOMPILED_H

@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QGraphicsScene>
 # include <QGraphicsSceneMouseEvent>
 # include <QList>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/Console.h>
