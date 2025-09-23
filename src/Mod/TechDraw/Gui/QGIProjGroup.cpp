@@ -72,8 +72,14 @@ bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
             auto *mEvent = dynamic_cast<QGraphicsSceneMouseEvent*>(event);
 
             // Disable moves on the view to prevent double drag
-            bool initCanMove = qWatched->flags() & QGraphicsItem::ItemIsMovable;
-            qWatched->setFlag(QGraphicsItem::ItemIsMovable, false);
+            std::vector<QGraphicsItem*> modifiedChildren;
+            for (auto* child : childItems()) {
+                if (child->isSelected() && (child->flags() & QGraphicsItem::ItemIsMovable)) {
+                    child->setFlag(QGraphicsItem::ItemIsMovable, false);
+                    modifiedChildren.push_back(child);
+                }
+            }
+
             switch (event->type()) {
                 case QEvent::GraphicsSceneMousePress:
                     mousePressEvent(mEvent);
@@ -87,8 +93,9 @@ bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
                 default:
                     break;
             }
-            // Restore flag
-            qWatched->setFlag(QGraphicsItem::ItemIsMovable, initCanMove);
+            for (auto* child : modifiedChildren) {
+                child->setFlag(QGraphicsItem::ItemIsMovable, true);
+            }
             return true;
         }
     }
