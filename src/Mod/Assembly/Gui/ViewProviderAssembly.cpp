@@ -766,7 +766,18 @@ void ViewProviderAssembly::collectMovableObjects(App::DocumentObject* selRoot,
         for (auto* child : children) {
             // Recurse on children, appending the child's name to the subName prefix
             std::string newSubNamePrefix = subNamePrefix + child->getNameInDocument() + ".";
-            collectMovableObjects(selRoot, newSubNamePrefix, child, onlySolids);
+            if (child->isDerivedFrom<App::Link>() && child->isLinkGroup()) {
+                auto* link = static_cast<App::Link*>(child);
+                std::vector<App::DocumentObject*> elts = link->ElementList.getValues();
+                for (auto* elt : elts) {
+                    std::string eltSubNamePrefix =
+                        newSubNamePrefix + elt->getNameInDocument() + ".";
+                    collectMovableObjects(selRoot, eltSubNamePrefix, elt, onlySolids);
+                }
+            }
+            else {
+                collectMovableObjects(selRoot, newSubNamePrefix, child, onlySolids);
+            }
         }
         return;
     }
