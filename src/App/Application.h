@@ -253,6 +253,8 @@ public:
     boost::signals2::signal<void ()> signalRedo;
     /// signal before close/abort active transaction
     boost::signals2::signal<void (bool)> signalBeforeCloseTransaction;
+    /// signal before open active transaction
+    boost::signals2::signal<void (bool)> signalBeforeOpenTransaction;
     /// signal after close/abort active transaction
     boost::signals2::signal<void (bool)> signalCloseTransaction;
     /// signal on show hidden items
@@ -261,8 +263,6 @@ public:
     boost::signals2::signal<void ()> signalStartOpenDocument;
     /// signal on finished opening document(s)
     boost::signals2::signal<void ()> signalFinishOpenDocument;
-    /// signal when a transaction is being opened
-    boost::signals2::signal<void(const char*)> signalAboutToOpenTransaction;
     //@}
 
 
@@ -691,3 +691,4 @@ inline App::Application &GetApplication(){
 
 
 #endif // SRC_APP_APPLICATION_H_
+
