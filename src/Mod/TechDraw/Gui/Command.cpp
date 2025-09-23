@@ -430,7 +430,7 @@ void CmdTechDrawView::activated(int iMsg)
                 auto dontShowMsg = QObject::tr("Do not show this message again");
                 QCheckBox dontShowCheckBox(dontShowMsg, &msgBox);
                 msgBox.setCheckBox(&dontShowCheckBox);
-                QPushButton* okButton = msgBox.addButton(QMessageBox::Ok);FreeCAD/
+                QPushButton* okButton = msgBox.addButton(QMessageBox::Ok);
 
                 msgBox.exec();
 
