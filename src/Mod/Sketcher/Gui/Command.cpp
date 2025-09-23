@@ -153,14 +153,16 @@ Attacher::eMapMode SuggestAutoMapMode(Attacher::SuggestResult::eSuggestResult* p
 DEF_STD_CMD_A(CmdSketcherNewSketch)
 
 namespace {
-    QString getAutoGroupCommandStr()
+    QString getAutoGroupCommandStr(bool useActiveBody=true)
         // Helper function to get the python code to add the newly created object to the active Part/Body object if present
     {
-        App::GeoFeature* activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PDBODYKEY);
-        if (!activeObj) {
-            activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PARTKEY);
-        }
-
+        App::GeoFeature* activeObj =nullptr;
+	if(useActiveBody){
+       	   Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PDBODYKEY);
+           if (!activeObj) {
+               activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PARTKEY);
+           }
+	}
         if (activeObj) {
             QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
             return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n").arg(activeName);
