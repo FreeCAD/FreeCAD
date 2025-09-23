@@ -14,7 +14,7 @@ import FreeCAD
 import re
 
 # Import exception types from the generated parser for type-safe handling.
-from generated_sql_parser import UnexpectedEOF, UnexpectedToken, VisitError
+from generated_sql_parser import UnexpectedEOF, UnexpectedToken, VisitError, Token
 import generated_sql_parser
 
 
@@ -29,6 +29,20 @@ class BimSqlSyntaxError(SqlEngineError):
     def __init__(self, message, is_incomplete=False):
         super().__init__(message)
         self.is_incomplete = is_incomplete
+
+
+# --- Debug Helpers for the SQL Engine ---
+
+def debug_transformer_method(func):
+    """A decorator to add verbose logging to transformer methods for debugging."""
+    def wrapper(self, items):
+        print(f"\n>>> ENTERING: {func.__name__}")
+        print(f"    RECEIVED: {repr(items)}")
+        result = func(self, items)
+        print(f"    RETURNING: {repr(result)}")
+        print(f"<<< EXITING:  {func.__name__}")
+        return result
+    return wrapper
 
 
 # --- Module-level Constants ---
@@ -109,9 +123,10 @@ class AggregateFunction:
         self.argument = self.arg_extractors[0]
 
     def get_value(self, obj):
-        # This method is a placeholder. The actual calculation will happen
-        # during the grouped execution phase, not on a single object.
-        return None
+        # This method should never be called directly in a row-by-row context like a WHERE clause.
+        # Aggregates are handled in a separate path (_execute_grouped_query or
+        # the single-row path in _execute_non_grouped_query). Calling it here is a semantic error.
+        raise SqlEngineError(f"Aggregate function '{self.function_name.upper()}' cannot be used in this context.")
 
 
 class FunctionBase:
@@ -378,12 +393,14 @@ class SelectStatement:
 
         # Rule: If there is no GROUP BY, you cannot mix aggregate and non-aggregate columns.
         has_aggregate = any(isinstance(ex, AggregateFunction) for ex, _ in self.columns_info)
-        # A non-aggregate is a ReferenceExtractor. StaticExtractors are allowed.
-        has_non_aggregate_reference = any(isinstance(ex, ReferenceExtractor) for ex, _ in self.columns_info)
+        # A non-aggregate is a ReferenceExtractor or a scalar function (FunctionBase).
+        # StaticExtractors are always allowed.
+        has_non_aggregate = any(isinstance(ex, (ReferenceExtractor, FunctionBase))
+                                          for ex, _ in self.columns_info)
 
-        if has_aggregate and has_non_aggregate_reference:
+        if has_aggregate and has_non_aggregate:
             raise ValueError(
-                "Cannot mix aggregate functions and object properties (e.g., 'Label') "
+                "Cannot mix aggregate functions (like COUNT) and other columns or functions (like Label or LOWER) "
                 "without a GROUP BY clause."
             )
 
@@ -587,13 +604,18 @@ class BooleanExpression:
             # An unknown operator is an invalid state and should raise an error.
             raise SqlEngineError(f"Unknown boolean operator: '{self.op}'")
 
-
 class BooleanComparison:
     def __init__(self, left, op, right):
         self.left = left
         self.op = op
         self.right = right
+        # Validation: Aggregate functions are not allowed in WHERE clauses.
+        if isinstance(self.left, AggregateFunction) or isinstance(self.right, AggregateFunction):
+            raise SqlEngineError("Aggregate functions (like COUNT, SUM) cannot be used in a WHERE clause.")
+
     def evaluate(self, obj):
+        # The 'get_value' method is polymorphic and works for ReferenceExtractor,
+        # StaticExtractor, and all FunctionBase derivatives.
         left_val = self.left.get_value(obj)
         right_val = self.right.get_value(obj)
         if self.op == 'is': return left_val is right_val
@@ -755,10 +777,6 @@ class SqlTransformerMixin:
         final_name = alias if alias is not None else default_name
         return (extractor, final_name)
 
-    def asterisk(self, _):
-        # Return the string '*' to distinguish it from a ReferenceExtractor
-        return "*"
-
     def boolean_expression_recursive(self, items):
         return BooleanExpression(items[0], items[1].value.lower(), items[2])
 
@@ -786,10 +804,25 @@ class SqlTransformerMixin:
     def gte_op(self, _): return ">="
     def lte_op(self, _): return "<="
 
-    def operand(self, i): return i[0]
+    def operand(self, items):
+        # This method is now "dumb" and simply passes up the already-transformed object.
+        # The transformation of terminals happens in their own dedicated methods below.
+        return items[0]
+
     def reference(self, items): return ReferenceExtractor(str(items[0]))
     def literal(self, items): return StaticExtractor(items[0].value[1:-1])
-    def null(self, _): return StaticExtractor(None)
+    def NUMBER(self, token):
+        # This method is automatically called by Lark for any NUMBER terminal.
+        return StaticExtractor(float(token.value))
+
+    def NULL(self, token):
+        # This method is automatically called by Lark for any NULL terminal.
+         return StaticExtractor(None)
+
+    def ASTERISK(self, token):
+        # This method is automatically called by Lark for any ASTERISK terminal.
+        # Return the string '*' to be used as a special identifier.
+        return "*"
 
     def function_args(self, items):
         # This method just collects all arguments into a single list.
@@ -861,7 +894,7 @@ except Exception as e:
     FreeCAD.Console.PrintError(f"BIM SQL engine failed to initialize: {e}\n")
 
 
-# --- Public API Functions ---
+# --- Internal API Functions ---
 
 def _get_query_object(query_string):
     """
@@ -893,6 +926,8 @@ def _get_query_object(query_string):
     except UnexpectedEOF as e:
         raise BimSqlSyntaxError("Query is incomplete.", is_incomplete=True) from e
 
+
+# --- Public API Functions ---
 
 def run_query_for_count(query_string):
     """Public interface for the Task Panel to get a result count."""
