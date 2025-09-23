@@ -13,6 +13,15 @@
 import FreeCAD
 import re
 
+if FreeCAD.GuiUp:
+#    from PySide.QtCore import QT_TRANSLATE_NOOP
+    from draftutils.translate import translate
+else:
+    def translate(ctxt, txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt, txt):
+        return txt
+
 # Import exception types from the generated parser for type-safe handling.
 from generated_sql_parser import UnexpectedEOF, UnexpectedToken, VisitError, Token
 import generated_sql_parser
@@ -22,7 +31,7 @@ __all__ = [
     'select',
     'count',
     'getSqlKeywords',
-    'getSqlCheatsheet',
+    'getSqlApiDocumentation',
     'BimSqlSyntaxError',
     'SqlEngineError',
 ]
@@ -713,10 +722,13 @@ class ArithmeticOperation:
         """Converts Quantities to floats for calculation."""
         if isinstance(value, FreeCAD.Units.Quantity):
             return value.Value
-        if isinstance(value, (int, float)):
+        elif isinstance(value, (int, float)):
             return value
-        # If a non-numeric type is used, the operation will fail with a TypeError.
-        return value
+        else:
+            # If a non-numeric type is used, we must raise a clear error.
+            # This prevents silent failures and confusing TypeErrors later on.
+            type_name = type(value).__name__
+            raise SqlEngineError(f"Cannot perform arithmetic on a non-numeric value of type '{type_name}'.")
 
     def get_value(self, obj):
         """Recursively evaluates the calculation tree."""
@@ -949,19 +961,28 @@ def _initialize_engine():
 
     # 2. Register all built-in function classes
     # SELECT Functions
-    select_function_registry.register('COUNT', AggregateFunction, category='Aggregate', description='Counts rows that match criteria.')
-    select_function_registry.register('SUM', AggregateFunction, category='Aggregate', description='Calculates the sum of a numerical property.')
-    select_function_registry.register('MIN', AggregateFunction, category='Aggregate', description='Finds the minimum value of a property.')
-    select_function_registry.register('MAX', AggregateFunction, category='Aggregate', description='Finds the maximum value of a property.')
-    select_function_registry.register('LOWER', LowerFunction, category='String', description='Converts text to lowercase.')
-    select_function_registry.register('UPPER', UpperFunction, category='String', description='Converts text to uppercase.')
-    select_function_registry.register('CONCAT', ConcatFunction, category='String', description='Joins multiple strings and properties together.')
-    select_function_registry.register('TYPE', TypeFunction, category='Utility', description="Returns the object's BIM type (e.g., 'Wall').")
-    select_function_registry.register('CONVERT', ConvertFunction, category='Utility', description="Converts a Quantity to a different unit (e.g., CONVERT(Length, 'm')).")
+    select_function_registry.register('COUNT', AggregateFunction, category=translate("Arch", "Aggregate"),
+                                      description=translate("Arch", "Counts rows that match criteria."))
+    select_function_registry.register('SUM', AggregateFunction, category=translate("Arch", "Aggregate"),
+                                      description=translate("Arch", "Calculates the sum of a numerical property."))
+    select_function_registry.register('MIN', AggregateFunction, category=translate("Arch", "Aggregate"),
+                                      description=translate("Arch", "Finds the minimum value of a property."))
+    select_function_registry.register('MAX', AggregateFunction, category=translate("Arch", "Aggregate"),
+                                      description=translate("Arch", "Finds the maximum value of a property."))
+    select_function_registry.register('LOWER', LowerFunction, category=translate("Arch", "String"),
+                                      description=translate("Arch", "Converts text to lowercase."))
+    select_function_registry.register('UPPER', UpperFunction, category=translate("Arch", "String"),
+                                      description=translate("Arch", "Converts text to uppercase."))
+    select_function_registry.register('CONCAT', ConcatFunction, category=translate("Arch", "String"),
+                                      description=translate("Arch", "Joins multiple strings and properties together."))
+    select_function_registry.register('TYPE', TypeFunction, category=translate("Arch", "Utility"),
+                                      description=translate("Arch", "Returns the object's BIM type (e.g., 'Wall')."))
+    select_function_registry.register('CONVERT', ConvertFunction, category=translate("Arch", "Utility"),
+                                      description=translate("Arch", "Converts a Quantity to a different unit (e.g., CONVERT(Length, 'm'))."))
 
-    # FROM Functions
-    from_function_registry.register('CHILDREN', ChildrenFromFunction, category='Hierarchical', description='Selects child objects of a given parent set.')
-
+     # FROM Functions
+    from_function_registry.register('CHILDREN', ChildrenFromFunction, category=translate("Arch", "Hierarchical"),
+                                      description=translate("Arch", "Selects child objects of a given parent set."))
     # 3. Define and instantiate the transformer
     class FinalTransformer(generated_sql_parser.Transformer, SqlTransformerMixin):
         def __init__(self, select_functions, from_functions):
@@ -1154,57 +1175,40 @@ def getSqlKeywords() -> List[str]:
     return sorted(list(set(keywords))) # Return a sorted, unique list.
 
 
-def getSqlCheatsheet() -> str:
+def getSqlApiDocumentation() -> dict:
     """
-    Generates a Markdown-formatted cheatsheet of the supported SQL dialect.
+    Generates a structured dictionary describing the supported SQL dialect.
 
     This function is fully dynamic and introspects the live engine
-    configuration to build its content.
+    configuration. All user-facing strings are pre-translated.
 
     Returns
     -------
-    str
-        A Markdown-formatted string containing a summary of clauses, functions,
-        and an example query.
+    dict
+        A dictionary with keys 'clauses' and 'functions'. 'functions' is a
+        dict of lists, categorized by function type.
     """
-    # Helper to query the registries and format the function lists.
-    def get_functions_by_category(registry, category_name):
-        func_list = []
-        for name, data in registry._functions.items():
-            if data['category'] == category_name:
-                func_list.append(name)
-        return sorted(func_list)
+    api_data = {
+        'clauses': [],
+        'functions': {}
+    }
 
-    # Dynamically build function lists by querying the registry metadata.
-    aggregates = get_functions_by_category(_transformer.select_function_registry, 'Aggregate')
-    string_funcs = get_functions_by_category(_transformer.select_function_registry, 'String')
-    utility_funcs = get_functions_by_category(_transformer.select_function_registry, 'Utility')
-    hierarchical_funcs = get_functions_by_category(_transformer.from_function_registry, 'Hierarchical')
+    # Combine all function registries into one for easier iteration.
+    all_registries = {
+        **_transformer.select_function_registry._functions,
+        **_transformer.from_function_registry._functions
+    }
 
-    # Dynamically build the clauses list by subtracting known function names.
-    all_function_names = set(_transformer.select_function_registry._functions.keys()) | set(_transformer.from_function_registry._functions.keys())
-    clauses = [k for k in getSqlKeywords() if k not in all_function_names]
+    # Group functions by their registered category.
+    for name, data in all_registries.items():
+        category = data['category']
+        if category not in api_data['functions']:
+            api_data['functions'][category] = []
+        api_data['functions'][category].append({'name': name, 'description': data['description']})
 
-    # Assemble the Markdown string.
-    cheatsheet = "# BIM SQL Cheatsheet\n\n"
-    cheatsheet += f"## Clauses\n`{', '.join(sorted(clauses))}`\n\n"
-    cheatsheet += "## Key Functions\n"
-    if aggregates:
-        cheatsheet += f"- **Aggregate:** `{', '.join(aggregates)}`\n"
-    if string_funcs:
-        cheatsheet += f"- **String:** `{', '.join(string_funcs)}`\n"
-    if utility_funcs:
-        cheatsheet += f"- **Utility:** `{', '.join(utility_funcs)}`\n"
-    if hierarchical_funcs:
-        cheatsheet += f"- **Hierarchical:** `{', '.join(hierarchical_funcs)}`\n"
+    # Dynamically build the clauses list by subtracting all known function names
+    # from the full list of keywords.
+    all_function_names = set(all_registries.keys())
+    api_data['clauses'] = [k for k in getSqlKeywords() if k not in all_function_names]
 
-    # Add the static example query to the end of the cheatsheet.
-    cheatsheet += "\n## Example Query\n"
-    cheatsheet += "```sql\n"
-    cheatsheet += "SELECT\n    Label AS 'Object Name',\n    CONVERT(Area, 'm^2')\n"
-    cheatsheet += "FROM CHILDREN(SELECT * FROM document WHERE IfcType = 'Building Storey')\n"
-    cheatsheet += "WHERE TYPE(*) = 'Space'\n"
-    cheatsheet += "ORDER BY Area DESC;\n"
-    cheatsheet += "```\n"
-
-    return cheatsheet
+    return api_data
