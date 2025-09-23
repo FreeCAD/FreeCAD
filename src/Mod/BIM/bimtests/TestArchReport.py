@@ -9,9 +9,9 @@ from unittest.mock import patch
 import FreeCAD
 import Arch
 import ArchReport
-from bimtests import TestArchBase
 import ArchSql
-from ArchSql import BimSqlSyntaxError, SqlEngineError
+from bimtests import TestArchBase
+
 
 class TestArchReport(TestArchBase.TestArchBase):
 
@@ -93,7 +93,7 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         self.doc.recompute()
 
-        headers, results_data_from_sql = ArchSql.run_query_for_objects(query_string)
+        headers, results_data_from_sql = Arch.select(query_string)
 
         self.assertIsInstance(headers, list, f"Headers should be a list for: {query_string}")
         self.assertIsInstance(results_data_from_sql, list, f"Results data should be a list for: {query_string}")
@@ -260,12 +260,12 @@ class TestArchReport(TestArchBase.TestArchBase):
     @patch('FreeCAD.Console.PrintError')
     def test_query_invalid_syntax(self, mock_print_error):
         # The low-level function now raises an exception on failure.
-        with self.assertRaises(BimSqlSyntaxError) as cm:
+        with self.assertRaises(Arch.BimSqlSyntaxError) as cm:
             ArchSql._get_query_object('SELECT FROM document WHERE')
         self.assertFalse(cm.exception.is_incomplete, "A syntax error should not be marked as incomplete.")
 
         # The high-level function for the UI catches it and returns a simple string.
-        count, error_str = ArchSql.run_query_for_count('SELECT FROM document WHERE')
+        count, error_str = Arch.count('SELECT FROM document WHERE')
         self.assertEqual(count, -1)
         self.assertIsInstance(error_str, str)
         self.assertIn('Syntax Error', error_str)
@@ -283,7 +283,7 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         for query in incomplete_queries:
             with self.subTest(query=query):
-                count, error = ArchSql.run_query_for_count(query)
+                count, error = Arch.count(query)
                 self.assertEqual(error, "INCOMPLETE", f"Query '{query}' should be marked as INCOMPLETE.")
 
     def test_invalid_partial_tokens_are_errors(self):
@@ -294,7 +294,7 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         for name, query in invalid_queries.items():
             with self.subTest(name=name, query=query):
-                count, error = ArchSql.run_query_for_count(query)
+                count, error = Arch.count(query)
                 self.assertNotEqual(error, "INCOMPLETE", f"Query '{query}' should be a syntax error, not incomplete.")
                 self.assertIsNotNone(error, f"Query '{query}' should have returned an error.")
 
@@ -426,7 +426,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         query = "SELECT SUM(Height) FROM document WHERE IfcType = 'Wall'"
 
         # We call the engine directly, bypassing the _run_query_for_objects helper.
-        headers, results_data = ArchSql.run_query_for_objects(query)
+        headers, results_data = Arch.select(query)
 
         # --- Assertions ---
         # 1. An aggregate query without a GROUP BY should always return exactly one row.
@@ -448,7 +448,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         query = "SELECT 'Total Height', SUM(Height) FROM document WHERE IfcType = 'Wall'"
 
         # We call the engine directly to isolate its behavior.
-        headers, results_data = ArchSql.run_query_for_objects(query)
+        headers, results_data = Arch.select(query)
 
         # --- Assertions ---
         # 1. The query should still return exactly one row.
@@ -490,7 +490,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         query = "SELECT SUM(Area) FROM document WHERE IfcType = 'Space'"
 
         # Call the engine directly to isolate its behavior
-        headers, results_data = ArchSql.run_query_for_objects(query)
+        headers, results_data = Arch.select(query)
 
         # --- Assertions ---
         # 1. An aggregate query should return exactly one row.
@@ -519,7 +519,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # Interior Wall: Length = 500mm
         query = "SELECT MIN(Length), MAX(Length) FROM document WHERE IfcType = 'Wall'"
 
-        headers, results_data = ArchSql.run_query_for_objects(query)
+        headers, results_data = Arch.select(query)
 
         self.assertEqual(len(results_data), 1, "Aggregate query should return a single row.")
         self.assertIsInstance(results_data[0][0], float, "MIN() should return a float.")
@@ -553,7 +553,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # --- Test COUNT(TestSpecificTag) ---
         # This query should now only find the two objects we explicitly modified.
         query_count_prop = f"SELECT COUNT({unique_prop_name}) FROM document"
-        headers_prop, results_prop = ArchSql.run_query_for_objects(query_count_prop)
+        headers_prop, results_prop = Arch.select(query_count_prop)
         self.assertEqual(int(results_prop[0][0]), 2,
                          f"COUNT({unique_prop_name}) should count exactly the 2 objects where the property was added.")
 
@@ -574,7 +574,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         where_conditions = " OR ".join([f"Label = '{label}'" for label in labels_to_count])
         query_count_star = f"SELECT COUNT(*) FROM document WHERE {where_conditions}"
 
-        headers_star, results_star = ArchSql.run_query_for_objects(query_count_star)
+        headers_star, results_star = Arch.select(query_count_star)
         self.assertEqual(int(results_star[0][0]), 6, "COUNT(*) should count all 6 test objects.")
 
     def test_bundled_report_templates_are_valid(self):
@@ -604,7 +604,7 @@ class TestArchReport(TestArchBase.TestArchBase):
                     # We only care that the query executes without raising an exception.
                     # This verifies syntax and compatibility with the sample model.
                     try:
-                        headers, results_data = ArchSql.run_query_for_objects(query)
+                        headers, results_data = Arch.select(query)
                         # A successful query returns a list of headers (even if empty)
                         self.assertIsInstance(headers, list)
                     except Exception as e:
@@ -635,7 +635,7 @@ class TestArchReport(TestArchBase.TestArchBase):
             with self.subTest(preset=preset_name):
                 # We only care that the query executes without raising an exception.
                 try:
-                    headers, results_data = ArchSql.run_query_for_objects(query)
+                    headers, results_data = Arch.select(query)
                     self.assertIsInstance(headers, list)
                 except Exception as e:
                     self.fail(f"Query '{query}' from preset '{preset_name}' failed with an exception: {e}")
@@ -648,7 +648,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         query = "SELECT * FROM document WHERE Label IN ('Exterior Wall', 'Interior partition wall')"
 
         # This will fail at the parsing stage until the 'IN' keyword is implemented.
-        headers, results_data = ArchSql.run_query_for_objects(query)
+        headers, results_data = Arch.select(query)
 
         # --- Assertions ---
         # 1. The query should return exactly two rows.
@@ -668,7 +668,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # We want the type of the Part::Box and one of the Arch Walls.
         query = "SELECT TYPE(*) FROM document WHERE Name IN ('Generic_Box', 'Wall')"
 
-        headers, results_data = ArchSql.run_query_for_objects(query)
+        headers, results_data = Arch.select(query)
 
         # --- Assertions ---
         # The query should return two rows, one for each object.
@@ -722,7 +722,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # --- Sub-Test 1: Direct containment and group traversal ---
         with self.subTest(description="Direct containment with group traversal"):
             query = f"SELECT Label FROM CHILDREN(SELECT * FROM document WHERE Label = '{floor.Label}')"
-            headers, results = ArchSql.run_query_for_objects(query)
+            headers, results = Arch.select(query)
 
             returned_labels = sorted([row[0] for row in results])
             # The result should contain the spaces, but NOT the intermediate group itself.
@@ -733,7 +733,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # --- Sub-Test 2: Hosting Relationship (Reverse Lookup) ---
         with self.subTest(description="Hosting relationship"):
             query = f"SELECT Label FROM CHILDREN(SELECT * FROM document WHERE Label = '{host_wall.Label}')"
-            headers, results = ArchSql.run_query_for_objects(query)
+            headers, results = Arch.select(query)
 
             self.assertEqual(len(results), 1)
             self.assertEqual(results[0][0], window.Label)
@@ -741,7 +741,7 @@ class TestArchReport(TestArchBase.TestArchBase):
     def test_order_by_label_desc(self):
         """Tests the ORDER BY clause to sort results alphabetically."""
         query = "SELECT Label FROM document WHERE IfcType = 'Wall' ORDER BY Label DESC"
-        headers, results_data = ArchSql.run_query_for_objects(query)
+        headers, results_data = Arch.select(query)
 
         # The results should be a list of lists, e.g., [['Wall 2'], ['Wall 1']]
         self.assertEqual(len(results_data), 2)
@@ -758,7 +758,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         """Tests renaming columns using the AS keyword."""
         # This query renames 'Label' to 'Wall Name' and sorts the results for a predictable check.
         query = "SELECT Label AS 'Wall Name' FROM document WHERE IfcType = 'Wall' ORDER BY Label ASC"
-        headers, results_data = ArchSql.run_query_for_objects(query)
+        headers, results_data = Arch.select(query)
 
         # 1. Assert that the header is the alias, not the original property name.
         self.assertEqual(headers, ['Wall Name'])
@@ -779,19 +779,19 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         with self.subTest(description="LOWER function"):
             query = f"SELECT LOWER(Label) FROM document WHERE Name = '{target_obj_name}'"
-            headers, data = ArchSql.run_query_for_objects(query)
+            headers, data = Arch.select(query)
             self.assertEqual(len(data), 1)
             self.assertEqual(data[0][0], target_obj_label.lower())
 
         with self.subTest(description="UPPER function"):
             query = f"SELECT UPPER(Label) FROM document WHERE Name = '{target_obj_name}'"
-            headers, data = ArchSql.run_query_for_objects(query)
+            headers, data = Arch.select(query)
             self.assertEqual(len(data), 1)
             self.assertEqual(data[0][0], target_obj_label.upper())
 
         with self.subTest(description="CONCAT function with properties and literals"):
             query = f"SELECT CONCAT(Label, ': ', IfcType) FROM document WHERE Name = '{target_obj_name}'"
-            headers, data = ArchSql.run_query_for_objects(query)
+            headers, data = Arch.select(query)
             self.assertEqual(len(data), 1)
             expected_string = f"{target_obj_label}: {target_obj_ifctype}"
             self.assertEqual(data[0][0], expected_string)
@@ -818,7 +818,7 @@ class TestArchReport(TestArchBase.TestArchBase):
 
     def test_get_sql_keywords(self):
         """Tests the public API for retrieving all SQL keywords."""
-        keywords = ArchSql.get_sql_keywords()
+        keywords = Arch.getSqlKeywords()
         self.assertIsInstance(keywords, list, "get_sql_keywords should return a list.")
         self.assertGreater(len(keywords), 10, "Should be a significant number of keywords.")
 
@@ -840,7 +840,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         """Tests using a scalar function (LOWER) in the WHERE clause."""
         # self.column.Label is "Main Column". This query should find it case-insensitively.
         query = f"SELECT Label FROM document WHERE LOWER(Label) = 'main column'"
-        _, results_data = ArchSql.run_query_for_objects(query)
+        _, results_data = Arch.select(query)
 
         self.assertEqual(len(results_data), 1, "Should find exactly one object.")
         self.assertEqual(results_data[0][0], self.column.Label, "Did not find the correct object.")
@@ -848,15 +848,19 @@ class TestArchReport(TestArchBase.TestArchBase):
         # Also test that an aggregate function raises a proper exception.
         error_query = "SELECT Label FROM document WHERE COUNT(*) > 1"
         with self.assertRaises(ArchSql.SqlEngineError) as cm:
+            # Test the public API directly, as it's expected to raise the exception.
             ArchSql._get_query_object(error_query)
         self.assertIn("Aggregate functions (like COUNT, SUM) cannot be used in a WHERE clause", str(cm.exception))
 
-        # Test the public, "safe" API: run_query_for_objects should catch the exception,
-        # print an error (which we can't easily check here), and return a safe, empty result.
-        # This verifies that the public API is stable and will not crash its consumers.
-        headers, results_data = ArchSql.run_query_for_objects(error_query)
-        self.assertEqual(headers, [], "Headers should be an empty list on error.")
-        self.assertEqual(results_data, [], "Results data should be an empty list on error.")
+        # 2. Test the "unsafe" public API: select() should re-raise the exception.
+        with self.assertRaises(Arch.SqlEngineError) as cm:
+             Arch.select(error_query)
+        self.assertIn("Aggregate functions (like COUNT, SUM) cannot be used in a WHERE clause", str(cm.exception))
+
+        # 3. Test the "safe" public API: count() should catch the exception and return an error tuple.
+        count, error_str = Arch.count(error_query)
+        self.assertEqual(count, -1)
+        self.assertIn("Aggregate functions", error_str)
 
     def test_null_as_operand(self):
         """Tests using NULL as a direct operand in a comparison like '= NULL'."""
@@ -865,7 +869,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # that the query parses and executes without crashing, proving that our
         # NULL terminal transformer is working correctly.
         query = "SELECT * FROM document WHERE IfcRole = NULL"
-        _, results_data = ArchSql.run_query_for_objects(query)
+        _, results_data = Arch.select(query)
         self.assertEqual(len(results_data), 0, "Comparing a column to NULL with '=' should return no rows.")
 
     def test_arithmetic_in_select_clause(self):
@@ -876,21 +880,21 @@ class TestArchReport(TestArchBase.TestArchBase):
         with self.subTest(description="Simple multiplication with Quantity"):
             # Test: 1000.0 * 2.0 = 2000.0
             query = f"SELECT Length * 2 FROM document WHERE Name = '{target_name}'"
-            headers, data = ArchSql.run_query_for_objects(query)
+            _, data = Arch.select(query)
             self.assertEqual(len(data), 1)
             self.assertAlmostEqual(data[0][0], 2000.0)
 
         with self.subTest(description="Operator precedence"):
             # Test: 100 + 1000.0 * 2 = 2100.0 (multiplication first)
             query = f"SELECT 100 + Length * 2 FROM document WHERE Name = '{target_name}'"
-            headers, data = ArchSql.run_query_for_objects(query)
+            _, data = Arch.select(query)
             self.assertEqual(len(data), 1)
             self.assertAlmostEqual(data[0][0], 2100.0)
 
         with self.subTest(description="Parentheses overriding precedence"):
             # Test: (100 + 1000.0) * 2 = 2200.0 (addition first)
             query = f"SELECT (100 + Length) * 2 FROM document WHERE Name = '{target_name}'"
-            headers, data = ArchSql.run_query_for_objects(query)
+            _, data = Arch.select(query)
             self.assertEqual(len(data), 1)
             self.assertAlmostEqual(data[0][0], 2200.0)
 
@@ -898,7 +902,7 @@ class TestArchReport(TestArchBase.TestArchBase):
             # self.wall_ext.Shape.Volume should be a float (200 * 3000 * 1000 = 600,000,000)
             # Test: 600,000,000 / 1,000,000 = 600.0
             query = f"SELECT Shape.Volume / 1000000 FROM document WHERE Name = '{target_name}'"
-            headers, data = ArchSql.run_query_for_objects(query)
+            _, data = Arch.select(query)
             self.assertEqual(len(data), 1)
             self.assertAlmostEqual(data[0][0], 600.0)
 
@@ -907,24 +911,35 @@ class TestArchReport(TestArchBase.TestArchBase):
         # Use wall_ext, which has Length = 1000.0 (mm Quantity)
         target_name = self.wall_ext.Name
 
-        # Test converting mm to meters. Expected result is 1.0.
+        # --- Test 1: Successful Conversion ---
+        # This part of the test verifies that a valid conversion works correctly.
         query = f"SELECT CONVERT(Length, 'm') FROM document WHERE Name = '{target_name}'"
-        _, data = ArchSql.run_query_for_objects(query)
+        headers, data = Arch.select(query)
 
         self.assertEqual(len(data), 1, "The query should return exactly one row.")
+        self.assertEqual(len(data[0]), 1, "The row should contain exactly one column.")
         self.assertIsInstance(data[0][0], float, "The result of CONVERT should be a float.")
         self.assertAlmostEqual(data[0][0], 1.0, msg="1000mm should be converted to 1.0m.")
 
-        # Test an invalid conversion (e.g., a length to a mass unit)
+        # --- Test 2: Invalid Conversion Error Handling ---
+        # This part of the test verifies that an invalid conversion (e.g., mm to kg),
+        # which is an EXECUTION-TIME error, is handled correctly by the public API.
         error_query = f"SELECT CONVERT(Length, 'kg') FROM document WHERE Name = '{target_name}'"
-        # We expect the underlying FreeCAD API to raise an exception, which our engine
-        # should catch and report. The query should return an empty result.
-        _, data = ArchSql.run_query_for_objects(error_query)
-        self.assertEqual(len(data), 0, "An invalid unit conversion should fail gracefully and return no data.")
+
+        # 2a. Test the "unsafe" public API: select() should raise the execution-time error.
+        with self.assertRaises(Arch.SqlEngineError) as cm:
+            Arch.select(error_query)
+        self.assertIn("Unit conversion failed", str(cm.exception))
+
+        # 2b. Test the "safe" public API: count() should catch the execution-time error and return an error tuple.
+        count, error_str = Arch.count(error_query)
+        self.assertEqual(count, -1)
+        self.assertIsInstance(error_str, str)
+        self.assertIn("Unit conversion failed", error_str)
 
     def test_get_syntax_cheatsheet(self):
         """Tests the dynamic generation of the SQL syntax cheatsheet."""
-        cheatsheet = ArchSql.get_syntax_cheatsheet()
+        cheatsheet = Arch.getSqlCheatsheet()
 
         self.assertIsInstance(cheatsheet, str)
         self.assertIn("# BIM SQL Cheatsheet", cheatsheet)

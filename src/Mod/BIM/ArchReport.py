@@ -17,7 +17,7 @@ else:
     def QT_TRANSLATE_NOOP(ctxt, txt):
         return txt
 
-import ArchSql
+import Arch
 
 if FreeCAD.GuiUp:
     ICON_STATUS_OK = FreeCADGui.getIcon(":/icons/edit_OK.svg")
@@ -150,7 +150,7 @@ class ReportStatement:
             self._validation_count = 0
             return
 
-        count, error = ArchSql.run_query_for_count(self.query_string)
+        count, error = Arch.count(self.query_string)
 
         if error == "INCOMPLETE":
             self._validation_status = "INCOMPLETE"
@@ -421,15 +421,24 @@ class _ArchReport:
             if not statement.query_string or not statement.query_string.strip():
                 continue
 
-            headers, results_data = ArchSql.run_query_for_objects(statement.query_string)
-
-            if results_data is None:
-                FreeCAD.Console.PrintError("Report '%s': Error executing query '%s'.\n" % (getattr(obj, 'Label', ''), statement.query_string))
-                # Add an error message to the spreadsheet
-                sp.set(f"A{self.spreadsheet_current_row}", f"❌ Error executing query: {statement.query_string}")
-                sp.setStyle(f"A{self.spreadsheet_current_row}", 'color:red', 'add')
-                self.spreadsheet_current_row += 1
-                continue # Skip to next statement
+            try:
+                # Arch.select will log detailed errors and then re-raise an exception.
+                # We catch it here to write a user-friendly message to the spreadsheet.
+                headers, results_data = Arch.select(statement.query_string)
+            except Arch.SqlEngineError as e:
+                # On failure, record the error in the spreadsheet.
+                self.spreadsheet_current_row = self.setSpreadsheetData(
+                    obj,
+                    ["Error"],
+                    [[str(e)]],
+                    self.spreadsheet_current_row,
+                    use_description_as_header=True, # Give context to the error
+                    description_text=statement.description,
+                    include_column_names=False, # Don't print "Error" twice
+                    print_results_in_bold=True
+                )
+                self.spreadsheet_current_row += 1 # Add a space after the error row
+                continue # Move to the next statement
 
             self.spreadsheet_current_row = self.setSpreadsheetData(
                 obj,
@@ -1136,7 +1145,7 @@ if FreeCAD.GuiUp:
 
             # Keywords (case-insensitive regex)
             # Get the list of keywords from the SQL engine.
-            for word in ArchSql.get_sql_keywords():
+            for word in Arch.getSqlKeywords():
                 pattern = QtCore.QRegExp(r"\b" + word + r"\b", QtCore.Qt.CaseInsensitive)
                 rule = {"pattern": pattern, "format": keyword_format}
                 self.highlighting_rules.append(rule)

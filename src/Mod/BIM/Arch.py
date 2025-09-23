@@ -67,6 +67,7 @@ translate = FreeCAD.Qt.translate
 # simply importing the Arch module, as if they were part of this module.
 from ArchCommands import *
 from ArchWindowPresets import *
+from ArchSql import *
 
 # TODO: migrate this one
 # Currently makeStructure, makeStructuralSystem need migration
@@ -2427,7 +2428,7 @@ def makeReport(name=None):
     # association is stored (we use a non-dependent ``ReportName`` on the sheet and persist the
     # report's ``Target`` link when the report creates the sheet).
     if hasattr(report_obj, 'Proxy') and hasattr(report_obj.Proxy, 'getSpreadSheet'):
-        sheet = report_obj.Proxy.getSpreadSheet(report_obj, force=True)
+        _ = report_obj.Proxy.getSpreadSheet(report_obj, force=True)
 
     if FreeCAD.GuiUp:
         # Automatically open the task panel for the new report

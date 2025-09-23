@@ -17,6 +17,15 @@ import re
 from generated_sql_parser import UnexpectedEOF, UnexpectedToken, VisitError, Token
 import generated_sql_parser
 
+from typing import List, Tuple, Any, Optional
+__all__ = [
+    'select',
+    'count',
+    'getSqlKeywords',
+    'getSqlCheatsheet',
+    'BimSqlSyntaxError',
+    'SqlEngineError',
+]
 
 # --- Custom Exceptions for the SQL Engine ---
 
@@ -981,8 +990,6 @@ except Exception as e:
     FreeCAD.Console.PrintError(f"BIM SQL engine failed to initialize: {e}\n")
 
 
-from typing import List, Tuple, Any, Optional
-
 # --- Internal API Functions ---
 
 def _get_query_object(query_string: str) -> "SelectStatement":
@@ -1038,7 +1045,7 @@ def _get_query_object(query_string: str) -> "SelectStatement":
 
 # --- Public API Functions ---
 
-def run_query_for_count(query_string: str) -> Tuple[int, Optional[str]]:
+def count(query_string: str) -> Tuple[int, Optional[str]]:
     """
     Executes a query and returns only the count of resulting rows.
 
@@ -1064,37 +1071,36 @@ def run_query_for_count(query_string: str) -> Tuple[int, Optional[str]]:
 
     try:
         statement = _get_query_object(query_string)
-        headers, results_data = statement.execute()
+        _, results_data = statement.execute()
         return len(results_data), None
     except BimSqlSyntaxError as e:
         if e.is_incomplete:
             return -1, "INCOMPLETE"
         else:
-            return -1, "Syntax Error"
+            # Pass the specific, detailed error message up to the caller.
+            return -1, str(e)
     except SqlEngineError as e:
         return -1, str(e)
 
 
-def run_query_for_objects(query_string: str) -> Tuple[List[str], List[List[Any]]]:
+def select(query_string: str) -> Tuple[List[str], List[List[Any]]]:
     """
     Executes a query and returns the full results.
 
-    This is a "safe" public API function intended for primary consumers like
-    the ArchReport object. It catches all exceptions, prints a detailed error
-    to the FreeCAD console, and returns a predictable empty result on failure.
-
-    Parameters
-    ----------
-    query_string : str
-        The raw SQL query string.
+    This function implements a "Catch, Log, and Re-Raise" pattern. It is
+    safe in that it logs a detailed error to the console, but it is also
+    "unsafe" in that it re-raises the exception to signal the failure to
+    the calling function, which is responsible for handling it.
 
     Returns
     -------
     Tuple[List[str], List[List[Any]]]
         A tuple `(headers, data_rows)`.
-        `headers` is a list of strings for the column names.
-        `data_rows` is a list of lists, where each inner list represents a row.
-        On failure, returns `([], [])`.
+
+    Raises
+    ------
+    SqlEngineError
+        Re-raises any SqlEngineError or BimSqlSyntaxError after logging it.
     """
     try:
         statement = _get_query_object(query_string)
@@ -1102,10 +1108,10 @@ def run_query_for_objects(query_string: str) -> Tuple[List[str], List[List[Any]]
         return headers, results_data
     except (SqlEngineError, BimSqlSyntaxError) as e:
         FreeCAD.Console.PrintError(f"BIM Report Execution Error: {e}\n")
-        return [], []
+        raise e  # Re-raise the exception for the caller to handle.
 
 
-def get_sql_keywords() -> List[str]:
+def getSqlKeywords() -> List[str]:
     """
     Returns a list of all keywords and function names for syntax highlighters.
 
@@ -1148,7 +1154,7 @@ def get_sql_keywords() -> List[str]:
     return sorted(list(set(keywords))) # Return a sorted, unique list.
 
 
-def get_syntax_cheatsheet() -> str:
+def getSqlCheatsheet() -> str:
     """
     Generates a Markdown-formatted cheatsheet of the supported SQL dialect.
 
@@ -1177,7 +1183,7 @@ def get_syntax_cheatsheet() -> str:
 
     # Dynamically build the clauses list by subtracting known function names.
     all_function_names = set(_transformer.select_function_registry._functions.keys()) | set(_transformer.from_function_registry._functions.keys())
-    clauses = [k for k in get_sql_keywords() if k not in all_function_names]
+    clauses = [k for k in getSqlKeywords() if k not in all_function_names]
 
     # Assemble the Markdown string.
     cheatsheet = "# BIM SQL Cheatsheet\n\n"
