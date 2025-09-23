@@ -303,6 +303,10 @@ class AccelLineEdit: public QLineEdit
 public:
     AccelLineEdit(QWidget* parent = 0);
     bool isNone() const;
+    void setKeySequence(const QKeySequence& sequence);
+
+Q_SIGNALS:
+    void keySequenceChanged(const QKeySequence& sequence);
 
 protected:
     void keyPressEvent(QKeyEvent* e);

@@ -275,6 +275,13 @@ bool AccelLineEdit::isNone() const
     return text().isEmpty();
 }
 
+void AccelLineEdit::setKeySequence(const QKeySequence& sequence)
+{
+    setText(sequence.toString(QKeySequence::PortableText));
+    keyPressedCount = sequence.count();
+    Q_EMIT keySequenceChanged(sequence);
+}
+
 void AccelLineEdit::keyPressEvent(QKeyEvent* e)
 {
     if (isReadOnly()) {
@@ -297,11 +304,14 @@ void AccelLineEdit::keyPressEvent(QKeyEvent* e)
                 keyPressedCount = 0;
                 if (isNone()) {
                     QKeySequence ks(key);
-                    setText(ks.toString(QKeySequence::NativeText));
+                    setText(ks.toString(QKeySequence::PortableText));
+                    Q_EMIT keySequenceChanged(ks);
                 }
                 else {
                     clear();
+                    Q_EMIT keySequenceChanged(QKeySequence());
                 }
+                return;
             }
         case Qt::Key_Control:
         case Qt::Key_Shift:
@@ -336,27 +346,30 @@ void AccelLineEdit::keyPressEvent(QKeyEvent* e)
     // Handles modifiers applying a mask.
     if ((state & Qt::ControlModifier) == Qt::ControlModifier) {
         QKeySequence ks(Qt::CTRL);
-        txtLine += ks.toString(QKeySequence::NativeText);
+        txtLine += ks.toString(QKeySequence::PortableText);
     }
     if ((state & Qt::AltModifier) == Qt::AltModifier) {
         QKeySequence ks(Qt::ALT);
-        txtLine += ks.toString(QKeySequence::NativeText);
+        txtLine += ks.toString(QKeySequence::PortableText);
     }
     if ((state & Qt::ShiftModifier) == Qt::ShiftModifier) {
         QKeySequence ks(Qt::SHIFT);
-        txtLine += ks.toString(QKeySequence::NativeText);
+        txtLine += ks.toString(QKeySequence::PortableText);
     }
     if ((state & Qt::MetaModifier) == Qt::MetaModifier) {
         QKeySequence ks(Qt::META);
-        txtLine += ks.toString(QKeySequence::NativeText);
+        txtLine += ks.toString(QKeySequence::PortableText);
     }
 
     // Handles normal keys
     QKeySequence ks(key);
-    txtLine += ks.toString(QKeySequence::NativeText);
+    txtLine += ks.toString(QKeySequence::PortableText);
 
     setText(txtLine);
     keyPressedCount++;
+    
+    // Emit signal when key sequence changes
+    Q_EMIT keySequenceChanged(QKeySequence(txtLine));
 }
 
 // ------------------------------------------------------------------------------
