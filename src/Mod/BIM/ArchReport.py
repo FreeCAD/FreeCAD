@@ -634,9 +634,13 @@ class ReportTaskPanel:
         self.btn_preview_results = QtWidgets.QPushButton(translate("Arch", "Preview Results"))
         self.btn_preview_results.setIcon(FreeCADGui.getIcon(":/icons/Std_ToggleVisibility.svg"))
         self.btn_preview_results.setToolTip(translate("Arch", "Execute the current query and show the results in a table below."))
+        self.btn_show_cheatsheet = QtWidgets.QPushButton(translate("Arch", "Help"))
+        self.btn_show_cheatsheet.setIcon(FreeCADGui.getIcon(":/icons/help-browser.svg"))
+        self.btn_show_cheatsheet.setToolTip(translate("Arch", "Show a cheatsheet of the supported SQL syntax."))
         self.preview_layout.addStretch()
         self.preview_layout.addWidget(self.btn_preview_results)
-        self.preview_layout.addStretch()
+        #self.preview_layout.addStretch()
+        self.preview_layout.addWidget(self.btn_show_cheatsheet)
         self.editor_layout.addLayout(self.preview_layout)
 
         self.table_preview_results = QtWidgets.QTableWidget()
@@ -685,6 +689,7 @@ class ReportTaskPanel:
         self.chk_print_results_in_bold.stateChanged.connect(self._on_editor_checkbox_changed)
         self.query_preset_dropdown.activated.connect(self._on_load_query_preset)
         self.btn_save_query_preset.clicked.connect(self._on_save_query_preset)
+        self.btn_show_cheatsheet.clicked.connect(self._show_cheatsheet_dialog)
         self.btn_preview_results.clicked.connect(self._on_preview_results_clicked)
 
         # Validation Timer for live SQL preview
@@ -1084,6 +1089,12 @@ class ReportTaskPanel:
             title += " *"
         self.overview_widget.setWindowTitle(title)
 
+    def _show_cheatsheet_dialog(self):
+        """Gets the API documentation and displays it in a dialog."""
+        api_data = Arch.getSqlApiDocumentation()
+        dialog = CheatsheetDialog(api_data, parent=self.editor_widget)
+        dialog.exec_()
+
     def _on_preview_results_clicked(self):
         """Handles the 'Preview Results' button click."""
         query = self.sql_query_edit.toPlainText().strip()
@@ -1264,6 +1275,43 @@ if FreeCAD.GuiUp:
 
                 self.setFormat(start_index, comment_length, self.multi_line_comment_format)
                 start_index = self.multi_line_comment_start_pattern.indexIn(text, start_index + comment_length)
+
+
+    class CheatsheetDialog(QtWidgets.QDialog):
+        """A simple dialog to display the HTML cheatsheet."""
+        def __init__(self, api_data, parent=None):
+            super().__init__(parent)
+            self.setWindowTitle(translate("Arch", "BIM SQL Cheatsheet"))
+            self.setMinimumSize(500, 400)
+            layout = QtWidgets.QVBoxLayout(self)
+            html = self._format_as_html(api_data)
+            text_edit = QtWidgets.QTextEdit()
+            text_edit.setReadOnly(True)
+            text_edit.setHtml(html)
+            layout.addWidget(text_edit)
+            button_box = QtWidgets.QDialogButtonBox(QtWidgets.QDialogButtonBox.Ok)
+            button_box.accepted.connect(self.accept)
+            layout.addWidget(button_box)
+            self.setLayout(layout)
+
+        def _format_as_html(self, api_data: dict) -> str:
+            """
+            Takes the structured data from the API and builds the final HTML string.
+            All presentation logic and translatable strings are contained here.
+            """
+            html = f"<h1>{translate('Arch', 'BIM SQL Cheatsheet')}</h1>"
+            html += f"<h2>{translate('Arch', 'Clauses')}</h2>"
+            html += f"<code>{', '.join(sorted(api_data.get('clauses', [])))}</code>"
+            html += f"<h2>{translate('Arch', 'Key Functions')}</h2>"
+            # Sort categories for a consistent display order
+            for category_name in sorted(api_data.get('functions', {}).keys()):
+                functions = api_data['functions'][category_name]
+                html += f"<b>{category_name}:</b><ul>"
+                # Sort functions within a category alphabetically
+                for func in sorted(functions, key=lambda x: x['name']):
+                    html += f"<li><code>{func['name']}</code>: {func['description']}</li>"
+                html += "</ul>"
+            return html
 else:
     # In headless mode, we don't need the GUI classes.
     pass
