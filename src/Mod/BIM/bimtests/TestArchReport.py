@@ -11,7 +11,7 @@ import Arch
 import ArchReport
 from bimtests import TestArchBase
 import ArchSql
-from ArchSql import BimSqlSyntaxError
+from ArchSql import BimSqlSyntaxError, SqlEngineError
 
 class TestArchReport(TestArchBase.TestArchBase):
 
@@ -615,7 +615,6 @@ class TestArchReport(TestArchBase.TestArchBase):
         Performs an integration test to ensure all bundled single-query presets
         are syntactically valid and executable.
         """
-        import os
         import json
 
         # Find the bundled presets file using the robust helper
@@ -836,3 +835,35 @@ class TestArchReport(TestArchBase.TestArchBase):
         self.assertNotIn("WS", keywords, "Whitespace token should be filtered out.")
         self.assertNotIn("RPAR", keywords, "Punctuation tokens should be filtered out.")
         self.assertNotIn("CNAME", keywords, "Regex-based tokens should be filtered out.")
+
+    def test_function_in_where_clause(self):
+        """Tests using a scalar function (LOWER) in the WHERE clause."""
+        # self.column.Label is "Main Column". This query should find it case-insensitively.
+        query = f"SELECT Label FROM document WHERE LOWER(Label) = 'main column'"
+        _, results_data = ArchSql.run_query_for_objects(query)
+
+        self.assertEqual(len(results_data), 1, "Should find exactly one object.")
+        self.assertEqual(results_data[0][0], self.column.Label, "Did not find the correct object.")
+
+        # Also test that an aggregate function raises a proper exception.
+        error_query = "SELECT Label FROM document WHERE COUNT(*) > 1"
+        with self.assertRaises(ArchSql.SqlEngineError) as cm:
+            ArchSql._get_query_object(error_query)
+        self.assertIn("Aggregate functions (like COUNT, SUM) cannot be used in a WHERE clause", str(cm.exception))
+
+        # Test the public, "safe" API: run_query_for_objects should catch the exception,
+        # print an error (which we can't easily check here), and return a safe, empty result.
+        # This verifies that the public API is stable and will not crash its consumers.
+        headers, results_data = ArchSql.run_query_for_objects(error_query)
+        self.assertEqual(headers, [], "Headers should be an empty list on error.")
+        self.assertEqual(results_data, [], "Results data should be an empty list on error.")
+
+    def test_null_as_operand(self):
+        """Tests using NULL as a direct operand in a comparison like '= NULL'."""
+        # In standard SQL, a comparison `SomeValue = NULL` evaluates to 'unknown'
+        # and thus filters out the row. The purpose of this test is to ensure
+        # that the query parses and executes without crashing, proving that our
+        # NULL terminal transformer is working correctly.
+        query = "SELECT * FROM document WHERE IfcRole = NULL"
+        _, results_data = ArchSql.run_query_for_objects(query)
+        self.assertEqual(len(results_data), 0, "Comparing a column to NULL with '=' should return no rows.")

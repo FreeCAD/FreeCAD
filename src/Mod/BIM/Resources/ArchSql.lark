@@ -40,9 +40,9 @@ where_clause: WHERE boolean_expression
 group_by_clause: GROUP BY reference ("," reference)*
 order_by_clause: ORDER BY reference (ASC | DESC)?
 columns: (column ("," column)*)
-column: (asterisk | operand) as_clause?
+column: (ASTERISK | operand) as_clause?
 as_clause: AS literal
-operand: function | reference | literal | NUMBER | null
+operand: function | reference | literal | NUMBER | NULL
 
 // Boolean Logic
 boolean_expression: boolean_or
@@ -67,14 +67,12 @@ is_op: IS
 like_op: LIKE
 
 // Basic Tokens
-asterisk: "*"
 reference: CNAME
 literal: STRING
-null: NULL
 
 // Functions
 function: CNAME "(" function_args? ")"
-function_args: asterisk | (operand ("," operand)*)
+function_args: ASTERISK | (operand ("," operand)*)
 
 // Terminal Definitions
 SELECT: "SELECT"i
@@ -92,6 +90,7 @@ BY:     "BY"i
 ORDER:  "ORDER"i
 ASC:    "ASC"i
 DESC:   "DESC"i
+ASTERISK: "*"
 NULL:   "NULL"i
 STRING : /"[^"]*"|'[^']*'/
 CNAME: /[a-zA-Z0-9\._]+/
