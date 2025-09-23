@@ -126,10 +126,10 @@ message( STATUS "[${PROJECT_NAME}] Revision ID: ${REVISION_ID}" )
 # Target
 if ( E57_BUILD_SHARED )
 	message( STATUS "[${PROJECT_NAME}] Building shared library" )
-	add_library( E57Format SHARED )
+	add_library( E57Format SHARED ${E57Format_SOURCES})
 else()
 	message( STATUS "[${PROJECT_NAME}] Building static library" )
-	add_library( E57Format STATIC )
+	add_library( E57Format STATIC ${E57Format_SOURCES})
 endif()
 
 include( E57ExportHeader )
