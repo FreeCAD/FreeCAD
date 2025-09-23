@@ -1042,7 +1042,10 @@ def _workingEdgeHelperManual(op, obj, depths):
     for ext in extensions:
         if not ext.avoid:
             if wire := ext.getWire():
-                selectedRegions += [f for f in ext.getExtensionFaces(wire)]
+                # NOTE: Can NOT just make a face directly, since that just gives
+                # the outside profile and removes internal holes
+                for f in ext.getExtensionFaces(wire):
+                    selectedRegions.extend(f.Faces)
 
     for base, subs in obj.Base:
         for sub in subs:
