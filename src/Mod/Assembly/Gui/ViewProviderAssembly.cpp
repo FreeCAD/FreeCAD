@@ -775,7 +775,8 @@ void ViewProviderAssembly::collectMovableObjects(App::DocumentObject* selRoot,
     if (onlySolids
         && !(currentObject->isDerivedFrom<App::Part>()
              || currentObject->isDerivedFrom<Part::Feature>()
-             || currentObject->isDerivedFrom<App::Link>())) {
+             || currentObject->isDerivedFrom<App::Link>()
+             || currentObject->isDerivedFrom<App::LinkElement>())) {
         return;
     }
 
