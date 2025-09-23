@@ -867,3 +867,39 @@ class TestArchReport(TestArchBase.TestArchBase):
         query = "SELECT * FROM document WHERE IfcRole = NULL"
         _, results_data = ArchSql.run_query_for_objects(query)
         self.assertEqual(len(results_data), 0, "Comparing a column to NULL with '=' should return no rows.")
+
+    def test_arithmetic_in_select_clause(self):
+        """Tests arithmetic operations in the SELECT clause."""
+        # Use the wall_ext object, which has Length=1000.0 (Quantity)
+        target_name = self.wall_ext.Name
+
+        with self.subTest(description="Simple multiplication with Quantity"):
+            # Test: 1000.0 * 2.0 = 2000.0
+            query = f"SELECT Length * 2 FROM document WHERE Name = '{target_name}'"
+            headers, data = ArchSql.run_query_for_objects(query)
+            self.assertEqual(len(data), 1)
+            self.assertAlmostEqual(data[0][0], 2000.0)
+
+        with self.subTest(description="Operator precedence"):
+            # Test: 100 + 1000.0 * 2 = 2100.0 (multiplication first)
+            query = f"SELECT 100 + Length * 2 FROM document WHERE Name = '{target_name}'"
+            headers, data = ArchSql.run_query_for_objects(query)
+            self.assertEqual(len(data), 1)
+            self.assertAlmostEqual(data[0][0], 2100.0)
+
+        with self.subTest(description="Parentheses overriding precedence"):
+            # Test: (100 + 1000.0) * 2 = 2200.0 (addition first)
+            query = f"SELECT (100 + Length) * 2 FROM document WHERE Name = '{target_name}'"
+            headers, data = ArchSql.run_query_for_objects(query)
+            self.assertEqual(len(data), 1)
+            self.assertAlmostEqual(data[0][0], 2200.0)
+
+        with self.subTest(description="Arithmetic with unitless float property"):
+            # self.wall_ext.Shape.Volume should be a float (200 * 3000 * 1000 = 600,000,000)
+            # Test: 600,000,000 / 1,000,000 = 600.0
+            query = f"SELECT Shape.Volume / 1000000 FROM document WHERE Name = '{target_name}'"
+            headers, data = ArchSql.run_query_for_objects(query)
+            self.assertEqual(len(data), 1)
+            self.assertAlmostEqual(data[0][0], 600.0)
+
+            
