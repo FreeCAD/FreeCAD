@@ -353,6 +353,10 @@ bool isCommandNeedingBSplineKnotActive(Gui::Document* doc)
         PointPos posId {PointPos::none};
         getIdsFromName(name, Obj, geoId, posId);
 
+        if (geoId == GeoEnum::GeoUndef) {
+            return false;
+        }
+
         int splineGeoId {GeoEnum::GeoUndef};
         int knotIndexOCC {-1};
 
