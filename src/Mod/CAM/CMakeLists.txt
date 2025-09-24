@@ -410,6 +410,7 @@ SET(PathScripts_SRCS
 SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/dogboneII.py
     Path/Base/Generator/drill.py
+    Path/Base/Generator/facing.py
     Path/Base/Generator/helix.py
     Path/Base/Generator/rotation.py
     Path/Base/Generator/tapping.py
@@ -505,6 +506,7 @@ SET(Tests_SRCS
     CAMTests/TestPathDressupHoldingTags.py
     CAMTests/TestPathDrillGenerator.py
     CAMTests/TestPathDrillable.py
+    CAMTests/TestPathFacingGenerator.py
     CAMTests/TestPathGeneratorDogboneII.py
     CAMTests/TestPathGeom.py
     CAMTests/TestPathHelix.py
