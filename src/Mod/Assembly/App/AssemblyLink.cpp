@@ -105,17 +105,33 @@ void AssemblyLink::onChanged(const App::Property* prop)
 
         if (Rigid.getValue()) {
             // movePlc needs to be computed before updateContents.
-            if (!objLinkMap.empty()) {
-                auto firstElement = *objLinkMap.begin();
+            App::DocumentObject* firstLink = nullptr;
+            for (auto* obj : Group.getValues()) {
+                if (obj
+                    && (obj->isDerivedFrom<App::Link>() || obj->isDerivedFrom<AssemblyLink>())) {
+                    firstLink = obj;
+                    break;
+                }
+            }
 
-                App::DocumentObject* obj = firstElement.first;
-                App::DocumentObject* link = firstElement.second;
-                auto* prop =
-                    dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
-                auto* prop2 =
-                    dynamic_cast<App::PropertyPlacement*>(link->getPropertyByName("Placement"));
-                if (prop && prop2) {
-                    movePlc = prop2->getValue() * prop->getValue().inverse();
+            if (firstLink) {
+                App::DocumentObject* sourceObj = nullptr;
+                if (auto* link = dynamic_cast<App::Link*>(firstLink)) {
+                    sourceObj = link->getLinkedObject(false);  // Get non-recursive linked object
+                }
+                else if (auto* asmLink = dynamic_cast<AssemblyLink*>(firstLink)) {
+                    sourceObj = asmLink->getLinkedAssembly();
+                }
+
+                if (sourceObj) {
+                    auto* propSource = dynamic_cast<App::PropertyPlacement*>(
+                        sourceObj->getPropertyByName("Placement"));
+                    auto* propLink = dynamic_cast<App::PropertyPlacement*>(
+                        firstLink->getPropertyByName("Placement"));
+
+                    if (propSource && propLink) {
+                        movePlc = propLink->getValue() * propSource->getValue().inverse();
+                    }
                 }
             }
         }
