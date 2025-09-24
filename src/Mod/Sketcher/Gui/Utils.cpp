@@ -493,7 +493,7 @@ bool SketcherGui::isSketchInEdit(Gui::Document* doc)
     return false;
 }
 
-bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
+bool SketcherGui::isCommandActive(Gui::Document* doc)
 {
     if (isSketchInEdit(doc)) {
         auto mode =
@@ -501,29 +501,79 @@ bool SketcherGui::isCommandActive(Gui::Document* doc, bool actsOnSelection)
 
         if (mode == ViewProviderSketch::STATUS_NONE
             || mode == ViewProviderSketch::STATUS_SKETCH_UseHandler) {
-
-            if (!actsOnSelection) {
-                return true;
-            }
-            return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
+            return true;
         }
     }
 
     return false;
 }
 
-bool SketcherGui::isSketcherBSplineActive(Gui::Document* doc, bool actsOnSelection)
+bool SketcherGui::isCommandNeedingConstraintActive(Gui::Document* doc)
 {
-    if (doc) {
-        // checks if a Sketch Viewprovider is in Edit and is in no special mode
-        if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
-            if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
-                == ViewProviderSketch::STATUS_NONE) {
-                if (!actsOnSelection) {
+    if (!isCommandActive(doc)) {
+        return false;
+    }
+
+    std::vector<Gui::SelectionObject> sel =
+        Gui::Selection().getSelectionEx(doc->getDocument()->getName(),
+                                        Sketcher::SketchObject::getClassTypeId());
+    if (sel.size() == 1) {
+        for (const std::string& name : sel[0].getSubNames()) {
+            if (name.starts_with("Constraint")) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool SketcherGui::isCommandNeedingGeometryActive(Gui::Document* doc)
+{
+    if (!isCommandActive(doc)) {
+        return false;
+    }
+
+    std::vector<Gui::SelectionObject> sel =
+        Gui::Selection().getSelectionEx(doc->getDocument()->getName(),
+                                        Sketcher::SketchObject::getClassTypeId());
+    if (sel.size() == 1) {
+        auto* Obj = static_cast<Sketcher::SketchObject*>(sel[0].getObject());
+        for (const std::string& name : sel[0].getSubNames()) {
+            int geoId {GeoEnum::GeoUndef};
+            PointPos posId {PointPos::none};
+            getIdsFromName(name, Obj, geoId, posId);
+
+            if (geoId != GeoEnum::GeoUndef) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool SketcherGui::isCommandNeedingBSplineActive(Gui::Document* doc)
+{
+    if (!isCommandActive(doc)) {
+        return false;
+    }
+
+    std::vector<Gui::SelectionObject> sel =
+        Gui::Selection().getSelectionEx(doc->getDocument()->getName(),
+                                        Sketcher::SketchObject::getClassTypeId());
+    if (sel.size() == 1) {
+        auto* Obj = static_cast<Sketcher::SketchObject*>(sel[0].getObject());
+        for (const std::string& name : sel[0].getSubNames()) {
+
+            int geoId {GeoEnum::GeoUndef};
+            PointPos posId {PointPos::none};
+            getIdsFromName(name, Obj, geoId, posId);
+
+            if (geoId != GeoEnum::GeoUndef) {
+                const Part::Geometry* geo = Obj->getGeometry(geoId);
+
+                if (geo && geo->is<Part::GeomBSplineCurve>()) {
                     return true;
                 }
-                return Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0;
             }
         }
     }
