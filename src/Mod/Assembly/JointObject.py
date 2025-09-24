@@ -738,7 +738,7 @@ class Joint:
         part2 = UtilsAssembly.getMovingPart(assembly, joint.Reference2)
 
         if not part1 or not part2:
-            return
+            return False
 
         isAssembly = assembly.Type == "Assembly"
         if isAssembly:
