@@ -99,6 +99,93 @@ def _save_preset(preset_type, name, data):
         FreeCAD.Console.PrintError(f"BIM Report: Could not save preset to {user_path}: {e}\n")
 
 
+if FreeCAD.GuiUp:
+
+    class SqlQueryEditor(QtWidgets.QPlainTextEdit):
+        """
+        A custom QPlainTextEdit that provides autocompletion features.
+
+        This class integrates QCompleter and handles key events to provide
+        content-based sizing for the popup and a better user experience,
+        such as accepting completions with the Tab key.
+        """
+        def __init__(self, parent=None):
+            super().__init__(parent)
+            self._completer = None
+
+        def setCompleter(self, completer):
+            if self._completer:
+                self._completer.activated.disconnect(self.insertCompletion)
+
+            self._completer = completer
+            if not self._completer:
+                return
+
+            self._completer.setWidget(self)
+            self._completer.setCompletionMode(QtWidgets.QCompleter.PopupCompletion)
+            self._completer.activated.connect(self.insertCompletion)
+
+        def completer(self):
+            return self._completer
+
+        def insertCompletion(self, completion):
+            if self._completer.widget() is not self:
+                return
+
+            tc = self.textCursor()
+            tc.select(QtGui.QTextCursor.WordUnderCursor)
+            tc.insertText(completion)
+            self.setTextCursor(tc)
+
+        def textUnderCursor(self):
+            tc = self.textCursor()
+            tc.select(QtGui.QTextCursor.WordUnderCursor)
+            return tc.selectedText()
+
+        def keyPressEvent(self, event):
+            # Pass key events to the completer first if its popup is visible.
+            if self._completer and self._completer.popup().isVisible():
+                if event.key() in (QtCore.Qt.Key_Enter, QtCore.Qt.Key_Return,
+                                   QtCore.Qt.Key_Escape, QtCore.Qt.Key_Tab,
+                                   QtCore.Qt.Key_Backtab):
+                    event.ignore()
+                    return
+
+            # Let the parent handle the key press to ensure normal typing works.
+            super().keyPressEvent(event)
+
+            # --- Autocompletion Trigger Logic ---
+
+            # A Ctrl+Space shortcut can also be used to trigger completion.
+            is_shortcut = (event.modifiers() & QtCore.Qt.ControlModifier and
+                           event.key() == QtCore.Qt.Key_Space)
+
+            completion_prefix = self.textUnderCursor()
+
+            # Don't show completer for very short prefixes unless forced by shortcut.
+            if not is_shortcut and len(completion_prefix) < 2:
+                self._completer.popup().hide()
+                return
+
+            # Show the completer if the prefix has changed.
+            if completion_prefix != self._completer.completionPrefix():
+                self._completer.setCompletionPrefix(completion_prefix)
+                # Select the first item by default for a better UX.
+                self._completer.popup().setCurrentIndex(
+                    self._completer.completionModel().index(0, 0))
+
+            # --- Sizing and Positioning Logic (The critical fix) ---
+            cursor_rect = self.cursorRect()
+
+            # Calculate the required width based on the content of the popup.
+            popup_width = (self._completer.popup().sizeHintForColumn(0) +
+                           self._completer.popup().verticalScrollBar().sizeHint().width())
+            cursor_rect.setWidth(popup_width)
+
+            # Show the completer.
+            self._completer.complete(cursor_rect)
+
+
 class ReportStatement:
     """Encapsulates a single SQL query statement and its display options."""
 
@@ -521,6 +608,13 @@ class ReportTaskPanel:
     Implements accept() and reject() to save or discard changes.
     """
 
+    # A static blocklist of common, non-queryable properties to exclude
+    # from the autocompletion list to reduce noise.
+    PROPERTY_BLOCKLIST = {
+        "ExpressionEngine", "Label2", "Proxy", "ShapeColor", "Visibility",
+        "LineColor", "LineWidth", "PointColor", "PointSize"
+    }
+
     def __init__(self, report_obj):
         # Create two top-level widgets so FreeCAD will wrap each into a TaskBox.
         # Box 1 (overview) contains the statements table and management buttons.
@@ -611,7 +705,7 @@ class ReportTaskPanel:
 
         # SQL Query editor
         self.sql_label = QtWidgets.QLabel(translate("Arch", "SQL Query:"))
-        self.sql_query_edit = QtWidgets.QPlainTextEdit()
+        self.sql_query_edit = SqlQueryEditor()
         self.sql_query_status_label = QtWidgets.QLabel(translate("Arch", "Ready"))
         self.sql_query_status_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
         # Enable word wrapping to prevent long error messages from expanding the panel.
@@ -624,6 +718,14 @@ class ReportTaskPanel:
 
         # --- Attach Syntax Highlighter ---
         self.sql_highlighter = SqlSyntaxHighlighter(self.sql_query_edit.document())
+
+        # --- Setup Autocompletion ---
+        self.completer = QtWidgets.QCompleter(self.sql_query_edit)
+        self.completion_model = self._build_completion_model()
+        self.completer.setModel(self.completion_model)
+        self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
+        # We use a custom keyPressEvent in SqlQueryEditor to handle Tab/Enter
+        self.sql_query_edit.setCompleter(self.completer)
 
         self.editor_layout.addWidget(self.sql_label)
         self.editor_layout.addWidget(self.sql_query_edit)
@@ -681,7 +783,7 @@ class ReportTaskPanel:
         self.btn_save_template.clicked.connect(self._on_save_report_template)
         # Keep table edits in sync with the runtime statements
         self.table_statements.itemChanged.connect(self._on_table_item_changed)
-        self.description_edit.textChanged.connect(self._on_editor_description_changed)
+        self.description_edit.textChanged.connect(self._on_editor_field_changed)
         self.sql_query_edit.textChanged.connect(self._on_editor_sql_changed)
         self.chk_use_description_as_header.stateChanged.connect(self._on_editor_checkbox_changed)
         self.chk_include_column_names.stateChanged.connect(self._on_editor_checkbox_changed)
@@ -903,6 +1005,13 @@ class ReportTaskPanel:
         self.sql_query_status_label.setText(translate("Arch", "<i>Typing...</i>"))
         self.sql_query_status_label.setStyleSheet("color: gray;")
         self.validation_timer.start(500) # (Re)start timer for live validation
+        self._set_dirty(True)
+
+    def _on_editor_field_changed(self):
+        # A generic handler to mark changes as dirty and trigger validation
+        if self.current_edited_statement_index != -1:
+            self._update_editor_title(self.description_edit.text())
+        self.validation_timer.start(500)
         self._set_dirty(True)
 
     def _on_editor_checkbox_changed(self):
@@ -1137,6 +1246,28 @@ class ReportTaskPanel:
             self.table_preview_results.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
 
         self.table_preview_results.setVisible(True) # Always show the table for results or errors
+
+    def _build_completion_model(self):
+        """
+        Builds the master list of words for the autocompleter.
+
+        This method scans for all SQL keywords and all unique, queryable
+        property names across all objects in the active document.
+        """
+        # 1. Start with the static SQL keywords and functions.
+        all_words = set(Arch.getSqlKeywords())
+
+        # 2. Add all unique property names from all objects in the document.
+        if FreeCAD.ActiveDocument:
+            property_names = set()
+            for obj in FreeCAD.ActiveDocument.Objects:
+                for prop_name in obj.PropertiesList:
+                    if prop_name not in self.PROPERTY_BLOCKLIST:
+                        property_names.add(prop_name)
+            all_words.update(property_names)
+
+        # 3. Return a sorted model for the completer.
+        return QtCore.QStringListModel(sorted(list(all_words)))
 
     # --- Dialog Acceptance / Rejection ---
     def accept(self):
