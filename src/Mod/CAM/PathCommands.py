@@ -27,6 +27,7 @@ import Path
 import traceback
 
 from PathScripts.PathUtils import loopdetect
+from PathScripts.PathUtils import wiredetect
 from PathScripts.PathUtils import horizontalEdgeLoop
 from PathScripts.PathUtils import tangentEdgeLoop
 from PathScripts.PathUtils import horizontalFaceLoop
@@ -62,7 +63,12 @@ class _CommandSelectLoop:
             "Accel": "P, L",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_SelectLoop",
-                "Completes the selection of edges that form a loop\n Select one edge to search loop edges in horizontal plane\n Select two edges to search loop edges in wires of the shape\n Select one or more vertical faces to search loop faces which form the walls",
+                "Completes the selection of edges or faces that form a loop"
+                "\n\nSelect faces: searching loop faces which form the walls."
+                "\n\nSelect one edge: searching loop edges in horizontal plane"
+                "\nor wire which contain selected edge."
+                "\n\nSelect two edges: searching loop edges in wires of the shape"
+                "\nor tangent edges.",
             ),
             "CmdType": "ForEdit",
         }
@@ -112,16 +118,20 @@ class _CommandSelectLoop:
 
         elif "Edge" in names[0]:
             if len(sub) == 1:
-                # One edge selected
+                # One edge selected: searching horizontal edge loop
                 loop = horizontalEdgeLoop(obj, sub[0], verbose=True)
 
-            if len(sub) >= 2:
-                # Several edges selected
+            elif len(sub) >= 2:
+                # Two edges selected: searching wire in shape which contain both edges
                 loop = loopdetect(obj, sub[0], sub[1])
 
+                if not loop:
+                    # Two edges selected: searching edges in tangency
+                    loop = tangentEdgeLoop(obj, sub[0])
+
             if not loop:
-                # Try to find tangent non planar loop
-                loop = tangentEdgeLoop(obj, sub[0])
+                # Searching any wire with first selected edge
+                loop = wiredetect(obj, names[0])
 
         if isinstance(loop, list) and len(loop) > 0 and isinstance(loop[0], Part.Edge):
             # Select edges from list
