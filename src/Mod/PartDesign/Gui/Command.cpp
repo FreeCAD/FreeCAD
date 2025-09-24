@@ -400,10 +400,8 @@ namespace {
 using ObjSet = std::set<App::DocumentObject*>;
 // Pure validation helper (no hidden deps).
 // Validates 'container' against the binding set to avoid cycles or self-inclusion.
-// On success, sets parent=container.
 static bool checkContainer(App::DocumentObject* container,
-                           const ObjSet& valueSet,
-                           App::DocumentObject*& parent)
+                           const ObjSet& valueSet)
 {    if (!container)
         return false;
 
@@ -442,28 +440,22 @@ static void findContainerForNewSubShapeBinder(App::Document* doc,
     // Try active Body first
     if (view) {
         if (auto* body = view->getActiveObject<PartDesign::Body*>(PDBODYKEY, &parent, &parentSub)) {
-            if (checkContainer(body, valueSet, parent)) {
+            if (checkContainer(body, valueSet)) {
                 container = body;
                 return;
-            } else {
-                // invalid -> reset hints
-                parent = nullptr;
-                parentSub.clear();
             }
         }
         // Then active Part
         if (auto* part = view->getActiveObject<App::Part*>(PARTKEY, &parent, &parentSub)) {
-            if (checkContainer(part, valueSet, parent)) {
+            if (checkContainer(part, valueSet)) {
                 container = part;
                 return;
-            } else {
-                parent = nullptr;
-                parentSub.clear();
             }
         }
     }
 }
 } // anonymous namespace
+
 void CmdPartDesignSubShapeBinder::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
@@ -485,22 +477,13 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         }
     }
 
-    std::string FeatName;
     PartDesign::Body *pcActiveBody = nullptr;
     App::Part *pcActivePart = nullptr;
 
     App::DocumentObject* targetContainer = nullptr;
     findContainerForNewSubShapeBinder(getDocument(), valueSet, targetContainer, parent, parentSub);
 
-    // Identify concrete type for naming/creation convenience
-    pcActiveBody = dynamic_cast<PartDesign::Body*>(targetContainer);
-    if (!pcActiveBody)
-        pcActivePart = dynamic_cast<App::Part*>(targetContainer);
-
-    FeatName = Gui::Command::getUniqueObjectName("Binder", pcActiveBody ?
-            static_cast<App::DocumentObject*>(pcActiveBody) : pcActivePart);
-
-    if (parent) {
+    if (targetContainer && parent) {
         decltype(values) links;
         for (auto &v : values) {
             App::DocumentObject *obj = v.first;
@@ -520,7 +503,15 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         values = std::move(links);
     }
 
-    PartDesign::SubShapeBinder* binder = nullptr;
+    // Identify concrete type for naming/creation convenience
+    pcActiveBody = dynamic_cast<PartDesign::Body*>(targetContainer);
+    if (!pcActiveBody)
+        pcActivePart = dynamic_cast<App::Part*>(targetContainer);
+
+    std::string FeatName = Gui::Command::getUniqueObjectName("Binder", pcActiveBody ?
+            static_cast<App::DocumentObject*>(pcActiveBody) : pcActivePart);
+
+    PartDesign::SubShapeBinder *binder = nullptr;
     try {
         openCommand(QT_TRANSLATE_NOOP("Command", "Create Sub-Shape Binder"));
         if (pcActiveBody) {
