@@ -1294,11 +1294,10 @@ PyObject* ViewProviderAssembly::getPyObject()
     return pyViewObject;
 }
 
-void ViewProviderAssembly::applyIsolationRecursively(
-    App::DocumentObject* current,
-    std::set<App::DocumentObject*>& isolateSet,
-    IsolateMode mode,
-    std::set<App::DocumentObject*>& visited)
+void ViewProviderAssembly::applyIsolationRecursively(App::DocumentObject* current,
+                                                     std::set<App::DocumentObject*>& isolateSet,
+                                                     IsolateMode mode,
+                                                     std::set<App::DocumentObject*>& visited)
 {
     if (!current || !visited.insert(current).second) {
         return;  // Object is null or already processed
@@ -1331,7 +1330,7 @@ void ViewProviderAssembly::applyIsolationRecursively(
     auto* vpl = dynamic_cast<Gui::ViewProviderLink*>(vp);
     auto* vpg = dynamic_cast<Gui::ViewProviderGeometryObject*>(vp);
     if (!vpl && !vpg) {
-        return; // we process only geometric objects and links.
+        return;  // we process only geometric objects and links.
     }
 
     // Backup the initial values.
@@ -1354,7 +1353,7 @@ void ViewProviderAssembly::applyIsolationRecursively(
         return;
     }
 
-    if (isolate && !state.visibility) { // force visibility for isolated objects
+    if (isolate && !state.visibility) {  // force visibility for isolated objects
         current->Visibility.setValue(true);
     }
 
@@ -1418,7 +1417,7 @@ void ViewProviderAssembly::isolateJointReferences(App::DocumentObject* joint, Is
     std::set<App::DocumentObject*> isolateSet = {part1, part2};
     isolateComponents(isolateSet, mode);
 }
-    
+
 void ViewProviderAssembly::clearIsolate()
 {
     if (isolatedJoint) {
@@ -1442,7 +1441,7 @@ void ViewProviderAssembly::clearIsolate()
             vpl->OverrideMaterial.setValue(state.overrideMaterial);
         }
         else if (auto* vpg = dynamic_cast<Gui::ViewProviderGeometryObject*>(
-                 Gui::Application::Instance->getViewProvider(component))) {
+                     Gui::Application::Instance->getViewProvider(component))) {
             vpg->Selectable.setValue(state.selectable);
             vpg->ShapeAppearance.setValue(state.shapeMaterial);
         }
