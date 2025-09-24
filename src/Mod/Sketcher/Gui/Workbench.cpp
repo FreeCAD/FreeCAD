@@ -195,6 +195,9 @@ void Workbench::activated()
     if (isSketchInEdit(doc)) {
         Gui::ToolBarManager::getInstance()->setState(editModeToolbarNames(),
                                                      Gui::ToolBarManager::State::ForceAvailable);
+
+        Gui::ToolBarManager::getInstance()->setState(nonEditModeToolbarNames(),
+                                                     Gui::ToolBarManager::State::ForceHidden);
     }
 }
 
@@ -727,3 +730,4 @@ void addSketcherWorkbenchEditTools(Gui::ToolBarItem& edittools)
 }
 
 } /* namespace SketcherGui */
+
