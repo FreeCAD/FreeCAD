@@ -355,16 +355,11 @@ namespace {
 using ObjSet = std::set<App::DocumentObject*>;
 // Pure validation helper (no hidden deps).
 // Validates 'container' against the binding set to avoid cycles or self-inclusion.
-// On success, sets parent=container and leaves parentSub as-is (may be set by view hints).
+// On success, sets parent=container.
 static bool checkContainer(App::DocumentObject* container,
                            const ObjSet& valueSet,
-                           App::DocumentObject*& parent,
-                           std::string& parentSub)
-{
-    parent = nullptr;
-    parentSub.clear();
-
-    if (!container)
+                           App::DocumentObject*& parent)
+{    if (!container)
         return false;
 
     if (valueSet.count(container)) {
@@ -378,9 +373,8 @@ static bool checkContainer(App::DocumentObject* container,
         }
     }
 
-    parent = container;
-    // parentSub not derived here; caller may provide via activeView selection hints
     return true;
+
 }
 
 // Centralized container lookup with explicit parameters (no hidden deps).
@@ -403,7 +397,7 @@ static void findContainerForNewSubShapeBinder(App::Document* doc,
     // Try active Body first
     if (view) {
         if (auto* body = view->getActiveObject<PartDesign::Body*>(PDBODYKEY, &parent, &parentSub)) {
-            if (checkContainer(body, valueSet, parent, parentSub)) {
+            if (checkContainer(body, valueSet, parent)) {
                 container = body;
                 return;
             } else {
@@ -414,7 +408,7 @@ static void findContainerForNewSubShapeBinder(App::Document* doc,
         }
         // Then active Part
         if (auto* part = view->getActiveObject<App::Part*>(PARTKEY, &parent, &parentSub)) {
-            if (checkContainer(part, valueSet, parent, parentSub)) {
+            if (checkContainer(part, valueSet, parent)) {
                 container = part;
                 return;
             } else {
@@ -423,9 +417,6 @@ static void findContainerForNewSubShapeBinder(App::Document* doc,
             }
         }
     }
-    // Nothing valid found
-    parent = nullptr;
-    parentSub.clear();
 }
 } // anonymous namespace
 void CmdPartDesignSubShapeBinder::activated(int iMsg)
