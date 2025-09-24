@@ -261,7 +261,7 @@ class TestArchReport(TestArchBase.TestArchBase):
     def test_query_invalid_syntax(self, mock_print_error):
         # The low-level function now raises an exception on failure.
         with self.assertRaises(Arch.BimSqlSyntaxError) as cm:
-            ArchSql._run_query('SELECT FROM document WHERE')
+            Arch.select('SELECT FROM document WHERE')
         self.assertFalse(cm.exception.is_incomplete, "A syntax error should not be marked as incomplete.")
 
         # The high-level function for the UI catches it and returns a simple string.
@@ -410,7 +410,7 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         # _run_query should raise an exception for validation errors.
         with self.assertRaises(ArchSql.SqlEngineError) as cm:
-            ArchSql._run_query(query)
+            Arch.select(query)
 
         # Check for the specific, user-friendly error message within the exception.
         self.assertIn("must appear in the GROUP BY clause", str(cm.exception),
@@ -806,7 +806,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         query = "SELECT TYPE(Label) FROM document"
 
         with self.assertRaises(ArchSql.BimSqlSyntaxError) as cm:
-            ArchSql._run_query(query)
+            Arch.select(query)
 
         # Assert that the error message is our clean, high-level message
         # and not a raw, confusing traceback from deep inside the library.
@@ -847,17 +847,13 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         # Also test that an aggregate function raises a proper exception.
         error_query = "SELECT Label FROM document WHERE COUNT(*) > 1"
-        with self.assertRaises(ArchSql.SqlEngineError) as cm:
-            # Test the public API directly, as it's expected to raise the exception.
-            ArchSql._run_query(error_query)
-        self.assertIn("Aggregate functions (like COUNT, SUM) cannot be used in a WHERE clause", str(cm.exception))
 
-        # 2. Test the "unsafe" public API: select() should re-raise the exception.
+        # 1. Test the "unsafe" public API: select() should re-raise the exception.
         with self.assertRaises(Arch.SqlEngineError) as cm:
              Arch.select(error_query)
         self.assertIn("Aggregate functions (like COUNT, SUM) cannot be used in a WHERE clause", str(cm.exception))
 
-        # 3. Test the "safe" public API: count() should catch the exception and return an error tuple.
+        # 2. Test the "safe" public API: count() should catch the exception and return an error tuple.
         count, error_str = Arch.count(error_query)
         self.assertEqual(count, -1)
         self.assertIn("Aggregate functions", error_str)
@@ -1026,3 +1022,19 @@ class TestArchReport(TestArchBase.TestArchBase):
         error_item = panel.table_preview_results.item(0, 0)
         self.assertIsNotNone(error_item, "An error item should have been placed in the table.")
         self.assertIn("Syntax Error", error_item.text(), "The error message should indicate a syntax error.")
+
+    def test_count_with_group_by_is_correct_and_fast(self):
+        """
+        Ensures that Arch.count() on a GROUP BY query returns the number of
+        final groups (output rows), not the number of input objects.
+        This validates the performance refactoring.
+        """
+        # This query will have 5 input objects with an IfcType
+        # but only 4 output rows/groups (Wall, Column, Beam, Window).
+        query = "SELECT IfcType, COUNT(*) FROM document WHERE IfcType IS NOT NULL GROUP BY IfcType"
+
+        # The count() function should be fast and correct.
+        count, error = Arch.count(query)
+
+        self.assertIsNone(error, "The query should be valid.")
+        self.assertEqual(count, 4, "Count should return the number of groups, not the number of objects.")

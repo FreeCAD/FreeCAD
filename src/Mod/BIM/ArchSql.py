@@ -356,18 +356,13 @@ class SelectStatement:
         self.order_by_clause = order_by_clause
 
     def execute(self):
-        # 1. Get and filter the initial object list from the document
-        all_objects = self.from_clause.get_objects()
-        filtered_objects = [o for o in all_objects if self.where_clause is None or self.where_clause.matches(o)]
-
+        # 1. Phase 1: Get filtered and grouped object data.
+        grouped_data = self._get_grouped_data()
         # 2. Determine the column headers from the parsed statement
         headers = [display_name for _, display_name in self.columns_info]
 
-        # 3. Decide which execution path to take based on the query structure
-        if self.group_by_clause:
-            results_data = self._execute_grouped_query(filtered_objects)
-        else:
-            results_data = self._execute_non_grouped_query(filtered_objects)
+        # 3. Phase 2: Process the SELECT columns to get the final data rows.
+        results_data = self._process_select_columns(grouped_data)
 
         # 4. Perform final sorting if an ORDER BY clause was provided.
         if self.order_by_clause:
@@ -616,6 +611,120 @@ class SelectStatement:
                 results_data.append(row)
 
         return results_data
+
+    def get_row_count(self):
+        """
+        Calculates only the number of rows the query will produce, performing
+        the minimal amount of work necessary. This is used by Arch.count()
+        for a fast UI preview.
+        """
+        grouped_data = self._get_grouped_data()
+        return len(grouped_data)
+
+    def _get_grouped_data(self):
+        """
+        Performs Phase 1 of execution: FROM, WHERE, and GROUP BY.
+        This is the fast part of the query that only deals with object lists.
+        Returns a list of "groups", where each group is a list of objects.
+        """
+        all_objects = self.from_clause.get_objects()
+        filtered_objects = [o for o in all_objects if self.where_clause is None or self.where_clause.matches(o)]
+
+        if not self.group_by_clause:
+            # If no GROUP BY, every object is its own group.
+            # Return as a list of single-item lists to maintain a consistent data structure.
+            return [[obj] for obj in filtered_objects]
+        else:
+            # If GROUP BY is present, partition the objects.
+            groups = {}
+            group_by_extractors = self.group_by_clause.columns
+            for obj in filtered_objects:
+                key = self._get_grouping_key(obj, group_by_extractors)
+                if key not in groups:
+                    groups[key] = []
+                groups[key].append(obj)
+            return list(groups.values())
+
+    def _process_select_columns(self, grouped_data):
+        """
+        Performs Phase 2 of execution: processes the SELECT columns.
+        This is the slow part of the query that does data extraction,
+        function calls, and aggregation.
+        """
+        results_data = []
+
+        # Handle SELECT * as a special case for non-grouped queries
+        if not self.group_by_clause and self.columns_info and self.columns_info[0][0] == '*':
+            for group in grouped_data:
+                obj = group[0]
+                value = obj.Label if hasattr(obj, 'Label') else getattr(obj, 'Name', '')
+                results_data.append([value])
+            return results_data
+
+        is_single_row_aggregate = any(isinstance(ex, AggregateFunction) for ex, _ in self.columns_info) and not self.group_by_clause
+        if is_single_row_aggregate:
+            # A query with aggregates but no GROUP BY always returns one summary row
+            # based on all objects that passed the filter.
+            all_filtered_objects = [obj for group in grouped_data for obj in group]
+            row = self._calculate_row_values(all_filtered_objects)
+            return [row]
+
+        # Standard processing: one output row for each group.
+        for group in grouped_data:
+            row = self._calculate_row_values(group)
+            results_data.append(row)
+
+        return results_data
+
+    def _calculate_row_values(self, object_list):
+        """
+        Helper that calculates all SELECT column values for a given list of objects
+        (which can be a "group" or all filtered objects).
+        """
+        row = []
+        for extractor, _ in self.columns_info:
+            value = None
+            if isinstance(extractor, AggregateFunction):
+                value = self._calculate_aggregate(extractor, object_list)
+            elif isinstance(extractor, (StaticExtractor, FunctionBase, ReferenceExtractor, ArithmeticOperation)):
+                # For non-aggregate extractors, the value is based on the first object in the list.
+                if object_list:
+                    value = extractor.get_value(object_list[0])
+            else: # Should not be reached with proper validation
+                value = "INVALID_EXTRACTOR"
+            row.append(value)
+        return row
+
+    def _calculate_aggregate(self, extractor, object_list):
+        """Helper to compute the value for a single aggregate function."""
+        if extractor.function_name == 'count':
+            if extractor.argument == '*':
+                return len(object_list)
+            else:
+                prop_name = extractor.argument.value
+                return sum(1 for obj in object_list if _get_property(obj, prop_name) is not None)
+
+        # For other aggregates, extract numeric values
+        arg_extractor = extractor.argument
+        values = []
+        for obj in object_list:
+            prop_val = arg_extractor.get_value(obj)
+            if prop_val is not None:
+                if isinstance(prop_val, FreeCAD.Units.Quantity):
+                    prop_val = prop_val.Value
+                if isinstance(prop_val, (int, float)):
+                    values.append(prop_val)
+
+        if not values:
+            return None
+        elif extractor.function_name == 'sum':
+            return sum(values)
+        elif extractor.function_name == 'min':
+            return min(values)
+        elif extractor.function_name == 'max':
+            return max(values)
+
+        return f"'{extractor.function_name}' NOT_IMPL"
 
 
 class FromClause:
@@ -1013,29 +1122,34 @@ except Exception as e:
 
 # --- Internal API Functions ---
 
-def _run_query(query_string: str) -> Tuple[List[str], List[List[Any]]]:
+def _run_query(query_string: str, mode: str):
     """
     The single, internal entry point for the SQL engine.
 
     This function encapsulates the entire query process: parsing, transformation,
-    validation, and execution. It is a "silent" function that raises a specific
-    exception on any failure, but performs no logging itself.
+    validation, and execution. It uses a 'mode' parameter to decide whether
+    to perform a full data execution or a lightweight, performant count. It is
+    a "silent" function that raises a specific exception on any failure, but
+    performs no logging itself.
 
     Parameters
     ----------
     query_string : str
-        The raw SQL query string to be executed.
+        The raw SQL query string to be processed.
+    mode : str
+        The execution mode, either 'full_data' or 'count_only'.
 
     Returns
     -------
-    Tuple[List[str], List[List[Any]]]
-        A tuple `(headers, data_rows)`.
+    int or tuple
+        If mode is 'count_only', returns an integer representing the row count.
+        If mode is 'full_data', returns a tuple `(headers, data_rows)`.
 
     Raises
     ------
     SqlEngineError
         For general engine errors, such as initialization failures or
-        validation/execution errors.
+        validation errors (e.g., mixing aggregates without GROUP BY).
     BimSqlSyntaxError
         For any syntax, parsing, or transformation error, with a flag to
         indicate if the query was simply incomplete.
@@ -1044,7 +1158,6 @@ def _run_query(query_string: str) -> Tuple[List[str], List[List[Any]]]:
         """Parses and transforms the string into a logical statement object."""
         if not _parser or not _transformer:
             raise SqlEngineError("BIM SQL engine is not initialized. Check console for errors on startup.")
-
         try:
             tree = _parser.parse(query_string_internal)
             statement_obj = _transformer.transform(tree)
@@ -1065,9 +1178,27 @@ def _run_query(query_string: str) -> Tuple[List[str], List[List[Any]]]:
             raise BimSqlSyntaxError("Query is incomplete.", is_incomplete=True) from e
 
     statement = _parse_and_transform(query_string)
-    headers, results_data = statement.execute()
 
-    return headers, results_data
+    if mode == 'count_only':
+        # Phase 1: Perform the fast filtering and grouping to get the
+        # correct final row count.
+        grouped_data = statement._get_grouped_data()
+        row_count = len(grouped_data)
+
+        # If there are no results, the query is valid and simply returns 0 rows.
+        if row_count == 0:
+            return 0
+
+        # Phase 2 Validation: Perform a "sample execution" on the first group
+        # to validate the SELECT clause and catch any execution-time errors.
+        # We only care if it runs without error; the result is discarded.
+        first_group_sample = grouped_data[0]
+        _ = statement._process_select_columns([first_group_sample])
+
+        # If the sample execution succeeds, the query is fully valid.
+        return row_count
+    else: # 'full_data'
+        return statement.execute()
 
 
 # --- Public API Functions ---
@@ -1097,8 +1228,8 @@ def count(query_string: str) -> Tuple[int, Optional[str]]:
         return -1, "INCOMPLETE"
 
     try:
-        _, results_data = _run_query(query_string)
-        return len(results_data), None
+        count_result = _run_query(query_string, mode='count_only')
+        return count_result, None
     except BimSqlSyntaxError as e:
         if e.is_incomplete:
             return -1, "INCOMPLETE"
@@ -1132,7 +1263,8 @@ def select(query_string: str) -> Tuple[List[str], List[List[Any]]]:
     # This is the "unsafe" API. It performs no error handling and lets all
     # exceptions propagate up to the caller, who is responsible for logging
     # or handling them as needed.
-    headers, results_data = _run_query(query_string)
+    # The 'select' function always performs a full data query.
+    headers, results_data = _run_query(query_string, mode='full_data')
     return headers, results_data
 
 
