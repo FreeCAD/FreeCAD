@@ -49,6 +49,9 @@ public:
 protected:
   void changeEvent(QEvent *e) override;
 
+private Q_SLOTS:
+  void onBtnTVApplyClicked(bool);
+
 private:
   std::unique_ptr<Ui_DlgSettingsObjectColor> ui;
 };
