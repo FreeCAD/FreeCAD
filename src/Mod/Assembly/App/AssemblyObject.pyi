@@ -150,7 +150,9 @@ class AssemblyObject(Part):
         ...
 
     @constmethod
-    def getDownstreamParts(self, start_part: "App.DocumentObject", joint_to_ignore: "App.DocumentObject") -> list["App.DocumentObject"]:
+    def getDownstreamParts(
+        self, start_part: "App.DocumentObject", joint_to_ignore: "App.DocumentObject"
+    ) -> list["App.DocumentObject"]:
         """
         Finds all parts connected to a start_part that are not connected to ground
         when a specific joint is ignored.

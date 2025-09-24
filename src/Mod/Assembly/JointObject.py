@@ -778,13 +778,13 @@ class Joint:
 
         if savePlc:
             self.partsMovedByPresolved = {p: p.Placement for p in parts_to_move}
-            
+
         moving_part_global_jcs = UtilsAssembly.getJcsGlobalPlc(moving_placement, moving_part_ref)
         fixed_part_global_jcs = UtilsAssembly.getJcsGlobalPlc(fixed_placement, fixed_part_ref)
-            
+
         if not sameDir:
             moving_part_global_jcs = UtilsAssembly.flipPlacement(moving_part_global_jcs)
-                
+
         transform_plc = fixed_part_global_jcs * moving_part_global_jcs.inverse()
 
         for part in parts_to_move:
@@ -795,7 +795,7 @@ class Joint:
     def undoPreSolve(self, joint):
         if hasattr(self, "partsMovedByPresolved") and self.partsMovedByPresolved:
             for part, plc in self.partsMovedByPresolved.items():
-                if part and hasattr(part, 'Placement'):
+                if part and hasattr(part, "Placement"):
                     part.Placement = plc
             self.partsMovedByPresolved = {}
 
