@@ -59,7 +59,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def areaOpFeatures(self, obj):
         """areaOpFeatures(obj) ... returns operation-specific features"""
-        return PathOp.FeatureBaseFaces | PathOp.FeatureBaseEdges
+        return PathOp.FeatureBaseFaces | PathOp.FeatureBaseEdges | PathOp.FeatureBaseModels
 
     def initAreaOp(self, obj):
         """initAreaOp(obj) ... creates all profile specific properties."""
@@ -461,9 +461,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             self.commandlist.append(Path.Command("(Uncompensated Tool Path)"))
 
         # Pre-process Base Geometry to process edges
-        if (
-            obj.Base and len(obj.Base) > 0
-        ):  # The user has selected subobjects from the base.  Process each.
+        if obj.Base:
+            # Processing models without subobjects (selection in tree)
+            shapes.extend(self._processEachBaseModel(obj))
+            # Processing edges from subobjects
             shapes.extend(self._processEdges(obj, remainingObjBaseFeatures))
             Path.Log.track("returned {} shapes".format(len(shapes)))
 
@@ -581,6 +582,26 @@ class ObjectProfile(PathAreaOp.ObjectOp):
     def _processEachModel(self, obj):
         shapeTups = []
         for base in self.model:
+            if hasattr(base, "Shape"):
+                env = PathUtils.getEnvelope(
+                    partshape=base.Shape, subshape=None, depthparams=self.depthparams
+                )
+                if env:
+                    shapeTups.append((env, False))
+        return shapeTups
+
+    # Method to handle each model as a whole, when no faces are selected
+    def _processEachBaseModel(self, obj):
+        shapeTups = []
+        for base in obj.Base:
+            if (
+                isinstance(base, tuple)
+                and len(base) == 2
+                and isinstance(base[1], tuple)
+                and base[1][0] == ""
+            ):
+                base = base[0]
+
             if hasattr(base, "Shape"):
                 env = PathUtils.getEnvelope(
                     partshape=base.Shape, subshape=None, depthparams=self.depthparams
