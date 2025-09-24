@@ -1038,3 +1038,42 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         self.assertIsNone(error, "The query should be valid.")
         self.assertEqual(count, 4, "Count should return the number of groups, not the number of objects.")
+
+    def test_sql_comment_support(self):
+        """Tests that single-line and multi-line SQL comments are correctly ignored."""
+
+        with self.subTest(description="Single-line comments with --"):
+            # This query uses comments to explain and to disable the ORDER BY clause.
+            # The engine should ignore them and return an unsorted result.
+            query = """
+                SELECT Label           -- Select the object's label
+                FROM document
+                WHERE IfcType = 'Wall' -- Only select walls
+                -- ORDER BY Label DESC
+            """
+            _, data = Arch.select(query)
+
+            # The query should run as if the comments were not there.
+            self.assertEqual(len(data), 2, "Should find the two wall objects.")
+            # Verify the content without assuming a specific order.
+            found_labels = {row[0] for row in data}
+            expected_labels = {self.wall_ext.Label, self.wall_int.Label}
+            self.assertSetEqual(found_labels, expected_labels)
+
+        with self.subTest(description="Multi-line comments with /* ... */"):
+            # This query uses a block comment to completely disable the WHERE clause.
+            query = """
+                SELECT Label
+                FROM document
+                /*
+                WHERE IfcType = 'Wall'
+                ORDER BY Label
+                */
+            """
+            _, data = Arch.select(query)
+            # Without the WHERE clause, it should return all test objects.
+            # The assertion must compare against all objects in the document,
+            # not just the list of BIM objects, as the setup also creates
+            # a spreadsheet.
+            self.assertEqual(len(data), len(self.doc.Objects))
+
