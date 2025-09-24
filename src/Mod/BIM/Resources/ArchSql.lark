@@ -105,4 +105,11 @@ STRING : /"[^"]*"|'[^']*'/
 CNAME: /[a-zA-Z0-9\._]+/
 NUMBER: /[0-9]+(\.[0-9]+)?/
 %import common.WS
+
+// Define comment terminals. The regex for multi-line is non-greedy.
+SINGLE_LINE_COMMENT: /--[^\n]*/
+MULTI_LINE_COMMENT: /\/\*[\s\S]*?\*\//
+
 %ignore WS
+%ignore SINGLE_LINE_COMMENT
+%ignore MULTI_LINE_COMMENT
