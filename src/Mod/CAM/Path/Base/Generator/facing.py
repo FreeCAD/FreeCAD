@@ -24,6 +24,7 @@ import FreeCAD
 import Path
 import Part
 import math
+from Path.Op import Base as PathOpBase
 
 __title__ = "Facing toolpath Generator"
 __author__ = "sliptonic (Brad Collette)"
@@ -49,7 +50,8 @@ def generate(
     milling_direction="climb",
     cutting_feedrate=None,
     approach_distance=None,
-    retract_height=None
+    retract_height=None,
+    tool_controller=None
 ):
     """
     Generate a facing toolpath for a closed polygon with proper side entry for large cutters.
@@ -65,8 +67,10 @@ def generate(
         pattern: "zigzag", "unidirectional", "spiral"
         milling_direction: "climb" or "conventional"
         cutting_feedrate: Feedrate for cutting moves (mm/min)
-        approach_distance: Distance to start approach (None = auto calculate)
+        approach_distance: Distance to approach from outside the polygon (None = 1.5 * tool_diameter)
         retract_height: Height to retract for rapids (None = start_depth + tool_diameter)
+        tool_controller: Optional tool controller for spindle direction and cut mode
+            If provided, will use Compass class for climb/conventional milling decisions
     
     Returns:
         List of Path.Command objects representing the toolpath
@@ -127,6 +131,7 @@ def generate(
         Path.Log.debug(f"Processing depth pass {pass_num + 1}/{len(depth_passes)} to depth {target_depth}")
         
         # Generate cutting pattern for this depth
+        spindle_dir = getattr(tool_controller, "SpindleDir", "None") if tool_controller else "None"
         pass_commands = _generate_cutting_pattern(
             extended_boundary,
             bb,
@@ -137,7 +142,8 @@ def generate(
             pattern,
             milling_direction,
             cutting_feedrate,
-            pass_num
+            pass_num,
+            spindle_dir
         )
         
         commands.extend(pass_commands)
@@ -256,7 +262,8 @@ def _generate_cutting_pattern(
     pattern,
     milling_direction,
     cutting_feedrate,
-    pass_num
+    pass_num,
+    spindle_direction
 ):
     """Generate the cutting pattern for one depth pass."""
     commands = []
@@ -294,7 +301,7 @@ def _generate_cutting_pattern(
     # Apply milling direction - this affects the order of step positions
     # For climb milling: tool rotates in direction of feed
     # For conventional milling: tool rotates opposite to feed direction
-    climb_step_order = _determine_climb_step_order(approach_direction, milling_direction)
+    climb_step_order = _determine_climb_step_order(approach_direction, milling_direction, spindle_direction)
     if not climb_step_order:
         step_positions.reverse()
     
@@ -303,7 +310,7 @@ def _generate_cutting_pattern(
         # Determine direction for this pass based on pattern and climb/conventional
         cutting_direction = _determine_cutting_direction(
             i, pattern, approach_direction, milling_direction, 
-            primary_start, primary_end
+            primary_start, primary_end, spindle_direction
         )
         start_pos, end_pos = cutting_direction
         
@@ -349,11 +356,23 @@ def _needs_rapid_move(last_command, target_point):
     return distance > 0.1  # Threshold for requiring rapid move
 
 
-def _determine_climb_step_order(approach_direction, milling_direction):
+def _determine_climb_step_order(approach_direction, milling_direction, spindle_direction=None):
     """Determine if step positions should be in climb order.
     
     Returns True for climb order, False for conventional order.
     """
+    # Use Compass class if spindle_direction is provided
+    if spindle_direction is not None and spindle_direction != "None":
+        try:
+            compass = PathOpBase.Compass(spindle_direction, "Area")
+            compass.cut_mode = "Climb" if milling_direction == "climb" else "Conventional"
+            result = compass.get_step_direction(approach_direction)
+            Path.Log.debug(f"Compass step direction: spindle={spindle_direction}, mode={milling_direction}, approach={approach_direction} -> {result}")
+            return result
+        except Exception as e:
+            Path.Log.warning(f"Failed to use Compass for step direction, falling back to legacy logic: {e}")
+    
+    # Legacy logic for backward compatibility
     # For climb milling, the cutter rotates in the direction of feed
     # For conventional milling, the cutter rotates opposite to feed
     
@@ -372,11 +391,33 @@ def _determine_climb_step_order(approach_direction, milling_direction):
 
 
 def _determine_cutting_direction(pass_index, pattern, approach_direction, milling_direction, 
-                               primary_start, primary_end):
+                               primary_start, primary_end, spindle_direction=None):
     """Determine cutting direction for a specific pass.
     
     Returns (start_pos, end_pos) tuple.
     """
+    # Use Compass class if spindle_direction is provided
+    if spindle_direction is not None and spindle_direction != "None":
+        try:
+            compass = PathOpBase.Compass(spindle_direction, "Area")
+            compass.cut_mode = "Climb" if milling_direction == "climb" else "Conventional"
+            base_forward = compass.get_cutting_direction(approach_direction, pass_index, pattern)
+        except Exception as e:
+            Path.Log.warning(f"Failed to use Compass for cutting direction, falling back to legacy logic: {e}")
+            base_forward = _legacy_cutting_direction(approach_direction, milling_direction, pass_index, pattern)
+    else:
+        # Legacy logic for backward compatibility
+        base_forward = _legacy_cutting_direction(approach_direction, milling_direction, pass_index, pattern)
+    
+    # Return start and end positions
+    if base_forward:
+        return (primary_start, primary_end)
+    else:
+        return (primary_end, primary_start)
+
+
+def _legacy_cutting_direction(approach_direction, milling_direction, pass_index, pattern):
+    """Legacy logic for determining cutting direction."""
     # Base direction depends on approach and milling type
     if approach_direction in ["X-", "X+"]:
         # Cutting along X axis
@@ -397,12 +438,8 @@ def _determine_cutting_direction(pass_index, pattern, approach_direction, millin
     elif pattern == "unidirectional":
         # Always same direction
         pass
-    
-    # Return start and end positions
-    if base_forward:
-        return (primary_start, primary_end)
-    else:
-        return (primary_end, primary_start)
+        
+    return base_forward
 
 
 def _validate_inputs(wire, tool_diameter, stepover_percent, start_depth, final_depth, 
