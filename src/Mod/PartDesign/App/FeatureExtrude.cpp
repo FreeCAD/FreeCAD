@@ -459,22 +459,87 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             prisms.push_back(prism1);
         }
         else if (Sidemethod == "Symmetric") {
-            L /= 2.0;
-            TopoShape prism1 = generateSingleExtrusionSide(sketchshape,
-                method, L, taper1, UpToFace, UpToShape,
-                dir, offset1, makeface, base);
-            prisms.push_back(prism1);
+            // For Length mode, we are not doing a mirror, but we extrude along the same axis
+            // in both directions as it is what users expect.
+            if (method == "Length") {
+                if (std::fabs(taper1) > Precision::Angular()) {
+                    // TAPERED case: We must create two separate prisms and fuse them
+                    // to ensure the taper originates correctly from the sketch plane in both
+                    // directions.
+                    L /= 2.0;
+                    TopoShape prism1 = generateSingleExtrusionSide(sketchshape.makeElementCopy(),
+                                                                   method,
+                                                                   L,
+                                                                   taper1,
+                                                                   UpToFace,
+                                                                   UpToShape,
+                                                                   dir,
+                                                                   offset1,
+                                                                   makeface,
+                                                                   base);
+                    if (!prism1.isNull() && !prism1.getShape().IsNull()) {
+                        prisms.push_back(prism1);
+                    }
 
-            // Prism 2: Mirror prism1 across the sketch plane.
-            // The mirror plane's normal must be the sketch normal, not the extrusion direction.
-            gp_Dir sketchNormalDir(SketchVector.x, SketchVector.y, SketchVector.z);
-            sketchNormalDir.Transform(invTrsf);  // Transform to global CS, like 'dir' was.
+                    gp_Dir dir2 = dir;
+                    dir2.Reverse();
+                    TopoShape prism2 = generateSingleExtrusionSide(sketchshape.makeElementCopy(),
+                                                                   method,
+                                                                   L,
+                                                                   taper1,
+                                                                   UpToFace,
+                                                                   UpToShape,
+                                                                   dir2,
+                                                                   offset1,
+                                                                   makeface,
+                                                                   base);
+                    if (!prism2.isNull() && !prism2.getShape().IsNull()) {
+                        prisms.push_back(prism2);
+                    }
+                }
+                else {
+                    // NON-TAPERED case: We can optimize by creating a single prism.
+                    // Translate the sketch to the start position (-L/2) and extrude by the full
+                    // length L.
+                    gp_Trsf start_transform;
+                    start_transform.SetTranslation(gp_Vec(dir).Reversed() * (L / 2.0));
 
-            Base::Vector3d sketchCenter = sketchshape.getBoundBox().GetCenter();
-            gp_Ax2 mirrorPlane(gp_Pnt(sketchCenter.x, sketchCenter.y, sketchCenter.z),
-                               sketchNormalDir);
-            TopoShape prism2 = prism1.makeElementMirror(mirrorPlane);
-            prisms.push_back(prism2);
+                    TopoShape moved_sketch = sketchshape.makeElementCopy();
+                    moved_sketch.move(start_transform);
+
+                    TopoShape prism1 = generateSingleExtrusionSide(moved_sketch,
+                                                                   method,
+                                                                   L,
+                                                                   taper1,
+                                                                   UpToFace,
+                                                                   UpToShape,
+                                                                   dir,
+                                                                   offset1,
+                                                                   makeface,
+                                                                   base);
+                    if (!prism1.isNull() && !prism1.getShape().IsNull()) {
+                        prisms.push_back(prism1);
+                    }
+                }
+            }
+            else {
+                // For "UpToFace", "UpToShape", etc., mirror the result.
+                TopoShape prism1 = generateSingleExtrusionSide(sketchshape,
+                    method, L, taper1, UpToFace, UpToShape,
+                    dir, offset1, makeface, base);
+                prisms.push_back(prism1);
+
+                // Prism 2: Mirror prism1 across the sketch plane.
+                // The mirror plane's normal must be the sketch normal, not the extrusion direction.
+                gp_Dir sketchNormalDir(SketchVector.x, SketchVector.y, SketchVector.z);
+                sketchNormalDir.Transform(invTrsf);  // Transform to global CS, like 'dir' was.
+
+                Base::Vector3d sketchCenter = sketchshape.getBoundBox().GetCenter();
+                gp_Ax2 mirrorPlane(gp_Pnt(sketchCenter.x, sketchCenter.y, sketchCenter.z),
+                                   sketchNormalDir);
+                TopoShape prism2 = prism1.makeElementMirror(mirrorPlane);
+                prisms.push_back(prism2);
+            }
         }
         else if (Sidemethod == "Two sides") {
             TopoShape prism1 = generateSingleExtrusionSide(sketchshape.makeElementCopy(),
