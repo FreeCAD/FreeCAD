@@ -730,4 +730,3 @@ void addSketcherWorkbenchEditTools(Gui::ToolBarItem& edittools)
 }
 
 } /* namespace SketcherGui */
-
