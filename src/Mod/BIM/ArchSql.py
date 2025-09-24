@@ -23,7 +23,7 @@ else:
         return txt
 
 # Import exception types from the generated parser for type-safe handling.
-from generated_sql_parser import UnexpectedEOF, UnexpectedToken, VisitError, Token
+from generated_sql_parser import UnexpectedEOF, UnexpectedToken, VisitError
 import generated_sql_parser
 
 from typing import List, Tuple, Any, Optional
