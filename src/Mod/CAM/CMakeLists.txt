@@ -354,6 +354,7 @@ SET(PathPythonOp_SRCS
     Path/Op/Drilling.py
     Path/Op/Helix.py
     Path/Op/MillFace.py
+    Path/Op/MillFacing.py
     Path/Op/Pocket.py
     Path/Op/PocketBase.py
     Path/Op/PocketShape.py
@@ -384,6 +385,7 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/FeatureExtension.py
     Path/Op/Gui/Helix.py
     Path/Op/Gui/MillFace.py
+    Path/Op/Gui/MillFacing.py
     Path/Op/Gui/PathShapeTC.py
     Path/Op/Gui/Pocket.py
     Path/Op/Gui/PocketBase.py
@@ -412,7 +414,13 @@ SET(PathScripts_SRCS
 SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/dogboneII.py
     Path/Base/Generator/drill.py
+    Path/Base/Generator/facing_common.py
+    Path/Base/Generator/spiral_facing.py
+    Path/Base/Generator/zigzag_facing.py
+    Path/Base/Generator/directional_facing.py
+    Path/Base/Generator/bidirectional_facing.py
     Path/Base/Generator/helix.py
+    Path/Base/Generator/linking.py
     Path/Base/Generator/rotation.py
     Path/Base/Generator/tapping.py
     Path/Base/Generator/threadmilling.py
@@ -497,7 +505,7 @@ SET(Tests_SRCS
     CAMTests/TestGrblPost.py
     CAMTests/TestGrblLegacyPost.py
     CAMTests/TestLinuxCNCPost.py
-    CAMTests/TestLinuxCNCLegacyPost.py
+    CAMTests/TestLinkingGenerator.py
     CAMTests/TestMach3Mach4Post.py
     CAMTests/TestMach3Mach4LegacyPost.py
     CAMTests/TestMassoG3Post.py
@@ -511,6 +519,7 @@ SET(Tests_SRCS
     CAMTests/TestPathDressupHoldingTags.py
     CAMTests/TestPathDrillGenerator.py
     CAMTests/TestPathDrillable.py
+    CAMTests/TestPathFacingGenerator.py
     CAMTests/TestPathGeneratorDogboneII.py
     CAMTests/TestPathGeom.py
     CAMTests/TestPathHelix.py
