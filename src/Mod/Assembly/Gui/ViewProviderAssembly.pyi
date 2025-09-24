@@ -29,7 +29,9 @@ class ViewProviderAssembly(ViewProvider):
                       Returns: dragger coin object of the assembly"""
         ...
 
-    def isolateComponents(self, components: List[DocumentObject] | Tuple[DocumentObject, ...], mode: int) -> None:
+    def isolateComponents(
+        self, components: List[DocumentObject] | Tuple[DocumentObject, ...], mode: int
+    ) -> None:
         """
         Temporarily isolates a given set of components in the 3D view.
         Other components are faded or hidden based on the specified mode.
@@ -49,7 +51,6 @@ class ViewProviderAssembly(ViewProvider):
         Restores the visual state of all components, clearing any active isolation.
         """
         ...
-
     EnableMovement: bool
     """Enable moving the parts by clicking and dragging."""
 

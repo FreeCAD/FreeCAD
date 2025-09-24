@@ -212,7 +212,8 @@ public:
     void UpdateSolverInformation();
 
     void isolateComponents(std::set<App::DocumentObject*>& parts, IsolateMode mode);
-    void isolateJointReferences(App::DocumentObject* joint, IsolateMode mode = IsolateMode::Transparent);
+    void isolateJointReferences(App::DocumentObject* joint,
+                                IsolateMode mode = IsolateMode::Transparent);
     void clearIsolate();
 
     DragMode dragMode;
