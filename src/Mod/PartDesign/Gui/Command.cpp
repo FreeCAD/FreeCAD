@@ -460,11 +460,19 @@ void CmdPartDesignClone::activated(int iMsg)
         auto bodyObj = obj->getDocument()->getObject(bodyName.c_str());
         auto cloneObj = obj->getDocument()->getObject(cloneName.c_str());
 
+        Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+            .GetUserParameter()
+            .GetGroup("BaseApp/Preferences/Mod/PartDesign");
+
+        bool allowCompound = hGrp->GetBool("AllowCompoundDefault", true);
+
         // In the first step set the group link and tip of the body
         Gui::cmdAppObject(bodyObj, std::stringstream()
                           << "Group = [" << getObjectCmd(cloneObj) << "]");
         Gui::cmdAppObject(bodyObj, std::stringstream()
                           << "Tip = " << getObjectCmd(cloneObj));
+        Gui::cmdAppObject(bodyObj, std::stringstream()
+                          << "AllowCompound = " << (allowCompound ? "True" : "False"));
 
         // In the second step set the link of the base feature
         Gui::cmdAppObject(cloneObj, std::stringstream()

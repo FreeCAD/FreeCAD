@@ -473,8 +473,15 @@ void CmdPartDesignMigrate::activated(int iMsg)
         std::string bodyName = getUniqueObjectName (
                 std::string ( chainIt->back()->getNameInDocument() ).append ( "Body" ).c_str () ) ;
 
+        Base::Reference<ParameterGrp> hGrp = App::GetApplication()
+            .GetUserParameter()
+            .GetGroup("BaseApp/Preferences/Mod/PartDesign");
+
+        bool allowCompound = hGrp->GetBool("AllowCompoundDefault", true);
+
         // Create a body for the chain
         doCommand ( Doc,"App.activeDocument().addObject('PartDesign::Body','%s')", bodyName.c_str () );
+        doCommand ( Doc,"App.ActiveDocument.getObject('%s').AllowCompound = %s", bodyName.c_str(), allowCompound ? "True" : "False");
         doCommand ( Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",
                 actPart->getNameInDocument (), bodyName.c_str () );
         if (base) {
