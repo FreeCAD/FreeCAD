@@ -723,7 +723,7 @@ void StdCmdDrawStyle::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     a[0]->setText(QCoreApplication::translate(
-        "Std_DrawStyle", "&1 As is"));
+        "Std_DrawStyle", "&1 As Is"));
     a[0]->setToolTip(QCoreApplication::translate(
         "Std_DrawStyle", "Normal mode"));
 
@@ -738,12 +738,12 @@ void StdCmdDrawStyle::languageChange()
         "Std_DrawStyle", "Wireframe mode"));
 
     a[3]->setText(QCoreApplication::translate(
-        "Std_DrawStyle", "&4 Hidden line"));
+        "Std_DrawStyle", "&4 Hidden Line"));
     a[3]->setToolTip(QCoreApplication::translate(
         "Std_DrawStyle", "Hidden line mode"));
 
     a[4]->setText(QCoreApplication::translate(
-        "Std_DrawStyle", "&5 No shading"));
+        "Std_DrawStyle", "&5 No Shading"));
     a[4]->setToolTip(QCoreApplication::translate(
         "Std_DrawStyle", "No shading mode"));
 
@@ -753,7 +753,7 @@ void StdCmdDrawStyle::languageChange()
         "Std_DrawStyle", "Shaded mode"));
 
     a[6]->setText(QCoreApplication::translate(
-        "Std_DrawStyle", "&7 Flat lines"));
+        "Std_DrawStyle", "&7 Flat Lines"));
     a[6]->setToolTip(QCoreApplication::translate(
         "Std_DrawStyle", "Flat lines mode"));
 }
