@@ -195,6 +195,19 @@ private:
     mutable Gui::SelectionObject faceSelection;
 };
 
+App::GeoFeatureGroupExtension* getGroupExtensionOfBody(const PartDesign::Body* activeBody)
+{
+    App::GeoFeatureGroupExtension *geoGroup{nullptr};
+    if (activeBody) {
+        auto group( App::GeoFeatureGroupExtension::getBoundaryGroupOfObject(activeBody) );
+        if (group) {
+            geoGroup = group->getExtensionByType<App::GeoFeatureGroupExtension>();
+        }
+    }
+
+    return geoGroup;
+}
+
 class SketchPreselection
 {
 public:
@@ -297,7 +310,8 @@ private:
 
     void handleIfSupportOutOfBody(App::DocumentObject* selectedObject)
     {
-        if (!activeBody->hasObject(selectedObject)) {
+        App::GeoFeatureGroupExtension *bodyGroup = getGroupExtensionOfBody(activeBody);
+        if (bodyGroup && !bodyGroup->hasObject(selectedObject,true)) {
             if ( !selectedObject->isDerivedFrom ( App::Plane::getClassTypeId() ) )  {
                 // TODO check here if the plane associated with right part/body (2015-09-01, Fat-Zer)
 
@@ -405,7 +419,7 @@ public:
 
     void findDatumPlanes()
     {
-        App::GeoFeatureGroupExtension *geoGroup = getGroupExtensionOfBody();
+        App::GeoFeatureGroupExtension *geoGroup = getGroupExtensionOfBody(activeBody);
         const std::vector<Base::Type> types = { PartDesign::Plane::getClassTypeId(), App::Plane::getClassTypeId() };
         auto datumPlanes = appdocument->getObjectsOfType(types);
 
@@ -477,18 +491,6 @@ private:
         }
     }
 
-    App::GeoFeatureGroupExtension* getGroupExtensionOfBody() const
-    {
-        App::GeoFeatureGroupExtension *geoGroup{nullptr};
-        if (activeBody) {
-            auto group( App::GeoFeatureGroupExtension::getGroupOfObject(activeBody) );
-            if (group) {
-                geoGroup = group->getExtensionByType<App::GeoFeatureGroupExtension>();
-            }
-        }
-
-        return geoGroup;
-    }
 
 private:
     App::Document* appdocument;

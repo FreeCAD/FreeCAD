@@ -1603,7 +1603,11 @@ void StdCmdPlacement::activated(int iMsg)
 bool StdCmdPlacement::isActive()
 {
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
-    return (sel.size() == 1 && ! sel.front()->isFreezed());
+    if(sel.size() != 1 || sel.front()->isFreezed()) return false;
+    App::Property* prop = sel.front()->getPropertyByName("Placement");
+    if(!prop) return false;
+    if (prop->testStatus(App::Property::Hidden)) return false;
+    return true;
 }
 
 //===========================================================================

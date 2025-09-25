@@ -35,6 +35,7 @@
 #include <App/Part.h>
 #include <App/VarSet.h>
 #include <Base/Console.h>
+#include <Base/Placement.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -44,10 +45,12 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
 #include <Gui/ViewProviderDatum.h>
+#include <Gui/TaskTransform.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/DatumCS.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
+#include <Mod/PartDesign/App/ResetBodyPlacement.h>
 
 #include "ViewProviderBody.h"
 #include "Utils.h"
@@ -466,4 +469,53 @@ bool ViewProviderBody::canDragObjectToTarget(App::DocumentObject* obj,
     return ViewProviderPart::canDragObjectToTarget(obj, target);
 }
 
+
+bool ViewProviderBody::setEdit(int ModNum)
+{
+    // Connect only for Transform edit mode, and only once
+    if (ModNum == Gui::ViewProvider::Transform && !m_tfAcceptConn.connected()) {
+        m_tfAcceptConn = Gui::TaskTransformDialog::signalAccepted.connect(
+           [this](App::DocumentObject* obj) {
+                // Make sure the signal refers to *this* Body
+                if (!obj || obj != this->getObject())
+                    return;
+
+                // Type check without pulling in heavy headers
+                static const Base::Type BodyT = Base::Type::fromName("PartDesign::Body");
+                if (!obj->getTypeId().isDerivedFrom(BodyT))
+                    return;
+
+                auto* body = static_cast<PartDesign::Body*>(obj);
+
+                // Only absorb if something actually moved
+                if (body->Placement.getValue().isIdentity())
+                    return;
+
+                try {
+                    // Your helper does NOT open transactions or recompute
+                    PartDesign::resetBodyPlacement(body);
+                    // Do NOT recompute here; TaskTransformDialog::accept() will
+                    // recompute right after commit. That avoids double recompute.
+                } catch (...) {
+                    Base::Console().warning(
+                        "[PartDesign][Transform] resetBodyPlacement failed for %s\n",
+                        body->getNameInDocument());
+                }
+            });
+    }
+
+    // existing logic…
+    return PartGui::ViewProviderPart::setEdit(ModNum);
+}
+
+void ViewProviderBody::unsetEdit(int ModNum)
+{
+    // Disconnect when leaving Transform mode to avoid stray callbacks
+    if (ModNum == Gui::ViewProvider::Transform && m_tfAcceptConn.connected())
+        m_tfAcceptConn.disconnect();
+
+    // Call base first (or after), depending on existing pattern
+    PartGui::ViewProviderPart::unsetEdit(ModNum);
+
+ }
 

@@ -35,6 +35,7 @@
 #include "Utils.h"
 #include "Workbench.h"
 #include "WorkflowManager.h"
+#include "UniPartCSMigrator.h"
 
 using namespace PartDesignGui;
 namespace sp = std::placeholders;
@@ -74,6 +75,7 @@ Workbench::Workbench() = default;
 Workbench::~Workbench()
 {
     WorkflowManager::destruct();
+    UniPartCSMigrator::destruct();
 }
 
 void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) const
@@ -147,6 +149,7 @@ void Workbench::activated()
     Gui::Workbench::activated();
 
     WorkflowManager::init();
+    UniPartCSMigrator::init();
 
     std::vector<Gui::TaskView::TaskWatcher*> Watcher;
 

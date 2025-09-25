@@ -7,6 +7,7 @@ from . import TestHelix
 from . import TestHole
 from . import TestInvoluteGear
 from . import TestLinearPattern
+from . import TestLegacyMigration
 from . import TestLoft
 from . import TestMirrored
 from . import TestMultiTransform

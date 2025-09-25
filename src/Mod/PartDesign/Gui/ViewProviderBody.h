@@ -92,6 +92,10 @@ public:
     /* Check whether the object accept reordering of its children during drop.*/
     bool acceptReorderingObjects() const override { return true; };
 
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
+
+
 protected:
     /// Copy over all visual properties to the child features
     void unifyVisualProperty(const App::Property* prop);
@@ -100,6 +104,7 @@ protected:
 
 private:
     static const char* BodyModeEnum[];
+    boost::signals2::connection m_tfAcceptConn;
 };
 
 
