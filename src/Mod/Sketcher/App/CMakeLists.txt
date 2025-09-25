@@ -24,7 +24,7 @@ target_include_directories(
     Sketcher
     SYSTEM
     PUBLIC
-    ${EIGEN3_INCLUDE_DIR}
+    ${Eigen3_INCLUDE_DIR}
 )
 
 set(Sketcher_LIBS
@@ -162,15 +162,6 @@ if(FREECAD_USE_PCH)
             $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
     )
 endif(FREECAD_USE_PCH)
-
-# Suppress some very long Eigen3 warnings of older versions
-if (EIGEN3_NO_DEPRECATED_COPY)
-    set_source_files_properties(
-        planegcs/GCS.cpp
-        planegcs/SubSystem.cpp
-        planegcs/qp_eq.cpp
-        PROPERTIES COMPILE_FLAGS ${EIGEN3_NO_DEPRECATED_COPY})
-endif ()
 
 
 SET_BIN_DIR(Sketcher Sketcher /Mod/Sketcher)

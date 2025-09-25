@@ -40,7 +40,7 @@ List of Open Source components<br />
 <hr>
 
 <h3><a name="_TocEigen"></a>Eigen</h3>
-<p>Version: ${EIGEN3_VERSION}</p>
+<p>Version: ${Eigen3_VERSION}</p>
 <p>Web site: <a href="https://eigen.tuxfamily.org">https://eigen.tuxfamily.org</a></p>
 <p>License:  MPL version 2.0: <a href="https://www.mozilla.org/en-US/MPL/2.0/">https://www.mozilla.org/en-US/MPL/2.0/</a></p>
 

@@ -28,7 +28,7 @@
 constexpr const char * fcCoin3dVersion = "${COIN3D_VERSION}";
 
 // Eigen3
-constexpr const char * fcEigen3Version = "${EIGEN3_VERSION}";
+constexpr const char * fcEigen3Version = "${Eigen3_VERSION}";
 
 // FreeType
 constexpr const char * fcFreetypeVersion = "${FREETYPE_VERSION_STRING}";
