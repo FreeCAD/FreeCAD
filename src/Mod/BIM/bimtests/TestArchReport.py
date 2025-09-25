@@ -1077,3 +1077,36 @@ class TestArchReport(TestArchBase.TestArchBase):
             # a spreadsheet.
             self.assertEqual(len(data), len(self.doc.Objects))
 
+    def test_query_with_non_ascii_property_name(self):
+        """
+        Tests that the SQL engine can correctly handle non-ASCII (Unicode)
+        characters in property names, which is crucial for international users.
+        """
+        # --- Test Setup ---
+        # Add a dynamic property with a German name containing a non-ASCII character.
+        # This simulates a common international use case.
+        prop_name_unicode = "Fläche" # "Area" in German
+        self.column.addProperty("App::PropertyFloat", prop_name_unicode, "BIM")
+        setattr(self.column, prop_name_unicode, 42.5)
+        self.doc.recompute()
+
+        # --- The Query ---
+        # This query will fail at the parsing (lexing) stage with the old grammar.
+        query = f"SELECT {prop_name_unicode} FROM document WHERE Name = '{self.column.Name}'"
+
+        # --- Test Execution ---
+        # We call the "unsafe" select() API, as it should raise the parsing
+        # exception with the old grammar, and succeed with the new one.
+        try:
+            headers, results_data = Arch.select(query)
+            # --- Assertions for when the test passes ---
+            self.assertEqual(len(results_data), 1, "The query should find the single target object.")
+            self.assertEqual(headers, [prop_name_unicode])
+            self.assertAlmostEqual(results_data[0][0], 42.5)
+
+        except Arch.BimSqlSyntaxError as e:
+            # --- Assertion for when the test fails ---
+            # This makes the test's purpose clear: it's expected to fail
+            # with a syntax error until the grammar is fixed.
+            self.fail(f"Parser failed to handle Unicode identifier. Error: {e}")
+
