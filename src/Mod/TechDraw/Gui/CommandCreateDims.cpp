@@ -710,8 +710,10 @@ protected:
 
         GeomSelectionSizes selection(selPoints.size(), selLine.size(), selCircleArc.size(), selEllipseArc.size(), selSplineAndCo.size(), selFaces.size());
         if (selection.hasFaces()) {
-            if (selection.has1Face()) { makeCts_Faces(selAllowed); }
-            else { return false; }  // nothing else with face works
+            makeCts_Faces(selAllowed);
+            if (!selection.has1Face()) {
+                Base::Console().warning("Multiple faces are selected. Using first.\n");
+            }
         }
         else if (selection.hasPoints()) {
             if (selection.has1Point()) { selAllowed = true; }
