@@ -4693,7 +4693,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="419"/>
       <source>Select at least 2 faces</source>
-      <translation>Изабери најмање две странице</translation>
+      <translation>Изабери најмање 2 странице</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="480"/>
@@ -5982,7 +5982,7 @@ Continue?</source>
       <translation>Уређивач придруживања</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="894"/>
+      <location filename="../../ViewProviderExt.cpp" line="896"/>
       <source>Appearance per Face</source>
       <translation>Офарбај појединачне странице</translation>
     </message>
@@ -7064,7 +7064,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../DlgExportStep.cpp" line="208"/>
       <source>Do not show this dialog again</source>
-      <translation type="unfinished">Do not show this dialog again</translation>
+      <translation>Не приказуј више овај дијалог</translation>
     </message>
   </context>
   <context>
@@ -7072,7 +7072,7 @@ Overlapping volumes of the shapes will be removed.</source>
     <message>
       <location filename="../../DlgImportStep.cpp" line="149"/>
       <source>Do not show this dialog again</source>
-      <translation type="unfinished">Do not show this dialog again</translation>
+      <translation>Не приказуј више овај дијалог</translation>
     </message>
   </context>
   <context>
