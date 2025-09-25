@@ -356,59 +356,59 @@
       <translation>Не создавать Ссылки</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="483"/>
+      <location filename="../../../CommandCreateSimulation.py" line="490"/>
       <source>Enter your formula...</source>
       <translation>Введите вашу формулу...</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="536"/>
+      <location filename="../../../CommandCreateSimulation.py" line="543"/>
       <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
       <translation>В заголовках есть переменные, которые необходимо заменить фактическими значениями. Более подробная информация о каждом случае приведена в его всплывающей подсказке.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="539"/>
+      <location filename="../../../CommandCreateSimulation.py" line="546"/>
       <source> - Linear: C + VEL*time</source>
       <translation> - Линейный: C + VEL*time</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="541"/>
+      <location filename="../../../CommandCreateSimulation.py" line="548"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
       <translation> - Квадратичный: C + VEL*time + ACC*time^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="544"/>
+      <location filename="../../../CommandCreateSimulation.py" line="551"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
       <translation> - Гармонический: C + AMP*sin(VEL*time - PHASE)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="547"/>
+      <location filename="../../../CommandCreateSimulation.py" line="554"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
       <translation> - Экспоненциальный: C*exp(время/TIMEC)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="553"/>
+      <location filename="../../../CommandCreateSimulation.py" line="560"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
       <translation> - Плавный шаг: L1 + (L2 - L1)*(1/2) + (1/pi)*arctan(УКЛОН*(время - T0)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="560"/>
+      <location filename="../../../CommandCreateSimulation.py" line="567"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
       <translation> - Плавный квадратичный импульс: (H/pi)*(arctan(УКЛОН*(время - T1)) - arctan(УКЛОН*(время - T2)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="567"/>
+      <location filename="../../../CommandCreateSimulation.py" line="574"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
       <translation> Импульс с плавной верхней площадкой: ((1/pi)*(arctan(1000*(время - T1)) - arctan(1000*(время - T2))))*(((H2 - H1)/(T2 - T1))*(время - T1) + H1)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="577"/>
+      <location filename="../../../CommandCreateSimulation.py" line="584"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation>C - постоянное смещение.
 VEL - скорость или уклон или градиент прямой линии.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="585"/>
+      <location filename="../../../CommandCreateSimulation.py" line="592"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
@@ -417,7 +417,7 @@ VEL — скорость или наклон или градиент прямо�
 ACC — ускорение или коэффициент второго порядка. Функция — парабола.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="594"/>
+      <location filename="../../../CommandCreateSimulation.py" line="601"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
@@ -428,14 +428,14 @@ VEL — угловая скорость в радианах в секунду.
 PHASE — фаза синусоиды.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="601"/>
+      <location filename="../../../CommandCreateSimulation.py" line="608"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
       <translation>C — константа.
 TIMEC — константа времени экспоненциальной функции.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="609"/>
+      <location filename="../../../CommandCreateSimulation.py" line="616"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
@@ -444,7 +444,7 @@ L2 — уровень ступени после времени = T0.
 УКЛОН (SLOPE) определяет крутизну перехода между L1 и L2 около времени = T0. Более высокие значения дают более острые угловые ступени. Подходит УКЛОН = 1000 или больше.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="618"/>
+      <location filename="../../../CommandCreateSimulation.py" line="625"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -455,7 +455,7 @@ T2 — конец импульса.
 УКЛОН (SLOPE) определяет крутизну перехода между 0 и H относительно времени = T1 и T2. Более высокие значения дают более острые угловые импульсы. Подходит УКЛОН = 1000 или больше.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="629"/>
+      <location filename="../../../CommandCreateSimulation.py" line="636"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -470,13 +470,13 @@ H2 — высота в точке T2 в конце ската.
 УКЛОН (SLOPE) определяет крутизну перехода между 0 и H1 и H2 к 0 примерно за время = T1 и T2 соответственно. Более высокие значения дают более острые угловые импульсы. Подходит УКЛОН = 1000 или больше.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="667"/>
-      <location filename="../../../CommandCreateSimulation.py" line="684"/>
+      <location filename="../../../CommandCreateSimulation.py" line="674"/>
+      <location filename="../../../CommandCreateSimulation.py" line="691"/>
       <source>Help</source>
       <translation>Справка</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="682"/>
+      <location filename="../../../CommandCreateSimulation.py" line="689"/>
       <source>Hide help</source>
       <translation>Скрыть справку</translation>
     </message>
@@ -894,53 +894,53 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>Вы хотите переместить объект и удалить связанные соединения?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="982"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="997"/>
       <source>Move part</source>
       <translation>Переместить деталь</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1316"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1331"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>Поставщик Вида для Сборки</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1333"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1348"/>
       <source>Empty Assembly</source>
       <translation>Пустая сборка</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1337"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1352"/>
       <source>Over-constrained:</source>
       <translation>Конфликтующие ограничения:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1344"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1359"/>
       <source>Malformed joints:</source>
       <translation>Неверные сопряжения:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1350"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1365"/>
       <source>Redundant joints:</source>
       <translation>Избыточные сопряжения:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1357"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1372"/>
       <source>Partially redundant:</source>
       <translation>Частично избыточны:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1363"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1378"/>
       <source>Solver failed to converge</source>
       <translation>Решатель не смог свести решение</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1369"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1384"/>
       <source>Under-constrained:</source>
       <translation>Недостаточно ограничен:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1371"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1386"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Степень свободы</numerusform>
@@ -950,7 +950,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1375"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1390"/>
       <source>Fully constrained</source>
       <translation>Полностью ограничен</translation>
     </message>
@@ -1111,7 +1111,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="495"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="511"/>
       <source>Joints</source>
       <translation>Соединения</translation>
     </message>

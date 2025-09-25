@@ -16,7 +16,7 @@
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="81"/>
       <source>The reference axis of the helix.</source>
-      <translation>Referenčna os vijačnice.</translation>
+      <translation>Sklicna os vijačnice.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="83"/>
@@ -146,7 +146,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1500"/>
       <source>Sweeps the selected sketch or profile along a helix and adds it to the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a helix and adds it to the body</translation>
+      <translation>Vzdolži izbrani očrt ali presek po vijačnici in doda k telesu</translation>
     </message>
   </context>
   <context>
@@ -182,7 +182,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1313"/>
       <source>Sweeps the selected sketch or profile along a path and adds it to the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a path and adds it to the body</translation>
+      <translation>Vzdolži izbrani očrt ali presek po poti in doda k telesu</translation>
     </message>
   </context>
   <context>
@@ -344,7 +344,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1250"/>
       <source>Revolves the sketch or profile around a line or axis and removes it from the body</source>
-      <translation type="unfinished">Revolves the sketch or profile around a line or axis and removes it from the body</translation>
+      <translation>Zvrti očrt ali presek okoli črte oz. osi in ga odvzame od telesa</translation>
     </message>
   </context>
   <context>
@@ -362,7 +362,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1152"/>
       <source>Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile</source>
-      <translation type="unfinished">Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile</translation>
+      <translation>Ustvari v izbranem telesu izvrtine v središčih krogov ali lokov izbranega očrta oz. preseka</translation>
     </message>
   </context>
   <context>
@@ -519,12 +519,12 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="504"/>
       <source>New Sketch</source>
-      <translation type="unfinished">New Sketch</translation>
+      <translation>Nov očrt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="505"/>
       <source>Creates a new sketch</source>
-      <translation type="unfinished">Creates a new sketch</translation>
+      <translation>Ustvari nov očrt</translation>
     </message>
   </context>
   <context>
@@ -542,7 +542,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1094"/>
       <source>Extrudes the selected sketch or profile and adds it to the body</source>
-      <translation type="unfinished">Extrudes the selected sketch or profile and adds it to the body</translation>
+      <translation>Izrine izbrani očrt ali presek in doda k telesu</translation>
     </message>
   </context>
   <context>
@@ -578,7 +578,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1123"/>
       <source>Extrudes the selected sketch or profile and removes it from the body</source>
-      <translation type="unfinished">Extrudes the selected sketch or profile and removes it from the body</translation>
+      <translation>Izrine izbrani očrt ali presek in odvzame od telesa</translation>
     </message>
   </context>
   <context>
@@ -632,7 +632,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1195"/>
       <source>Revolves the selected sketch or profile around a line or axis and adds it to the body</source>
-      <translation type="unfinished">Revolves the selected sketch or profile around a line or axis and adds it to the body</translation>
+      <translation>Zvrti izbrani očrt ali presek okoli črte oz. osi in doda k telesu</translation>
     </message>
   </context>
   <context>
@@ -704,7 +704,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1572"/>
       <source>Sweeps the selected sketch or profile along a helix and removes it from the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a helix and removes it from the body</translation>
+      <translation>Vzdolži izbrani očrt ali presek po vijačnici in odvzame od telesa</translation>
     </message>
   </context>
   <context>
@@ -740,7 +740,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../Command.cpp" line="1360"/>
       <source>Sweeps the selected sketch or profile along a path and removes it from the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a path and removes it from the body</translation>
+      <translation>Vzdolži izbrani očrt ali presek po poti in odvzame od telesa</translation>
     </message>
   </context>
   <context>
@@ -912,7 +912,7 @@ da se izogne samosečnosti.</translation>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="258"/>
       <source>Sketch on Face</source>
-      <translation type="unfinished">Sketch on Face</translation>
+      <translation>Očrt na ploskev</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="317"/>
@@ -921,9 +921,9 @@ da se izogne samosečnosti.</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="514"/>
-      <location filename="../../SketchWorkflow.cpp" line="742"/>
+      <location filename="../../SketchWorkflow.cpp" line="746"/>
       <source>New Sketch</source>
-      <translation type="unfinished">New Sketch</translation>
+      <translation>Nov očrt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2327"/>
@@ -980,44 +980,6 @@ da se izogne samosečnosti.</translation>
       <location filename="../../TaskMultiTransformParameters.cpp" line="382"/>
       <source>Scale</source>
       <translation>Povečava</translation>
-    </message>
-  </context>
-  <context>
-    <name>FeaturePickDialog</name>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="42"/>
-      <source>Valid</source>
-      <translation>Veljavno</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="43"/>
-      <source>Invalid shape</source>
-      <translation>Neveljavna oblika</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="44"/>
-      <source>No wire in sketch</source>
-      <translation>V očrtu ni nobenega črtovja</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="45"/>
-      <source>Sketch already used by other feature</source>
-      <translation>Očrt je že uporabljen za drugo značilnost</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="46"/>
-      <source>Sketch belongs to another body feature</source>
-      <translation type="unfinished">Sketch belongs to another body feature</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="48"/>
-      <source>Feature is located after the tip of the body</source>
-      <translation type="unfinished">Feature is located after the tip of the body</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="47"/>
-      <source>Base plane</source>
-      <translation>Osnovna ravnina</translation>
     </message>
   </context>
   <context>
@@ -2251,7 +2213,7 @@ If zero, it is equal to Radius2</translation>
       <translation>Ravnina</translation>
     </message>
     <message>
-      <location filename="../../TaskMirroredParameters.cpp" line="175"/>
+      <location filename="../../TaskMirroredParameters.cpp" line="182"/>
       <source>Error</source>
       <translation>Napaka</translation>
     </message>
@@ -2835,7 +2797,7 @@ merjena vzdolž določene smeri</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="70"/>
       <source>Vertical sketch axis</source>
-      <translation>Navpična os skice</translation>
+      <translation>Navpična os očrta</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="154"/>
@@ -3043,7 +3005,7 @@ merjena vzdolž določene smeri</translation>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="404"/>
       <source>Normal sketch axis</source>
-      <translation>Os normale skice</translation>
+      <translation>Os normale očrta</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="403"/>
@@ -3189,48 +3151,48 @@ merjena vzdolž določene smeri</translation>
       <translation>Napaka</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="775"/>
+      <location filename="../../SketchWorkflow.cpp" line="779"/>
       <source>Several sub-elements selected</source>
       <translation>Izbranih več podelementov</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="776"/>
-      <source>Select a single face as support for a sketch!</source>
-      <translation type="unfinished">Select a single face as support for a sketch!</translation>
-    </message>
-    <message>
       <location filename="../../SketchWorkflow.cpp" line="780"/>
-      <source>Select a face as support for a sketch!</source>
-      <translation type="unfinished">Select a face as support for a sketch!</translation>
+      <source>Select a single face as support for a sketch!</source>
+      <translation>Izberite eno ploskev kot podlago za očrt!</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="784"/>
-      <source>Need a planar face as support for a sketch!</source>
-      <translation type="unfinished">Need a planar face as support for a sketch!</translation>
+      <source>Select a face as support for a sketch!</source>
+      <translation>Izberite ploskev kot podlago za očrt!</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="788"/>
-      <source>Create a plane first or select a face to sketch on</source>
-      <translation type="unfinished">Create a plane first or select a face to sketch on</translation>
+      <source>Need a planar face as support for a sketch!</source>
+      <translation>Za podlago skice je potrebna ravninska ploskev!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="779"/>
+      <location filename="../../SketchWorkflow.cpp" line="792"/>
+      <source>Create a plane first or select a face to sketch on</source>
+      <translation>Ustvarite najprej ravnino ali izberite ploskev, na katero želite očrtavati</translation>
+    </message>
+    <message>
+      <location filename="../../SketchWorkflow.cpp" line="783"/>
       <source>No support face selected</source>
       <translation>Nobena podporna ploskev ni izbrana</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="783"/>
+      <location filename="../../SketchWorkflow.cpp" line="787"/>
       <source>No planar support</source>
       <translation>Ni ravninske podpore</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="787"/>
+      <location filename="../../SketchWorkflow.cpp" line="791"/>
       <source>No valid planes in this document</source>
       <translation>Ni veljavnih ravnin v tem dokumentu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1014"/>
-      <location filename="../../SketchWorkflow.cpp" line="702"/>
+      <location filename="../../SketchWorkflow.cpp" line="706"/>
       <location filename="../../ViewProvider.cpp" line="139"/>
       <location filename="../../ViewProviderDatum.cpp" line="250"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
@@ -3274,12 +3236,12 @@ merjena vzdolž določene smeri</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../SketchWorkflow.cpp" line="703"/>
+      <location filename="../../SketchWorkflow.cpp" line="707"/>
       <location filename="../../ViewProvider.cpp" line="140"/>
       <location filename="../../ViewProviderDatum.cpp" line="251"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
       <source>Close this dialog?</source>
-      <translation type="unfinished">Close this dialog?</translation>
+      <translation>Želite zapreti to pogovorno okno?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1633"/>
@@ -3519,7 +3481,7 @@ To lahko pripelje do nepričakovanih rezultatov.</translation>
       <location filename="../../TaskRevolutionParameters.cpp" line="227"/>
       <location filename="../../TaskTransformedParameters.cpp" line="441"/>
       <source>Horizontal sketch axis</source>
-      <translation>Vodoravna os skice</translation>
+      <translation>Vodoravna os očrta</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="229"/>
@@ -4525,7 +4487,7 @@ nad 90: v spodnjem delu večji premer luknje</translation>
       <location filename="../../../App/FeatureExtrude.cpp" line="599"/>
       <location filename="../../../App/FeatureFillet.cpp" line="119"/>
       <location filename="../../../App/FeatureGroove.cpp" line="196"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2185"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2197"/>
       <location filename="../../../App/FeatureLoft.cpp" line="277"/>
       <location filename="../../../App/FeatureLoft.cpp" line="312"/>
       <location filename="../../../App/FeaturePipe.cpp" line="404"/>
@@ -4627,7 +4589,7 @@ nad 90: v spodnjem delu večji premer luknje</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="112"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1904"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1913"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4670,8 +4632,8 @@ nad 90: v spodnjem delu večji premer luknje</translation>
       <location filename="../../../App/FeatureRevolution.cpp" line="252"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
-      <translation>Iz skice ni bilo mogoče ustvariti ploskve.
-Črte v skici se ne smejo križati.</translation>
+      <translation>Iz očrta ni bilo mogoče ustvariti ploskve.
+Črte očrta se ne smejo sekati.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="137"/>
@@ -4719,7 +4681,7 @@ Intersecting sketch entities in a sketch are not allowed.</source>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="299"/>
       <location filename="../../../App/FeatureHelix.cpp" line="331"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2529"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2541"/>
       <source>Error: Result is not a solid</source>
       <translation>Napaka: dobljeno ni telo</translation>
     </message>
@@ -4761,73 +4723,78 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Neveljavna vrsta navoja</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1944"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1953"/>
       <source>Hole error: Unsupported length specification</source>
       <translation>Napaka luknje: nepodprta določitev dolžine</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1947"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1956"/>
       <source>Hole error: Invalid hole depth</source>
       <translation>Napaka luknje: neveljavna globina luknje</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1970"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1979"/>
       <source>Hole error: Invalid taper angle</source>
       <translation>Napaka luknje: neveljaven kót koničenja</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1991"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2000"/>
       <source>Hole error: Hole cut diameter too small</source>
       <translation>Napaka luknje: Premajhen premer vrtanja luknje</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1995"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2004"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
       <translation>Napaka luknje: globina vrtanja luknje mora biti manjša od globine luknje</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1999"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2008"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
       <translation>Napaka luknje: globina vrtanja luknje mora biti večja ali enaka nič</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2021"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2030"/>
       <source>Hole error: Invalid countersink</source>
       <translation>Napaka luknje: neveljavno kotno grezenje</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2054"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2063"/>
       <source>Hole error: Invalid drill point angle</source>
       <translation>Napaka luknje: neveljaven kót konice svedra</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2064"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2073"/>
       <source>Hole error: Invalid drill point</source>
       <translation>Napaka luknje: neveljavna konica svedra</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2098"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2107"/>
       <source>Hole error: Could not revolve sketch</source>
       <translation>Napaka luknje: očrta ni mogoče zvrteti</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2102"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2111"/>
       <source>Hole error: Resulting shape is empty</source>
       <translation>Napaka luknje: dobljena oblika je prazna</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2112"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2121"/>
       <source>Error: Adding the thread failed</source>
       <translation>Napaka: dodajanje navoja spodletelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2163"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2168"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2129"/>
+      <source>Hole error: Finding axis failed</source>
+      <translation type="unfinished">Hole error: Finding axis failed</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2175"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2180"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation type="unfinished">Boolean operation failed on profile Edge</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2174"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2186"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation type="unfinished">Boolean operation produced non-solid on profile Edge</translation>
     </message>
@@ -4837,24 +4804,24 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Logična operacija spodletela</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2195"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2207"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Iz očrta ni bilo mogoče ustvariti ploskve.
 Sekanje enot očrta ali več ploskev v očrtu ni dopustno pri izdelavi ugreza v ploskev.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2345"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2357"/>
       <source>Thread type out of range</source>
       <translation>Vrsta navoja izven obsega</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2348"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2360"/>
       <source>Thread size out of range</source>
       <translation>Velikost navoja izven obsega</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2504"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2516"/>
       <source>Error: Thread could not be built</source>
       <translation>Napak: navoja ni bilo mogoče izvesti</translation>
     </message>
@@ -5244,12 +5211,12 @@ Sekajočih se prvin očrta ali več ploskev v očrtu ne sme biti.</translation>
     <message>
       <location filename="../../Command.cpp" line="2407"/>
       <source>Create Datum</source>
-      <translation type="unfinished">Create Datum</translation>
+      <translation>Ustvari sklicni predmet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2408"/>
       <source>Creates a datum object or local coordinate system</source>
-      <translation type="unfinished">Creates a datum object or local coordinate system</translation>
+      <translation>Ustvari sklicni predmet ali krajevni koordinatni sistem</translation>
     </message>
   </context>
   <context>

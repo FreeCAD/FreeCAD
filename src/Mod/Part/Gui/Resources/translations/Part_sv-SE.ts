@@ -1061,7 +1061,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="14"/>
       <source>Block Definition</source>
-      <translation type="unfinished">Block Definition</translation>
+      <translation>Blockdefinition</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="20"/>
@@ -2786,7 +2786,7 @@ Om båda längderna är noll används riktningens magnitud.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="290"/>
       <source>Taper (draft) angle along extrusion direction</source>
-      <translation>Avsmalningsvinkel (dragvinkel) längs extruderingsriktningen</translation>
+      <translation>Avsmalningsvinkel (släppning) längs extruderingsriktningen</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="306"/>
@@ -2796,7 +2796,7 @@ Om båda längderna är noll används riktningens magnitud.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="319"/>
       <source>Taper (draft) angle against extrusion direction</source>
-      <translation>Avsmalningsvinkel (drag) mot extruderingsriktningen</translation>
+      <translation>Avsmalningsvinkel (släppning) mot extruderingsriktningen</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="337"/>
@@ -3583,7 +3583,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
       <location filename="../../DlgPrimitives.ui" line="1399"/>
       <location filename="../../DlgPrimitives.ui" line="2441"/>
       <source>Circumradius</source>
-      <translation type="unfinished">Circumradius</translation>
+      <translation>Omkretsradie</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1518"/>
@@ -5574,7 +5574,7 @@ i 3D-vyn för svepbanan.</translation>
       <location filename="../../AppPartGui.cpp" line="250"/>
       <location filename="../../AppPartGui.cpp" line="251"/>
       <source>Part/Part Design</source>
-      <translation type="unfinished">Part/Part Design</translation>
+      <translation>Part/Part Design</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="252"/>
@@ -5986,7 +5986,7 @@ Fortsättning?</translation>
       <translation>Redigerare för bilaga</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="894"/>
+      <location filename="../../ViewProviderExt.cpp" line="896"/>
       <source>Appearance per Face</source>
       <translation>Utseende per yta</translation>
     </message>
