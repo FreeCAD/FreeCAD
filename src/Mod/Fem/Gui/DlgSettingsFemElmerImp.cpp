@@ -56,7 +56,6 @@ void DlgSettingsFemElmerImp::saveSettings()
 
     ui->sb_num_processes->onSave();
 
-    ui->cb_filtering->onSave();
     ui->ckb_binary_format->onSave();
     ui->ckb_geom_id->onSave();
 }
@@ -68,7 +67,6 @@ void DlgSettingsFemElmerImp::loadSettings()
 
     ui->sb_num_processes->onRestore();
 
-    ui->cb_filtering->onRestore();
     ui->ckb_binary_format->onRestore();
     ui->ckb_geom_id->onRestore();
 }

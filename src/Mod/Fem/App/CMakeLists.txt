@@ -82,6 +82,20 @@ if(BUILD_FEM_VTK)
         FemVTKTools.cpp
     )
     SOURCE_GROUP("PostObjects" FILES ${FemPost_SRCS})
+
+    SET(FemVTK_SRCS
+        VTKExtensions/vtkFemFrameSourceAlgorithm.h
+        VTKExtensions/vtkFemFrameSourceAlgorithm.cpp
+    )
+    SET(VTK_SRCS_0903
+        VTKExtensions/vtkCleanUnstructuredGrid.h
+        VTKExtensions/vtkCleanUnstructuredGrid.cxx
+        VTKExtensions/vtkSMPTools.h
+    )
+    if (${VTK_MAJOR_VERSION} EQUAL 9 AND ${VTK_MINOR_VERSION} LESS 3)
+        list(APPEND FemVTK_SRCS ${VTK_SRCS_0903})
+    endif()
+    SOURCE_GROUP("VTKExtensions" FILES ${FemVTK_SRCS})
 endif(BUILD_FEM_VTK)
 
 
@@ -177,6 +191,7 @@ SET(Fem_SRCS
     ${FemConstraints_SRCS}
     ${FemPost_SRCS}
     ${FemSet_SRCS}
+    ${FemVTK_SRCS}
     ${Mod_SRCS}
     ${Python_SRCS}
 )
@@ -196,6 +211,7 @@ target_include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 target_include_directories(

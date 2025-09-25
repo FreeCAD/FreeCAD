@@ -146,10 +146,14 @@
 #include <gp_Vec.hxx>
 
 // VTK
+#include <vtkVersionMacros.h>
 #include <vtkAlgorithmOutput.h>
 #include <vtkAppendFilter.h>
 #include <vtkArrayCalculator.h>
 #include <vtkCellArray.h>
+#if VTK_VERSION_NUMBER >= VTK_VERSION_CHECK(9, 3, 0)
+#include <vtkCleanUnstructuredGrid.h>
+#endif
 #include <vtkCompositeDataSet.h>
 #include <vtkDataArray.h>
 #include <vtkDataSetReader.h>
