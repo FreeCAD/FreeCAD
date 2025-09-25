@@ -1177,7 +1177,7 @@ void DSHOffsetController::configureToolWidget()
 
     onViewParameters[OnViewParameter::First]->setLabelType(
         Gui::SoDatumLabel::DISTANCE,
-        Gui::EditableDatumLabel::Function::Dimensioning);
+        Gui::EditableDatumLabel::Function::Forced);
 }
 
 template<>
