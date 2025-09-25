@@ -706,4 +706,3 @@ void addSketcherWorkbenchVisual(Gui::ToolBarItem& visual)
 }
 
 } /* namespace SketcherGui */
-

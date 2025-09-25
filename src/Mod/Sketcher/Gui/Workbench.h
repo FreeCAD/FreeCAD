@@ -73,4 +73,3 @@ SketcherGuiExport void addSketcherWorkbenchVisual(Gui::ToolBarItem& visual);
 }  // namespace SketcherGui
 
 #endif  // SKETCHER_WORKBENCH_H
-
