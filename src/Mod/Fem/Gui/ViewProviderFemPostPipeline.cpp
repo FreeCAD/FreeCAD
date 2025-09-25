@@ -121,7 +121,7 @@ void ViewProviderFemPostPipeline::beforeDelete()
         analyzeView->removeView(this);
     }
 
-    return ViewProviderFemPostObject::beforeDelete();
+    ViewProviderFemPostObject::beforeDelete();
 }
 
 void ViewProviderFemPostPipeline::onSelectionChanged(const Gui::SelectionChanges& sel)
