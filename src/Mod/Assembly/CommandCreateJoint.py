@@ -79,7 +79,7 @@ class CommandCreateJointFixed:
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointFixed",
                 "<p>1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation</p>"
-                "<p>2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.</p>"
+                "<p>2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.</p>",
             ),
             "CmdType": "ForEdit",
         }
@@ -103,7 +103,7 @@ class CommandCreateJointRevolute:
             "Pixmap": "Assembly_CreateJointRevolute",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointRevolute", "Revolute Joint"),
             "Accel": "R",
-            "ToolTip":QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointRevolute",
                 "Creates a revolute joint allowing rotation around a single axis between selected parts",
             ),
@@ -126,7 +126,7 @@ class CommandCreateJointCylindrical:
             "Pixmap": "Assembly_CreateJointCylindrical",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointCylindrical", "Cylindrical Joint"),
             "Accel": "C",
-            "ToolTip":QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointCylindrical",
                 "Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts",
             ),
@@ -199,7 +199,7 @@ class CommandCreateJointDistance:
                 "Assembly_CreateJointDistance",
                 "<p>Creates a distance joint that fixes the distance between the selected objects</p>"
                 "<p>Creates one of several different joints based on the selection. "
-                "For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</p>"
+                "For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</p>",
             ),
             "CmdType": "ForEdit",
         }
@@ -296,7 +296,7 @@ class CommandCreateJointRackPinion:
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointRackPinion",
                 "<p>Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint</p>"
-                "<p>Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.</p>"
+                "<p>Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.</p>",
             ),
             "CmdType": "ForEdit",
         }
@@ -344,7 +344,7 @@ class CommandCreateJointGears:
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointGears",
                 "<p>Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.</p>"
-                "<p>Select the same coordinate systems as the revolute joints.</p>"
+                "<p>Select the same coordinate systems as the revolute joints.</p>",
             ),
             "CmdType": "ForEdit",
         }
@@ -368,7 +368,7 @@ class CommandCreateJointBelt:
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointBelt",
                 "<p>Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.</p>"
-                "<p>Select the same coordinate systems as the revolute joints.</p>"
+                "<p>Select the same coordinate systems as the revolute joints.</p>",
             ),
             "CmdType": "ForEdit",
         }
@@ -392,7 +392,7 @@ class CommandGroupGearBelt:
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointGearBelt",
                 "<p>Creates a gears or belt joint that links 2 rotating gears together</p>"
-                "<p>Select the same coordinate systems as the revolute joints.</p>"
+                "<p>Select the same coordinate systems as the revolute joints.</p>",
             ),
             "CmdType": "ForEdit",
         }
@@ -431,7 +431,7 @@ class CommandToggleGrounded:
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_ToggleGrounded",
                 "<p>Toggles the grounding of a part.</p>"
-                "<p>Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble."
+                "<p>Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.",
             ),
             "CmdType": "ForEdit",
         }
