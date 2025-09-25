@@ -33,6 +33,7 @@
 #include <cassert>
 #endif
 
+#include <Precision.hxx>
 #include <boost/graph/graph_concepts.hpp>
 
 #include "Constraints.h"
@@ -1509,10 +1510,10 @@ double ConstraintTangentCircumf::error()
     }
 
     if (internal) {
-        return scale * ((dx * dx + dy * dy) - (*r1() - *r2()) * (*r1() - *r2()));
+        return scale * (d_sq - (*r1() - *r2()) * (*r1() - *r2()));
     }
     else {
-        return scale * ((dx * dx + dy * dy) - (*r1() + *r2()) * (*r1() + *r2()));
+        return scale * (d_sq - (*r1() + *r2()) * (*r1() + *r2()));
     }
 }
 
