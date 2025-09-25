@@ -45,7 +45,7 @@ Py_ssize_t numeric_limits_max()
     return std::numeric_limits<Py_ssize_t>::max();
 }
 
-#if !defined(Py_LIMITED_API)
+#if !defined(Py_LIMITED_API) && !defined(Py_UNICODE_DEPRECATED)
 Py_UNICODE unicode_null_string[1] = { 0 };
 #endif
 char32_t ucs4_null_string[1] = { 0 };
