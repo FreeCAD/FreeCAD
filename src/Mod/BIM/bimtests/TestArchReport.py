@@ -949,6 +949,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         count_func = next((f for f in api_data['functions']['Aggregate'] if f['name'] == 'COUNT'), None)
         self.assertIsNotNone(count_func)
         self.assertIn('description', count_func)
+        self.assertIn('snippet', count_func)
         self.assertGreater(len(count_func['description']), 0)
 
     def test_cheatsheet_dialog_creation(self):
@@ -1139,4 +1140,23 @@ class TestArchReport(TestArchBase.TestArchBase):
         expected_order = sorted(expected_order, key=lambda x: (x[1], x[0]))
 
         self.assertListEqual(data, expected_order)
+
+    def test_hover_tooltips(self):
+        """Tests that the custom SQL editor can generate correct tooltips."""
+        if not FreeCAD.GuiUp:
+            self.skipTest("Cannot test SqlQueryEditor without a GUI.")
+
+        # 1. Setup the editor and provide it with the API docs
+        editor = ArchReport.SqlQueryEditor()
+        api_docs = Arch.getSqlApiDocumentation()
+        editor.set_api_documentation(api_docs)
+
+        # 2. Test tooltip for a function
+        func_tooltip = editor._get_tooltip_for_word("CONVERT")
+        self.assertIn("CONVERT(quantity, 'unit')", func_tooltip)
+        self.assertIn("Utility", func_tooltip)
+
+        # 3. Test tooltip for a clause
+        clause_tooltip = editor._get_tooltip_for_word("SELECT")
+        self.assertIn("SQL Clause", clause_tooltip)
 

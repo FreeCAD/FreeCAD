@@ -120,12 +120,14 @@ class FunctionRegistry:
     def __init__(self):
         self._functions = {}
 
-    def register(self, name, function_class, category='General', description=''):
+    def register(self, name, function_class, category, signature, description, snippet=""):
         """Registers a class to handle a function with the given name."""
         self._functions[name.upper()] = {
             'class': function_class,
             'category': category,
-            'description': description
+            'signature': signature,
+            'description': description,
+            'snippet': snippet,
         }
 
     def get_class(self, name):
@@ -1069,29 +1071,30 @@ def _initialize_engine():
     from_function_registry = FunctionRegistry()
 
     # 2. Register all built-in function classes
-    # SELECT Functions
-    select_function_registry.register('COUNT', AggregateFunction, category=translate("Arch", "Aggregate"),
-                                      description=translate("Arch", "Counts rows that match criteria."))
-    select_function_registry.register('SUM', AggregateFunction, category=translate("Arch", "Aggregate"),
-                                      description=translate("Arch", "Calculates the sum of a numerical property."))
-    select_function_registry.register('MIN', AggregateFunction, category=translate("Arch", "Aggregate"),
-                                      description=translate("Arch", "Finds the minimum value of a property."))
-    select_function_registry.register('MAX', AggregateFunction, category=translate("Arch", "Aggregate"),
-                                      description=translate("Arch", "Finds the maximum value of a property."))
-    select_function_registry.register('LOWER', LowerFunction, category=translate("Arch", "String"),
-                                      description=translate("Arch", "Converts text to lowercase."))
-    select_function_registry.register('UPPER', UpperFunction, category=translate("Arch", "String"),
-                                      description=translate("Arch", "Converts text to uppercase."))
-    select_function_registry.register('CONCAT', ConcatFunction, category=translate("Arch", "String"),
-                                      description=translate("Arch", "Joins multiple strings and properties together."))
-    select_function_registry.register('TYPE', TypeFunction, category=translate("Arch", "Utility"),
-                                      description=translate("Arch", "Returns the object's BIM type (e.g., 'Wall')."))
-    select_function_registry.register('CONVERT', ConvertFunction, category=translate("Arch", "Utility"),
-                                      description=translate("Arch", "Converts a Quantity to a different unit (e.g., CONVERT(Length, 'm'))."))
 
-     # FROM Functions
-    from_function_registry.register('CHILDREN', ChildrenFromFunction, category=translate("Arch", "Hierarchical"),
-                                      description=translate("Arch", "Selects child objects of a given parent set."))
+    # SELECT Functions
+    select_function_registry.register('COUNT', AggregateFunction, category="Aggregate", signature="COUNT(* | property)",
+                                      description="Counts rows that match criteria.", snippet="SELECT COUNT(*) FROM document WHERE IfcType = 'Space'")
+    select_function_registry.register('SUM', AggregateFunction, category="Aggregate", signature="SUM(property)",
+                                      description="Calculates the sum of a numerical property.", snippet="SELECT SUM(Area) FROM document WHERE IfcType = 'Space'")
+    select_function_registry.register('MIN', AggregateFunction, category="Aggregate", signature="MIN(property)",
+                                      description="Finds the minimum value of a property.", snippet="SELECT MIN(Length) FROM document WHERE IfcType = 'Wall'")
+    select_function_registry.register('MAX', AggregateFunction, category="Aggregate", signature="MAX(property)",
+                                      description="Finds the maximum value of a property.", snippet="SELECT MAX(Height) FROM document WHERE IfcType = 'Wall'")
+    select_function_registry.register('LOWER', LowerFunction, category="String", signature="LOWER(property)",
+                                      description="Converts text to lowercase.", snippet="SELECT Label FROM document WHERE LOWER(Label) = 'exterior wall'")
+    select_function_registry.register('UPPER', UpperFunction, category="String", signature="UPPER(property)",
+                                      description="Converts text to uppercase.", snippet="SELECT Label FROM document WHERE UPPER(IfcType) = 'WALL'")
+    select_function_registry.register('CONCAT', ConcatFunction, category="String", signature="CONCAT(value1, value2, ...)",
+                                      description="Joins multiple strings and properties together.", snippet="SELECT CONCAT(Label, ': ', IfcType) FROM document")
+    select_function_registry.register('TYPE', TypeFunction, category="Utility", signature="TYPE(*)",
+                                      description="Returns the object's BIM type (e.g., 'Wall').", snippet="SELECT Label FROM document WHERE TYPE(*) = 'Wall'")
+    select_function_registry.register('CONVERT', ConvertFunction, category="Utility", signature="CONVERT(quantity, 'unit')",
+                                      description="Converts a Quantity to a different unit (e.g., CONVERT(Length, 'm')).", snippet="SELECT CONVERT(Length, 'm') AS LengthInMeters FROM document")
+    # FROM Functions
+    from_function_registry.register('CHILDREN', ChildrenFromFunction, category="Hierarchical", signature="CHILDREN(subquery)",
+                                      description="Selects child objects of a given parent set.", snippet="SELECT * FROM CHILDREN(SELECT * FROM document WHERE Label = 'My Floor')")
+
     # 3. Define and instantiate the transformer
     class FinalTransformer(generated_sql_parser.Transformer, SqlTransformerMixin):
         def __init__(self, select_functions, from_functions):
@@ -1340,11 +1343,21 @@ def getSqlApiDocumentation() -> dict:
         category = data['category']
         if category not in api_data['functions']:
             api_data['functions'][category] = []
-        api_data['functions'][category].append({'name': name, 'description': data['description']})
+        api_data['functions'][category].append({
+            'name': name,
+            'signature': data['signature'],
+            'description': data['description'],
+            'snippet': data['snippet'],
+        })
 
-    # Dynamically build the clauses list by subtracting all known function names
-    # from the full list of keywords.
-    all_function_names = set(all_registries.keys())
-    api_data['clauses'] = [k for k in getSqlKeywords() if k not in all_function_names]
+    # To get a clean list of "Clauses" for the cheatsheet, we use an explicit
+    # whitelist of keywords that represent major SQL clauses. This is more
+    # robust and clearer than trying to filter out all non-clause tokens.
+    CLAUSE_KEYWORDS = {
+        'SELECT', 'FROM', 'WHERE', 'GROUP', 'BY', 'ORDER', 'AS', 'AND', 'OR', 'IS', 'NOT', 'IN', 'LIKE'
+    }
+    # We still get all terminals from the parser to ensure our list is valid.
+    all_terminals = {term.name for term in _parser.terminals}
+    api_data['clauses'] = sorted([k for k in CLAUSE_KEYWORDS if k in all_terminals])
 
     return api_data

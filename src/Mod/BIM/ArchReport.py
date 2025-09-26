@@ -112,6 +112,59 @@ if FreeCAD.GuiUp:
         def __init__(self, parent=None):
             super().__init__(parent)
             self._completer = None
+            self.setMouseTracking(True) # Required to receive mouseMoveEvents
+            self.api_docs = {}
+            self.clauses = set()
+            self.functions = {}
+
+        def set_api_documentation(self, api_docs: dict):
+            """Receives the API documentation from the panel and caches it."""
+            self.api_docs = api_docs
+            self.clauses = set(api_docs.get('clauses', []))
+            # Create a flat lookup dictionary for fast access
+            for category, func_list in api_docs.get('functions', {}).items():
+                for func_data in func_list:
+                    self.functions[func_data['name']] = {
+                        'category': category,
+                        'signature': func_data['signature'],
+                        'description': func_data['description']
+                    }
+
+        def mouseMoveEvent(self, event: QtGui.QMouseEvent):
+            """Overrides the mouse move event to show tooltips."""
+            cursor = self.cursorForPosition(event.pos())
+            cursor.select(QtGui.QTextCursor.WordUnderCursor)
+            word = cursor.selectedText().upper()
+
+            tooltip_text = self._get_tooltip_for_word(word)
+
+            if tooltip_text:
+                QtWidgets.QToolTip.showText(event.globalPos(), tooltip_text, self)
+            else:
+                QtWidgets.QToolTip.hideText()
+
+            super().mouseMoveEvent(event)
+
+        def _get_tooltip_for_word(self, word: str) -> str:
+            """Builds the HTML-formatted tooltip string for a given word."""
+            if not word:
+                return ""
+
+            # Check if the word is a function
+            if word in self.functions:
+                func_data = self.functions[word]
+                # Format a rich HTML tooltip for functions
+                return (f"<p style='white-space:nowrap'><code><b>{func_data['signature']}</b></code><br>"
+                        f"<i>{func_data['category']}</i><br>"
+                        f"{func_data['description']}</p>")
+
+            # Check if the word is a clause
+            if word in self.clauses:
+                # Format a simple, translatable tooltip for clauses
+                # The string itself is marked for translation here.
+                return f"<i>{translate('Arch', 'SQL Clause')}</i>"
+
+            return ""
 
         def setCompleter(self, completer):
             if self._completer:
@@ -809,6 +862,9 @@ class ReportTaskPanel:
         # Initial UI setup
         self._load_and_populate_presets()
         self._populate_table_from_statements()
+        # Pass the documentation data to the editor for its tooltips
+        api_docs = Arch.getSqlApiDocumentation()
+        self.sql_query_edit.set_api_documentation(api_docs)
         self._update_editor_visibility(False)  # Start with editor collapsed/hidden
         # Do not auto-select the first statement; leave editor collapsed until user selects
 
@@ -1427,7 +1483,7 @@ if FreeCAD.GuiUp:
         def __init__(self, api_data, parent=None):
             super().__init__(parent)
             self.setWindowTitle(translate("Arch", "BIM SQL Cheatsheet"))
-            self.setMinimumSize(500, 400)
+            self.setMinimumSize(750, 600)
             layout = QtWidgets.QVBoxLayout(self)
             html = self._format_as_html(api_data)
             text_edit = QtWidgets.QTextEdit()
@@ -1453,8 +1509,15 @@ if FreeCAD.GuiUp:
                 functions = api_data['functions'][category_name]
                 html += f"<b>{category_name}:</b><ul>"
                 # Sort functions within a category alphabetically
-                for func in sorted(functions, key=lambda x: x['name']):
-                    html += f"<li><code>{func['name']}</code>: {func['description']}</li>"
+                for func_data in sorted(functions, key=lambda x: x['name']):
+                    # Add a bottom margin to the list item for clear visual separation.
+                    html += f"<li style='margin-bottom: 10px;'><code>{func_data['signature']}</code><br>{func_data['description']}"                    # Add the example snippet if it exists
+                    if func_data.get('snippet'):
+                        snippet_html = func_data['snippet'].replace("\n", "<br>")
+                        # No <br> before the snippet. Added styling to make the snippet stand out.
+                        html += f"<pre style='margin-top: 4px; padding: 5px; background-color: #f0f0f0; border: 1px solid #ccc;'><code>{snippet_html}</code></pre></li>"
+                    else:
+                        html += "</li>"
                 html += "</ul>"
             return html
 else:
