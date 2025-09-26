@@ -206,8 +206,8 @@ private:
 
         if (avoidRedundants && alignmentCstr) {
             removeRedundantHorizontalVertical(getSketchObject(),
-                                                sugConstraints[0],
-                                                sugConstraints[1]);
+                                              sugConstraints[0],
+                                              sugConstraints[1]);
         }
 
         // add auto constraints for the center of 1st arc
@@ -682,4 +682,3 @@ void DSHSlotController::addConstraints()
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerSlot_H
-
