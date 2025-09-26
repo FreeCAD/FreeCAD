@@ -505,13 +505,25 @@ class LibraryEditor(QWidget):
             new_toolbit = tool_bit_class(shape)
             new_toolbit.label = FreeCAD.Qt.translate("CAM", "New Toolbit")
 
-            # Save the individual toolbit asset first
+            # Get next available tool number for the library
+            tool_no = None
+            if current_library:
+                tool_no = current_library.get_next_bit_no()
+
+            editor = ToolBitEditor(new_toolbit, tool_no=tool_no)
+            result = editor.show()
+            if result != QDialog.Accepted:
+                return
+
+            if current_library:
+                tool_no = editor.get_tool_no()
+
             tool_asset_uri = cam_assets.add(new_toolbit)
             Path.Log.debug(f"_on_add_toolbit_requested: Saved tool with URI: {tool_asset_uri}")
 
             # Add the toolbit to the current library if one is selected
             if current_library:
-                toolno = current_library.add_bit(new_toolbit)
+                toolno = current_library.add_bit(new_toolbit, bit_no=tool_no)
                 Path.Log.debug(
                     f"_on_add_toolbit_requested: Added toolbit {new_toolbit.get_id()} (URI: {new_toolbit.get_uri()}) "
                     f"to current_library with number {toolno}."
@@ -534,6 +546,23 @@ class LibraryEditor(QWidget):
 
         setToolBitSchema()  # Ensure correct schema is set for the new toolbit
         self.browser.refresh()
+
+        # Set the filter dropdown to show the new toolbit's type
+        subtype = new_toolbit.get_subtype()
+        if subtype:
+            # If it has a subtype (e.g., "compression", "variable_flute"), select that
+            filter_value = subtype
+        else:
+            # Otherwise select the parent shape type (e.g., "Endmill", "Probe")
+            filter_value = new_toolbit.get_shape_name()
+
+        # Find and set the filter dropdown by matching the data value
+        if hasattr(self.browser, "_tool_type_combo"):
+            for i in range(self.browser._tool_type_combo.count()):
+                if self.browser._tool_type_combo.itemData(i) == filter_value:
+                    self.browser._tool_type_combo.setCurrentIndex(i)
+                    break
+
         self.browser.select_by_uri([str(new_toolbit.get_uri())])
         self._update_button_states()
 

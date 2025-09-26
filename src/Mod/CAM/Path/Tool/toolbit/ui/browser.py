@@ -81,6 +81,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         # UI Elements
         self._search_edit = QtGui.QLineEdit()
         self._search_edit.setPlaceholderText("Search toolbits...")
+        self._search_edit.setClearButtonEnabled(True)
 
         # Sorting dropdown
         self._sort_combo = QtGui.QComboBox()

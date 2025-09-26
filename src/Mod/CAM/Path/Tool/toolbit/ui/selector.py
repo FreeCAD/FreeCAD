@@ -23,32 +23,42 @@
 
 """ToolBit selector dialog."""
 
-from PySide import QtWidgets
+from PySide import QtWidgets, QtGui
 import FreeCAD
 from ...camassets import cam_assets
 from ...toolbit import ToolBit
-from .browser import ToolBitBrowserWidget
+from ...library.ui.browser import LibraryBrowserWithCombo
 
 
 class ToolBitSelector(QtWidgets.QDialog):
     """
-    A dialog for selecting ToolBits using the ToolBitBrowserWidget.
+    A dialog for selecting ToolBits using the LibraryBrowserWithCombo.
+    Can show tools from libraries or all available toolbits.
     """
 
     def __init__(
-        self, parent=None, compact=False, button_label=FreeCAD.Qt.translate("CAM", "Add Tool")
+        self,
+        parent=None,
+        compact=False,
+        button_label=FreeCAD.Qt.translate("CAM", "Add Tool"),
+        show_all_tools=False,
     ):
         super().__init__(parent)
 
-        self.setMinimumSize(600, 400)
-
+        self.setMinimumSize(700, 500)
         self.setWindowTitle(FreeCAD.Qt.translate("CAM", "Select Toolbit"))
 
-        self._browser_widget = ToolBitBrowserWidget(cam_assets, compact=compact)
+        # Use LibraryBrowserWithCombo which handles library selection and "All Tools" option
+        self._browser_widget = LibraryBrowserWithCombo(
+            asset_manager=cam_assets,
+            store="local",
+            compact=compact,
+            show_all_tools=show_all_tools,
+        )
 
         # Create OK and Cancel buttons
         self._ok_button = QtWidgets.QPushButton(button_label)
-        self._cancel_button = QtWidgets.QPushButton("Cancel")
+        self._cancel_button = QtWidgets.QPushButton(FreeCAD.Qt.translate("CAM", "Cancel"))
 
         # Connect buttons to their actions
         self._ok_button.clicked.connect(self.accept)
@@ -70,21 +80,47 @@ class ToolBitSelector(QtWidgets.QDialog):
         self._browser_widget.toolSelected.connect(self._on_tool_selected)
         self._browser_widget.itemDoubleClicked.connect(self.accept)
 
-        self._selected_tool_uri = None
+        # Initialize the browser
+        self._browser_widget.refresh()
 
     def _on_tool_selected(self, uri):
         """Enables/disables OK button based on selection."""
-        self._selected_tool_uri = uri
         self._ok_button.setEnabled(uri is not None)
 
-    def get_selected_tool_uri(self):
-        """Returns the URI of the selected tool bit."""
-        return self._selected_tool_uri
-
     def get_selected_tool(self) -> ToolBit:
-        """Returns the selected ToolBit object, or None if none selected."""
-        uri = self.get_selected_tool_uri()
-        if uri:
-            # Assuming ToolBit.from_uri exists and loads the ToolBit object
-            return cam_assets.get(uri)
+        """Returns the first selected ToolBit object, or None if none selected."""
+        tools = self.get_selected_tools()
+        return tools[0] if tools else None
+
+    def get_selected_tools(self) -> list:
+        """Returns a list of all selected ToolBit objects."""
+        return self._browser_widget.get_selected_bits()
+
+    def get_tool_numbers(self) -> dict:
+        """
+        Returns a dict mapping ToolBit URIs to tool numbers.
+        If a library is selected, uses library tool numbers.
+        If \"All Tools\" is selected, returns empty dict (auto-increment).
+        """
+        tool_numbers = {}
+
+        # Only get library numbers if a specific library is selected
+        if self._browser_widget.current_library:
+            for toolbit in self.get_selected_tools():
+                tool_no = self._browser_widget.get_tool_no_from_current_library(toolbit)
+                if tool_no is not None:
+                    tool_numbers[str(toolbit.get_uri())] = tool_no
+
+        return tool_numbers  # Empty dict means auto-increment for all
+
+    def get_tool_number(self):
+        """
+        Returns the tool number for the first selected tool.
+        Kept for backward compatibility.
+        """
+        tool_numbers = self.get_tool_numbers()
+        if tool_numbers:
+            first_tool = self.get_selected_tool()
+            if first_tool:
+                return tool_numbers.get(str(first_tool.get_uri()))
         return None
