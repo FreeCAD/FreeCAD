@@ -783,13 +783,11 @@ class ReportTaskPanel:
         self.btn_save_template.clicked.connect(self._on_save_report_template)
         # Keep table edits in sync with the runtime statements
         self.table_statements.itemChanged.connect(self._on_table_item_changed)
+        # Connect all editor fields to a single handler to manage dirty state and UI sync.
         self.description_edit.textChanged.connect(self._on_editor_field_changed)
-        self.description_edit.textChanged.connect(self._on_editor_description_changed)
         self.sql_query_edit.textChanged.connect(self._on_editor_sql_changed)
-        self.chk_use_description_as_header.stateChanged.connect(self._on_editor_checkbox_changed)
-        self.chk_include_column_names.stateChanged.connect(self._on_editor_checkbox_changed)
-        self.chk_add_empty_row_after.stateChanged.connect(self._on_editor_checkbox_changed)
-        self.chk_print_results_in_bold.stateChanged.connect(self._on_editor_checkbox_changed)
+        for checkbox in self.display_options_group.findChildren(QtWidgets.QCheckBox):
+            checkbox.stateChanged.connect(self._on_editor_field_changed)
         self.query_preset_dropdown.activated.connect(self._on_load_query_preset)
         self.btn_save_query_preset.clicked.connect(self._on_save_query_preset)
         self.btn_show_cheatsheet.clicked.connect(self._show_cheatsheet_dialog)
@@ -991,34 +989,24 @@ class ReportTaskPanel:
             statement.validate_and_update_status() # Update status in the statement object
             self._update_table_row_status(self.current_edited_statement_index, statement) # Refresh table status
 
-    def _on_editor_description_changed(self):
-        # Update table description live as user types in editor
-        if self.current_edited_statement_index != -1:
-            item = self.table_statements.item(self.current_edited_statement_index, 0)
-            if item:
-                item.setText(self.description_edit.text())
-            self._update_editor_title(self.description_edit.text())
-        # Re-trigger validation for other fields potentially (e.g. if query uses description)
-        self.validation_timer.start(500) # (Re)start timer for live validation
-        self._set_dirty(True)
-
     def _on_editor_sql_changed(self):
+        self._set_dirty(True)
         self.sql_query_status_label.setText(translate("Arch", "<i>Typing...</i>"))
         self.sql_query_status_label.setStyleSheet("color: gray;")
         self.validation_timer.start(500) # (Re)start timer for live validation
-        self._set_dirty(True)
 
     def _on_editor_field_changed(self):
-        # A generic handler to mark changes as dirty and trigger validation
-        if self.current_edited_statement_index != -1:
-            self._update_editor_title(self.description_edit.text())
-        self.validation_timer.start(500)
+        """A generic slot that handles any change in an editor field."""
         self._set_dirty(True)
+        # --- Specific logic for description sync ---
+        if self.current_edited_statement_index != -1:
+            # This provides the real-time two-way data binding for the description.
+            item = self.table_statements.item(self.current_edited_statement_index, 0)
+            if item and item.text() != self.description_edit.text():
+                item.setText(self.description_edit.text())
+            self._update_editor_title(self.description_edit.text())
 
-    def _on_editor_checkbox_changed(self):
-        # Checkboxes are saved when editor state is saved, but ensure live validation for status icon
-        # When editor checkboxes change, update the selected table row to reflect new state
-        self.validation_timer.start(500) # (Re)start timer for live validation
+        # --- Specific logic for checkboxes ---
         # If a statement is currently selected in the table, mirror the editor state to the table
         if self.current_edited_statement_index != -1:
             row = self.current_edited_statement_index
