@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from Base.BaseClass import BaseClass
 from typing import Any, Final, Tuple
@@ -24,7 +28,7 @@ class SelectionObject(BaseClass):
         """
         ...
 
-    def isObjectTypeOf(self, type: Any) -> bool:
+    def isObjectTypeOf(self, type: Any, /) -> bool:
         """
         Test for a certain father class.
         isObjectTypeOf(type) -> Bool

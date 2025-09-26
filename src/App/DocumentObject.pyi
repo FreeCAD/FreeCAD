@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import constmethod
 from Base.Matrix import Matrix
 from Document import Document
@@ -79,7 +83,7 @@ class DocumentObject(ExtensionContainer):
         """
         ...
 
-    def removeProperty(self, string: str) -> None:
+    def removeProperty(self, string: str, /) -> None:
         """
         removeProperty(string) -- Remove a generic property.
 
@@ -111,26 +115,26 @@ class DocumentObject(ExtensionContainer):
         """
         ...
 
-    def setExpression(self, name: str, expression: str) -> None:
+    def setExpression(self, name: str, expression: str, /) -> None:
         """
         Register an expression for a property
         """
         ...
 
-    def clearExpression(self, name: str) -> None:
+    def clearExpression(self, name: str, /) -> None:
         """
         Clear the expression for a property
         """
         ...
 
     @classmethod
-    def evalExpression(cls, expression: str) -> Any:
+    def evalExpression(cls, expression: str, /) -> Any:
         """
         Evaluate an expression
         """
         ...
 
-    def recompute(self, recursive: bool = False) -> None:
+    def recompute(self, recursive: bool = False, /) -> None:
         """
         recompute(recursive=False): Recomputes this object
         """
@@ -191,7 +195,7 @@ class DocumentObject(ExtensionContainer):
         """
         ...
 
-    def getSubObjectList(self, subname: str) -> list:
+    def getSubObjectList(self, subname: str, /) -> list:
         """
         getSubObjectList(subname)
 
@@ -199,7 +203,7 @@ class DocumentObject(ExtensionContainer):
         """
         ...
 
-    def getSubObjects(self, reason: int = 0) -> list:
+    def getSubObjects(self, reason: int = 0, /) -> list:
         """
         getSubObjects(reason=0): Return subname reference of all sub-objects
         """
@@ -229,14 +233,14 @@ class DocumentObject(ExtensionContainer):
         """
         ...
 
-    def setElementVisible(self, element: str, visible: bool) -> int:
+    def setElementVisible(self, element: str, visible: bool, /) -> int:
         """
         setElementVisible(element,visible): Set the visibility of a child element
         Return -1 if element visibility is not supported, 0 if element not found, 1 if success
         """
         ...
 
-    def isElementVisible(self, element: str) -> int:
+    def isElementVisible(self, element: str, /) -> int:
         """
         isElementVisible(element): Check if a child element is visible
         Return -1 if element visibility is not supported or element not found, 0 if invisible, or else 1
@@ -283,7 +287,7 @@ class DocumentObject(ExtensionContainer):
         ...
 
     @constmethod
-    def resolve(self, subname: str) -> tuple:
+    def resolve(self, subname: str, /) -> tuple:
         """
         resolve(subname) -- resolve the sub object
 
@@ -296,7 +300,7 @@ class DocumentObject(ExtensionContainer):
         ...
 
     @constmethod
-    def resolveSubElement(self, subname: str, append: bool, type: int) -> tuple:
+    def resolveSubElement(self, subname: str, append: bool, type: int, /) -> tuple:
         """
         resolveSubElement(subname,append,type) -- resolve both new and old style sub element
 
@@ -308,14 +312,14 @@ class DocumentObject(ExtensionContainer):
         """
         ...
 
-    def adjustRelativeLinks(self, parent: DocumentObject, recursive: bool = True) -> bool:
+    def adjustRelativeLinks(self, parent: DocumentObject, recursive: bool = True, /) -> bool:
         """
         adjustRelativeLinks(parent,recursive=True) -- auto correct potential cyclic dependencies
         """
         ...
 
     @constmethod
-    def getElementMapVersion(self, property_name: str) -> str:
+    def getElementMapVersion(self, property_name: str, /) -> str:
         """
         getElementMapVersion(property_name): return element map version of a given geometry property
         """

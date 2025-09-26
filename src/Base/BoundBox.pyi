@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Metadata import export, constmethod
 from PyObjectBase import PyObjectBase
 from Vector import Vector
@@ -132,11 +136,14 @@ class BoundBox(PyObjectBase):
         ...
 
     @overload
-    def add(self, minMax: Vector) -> None: ...
+    def add(self, minMax: Vector, /) -> None: ...
+
     @overload
-    def add(self, minMax: Tuple[float, float, float]) -> None: ...
+    def add(self, minMax: Tuple[float, float, float], /) -> None: ...
+
     @overload
-    def add(self, x: float, y: float, z: float) -> None: ...
+    def add(self, x: float, y: float, z: float, /) -> None: ...
+
     def add(self, *args: Any, **kwargs: Any) -> None:
         """
         add(minMax) -> None
@@ -158,7 +165,7 @@ class BoundBox(PyObjectBase):
         ...
 
     @constmethod
-    def getPoint(self, index: int) -> Vector:
+    def getPoint(self, index: int, /) -> Vector:
         """
         getPoint(index) -> Base.Vector
 
@@ -170,7 +177,7 @@ class BoundBox(PyObjectBase):
         ...
 
     @constmethod
-    def getEdge(self, index: int) -> Tuple[Vector, ...]:
+    def getEdge(self, index: int, /) -> Tuple[Vector, ...]:
         """
         getEdge(index) -> tuple of Base.Vector
 
@@ -182,9 +189,9 @@ class BoundBox(PyObjectBase):
         ...
 
     @overload
-    def closestPoint(self, point: Vector) -> Vector: ...
+    def closestPoint(self, point: Vector, /) -> Vector: ...
     @overload
-    def closestPoint(self, x: float, y: float, z: float) -> Vector: ...
+    def closestPoint(self, x: float, y: float, z: float, /) -> Vector: ...
     @constmethod
     def closestPoint(self, *args: Any, **kwargs: Any) -> Vector:
         """
@@ -205,13 +212,13 @@ class BoundBox(PyObjectBase):
         ...
 
     @overload
-    def intersect(self, boundBox2: "BoundBox") -> bool: ...
+    def intersect(self, boundBox2: "BoundBox", /) -> bool: ...
     @overload
     def intersect(
         self,
         base: Union[Vector, Tuple[float, float, float]],
         dir: Union[Vector, Tuple[float, float, float]],
-    ) -> bool: ...
+     /,) -> bool: ...
     def intersect(self, *args: Any) -> bool:
         """
         intersect(boundBox2) -> bool
@@ -226,7 +233,7 @@ class BoundBox(PyObjectBase):
         """
         ...
 
-    def intersected(self, boundBox2: "BoundBox") -> "BoundBox":
+    def intersected(self, boundBox2: "BoundBox", /) -> "BoundBox":
         """
         intersected(boundBox2) -> Base.BoundBox
 
@@ -236,7 +243,7 @@ class BoundBox(PyObjectBase):
         """
         ...
 
-    def united(self, boundBox2: "BoundBox") -> "BoundBox":
+    def united(self, boundBox2: "BoundBox", /) -> "BoundBox":
         """
         united(boundBox2) -> Base.BoundBox
 
@@ -246,7 +253,7 @@ class BoundBox(PyObjectBase):
         """
         ...
 
-    def enlarge(self, variation: float) -> None:
+    def enlarge(self, variation: float, /) -> None:
         """
         enlarge(variation) -> None
 
@@ -257,7 +264,7 @@ class BoundBox(PyObjectBase):
         """
         ...
 
-    def getIntersectionPoint(self, base: Vector, dir: Vector, epsilon: float = 0.0001) -> Vector:
+    def getIntersectionPoint(self, base: Vector, dir: Vector, epsilon: float = 0.0001, /) -> Vector:
         """
         getIntersectionPoint(base, dir, epsilon=0.0001) -> Base.Vector
 
@@ -274,11 +281,11 @@ class BoundBox(PyObjectBase):
         ...
 
     @overload
-    def move(self, displacement: Vector) -> None: ...
+    def move(self, displacement: Vector, /) -> None: ...
     @overload
-    def move(self, displacement: Tuple[float, float, float]) -> None: ...
+    def move(self, displacement: Tuple[float, float, float], /) -> None: ...
     @overload
-    def move(self, x: float, y: float, z: float) -> None: ...
+    def move(self, x: float, y: float, z: float, /) -> None: ...
     def move(self, *args: Any, **kwargs: Any) -> None:
         """
         move(displacement) -> None
@@ -298,11 +305,11 @@ class BoundBox(PyObjectBase):
         ...
 
     @overload
-    def scale(self, factor: Vector) -> None: ...
+    def scale(self, factor: Vector, /) -> None: ...
     @overload
-    def scale(self, factor: Tuple[float, float, float]) -> None: ...
+    def scale(self, factor: Tuple[float, float, float], /) -> None: ...
     @overload
-    def scale(self, x: float, y: float, z: float) -> None: ...
+    def scale(self, x: float, y: float, z: float, /) -> None: ...
     def scale(self, *args: Any, **kwargs: Any) -> None:
         """
         scale(factor) -> None
@@ -321,7 +328,7 @@ class BoundBox(PyObjectBase):
         """
         ...
 
-    def transformed(self, matrix: Matrix) -> "BoundBox":
+    def transformed(self, matrix: Matrix, /) -> "BoundBox":
         """
         transformed(matrix) -> Base.BoundBox
 
@@ -333,7 +340,7 @@ class BoundBox(PyObjectBase):
         """
         ...
 
-    def isCutPlane(self, base: Vector, normal: Vector) -> bool:
+    def isCutPlane(self, base: Vector, normal: Vector, /) -> bool:
         """
         isCutPlane(base, normal) -> bool
 
@@ -346,11 +353,11 @@ class BoundBox(PyObjectBase):
         ...
 
     @overload
-    def isInside(self, object: Vector) -> bool: ...
+    def isInside(self, object: Vector, /) -> bool: ...
     @overload
-    def isInside(self, object: "BoundBox") -> bool: ...
+    def isInside(self, object: "BoundBox", /) -> bool: ...
     @overload
-    def isInside(self, x: float, y: float, z: float) -> bool: ...
+    def isInside(self, x: float, y: float, z: float, /) -> bool: ...
     def isInside(self, *args: Any) -> bool:
         """
         isInside(object) -> bool

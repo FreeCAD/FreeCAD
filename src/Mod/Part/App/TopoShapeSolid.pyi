@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from TopoShape import TopoShape
 from Base.Vector import Vector
@@ -78,7 +82,7 @@ class TopoShapeSolid(TopoShape):
     """
 
     @constmethod
-    def getMomentOfInertia(self, point: Vector, direction: Vector) -> float:
+    def getMomentOfInertia(self, point: Vector, direction: Vector, /) -> float:
         """
         computes the moment of inertia of the material system about the axis A.
         getMomentOfInertia(point,direction) -> Float
@@ -86,7 +90,7 @@ class TopoShapeSolid(TopoShape):
         ...
 
     @constmethod
-    def getRadiusOfGyration(self, point: Vector, direction: Vector) -> float:
+    def getRadiusOfGyration(self, point: Vector, direction: Vector, /) -> float:
         """
         Returns the radius of gyration of the current system about the axis A.
         getRadiusOfGyration(point,direction) -> Float
@@ -96,12 +100,11 @@ class TopoShapeSolid(TopoShape):
     @overload
     @constmethod
     def offsetFaces(
-        self, facesTuple: Tuple[TopoShape, ...], offset: float
-    ) -> TopoShape: ...
+        self, facesTuple: Tuple[TopoShape, ...], offset: float, /) -> TopoShape: ...
 
     @overload
     @constmethod
-    def offsetFaces(self, facesDict: Dict[TopoShape, float]) -> TopoShape: ...
+    def offsetFaces(self, facesDict: Dict[TopoShape, float], /) -> TopoShape: ...
 
     @constmethod
     def offsetFaces(self, *args, **kwargs) -> TopoShape:

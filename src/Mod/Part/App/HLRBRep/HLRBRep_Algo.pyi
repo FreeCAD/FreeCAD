@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from typing import Final
@@ -60,7 +64,7 @@ class HLRBRep_Algo(PyObjectBase):
     Licence: LGPL
     """
 
-    def add(self, S, nbIso: int = 0) -> None:
+    def add(self, S, nbIso: int = 0, /) -> None:
         """
         add(S, nbIso=0)
 
@@ -70,7 +74,7 @@ class HLRBRep_Algo(PyObjectBase):
         """
         ...
 
-    def remove(self, i: int) -> None:
+    def remove(self, i: int, /) -> None:
         """
         remove(i)
 
@@ -78,7 +82,7 @@ class HLRBRep_Algo(PyObjectBase):
         """
         ...
 
-    def index(self, S) -> int:
+    def index(self, S, /) -> int:
         """
         index(S) ->  int
 
@@ -119,7 +123,7 @@ class HLRBRep_Algo(PyObjectBase):
         """
         ...
 
-    def showAll(self, i: int = -1) -> None:
+    def showAll(self, i: int = -1, /) -> None:
         """
         showAll(i=-1)
 
@@ -128,7 +132,7 @@ class HLRBRep_Algo(PyObjectBase):
         """
         ...
 
-    def hide(self, i: int = -1, j: int = -1) -> None:
+    def hide(self, i: int = -1, j: int = -1, /) -> None:
         """
         hide(i=-1, j=-1)
 
@@ -138,7 +142,7 @@ class HLRBRep_Algo(PyObjectBase):
         """
         ...
 
-    def hideAll(self, i: int = -1) -> None:
+    def hideAll(self, i: int = -1, /) -> None:
         """
         hideAll(i=-1)
 
@@ -155,7 +159,7 @@ class HLRBRep_Algo(PyObjectBase):
         """
         ...
 
-    def select(self, i: int = -1) -> None:
+    def select(self, i: int = -1, /) -> None:
         """
         select(i=-1)
 
@@ -164,7 +168,7 @@ class HLRBRep_Algo(PyObjectBase):
         """
         ...
 
-    def selectEdge(self, i: int) -> None:
+    def selectEdge(self, i: int, /) -> None:
         """
         selectEdge(i)
 
@@ -172,7 +176,7 @@ class HLRBRep_Algo(PyObjectBase):
         """
         ...
 
-    def selectFace(self, i: int) -> None:
+    def selectFace(self, i: int, /) -> None:
         """
         selectFace(i)
 		

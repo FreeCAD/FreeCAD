@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import Any, Final, List
@@ -52,19 +56,19 @@ class Array3D(BaseClass):
         """
         ...
 
-    def setDepthValue(self, value: Any):
+    def setDepthValue(self, value: Any, /):
         """
         Set the column value at the given depth
         """
         ...
 
-    def setValue(self, depth: int, row: int, column: int, value: Any):
+    def setValue(self, depth: int, row: int, column: int, value: Any, /):
         """
         Set the value at the given depth, row, and column
         """
         ...
 
-    def setRows(self, depth: int, value: int):
+    def setRows(self, depth: int, value: int, /):
         """
         Set the number of rows at the given depth
         """

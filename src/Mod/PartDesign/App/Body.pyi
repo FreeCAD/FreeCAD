@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Part.BodyBase import BodyBase
 from typing import Final, overload
@@ -17,7 +21,7 @@ class Body(BodyBase):
     VisibleFeature: Final[object] = ...
     """Return the visible feature of this body"""
 
-    def insertObject(self, feature: object, target: object, after: bool = False) -> None:
+    def insertObject(self, feature: object, target: object, after: bool = False, /) -> None:
         """
         insertObject(feature, target, after=False)
         Insert the feature into the body after the given feature.

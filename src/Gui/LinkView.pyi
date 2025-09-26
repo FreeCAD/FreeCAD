@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import Any, Final, List, Dict, Tuple, overload
@@ -22,7 +26,7 @@ class LinkView(BaseClass):
         """
         ...
 
-    def setMaterial(self, material: Any) -> None:
+    def setMaterial(self, material: Any, /) -> None:
         """
         setMaterial(Material): set the override material of the entire linked object
 
@@ -39,18 +43,18 @@ class LinkView(BaseClass):
         ...
 
     @overload
-    def setMaterial(self, material: None) -> None: ...
+    def setMaterial(self, material: None, /) -> None: ...
 
     @overload
-    def setMaterial(self, material: Any) -> None: ...
+    def setMaterial(self, material: Any, /) -> None: ...
 
     @overload
-    def setMaterial(self, material: List[Any]) -> None: ...
+    def setMaterial(self, material: List[Any], /) -> None: ...
 
     @overload
-    def setMaterial(self, material: Dict[int, Any]) -> None: ...
+    def setMaterial(self, material: Dict[int, Any], /) -> None: ...
 
-    def setType(self, type: int, sublink: bool = True) -> None:
+    def setType(self, type: int, sublink: bool = True, /) -> None:
         """
         setType(type, sublink=True): set the link type.
 
@@ -66,12 +70,12 @@ class LinkView(BaseClass):
         ...
 
     @overload
-    def setType(self, type: int) -> None: ...
+    def setType(self, type: int, /) -> None: ...
 
     @overload
-    def setType(self, type: int, sublink: bool) -> None: ...
+    def setType(self, type: int, sublink: bool, /) -> None: ...
 
-    def setTransform(self, matrix: Any) -> None:
+    def setTransform(self, matrix: Any, /) -> None:
         """
         setTransform(matrix): set transformation of the linked object
 
@@ -84,17 +88,16 @@ class LinkView(BaseClass):
         ...
 
     @overload
-    def setTransform(self, matrix: Any) -> None: ...
+    def setTransform(self, matrix: Any, /) -> None: ...
 
     @overload
-    def setTransform(self, matrix: List[Any]) -> None: ...
+    def setTransform(self, matrix: List[Any], /) -> None: ...
 
     @overload
-    def setTransform(self, matrix: Dict[int, Any]) -> None: ...
+    def setTransform(self, matrix: Dict[int, Any], /) -> None: ...
 
     def setChildren(
-        self, children: List[Any], vis: List[Any] = [], type: int = 0
-    ) -> None:
+        self, children: List[Any], vis: List[Any] = [], type: int = 0, /) -> None:
         """
         setChildren([obj...],vis=[],type=0)
         Group a list of children objects. Note, this mode of operation is incompatible
@@ -110,7 +113,7 @@ class LinkView(BaseClass):
         """
         ...
 
-    def setLink(self, obj: Any, subname: Any = None) -> None:
+    def setLink(self, obj: Any, subname: Any = None, /) -> None:
         """
         setLink(object): Set the link
 
@@ -128,15 +131,15 @@ class LinkView(BaseClass):
         ...
 
     @overload
-    def setLink(self, obj: Any) -> None: ...
+    def setLink(self, obj: Any, /) -> None: ...
 
     @overload
-    def setLink(self, obj: Any, subname: str) -> None: ...
+    def setLink(self, obj: Any, subname: str, /) -> None: ...
 
     @overload
-    def setLink(self, obj: Any, subname: List[str]) -> None: ...
+    def setLink(self, obj: Any, subname: List[str], /) -> None: ...
 
-    def getDetailPath(self, element: Any) -> Tuple[Any, Any]:
+    def getDetailPath(self, element: Any, /) -> Tuple[Any, Any]:
         """
         getDetailPath(element): get the 3d path an detail of an element.
 
@@ -144,13 +147,13 @@ class LinkView(BaseClass):
         """
         ...
 
-    def getElementPicked(self, pickPoint: Any) -> Any:
+    def getElementPicked(self, pickPoint: Any, /) -> Any:
         """
         getElementPicked(pickPoint): get the element under a 3d pick point.
         """
         ...
 
-    def getBoundBox(self, vobj: Any = None) -> Any:
+    def getBoundBox(self, vobj: Any = None, /) -> Any:
         """
         getBoundBox(vobj=None): get the bounding box.
         """
