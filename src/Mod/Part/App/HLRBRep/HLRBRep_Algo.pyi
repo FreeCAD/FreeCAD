@@ -103,7 +103,6 @@ class HLRBRep_Algo(PyObjectBase):
 
     def setProjector(
         self,
-        *,
         Origin: tuple[float, float, float] = (0, 0, 0),
         ZDir: tuple[float, float, float] = (0, 0, 0),
         XDir: tuple[float, float, float] = (0, 0, 0),

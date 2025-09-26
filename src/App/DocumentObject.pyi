@@ -67,7 +67,6 @@ class DocumentObject(ExtensionContainer):
 
     def addProperty(
         self,
-        *,
         type: str,
         name: str,
         group: str = "",
@@ -159,8 +158,8 @@ class DocumentObject(ExtensionContainer):
 
     def getSubObject(
         self,
-        *,
         subname: Union[str, List[str], Tuple[str, ...]],
+        *,
         retType: int = 0,
         matrix: Matrix = None,
         transform: bool = True,

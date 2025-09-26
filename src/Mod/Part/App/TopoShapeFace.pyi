@@ -110,8 +110,14 @@ class TopoShapeFace(TopoShape):
 
     @constmethod
     def makeEvolved(
-        self, *, Profile: TopoShape, Join: int, AxeProf: bool, Solid: bool, ProfOnSpine: bool,
-        Tolerance: float
+        self,
+        Profile: TopoShape,
+        Join: int,
+        *,
+        AxeProf: bool,
+        Solid: bool,
+        ProfOnSpine: bool,
+        Tolerance: float,
     ) -> TopoShape:
         """
         Profile along the spine
