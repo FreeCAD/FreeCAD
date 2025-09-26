@@ -31,12 +31,11 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Inventor/Draggers/Gizmo.h>
-#include <Gui/Inventor/Draggers/GizmoHelper.h>
-#include "Gui/Inventor/Draggers/SoLinearDragger.h"
 #include <Gui/Inventor/Draggers/SoRotationDragger.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/PartDesign/App/FeatureHole.h>
+#include <Mod/Part/App/GizmoHelper.h>
 
 #include "ui_TaskHoleParameters.h"
 #include "TaskHoleParameters.h"
