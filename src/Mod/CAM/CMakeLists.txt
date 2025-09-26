@@ -410,7 +410,11 @@ SET(PathScripts_SRCS
 SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/dogboneII.py
     Path/Base/Generator/drill.py
-    Path/Base/Generator/facing.py
+    Path/Base/Generator/facing_common.py
+    Path/Base/Generator/spiral_facing.py
+    Path/Base/Generator/zigzag_facing.py
+    Path/Base/Generator/directional_facing.py
+    Path/Base/Generator/bidirectional_facing.py
     Path/Base/Generator/helix.py
     Path/Base/Generator/rotation.py
     Path/Base/Generator/tapping.py

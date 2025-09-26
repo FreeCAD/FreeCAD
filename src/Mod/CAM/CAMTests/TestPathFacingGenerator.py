@@ -21,7 +21,11 @@
 # ***************************************************************************
 
 import FreeCAD
-import Path.Base.Generator.facing as facing
+import Path.Base.Generator.spiral_facing as spiral_facing
+import Path.Base.Generator.zigzag_facing as zigzag_facing
+import Path.Base.Generator.directional_facing as directional_facing
+import Path.Base.Generator.bidirectional_facing as bidirectional_facing
+import Path.Base.Generator.facing_common as facing_common
 import Part
 import math
 
@@ -69,8 +73,8 @@ class TestPathFacingGenerator(PathTestBase):
 
 
     def test_directional_strategy_basic(self):
-        """Test _directional strategy basic functionality."""
-        commands = facing._directional(
+        """Test directional strategy basic functionality."""
+        commands = directional_facing.directional(
             polygon=self.square_wire,
             tool_diameter=5.0,
             stepover_percent=50,
@@ -86,15 +90,15 @@ class TestPathFacingGenerator(PathTestBase):
             self.assertIn(cmd.Name, ['G0', 'G1'])
 
     def test_directional_climb_vs_conventional(self):
-        """Test _directional with different milling directions."""
-        climb_commands = facing._directional(
+        """Test directional with different milling directions."""
+        climb_commands = directional_facing.directional(
             polygon=self.square_wire,
             tool_diameter=5.0,
             stepover_percent=50,
             milling_direction="climb"
         )
         
-        conventional_commands = facing._directional(
+        conventional_commands = directional_facing.directional(
             polygon=self.square_wire,
             tool_diameter=5.0,
             stepover_percent=50,
@@ -114,14 +118,14 @@ class TestPathFacingGenerator(PathTestBase):
 
     def test_directional_retract_height(self):
         """Test retract height functionality in directional."""
-        commands_no_retract = facing._directional(
+        commands_no_retract = directional_facing.directional(
             polygon=self.square_wire,
             tool_diameter=5.0,
             stepover_percent=50,
             retract_height=None
         )
         
-        commands_with_retract = facing._directional(
+        commands_with_retract = directional_facing.directional(
             polygon=self.square_wire,
             tool_diameter=5.0,
             stepover_percent=50,
@@ -137,8 +141,8 @@ class TestPathFacingGenerator(PathTestBase):
         self.assertGreater(len(z_retracts), 0)
 
     def test_zigzag_strategy_basic(self):
-        """Test _zigzag strategy basic functionality."""
-        commands = facing._zigzag(
+        """Test zigzag strategy basic functionality."""
+        commands = zigzag_facing.zigzag(
             polygon=self.square_wire,
             tool_diameter=5.0,
             stepover_percent=50,
@@ -155,7 +159,7 @@ class TestPathFacingGenerator(PathTestBase):
 
     def test_zigzag_alternating_direction(self):
         """Test that zigzag alternates cutting direction."""
-        commands = facing._zigzag(
+        commands = zigzag_facing.zigzag(
             polygon=self.rectangle_wire,
             tool_diameter=2.0,  # Small tool for more passes
             stepover_percent=25,  # Small stepover for more passes
@@ -176,14 +180,14 @@ class TestPathFacingGenerator(PathTestBase):
 
     def test_zigzag_with_retract_height(self):
         """Test zigzag with retract height (converts to directional-like behavior)."""
-        commands_no_retract = facing._zigzag(
+        commands_no_retract = zigzag_facing.zigzag(
             polygon=self.square_wire,
             tool_diameter=5.0,
             stepover_percent=50,
             retract_height=None
         )
         
-        commands_with_retract = facing._zigzag(
+        commands_with_retract = zigzag_facing.zigzag(
             polygon=self.square_wire,
             tool_diameter=5.0,
             stepover_percent=50,
@@ -199,14 +203,14 @@ class TestPathFacingGenerator(PathTestBase):
 
     def test_zigzag_milling_direction(self):
         """Test zigzag with different milling directions."""
-        climb_commands = facing._zigzag(
+        climb_commands = zigzag_facing.zigzag(
             polygon=self.square_wire,
             tool_diameter=5.0,
             stepover_percent=50,
             milling_direction="climb"
         )
         
-        conventional_commands = facing._zigzag(
+        conventional_commands = zigzag_facing.zigzag(
             polygon=self.square_wire,
             tool_diameter=5.0,
             stepover_percent=50,
@@ -226,7 +230,7 @@ class TestPathFacingGenerator(PathTestBase):
 
     def test_get_angled_polygon_zero_degrees(self):
         """Test get_angled_polygon with 0 degree rotation."""
-        result = facing.get_angled_polygon(self.square_wire, 0)
+        result = facing_common.get_angled_polygon(self.square_wire, 0)
         
         # Should get back a valid wire
         self.assertTrue(result.isClosed())
@@ -238,7 +242,7 @@ class TestPathFacingGenerator(PathTestBase):
 
     def test_get_angled_polygon_45_degrees(self):
         """Test get_angled_polygon with 45 degree rotation."""
-        result = facing.get_angled_polygon(self.square_wire, 45)
+        result = facing_common.get_angled_polygon(self.square_wire, 45)
         
         self.assertTrue(result.isClosed())
         # The rotated bounding box should be larger than the original
@@ -255,8 +259,8 @@ class TestPathFacingGenerator(PathTestBase):
         self.assertEqual(len(result.Edges), 4)
 
     def test_analyze_rectangle_axis_aligned(self):
-        """Test _analyze_rectangle with axis-aligned rectangle."""
-        result = facing._analyze_rectangle(self.rectangle_wire, "long")
+        """Test analyze_rectangle with axis-aligned rectangle."""
+        result = zigzag_facing.analyze_rectangle(self.rectangle_wire, "long")
         
         # Check that we get the expected keys
         expected_keys = ['primary_vec', 'step_vec', 'primary_length', 'step_length', 'reference_corner']
@@ -272,15 +276,15 @@ class TestPathFacingGenerator(PathTestBase):
         self.assertAlmostEqual(result['step_vec'].Length, 1.0, places=5)
 
     def test_analyze_rectangle_short_preference(self):
-        """Test _analyze_rectangle with short axis preference."""
-        result = facing._analyze_rectangle(self.rectangle_wire, "short")
+        """Test analyze_rectangle with short axis preference."""
+        result = zigzag_facing.analyze_rectangle(self.rectangle_wire, "short")
         
         # For a 20x10 rectangle with "short" preference, primary should be along 10-unit side
         self.assertAlmostEqual(result['primary_length'], 10, places=1)
         self.assertAlmostEqual(result['step_length'], 20, places=1)
 
     def test_analyze_rectangle_invalid_polygon(self):
-        """Test _analyze_rectangle with invalid polygon."""
+        """Test analyze_rectangle with invalid polygon."""
         # Create a triangle (3 edges instead of 4)
         triangle_wire = Part.makePolygon([
             FreeCAD.Vector(0, 0, 0),
@@ -290,11 +294,11 @@ class TestPathFacingGenerator(PathTestBase):
         ])
         
         with self.assertRaises(ValueError):
-            facing._analyze_rectangle(triangle_wire, "long")
+            zigzag_facing.analyze_rectangle(triangle_wire, "long")
 
     def test_spiral_conventional_milling(self):
         """Test spiral strategy with conventional milling direction."""
-        commands = facing._spiral(self.square_wire, 10.0, 50.0, milling_direction="conventional")
+        commands = spiral_facing.spiral(self.square_wire, 10.0, 50.0, milling_direction="conventional")
         
         self.assertGreater(len(commands), 0)
         # First move should be G0 rapid positioning
@@ -306,7 +310,7 @@ class TestPathFacingGenerator(PathTestBase):
 
     def test_bidirectional_basic(self):
         """Test basic bidirectional strategy functionality."""
-        commands = facing._bidirectional(self.square_wire, 10.0, 50.0)
+        commands = bidirectional_facing.bidirectional(self.square_wire, 10.0, 50.0)
         
         self.assertGreater(len(commands), 0)
         # First move should be G1 to start position
@@ -322,7 +326,7 @@ class TestPathFacingGenerator(PathTestBase):
 
     def test_bidirectional_climb_milling(self):
         """Test bidirectional strategy with climb milling direction."""
-        commands = facing._bidirectional(self.square_wire, 10.0, 50.0, milling_direction="climb")
+        commands = bidirectional_facing.bidirectional(self.square_wire, 10.0, 50.0, milling_direction="climb")
         
         self.assertGreater(len(commands), 0)
         # First move should be G1 to start position
@@ -334,7 +338,7 @@ class TestPathFacingGenerator(PathTestBase):
 
     def test_bidirectional_conventional_milling(self):
         """Test bidirectional strategy with conventional milling direction."""
-        commands = facing._bidirectional(self.square_wire, 10.0, 50.0, milling_direction="conventional")
+        commands = bidirectional_facing.bidirectional(self.square_wire, 10.0, 50.0, milling_direction="conventional")
         
         self.assertGreater(len(commands), 0)
         # First move should be G1 to start position
@@ -347,7 +351,7 @@ class TestPathFacingGenerator(PathTestBase):
     def test_bidirectional_with_retract_height(self):
         """Test bidirectional strategy with retract height parameter."""
         retract_height = 5.0
-        commands = facing._bidirectional(self.square_wire, 10.0, 50.0, retract_height=retract_height)
+        commands = bidirectional_facing.bidirectional(self.square_wire, 10.0, 50.0, retract_height=retract_height)
         
         self.assertGreater(len(commands), 0)
         
@@ -357,7 +361,7 @@ class TestPathFacingGenerator(PathTestBase):
 
     def test_bidirectional_alternating_positions(self):
         """Test that bidirectional strategy alternates between bottom and top positions."""
-        commands = facing._bidirectional(self.rectangle_wire, 2.0, 25.0, milling_direction="climb")
+        commands = bidirectional_facing.bidirectional(self.rectangle_wire, 2.0, 25.0, milling_direction="climb")
         
         # Get all G1 cutting moves
         cutting_moves = [cmd for cmd in commands if cmd.Name == "G1" and "X" in cmd.Parameters and "Y" in cmd.Parameters]
@@ -392,7 +396,7 @@ class TestPathFacingGenerator(PathTestBase):
 
     def test_bidirectional_axis_preference_long(self):
         """Test bidirectional strategy with long axis preference."""
-        commands = facing._bidirectional(self.rectangle_wire, 5.0, 50.0, axis_preference="long")
+        commands = bidirectional_facing.bidirectional(self.rectangle_wire, 5.0, 50.0, axis_preference="long")
         
         self.assertGreater(len(commands), 0)
         # Should generate valid toolpath commands
@@ -401,7 +405,7 @@ class TestPathFacingGenerator(PathTestBase):
 
     def test_bidirectional_axis_preference_short(self):
         """Test bidirectional strategy with short axis preference."""
-        commands = facing._bidirectional(self.rectangle_wire, 5.0, 50.0, axis_preference="short")
+        commands = bidirectional_facing.bidirectional(self.rectangle_wire, 5.0, 50.0, axis_preference="short")
         
         self.assertGreater(len(commands), 0)
         # Should generate valid toolpath commands
@@ -411,7 +415,7 @@ class TestPathFacingGenerator(PathTestBase):
     def test_bidirectional_with_pass_extension(self):
         """Test bidirectional strategy with pass extension parameter."""
         pass_extension = 2.0
-        commands = facing._bidirectional(self.square_wire, 10.0, 50.0, pass_extension=pass_extension)
+        commands = bidirectional_facing.bidirectional(self.square_wire, 10.0, 50.0, pass_extension=pass_extension)
         
         self.assertGreater(len(commands), 0)
         # Should generate valid toolpath commands
@@ -421,7 +425,7 @@ class TestPathFacingGenerator(PathTestBase):
     def test_spiral_layer_calculation(self):
         """Test that spiral generates appropriate number of layers."""
         # Use small stepover to get multiple layers
-        commands = facing._spiral(
+        commands = spiral_facing.spiral(
             polygon=self.square_wire,  # 10x10 square
             tool_diameter=2.0,
             stepover_percent=25,  # 0.5mm stepover
@@ -446,14 +450,14 @@ class TestPathFacingGenerator(PathTestBase):
 
     def test_spiral_milling_direction(self):
         """Test spiral with different milling directions."""
-        climb_commands = facing._spiral(
+        climb_commands = spiral_facing.spiral(
             polygon=self.square_wire,
             tool_diameter=4.0,
             stepover_percent=50,
             milling_direction="climb"
         )
         
-        conventional_commands = facing._spiral(
+        conventional_commands = spiral_facing.spiral(
             polygon=self.square_wire,
             tool_diameter=4.0,
             stepover_percent=50,
@@ -485,7 +489,7 @@ class TestPathFacingGenerator(PathTestBase):
         ])
         
         # Use small stepover to get multiple layers
-        commands = facing._spiral(
+        commands = spiral_facing.spiral(
             polygon=centered_rectangle,  # 10x6 rectangle centered on origin
             tool_diameter=2.0,
             stepover_percent=25,  # 0.5mm stepover
@@ -535,7 +539,7 @@ class TestPathFacingGenerator(PathTestBase):
         
         for axis_pref, milling_dir in test_cases:
             with self.subTest(axis_preference=axis_pref, milling_direction=milling_dir):
-                commands = facing._spiral(
+                commands = spiral_facing.spiral(
                     polygon=test_rectangle,
                     tool_diameter=2.0,
                     stepover_percent=25,
@@ -581,7 +585,7 @@ class TestPathFacingGenerator(PathTestBase):
         # Test both axis preferences with the angled rectangle
         for axis_pref in ["long", "short"]:
             with self.subTest(axis_preference=axis_pref):
-                commands = facing._spiral(
+                commands = spiral_facing.spiral(
                     polygon=angled_rectangle,
                     tool_diameter=2.0,
                     stepover_percent=25,
@@ -600,7 +604,7 @@ class TestPathFacingGenerator(PathTestBase):
 
     def test_spiral_continuous_cutting(self):
         """Test that spiral maintains continuous cutting motion throughout."""
-        commands = facing._spiral(
+        commands = spiral_facing.spiral(
             polygon=self.square_wire,
             tool_diameter=4.0,
             stepover_percent=50
@@ -622,7 +626,7 @@ class TestPathFacingGenerator(PathTestBase):
 
     def test_spiral_rectangular_polygon(self):
         """Test spiral with rectangular (non-square) polygon."""
-        commands = facing._spiral(
+        commands = spiral_facing.spiral(
             polygon=self.rectangle_wire,  # 20x10 rectangle
             tool_diameter=3.0,
             stepover_percent=40,
@@ -652,14 +656,14 @@ class TestPathFacingGenerator(PathTestBase):
 
     def test_spiral_axis_preference(self):
         """Test spiral with different axis preferences."""
-        long_commands = facing._spiral(
+        long_commands = spiral_facing.spiral(
             polygon=self.rectangle_wire,
             tool_diameter=4.0,
             stepover_percent=50,
             axis_preference="long"
         )
         
-        short_commands = facing._spiral(
+        short_commands = spiral_facing.spiral(
             polygon=self.rectangle_wire,
             tool_diameter=4.0,
             stepover_percent=50,
