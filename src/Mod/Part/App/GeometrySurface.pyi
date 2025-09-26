@@ -41,7 +41,7 @@ class GeometrySurface(Geometry):
         ...
 
     @constmethod
-    def toShell(self, *, Bounds: object, Segment: object) -> Any:
+    def toShell(self, Bounds: object, Segment: object) -> Any:
         """
         Make a shell of the surface.
         """
@@ -110,7 +110,7 @@ class GeometrySurface(Geometry):
         ...
 
     @constmethod
-    def projectPoint(self, *, Point: Vector, Method: str = ...) -> Any:
+    def projectPoint(self, Point: Vector, Method: str = ...) -> Any:
         """
         Computes the projection of a point on the surface
 
@@ -248,7 +248,6 @@ class GeometrySurface(Geometry):
     @constmethod
     def toBSpline(
         self,
-        *,
         tolerance: float = 1e-7,
         continuity_u: str = "C1",
         continuity_v: str = "C1",

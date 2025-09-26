@@ -141,8 +141,14 @@ class TopoShapeWire(TopoShape):
 
     @constmethod
     def makeEvolved(
-        self, *, Profile: TopoShape, Join: int, AxeProf: bool, Solid: bool, ProfOnSpine: bool,
-        Tolerance: float
+        self,
+        Profile: TopoShape,
+        Join: int,
+        *,
+        AxeProf: bool,
+        Solid: bool,
+        ProfOnSpine: bool,
+        Tolerance: float,
     ) -> TopoShape:
         """
         Profile along the spine
@@ -152,7 +158,6 @@ class TopoShapeWire(TopoShape):
     @constmethod
     def approximate(
         self,
-        *,
         Tol2d: float = None,
         Tol3d: float = 0.0001,
         MaxSegments: int = 10,

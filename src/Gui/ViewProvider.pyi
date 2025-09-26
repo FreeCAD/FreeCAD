@@ -23,7 +23,6 @@ class ViewProvider(ExtensionContainer):
 
     def addProperty(
         self,
-        *,
         type: str,
         name: str,
         group: str,
@@ -123,7 +122,7 @@ class ViewProvider(ExtensionContainer):
         ...
 
     def canDropObject(
-        self, *, obj: Any = None, owner: Any = None, subname: str, elem: Optional[List[str]] = None
+        self, obj: Any = None, *, owner: Any = None, subname: str, elem: Optional[List[str]] = None
     ) -> bool:
         """
         canDropObject(obj=None, owner=None, subname, elem=None) -> bool
@@ -144,7 +143,7 @@ class ViewProvider(ExtensionContainer):
         ...
 
     def dropObject(
-        self, *, obj: Any, owner: Any = None, subname: str, elem: Optional[List[str]] = None
+        self, obj: Any, *, owner: Any = None, subname: str, elem: Optional[List[str]] = None
     ) -> str:
         """
         dropObject(obj, owner=None, subname, elem=None) -> str
