@@ -7,6 +7,7 @@ from Base.Persistence import Persistence
 from Base.Vector import Vector
 from typing import Final, Tuple
 
+
 @export(
     Include="Mod/Sketcher/App/Sketch.h",
     FatherInclude="Base/PersistencePy.h",
@@ -60,7 +61,8 @@ class Sketch(Persistence):
         ...
 
     def moveGeometry(
-        self, GeoIndex: int, PointPos: Vector, Vector: Vector, relative: bool = False, /) -> None:
+        self, GeoIndex: int, PointPos: Vector, Vector: Vector, relative: bool = False, /
+    ) -> None:
         """
         moveGeometry(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
         to another location.

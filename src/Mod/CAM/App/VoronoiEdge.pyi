@@ -5,6 +5,7 @@ from typing import Any, Final
 from Base.BaseClass import BaseClass
 from Base.Metadata import constmethod, export
 
+
 @export(
     Include="Mod/CAM/App/VoronoiEdge.h",
     Namespace="Path",
@@ -69,6 +70,7 @@ class VoronoiEdge(BaseClass):
     def getSegmentAngle(self) -> Any:
         """Returns the angle (in degree) of the segments if the edge was formed by two segments"""
         ...
+
     Index: Final[int]
     """Internal id of the element."""
 

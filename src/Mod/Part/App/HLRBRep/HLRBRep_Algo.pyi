@@ -6,13 +6,15 @@ from Base.Metadata import export, constmethod, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from typing import Final
 
+
 @export(
     Twin="HLRBRep_Algo",
     TwinPointer="HLRBRep_Algo",
     Include="HLRBRep_Algo.hxx",
     Constructor=True,
 )
-@class_declarations("""
+@class_declarations(
+    """
 private:
     Handle(HLRBRep_Algo) hAlgo;
 
@@ -20,7 +22,8 @@ public:
     Handle(HLRBRep_Algo) handle() {
         return hAlgo;
     }
-""")
+"""
+)
 class HLRBRep_Algo(PyObjectBase):
     """
     Algo() -> HLRBRep_Algo

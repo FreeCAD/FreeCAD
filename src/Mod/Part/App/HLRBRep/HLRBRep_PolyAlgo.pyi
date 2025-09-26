@@ -7,6 +7,7 @@ from Base.PyObjectBase import PyObjectBase
 from Part.TopoShapePy import TopoShape
 from typing import Final, overload
 
+
 @export(
     PythonName="Part.HLRBRep_PolyAlgo",
     Twin="HLRBRep_PolyAlgo",
@@ -14,7 +15,8 @@ from typing import Final, overload
     Include="HLRBRep_PolyAlgo.hxx",
     Constructor=True,
 )
-@class_declarations("""
+@class_declarations(
+    """
 private:
     Handle(HLRBRep_PolyAlgo) hAlgo;
 
@@ -22,7 +24,8 @@ public:
     Handle(HLRBRep_PolyAlgo) handle() {
         return hAlgo;
     }
-""")
+"""
+)
 class HLRBRep_PolyAlgo(PyObjectBase):
     """
     PolyAlgo() -> HLRBRep_PolyAlgo
@@ -105,10 +108,14 @@ class HLRBRep_PolyAlgo(PyObjectBase):
 	    """
         ...
 
-    def setProjector(self, *, Origin: tuple[float, float, float] = (0.0, 0.0, 0.0),
-                     ZDir: tuple[float, float, float] = (0.0, 0.0, 0.0),
-                     XDir: tuple[float, float, float] = (0.0, 0.0, 0.0),
-                     focus: float = float("nan")) -> None:
+    def setProjector(
+        self,
+        *,
+        Origin: tuple[float, float, float] = (0.0, 0.0, 0.0),
+        ZDir: tuple[float, float, float] = (0.0, 0.0, 0.0),
+        XDir: tuple[float, float, float] = (0.0, 0.0, 0.0),
+        focus: float = float("nan")
+    ) -> None:
         """
         setProjector(Origin=(0, 0, 0), ZDir=(0,0,0), XDir=(0,0,0), focus=NaN)
 

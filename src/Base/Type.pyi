@@ -6,17 +6,16 @@ from Metadata import export, forward_declarations, constmethod
 from PyObjectBase import PyObjectBase
 from typing import List, Final
 
+
 @export(
     Twin="BaseType",
     TwinPointer="BaseType",
     Delete=True,
 )
-@forward_declarations(
-    """
+@forward_declarations("""
 namespace Base {
     using BaseType = Type;
-}"""
-)
+}""")
 class Type(PyObjectBase):
     """
     BaseTypePy class.

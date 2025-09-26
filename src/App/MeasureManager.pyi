@@ -6,13 +6,13 @@ from Base.Metadata import export, no_args
 from Base.PyObjectBase import PyObjectBase
 from typing import List, Tuple, TypeAlias
 
-
 MeasureType: TypeAlias = object
+
 
 @export(
     Constructor=False,
     Delete=True,
-    )
+)
 class MeasureManager(PyObjectBase):
     """
     MeasureManager class.

@@ -14,8 +14,7 @@ from typing import Any, Final, List
 @class_declarations("""private:
     friend class StringID;
     int _index = 0;
-        """
-)
+        """)
 class StringID(BaseClass):
     """
     This is the StringID class

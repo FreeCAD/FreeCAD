@@ -151,4 +151,3 @@ class AttachEngine(BaseClass):
         will crash FreeCAD.
         """
         ...
-

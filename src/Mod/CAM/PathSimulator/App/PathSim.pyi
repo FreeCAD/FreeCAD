@@ -7,6 +7,7 @@ from typing import Any, Final
 from Base.BaseClass import BaseClass
 from Base.Metadata import export
 
+
 @export(
     FatherInclude="Base/BaseClassPy.h",
     Include="Mod/CAM/PathSimulator/App/PathSim.h",
@@ -51,5 +52,6 @@ class PathSim(BaseClass):
 
                   Apply a single path command on the stock starting from placement."""
         ...
+
     Tool: Final[Any]
     """Return current simulation tool."""

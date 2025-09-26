@@ -7,6 +7,7 @@ from typing import Any, Final
 from Base.PyObjectBase import PyObjectBase
 from Base.Metadata import constmethod, export
 
+
 @export(
     Include="Mod/TechDraw/App/CenterLine.h",
     Namespace="TechDraw",
@@ -30,6 +31,7 @@ class CenterLine(PyObjectBase):
     def copy(self) -> Any:
         """Create a copy of this centerline"""
         ...
+
     Tag: Final[str]
     """Gives the tag of the CenterLine as string."""
 

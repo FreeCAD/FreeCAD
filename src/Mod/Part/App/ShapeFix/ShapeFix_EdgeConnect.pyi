@@ -8,6 +8,7 @@ from Part.App.TopoShapeEdge import TopoShapeEdge
 from Part.App.TopoShape import TopoShape
 from typing import overload
 
+
 @export(
     PythonName="Part.ShapeFix.EdgeConnect",
     Include="ShapeFix_EdgeConnect.hxx",
@@ -23,10 +24,12 @@ class ShapeFix_EdgeConnect(PyObjectBase):
     """
 
     @overload
-    def add(self, edge1: TopoShapeEdge, edge2: TopoShapeEdge, /) -> None: ...
+    def add(self, edge1: TopoShapeEdge, edge2: TopoShapeEdge, /) -> None:
+        ...
 
     @overload
-    def add(self, shape: TopoShape, /) -> None: ...
+    def add(self, shape: TopoShape, /) -> None:
+        ...
 
     def add(self, *args, **kwargs) -> None:
         """

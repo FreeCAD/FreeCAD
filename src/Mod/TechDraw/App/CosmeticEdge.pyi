@@ -7,6 +7,7 @@ from typing import Final
 from Base.PyObjectBase import PyObjectBase
 from Base.Metadata import export
 
+
 @export(
     Include="Mod/TechDraw/App/Cosmetic.h",
     Namespace="TechDraw",

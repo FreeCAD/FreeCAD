@@ -8,6 +8,7 @@ from Base.Metadata import constmethod, export
 
 from App.Part import Part
 
+
 @export(Include="Mod/Assembly/App/AssemblyObject.h", Namespace="Assembly")
 class AssemblyObject(Part):
     """

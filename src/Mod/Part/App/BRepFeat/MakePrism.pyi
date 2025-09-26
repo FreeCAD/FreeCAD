@@ -6,6 +6,7 @@ from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
 from typing import List
 
+
 @export(
     PythonName="Part.BRepFeat.MakePrism",
     Twin="BRepFeat_MakePrism",

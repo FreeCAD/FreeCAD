@@ -8,6 +8,7 @@ from Vector import Vector
 from Matrix import Matrix
 from typing import overload, Any, Final, Tuple, Union
 
+
 @export(
     TwinPointer="BoundBox3d",
     Constructor=True,
@@ -109,13 +110,13 @@ class BoundBox(PyObjectBase):
         xMax: float = 0,
         yMax: float = 0,
         zMax: float = 0,
-    ) -> None: ...
+    ) -> None:        ...
     @overload
     def __init__(
         self,
         min: Union[Vector, Tuple[float, float, float]],
         max: Union[Vector, Tuple[float, float, float]],
-    ) -> None: ...
+    ) -> None:        ...
     # fmt: on
 
     def setVoid(self) -> None:
@@ -136,13 +137,16 @@ class BoundBox(PyObjectBase):
         ...
 
     @overload
-    def add(self, minMax: Vector, /) -> None: ...
+    def add(self, minMax: Vector, /) -> None:
+        ...
 
     @overload
-    def add(self, minMax: Tuple[float, float, float], /) -> None: ...
+    def add(self, minMax: Tuple[float, float, float], /) -> None:
+        ...
 
     @overload
-    def add(self, x: float, y: float, z: float, /) -> None: ...
+    def add(self, x: float, y: float, z: float, /) -> None:
+        ...
 
     def add(self, *args: Any, **kwargs: Any) -> None:
         """
@@ -189,9 +193,13 @@ class BoundBox(PyObjectBase):
         ...
 
     @overload
-    def closestPoint(self, point: Vector, /) -> Vector: ...
+    def closestPoint(self, point: Vector, /) -> Vector:
+        ...
+
     @overload
-    def closestPoint(self, x: float, y: float, z: float, /) -> Vector: ...
+    def closestPoint(self, x: float, y: float, z: float, /) -> Vector:
+        ...
+
     @constmethod
     def closestPoint(self, *args: Any, **kwargs: Any) -> Vector:
         """
@@ -212,13 +220,18 @@ class BoundBox(PyObjectBase):
         ...
 
     @overload
-    def intersect(self, boundBox2: "BoundBox", /) -> bool: ...
+    def intersect(self, boundBox2: "BoundBox", /) -> bool:
+        ...
+
     @overload
     def intersect(
         self,
         base: Union[Vector, Tuple[float, float, float]],
         dir: Union[Vector, Tuple[float, float, float]],
-     /,) -> bool: ...
+        /,
+    ) -> bool:
+        ...
+
     def intersect(self, *args: Any) -> bool:
         """
         intersect(boundBox2) -> bool
@@ -281,11 +294,17 @@ class BoundBox(PyObjectBase):
         ...
 
     @overload
-    def move(self, displacement: Vector, /) -> None: ...
+    def move(self, displacement: Vector, /) -> None:
+        ...
+
     @overload
-    def move(self, displacement: Tuple[float, float, float], /) -> None: ...
+    def move(self, displacement: Tuple[float, float, float], /) -> None:
+        ...
+
     @overload
-    def move(self, x: float, y: float, z: float, /) -> None: ...
+    def move(self, x: float, y: float, z: float, /) -> None:
+        ...
+
     def move(self, *args: Any, **kwargs: Any) -> None:
         """
         move(displacement) -> None
@@ -305,11 +324,17 @@ class BoundBox(PyObjectBase):
         ...
 
     @overload
-    def scale(self, factor: Vector, /) -> None: ...
+    def scale(self, factor: Vector, /) -> None:
+        ...
+
     @overload
-    def scale(self, factor: Tuple[float, float, float], /) -> None: ...
+    def scale(self, factor: Tuple[float, float, float], /) -> None:
+        ...
+
     @overload
-    def scale(self, x: float, y: float, z: float, /) -> None: ...
+    def scale(self, x: float, y: float, z: float, /) -> None:
+        ...
+
     def scale(self, *args: Any, **kwargs: Any) -> None:
         """
         scale(factor) -> None
@@ -353,11 +378,17 @@ class BoundBox(PyObjectBase):
         ...
 
     @overload
-    def isInside(self, object: Vector, /) -> bool: ...
+    def isInside(self, object: Vector, /) -> bool:
+        ...
+
     @overload
-    def isInside(self, object: "BoundBox", /) -> bool: ...
+    def isInside(self, object: "BoundBox", /) -> bool:
+        ...
+
     @overload
-    def isInside(self, x: float, y: float, z: float, /) -> bool: ...
+    def isInside(self, x: float, y: float, z: float, /) -> bool:
+        ...
+
     def isInside(self, *args: Any) -> bool:
         """
         isInside(object) -> bool

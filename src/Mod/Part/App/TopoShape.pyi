@@ -10,6 +10,7 @@ from App.ComplexGeoData import ComplexGeoData
 from __future__ import annotations
 from typing import Final, List, Tuple, Union, overload
 
+
 @export(
     Include="Mod/Part/App/TopoShape.h",
     FatherInclude="App/ComplexGeoDataPy.h",
@@ -294,7 +295,13 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def section(self, tool: Tuple[TopoShape, ...], tolerance: float = 0.0, approximation: bool = False, /) -> TopoShape:
+    def section(
+        self,
+        tool: Tuple[TopoShape, ...],
+        tolerance: float = 0.0,
+        approximation: bool = False,
+        /
+    ) -> TopoShape:
         """
         Section of this with a given (list of) topo shape.
         section(tool,[approximation=False]) -> Shape
@@ -346,7 +353,10 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def generalFuse(self, shapes: Tuple[TopoShape, ...], fuzzy_value: float = 0.0, /) -> Tuple[TopoShape, List[List[TopoShape]]]:
+    def generalFuse(self,
+        shapes: Tuple[TopoShape, ...],
+        fuzzy_value: float = 0.0,
+        /) -> Tuple[TopoShape, List[List[TopoShape]]]:
         """
         Run general fuse algorithm (GFA) between this and given shapes.
         generalFuse(list_of_other_shapes, [fuzzy_value = 0.0]) -> (result, map)
@@ -458,7 +468,9 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def transformed(self, *, matrix: Matrix, copy: bool = False, checkScale: bool = False, op: str = None) -> TopoShape:
+    def transformed(
+        self, *, matrix: Matrix, copy: bool = False, checkScale: bool = False, op: str = None
+    ) -> TopoShape:
         """
         Create a new transformed shape
         transformed(Matrix,copy=False,checkScale=False,op=None) -> shape
@@ -524,11 +536,13 @@ class TopoShape(ComplexGeoData):
 
     @overload
     @constmethod
-    def makeFillet(self, radius: float, edgeList: List, /) -> TopoShape: ...
+    def makeFillet(self, radius: float, edgeList: List, /) -> TopoShape:
+        ...
 
     @overload
     @constmethod
-    def makeFillet(self, radius1: float, radius2: float, edgeList: List, /) -> TopoShape: ...
+    def makeFillet(self, radius1: float, radius2: float, edgeList: List, /) -> TopoShape:
+        ...
 
     @constmethod
     def makeChamfer(self, *args) -> TopoShape:
@@ -542,11 +556,13 @@ class TopoShape(ComplexGeoData):
 
     @overload
     @constmethod
-    def makeChamfer(self, radius: float, edgeList: List, /) -> TopoShape: ...
+    def makeChamfer(self, radius: float, edgeList: List, /) -> TopoShape:
+        ...
 
     @overload
     @constmethod
-    def makeChamfer(self, radius1: float, radius2: float, edgeList: List, /) -> TopoShape: ...
+    def makeChamfer(self, radius1: float, radius2: float, edgeList: List, /) -> TopoShape:
+        ...
 
     @constmethod
     def makeThickness(self, faces: List, offset: float, tolerance: float, /) -> TopoShape:
@@ -561,7 +577,17 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def makeOffsetShape(self, offset: float, tolerance: float, *, inter: bool = False, self_inter: bool = False, offsetMode: int = 0, join: int = 0, fill: bool = False) -> TopoShape:
+    def makeOffsetShape(
+        self,
+        offset: float,
+        tolerance: float,
+        *,
+        inter: bool = False,
+        self_inter: bool = False,
+        offsetMode: int = 0,
+        join: int = 0,
+        fill: bool = False
+    ) -> TopoShape:
         """
         Makes an offset shape (3d offsetting).
         makeOffsetShape(offset, tolerance, [inter=False, self_inter=False, offsetMode=0, join=0, fill=False]) -> Shape
@@ -588,7 +614,15 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def makeOffset2D(self, offset: float, *, join: int = 0, fill: bool = False, openResult: bool = False, intersection: bool = False) -> TopoShape:
+    def makeOffset2D(
+        self,
+        offset: float,
+        *,
+        join: int = 0,
+        fill: bool = False,
+        openResult: bool = False,
+        intersection: bool = False
+    ) -> TopoShape:
         """
         Makes an offset shape (2d offsetting).
         makeOffset2D(offset, [join=0, fill=False, openResult=False, intersection=False]) -> Shape
@@ -619,8 +653,10 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def makeEvolved(self, *, Profile: TopoShape, Join: int, AxeProf: bool, Solid: bool,
-                    ProfOnSpine: bool, Tolerance: float) -> None:
+    def makeEvolved(
+        self, *, Profile: TopoShape, Join: int, AxeProf: bool, Solid: bool, ProfOnSpine: bool,
+        Tolerance: float
+    ) -> None:
         """
         Profile along the spine
         """
@@ -807,8 +843,16 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def reflectLines(self, ViewDir: Vector, *, ViewPos: Vector = None, UpDir: Vector = None,
-                    EdgeType: str = None, Visible: bool = True, OnShape: bool = False) -> TopoShape:
+    def reflectLines(
+        self,
+        ViewDir: Vector,
+        *,
+        ViewPos: Vector = None,
+        UpDir: Vector = None,
+        EdgeType: str = None,
+        Visible: bool = True,
+        OnShape: bool = False
+    ) -> TopoShape:
         """
         Build projection or reflect lines of a shape according to a view direction.
         reflectLines(ViewDir, [ViewPos, UpDir, EdgeType, Visible, OnShape]) -> Shape (Compound of edges)
@@ -931,7 +975,10 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def distToShape(self, shape: TopoShape, tol: float = 1e-7, /) -> Tuple[float, List[Tuple[Vector, Vector]], List[Tuple]]:
+    def distToShape(self,
+        shape: TopoShape,
+        tol: float = 1e-7,
+        /) -> Tuple[float, List[Tuple[Vector, Vector]], List[Tuple]]:
         """
         Find the minimum distance to another shape.
         distToShape(shape, tol=1e-7) -> (dist, vectors, infos)
@@ -985,7 +1032,13 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
-    def mapShapes(self, generated: List[Tuple[TopoShape, TopoShape]], modified: List[Tuple[TopoShape, TopoShape]], op: str = "", /) -> None:
+    def mapShapes(
+        self,
+        generated: List[Tuple[TopoShape, TopoShape]],
+        modified: List[Tuple[TopoShape, TopoShape]],
+        op: str = "",
+        /
+    ) -> None:
         """
         mapShapes(generated, modified, op='')
 
@@ -1099,7 +1152,9 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def optimalBoundingBox(self, useTriangulation: bool = True, useShapeTolerance: bool = False, /) -> BoundBox:
+    def optimalBoundingBox(
+        self, useTriangulation: bool = True, useShapeTolerance: bool = False, /
+    ) -> BoundBox:
         """
         Get the optimal bounding box
         optimalBoundingBox([useTriangulation = True, useShapeTolerance = False]) -> bound box
@@ -1123,7 +1178,15 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def findSubShapesWithSharedVertex(self, shape: TopoShape, *, needName: bool = False, checkGeometry: bool = True, tol: float = 1e-7, atol: float = 1e-12) -> Union[List[Tuple[str, TopoShape]], List[TopoShape]]:
+    def findSubShapesWithSharedVertex(
+        self,
+        shape: TopoShape,
+        *,
+        needName: bool = False,
+        checkGeometry: bool = True,
+        tol: float = 1e-7,
+        atol: float = 1e-12
+    ) -> Union[List[Tuple[str, TopoShape]], List[TopoShape]]:
         """
         findSubShapesWithSharedVertex(shape, needName=False, checkGeometry=True, tol=1e-7, atol=1e-12) -> Shape
 

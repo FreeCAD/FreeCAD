@@ -7,6 +7,7 @@ from typing import Any, Final
 from Base.BaseClass import PyObjectBase
 from Base.Metadata import constmethod, export
 
+
 @export(
     Include="Mod/Surface/App/Blending/BlendPoint.h",
     Namespace="Surface",
@@ -43,5 +44,6 @@ class BlendPoint(PyObjectBase):
         BlendPoint.setvectors([Point, D1, D2, ..., DN])
         """
         ...
+
     Vectors: Final[list]
     """The list of vectors of this BlendPoint."""
