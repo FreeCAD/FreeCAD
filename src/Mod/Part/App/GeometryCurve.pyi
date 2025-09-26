@@ -45,8 +45,9 @@ class GeometryCurve(Geometry):
 
     @overload
     @constmethod
-    def discretize(self, Number: int, *, First: Optional[float] = None,
-        Last: Optional[float] = None) -> List[Vector]:
+    def discretize(
+        self, Number: int, *, First: Optional[float] = None, Last: Optional[float] = None
+    ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of points.
         """
@@ -54,11 +55,9 @@ class GeometryCurve(Geometry):
 
     @overload
     @constmethod
-    def discretize(self,
-        QuasiNumber: int,
-        *,
-        First: Optional[float] = None,
-        Last: Optional[float] = None) -> List[Vector]:
+    def discretize(
+        self, QuasiNumber: int, *, First: Optional[float] = None, Last: Optional[float] = None
+    ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of quasi equidistant points.
         """
@@ -66,11 +65,9 @@ class GeometryCurve(Geometry):
 
     @overload
     @constmethod
-    def discretize(self,
-        Distance: float,
-        *,
-        First: Optional[float] = None,
-        Last: Optional[float] = None) -> List[Vector]:
+    def discretize(
+        self, Distance: float, *, First: Optional[float] = None, Last: Optional[float] = None
+    ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of equidistant points with distance 'd'.
         """
@@ -78,11 +75,9 @@ class GeometryCurve(Geometry):
 
     @overload
     @constmethod
-    def discretize(self,
-        Deflection: float,
-        *,
-        First: Optional[float] = None,
-        Last: Optional[float] = None) -> List[Vector]:
+    def discretize(
+        self, Deflection: float, *, First: Optional[float] = None, Last: Optional[float] = None
+    ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of points with a maximum deflection 'd' to the curve.
         """
@@ -107,7 +102,7 @@ class GeometryCurve(Geometry):
         Minimum: int = 2,
         *,
         First: Optional[float] = None,
-        Last: Optional[float] = None
+        Last: Optional[float] = None,
     ) -> List[Vector]:
         """
         Discretizes the curve and returns a list of points with an angular deflection of 'a' and a curvature deflection of 'c'.

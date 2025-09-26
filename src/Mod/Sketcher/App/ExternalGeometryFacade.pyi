@@ -6,7 +6,6 @@ from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import Final, List
 
-
 @export(
     PythonName="Sketcher.ExternalGeometryFacade",
     Include="Mod/Sketcher/App/ExternalGeometryFacade.h",

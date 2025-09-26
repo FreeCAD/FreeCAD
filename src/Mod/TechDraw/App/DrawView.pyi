@@ -8,7 +8,6 @@ from Base.Metadata import export
 
 from App.DocumentObject import DocumentObject
 
-
 @export(
     Include="Mod/TechDraw/App/DrawView.h",
     Namespace="TechDraw",
@@ -16,7 +15,7 @@ from App.DocumentObject import DocumentObject
 class DrawView(DocumentObject):
     """
     Feature for creating and manipulating Technical Drawing Views
-    
+
     Author: WandererFan (wandererfan@gmail.com)
     License: LGPL-2.1-or-later
     """

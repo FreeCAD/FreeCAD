@@ -8,7 +8,6 @@ from Base.Metadata import constmethod, export
 
 from App.ComplexGeoData import ComplexGeoData
 
-
 @export(
     Twin="MeshObject",
     TwinPointer="MeshObject",
@@ -510,7 +509,6 @@ class Mesh(ComplexGeoData):
         The items in the list contains minimum and maximum curvature with their directions
         """
         ...
-
     Points: Final[list]
     """A collection of the mesh points
 With this attribute it is possible to get access to the points of the mesh

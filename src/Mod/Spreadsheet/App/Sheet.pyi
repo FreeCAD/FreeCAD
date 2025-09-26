@@ -8,7 +8,6 @@ from Base.Metadata import export
 
 from App.DocumentObject import DocumentObject
 
-
 @export(
     Include="Mod/Spreadsheet/App/Sheet.h",
     Namespace="Spreadsheet",

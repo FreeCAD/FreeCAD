@@ -6,7 +6,6 @@ from Base.Metadata import export, constmethod
 from Part.BodyBase import BodyBase
 from typing import Final, overload
 
-
 @export(
     Include="Mod/PartDesign/App/Body.h",
     FatherInclude="Mod/Part/App/BodyBasePy.h",

@@ -6,7 +6,6 @@ from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import Final
 
-
 @export(
     PythonName="Material.UUIDs",
     Twin="ModelUUIDs",
@@ -19,7 +18,7 @@ from typing import Final
 class UUIDs(BaseClass):
     """
     Material model UUID identifiers.
-    
+
     Author: DavidCarter (dcarter@davidcarter.ca)
     Licence: LGPL
     """

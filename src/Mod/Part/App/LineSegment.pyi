@@ -37,17 +37,11 @@ class LineSegment(TrimmedCurve):
     """Returns the end point point of this line."""
 
     @overload
-    def __init__(self) -> None:
-        ...
-
+    def __init__(self) -> None: ...
     @overload
-    def __init__(self, line_segment: "LineSegment") -> None:
-        ...
-
+    def __init__(self, line_segment: "LineSegment") -> None: ...
     @overload
-    def __init__(self, point1: Point, point2: Point) -> None:
-        ...
-
+    def __init__(self, point1: Point, point2: Point) -> None: ...
     def setParameterRange(self) -> None:
         """
         Set the parameter range of the underlying line geometry

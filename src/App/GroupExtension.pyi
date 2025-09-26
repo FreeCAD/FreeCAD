@@ -6,8 +6,9 @@ from Base.Metadata import export
 from DocumentObjectExtension import DocumentObjectExtension
 from typing import Any, List
 
-
-@export(Include="App/DocumentObjectGroup.h",)
+@export(
+    Include="App/DocumentObjectGroup.h",
+)
 class GroupExtension(DocumentObjectExtension):
     """
     Extension class which allows grouping of document objects

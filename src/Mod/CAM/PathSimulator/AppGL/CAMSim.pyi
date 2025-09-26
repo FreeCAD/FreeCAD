@@ -8,7 +8,6 @@ from Base.BaseClass import BaseClass
 from Base.Metadata import export
 from Metadata import no_args
 
-
 @export(
     Include="Mod/CAM/PathSimulator/AppGL/CAMSim.h",
     FatherInclude="Base/BaseClassPy.h",

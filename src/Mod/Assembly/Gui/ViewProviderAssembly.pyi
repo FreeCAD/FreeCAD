@@ -8,7 +8,6 @@ from Base.Metadata import export
 
 from Gui.ViewProvider import ViewProvider
 
-
 @export(Include="Mod/Assembly/Gui/ViewProviderAssembly.h", Namespace="AssemblyGui")
 class ViewProviderAssembly(ViewProvider):
     """

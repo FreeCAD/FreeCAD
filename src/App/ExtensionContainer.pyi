@@ -5,7 +5,6 @@ from __future__ import annotations
 from Base.Metadata import export, constmethod
 from PropertyContainer import PropertyContainer
 
-
 @export(
     Initialization=True,
     Constructor=True,

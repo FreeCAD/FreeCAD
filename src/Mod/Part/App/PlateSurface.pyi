@@ -27,7 +27,7 @@ class PlateSurface(GeometrySurface):
         MaxDistance: float = 0,
         CritOrder: int = 0,
         Continuity: str = "",
-        EnlargeCoeff: float = 0
+        EnlargeCoeff: float = 0,
     ) -> None:
         """
         Approximate the plate surface to a B-Spline surface

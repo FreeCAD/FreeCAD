@@ -7,7 +7,6 @@ from typing import Any
 from Base.Metadata import export
 from DrawTemplate import DrawTemplate
 
-
 @export(
     Include="Mod/TechDraw/App/DrawSVGTemplate.h",
     Namespace="TechDraw",
@@ -16,7 +15,7 @@ from DrawTemplate import DrawTemplate
 class DrawSVGTemplate(DrawTemplate):
     """
     Feature for creating and manipulating Technical Drawing SVG Templates
-    
+
     Author: Luke Parry (l.parry@warwick.ac.uk)
     License: LGPL-2.1-or-later
     """

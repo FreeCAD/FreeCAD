@@ -5,7 +5,6 @@ from typing import Any, Final
 from Base.BaseClass import BaseClass
 from Base.Metadata import constmethod, export
 
-
 @export(
     Include="Mod/CAM/App/Voronoi.h",
     Namespace="Path",
@@ -82,7 +81,6 @@ class Voronoi(BaseClass):
     def numSegments(self) -> Any:
         """Return number of input segments"""
         ...
-
     Cells: Final[list]
     """List of all cells of the voronoi diagram"""
 

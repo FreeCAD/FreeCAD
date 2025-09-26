@@ -6,7 +6,6 @@ from Base.Metadata import export
 from ModelProperty import ModelProperty
 from typing import Final
 
-
 @export(
     Include="Mod/Material/App/Materials.h",
     Namespace="Materials",
@@ -18,7 +17,7 @@ from typing import Final
 class MaterialProperty(ModelProperty):
     """
     Material property descriptions.
-    
+
     Author: DavidCarter (dcarter@davidcarter.ca)
     Licence: LGPL
     """

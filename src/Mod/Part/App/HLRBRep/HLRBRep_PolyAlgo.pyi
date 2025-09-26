@@ -7,7 +7,6 @@ from Base.PyObjectBase import PyObjectBase
 from Part.TopoShapePy import TopoShape
 from typing import Final, overload
 
-
 @export(
     PythonName="Part.HLRBRep_PolyAlgo",
     Twin="HLRBRep_PolyAlgo",
@@ -113,7 +112,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         Origin: tuple[float, float, float] = (0.0, 0.0, 0.0),
         ZDir: tuple[float, float, float] = (0.0, 0.0, 0.0),
         XDir: tuple[float, float, float] = (0.0, 0.0, 0.0),
-        focus: float = float("nan")
+        focus: float = float("nan"),
     ) -> None:
         """
         setProjector(Origin=(0, 0, 0), ZDir=(0,0,0), XDir=(0,0,0), focus=NaN)

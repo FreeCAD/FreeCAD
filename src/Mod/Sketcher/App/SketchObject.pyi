@@ -11,7 +11,6 @@ from Part.App.Geometry import Geometry
 from Sketcher.App.Constraint import Constraint
 from typing import List, Tuple, Union, Final, overload
 
-
 @export(
     Include="Mod/Sketcher/App/SketchObject.h",
     FatherInclude="Mod/Part/App/Part2DObjectPy.h",
@@ -84,17 +83,14 @@ class SketchObject(Part2DObject):
         ...
 
     @overload
-    def addGeometry(self, geo: Geometry, isConstruction: bool = False, /) -> int:
-        ...
-
+    def addGeometry(self, geo: Geometry, isConstruction: bool = False, /) -> int: ...
     @overload
-    def addGeometry(self, geo: List[Geometry], isConstruction: bool = False, /) -> Tuple[int, ...]:
-        ...
-
-    def addGeometry(self,
-        geo: Union[Geometry, List[Geometry]],
-        isConstruction: bool = False,
-        /) -> Union[int, Tuple[int, ...]]:
+    def addGeometry(
+        self, geo: List[Geometry], isConstruction: bool = False, /
+    ) -> Tuple[int, ...]: ...
+    def addGeometry(
+        self, geo: Union[Geometry, List[Geometry]], isConstruction: bool = False, /
+    ) -> Union[int, Tuple[int, ...]]:
         """
         Add geometric objects to the sketch.
 
@@ -231,15 +227,12 @@ class SketchObject(Part2DObject):
         ...
 
     @overload
-    def addConstraint(self, constraint: Constraint, /) -> int:
-        ...
-
+    def addConstraint(self, constraint: Constraint, /) -> int: ...
     @overload
-    def addConstraint(self, constraints: List[Constraint], /) -> Tuple[int, ...]:
-        ...
-
-    def addConstraint(self, constraint: Union[Constraint, List[Constraint]], /) -> Union[int, Tuple[int,
-        ...]]:
+    def addConstraint(self, constraints: List[Constraint], /) -> Tuple[int, ...]: ...
+    def addConstraint(
+        self, constraint: Union[Constraint, List[Constraint]], /
+    ) -> Union[int, Tuple[int, ...]]:
         """
         Add constraints to the sketch.
 
@@ -268,7 +261,9 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def delConstraints(self, constraintIndices: List[int], updateGeometry: bool, noSolve: bool, /) -> None:
+    def delConstraints(
+        self, constraintIndices: List[int], updateGeometry: bool, noSolve: bool, /
+    ) -> None:
         """
         Delete multiple constraints from a sketch
 
@@ -347,13 +342,9 @@ class SketchObject(Part2DObject):
         ...
 
     @overload
-    def delConstraintOnPoint(self, vertexId: int, /) -> None:
-        ...
-
+    def delConstraintOnPoint(self, vertexId: int, /) -> None: ...
     @overload
-    def delConstraintOnPoint(self, geoId: int, pointPos: int, /) -> None:
-        ...
-
+    def delConstraintOnPoint(self, geoId: int, pointPos: int, /) -> None: ...
     def delConstraintOnPoint(self, *args: int) -> None:
         """
         Delete coincident constraints associated with a sketch point.
@@ -592,7 +583,9 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def moveGeometry(self, GeoIndex: int, PointPos: int, Vector: Vector, relative: bool = False, /) -> None:
+    def moveGeometry(
+        self, GeoIndex: int, PointPos: int, Vector: Vector, relative: bool = False, /
+    ) -> None:
         """
         Move a given point (or curve) to another location.
 
@@ -608,7 +601,9 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def moveGeometries(self, Geos: List[Tuple[int, int]], Vector: Vector, relative: bool = False, /) -> None:
+    def moveGeometries(
+        self, Geos: List[Tuple[int, int]], Vector: Vector, relative: bool = False, /
+    ) -> None:
         """
         Move given points and curves to another location.
 

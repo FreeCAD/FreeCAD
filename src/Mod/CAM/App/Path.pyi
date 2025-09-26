@@ -5,7 +5,6 @@ from typing import Any, Final
 from Base.Metadata import constmethod, export
 from Base.Persistence import Persistence
 
-
 @export(
     Include="Mod/CAM/App/Path.h",
     Twin="Toolpath",
@@ -55,7 +54,6 @@ class Path(Persistence):
     def getCycleTime(self) -> Any:
         """return the cycle time estimation for this path in s"""
         ...
-
     Length: Final[float]
     """the total length of this path in mm"""
 

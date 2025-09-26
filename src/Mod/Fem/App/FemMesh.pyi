@@ -8,7 +8,6 @@ from Base.Metadata import constmethod, export
 
 from App.ComplexGeoData import ComplexGeoData
 
-
 @export(
     Include="Mod/Fem/App/FemMesh.h",
     Namespace="Fem",
@@ -261,7 +260,6 @@ class FemMesh(ComplexGeoData):
     def getIdByElementType(self) -> Any:
         """Return a tuple of IDs to a given element type"""
         ...
-
     Nodes: Final[dict]
     """Dictionary of Nodes by ID (int ID:Vector())"""
 

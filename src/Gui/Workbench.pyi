@@ -6,8 +6,9 @@ from Base.Metadata import export
 from Base.BaseClass import BaseClass
 from typing import Any, List, Dict
 
-
-@export(Include="Gui/Workbench.h",)
+@export(
+    Include="Gui/Workbench.h",
+)
 class Workbench(BaseClass):
     """
     This is the base class for workbenches

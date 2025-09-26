@@ -6,7 +6,6 @@ from Base.Metadata import export
 
 from App.DocumentObjectGroup import DocumentObjectGroup
 
-
 @export(Include="Mod/Assembly/App/BomGroup.h", Namespace="Assembly")
 class BomGroup(DocumentObjectGroup):
     """

@@ -6,7 +6,6 @@ from Metadata import export, constmethod, overload
 from typing import Final
 from Part.Geom2d import ArcOfConic2d
 
-
 @export(
     PythonName="Part.Geom2d.ArcOfParabola2d",
     Twin="Geom2dArcOfParabola",

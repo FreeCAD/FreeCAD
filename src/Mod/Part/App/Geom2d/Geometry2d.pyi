@@ -6,7 +6,6 @@ from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
 from typing import overload
 
-
 @export(
     Twin="Geometry2d",
     TwinPointer="Geometry2d",

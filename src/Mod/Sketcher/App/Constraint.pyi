@@ -6,7 +6,6 @@ from Base.Metadata import export
 from Base.Persistence import Persistence
 from typing import Final
 
-
 @export(
     Include="Mod/Sketcher/App/Constraint.h",
     Constructor=True,

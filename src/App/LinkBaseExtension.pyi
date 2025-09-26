@@ -6,8 +6,9 @@ from Base.Metadata import export
 from DocumentObjectExtension import DocumentObjectExtension
 from typing import Any, Final, List, Tuple, Optional, Union, overload
 
-
-@export(Include="App/Link.h",)
+@export(
+    Include="App/Link.h",
+)
 class LinkBaseExtension(DocumentObjectExtension):
     """
     Link extension base class
@@ -45,28 +46,22 @@ class LinkBaseExtension(DocumentObjectExtension):
 
     def getLinkExtProperty(self, name: str, /) -> Any:
         """
-        getLinkExtProperty(name): return the property value by its predefined name 
+        getLinkExtProperty(name): return the property value by its predefined name
         """
         ...
 
     def getLinkExtPropertyName(self, name: str, /) -> str:
         """
-        getLinkExtPropertyName(name): lookup the property name by its predefined name 
+        getLinkExtPropertyName(name): lookup the property name by its predefined name
         """
         ...
 
     @overload
-    def getLinkPropertyInfo(self, /) -> tuple:
-        ...
-
+    def getLinkPropertyInfo(self, /) -> tuple: ...
     @overload
-    def getLinkPropertyInfo(self, index: int, /) -> tuple:
-        ...
-
+    def getLinkPropertyInfo(self, index: int, /) -> tuple: ...
     @overload
-    def getLinkPropertyInfo(self, name: str, /) -> tuple:
-        ...
-
+    def getLinkPropertyInfo(self, name: str, /) -> tuple: ...
     def getLinkPropertyInfo(self, arg: Any = None, /) -> tuple:
         """
         getLinkPropertyInfo(): return a tuple of (name,type,doc) for all supported properties.
@@ -82,7 +77,7 @@ class LinkBaseExtension(DocumentObjectExtension):
         obj: Any,
         subName: Optional[str] = None,
         subElements: Optional[Union[str, Tuple[str, ...]]] = None,
-        /
+        /,
     ) -> None:
         """
         setLink(obj,subName=None,subElements=None): Set link object.

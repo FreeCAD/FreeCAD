@@ -6,7 +6,6 @@ from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import Final, List, Dict, overload
 
-
 @export(
     Include="Mod/Material/App/Model.h",
     Namespace="Materials",

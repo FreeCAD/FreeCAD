@@ -30,7 +30,7 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         Tol2d: float = 0.00001,
         Tol3d: float = 0.0001,
         TolAng: float = 0.01,
-        TolCurv: float = 0.1
+        TolCurv: float = 0.1,
     ) -> None:
         """
         setConstrParam(Tol2d=0.00001, Tol3d=0.0001, TolAng=0.01, TolCurv=0.1)
@@ -97,13 +97,9 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         ...
 
     @overload
-    def G0Error(self, /) -> float:
-        ...
-
+    def G0Error(self, /) -> float: ...
     @overload
-    def G0Error(self, arg: int, /) -> float:
-        ...
-
+    def G0Error(self, arg: int, /) -> float: ...
     def G0Error(self, arg: int = 0, /) -> float:
         """
         G0Error([int])
@@ -112,13 +108,9 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         ...
 
     @overload
-    def G1Error(self, /) -> float:
-        ...
-
+    def G1Error(self, /) -> float: ...
     @overload
-    def G1Error(self, arg: int, /) -> float:
-        ...
-
+    def G1Error(self, arg: int, /) -> float: ...
     def G1Error(self, arg: int = 0, /) -> float:
         """
         G1Error([int])
@@ -127,13 +119,9 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         ...
 
     @overload
-    def G2Error(self, /) -> float:
-        ...
-
+    def G2Error(self, /) -> float: ...
     @overload
-    def G2Error(self, arg: int, /) -> float:
-        ...
-
+    def G2Error(self, arg: int, /) -> float: ...
     def G2Error(self, arg: int = 0, /) -> float:
         """
         G2Error([int])

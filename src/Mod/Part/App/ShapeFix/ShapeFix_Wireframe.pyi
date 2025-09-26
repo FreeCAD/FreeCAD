@@ -6,7 +6,6 @@ from Base.Metadata import export, constmethod
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 from typing import Final
 
-
 @export(
     PythonName="Part.ShapeFix.Wireframe",
     Twin="ShapeFix_Wireframe",

@@ -6,7 +6,6 @@ from Base.Metadata import export
 from Gui.ViewProviderPartExt import ViewProviderPartExt
 from typing import Final, overload
 
-
 @export(
     Include="Mod/PartDesign/Gui/ViewProvider.h",
     Namespace="PartDesignGui",

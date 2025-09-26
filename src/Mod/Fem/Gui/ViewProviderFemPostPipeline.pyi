@@ -8,7 +8,6 @@ from Base.Metadata import export
 
 from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
 
-
 @export(
     Include="Mod/Fem/Gui/ViewProviderFemPostPipeline.h",
     Namespace="FemGui",

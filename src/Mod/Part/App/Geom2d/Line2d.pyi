@@ -6,7 +6,6 @@ from Base.Metadata import export, constmethod
 from Part.Geom2d.Curve2d import Curve2d
 from typing import overload
 
-
 @export(
     PythonName="Part.Geom2d.Line2d",
     Twin="Geom2dLine",

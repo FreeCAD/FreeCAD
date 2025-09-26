@@ -168,9 +168,7 @@ class Function:
     def has_keywords(self) -> bool:
         overloads = len(self.signatures) > 1
         if overloads:
-            return any(
-                sig.has_keywords for sig in self.signatures if sig.is_overload
-            )
+            return any(sig.has_keywords for sig in self.signatures if sig.is_overload)
         return self.signatures[0].has_keywords
 
     @property
@@ -327,9 +325,7 @@ def _python_type_to_parameter_type(py_type: str) -> ParameterType:
             return ParameterType.OBJECT
 
 
-def _parse_class_attributes(
-    class_node: ast.ClassDef, source_code: str
-) -> List[Attribute]:
+def _parse_class_attributes(class_node: ast.ClassDef, source_code: str) -> List[Attribute]:
     """
     Parse top-level attributes (e.g. `TypeId: str = ""`) from the class AST node.
     We'll create an `Attribute` for each. For the `Documentation` of each attribute,
@@ -341,11 +337,7 @@ def _parse_class_attributes(
     for idx, stmt in enumerate(class_node.body):
         if isinstance(stmt, ast.AnnAssign):
             # e.g.: `TypeId: Final[str] = ""`
-            name = (
-                stmt.target.id
-                if isinstance(stmt.target, ast.Name)
-                else "unknown"
-            )
+            name = stmt.target.id if isinstance(stmt.target, ast.Name) else "unknown"
             # Evaluate the type annotation and detect Final for read-only attributes
             if isinstance(stmt.annotation, ast.Name):
                 # e.g. `str`
@@ -592,9 +584,7 @@ def _extract_base_class_name(base: ast.expr) -> str:
     return base_str
 
 
-def _parse_class(
-    class_node, source_code: str, path: str, imports_mapping: dict
-) -> PythonExport:
+def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict) -> PythonExport:
     base_class_name = None
     for base in class_node.bases:
         base_class_name = _extract_base_class_name(base)
@@ -626,9 +616,7 @@ def _parse_class(
                     match args[0]:
                         case ast.Constant(value=val):
                             class_declarations_text = val
-            case ast.Call(
-                func=ast.Name(id="sequence_protocol"), keywords=_, args=_
-            ):
+            case ast.Call(func=ast.Name(id="sequence_protocol"), keywords=_, args=_):
                 sequence_protocol_kwargs = _extract_decorator_kwargs(decorator)
             case _:
                 pass
@@ -648,33 +636,23 @@ def _parse_class(
     native_python_class_name = _get_native_python_class_name(class_node.name)
     include = _get_module_path(module_name) + "/" + native_class_name + ".h"
 
-    father_native_python_class_name = _get_native_python_class_name(
-        base_class_name
-    )
+    father_native_python_class_name = _get_native_python_class_name(base_class_name)
     father_include = (
-        _get_module_path(parent_module_name)
-        + "/"
-        + father_native_python_class_name
-        + ".h"
+        _get_module_path(parent_module_name) + "/" + father_native_python_class_name + ".h"
     )
 
     py_export = PythonExport(
         Documentation=doc_obj,
         ModuleName=module_name,
-        Name=export_decorator_kwargs.get("Name", "")
-        or native_python_class_name,
+        Name=export_decorator_kwargs.get("Name", "") or native_python_class_name,
         PythonName=export_decorator_kwargs.get("PythonName", "") or None,
         Include=export_decorator_kwargs.get("Include", "") or include,
-        Father=export_decorator_kwargs.get("Father", "")
-        or father_native_python_class_name,
+        Father=export_decorator_kwargs.get("Father", "") or father_native_python_class_name,
         Twin=export_decorator_kwargs.get("Twin", "") or native_class_name,
-        TwinPointer=export_decorator_kwargs.get("TwinPointer", "")
-        or native_class_name,
+        TwinPointer=export_decorator_kwargs.get("TwinPointer", "") or native_class_name,
         Namespace=export_decorator_kwargs.get("Namespace", "") or module_name,
-        FatherInclude=export_decorator_kwargs.get("FatherInclude", "")
-        or father_include,
-        FatherNamespace=export_decorator_kwargs.get("FatherNamespace", "")
-        or parent_module_name,
+        FatherInclude=export_decorator_kwargs.get("FatherInclude", "") or father_include,
+        FatherNamespace=export_decorator_kwargs.get("FatherNamespace", "") or parent_module_name,
         Constructor=export_decorator_kwargs.get("Constructor", False),
         NumberProtocol=export_decorator_kwargs.get("NumberProtocol", False),
         RichCompare=export_decorator_kwargs.get("RichCompare", False),

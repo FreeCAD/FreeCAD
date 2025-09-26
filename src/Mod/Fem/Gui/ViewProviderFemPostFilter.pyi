@@ -8,7 +8,6 @@ from Base.Metadata import export
 
 from Gui.ViewProviderDocumentObject import ViewProviderDocumentObject
 
-
 @export(
     Twin="ViewProviderFemPostObject",
     TwinPointer="ViewProviderFemPostObject",
