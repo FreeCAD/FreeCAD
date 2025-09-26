@@ -2366,7 +2366,7 @@ PyObject* TopoShapePy::findSubShapesWithSharedVertex(PyObject* args, PyObject* k
     double atol = 1e-12;
     if (!Base::Wrapped_ParseTupleAndKeywords(args,
                                              keywds,
-                                             "O!|OOdd",
+                                             "O!|OOddO",
                                              kwlist,
                                              &Type,
                                              &pyobj,
