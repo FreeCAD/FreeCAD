@@ -19,12 +19,17 @@ set(Cloud_LIBS
 
 SET(Cloud_SRCS
     AppCloud.cpp
-    PreCompiled.cpp
     PreCompiled.h
 )
 
 add_library(Cloud SHARED ${Cloud_SRCS})
 target_link_libraries(Cloud ${Cloud_LIBS})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(Cloud PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
 
 
 SET_BIN_DIR(Cloud Cloud /Mod/Cloud)

@@ -25,8 +25,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // standard
 #include <algorithm>
 #include <sstream>
@@ -44,7 +42,5 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QPushButton>
-
-#endif  //_PreComp_
 
 #endif  // __PRECOMPILED_GUI__

@@ -25,8 +25,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // STL
 #include <numeric>
 
@@ -47,7 +45,5 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
-
-#endif  //_PreComp_
 
 #endif

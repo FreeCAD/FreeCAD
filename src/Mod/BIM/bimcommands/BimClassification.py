@@ -54,6 +54,12 @@ class BIM_Classification:
         return v
 
     def Activated(self):
+
+        # only raise the dialog if it is already open
+        if getattr(self, "form", None):
+            self.form.raise_()
+            return
+
         import Draft
         from PySide import QtCore, QtGui
         from bimcommands import BimMaterial
@@ -156,6 +162,7 @@ class BIM_Classification:
         self.form.buttonRename.clicked.connect(self.rename)
         self.form.search.textEdited.connect(self.updateClasses)
         self.form.buttonBox.accepted.connect(self.accept)
+        self.form.buttonBox.rejected.connect(self.reject)
         self.form.groupMode.currentIndexChanged.connect(self.updateObjects)
         self.form.treeClass.itemDoubleClicked.connect(self.apply)
         self.form.search.up.connect(self.onUpArrow)
@@ -657,6 +664,11 @@ class BIM_Classification:
         p.SetInt("BimClassificationDialogWidth", self.form.width())
         p.SetInt("BimClassificationDialogHeight", self.form.height())
         self.form.hide()
+        return self.reject()
+
+    def reject(self):
+        self.form.hide()
+        del self.form
         return True
 
     def onUpArrow(self):

@@ -21,15 +21,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QFileInfo>
 # include <QPointer>
 # include <QString>
 # include <Standard_Version.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Shape.hxx>
-#endif
+
 
 #include <App/Document.h>
 #include <App/GeoFeature.h>

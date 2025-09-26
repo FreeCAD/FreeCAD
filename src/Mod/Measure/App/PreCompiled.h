@@ -27,7 +27,6 @@
 
 #include <Mod/Measure/MeasureGlobal.h>
 
-#ifdef _PreComp_
 
 // standard
 #include <cmath>
@@ -42,7 +41,5 @@
 // OpenCasCade
 #include <Mod/Part/App/OpenCascadeAll.h>
 
-
-#endif  //_PreComp_
 
 #endif  // MEASUREGUI_PRECOMPILED_H

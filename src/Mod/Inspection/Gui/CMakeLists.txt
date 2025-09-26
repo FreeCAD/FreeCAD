@@ -21,7 +21,6 @@ SET(InspectionGui_SRCS
     ${Dialogs_SRCS}
     AppInspectionGui.cpp
     Command.cpp
-    PreCompiled.cpp
     PreCompiled.h
     ViewProviderInspection.cpp
     ViewProviderInspection.h
@@ -33,12 +32,6 @@ set(InspectionGui_Scripts
     ../InitGui.py
 )
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${InspectionGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(InspectionGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
-
 SET(InspectionGuiIcon_SVG
     Resources/icons/InspectionWorkbench.svg
 )
@@ -48,6 +41,12 @@ add_library(InspectionGui SHARED
     ${InspectionGui_Scripts}
     ${InspectionGuiIcon_SVG}
 )
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(InspectionGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
 
 target_include_directories(
     InspectionGui

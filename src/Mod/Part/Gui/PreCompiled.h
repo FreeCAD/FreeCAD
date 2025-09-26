@@ -32,7 +32,6 @@
 # include <windows.h>
 #endif
 
-#ifdef _PreComp_
 
 // standard
 #include <cmath>
@@ -78,6 +77,5 @@
 // Inventor includes OpenGL
 # include <Gui/InventorAll.h>
 
-#endif  //_PreComp_
 
 #endif // PARTGUI_PRECOMPILED_H

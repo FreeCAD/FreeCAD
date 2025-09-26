@@ -35,8 +35,6 @@
 #define _TEMPLATE_GuiExport
 #endif
 
-#ifdef _PreComp_
-
 // standard
 #include <cassert>
 #include <cstdio>
@@ -62,7 +60,5 @@
 
 // Qt Toolkit
 #include <Gui/QtAll.h>
-
-#endif  //_PreComp_
 
 #endif  // GUI_PRECOMPILED_H

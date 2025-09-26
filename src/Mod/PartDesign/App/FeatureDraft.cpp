@@ -22,8 +22,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRepOffsetAPI_DraftAngle.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
@@ -40,7 +38,7 @@
 # include <gp_Dir.hxx>
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
-#endif
+
 
 #include <App/Datums.h>
 #include <App/Document.h>

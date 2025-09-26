@@ -20,10 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <sstream>
 
 # include <BRepBuilderAPI_MakeEdge.hxx>
@@ -55,7 +51,6 @@
 # include <IntRes2d_IntersectionSegment.hxx>
 # include <Precision.hxx>
 # include <Standard_Failure.hxx>
-#endif
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>

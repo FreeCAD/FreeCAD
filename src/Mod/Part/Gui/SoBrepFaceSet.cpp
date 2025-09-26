@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
 #ifndef FC_OS_WIN32
 # ifndef GL_GLEXT_PROTOTYPES
@@ -28,7 +28,6 @@
 # endif
 #endif
 
-#ifndef _PreComp_
 # include <algorithm>
 # include <limits>
 # include <map>
@@ -66,7 +65,6 @@
 # endif //FC_OS_WIN32
 // Should come after glext.h to avoid warnings
 # include <Inventor/C/glue/gl.h>
-#endif
 
 #include <Base/Profiler.h>
 

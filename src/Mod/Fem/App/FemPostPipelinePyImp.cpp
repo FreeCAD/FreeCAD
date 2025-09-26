@@ -327,10 +327,11 @@ PyObject* FemPostPipelinePy::getOutputAlgorithm(PyObject* args)
     auto algorithm = getFemPostPipelinePtr()->getOutputAlgorithm();
     PyObject* py_algorithm = vtkPythonUtil::GetObjectFromPointer(algorithm);
 
-    return Py::new_reference_to(py_algorithm);
+    return py_algorithm;
 #else
+    (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
-    Py_Return;
+    return nullptr;
 #endif
 }
 

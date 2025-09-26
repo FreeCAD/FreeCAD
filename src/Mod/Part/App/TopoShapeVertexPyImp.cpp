@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <gp_Pnt.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
@@ -31,7 +29,7 @@
 # include <Standard_Failure.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Vertex.hxx>
-#endif
+
 
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>

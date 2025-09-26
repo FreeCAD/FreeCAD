@@ -22,13 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QMenu>
 # include <Inventor/nodes/SoTransform.h>
-#endif
 
 #include "ViewProviderBoolean.h"
 

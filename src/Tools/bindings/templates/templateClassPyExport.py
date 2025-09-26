@@ -1235,7 +1235,6 @@ int @self.export.Name@::descriptorSetter(PyObject* self, PyObject* obj, PyObject
 
     # Here's the template for the user part of the implementation. This does NOT get overridden if it already exists.
     TemplateImplement = """
-#include "PreCompiled.h"
 
 #include "@self.export.Include@"
 

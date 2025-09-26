@@ -28,6 +28,8 @@
 
 #include <App/PropertyGeo.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "TopoShape.h"
 #include <TopAbs_ShapeEnum.hxx>
 

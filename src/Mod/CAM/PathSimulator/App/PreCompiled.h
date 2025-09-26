@@ -25,7 +25,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
 
 // standard
 #include <cstdio>
@@ -49,7 +48,5 @@
 
 // Xerces
 #include <xercesc/util/XercesDefs.hpp>
-
-#endif  //_PreComp_
 
 #endif

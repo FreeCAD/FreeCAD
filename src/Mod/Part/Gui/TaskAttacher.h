@@ -35,6 +35,8 @@
 
 #include <functional>
 
+#include <Mod/Part/PartGlobal.h>
+
 class Ui_TaskAttacher;
 class QLineEdit;
 

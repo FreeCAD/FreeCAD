@@ -20,7 +20,6 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Mod/Part/App/TopoShapePy.h>

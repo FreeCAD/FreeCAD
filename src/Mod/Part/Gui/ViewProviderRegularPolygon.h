@@ -24,6 +24,8 @@
 #ifndef PARTGUI_VIEWPROVIDERREGULARPOLYGON_H
 #define PARTGUI_VIEWPROVIDERREGULARPOLYGON_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "ViewProviderPrimitive.h"
 
 

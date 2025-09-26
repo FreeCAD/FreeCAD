@@ -20,13 +20,9 @@
  *                                                                            *
  ******************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <QMessageBox>
 #include <QTimer>
 #include <QVBoxLayout>
-#endif
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>

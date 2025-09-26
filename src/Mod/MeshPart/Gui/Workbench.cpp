@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <qobject.h>
-#endif
+
 
 #include <Gui/ToolBarManager.h>
 

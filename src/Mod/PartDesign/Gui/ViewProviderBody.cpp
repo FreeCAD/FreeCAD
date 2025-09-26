@@ -21,14 +21,12 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Precision.hxx>
 # include <QMenu>
-#endif
+
 
 #include <App/Document.h>
 #include <App/Origin.h>

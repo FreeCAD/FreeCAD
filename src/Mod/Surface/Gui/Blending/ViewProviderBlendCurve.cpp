@@ -20,10 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMenu>
-#endif
 
 #include "ViewProviderBlendCurve.h"
 #include "TaskBlendCurve.h"

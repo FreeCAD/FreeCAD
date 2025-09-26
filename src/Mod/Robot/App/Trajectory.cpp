@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <memory>
 
 #include "kdl_cp/path_line.hpp"
@@ -32,7 +30,6 @@
 #include "kdl_cp/trajectory_segment.hpp"
 #include "kdl_cp/utilities/error.h"
 #include "kdl_cp/velocityprofile_trap.hpp"
-#endif
 
 #include <Base/Exception.h>
 #include <Base/Reader.h>

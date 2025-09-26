@@ -20,16 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QButtonGroup>
 # include <QMessageBox>
 # include <QTextStream>
 # include <sstream>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

@@ -20,19 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <limits>
-# include <QMessageBox>
-# include <BRep_Tool.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <Precision.hxx>
-# include <ShapeExtend_Explorer.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-#endif
+#include <limits>
+
+#include <QMessageBox>
+#include <BRep_Tool.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <Precision.hxx>
+#include <ShapeExtend_Explorer.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopTools_HSequenceOfShape.hxx>
 
 #include <App/Application.h>
 #include <App/Document.h>

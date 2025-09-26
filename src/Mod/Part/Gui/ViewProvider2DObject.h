@@ -28,6 +28,8 @@
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderFeaturePython.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 class TopoDS_Shape;
 class TopoDS_Face;
 class SoSeparator;

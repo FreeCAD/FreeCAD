@@ -43,6 +43,7 @@
 #include <Gui/ViewProviderExtension.h>
 #include <Gui/ViewProviderExtensionPython.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/PartGlobal.h>
 
 namespace PartGui {
 

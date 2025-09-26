@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QMessageBox>
 # include <gp_Pln.hxx>
 # include <Precision.hxx>
-#endif
+
 
 #include <App/Origin.h>
 #include <App/Datums.h>

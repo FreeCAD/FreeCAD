@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
@@ -38,7 +36,6 @@
 #include <GProp_GProps.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
-#endif
 
 
 #include <Base/Console.h>

@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QDir>
 #include <QFileInfo>
 #include <QMessageBox>
 #include <qobject.h>
-#endif
+
 
 #include <App/Application.h>
 #include <Gui/Control.h>

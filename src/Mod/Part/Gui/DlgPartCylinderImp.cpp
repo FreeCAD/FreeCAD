@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DlgPartCylinderImp.h"
 #include "ui_DlgPartCylinder.h"

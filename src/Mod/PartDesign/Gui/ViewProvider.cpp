@@ -20,17 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QMessageBox>
 # include <QAction>
 # include <QMenu>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <BRep_Builder.hxx>
-#endif
 
 #include <Base/Exception.h>
 #include <Base/ServiceProvider.h>

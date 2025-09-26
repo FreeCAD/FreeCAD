@@ -20,8 +20,6 @@
 *                                                                         *
 ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <boost/signals2.hpp>
@@ -29,7 +27,7 @@
 # include <string>
 # include <vector>
 # include <QMessageBox>
-#endif
+
 
 #include "SketchWorkflow.h"
 #include "DlgActiveBody.h"
