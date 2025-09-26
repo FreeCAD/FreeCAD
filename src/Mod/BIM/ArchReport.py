@@ -638,6 +638,13 @@ class ReportTaskPanel:
             translate("Arch", "Cols"),
             translate("Arch", "Status"),
         ])
+
+        # Add informative tooltips to the headers
+        self.table_statements.horizontalHeaderItem(0).setToolTip(translate("Arch", "A user-defined description for this statement."))
+        self.table_statements.horizontalHeaderItem(1).setToolTip(translate("Arch", "If checked, the Description will be used as a section header in the report."))
+        self.table_statements.horizontalHeaderItem(2).setToolTip(translate("Arch", "If checked, the column names (e.g., 'Label', 'Area') will be included in the report."))
+        self.table_statements.horizontalHeaderItem(3).setToolTip(translate("Arch", "Indicates the status of the SQL query."))
+
         # Description stretches, others sized to contents
         self.table_statements.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         self.table_statements.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
@@ -828,18 +835,21 @@ class ReportTaskPanel:
             # Description (editable text)
             desc_item = QtWidgets.QTableWidgetItem(statement.description)
             desc_item.setFlags(desc_item.flags() | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+            desc_item.setToolTip(translate("Arch", "Double-click to edit description in place."))
             self.table_statements.setItem(row_idx, 0, desc_item)
 
             # Header checkbox
             header_item = QtWidgets.QTableWidgetItem()
             header_item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
             header_item.setCheckState(QtCore.Qt.Checked if statement.use_description_as_header else QtCore.Qt.Unchecked)
+            header_item.setToolTip(translate("Arch", "Toggle whether to use this statement's Description as a section header."))
             self.table_statements.setItem(row_idx, 1, header_item)
 
             # Cols checkbox (Include Column Names)
             cols_item = QtWidgets.QTableWidgetItem()
             cols_item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
             cols_item.setCheckState(QtCore.Qt.Checked if statement.include_column_names else QtCore.Qt.Unchecked)
+            cols_item.setToolTip(translate("Arch", "Toggle whether to include this statement's column names in the report."))
             self.table_statements.setItem(row_idx, 2, cols_item)
 
             # Status Item (Icon + Tooltip) - read-only
