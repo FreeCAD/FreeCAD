@@ -3998,8 +3998,10 @@ void StdCmdClarifySelection::activated(int iMsg)
     } else {
         QPoint pos = QCursor::pos();
         QPoint local = widget->mapFromGlobal(pos);
-        point = SbVec2s(static_cast<short>(local.x()),
-                        static_cast<short>(widget->height() - local.y() - 1));
+
+        qreal devicePixelRatio = widget->devicePixelRatioF();
+        point = SbVec2s(static_cast<short>(local.x() * devicePixelRatio),
+                        static_cast<short>((widget->height() - local.y() - 1) * devicePixelRatio));
     }
     
     // Use ray picking to get all objects under cursor
@@ -4071,7 +4073,11 @@ void StdCmdClarifySelection::activated(int iMsg)
     
     QPoint globalPos;
     if (storedPosition.has_value()) {
-        globalPos = widget->mapToGlobal(QPoint(point[0], widget->height() - point[1] - 1));
+        qreal devicePixelRatio = widget->devicePixelRatioF();
+        int logicalHeight = static_cast<int>(widget->height());
+        QPoint localPos(static_cast<int>(point[0] / devicePixelRatio), 
+	                    logicalHeight - static_cast<int>(point[1] / devicePixelRatio) - 1);
+        globalPos = widget->mapToGlobal(localPos);
     } else {
         globalPos = QCursor::pos();
     }
