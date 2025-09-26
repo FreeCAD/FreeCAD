@@ -784,6 +784,7 @@ class ReportTaskPanel:
         # Keep table edits in sync with the runtime statements
         self.table_statements.itemChanged.connect(self._on_table_item_changed)
         self.description_edit.textChanged.connect(self._on_editor_field_changed)
+        self.description_edit.textChanged.connect(self._on_editor_description_changed)
         self.sql_query_edit.textChanged.connect(self._on_editor_sql_changed)
         self.chk_use_description_as_header.stateChanged.connect(self._on_editor_checkbox_changed)
         self.chk_include_column_names.stateChanged.connect(self._on_editor_checkbox_changed)
