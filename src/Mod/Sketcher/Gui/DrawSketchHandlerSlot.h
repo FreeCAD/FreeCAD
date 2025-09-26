@@ -73,8 +73,6 @@ public:
         : radius(1.0)
         , length(0.0)
         , angle(0.0)
-        , isHorizontal(false)
-        , isVertical(false)
         , firstCurve(0)
     {}
 
@@ -123,7 +121,6 @@ private:
 
                 secondPoint = onSketchPos;
                 angle = (secondPoint - startPoint).Angle();
-                checkHorizontalVertical();
                 length = (secondPoint - startPoint).Length();
                 const double scale = 0.2;
                 radius = length * scale;  // radius chosen at 1/5 of length
@@ -202,6 +199,14 @@ private:
                                          getHighestCurveIndex() - 3,
                                          Sketcher::PointPos::mid);
 
+        // alignment constraints needs to apply to the line not the arc.
+        AutoConstraint& lastCons = sugConstraints[1].back();
+        if (lastCons.Type == Sketcher::Horizontal || lastCons.Type == Sketcher::Vertical
+            || lastCons.Type == Sketcher::Perpendicular || lastCons.Type == Sketcher::Parallel) {
+            Base::Console().warning("there is going to be a horizontal.\n");
+            lastCons.GeoId = firstCurve + 2;
+        }
+
         generateAutoConstraintsOnElement(sugConstraints[1],
                                          getHighestCurveIndex() - 2,
                                          Sketcher::PointPos::mid);
@@ -219,8 +224,6 @@ private:
 
         sugConstraints[0].clear();
         sugConstraints[1].clear();
-        isHorizontal = false;
-        isVertical = false;
     }
 
     std::string getToolName() const override
@@ -321,53 +324,12 @@ private:
                                   firstCurve,
                                   Sketcher::PointPos::none,
                                   firstCurve + 1);
-
-            // Prevent duplicate with Autocontraint
-            AutoConstraint lastCons = {Sketcher::None,
-                                       Sketcher::GeoEnum::GeoUndef,
-                                       Sketcher::PointPos::none};
-            if (!sugConstraints[1].empty()) {
-                lastCons = sugConstraints[1].back();
-            }
-
-            if (isHorizontal || isVertical) {
-                addToShapeConstraints(isHorizontal ? Sketcher::Horizontal : Sketcher::Vertical,
-                                      firstCurve + 3);
-
-
-                if (lastCons.Type == Sketcher::Horizontal || lastCons.Type == Sketcher::Vertical) {
-                    sugConstraints[1].pop_back();
-                }
-            }
-            else {
-                // If horizontal/vertical Autoconstraint suggested, applied it on first line
-                // (rather than last arc)
-                if (lastCons.Type == Sketcher::Horizontal || lastCons.Type == Sketcher::Vertical) {
-                    sugConstraints[1].back().GeoId = firstCurve + 2;
-                }
-            }
-        }
-    }
-
-    void checkHorizontalVertical()
-    {
-        using std::numbers::pi;
-
-        isHorizontal = false;
-        isVertical = false;
-
-        if (fmod(fabs(angle), pi) < Precision::Confusion()) {
-            isHorizontal = true;
-        }
-        else if (fmod(fabs(angle + pi / 2), pi) < Precision::Confusion()) {
-            isVertical = true;
         }
     }
 
 private:
     Base::Vector2d startPoint, secondPoint;
     double radius, length, angle;
-    bool isHorizontal, isVertical;
     int firstCurve;
 };
 
@@ -625,23 +587,16 @@ void DSHSlotController::addConstraints()
     };
 
     auto constraintAngle = [&]() {
-        if (!handler->isHorizontal && !handler->isVertical) {
+        ConstraintType lastType = handler->sugConstraints[1].empty()
+            ? ConstraintType::None
+            : handler->sugConstraints[1].back().Type;
+        if (lastType != Sketcher::Horizontal && lastType != Sketcher::Vertical
+            && lastType != Sketcher::Perpendicular && lastType != Sketcher::Parallel) {
             Gui::cmdAppObjectArgs(obj,
                                   "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
                                   Sketcher::GeoEnum::HAxis,
                                   firstCurve + 2,
                                   handler->angle);
-
-            // Prevent duplicate with Autocontraint
-            AutoConstraint lastCons = {Sketcher::None,
-                                       Sketcher::GeoEnum::GeoUndef,
-                                       Sketcher::PointPos::none};
-            if (!handler->sugConstraints[1].empty()) {
-                lastCons = handler->sugConstraints[1].back();
-                if (lastCons.Type == Sketcher::Horizontal || lastCons.Type == Sketcher::Vertical) {
-                    handler->AutoConstraints.pop_back();
-                }
-            }
         }
     };
 
