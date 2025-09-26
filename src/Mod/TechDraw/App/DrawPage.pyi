@@ -7,6 +7,7 @@ from typing import Any, Final
 from Base.Metadata import export
 from App.DocumentObject import DocumentObject
 
+
 @export(
     Include="Mod/TechDraw/App/DrawPage.h",
     Namespace="TechDraw",
@@ -45,6 +46,7 @@ class DrawPage(DocumentObject):
     def requestPaint(self) -> Any:
         """Ask the Gui to redraw this page"""
         ...
+
     PageWidth: Final[float]
     """Returns the width of this page"""
 

@@ -5,6 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export
 from Base.Persistence import Persistence
 
+
 @export(
     Include="Mod/Spreadsheet/App/PropertyRowHeights.h",
     Namespace="Spreadsheet",

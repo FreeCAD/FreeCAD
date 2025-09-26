@@ -98,12 +98,13 @@ class TopoShapeSolid(TopoShape):
 
     @overload
     @constmethod
-    def offsetFaces(
-        self, facesTuple: Tuple[TopoShape, ...], offset: float, /) -> TopoShape: ...
+    def offsetFaces(self, facesTuple: Tuple[TopoShape, ...], offset: float, /) -> TopoShape:
+        ...
 
     @overload
     @constmethod
-    def offsetFaces(self, facesDict: Dict[TopoShape, float], /) -> TopoShape: ...
+    def offsetFaces(self, facesDict: Dict[TopoShape, float], /) -> TopoShape:
+        ...
 
     @constmethod
     def offsetFaces(self, *args, **kwargs) -> TopoShape:

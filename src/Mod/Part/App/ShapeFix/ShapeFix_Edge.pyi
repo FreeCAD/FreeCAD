@@ -6,6 +6,7 @@ from Base.Metadata import export, constmethod, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from typing import Final
 
+
 @export(
     PythonName="Part.ShapeFix.Edge",
     Include="ShapeFix_Edge.hxx",

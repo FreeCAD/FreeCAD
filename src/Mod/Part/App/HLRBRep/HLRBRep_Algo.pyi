@@ -6,6 +6,7 @@ from Base.Metadata import export, constmethod, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from typing import Final
 
+
 @export(
     Twin="HLRBRep_Algo",
     TwinPointer="HLRBRep_Algo",

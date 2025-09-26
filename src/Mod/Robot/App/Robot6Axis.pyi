@@ -7,6 +7,7 @@ from typing import Any
 from Base.Metadata import export
 from Base.Persistence import Persistence
 
+
 @export(
     Include="Mod/Robot/App/Robot6Axis.h",
     Namespace="Robot",
@@ -25,6 +26,7 @@ class Robot6Axis(Persistence):
         """Checks the shape and report errors in the shape structure.
         This is a more detailed check as done in isValid()."""
         ...
+
     Axis1: float
     """Pose of Axis 1 in degrees"""
 

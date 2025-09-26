@@ -7,9 +7,7 @@ from Base.Persistence import Persistence
 from typing import Any, Final, Union, List, Optional
 
 
-@export(
-    DisableNotify=True,
-)
+@export(DisableNotify=True,)
 class PropertyContainer(Persistence):
     """
     App.PropertyContainer class.
@@ -124,8 +122,7 @@ class PropertyContainer(Persistence):
         """
         ...
 
-    def setPropertyStatus(
-        self, name: str, val: Union[int, str, List[Union[str, int]]], /) -> None:
+    def setPropertyStatus(self, name: str, val: Union[int, str, List[Union[str, int]]], /) -> None:
         """
         setPropertyStatus(name, val) -> None
 

@@ -45,9 +45,8 @@ class GeometryCurve(Geometry):
 
     @overload
     @constmethod
-    def discretize(
-        self, Number: int, *, First: Optional[float] = None, Last: Optional[float] = None
-    ) -> List[Vector]:
+    def discretize(self, Number: int, *, First: Optional[float] = None,
+        Last: Optional[float] = None) -> List[Vector]:
         """
         Discretizes the curve and returns a list of points.
         """
@@ -55,9 +54,11 @@ class GeometryCurve(Geometry):
 
     @overload
     @constmethod
-    def discretize(
-        self, QuasiNumber: int, *, First: Optional[float] = None, Last: Optional[float] = None
-    ) -> List[Vector]:
+    def discretize(self,
+        QuasiNumber: int,
+        *,
+        First: Optional[float] = None,
+        Last: Optional[float] = None) -> List[Vector]:
         """
         Discretizes the curve and returns a list of quasi equidistant points.
         """
@@ -65,9 +66,11 @@ class GeometryCurve(Geometry):
 
     @overload
     @constmethod
-    def discretize(
-        self, Distance: float, *, First: Optional[float] = None, Last: Optional[float] = None
-    ) -> List[Vector]:
+    def discretize(self,
+        Distance: float,
+        *,
+        First: Optional[float] = None,
+        Last: Optional[float] = None) -> List[Vector]:
         """
         Discretizes the curve and returns a list of equidistant points with distance 'd'.
         """
@@ -75,9 +78,11 @@ class GeometryCurve(Geometry):
 
     @overload
     @constmethod
-    def discretize(
-        self, Deflection: float, *, First: Optional[float] = None, Last: Optional[float] = None
-    ) -> List[Vector]:
+    def discretize(self,
+        Deflection: float,
+        *,
+        First: Optional[float] = None,
+        Last: Optional[float] = None) -> List[Vector]:
         """
         Discretizes the curve and returns a list of points with a maximum deflection 'd' to the curve.
         """
@@ -190,7 +195,8 @@ class GeometryCurve(Geometry):
         uMin: Optional[float] = None,
         uMax: Optional[float] = None,
         Tol: Optional[float] = None,
-     /,) -> float:
+        /,
+    ) -> float:
         """
         Computes the length of a curve
         length([uMin, uMax, Tol]) -> float
@@ -202,7 +208,8 @@ class GeometryCurve(Geometry):
         self,
         abscissa: Optional[float] = None,
         startingParameter: Optional[float] = None,
-     /,) -> float:
+        /,
+    ) -> float:
         """
         Returns the parameter on the curve of a point at the given distance from a starting parameter.
         parameterAtDistance([abscissa, startingParameter]) -> float
@@ -384,7 +391,8 @@ class GeometryCurve(Geometry):
 
     @constmethod
     def approximateBSpline(
-        self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = "C2", /) -> "BSplineCurve":
+        self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = "C2", /
+    ) -> "BSplineCurve":
         """
         Approximates a curve of any type to a B-Spline curve.
         approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> BSplineCurve

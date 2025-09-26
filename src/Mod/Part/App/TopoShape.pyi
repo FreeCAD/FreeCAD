@@ -10,6 +10,7 @@ from App.ComplexGeoData import ComplexGeoData
 from __future__ import annotations
 from typing import Final, List, Tuple, Union, overload
 
+
 @export(
     Include="Mod/Part/App/TopoShape.h",
     FatherInclude="App/ComplexGeoDataPy.h",
@@ -296,7 +297,13 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def section(self, tool: Tuple[TopoShape, ...], tolerance: float = 0.0, approximation: bool = False, /) -> TopoShape:
+    def section(
+        self,
+        tool: Tuple[TopoShape, ...],
+        tolerance: float = 0.0,
+        approximation: bool = False,
+        /
+    ) -> TopoShape:
         """
         Section of this with a given (list of) topo shape.
         section(tool,[approximation=False]) -> Shape
@@ -348,7 +355,10 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def generalFuse(self, shapes: Tuple[TopoShape, ...], fuzzy_value: float = 0.0, /) -> Tuple[TopoShape, List[List[TopoShape]]]:
+    def generalFuse(self,
+        shapes: Tuple[TopoShape, ...],
+        fuzzy_value: float = 0.0,
+        /) -> Tuple[TopoShape, List[List[TopoShape]]]:
         """
         Run general fuse algorithm (GFA) between this and given shapes.
         generalFuse(list_of_other_shapes, [fuzzy_value = 0.0]) -> (result, map)
@@ -528,11 +538,13 @@ class TopoShape(ComplexGeoData):
 
     @overload
     @constmethod
-    def makeFillet(self, radius: float, edgeList: List, /) -> TopoShape: ...
+    def makeFillet(self, radius: float, edgeList: List, /) -> TopoShape:
+        ...
 
     @overload
     @constmethod
-    def makeFillet(self, radius1: float, radius2: float, edgeList: List, /) -> TopoShape: ...
+    def makeFillet(self, radius1: float, radius2: float, edgeList: List, /) -> TopoShape:
+        ...
 
     @constmethod
     def makeChamfer(self, *args) -> TopoShape:
@@ -546,11 +558,13 @@ class TopoShape(ComplexGeoData):
 
     @overload
     @constmethod
-    def makeChamfer(self, radius: float, edgeList: List, /) -> TopoShape: ...
+    def makeChamfer(self, radius: float, edgeList: List, /) -> TopoShape:
+        ...
 
     @overload
     @constmethod
-    def makeChamfer(self, radius1: float, radius2: float, edgeList: List, /) -> TopoShape: ...
+    def makeChamfer(self, radius1: float, radius2: float, edgeList: List, /) -> TopoShape:
+        ...
 
     @constmethod
     def makeThickness(self, faces: List, offset: float, tolerance: float, /) -> TopoShape:
@@ -642,13 +656,7 @@ class TopoShape(ComplexGeoData):
 
     @constmethod
     def makeEvolved(
-        self,
-        *,
-        Profile: TopoShape,
-        Join: int,
-        AxeProf: bool,
-        Solid: bool,
-        ProfOnSpine: bool,
+        self, *, Profile: TopoShape, Join: int, AxeProf: bool, Solid: bool, ProfOnSpine: bool,
         Tolerance: float
     ) -> None:
         """
@@ -969,7 +977,10 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def distToShape(self, shape: TopoShape, tol: float = 1e-7, /) -> Tuple[float, List[Tuple[Vector, Vector]], List[Tuple]]:
+    def distToShape(self,
+        shape: TopoShape,
+        tol: float = 1e-7,
+        /) -> Tuple[float, List[Tuple[Vector, Vector]], List[Tuple]]:
         """
         Find the minimum distance to another shape.
         distToShape(shape, tol=1e-7) -> (dist, vectors, infos)
@@ -1023,7 +1034,13 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
-    def mapShapes(self, generated: List[Tuple[TopoShape, TopoShape]], modified: List[Tuple[TopoShape, TopoShape]], op: str = "", /) -> None:
+    def mapShapes(
+        self,
+        generated: List[Tuple[TopoShape, TopoShape]],
+        modified: List[Tuple[TopoShape, TopoShape]],
+        op: str = "",
+        /
+    ) -> None:
         """
         mapShapes(generated, modified, op='')
 
@@ -1137,7 +1154,9 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def optimalBoundingBox(self, useTriangulation: bool = True, useShapeTolerance: bool = False, /) -> BoundBox:
+    def optimalBoundingBox(
+        self, useTriangulation: bool = True, useShapeTolerance: bool = False, /
+    ) -> BoundBox:
         """
         Get the optimal bounding box
         optimalBoundingBox([useTriangulation = True, useShapeTolerance = False]) -> bound box

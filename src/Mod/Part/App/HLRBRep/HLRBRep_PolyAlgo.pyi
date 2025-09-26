@@ -7,6 +7,7 @@ from Base.PyObjectBase import PyObjectBase
 from Part.TopoShapePy import TopoShape
 from typing import Final, overload
 
+
 @export(
     PythonName="Part.HLRBRep_PolyAlgo",
     Twin="HLRBRep_PolyAlgo",

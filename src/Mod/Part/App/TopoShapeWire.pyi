@@ -96,8 +96,7 @@ class TopoShapeWire(TopoShape):
         """
         ...
 
-    def fixWire(
-        self, face: Optional[object] = None, tolerance: Optional[float] = None, /) -> None:
+    def fixWire(self, face: Optional[object] = None, tolerance: Optional[float] = None, /) -> None:
         """
         Fix wire
         fixWire([face, tolerance])
@@ -129,7 +128,8 @@ class TopoShapeWire(TopoShape):
         isSolid: bool = False,
         isFrenet: bool = False,
         transition: int = 0,
-     /,) -> object:
+        /,
+    ) -> object:
         """
         Make a loft defined by a list of profiles along a wire.
         makePipeShell(shapeList,[isSolid=False,isFrenet=False,transition=0]) -> Shape
@@ -140,14 +140,8 @@ class TopoShapeWire(TopoShape):
 
     @constmethod
     def makeEvolved(
-        self,
-        *,
-        Profile: TopoShape,
-        Join: int,
-        AxeProf: bool,
-        Solid: bool,
-        ProfOnSpine: bool,
-        Tolerance: float,
+        self, *, Profile: TopoShape, Join: int, AxeProf: bool, Solid: bool, ProfOnSpine: bool,
+        Tolerance: float
     ) -> TopoShape:
         """
         Profile along the spine

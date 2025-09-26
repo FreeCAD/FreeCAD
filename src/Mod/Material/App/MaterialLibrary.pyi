@@ -6,6 +6,7 @@ from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import Final
 
+
 @export(
     Include="Mod/Material/App/MaterialLibrary.h",
     Namespace="Materials",

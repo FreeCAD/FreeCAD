@@ -6,6 +6,7 @@ from Metadata import constmethod
 from PyObjectBase import PyObjectBase
 from typing import List, Final
 
+
 class BaseClass(PyObjectBase):
     """
     This is the base class

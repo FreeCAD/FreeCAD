@@ -8,6 +8,7 @@ from Part.App.Geom2d.Geometry2d import Geometry2d
 from Part.App.Geom2d.BSplineCurve import BSplineCurve
 from typing import Final, overload, List
 
+
 @export(
     Include="Mod/Part/App/Geometry2d.h",
     FatherInclude="Mod/Part/App/Geom2d/Geometry2dPy.h",
@@ -207,7 +208,9 @@ class Curve2d(Geometry2d):
         """
         ...
 
-    def approximateBSpline(self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = "C2", /) -> BSplineCurve:
+    def approximateBSpline(
+        self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = "C2", /
+    ) -> BSplineCurve:
         """
         Approximates a curve of any type to a B-Spline curve
         approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> B-Spline curve

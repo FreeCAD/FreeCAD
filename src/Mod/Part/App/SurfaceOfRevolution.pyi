@@ -35,6 +35,5 @@ class SurfaceOfRevolution(GeometrySurface):
     """Sets or gets the basic curve."""
 
     @overload
-    def __init__(
-        self, location: Placement, direction: Vector, basis_curve: GeometryCurve
-    ) -> None: ...
+    def __init__(self, location: Placement, direction: Vector, basis_curve: GeometryCurve) -> None:
+        ...

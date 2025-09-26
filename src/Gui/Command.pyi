@@ -125,13 +125,7 @@ class Command(PyObjectBase):
 
     @staticmethod
     def createCustomCommand(
-        *,
-        macroFile: str,
-        menuText: str,
-        toolTip: str,
-        whatsThis: str,
-        statusTip: str,
-        pixmap: str,
+        *, macroFile: str, menuText: str, toolTip: str, whatsThis: str, statusTip: str, pixmap: str,
         shortcut: str
     ) -> str:
         """

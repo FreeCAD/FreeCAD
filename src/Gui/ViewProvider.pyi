@@ -327,7 +327,8 @@ class ViewProvider(ExtensionContainer):
         ...
 
     def getBoundingBox(
-        self, subName: Optional[str] = None, transform: bool = True, view: Any = None, /) -> BoundBox:
+        self, subName: Optional[str] = None, transform: bool = True, view: Any = None, /
+    ) -> BoundBox:
         """
         getBoundingBox(subName, transform=True, view) -> Base.BoundBox
 

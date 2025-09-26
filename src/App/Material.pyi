@@ -11,11 +11,9 @@ from typing import Any, overload
     Constructor=True,
     Delete=True,
 )
-@class_declarations(
-    """public:
+@class_declarations("""public:
     static Base::Color toColor(PyObject* value);
-        """
-)
+        """)
 class Material(PyObjectBase):
     """
     App.Material class.

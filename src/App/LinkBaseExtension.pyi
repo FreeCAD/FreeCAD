@@ -7,9 +7,7 @@ from DocumentObjectExtension import DocumentObjectExtension
 from typing import Any, Final, List, Tuple, Optional, Union, overload
 
 
-@export(
-    Include="App/Link.h",
-)
+@export(Include="App/Link.h",)
 class LinkBaseExtension(DocumentObjectExtension):
     """
     Link extension base class
@@ -60,15 +58,15 @@ class LinkBaseExtension(DocumentObjectExtension):
     @overload
     def getLinkPropertyInfo(self, /) -> tuple:
         ...
-    
+
     @overload
     def getLinkPropertyInfo(self, index: int, /) -> tuple:
         ...
-    
+
     @overload
     def getLinkPropertyInfo(self, name: str, /) -> tuple:
         ...
-    
+
     def getLinkPropertyInfo(self, arg: Any = None, /) -> tuple:
         """
         getLinkPropertyInfo(): return a tuple of (name,type,doc) for all supported properties.
@@ -79,7 +77,13 @@ class LinkBaseExtension(DocumentObjectExtension):
         """
         ...
 
-    def setLink(self, obj: Any, subName: Optional[str] = None, subElements: Optional[Union[str, Tuple[str, ...]]] = None, /) -> None:
+    def setLink(
+        self,
+        obj: Any,
+        subName: Optional[str] = None,
+        subElements: Optional[Union[str, Tuple[str, ...]]] = None,
+        /
+    ) -> None:
         """
         setLink(obj,subName=None,subElements=None): Set link object.
 

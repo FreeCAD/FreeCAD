@@ -7,6 +7,7 @@ from typing import Any, Final
 from Base.PyObjectBase import PyObjectBase
 from Base.Metadata import constmethod, export
 
+
 @export(
     Include="Mod/TechDraw/App/Cosmetic.h",
     Namespace="TechDraw",
@@ -30,5 +31,6 @@ class GeomFormat(PyObjectBase):
     def copy(self) -> Any:
         """Create a copy of this geomformat"""
         ...
+
     Tag: Final[str]
     """Gives the tag of the GeomFormat as string."""

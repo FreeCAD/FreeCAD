@@ -6,6 +6,7 @@ from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
 from typing import Final, overload
 
+
 @export(
     PythonName="Part.GeomPlate.CurveConstraintPy",
     Twin="GeomPlate_CurveConstraint",

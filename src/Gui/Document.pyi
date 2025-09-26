@@ -192,8 +192,7 @@ class Document(Persistence):
         """
         ...
 
-    def toggleTreeItem(
-        self, obj: Any, mod: int = 0, subName: Optional[str] = None, /) -> None:
+    def toggleTreeItem(self, obj: Any, mod: int = 0, subName: Optional[str] = None, /) -> None:
         """
         toggleTreeItem(obj, mod=0, subName) -> None
 

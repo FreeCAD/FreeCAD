@@ -6,6 +6,7 @@ from Metadata import export, constmethod, sequence_protocol, class_declarations
 from PyObjectBase import PyObjectBase
 from typing import overload, Sequence, TYPE_CHECKING
 
+
 @export(
     TwinPointer="Vector3d",
     Include="Base/Vector3D.h",

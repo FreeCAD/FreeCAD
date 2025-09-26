@@ -7,6 +7,7 @@ from Part.TopoShapePy import TopoShape
 from Base.PyObjectBase import PyObjectBase
 from typing import Optional, overload
 
+
 @export(
     PythonName="Part.HLRToShapePy",
     Twin="HLRBRep_HLRToShape",

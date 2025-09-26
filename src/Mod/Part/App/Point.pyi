@@ -33,11 +33,17 @@ class Point(Geometry):
     """
 
     @overload
-    def __init__(self) -> None: ...
+    def __init__(self) -> None:
+        ...
+
     @overload
-    def __init__(self, other: "Point") -> None: ...
+    def __init__(self, other: "Point") -> None:
+        ...
+
     @overload
-    def __init__(self, coordinates: Vector) -> None: ...
+    def __init__(self, coordinates: Vector) -> None:
+        ...
+
     @constmethod
     def toShape(self) -> object:
         """

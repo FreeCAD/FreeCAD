@@ -44,7 +44,8 @@ class ChFi2d_FilletAPI(PyObjectBase):
         """
         ...
 
-    def result(self, point: Point, solution: int = -1, /) -> tuple[TopoShapeEdge, TopoShapeEdge, TopoShapeEdge]:
+    def result(self, point: Point, solution: int = -1,
+        /) -> tuple[TopoShapeEdge, TopoShapeEdge, TopoShapeEdge]:
         """
         result(point, solution=-1)
 
