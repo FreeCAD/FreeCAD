@@ -12,6 +12,7 @@
 
 import FreeCAD
 import re
+from Draft import get_type
 
 if FreeCAD.GuiUp:
 #    from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -329,6 +330,43 @@ class ChildrenFromFunction(FromFunctionBase):
             self._collect_contained_children(parent, results_set)
 
         return list(results_set)
+
+
+class ParentFunction(FunctionBase):
+    """Implements the PARENT(*) function to find an object's container."""
+    def __init__(self, function_name, arg_extractors):
+        super().__init__(function_name, arg_extractors)
+        if len(self.arg_extractors) != 1 or self.arg_extractors[0] != '*':
+            raise ValueError(f"Function {self.function_name} requires exactly one argument: '*'")
+
+    def get_value(self, obj):
+        """
+        Walks up the hierarchy from the object to find the first
+        architecturally significant parent (e.g., a Floor, not a generic Group).
+        """
+        current_obj = obj
+        # Limit search depth to prevent infinite loops in malformed documents
+        for _ in range(20):
+            if not hasattr(current_obj, 'InList') or not current_obj.InList:
+                return None # Reached the top of this branch
+
+            # For simplicity, we consider the first parent in the InList.
+            parent = current_obj.InList[0]
+            parent_type = get_type(parent)
+
+            # A "significant" parent is an architectural container (Floor, Building)
+            # or a host object (Wall, Structure). A generic "Group" is not.
+            significant_types = {'BuildingPart', 'Wall', 'Structure'}
+            is_significant = parent_type in significant_types
+
+            if is_significant:
+                return parent # Found the significant parent
+
+            # If the parent is not significant (e.g., it's a generic group),
+            # continue walking up the tree from that parent.
+            current_obj = parent
+
+        return None # Search limit exceeded
 
 
 class GroupByClause:
@@ -1094,6 +1132,8 @@ def _initialize_engine():
     # FROM Functions
     from_function_registry.register('CHILDREN', ChildrenFromFunction, category="Hierarchical", signature="CHILDREN(subquery)",
                                       description="Selects child objects of a given parent set.", snippet="SELECT * FROM CHILDREN(SELECT * FROM document WHERE Label = 'My Floor')")
+    select_function_registry.register('PARENT', ParentFunction, category="Hierarchical", signature="PARENT(*)",
+                                      description="Returns the immediate, architecturally significant parent of an object.", snippet="SELECT Label, PARENT(*).Label AS Floor FROM document WHERE IfcType = 'Space'")
 
     # 3. Define and instantiate the transformer
     class FinalTransformer(generated_sql_parser.Transformer, SqlTransformerMixin):

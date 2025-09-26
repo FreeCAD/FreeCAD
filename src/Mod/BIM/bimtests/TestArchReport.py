@@ -11,7 +11,7 @@ import Arch
 import ArchReport
 import ArchSql
 from bimtests import TestArchBase
-
+import Draft
 
 class TestArchReport(TestArchBase.TestArchBase):
 
@@ -691,7 +691,6 @@ class TestArchReport(TestArchBase.TestArchBase):
         Tests the unified CHILDREN() function for both direct containment (.Group)
         and hosting relationships (.Hosts), including traversal of generic groups.
         """
-        import Draft
 
         # --- Test Setup: Create a mini-model with all relationship types ---
         # 1. A parent Floor for direct containment
@@ -1160,3 +1159,41 @@ class TestArchReport(TestArchBase.TestArchBase):
         clause_tooltip = editor._get_tooltip_for_word("SELECT")
         self.assertIn("SQL Clause", clause_tooltip)
 
+    def test_parent_function(self):
+        """
+        Tests the PARENT(*) function to find an object's container.
+        This test verifies that the function returns the correct parent OBJECT.
+        """
+        # 1. Setup a nested hierarchy: Building -> Floor -> Group -> Space
+        building = Arch.makeBuilding(name="My Building")
+        floor = Arch.makeFloor(name="Ground Floor")
+        group = self.doc.addObject("App::DocumentObjectGroup", "Room Group")
+        # Use a simple profile for the space
+        space_profile = Draft.makeRectangle(length=2000, height=3000)
+        space = Arch.makeSpace(space_profile, name="Main Office")
+
+        building.addObject(floor)
+        floor.addObject(group)
+        group.addObject(space)
+        self.doc.recompute()
+
+        # 2. The Query
+        # Select the PARENT(*) of the space. This should return the Floor object itself.
+        query = f"SELECT PARENT(*) FROM document WHERE Label = '{space.Label}'"
+        _, data = Arch.select(query)
+
+        # 3. Assertions
+        self.assertEqual(len(data), 1, "Query should return exactly one row.")
+        self.assertEqual(len(data[0]), 1, "Row should contain exactly one column.")
+
+        # The returned value should be the actual Floor object.
+        returned_parent = data[0][0]
+        self.assertIsInstance(returned_parent, FreeCAD.DocumentObject, "The result should be a DocumentObject.")
+        self.assertEqual(returned_parent, floor, "PARENT(*) did not return the correct Floor object.")
+
+        # 4. Test case with no significant parent
+        # A top-level object's parent should be None.
+        query_no_parent = f"SELECT PARENT(*) FROM document WHERE Label = '{building.Label}'"
+        _, data_no_parent = Arch.select(query_no_parent)
+        self.assertEqual(len(data_no_parent), 1)
+        self.assertIsNone(data_no_parent[0][0], "A top-level object should have no parent.")
