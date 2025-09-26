@@ -56,43 +56,48 @@ PyObject* FemPostFilterPy::addFilterPipeline(PyObject* args)
     const char* name;
     PyObject* source = nullptr;
     PyObject* target = nullptr;
-
-    if (PyArg_ParseTuple(args, "sOO", &name, &source, &target)) {
-
-        // extract the algorithms
-        vtkObjectBase* obj = vtkPythonUtil::GetPointerFromObject(source, "vtkAlgorithm");
-        if (!obj) {
-            // error marker is set by PythonUtil
-            return nullptr;
-        }
-        auto source_algo = static_cast<vtkAlgorithm*>(obj);
-
-        obj = vtkPythonUtil::GetPointerFromObject(target, "vtkAlgorithm");
-        if (!obj) {
-            // error marker is set by PythonUtil
-            return nullptr;
-        }
-        auto target_algo = static_cast<vtkAlgorithm*>(obj);
-
-        // add the pipeline
-        FemPostFilter::FilterPipeline pipe;
-        pipe.source = source_algo;
-        pipe.target = target_algo;
-        getFemPostFilterPtr()->addFilterPipeline(pipe, name);
+    PyTypeObject* typeAlgo = vtkPythonUtil::FindClassTypeObject("vtkAlgorithm");
+    if (!PyArg_ParseTuple(args, "sO!O!", &name, typeAlgo, &source, typeAlgo, &target)) {
+        return nullptr;
     }
+
+    // extract the algorithms
+    vtkObjectBase* obj = vtkPythonUtil::GetPointerFromObject(source, "vtkAlgorithm");
+    if (!obj) {
+        // error marker is set by PythonUtil
+        return nullptr;
+    }
+    auto source_algo = static_cast<vtkAlgorithm*>(obj);
+
+    obj = vtkPythonUtil::GetPointerFromObject(target, "vtkAlgorithm");
+    if (!obj) {
+        // error marker is set by PythonUtil
+        return nullptr;
+    }
+    auto target_algo = static_cast<vtkAlgorithm*>(obj);
+
+    // add the pipeline
+    FemPostFilter::FilterPipeline pipe;
+    pipe.source = source_algo;
+    pipe.target = target_algo;
+    getFemPostFilterPtr()->addFilterPipeline(pipe, name);
+
     Py_Return;
 #else
+    (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
-    Py_Return;
+    return nullptr;
 #endif
 }
 
 PyObject* FemPostFilterPy::setActiveFilterPipeline(PyObject* args)
 {
     const char* name;
-    if (PyArg_ParseTuple(args, "s", &name)) {
-        getFemPostFilterPtr()->setActiveFilterPipeline(std::string(name));
+    if (!PyArg_ParseTuple(args, "s", &name)) {
+        return nullptr;
     }
+
+    getFemPostFilterPtr()->setActiveFilterPipeline(std::string(name));
 
     Py_Return;
 }
@@ -109,7 +114,7 @@ PyObject* FemPostFilterPy::getParentPostGroup(PyObject* args)
         return group->getPyObject();
     }
 
-    return Py_None;
+    Py_Return;
 }
 
 PyObject* FemPostFilterPy::getInputData(PyObject* args)
@@ -133,17 +138,18 @@ PyObject* FemPostFilterPy::getInputData(PyObject* args)
         default:
             PyErr_SetString(PyExc_TypeError,
                             "cannot return datatype object; not unstructured grid");
-            Py_Return;
+            return nullptr;
     }
 
     // return the python wrapper
     copy->DeepCopy(dataset);
     PyObject* py_dataset = vtkPythonUtil::GetObjectFromPointer(copy);
 
-    return Py::new_reference_to(py_dataset);
+    return py_dataset;
 #else
+    (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
-    Py_Return;
+    return nullptr;
 #endif
 }
 
@@ -196,10 +202,11 @@ PyObject* FemPostFilterPy::getOutputAlgorithm(PyObject* args)
     auto algorithm = getFemPostFilterPtr()->getFilterOutput();
     PyObject* py_algorithm = vtkPythonUtil::GetObjectFromPointer(algorithm);
 
-    return Py::new_reference_to(py_algorithm);
+    return py_algorithm;
 #else
+    (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
-    Py_Return;
+    return nullptr;
 #endif
 }
 
