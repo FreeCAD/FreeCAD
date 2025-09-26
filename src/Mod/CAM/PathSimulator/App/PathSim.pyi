@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from typing import Any, Final
 
 from Base.BaseClass import BaseClass

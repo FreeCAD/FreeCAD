@@ -1,4 +1,6 @@
-# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
 
 from Metadata import export, constmethod
 from PyObjectBase import PyObjectBase
@@ -40,7 +42,7 @@ class CoordinateSystem(PyObjectBase):
     Position: Vector = None
     """Set or get position."""
 
-    def setAxes(self, axis: Union[AxisPy, Vector], xDir: Vector) -> None:
+    def setAxes(self, axis: Union[AxisPy, Vector], xDir: Vector, /) -> None:
         """
         setAxes(axis, xDir) -> None
 
@@ -54,7 +56,7 @@ class CoordinateSystem(PyObjectBase):
         ...
 
     @constmethod
-    def displacement(self, coordSystem2: "CoordinateSystem") -> Placement:
+    def displacement(self, coordSystem2: "CoordinateSystem", /) -> Placement:
         """
         displacement(coordSystem2) -> Base.Placement
 
@@ -64,7 +66,7 @@ class CoordinateSystem(PyObjectBase):
         """
         ...
 
-    def transformTo(self, vector: Vector) -> Vector:
+    def transformTo(self, vector: Vector, /) -> Vector:
         """
         transformTo(vector) -> Base.Vector
 
@@ -74,7 +76,7 @@ class CoordinateSystem(PyObjectBase):
         """
         ...
 
-    def transform(self, trans: Union[Rotation, Placement]) -> None:
+    def transform(self, trans: Union[Rotation, Placement], /) -> None:
         """
         transform(trans) -> None
 
@@ -84,7 +86,7 @@ class CoordinateSystem(PyObjectBase):
         """
         ...
 
-    def setPlacement(self, placement: Placement) -> None:
+    def setPlacement(self, placement: Placement, /) -> None:
         """
         setPlacement(placement) -> None
 

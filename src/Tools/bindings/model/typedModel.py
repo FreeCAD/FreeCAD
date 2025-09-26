@@ -326,3 +326,19 @@ class GenerateModel:
                 # Each method might have parameters
                 for param in meth.Parameter:
                     print(f"    * param: {param.Name}, type={param.Type}")
+
+# Rich Modules
+
+class ArgumentKind(Enum):
+    PositionOnly = 0
+    Arg = 1
+    VarArg = 2
+    KwOnly = 3
+    KwArg = 4
+
+@dataclass
+class FuncArgument:
+    name: str
+    annotation: str
+    kind: ArgumentKind
+

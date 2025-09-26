@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import constmethod
 from Base.BoundBox import BoundBox
 from App.ExtensionContainer import ExtensionContainer
@@ -50,7 +54,7 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
-    def removeProperty(self, name: str) -> bool:
+    def removeProperty(self, name: str, /) -> bool:
         """
         removeProperty(name) -> bool
 
@@ -94,7 +98,7 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
-    def canDragObject(self, obj: Any = None) -> bool:
+    def canDragObject(self, obj: Any = None, /) -> bool:
         """
         canDragObject(obj=None) -> bool
 
@@ -106,7 +110,7 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
-    def dragObject(self, obj: Any) -> None:
+    def dragObject(self, obj: Any, /) -> None:
         """
         dragObject(obj) -> None
 
@@ -158,7 +162,7 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
-    def canDragAndDropObject(self, obj: Any) -> bool:
+    def canDragAndDropObject(self, obj: Any, /) -> bool:
         """
         canDragAndDropObject(obj) -> bool
 
@@ -170,7 +174,7 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
-    def replaceObject(self, oldObj: Any, newObj: Any) -> int:
+    def replaceObject(self, oldObj: Any, newObj: Any, /) -> int:
         """
         replaceObject(oldObj, newObj) -> int
 
@@ -192,7 +196,7 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
-    def addDisplayMode(self, obj: Any, mode: str) -> None:
+    def addDisplayMode(self, obj: Any, mode: str, /) -> None:
         """
         addDisplayMode(obj, mode) -> None
 
@@ -221,7 +225,7 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
-    def setTransformation(self, trans: Any) -> None:
+    def setTransformation(self, trans: Any, /) -> None:
         """
         setTransformation(trans) -> None
 
@@ -249,7 +253,7 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
-    def partialRender(self, sub: Any = None, clear: bool = False) -> int:
+    def partialRender(self, sub: Any = None, clear: bool = False, /) -> int:
         """
         partialRender(sub=None, clear=False) -> int
 
@@ -262,7 +266,7 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
-    def getElementColors(self, elementName: Optional[str] = None) -> dict:
+    def getElementColors(self, elementName: Optional[str] = None, /) -> dict:
         """
         getElementColors(elementName) -> dict
 
@@ -274,7 +278,7 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
-    def setElementColors(self, colors: dict) -> None:
+    def setElementColors(self, colors: dict, /) -> None:
         """
         setElementColors(colors) -> None
 
@@ -286,7 +290,7 @@ class ViewProvider(ExtensionContainer):
         ...
 
     @constmethod
-    def getElementPicked(self, pickPoint: Any) -> str:
+    def getElementPicked(self, pickPoint: Any, /) -> str:
         """
         getElementPicked(pickPoint) -> str
 
@@ -297,7 +301,7 @@ class ViewProvider(ExtensionContainer):
         ...
 
     @constmethod
-    def getDetailPath(self, subelement: str, path: Any, append: bool = True) -> Any:
+    def getDetailPath(self, subelement: str, path: Any, append: bool = True, /) -> Any:
         """
         getDetailPath(subelement, path, append=True) -> coin.SoDetail or None
 
@@ -323,8 +327,7 @@ class ViewProvider(ExtensionContainer):
         ...
 
     def getBoundingBox(
-        self, subName: Optional[str] = None, transform: bool = True, view: Any = None
-    ) -> BoundBox:
+        self, subName: Optional[str] = None, transform: bool = True, view: Any = None, /) -> BoundBox:
         """
         getBoundingBox(subName, transform=True, view) -> Base.BoundBox
 

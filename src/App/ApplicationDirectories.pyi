@@ -13,7 +13,7 @@ class ApplicationDirectories(PyObjectBase):
     """
 
     @staticmethod
-    def usingCurrentVersionConfig(path: str) -> bool:
+    def usingCurrentVersionConfig(path: str, /) -> bool:
         """
         Determine if a given config path is for the current version of the program.
 
@@ -23,7 +23,7 @@ class ApplicationDirectories(PyObjectBase):
         ...
 
     @staticmethod
-    def migrateAllPaths(paths: list[str]) -> None:
+    def migrateAllPaths(paths: list[str], /) -> None:
         """
         Migrate a set of versionable configuration directories from the given paths to a new version.
 
@@ -47,7 +47,7 @@ class ApplicationDirectories(PyObjectBase):
         ...
 
     @staticmethod
-    def versionStringForPath(major: int, minor: int) -> str:
+    def versionStringForPath(major: int, minor: int, /) -> str:
         """
         Given a major and minor version number.
 
@@ -62,7 +62,7 @@ class ApplicationDirectories(PyObjectBase):
         ...
 
     @staticmethod
-    def isVersionedPath(startingPath: str) -> bool:
+    def isVersionedPath(startingPath: str, /) -> bool:
         """
         Determine if a given path is versioned.
 
@@ -80,7 +80,7 @@ class ApplicationDirectories(PyObjectBase):
         ...
 
     @staticmethod
-    def mostRecentAvailableConfigVersion(startingPath: str) -> str:
+    def mostRecentAvailableConfigVersion(startingPath: str, /) -> str:
         """
         Given a base path that is expected to contain versioned subdirectories, locate the
         directory name (*not* the path, only the final component, the version string itself)
@@ -97,7 +97,7 @@ class ApplicationDirectories(PyObjectBase):
         ...
 
     @staticmethod
-    def mostRecentConfigFromBase(startingPath: str) -> str:
+    def mostRecentConfigFromBase(startingPath: str, /) -> str:
         """
         Given a base path that is expected to contained versioned subdirectories, locate the
         directory corresponding to the most recent version of the software, up to and including
@@ -113,7 +113,7 @@ class ApplicationDirectories(PyObjectBase):
         ...
 
     @staticmethod
-    def migrateConfig(oldPath: str, newPath: str) -> None:
+    def migrateConfig(oldPath: str, newPath: str, /) -> None:
         """
         A utility method to copy all files and directories from oldPath to newPath, handling the
         case where newPath might itself be a subdirectory of oldPath (and *not* attempting that

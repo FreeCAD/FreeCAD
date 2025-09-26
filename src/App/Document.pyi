@@ -89,19 +89,19 @@ class Document(PropertyContainer):
         """
         ...
 
-    def saveAs(self, path: str) -> None:
+    def saveAs(self, path: str, /) -> None:
         """
         Save the document under a new name to disk.
         """
         ...
 
-    def saveCopy(self, path: str) -> None:
+    def saveCopy(self, path: str, /) -> None:
         """
         Save a copy of the document under a new name to disk.
         """
         ...
 
-    def load(self, path: str) -> None:
+    def load(self, path: str, /) -> None:
         """
         Load the document from the given path.
         """
@@ -132,7 +132,7 @@ class Document(PropertyContainer):
         """
         ...
 
-    def getUniqueObjectName(self, objName: str) -> str:
+    def getUniqueObjectName(self, objName: str, /) -> str:
         """
         Return the same name, or the name made unique, for Example Box -> Box002 if there are conflicting name
         already in the document.
@@ -145,13 +145,13 @@ class Document(PropertyContainer):
         """
         ...
 
-    def mergeProject(self, path: str) -> None:
+    def mergeProject(self, path: str, /) -> None:
         """
         Merges this document with another project file.
         """
         ...
 
-    def exportGraphviz(self, path: str = None) -> str | None:
+    def exportGraphviz(self, path: str = None, /) -> str | None:
         """
         Export the dependencies of the objects as graph.
 
@@ -159,7 +159,7 @@ class Document(PropertyContainer):
         """
         ...
 
-    def openTransaction(self, name: str) -> None:
+    def openTransaction(self, name: str, /) -> None:
         """
         Open a new Undo/Redo transaction.
 
@@ -185,7 +185,6 @@ class Document(PropertyContainer):
 
     def addObject(
         self,
-        *,
         type: str,
         name: str = None,
         objProxy: object = None,
@@ -210,7 +209,6 @@ class Document(PropertyContainer):
 
     def addProperty(
         self,
-        *,
         type: str,
         name: str,
         group: str = "",
@@ -219,7 +217,8 @@ class Document(PropertyContainer):
         read_only: bool = False,
         hidden: bool = False,
         locked: bool = False,
-    ) -> Document:
+        enum_vals: list[str] | None = None,
+        ) -> Document:
         """
         Add a generic property.
 
@@ -238,7 +237,7 @@ class Document(PropertyContainer):
         """
         ...
 
-    def removeProperty(self, name: str) -> None:
+    def removeProperty(self, name: str, /) -> None:
         """
         Remove a generic property.
 
@@ -246,7 +245,7 @@ class Document(PropertyContainer):
         """
         ...
 
-    def removeObject(self, name: str) -> None:
+    def removeObject(self, name: str, /) -> None:
         """
         Remove an object from the document.
         """
@@ -271,7 +270,10 @@ class Document(PropertyContainer):
         ...
 
     def moveObject(
-        self, object: DocumentObject, with_dependencies: bool = False
+        self,
+        object: DocumentObject,
+        with_dependencies: bool = False,
+        /,
     ) -> DocumentObject:
         """
         Transfers an object from another document to this document.
@@ -283,7 +285,9 @@ class Document(PropertyContainer):
         ...
 
     def importLinks(
-        self, object: DocumentObject = None
+        self,
+        object: DocumentObject = None,
+        /,
     ) -> tuple[DocumentObject, ...]:
         """
         Import any externally linked object given a list of objects in
@@ -319,7 +323,7 @@ class Document(PropertyContainer):
         """
         ...
 
-    def setClosable(self, closable: bool) -> None:
+    def setClosable(self, closable: bool, /) -> None:
         """
         Set a flag that allows or forbids to close a document
         """
@@ -331,7 +335,7 @@ class Document(PropertyContainer):
         """
         ...
 
-    def setAutoCreated(self, autoCreated: bool) -> None:
+    def setAutoCreated(self, autoCreated: bool, /) -> None:
         """
         Set a flag that indicates if a document is autoCreated
         """
@@ -348,6 +352,7 @@ class Document(PropertyContainer):
         objs: Sequence[DocumentObject] = None,
         force: bool = False,
         check_cycle: bool = False,
+        /,
     ) -> int:
         """
         Recompute the document and returns the amount of recomputed features.
@@ -372,13 +377,13 @@ class Document(PropertyContainer):
         """
         ...
 
-    def getObject(self, name: str) -> DocumentObject:
+    def getObject(self, name: str, /) -> DocumentObject:
         """
         Return the object with the given name
         """
         ...
 
-    def getObjectsByLabel(self, label: str) -> list[DocumentObject]:
+    def getObjectsByLabel(self, label: str, /) -> list[DocumentObject]:
         """
         Return the objects with the given label name.
 
@@ -388,7 +393,6 @@ class Document(PropertyContainer):
 
     def findObjects(
         self,
-        *,
         Type: str = None,
         Name: str = None,
         Label: str = None,
@@ -410,6 +414,7 @@ class Document(PropertyContainer):
         obj: DocumentObject,
         options: int = 0,
         maxCount: int = 0,
+        /,
     ) -> tuple[DocumentObject, ...]:
         """
         Return objects linked to 'obj'
@@ -432,7 +437,7 @@ class Document(PropertyContainer):
         """
         ...
 
-    def getDependentDocuments(self, sort: bool = True) -> list[DocumentObject]:
+    def getDependentDocuments(self, sort: bool = True, /) -> list[DocumentObject]:
         """
         Returns a list of documents that this document directly or indirectly links to including itself.
 

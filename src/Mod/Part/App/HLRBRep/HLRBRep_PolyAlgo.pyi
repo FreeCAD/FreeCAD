@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from Part.TopoShapePy import TopoShape
@@ -62,7 +66,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
       same shape.
     """
 
-    def load(self, S: TopoShape) -> None:
+    def load(self, S: TopoShape, /) -> None:
         """
         load(S)
 
@@ -70,7 +74,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         """
         ...
 
-    def remove(self, i: int) -> None:
+    def remove(self, i: int, /) -> None:
         """
         remove(i)
 
@@ -87,7 +91,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         """
         ...
 
-    def shape(self, i: int) -> TopoShape:
+    def shape(self, i: int, /) -> TopoShape:
         """
         shape(i) -> TopoShape
 
@@ -95,7 +99,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         """
         ...
 
-    def index(self, S: TopoShape) -> int:
+    def index(self, S: TopoShape, /) -> int:
         """
         index(S) ->  int
 
@@ -165,7 +169,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         """
         ...
 
-    def outLinedShape(self, S: TopoShape) -> TopoShape:
+    def outLinedShape(self, S: TopoShape, /) -> TopoShape:
         """
         outLinedShape(S) -> TopoShape
 

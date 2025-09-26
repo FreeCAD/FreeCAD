@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from typing import Any, overload
@@ -25,7 +29,7 @@ class Material(PyObjectBase):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         ...
 
-    def set(self, string: str) -> None:
+    def set(self, string: str, /) -> None:
         """
         Set(string) -- Set the material.
 

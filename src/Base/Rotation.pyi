@@ -1,4 +1,6 @@
-# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
 
 from Metadata import export, constmethod, class_declarations
 from PyObjectBase import PyObjectBase
@@ -144,7 +146,7 @@ class Rotation(PyObjectBase):
         """
         ...
 
-    def isSame(self, rotation: "Rotation", tol: float = 0) -> bool:
+    def isSame(self, rotation: "Rotation", tol: float = 0, /) -> bool:
         """
         isSame(rotation, tol=0) -> bool
 
@@ -158,7 +160,7 @@ class Rotation(PyObjectBase):
         ...
 
     @constmethod
-    def multiply(self, rotation: "Rotation") -> "Rotation":
+    def multiply(self, rotation: "Rotation", /) -> "Rotation":
         """
         multiply(rotation) -> Base.Rotation
 
@@ -170,7 +172,7 @@ class Rotation(PyObjectBase):
         ...
 
     @constmethod
-    def multVec(self, vector: Vector) -> Vector:
+    def multVec(self, vector: Vector, /) -> Vector:
         """
         multVec(vector) -> Base.Vector
 
@@ -182,7 +184,7 @@ class Rotation(PyObjectBase):
         ...
 
     @constmethod
-    def slerp(self, rotation2: "Rotation", t: float) -> "Rotation":
+    def slerp(self, rotation2: "Rotation", t: float, /) -> "Rotation":
         """
         slerp(rotation2, t) -> Base.Rotation
 
@@ -193,7 +195,7 @@ class Rotation(PyObjectBase):
         """
         ...
 
-    def setYawPitchRoll(self, angle1: float, angle2: float, angle3: float) -> None:
+    def setYawPitchRoll(self, angle1: float, angle2: float, angle3: float, /) -> None:
         """
         setYawPitchRoll(angle1, angle2, angle3) -> None
 
@@ -218,7 +220,7 @@ class Rotation(PyObjectBase):
         """
         ...
 
-    def setEulerAngles(self, seq: str, angle1: float, angle2: float, angle3: float) -> None:
+    def setEulerAngles(self, seq: str, angle1: float, angle2: float, angle3: float, /) -> None:
         """
         setEulerAngles(seq, angle1, angle2, angle3) -> None
 
@@ -234,7 +236,7 @@ class Rotation(PyObjectBase):
         ...
 
     @constmethod
-    def toEulerAngles(self, seq: str = "") -> List[float]:
+    def toEulerAngles(self, seq: str = "", /) -> List[float]:
         """
         toEulerAngles(seq) -> list
 
@@ -265,7 +267,7 @@ class Rotation(PyObjectBase):
         ...
 
     @constmethod
-    def isIdentity(self, tol: float = 0) -> bool:
+    def isIdentity(self, tol: float = 0, /) -> bool:
         """
         isIdentity(tol=0) -> bool
 

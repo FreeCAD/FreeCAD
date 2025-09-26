@@ -1,4 +1,6 @@
-# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
 
 from Metadata import export, constmethod, sequence_protocol, class_declarations
 from PyObjectBase import PyObjectBase
@@ -93,7 +95,7 @@ class Vector(PyObjectBase):
         ...
 
     @constmethod
-    def add(self, vector2: "Vector") -> "Vector":
+    def add(self, vector2: "Vector", /) -> "Vector":
         """
         add(vector2) -> Base.Vector
 
@@ -104,7 +106,7 @@ class Vector(PyObjectBase):
         ...
 
     @constmethod
-    def sub(self, vector2: "Vector") -> "Vector":
+    def sub(self, vector2: "Vector", /) -> "Vector":
         """
         sub(vector2) -> Base.Vector
 
@@ -123,7 +125,7 @@ class Vector(PyObjectBase):
         """
         ...
 
-    def scale(self, x: float, y: float, z: float) -> "Vector":
+    def scale(self, x: float, y: float, z: float, /) -> "Vector":
         """
         scale(x, y, z) -> Base.Vector
 
@@ -138,7 +140,7 @@ class Vector(PyObjectBase):
         """
         ...
 
-    def multiply(self, factor: float) -> "Vector":
+    def multiply(self, factor: float, /) -> "Vector":
         """
         multiply(factor) -> Base.Vector
 
@@ -150,7 +152,7 @@ class Vector(PyObjectBase):
         ...
 
     @constmethod
-    def dot(self, vector2: "Vector") -> float:
+    def dot(self, vector2: "Vector", /) -> float:
         """
         dot(vector2) -> float
 
@@ -161,7 +163,7 @@ class Vector(PyObjectBase):
         ...
 
     @constmethod
-    def cross(self, vector2: "Vector") -> "Vector":
+    def cross(self, vector2: "Vector", /) -> "Vector":
         """
         cross(vector2) -> Base.Vector
 
@@ -172,7 +174,7 @@ class Vector(PyObjectBase):
         ...
 
     @constmethod
-    def isOnLineSegment(self, vector1: "Vector", vector2: "Vector") -> bool:
+    def isOnLineSegment(self, vector1: "Vector", vector2: "Vector", /) -> bool:
         """
         isOnLineSegment(vector1, vector2) -> bool
 
@@ -184,7 +186,7 @@ class Vector(PyObjectBase):
         ...
 
     @constmethod
-    def getAngle(self, vector2: "Vector") -> float:
+    def getAngle(self, vector2: "Vector", /) -> float:
         """
         getAngle(vector2) -> float
 
@@ -203,7 +205,7 @@ class Vector(PyObjectBase):
         ...
 
     @constmethod
-    def isEqual(self, vector2: "Vector", tol: float = 0) -> bool:
+    def isEqual(self, vector2: "Vector", tol: float = 0, /) -> bool:
         """
         isEqual(vector2, tol=0) -> bool
 
@@ -216,7 +218,7 @@ class Vector(PyObjectBase):
         ...
 
     @constmethod
-    def isParallel(self, vector2: "Vector", tol: float = 0) -> bool:
+    def isParallel(self, vector2: "Vector", tol: float = 0, /) -> bool:
         """
         isParallel(vector2, tol=0) -> bool
 
@@ -229,7 +231,7 @@ class Vector(PyObjectBase):
         ...
 
     @constmethod
-    def isNormal(self, vector2: "Vector", tol: float = 0) -> bool:
+    def isNormal(self, vector2: "Vector", tol: float = 0, /) -> bool:
         """
         isNormal(vector2, tol=0) -> bool
 
@@ -241,7 +243,7 @@ class Vector(PyObjectBase):
         """
         ...
 
-    def projectToLine(self, point: "Vector", dir: "Vector") -> "Vector":
+    def projectToLine(self, point: "Vector", dir: "Vector", /) -> "Vector":
         """
         projectToLine(point, dir) -> Base.Vector
 
@@ -257,7 +259,7 @@ class Vector(PyObjectBase):
         """
         ...
 
-    def projectToPlane(self, base: "Vector", normal: "Vector") -> "Vector":
+    def projectToPlane(self, base: "Vector", normal: "Vector", /) -> "Vector":
         """
         projectToPlane(base, normal) -> Base.Vector
 
@@ -270,7 +272,7 @@ class Vector(PyObjectBase):
         ...
 
     @constmethod
-    def distanceToPoint(self, point2: "Vector") -> float:
+    def distanceToPoint(self, point2: "Vector", /) -> float:
         """
         distanceToPoint(point2) -> float
 
@@ -281,7 +283,7 @@ class Vector(PyObjectBase):
         ...
 
     @constmethod
-    def distanceToLine(self, base: "Vector", dir: "Vector") -> float:
+    def distanceToLine(self, base: "Vector", dir: "Vector", /) -> float:
         """
         distanceToLine(base, dir) -> float
 
@@ -295,7 +297,7 @@ class Vector(PyObjectBase):
         ...
 
     @constmethod
-    def distanceToLineSegment(self, point1: "Vector", point2: "Vector") -> "Vector":
+    def distanceToLineSegment(self, point1: "Vector", point2: "Vector", /) -> "Vector":
         """
         distanceToLineSegment(point1, point2) -> Base.Vector
 
@@ -309,7 +311,7 @@ class Vector(PyObjectBase):
         ...
 
     @constmethod
-    def distanceToPlane(self, base: "Vector", normal: "Vector") -> float:
+    def distanceToPlane(self, base: "Vector", normal: "Vector", /) -> float:
         """
         distanceToPlane(base, normal) -> float
 

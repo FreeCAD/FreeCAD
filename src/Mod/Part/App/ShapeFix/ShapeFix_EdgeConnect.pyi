@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
 from Part.App.TopoShapeEdge import TopoShapeEdge
@@ -19,9 +23,11 @@ class ShapeFix_EdgeConnect(PyObjectBase):
     """
 
     @overload
-    def add(self, edge1: TopoShapeEdge, edge2: TopoShapeEdge) -> None: ...
+    def add(self, edge1: TopoShapeEdge, edge2: TopoShapeEdge, /) -> None: ...
+
     @overload
-    def add(self, shape: TopoShape) -> None: ...
+    def add(self, shape: TopoShape, /) -> None: ...
+
     def add(self, *args, **kwargs) -> None:
         """
         add(edge, edge)

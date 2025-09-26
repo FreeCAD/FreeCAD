@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from Gui.ViewProviderPartExt import ViewProviderPartExt
 from typing import Final, overload
@@ -16,7 +20,7 @@ class ViewProvider(ViewProviderPartExt):
     Licence: LGPL
     """
 
-    def setBodyMode(self, mode: bool) -> None:
+    def setBodyMode(self, mode: bool, /) -> None:
         """
         setBodyMode(bool): body mode means that the object is part of a body
         and that the body is used to set the visual properties, not the features. Hence
@@ -24,7 +28,7 @@ class ViewProvider(ViewProviderPartExt):
         """
         ...
 
-    def makeTemporaryVisible(self, visible: bool) -> None:
+    def makeTemporaryVisible(self, visible: bool, /) -> None:
         """
         makeTemporaryVisible(bool): makes this viewprovider visible in the
         scene graph without changing any properties, not the visibility one and also not

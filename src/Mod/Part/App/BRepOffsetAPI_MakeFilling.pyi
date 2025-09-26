@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
 from Part.App.Point import Point
@@ -50,7 +54,7 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         """
         ...
 
-    def loadInitSurface(self, face: TopoShapeFace) -> None:
+    def loadInitSurface(self, face: TopoShapeFace, /) -> None:
         """
         loadInitSurface(face)
         Loads the initial surface.
@@ -93,10 +97,14 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         ...
 
     @overload
-    def G0Error(self) -> float: ...
+    def G0Error(self, /) -> float:
+        ...
+
     @overload
-    def G0Error(self, arg: int) -> float: ...
-    def G0Error(self, arg: int = 0) -> float:
+    def G0Error(self, arg: int, /) -> float:
+        ...
+
+    def G0Error(self, arg: int = 0, /) -> float:
         """
         G0Error([int])
         Returns the maximum distance between the result and the constraints.
@@ -104,10 +112,14 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         ...
 
     @overload
-    def G1Error(self) -> float: ...
+    def G1Error(self, /) -> float:
+        ...
+
     @overload
-    def G1Error(self, arg: int) -> float: ...
-    def G1Error(self, arg: int = 0) -> float:
+    def G1Error(self, arg: int, /) -> float:
+        ...
+
+    def G1Error(self, arg: int = 0, /) -> float:
         """
         G1Error([int])
         Returns the maximum angle between the result and the constraints.
@@ -115,10 +127,14 @@ class BRepOffsetAPI_MakeFilling(PyObjectBase):
         ...
 
     @overload
-    def G2Error(self) -> float: ...
+    def G2Error(self, /) -> float:
+        ...
+
     @overload
-    def G2Error(self, arg: int) -> float: ...
-    def G2Error(self, arg: int = 0) -> float:
+    def G2Error(self, arg: int, /) -> float:
+        ...
+
+    def G2Error(self, arg: int = 0, /) -> float:
         """
         G2Error([int])
         Returns the greatest difference in curvature between the result and the constraints.

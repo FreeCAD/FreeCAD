@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from typing import Any, List, Dict, overload, Optional
@@ -217,7 +221,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def getGenericMetadata(self, name: str) -> List[Any]:
+    def getGenericMetadata(self, name: str, /) -> List[Any]:
         """
         getGenericMetadata(name) -> list
 
@@ -228,7 +232,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def addContentItem(self, content_type: str, metadata: "Metadata") -> None:
+    def addContentItem(self, content_type: str, metadata: "Metadata", /) -> None:
         """
         addContentItem(content_type,metadata)
 
@@ -236,7 +240,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def removeContentItem(self, content_type: str, name: str) -> None:
+    def removeContentItem(self, content_type: str, name: str, /) -> None:
         """
         removeContentItem(content_type,name)
 
@@ -244,7 +248,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def addMaintainer(self, name: str, email: str) -> None:
+    def addMaintainer(self, name: str, email: str, /) -> None:
         """
         addMaintainer(name, email)
 
@@ -252,7 +256,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def removeMaintainer(self, name: str, email: str) -> None:
+    def removeMaintainer(self, name: str, email: str, /) -> None:
         """
         removeMaintainer(name, email)
 
@@ -260,7 +264,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def addLicense(self, short_code: str, path: str) -> None:
+    def addLicense(self, short_code: str, path: str, /) -> None:
         """
         addLicense(short_code,path)
 
@@ -268,7 +272,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def removeLicense(self, short_code: str) -> None:
+    def removeLicense(self, short_code: str, /) -> None:
         """
         removeLicense(short_code)
 
@@ -276,7 +280,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def addUrl(self, url_type: str, url: str, branch: str) -> None:
+    def addUrl(self, url_type: str, url: str, branch: str, /) -> None:
         """
         addUrl(url_type,url,branch)
 
@@ -288,7 +292,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def removeUrl(self, url_type: str, url: str) -> None:
+    def removeUrl(self, url_type: str, url: str, /) -> None:
         """
         removeUrl(url_type,url)
 
@@ -296,7 +300,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def addAuthor(self, name: str, email: str) -> None:
+    def addAuthor(self, name: str, email: str, /) -> None:
         """
         addAuthor(name, email)
 
@@ -304,7 +308,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def removeAuthor(self, name: str, email: str) -> None:
+    def removeAuthor(self, name: str, email: str, /) -> None:
         """
         removeAuthor(name, email)
 
@@ -312,7 +316,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def addDepend(self, name: str, kind: str, optional: bool) -> None:
+    def addDepend(self, name: str, kind: str, optional: bool, /) -> None:
         """
         addDepend(name, kind, optional)
 
@@ -322,7 +326,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def removeDepend(self, name: str, kind: str) -> None:
+    def removeDepend(self, name: str, kind: str, /) -> None:
         """
         removeDepend(name, kind)
 
@@ -332,7 +336,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def addConflict(self, name: str, kind: str) -> None:
+    def addConflict(self, name: str, kind: str, /) -> None:
         """
         addConflict(name, kind)
 
@@ -340,7 +344,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def removeConflict(self, name: str, kind: str) -> None:
+    def removeConflict(self, name: str, kind: str, /) -> None:
         """
         removeConflict(name, kind)
 
@@ -348,7 +352,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def addReplace(self, name: str) -> None:
+    def addReplace(self, name: str, /) -> None:
         """
         addReplace(name)
 
@@ -356,7 +360,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def removeReplace(self, name: str) -> None:
+    def removeReplace(self, name: str, /) -> None:
         """
         removeReplace(name)
 
@@ -364,7 +368,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def addTag(self, tag: str) -> None:
+    def addTag(self, tag: str, /) -> None:
         """
         addTag(tag)
 
@@ -372,7 +376,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def removeTag(self, tag: str) -> None:
+    def removeTag(self, tag: str, /) -> None:
         """
         removeTag(tag)
 
@@ -380,7 +384,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def addFile(self, filename: str) -> None:
+    def addFile(self, filename: str, /) -> None:
         """
         addFile(filename)
 
@@ -388,7 +392,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def removeFile(self, filename: str) -> None:
+    def removeFile(self, filename: str, /) -> None:
         """
         removeFile(filename)
 
@@ -396,7 +400,7 @@ class Metadata(PyObjectBase):
         """
         ...
 
-    def write(self, filename: str) -> None:
+    def write(self, filename: str, /) -> None:
         """
         write(filename)
 

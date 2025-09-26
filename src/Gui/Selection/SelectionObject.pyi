@@ -25,7 +25,7 @@ class SelectionObject(BaseClass):
         """
         ...
 
-    def isObjectTypeOf(self, type: Any) -> bool:
+    def isObjectTypeOf(self, type: Any, /) -> bool:
         """
         Test for a certain father class.
         isObjectTypeOf(type) -> Bool

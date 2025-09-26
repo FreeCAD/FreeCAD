@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Metadata import export, constmethod, forward_declarations, class_declarations, sequence_protocol
 from Base.BaseClass import BaseClass
 from typing import Final, overload

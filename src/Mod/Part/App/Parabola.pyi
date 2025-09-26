@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.Vector import Vector
 from Conic import Conic
@@ -35,7 +39,7 @@ class Parabola(Conic):
     and its directrix. This distance is twice the focal length.
     """
 
-    def compute(self, p1: Vector, p2: Vector, p3: Vector) -> None:
+    def compute(self, p1: Vector, p2: Vector, p3: Vector, /) -> None:
         """
         compute(p1,p2,p3) -> None
 
