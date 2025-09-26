@@ -1117,4 +1117,3 @@ int ConstraintPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
-
