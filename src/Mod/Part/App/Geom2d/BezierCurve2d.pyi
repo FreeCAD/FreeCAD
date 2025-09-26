@@ -6,7 +6,6 @@ from Base.Metadata import export, constmethod
 from Part.Curve2d import Curve2d
 from typing import Final, List
 
-
 @export(
     Twin="Geom2dBezierCurve",
     TwinPointer="Geom2dBezierCurve",

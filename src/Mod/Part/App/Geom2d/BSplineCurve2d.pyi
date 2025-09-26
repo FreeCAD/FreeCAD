@@ -7,7 +7,6 @@ from typing import Final, overload
 from Part.Curve2d import Curve2d
 from Base.Vector import Vector
 
-
 @export(
     Twin="Geom2dBSplineCurve",
     TwinPointer="Geom2dBSplineCurve",
@@ -88,13 +87,9 @@ class BSplineCurve2d(Curve2d):
         ...
 
     @overload
-    def increaseMultiplicity(self, index: int, mult: int, /) -> None:
-        ...
-
+    def increaseMultiplicity(self, index: int, mult: int, /) -> None: ...
     @overload
-    def increaseMultiplicity(self, start: int, end: int, mult: int, /) -> None:
-        ...
-
+    def increaseMultiplicity(self, start: int, end: int, mult: int, /) -> None: ...
     def increaseMultiplicity(self, *args, **kwargs) -> None:
         """
         increaseMultiplicity(int index, int mult)
@@ -131,7 +126,7 @@ class BSplineCurve2d(Curve2d):
         list_of_ints: list[int],
         tol: float = 0.0,
         bool_add: bool = True,
-        /
+        /,
     ) -> None:
         """
         insertKnots(list_of_floats, list_of_ints, tol = 0.0, bool_add = True)
@@ -381,18 +376,24 @@ class BSplineCurve2d(Curve2d):
 
     @overload
     def buildFromPolesMultsKnots(
-        self, poles: list[Vector], mults: tuple[int, ...], knots: tuple[float, ...], periodic: bool,
-        degree: int
-    ) -> None:
-        ...
-
+        self,
+        poles: list[Vector],
+        mults: tuple[int, ...],
+        knots: tuple[float, ...],
+        periodic: bool,
+        degree: int,
+    ) -> None: ...
     @overload
     def buildFromPolesMultsKnots(
-        self, poles: list[Vector], mults: tuple[int, ...], knots: tuple[float, ...], periodic: bool,
-        degree: int, weights: tuple[float, ...], CheckRational: bool
-    ) -> None:
-        ...
-
+        self,
+        poles: list[Vector],
+        mults: tuple[int, ...],
+        knots: tuple[float, ...],
+        periodic: bool,
+        degree: int,
+        weights: tuple[float, ...],
+        CheckRational: bool,
+    ) -> None: ...
     def buildFromPolesMultsKnots(self, **kwargs) -> None:
         """
         Builds a B-Spline by a lists of Poles, Mults, Knots.

@@ -6,14 +6,13 @@ from Base.Metadata import export
 from Part.Conic2d import Conic2d
 from typing import Final, overload
 
-
 @export(
     Twin="Geom2dHyperbola",
     TwinPointer="Geom2dHyperbola",
     PythonName="Part.Geom2d.Hyperbola2d",
     FatherInclude="Mod/Part/App/Geom2d/Conic2dPy.h",
     Include="Mod/Part/App/Geometry2d.h",
-    Constructor=True
+    Constructor=True,
 )
 class Hyperbola2d(Conic2d):
     """
@@ -62,17 +61,10 @@ class Hyperbola2d(Conic2d):
     """
 
     @overload
-    def __init__(self) -> None:
-        ...
-
+    def __init__(self) -> None: ...
     @overload
-    def __init__(self, Hyperbola: "Hyperbola2d") -> None:
-        ...
-
+    def __init__(self, Hyperbola: "Hyperbola2d") -> None: ...
     @overload
-    def __init__(self, S1: object, S2: object, Center: object) -> None:
-        ...
-
+    def __init__(self, S1: object, S2: object, Center: object) -> None: ...
     @overload
-    def __init__(self, Center: object, MajorRadius: float, MinorRadius: float) -> None:
-        ...
+    def __init__(self, Center: object, MajorRadius: float, MinorRadius: float) -> None: ...

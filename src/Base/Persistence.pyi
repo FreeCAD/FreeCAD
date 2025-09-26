@@ -6,7 +6,6 @@ from Metadata import constmethod
 from BaseClass import BaseClass
 from typing import Final
 
-
 class Persistence(BaseClass):
     """
     Base.Persistence class.

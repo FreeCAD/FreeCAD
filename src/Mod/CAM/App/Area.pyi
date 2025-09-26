@@ -7,7 +7,6 @@ from typing import Any, Final
 from Base.BaseClass import BaseClass
 from Base.Metadata import export
 
-
 @export(
     Include="Mod/CAM/App/Area.h",
     Namespace="Path",
@@ -98,7 +97,6 @@ class Area(BaseClass):
     def abort(self, **kwargs) -> Any:
         """Abort the current operation."""
         ...
-
     Sections: Final[list]
     """List of sections in this area."""
 

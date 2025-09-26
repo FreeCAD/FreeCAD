@@ -7,7 +7,6 @@ from typing import Any
 from Base.Metadata import export
 from TechDraw.DrawView import DrawView
 
-
 @export(
     Include="Mod/TechDraw/App/DrawViewCollection.h",
     Namespace="TechDraw",
@@ -16,7 +15,7 @@ from TechDraw.DrawView import DrawView
 class DrawViewCollection(DrawView):
     """
     Feature for creating and manipulating Technical Drawing View Collections
-    
+
     Author: WandererFan (wandererfan@gmail.com)
     License: LGPL-2.1-or-later
     """

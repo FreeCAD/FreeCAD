@@ -8,14 +8,12 @@ from PyObjectBase import PyObjectBase
 from enum import IntEnum
 from typing import overload, Union, Tuple, Sequence
 
-
 class ScaleType(IntEnum):
     Other = -1
     NoScaling = 0
     NonUniformRight = 1
     NonUniformLeft = 2
     Uniform = 3
-
 
 @export(
     TwinPointer="Matrix4D",
@@ -109,13 +107,9 @@ class Matrix(PyObjectBase):
     """The matrix elements."""
 
     @overload
-    def move(self, vector: Vector, /) -> None:
-        ...
-
+    def move(self, vector: Vector, /) -> None: ...
     @overload
-    def move(self, x: float, y: float, z: float, /) -> None:
-        ...
-
+    def move(self, x: float, y: float, z: float, /) -> None: ...
     def move(self, *args) -> None:
         """
         move(vector) -> None
@@ -135,17 +129,11 @@ class Matrix(PyObjectBase):
         ...
 
     @overload
-    def scale(self, vector: Vector, /) -> None:
-        ...
-
+    def scale(self, vector: Vector, /) -> None: ...
     @overload
-    def scale(self, x: float, y: float, z: float, /) -> None:
-        ...
-
+    def scale(self, x: float, y: float, z: float, /) -> None: ...
     @overload
-    def scale(self, factor: float, /) -> None:
-        ...
-
+    def scale(self, factor: float, /) -> None: ...
     def scale(self, *args) -> None:
         """
         scale(vector) -> None
@@ -347,13 +335,9 @@ class Matrix(PyObjectBase):
         ...
 
     @overload
-    def multiply(self, matrix: "Matrix", /) -> "Matrix":
-        ...
-
+    def multiply(self, matrix: "Matrix", /) -> "Matrix": ...
     @overload
-    def multiply(self, vector: Vector, /) -> Vector:
-        ...
-
+    def multiply(self, vector: Vector, /) -> Vector: ...
     @constmethod
     def multiply(self, obj: Union["Matrix", Vector], /) -> Union["Matrix", Vector]:
         """

@@ -9,7 +9,6 @@ from DocumentObjectGroup import DocumentObjectGroup
 from ExtensionContainer import ExtensionContainer
 from typing import Any, Final, List, Optional, Union, Tuple
 
-
 class DocumentObject(ExtensionContainer):
     """
     This is the father of all classes handled by the document
@@ -75,7 +74,7 @@ class DocumentObject(ExtensionContainer):
         read_only: bool = False,
         hidden: bool = False,
         locked: bool = False,
-        enum_vals: list = []
+        enum_vals: list = [],
     ) -> "DocumentObject":
         """
         addProperty(type: string, name: string, group="", doc="", attr=0, read_only=False, hidden=False, locked = False, enum_vals=[]) -- Add a generic property.

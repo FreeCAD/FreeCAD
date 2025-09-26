@@ -324,4 +324,3 @@ class GenerateModel:
                 # Each method might have parameters
                 for param in meth.Parameter:
                     print(f"    * param: {param.Name}, type={param.Type}")
-

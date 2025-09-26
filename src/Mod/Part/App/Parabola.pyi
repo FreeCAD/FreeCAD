@@ -7,7 +7,6 @@ from Base.Vector import Vector
 from Conic import Conic
 from typing import Final
 
-
 @export(
     Twin="GeomParabola",
     TwinPointer="GeomParabola",

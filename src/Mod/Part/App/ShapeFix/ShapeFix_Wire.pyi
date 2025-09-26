@@ -6,7 +6,6 @@ from Base.Metadata import export, constmethod
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 from typing import Final
 
-
 @export(
     PythonName="Part.ShapeFix.Wire",
     Twin="ShapeFix_Wire",
@@ -231,7 +230,6 @@ class ShapeFix_Wire(ShapeFix_Root):
         This method examines the geometry and applies corrective actions to eliminate or reduce the presence of tails.
         """
         pass
-
     ModifyTopologyMode: bool = ...
     """Mode for modifying topology of the wire"""
 

@@ -7,7 +7,6 @@ from typing import Any, Final
 from Base.BaseClass import BaseClass
 from Base.Metadata import constmethod, export
 
-
 @export(
     Include="Mod/CAM/App/VoronoiCell.h",
     Namespace="Path",
@@ -42,7 +41,6 @@ class VoronoiCell(BaseClass):
     def getSource(self) -> Any:
         """Returns the Source for the cell"""
         ...
-
     Index: Final[int]
     """Internal id of the element."""
 

@@ -5,7 +5,6 @@ from __future__ import annotations
 from Base.Metadata import export, constmethod
 from PartFeature import PartFeature
 
-
 @export(
     Twin="BodyBase",
     TwinPointer="BodyBase",

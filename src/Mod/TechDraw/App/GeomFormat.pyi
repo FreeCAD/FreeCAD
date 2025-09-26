@@ -7,7 +7,6 @@ from typing import Any, Final
 from Base.PyObjectBase import PyObjectBase
 from Base.Metadata import constmethod, export
 
-
 @export(
     Include="Mod/TechDraw/App/Cosmetic.h",
     Namespace="TechDraw",
@@ -17,7 +16,7 @@ from Base.Metadata import constmethod, export
 class GeomFormat(PyObjectBase):
     """
     GeomFormat specifies appearance parameters for TechDraw Geometry objects
-    
+
     Author: WandererFan (wandererfan@gmail.com)
     License: LGPL-2.1-or-later
     """
@@ -31,6 +30,5 @@ class GeomFormat(PyObjectBase):
     def copy(self) -> Any:
         """Create a copy of this geomformat"""
         ...
-
     Tag: Final[str]
     """Gives the tag of the GeomFormat as string."""

@@ -8,7 +8,6 @@ from Part.HLRBRep_PolyAlgo import HLRBRep_PolyAlgo
 from Part.TopoShapePy import TopoShape
 from typing import Optional, overload
 
-
 @export(
     PythonName="Part.PolyHLRToShapePy",
     Twin="HLRBRep_PolyHLRToShape",
@@ -43,7 +42,7 @@ class PolyHLRToShape(PyObjectBase):
     shape. In order to obtain a complete image, you must combine the shapes given
     by each of the chosen filters. The construction of the shape does not call a
     new computation of the algorithm, but only reads its internal results.
-	"""
+    """
 
     def update(self, algo: HLRBRep_PolyAlgo, /) -> None:
         """
@@ -78,7 +77,7 @@ class PolyHLRToShape(PyObjectBase):
 
         Sets the extraction filter for visible smooth edges for either shape Shape or
         for all added shapes (Shape=None).
-	    """
+        """
         ...
 
     def RgNLineVCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:
@@ -87,7 +86,7 @@ class PolyHLRToShape(PyObjectBase):
 
         Sets the extraction filter for visible sewn edges for either shape Shape or for
         all added shapes (Shape=None).
-	    """
+        """
         ...
 
     def outLineVCompound(self, Shape: Optional[TopoShape] = None, /) -> TopoShape:

@@ -6,7 +6,6 @@ from Base.Metadata import export
 from Workbench import Workbench
 from warnings import deprecated
 
-
 @export(
     Twin="PythonBaseWorkbench",
     TwinPointer="PythonBaseWorkbench",

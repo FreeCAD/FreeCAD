@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import Final, Any
 from Base.PyObjectBase import PyObjectBase
 
-
 class Extension(PyObjectBase):
     """
     Base class for all extensions

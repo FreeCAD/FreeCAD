@@ -6,7 +6,6 @@ from Base.Metadata import export, constmethod
 from GeometrySurface import GeometrySurface
 from typing import Final, List, Any
 
-
 @export(
     PythonName="Part.BSplineSurface",
     Twin="GeomBSplineSurface",
@@ -665,7 +664,7 @@ class BSplineSurface(GeometrySurface):
         ParamType: str = ...,
         LengthWeight: float = ...,
         CurvatureWeight: float = ...,
-        TorsionWeight: float = ...
+        TorsionWeight: float = ...,
     ) -> None:
         """
         Replaces this B-Spline surface by approximating a set of points.
@@ -726,7 +725,7 @@ class BSplineSurface(GeometrySurface):
         vperiodic: bool = ...,
         udegree: int = ...,
         vdegree: int = ...,
-        weights: List[List[float]] = ...
+        weights: List[List[float]] = ...,
     ) -> None:
         """
         Builds a B-Spline by a lists of Poles, Mults and Knots

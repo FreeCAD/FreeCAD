@@ -6,7 +6,6 @@ from DocumentObject import DocumentObject
 from Base import Placement
 from typing import Any, Final, Optional
 
-
 class GeoFeature(DocumentObject):
     """
     App.GeoFeature class.

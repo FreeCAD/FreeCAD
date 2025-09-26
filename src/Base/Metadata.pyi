@@ -1,10 +1,10 @@
 # SPDX-License: LGPL-2.1-or-later
 
 from __future__ import annotations
+
 """
 This file keeps auxiliary metadata to be used by the Python API stubs.
 """
-
 
 def export(**kwargs):
     """
@@ -12,28 +12,19 @@ def export(**kwargs):
     """
     ...
 
-
-def constmethod():
-    ...
-
-
-def no_args():
-    ...
-
-
+def constmethod(): ...
+def no_args(): ...
 def forward_declarations(source_code):
     """
     A decorator to attach forward declarations to a class.
     """
     ...
 
-
 def class_declarations(source_code):
     """
     A decorator to attach forward declarations to a class.
     """
     ...
-
 
 def sequence_protocol(**kwargs):
     """

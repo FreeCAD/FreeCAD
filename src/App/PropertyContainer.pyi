@@ -6,8 +6,9 @@ from Base.Metadata import export, constmethod
 from Base.Persistence import Persistence
 from typing import Any, Final, Union, List, Optional
 
-
-@export(DisableNotify=True,)
+@export(
+    DisableNotify=True,
+)
 class PropertyContainer(Persistence):
     """
     App.PropertyContainer class.

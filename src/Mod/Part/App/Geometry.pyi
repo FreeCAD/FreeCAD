@@ -9,7 +9,6 @@ from Base.Vector import Vector
 from Base.Matrix import Matrix
 from typing import Final, List, Optional
 
-
 @export(
     Include="Mod/Part/App/Geometry.h",
     Constructor=True,
