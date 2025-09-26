@@ -7,6 +7,7 @@ from Part.TopoShapePy import TopoShape
 from Base.PyObjectBase import PyObjectBase
 from typing import Optional, overload
 
+
 @export(
     PythonName="Part.HLRToShapePy",
     Twin="HLRBRep_HLRToShape",
@@ -144,7 +145,9 @@ class HLRToShape(PyObjectBase):
         """
         ...
 
-    def compoundOfEdges(self, Type: int, Visible: bool, In3D: bool, *, Shape: Optional[TopoShape] = None) -> TopoShape:
+    def compoundOfEdges(
+        self, Type: int, Visible: bool, In3D: bool, *, Shape: Optional[TopoShape] = None
+    ) -> TopoShape:
         """
         compoundOfEdges(Type: int, Visible: bool, In3D: bool, Shape=None) -> TopoShape
 

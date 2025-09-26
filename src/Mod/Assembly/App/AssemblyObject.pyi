@@ -8,6 +8,7 @@ from Base.Metadata import constmethod, export
 
 from App.Part import Part
 
+
 @export(Include="Mod/Assembly/App/AssemblyObject.h", Namespace="Assembly")
 class AssemblyObject(Part):
     """
@@ -152,5 +153,6 @@ class AssemblyObject(Part):
         Args:
         fileName: The name of the file where the ASMT will be exported."""
         ...
+
     Joints: Final[list]
     """A list of all joints this assembly has."""

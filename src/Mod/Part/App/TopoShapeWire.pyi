@@ -97,8 +97,7 @@ class TopoShapeWire(TopoShape):
         """
         ...
 
-    def fixWire(
-        self, face: Optional[object] = None, tolerance: Optional[float] = None, /) -> None:
+    def fixWire(self, face: Optional[object] = None, tolerance: Optional[float] = None, /) -> None:
         """
         Fix wire
         fixWire([face, tolerance])
@@ -130,7 +129,8 @@ class TopoShapeWire(TopoShape):
         isSolid: bool = False,
         isFrenet: bool = False,
         transition: int = 0,
-     /,) -> object:
+        /,
+    ) -> object:
         """
         Make a loft defined by a list of profiles along a wire.
         makePipeShell(shapeList,[isSolid=False,isFrenet=False,transition=0]) -> Shape
@@ -140,8 +140,10 @@ class TopoShapeWire(TopoShape):
         ...
 
     @constmethod
-    def makeEvolved(self, *, Profile: TopoShape, Join: int, AxeProf: bool, Solid: bool,
-                    ProfOnSpine: bool, Tolerance: float) -> TopoShape:
+    def makeEvolved(
+        self, *, Profile: TopoShape, Join: int, AxeProf: bool, Solid: bool, ProfOnSpine: bool,
+        Tolerance: float
+    ) -> TopoShape:
         """
         Profile along the spine
         """
@@ -204,19 +206,14 @@ class TopoShapeWire(TopoShape):
 
     @overload
     @constmethod
-    def discretize(
-        self, Angular: float, Curvature: float, Minimum: int = 2
-    ) -> List[object]:
+    def discretize(self, Angular: float, Curvature: float, Minimum: int = 2) -> List[object]:
         """
         discretize(Angular=a,Curvature=c,[Minimum=m]) -> list
         """
         ...
 
     @constmethod
-    def discretize(
-        self,
-        **kwargs
-    ) -> List[object]:
+    def discretize(self, **kwargs) -> List[object]:
         """
         Discretizes the wire and returns a list of points.
         discretize(kwargs) -> list

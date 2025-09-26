@@ -12,7 +12,7 @@ from typing import Any, List, Dict, overload, Optional
     Delete=True,
     NumberProtocol=False,
     RichCompare=False,
-    )
+)
 @class_declarations(
     """public:
     MetadataPy(const Metadata & pla, PyTypeObject *T = &Type)
@@ -53,16 +53,20 @@ class Metadata(PyObjectBase):
     """
 
     @overload
-    def __init__(self) -> None: ...
+    def __init__(self) -> None:
+        ...
 
     @overload
-    def __init__(self, metadata: "Metadata") -> None: ...
+    def __init__(self, metadata: "Metadata") -> None:
+        ...
 
     @overload
-    def __init__(self, file: str) -> None: ...
+    def __init__(self, file: str) -> None:
+        ...
 
     @overload
-    def __init__(self, bytes: bytes) -> None: ...
+    def __init__(self, bytes: bytes) -> None:
+        ...
 
     Name: str = ""
     """String representing the name of this item."""

@@ -26,7 +26,8 @@ class ArcOfConic(TrimmedCurve):
     """
 
     @overload
-    def __init__(self) -> None: ...
+    def __init__(self) -> None:
+        ...
 
     Location: Vector = ...
     """Center of the conic."""

@@ -21,7 +21,6 @@ class ViewProvider(ExtensionContainer):
         CanToggleVisibility = "CanToggleVisibility"
         NoToggleVisibility = "NoToggleVisibility"
 
-
     def addProperty(
         self,
         *,
@@ -124,12 +123,7 @@ class ViewProvider(ExtensionContainer):
         ...
 
     def canDropObject(
-        self,
-        *,
-        obj: Any = None,
-        owner: Any = None,
-        subname: str,
-        elem: Optional[List[str]] = None
+        self, *, obj: Any = None, owner: Any = None, subname: str, elem: Optional[List[str]] = None
     ) -> bool:
         """
         canDropObject(obj=None, owner=None, subname, elem=None) -> bool
@@ -150,12 +144,7 @@ class ViewProvider(ExtensionContainer):
         ...
 
     def dropObject(
-        self,
-        *,
-        obj: Any,
-        owner: Any = None,
-        subname: str,
-        elem: Optional[List[str]] = None
+        self, *, obj: Any, owner: Any = None, subname: str, elem: Optional[List[str]] = None
     ) -> str:
         """
         dropObject(obj, owner=None, subname, elem=None) -> str
@@ -339,7 +328,8 @@ class ViewProvider(ExtensionContainer):
         ...
 
     def getBoundingBox(
-        self, subName: Optional[str] = None, transform: bool = True, view: Any = None, /) -> BoundBox:
+        self, subName: Optional[str] = None, transform: bool = True, view: Any = None, /
+    ) -> BoundBox:
         """
         getBoundingBox(subName, transform=True, view) -> Base.BoundBox
 

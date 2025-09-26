@@ -7,6 +7,7 @@ from typing import Any, Final
 from Base.Metadata import export
 from DrawTemplate import DrawTemplate
 
+
 @export(
     Include="Mod/TechDraw/App/DrawParametricTemplate.h",
     Namespace="TechDraw",
@@ -23,5 +24,6 @@ class DrawParametricTemplate(DrawTemplate):
     def drawLine(self) -> Any:
         """Draw a line"""
         ...
+
     GeometryCount: Final[int]
     """Number of geometry in template"""

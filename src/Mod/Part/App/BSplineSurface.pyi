@@ -186,7 +186,8 @@ class BSplineSurface(GeometrySurface):
         dX: float = ...,
         Y0: float = ...,
         dY: float = ...,
-     /,) -> None:
+        /,
+    ) -> None:
         """
         increase(Int=UDegree, int=VDegree)
         Increases the degrees of this B-Spline surface to UDegree and VDegree
@@ -379,8 +380,7 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def setPoleCol(
-        self, VIndex: int, values: List[Any], CPoleWeights: List[float], /) -> None:
+    def setPoleCol(self, VIndex: int, values: List[Any], CPoleWeights: List[float], /) -> None:
         """
         Modifies this B-Spline surface by assigning values to all or part
         of the column of poles of index VIndex, of this B-Spline surface.
@@ -390,8 +390,7 @@ class BSplineSurface(GeometrySurface):
         """
         ...
 
-    def setPoleRow(
-        self, UIndex: int, values: List[Any], CPoleWeights: List[float], /) -> None:
+    def setPoleRow(self, UIndex: int, values: List[Any], CPoleWeights: List[float], /) -> None:
         """
         Modifies this B-Spline surface by assigning values to all or part
         of the row of poles of index UIndex, of this B-Spline surface.
@@ -496,7 +495,8 @@ class BSplineSurface(GeometrySurface):
         UIndex2: int = ...,
         VIndex1: int = ...,
         VIndex2: int = ...,
-     /,) -> Any:
+        /,
+    ) -> Any:
         """
         Moves the point of parameters (U, V) of this B-Spline surface to P.
         UIndex1, UIndex2, VIndex1 and VIndex2 are the indexes in the poles
@@ -696,7 +696,8 @@ class BSplineSurface(GeometrySurface):
         dX: float = ...,
         Y0: float = ...,
         dY: float = ...,
-     /,) -> None:
+        /,
+    ) -> None:
         """
         interpolate(points)
         interpolate(zpoints, X0, dX, Y0, dY)

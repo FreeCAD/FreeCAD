@@ -6,12 +6,14 @@ from Base.Metadata import export, constmethod, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from typing import Final
 
+
 @export(
     PythonName="Part.ShapeFix.Edge",
     Include="ShapeFix_Edge.hxx",
     Constructor=True,
 )
-@class_declarations("""
+@class_declarations(
+    """
 private:
     Handle(ShapeFix_Edge) hEdge;
 
@@ -20,7 +22,8 @@ public:
         setTwinPointer(handle.get());
         hEdge = handle;
     }
-""")
+"""
+)
 class ShapeFix_Edge(PyObjectBase):
     """
     Fixing invalid edge

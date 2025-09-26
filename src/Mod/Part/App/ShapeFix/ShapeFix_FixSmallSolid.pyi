@@ -6,6 +6,7 @@ from Base.Metadata import export
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 from typing import overload
 
+
 @export(
     PythonName="Part.ShapeFix.FixSmallSolid",
     Include="ShapeFix_FixSmallSolid.hxx",

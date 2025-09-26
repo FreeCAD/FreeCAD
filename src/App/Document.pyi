@@ -6,6 +6,7 @@ from PropertyContainer import PropertyContainer
 from DocumentObject import DocumentObject
 from typing import Final, Sequence
 
+
 class Document(PropertyContainer):
     """
     This is the Document class.
@@ -218,7 +219,7 @@ class Document(PropertyContainer):
         hidden: bool = False,
         locked: bool = False,
         enum_vals: list[str] | None = None,
-        ) -> Document:
+    ) -> Document:
         """
         Add a generic property.
 

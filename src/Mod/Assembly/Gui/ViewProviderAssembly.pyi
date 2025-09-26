@@ -8,6 +8,7 @@ from Base.Metadata import export
 
 from Gui.ViewProvider import ViewProvider
 
+
 @export(Include="Mod/Assembly/Gui/ViewProviderAssembly.h", Namespace="AssemblyGui")
 class ViewProviderAssembly(ViewProvider):
     """
@@ -32,6 +33,7 @@ class ViewProviderAssembly(ViewProvider):
 
                       Returns: dragger coin object of the assembly"""
         ...
+
     EnableMovement: bool
     """Enable moving the parts by clicking and dragging."""
 
