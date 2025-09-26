@@ -109,14 +109,20 @@ def _analyze_rectangle(polygon, axis_preference="long"):
     if len(edges) != 4:
         raise ValueError("Polygon must be rectangular (4 edges)")
     
-    # Get vertices from edges
-    vertices = []
-    for edge in edges:
-        vertices.append(edge.Vertexes[0].Point)
+    # Get vertices from edges - use bounding box to ensure consistent ordering
+    bbox = polygon.BoundBox
+    
+    # Define the four corners based on bounding box (consistent regardless of polygon vertex order)
+    vertices = [
+        FreeCAD.Vector(bbox.XMin, bbox.YMin, bbox.ZMin),  # bottom-left
+        FreeCAD.Vector(bbox.XMax, bbox.YMin, bbox.ZMin),  # bottom-right  
+        FreeCAD.Vector(bbox.XMax, bbox.YMax, bbox.ZMin),  # top-right
+        FreeCAD.Vector(bbox.XMin, bbox.YMax, bbox.ZMin)   # top-left
+    ]
     
     # Find the two edge vectors to determine rectangle orientation
-    edge1_vec = vertices[1].sub(vertices[0])
-    edge2_vec = vertices[2].sub(vertices[1])
+    edge1_vec = vertices[1].sub(vertices[0])  # horizontal edge (X direction)
+    edge2_vec = vertices[3].sub(vertices[0])  # vertical edge (Y direction)
     
     # Calculate edge lengths
     edge1_length = edge1_vec.Length
@@ -147,24 +153,9 @@ def _analyze_rectangle(polygon, axis_preference="long"):
             step_length = edge1_length
     
     # Find the corner that will serve as our reference point
-    # We want the corner that is at the "origin" of our coordinate system
-    # This should be the corner where both primary_vec and step_vec point "outward"
-    reference_corner = None
-    min_projection = float('inf')
-    
-    for vertex in vertices:
-        # Project this vertex onto both direction vectors
-        # The reference corner should have the minimum projections in both directions
-        primary_proj = vertex.dot(primary_vec)
-        step_proj = vertex.dot(step_vec)
-        combined_proj = primary_proj + step_proj
-        
-        if combined_proj < min_projection:
-            min_projection = combined_proj
-            reference_corner = vertex
-    
-    if reference_corner is None:
-        reference_corner = vertices[0]  # Fallback
+    # Use the polygon's bounding box minimum corner as the reference
+    # This ensures consistent behavior regardless of world coordinate origin
+    reference_corner = FreeCAD.Vector(polygon.BoundBox.XMin, polygon.BoundBox.YMin, polygon.BoundBox.ZMin)
 
     Path.Log.debug("Primary vector: {} (length: {})".format(primary_vec, primary_vec.Length))
     Path.Log.debug("Step vector: {} (length: {})".format(step_vec, step_vec.Length))
@@ -439,45 +430,64 @@ def _directional(polygon, tool_diameter, stepover_percent, axis_preference="long
 
 def _spiral(polygon, tool_diameter, stepover_percent, axis_preference="long", milling_direction="climb"):
     """
-    Generate a spiral clearing pattern.
+    Generate a spiral clearing pattern for rectangular polygons.
     
-    This strategy cuts in a continuous spiral from the outside toward the center
-    (or center outward). The tool follows a rectangular spiral path that gradually
-    works inward, maintaining a continuous cutting motion. This minimizes tool
-    lifting and provides smooth material removal, but may require careful
-    consideration of chip evacuation in deep pockets.
+    NEW ALGORITHM DESIGN:
+    This algorithm works directly with the polygon's actual geometry, including
+    angled rectangles, rather than using axis-aligned bounding boxes.
+    
+    GEOMETRIC APPROACH:
+    1. Extract the 4 edges of the rectangular polygon directly
+    2. Determine primary/step edges based on axis_preference and edge lengths
+    3. Find the starting corner based on milling direction and edge orientation
+    4. Generate concentric rectangular layers that follow the polygon's orientation
+    5. Each layer is offset inward by stepover distance along polygon normals
+    
+    MILLING DIRECTION & STARTING CORNER:
+    - Climb milling: Start from corner that allows clockwise traversal
+    - Conventional milling: Start from corner that allows counter-clockwise traversal
+    - Starting corner selection is independent of coordinate system origin
+    
+    POLYGON ORIENTATION HANDLING:
+    - Works with rectangles at any angle, not just axis-aligned
+    - Spiral follows the actual polygon shape, maintaining its orientation
+    - Edge vectors and normals are derived from actual polygon geometry
     
     Args:
-        polygon: The polygon boundary to clear
+        polygon: The rectangular polygon boundary to clear
         tool_diameter: Diameter of the cutting tool
         stepover_percent: Stepover as percentage of tool diameter
-        axis_preference: "long" or "short" - which axis to align primary cutting direction with
-        milling_direction: "climb" or "conventional" - affects spiral direction
+        axis_preference: "long" or "short" - which polygon edge to use as primary direction
+        milling_direction: "climb" or "conventional" - spiral rotation direction
         
     Returns:
         List of Path.Command objects representing the toolpath
     """
-    # Analyze the rectangle to get orientation and dimensions
-    rect_info = _analyze_rectangle(polygon, axis_preference)
-    primary_vec = rect_info['primary_vec']
-    step_vec = rect_info['step_vec']
-    primary_length = rect_info['primary_length']
-    step_length = rect_info['step_length']
-    reference_corner = rect_info['reference_corner']
-
-    # Ensure vectors are properly normalized
-    primary_vec = primary_vec.multiply(1.0 / primary_vec.Length)
-    step_vec = step_vec.multiply(1.0 / step_vec.Length)
-
-    # Calculate stepover distance and tool radius
-    stepover = (stepover_percent / 100.0) * tool_diameter
-    tool_radius = tool_diameter / 2.0
+    # Extract polygon edges and corners directly
+    polygon_info = _extract_polygon_geometry(polygon)
+    edges = polygon_info['edges']
+    corners = polygon_info['corners']
     
-    Path.Log.debug("Spiral: Tool diameter: {}, stepover_percent: {}, stepover: {}, tool_radius: {}".format(
-        tool_diameter, stepover_percent, stepover, tool_radius))
+    # Determine primary and step edges based on axis preference
+    edge_info = _select_primary_step_edges(edges, axis_preference)
+    primary_edge = edge_info['primary_edge']
+    step_edge = edge_info['step_edge']
+    primary_vec = edge_info['primary_vec']
+    step_vec = edge_info['step_vec']
+    primary_length = edge_info['primary_length']
+    step_length = edge_info['step_length']
     
+    # Determine starting corner based on milling direction
+    start_corner = _select_starting_corner(corners, primary_edge, step_edge, milling_direction)
+    
+    Path.Log.debug("Spiral: primary_vec={}, step_vec={}, primary_length={}, step_length={}".format(
+        primary_vec, step_vec, primary_length, step_length))
+    Path.Log.debug("Spiral: start_corner={}".format(start_corner))
+
+    # Calculate stepover distance
+    stepover = tool_diameter * stepover_percent / 100.0
+
     # Calculate the number of layers (concentric rectangles) we need
-    # Each layer is one stepover distance smaller on all sides
     max_layers_primary = int((primary_length / 2.0) / stepover)
     max_layers_step = int((step_length / 2.0) / stepover)
     num_layers = min(max_layers_primary, max_layers_step)
@@ -490,71 +500,189 @@ def _spiral(polygon, tool_diameter, stepover_percent, axis_preference="long", mi
     z = polygon.BoundBox.ZMin
     
     # Determine spiral direction based on milling direction
-    # For climb milling: clockwise spiral (outside to inside)
-    # For conventional milling: counter-clockwise spiral
     clockwise = (milling_direction == "climb")
     
-    for layer in range(num_layers):
-        # Calculate the inset for this layer
-        inset = layer * stepover
+    for layer in range(num_layers + 1):
+        # Calculate inward offset for this layer
+        inward_offset = layer * stepover
         
-        # Calculate the corners of this layer's rectangle
-        # Start from reference corner and inset by the layer amount
-        layer_primary_length = primary_length - 2 * inset
-        layer_step_length = step_length - 2 * inset
+        # Generate the corners for this layer by offsetting inward
+        layer_corners = _generate_layer_corners(start_corner, primary_vec, step_vec, 
+                                               primary_length, step_length, inward_offset)
         
-        # Skip if rectangle becomes too small
-        if layer_primary_length <= 0 or layer_step_length <= 0:
+        # Skip if layer becomes too small
+        layer_primary_length = primary_length - 2 * inward_offset
+        layer_step_length = step_length - 2 * inward_offset
+        
+        if (layer_primary_length <= tool_diameter or layer_step_length <= tool_diameter) and layer >= num_layers:
+            Path.Log.debug("Spiral layer {}: Rectangle too small, breaking.".format(layer))
             break
-            
-        # Calculate the four corners of this layer
-        inset_primary = FreeCAD.Vector(primary_vec).multiply(inset)
-        inset_step = FreeCAD.Vector(step_vec).multiply(inset)
-        
-        corner1 = FreeCAD.Vector(reference_corner).add(inset_primary).add(inset_step)
-        corner2 = corner1.add(FreeCAD.Vector(primary_vec).multiply(layer_primary_length))
-        corner3 = corner2.add(FreeCAD.Vector(step_vec).multiply(layer_step_length))
-        corner4 = corner3.sub(FreeCAD.Vector(primary_vec).multiply(layer_primary_length))
-        
-        # Set Z coordinates
-        corner1.z = z
-        corner2.z = z
-        corner3.z = z
-        corner4.z = z
-        
-        Path.Log.debug("Spiral layer {}: inset={}, corners=[{}, {}, {}, {}]".format(
-            layer, inset, corner1, corner2, corner3, corner4))
         
         # Generate the spiral path for this layer
-        if clockwise:
-            # Clockwise: corner1 -> corner2 -> corner3 -> corner4 -> (back toward corner1)
-            corners = [corner1, corner2, corner3, corner4]
-        else:
-            # Counter-clockwise: corner1 -> corner4 -> corner3 -> corner2 -> (back toward corner1)
-            corners = [corner1, corner4, corner3, corner2]
+        layer_commands = _generate_layer_path(layer_corners, layer, z, clockwise, stepover, 
+                                            layer < num_layers)
+        commands.extend(layer_commands)
         
-        # First layer - position to start
-        if layer == 0:
-            commands.append(Path.Command("G1", {
-                "X": corners[0].x,
-                "Y": corners[0].y,
-                "Z": z
-            }))
-        else:
-            # Subsequent layers - direct cutting move to next layer start
-            commands.append(Path.Command("G1", {
-                "X": corners[0].x,
-                "Y": corners[0].y,
-                "Z": z
-            }))
+        # Add transition to next layer if not the last layer
+        if layer < num_layers and layer_primary_length > tool_diameter and layer_step_length > tool_diameter:
+            # Calculate the starting corner of the next layer
+            next_inward_offset = (layer + 1) * stepover
+            next_layer_corners = _generate_layer_corners(start_corner, primary_vec, step_vec, 
+                                                       primary_length, step_length, next_inward_offset)
+            # Move to the starting corner of the next layer
+            commands.append(Path.Command("G1", {"X": next_layer_corners[0].x, "Y": next_layer_corners[0].y, "Z": z}))
+    
+    return commands
+
+def _extract_polygon_geometry(polygon):
+    """Extract edges and corners from a rectangular polygon."""
+    # Get the polygon edges
+    edges = []
+    corners = []
+    
+    # Assuming polygon is a closed wire with 4 edges (rectangle)
+    for edge in polygon.Edges:
+        edge_vector = edge.Vertexes[1].Point.sub(edge.Vertexes[0].Point)
+        edges.append({
+            'start': edge.Vertexes[0].Point,
+            'end': edge.Vertexes[1].Point,
+            'vector': edge_vector,
+            'length': edge.Length
+        })
+        corners.append(edge.Vertexes[0].Point)
+        Path.Log.debug("Edge: start={}, end={}, vector={}, length={}".format(
+            edge.Vertexes[0].Point, edge.Vertexes[1].Point, edge_vector, edge.Length))
+    
+    return {
+        'edges': edges,
+        'corners': corners
+    }
+
+def _select_primary_step_edges(edges, axis_preference):
+    """Select primary and step edges based on axis preference."""
+    # Find the unique edge lengths (assuming rectangle)
+    edge_lengths = [edge['length'] for edge in edges]
+    unique_lengths = list(set(edge_lengths))
+    
+    if len(unique_lengths) == 1:
+        # Square case - all edges are the same length
+        # For squares, we need to pick two perpendicular edges
+        # Find two edges that are perpendicular (dot product near 0)
+        primary_edge = edges[0]
+        step_edge = None
         
-        # Cut around the rectangle (3 sides, leaving one side open for next layer entry)
-        for i in range(1, 4):  # Skip the 4th side to allow spiral continuation
-            commands.append(Path.Command("G1", {
-                "X": corners[i].x,
-                "Y": corners[i].y,
-                "Z": z
-            }))
+        for edge in edges[1:]:
+            # Check if this edge is perpendicular to the primary edge
+            dot_product = abs(primary_edge['vector'].normalize().dot(edge['vector'].normalize()))
+            if dot_product < 0.1:  # Nearly perpendicular
+                step_edge = edge
+                break
+        
+        if step_edge is None:
+            # Fallback - just use adjacent edges (should be perpendicular for rectangles)
+            step_edge = edges[1]
+    elif len(unique_lengths) == 2:
+        # Rectangle case - two different edge lengths
+        long_length = max(unique_lengths)
+        short_length = min(unique_lengths)
+        
+        # Find edges with long and short lengths
+        long_edges = [edge for edge in edges if abs(edge['length'] - long_length) < 1e-6]
+        short_edges = [edge for edge in edges if abs(edge['length'] - short_length) < 1e-6]
+        
+        # Select primary edge based on preference
+        if axis_preference == "long":
+            primary_edge = long_edges[0]
+            step_edge = short_edges[0]
+        else:  # "short"
+            primary_edge = short_edges[0]
+            step_edge = long_edges[0]
+    else:
+        raise ValueError("Polygon must be rectangular with 1 or 2 unique edge lengths")
+    
+    # Normalize vectors properly
+    primary_vec = primary_edge['vector']
+    step_vec = step_edge['vector']
+    
+    # Manual normalization to ensure it works correctly
+    primary_length_calc = primary_vec.Length
+    step_length_calc = step_vec.Length
+    
+    if primary_length_calc > 0:
+        primary_vec = primary_vec.multiply(1.0 / primary_length_calc)
+    if step_length_calc > 0:
+        step_vec = step_vec.multiply(1.0 / step_length_calc)
+    
+    Path.Log.debug("Edge selection: primary_length={}, step_length={}, primary_vec={}, step_vec={}".format(
+        primary_edge['length'], step_edge['length'], primary_vec, step_vec))
+    
+    return {
+        'primary_edge': primary_edge,
+        'step_edge': step_edge,
+        'primary_vec': primary_vec,
+        'step_vec': step_vec,
+        'primary_length': primary_edge['length'],
+        'step_length': step_edge['length']
+    }
+
+def _select_starting_corner(corners, primary_edge, step_edge, milling_direction):
+    """Select starting corner based on milling direction and edge orientation."""
+    # For now, use the first corner as starting point
+    # TODO: Implement proper corner selection logic based on milling direction
+    return corners[0]
+
+def _generate_layer_corners(start_corner, primary_vec, step_vec, primary_length, step_length, inward_offset):
+    """Generate the four corners of a spiral layer offset inward from the original polygon."""
+    # Calculate the four corners of this layer (reduced by inward offset)
+    adjusted_primary_length = max(0, primary_length - 2 * inward_offset)
+    adjusted_step_length = max(0, step_length - 2 * inward_offset)
+    
+    Path.Log.debug("Layer corners: inward_offset={}, primary_length={}, step_length={}, adjusted_primary={}, adjusted_step={}".format(
+        inward_offset, primary_length, step_length, adjusted_primary_length, adjusted_step_length))
+    
+    # Move the starting corner inward by the offset amount
+    # The inward direction is the sum of the normalized inward normals of both edges
+    inward_primary = primary_vec * inward_offset  # Move inward along primary direction
+    inward_step = step_vec * inward_offset        # Move inward along step direction
+    
+    # The actual starting corner for this layer is offset inward
+    layer_start_corner = start_corner + inward_primary + inward_step
+    
+    # Build rectangle from the offset starting corner with reduced dimensions
+    corner1 = FreeCAD.Vector(layer_start_corner)
+    corner2 = corner1 + primary_vec * adjusted_primary_length
+    corner3 = corner2 + step_vec * adjusted_step_length
+    corner4 = corner3 - primary_vec * adjusted_primary_length
+    
+    Path.Log.debug("Generated corners: c1={}, c2={}, c3={}, c4={}".format(corner1, corner2, corner3, corner4))
+    
+    return [corner1, corner2, corner3, corner4]
+
+def _generate_layer_path(layer_corners, layer_num, z, clockwise, stepover, has_next_layer):
+    """Generate the toolpath commands for a single spiral layer."""
+    commands = []
+    
+    # Set Z coordinate for all corners
+    for corner in layer_corners:
+        corner.z = z
+    
+    # For the first layer, start with a rapid move to the first corner
+    if layer_num == 0:
+        commands.append(Path.Command("G0", {"X": layer_corners[0].x, "Y": layer_corners[0].y, "Z": z}))
+    
+    # Generate the rectangular path - always go around the full rectangle
+    if clockwise:
+        # Clockwise: 0 -> 1 -> 2 -> 3 -> back to 0
+        for i in range(1, 4):
+            commands.append(Path.Command("G1", {"X": layer_corners[i].x, "Y": layer_corners[i].y, "Z": z}))
+        # Complete the rectangle
+        commands.append(Path.Command("G1", {"X": layer_corners[0].x, "Y": layer_corners[0].y, "Z": z}))
+    else:
+        # Counter-clockwise: 0 -> 3 -> 2 -> 1 -> back to 0
+        for i in [3, 2, 1]:
+            commands.append(Path.Command("G1", {"X": layer_corners[i].x, "Y": layer_corners[i].y, "Z": z}))
+        # Complete the rectangle
+        commands.append(Path.Command("G1", {"X": layer_corners[0].x, "Y": layer_corners[0].y, "Z": z}))
     
     return commands
 

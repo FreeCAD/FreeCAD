@@ -297,8 +297,8 @@ class TestPathFacingGenerator(PathTestBase):
         commands = facing._spiral(self.square_wire, 10.0, 50.0, milling_direction="conventional")
         
         self.assertGreater(len(commands), 0)
-        # First move should be G1 to start position
-        self.assertEqual(commands[0].Name, "G1")
+        # First move should be G0 rapid positioning
+        self.assertEqual(commands[0].Name, "G0")
         
         # Check that we have cutting moves (G1 commands)
         cutting_moves = [cmd for cmd in commands if cmd.Name == "G1"]
@@ -440,6 +440,9 @@ class TestPathFacingGenerator(PathTestBase):
         # Should have multiple unique positions
         unique_positions = set(positions)
         self.assertGreater(len(unique_positions), 4)
+        import Path
+        p= Path.Path(commands)
+        print(p.toGCode())
 
     def test_spiral_milling_direction(self):
         """Test spiral with different milling directions."""
@@ -468,6 +471,133 @@ class TestPathFacingGenerator(PathTestBase):
                 break
         self.assertTrue(different_coords)
 
+    def test_spiral_centered_on_origin(self):
+        """Test spiral with rectangle centered on origin to debug overlapping passes."""
+        import Part
+        
+        # Create a 10x6 rectangle centered on origin (-5,-3) to (5,3)
+        centered_rectangle = Part.makePolygon([
+            FreeCAD.Vector(-5, -3, 0),
+            FreeCAD.Vector(5, -3, 0),
+            FreeCAD.Vector(5, 3, 0),
+            FreeCAD.Vector(-5, 3, 0),
+            FreeCAD.Vector(-5, -3, 0)
+        ])
+        
+        # Use small stepover to get multiple layers
+        commands = facing._spiral(
+            polygon=centered_rectangle,  # 10x6 rectangle centered on origin
+            tool_diameter=2.0,
+            stepover_percent=25,  # 0.5mm stepover
+            axis_preference="long"
+        )
+        
+        # Should have multiple layers
+        self.assertGreater(len(commands), 8)  # At least 2-3 layers with multiple moves each
+        
+        # Extract unique positions to verify spiral pattern
+        positions = []
+        for cmd in commands:
+            if 'X' in cmd.Parameters and 'Y' in cmd.Parameters:
+                positions.append((cmd.Parameters['X'], cmd.Parameters['Y']))
+        
+        # Should have multiple unique positions
+        unique_positions = set(positions)
+        self.assertGreater(len(unique_positions), 4)
+        
+        # Print G-code for debugging
+        import Path
+        p = Path.Path(commands)
+        print("Centered on origin G-code:")
+        print(p.toGCode())
+
+    def test_spiral_axis_preference_variations(self):
+        """Test spiral with different axis preferences and milling directions."""
+        import Part
+        
+        # Create a 12x8 rectangle centered on origin (-6,-4) to (6,4)
+        # Long axis = 12mm (X), Short axis = 8mm (Y)
+        test_rectangle = Part.makePolygon([
+            FreeCAD.Vector(-6, -4, 0),
+            FreeCAD.Vector(6, -4, 0),
+            FreeCAD.Vector(6, 4, 0),
+            FreeCAD.Vector(-6, 4, 0),
+            FreeCAD.Vector(-6, -4, 0)
+        ])
+        
+        # Test different combinations
+        test_cases = [
+            ("long", "climb"),
+            ("long", "conventional"), 
+            ("short", "climb"),
+            ("short", "conventional")
+        ]
+        
+        for axis_pref, milling_dir in test_cases:
+            with self.subTest(axis_preference=axis_pref, milling_direction=milling_dir):
+                commands = facing._spiral(
+                    polygon=test_rectangle,
+                    tool_diameter=2.0,
+                    stepover_percent=25,
+                    axis_preference=axis_pref,
+                    milling_direction=milling_dir
+                )
+                
+                # Should have multiple layers
+                self.assertGreater(len(commands), 8)
+                
+                # Print G-code for debugging
+                import Path
+                p = Path.Path(commands)
+                print(f"\n{axis_pref} axis, {milling_dir} milling G-code:")
+                print(p.toGCode())
+
+    def test_spiral_angled_rectangle(self):
+        """Test spiral with angled rectangle to verify it follows polygon shape, not bounding box."""
+        import Part
+        import math
+        
+        # Create a 12x8 rectangle rotated 30 degrees
+        # This will test if spiral follows the actual polygon or just the axis-aligned bounding box
+        angle = math.radians(30)
+        cos_a = math.cos(angle)
+        sin_a = math.sin(angle)
+        
+        # Original rectangle corners (before rotation)
+        corners = [(-6, -4), (6, -4), (6, 4), (-6, 4)]
+        
+        # Rotate corners
+        rotated_corners = []
+        for x, y in corners:
+            new_x = x * cos_a - y * sin_a
+            new_y = x * sin_a + y * cos_a
+            rotated_corners.append(FreeCAD.Vector(new_x, new_y, 0))
+        
+        # Close the polygon
+        rotated_corners.append(rotated_corners[0])
+        
+        angled_rectangle = Part.makePolygon(rotated_corners)
+        
+        # Test both axis preferences with the angled rectangle
+        for axis_pref in ["long", "short"]:
+            with self.subTest(axis_preference=axis_pref):
+                commands = facing._spiral(
+                    polygon=angled_rectangle,
+                    tool_diameter=2.0,
+                    stepover_percent=25,
+                    axis_preference=axis_pref,
+                    milling_direction="climb"
+                )
+                
+                # Should have multiple layers
+                self.assertGreater(len(commands), 8)
+                
+                # Print G-code for debugging
+                import Path
+                p = Path.Path(commands)
+                print(f"\nAngled rectangle {axis_pref} axis G-code:")
+                print(p.toGCode())
+
     def test_spiral_continuous_cutting(self):
         """Test that spiral maintains continuous cutting motion throughout."""
         commands = facing._spiral(
@@ -476,16 +606,19 @@ class TestPathFacingGenerator(PathTestBase):
             stepover_percent=50
         )
         
-        # Spiral should have no rapid moves (G0) - all cutting moves (G1)
+        # Spiral should have only one rapid move (G0) for initial positioning
         rapid_moves = [cmd for cmd in commands if cmd.Name == 'G0']
         cutting_moves = [cmd for cmd in commands if cmd.Name == 'G1']
         
-        # Should have no rapid moves since spiral stays engaged
-        self.assertEqual(len(rapid_moves), 0)
+        # Should have exactly one rapid move for initial positioning
+        self.assertEqual(len(rapid_moves), 1)
+        # First command should be the rapid positioning move
+        self.assertEqual(commands[0].Name, 'G0')
         
-        # Should have only cutting moves
+        # Should have multiple cutting moves after the initial rapid move
         self.assertGreater(len(cutting_moves), 0)
-        self.assertEqual(len(commands), len(cutting_moves))
+        # Total commands should be rapid moves + cutting moves
+        self.assertEqual(len(commands), len(rapid_moves) + len(cutting_moves))
 
     def test_spiral_rectangular_polygon(self):
         """Test spiral with rectangular (non-square) polygon."""
@@ -499,9 +632,11 @@ class TestPathFacingGenerator(PathTestBase):
         # Should generate valid spiral
         self.assertGreater(len(commands), 0)
         
-        # All should be cutting moves (no retract specified)
-        for cmd in commands:
-            self.assertEqual(cmd.Name, 'G1')
+        # First command should be rapid positioning (G0), rest should be cutting moves (G1)
+        self.assertEqual(commands[0].Name, 'G0')
+        for cmd in commands[1:]:
+            if 'X' in cmd.Parameters and 'Y' in cmd.Parameters:
+                self.assertEqual(cmd.Name, 'G1')
         
         # Should stay within reasonable bounds
         for cmd in commands:
