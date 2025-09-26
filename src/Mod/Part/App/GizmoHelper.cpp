@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GIZMO_HELPER_H
-#define GIZMO_HELPER_H
+#include "GizmoHelper.h"
 
 #include <utility>
 
@@ -39,19 +38,10 @@
 
 #include <Base/BoundBox.h>
 #include <Base/Converter.h>
-#include <Base/Console.h>
-#include <Base/Vector3D.h>
 #include <Mod/Part/App/Tools.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/Geometry.h>
 
-struct GuiExport EdgeMidPointProps
-{
-    Base::Vector3d position;
-    Base::Vector3d tangent;
-    double middle;
-};
-inline EdgeMidPointProps getEdgeMidPointProps(Part::TopoShape& edge)
+
+EdgeMidPointProps getEdgeMidPointProps(Part::TopoShape& edge)
 {
     std::unique_ptr<Part::Geometry> geom = Part::Geometry::fromShape(edge.getShape());
     auto curve = freecad_cast<Part::GeomCurve*>(geom.get());
@@ -66,37 +56,41 @@ inline EdgeMidPointProps getEdgeMidPointProps(Part::TopoShape& edge)
         return {position, tangent, middle};
     }
 
-    Base::Console().error("Failed to calculate tangent for the draggers! Please file a bug report for this.");
-    return {position, Base::Vector3d{0, 0, 0}, middle};
+    Base::Console().error(
+        "Failed to calculate tangent for the draggers! Please file a bug report for this.");
+    return {position, Base::Vector3d {0, 0, 0}, middle};
 }
 
-inline Base::Vector3d getCentreOfMassFromFace(TopoDS_Face& face)
+Base::Vector3d getCentreOfMassFromFace(TopoDS_Face& face)
 {
     GProp_GProps massProps;
     BRepGProp::SurfaceProperties(face, massProps);
     return Base::convertTo<Base::Vector3d>(massProps.CentreOfMass());
 }
 
-inline std::optional<std::pair<Base::Vector3d, Base::Vector3d>>
+std::optional<std::pair<Base::Vector3d, Base::Vector3d>>
 getFaceNormalFromPointNearEdge(Part::TopoShape& edge, double middle, TopoDS_Face& face)
 {
     auto _edge = TopoDS::Edge(edge.getShape());
-    
+
     gp_Pnt _inwardPoint;
     gp_Dir _normal;
     Handle(IntTools_Context) context = new IntTools_Context;
 
-    if (!BOPTools_AlgoTools3D::GetApproxNormalToFaceOnEdge(_edge, face, middle, _inwardPoint, _normal, context)) {
+    if (!BOPTools_AlgoTools3D::GetApproxNormalToFaceOnEdge(_edge,
+                                                           face,
+                                                           middle,
+                                                           _inwardPoint,
+                                                           _normal,
+                                                           context)) {
         return std::nullopt;
     }
 
-    return {{
-        Base::convertTo<Base::Vector3d>(_inwardPoint),
-        Base::convertTo<Base::Vector3d>(_normal)
-    }};
+    return {
+        {Base::convertTo<Base::Vector3d>(_inwardPoint), Base::convertTo<Base::Vector3d>(_normal)}};
 }
 
-inline Base::Vector3d getFaceNormalFromPoint(Base::Vector3d& point, TopoDS_Face& face)
+Base::Vector3d getFaceNormalFromPoint(Base::Vector3d& point, TopoDS_Face& face)
 {
     Handle(Geom_Surface) surf = BRep_Tool::Surface(face);
     auto pt = Base::convertTo<gp_Pnt>(point);
@@ -109,14 +103,18 @@ inline Base::Vector3d getFaceNormalFromPoint(Base::Vector3d& point, TopoDS_Face&
     return Base::convertTo<Base::Vector3d>(props.Normal());
 }
 
-inline std::pair<TopoDS_Face, TopoDS_Face> getAdjacentFacesFromEdge(Part::TopoShape& edge, Part::TopoShape& baseShape)
+std::pair<TopoDS_Face, TopoDS_Face> getAdjacentFacesFromEdge(
+	Part::TopoShape& edge,
+	Part::TopoShape& baseShape
+)
 {
     TopTools_IndexedDataMapOfShapeListOfShape edgeToFaceMap;
 
     TopExp::MapShapesAndAncestors(baseShape.getShape(), TopAbs_EDGE, TopAbs_FACE, edgeToFaceMap);
     const TopTools_ListOfShape& faces = edgeToFaceMap.FindFromKey(edge.getShape());
 
-    assert(faces.Extent() >= 2 && "This is probably a bug so please report it to the issue tracker");
+    assert(faces.Extent() >= 2
+           && "This is probably a bug so please report it to the issue tracker");
 
     TopoDS_Face face1 = TopoDS::Face(faces.First());
     TopoDS_Face face2 = TopoDS::Face(*(++faces.begin()));
@@ -124,13 +122,7 @@ inline std::pair<TopoDS_Face, TopoDS_Face> getAdjacentFacesFromEdge(Part::TopoSh
     return {face1, face2};
 }
 
-struct GuiExport DraggerPlacementProps
-{
-    Base::Vector3d position;
-    Base::Vector3d dir;
-    Base::Vector3d tangent;
-};
-inline DraggerPlacementProps getDraggerPlacementFromEdgeAndFace(Part::TopoShape& edge, TopoDS_Face& face)
+DraggerPlacementProps getDraggerPlacementFromEdgeAndFace(Part::TopoShape& edge, TopoDS_Face& face)
 {
     auto [position, tangent, middle] = getEdgeMidPointProps(edge);
 
@@ -139,7 +131,8 @@ inline DraggerPlacementProps getDraggerPlacementFromEdgeAndFace(Part::TopoShape&
     if (auto ret = getFaceNormalFromPointNearEdge(edge, middle, face)) {
         inwardPoint = ret->first;
         normal = ret->second;
-    } else {
+    }
+    else {
         // Failed to compute the normal at a point on the face near the edge
         // Fallback to the COM and hope for the best
         inwardPoint = getCentreOfMassFromFace(face);
@@ -157,13 +150,16 @@ inline DraggerPlacementProps getDraggerPlacementFromEdgeAndFace(Part::TopoShape&
     return {position, dir, tangent};
 }
 
-inline DraggerPlacementProps getDraggerPlacementFromEdgeAndFace(Part::TopoShape& edge, Part::TopoShape& face)
+DraggerPlacementProps getDraggerPlacementFromEdgeAndFace(
+	Part::TopoShape& edge,
+	Part::TopoShape& face
+)
 {
     TopoDS_Face _face = TopoDS::Face(face.getShape());
     return getDraggerPlacementFromEdgeAndFace(edge, _face);
 }
 
-inline std::vector<Part::TopoShape> getAdjacentEdgesFromFace(Part::TopoShape& face)
+std::vector<Part::TopoShape> getAdjacentEdgesFromFace(Part::TopoShape& face)
 {
     assert(face.getShape().ShapeType() == TopAbs_FACE);
 
@@ -175,13 +171,13 @@ inline std::vector<Part::TopoShape> getAdjacentEdgesFromFace(Part::TopoShape& fa
     return edges;
 }
 
-inline Base::Vector3d getMidPointFromFace(Part::TopoShape& face)
+Base::Vector3d getMidPointFromFace(Part::TopoShape& face)
 {
     TopoDS_Shape shape = face.getShape();
     assert(shape.ShapeType() == TopAbs_FACE);
 
     std::unique_ptr<Part::Geometry> geom = Part::Geometry::fromShape(shape);
-    Part::GeomSurface* surface = freecad_cast<Part::GeomSurface*>(geom.get());
+    auto* surface = freecad_cast<Part::GeomSurface*>(geom.get());
 
     TopoDS_Face _face = TopoDS::Face(shape);
     BRepAdaptor_Surface adaptorSurface = BRepAdaptor_Surface(_face, true);
@@ -198,20 +194,24 @@ inline Base::Vector3d getMidPointFromFace(Part::TopoShape& face)
 
     if (auto sphere = freecad_cast<Part::GeomSphere*>(geom.get())) {
         midPoint = sphere->getLocation();
-    } else if (auto cone = freecad_cast<Part::GeomCone*>(geom.get())) {
+    }
+    else if (auto cone = freecad_cast<Part::GeomCone*>(geom.get())) {
         midPoint = cone->getApex();
-    } else if (auto point = surface->point(midU, midV)) {
+    }
+    else if (auto point = surface->point(midU, midV)) {
         midPoint = *point;
-    } else if (auto com = face.centerOfGravity()) {
+    }
+    else if (auto com = face.centerOfGravity()) {
         midPoint = *com;
-    } else {
+    }
+    else {
         midPoint = face.getBoundBox().GetCenter();
     }
 
     return midPoint;
 }
 
-inline Base::Vector3d getMidPointFromProfile(Part::TopoShape& profile)
+Base::Vector3d getMidPointFromProfile(Part::TopoShape& profile)
 {
     TopoDS_Shape shape = profile.getShape();
 
@@ -225,5 +225,3 @@ inline Base::Vector3d getMidPointFromProfile(Part::TopoShape& profile)
 
     return midPoint;
 }
-
-#endif /* GIZMO_HELPER_H */
