@@ -2,7 +2,10 @@
 
 """Parses Python binding interface files into a typed AST model."""
 
-import ast, re
+from dataclasses import dataclass
+from enum import Enum
+import ast
+import re
 from typing import List
 from model.typedModel import (
     GenerateModel,
@@ -14,9 +17,22 @@ from model.typedModel import (
     Parameter,
     ParameterType,
     SequenceProtocol,
-    FuncArgument,
-    ArgumentKind,
 )
+
+
+class ArgumentKind(Enum):
+    PositionOnly = 0
+    Arg = 1
+    VarArg = 2
+    KwOnly = 3
+    KwArg = 4
+
+
+@dataclass
+class FuncArgument:
+    name: str
+    annotation: str
+    kind: ArgumentKind
 
 
 class FunctionSignature:
