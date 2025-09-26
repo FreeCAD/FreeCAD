@@ -7,7 +7,6 @@ from Base.Vector import Vector
 from Base.Matrix import Matrix
 from Base.BoundBox import BoundBox
 from App.ComplexGeoData import ComplexGeoData
-from __future__ import annotations
 from typing import Final, List, Tuple, Union, overload
 
 
@@ -469,7 +468,7 @@ class TopoShape(ComplexGeoData):
 
     @constmethod
     def transformed(
-        self, *, matrix: Matrix, copy: bool = False, checkScale: bool = False, op: str = None
+        self, matrix: Matrix, *, copy: bool = False, checkScale: bool = False, op: str = None
     ) -> TopoShape:
         """
         Create a new transformed shape
@@ -654,8 +653,14 @@ class TopoShape(ComplexGeoData):
 
     @constmethod
     def makeEvolved(
-        self, *, Profile: TopoShape, Join: int, AxeProf: bool, Solid: bool, ProfOnSpine: bool,
-        Tolerance: float
+        self,
+        Profile: TopoShape,
+        Join: int,
+        AxeProf: bool,
+        *,
+        Solid: bool,
+        ProfOnSpine: bool,
+        Tolerance: float,
     ) -> None:
         """
         Profile along the spine

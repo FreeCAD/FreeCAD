@@ -103,7 +103,6 @@ class HLRBRep_Algo(PyObjectBase):
 
     def setProjector(
         self,
-        *,
         Origin: tuple[float, float, float] = (0, 0, 0),
         ZDir: tuple[float, float, float] = (0, 0, 0),
         XDir: tuple[float, float, float] = (0, 0, 0),
@@ -182,7 +181,7 @@ class HLRBRep_Algo(PyObjectBase):
     def selectFace(self, i: int, /) -> None:
         """
         selectFace(i)
-		
+
         Select only the faces of the shape of index i.
         """
         ...
@@ -199,7 +198,7 @@ class HLRBRep_Algo(PyObjectBase):
     def update(self) -> None:
         """
         update()
-		
+
         Update the DataStructure.
         """
         ...
