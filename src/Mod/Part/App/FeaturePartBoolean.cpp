@@ -62,7 +62,7 @@ bool getRefineModelParameter()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
-    return hGrp->GetBool("RefineModel", false);
+    return hGrp->GetBool("RefineModel", true);
 }
 
 }
