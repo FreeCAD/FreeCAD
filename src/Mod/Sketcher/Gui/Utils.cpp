@@ -601,73 +601,71 @@ void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* pske
                                                     std::vector<AutoConstraint>& sug1,
                                                     std::vector<AutoConstraint>& sug2)
 {
-    if (!sug1.empty() && !sug2.empty()) {
+    if (sug1.empty() || sug2.empty()) {
+        return;
+    }
 
-        bool rmvhorvert = false;
+    bool rmvhorvert = false;
 
-        // we look for:
-        // 1. Coincident to external on both endpoints
-        // 2. Coincident in one endpoint to origin and pointonobject/tangent to an axis on the other
-        auto detectredundant =
-            [psketch](std::vector<AutoConstraint>& sug, bool& ext, bool& orig, bool& axis) {
-                ext = false;
-                orig = false;
-                axis = false;
+    // we look for:
+    // 1. Coincident to external on both endpoints
+    // 2. Coincident in one endpoint to origin and pointonobject/tangent to an axis on the other
+    auto detectredundant =
+        [psketch](std::vector<AutoConstraint>& sug, bool& ext, bool& orig, bool& axis) {
+            ext = false;
+            orig = false;
+            axis = false;
 
-                for (std::vector<AutoConstraint>::const_iterator it = sug.begin(); it != sug.end();
-                     ++it) {
-                    if ((*it).Type == Sketcher::Coincident && !ext) {
-                        const std::map<int, Sketcher::PointPos> coincidents =
-                            psketch->getAllCoincidentPoints((*it).GeoId, (*it).PosId);
+            for (auto& it : sug) {
+                if (it.Type == Sketcher::Coincident && !ext) {
+                    const std::map<int, Sketcher::PointPos> coincidents =
+                        psketch->getAllCoincidentPoints(it.GeoId, it.PosId);
 
-                        if (!coincidents.empty()) {
-                            // the keys are ordered, so if the first is negative, it is coincident
-                            // with external
-                            ext = coincidents.begin()->first < 0;
+                    if (!coincidents.empty()) {
+                        // the keys are ordered, so if the first is negative, it is coincident
+                        // with external
+                        ext = coincidents.begin()->first < 0;
 
-                            std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
+                        std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
 
-                            geoId1iterator = coincidents.find(-1);
+                        geoId1iterator = coincidents.find(-1);
 
-                            if (geoId1iterator != coincidents.end()) {
-                                if ((*geoId1iterator).second == Sketcher::PointPos::start) {
-                                    orig = true;
-                                }
+                        if (geoId1iterator != coincidents.end()) {
+                            if ((*geoId1iterator).second == Sketcher::PointPos::start) {
+                                orig = true;
                             }
                         }
-                        else {  // it may be that there is no constraint at all, but there is
-                                // external geometry
-                            ext = (*it).GeoId < 0;
-                            orig = ((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::start);
-                        }
                     }
-                    else if ((*it).Type == Sketcher::PointOnObject && !axis) {
-                        axis = (((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::none)
-                                || ((*it).GeoId == -2 && (*it).PosId == Sketcher::PointPos::none));
+                    else {  // it may be that there is no constraint at all, but there is
+                            // external geometry
+                        ext = it.GeoId < 0;
+                        orig = (it.GeoId == -1 && it.PosId == Sketcher::PointPos::start);
                     }
                 }
-            };
-
-        bool firstext = false, secondext = false, firstorig = false, secondorig = false,
-             firstaxis = false, secondaxis = false;
-
-        detectredundant(sug1, firstext, firstorig, firstaxis);
-        detectredundant(sug2, secondext, secondorig, secondaxis);
-
-
-        rmvhorvert =
-            ((firstext && secondext) ||    // coincident with external on both endpoints
-             (firstorig && secondaxis) ||  // coincident origin and point on object on other
-             (secondorig && firstaxis));
-
-        if (rmvhorvert) {
-            for (std::vector<AutoConstraint>::reverse_iterator it = sug2.rbegin();
-                 it != sug2.rend();
-                 ++it) {
-                if ((*it).Type == Sketcher::Horizontal || (*it).Type == Sketcher::Vertical) {
-                    sug2.erase(std::next(it).base());
-                    it = sug2.rbegin();  // erase invalidates the iterator
+                else if (it.Type == Sketcher::PointOnObject && !axis) {
+                    axis = ((it.GeoId == -1 && it.PosId == Sketcher::PointPos::none)
+                            || (it.GeoId == -2 && it.PosId == Sketcher::PointPos::none));
                 }
+            }
+        };
+
+    bool firstext = false, secondext = false, firstorig = false, secondorig = false,
+         firstaxis = false, secondaxis = false;
+
+    detectredundant(sug1, firstext, firstorig, firstaxis);
+    detectredundant(sug2, secondext, secondorig, secondaxis);
+
+
+    rmvhorvert = ((firstext && secondext) ||    // coincident with external on both endpoints
+                  (firstorig && secondaxis) ||  // coincident origin and point on object on other
+                  (secondorig && firstaxis));
+
+    if (rmvhorvert) {
+        for (std::vector<AutoConstraint>::reverse_iterator it = sug2.rbegin(); it != sug2.rend();
+             ++it) {
+            if ((*it).Type == Sketcher::Horizontal || (*it).Type == Sketcher::Vertical) {
+                sug2.erase(std::next(it).base());
+                it = sug2.rbegin();  // erase invalidates the iterator
             }
         }
     }
