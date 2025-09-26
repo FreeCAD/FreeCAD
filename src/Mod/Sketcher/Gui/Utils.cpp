@@ -650,21 +650,19 @@ void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* pske
         };
 
     bool firstext = false, secondext = false, firstorig = false, secondorig = false,
-            firstaxis = false, secondaxis = false;
+         firstaxis = false, secondaxis = false;
 
     detectredundant(sug1, firstext, firstorig, firstaxis);
     detectredundant(sug2, secondext, secondorig, secondaxis);
 
 
-    rmvhorvert =
-        ((firstext && secondext) ||    // coincident with external on both endpoints
-            (firstorig && secondaxis) ||  // coincident origin and point on object on other
-            (secondorig && firstaxis));
+    rmvhorvert = ((firstext && secondext) ||    // coincident with external on both endpoints
+                  (firstorig && secondaxis) ||  // coincident origin and point on object on other
+                  (secondorig && firstaxis));
 
     if (rmvhorvert) {
-        for (std::vector<AutoConstraint>::reverse_iterator it = sug2.rbegin();
-                it != sug2.rend();
-                ++it) {
+        for (std::vector<AutoConstraint>::reverse_iterator it = sug2.rbegin(); it != sug2.rend();
+             ++it) {
             if ((*it).Type == Sketcher::Horizontal || (*it).Type == Sketcher::Vertical) {
                 sug2.erase(std::next(it).base());
                 it = sug2.rbegin();  // erase invalidates the iterator
