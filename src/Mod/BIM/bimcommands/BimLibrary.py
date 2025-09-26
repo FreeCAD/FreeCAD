@@ -555,7 +555,7 @@ class BIM_Library_TaskPanel:
         if hasattr(self, "box") and self.box:
             self.box.off()
         FreeCADGui.Control.closeDialog()
-        if self.previewDocName in FreeCAD.listDocuments().keys():
+        if self.previewDocName in FreeCAD.listDocuments():
             FreeCAD.closeDocument(self.previewDocName)
         FreeCAD.ActiveDocument.recompute()
 
