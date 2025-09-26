@@ -38,7 +38,7 @@ from_source: reference | from_function
 from_function: CNAME "(" statement ")"
 where_clause: WHERE boolean_expression
 group_by_clause: GROUP BY reference ("," reference)*
-order_by_clause: ORDER BY reference (ASC | DESC)?
+order_by_clause: ORDER BY reference ("," reference)* (ASC | DESC)?
 columns: (column ("," column)*)
 column: (ASTERISK | operand) as_clause?
 as_clause: AS literal
