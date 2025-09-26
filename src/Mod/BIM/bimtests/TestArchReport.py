@@ -1110,3 +1110,33 @@ class TestArchReport(TestArchBase.TestArchBase):
             # with a syntax error until the grammar is fixed.
             self.fail(f"Parser failed to handle Unicode identifier. Error: {e}")
 
+    def test_order_by_multiple_columns(self):
+        """Tests sorting by multiple columns in the ORDER BY clause."""
+        # This query selects a subset of objects and sorts them first by their
+        # IfcType alphabetically, and then by their Label alphabetically within
+        # each IfcType group. This requires a multi-column sort to verify.
+        query = """
+            SELECT Label, IfcType
+            FROM document
+            WHERE IfcType IN ('Wall', 'Column', 'Beam')
+            ORDER BY IfcType, Label ASC
+        """
+        headers, data = Arch.select(query)
+
+        self.assertEqual(len(data), 4, "Should find the two walls, one column, and one beam.")
+
+        # Verify the final, multi-level sorted order.
+        # The engine should sort by IfcType first ('Beam' < 'Column' < 'Wall'),
+        # and then by Label for the two 'Wall' objects.
+        expected_order = [
+            [self.beam.Label, self.beam.IfcType],         # Type: Beam
+            [self.column.Label, self.column.IfcType],       # Type: Column
+            [self.wall_ext.Label, self.wall_ext.IfcType],   # Type: Wall, Label: Exterior...
+            [self.wall_int.Label, self.wall_int.IfcType],   # Type: Wall, Label: Interior...
+        ]
+
+        # We sort our expected list's inner items to be sure, in case the test setup changes.
+        expected_order = sorted(expected_order, key=lambda x: (x[1], x[0]))
+
+        self.assertListEqual(data, expected_order)
+

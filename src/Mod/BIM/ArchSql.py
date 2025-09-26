@@ -338,13 +338,13 @@ class GroupByClause:
 
 class OrderByClause:
     """Represents the ORDER BY clause of a SQL statement."""
-    def __init__(self, column_reference, direction='ASC'):
-        self.column_name = column_reference.value
+    def __init__(self, column_references, direction='ASC'):
+        self.column_names = [ref.value for ref in column_references]
         self.direction = direction.upper()
 
     def __repr__(self):
         # Add a __repr__ for clearer debug logs.
-        return f"<OrderByClause column='{self.column_name}' dir='{self.direction}'>"
+        return f"<OrderByClause columns='{self.column_names}' dir='{self.direction}'>"
 
 
 class SelectStatement:
@@ -366,44 +366,44 @@ class SelectStatement:
 
         # 4. Perform final sorting if an ORDER BY clause was provided.
         if self.order_by_clause:
-            sort_col_original_name = self.order_by_clause.column_name
-            sort_col_final_name = sort_col_original_name
+            sort_keys = []
+            for original_name in self.order_by_clause.column_names:
+                final_name = original_name
+                # Check if the ORDER BY column was aliased in the SELECT list.
+                for extractor, aliased_name in self.columns_info:
+                    if isinstance(extractor, ReferenceExtractor) and extractor.value == original_name:
+                        final_name = aliased_name
+                        break
 
-            # Check if the ORDER BY column was aliased in the SELECT list.
-            for extractor, final_name in self.columns_info:
-                if isinstance(extractor, ReferenceExtractor) and extractor.value == sort_col_original_name:
-                    sort_col_final_name = final_name
-                    break
-            try:
-                # Find the column index to sort by from the final headers.
-                # Use the potentially aliased name for the lookup.
-                sort_column_index = headers.index(sort_col_final_name)
-            except ValueError:
-                raise ValueError(
-                    f"ORDER BY column '{sort_col_original_name}' is not in the SELECT list."
-                )
+                try:
+                    # Find the column index to sort by from the final headers.
+                    sort_column_index = headers.index(final_name)
+                    sort_keys.append(sort_column_index)
+                except ValueError:
+                    raise ValueError(
+                        f"ORDER BY column '{original_name}' is not in the SELECT list."
+                    )
 
             is_descending = self.order_by_clause.direction == 'DESC'
 
             # Define a sort key that can handle different data types.
             def sort_key(row):
                 """
-                Returns a consistent tuple (type_priority, value) to ensure stable
-                sorting across different and incompatible data types.
+                Returns a tuple of sortable keys for a given row, one for each
+                column specified in the ORDER BY clause.
                 """
-                value = row[sort_column_index]
-                # The key must always be a tuple of the same length to ensure
-                # stable sorting and avoid TypeErrors. We use a 3-element tuple:
-                # (priority, secondary_sort_key, value)
-                if value is None:
-                    return (0, '', None)  # Nones sort first.
-                if isinstance(value, FreeCAD.Units.Quantity):
-                    return (1, '', value.Value) # Quantities sort as numbers.
-                if isinstance(value, (int, float)):
-                    return (1, '', value) # Other numbers sort with quantities.
-                # All other types (strings, etc.) sort last, alphabetically by type name
-                # first and then by their natural value.
-                return (2, type(value).__name__, value)
+                keys = []
+                for index in sort_keys:
+                    value = row[index]
+                    # Create a consistent, comparable key for each value.
+                    if value is None:
+                        keys.append((0, None))  # Nones sort first.
+                    elif isinstance(value, (int, float, FreeCAD.Units.Quantity)):
+                        num_val = value.Value if isinstance(value, FreeCAD.Units.Quantity) else value
+                        keys.append((1, num_val)) # Numbers sort second.
+                    else:
+                        keys.append((2, str(value))) # Everything else sorts as a string.
+                return tuple(keys)
 
             results_data.sort(key=sort_key, reverse=is_descending)
 
@@ -909,15 +909,15 @@ class SqlTransformerMixin:
         return GroupByClause(references)
 
     def order_by_clause(self, items):
-        # items[0]=ORDER, items[1]=BY, items[2]=reference, items[3]=optional direction
-        column_reference = items[2] # This is a ReferenceExtractor object
+        # items contains: ORDER, BY, reference, (",", reference)*, optional direction
+        column_references = [item for item in items if isinstance(item, ReferenceExtractor)]
         direction = 'ASC'
-        # Check if the optional direction token (items[3]) exists and is not None.
-        if len(items) > 3 and items[3] is not None:
-            # The token itself is the 4th item. e.g. Token('DESC', 'DESC')
-            direction = str(items[3].value).upper()
+        # The optional direction token will be the last item if it exists.
+        last_item = items[-1]
+        if isinstance(last_item, generated_sql_parser.Token) and last_item.type in ('ASC', 'DESC'):
+            direction = last_item.value.upper()
 
-        return OrderByClause(column_reference, direction)
+        return OrderByClause(column_references, direction)
 
     def columns(self, items):
         # `items` is a list of results from `column` rules, which are (extractor, display_name) tuples
