@@ -673,4 +673,3 @@ void DSHSlotController::addConstraints()
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerSlot_H
-
