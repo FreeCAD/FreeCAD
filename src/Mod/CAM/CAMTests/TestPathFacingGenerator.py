@@ -292,6 +292,257 @@ class TestPathFacingGenerator(PathTestBase):
         with self.assertRaises(ValueError):
             facing._analyze_rectangle(triangle_wire, "long")
 
+    def test_spiral_conventional_milling(self):
+        """Test spiral strategy with conventional milling direction."""
+        commands = facing._spiral(self.square_wire, 10.0, 50.0, milling_direction="conventional")
+        
+        self.assertGreater(len(commands), 0)
+        # First move should be G1 to start position
+        self.assertEqual(commands[0].Name, "G1")
+        
+        # Check that we have cutting moves (G1 commands)
+        cutting_moves = [cmd for cmd in commands if cmd.Name == "G1"]
+        self.assertGreaterEqual(len(cutting_moves), 4)  # At least one complete rectangle
+
+    def test_bidirectional_basic(self):
+        """Test basic bidirectional strategy functionality."""
+        commands = facing._bidirectional(self.square_wire, 10.0, 50.0)
+        
+        self.assertGreater(len(commands), 0)
+        # First move should be G1 to start position
+        self.assertEqual(commands[0].Name, "G1")
+        
+        # Check that we have cutting moves (G1 commands)
+        cutting_moves = [cmd for cmd in commands if cmd.Name == "G1"]
+        self.assertGreater(len(cutting_moves), 1)  # At least one pass
+        
+        # Check that we have rapid moves (G0 commands) between passes
+        rapid_moves = [cmd for cmd in commands if cmd.Name == "G0"]
+        self.assertGreater(len(rapid_moves), 0)
+
+    def test_bidirectional_climb_milling(self):
+        """Test bidirectional strategy with climb milling direction."""
+        commands = facing._bidirectional(self.square_wire, 10.0, 50.0, milling_direction="climb")
+        
+        self.assertGreater(len(commands), 0)
+        # First move should be G1 to start position
+        self.assertEqual(commands[0].Name, "G1")
+        
+        # Check that we have cutting moves (G1 commands)
+        cutting_moves = [cmd for cmd in commands if cmd.Name == "G1"]
+        self.assertGreater(len(cutting_moves), 1)
+
+    def test_bidirectional_conventional_milling(self):
+        """Test bidirectional strategy with conventional milling direction."""
+        commands = facing._bidirectional(self.square_wire, 10.0, 50.0, milling_direction="conventional")
+        
+        self.assertGreater(len(commands), 0)
+        # First move should be G1 to start position
+        self.assertEqual(commands[0].Name, "G1")
+        
+        # Check that we have cutting moves (G1 commands)
+        cutting_moves = [cmd for cmd in commands if cmd.Name == "G1"]
+        self.assertGreater(len(cutting_moves), 1)
+
+    def test_bidirectional_with_retract_height(self):
+        """Test bidirectional strategy with retract height parameter."""
+        retract_height = 5.0
+        commands = facing._bidirectional(self.square_wire, 10.0, 50.0, retract_height=retract_height)
+        
+        self.assertGreater(len(commands), 0)
+        
+        # Check for Z moves to retract height
+        z_retracts = [cmd for cmd in commands if cmd.Name == "G0" and "Z" in cmd.Parameters and cmd.Parameters["Z"] == retract_height]
+        self.assertGreater(len(z_retracts), 0)
+
+    def test_bidirectional_alternating_positions(self):
+        """Test that bidirectional strategy alternates between bottom and top positions."""
+        commands = facing._bidirectional(self.rectangle_wire, 2.0, 25.0, milling_direction="climb")
+        
+        # Get all G1 cutting moves
+        cutting_moves = [cmd for cmd in commands if cmd.Name == "G1" and "X" in cmd.Parameters and "Y" in cmd.Parameters]
+        
+        # Should have multiple cutting moves
+        self.assertGreaterEqual(len(cutting_moves), 4)
+        
+        # For bidirectional, we should have rapid moves (G0) between passes
+        rapid_moves = [cmd for cmd in commands if cmd.Name == "G0"]
+        self.assertGreater(len(rapid_moves), 0)
+        
+        # Extract Y coordinates of positioning moves (every other move starting from 0)
+        positioning_y_coords = []
+        for i in range(0, len(cutting_moves), 2):
+            if i < len(cutting_moves):
+                positioning_y_coords.append(cutting_moves[i].Parameters["Y"])
+        
+        # Should have alternating Y positions (bottom and top)
+        if len(positioning_y_coords) >= 2:
+            # First two positions should be different (alternating between bottom and top)
+            self.assertNotEqual(positioning_y_coords[0], positioning_y_coords[1])
+            
+            # Bottom passes should be increasing (stepping inward from bottom)
+            bottom_passes = [positioning_y_coords[i] for i in range(0, len(positioning_y_coords), 2)]
+            if len(bottom_passes) >= 2:
+                self.assertLess(bottom_passes[0], bottom_passes[1])  # Second bottom pass higher than first
+            
+            # Top passes should be decreasing (stepping inward from top)
+            top_passes = [positioning_y_coords[i] for i in range(1, len(positioning_y_coords), 2)]
+            if len(top_passes) >= 2:
+                self.assertGreater(top_passes[0], top_passes[1])  # Second top pass lower than first
+
+    def test_bidirectional_axis_preference_long(self):
+        """Test bidirectional strategy with long axis preference."""
+        commands = facing._bidirectional(self.rectangle_wire, 5.0, 50.0, axis_preference="long")
+        
+        self.assertGreater(len(commands), 0)
+        # Should generate valid toolpath commands
+        cutting_moves = [cmd for cmd in commands if cmd.Name == "G1"]
+        self.assertGreater(len(cutting_moves), 1)
+
+    def test_bidirectional_axis_preference_short(self):
+        """Test bidirectional strategy with short axis preference."""
+        commands = facing._bidirectional(self.rectangle_wire, 5.0, 50.0, axis_preference="short")
+        
+        self.assertGreater(len(commands), 0)
+        # Should generate valid toolpath commands
+        cutting_moves = [cmd for cmd in commands if cmd.Name == "G1"]
+        self.assertGreater(len(cutting_moves), 1)
+
+    def test_bidirectional_with_pass_extension(self):
+        """Test bidirectional strategy with pass extension parameter."""
+        pass_extension = 2.0
+        commands = facing._bidirectional(self.square_wire, 10.0, 50.0, pass_extension=pass_extension)
+        
+        self.assertGreater(len(commands), 0)
+        # Should generate valid toolpath commands
+        cutting_moves = [cmd for cmd in commands if cmd.Name == "G1"]
+        self.assertGreater(len(cutting_moves), 1)
+
+    def test_spiral_layer_calculation(self):
+        """Test that spiral generates appropriate number of layers."""
+        # Use small stepover to get multiple layers
+        commands = facing._spiral(
+            polygon=self.square_wire,  # 10x10 square
+            tool_diameter=2.0,
+            stepover_percent=25,  # 0.5mm stepover
+            axis_preference="long"
+        )
+        
+        # Should have multiple layers
+        self.assertGreater(len(commands), 8)  # At least 2-3 layers with multiple moves each
+        
+        # Extract unique positions to verify spiral pattern
+        positions = []
+        for cmd in commands:
+            if 'X' in cmd.Parameters and 'Y' in cmd.Parameters:
+                positions.append((cmd.Parameters['X'], cmd.Parameters['Y']))
+        
+        # Should have multiple unique positions
+        unique_positions = set(positions)
+        self.assertGreater(len(unique_positions), 4)
+
+    def test_spiral_milling_direction(self):
+        """Test spiral with different milling directions."""
+        climb_commands = facing._spiral(
+            polygon=self.square_wire,
+            tool_diameter=4.0,
+            stepover_percent=50,
+            milling_direction="climb"
+        )
+        
+        conventional_commands = facing._spiral(
+            polygon=self.square_wire,
+            tool_diameter=4.0,
+            stepover_percent=50,
+            milling_direction="conventional"
+        )
+        
+        # Should have same number of commands
+        self.assertEqual(len(climb_commands), len(conventional_commands))
+        
+        # But coordinates should be different due to different spiral direction
+        different_coords = False
+        for i in range(min(len(climb_commands), len(conventional_commands))):
+            if climb_commands[i].Parameters != conventional_commands[i].Parameters:
+                different_coords = True
+                break
+        self.assertTrue(different_coords)
+
+    def test_spiral_continuous_cutting(self):
+        """Test that spiral maintains continuous cutting motion throughout."""
+        commands = facing._spiral(
+            polygon=self.square_wire,
+            tool_diameter=4.0,
+            stepover_percent=50
+        )
+        
+        # Spiral should have no rapid moves (G0) - all cutting moves (G1)
+        rapid_moves = [cmd for cmd in commands if cmd.Name == 'G0']
+        cutting_moves = [cmd for cmd in commands if cmd.Name == 'G1']
+        
+        # Should have no rapid moves since spiral stays engaged
+        self.assertEqual(len(rapid_moves), 0)
+        
+        # Should have only cutting moves
+        self.assertGreater(len(cutting_moves), 0)
+        self.assertEqual(len(commands), len(cutting_moves))
+
+    def test_spiral_rectangular_polygon(self):
+        """Test spiral with rectangular (non-square) polygon."""
+        commands = facing._spiral(
+            polygon=self.rectangle_wire,  # 20x10 rectangle
+            tool_diameter=3.0,
+            stepover_percent=40,
+            axis_preference="long"
+        )
+        
+        # Should generate valid spiral
+        self.assertGreater(len(commands), 0)
+        
+        # All should be cutting moves (no retract specified)
+        for cmd in commands:
+            self.assertEqual(cmd.Name, 'G1')
+        
+        # Should stay within reasonable bounds
+        for cmd in commands:
+            if 'X' in cmd.Parameters:
+                x = cmd.Parameters['X']
+                # Should be within extended rectangle bounds
+                self.assertGreaterEqual(x, -5)  # Some margin for tool
+                self.assertLessEqual(x, 25)
+            if 'Y' in cmd.Parameters:
+                y = cmd.Parameters['Y']
+                self.assertGreaterEqual(y, -5)
+                self.assertLessEqual(y, 15)
+
+    def test_spiral_axis_preference(self):
+        """Test spiral with different axis preferences."""
+        long_commands = facing._spiral(
+            polygon=self.rectangle_wire,
+            tool_diameter=4.0,
+            stepover_percent=50,
+            axis_preference="long"
+        )
+        
+        short_commands = facing._spiral(
+            polygon=self.rectangle_wire,
+            tool_diameter=4.0,
+            stepover_percent=50,
+            axis_preference="short"
+        )
+        
+        # Both should generate valid paths
+        self.assertGreater(len(long_commands), 0)
+        self.assertGreater(len(short_commands), 0)
+        
+        # Paths should be different due to different orientation
+        different_coords = False
+        for i in range(min(len(long_commands), len(short_commands))):
+            if long_commands[i].Parameters != short_commands[i].Parameters:
+                different_coords = True
+                break
+        self.assertTrue(different_coords)
+
     def _create_mock_tool_controller(self, spindle_dir):
         """Create a mock tool controller for testing."""
         class MockToolController:

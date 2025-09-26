@@ -437,7 +437,7 @@ def _directional(polygon, tool_diameter, stepover_percent, axis_preference="long
     
     return commands
 
-def _spiral(polygon, tool_diameter, stepover_percent, axis_preference="long"):
+def _spiral(polygon, tool_diameter, stepover_percent, axis_preference="long", milling_direction="climb"):
     """
     Generate a spiral clearing pattern.
     
@@ -452,16 +452,120 @@ def _spiral(polygon, tool_diameter, stepover_percent, axis_preference="long"):
         tool_diameter: Diameter of the cutting tool
         stepover_percent: Stepover as percentage of tool diameter
         axis_preference: "long" or "short" - which axis to align primary cutting direction with
+        milling_direction: "climb" or "conventional" - affects spiral direction
+        
+    Returns:
+        List of Path.Command objects representing the toolpath
     """
-    pass
+    # Analyze the rectangle to get orientation and dimensions
+    rect_info = _analyze_rectangle(polygon, axis_preference)
+    primary_vec = rect_info['primary_vec']
+    step_vec = rect_info['step_vec']
+    primary_length = rect_info['primary_length']
+    step_length = rect_info['step_length']
+    reference_corner = rect_info['reference_corner']
 
-def _bidirectional(polygon, tool_diameter, stepover_percent, axis_preference="long", pass_extension=None):
+    # Ensure vectors are properly normalized
+    primary_vec = primary_vec.multiply(1.0 / primary_vec.Length)
+    step_vec = step_vec.multiply(1.0 / step_vec.Length)
+
+    # Calculate stepover distance and tool radius
+    stepover = (stepover_percent / 100.0) * tool_diameter
+    tool_radius = tool_diameter / 2.0
+    
+    Path.Log.debug("Spiral: Tool diameter: {}, stepover_percent: {}, stepover: {}, tool_radius: {}".format(
+        tool_diameter, stepover_percent, stepover, tool_radius))
+    
+    # Calculate the number of layers (concentric rectangles) we need
+    # Each layer is one stepover distance smaller on all sides
+    max_layers_primary = int((primary_length / 2.0) / stepover)
+    max_layers_step = int((step_length / 2.0) / stepover)
+    num_layers = min(max_layers_primary, max_layers_step)
+    
+    Path.Log.debug("Spiral: max_layers_primary={}, max_layers_step={}, num_layers={}".format(
+        max_layers_primary, max_layers_step, num_layers))
+    
+    # Generate toolpath commands
+    commands = []
+    z = polygon.BoundBox.ZMin
+    
+    # Determine spiral direction based on milling direction
+    # For climb milling: clockwise spiral (outside to inside)
+    # For conventional milling: counter-clockwise spiral
+    clockwise = (milling_direction == "climb")
+    
+    for layer in range(num_layers):
+        # Calculate the inset for this layer
+        inset = layer * stepover
+        
+        # Calculate the corners of this layer's rectangle
+        # Start from reference corner and inset by the layer amount
+        layer_primary_length = primary_length - 2 * inset
+        layer_step_length = step_length - 2 * inset
+        
+        # Skip if rectangle becomes too small
+        if layer_primary_length <= 0 or layer_step_length <= 0:
+            break
+            
+        # Calculate the four corners of this layer
+        inset_primary = FreeCAD.Vector(primary_vec).multiply(inset)
+        inset_step = FreeCAD.Vector(step_vec).multiply(inset)
+        
+        corner1 = FreeCAD.Vector(reference_corner).add(inset_primary).add(inset_step)
+        corner2 = corner1.add(FreeCAD.Vector(primary_vec).multiply(layer_primary_length))
+        corner3 = corner2.add(FreeCAD.Vector(step_vec).multiply(layer_step_length))
+        corner4 = corner3.sub(FreeCAD.Vector(primary_vec).multiply(layer_primary_length))
+        
+        # Set Z coordinates
+        corner1.z = z
+        corner2.z = z
+        corner3.z = z
+        corner4.z = z
+        
+        Path.Log.debug("Spiral layer {}: inset={}, corners=[{}, {}, {}, {}]".format(
+            layer, inset, corner1, corner2, corner3, corner4))
+        
+        # Generate the spiral path for this layer
+        if clockwise:
+            # Clockwise: corner1 -> corner2 -> corner3 -> corner4 -> (back toward corner1)
+            corners = [corner1, corner2, corner3, corner4]
+        else:
+            # Counter-clockwise: corner1 -> corner4 -> corner3 -> corner2 -> (back toward corner1)
+            corners = [corner1, corner4, corner3, corner2]
+        
+        # First layer - position to start
+        if layer == 0:
+            commands.append(Path.Command("G1", {
+                "X": corners[0].x,
+                "Y": corners[0].y,
+                "Z": z
+            }))
+        else:
+            # Subsequent layers - direct cutting move to next layer start
+            commands.append(Path.Command("G1", {
+                "X": corners[0].x,
+                "Y": corners[0].y,
+                "Z": z
+            }))
+        
+        # Cut around the rectangle (3 sides, leaving one side open for next layer entry)
+        for i in range(1, 4):  # Skip the 4th side to allow spiral continuation
+            commands.append(Path.Command("G1", {
+                "X": corners[i].x,
+                "Y": corners[i].y,
+                "Z": z
+            }))
+    
+    return commands
+
+def _bidirectional(polygon, tool_diameter, stepover_percent, axis_preference="long", pass_extension=None, retract_height=None, milling_direction="climb"):
     """
     Generate a bidirectional clearing pattern.
     
-    This strategy cuts back and forth across the polygon like zigzag, but only
-    makes cutting moves on the long sides (similar to spiral pattern). The end
-    connections between passes are rapid moves that stay outside the stock area,
+    This strategy cuts back and forth across the polygon but alternates which side of the polygon is cut. 
+    Like spiral, this maintains consistency of milling type.  Unlike the sprial strategy,
+    -bidirectional only cuts on the preferred axis and does rapid moves between them.
+    The end moves on the non-preferred axis are rapid moves that stay outside the stock area,
     so no tool lifting is required. This provides efficient material removal
     while avoiding cutting on the short ends of the rectangle, which can be
     beneficial for surface finish and tool life.
@@ -472,8 +576,131 @@ def _bidirectional(polygon, tool_diameter, stepover_percent, axis_preference="lo
         stepover_percent: Stepover as percentage of tool diameter
         axis_preference: "long" or "short" - which axis to align primary cutting direction with
         pass_extension: Distance to extend cuts beyond polygon boundary for tool disengagement
+        retract_height: Z height for rapid moves (None = cutting height, no retracts)
+        milling_direction: "climb" or "conventional" - affects direction of first pass
+        
+    Returns:
+        List of Path.Command objects representing the toolpath
     """
-    pass
+    if pass_extension is None:
+        pass_extension = tool_diameter * 0.5  # Default to half tool diameter
+    
+    # Analyze the rectangle to get orientation and dimensions
+    rect_info = _analyze_rectangle(polygon, axis_preference)
+    primary_vec = rect_info['primary_vec']
+    step_vec = rect_info['step_vec']
+    primary_length = rect_info['primary_length']
+    step_length = rect_info['step_length']
+    reference_corner = rect_info['reference_corner']
+
+    # Ensure vectors are properly normalized
+    primary_vec = primary_vec.multiply(1.0 / primary_vec.Length)
+    step_vec = step_vec.multiply(1.0 / step_vec.Length)
+
+    # Calculate stepover distance and tool radius
+    stepover = (stepover_percent / 100.0) * tool_diameter
+    tool_radius = tool_diameter / 2.0
+    
+    Path.Log.debug("Bidirectional: Tool diameter: {}, stepover_percent: {}, stepover: {}, tool_radius: {}".format(
+        tool_diameter, stepover_percent, stepover, tool_radius))
+    
+    # For bidirectional, we start outside the polygon and step inward
+    # Calculate how many passes we need based on stepover
+    max_passes = int((step_length + 2 * tool_radius) / stepover) + 1
+    
+    Path.Log.debug("Bidirectional: Calculated {} passes with stepover {}".format(max_passes, stepover))
+    
+    # Generate toolpath commands
+    commands = []
+    z = polygon.BoundBox.ZMin
+    
+    # Bidirectional alternates between bottom and top while stepping inward
+    pass_count = 0
+    while pass_count < max_passes:
+        # Calculate step distance - start outside and step inward
+        if pass_count % 2 == 0:
+            # Bottom passes: start outside bottom edge, step inward (increasing)
+            step_distance = -tool_radius + (pass_count // 2) * stepover
+        else:
+            # Top passes: start outside top edge, step inward (decreasing)
+            step_distance = step_length + tool_radius - (pass_count // 2) * stepover
+        
+        # Stop if we've stepped too far inward
+        if pass_count % 2 == 0:  # Bottom pass
+            if step_distance > step_length - tool_radius:
+                break
+        else:  # Top pass
+            if step_distance < tool_radius:
+                break
+        
+        # Calculate the start and end points for this pass
+        step_offset = FreeCAD.Vector(step_vec).multiply(step_distance)
+        pass_base = FreeCAD.Vector(reference_corner).add(step_offset)
+        
+        # Extend the pass beyond the polygon boundaries
+        primary_extension = FreeCAD.Vector(primary_vec).multiply(pass_extension)
+        primary_full_length = FreeCAD.Vector(primary_vec).multiply(primary_length)
+        
+        # Maintain consistent milling direction but alternate cutting direction to stay climb/conventional
+        if milling_direction == "climb":
+            if pass_count % 2 == 0:
+                # Bottom pass: cut left to right (climb)
+                start_point = FreeCAD.Vector(pass_base).sub(primary_extension)
+                end_point = FreeCAD.Vector(pass_base).add(primary_full_length).add(primary_extension)
+            else:
+                # Top pass: cut right to left (still climb)
+                start_point = FreeCAD.Vector(pass_base).add(primary_full_length).add(primary_extension)
+                end_point = FreeCAD.Vector(pass_base).sub(primary_extension)
+        else:  # conventional milling
+            if pass_count % 2 == 0:
+                # Bottom pass: cut right to left (conventional)
+                start_point = FreeCAD.Vector(pass_base).add(primary_full_length).add(primary_extension)
+                end_point = FreeCAD.Vector(pass_base).sub(primary_extension)
+            else:
+                # Top pass: cut left to right (still conventional)
+                start_point = FreeCAD.Vector(pass_base).sub(primary_extension)
+                end_point = FreeCAD.Vector(pass_base).add(primary_full_length).add(primary_extension)
+        
+        Path.Log.debug("Bidirectional Pass {}: step_distance={}, start_point={}, end_point={}".format(
+            pass_count, step_distance, start_point, end_point))
+        
+        # Set Z coordinate
+        start_point.z = z
+        end_point.z = z
+        
+        # Bidirectional uses rapid moves between passes (like directional)
+        if pass_count > 0:
+            if retract_height is not None:
+                # Retract to safe height
+                commands.append(Path.Command("G0", {"Z": retract_height}))
+            
+            # Rapid to XY position
+            commands.append(Path.Command("G0", {
+                "X": start_point.x,
+                "Y": start_point.y
+            }))
+            
+            # Rapid down to cutting height if we retracted
+            if retract_height is not None:
+                commands.append(Path.Command("G0", {"Z": z}))
+        else:
+            # First pass - position to start
+            commands.append(Path.Command("G1", {
+                "X": start_point.x,
+                "Y": start_point.y,
+                "Z": z
+            }))
+        
+        # Add cutting move across the pass
+        commands.append(Path.Command("G1", {
+            "X": end_point.x,
+            "Y": end_point.y,
+            "Z": z
+        }))
+        
+        pass_count += 1
+    
+    return commands
 
 def generate(
     wire,
