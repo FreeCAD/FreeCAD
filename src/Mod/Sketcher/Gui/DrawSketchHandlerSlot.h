@@ -203,7 +203,6 @@ private:
         AutoConstraint& lastCons = sugConstraints[1].back();
         if (lastCons.Type == Sketcher::Horizontal || lastCons.Type == Sketcher::Vertical
             || lastCons.Type == Sketcher::Perpendicular || lastCons.Type == Sketcher::Parallel) {
-            Base::Console().warning("there is going to be a horizontal.\n");
             lastCons.GeoId = firstCurve + 2;
         }
 
@@ -674,3 +673,4 @@ void DSHSlotController::addConstraints()
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerSlot_H
+
