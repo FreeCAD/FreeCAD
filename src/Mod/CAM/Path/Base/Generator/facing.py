@@ -31,12 +31,449 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Generates facing toolpaths for large cutters with side entry"
 
-if False:
+if True:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
+
+def get_angled_polygon(wire, angle):
+    """
+    Create a rotated bounding box that fully contains the input wire.
+    
+    This function generates a rectangular wire representing a bounding box rotated by the 
+    specified angle that completely encompasses the original wire. The algorithm works by:
+    1. Rotating the original wire in the opposite direction to align it optimally
+    2. Computing the axis-aligned bounding box of the rotated wire
+    3. Rotating the bounding box back to the desired angle
+    
+    Args:
+        wire (Part.Wire): A closed wire to create the rotated bounding box for
+        angle (float): Rotation angle in degrees (positive = counterclockwise)
+    
+    Returns:
+        Part.Wire: A closed rectangular wire representing the rotated bounding box
+        
+    Raises:
+        ValueError: If the input wire is not closed
+    """
+    if not wire.isClosed():
+        raise ValueError("Wire must be closed")
+
+    # Get the center point of the original wire for all rotations
+    center = wire.BoundBox.Center
+    rotation_axis = FreeCAD.Vector(0, 0, 1)  # Z-axis
+    
+    Path.Log.debug(f"Original wire center: {center}")
+
+    # Step 1: Rotate the wire in the opposite direction to align optimally with axes
+    temp_wire = wire.copy()
+    temp_wire.rotate(center, rotation_axis, -angle)
+    
+    # Step 2: Get the axis-aligned bounding box of the rotated wire
+    bounding_box = temp_wire.BoundBox
+    Path.Log.debug(f"Rotated bounding box center: {bounding_box.Center}")
+
+    # Create the four corners of the bounding box rectangle
+    corners = [
+        FreeCAD.Vector(bounding_box.XMin, bounding_box.YMin, bounding_box.ZMin),
+        FreeCAD.Vector(bounding_box.XMax, bounding_box.YMin, bounding_box.ZMin),
+        FreeCAD.Vector(bounding_box.XMax, bounding_box.YMax, bounding_box.ZMin),
+        FreeCAD.Vector(bounding_box.XMin, bounding_box.YMax, bounding_box.ZMin)
+    ]
+    
+    # Close the polygon by adding the first corner again
+    corners.append(corners[0])
+    bounding_wire = Part.makePolygon(corners)
+
+    # Step 3: Rotate the bounding box to the desired angle
+    bounding_wire.rotate(center, rotation_axis, angle)
+    
+    return bounding_wire
+
+
+def _analyze_rectangle(polygon, axis_preference="long"):
+    """
+    Analyze a rectangular polygon to determine its orientation and dimensions.
+    
+    Args:
+        polygon: The rectangular polygon to analyze
+        axis_preference: "long" or "short" - which axis to use as primary cutting direction
+    
+    Returns:
+        dict: Contains primary_vec, step_vec, primary_length, step_length, reference_corner
+    """
+    # Get the four corners of the rectangular polygon
+    edges = polygon.Edges
+    if len(edges) != 4:
+        raise ValueError("Polygon must be rectangular (4 edges)")
+    
+    # Get vertices from edges
+    vertices = []
+    for edge in edges:
+        vertices.append(edge.Vertexes[0].Point)
+    
+    # Find the two edge vectors to determine rectangle orientation
+    edge1_vec = vertices[1].sub(vertices[0])
+    edge2_vec = vertices[2].sub(vertices[1])
+    
+    # Calculate edge lengths
+    edge1_length = edge1_vec.Length
+    edge2_length = edge2_vec.Length
+    
+    # Determine which edge represents the long/short axis based on preference
+    if axis_preference == "long":
+        if edge1_length >= edge2_length:
+            primary_vec = edge1_vec.multiply(1.0 / edge1_length)
+            step_vec = edge2_vec.multiply(1.0 / edge2_length)
+            primary_length = edge1_length
+            step_length = edge2_length
+        else:
+            primary_vec = edge2_vec.multiply(1.0 / edge2_length)
+            step_vec = edge1_vec.multiply(1.0 / edge1_length)
+            primary_length = edge2_length
+            step_length = edge1_length
+    else:  # axis_preference == "short"
+        if edge1_length <= edge2_length:
+            primary_vec = edge1_vec.multiply(1.0 / edge1_length)
+            step_vec = edge2_vec.multiply(1.0 / edge2_length)
+            primary_length = edge1_length
+            step_length = edge2_length
+        else:
+            primary_vec = edge2_vec.multiply(1.0 / edge2_length)
+            step_vec = edge1_vec.multiply(1.0 / edge1_length)
+            primary_length = edge2_length
+            step_length = edge1_length
+    
+    # Find the corner that will serve as our reference point
+    # We want the corner that is at the "origin" of our coordinate system
+    # This should be the corner where both primary_vec and step_vec point "outward"
+    reference_corner = None
+    min_projection = float('inf')
+    
+    for vertex in vertices:
+        # Project this vertex onto both direction vectors
+        # The reference corner should have the minimum projections in both directions
+        primary_proj = vertex.dot(primary_vec)
+        step_proj = vertex.dot(step_vec)
+        combined_proj = primary_proj + step_proj
+        
+        if combined_proj < min_projection:
+            min_projection = combined_proj
+            reference_corner = vertex
+    
+    if reference_corner is None:
+        reference_corner = vertices[0]  # Fallback
+
+    Path.Log.debug("Primary vector: {} (length: {})".format(primary_vec, primary_vec.Length))
+    Path.Log.debug("Step vector: {} (length: {})".format(step_vec, step_vec.Length))
+    Path.Log.debug("Primary length: {}".format(primary_length))
+    Path.Log.debug("Step length: {}".format(step_length))
+    Path.Log.debug("Reference corner: {}".format(reference_corner)) 
+
+    return {
+        'primary_vec': primary_vec,
+        'step_vec': step_vec,
+        'primary_length': primary_length,
+        'step_length': step_length,
+        'reference_corner': reference_corner
+    }
+
+
+def _zigzag(polygon, tool_diameter, stepover_percent, axis_preference="long", pass_extension=None, retract_height=None, milling_direction="climb"):
+    """
+    Generate a zigzag clearing pattern.
+    
+    This strategy cuts back and forth across the polygon in alternating directions.
+    Each pass reverses direction from the previous pass, creating a zigzag pattern.
+    The tool cuts continuously without lifting between passes, minimizing air time.
+    Cutting direction alternates to maintain consistent chip load and surface finish.
+    
+    Args:
+        polygon: The polygon boundary to clear
+        tool_diameter: Diameter of the cutting tool
+        stepover_percent: Stepover as percentage of tool diameter
+        axis_preference: "long" or "short" - which axis to align primary cutting direction with
+        pass_extension: Distance to extend cuts beyond polygon boundary for tool disengagement
+        retract_height: Z height for rapid moves between passes (None = cutting height, no retracts)
+        milling_direction: "climb" or "conventional" - affects direction of first pass
+        
+    Returns:
+        List of Path.Command objects representing the toolpath
+    """
+    if pass_extension is None:
+        pass_extension = tool_diameter * 0.5  # Default to half tool diameter
+    
+    # Analyze the rectangle to get orientation and dimensions
+    rect_info = _analyze_rectangle(polygon, axis_preference)
+    primary_vec = rect_info['primary_vec']
+    step_vec = rect_info['step_vec']
+    primary_length = rect_info['primary_length']
+    step_length = rect_info['step_length']
+    reference_corner = rect_info['reference_corner']
+
+    # Ensure vectors are properly normalized
+    primary_vec = primary_vec.multiply(1.0 / primary_vec.Length)
+    step_vec = step_vec.multiply(1.0 / step_vec.Length)
+
+    # Calculate stepover distance and tool radius
+    stepover = (stepover_percent / 100.0) * tool_diameter
+    tool_radius = tool_diameter / 2.0
+    
+    Path.Log.debug("Zigzag: Tool diameter: {}, stepover_percent: {}, stepover: {}, tool_radius: {}".format(
+        tool_diameter, stepover_percent, stepover, tool_radius))
+    
+    # Generate step positions along the stepping direction
+    engagement_offset = tool_radius * (1.0 - stepover_percent / 100.0)
+    step_positions = []
+    current_step = -engagement_offset
+    
+    # Stop when tool edge reaches polygon edge (tool center at step_length - tool_radius)
+    while current_step <= step_length - tool_radius:
+        step_positions.append(current_step)
+        current_step += stepover
+    
+    # Ensure we cover the end - tool edge should reach polygon edge
+    if step_positions and step_positions[-1] < step_length - tool_radius - 0.001:
+        step_positions.append(step_length - tool_radius)
+    
+    Path.Log.debug("Zigzag: Generated {} steps with stepover: {}, tool_radius: {}".format(len(step_positions), stepover, tool_radius))
+    
+    # Generate toolpath commands
+    commands = []
+    z = polygon.BoundBox.ZMin
+    
+    for i, step_distance in enumerate(step_positions):
+        # Calculate the start and end points for this pass
+        step_offset = FreeCAD.Vector(step_vec).multiply(step_distance)
+        pass_start_base = FreeCAD.Vector(reference_corner).add(step_offset)
+        
+        # Extend the pass beyond the polygon boundaries
+        primary_extension = FreeCAD.Vector(primary_vec).multiply(pass_extension)
+        primary_full_length = FreeCAD.Vector(primary_vec).multiply(primary_length)
+        
+        # Alternate cutting direction for zigzag pattern based on milling direction preference
+        # For climb milling, start with primary direction; for conventional, start opposite
+        if milling_direction == "climb":
+            if i % 2 == 0:
+                # Even passes: cut in primary vector direction
+                start_point = FreeCAD.Vector(pass_start_base).sub(primary_extension)
+                end_point = FreeCAD.Vector(pass_start_base).add(primary_full_length).add(primary_extension)
+            else:
+                # Odd passes: cut opposite to primary vector direction
+                start_point = FreeCAD.Vector(pass_start_base).add(primary_full_length).add(primary_extension)
+                end_point = FreeCAD.Vector(pass_start_base).sub(primary_extension)
+        else:  # conventional milling
+            if i % 2 == 0:
+                # Even passes: cut opposite to primary vector direction
+                start_point = FreeCAD.Vector(pass_start_base).add(primary_full_length).add(primary_extension)
+                end_point = FreeCAD.Vector(pass_start_base).sub(primary_extension)
+            else:
+                # Odd passes: cut in primary vector direction
+                start_point = FreeCAD.Vector(pass_start_base).sub(primary_extension)
+                end_point = FreeCAD.Vector(pass_start_base).add(primary_full_length).add(primary_extension)
+        
+        Path.Log.debug("Zigzag Step {}: pass={}, step_offset={}, start_point={}, end_point={}".format(
+            step_distance, i, step_offset, start_point, end_point))
+        
+        # Set Z coordinate
+        start_point.z = z
+        end_point.z = z
+        
+        # Handle connection between passes based on retract_height setting
+        if i > 0:
+            if retract_height is not None:
+                # Lift to retract height, rapid to start, then plunge
+                commands.append(Path.Command("G0", {"Z": retract_height}))
+                commands.append(Path.Command("G0", {
+                    "X": start_point.x,
+                    "Y": start_point.y
+                }))
+                commands.append(Path.Command("G0", {"Z": z}))
+            else:
+                # Traditional zigzag - cutting move to connect passes
+                commands.append(Path.Command("G1", {
+                    "X": start_point.x,
+                    "Y": start_point.y,
+                    "Z": z
+                }))
+        else:
+            # First pass - position to start
+            commands.append(Path.Command("G1", {
+                "X": start_point.x,
+                "Y": start_point.y,
+                "Z": z
+            }))
+        
+        # Add cutting move across the pass
+        commands.append(Path.Command("G1", {
+            "X": end_point.x,
+            "Y": end_point.y,
+            "Z": z
+        }))
+    
+    return commands
+
+def _directional(polygon, tool_diameter, stepover_percent, axis_preference="long", pass_extension=None, retract_height=None, milling_direction="climb"):
+    """
+    Generate a unidirectional clearing pattern.
+    
+    This strategy cuts in the same direction for every pass across the polygon.
+    After each cutting pass, the tool lifts up (rapid move) and repositions to 
+    the start of the next pass. All cutting moves go in the same direction,
+    which can provide more consistent surface finish but requires more air time
+    due to the rapid repositioning moves between passes.
+    
+    Args:
+        polygon: The polygon boundary to clear (rectangular, possibly rotated)
+        tool_diameter: Diameter of the cutting tool
+        stepover_percent: Stepover as percentage of tool diameter
+        axis_preference: "long" or "short" - which axis to align primary cutting direction with
+        pass_extension: Distance to extend cuts beyond polygon boundary for tool disengagement
+        retract_height: Z height for rapid moves (None = cutting height)
+        milling_direction: "climb" or "conventional" - milling direction preference
+    
+    Returns:
+        List of Path.Command objects representing the toolpath
+    """
+    if pass_extension is None:
+        pass_extension = tool_diameter * 0.5  # Default to half tool diameter
+    
+    # Analyze the rectangle to get orientation and dimensions
+    rect_info = _analyze_rectangle(polygon, axis_preference)
+    primary_vec = rect_info['primary_vec']
+    step_vec = rect_info['step_vec']
+    primary_length = rect_info['primary_length']
+    step_length = rect_info['step_length']
+    reference_corner = rect_info['reference_corner']
+
+    # Ensure vectors are properly normalized
+    primary_vec = primary_vec.multiply(1.0 / primary_vec.Length)
+    step_vec = step_vec.multiply(1.0 / step_vec.Length)
+
+    # Calculate stepover distance and tool radius
+    stepover = (stepover_percent / 100.0) * tool_diameter
+    tool_radius = tool_diameter / 2.0
+    
+    Path.Log.debug("Tool diameter: {}, stepover_percent: {}, stepover: {}, tool_radius: {}".format(
+        tool_diameter, stepover_percent, stepover, tool_radius))
+    
+    # Generate step positions along the stepping direction
+    # For 30% engagement: tool center should be at (tool_radius - 30% of tool_radius) outside polygon
+    engagement_offset = tool_radius * (1.0 - stepover_percent / 100.0)
+    step_positions = []
+    current_step = -engagement_offset
+    
+    # Stop when tool edge reaches polygon edge (tool center at step_length - tool_radius)
+    while current_step <= step_length - tool_radius:
+        step_positions.append(current_step)
+        current_step += stepover
+    
+    # Ensure we cover the end - tool edge should reach polygon edge
+    if step_positions and step_positions[-1] < step_length - tool_radius - 0.001:
+        step_positions.append(step_length - tool_radius)
+    
+    Path.Log.debug("Engagement offset: {}, step positions: {}".format(engagement_offset, step_positions))
+    Path.Log.debug("Generated {} steps with stepover: {}, tool_radius: {}".format(len(step_positions), stepover, tool_radius))
+    
+    # Generate toolpath commands
+    commands = []
+    z = polygon.BoundBox.ZMin
+    
+    for step_distance in step_positions:
+        # Calculate the start and end points for this pass
+        step_offset = FreeCAD.Vector(step_vec).multiply(step_distance)
+        pass_start_base = FreeCAD.Vector(reference_corner).add(step_offset)
+        
+        # Extend the pass beyond the polygon boundaries
+        primary_extension = FreeCAD.Vector(primary_vec).multiply(pass_extension)
+        primary_full_length = FreeCAD.Vector(primary_vec).multiply(primary_length)
+        
+        # Determine cutting direction based on milling preference
+        if milling_direction == "climb":
+            # Climb milling: cut in primary vector direction
+            start_point = FreeCAD.Vector(pass_start_base).sub(primary_extension)
+            end_point = FreeCAD.Vector(pass_start_base).add(primary_full_length).add(primary_extension)
+        else:
+            # Conventional milling: cut opposite to primary vector direction
+            start_point = FreeCAD.Vector(pass_start_base).add(primary_full_length).add(primary_extension)
+            end_point = FreeCAD.Vector(pass_start_base).sub(primary_extension)
+        
+        Path.Log.debug("Step {}: step_offset={}, pass_start_base={}, start_point={}, end_point={}".format(
+            step_distance, step_offset, pass_start_base, start_point, end_point))
+        
+        # Set Z coordinate
+        start_point.z = z
+        end_point.z = z
+        
+        # Add rapid move to start of pass (except for first pass)
+        if commands:
+            # Retract to safe height if specified
+            if retract_height is not None:
+                commands.append(Path.Command("G0", {"Z": retract_height}))
+            
+            # Rapid to XY position
+            commands.append(Path.Command("G0", {
+                "X": start_point.x,
+                "Y": start_point.y
+            }))
+            
+            # Rapid down to cutting height if we retracted
+            if retract_height is not None:
+                commands.append(Path.Command("G0", {"Z": z}))
+        
+        # Add cutting moves
+        commands.append(Path.Command("G1", {
+            "X": start_point.x,
+            "Y": start_point.y,
+            "Z": z
+        }))
+        commands.append(Path.Command("G1", {
+            "X": end_point.x,
+            "Y": end_point.y,
+            "Z": z
+        }))
+    
+    return commands
+
+def _spiral(polygon, tool_diameter, stepover_percent, axis_preference="long"):
+    """
+    Generate a spiral clearing pattern.
+    
+    This strategy cuts in a continuous spiral from the outside toward the center
+    (or center outward). The tool follows a rectangular spiral path that gradually
+    works inward, maintaining a continuous cutting motion. This minimizes tool
+    lifting and provides smooth material removal, but may require careful
+    consideration of chip evacuation in deep pockets.
+    
+    Args:
+        polygon: The polygon boundary to clear
+        tool_diameter: Diameter of the cutting tool
+        stepover_percent: Stepover as percentage of tool diameter
+        axis_preference: "long" or "short" - which axis to align primary cutting direction with
+    """
+    pass
+
+def _bidirectional(polygon, tool_diameter, stepover_percent, axis_preference="long", pass_extension=None):
+    """
+    Generate a bidirectional clearing pattern.
+    
+    This strategy cuts back and forth across the polygon like zigzag, but only
+    makes cutting moves on the long sides (similar to spiral pattern). The end
+    connections between passes are rapid moves that stay outside the stock area,
+    so no tool lifting is required. This provides efficient material removal
+    while avoiding cutting on the short ends of the rectangle, which can be
+    beneficial for surface finish and tool life.
+    
+    Args:
+        polygon: The polygon boundary to clear
+        tool_diameter: Diameter of the cutting tool
+        stepover_percent: Stepover as percentage of tool diameter
+        axis_preference: "long" or "short" - which axis to align primary cutting direction with
+        pass_extension: Distance to extend cuts beyond polygon boundary for tool disengagement
+    """
+    pass
 
 def generate(
     wire,
@@ -44,14 +481,13 @@ def generate(
     stepover_percent,
     start_depth,
     final_depth,
-    start_point=None,
+    spindle_direction,
     max_depth_per_pass=None,
     pattern="zigzag",
     milling_direction="climb",
     cutting_feedrate=None,
     approach_distance=None,
-    retract_height=None,
-    tool_controller=None
+    retract_height=None
 ):
     """
     Generate a facing toolpath for a closed polygon with proper side entry for large cutters.
@@ -62,6 +498,7 @@ def generate(
         stepover_percent: Stepover as percentage of tool diameter (e.g., 75 for 75%)
         start_depth: Z height to start cutting (typically stock top)
         final_depth: Z height to finish cutting (typically part surface)
+        spindle_direction: Spindle direction ("Forward", "Reverse", or "None")
         start_point: Optional FreeCAD.Vector for toolpath start (Z component ignored)
         max_depth_per_pass: Maximum depth to cut in single pass (None = single pass)
         pattern: "zigzag", "unidirectional", "spiral"
@@ -69,8 +506,6 @@ def generate(
         cutting_feedrate: Feedrate for cutting moves (mm/min)
         approach_distance: Distance to approach from outside the polygon (None = 1.5 * tool_diameter)
         retract_height: Height to retract for rapids (None = start_depth + tool_diameter)
-        tool_controller: Optional tool controller for spindle direction and cut mode
-            If provided, will use Compass class for climb/conventional milling decisions
     
     Returns:
         List of Path.Command objects representing the toolpath
@@ -106,44 +541,35 @@ def generate(
     # Determine approach direction from start point or auto-select
     actual_approach = _determine_approach_from_start_point(bb, start_point)
     Path.Log.debug(f"Using approach direction: {actual_approach}")
+    Path.Log.debug(f"Wire bounding box: XMin={bb.XMin}, XMax={bb.XMax}, YMin={bb.YMin}, YMax={bb.YMax}, XLength={bb.XLength}, YLength={bb.YLength}")
     
     # Calculate depth passes
     depth_passes = _calculate_depth_passes(start_depth, final_depth, max_depth_per_pass)
     Path.Log.debug(f"Depth passes: {depth_passes}")
     
-    # Generate extended boundary for side entry
-    extended_boundary = _generate_extended_boundary(
-        bb, tool_diameter, approach_distance, actual_approach
-    )
+    # Generate clearing boundary (expanded by tool radius only)
+    clearing_boundary = _generate_clearing_boundary(bb, tool_diameter)
     
     commands = []
     
-    # Add initial rapid to approach position
-    approach_pos = _get_approach_position(extended_boundary, actual_approach, retract_height, start_point)
-    commands.append(Path.Command("G0", {
-        "X": approach_pos.x,
-        "Y": approach_pos.y,
-        "Z": retract_height
-    }))
+    # Start with simple retract to safe height
+    commands.append(Path.Command("G0", {"Z": retract_height}))
     
     # Process each depth pass
     for pass_num, target_depth in enumerate(depth_passes):
         Path.Log.debug(f"Processing depth pass {pass_num + 1}/{len(depth_passes)} to depth {target_depth}")
         
         # Generate cutting pattern for this depth
-        spindle_dir = getattr(tool_controller, "SpindleDir", "None") if tool_controller else "None"
         pass_commands = _generate_cutting_pattern(
-            extended_boundary,
-            bb,
+            clearing_boundary,
             tool_diameter,
             stepover,
             target_depth,
-            actual_approach,
             pattern,
             milling_direction,
             cutting_feedrate,
             pass_num,
-            spindle_dir
+            spindle_direction
         )
         
         commands.extend(pass_commands)
@@ -159,8 +585,8 @@ def _determine_approach_from_start_point(bb, start_point):
     """Determine approach direction from start point or auto-select."""
     if start_point is None:
         # Auto-select based on geometry aspect ratio
-        if bb.XLength > bb.YLength:
-            return "X-"  # Approach from negative X (longer dimension)
+        if bb.XLength >= bb.YLength:
+            return "X-"  # Approach from negative X (longer or equal dimension)
         else:
             return "Y-"  # Approach from negative Y
     else:
@@ -194,71 +620,63 @@ def _calculate_depth_passes(start_depth, final_depth, max_depth_per_pass):
     return passes
 
 
-def _generate_extended_boundary(bb, tool_diameter, approach_distance, approach_direction):
-    """Generate extended boundary box for side entry approach."""
+def _generate_clearing_boundary(bb, tool_diameter):
+    """Generate clearing boundary box expanded by tool radius for clearance."""
     tool_radius = tool_diameter / 2.0
     
-    # Start with original bounding box
-    extended_bb = FreeCAD.BoundBox(bb)
+    # Expand bounding box by tool radius in all directions for clearance
+    clearing_bb = FreeCAD.BoundBox(bb)
+    clearing_bb.XMin -= tool_radius
+    clearing_bb.XMax += tool_radius
+    clearing_bb.YMin -= tool_radius
+    clearing_bb.YMax += tool_radius
     
-    # Extend based on approach direction
-    if approach_direction == "X-":
-        extended_bb.XMin -= (approach_distance + tool_radius)
-        extended_bb.XMax += tool_radius
-        extended_bb.YMin -= tool_radius
-        extended_bb.YMax += tool_radius
-    elif approach_direction == "X+":
-        extended_bb.XMin -= tool_radius
-        extended_bb.XMax += (approach_distance + tool_radius)
-        extended_bb.YMin -= tool_radius
-        extended_bb.YMax += tool_radius
-    elif approach_direction == "Y-":
-        extended_bb.XMin -= tool_radius
-        extended_bb.XMax += tool_radius
-        extended_bb.YMin -= (approach_distance + tool_radius)
-        extended_bb.YMax += tool_radius
-    elif approach_direction == "Y+":
-        extended_bb.XMin -= tool_radius
-        extended_bb.XMax += tool_radius
-        extended_bb.YMin -= tool_radius
-        extended_bb.YMax += (approach_distance + tool_radius)
-    else:
-        # For angled approach, extend in all directions
-        extended_bb.XMin -= (approach_distance + tool_radius)
-        extended_bb.XMax += (approach_distance + tool_radius)
-        extended_bb.YMin -= (approach_distance + tool_radius)
-        extended_bb.YMax += (approach_distance + tool_radius)
-    
-    return extended_bb
+    return clearing_bb
 
 
-def _get_approach_position(extended_bb, approach_direction, z_height, start_point=None):
+def _get_approach_position(clearing_bb, approach_direction, z_height, start_point=None, approach_distance=None):
     """Get the initial approach position outside the material."""
-    if start_point is not None:
-        # Use the provided start point (ignore Z component)
-        return FreeCAD.Vector(start_point.x, start_point.y, z_height)
     
-    # Default positions based on approach direction
-    if approach_direction == "X-":
-        return FreeCAD.Vector(extended_bb.XMin, extended_bb.YMin, z_height)
-    elif approach_direction == "X+":
-        return FreeCAD.Vector(extended_bb.XMax, extended_bb.YMin, z_height)
-    elif approach_direction == "Y-":
-        return FreeCAD.Vector(extended_bb.XMin, extended_bb.YMin, z_height)
-    elif approach_direction == "Y+":
-        return FreeCAD.Vector(extended_bb.XMin, extended_bb.YMax, z_height)
+    # Default approach distance if not provided
+    if approach_distance is None:
+        approach_distance = 10.0
+    
+    Path.Log.debug(f"_get_approach_position: approach_direction={approach_direction}, start_point={start_point}, approach_distance={approach_distance}")
+    
+    # Calculate approach position based on direction, extended by approach distance
+    if start_point is not None:
+        # Use start point to determine which side to approach from, but still apply approach distance
+        if approach_direction == "X-":
+            return FreeCAD.Vector(clearing_bb.XMin - approach_distance, start_point.y, z_height)
+        elif approach_direction == "X+":
+            return FreeCAD.Vector(clearing_bb.XMax + approach_distance, start_point.y, z_height)
+        elif approach_direction == "Y-":
+            return FreeCAD.Vector(start_point.x, clearing_bb.YMin - approach_distance, z_height)
+        elif approach_direction == "Y+":
+            return FreeCAD.Vector(start_point.x, clearing_bb.YMax + approach_distance, z_height)
+        else:
+            # Default to X- approach with start point Y
+            return FreeCAD.Vector(clearing_bb.XMin - approach_distance, start_point.y, z_height)
     else:
-        # Default to X- approach
-        return FreeCAD.Vector(extended_bb.XMin, extended_bb.YMin, z_height)
+        # Default positions based on approach direction, extended by approach distance
+        if approach_direction == "X-":
+            return FreeCAD.Vector(clearing_bb.XMin - approach_distance, clearing_bb.YMin, z_height)
+        elif approach_direction == "X+":
+            return FreeCAD.Vector(clearing_bb.XMax + approach_distance, clearing_bb.YMin, z_height)
+        elif approach_direction == "Y-":
+            return FreeCAD.Vector(clearing_bb.XMin, clearing_bb.YMin - approach_distance, z_height)
+        elif approach_direction == "Y+":
+            return FreeCAD.Vector(clearing_bb.XMin, clearing_bb.YMax + approach_distance, z_height)
+        else:
+            # Default to X- approach
+            return FreeCAD.Vector(clearing_bb.XMin - approach_distance, clearing_bb.YMin, z_height)
 
 
 def _generate_cutting_pattern(
-    extended_bb,
-    original_bb,
+    clearing_bb,
     tool_diameter,
     stepover,
     target_depth,
-    approach_direction,
     pattern,
     milling_direction,
     cutting_feedrate,
@@ -269,23 +687,13 @@ def _generate_cutting_pattern(
     commands = []
     tool_radius = tool_diameter / 2.0
     
-    # Determine cutting direction based on approach
-    if approach_direction in ["X-", "X+"]:
-        # Cutting along X, stepping in Y
-        primary_axis = "X"
-        step_axis = "Y"
-        primary_start = extended_bb.XMin
-        primary_end = extended_bb.XMax
-        step_start = extended_bb.YMin + tool_radius
-        step_end = extended_bb.YMax - tool_radius
-    else:
-        # Cutting along Y, stepping in X
-        primary_axis = "Y"
-        step_axis = "X"
-        primary_start = extended_bb.YMin
-        primary_end = extended_bb.YMax
-        step_start = extended_bb.XMin + tool_radius
-        step_end = extended_bb.XMax - tool_radius
+    # Simple X-axis cutting (left to right), stepping in Y
+    primary_axis = "X"
+    step_axis = "Y"
+    primary_start = clearing_bb.XMin
+    primary_end = clearing_bb.XMax
+    step_start = clearing_bb.YMin + tool_radius
+    step_end = clearing_bb.YMax - tool_radius
     
     # Calculate step positions
     step_positions = []
@@ -298,21 +706,15 @@ def _generate_cutting_pattern(
     if step_positions and step_positions[-1] < step_end - 0.001:
         step_positions.append(step_end)
     
-    # Apply milling direction - this affects the order of step positions
-    # For climb milling: tool rotates in direction of feed
-    # For conventional milling: tool rotates opposite to feed direction
-    climb_step_order = _determine_climb_step_order(approach_direction, milling_direction, spindle_direction)
-    if not climb_step_order:
-        step_positions.reverse()
-    
-    # Generate cutting moves
+    # Generate simple cutting moves - always left to right for now
     for i, step_pos in enumerate(step_positions):
-        # Determine direction for this pass based on pattern and climb/conventional
-        cutting_direction = _determine_cutting_direction(
-            i, pattern, approach_direction, milling_direction, 
-            primary_start, primary_end, spindle_direction
-        )
-        start_pos, end_pos = cutting_direction
+        # Simple pattern: zigzag (alternate direction each pass)
+        if pattern == "zigzag" and i % 2 == 1:
+            start_pos = primary_end  # Start from right
+            end_pos = primary_start  # Cut to left
+        else:
+            start_pos = primary_start  # Start from left
+            end_pos = primary_end     # Cut to right
         
         # Move to start of cut if needed
         if primary_axis == "X":
@@ -336,7 +738,7 @@ def _generate_cutting_pattern(
             "Y": end_point.y,
             "Z": target_depth
         }
-        if cutting_feedrate:
+        if cutting_feedrate is not None:
             cut_params["F"] = cutting_feedrate
         
         commands.append(Path.Command("G1", cut_params))
@@ -361,18 +763,8 @@ def _determine_climb_step_order(approach_direction, milling_direction, spindle_d
     
     Returns True for climb order, False for conventional order.
     """
-    # Use Compass class if spindle_direction is provided
-    if spindle_direction is not None and spindle_direction != "None":
-        try:
-            compass = PathOpBase.Compass(spindle_direction, "Area")
-            compass.cut_mode = "Climb" if milling_direction == "climb" else "Conventional"
-            result = compass.get_step_direction(approach_direction)
-            Path.Log.debug(f"Compass step direction: spindle={spindle_direction}, mode={milling_direction}, approach={approach_direction} -> {result}")
-            return result
-        except Exception as e:
-            Path.Log.warning(f"Failed to use Compass for step direction, falling back to legacy logic: {e}")
-    
-    # Legacy logic for backward compatibility
+    # Use legacy logic for step direction - Compass class has incorrect logic for facing operations
+    # TODO: Fix Compass class logic for facing operations
     # For climb milling, the cutter rotates in the direction of feed
     # For conventional milling, the cutter rotates opposite to feed
     
@@ -396,24 +788,19 @@ def _determine_cutting_direction(pass_index, pattern, approach_direction, millin
     
     Returns (start_pos, end_pos) tuple.
     """
-    # Use Compass class if spindle_direction is provided
-    if spindle_direction is not None and spindle_direction != "None":
-        try:
-            compass = PathOpBase.Compass(spindle_direction, "Area")
-            compass.cut_mode = "Climb" if milling_direction == "climb" else "Conventional"
-            base_forward = compass.get_cutting_direction(approach_direction, pass_index, pattern)
-        except Exception as e:
-            Path.Log.warning(f"Failed to use Compass for cutting direction, falling back to legacy logic: {e}")
-            base_forward = _legacy_cutting_direction(approach_direction, milling_direction, pass_index, pattern)
-    else:
-        # Legacy logic for backward compatibility
-        base_forward = _legacy_cutting_direction(approach_direction, milling_direction, pass_index, pattern)
+    # Use legacy logic for cutting direction - Compass class has incorrect logic for facing operations
+    # TODO: Fix Compass class logic for facing operations where X- approach cuts along X axis, not Y axis
+    base_forward = _legacy_cutting_direction(approach_direction, milling_direction, pass_index, pattern)
+    Path.Log.debug(f"Cutting direction: approach={approach_direction}, pass={pass_index}, milling={milling_direction}, base_forward={base_forward}")
     
     # Return start and end positions
     if base_forward:
-        return (primary_start, primary_end)
+        result = (primary_start, primary_end)
     else:
-        return (primary_end, primary_start)
+        result = (primary_end, primary_start)
+    
+    Path.Log.debug(f"Cutting direction result: primary_start={primary_start}, primary_end={primary_end}, base_forward={base_forward}, result={result}")
+    return result
 
 
 def _legacy_cutting_direction(approach_direction, milling_direction, pass_index, pattern):
@@ -422,9 +809,10 @@ def _legacy_cutting_direction(approach_direction, milling_direction, pass_index,
     if approach_direction in ["X-", "X+"]:
         # Cutting along X axis
         if milling_direction == "climb":
-            base_forward = approach_direction == "X-"
+            base_forward = approach_direction == "X-"  # X- approach: start from left (XMin)
         else:  # conventional
-            base_forward = approach_direction == "X+"
+            base_forward = approach_direction == "X+"  # X- approach: start from right (XMax)
+        Path.Log.debug(f"X-axis cutting: approach={approach_direction}, milling={milling_direction}, base_forward={base_forward}")
     else:
         # Cutting along Y axis
         if milling_direction == "climb":

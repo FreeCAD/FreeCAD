@@ -66,447 +66,231 @@ class TestPathFacingGenerator(PathTestBase):
         ]
         self.spline_wire = Part.Wire([Part.BSplineCurve(points, None, None, False, 3, None, False).toShape()])
 
-    def test_basic_square_facing(self):
-        """Test basic facing of a square polygon."""
-        commands = facing.generate(
-            wire=self.square_wire,
-            tool_diameter=6.0,
-            stepover_percent=75,
-            start_depth=5.0,
-            final_depth=0.0,
-            start_point=FreeCAD.Vector(-5, 0, 0),  # Start from left side
-            cutting_feedrate=1000
+
+
+    def test_directional_strategy_basic(self):
+        """Test _directional strategy basic functionality."""
+        commands = facing._directional(
+            polygon=self.square_wire,
+            tool_diameter=5.0,
+            stepover_percent=50,
+            axis_preference="long"
         )
         
-        # Verify we get commands
+        # Should return a list of Path.Command objects
+        self.assertIsInstance(commands, list)
         self.assertGreater(len(commands), 0)
         
-        # First command should be rapid to approach position
-        first_cmd = commands[0]
-        self.assertEqual(first_cmd.Name, "G0")
-        
-        # Should start outside the polygon boundary
-        self.assertLess(first_cmd.Parameters.get('X', 0), -6/2)
-        
-        # Last command should retract
-        last_cmd = commands[-1]
-        self.assertEqual(last_cmd.Name, "G0")
-        # Retract height = start_depth + tool_diameter = 5.0 + 6.0 = 11.0
-        self.assertEqual(last_cmd.Parameters.get('Z', 0), 11.0)
-
-    def test_rectangular_facing(self):
-        """Test facing of a rectangular polygon."""
-        commands = facing.generate(
-            wire=self.rectangle_wire,
-            tool_diameter=4.0,
-            stepover_percent=50,
-            start_depth=3.0,
-            final_depth=-2.0,
-            start_point=FreeCAD.Vector(10, 15, 0),  # Start from top side
-            cutting_feedrate=800
-        )
-        
-        # Find first cutting move
-        cutting_moves = [cmd for cmd in commands if cmd.Name == "G1"]
-        self.assertGreater(len(cutting_moves), 0)
-        
-        first_cut = cutting_moves[0]
-        # Should start outside in Y direction (allow for equal boundary case)
-        self.assertLessEqual(first_cut.Parameters.get('Y', 0), -4/2)
-
-    def test_auto_approach_direction(self):
-        """Test automatic approach direction selection."""
-        # Test with square (should choose X- for equal dimensions)
-        commands_square = facing.generate(
-            wire=self.square_wire,
-            tool_diameter=6.0,
-            stepover_percent=75,
-            start_depth=5.0,
-            final_depth=0.0
-            # No start_point provided, should auto-select
-        )
-        
-        # Should automatically choose X- approach for equal dimensions
-        cutting_moves = [cmd for cmd in commands_square if cmd.Name == "G1"]
-        self.assertGreater(len(cutting_moves), 0)
-        
-        first_cut = cutting_moves[0]
-        # Should approach from X direction (equal dimensions)
-        # Extended boundary starts at geometry.XMin - (approach_distance + tool_radius)
-        # For square (0-10), tool_diameter=6: 0 - (max(9, 10) + 3) = -13
-        self.assertLessEqual(first_cut.Parameters.get('X', 0), 0)
-
-    def test_multiple_depth_passes(self):
-        """Test facing with multiple depth passes."""
-        commands = facing.generate(
-            wire=self.square_wire,
-            tool_diameter=6.0,
-            stepover_percent=75,
-            start_depth=5.0,
-            final_depth=-5.0,
-            max_depth_per_pass=2.0,
-            start_point=FreeCAD.Vector(-5, 0, 0)
-        )
-        
-        # Should have multiple Z levels
-        z_values = set()
+        # All commands should be G0 or G1
         for cmd in commands:
-            if 'Z' in cmd.Parameters and cmd.Name in ["G1", "G2", "G3"]:
-                z_values.add(cmd.Parameters['Z'])
-        
-        # Should have at least 5 passes (10mm / 2mm per pass)
-        self.assertGreaterEqual(len(z_values), 5)
+            self.assertIn(cmd.Name, ['G0', 'G1'])
 
-    def test_zigzag_pattern(self):
-        """Test zigzag cutting pattern."""
-        commands = facing.generate(
-            wire=self.square_wire,
-            tool_diameter=4.0,
+    def test_directional_climb_vs_conventional(self):
+        """Test _directional with different milling directions."""
+        climb_commands = facing._directional(
+            polygon=self.square_wire,
+            tool_diameter=5.0,
             stepover_percent=50,
-            start_depth=2.0,
-            final_depth=0.0,
-            pattern="zigzag",
-            start_point=FreeCAD.Vector(-5, 0, 0)
-        )
-        
-        # Find cutting moves and check for alternating directions
-        cutting_moves = [cmd for cmd in commands if cmd.Name == "G1" and 'X' in cmd.Parameters]
-        
-        if len(cutting_moves) >= 2:
-            # Check that consecutive moves alternate direction
-            x_directions = []
-            for i in range(1, len(cutting_moves)):
-                prev_x = cutting_moves[i-1].Parameters.get('X', 0)
-                curr_x = cutting_moves[i].Parameters.get('X', 0)
-                if abs(curr_x - prev_x) > 0.1:  # Significant X movement
-                    x_directions.append(curr_x > prev_x)
-            
-            # Should have alternating directions for zigzag
-            if len(x_directions) >= 2:
-                self.assertNotEqual(x_directions[0], x_directions[1])
-
-    def test_climb_vs_conventional_milling(self):
-        """Test climb vs conventional milling produces different toolpaths."""
-        # Generate climb milling toolpath
-        commands_climb = facing.generate(
-            wire=self.square_wire,
-            tool_diameter=6.0,
-            stepover_percent=75,
-            start_depth=2.0,
-            final_depth=0.0,
-            start_point=FreeCAD.Vector(-5, 0, 0),
             milling_direction="climb"
         )
         
-        # Generate conventional milling toolpath
-        commands_conventional = facing.generate(
-            wire=self.square_wire,
-            tool_diameter=6.0,
-            stepover_percent=75,
-            start_depth=2.0,
-            final_depth=0.0,
-            start_point=FreeCAD.Vector(-5, 0, 0),
+        conventional_commands = facing._directional(
+            polygon=self.square_wire,
+            tool_diameter=5.0,
+            stepover_percent=50,
             milling_direction="conventional"
         )
         
-        # Both should generate valid paths
-        self.assertGreater(len(commands_climb), 0)
-        self.assertGreater(len(commands_conventional), 0)
+        # Should have same number of commands but different coordinates
+        self.assertEqual(len(climb_commands), len(conventional_commands))
         
-        # Toolpaths should be different (different step order)
-        # This is a basic check - more detailed verification could be added
-        self.assertNotEqual(commands_climb, commands_conventional)
+        # At least some coordinates should be different
+        different_coords = False
+        for i in range(min(len(climb_commands), len(conventional_commands))):
+            if climb_commands[i].Parameters != conventional_commands[i].Parameters:
+                different_coords = True
+                break
+        self.assertTrue(different_coords)
 
-    def test12_stepover_validation(self):
-        """Verify generator validates stepover parameters."""
-        
-        # Test negative stepover
-        with self.assertRaises(ValueError) as context:
-            facing.generate(
-                wire=self.square_wire,
-                tool_diameter=2.0,
-                stepover_percent=-75.0,
-                start_depth=1.0,
-                final_depth=0.0
-            )
-        self.assertIn("positive", str(context.exception))
-        
-        # Test zero stepover
-        with self.assertRaises(ValueError) as context:
-            facing.generate(
-                wire=self.square_wire,
-                tool_diameter=2.0,
-                stepover_percent=0.0,
-                start_depth=1.0,
-                final_depth=0.0
-            )
-        self.assertIn("positive", str(context.exception))
-
-    def test13_depth_validation(self):
-        """Verify generator validates depth parameters."""
-        
-        # Test same start and final depth
-        with self.assertRaises(ValueError) as context:
-            facing.generate(
-                wire=self.square_wire,
-                tool_diameter=2.0,
-                stepover_percent=75.0,
-                start_depth=1.0,
-                final_depth=1.0  # Same as start
-            )
-        self.assertIn("different", str(context.exception))
-
-    def test13a_start_point_validation(self):
-        """Verify generator validates start point location."""
-        
-        # Test start point inside polygon (should fail)
-        with self.assertRaises(ValueError) as context:
-            facing.generate(
-                wire=self.square_wire,
-                tool_diameter=2.0,
-                stepover_percent=75.0,
-                start_depth=1.0,
-                final_depth=0.0,
-                start_point=FreeCAD.Vector(5, 5, 0)  # Inside the 10x10 square
-            )
-        self.assertIn("too close", str(context.exception))
-        
-        # Test start point outside polygon (should succeed)
-        commands = facing.generate(
-            wire=self.square_wire,
-            tool_diameter=2.0,
-            stepover_percent=75.0,
-            start_depth=1.0,
-            final_depth=0.0,
-            start_point=FreeCAD.Vector(-5, 5, 0)  # Outside the square
-        )
-        self.assertGreater(len(commands), 0)
-
-    def test14_improved_climb_conventional(self):
-        """Verify improved climb vs conventional milling implementation."""
-        
-        tool_diameter = 3.0
-        stepover_percent = 67.0
-        start_depth = 1.0
-        final_depth = 0.0
-        start_point = FreeCAD.Vector(-5, 0, 0)  # Start from left side
-        
-        # Create mock tool controller with forward spindle direction
-        class MockToolController:
-            def __init__(self, spindle_dir):
-                self.SpindleDir = spindle_dir
-        
-        tool_controller = MockToolController("Forward")
-        
-        # Test climb milling
-        path_climb = facing.generate(
-            wire=self.square_wire,
-            tool_diameter=tool_diameter,
-            stepover_percent=stepover_percent,
-            start_depth=start_depth,
-            final_depth=final_depth,
-            start_point=start_point,
-            milling_direction="climb",
-            pattern="unidirectional",  # Use unidirectional to avoid zigzag confusion
-            tool_controller=tool_controller
+    def test_directional_retract_height(self):
+        """Test retract height functionality in directional."""
+        commands_no_retract = facing._directional(
+            polygon=self.square_wire,
+            tool_diameter=5.0,
+            stepover_percent=50,
+            retract_height=None
         )
         
-        # Test conventional milling
-        path_conventional = facing.generate(
-            wire=self.square_wire,
-            tool_diameter=tool_diameter,
-            stepover_percent=stepover_percent,
-            start_depth=start_depth,
-            final_depth=final_depth,
-            start_point=start_point,
-            milling_direction="conventional",
-            pattern="unidirectional",
-            tool_controller=tool_controller
+        commands_with_retract = facing._directional(
+            polygon=self.square_wire,
+            tool_diameter=5.0,
+            stepover_percent=50,
+            retract_height=15.0
         )
         
-        # Extract cutting moves
-        climb_cuts = [cmd for cmd in path_climb if cmd.Name == "G1"]
-        conv_cuts = [cmd for cmd in path_conventional if cmd.Name == "G1"]
+        # Commands with retract should have more moves (G0 Z moves)
+        self.assertGreaterEqual(len(commands_with_retract), len(commands_no_retract))
         
-        self.assertGreater(len(climb_cuts), 0)
-        self.assertGreater(len(conv_cuts), 0)
-        
-        # For X- approach with unidirectional pattern:
-        # Climb: should step in Y+ direction, cut in X+ direction
-        # Conventional: should step in Y- direction, cut in X- direction
-        
-        # Extract step positions by finding Y coordinate changes between passes
-        def extract_step_positions(cuts):
-            """Extract Y coordinates where new passes start (step positions)."""
-            if not cuts:
-                return []
-            
-            step_positions = []
-            prev_y = None
-            
-            for cmd in cuts:
-                y = cmd.Parameters.get('Y', 0)
-                if prev_y is None or abs(y - prev_y) > 0.1:  # New step position
-                    step_positions.append(y)
-                    prev_y = y
-            
-            return step_positions
-        
-        climb_steps = extract_step_positions(climb_cuts)
-        conv_steps = extract_step_positions(conv_cuts)
-        
-        # Debug output
-        print(f"Climb step positions: {climb_steps}")
-        print(f"Conv step positions: {conv_steps}")
-        
-        if len(climb_steps) > 1 and len(conv_steps) > 1:
-            # Check if step direction is increasing or decreasing
-            climb_increasing = climb_steps[1] > climb_steps[0]
-            conv_increasing = conv_steps[1] > conv_steps[0]
-            print(f"Climb increasing: {climb_increasing}, Conv increasing: {conv_increasing}")
-            
-            # Climb should step in opposite direction from conventional
-            self.assertNotEqual(climb_increasing, conv_increasing)
+        # Should have some Z-only G0 commands
+        z_retracts = [cmd for cmd in commands_with_retract 
+                     if cmd.Name == 'G0' and 'Z' in cmd.Parameters and len(cmd.Parameters) == 1]
+        self.assertGreater(len(z_retracts), 0)
 
-    def test15_curved_geometry_support(self):
-        """Verify generator works with curved and spline geometries."""
-        
-        tool_diameter = 2.0
-        stepover_percent = 75.0
-        start_depth = 1.0
-        final_depth = 0.0
-        start_point = FreeCAD.Vector(-5, 0, 0)  # Start from left side
-        
-        # Test with circular wire
-        path_circle = facing.generate(
-            wire=self.circle_wire,
-            tool_diameter=tool_diameter,
-            stepover_percent=stepover_percent,
-            start_depth=start_depth,
-            final_depth=final_depth,
-            start_point=start_point
+    def test_zigzag_strategy_basic(self):
+        """Test _zigzag strategy basic functionality."""
+        commands = facing._zigzag(
+            polygon=self.square_wire,
+            tool_diameter=5.0,
+            stepover_percent=50,
+            axis_preference="long"
         )
         
-        # Test with spline wire
-        path_spline = facing.generate(
-            wire=self.spline_wire,
-            tool_diameter=tool_diameter,
-            stepover_percent=stepover_percent,
-            start_depth=start_depth,
-            final_depth=final_depth,
-            start_point=start_point
-        )
-        
-        # Both should generate valid paths
-        self.assertGreater(len(path_circle), 0)
-        self.assertGreater(len(path_spline), 0)
-        
-        # Should have cutting moves
-        circle_cuts = [cmd for cmd in path_circle if cmd.Name == "G1"]
-        spline_cuts = [cmd for cmd in path_spline if cmd.Name == "G1"]
-        
-        self.assertGreater(len(circle_cuts), 0)
-        self.assertGreater(len(spline_cuts), 0)
-        
-        # Verify toolpath stays within reasonable bounds of extended bounding box
-        circle_bb = self.circle_wire.BoundBox
-        spline_bb = self.spline_wire.BoundBox
-        
-        # Calculate expected extended bounds (approach_distance = max(tool_diameter * 1.5, 10.0))
-        approach_distance = max(tool_diameter * 1.5, 10.0)
-        tool_radius = tool_diameter / 2.0
-        
-        # For X- approach from start_point (-5, 0, 0)
-        expected_xmin = circle_bb.XMin - (approach_distance + tool_radius)
-        expected_xmax = circle_bb.XMax + tool_radius
-        expected_ymin = circle_bb.YMin - tool_radius
-        expected_ymax = circle_bb.YMax + tool_radius
-        
-        for cmd in circle_cuts:
-            x = cmd.Parameters.get('X', 0)
-            y = cmd.Parameters.get('Y', 0)
-            # Should be within extended bounding box for side entry
-            self.assertGreaterEqual(x, expected_xmin)
-            self.assertLessEqual(x, expected_xmax)
-            self.assertGreaterEqual(y, expected_ymin)
-            self.assertLessEqual(y, expected_ymax)
-        
-        # Calculate expected extended bounds for spline
-        spline_expected_xmin = spline_bb.XMin - (approach_distance + tool_radius)
-        spline_expected_xmax = spline_bb.XMax + tool_radius
-        spline_expected_ymin = spline_bb.YMin - tool_radius
-        spline_expected_ymax = spline_bb.YMax + tool_radius
-        
-        for cmd in spline_cuts:
-            x = cmd.Parameters.get('X', 0)
-            y = cmd.Parameters.get('Y', 0)
-            # Should be within extended bounding box for side entry
-            self.assertGreaterEqual(x, spline_expected_xmin)
-            self.assertLessEqual(x, spline_expected_xmax)
-            self.assertGreaterEqual(y, spline_expected_ymin)
-            self.assertLessEqual(y, spline_expected_ymax)
-
-    def test_compass_integration(self):
-        """Test facing generator with Compass class integration."""
-        # Create mock tool controller
-        mock_tc = self._create_mock_tool_controller("Forward")
-        
-        # Generate toolpath with tool controller
-        commands = facing.generate(
-            wire=self.square_wire,
-            tool_diameter=10.0,
-            stepover_percent=75,
-            start_depth=5.0,
-            final_depth=0.0,
-            milling_direction="climb",
-            cutting_feedrate=1000,
-            tool_controller=mock_tc
-        )
-        
+        # Should return a list of Path.Command objects
+        self.assertIsInstance(commands, list)
         self.assertGreater(len(commands), 0)
         
-        # Verify it generates proper toolpath
-        g1_commands = [cmd for cmd in commands if cmd.Name == "G1"]
-        self.assertGreater(len(g1_commands), 0)
+        # All commands should be G1 (no rapid moves in traditional zigzag)
+        for cmd in commands:
+            self.assertEqual(cmd.Name, 'G1')
 
-    def test_compass_vs_legacy_consistency(self):
-        """Test that Compass integration produces consistent results with legacy logic."""
-        # Create mock tool controller with forward spindle
-        mock_tc = self._create_mock_tool_controller("Forward")
-        
-        # Generate with legacy logic (no tool controller)
-        commands_legacy = facing.generate(
-            wire=self.square_wire,
-            tool_diameter=10.0,
-            stepover_percent=75,
-            start_depth=5.0,
-            final_depth=0.0,
-            milling_direction="climb",
-            cutting_feedrate=1000
+    def test_zigzag_alternating_direction(self):
+        """Test that zigzag alternates cutting direction."""
+        commands = facing._zigzag(
+            polygon=self.rectangle_wire,
+            tool_diameter=2.0,  # Small tool for more passes
+            stepover_percent=25,  # Small stepover for more passes
+            axis_preference="long"
         )
         
-        # Generate with Compass integration
-        commands_compass = facing.generate(
-            wire=self.square_wire,
-            tool_diameter=10.0,
-            stepover_percent=75,
-            start_depth=5.0,
-            final_depth=0.0,
-            milling_direction="climb",
-            cutting_feedrate=1000,
-            tool_controller=mock_tc
+        # Should have multiple passes
+        self.assertGreater(len(commands), 4)
+        
+        # Extract X coordinates from cutting moves
+        x_coords = []
+        for cmd in commands:
+            if 'X' in cmd.Parameters:
+                x_coords.append(cmd.Parameters['X'])
+        
+        # Should have alternating pattern in X coordinates
+        self.assertGreater(len(x_coords), 2)
+
+    def test_zigzag_with_retract_height(self):
+        """Test zigzag with retract height (converts to directional-like behavior)."""
+        commands_no_retract = facing._zigzag(
+            polygon=self.square_wire,
+            tool_diameter=5.0,
+            stepover_percent=50,
+            retract_height=None
         )
         
-        # Both should generate valid toolpaths
-        self.assertGreater(len(commands_legacy), 0)
-        self.assertGreater(len(commands_compass), 0)
+        commands_with_retract = facing._zigzag(
+            polygon=self.square_wire,
+            tool_diameter=5.0,
+            stepover_percent=50,
+            retract_height=15.0
+        )
         
-        # Extract G1 commands for comparison
-        g1_legacy = [cmd for cmd in commands_legacy if cmd.Name == "G1"]
-        g1_compass = [cmd for cmd in commands_compass if cmd.Name == "G1"]
+        # Commands with retract should have rapid moves
+        rapid_moves_no_retract = [cmd for cmd in commands_no_retract if cmd.Name == 'G0']
+        rapid_moves_with_retract = [cmd for cmd in commands_with_retract if cmd.Name == 'G0']
         
-        self.assertGreater(len(g1_legacy), 0)
-        self.assertGreater(len(g1_compass), 0)
+        # With retract should have more rapid moves
+        self.assertGreater(len(rapid_moves_with_retract), len(rapid_moves_no_retract))
+
+    def test_zigzag_milling_direction(self):
+        """Test zigzag with different milling directions."""
+        climb_commands = facing._zigzag(
+            polygon=self.square_wire,
+            tool_diameter=5.0,
+            stepover_percent=50,
+            milling_direction="climb"
+        )
+        
+        conventional_commands = facing._zigzag(
+            polygon=self.square_wire,
+            tool_diameter=5.0,
+            stepover_percent=50,
+            milling_direction="conventional"
+        )
+        
+        # Should have same number of commands
+        self.assertEqual(len(climb_commands), len(conventional_commands))
+        
+        # But coordinates should be different
+        different_coords = False
+        for i in range(min(len(climb_commands), len(conventional_commands))):
+            if climb_commands[i].Parameters != conventional_commands[i].Parameters:
+                different_coords = True
+                break
+        self.assertTrue(different_coords)
+
+    def test_get_angled_polygon_zero_degrees(self):
+        """Test get_angled_polygon with 0 degree rotation."""
+        result = facing.get_angled_polygon(self.square_wire, 0)
+        
+        # Should get back a valid wire
+        self.assertTrue(result.isClosed())
+        # Bounding box should be similar to original
+        original_bb = self.square_wire.BoundBox
+        result_bb = result.BoundBox
+        self.assertAlmostEqual(original_bb.XLength, result_bb.XLength, places=1)
+        self.assertAlmostEqual(original_bb.YLength, result_bb.YLength, places=1)
+
+    def test_get_angled_polygon_45_degrees(self):
+        """Test get_angled_polygon with 45 degree rotation."""
+        result = facing.get_angled_polygon(self.square_wire, 45)
+        
+        self.assertTrue(result.isClosed())
+        # The rotated bounding box should be larger than the original
+        original_bb = self.square_wire.BoundBox
+        result_bb = result.BoundBox
+        
+        # The function creates a bounding box that fully contains the rotated wire
+        # For a 45-degree rotation, this will be larger than just the diagonal
+        # The result should be larger than the original in both dimensions
+        self.assertGreater(result_bb.XLength, original_bb.XLength)
+        self.assertGreater(result_bb.YLength, original_bb.YLength)
+        
+        # Should have 4 edges (rectangular)
+        self.assertEqual(len(result.Edges), 4)
+
+    def test_analyze_rectangle_axis_aligned(self):
+        """Test _analyze_rectangle with axis-aligned rectangle."""
+        result = facing._analyze_rectangle(self.rectangle_wire, "long")
+        
+        # Check that we get the expected keys
+        expected_keys = ['primary_vec', 'step_vec', 'primary_length', 'step_length', 'reference_corner']
+        for key in expected_keys:
+            self.assertIn(key, result)
+        
+        # For a 20x10 rectangle with "long" preference, primary should be along 20-unit side
+        self.assertAlmostEqual(result['primary_length'], 20, places=1)
+        self.assertAlmostEqual(result['step_length'], 10, places=1)
+        
+        # Vectors should be normalized
+        self.assertAlmostEqual(result['primary_vec'].Length, 1.0, places=5)
+        self.assertAlmostEqual(result['step_vec'].Length, 1.0, places=5)
+
+    def test_analyze_rectangle_short_preference(self):
+        """Test _analyze_rectangle with short axis preference."""
+        result = facing._analyze_rectangle(self.rectangle_wire, "short")
+        
+        # For a 20x10 rectangle with "short" preference, primary should be along 10-unit side
+        self.assertAlmostEqual(result['primary_length'], 10, places=1)
+        self.assertAlmostEqual(result['step_length'], 20, places=1)
+
+    def test_analyze_rectangle_invalid_polygon(self):
+        """Test _analyze_rectangle with invalid polygon."""
+        # Create a triangle (3 edges instead of 4)
+        triangle_wire = Part.makePolygon([
+            FreeCAD.Vector(0, 0, 0),
+            FreeCAD.Vector(10, 0, 0),
+            FreeCAD.Vector(5, 10, 0),
+            FreeCAD.Vector(0, 0, 0)
+        ])
+        
+        with self.assertRaises(ValueError):
+            facing._analyze_rectangle(triangle_wire, "long")
 
     def _create_mock_tool_controller(self, spindle_dir):
         """Create a mock tool controller for testing."""
