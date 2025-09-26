@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRepPrimAPI_MakePrism.hxx>
-#endif
+
 
 #include <Base/Tools.h>
 

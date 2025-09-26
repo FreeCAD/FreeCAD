@@ -48,17 +48,16 @@ SET(Reen_SRCS
     Segmentation.h
     SurfaceTriangulation.cpp
     SurfaceTriangulation.h
-    PreCompiled.cpp
     PreCompiled.h
 )
 
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${Reen_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(ReverseEngineering PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
-
 add_library(ReverseEngineering SHARED ${Reen_SRCS})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(ReverseEngineering PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
 
 target_include_directories(
     ReverseEngineering

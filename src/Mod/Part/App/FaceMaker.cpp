@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Builder.hxx>
 # include <TopoDS_Iterator.hxx>
 # include <QtGlobal>
-#endif
+
 
 #include <memory>
 

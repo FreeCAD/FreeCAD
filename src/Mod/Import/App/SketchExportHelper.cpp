@@ -23,15 +23,12 @@
 //! a class to assist with exporting sketches to dxf
 
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <HLRBRep_Algo.hxx>
 #include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_HLRToShape.hxx>
 #include <BRep_Builder.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Base/Placement.h>

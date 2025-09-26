@@ -21,15 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QAction>
 #include <QMenu>
 #include <QMessageBox>
 #include <QTimer>
 #include <TopExp.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/Console.h>

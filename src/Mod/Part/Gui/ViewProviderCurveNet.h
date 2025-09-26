@@ -24,6 +24,8 @@
 #ifndef PARTGUI_VIEWPROVIDERCURVENET_H
 #define PARTGUI_VIEWPROVIDERCURVENET_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "ViewProvider.h"
 
 

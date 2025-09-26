@@ -20,10 +20,8 @@
  *                                                                            *
  ******************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <limits>
+
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <gp_Dir.hxx>
@@ -31,7 +29,6 @@
 # include <Precision.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
-#endif
 
 #include <App/Datums.h>
 #include <Base/Axis.h>

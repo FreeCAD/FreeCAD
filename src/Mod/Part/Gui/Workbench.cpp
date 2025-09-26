@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include "Workbench.h"
 #include <Base/Interpreter.h>

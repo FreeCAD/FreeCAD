@@ -8,19 +8,7 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-#define MeshExport __declspec(dllimport)
-#define AppJtReaderExport __declspec(dllexport)
-#else  // for Linux
-#define MeshExport
-#define AppJtReaderExport
-#endif
-
-#ifdef _PreComp_
-
 // standard
-
 #include <cassert>
 #include <cstdio>
 
@@ -40,7 +28,5 @@
 
 // sys
 #include <sys/types.h>
-
-#endif  //_PreComp_
 
 #endif

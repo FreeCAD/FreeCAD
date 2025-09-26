@@ -22,13 +22,11 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <gp_Pln.hxx>
 # include <gp_Pnt.hxx>
-#endif
+
 
 #include "DatumPlane.h"
 

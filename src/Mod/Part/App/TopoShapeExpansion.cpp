@@ -22,11 +22,12 @@
  *                                                                          *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <cmath>
 #include <limits>
+
+#ifndef _Standard_Version_HeaderFile
+# include <Standard_Version.hxx>
+#endif
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
@@ -82,9 +83,9 @@
 
 #include <utility>
 
-#endif
-
 #include <OSD_Parallel.hxx>
+
+#include <FCConfig.h>
 
 #include "modelRefine.h"
 #include "CrossSection.h"

@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRepBuilderAPI_Copy.hxx>
 # include <TopoDS.hxx>
-#endif
+
 
 #include "FeatureFace.h"
 #include "FaceMaker.h"

@@ -25,8 +25,9 @@
 
 #include <App/PropertyUnits.h>
 
-#include "PrimitiveFeature.h"
+#include <Mod/Part/PartGlobal.h>
 
+#include "PrimitiveFeature.h"
 
 namespace Part
 {

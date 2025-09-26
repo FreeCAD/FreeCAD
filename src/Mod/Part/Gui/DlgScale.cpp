@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <BRepAdaptor_Curve.hxx>
 # include <BRep_Tool.hxx>
 # include <Precision.hxx>
@@ -33,7 +31,7 @@
 # include <QMessageBox>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

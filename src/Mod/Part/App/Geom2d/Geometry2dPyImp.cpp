@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <gp_Dir2d.hxx>
 # include <gp_Pnt2d.hxx>
 # include <gp_Trsf.hxx>
 # include <gp_Trsf2d.hxx>
 # include <gp_Vec2d.hxx>
-#endif
+
 
 #include <Base/GeometryPyCXX.h>
 

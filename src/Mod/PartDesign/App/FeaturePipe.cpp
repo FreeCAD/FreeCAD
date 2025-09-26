@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 # include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepBndLib.hxx>
@@ -40,7 +38,7 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Wire.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Base/Exception.h>

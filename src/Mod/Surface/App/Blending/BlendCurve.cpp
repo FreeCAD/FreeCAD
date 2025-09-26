@@ -21,8 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <BSplCLib.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <Precision.hxx>
@@ -31,7 +29,7 @@
 #include <gp_Pnt.hxx>
 #include <math_Gauss.hxx>
 #include <math_Matrix.hxx>
-#endif
+
 #include "Blending/BlendCurve.h"
 #include "Blending/BlendCurvePy.h"
 #include <Base/Vector3D.h>

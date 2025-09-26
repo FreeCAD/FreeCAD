@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS.hxx>
@@ -37,7 +35,7 @@
 # include <GeomAPI.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <IntRes2d_IntersectionSegment.hxx>
-#endif
+
 
 #include <App/FeaturePythonPyImp.h>
 #include <App/PropertyLinks.h>

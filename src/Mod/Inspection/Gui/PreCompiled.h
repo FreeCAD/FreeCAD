@@ -26,8 +26,6 @@
 #include <FCConfig.h>
 
 
-#ifdef _PreComp_
-
 // STL
 
 // Inventor
@@ -53,7 +51,5 @@
 #include <QApplication>
 #include <QMenu>
 #include <QMessageBox>
-
-#endif  //_PreComp_
 
 #endif  // GUI_PRECOMPILED_H

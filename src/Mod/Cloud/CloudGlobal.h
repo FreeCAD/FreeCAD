@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
+ *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,4 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#ifndef CLOUD_GLOBAL_H
+#define CLOUD_GLOBAL_H
+
+#include <FCGlobal.h>
+
+// Cloud
+#ifndef CloudAppExport
+#ifdef CloudApp_EXPORTS
+#define CloudAppExport FREECAD_DECL_EXPORT
+#else
+#define CloudAppExport FREECAD_DECL_IMPORT
+#endif
+#endif
+
+// Cloud
+#ifndef CloudGuiExport
+#ifdef CloudGui_EXPORTS
+#define CloudGuiExport FREECAD_DECL_EXPORT
+#else
+#define CloudGuiExport FREECAD_DECL_IMPORT
+#endif
+#endif
+
+
+#endif  // CLOUD_GLOBAL_H

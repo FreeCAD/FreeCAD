@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <Geom_BSplineSurface.hxx>
 # include <GeomAbs_Shape.hxx>
 # include <GeomAPI_PointsToBSplineSurface.hxx>
@@ -31,7 +29,7 @@
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_Array2OfReal.hxx>
 # include <TColStd_Array1OfInteger.hxx>
-#endif
+
 # include <GeomFill_NSections.hxx>
 
 #include <Base/GeometryPyCXX.h>

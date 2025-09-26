@@ -25,8 +25,6 @@
 
 #include <FCConfig.h>
 
-#ifdef _PreComp_
-
 // STL
 #include <sstream>
 
@@ -68,7 +66,5 @@
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoSeparator.h>
-
-#endif  //_PreComp_
 
 #endif  // __PRECOMPILED_GUI__

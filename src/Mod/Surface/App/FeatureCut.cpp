@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <TopoDS.hxx>
-#endif
+
 
 #include "FeatureCut.h"
 

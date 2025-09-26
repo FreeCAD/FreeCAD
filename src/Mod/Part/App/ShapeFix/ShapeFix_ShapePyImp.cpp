@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <Mod/Part/PartGlobal.h>
 
 #include "ShapeFix/ShapeFix_ShapePy.h"
 #include "ShapeFix/ShapeFix_ShapePy.cpp"
