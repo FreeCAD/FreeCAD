@@ -7,12 +7,11 @@ from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 from Part.App.TopoShape import TopoShape
 from typing import Final, overload
 
-
 @export(
     PythonName="Part.ShapeFix.FixSmallFace",
     Include="ShapeFix_FixSmallFace.hxx",
     FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h",
-    Constructor=True
+    Constructor=True,
 )
 class ShapeFix_FixSmallFace(ShapeFix_Root):
     """

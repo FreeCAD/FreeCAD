@@ -6,7 +6,6 @@ from Metadata import export, constmethod
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 from typing import Final, overload
 
-
 @export(
     PythonName="Part.ShapeFix.Shell",
     Twin="ShapeFix_Shell",

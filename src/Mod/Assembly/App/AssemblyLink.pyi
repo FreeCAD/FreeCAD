@@ -8,7 +8,6 @@ from Base.Metadata import export
 
 from App.Part import Part
 
-
 @export(
     Include="Mod/Assembly/App/AssemblyLink.h",
     Namespace="Assembly",

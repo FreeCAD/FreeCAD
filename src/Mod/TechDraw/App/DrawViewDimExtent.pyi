@@ -7,7 +7,6 @@ from typing import Any
 from Base.Metadata import export
 from TechDraw.DrawViewDimension import DrawViewDimension
 
-
 @export(
     Include="Mod/TechDraw/App/DrawViewDimExtent.h",
     Namespace="TechDraw",
@@ -16,7 +15,7 @@ from TechDraw.DrawViewDimension import DrawViewDimension
 class DrawViewDimExtent(DrawViewDimension):
     """
     Feature for creating and manipulating Technical Drawing DimExtents
-    
+
     Author: WandererFan (wandererfan@gmail.com)
     License: LGPL-2.1-or-later
     """

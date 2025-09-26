@@ -6,7 +6,6 @@ from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from typing import Any, List, Dict, overload, Optional
 
-
 @export(
     Constructor=True,
     Delete=True,
@@ -53,20 +52,13 @@ class Metadata(PyObjectBase):
     """
 
     @overload
-    def __init__(self) -> None:
-        ...
-
+    def __init__(self) -> None: ...
     @overload
-    def __init__(self, metadata: "Metadata") -> None:
-        ...
-
+    def __init__(self, metadata: "Metadata") -> None: ...
     @overload
-    def __init__(self, file: str) -> None:
-        ...
-
+    def __init__(self, file: str) -> None: ...
     @overload
-    def __init__(self, bytes: bytes) -> None:
-        ...
+    def __init__(self, bytes: bytes) -> None: ...
 
     Name: str = ""
     """String representing the name of this item."""

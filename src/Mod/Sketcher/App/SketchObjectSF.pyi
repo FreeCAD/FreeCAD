@@ -5,7 +5,6 @@ from __future__ import annotations
 from Base.Metadata import export
 from Part.App.Part2DObject import Part2DObject
 
-
 @export(
     Include="Mod/Sketcher/App/SketchObjectSF.h",
     FatherInclude="Mod/Part/App/Part2DObjectPy.h",

@@ -5,7 +5,6 @@ from __future__ import annotations
 from Base.Metadata import export
 from TopoShape import TopoShape
 
-
 @export(
     Father="TopoShapePy",
     Name="TopoShapeCompSolidPy",

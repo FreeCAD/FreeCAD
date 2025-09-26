@@ -5,7 +5,6 @@ from __future__ import annotations
 from Base.Metadata import no_args
 from ViewProviderDocumentObject import ViewProviderDocumentObject
 
-
 class ViewProviderGeometryObject(ViewProviderDocumentObject):
     """
     This is the ViewProvider geometry class

@@ -7,7 +7,6 @@ from typing import Any, Final
 from Base.Metadata import export
 from Base.Persistence import Persistence
 
-
 @export(
     Include="Mod/Robot/App/Trajectory.h",
     Namespace="Robot",
@@ -40,7 +39,6 @@ class Trajectory(Persistence):
         deleteLast()  - delete the last waypoint
         """
         ...
-
     Duration: Final[float]
     """duration of the trajectory"""
 

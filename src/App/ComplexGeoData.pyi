@@ -12,7 +12,6 @@ from Base.Matrix import Matrix
 from StringHasher import StringHasher
 from typing import Any, Final
 
-
 @export(
     Namespace="Data",
     Reference=True,
@@ -37,14 +36,18 @@ class ComplexGeoData(Persistence):
         ...
 
     @constmethod
-    def getFacesFromSubElement(self,) -> tuple[list[Vector], list[tuple[int, int, int]]]:
+    def getFacesFromSubElement(
+        self,
+    ) -> tuple[list[Vector], list[tuple[int, int, int]]]:
         """
         Return vertexes and faces from a sub-element.
         """
         ...
 
     @constmethod
-    def getLinesFromSubElement(self,) -> tuple[list[Vector], list[tuple[int, int]]]:
+    def getLinesFromSubElement(
+        self,
+    ) -> tuple[list[Vector], list[tuple[int, int]]]:
         """
         Return vertexes and lines from a sub-element.
         """
@@ -133,7 +136,6 @@ class ComplexGeoData(Persistence):
         Return the mapped element name
         """
         ...
-
     BoundBox: Final[BoundBox] = ...
     """Get the bounding box (BoundBox) of the complex geometric data."""
 

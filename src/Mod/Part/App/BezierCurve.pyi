@@ -7,7 +7,6 @@ from Base.Vector import Vector
 from BoundedCurve import BoundedCurve
 from typing import Final, List
 
-
 @export(
     Twin="GeomBezierCurve",
     TwinPointer="GeomBezierCurve",

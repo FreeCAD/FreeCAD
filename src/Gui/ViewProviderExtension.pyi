@@ -5,7 +5,6 @@ from __future__ import annotations
 from Base.Metadata import constmethod
 from App.Extension import Extension
 
-
 class ViewProviderExtension(Extension):
     """
     Base class for all view provider extensions

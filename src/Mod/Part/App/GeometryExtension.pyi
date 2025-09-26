@@ -6,7 +6,6 @@ from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
 from typing import Final
 
-
 @export(
     Include="Mod/Part/App/GeometryExtension.h",
     Constructor=True,

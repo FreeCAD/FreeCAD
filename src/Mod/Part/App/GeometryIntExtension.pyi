@@ -6,7 +6,6 @@ from Base.Metadata import export
 from Part.GeometryExtension import GeometryExtension
 from typing import Final
 
-
 @export(
     Father="GeometryExtensionPy",
     Name="GeometryIntExtensionPy",
