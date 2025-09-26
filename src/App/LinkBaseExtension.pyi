@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from DocumentObjectExtension import DocumentObjectExtension
 from typing import Any, Final, List, Tuple, Optional, Union, overload
@@ -41,31 +45,31 @@ class LinkBaseExtension(DocumentObjectExtension):
         """
         ...
 
-    def getLinkExtProperty(self, name: str) -> Any:
+    def getLinkExtProperty(self, name: str, /) -> Any:
         """
         getLinkExtProperty(name): return the property value by its predefined name 
         """
         ...
 
-    def getLinkExtPropertyName(self, name: str) -> str:
+    def getLinkExtPropertyName(self, name: str, /) -> str:
         """
         getLinkExtPropertyName(name): lookup the property name by its predefined name 
         """
         ...
 
     @overload
-    def getLinkPropertyInfo(self) -> tuple:
+    def getLinkPropertyInfo(self, /) -> tuple:
         ...
     
     @overload
-    def getLinkPropertyInfo(self, index: int) -> tuple:
+    def getLinkPropertyInfo(self, index: int, /) -> tuple:
         ...
     
     @overload
-    def getLinkPropertyInfo(self, name: str) -> tuple:
+    def getLinkPropertyInfo(self, name: str, /) -> tuple:
         ...
     
-    def getLinkPropertyInfo(self, arg: Any = None) -> tuple:
+    def getLinkPropertyInfo(self, arg: Any = None, /) -> tuple:
         """
         getLinkPropertyInfo(): return a tuple of (name,type,doc) for all supported properties.
 
@@ -75,7 +79,7 @@ class LinkBaseExtension(DocumentObjectExtension):
         """
         ...
 
-    def setLink(self, obj: Any, subName: Optional[str] = None, subElements: Optional[Union[str, Tuple[str, ...]]] = None) -> None:
+    def setLink(self, obj: Any, subName: Optional[str] = None, subElements: Optional[Union[str, Tuple[str, ...]]] = None, /) -> None:
         """
         setLink(obj,subName=None,subElements=None): Set link object.
 
@@ -92,7 +96,7 @@ class LinkBaseExtension(DocumentObjectExtension):
         """
         ...
 
-    def cacheChildLabel(self, enable: bool = True) -> None:
+    def cacheChildLabel(self, enable: bool = True, /) -> None:
         """
         cacheChildLabel(enable=True): enable/disable child label cache
 
@@ -101,7 +105,7 @@ class LinkBaseExtension(DocumentObjectExtension):
         """
         ...
 
-    def flattenSubname(self, subname: str) -> str:
+    def flattenSubname(self, subname: str, /) -> str:
         """
         flattenSubname(subname) -> string
 
@@ -109,7 +113,7 @@ class LinkBaseExtension(DocumentObjectExtension):
         """
         ...
 
-    def expandSubname(self, subname: str) -> str:
+    def expandSubname(self, subname: str, /) -> str:
         """
         expandSubname(subname) -> string
 

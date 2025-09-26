@@ -74,19 +74,19 @@ class ComplexGeoData(Persistence):
         """
         ...
 
-    def applyTranslation(self, translation: Vector) -> None:
+    def applyTranslation(self, translation: Vector, /) -> None:
         """
         Apply an additional translation to the placement
         """
         ...
 
-    def applyRotation(self, rotation: Rotation) -> None:
+    def applyRotation(self, rotation: Rotation, /) -> None:
         """
         Apply an additional rotation to the placement
         """
         ...
 
-    def transformGeometry(self, transformation: Matrix) -> None:
+    def transformGeometry(self, transformation: Matrix, /) -> None:
         """
         Apply a transformation to the underlying geometry
         """
@@ -117,21 +117,21 @@ class ComplexGeoData(Persistence):
         ...
 
     @constmethod
-    def getElementName(self, name: str, direction: int = 0) -> str:
+    def getElementName(self, name: str, direction: int = 0, /) -> str:
         """
         Return a mapped element name or reverse.
         """
         ...
 
     @constmethod
-    def getElementIndexedName(self, name: str) -> str | tuple[str, list[int]]:
+    def getElementIndexedName(self, name: str, /) -> str | tuple[str, list[int]]:
         """
         Return the indexed element name.
         """
         ...
 
     @constmethod
-    def getElementMappedName(self, name: str) -> str | tuple[str, list[int]]:
+    def getElementMappedName(self, name: str, /) -> str | tuple[str, list[int]]:
         """
         Return the mapped element name
         """

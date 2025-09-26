@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from TopoShape import TopoShape
 from typing import Dict, List, Final, overload, Optional
@@ -86,7 +90,7 @@ class TopoShapeWire(TopoShape):
         """
         ...
 
-    def add(self, edge: object) -> None:
+    def add(self, edge: object, /) -> None:
         """
         Add an edge to the wire
         add(edge)
@@ -94,8 +98,7 @@ class TopoShapeWire(TopoShape):
         ...
 
     def fixWire(
-        self, face: Optional[object] = None, tolerance: Optional[float] = None
-    ) -> None:
+        self, face: Optional[object] = None, tolerance: Optional[float] = None, /) -> None:
         """
         Fix wire
         fixWire([face, tolerance])
@@ -105,7 +108,7 @@ class TopoShapeWire(TopoShape):
         ...
 
     @constmethod
-    def makeHomogenousWires(self, wire: object) -> object:
+    def makeHomogenousWires(self, wire: object, /) -> object:
         """
         Make this and the given wire homogeneous to have the same number of edges
         makeHomogenousWires(wire) -> Wire
@@ -113,7 +116,7 @@ class TopoShapeWire(TopoShape):
         ...
 
     @constmethod
-    def makePipe(self, profile: object) -> object:
+    def makePipe(self, profile: object, /) -> object:
         """
         Make a pipe by sweeping along a wire.
         makePipe(profile) -> Shape
@@ -127,7 +130,7 @@ class TopoShapeWire(TopoShape):
         isSolid: bool = False,
         isFrenet: bool = False,
         transition: int = 0,
-    ) -> object:
+     /,) -> object:
         """
         Make a loft defined by a list of profiles along a wire.
         makePipeShell(shapeList,[isSolid=False,isFrenet=False,transition=0]) -> Shape

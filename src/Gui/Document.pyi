@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import constmethod
 from Base.Persistence import Persistence
 from Base.Matrix import Matrix
@@ -12,7 +16,7 @@ class Document(Persistence):
     Licence: LGPL
     """
 
-    def show(self, objName: str) -> None:
+    def show(self, objName: str, /) -> None:
         """
         show(objName) -> None
 
@@ -23,7 +27,7 @@ class Document(Persistence):
         """
         ...
 
-    def hide(self, objName: str) -> None:
+    def hide(self, objName: str, /) -> None:
         """
         hide(objName) -> None
 
@@ -34,7 +38,7 @@ class Document(Persistence):
         """
         ...
 
-    def setPos(self, objName: str, matrix: Matrix) -> None:
+    def setPos(self, objName: str, matrix: Matrix, /) -> None:
         """
         setPos(objName, matrix) -> None
 
@@ -48,7 +52,7 @@ class Document(Persistence):
         """
         ...
 
-    def setEdit(self, obj: Any, mod: int = 0, subName: Optional[str] = None) -> bool:
+    def setEdit(self, obj: Any, mod: int = 0, subName: Optional[str] = None, /) -> bool:
         """
         setEdit(obj, mod=0, subName) -> bool
 
@@ -79,7 +83,7 @@ class Document(Persistence):
         """
         ...
 
-    def addAnnotation(self, annoName: str, fileName: str, modName: str) -> None:
+    def addAnnotation(self, annoName: str, fileName: str, modName: str, /) -> None:
         """
         addAnnotation(annoName, fileName, modName) -> None
 
@@ -102,7 +106,7 @@ class Document(Persistence):
         """
         ...
 
-    def getObject(self, objName: str) -> Optional[Any]:
+    def getObject(self, objName: str, /) -> Optional[Any]:
         """
         getObject(objName) -> object or None
 
@@ -129,7 +133,7 @@ class Document(Persistence):
         """
         ...
 
-    def createView(self, type: str) -> Optional[Any]:
+    def createView(self, type: str, /) -> Optional[Any]:
         """
         createView(type) -> object or None
 
@@ -141,7 +145,7 @@ class Document(Persistence):
         ...
 
     @constmethod
-    def mdiViewsOfType(self, type: str) -> List[Any]:
+    def mdiViewsOfType(self, type: str, /) -> List[Any]:
         """
         mdiViewsOfType(type) -> list of MDIView
 
@@ -168,7 +172,7 @@ class Document(Persistence):
         """
         ...
 
-    def sendMsgToViews(self, msg: str) -> None:
+    def sendMsgToViews(self, msg: str, /) -> None:
         """
         sendMsgToViews(msg) -> None
 
@@ -178,7 +182,7 @@ class Document(Persistence):
         """
         ...
 
-    def mergeProject(self, fileName: str) -> None:
+    def mergeProject(self, fileName: str, /) -> None:
         """
         mergeProject(fileName) -> None
 
@@ -190,8 +194,7 @@ class Document(Persistence):
         ...
 
     def toggleTreeItem(
-        self, obj: Any, mod: int = 0, subName: Optional[str] = None
-    ) -> None:
+        self, obj: Any, mod: int = 0, subName: Optional[str] = None, /) -> None:
         """
         toggleTreeItem(obj, mod=0, subName) -> None
 
@@ -206,7 +209,7 @@ class Document(Persistence):
         """
         ...
 
-    def scrollToTreeItem(self, obj: Any) -> None:
+    def scrollToTreeItem(self, obj: Any, /) -> None:
         """
         scrollToTreeItem(obj) -> None
 
@@ -216,7 +219,7 @@ class Document(Persistence):
         """
         ...
 
-    def toggleInSceneGraph(self, obj: Any) -> None:
+    def toggleInSceneGraph(self, obj: Any, /) -> None:
         """
         toggleInSceneGraph(obj) -> None
 

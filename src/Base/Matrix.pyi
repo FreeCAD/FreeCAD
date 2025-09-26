@@ -1,4 +1,6 @@
-# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
 
 from Vector import Vector
 from Metadata import export, constmethod, class_declarations, no_args
@@ -105,9 +107,9 @@ class Matrix(PyObjectBase):
     """The matrix elements."""
 
     @overload
-    def move(self, vector: Vector) -> None: ...
+    def move(self, vector: Vector, /) -> None: ...
     @overload
-    def move(self, x: float, y: float, z: float) -> None: ...
+    def move(self, x: float, y: float, z: float, /) -> None: ...
     def move(self, *args) -> None:
         """
         move(vector) -> None
@@ -127,11 +129,11 @@ class Matrix(PyObjectBase):
         ...
 
     @overload
-    def scale(self, vector: Vector) -> None: ...
+    def scale(self, vector: Vector, /) -> None: ...
     @overload
-    def scale(self, x: float, y: float, z: float) -> None: ...
+    def scale(self, x: float, y: float, z: float, /) -> None: ...
     @overload
-    def scale(self, factor: float) -> None: ...
+    def scale(self, factor: float, /) -> None: ...
     def scale(self, *args) -> None:
         """
         scale(vector) -> None
@@ -153,7 +155,7 @@ class Matrix(PyObjectBase):
         ...
 
     @constmethod
-    def hasScale(self, tol: float = 0) -> ScaleType:
+    def hasScale(self, tol: float = 0, /) -> ScaleType:
         """
         hasScale(tol=0) -> ScaleType
 
@@ -204,7 +206,7 @@ class Matrix(PyObjectBase):
         ...
 
     @constmethod
-    def isUnity(self, tol: float = 0.0) -> bool:
+    def isUnity(self, tol: float = 0.0, /) -> bool:
         """
         isUnity([tol=0.0]) -> bool
 
@@ -212,7 +214,7 @@ class Matrix(PyObjectBase):
         """
         ...
 
-    def transform(self, vector: Vector, matrix2: "Matrix") -> None:
+    def transform(self, vector: Vector, matrix2: "Matrix", /) -> None:
         """
         transform(vector, matrix2) -> None
 
@@ -228,7 +230,7 @@ class Matrix(PyObjectBase):
         ...
 
     @constmethod
-    def col(self, index: int) -> Vector:
+    def col(self, index: int, /) -> Vector:
         """
         col(index) -> Base.Vector
 
@@ -240,7 +242,7 @@ class Matrix(PyObjectBase):
         """
         ...
 
-    def setCol(self, index: int, vector: Vector) -> None:
+    def setCol(self, index: int, vector: Vector, /) -> None:
         """
         setCol(index, vector) -> None
 
@@ -254,7 +256,7 @@ class Matrix(PyObjectBase):
         ...
 
     @constmethod
-    def row(self, index: int) -> Vector:
+    def row(self, index: int, /) -> Vector:
         """
         row(index) -> Base.Vector
 
@@ -266,7 +268,7 @@ class Matrix(PyObjectBase):
         """
         ...
 
-    def setRow(self, index: int, vector: Vector) -> None:
+    def setRow(self, index: int, vector: Vector, /) -> None:
         """
         setRow(index, vector) -> None
 
@@ -289,7 +291,7 @@ class Matrix(PyObjectBase):
         """
         ...
 
-    def setDiagonal(self, vector: Vector) -> None:
+    def setDiagonal(self, vector: Vector, /) -> None:
         """
         setDiagonal(vector) -> None
 
@@ -299,7 +301,7 @@ class Matrix(PyObjectBase):
         """
         ...
 
-    def rotateX(self, angle: float) -> None:
+    def rotateX(self, angle: float, /) -> None:
         """
         rotateX(angle) -> None
 
@@ -310,7 +312,7 @@ class Matrix(PyObjectBase):
         """
         ...
 
-    def rotateY(self, angle: float) -> None:
+    def rotateY(self, angle: float, /) -> None:
         """
         rotateY(angle) -> None
 
@@ -321,7 +323,7 @@ class Matrix(PyObjectBase):
         """
         ...
 
-    def rotateZ(self, angle: float) -> None:
+    def rotateZ(self, angle: float, /) -> None:
         """
         rotateZ(angle) -> None
 
@@ -333,11 +335,11 @@ class Matrix(PyObjectBase):
         ...
 
     @overload
-    def multiply(self, matrix: "Matrix") -> "Matrix": ...
+    def multiply(self, matrix: "Matrix", /) -> "Matrix": ...
     @overload
-    def multiply(self, vector: Vector) -> Vector: ...
+    def multiply(self, vector: Vector, /) -> Vector: ...
     @constmethod
-    def multiply(self, obj: Union["Matrix", Vector]) -> Union["Matrix", Vector]:
+    def multiply(self, obj: Union["Matrix", Vector], /) -> Union["Matrix", Vector]:
         """
         multiply(matrix) -> Base.Matrix
         multiply(vector) -> Base.Vector
@@ -351,7 +353,7 @@ class Matrix(PyObjectBase):
         ...
 
     @constmethod
-    def multVec(self, vector: Vector) -> Vector:
+    def multVec(self, vector: Vector, /) -> Vector:
         """
         multVec(vector) -> Base.Vector
 
@@ -410,7 +412,7 @@ class Matrix(PyObjectBase):
         ...
 
     @constmethod
-    def isOrthogonal(self, tol: float = 1e-6) -> float:
+    def isOrthogonal(self, tol: float = 1e-6, /) -> float:
         """
         isOrthogonal(tol=1e-6) -> float
 
@@ -423,7 +425,7 @@ class Matrix(PyObjectBase):
         ...
 
     @constmethod
-    def submatrix(self, dim: int) -> "Matrix":
+    def submatrix(self, dim: int, /) -> "Matrix":
         """
         submatrix(dim) -> Base.Matrix
 

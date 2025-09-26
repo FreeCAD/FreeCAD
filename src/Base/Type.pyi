@@ -1,4 +1,6 @@
-# SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
 
 from Metadata import export, forward_declarations, constmethod
 from PyObjectBase import PyObjectBase
@@ -35,7 +37,7 @@ class Type(PyObjectBase):
     """Module in which this class is defined."""
 
     @staticmethod
-    def fromName(name: str) -> "Type":
+    def fromName(name: str, /) -> "Type":
         """
         fromName(name) -> Base.BaseType
 
@@ -46,7 +48,7 @@ class Type(PyObjectBase):
         ...
 
     @staticmethod
-    def fromKey(key: int) -> "Type":
+    def fromKey(key: int, /) -> "Type":
         """
         fromKey(key) -> Base.BaseType
 
@@ -75,7 +77,7 @@ class Type(PyObjectBase):
         ...
 
     @staticmethod
-    def getAllDerivedFrom(type: str) -> List[str]:
+    def getAllDerivedFrom(type: str, /) -> List[str]:
         """
         getAllDerivedFrom(type) -> list
 
@@ -104,7 +106,7 @@ class Type(PyObjectBase):
         ...
 
     @constmethod
-    def isDerivedFrom(self, type: str) -> bool:
+    def isDerivedFrom(self, type: str, /) -> bool:
         """
         isDerivedFrom(type) -> bool
 
@@ -132,7 +134,7 @@ class Type(PyObjectBase):
         ...
 
     @staticmethod
-    def createInstanceByName(name: str, load: bool = False) -> object:
+    def createInstanceByName(name: str, load: bool = False, /) -> object:
         """
         createInstanceByName(name, load=False) -> object
 

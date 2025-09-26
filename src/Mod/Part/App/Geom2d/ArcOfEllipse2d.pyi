@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Metadata import export, constmethod
 from typing import Final, overload
 from Part import ArcOfConic2d

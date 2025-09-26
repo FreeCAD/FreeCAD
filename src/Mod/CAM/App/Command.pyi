@@ -24,11 +24,11 @@ class Command(Persistence):
         """toGCode(): returns a GCode representation of the command"""
         ...
 
-    def setFromGCode(self, gcode: str) -> None:
+    def setFromGCode(self, gcode: str, /) -> None:
         """setFromGCode(): sets the path from the contents of the given GCode string"""
         ...
 
-    def transform(self, placement: Placement) -> "CommandPy":
+    def transform(self, placement: Placement, /) -> "CommandPy":
         """transform(Placement): returns a copy of this command transformed by the given placement"""
         ...
     Name: str

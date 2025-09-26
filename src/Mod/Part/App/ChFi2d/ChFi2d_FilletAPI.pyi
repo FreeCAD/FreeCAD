@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
 from typing import overload
@@ -27,7 +31,7 @@ class ChFi2d_FilletAPI(PyObjectBase):
         """
         ...
 
-    def perform(self, radius: float) -> bool:
+    def perform(self, radius: float, /) -> bool:
         """
         perform(radius) -> bool
 
@@ -41,7 +45,7 @@ class ChFi2d_FilletAPI(PyObjectBase):
         """
         ...
 
-    def result(self, point: Point, solution: int = -1) -> tuple[TopoShapeEdge, TopoShapeEdge, TopoShapeEdge]:
+    def result(self, point: Point, solution: int = -1, /) -> tuple[TopoShapeEdge, TopoShapeEdge, TopoShapeEdge]:
         """
         result(point, solution=-1)
 
