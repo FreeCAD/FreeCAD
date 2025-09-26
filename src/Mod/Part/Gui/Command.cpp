@@ -814,27 +814,29 @@ bool CmdPartCompCompoundTools::isActive()
         return false;
 }
 
-
-
-namespace {
-    QString getAutoGroupCommandStr(bool useActiveBody=true)
-        // Helper function to get the python code to add the newly created object to the active Part/Body object if present
-    {
-        App::GeoFeature* activeObj =nullptr;
-	if(useActiveBody){
-       	   Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PDBODYKEY);
-           if (!activeObj) {
-               activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PARTKEY);
-           }
-	}
-        if (activeObj) {
-            QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
-            return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n").arg(activeName);
+namespace
+{
+QString getAutoGroupCommandStr(bool useActiveBody = true)
+// Helper function to get the python code to add the newly created object to the active Part/Body
+// object if present
+{
+    App::GeoFeature* activeObj = nullptr;
+    if (useActiveBody) {
+        Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PDBODYKEY);
+        if (!activeObj) {
+            activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(
+                PARTKEY);
         }
-
-        return QStringLiteral("# Object created at document root.");
     }
+    if (activeObj) {
+        QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
+        return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n")
+            .arg(activeName);
+    }
+
+    return QStringLiteral("# Object created at document root.");
 }
+}  // namespace
 
 //===========================================================================
 // Part_Compound
@@ -856,10 +858,13 @@ CmdPartCompound::CmdPartCompound()
 void CmdPartCompound::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    unsigned int n = getSelection().countObjectsOfType<App::DocumentObject>(nullptr, Gui::ResolveMode::FollowLink);
+    unsigned int n =
+        getSelection().countObjectsOfType<App::DocumentObject>(nullptr,
+                                                               Gui::ResolveMode::FollowLink);
     if (n < 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select at least one shape"));
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Wrong selection"),
+                             QObject::tr("Select at least one shape"));
         return;
     }
 
@@ -871,7 +876,7 @@ void CmdPartCompound::activated(int iMsg)
     // avoid duplicates without changing the order
     std::set<std::string> tempSelNames;
     str << "App.activeDocument()." << FeatName << ".Links = [";
-    for (const auto & it : Sel) {
+    for (const auto& it : Sel) {
         auto pos = tempSelNames.insert(it.FeatName);
         if (pos.second) {
             str << "App.activeDocument()." << it.FeatName << ",";
@@ -880,9 +885,11 @@ void CmdPartCompound::activated(int iMsg)
     str << "]";
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Compound"));
-    doCommand(Doc,"obj = App.activeDocument().addObject(\"Part::Compound\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,
+              "obj = App.activeDocument().addObject(\"Part::Compound\",\"%s\")",
+              FeatName.c_str());
     doCommand(Doc, getAutoGroupCommandStr().toUtf8());
-    runCommand(Doc,str.str().c_str());
+    runCommand(Doc, str.str().c_str());
     updateActive();
     commitCommand();
 }
