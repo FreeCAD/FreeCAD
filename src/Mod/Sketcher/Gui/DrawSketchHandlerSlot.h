@@ -194,17 +194,26 @@ private:
 
     void generateAutoConstraints() override
     {
+        // alignment constraints needs to apply to the line not the arc.
+        bool alignmentCstr = false;
+        for (auto& ac : sugConstraints[1]) {
+            if (ac.Type == Sketcher::Horizontal || ac.Type == Sketcher::Vertical
+                || ac.Type == Sketcher::Perpendicular || ac.Type == Sketcher::Parallel) {
+                ac.GeoId = firstCurve + 2;
+                alignmentCstr = true;
+            }
+        }
+
+        if (avoidRedundants && alignmentCstr) {
+            removeRedundantHorizontalVertical(getSketchObject(),
+                                                sugConstraints[0],
+                                                sugConstraints[1]);
+        }
+
         // add auto constraints for the center of 1st arc
         generateAutoConstraintsOnElement(sugConstraints[0],
                                          getHighestCurveIndex() - 3,
                                          Sketcher::PointPos::mid);
-
-        // alignment constraints needs to apply to the line not the arc.
-        AutoConstraint& lastCons = sugConstraints[1].back();
-        if (lastCons.Type == Sketcher::Horizontal || lastCons.Type == Sketcher::Vertical
-            || lastCons.Type == Sketcher::Perpendicular || lastCons.Type == Sketcher::Parallel) {
-            lastCons.GeoId = firstCurve + 2;
-        }
 
         generateAutoConstraintsOnElement(sugConstraints[1],
                                          getHighestCurveIndex() - 2,
@@ -673,3 +682,4 @@ void DSHSlotController::addConstraints()
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerSlot_H
+
