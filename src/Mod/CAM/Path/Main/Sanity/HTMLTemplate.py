@@ -380,16 +380,16 @@ squawk_template = Template(
     """
 <tr>
     <td style="border: 1px solid #dedede; padding: 0.05cm">
-        ${squawkIcon}
+        ${icon}
     </td>
     <td style="border: 1px solid #dedede; padding: 0.05cm">
-        ${Operator}
+        ${operator}
     </td>
     <td style="border: 1px solid #dedede; padding: 0.05cm">
-        ${Date}
+        ${date}
     </td>
     <td style="border: 1px solid #dedede; padding: 0.05cm" colspan="3">
-        ${Note}
+        ${note}
     </td>
 </tr>
         """

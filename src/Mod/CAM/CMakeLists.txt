@@ -111,6 +111,8 @@ SET(PathPythonMainSanity_SRCS
     Path/Main/Sanity/Sanity_Caution.svg
     Path/Main/Sanity/Sanity_Note.svg
     Path/Main/Sanity/Sanity_Warning.svg
+    Path/Main/Sanity/SanityRule.py
+    Path/Main/Sanity/Squawk.py
 )
 
 SET(PathPythonTools_SRCS
