@@ -1814,32 +1814,230 @@ def joinWalls(walls, delete=False, deletebase=False):
     return base
 
 
-def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
+def makeWindow(
+    baseobj: Optional[FreeCAD.DocumentObject] = None,
+    width: Optional[float] = None,
+    height: Optional[float] = None,
+    parts: Optional[list[str]] = None,
+    name: Optional[str] = None,
+) -> FreeCAD.DocumentObject:
     """
-    Creates a window object based on the given base object.
+    Creates an Arch Window object, which can represent either a window or a door.
+
+    The created object can be based on a 2D profile (e.g., a Sketch), have its
+    dimensions set directly, or be defined by custom components. It can be
+    inserted into host objects like Walls, creating openings. The IfcType of
+    the object can be set to "Window" or "Door" accordingly (presets often
+    handle this automatically).
 
     Parameters
     ----------
-    baseobj : Draft.Wire or Sketcher.Sketch, optional
-        The base object for the window. It should be a well-formed, closed
-        Draft.Wire or Sketcher.Sketch object. Defaults to None.
+    baseobj : FreeCAD.DocumentObject, optional
+        The base object for the window/door.
+        If `baseobj` is an existing `Arch.Window` (or Door), it will be cloned.
+        If `baseobj` is a 2D object with wires (e.g., `Sketcher::SketchObject`,
+        `Draft.Wire`), these wires are used to define the geometry.
+        If `parts` is None, default components are generated from `baseobj.Shape.Wires`:
+        - If one closed wire: `["Default", "Frame", "Wire0", "1", "0"]` (or "Solid panel").
+        - If multiple closed wires (e.g., Wire0 outer, Wire1 inner):
+          `["Default", "Frame", "Wire0,Wire1", "1", "0"]` (Wire1 cuts Wire0).
+        The `Normal` direction is derived from `baseobj.Placement`.
+        Defaults to None.
     width : float, optional
-        The width of the window. Defaults to None.
+        The total width of the window/door.
+        If `baseobj` is None, this value is used by `ensureBase()` on first
+        recompute to create a default sketch with a "Width" constraint.
+        If `baseobj` is a sketch with a "Width" named constraint, setting
+        `window_or_door.Width` will drive this sketch constraint. `makeWindow` itself
+        does not initially set the object's `Width` *from* a sketch's constraint.
+        Defaults to None (or an Arch preference value if `baseobj` is None).
     height : float, optional
-        The height of the window. Defaults to None.
-    parts : list, optional
-        The parts of the window. Defaults to None.
+        The total height of the window/door.
+        If `baseobj` is None, this value is used by `ensureBase()` on first
+        recompute to create a default sketch with a "Height" constraint.
+        If `baseobj` is a sketch with a "Height" named constraint, setting
+        `window_or_door.Height` will drive this sketch constraint. `makeWindow` itself
+        does not initially set the object's `Height` *from* a sketch's constraint.
+        Defaults to None (or an Arch preference value if `baseobj` is None).
+    parts : list[str], optional
+        A list defining custom components for the window/door. The list is flat, with
+        every 5 elements describing one component:
+        `["Name1", "Type1", "WiresStr1", "ThickStr1", "OffsetStr1", ...]`
+        - `Name`: User-defined name (e.g., "OuterFrame").
+        - `Type`: Component type (e.g., "Frame", "Glass panel", "Solid panel").
+          See `ArchWindow.WindowPartTypes`.
+        - `WiresStr`: Comma-separated string defining wire usage from `baseobj.Shape.Wires`
+          (0-indexed) and optionally hinge/opening from `baseobj.Shape.Edges` (1-indexed).
+          Example: `"Wire0,Wire1,Edge8,Mode1"`.
+          - `"WireN"`: Uses Nth wire for the base face.
+          - `"WireN,WireM"`: WireN is base, WireM is cutout.
+          - `"EdgeK"`: Kth edge is hinge.
+          - `"ModeL"`: Lth opening mode from `ArchWindow.WindowOpeningModes`.
+        - `ThickStr`: Thickness as string (e.g., `"50.0"`). Appending `"+V"`
+          adds the object's `Frame` property value.
+        - `OffsetStr`: Offset along normal as string (e.g., `"25.0"`). Appending `"+V"`
+          adds the object's `Offset` property value.
+        Defaults to None. If None and `baseobj` is a sketch, default parts
+        are generated as described under `baseobj`.
     name : str, optional
-        The name to assign to the created window. Defaults to None.
+        The name (label) for the created window/door. If None, a default localized
+        name ("Window" or "Door", depending on context or subsequent changes) is used.
+        Defaults to None.
 
     Returns
     -------
-    Part::FeaturePython
-        The created window object.
+    FreeCAD.DocumentObject
+        The created Arch Window object (which is a `Part::FeaturePython` instance,
+        configurable to represent a window or a door).
+
+    See Also
+    --------
+    ArchWindowPresets.makeWindowPreset : Create window/door from predefined types.
+    ArchWall.addComponents : Add a window/door to a wall (creates opening).
 
     Notes
     -----
-    1. If baseobj is not a closed shape, the tool may not create a proper solid figure.
+    - **Dual purpose (window/door)**: despite its name, this function is the primary
+      way to programmatically create both windows and doors in the BIM workbench.
+      The distinction is often made by setting the `IfcType` property of the
+      created object to "Window" or "Door", and by the chosen components or preset.
+    - **Sketch-based dimensions**: If `baseobj` is a `Sketcher::SketchObject`
+      with named constraints "Width" and "Height", these sketch constraints will be
+      parametrically driven by the created object's `Width` and `Height` properties
+      respectively *after* the object is created and its properties are changed.
+      `makeWindow` itself does not initially populate the object's `Width`/`Height` from
+      these sketch constraints if `width`/`height` arguments are not passed to it.
+      The object's internal `Width` and `Height` properties are the drivers.
+    - **Object from dimensions (No `baseobj` initially)**: if `baseobj` is `None` but
+      `width` and `height` are provided, `makeWindow` creates an Arch Window object.
+      Upon the first `doc.recompute()`, the `ensureBase()` mechanism generates
+      an internal sketch (`obj.Base`) with "Width" and "Height" constraints
+      driven by `obj.Width` and `obj.Height`. However, `obj.WindowParts`
+      will remain undefined, resulting in a shapeless object until `WindowParts`
+      are manually set.
+    - **`obj.Frame` and `obj.Offset` properties**: these main properties of the
+      created object (e.g., `my_window.Frame = 50.0`) provide the values used when
+      `"+V"` is specified in the `ThicknessString` or `OffsetString` of a component
+      within the `parts` list.
+    - **Hosting and openings**: to create an opening in a host object (e.g., `Arch.Wall`),
+      set `obj.Hosts = [my_wall]`. The opening's shape is typically derived
+      from `obj.HoleWire` (defaulting to the largest wire of `obj.Base`) and
+      extruded by `obj.HoleDepth` (if 0, tries to match host thickness).
+      A custom `obj.Subvolume` can also define the opening shape.
+    - **Component management**: components and their geometry are primarily
+      managed by the `_Window` class and its methods in `ArchWindow.py`.
+    - **Initialization from sketch `baseobj`**: when `baseobj` is a sketch
+      (e.g., `Sketcher::SketchObject`) and `parts` is `None` or provided:
+        - The `window.Shape` (geometric representation) is correctly generated
+          at the global position and orientation defined by `baseobj.Placement`.
+        - However, the created window object's own `window.Placement` property is
+          **not** automatically initialized from `baseobj.Placement` and typically
+          remains at the identity placement (origin, no rotation).
+        - Similarly, the `window.Width` and `window.Height` properties are **not**
+          automatically populated from the dimensions of the `baseobj` sketch.
+          These properties will default to 0.0 or values from Arch preferences
+          (if `width`/`height` arguments to `makeWindow` are also `None`).
+        - If you need the `window` object's `Placement`, `Width`, or `Height`
+          properties to reflect the `baseobj` sketch for subsequent operations
+          (e.g., if other systems query these specific window properties, or if
+          you intend to parametrically drive the sketch via these window properties),
+          you may need to set them manually after `makeWindow` is called:
+        - The `ArchWindow._Window.execute()` method, when recomputing the window,
+          *does* use `window.Base.Shape` (the sketch's shape in its global position)
+          to generate the window's geometry. The `ArchWindow._Window.getSubVolume()`
+          method also correctly uses `window.Base.Shape` and the window object's
+          (identity) `Placement` for creating the cutting volume.
+
+    Examples
+    --------
+    >>> import FreeCAD as App
+    >>> import Draft, Arch, Sketcher, Part
+    >>> doc = App.newDocument("ArchWindowDoorExamples")
+
+    >>> # Ex1: Basic window from sketch and parts definition, oriented to XZ (vertical) plane
+    >>> sketch_ex1 = doc.addObject('Sketcher::SketchObject', 'WindowSketchEx1_Vertical')
+    >>> # Define geometry in sketch's local XY plane (width along local X, height along local Y)
+    >>> sketch_ex1.addGeometry(Part.LineSegment(App.Vector(0,0,0), App.Vector(1000,0,0))) # Wire0 - Outer
+    >>> sketch_ex1.addGeometry(Part.LineSegment(App.Vector(1000,0,0), App.Vector(1000,1200,0)))
+    >>> sketch_ex1.addGeometry(Part.LineSegment(App.Vector(1000,1200,0), App.Vector(0,1200,0)))
+    >>> sketch_ex1.addGeometry(Part.LineSegment(App.Vector(0,1200,0), App.Vector(0,0,0)))
+    >>> sketch_ex1.addGeometry(Part.LineSegment(App.Vector(100,100,0), App.Vector(900,100,0))) # Wire1 - Inner
+    >>> sketch_ex1.addGeometry(Part.LineSegment(App.Vector(900,100,0), App.Vector(900,1100,0)))
+    >>> sketch_ex1.addGeometry(Part.LineSegment(App.Vector(900,1100,0), App.Vector(100,1100,0)))
+    >>> sketch_ex1.addGeometry(Part.LineSegment(App.Vector(100,1100,0), App.Vector(100,100,0)))
+    >>> doc.recompute() # Update sketch Wires
+    >>> # Orient sketch: Rotate +90 deg around X-axis to place sketch's XY onto global XZ.
+    >>> # Sketch's local Y (height) now aligns with global Z. Sketch normal is global -Y.
+    >>> sketch_ex1.Placement.Rotation = App.Rotation(App.Vector(1,0,0), 90)
+    >>> doc.recompute() # Apply sketch placement
+    >>> window_ex1 = Arch.makeWindow(baseobj=sketch_ex1, name="MyWindowEx1_Vertical")
+    >>> # Window Normal will be derived as global +Y, extrusion along +Y.
+    >>> window_ex1.WindowParts = [
+    ...     "Frame", "Frame", "Wire0,Wire1", "60", "0",      # Frame from Wire0-Wire1
+    ...     "Glass", "Glass panel", "Wire1", "10", "25"     # Glass from Wire1, offset in Normal dir
+    ... ]
+    >>> doc.recompute()
+
+    >>> # Ex2: Window from sketch with named "Width"/"Height" constraints (on default XY plane)
+    >>> sketch_ex2 = doc.addObject('Sketcher::SketchObject', 'WindowSketchEx2_Named')
+    >>> sketch_ex2.addGeometry(Part.LineSegment(App.Vector(0,0,0), App.Vector(800,0,0))) # Edge 0
+    >>> sketch_ex2.addGeometry(Part.LineSegment(App.Vector(800,0,0), App.Vector(800,600,0))) # Edge 1
+    >>> sketch_ex2.addGeometry(Part.LineSegment(App.Vector(800,600,0), App.Vector(0,600,0))) # Complete Wire0
+    >>> sketch_ex2.addGeometry(Part.LineSegment(App.Vector(0,600,0), App.Vector(0,0,0)))
+    >>> sketch_ex2.addConstraint(Sketcher.Constraint('DistanceX',0,1,0,2, 800))
+    >>> sketch_ex2.renameConstraint(sketch_ex2.ConstraintCount-1, "Width")
+    >>> sketch_ex2.addConstraint(Sketcher.Constraint('DistanceY',1,1,1,2, 600))
+    >>> sketch_ex2.renameConstraint(sketch_ex2.ConstraintCount-1, "Height")
+    >>> doc.recompute()
+    >>> window_ex2 = Arch.makeWindow(baseobj=sketch_ex2, name="MyWindowEx2_Parametric")
+    >>> window_ex2.WindowParts = ["Frame", "Frame", "Wire0", "50", "0"]
+    >>> doc.recompute()
+    >>> print(f"Ex2 Initial - Sketch Width: {sketch_ex2.getDatum('Width')}, Window Width: {window_ex2.Width.Value}")
+    >>> window_ex2.Width = 950 # This drives the sketch constraint
+    >>> doc.recompute()
+    >>> print(f"Ex2 Updated - Sketch Width: {sketch_ex2.getDatum('Width')}, Window Width: {window_ex2.Width.Value}")
+
+    >>> # Ex3: Window from dimensions only (initially shapeless, sketch on XY plane)
+    >>> window_ex3 = Arch.makeWindow(width=700, height=900, name="MyWindowEx3_Dims")
+    >>> print(f"Ex3 Initial - Base: {window_ex3.Base}, Shape isNull: {window_ex3.Shape.isNull()}")
+    >>> doc.recompute() # ensureBase creates the sketch on XY plane
+    >>> print(f"Ex3 After Recompute - Base: {window_ex3.Base.Name if window_ex3.Base else 'None'}, Shape isNull: {window_ex3.Shape.isNull()}")
+    >>> window_ex3.WindowParts = ["SimpleFrame", "Frame", "Wire0", "40", "0"] # Wire0 from auto-generated sketch
+    >>> doc.recompute()
+    >>> print(f"Ex3 After Parts - Shape isNull: {window_ex3.Shape.isNull()}")
+
+    >>> # Ex4: Door created using an ArchWindowPresets function
+    >>> # Note: Arch.makeWindowPreset calls Arch.makeWindow internally
+    >>> door_ex4_preset = makeWindowPreset(
+    ...     "Simple door", width=900, height=2100,
+    ...     h1=50, h2=0, h3=0, w1=70, w2=40, o1=0, o2=0 # Preset-specific params
+    ... )
+    >>> if door_ex4_preset:
+    ...     door_ex4_preset.Label = "MyDoorEx4_Preset"
+    ...     doc.recompute()
+
+    >>> # Ex5: Door created from a sketch, with IfcType manually set (sketch on XY plane)
+    >>> sketch_ex5_door = doc.addObject('Sketcher::SketchObject', 'DoorSketchEx5')
+    >>> sketch_ex5_door.addGeometry(Part.LineSegment(App.Vector(0,0,0), App.Vector(850,0,0))) # Wire0
+    >>> sketch_ex5_door.addGeometry(Part.LineSegment(App.Vector(850,0,0), App.Vector(850,2050,0)))
+    >>> sketch_ex5_door.addGeometry(Part.LineSegment(App.Vector(850,2050,0), App.Vector(0,2050,0)))
+    >>> sketch_ex5_door.addGeometry(Part.LineSegment(App.Vector(0,2050,0), App.Vector(0,0,0)))
+    >>> doc.recompute()
+    >>> door_ex5_manual = Arch.makeWindow(baseobj=sketch_ex5_door, name="MyDoorEx5_Manual")
+    >>> door_ex5_manual.WindowParts = ["DoorPanel", "Solid panel", "Wire0", "40", "0"]
+    >>> door_ex5_manual.IfcType = "Door" # Explicitly define as a Door
+    >>> doc.recompute()
+
+    >>> # Ex6: Hosting the vertical window from Ex1 in an Arch.Wall
+    >>> wall_ex6 = Arch.makeWall(None, length=4000, width=200, height=2400)
+    >>> wall_ex6.Label = "WallForOpening_Ex6"
+    >>> # Window_ex1 is already oriented (its sketch placement was set in Ex1).
+    >>> # Now, just position the window object itself.
+    >>> window_ex1.Placement.Base = App.Vector(1500, wall_ex6.Width.Value / 2, 900) # X, Y (center of wall), Z (sill)
+    >>> window_ex1.HoleDepth = 0 # Use wall's thickness for the opening depth
+    >>> doc.recompute() # Apply window placement and HoleDepth
+    >>> window_ex1.Hosts = [wall_ex6]
+    >>> doc.recompute() # Wall recomputes to create the opening
     """
     import Draft
     import DraftGeomUtils
@@ -1899,7 +2097,7 @@ def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
                         part_name, part_type, wires_str, part_frame_thickness, part_offset
                     ]
             else:
-                # bind properties from base obj if existing
+                # Bind properties from base obj if they exist
                 for prop in ["Height", "Width", "Subvolume", "Tag", "Description", "Material"]:
                     for baseobj_prop in baseobj.PropertiesList:
                         if (baseobj_prop == prop) or baseobj_prop.endswith(f"_{prop}"):

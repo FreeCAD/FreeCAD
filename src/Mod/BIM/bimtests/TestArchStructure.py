@@ -22,23 +22,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-import Arch
 import FreeCAD as App
+import Arch
 from bimtests import TestArchBase
 
-class TestArchEquipment(TestArchBase.TestArchBase):
+class TestArchStructure(TestArchBase.TestArchBase):
 
-    def test_makeEquipment(self):
-        """Test the makeEquipment function."""
-
-        obj = Arch.makeEquipment()
-        self.assertIsNotNone(obj, "makeEquipment failed to create an object")
-        self.assertEqual(obj.Label, "Equipment", "Incorrect default label for Equipment")
-
-    def testEquipment(self):
-        box = App.ActiveDocument.addObject("Part::Box", "Box")
-        box.Length = 500
-        box.Width = 2000
-        box.Height = 600
-        equip = Arch.makeEquipment(box)
-        self.assertTrue(equip,"Arch Equipment failed")
+    def testStructure(self):
+        App.Console.PrintLog ('Checking BIM Structure...\n')
+        s = Arch.makeStructure(length=2,width=3,height=5)
+        self.assertTrue(s,"BIM Structure failed")
