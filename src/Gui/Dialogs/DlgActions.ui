@@ -115,7 +115,7 @@
             <item row="6" column="0">
              <widget class="QLabel" name="TextLabel5_2">
               <property name="text">
-               <string>Pixmap</string>
+               <string>Icon</string>
               </property>
              </widget>
             </item>
@@ -124,7 +124,7 @@
               <item>
                <widget class="QToolButton" name="buttonChoosePixmap">
                 <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
@@ -135,14 +135,14 @@
                   <height>30</height>
                  </size>
                 </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>40</width>
-                  <height>30</height>
-                 </size>
+                <property name="toolTip">
+                 <string>Choose an icon</string>
                 </property>
                 <property name="text">
-                 <string>Choose Icon</string>
+                 <string>Choose ...</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="QIcon::ThemeIcon::FolderOpen"/>
                 </property>
                </widget>
               </item>
