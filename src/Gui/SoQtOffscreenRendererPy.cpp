@@ -24,6 +24,7 @@
 #include <Base/Interpreter.h>
 
 #include "SoQtOffscreenRendererPy.h"
+#include <qbuffer.h>
 
 
 using namespace Gui;
@@ -160,6 +161,32 @@ Py::Object SoQtOffscreenRendererPy::writeToImage(const Py::Tuple& args)
     return Py::None();
 }
 PYCXX_VARARGS_METHOD_DECL(SoQtOffscreenRendererPy, writeToImage)
+
+Py::Object SoQtOffscreenRendererPy::writeToBuffer(const Py::Tuple& args)
+{
+    const char* format = "PNG";
+    int quality = -1;
+    
+    if (!PyArg_ParseTuple(args.ptr(), "|si", &format, &quality)) {
+        throw Py::Exception();
+    }
+
+    QImage img;
+    renderer.writeToImage(img);
+    
+    QByteArray byteArray;
+    QBuffer    buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+    
+
+    if ( !img.save(&buffer, format, quality) ) {
+        throw Py::RuntimeError("Failed to save image to buffer");
+    }
+    
+    buffer.close();
+    
+    return Py::Bytes(byteArray.data(), byteArray.size());
+}
 
 Py::Object SoQtOffscreenRendererPy::getWriteImageFiletypeInfo()
 {
