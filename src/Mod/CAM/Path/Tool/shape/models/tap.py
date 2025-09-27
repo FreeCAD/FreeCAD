@@ -56,6 +56,10 @@ class ToolBitShapeTap(ToolBitShape):
                 FreeCAD.Qt.translate("ToolBitShape", "Tip angle"),
                 "App::PropertyAngle",
             ),
+            "Pitch": (
+                FreeCAD.Qt.translate("ToolBitShape", "Thread pitch"),
+                "App::PropertyLength",
+            ),
         }
 
     @property
