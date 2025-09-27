@@ -30,10 +30,10 @@
 #include <Gui/Command.h>
 #include <Gui/Tools.h>
 #include <Gui/Inventor/Draggers/Gizmo.h>
-#include <Gui/Inventor/Draggers/GizmoHelper.h>
 #include <Gui/Inventor/Draggers/SoLinearDragger.h>
 #include <Gui/Inventor/Draggers/SoRotationDragger.h>
 #include <Mod/PartDesign/App/FeatureExtrude.h>
+#include <Mod/Part/App/GizmoHelper.h>
 
 #include "ui_TaskPadPocketParameters.h"
 #include "TaskExtrudeParameters.h"

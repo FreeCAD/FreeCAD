@@ -45,7 +45,7 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Geometry.h>
 
-struct GuiExport EdgeMidPointProps
+struct PartExport EdgeMidPointProps
 {
     Base::Vector3d position;
     Base::Vector3d tangent;
@@ -124,7 +124,7 @@ inline std::pair<TopoDS_Face, TopoDS_Face> getAdjacentFacesFromEdge(Part::TopoSh
     return {face1, face2};
 }
 
-struct GuiExport DraggerPlacementProps
+struct PartExport DraggerPlacementProps
 {
     Base::Vector3d position;
     Base::Vector3d dir;

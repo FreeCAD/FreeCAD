@@ -35,10 +35,10 @@
 #include <Gui/WaitCursor.h>
 #include <Mod/Part/App/Tools.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
-#include <Gui/Inventor/Draggers/GizmoHelper.h>
 #include <Gui/Inventor/Draggers/SoLinearDragger.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureHelix.h>
+#include <Mod/Part/App/GizmoHelper.h>
 
 #include "ReferenceSelection.h"
 #include "ui_TaskHelixParameters.h"
