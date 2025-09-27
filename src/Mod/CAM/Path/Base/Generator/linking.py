@@ -22,11 +22,16 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 import Part
 import Path
 from FreeCAD import Vector
 from typing import List, Optional
+
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 def get_linking_moves(
     start_position: Vector,

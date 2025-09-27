@@ -55,7 +55,7 @@ if FreeCAD.GuiUp:
 translate = FreeCAD.Qt.translate
 
 
-if True:
+if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
@@ -95,11 +95,10 @@ class ObjectMillFacing(PathOp.ObjectOp):
 
         # Set enumeration lists for enumeration properties
         if len(self.addNewProps) > 0:
-            enumDict = ObjectMillFacing.propertyEnumerations(dataType="raw")
-            for k, tupList in enumDict.items():
-                if k in self.addNewProps:
-                    setattr(obj, k, [t[1] for t in tupList])
-
+            ENUMS = self.propertyEnumerations()
+            for n in ENUMS:
+                if n[0] in self.addNewProps:
+                    setattr(obj, n[0], n[1])
             if warn:
                 newPropMsg = translate("CAM_MIllFacing", "New property added to")
                 newPropMsg += ' "{}": {}'.format(obj.Label, self.addNewProps) + ". "
@@ -107,6 +106,15 @@ class ObjectMillFacing(PathOp.ObjectOp):
                 FreeCAD.Console.PrintWarning(newPropMsg + "\n")
 
         self.propertiesReady = True
+
+    def onChanged(self, obj, prop):
+        """onChanged(obj, prop) ... Called when a property changes"""
+        if prop == "StepOver" and hasattr(obj, "StepOver"):
+            # Validate StepOver is between 0 and 100 percent
+            if obj.StepOver < 0:
+                obj.StepOver = 0
+            elif obj.StepOver > 100:
+                obj.StepOver = 100
 
     def opPropertyDefinitions(self):
         """opPropertyDefinitions(obj) ... Store operation specific properties"""
@@ -140,12 +148,12 @@ class ObjectMillFacing(PathOp.ObjectOp):
                 ),
             ),
             (
-                "App::PropertyDistance",
+                "App::PropertyPercent",
                 "StepOver",
                 "Facing",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Set the stepover for the operation.",
+                    "Set the stepover percentage of tool diameter.",
                 ),
             ),
             (
@@ -155,6 +163,24 @@ class ObjectMillFacing(PathOp.ObjectOp):
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Set the stock to leave for the operation.",
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "AxisPreference",
+                "Facing",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set the axis preference for the toolpath direction.",
+                ),
+            ),
+            (
+                "App::PropertyDistance",
+                "PassExtension",
+                "Facing",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Distance to extend cuts beyond polygon boundary for tool disengagement.",
                 ),
             ),
         ]
@@ -182,6 +208,10 @@ class ObjectMillFacing(PathOp.ObjectOp):
                 (translate("CAM_MillFacing", "Directional"), "Directional"),
                 (translate("CAM_MillFacing", "Spiral"), "Spiral"),
             ],
+            "AxisPreference": [
+                (translate("CAM_MillFacing", "Long"), "Long"),
+                (translate("CAM_MillFacing", "Short"), "Short"),
+            ],
         }
 
         if dataType == "raw":
@@ -206,22 +236,40 @@ class ObjectMillFacing(PathOp.ObjectOp):
             "ClearingPattern": "ZigZag",
             "Angle": 0,
             "StepOver": 25,
+            "MaterialAllowance": 0.0,
         }
 
         return defaults
+
+    def opSetDefaultValues(self, obj, job):
+        """opSetDefaultValues(obj, job) ... set default values for operation-specific properties"""
+        Path.Log.track()
+        
+        # Set default values directly like other operations do
+        obj.CutMode = "Climb"
+        obj.ClearingPattern = "ZigZag"
+        obj.Angle = 0.0
+        obj.StepOver = 25  # 25% as percentage
+        obj.MaterialAllowance = 0.0
+        obj.AxisPreference = "Long"
+        obj.PassExtension = 3.0  # Default to 3mm, will be adjusted based on tool diameter in opExecute
 
 
 
     def opExecute(self, obj):
         """opExecute(obj) ... process Mill Facing operation"""
         Path.Log.track()
+        Path.Log.debug("MillFacing.opExecute() starting")
 
         # Get tool information
         tool = obj.ToolController.Tool
+        Path.Log.debug(f"Tool: {tool.Label if tool else 'None'}")
         tool_diameter = tool.Diameter.Value
+        Path.Log.debug(f"Tool diameter: {tool_diameter}")
         
         # Determine the step-downs
         finish_step = 0.0  # No finish step for facing
+        Path.Log.debug(f"Depth parameters: clearance={obj.ClearanceHeight.Value}, safe={obj.SafeHeight.Value}, start={obj.StartDepth.Value}, step={obj.StepDown.Value}, final={obj.FinalDepth.Value + obj.MaterialAllowance.Value}")
         depthparams = PathUtils.depth_params(
             clearance_height=obj.ClearanceHeight.Value,
             safe_height=obj.SafeHeight.Value,
@@ -231,15 +279,41 @@ class ObjectMillFacing(PathOp.ObjectOp):
             final_depth=obj.FinalDepth.Value + obj.MaterialAllowance.Value,
             user_depths=None,
         )
+        Path.Log.debug(f"Depth params object: {depthparams}")
 
         # Always use the stock object top face for facing operations
         job = PathUtils.findParentJob(obj)
+        Path.Log.debug(f"Job: {job.Label if job else 'None'}")
         if job and job.Stock:
+            Path.Log.debug(f"Stock: {job.Stock.Label}")
             stock_faces = job.Stock.Shape.Faces
-            # Find the topmost face
-            top_face = max(stock_faces, key=lambda f: f.BoundBox.ZMax)
+            Path.Log.debug(f"Number of stock faces: {len(stock_faces)}")
+            
+            # Find faces with normal pointing toward Z+ (upward)
+            z_up_faces = []
+            for face in stock_faces:
+                # Get face normal at center
+                u_mid = (face.ParameterRange[0] + face.ParameterRange[1]) / 2
+                v_mid = (face.ParameterRange[2] + face.ParameterRange[3]) / 2
+                normal = face.normalAt(u_mid, v_mid)
+                Path.Log.debug(f"Face normal: {normal}, Z component: {normal.z}")
+                
+                # Check if normal points upward (Z+ direction) with some tolerance
+                if normal.z > 0.9:  # Allow for slight deviation from perfect vertical
+                    z_up_faces.append(face)
+                    Path.Log.debug(f"Found upward-facing face at Z={face.BoundBox.ZMax}")
+            
+            if not z_up_faces:
+                Path.Log.error("No upward-facing faces found in stock")
+                raise ValueError("No upward-facing faces found in stock")
+            
+            # From the upward-facing faces, select the highest one
+            top_face = max(z_up_faces, key=lambda f: f.BoundBox.ZMax)
+            Path.Log.debug(f"Selected top face ZMax: {top_face.BoundBox.ZMax}")
             wire = top_face.OuterWire
+            Path.Log.debug(f"Wire vertices: {len(wire.Vertexes)}")
         else:
+            Path.Log.error("No stock found for facing operation")
             raise ValueError("No stock found for facing operation")
 
         # Use facing_common.get_angled_polygon to get the angled polygon with the angle property
@@ -249,126 +323,149 @@ class ObjectMillFacing(PathOp.ObjectOp):
         # Determine milling direction
         milling_direction = "climb" if obj.CutMode == "Climb" else "conventional"
         
-        # Convert stepover percentage
-        stepover_percent = obj.StepOver.Value
+        # Get operation parameters
+        stepover_percent = obj.StepOver
+        axis_preference = obj.AxisPreference.lower() if hasattr(obj, 'AxisPreference') else "long"
+        pass_extension = obj.PassExtension.Value if hasattr(obj, 'PassExtension') else tool_diameter * 0.5
+        retract_height = obj.SafeHeight.Value
+        
+        Path.Log.debug(f"Milling direction: {milling_direction}, StepOver: {obj.StepOver}, stepover_percent: {stepover_percent}")
+        Path.Log.debug(f"Clearing pattern: {obj.ClearingPattern}, Axis preference: {axis_preference}")
+        Path.Log.debug(f"Pass extension: {pass_extension}, Retract height: {retract_height}")
 
         # Generate the base toolpath for one depth level based on clearing pattern
-        if obj.ClearingPattern == "Spiral":
-            # Spiral has different signature - no pass_extension or retract_height
-            base_commands = spiral_facing.spiral(
-                polygon=wire,
-                tool_diameter=tool_diameter,
-                stepover_percent=stepover_percent,
-                axis_preference="long",
-                milling_direction=milling_direction
-            )
-        elif obj.ClearingPattern == "ZigZag":
-            base_commands = zigzag_facing.zigzag(
-                polygon=wire,
-                tool_diameter=tool_diameter,
-                stepover_percent=stepover_percent,
-                axis_preference="long",
-                pass_extension=None,
-                retract_height=None,
-                milling_direction=milling_direction
-            )
-        elif obj.ClearingPattern == "Bidirectional":
-            base_commands = bidirectional_facing.bidirectional(
-                polygon=wire,
-                tool_diameter=tool_diameter,
-                stepover_percent=stepover_percent,
-                axis_preference="long",
-                pass_extension=None,
-                retract_height=None,
-                milling_direction=milling_direction
-            )
-        elif obj.ClearingPattern == "Directional":
-            base_commands = directional_facing.directional(
-                polygon=wire,
-                tool_diameter=tool_diameter,
-                stepover_percent=stepover_percent,
-                axis_preference="long",
-                pass_extension=None,
-                retract_height=None,
-                milling_direction=milling_direction
-            )
-        else:
-            raise ValueError(f"Unknown clearing pattern: {obj.ClearingPattern}")
-
-        # Initialize the result command list
-        commands = []
-        
-        # Add initial rapid to clearance height
-        commands.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-
-        # Process each step-down
-        for i, depth in enumerate(depthparams.depths):
-            is_last_pass = (i == len(depthparams.depths) - 1)
-            
-            # Copy the base commands and adjust Z coordinates
-            depth_commands = []
-            for cmd in base_commands:
-                new_params = dict(cmd.Parameters)
-                if "Z" in new_params:
-                    new_params["Z"] = depth
-                
-                depth_commands.append(Path.Command(cmd.Name, new_params))
-            
-            commands.extend(depth_commands)
-            
-            # Handle linking between passes
-            if not is_last_pass:
-                # Extract final position from current pass
-                final_cmd = depth_commands[-1]
-                final_pos = FreeCAD.Vector(
-                    final_cmd.Parameters.get("X", 0),
-                    final_cmd.Parameters.get("Y", 0),
-                    depth
+        try:
+            if obj.ClearingPattern == "Spiral":
+                # Spiral has different signature - no pass_extension or retract_height
+                Path.Log.debug("Generating spiral toolpath")
+                base_commands = spiral_facing.spiral(
+                    polygon=wire,
+                    tool_diameter=tool_diameter,
+                    stepover_percent=stepover_percent,
+                    axis_preference=axis_preference,
+                    milling_direction=milling_direction
                 )
+            elif obj.ClearingPattern == "ZigZag":
+                Path.Log.debug("Generating zigzag toolpath")
+                base_commands = zigzag_facing.zigzag(
+                    polygon=wire,
+                    tool_diameter=tool_diameter,
+                    stepover_percent=stepover_percent,
+                    axis_preference=axis_preference,
+                    pass_extension=pass_extension,
+                    retract_height=retract_height,
+                    milling_direction=milling_direction
+                )
+            elif obj.ClearingPattern == "Bidirectional":
+                Path.Log.debug("Generating bidirectional toolpath")
+                base_commands = bidirectional_facing.bidirectional(
+                    polygon=wire,
+                    tool_diameter=tool_diameter,
+                    stepover_percent=stepover_percent,
+                    axis_preference=axis_preference,
+                    pass_extension=pass_extension,
+                    retract_height=retract_height,
+                    milling_direction=milling_direction
+                )
+            elif obj.ClearingPattern == "Directional":
+                Path.Log.debug("Generating directional toolpath")
+                base_commands = directional_facing.directional(
+                    polygon=wire,
+                    tool_diameter=tool_diameter,
+                    stepover_percent=stepover_percent,
+                    axis_preference=axis_preference,
+                    pass_extension=pass_extension,
+                    retract_height=retract_height,
+                    milling_direction=milling_direction
+                )
+            else:
+                Path.Log.error(f"Unknown clearing pattern: {obj.ClearingPattern}")
+                raise ValueError(f"Unknown clearing pattern: {obj.ClearingPattern}")
+            
+            Path.Log.debug(f"Generated {len(base_commands)} base commands")
+            
+        except Exception as e:
+            Path.Log.error(f"Error generating toolpath: {e}")
+            raise
+
+        # Process each step-down using iterator protocol and add to commandlist
+        depth_count = 0
+        try:
+            while True:
+                depth = depthparams.next()
+                depth_count += 1
+                Path.Log.debug(f"Processing depth {depth_count}: {depth}")
                 
-                # Get the next depth level
-                next_depth = depthparams.depths[i + 1]
-                
-                # Generate the next pass commands but replace the first G0 with linking moves
-                next_depth_commands = []
-                first_g0_cmd = None
-                
-                for j, cmd in enumerate(base_commands):
-                    new_params = dict(cmd.Parameters)
-                    if "Z" in new_params:
-                        new_params["Z"] = next_depth
+                if depth_count == 1:
+                    # First stepdown - adjust Z depths for the commands directly
+                    for cmd in base_commands:
+                        new_params = dict(cmd.Parameters)
+                        if "Z" in new_params:
+                            new_params["Z"] = depth
+                        self.commandlist.append(Path.Command(cmd.Name, new_params))
+                    Path.Log.debug(f"First stepdown: Added {len(base_commands)} commands for depth {depth}")
+                else:
+                    # Subsequent stepdowns - handle linking
+                    # Make a copy of base_commands and update Z depths
+                    copy_commands = []
+                    for cmd in base_commands:
+                        new_params = dict(cmd.Parameters)
+                        if "Z" in new_params:
+                            new_params["Z"] = depth
+                        copy_commands.append(Path.Command(cmd.Name, new_params))
                     
+                    # Get the last position from self.commandlist
+                    last_cmd = self.commandlist[-1]
+                    last_position = FreeCAD.Vector(
+                        last_cmd.Parameters.get("X", 0),
+                        last_cmd.Parameters.get("Y", 0),
+                        last_cmd.Parameters.get("Z", depth)
+                    )
                     
-                    # Replace the first G0 command with linking moves
-                    if j == 0 and cmd.Name == "G0":
-                        first_g0_cmd = cmd
-                        target_pos = FreeCAD.Vector(
-                            new_params.get("X", 0),
-                            new_params.get("Y", 0),
-                            next_depth
-                        )
-                        
-                        # Generate linking moves to replace the G0
+                    # Find the first position (first G0 command in the copy)
+                    first_g0_idx = None
+                    first_position = None
+                    for i, cmd in enumerate(copy_commands):
+                        if cmd.Name == "G0":
+                            first_g0_idx = i
+                            first_position = FreeCAD.Vector(
+                                cmd.Parameters.get("X", 0),
+                                cmd.Parameters.get("Y", 0),
+                                cmd.Parameters.get("Z", depth)
+                            )
+                            break
+                    
+                    if first_g0_idx is not None:
+                        # Generate linking moves
                         link_commands = linking.get_linking_moves(
-                            start_position=final_pos,
-                            target_position=target_pos,
+                            start_position=last_position,
+                            target_position=first_position,
                             local_clearance=obj.SafeHeight.Value,
                             global_clearance=obj.ClearanceHeight.Value,
                             tool_shape=obj.ToolController.Tool.Shape
                         )
-                        next_depth_commands.extend(link_commands)
-                    else:
-                        next_depth_commands.append(Path.Command(cmd.Name, new_params))
+                        
+                        # Append linking moves to commandlist
+                        self.commandlist.extend(link_commands)
+                        
+                        # Remove the G0 command from copy (replaced by linking moves)
+                        copy_commands.pop(first_g0_idx)
+                    
+                    # Append the copy commands
+                    self.commandlist.extend(copy_commands)
+                    Path.Log.debug(f"Stepdown {depth_count}: Added linking + {len(copy_commands)} commands for depth {depth}")
                 
-                commands.extend(next_depth_commands)
-            else:
-                # Final pass - rapid to clearance height
-                commands.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+        except StopIteration:
+            Path.Log.debug(f"All depths processed. Total depth levels: {depth_count}")
 
-        # Create the path and apply feedrates using the helper
-        path = Path.Path(commands)
-        FeedRate.setFeedRate(path.Commands, obj.ToolController)
-        obj.Path = path
+        # Add final G0 to clearance height
+        self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+        
+        # Apply feedrates to the entire commandlist
+        FeedRate.setFeedRate(self.commandlist, obj.ToolController)
+        
+        Path.Log.debug(f"Total commands in commandlist: {len(self.commandlist)}")
+        Path.Log.debug("MillFacing.opExecute() completed successfully")
 
 
 # Eclass

@@ -32,6 +32,13 @@ import FreeCAD
 import Path
 from . import facing_common
 
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
 
 def zigzag(polygon, tool_diameter, stepover_percent, axis_preference="long", pass_extension=None, retract_height=None, milling_direction="climb"):
     """
@@ -54,6 +61,8 @@ def zigzag(polygon, tool_diameter, stepover_percent, axis_preference="long", pas
     Returns:
         List of Path.Command objects representing the toolpath
     """
+
+    Path.Log.debug(f"Zigzag: Tool diameter: {tool_diameter}, stepover_percent: {stepover_percent}, axis_preference: {axis_preference}, pass_extension: {pass_extension}, retract_height: {retract_height}, milling_direction: {milling_direction}")
     if pass_extension is None:
         pass_extension = tool_diameter * 0.5  # Default to half tool diameter
     
@@ -125,9 +134,6 @@ def zigzag(polygon, tool_diameter, stepover_percent, axis_preference="long", pas
                 # Odd passes: cut in primary vector direction
                 start_point = FreeCAD.Vector(pass_start_base).sub(primary_extension)
                 end_point = FreeCAD.Vector(pass_start_base).add(primary_full_length).add(primary_extension)
-        
-        Path.Log.debug("Zigzag Step {}: pass={}, step_offset={}, start_point={}, end_point={}".format(
-            step_distance, i, step_offset, start_point, end_point))
         
         # Set Z coordinate
         start_point.z = z

@@ -32,6 +32,13 @@ import FreeCAD
 import Path
 from . import facing_common
 
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
 
 def generate_spiral_corners(start_corner, primary_vec, step_vec, primary_length, step_length, inward_offset):
     """Generate the four corners of a spiral layer offset inward from the original polygon."""
@@ -102,6 +109,8 @@ def spiral(polygon, tool_diameter, stepover_percent, axis_preference="long", mil
     Returns:
         List of Path.Command objects representing the toolpath
     """
+    Path.Log.debug(f"tool_diameter: {tool_diameter}, stepover_percent: {stepover_percent}, axis_preference: {axis_preference}, milling_direction: {milling_direction}")
+
     # Extract polygon edges and corners directly
     polygon_info = facing_common.extract_polygon_geometry(polygon)
     edges = polygon_info['edges']

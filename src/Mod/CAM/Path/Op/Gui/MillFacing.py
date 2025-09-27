@@ -25,6 +25,7 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
+import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.MillFacing as PathMillFacing
 import FreeCADGui
@@ -52,12 +53,80 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         comboToPropertyMap = [
             ("cutMode", "CutMode"),
             ("clearingPattern", "ClearingPattern"),
+            ("axisPreference", "AxisPreference"),
         ]
 
         enumTups = PathMillFacing.ObjectMillFacing.propertyEnumerations(dataType="raw")
-
-        self.populateCombobox(form, enumTups, comboToPropertyMap)
+        PathGuiUtil.populateCombobox(form, enumTups, comboToPropertyMap)
         return form
+
+    def getFields(self, obj):
+        """getFields(obj) ... transfers values from UI to obj's properties"""
+        self.updateToolController(obj, self.form.toolController)
+        self.updateCoolant(obj, self.form.coolantController)
+
+        if obj.CutMode != str(self.form.cutMode.currentData()):
+            obj.CutMode = str(self.form.cutMode.currentData())
+
+        if obj.ClearingPattern != str(self.form.clearingPattern.currentData()):
+            obj.ClearingPattern = str(self.form.clearingPattern.currentData())
+
+        if hasattr(obj, 'AxisPreference') and obj.AxisPreference != str(self.form.axisPreference.currentData()):
+            obj.AxisPreference = str(self.form.axisPreference.currentData())
+
+        if obj.Angle != self.form.angle.value():
+            obj.Angle = self.form.angle.value()
+
+        if obj.StepOver != self.form.stepOver.value():
+            obj.StepOver = self.form.stepOver.value()
+
+        PathGuiUtil.updateInputField(obj, "MaterialAllowance", self.form.materialAllowance)
+        
+        # Only update PassExtension if the property exists
+        if hasattr(obj, 'PassExtension'):
+            PathGuiUtil.updateInputField(obj, "PassExtension", self.form.passExtension)
+
+    def setFields(self, obj):
+        """setFields(obj) ... transfers obj's property values to UI"""
+        self.setupToolController(obj, self.form.toolController)
+        self.setupCoolant(obj, self.form.coolantController)
+        
+        self.selectInComboBox(obj.CutMode, self.form.cutMode)
+        self.selectInComboBox(obj.ClearingPattern, self.form.clearingPattern)
+        
+        # Handle new properties that may not exist in older operations
+        if hasattr(obj, 'AxisPreference'):
+            self.selectInComboBox(obj.AxisPreference, self.form.axisPreference)
+        else:
+            self.form.axisPreference.setCurrentText("Long")  # Default value
+        
+        self.form.angle.setValue(obj.Angle)
+        self.form.stepOver.setValue(obj.StepOver)
+        self.form.materialAllowance.setText(
+            FreeCAD.Units.Quantity(obj.MaterialAllowance.Value, FreeCAD.Units.Length).UserString
+        )
+        
+        if hasattr(obj, 'PassExtension'):
+            self.form.passExtension.setText(
+                FreeCAD.Units.Quantity(obj.PassExtension.Value, FreeCAD.Units.Length).UserString
+            )
+        else:
+            self.form.passExtension.setText("3.0 mm")  # Default value
+
+    def getSignalsForUpdate(self, obj):
+        """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
+        signals = []
+        signals.append(self.form.toolController.currentIndexChanged)
+        signals.append(self.form.coolantController.currentIndexChanged)
+        signals.append(self.form.cutMode.currentIndexChanged)
+        signals.append(self.form.clearingPattern.currentIndexChanged)
+        signals.append(self.form.axisPreference.currentIndexChanged)
+        signals.append(self.form.angle.editingFinished)
+        signals.append(self.form.stepOver.editingFinished)
+        signals.append(self.form.materialAllowance.editingFinished)
+        signals.append(self.form.passExtension.editingFinished)
+        
+        return signals
 
 
 

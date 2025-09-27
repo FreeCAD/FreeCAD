@@ -35,6 +35,13 @@ import Path
 from . import facing_common
 
 
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
 def bidirectional(polygon, tool_diameter, stepover_percent, axis_preference="long", pass_extension=None, retract_height=None, milling_direction="climb"):
     """
     Generate a bidirectional clearing pattern.
@@ -59,6 +66,8 @@ def bidirectional(polygon, tool_diameter, stepover_percent, axis_preference="lon
     Returns:
         List of Path.Command objects representing the toolpath
     """
+    Path.Log.debug(f"Bidirectional: Tool diameter: {tool_diameter}, stepover_percent: {stepover_percent}, axis_preference: {axis_preference}, pass_extension: {pass_extension}, retract_height: {retract_height}, milling_direction: {milling_direction}")
+
     if pass_extension is None:
         pass_extension = tool_diameter * 0.5  # Default to half tool diameter
     

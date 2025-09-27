@@ -33,6 +33,11 @@ import FreeCAD
 import Path
 import Part
 
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 def extract_polygon_geometry(polygon):
     """Extract edges and corners from a rectangular polygon."""
