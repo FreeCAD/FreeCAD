@@ -1,0 +1,11 @@
+results.png - shows the new panel
+
+################ add before start animation ######################
+Cycle Type:
+
+Full cycle: cycles between 0 - 180 - 360 degrees
+
+Half cycle: if "Number of cycles" > 0 cycles between 0 - 180 degrees
+            if "Number of cycles" == 0 cycles between 0 - 90 degrees, once
+################ add before start animation ######################
+
