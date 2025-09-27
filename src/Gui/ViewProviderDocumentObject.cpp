@@ -164,6 +164,7 @@ void ViewProviderDocumentObject::onBeforeChange(const App::Property* prop)
 
 void ViewProviderDocumentObject::onChanged(const App::Property* prop)
 {
+    bool changedVisibility = false;
     if (prop == &DisplayMode) {
         setActiveMode();
     }
@@ -178,6 +179,7 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
                 && getObject()
                 && getObject()->Visibility.getValue()!=Visibility.getValue())
         {
+            changedVisibility = true;
             // Changing the visibility of a document object will automatically set
             // the document modified but if the 'TouchDocument' flag is not set then
             // this is undesired behaviour. So, if this change marks the document as
@@ -211,11 +213,12 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
 
     if (prop && !prop->testStatus(App::Property::NoModify)
              && pcDocument
-             && !pcDocument->isModified()
-             && testStatus(Gui::ViewStatus::TouchDocument)) {
+            //  && !pcDocument->isModified()
+             && testStatus(Gui::ViewStatus::TouchDocument)
+            && !(prop == &Visibility && !changedVisibility)) {
         if (prop)
             FC_LOG(prop->getFullName() << " changed");
-        pcDocument->setModified(true);
+        pcDocument->setModified(Document::ModificationType::OutOfTransaction);
     }
 
     ViewProvider::onChanged(prop);
