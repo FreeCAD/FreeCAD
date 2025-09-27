@@ -61,11 +61,11 @@ repos:
     -   id: check-added-large-files
     -   id: mixed-line-ending
 -   repo: https://github.com/psf/black
-    rev: 8a737e727ac5ab2f1d4cf5876720ed276dc8dc4b  # frozen: 25.1.0
+    rev: af0ba72a73598c76189d6dd1b21d8532255d5942  # frozen: 25.9.0
     hooks:
         -   id: black
             args: ['--line-length', '100']
 -   repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: 86fdcc9bd34d6afbbd29358b97436c8ffe3aa3b2  # frozen: v21.1.0
+    rev: 74255df91d8d2005597feb25c0e96b9a6a0f33a0  # frozen: v21.1.1
     hooks:
         -   id: clang-format
