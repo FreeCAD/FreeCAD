@@ -1177,19 +1177,25 @@ class TestArchReport(TestArchBase.TestArchBase):
         group.addObject(space)
         self.doc.recompute()
 
-        # 2. The Query
-        # Select the PARENT(*) of the space. This should return the Floor object itself.
-        query = f"SELECT PARENT(*) FROM document WHERE Label = '{space.Label}'"
-        _, data = Arch.select(query)
+        with self.subTest(description="Pure PARENT(*) returns the parent object"):
+            # 2a. The Query for the pure function
+            # This should return the Floor object itself.
+            query = f"SELECT PARENT(*) FROM document WHERE Label = '{space.Label}'"
+            _, data = Arch.select(query)
 
-        # 3. Assertions
-        self.assertEqual(len(data), 1, "Query should return exactly one row.")
-        self.assertEqual(len(data[0]), 1, "Row should contain exactly one column.")
+            # 2b. Assertions for the pure function
+            self.assertEqual(len(data), 1, "Query should return exactly one row.")
+            returned_parent = data[0][0]
+            self.assertEqual(returned_parent, floor, "PARENT(*) did not return the correct Floor object.")
 
-        # The returned value should be the actual Floor object.
-        returned_parent = data[0][0]
-        self.assertIsInstance(returned_parent, FreeCAD.DocumentObject, "The result should be a DocumentObject.")
-        self.assertEqual(returned_parent, floor, "PARENT(*) did not return the correct Floor object.")
+        with self.subTest(description="Pythonic access PARENT(*).Label"):
+            # 3a. The Query for Pythonic access
+            query_py = f"SELECT PARENT(*).Label FROM document WHERE Label = '{space.Label}'"
+            _, data_py = Arch.select(query_py)
+
+            # 3b. Assertions for Pythonic access
+            self.assertEqual(len(data_py), 1, "Query should return exactly one row.")
+            self.assertEqual(data_py[0][0], floor.Label, "PARENT(*).Label did not return the correct parent Label.")
 
         # 4. Test case with no significant parent
         # A top-level object's parent should be None.
