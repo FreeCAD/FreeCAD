@@ -82,8 +82,6 @@ endif()
 
 list(APPEND FreeCADBase_LIBS ${QtCore_LIBRARIES})
 
-list(APPEND FreeCADBase_LIBS fmt::fmt)
-
 if (BUILD_DYNAMIC_LINK_PYTHON)
     list(APPEND FreeCADBase_LIBS ${Python3_LIBRARIES})
 endif (BUILD_DYNAMIC_LINK_PYTHON)

@@ -39,6 +39,7 @@
 #include <chrono>
 #include <cmath>
 #include <codecvt>
+#include <format>
 #include <locale>
 
 #ifdef FC_OS_WIN32
