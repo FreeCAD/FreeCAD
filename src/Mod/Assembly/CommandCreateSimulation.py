@@ -66,12 +66,10 @@ class CommandCreateSimulation:
             "Pixmap": "Assembly_CreateSimulation",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateSimulation", "Simulation"),
             "Accel": "V",
-            "ToolTip": "<p>"
-            + QT_TRANSLATE_NOOP(
+            "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateSimulation",
                 "Creates a new simulation of the current assembly",
-            )
-            + "</p>",
+            ),
             "CmdType": "ForEdit",
         }
 
