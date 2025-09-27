@@ -131,10 +131,13 @@ void AutoTransaction::setEnable(bool enable)
 
 int Application::setActiveTransaction(const char* name, bool persist)
 {
+
     if (!name || !name[0]) {
         name = "Command";
     }
     
+    this->signalBeforeOpenTransaction(name);
+
     this->signalBeforeOpenTransaction(name);
 
     if (_activeTransactionGuard > 0 && getActiveTransaction()) {

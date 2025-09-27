@@ -98,6 +98,13 @@ class AssemblyGuiExport ViewProviderAssembly: public Gui::ViewProviderPart,
     };
 
 public:
+    enum class IsolateMode
+    {
+        Transparent,
+        Wireframe,
+        Hidden,
+    };
+
     ViewProviderAssembly();
     ~ViewProviderAssembly() override;
 
@@ -204,6 +211,11 @@ public:
 
     void UpdateSolverInformation();
 
+    void isolateComponents(std::set<App::DocumentObject*>& parts, IsolateMode mode);
+    void isolateJointReferences(App::DocumentObject* joint,
+                                IsolateMode mode = IsolateMode::Transparent);
+    void clearIsolate();
+
     DragMode dragMode;
     bool canStartDragging;
     bool partMoving;
@@ -246,8 +258,29 @@ private:
                                App::DocumentObject* currentObject,
                                bool onlySolids);
 
+    void slotAboutToOpenTransaction(const std::string& cmdName);
+
+    struct ComponentState
+    {
+        bool visibility;
+        bool selectable;
+        // For Links
+        bool overrideMaterial;
+        App::Material shapeMaterial;
+    };
+
+    std::unordered_map<App::DocumentObject*, ComponentState> stateBackup;
+    App::DocumentObject* isolatedJoint {nullptr};
+    bool isolatedJointVisibilityBackup {false};
+
+    void applyIsolationRecursively(App::DocumentObject* current,
+                                   std::set<App::DocumentObject*>& isolateSet,
+                                   IsolateMode mode,
+                                   std::set<App::DocumentObject*>& visited);
+
     TaskAssemblyMessages* taskSolver;
     boost::signals2::connection connectSolverUpdate;
+    boost::signals2::scoped_connection m_preTransactionConn;
 };
 
 }  // namespace AssemblyGui
