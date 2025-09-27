@@ -597,17 +597,6 @@ class _ArchReport:
         sp.purgeTouched()
 
 
-class Report(_ArchReport):
-    """Public alias class so Arch._initializeArchObject can find 'Report'.
-
-    This mirrors the naming pattern used by ArchSchedule where the public
-    base class is available at module level. It simply inherits from
-    the implementation class and does not change behaviour.
-    """
-    def __init__(self, obj):
-        super().__init__(obj)
-
-
 class ViewProviderReport:
     """The ViewProvider for the ArchReport object."""
 
