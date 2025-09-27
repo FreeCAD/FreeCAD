@@ -1588,3 +1588,65 @@ void DocumentObject::onPropertyStatusChanged(const Property& prop, unsigned long
         getDocument()->signalChangePropertyEditor(*getDocument(), prop);
     }
 }
+
+bool DocumentObject::canPropBeReferenced(const App::Property* prop)
+{
+    if (!prop) {
+        return false;
+    }
+
+    App::PropertyContainer* container = prop->getContainer();
+    if (!container) {
+        return false;
+    }
+
+    auto* obj = freecad_cast<App::DocumentObject*>(container);
+    return obj && obj->isAttachedToDocument();
+}
+
+static void getPropertyUsesObj(std::set<ObjectIdentifier>& uses,
+                               App::DocumentObject* obj,
+                               const App::Property* prop)
+{
+    if (!obj || !obj->isAttachedToDocument()) {
+        return;
+    }
+
+    auto idIsProp = [prop](const std::pair<App::ObjectIdentifier, bool>& idPair) {
+        return idPair.first.getProperty() == prop;
+    };
+
+    auto referencesProperty = [&idIsProp](const App::Expression* expr) {
+        if (!expr) {
+            return false;
+        }
+
+        return std::ranges::any_of(expr->getIdentifiers(), idIsProp);
+    };
+
+    std::map<App::ObjectIdentifier, const App::Expression*> exprs =
+        obj->ExpressionEngine.getExpressions();
+
+    for (const auto& [id, expr] : exprs) {
+        if (referencesProperty(expr)) {
+            uses.insert(id);
+        }
+    }
+}
+
+std::set<ObjectIdentifier> DocumentObject::getPropertyUses(const App::Property *prop)
+{
+    std::set<ObjectIdentifier> uses;
+    if (!canPropBeReferenced(prop)) {
+        return uses;
+    }
+
+    auto* objProp = freecad_cast<DocumentObject*>(prop->getContainer());
+    std::vector<App::DocumentObject*> inList = objProp->getInList();
+
+    for (auto* obj : inList) {
+        getPropertyUsesObj(uses, obj, prop);
+    }
+
+    return uses;
+}
