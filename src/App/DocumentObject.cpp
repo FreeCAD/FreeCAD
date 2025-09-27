@@ -228,6 +228,19 @@ void DocumentObject::touch(bool noRecompute)
 void DocumentObject::freeze()
 {
     StatusBits.set(ObjectStatus::Freeze);
+
+    // store read-only property names
+    this->readOnlyProperties.clear();
+    std::vector<std::pair<const char*, Property*>> list;
+    static_cast<App::PropertyContainer*>(this)->getPropertyNamedList(list);
+    for (auto pair: list){
+        if (pair.second->isReadOnly()){
+            this->readOnlyProperties.push_back(pair.first);
+        } else {
+            pair.second->setReadOnly(true);
+        }
+    }
+
     // use the signalTouchedObject to refresh the Gui
     if (_pDoc) {
         _pDoc->signalTouchedObject(*this);
@@ -241,6 +254,17 @@ void DocumentObject::freeze()
 void DocumentObject::unfreeze(bool noRecompute)
 {
     StatusBits.reset(ObjectStatus::Freeze);
+
+    // reset read-only property status
+    std::vector<std::pair<const char*, Property*>> list;
+    static_cast<App::PropertyContainer*>(this)->getPropertyNamedList(list);
+
+    for (auto pair: list){
+        if (! std::count(readOnlyProperties.begin(), readOnlyProperties.end(), pair.first)){
+            pair.second->setReadOnly(false);
+        }
+    }
+
     touch(noRecompute);
 }
 
@@ -840,6 +864,10 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
 
 void DocumentObject::onEarlyChange(const Property* prop)
 {
+    if (isFreezed() && prop != &Visibility) {
+        return;
+    }
+
     if (GetApplication().isClosingAll()) {
         return;
     }
