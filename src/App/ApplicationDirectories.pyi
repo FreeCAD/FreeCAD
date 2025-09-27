@@ -49,14 +49,14 @@ class ApplicationDirectories(PyObjectBase):
     @staticmethod
     def versionStringForPath(major: int, minor: int, /) -> str:
         """
-        Given a major and minor version number.
+        Given a major and minor version number, return the name for a versioned subdirectory.
 
         Args:
             major: Major version number.
             minor: Minor version number.
 
         Returns:
-            a string that can be used as the name for a versioned subdirectory.
+            A string that can be used as the name for a versioned subdirectory.
             Only returns the version string, not the full path.
         """
         ...
@@ -73,7 +73,7 @@ class ApplicationDirectories(PyObjectBase):
             startingPath: The path to check.
 
         Returns:
-            True for any path that the *current* version of FreeCAD would recognized as versioned,
+            True for any path that the *current* version of FreeCAD would recognize as versioned,
             and False for either something that is not versioned, or something that is versioned
             but for a later version of FreeCAD.
         """

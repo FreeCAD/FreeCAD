@@ -16,7 +16,7 @@ from Part.Geom2d import Curve2d
 )
 class Line2dSegment(Curve2d):
     """
-        Describes a line segment in 2D space.
+    Describes a line segment in 2D space.
 
     To create a line there are several ways:
     Part.Geom2d.Line2dSegment()
