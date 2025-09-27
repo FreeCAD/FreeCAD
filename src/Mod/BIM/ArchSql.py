@@ -896,11 +896,82 @@ class ArithmeticOperation:
 
 
 class ReferenceExtractor:
-    def __init__(self, value): self.value = value
-    def get_value(self, obj): return _get_property(obj, self.value)
+    """
+    Represents a request to extract a value from an object, handling nesting.
+
+    This class is the core of property access in the SQL engine. It can represent a simple property
+    access (e.g., `Label`), a nested property access using a dot-notation string (e.g.,
+    `Shape.Volume`), or a chained access on the result of another function (e.g.,
+    `PARENT(*).Label`).
+
+    The chained access is achieved by making the class recursive. The `base` attribute can hold
+    another extractor object (like `ParentFunction` or another `ReferenceExtractor`), which is
+    evaluated first to get an intermediate object from which the final `value` is extracted.
+    """
+    def __init__(self, value, base=None):
+        """
+        Initializes the ReferenceExtractor.
+
+        Parameters
+        ----------
+        value : str
+            The name of the property to extract (e.g., 'Label', 'Shape.Volume').
+        base : object, optional
+            Another logical extractor object that, when evaluated, provides the base object for this
+            extraction. If None, the property is extracted from the main object of the current row.
+            Defaults to None.
+        """
+        self.value = value
+        self.base = base
+
+    def get_value(self, obj):
+        """
+        Extracts and returns the final property value from a given object.
+
+        If `self.base` is set, this method first recursively calls `get_value` on the base to
+        resolve the intermediate object (e.g., executing `PARENT(*)` to get the parent). It then
+        extracts the property specified by `self.value` from that intermediate object.
+
+        If `self.base` is None, it directly extracts the property from the provided row object
+        `obj`.
+
+        Parameters
+        ----------
+        obj : FreeCAD.DocumentObject
+            The document object for the current row being processed.
+
+        Returns
+        -------
+        any
+            The value of the requested property, or None if any part of the access chain is invalid
+            or returns None.
+        """
+        if self.base:
+            base_object = self.base.get_value(obj)
+            # If the base evaluates to None (e.g., PARENT(*) on a top-level object),
+            # we cannot get a property from it. Return None to prevent errors.
+            if base_object is None:
+                return None
+            return _get_property(base_object, self.value)
+        else:
+            # Original behavior for a base reference from the current row's object.
+            return _get_property(obj, self.value)
+
     def get_objects(self):
-        """Provides a consistent interface for the FromClause."""
-        if self.value == 'document':
+        """
+        Provides the interface for the FromClause to get the initial set of objects to query.
+
+        This method is only intended to be used for the special case of `FROM document`, where it
+        returns all objects in the active document. In all other contexts, it returns an empty list.
+
+        Returns
+        -------
+        list of FreeCAD.DocumentObject
+            A list of all objects in the active document if `self.value` is 'document', otherwise an
+            empty list.
+        """
+
+        if self.value == 'document' and not self.base:
             return FreeCAD.ActiveDocument.Objects
         return []
 
@@ -928,11 +999,20 @@ class SqlTransformerMixin:
 
         return SelectStatement(columns_info, from_c, where_c, group_by_c, order_by_c)
 
+    def from_source(self, items):
+        # This method handles the 'from_source' rule.
+        # items[0] will either be a CNAME token (for 'document') or a
+        # transformed FromFunctionBase object.
+        item = items[0]
+        if isinstance(item, generated_sql_parser.Token) and item.type == 'CNAME':
+            # If it's the CNAME 'document', create the base ReferenceExtractor for it.
+            return ReferenceExtractor(str(item))
+        else:
+            # Otherwise, it's already a transformed function object, so just return it.
+            return item
+
     def from_clause(self, i):
         return FromClause(i[1])
-
-    def from_source(self, items):
-        return items[0]
 
     def where_clause(self, i): return WhereClause(i[1])
 
@@ -1020,10 +1100,38 @@ class SqlTransformerMixin:
     def boolean_comparison(self, items):
         return BooleanComparison(items[0], items[1], items[2])
 
+    def primary(self, items):
+        # This transformer handles the 'primary' grammar rule.
+        # It transforms a CNAME token into a base ReferenceExtractor.
+        # All other items (functions, literals, numbers) are already transformed
+        # by their own methods, so we just pass them up.
+        item = items[0]
+        if isinstance(item, generated_sql_parser.Token) and item.type == 'CNAME':
+            return ReferenceExtractor(str(item))
+        return item
+
+    def factor(self, items):
+        # This transformer handles the 'factor' rule for chained property access.
+        # It receives a list of the transformed children.
+        # The first item is the base (the result of the 'primary' rule).
+        # The subsequent items are the CNAME tokens for each property access.
+
+        # Start with the base of the chain.
+        base_extractor = items[0]
+
+        # Iteratively wrap the base with a new ReferenceExtractor for each
+        # property in the chain.
+        for prop_token in items[1:]:
+            prop_name = str(prop_token)
+            base_extractor = ReferenceExtractor(prop_name, base=base_extractor)
+
+        return base_extractor
+
     def in_expression(self, items):
-        reference_extractor = items[0]
+        # Unpack the items: the factor to check, and then all literal extractors.
+        factor_to_check = items[0]
         literal_extractors = [item for item in items[1:] if isinstance(item, StaticExtractor)]
-        return InComparison(reference_extractor, literal_extractors)
+        return InComparison(factor_to_check, literal_extractors)
 
     def comparison_operator(self, i): return i[0]
     def eq_op(self, _): return "="
@@ -1041,7 +1149,6 @@ class SqlTransformerMixin:
         # The transformation of terminals happens in their own dedicated methods below.
         return items[0]
 
-    def reference(self, items): return ReferenceExtractor(str(items[0]))
     def literal(self, items): return StaticExtractor(items[0].value[1:-1])
     def NUMBER(self, token):
         # This method is automatically called by Lark for any NUMBER terminal.
@@ -1060,11 +1167,10 @@ class SqlTransformerMixin:
         # This method just collects all arguments into a single list.
         return items
 
-    def _build_left_associative_tree(self, items):
+    def term(self, items):
         """
-        A generic helper to build a left-associative calculation tree from a
-        flat list of [operand, operator, operand, operator, ...].
-        This is used by both the 'expr' and 'term' grammar rules.
+        Builds a left-associative tree for multiplication/division.
+        This is a critical change to fix the data flow for the factor rule.
         """
         tree = items[0]
         for i in range(1, len(items), 2):
@@ -1073,13 +1179,32 @@ class SqlTransformerMixin:
             tree = ArithmeticOperation(tree, op_token.value, right)
         return tree
 
-    # Both 'expr' and 'term' rules use the same tree-building logic.
-    expr = _build_left_associative_tree
-    term = _build_left_associative_tree
+    def expr(self, items):
+        """Builds a left-associative tree for addition/subtraction."""
+        tree = items[0]
+        for i in range(1, len(items), 2):
+            op_token = items[i]
+            right = items[i+1]
+            tree = ArithmeticOperation(tree, op_token.value, right)
+        return tree
 
-    def factor(self, items):
-        # Handles parentheses by simply returning the transformed inner expression.
-        return items[0]
+    def member_access(self, items):
+        """This transformer handles the 'member_access' rule for chained property access."""
+
+        # Start with the base of the chain.
+        base_extractor = items[0]
+
+        # Filter the rest of the items to get only the CNAME tokens,
+        # ignoring the '.' literal tokens that are also passed in.
+        prop_tokens = [item for item in items[1:] if isinstance(item, generated_sql_parser.Token) and item.type == 'CNAME']
+
+        # Iteratively wrap the base with a new ReferenceExtractor for each
+        # property in the chain.
+        for prop_token in prop_tokens:
+            prop_name = str(prop_token)
+            base_extractor = ReferenceExtractor(prop_name, base=base_extractor)
+
+        return base_extractor
 
     def function(self, items):
         function_name_token = items[0]
