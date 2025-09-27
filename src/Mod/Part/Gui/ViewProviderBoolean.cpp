@@ -58,35 +58,36 @@ namespace {
                     obj->getDocument()->removeObject(obj->getNameInDocument());
                 }
             }
+            return true;
         }
-        else {
-            QMessageBox::StandardButton choice = QMessageBox::question(
-                Gui::getMainWindow(), 
-                QObject::tr("Delete %1 content?").arg(operationName),
-                QObject::tr("The %1 '%2' has %3. Do you want to delete them as well?")
-                    .arg(operationName.toLower())
-                    .arg(objectLabel)
-                    .arg(inputDescription),
-                QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, 
-                QMessageBox::No
-            );
+
+        QMessageBox::StandardButton choice = QMessageBox::question(
+            Gui::getMainWindow(), 
+            QObject::tr("Delete %1 content?").arg(operationName),
+            QObject::tr("The %1 '%2' has %3. Do you want to delete them as well?")
+                .arg(operationName.toLower())
+                .arg(objectLabel)
+                .arg(inputDescription),
+            QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, 
+            QMessageBox::No
+        );
             
-            if (choice == QMessageBox::Cancel) {
-                return false;
-            }
-            else if (choice == QMessageBox::Yes) {
-                for (auto obj : inputObjects) {
-                    if (obj && obj->isAttachedToDocument() && !obj->isRemoving()) {
-                        obj->getDocument()->removeObject(obj->getNameInDocument());
-                    }
+        if (choice == QMessageBox::Cancel) {
+            return false;
+        }
+        
+        if (choice == QMessageBox::Yes) {
+            for (auto obj : inputObjects) {
+                if (obj && obj->isAttachedToDocument() && !obj->isRemoving()) {
+                    obj->getDocument()->removeObject(obj->getNameInDocument());
                 }
             }
-            else {
-                for (auto obj : inputObjects) {
-                    if (obj) {
-                        Gui::Application::Instance->showViewProvider(obj);
-                    }
-                }
+            return true;
+        }
+
+        for (auto obj : inputObjects) {
+            if (obj) {
+                Gui::Application::Instance->showViewProvider(obj);
             }
         }
         
@@ -206,8 +207,13 @@ bool ViewProviderBoolean::onDelete(const std::vector<std::string> &subNames)
 
     // Prepare input objects list and description
     std::vector<App::DocumentObject*> inputObjects;
-    if (pBase) inputObjects.push_back(pBase);
-    if (pTool) inputObjects.push_back(pTool);
+    if (pBase) {
+        inputObjects.push_back(pBase);
+    }
+
+    if (pTool) {
+        inputObjects.push_back(pTool);
+    }
     
     QString inputDescription;
     if (pBase && pTool) {

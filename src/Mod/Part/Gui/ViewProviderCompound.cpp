@@ -66,34 +66,34 @@ bool ViewProviderCompound::onDelete(const std::vector<std::string> &subNames)
                     pLink->getDocument()->removeObject(pLink->getNameInDocument());
                 }
             }
+            return true;
         }
-        else {
-            QMessageBox::StandardButton choice = QMessageBox::question(
-                Gui::getMainWindow(), 
-                QObject::tr("Delete compound content?"),
-                QObject::tr("The compound '%1' has %2 child objects. Do you want to delete them as well?")
-                    .arg(QString::fromUtf8(pComp->Label.getValue()))
-                    .arg(pLinks.size()),
-                QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, 
-                QMessageBox::No
-            );
+        QMessageBox::StandardButton choice = QMessageBox::question(
+            Gui::getMainWindow(), 
+            QObject::tr("Delete compound content?"),
+            QObject::tr("The compound '%1' has %2 child objects. Do you want to delete them as well?")
+                .arg(QString::fromUtf8(pComp->Label.getValue()))
+                .arg(pLinks.size()),
+            QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, 
+            QMessageBox::No
+        );
             
-            if (choice == QMessageBox::Cancel) {
-                return false;
-            }
-            else if (choice == QMessageBox::Yes) {
-                for (auto pLink : pLinks) {
-                    if (pLink && pLink->isAttachedToDocument() && !pLink->isRemoving()) {
-                        pLink->getDocument()->removeObject(pLink->getNameInDocument());
-                    }
+        if (choice == QMessageBox::Cancel) {
+            return false;
+        }
+        
+        if (choice == QMessageBox::Yes) {
+            for (auto pLink : pLinks) {
+                if (pLink && pLink->isAttachedToDocument() && !pLink->isRemoving()) {
+                    pLink->getDocument()->removeObject(pLink->getNameInDocument());
                 }
             }
-            else {
-                for (auto pLink : pLinks) {
-                    if (pLink)
-                        Gui::Application::Instance->showViewProvider(pLink);
-                }
-            }
+            return true;
+        }
+
+        for (auto pLink : pLinks) {
+            if (pLink)
+                Gui::Application::Instance->showViewProvider(pLink);
         }
     }
 

@@ -44,7 +44,7 @@ using namespace Gui;
 
 namespace {
     // helper function to recursively delete group contents while respecting view provider onDelete methods
-    void deleteGroupContentsRecursively(App::GroupExtension* group, ViewProvider* groupViewProvider) {
+    void deleteGroupContentsRecursively(App::GroupExtension* group, ViewProvider*) {
         if (!group) {
             return;
         }
@@ -228,13 +228,9 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::strin
         return true;
     }
     
-    std::vector<App::DocumentObject*> allDescendants;
-    if (getExtendedViewProvider()->getObject()->isDerivedFrom<App::DocumentObjectGroup>()) {
-        auto* docGroup = static_cast<App::DocumentObjectGroup*>(getExtendedViewProvider()->getObject());
-        allDescendants = docGroup->getAllChildren();
-    } else {
-        allDescendants = directChildren;
-    }
+    const auto* docGroup =
+        freecad_cast<App::DocumentObjectGroup*>(getExtendedViewProvider()->getObject());
+    auto allDescendants = docGroup ? docGroup->getAllChildren() : directChildren;
     
     QString message;
     if (allDescendants.size() == directChildren.size()) {
@@ -261,7 +257,8 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::strin
         // don't delete anything if user has cancelled
         return false;
     }
-    else if (choice == QMessageBox::Yes) {
+    
+    if (choice == QMessageBox::Yes) {
         // delete all of the children recursively and call their viewprovider method
         deleteGroupContentsRecursively(group, getExtendedViewProvider());
     }
