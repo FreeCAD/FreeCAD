@@ -71,12 +71,27 @@ SELECT_STAR_HEADER = 'Object Label'
 _CUSTOM_FRIENDLY_TOKEN_NAMES = {
     # This dictionary provides overrides for tokens where the name is not user-friendly.
     # Punctuation
-     'RPAR': "')'",
-     'LPAR': "'('",
-     'COMMA': "','",
-     'ASTERISK': "'*'",
+    'RPAR': "')'",
+    'LPAR': "'('",
+    'COMMA': "','",
+    'ASTERISK': "'*'",
+    'DOT': "'.'",
+    'SEMICOLON': "';'",
+
+    # Arithmetic Operators
+    'ADD': "'+'",
+    'SUB': "'-'",
+    'MUL': "'*'",
+    'DIV': "'/'",
+
+    # Comparison Operators (from the grammar)
+    'EQUAL': "'='",
+    'MORETHAN': "'>'",
+    'LESSTHAN': "'<'",
+
     # Other non-keyword tokens
-     'CNAME': "a property or function name",
+    'CNAME': "a property or function name",
+    'STRING': "a quoted string like 'text'",
  }
 
 
@@ -1445,7 +1460,12 @@ def _run_query(query_string: str, mode: str):
             raise BimSqlSyntaxError(message) from e
         except UnexpectedToken as e:
             is_incomplete = e.token.type == '$END'
-            expected_str = ', '.join([_FRIENDLY_TOKEN_NAMES.get(t, f"'{t}'") for t in e.expected])
+            # Filter out internal Lark tokens before creating the message
+            friendly_expected = [
+                _FRIENDLY_TOKEN_NAMES.get(t, f"'{t}'")
+                for t in e.expected if not t.startswith('__')
+            ]
+            expected_str = ', '.join(friendly_expected)
             message = (f"Syntax Error: Unexpected '{e.token.value}' at line {e.line}, column {e.column}. "
                        f"Expected {expected_str}.")
             raise BimSqlSyntaxError(message, is_incomplete=is_incomplete) from e
