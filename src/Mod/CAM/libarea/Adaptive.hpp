@@ -49,7 +49,8 @@ enum MotionType
     mtCutting = 0,
     mtLinkClear = 1,
     mtLinkNotClear = 2,
-    mtLinkClearAtPrevPass = 3
+    mtLinkClearAtPrevPass = 3,
+    mtFinishingCutting = 4
 };
 
 enum OperationType
@@ -149,7 +150,8 @@ private:
                         const Path& passToolPath,
                         ClearedArea& clearedAreaBefore,
                         ClearedArea& clearedAreaAfter,
-                        const Paths& toolBoundPaths);
+                        const Paths& toolBoundPaths,
+                        bool isFinishingPath);
     bool IsClearPath(const Path& path, ClearedArea& clearedArea, double safetyDistanceScaled = 0);
     bool IsAllowedToCutTrough(const IntPoint& p1,
                               const IntPoint& p2,

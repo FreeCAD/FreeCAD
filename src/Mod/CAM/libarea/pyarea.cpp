@@ -394,7 +394,8 @@ void init_pyarea(py::module& m)
         .value("Cutting", MotionType::mtCutting)
         .value("LinkClear", MotionType::mtLinkClear)
         .value("LinkNotClear", MotionType::mtLinkNotClear)
-        .value("LinkClearAtPrevPass", MotionType::mtLinkClearAtPrevPass);
+        .value("LinkClearAtPrevPass", MotionType::mtLinkClearAtPrevPass)
+        .value("FinishingCutting", MotionType::mtFinishingCutting);
 
     py::enum_<OperationType>(m, "AdaptiveOperationType")
         .value("ClearingInside", OperationType::otClearingInside)

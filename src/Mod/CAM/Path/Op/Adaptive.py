@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
-# ***************************************************************************
-# *   Copyright (c) 2018 Kresimir Tusek <kresimir.tusek@gmail.com>          *
-# *   Copyright (c) 2019-2021 Schildkroet                                   *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
-# *   This library is free software; you can redistribute it and/or         *
-# *   modify it under the terms of the GNU Library General Public           *
-# *   License as published by the Free Software Foundation; either          *
-# *   version 2 of the License, or (at your option) any later version.      *
-# *                                                                         *
-# *   This library  is distributed in the hope that it will be useful,      *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this library; see the file COPYING.LIB. If not,    *
-# *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
-# *   Suite 330, Boston, MA  02111-1307, USA                                *
-# *                                                                         *
-# ***************************************************************************
+# *****************************************************************************
+# * Copyright (c) 2018 Kresimir Tusek <kresimir.tusek@gmail.com>               *
+# * Copyright (c) 2019-2021 Schildkroet                                       *
+# *                                                                           *
+# * This file is part of the FreeCAD CAx development system.                  *
+# *                                                                           *
+# * This library is free software; you can redistribute it and/or             *
+# * modify it under the terms of the GNU Library General Public               *
+# * License as published by the Free Software Foundation; either              *
+# * version 2 of the License, or (at your option) any later version.          *
+# *                                                                           *
+# * This library is distributed in the hope that it will be useful,           *
+# * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
+# * GNU Library General Public License for more details.                      *
+# *                                                                           *
+# * You should have received a copy of the GNU Library General Public         *
+# * License along with this library; see the file COPYING.LIB.  If not,       *
+# * write to the Software Foundation, Inc., 59 Temple Place,                  *
+# * Suite 330, Boston, MA 02111-1307, USA                                     *
+# *                                                                           *
+# *****************************************************************************
 
 # NOTE: "isNull() note"
 # After performing cut operations, checking the resulting shape.isNull() will
@@ -36,6 +36,7 @@ import time
 import json
 import math
 import area
+import numpy as np  # Added for vector math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if FreeCAD.GuiUp:
@@ -82,6 +83,203 @@ topZ = 10
 _ADAPTIVE_MIN_STEPDOWN = 0.1
 
 
+def _calculate_circumcircle_radius(p1, p2, p3):
+    """
+    Calculates the radius of a circle passing through three points.
+    Includes a robustness check for nearly collinear points.
+    """
+    # --- Collinearity Check ---
+    # Calculate the area of the triangle formed by the three points.
+    # If the area is infinitesimally small, the points are on a straight
+    # line, so we can consider the radius to be infinite.
+    # This is the key to preventing numerical instability.
+    area = 0.5 * np.linalg.norm(np.cross(p2 - p1, p3 - p1))
+    if area < 1e-9: # A very small tolerance for what we consider a straight line
+        return float('inf')
+
+    # --- Standard Radius Calculation ---
+    # If the points are not collinear, proceed with the normal calculation.
+    a = np.linalg.norm(p3 - p2)
+    b = np.linalg.norm(p3 - p1)
+    c = np.linalg.norm(p2 - p1)
+    
+    denominator = (4 * area)
+    if denominator < 1e-9:
+        return float('inf') # Avoid division by zero in the unlikely event area check wasn't enough
+        
+    radius = (a * b * c) / denominator
+    return radius
+
+
+def _get_g1_points(commands):
+    """Extracts a list of XY numpy arrays from a list of G-code commands."""
+    points = []
+    last_point = np.array([0.0, 0.0])
+
+    # Establish the initial coordinates from the first move command
+    initial_pos_found = False
+    for cmd in commands:
+        if cmd.Name in ('G0', 'G1'):
+            last_point[0] = cmd.Parameters.get('X', last_point[0])
+            last_point[1] = cmd.Parameters.get('Y', last_point[1])
+            initial_pos_found = True
+            break # We have our starting point, now we can process the G1s
+
+    if not initial_pos_found:
+        return [] # No moves in path
+
+    # Now iterate through the whole list to build the G1 path
+    for command in commands:
+
+        # Detect the start and end of the special helix entry
+        if "Helix to depth" in command.Name:
+            in_helix = True
+        elif "Adaptive - depth" in command.Name:
+            in_helix = False
+                    
+        current_point = last_point.copy()
+        # Update current position based on any move command
+        if command.Name in ('G0', 'G1') and not in_helix:
+            current_point[0] = command.Parameters.get('X', last_point[0])
+            current_point[1] = command.Parameters.get('Y', last_point[1])
+
+            # If it's a G1 move that isn't a duplicate command, add its destination
+            if command.Name == 'G1':
+                # Only add if it's a distinct point to avoid noise
+                if not np.allclose(current_point, last_point):
+                    points.append(current_point.copy())
+
+            last_point = current_point  # Update state for the next command
+    return points
+
+
+# Define _calculate_next_feed as a helper for _apply_adaptive_feed_logic
+def _calculate_next_feed(point_cursor, g1_points, tool_radius, linear_feed,
+                         max_reduction_factor, min_radius_threshold, in_finishingPath):
+    """Calculates the adaptive feed rate for the current point."""
+    is_in_arc = False
+    adaptive_feed = linear_feed
+
+    # Three points for radius calculation used (-1 , +1, +3)
+    if 1 <= point_cursor < len(g1_points) - 3:
+        p1 = g1_points[point_cursor - 1]
+        p2 = g1_points[point_cursor + 1]
+        p3 = g1_points[point_cursor + 3]
+
+        path_radius = _calculate_circumcircle_radius(p1, p2, p3)
+
+        if path_radius < min_radius_threshold:
+            vec1 = g1_points[point_cursor][:2] - p1[:2]
+            vec2 = p2[:2] - g1_points[point_cursor][:2]
+            cross_prod_z = np.cross(vec1, vec2)
+
+            if cross_prod_z > 1e-9: # Inner arc
+                is_in_arc = True
+                tool_center_radius = path_radius - tool_radius
+                if tool_center_radius < 0.01: tool_center_radius = 0.01
+                reduction_factor = max(tool_center_radius / path_radius, max_reduction_factor)
+                adaptive_feed = linear_feed * reduction_factor
+                # Suppress feed rate reduction by 15% for finishing.
+                if in_finishingPath:
+                    adaptive_feed = adaptive_feed / 0.85
+
+            elif in_finishingPath and abs(cross_prod_z) > 1e-9: # Outer arc for finishing only
+                is_in_arc = True
+                tool_center_radius = path_radius + tool_radius
+                increase_factor = min(tool_center_radius / path_radius, (max_reduction_factor + 1))
+                adaptive_feed = linear_feed * increase_factor
+                # Suppress feed rate increase by 15% to maintain good surface finish.
+                adaptive_feed = adaptive_feed * 0.85
+
+    return adaptive_feed, is_in_arc
+
+
+def _apply_adaptive_feed_logic(op, obj, original_commands, g1_points, tool_radius,
+                               linear_feed, max_reduction_factor, min_radius_threshold):
+    """Applies adaptive feed rate modifications to a list of G-code commands."""
+
+    point_cursor = 0
+    current_feed = linear_feed
+    is_in_adaptive_section = False
+    in_helix = False
+    first_in_helix = True
+    in_finishingPath = False
+    last_pos = np.array([0.0, 0.0])
+
+    for command in original_commands:
+        cmd_already_in = False # Reset for each command
+
+        # Detect special sections (helix, finishing path)
+        if "Helix to depth" in command.Name:
+            in_helix = True
+        elif "Adaptive - depth" in command.Name:
+            in_helix = False
+        elif "FinishingPath - depth" in command.Name:
+            in_finishingPath = True
+
+        # Strip 'F' from horizontal G1s, manage first_in_helix
+        if not in_helix or not first_in_helix:
+            move_params = {k: v for k, v in command.Parameters.items() if k != 'F'}
+            command = Path.Command(command.Name, move_params)
+        elif first_in_helix:
+            if command.Name == 'G1':
+                first_in_helix = False
+
+        # Determine if this G1 command is an actual geometric move
+        is_geometric_g1 = False
+        if command.Name == 'G1':
+            cmd_pos = last_pos.copy()
+            cmd_pos[0] = command.Parameters.get('X', last_pos[0])
+            cmd_pos[1] = command.Parameters.get('Y', last_pos[1])
+            if not np.allclose(cmd_pos, last_pos):
+                is_geometric_g1 = True
+
+        # Update last known tool position
+        if command.Name in ('G0', 'G1'):
+            last_pos[0] = command.Parameters.get('X', last_pos[0])
+            last_pos[1] = command.Parameters.get('Y', last_pos[1])
+
+        # Core adaptive feed logic for G1 moves
+        if is_geometric_g1 and point_cursor < len(g1_points) and not in_helix:
+            # Use helper function: _calculate_next_feed
+            # It would return (new_feed, is_in_arc_now)
+            
+            new_feed, in_arc_now = _calculate_next_feed(
+                point_cursor, g1_points, tool_radius, linear_feed,
+                max_reduction_factor, min_radius_threshold, in_finishingPath
+            )
+
+            # State machine for issuing feed commands
+            if in_arc_now:
+                if abs(new_feed - current_feed) > 0.1:
+                    current_feed = new_feed
+                    cmd_params = command.Parameters.copy()
+                    cmd_params['F'] = round(current_feed, 2)
+                    op.commandlist.append(Path.Command(command.Name, cmd_params))
+                    cmd_already_in = True
+                is_in_adaptive_section = True
+            elif not in_arc_now and is_in_adaptive_section: # Exiting adaptive section
+                if abs(linear_feed - current_feed) > 0.1:
+                    current_feed = linear_feed
+                    cmd_params = command.Parameters.copy()
+                    cmd_params['F'] = round(current_feed, 2)
+                    op.commandlist.append(Path.Command(command.Name, cmd_params))
+                    cmd_already_in = True
+                is_in_adaptive_section = False
+
+            if not cmd_already_in:
+                op.commandlist.append(command)
+            point_cursor += 1
+        else:
+            # Handle G1 plunge
+            if command.Name == 'G1' and command.Parameters.get('X') is None and command.Parameters.get('Y') is None:
+                op.commandlist.append(Path.Command("G1", {"F": op.vertFeed}))
+                current_feed = op.vertFeed
+                is_in_adaptive_section = True
+            # Append other non-geometric G1s, G0s, comments etc.
+            op.commandlist.append(command)
+
+
 def sceneDrawPath(path, color=(0, 0, 1)):
     coPoint = coin.SoCoordinate3()
 
@@ -118,10 +316,58 @@ def discretize(edge, flipDirection=False):
 
 
 def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
+    """
+    Generates G-code for the Adaptive operation, applying an adaptive feed rate
+    logic to slow down in corners.
+    """
+    # --- Step 1: Initial Checks and Generation of Base Toolpath ---
+
+    # If the C++ backend produced no paths, exit immediately.
     if not adaptiveResults or not adaptiveResults[0]["AdaptivePaths"]:
+        op.commandlist = []
         return
 
-    # minLiftDistance = op.tool.Diameter
+    # First, generate the entire original G-code path into a temporary list.
+    # We will then process this list to create a new, modified command list.
+    original_commands = []
+    _generate_original_gcode(op, obj, adaptiveResults, helixDiameter, original_commands)
+
+    # If the user has disabled the Adaptive Feed feature, just assign the
+    # originally generated path and exit. This is the main toggle for the feature.
+    if not obj.AdaptiveFeed:
+        op.commandlist = original_commands
+        return
+
+    # --- Step 2: Setup Parameters for Adaptive Feed Calculation ---
+
+    tool_radius = op.tool.Diameter.Value / 2.0
+    linear_feed = op.horizFeed
+    max_reduction_factor = (100.0 - obj.AdaptiveFeedMaxReduction) / 100.0
+    min_radius_threshold = obj.AdaptiveFeedMinRadius
+    
+    # The final, modified G-code will be built in this list.
+    op.commandlist = []
+
+    # Pre-process the original commands to get a clean list of just the
+    # XY cordinates of the tool's cutting path. This is the data we analyse.
+    g1_points = _get_g1_points(original_commands)
+    
+    if len(g1_points) < 3:
+        Path.Log.warning("Not enough G1 points for adaptive feed calculation. Using original G-code.")
+        op.commandlist = original_commands
+        return
+
+    # --- Step 3: Main Loop for Processing and Modifying G-Code ---
+    Path.Log.info("Applying adaptive feed rates...")
+    
+    _apply_adaptive_feed_logic(op, obj, original_commands, g1_points, tool_radius,
+                               linear_feed, max_reduction_factor, min_radius_threshold)
+                               
+    Path.Log.info("Adaptive feed rates applied.")
+    
+    
+    
+def _generate_original_gcode(op, obj, adaptiveResults, helixDiameter, commandlist):
     helixRadius = 0
     for region in adaptiveResults:
         p1 = region["HelixCenterPoint"]
@@ -179,7 +425,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
             # Helix ramp
             if helixRadius > 0.01:
                 r = helixRadius - 0.01
-                op.commandlist.append(Path.Command("(Helix to depth: %f)" % passEndDepth))
+                commandlist.append(Path.Command("(Helix to depth: %f)" % passEndDepth))
 
                 if obj.UseHelixArcs is False:
                     helix_down_angle = passDepth / depthPerOneCircle * 2 * math.pi
@@ -202,8 +448,8 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                     ]
 
                     # rapid move to start point
-                    op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-                    op.commandlist.append(
+                    commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+                    commandlist.append(
                         Path.Command(
                             "G0",
                             {
@@ -215,7 +461,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                     )
 
                     # rapid move to safe height
-                    op.commandlist.append(
+                    commandlist.append(
                         Path.Command(
                             "G0",
                             {
@@ -227,7 +473,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                     )
 
                     # move to start depth
-                    op.commandlist.append(
+                    commandlist.append(
                         Path.Command(
                             "G1",
                             {
@@ -250,7 +496,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                             helix_angular_progress + helix_base_angle
                         )
                         z = passStartDepth - progress * (passStartDepth - passEndDepth)
-                        op.commandlist.append(
+                        commandlist.append(
                             Path.Command("G1", {"X": x, "Y": y, "Z": z, "F": op.vertFeed})
                         )
                         helix_angular_progress = min(
@@ -274,7 +520,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                             helix_angular_progress + helix_base_angle
                         )
                         z = passEndDepth
-                        op.commandlist.append(
+                        commandlist.append(
                             Path.Command("G1", {"X": x, "Y": y, "Z": z, "F": op.horizFeed})
                         )
                         helix_angular_progress = min(
@@ -288,8 +534,8 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                     ]
 
                     # rapid move to start point
-                    op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-                    op.commandlist.append(
+                    commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+                    commandlist.append(
                         Path.Command(
                             "G0",
                             {
@@ -301,7 +547,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                     )
 
                     # rapid move to safe height
-                    op.commandlist.append(
+                    commandlist.append(
                         Path.Command(
                             "G0",
                             {
@@ -313,7 +559,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                     )
 
                     # move to start depth
-                    op.commandlist.append(
+                    commandlist.append(
                         Path.Command(
                             "G1",
                             {
@@ -330,7 +576,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
 
                     curDep = passStartDepth
                     while curDep > (passEndDepth + depthPerOneCircle):
-                        op.commandlist.append(
+                        commandlist.append(
                             Path.Command(
                                 "G2",
                                 {
@@ -342,7 +588,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                                 },
                             )
                         )
-                        op.commandlist.append(
+                        commandlist.append(
                             Path.Command(
                                 "G2",
                                 {
@@ -358,7 +604,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
 
                     lastStep = curDep - passEndDepth
                     if lastStep > (depthPerOneCircle / 2):
-                        op.commandlist.append(
+                        commandlist.append(
                             Path.Command(
                                 "G2",
                                 {
@@ -370,7 +616,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                                 },
                             )
                         )
-                        op.commandlist.append(
+                        commandlist.append(
                             Path.Command(
                                 "G2",
                                 {
@@ -383,7 +629,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                             )
                         )
                     else:
-                        op.commandlist.append(
+                        commandlist.append(
                             Path.Command(
                                 "G2",
                                 {
@@ -395,7 +641,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                                 },
                             )
                         )
-                        op.commandlist.append(
+                        commandlist.append(
                             Path.Command(
                                 "G1",
                                 {"X": x, "Y": y, "Z": passEndDepth, "F": op.vertFeed},
@@ -403,7 +649,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                         )
 
                     # one more circle at target depth to make sure center is cleared
-                    op.commandlist.append(
+                    commandlist.append(
                         Path.Command(
                             "G2",
                             {
@@ -415,7 +661,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                             },
                         )
                     )
-                    op.commandlist.append(
+                    commandlist.append(
                         Path.Command(
                             "G2",
                             {
@@ -430,8 +676,8 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
 
             else:  # no helix entry
                 # rapid move to clearance height
-                op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-                op.commandlist.append(
+                commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+                commandlist.append(
                     Path.Command(
                         "G0",
                         {
@@ -442,7 +688,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                     )
                 )
                 # straight plunge to target depth
-                op.commandlist.append(
+                commandlist.append(
                     Path.Command(
                         "G1",
                         {
@@ -456,45 +702,51 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
 
             lz = passEndDepth
             z = obj.ClearanceHeight.Value
-            op.commandlist.append(Path.Command("(Adaptive - depth: %f)" % passEndDepth))
+            commandlist.append(Path.Command("(Adaptive - depth: %f)" % passEndDepth))
 
             # add adaptive paths
+            finishingPath = False
             for pth in region["AdaptivePaths"]:
                 motionType = pth[0]  # [0] contains motion type
+                motion = area.AdaptiveMotionType
+                
+                if not finishingPath and motionType == motion.FinishingCutting:
+                    commandlist.append(Path.Command("(FinishingPath - depth: %f)" % passEndDepth))
+                    finishingPath = True
 
                 for pt in pth[1]:  # [1] contains list of points
                     x = pt[0]
                     y = pt[1]
 
-                    if motionType == area.AdaptiveMotionType.Cutting:
+                    if motionType == motion.Cutting or motionType == motion.FinishingCutting:
                         z = passEndDepth
                         if z != lz:
-                            op.commandlist.append(Path.Command("G1", {"Z": z, "F": op.vertFeed}))
+                            commandlist.append(Path.Command("G1", {"Z": z, "F": op.vertFeed}))
 
-                        op.commandlist.append(
+                        commandlist.append(
                             Path.Command("G1", {"X": x, "Y": y, "F": op.horizFeed})
                         )
 
-                    elif motionType == area.AdaptiveMotionType.LinkClear:
+                    elif motionType == motion.LinkClear:
                         z = passEndDepth + stepUp
                         if z != lz:
-                            op.commandlist.append(Path.Command("G0", {"Z": z}))
+                            commandlist.append(Path.Command("G0", {"Z": z}))
 
-                        op.commandlist.append(Path.Command("G0", {"X": x, "Y": y}))
+                        commandlist.append(Path.Command("G0", {"X": x, "Y": y}))
 
-                    elif motionType == area.AdaptiveMotionType.LinkNotClear:
+                    elif motionType == motion.LinkNotClear:
                         z = obj.ClearanceHeight.Value
                         if z != lz:
-                            op.commandlist.append(Path.Command("G0", {"Z": z}))
+                            commandlist.append(Path.Command("G0", {"Z": z}))
 
-                        op.commandlist.append(Path.Command("G0", {"X": x, "Y": y}))
+                        commandlist.append(Path.Command("G0", {"X": x, "Y": y}))
 
                     lz = z
 
             # return to safe height in this Z pass
             z = obj.ClearanceHeight.Value
             if z != lz:
-                op.commandlist.append(Path.Command("G0", {"Z": z}))
+                commandlist.append(Path.Command("G0", {"Z": z}))
 
             lz = z
 
@@ -503,14 +755,13 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
             # return to safe height in this Z pass
             z = obj.ClearanceHeight.Value
             if z != lz:
-                op.commandlist.append(Path.Command("G0", {"Z": z}))
+                commandlist.append(Path.Command("G0", {"Z": z}))
 
             lz = z
 
     z = obj.ClearanceHeight.Value
     if z != lz:
-        op.commandlist.append(Path.Command("G0", {"Z": z}))
-
+        commandlist.append(Path.Command("G0", {"Z": z}))
 
 def Execute(op, obj):
     global sceneGraph
@@ -545,10 +796,8 @@ def Execute(op, obj):
         # NOTE: Reminder that stock is formatted differently than inside/outside!
         stockPaths = {d: convertTo2d(op.stockPathArray[d]) for d in op.stockPathArray}
 
-        outsideClearing = area.AdaptiveOperationType.ClearingOutside
-        insideClearing = area.AdaptiveOperationType.ClearingInside
-        outsideProfiling = area.AdaptiveOperationType.ProfilingOutside
-        insideProfiling = area.AdaptiveOperationType.ProfilingInside
+        outsideOpType = area.AdaptiveOperationType.ClearingOutside
+        insideOpType = area.AdaptiveOperationType.ClearingInside
 
         # List every REGION separately- we can then calculate a toolpath based
         # on the region. One or more stepdowns may use that same toolpath by
@@ -565,9 +814,7 @@ def Execute(op, obj):
         for rdict in op.outsidePathArray:
             regionOps.append(
                 {
-                    "opType": (
-                        outsideClearing if obj.OperationType == "Clearing" else outsideProfiling
-                    ),
+                    "opType": outsideOpType,
                     "path2d": convertTo2d(rdict["edges"]),
                     "id": rdict["id"],
                     "children": rdict["children"],
@@ -582,9 +829,7 @@ def Execute(op, obj):
         for rdict in op.insidePathArray:
             regionOps.append(
                 {
-                    "opType": (
-                        insideClearing if obj.OperationType == "Clearing" else insideProfiling
-                    ),
+                    "opType": insideOpType,
                     "path2d": convertTo2d(rdict["edges"]),
                     "id": rdict["id"],
                     "children": rdict["children"],
@@ -605,9 +850,7 @@ def Execute(op, obj):
         outsideInputStateObject = {
             "tool": op.tool.Diameter.Value,
             "tolerance": obj.Tolerance,
-            "geometry": [
-                k["path2d"] for k in regionOps if k["opType"] in [outsideClearing, outsideProfiling]
-            ],
+            "geometry": [k["path2d"] for k in regionOps if k["opType"] == outsideOpType],
             "stockGeometry": stockPaths,
             "stepover": obj.StepOver,
             "effectiveHelixDiameter": helixDiameter,
@@ -624,9 +867,7 @@ def Execute(op, obj):
         insideInputStateObject = {
             "tool": op.tool.Diameter.Value,
             "tolerance": obj.Tolerance,
-            "geometry": [
-                k["path2d"] for k in regionOps if k["opType"] in [insideClearing, insideProfiling]
-            ],
+            "geometry": [k["path2d"] for k in regionOps if k["opType"] == insideOpType],
             "stockGeometry": stockPaths,
             "stepover": obj.StepOver,
             "effectiveHelixDiameter": helixDiameter,
@@ -1042,10 +1283,7 @@ def _workingEdgeHelperManual(op, obj, depths):
     for ext in extensions:
         if not ext.avoid:
             if wire := ext.getWire():
-                # NOTE: Can NOT just make a face directly, since that just gives
-                # the outside profile and removes internal holes
-                for f in ext.getExtensionFaces(wire):
-                    selectedRegions.extend(f.Faces)
+                selectedRegions += [f for f in ext.getExtensionFaces(wire)]
 
     for base, subs in obj.Base:
         for sub in subs:
@@ -1366,7 +1604,6 @@ def _getWorkingEdges(op, obj):
     # a dict with depth: region entries, single depth for easy lookup
     return insideDiscretized, outsideDiscretized, stockDiscretized
 
-
 class PathAdaptive(PathOp.ObjectOp):
     def opFeatures(self, obj):
         """opFeatures(obj) ... returns the OR'ed list of features used and supported by the operation.
@@ -1514,6 +1751,37 @@ class PathAdaptive(PathOp.ObjectOp):
                 "To take a finishing profile path at the end",
             ),
         )
+        
+        # --- NEW ADAPTIVE FEED PROPERTIES ---
+        obj.addProperty(
+            "App::PropertyBool",
+            "AdaptiveFeed",
+            "Adaptive Feed",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Enable adaptive feed rate modification based on path curvature"
+            )
+        )
+        obj.addProperty(
+            "App::PropertyPercent",
+            "AdaptiveFeedMaxReduction",
+            "Adaptive Feed",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Maximum feed rate reduction percentage on tight corners (Values below 30% are not recommended)."
+            )
+        )
+        obj.addProperty(
+            "App::PropertyLength",
+            "AdaptiveFeedMinRadius",
+            "Adaptive Feed",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Minimum radius for adaptive feed calculations (3-5 times the Tool Diameter is recommended). Paths with a larger radius will be considered straight. "
+            )
+        )
+        # --- END NEW PROPERTIES ---
+
         obj.addProperty(
             "App::PropertyBool",
             "Stopped",
@@ -1625,7 +1893,6 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.Tolerance = 0.1
         obj.StepOver = 20
         obj.LiftDistance = 0
-        # obj.ProcessHoles = True
         obj.ForceInsideOut = False
         obj.FinishingProfile = True
         obj.Stopped = False
@@ -1641,8 +1908,15 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.UseHelixArcs = False
         obj.UseOutline = False
         obj.OrderCutsByRegion = False
-        FeatureExtensions.set_default_property_values(obj, job)
 
+        # --- DEFAULTS FOR ADAPTIVE FEED RATES PROPERTIES ---
+        obj.AdaptiveFeed = False
+        obj.AdaptiveFeedMaxReduction = 50
+        obj.AdaptiveFeedMinRadius = 15
+        # --- END DEFAULTS ---
+
+        FeatureExtensions.set_default_property_values(obj, job)
+        
     def opExecute(self, obj):
         """opExecute(obj) ... called whenever the receiver needs to be recalculated.
         See documentation of execute() for a list of base functionality provided.

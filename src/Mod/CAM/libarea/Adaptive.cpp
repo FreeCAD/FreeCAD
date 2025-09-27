@@ -2402,7 +2402,8 @@ void Adaptive2d::AppendToolPath(TPaths& progressPaths,
                                 const Path& passToolPath,
                                 ClearedArea& clearedBefore,
                                 ClearedArea& clearedAfter,
-                                const Paths& toolBoundPaths)
+                                const Paths& toolBoundPaths,
+                                bool isFinishingPath)
 {
     if (passToolPath.size() < 2) {
         return;
@@ -2629,7 +2630,12 @@ void Adaptive2d::AppendToolPath(TPaths& progressPaths,
         }
     }
     TPath cutPath;
-    cutPath.first = MotionType::mtCutting;
+    if (isFinishingPath) {
+        cutPath.first = MotionType::mtFinishingCutting;
+    }
+    else {
+        cutPath.first = MotionType::mtCutting;
+    }
     for (const auto& p : passToolPath) {
         DPoint nextT;
         nextT.first = double(p.X) / scaleFactor;
@@ -3094,7 +3100,8 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                            cleaned,
                            clearedBeforePass,
                            cleared,
-                           toolBoundPaths);
+                           toolBoundPaths,
+                           false);
             CheckReportProgress(progressPaths);
             bad_engage_count = 0;
             engage.ResetPasses();
@@ -3241,7 +3248,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 
             // make sure it's closed
             finCleaned.push_back(finCleaned.front());
-            AppendToolPath(progressPaths, output, finCleaned, cleared, cleared, toolBoundPaths);
+            AppendToolPath(progressPaths, output, finCleaned, cleared, cleared, toolBoundPaths, true);
 
             cleared.ExpandCleared(finCleaned);
 
