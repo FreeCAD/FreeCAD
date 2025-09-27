@@ -61,9 +61,11 @@ class CommandAxoLengthDimension:
         App.setActiveTransaction("Create axonometric length dimension")
         vertexes = []
         edges = []
-        if Utils.getSelEdges(2):
-            edges = Utils.getSelEdges(2)
-            vertexes = Utils.getSelVertexes(0)
+        if Utils.getSelEdges(2) is False:
+            return
+
+        edges = Utils.getSelEdges(2)
+        vertexes = Utils.getSelVertexes(0)
 
         if len(vertexes)<2:
             vertexes.append(edges[0].Vertexes[0])
@@ -79,13 +81,16 @@ class CommandAxoLengthDimension:
         xAxis = App.Vector(1,0,0)
         extAngle = degrees(extLineVec.getAngle(xAxis))
         lineAngle = degrees(dimLineVec.getAngle(xAxis))
+        originalLineAngle = lineAngle
 
         if extLineVec.y < 0.0:
             extAngle = 180-extAngle
         if dimLineVec.y < 0.0:
             lineAngle = 180-lineAngle
         if abs(extAngle-lineAngle)>0.1:
-            distanceDim=TechDraw.makeDistanceDim(view,'Distance',vertexes[0].Point*scale,vertexes[1].Point*scale)
+            distanceDim = TechDraw.makeDistanceDim(
+                view, "Distance", vertexes[0].Point * scale, vertexes[1].Point * scale
+            )
             distanceDim.AngleOverride = True
             distanceDim.LineAngle = lineAngle
             distanceDim.ExtensionAngle = extAngle
@@ -108,6 +113,32 @@ class CommandAxoLengthDimension:
                 distanceDim.Arbitrary = True
                 distanceDim.Label = distanceDim.Label.replace('Dimension','Dimension3D')
                 distanceDim.FormatSpec = fomatted3DValue
+            # Text location for 45 degree angled dimensions above the selection
+            if (
+                abs(originalLineAngle) > 29.0
+                and abs(originalLineAngle) < 31.0
+                and abs(extAngle - lineAngle) > 115.0
+                and abs(extAngle - lineAngle) < 125.0
+            ):
+                distanceDim.X = -abs(
+                    float(vertexes[0].Point.x + vertexes[0].Point.x) / 3.0
+                )
+                distanceDim.Y = abs(
+                    float(vertexes[0].Point.x + vertexes[1].Point.y) / 4.8
+                )
+            # Text location for 45 degree angled dimensions below the selection
+            if (
+                abs(originalLineAngle) > 149.0
+                and abs(originalLineAngle) < 151.0
+                and abs(extAngle - lineAngle) > 115.0
+                and abs(extAngle - lineAngle) < 125.0
+            ):
+                distanceDim.X = abs(
+                    float(vertexes[0].Point.x + vertexes[0].Point.x) / 3.0
+                )
+                distanceDim.Y = -abs(
+                    float(vertexes[0].Point.x + vertexes[1].Point.y) / 4.8
+                )
 
             distanceDim.recompute()
             view.requestPaint()
