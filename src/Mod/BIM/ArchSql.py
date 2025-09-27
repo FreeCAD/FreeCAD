@@ -15,7 +15,7 @@ import re
 from Draft import get_type
 
 if FreeCAD.GuiUp:
-#    from PySide.QtCore import QT_TRANSLATE_NOOP
+    from PySide.QtCore import QT_TRANSLATE_NOOP
     from draftutils.translate import translate
 else:
     def translate(ctxt, txt):
@@ -137,6 +137,33 @@ class FunctionRegistry:
         return data['class'] if data else None
 
 
+# Create global, module-level registries that will be populated by decorators.
+select_function_registry = FunctionRegistry()
+from_function_registry = FunctionRegistry()
+
+
+def register_select_function(name, category, signature, description, snippet=""):
+    """
+    A decorator that registers a class as a selectable SQL function.
+    The decorated class must be a subclass of FunctionBase or similar.
+    """
+    def wrapper(cls):
+        select_function_registry.register(name, cls, category, signature, description, snippet)
+        return cls
+    return wrapper
+
+
+def register_from_function(name, category, signature, description, snippet=""):
+    """
+    A decorator that registers a class as a FROM clause SQL function.
+    The decorated class must be a subclass of FromFunctionBase.
+    """
+    def wrapper(cls):
+        from_function_registry.register(name, cls, category, signature, description, snippet)
+        return cls
+    return wrapper
+
+
 class AggregateFunction:
     """Represents an aggregate function call like COUNT(*) or SUM(Height)."""
     def __init__(self, name, arg_extractors):
@@ -155,6 +182,54 @@ class AggregateFunction:
         raise SqlEngineError(f"Aggregate function '{self.function_name.upper()}' cannot be used in this context.")
 
 
+@register_select_function(
+    name='COUNT',
+    category=QT_TRANSLATE_NOOP("ArchSql", "Aggregate"),
+    signature="COUNT(* | property)",
+    description=QT_TRANSLATE_NOOP("ArchSql", "Counts rows that match criteria."),
+    snippet="SELECT COUNT(*) FROM document WHERE IfcType = 'Space'"
+)
+class CountFunction(AggregateFunction):
+    """Implements the COUNT() aggregate function."""
+    pass
+
+
+@register_select_function(
+    name='SUM',
+    category=QT_TRANSLATE_NOOP("ArchSql", "Aggregate"),
+    signature="SUM(property)",
+    description=QT_TRANSLATE_NOOP("ArchSql", "Calculates the sum of a numerical property."),
+    snippet="SELECT SUM(Area) FROM document WHERE IfcType = 'Space'"
+)
+class SumFunction(AggregateFunction):
+    """Implements the SUM() aggregate function."""
+    pass
+
+
+@register_select_function(
+    name='MIN',
+    category=QT_TRANSLATE_NOOP("ArchSql", "Aggregate"),
+    signature="MIN(property)",
+    description=QT_TRANSLATE_NOOP("ArchSql", "Finds the minimum value of a property."),
+    snippet="SELECT MIN(Length) FROM document WHERE IfcType = 'Wall'"
+)
+class MinFunction(AggregateFunction):
+    """Implements the MIN() aggregate function."""
+    pass
+
+
+@register_select_function(
+    name='MAX',
+    category=QT_TRANSLATE_NOOP("ArchSql", "Aggregate"),
+    signature="MAX(property)",
+    description=QT_TRANSLATE_NOOP("ArchSql", "Finds the maximum value of a property."),
+    snippet="SELECT MAX(Height) FROM document WHERE IfcType = 'Wall'"
+)
+class MaxFunction(AggregateFunction):
+    """Implements the MAX() aggregate function."""
+    pass
+
+
 class FunctionBase:
     """A base class for non-aggregate functions like TYPE, CONCAT, etc."""
     def __init__(self, function_name, arg_extractors):
@@ -166,6 +241,13 @@ class FunctionBase:
         raise NotImplementedError()
 
 
+@register_select_function(
+    name='TYPE',
+    category=QT_TRANSLATE_NOOP("ArchSql", "Utility"),
+    signature="TYPE(*)",
+    description=QT_TRANSLATE_NOOP("ArchSql", "Returns the object's BIM type (e.g., 'Wall')."),
+    snippet="SELECT Label FROM document WHERE TYPE(*) = 'Wall'"
+)
 class TypeFunction(FunctionBase):
     """Implements the TYPE() function."""
     def __init__(self, function_name, arg_extractors):
@@ -179,6 +261,13 @@ class TypeFunction(FunctionBase):
         return Draft.get_type(obj)
 
 
+@register_select_function(
+    name='LOWER',
+    category=QT_TRANSLATE_NOOP("ArchSql", "String"),
+    signature="LOWER(property)",
+    description=QT_TRANSLATE_NOOP("ArchSql", "Converts text to lowercase."),
+    snippet="SELECT Label FROM document WHERE LOWER(Label) = 'exterior wall'"
+)
 class LowerFunction(FunctionBase):
     """Implements the LOWER() string function."""
     def __init__(self, function_name, arg_extractors):
@@ -191,6 +280,13 @@ class LowerFunction(FunctionBase):
         return str(value).lower() if value is not None else None
 
 
+@register_select_function(
+    name='UPPER',
+    category=QT_TRANSLATE_NOOP("ArchSql", "String"),
+    signature="UPPER(property)",
+    description=QT_TRANSLATE_NOOP("ArchSql", "Converts text to uppercase."),
+    snippet="SELECT Label FROM document WHERE UPPER(IfcType) = 'WALL'"
+)
 class UpperFunction(FunctionBase):
     """Implements the UPPER() string function."""
     def __init__(self, function_name, arg_extractors):
@@ -203,6 +299,13 @@ class UpperFunction(FunctionBase):
         return str(value).upper() if value is not None else None
 
 
+@register_select_function(
+    name='CONCAT',
+    category=QT_TRANSLATE_NOOP("ArchSql", "String"),
+    signature="CONCAT(value1, value2, ...)",
+    description=QT_TRANSLATE_NOOP("ArchSql", "Joins multiple strings and properties together."),
+    snippet="SELECT CONCAT(Label, ': ', IfcType) FROM document"
+)
 class ConcatFunction(FunctionBase):
     """Implements the CONCAT() string function."""
     def __init__(self, function_name, arg_extractors):
@@ -215,6 +318,13 @@ class ConcatFunction(FunctionBase):
         return "".join(parts)
 
 
+@register_select_function(
+    name='CONVERT',
+    category=QT_TRANSLATE_NOOP("ArchSql", "Utility"),
+    signature="CONVERT(quantity, 'unit')",
+    description=QT_TRANSLATE_NOOP("ArchSql", "Converts a Quantity to a different unit (e.g., CONVERT(Length, 'm'))."),
+    snippet="SELECT CONVERT(Length, 'm') AS LengthInMeters FROM document"
+)
 class ConvertFunction(FunctionBase):
     """Implements the CONVERT(Quantity, 'unit') function."""
     def __init__(self, function_name, arg_extractors):
@@ -290,6 +400,13 @@ class FromFunctionBase:
         return parent_objects
 
 
+@register_from_function(
+    name='CHILDREN',
+    category=QT_TRANSLATE_NOOP("ArchSql", "Hierarchical"),
+    signature="CHILDREN(subquery)",
+    description=QT_TRANSLATE_NOOP("ArchSql", "Selects child objects of a given parent set."),
+    snippet="SELECT * FROM CHILDREN(SELECT * FROM document WHERE Label = 'My Floor')"
+)
 class ChildrenFromFunction(FromFunctionBase):
     """Implements the CHILDREN() function."""
 
@@ -332,6 +449,13 @@ class ChildrenFromFunction(FromFunctionBase):
         return list(results_set)
 
 
+@register_select_function(
+    name='PARENT',
+    category=QT_TRANSLATE_NOOP("ArchSql", "Hierarchical"),
+    signature="PARENT(*)",
+    description=QT_TRANSLATE_NOOP("ArchSql", "Returns the immediate, architecturally significant parent of an object."),
+    snippet="SELECT Label, PARENT(*).Label AS Floor FROM document WHERE IfcType = 'Space'"
+)
 class ParentFunction(FunctionBase):
     """Implements the PARENT(*) function to find an object's container."""
     def __init__(self, function_name, arg_extractors):
@@ -1212,6 +1336,19 @@ class SqlTransformerMixin:
         # Arguments are optional (e.g. for a future function).
         args = items[1] if len(items) > 1 else []
 
+        # Special handling for aggregates, which all use the AggregateFunction logic
+        # but are instantiated via their specific subclasses.
+        aggregate_map = {
+            "COUNT": CountFunction,
+            "SUM": SumFunction,
+            "MIN": MinFunction,
+            "MAX": MaxFunction,
+        }
+        if function_name in aggregate_map:
+            # Instantiate the correct subclass (CountFunction, etc.) but pass the
+            # function name (e.g., 'count') to the AggregateFunction constructor.
+            return aggregate_map[function_name](function_name.lower(), args)
+
         # Look up the function in the injected SELECT function registry
         function_class = self.select_function_registry.get_class(function_name)
 
@@ -1227,54 +1364,23 @@ class SqlTransformerMixin:
 def _initialize_engine():
     """
     Creates and configures all components of the SQL engine.
-    This is the single source of truth for engine setup.
+    Function registration is now handled automatically via decorators on each
+    function's class definition.
     """
-    # 1. Create Registries
-    select_function_registry = FunctionRegistry()
-    from_function_registry = FunctionRegistry()
-
-    # 2. Register all built-in function classes
-
-    # SELECT Functions
-    select_function_registry.register('COUNT', AggregateFunction, category="Aggregate", signature="COUNT(* | property)",
-                                      description="Counts rows that match criteria.", snippet="SELECT COUNT(*) FROM document WHERE IfcType = 'Space'")
-    select_function_registry.register('SUM', AggregateFunction, category="Aggregate", signature="SUM(property)",
-                                      description="Calculates the sum of a numerical property.", snippet="SELECT SUM(Area) FROM document WHERE IfcType = 'Space'")
-    select_function_registry.register('MIN', AggregateFunction, category="Aggregate", signature="MIN(property)",
-                                      description="Finds the minimum value of a property.", snippet="SELECT MIN(Length) FROM document WHERE IfcType = 'Wall'")
-    select_function_registry.register('MAX', AggregateFunction, category="Aggregate", signature="MAX(property)",
-                                      description="Finds the maximum value of a property.", snippet="SELECT MAX(Height) FROM document WHERE IfcType = 'Wall'")
-    select_function_registry.register('LOWER', LowerFunction, category="String", signature="LOWER(property)",
-                                      description="Converts text to lowercase.", snippet="SELECT Label FROM document WHERE LOWER(Label) = 'exterior wall'")
-    select_function_registry.register('UPPER', UpperFunction, category="String", signature="UPPER(property)",
-                                      description="Converts text to uppercase.", snippet="SELECT Label FROM document WHERE UPPER(IfcType) = 'WALL'")
-    select_function_registry.register('CONCAT', ConcatFunction, category="String", signature="CONCAT(value1, value2, ...)",
-                                      description="Joins multiple strings and properties together.", snippet="SELECT CONCAT(Label, ': ', IfcType) FROM document")
-    select_function_registry.register('TYPE', TypeFunction, category="Utility", signature="TYPE(*)",
-                                      description="Returns the object's BIM type (e.g., 'Wall').", snippet="SELECT Label FROM document WHERE TYPE(*) = 'Wall'")
-    select_function_registry.register('CONVERT', ConvertFunction, category="Utility", signature="CONVERT(quantity, 'unit')",
-                                      description="Converts a Quantity to a different unit (e.g., CONVERT(Length, 'm')).", snippet="SELECT CONVERT(Length, 'm') AS LengthInMeters FROM document")
-    # FROM Functions
-    from_function_registry.register('CHILDREN', ChildrenFromFunction, category="Hierarchical", signature="CHILDREN(subquery)",
-                                      description="Selects child objects of a given parent set.", snippet="SELECT * FROM CHILDREN(SELECT * FROM document WHERE Label = 'My Floor')")
-    select_function_registry.register('PARENT', ParentFunction, category="Hierarchical", signature="PARENT(*)",
-                                      description="Returns the immediate, architecturally significant parent of an object.", snippet="SELECT Label, PARENT(*).Label AS Floor FROM document WHERE IfcType = 'Space'")
-
-    # 3. Define and instantiate the transformer
+    # 1. Define and instantiate the transformer.
     class FinalTransformer(generated_sql_parser.Transformer, SqlTransformerMixin):
-        def __init__(self, select_functions, from_functions):
-            self.select_function_registry = select_functions
-            self.from_function_registry = from_functions
+        def __init__(self):
+            # The transformer still needs access to the registries to look up
+            # standard function classes.
+            self.select_function_registry = select_function_registry
+            self.from_function_registry = from_function_registry
 
-    transformer = FinalTransformer(
-        select_functions=select_function_registry,
-        from_functions=from_function_registry
-    )
+    transformer = FinalTransformer()
 
-    # 4. Instantiate the parser
+    # 2. Instantiate the parser
     parser = generated_sql_parser.Lark_StandAlone()
 
-    # 5. Generate friendly token names from the initialized parser
+    # 3. Generate friendly token names from the initialized parser
     friendly_token_names = _generate_friendly_token_names(parser)
 
     return parser, transformer, friendly_token_names
@@ -1483,8 +1589,9 @@ def getSqlApiDocumentation() -> dict:
     """
     Generates a structured dictionary describing the supported SQL dialect.
 
-    This function is fully dynamic and introspects the live engine
-    configuration. All user-facing strings are pre-translated.
+    This function introspects the live engine configuration and performs
+    just-in-time translation of descriptive strings to ensure they appear
+    in the user's current language.
 
     Returns
     -------
@@ -1503,25 +1610,27 @@ def getSqlApiDocumentation() -> dict:
         **_transformer.from_function_registry._functions
     }
 
-    # Group functions by their registered category.
+    # Group functions by their registered category, translating as we go.
     for name, data in all_registries.items():
-        category = data['category']
-        if category not in api_data['functions']:
-            api_data['functions'][category] = []
-        api_data['functions'][category].append({
+        # The category and description strings were marked for translation
+        # with a context of "ArchSql" when they were registered.
+        translated_category = translate("ArchSql", data['category'])
+
+        if translated_category not in api_data['functions']:
+            api_data['functions'][translated_category] = []
+
+        api_data['functions'][translated_category].append({
             'name': name,
             'signature': data['signature'],
-            'description': data['description'],
+            'description': translate("ArchSql", data['description']),
             'snippet': data['snippet'],
         })
 
     # To get a clean list of "Clauses" for the cheatsheet, we use an explicit
-    # whitelist of keywords that represent major SQL clauses. This is more
-    # robust and clearer than trying to filter out all non-clause tokens.
+    # whitelist of keywords that represent major SQL clauses.
     CLAUSE_KEYWORDS = {
         'SELECT', 'FROM', 'WHERE', 'GROUP', 'BY', 'ORDER', 'AS', 'AND', 'OR', 'IS', 'NOT', 'IN', 'LIKE'
     }
-    # We still get all terminals from the parser to ensure our list is valid.
     all_terminals = {term.name for term in _parser.terminals}
     api_data['clauses'] = sorted([k for k in CLAUSE_KEYWORDS if k in all_terminals])
 
