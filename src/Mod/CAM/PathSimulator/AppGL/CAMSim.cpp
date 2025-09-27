@@ -36,12 +36,12 @@ TYPESYSTEM_SOURCE(CAMSimulator::CAMSim, Base::BaseClass);
 
 void CAMSim::BeginSimulation(const Part::TopoShape& stock, float quality)
 {
-    DlgCAMSimulator::GetInstance()->startSimulation(stock, quality);
+    DlgCAMSimulator::instance()->startSimulation(stock, quality);
 }
 
 void CAMSimulator::CAMSim::resetSimulation()
 {
-    DlgCAMSimulator::GetInstance()->resetSimulation();
+    DlgCAMSimulator::instance()->resetSimulation();
 }
 
 void CAMSim::addTool(const std::vector<float>& toolProfilePoints,
@@ -49,7 +49,7 @@ void CAMSim::addTool(const std::vector<float>& toolProfilePoints,
                      float diameter,
                      float resolution)
 {
-    DlgCAMSimulator::GetInstance()->addTool(toolProfilePoints, toolNumber, diameter, resolution);
+    DlgCAMSimulator::instance()->addTool(toolProfilePoints, toolNumber, diameter, resolution);
 }
 
 void CAMSimulator::CAMSim::SetBaseShape(const Part::TopoShape& baseShape, float resolution)
@@ -58,11 +58,11 @@ void CAMSimulator::CAMSim::SetBaseShape(const Part::TopoShape& baseShape, float 
         return;
     }
 
-    DlgCAMSimulator::GetInstance()->SetBaseShape(baseShape, resolution);
+    DlgCAMSimulator::instance()->setBaseShape(baseShape, resolution);
 }
 
 void CAMSim::AddCommand(Command* cmd)
 {
     std::string gline = cmd->toGCode();
-    DlgCAMSimulator::GetInstance()->addGcodeCommand(gline.c_str());
+    DlgCAMSimulator::instance()->addGcodeCommand(gline.c_str());
 }
