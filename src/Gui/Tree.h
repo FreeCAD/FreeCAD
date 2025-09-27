@@ -102,7 +102,24 @@ public:
     void markItem(const App::DocumentObject* Obj,bool mark);
     void syncView(ViewProviderDocumentObject *vp);
 
+    /**
+     * @brief Selects all selectable objects within the current group.
+     *
+     * Clears the current FreeCAD selection and then selects all sibling items
+     * of the currently selected object, i.e., all child items of the selected
+     * item's parent in the tree.
+     */
     void selectAll() override;
+    /**
+     * @brief Selects all selectable objects within the current group.
+     *
+     * Clears the current FreeCAD selection and then selects all sibling items
+     * of the currently selected object recursivly, i.e., all child items of the selected
+     * item's parent in the tree.
+     * 
+     * @param recursive If true, selects all items in the group recursively.
+     */
+    void selectAll(bool recursive);
 
     const char *getTreeName() const;
 
@@ -143,6 +160,7 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent * event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
+    void selectGroupItems(const QTreeWidgetItem* group, bool recursive);
 
 private:
     struct TargetItemInfo {
