@@ -796,8 +796,10 @@ def Execute(op, obj):
         # NOTE: Reminder that stock is formatted differently than inside/outside!
         stockPaths = {d: convertTo2d(op.stockPathArray[d]) for d in op.stockPathArray}
 
-        outsideOpType = area.AdaptiveOperationType.ClearingOutside
-        insideOpType = area.AdaptiveOperationType.ClearingInside
+        outsideClearing = area.AdaptiveOperationType.ClearingOutside
+        insideClearing = area.AdaptiveOperationType.ClearingInside
+        outsideProfiling = area.AdaptiveOperationType.ProfilingOutside
+        insideProfiling = area.AdaptiveOperationType.ProfilingInside
 
         # List every REGION separately- we can then calculate a toolpath based
         # on the region. One or more stepdowns may use that same toolpath by
@@ -814,7 +816,9 @@ def Execute(op, obj):
         for rdict in op.outsidePathArray:
             regionOps.append(
                 {
-                    "opType": outsideOpType,
+                    "opType": (
+                        outsideClearing if obj.OperationType == "Clearing" else outsideProfiling
+                    ),
                     "path2d": convertTo2d(rdict["edges"]),
                     "id": rdict["id"],
                     "children": rdict["children"],
@@ -829,7 +833,9 @@ def Execute(op, obj):
         for rdict in op.insidePathArray:
             regionOps.append(
                 {
-                    "opType": insideOpType,
+                    "opType": (
+                        insideClearing if obj.OperationType == "Clearing" else insideProfiling
+                    ),
                     "path2d": convertTo2d(rdict["edges"]),
                     "id": rdict["id"],
                     "children": rdict["children"],
@@ -850,7 +856,9 @@ def Execute(op, obj):
         outsideInputStateObject = {
             "tool": op.tool.Diameter.Value,
             "tolerance": obj.Tolerance,
-            "geometry": [k["path2d"] for k in regionOps if k["opType"] == outsideOpType],
+            "geometry": [
+                k["path2d"] for k in regionOps if k["opType"] in [outsideClearing, outsideProfiling]
+            ],
             "stockGeometry": stockPaths,
             "stepover": obj.StepOver,
             "effectiveHelixDiameter": helixDiameter,
@@ -867,7 +875,9 @@ def Execute(op, obj):
         insideInputStateObject = {
             "tool": op.tool.Diameter.Value,
             "tolerance": obj.Tolerance,
-            "geometry": [k["path2d"] for k in regionOps if k["opType"] == insideOpType],
+            "geometry": [
+                k["path2d"] for k in regionOps if k["opType"] in [insideClearing, insideProfiling]
+            ],
             "stockGeometry": stockPaths,
             "stepover": obj.StepOver,
             "effectiveHelixDiameter": helixDiameter,
@@ -1283,7 +1293,10 @@ def _workingEdgeHelperManual(op, obj, depths):
     for ext in extensions:
         if not ext.avoid:
             if wire := ext.getWire():
-                selectedRegions += [f for f in ext.getExtensionFaces(wire)]
+                # NOTE: Can NOT just make a face directly, since that just gives
+                # the outside profile and removes internal holes
+                for f in ext.getExtensionFaces(wire):
+                    selectedRegions.extend(f.Faces)
 
     for base, subs in obj.Base:
         for sub in subs:
