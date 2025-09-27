@@ -60,7 +60,7 @@ def export(objectslist, filename, argstring):
 
     if SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
-        dia.editor.setText(output)
+        dia.editor.setPlainText(output)
         result = dia.exec_()
         if result:
             final = dia.editor.toPlainText()

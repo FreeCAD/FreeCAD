@@ -30,6 +30,11 @@ These are common functions and classes for creating custom post processors.
 
 from Path.Base.MachineState import MachineState
 from PySide import QtCore, QtGui
+
+from PySide.QtWidgets import QWidget, QPlainTextEdit
+from PySide.QtGui import QPainter
+from PySide.QtCore import Qt, QRect, QSize
+
 import FreeCAD
 import Part
 import Path
@@ -215,13 +220,15 @@ class GCodeEditorDialog(QtGui.QDialog):
         layout = QtGui.QVBoxLayout(self)
 
         # nice text editor widget for editing the gcode
-        self.editor = QtGui.QTextEdit()
+        # self.editor = QtGui.QTextEdit()
+        self.editor = CodeEditor()
         font = QtGui.QFont()
         font.setFamily("Courier")
         font.setFixedPitch(True)
         font.setPointSize(10)
         self.editor.setFont(font)
-        self.editor.setText("G01 X55 Y4.5 F300.0")
+        # self.editor.setText("G01 X55 Y4.5 F300.0")
+        self.editor.setPlainText("G01 X55 Y4.5 F300.0")
         layout.addWidget(self.editor)
 
         # OK and Cancel buttons
@@ -254,6 +261,81 @@ class GCodeEditorDialog(QtGui.QDialog):
         params.SetInt("width", self.size().width())
         params.SetInt("height", self.size().height())
         return QtGui.QDialog.done(self, *args, **kwargs)
+
+
+class LineNumberArea(QWidget):
+    def __init__(self, editor):
+        super().__init__(editor)
+        self.editor = editor
+
+    def sizeHint(self):
+        return QSize(self.editor.fontMetrics().horizontalAdvance("999") + 4, 0)
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.fillRect(event.rect(), Qt.black)
+
+        block = self.editor.firstVisibleBlock()
+        blockNumber = block.blockNumber()
+        top = self.editor.blockBoundingGeometry(block).translated(self.editor.contentOffset()).top()
+        bottom = top + self.editor.blockBoundingRect(block).height()
+
+        while block.isValid() and top <= event.rect().bottom():
+            if block.isVisible() and bottom >= event.rect().top():
+                number = str(blockNumber + 1)
+                painter.setPen(Qt.gray)
+                painter.drawText(
+                    -6,
+                    int(top),
+                    self.width(),
+                    self.editor.fontMetrics().height(),
+                    Qt.AlignRight,
+                    number,
+                )
+
+            block = block.next()
+            top = bottom
+            bottom = top + self.editor.blockBoundingRect(block).height()
+            blockNumber += 1
+
+
+class CodeEditor(QPlainTextEdit):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.lineNumberArea = LineNumberArea(self)
+        self.blockCountChanged.connect(self.updateLineNumberAreaWidth)
+        self.updateRequest.connect(self.updateLineNumberArea)
+        self.verticalScrollBar().valueChanged.connect(self.lineNumberArea.update)  # Simple update
+
+        self.updateLineNumberAreaWidth(0)  # Initial call
+
+    def lineNumberAreaWidth(self):
+        digits = 2
+        max_value = max(1, self.blockCount())
+        while max_value >= 10:
+            max_value /= 10
+            digits += 1
+        space = 3 + self.fontMetrics().horizontalAdvance("9") * digits
+        return space
+
+    def updateLineNumberAreaWidth(self, newBlockCount):
+        self.setViewportMargins(self.lineNumberAreaWidth(), 0, 0, 0)
+
+    def updateLineNumberArea(self, rect, dy):
+        if dy:
+            self.lineNumberArea.scroll(0, dy)
+        else:
+            self.lineNumberArea.update(0, rect.y(), self.lineNumberArea.width(), rect.height())
+
+        if rect.contains(self.viewport().rect()):
+            self.updateLineNumberAreaWidth(0)
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        cr = self.contentsRect()
+        self.lineNumberArea.setGeometry(
+            QRect(cr.left(), cr.top(), self.lineNumberAreaWidth(), cr.height())
+        )
 
 
 def stringsplit(commandline):
