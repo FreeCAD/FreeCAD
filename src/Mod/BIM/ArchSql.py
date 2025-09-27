@@ -31,6 +31,7 @@ from typing import List, Tuple, Any, Optional
 __all__ = [
     'select',
     'count',
+    'selectObjects',
     'getSqlKeywords',
     'getSqlApiDocumentation',
     'BimSqlSyntaxError',
@@ -1540,6 +1541,73 @@ def select(query_string: str) -> Tuple[List[str], List[List[Any]]]:
     # The 'select' function always performs a full data query.
     headers, results_data = _run_query(query_string, mode='full_data')
     return headers, results_data
+
+
+def selectObjects(query_string: str) -> List['FreeCAD.DocumentObject']:
+    """
+    Selects objects from the active document using a SQL-like query.
+
+    This provides a declarative way to select BIM objects
+    based on their properties. This is a convenience function for scripting.
+
+    Parameters
+    ----------
+    query_string : str
+        The SQL query to execute. For example:
+        'SELECT * FROM document WHERE IfcType = "Wall" AND Label LIKE "%exterior%"'
+
+    Returns
+    -------
+    list of App::DocumentObject
+        A list of the FreeCAD document objects that match the query.
+        Returns an empty list if the query is invalid or finds no objects.
+    """
+    if not FreeCAD.ActiveDocument:
+        FreeCAD.Console.PrintError("Arch.selectObjects() requires an active document.\n")
+        return []
+
+    try:
+        # Execute the query using the internal 'select' function.
+        headers, data_rows = select(query_string)
+
+        if not data_rows:
+            return []
+
+        # Build a lookup map for fast access to objects by their unique Name.
+        objects_by_name = {o.Name: o for o in FreeCAD.ActiveDocument.Objects}
+        objects_by_label = {} # Lazy-loaded if needed
+
+        # Find the index of the column that contains the object identifier.
+        # Prefer 'Name' as it is guaranteed to be unique. Fallback to 'Label'.
+        if 'Name' in headers:
+            id_idx = headers.index('Name')
+            lookup_dict = objects_by_name
+        elif 'Label' in headers:
+            id_idx = headers.index('Label')
+            objects_by_label = {o.Label: o for o in FreeCAD.ActiveDocument.Objects}
+            lookup_dict = objects_by_label
+        elif SELECT_STAR_HEADER in headers: # Handle 'SELECT *' case
+            id_idx = headers.index(SELECT_STAR_HEADER)
+            objects_by_label = {o.Label: o for o in FreeCAD.ActiveDocument.Objects}
+            lookup_dict = objects_by_label
+        else:
+            FreeCAD.Console.PrintError("Query for selectObjects must return a 'Name' or 'Label' column, or use 'SELECT *'.\n")
+            return []
+
+        # Map the identifiers from the query results back to the actual objects.
+        found_objects = []
+        for row in data_rows:
+            identifier = row[id_idx]
+            obj = lookup_dict.get(identifier)
+            if obj and obj not in found_objects: # Avoid duplicates
+                found_objects.append(obj)
+
+        return found_objects
+
+    except (SqlEngineError, BimSqlSyntaxError) as e:
+        # If the query fails, log the error and return an empty list.
+        FreeCAD.Console.PrintError(f"Arch.selectObjects query failed: {e}\n")
+        return []
 
 
 def getSqlKeywords() -> List[str]:
