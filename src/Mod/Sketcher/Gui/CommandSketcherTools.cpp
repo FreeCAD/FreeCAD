@@ -2323,7 +2323,7 @@ CmdSketcherOffset::CmdSketcherOffset()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Offset");
-    sToolTipText = QT_TR_NOOP("Offsets the selected geometry: positive values offset outward, negative values inward");
+    sToolTipText = QT_TR_NOOP("Adds an equidistant closed contour around selected geometry: positive values offset outward, negative values inward");
     sWhatsThis = "Sketcher_Offset";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Offset";
