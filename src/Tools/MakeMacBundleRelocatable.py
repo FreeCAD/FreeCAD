@@ -239,7 +239,9 @@ def create_dep_nodes(install_names, search_paths, referencing_lib_path=None):
         # resolve @loader_path if present
         if referencing_lib_path and lib.startswith("@loader_path/"):
             lib = resolve_loader_path(lib, referencing_lib_path)
-            logging.debug(f"Resolved {original_lib} to {lib} (referencing from {referencing_lib_path})")
+            logging.debug(
+                f"Resolved {original_lib} to {lib} (referencing from {referencing_lib_path})"
+            )
 
         # resolve @rpath if present
         elif lib.startswith("@rpath/"):
@@ -500,12 +502,12 @@ def main():
     initial_search_paths = [bundle_path + "/lib"] + sys.argv[2:]
 
     # add additional search paths if required
-    additional_search_paths = [
-            os.path.join(brew_prefix, "lib", "gcc", "current")
-            ]
+    additional_search_paths = [os.path.join(brew_prefix, "lib", "gcc", "current")]
 
     # combine the initial + additional search paths
-    search_paths = initial_search_paths + [p for p in additional_search_paths if p not in initial_search_paths]
+    search_paths = initial_search_paths + [
+        p for p in additional_search_paths if p not in initial_search_paths
+    ]
 
     # change to level to logging.DEBUG for diagnostic messages
     logging.basicConfig(
