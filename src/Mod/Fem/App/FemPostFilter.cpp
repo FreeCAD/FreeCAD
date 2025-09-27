@@ -1488,15 +1488,24 @@ void FemPostCalculatorFilter::updateAvailableFields()
         std::string name1 = pd->GetArrayName(i);
         std::string name2 = name1;
         std::replace(name2.begin(), name2.end(), ' ', '_');
-        if (pd->GetArray(i)->GetNumberOfComponents() == 3) {
+        if (pd->GetArray(i)->GetNumberOfComponents() == 1) {
+            m_calculator->AddScalarVariable(name2.c_str(), name1.c_str());
+        }
+        else if (pd->GetArray(i)->GetNumberOfComponents() == 3) {
             m_calculator->AddVectorVariable(name2.c_str(), name1.c_str());
-            // add components as scalar variable
+            // add vector components as scalar variable
             m_calculator->AddScalarVariable((name2 + "_X").c_str(), name1.c_str(), 0);
             m_calculator->AddScalarVariable((name2 + "_Y").c_str(), name1.c_str(), 1);
             m_calculator->AddScalarVariable((name2 + "_Z").c_str(), name1.c_str(), 2);
         }
-        else if (pd->GetArray(i)->GetNumberOfComponents() == 1) {
-            m_calculator->AddScalarVariable(name2.c_str(), name1.c_str());
+        else if (pd->GetArray(i)->GetNumberOfComponents() == 6) {
+            // add tensor components as scalar variable
+            m_calculator->AddScalarVariable((name2 + "_XX").c_str(), name1.c_str(), 0);
+            m_calculator->AddScalarVariable((name2 + "_YY").c_str(), name1.c_str(), 1);
+            m_calculator->AddScalarVariable((name2 + "_ZZ").c_str(), name1.c_str(), 2);
+            m_calculator->AddScalarVariable((name2 + "_XY").c_str(), name1.c_str(), 3);
+            m_calculator->AddScalarVariable((name2 + "_YZ").c_str(), name1.c_str(), 4);
+            m_calculator->AddScalarVariable((name2 + "_ZX").c_str(), name1.c_str(), 5);
         }
     }
 }
