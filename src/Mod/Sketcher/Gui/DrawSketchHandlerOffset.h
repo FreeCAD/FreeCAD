@@ -1255,16 +1255,21 @@ void DSHOffsetController::adaptParameters(Base::Vector2d onSketchPos)
                 Base::Vector2d direction = handler->endpoint - handler->pointOnSourceWire;
                 if (direction.Length() > Precision::Confusion()) {
                     direction.Normalize();
-                    Base::Vector2d correctedEndpoint = handler->pointOnSourceWire + direction * handler->offsetLength;
-                    dimensionEndpoint = Base::Vector3d(correctedEndpoint.x, correctedEndpoint.y, 0.);
-                } else {
-                    dimensionEndpoint = Base::Vector3d(handler->endpoint.x, handler->endpoint.y, 0.);
+                    Base::Vector2d correctedEndpoint =
+                        handler->pointOnSourceWire + direction * handler->offsetLength;
+                    dimensionEndpoint =
+                        Base::Vector3d(correctedEndpoint.x, correctedEndpoint.y, 0.);
                 }
-            } else {
+                else {
+                    dimensionEndpoint =
+                        Base::Vector3d(handler->endpoint.x, handler->endpoint.y, 0.);
+                }
+            }
+            else {
                 // use mouse pos when user hasn't typed a value
                 dimensionEndpoint = Base::Vector3d(handler->endpoint.x, handler->endpoint.y, 0.);
             }
-            
+
             firstParam->setPoints(
                 dimensionEndpoint,
                 Base::Vector3d(handler->pointOnSourceWire.x, handler->pointOnSourceWire.y, 0.));
