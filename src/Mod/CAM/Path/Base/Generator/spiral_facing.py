@@ -117,7 +117,7 @@ def spiral(polygon, tool_diameter, stepover_percent, axis_preference="long", mil
     step_length = edge_info['step_length']
     
     # Determine starting corner based on milling direction
-    start_corner = facing_common.select_starting_corner(corners, primary_edge, step_edge, milling_direction)
+    start_corner = facing_common.select_starting_corner(corners, primary_vec, step_vec, milling_direction)
 
     # Calculate stepover distance and engagement offset
     stepover = tool_diameter * stepover_percent / 100.0

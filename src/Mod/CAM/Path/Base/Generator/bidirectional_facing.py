@@ -195,5 +195,5 @@ def analyze_rectangle(polygon, axis_preference):
         'step_vec': edge_info['step_vec'],
         'primary_length': edge_info['primary_length'],
         'step_length': edge_info['step_length'],
-        'reference_corner': facing_common.select_starting_corner(corners, edge_info['primary_edge'], edge_info['step_edge'], "climb")
+        'reference_corner': facing_common.select_starting_corner(corners, edge_info['primary_vec'], edge_info['step_vec'], "climb")
     }

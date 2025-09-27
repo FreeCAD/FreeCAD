@@ -352,6 +352,7 @@ SET(PathPythonOp_SRCS
     Path/Op/Drilling.py
     Path/Op/Helix.py
     Path/Op/MillFace.py
+    Path/Op/MillFacing.py
     Path/Op/Pocket.py
     Path/Op/PocketBase.py
     Path/Op/PocketShape.py
@@ -382,6 +383,7 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/FeatureExtension.py
     Path/Op/Gui/Helix.py
     Path/Op/Gui/MillFace.py
+    Path/Op/Gui/MillFacing.py
     Path/Op/Gui/PathShapeTC.py
     Path/Op/Gui/Pocket.py
     Path/Op/Gui/PocketBase.py

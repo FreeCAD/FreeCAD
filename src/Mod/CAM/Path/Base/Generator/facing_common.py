@@ -122,11 +122,59 @@ def select_primary_step_edges(edges, axis_preference):
     }
 
 
-def select_starting_corner(corners, primary_edge, step_edge, milling_direction):
-    """Select starting corner based on milling direction and edge orientation."""
-    # For now, use the first corner as starting point
-    # TODO: Implement proper corner selection logic based on milling direction
-    return corners[0]
+def select_starting_corner(corners, primary_vec, step_vec, milling_direction):
+    """
+    Select starting corner based on milling direction and edge orientation.
+    
+    For climb milling, we want to start from the corner that allows the tool to
+    move in the direction that creates the optimal cutting conditions.
+    For conventional milling, we start from the opposite corner.
+    
+    Args:
+        corners (list): List of corner points from the polygon
+        primary_vec (FreeCAD.Vector): Primary direction vector (normalized)
+        step_vec (FreeCAD.Vector): Step direction vector (normalized)
+        milling_direction (str): "climb" or "conventional"
+    
+    Returns:
+        FreeCAD.Vector: The selected starting corner point
+    """
+    if len(corners) < 4:
+        return corners[0]
+    
+    # Find the corner with minimum combined projection onto both direction vectors
+    # This gives us the "origin" corner regardless of polygon rotation
+    min_projection = float('inf')
+    selected_corner = corners[0]
+    
+    for corner in corners:
+        # Calculate projections onto both direction vectors
+        primary_proj = corner.dot(primary_vec)
+        step_proj = corner.dot(step_vec)
+        
+        # Combined projection (distance from origin in direction space)
+        combined_proj = primary_proj + step_proj
+        
+        if combined_proj < min_projection:
+            min_projection = combined_proj
+            selected_corner = corner
+    
+    # For conventional milling, we want to start from the opposite corner
+    # to ensure proper cutting direction
+    if milling_direction == "conventional":
+        # Find the corner that's furthest from the selected corner
+        max_distance = 0
+        opposite_corner = selected_corner
+        
+        for corner in corners:
+            distance = selected_corner.distanceToPoint(corner)
+            if distance > max_distance:
+                max_distance = distance
+                opposite_corner = corner
+        
+        selected_corner = opposite_corner
+    
+    return selected_corner
 
 
 def get_angled_polygon(wire, angle):
