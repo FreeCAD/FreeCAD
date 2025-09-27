@@ -92,6 +92,9 @@ TaskFemConstraintPlaneRotation::TaskFemConstraintPlaneRotation(
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
 
+    ui->lbl_info->setText(tr("Select single geometry of type: ")
+                          + QString::fromUtf8("<b>%1</b>").arg(tr("Face")));
+
     // Selection buttons
     connect(ui->btnAdd,
             &QToolButton::clicked,

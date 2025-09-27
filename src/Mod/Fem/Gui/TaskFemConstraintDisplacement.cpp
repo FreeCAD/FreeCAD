@@ -161,6 +161,9 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
     ui->DisplacementZFormulaCB->setChecked(bStates[8]);
     ui->FlowForceCB->setChecked(bStates[9]);
 
+    ui->lbl_info->setText(tr("Select geometry of type: ")
+                          + QString::fromUtf8("<b>%1</b>").arg(tr("Vertex, Edge, Face")));
+
     // Selection buttons
     buttonGroup->addButton(ui->btnAdd, static_cast<int>(SelectionChangeModes::refAdd));
     buttonGroup->addButton(ui->btnRemove, static_cast<int>(SelectionChangeModes::refRemove));

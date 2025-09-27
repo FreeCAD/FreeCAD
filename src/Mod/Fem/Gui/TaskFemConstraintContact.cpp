@@ -136,6 +136,13 @@ TaskFemConstraintContact::TaskFemConstraintContact(ViewProviderFemConstraintCont
         ui->lw_referencesSlave->addItem(makeRefText(Objects[0], SubElements[0]));
     }
 
+    ui->lbl_info->setText(tr("Select slave geometry of type: ")
+                          + QString::fromUtf8("<b>%1</b>; ").arg(tr("Face"))
+                          + tr("click Add or Remove"));
+    ui->lbl_info_2->setText(tr("Select master geometry of type: ")
+                            + QString::fromUtf8("<b>%1</b>; ").arg(tr("Face"))
+                            + tr("click Add or Remove"));
+
     // Selection buttons
     connect(ui->btnAddSlave,
             &QToolButton::clicked,

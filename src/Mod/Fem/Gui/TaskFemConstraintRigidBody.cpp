@@ -248,6 +248,9 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
     buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);
     buttonGroup->addButton(ui->btnRemove, (int)SelectionChangeModes::refRemove);
 
+    ui->lbl_info->setText(tr("Select geometry of type: ")
+                          + QString::fromUtf8("<b>%1</b>").arg(tr("Vertex, Edge, Face")));
+
     updateUI();
 }
 
