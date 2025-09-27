@@ -3726,6 +3726,60 @@ int Sketch::addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointP
         return -1;
     }
 
+    // Special handling for arc endpoint symmetry when the arc's center is on the symmetry axis.
+    // In this specific geometric configuration, the perpendicularity part of the symmetry
+    // constraint is inherently redundant. Applying it would lead to solver errors.
+    // We detect this case and add only the midpoint-on-line part of the constraint,
+    // which is sufficient to enforce symmetry without causing redundancy.
+
+    // Step 1: Check if the two points (p1, p2) are endpoints of the same arc.
+    // We iterate through all geometries to find an arc whose start/end points match our input
+    // points.
+    int arcGeoId = -1;
+    for (int i = 0; i < (int)Geoms.size(); ++i) {
+        if (Geoms[i].type == Arc) {
+            int arcStartPointId = Geoms[i].startPointId;
+            int arcEndPointId = Geoms[i].endPointId;
+
+            int p1_Id = getPointId(geoId1, pos1);
+            int p2_Id = getPointId(geoId2, pos2);
+
+            if ((p1_Id == arcStartPointId && p2_Id == arcEndPointId)
+                || (p1_Id == arcEndPointId && p2_Id == arcStartPointId)) {
+                arcGeoId = i;
+                break;
+            }
+        }
+    }
+
+    if (arcGeoId != -1) {
+        // Step 2: We found the arc. Now check if its center lies on the symmetry line.
+        int centerPointId = Geoms[arcGeoId].midPointId;
+        GCS::Point& center = Points[centerPointId];
+        GCS::Line& l = Lines[Geoms[geoId3].index];  // The symmetry line
+
+        double dx = *l.p2.x - *l.p1.x;
+        double dy = *l.p2.y - *l.p1.y;
+        double line_len_sq = dx * dx + dy * dy;
+
+        if (line_len_sq > Precision::SquareConfusion()) {
+            double area = (*center.x - *l.p1.x) * dy - (*center.y - *l.p1.y) * dx;
+            if (std::abs(area) / sqrt(line_len_sq) < Precision::Confusion()) {
+                // The center IS on the symmetry line. This is the degenerate case.
+                // Weaken the constraint by only adding the midpoint part.
+                int pointId1 = getPointId(geoId1, pos1);
+                int pointId2 = getPointId(geoId2, pos2);
+                GCS::Point& p1 = Points[pointId1];
+                GCS::Point& p2 = Points[pointId2];
+                int tag = ++ConstraintsCounter;
+                // addConstraintMidpointOnLine is a GCS::System method, but we can call it from
+                // here.
+                GCSsys.addConstraintMidpointOnLine(p1, p2, l.p1, l.p2, tag);
+                return ConstraintsCounter;
+            }
+        }
+    }
+
     int pointId1 = getPointId(geoId1, pos1);
     int pointId2 = getPointId(geoId2, pos2);
 
