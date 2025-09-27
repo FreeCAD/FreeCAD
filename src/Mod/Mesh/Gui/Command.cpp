@@ -343,7 +343,7 @@ void CmdMeshImport::activated(int)
     QStringList fn = Gui::FileDialog::getOpenFileNames(Gui::getMainWindow(),
                                                        QObject::tr("Import Mesh"),
                                                        QString(),
-                                                       filter.join(QLatin1String(";;")));
+                                                       filter);
     for (const auto& it : fn) {
         std::string unicodepath = Base::Tools::escapedUnicodeFromUtf8(it.toUtf8().data());
         unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
@@ -418,7 +418,7 @@ void CmdMeshExport::activated(int)
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
                                                   QObject::tr("Export Mesh"),
                                                   dir,
-                                                  filter.join(QLatin1String(";;")),
+                                                  filter,
                                                   &format);
     if (!fn.isEmpty()) {
         QFileInfo fi(fn);
