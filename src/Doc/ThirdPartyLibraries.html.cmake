@@ -7,6 +7,7 @@ List of Open Source components<br />
 <li><p><a href="#_TocCoin3D">Coin3D</a></p></li>
 <li><p><a href="#_TocEigen">Eigen</a></p></li>
 <li><p><a href="#_TocFreeType">FreeType</a></p></li>
+<li><p><a href="#_TocIfcOpenShell">IfcOpenShell</a></p></li>
 <li><p><a href="#_TocKDL">KDL</a></p></li>
 <li><p><a href="#_TocLibArea">libarea</a></p></li>
 <li><p><a href="#_TocOCCT">Open CASCADE Technology</a></p></li>
@@ -52,6 +53,13 @@ List of Open Source components<br />
 <p>Web site: <a href="https://www.freetype.org/">https://www.freetype.org/</a></p>
 <p>License: FreeType License: <a href="https://gitlab.freedesktop.org/freetype/freetype/-/blob/master/docs/FTL.TXT">https://gitlab.freedesktop.org/freetype/freetype/-/blob/master/docs/FTL.TXT</a></p>
 
+
+<hr>
+
+<h3><a name="_TocIfcOpenShell"></a>IfcOpenShell</h3>
+<p>Version: ${_VERSION_STRING}</p>
+<p>Web site: <a href="https://ifcopenshell.org/">https://ifcopenshell.org/</a></p>
+<p>License: LGPL version 3.0 License: <a href="https://github.com/IfcOpenShell/IfcOpenShell?tab=LGPL-3.0-1-ov-fil">https://github.com/IfcOpenShell/IfcOpenShell?tab=LGPL-3.0-1-ov-fil</a></p>
 
 <hr>
 
