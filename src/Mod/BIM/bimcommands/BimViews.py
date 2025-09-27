@@ -302,13 +302,7 @@ class BIM_Views:
                     views = self.getViews()
                     pages = self.getPages()
 
-                    if views == self.oldData[1] and pages == self.oldData[2]:
-                        pass
-                    elif not views and not pages:
-                        vm.viewtree.clear()
-                        self.oldData[1] = []
-                        self.oldData[2] = []
-                    else:
+                    if views != self.oldData[1] or pages != self.oldData[2]:
                         vm.viewtree.clear()
                         self.oldData[1] = views
                         self.oldData[2] = pages
