@@ -3248,7 +3248,13 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 
             // make sure it's closed
             finCleaned.push_back(finCleaned.front());
-            AppendToolPath(progressPaths, output, finCleaned, cleared, cleared, toolBoundPaths, true);
+            AppendToolPath(progressPaths,
+                           output,
+                           finCleaned,
+                           cleared,
+                           cleared,
+                           toolBoundPaths,
+                           true);
 
             cleared.ExpandCleared(finCleaned);
 

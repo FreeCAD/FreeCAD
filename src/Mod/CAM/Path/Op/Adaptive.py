@@ -94,19 +94,19 @@ def _calculate_circumcircle_radius(p1, p2, p3):
     # line, so we can consider the radius to be infinite.
     # This is the key to preventing numerical instability.
     area = 0.5 * np.linalg.norm(np.cross(p2 - p1, p3 - p1))
-    if area < 1e-9: # A very small tolerance for what we consider a straight line
-        return float('inf')
+    if area < 1e-9:  # A very small tolerance for what we consider a straight line
+        return float("inf")
 
     # --- Standard Radius Calculation ---
     # If the points are not collinear, proceed with the normal calculation.
     a = np.linalg.norm(p3 - p2)
     b = np.linalg.norm(p3 - p1)
     c = np.linalg.norm(p2 - p1)
-    
-    denominator = (4 * area)
+
+    denominator = 4 * area
     if denominator < 1e-9:
-        return float('inf') # Avoid division by zero in the unlikely event area check wasn't enough
-        
+        return float("inf")  # Avoid division by zero in the unlikely event area check wasn't enough
+
     radius = (a * b * c) / denominator
     return radius
 
@@ -119,14 +119,14 @@ def _get_g1_points(commands):
     # Establish the initial coordinates from the first move command
     initial_pos_found = False
     for cmd in commands:
-        if cmd.Name in ('G0', 'G1'):
-            last_point[0] = cmd.Parameters.get('X', last_point[0])
-            last_point[1] = cmd.Parameters.get('Y', last_point[1])
+        if cmd.Name in ("G0", "G1"):
+            last_point[0] = cmd.Parameters.get("X", last_point[0])
+            last_point[1] = cmd.Parameters.get("Y", last_point[1])
             initial_pos_found = True
-            break # We have our starting point, now we can process the G1s
+            break  # We have our starting point, now we can process the G1s
 
     if not initial_pos_found:
-        return [] # No moves in path
+        return []  # No moves in path
 
     # Now iterate through the whole list to build the G1 path
     for command in commands:
@@ -136,15 +136,15 @@ def _get_g1_points(commands):
             in_helix = True
         elif "Adaptive - depth" in command.Name:
             in_helix = False
-                    
+
         current_point = last_point.copy()
         # Update current position based on any move command
-        if command.Name in ('G0', 'G1') and not in_helix:
-            current_point[0] = command.Parameters.get('X', last_point[0])
-            current_point[1] = command.Parameters.get('Y', last_point[1])
+        if command.Name in ("G0", "G1") and not in_helix:
+            current_point[0] = command.Parameters.get("X", last_point[0])
+            current_point[1] = command.Parameters.get("Y", last_point[1])
 
             # If it's a G1 move that isn't a duplicate command, add its destination
-            if command.Name == 'G1':
+            if command.Name == "G1":
                 # Only add if it's a distinct point to avoid noise
                 if not np.allclose(current_point, last_point):
                     points.append(current_point.copy())
@@ -154,8 +154,15 @@ def _get_g1_points(commands):
 
 
 # Define _calculate_next_feed as a helper for _apply_adaptive_feed_logic
-def _calculate_next_feed(point_cursor, g1_points, tool_radius, linear_feed,
-                         max_reduction_factor, min_radius_threshold, in_finishingPath):
+def _calculate_next_feed(
+    point_cursor,
+    g1_points,
+    tool_radius,
+    linear_feed,
+    max_reduction_factor,
+    min_radius_threshold,
+    in_finishingPath,
+):
     """Calculates the adaptive feed rate for the current point."""
     is_in_arc = False
     adaptive_feed = linear_feed
@@ -173,17 +180,18 @@ def _calculate_next_feed(point_cursor, g1_points, tool_radius, linear_feed,
             vec2 = p2[:2] - g1_points[point_cursor][:2]
             cross_prod_z = np.cross(vec1, vec2)
 
-            if cross_prod_z > 1e-9: # Inner arc
+            if cross_prod_z > 1e-9:  # Inner arc
                 is_in_arc = True
                 tool_center_radius = path_radius - tool_radius
-                if tool_center_radius < 0.01: tool_center_radius = 0.01
+                if tool_center_radius < 0.01:
+                    tool_center_radius = 0.01
                 reduction_factor = max(tool_center_radius / path_radius, max_reduction_factor)
                 adaptive_feed = linear_feed * reduction_factor
                 # Suppress feed rate reduction by 15% for finishing.
                 if in_finishingPath:
                     adaptive_feed = adaptive_feed / 0.85
 
-            elif in_finishingPath and abs(cross_prod_z) > 1e-9: # Outer arc for finishing only
+            elif in_finishingPath and abs(cross_prod_z) > 1e-9:  # Outer arc for finishing only
                 is_in_arc = True
                 tool_center_radius = path_radius + tool_radius
                 increase_factor = min(tool_center_radius / path_radius, (max_reduction_factor + 1))
@@ -194,8 +202,16 @@ def _calculate_next_feed(point_cursor, g1_points, tool_radius, linear_feed,
     return adaptive_feed, is_in_arc
 
 
-def _apply_adaptive_feed_logic(op, obj, original_commands, g1_points, tool_radius,
-                               linear_feed, max_reduction_factor, min_radius_threshold):
+def _apply_adaptive_feed_logic(
+    op,
+    obj,
+    original_commands,
+    g1_points,
+    tool_radius,
+    linear_feed,
+    max_reduction_factor,
+    min_radius_threshold,
+):
     """Applies adaptive feed rate modifications to a list of G-code commands."""
 
     point_cursor = 0
@@ -207,7 +223,7 @@ def _apply_adaptive_feed_logic(op, obj, original_commands, g1_points, tool_radiu
     last_pos = np.array([0.0, 0.0])
 
     for command in original_commands:
-        cmd_already_in = False # Reset for each command
+        cmd_already_in = False  # Reset for each command
 
         # Detect special sections (helix, finishing path)
         if "Helix to depth" in command.Name:
@@ -219,34 +235,39 @@ def _apply_adaptive_feed_logic(op, obj, original_commands, g1_points, tool_radiu
 
         # Strip 'F' from horizontal G1s, manage first_in_helix
         if not in_helix or not first_in_helix:
-            move_params = {k: v for k, v in command.Parameters.items() if k != 'F'}
+            move_params = {k: v for k, v in command.Parameters.items() if k != "F"}
             command = Path.Command(command.Name, move_params)
         elif first_in_helix:
-            if command.Name == 'G1':
+            if command.Name == "G1":
                 first_in_helix = False
 
         # Determine if this G1 command is an actual geometric move
         is_geometric_g1 = False
-        if command.Name == 'G1':
+        if command.Name == "G1":
             cmd_pos = last_pos.copy()
-            cmd_pos[0] = command.Parameters.get('X', last_pos[0])
-            cmd_pos[1] = command.Parameters.get('Y', last_pos[1])
+            cmd_pos[0] = command.Parameters.get("X", last_pos[0])
+            cmd_pos[1] = command.Parameters.get("Y", last_pos[1])
             if not np.allclose(cmd_pos, last_pos):
                 is_geometric_g1 = True
 
         # Update last known tool position
-        if command.Name in ('G0', 'G1'):
-            last_pos[0] = command.Parameters.get('X', last_pos[0])
-            last_pos[1] = command.Parameters.get('Y', last_pos[1])
+        if command.Name in ("G0", "G1"):
+            last_pos[0] = command.Parameters.get("X", last_pos[0])
+            last_pos[1] = command.Parameters.get("Y", last_pos[1])
 
         # Core adaptive feed logic for G1 moves
         if is_geometric_g1 and point_cursor < len(g1_points) and not in_helix:
             # Use helper function: _calculate_next_feed
             # It would return (new_feed, is_in_arc_now)
-            
+
             new_feed, in_arc_now = _calculate_next_feed(
-                point_cursor, g1_points, tool_radius, linear_feed,
-                max_reduction_factor, min_radius_threshold, in_finishingPath
+                point_cursor,
+                g1_points,
+                tool_radius,
+                linear_feed,
+                max_reduction_factor,
+                min_radius_threshold,
+                in_finishingPath,
             )
 
             # State machine for issuing feed commands
@@ -254,15 +275,15 @@ def _apply_adaptive_feed_logic(op, obj, original_commands, g1_points, tool_radiu
                 if abs(new_feed - current_feed) > 0.1:
                     current_feed = new_feed
                     cmd_params = command.Parameters.copy()
-                    cmd_params['F'] = round(current_feed, 2)
+                    cmd_params["F"] = round(current_feed, 2)
                     op.commandlist.append(Path.Command(command.Name, cmd_params))
                     cmd_already_in = True
                 is_in_adaptive_section = True
-            elif not in_arc_now and is_in_adaptive_section: # Exiting adaptive section
+            elif not in_arc_now and is_in_adaptive_section:  # Exiting adaptive section
                 if abs(linear_feed - current_feed) > 0.1:
                     current_feed = linear_feed
                     cmd_params = command.Parameters.copy()
-                    cmd_params['F'] = round(current_feed, 2)
+                    cmd_params["F"] = round(current_feed, 2)
                     op.commandlist.append(Path.Command(command.Name, cmd_params))
                     cmd_already_in = True
                 is_in_adaptive_section = False
@@ -272,7 +293,11 @@ def _apply_adaptive_feed_logic(op, obj, original_commands, g1_points, tool_radiu
             point_cursor += 1
         else:
             # Handle G1 plunge
-            if command.Name == 'G1' and command.Parameters.get('X') is None and command.Parameters.get('Y') is None:
+            if (
+                command.Name == "G1"
+                and command.Parameters.get("X") is None
+                and command.Parameters.get("Y") is None
+            ):
                 op.commandlist.append(Path.Command("G1", {"F": op.vertFeed}))
                 current_feed = op.vertFeed
                 is_in_adaptive_section = True
@@ -344,29 +369,38 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
     linear_feed = op.horizFeed
     max_reduction_factor = (100.0 - obj.AdaptiveFeedMaxReduction) / 100.0
     min_radius_threshold = obj.AdaptiveFeedMinRadius
-    
+
     # The final, modified G-code will be built in this list.
     op.commandlist = []
 
     # Pre-process the original commands to get a clean list of just the
     # XY cordinates of the tool's cutting path. This is the data we analyse.
     g1_points = _get_g1_points(original_commands)
-    
+
     if len(g1_points) < 3:
-        Path.Log.warning("Not enough G1 points for adaptive feed calculation. Using original G-code.")
+        Path.Log.warning(
+            "Not enough G1 points for adaptive feed calculation. Using original G-code."
+        )
         op.commandlist = original_commands
         return
 
     # --- Step 3: Main Loop for Processing and Modifying G-Code ---
     Path.Log.info("Applying adaptive feed rates...")
-    
-    _apply_adaptive_feed_logic(op, obj, original_commands, g1_points, tool_radius,
-                               linear_feed, max_reduction_factor, min_radius_threshold)
-                               
+
+    _apply_adaptive_feed_logic(
+        op,
+        obj,
+        original_commands,
+        g1_points,
+        tool_radius,
+        linear_feed,
+        max_reduction_factor,
+        min_radius_threshold,
+    )
+
     Path.Log.info("Adaptive feed rates applied.")
-    
-    
-    
+
+
 def _generate_original_gcode(op, obj, adaptiveResults, helixDiameter, commandlist):
     helixRadius = 0
     for region in adaptiveResults:
@@ -709,7 +743,7 @@ def _generate_original_gcode(op, obj, adaptiveResults, helixDiameter, commandlis
             for pth in region["AdaptivePaths"]:
                 motionType = pth[0]  # [0] contains motion type
                 motion = area.AdaptiveMotionType
-                
+
                 if not finishingPath and motionType == motion.FinishingCutting:
                     commandlist.append(Path.Command("(FinishingPath - depth: %f)" % passEndDepth))
                     finishingPath = True
@@ -723,9 +757,7 @@ def _generate_original_gcode(op, obj, adaptiveResults, helixDiameter, commandlis
                         if z != lz:
                             commandlist.append(Path.Command("G1", {"Z": z, "F": op.vertFeed}))
 
-                        commandlist.append(
-                            Path.Command("G1", {"X": x, "Y": y, "F": op.horizFeed})
-                        )
+                        commandlist.append(Path.Command("G1", {"X": x, "Y": y, "F": op.horizFeed}))
 
                     elif motionType == motion.LinkClear:
                         z = passEndDepth + stepUp
@@ -762,6 +794,7 @@ def _generate_original_gcode(op, obj, adaptiveResults, helixDiameter, commandlis
     z = obj.ClearanceHeight.Value
     if z != lz:
         commandlist.append(Path.Command("G0", {"Z": z}))
+
 
 def Execute(op, obj):
     global sceneGraph
@@ -1604,6 +1637,7 @@ def _getWorkingEdges(op, obj):
     # a dict with depth: region entries, single depth for easy lookup
     return insideDiscretized, outsideDiscretized, stockDiscretized
 
+
 class PathAdaptive(PathOp.ObjectOp):
     def opFeatures(self, obj):
         """opFeatures(obj) ... returns the OR'ed list of features used and supported by the operation.
@@ -1751,16 +1785,15 @@ class PathAdaptive(PathOp.ObjectOp):
                 "To take a finishing profile path at the end",
             ),
         )
-        
+
         # --- NEW ADAPTIVE FEED PROPERTIES ---
         obj.addProperty(
             "App::PropertyBool",
             "AdaptiveFeed",
             "Adaptive Feed",
             QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Enable adaptive feed rate modification based on path curvature"
-            )
+                "App::Property", "Enable adaptive feed rate modification based on path curvature"
+            ),
         )
         obj.addProperty(
             "App::PropertyPercent",
@@ -1768,8 +1801,8 @@ class PathAdaptive(PathOp.ObjectOp):
             "Adaptive Feed",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Maximum feed rate reduction percentage on tight corners (Values below 30% are not recommended)."
-            )
+                "Maximum feed rate reduction percentage on tight corners (Values below 30% are not recommended).",
+            ),
         )
         obj.addProperty(
             "App::PropertyLength",
@@ -1777,8 +1810,8 @@ class PathAdaptive(PathOp.ObjectOp):
             "Adaptive Feed",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Minimum radius for adaptive feed calculations (3-5 times the Tool Diameter is recommended). Paths with a larger radius will be considered straight. "
-            )
+                "Minimum radius for adaptive feed calculations (3-5 times the Tool Diameter is recommended). Paths with a larger radius will be considered straight. ",
+            ),
         )
         # --- END NEW PROPERTIES ---
 
@@ -1916,7 +1949,7 @@ class PathAdaptive(PathOp.ObjectOp):
         # --- END DEFAULTS ---
 
         FeatureExtensions.set_default_property_values(obj, job)
-        
+
     def opExecute(self, obj):
         """opExecute(obj) ... called whenever the receiver needs to be recalculated.
         See documentation of execute() for a list of base functionality provided.
