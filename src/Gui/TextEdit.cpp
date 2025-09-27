@@ -448,8 +448,15 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
 #else
         int fontSize = hPrefGrp->GetInt("FontSize", 10);
 #endif
-        QFont font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-        font.setPointSize(fontSize);
+        QFont font;
+        auto fontName = hPrefGrp->GetASCII("Font");
+        if (fontName.empty()) {
+            font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+            font.setPointSize(fontSize);
+        }
+        else {
+            font = QFont (QString::fromStdString(fontName), fontSize);
+        }
         setFont(font);
         lineNumberArea->setFont(font);
     }
