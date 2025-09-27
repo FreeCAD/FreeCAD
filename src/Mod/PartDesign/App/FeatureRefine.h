@@ -61,7 +61,7 @@ protected:
      * computation is necessary.
      */
     bool onlyHaveRefined();
-    TopoShape refineShapeIfActive(const TopoShape& oldShape, const RefineErrorPolicy onError = RefineErrorPolicy::Raise) const;
+    TopoShape refineShapeIfActive(const TopoShape& oldShape, const RefineErrorPolicy onError = RefineErrorPolicy::Warn) const;
 };
 
 using FeatureRefinePython = App::FeaturePythonT<FeatureRefine>;
