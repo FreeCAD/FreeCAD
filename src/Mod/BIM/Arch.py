@@ -2406,7 +2406,7 @@ def makeReport(name=None):
     # correct class and module names.
     report_obj = _initializeArchObject(
         objectType="App::FeaturePython",
-        baseClassName="Report",
+        baseClassName="_ArchReport",
         internalName="ArchReport",
         defaultLabel=name if name else translate("Arch", "Report"),
         moduleName="ArchReport",
