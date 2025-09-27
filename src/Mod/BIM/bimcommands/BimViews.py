@@ -53,7 +53,7 @@ class BIM_Views:
 
         vm = findWidget()
         self.allItemsInTree = []
-        self.oldData = [[], [], []]
+        self.oldData = [[], []]
         bimviewsbutton = None
         mw = FreeCADGui.getMainWindow()
         st = mw.statusBar()
@@ -209,10 +209,12 @@ class BIM_Views:
 
         vm = findWidget()
         if vm and vm.isVisible():
-            if not FreeCAD.ActiveDocument:
+            if FreeCAD.isRestoring() or not FreeCAD.ActiveDocument:
                 if vm.tree.state() != vm.tree.State.EditingState:
+                    self.oldData[0] = []
                     vm.tree.clear()
                 if vm.viewtree.state() != vm.viewtree.State.EditingState:
+                    self.oldData[1] = []
                     vm.viewtree.clear()
             else:
                 if vm.tree.state() != vm.tree.State.EditingState:
@@ -292,41 +294,45 @@ class BIM_Views:
                     treeViewItems = treeViewItems + sortLvItems + soloProxyHold
                     new = self._treeToStringList(treeViewItems)
                     if new != self.oldData[0]:
+                        self.oldData[0] = new
                         vm.tree.clear()
                         self.allItemsInTree.clear()
                         vm.tree.addTopLevelItems(treeViewItems)
-                        self.oldData[0] == new
 
                 if vm.viewtree.state() != vm.viewtree.State.EditingState:
                     ficon = QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
-                    views = self.getViews()
-                    pages = self.getPages()
+                    treeViewItems = []
 
-                    if views != self.oldData[1] or pages != self.oldData[2]:
-                        vm.viewtree.clear()
-                        self.oldData[1] = views
-                        self.oldData[2] = pages
-                        if views:
-                            top = QtGui.QTreeWidgetItem([translate("BIM","2D Views"), ""])
-                            top.setIcon(0, ficon)
-                            for v in views:
-                                if hasattr(v, "Label"):
-                                    i = QtGui.QTreeWidgetItem([v.Label, ""])
-                                    if hasattr(v.ViewObject, "Icon"):
-                                        i.setIcon(0, v.ViewObject.Icon)
-                                    i.setToolTip(0, v.Name)
-                                    top.addChild(i)
-                            vm.viewtree.addTopLevelItem(top)
-                        if pages:
-                            top = QtGui.QTreeWidgetItem([translate("BIM","Sheets"), ""])
-                            top.setIcon(0, ficon)
-                            for p in pages:
-                                i = QtGui.QTreeWidgetItem([p.Label, ""])
-                                if hasattr(p.ViewObject, "Icon"):
-                                        i.setIcon(0, p.ViewObject.Icon)
-                                i.setToolTip(0, p.Name)
+                    views = self.getViews()
+                    if views:
+                        top = QtGui.QTreeWidgetItem([translate("BIM","2D Views"), ""])
+                        top.setIcon(0, ficon)
+                        for v in views:
+                            if hasattr(v, "Label"):
+                                i = QtGui.QTreeWidgetItem([v.Label, ""])
+                                if hasattr(v.ViewObject, "Icon"):
+                                    i.setIcon(0, v.ViewObject.Icon)
+                                i.setToolTip(0, v.Name)
                                 top.addChild(i)
-                            vm.viewtree.addTopLevelItem(top)
+                        treeViewItems.append(top)
+
+                    pages = self.getPages()
+                    if pages:
+                        top = QtGui.QTreeWidgetItem([translate("BIM","Sheets"), ""])
+                        top.setIcon(0, ficon)
+                        for p in pages:
+                            i = QtGui.QTreeWidgetItem([p.Label, ""])
+                            if hasattr(p.ViewObject, "Icon"):
+                                    i.setIcon(0, p.ViewObject.Icon)
+                            i.setToolTip(0, p.Name)
+                            top.addChild(i)
+                        treeViewItems.append(top)
+
+                    new = self._treeToStringList(treeViewItems)
+                    if new != self.oldData[1]:
+                        self.oldData[1] = new
+                        vm.viewtree.clear()
+                        vm.viewtree.addTopLevelItems(treeViewItems)
 
             # We reuse the variable later on in "Isolate", to not traverse the tree once
             # again
@@ -335,27 +341,31 @@ class BIM_Views:
 
             if allItemsInTrees:
                 # set TreeView Item selected if obj is selected
-                bold = QtGui.QFont()
-                bold.setBold(True)
                 objSelected = FreeCADGui.Selection.getSelection()
-                objNameSelected = [obj.Label for obj in objSelected]
+                objNameSelected = [obj.Name for obj in objSelected]
                 objActive = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
                 if not objActive:
                     objActive = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
-                tparam = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/TreeView")
-                activeColor = tparam.GetUnsigned("TreeActiveColor",0)
 
+                default_background = allItemsInTrees[0].background(1)
+                default_font = allItemsInTrees[0].font(1)
                 for item in allItemsInTrees:
-                    if item.text(0) in objNameSelected:
-                        item.setSelected(True)
+                    item.setSelected(item.toolTip(0) in objNameSelected)
                     if objActive and item.toolTip(0) == objActive.Name:
+                        tparam = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/TreeView")
+                        activeColor = tparam.GetUnsigned("TreeActiveColor",0)
                         if activeColor:
                             r = ((activeColor >> 24) & 0xFF) / 255.0
                             g = ((activeColor >> 16) & 0xFF) / 255.0
                             b = ((activeColor >> 8) & 0xFF) / 255.0
                             activeColor = QtGui.QColor.fromRgbF(r, g, b)
                             item.setBackground(0, QtGui.QBrush(activeColor, QtCore.Qt.SolidPattern))
+                            bold = QtGui.QFont()
+                            bold.setBold(True)
                             item.setFont(0, bold)
+                    else:
+                        item.setBackground(0, default_background)
+                        item.setFont(0, default_font)
 
         if retrigger:
             QtCore.QTimer.singleShot(UPDATEINTERVAL, self.update)
