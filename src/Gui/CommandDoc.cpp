@@ -135,7 +135,7 @@ void StdCmdOpen::activated(int iMsg)
 
     QString selectedFilter;
     QStringList fileList = FileDialog::getOpenFileNames(getMainWindow(),
-        QObject::tr("Open document"), QString(), formatList, &selectedFilter);
+        QObject::tr("Open Document"), QString(), formatList, &selectedFilter);
     if (fileList.isEmpty()) {
         return;
     }
@@ -144,7 +144,7 @@ void StdCmdOpen::activated(int iMsg)
     SelectModule::Dict dict = SelectModule::importHandler(fileList, selectedFilter);
     if (dict.isEmpty()) {
         QMessageBox::critical(getMainWindow(),
-            qApp->translate("StdCmdOpen", "Cannot open file"),
+            qApp->translate("StdCmdOpen", "Cannot Open File"),
             qApp->translate("StdCmdOpen", "Loading the file %1 is not supported").arg(fileList.front()));
     }
     else {
@@ -222,7 +222,7 @@ void StdCmdImport::activated(int iMsg)
                                ->GetGroup("Preferences")->GetGroup("General");
     QString selectedFilter = QString::fromStdString(hPath->GetASCII("FileImportFilter"));
     QStringList fileList = FileDialog::getOpenFileNames(getMainWindow(),
-        QObject::tr("Import file"), QString(), formatList, &selectedFilter);
+        QObject::tr("Import File"), QString(), formatList, &selectedFilter);
     if (!fileList.isEmpty()) {
         hPath->SetASCII("FileImportFilter", selectedFilter.toLatin1().constData());
         SelectModule::Dict dict = SelectModule::importHandler(fileList, selectedFilter);
@@ -398,7 +398,7 @@ void StdCmdExport::activated(int iMsg)
     auto selection = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
-            QCoreApplication::translate("StdCmdExport", "No selection"),
+            QCoreApplication::translate("StdCmdExport", "No Selection"),
             QCoreApplication::translate("StdCmdExport", "Select objects to export before using the Export command."));
         return;
     }
@@ -470,7 +470,7 @@ void StdCmdExport::activated(int iMsg)
     }
         // Launch the file selection modal dialog
     QString filename = FileDialog::getSaveFileName(getMainWindow(),
-        QObject::tr("Export file"), defaultFilename, formatList, &selectedFilter);
+        QObject::tr("Export File"), defaultFilename, formatList, &selectedFilter);
     if (!filename.isEmpty()) {
         hPath->SetASCII("FileExportFilter", selectedFilter.toLatin1().constData());
 
@@ -532,7 +532,7 @@ void StdCmdMergeProjects::activated(int iMsg)
 
     QString exe = qApp->applicationName();
     QString project = FileDialog::getOpenFileName(Gui::getMainWindow(),
-        QString::fromUtf8(QT_TR_NOOP("Merge document")), FileDialog::getWorkingDirectory(),
+        QString::fromUtf8(QT_TR_NOOP("Merge Document")), FileDialog::getWorkingDirectory(),
         QString::fromUtf8(QT_TR_NOOP("%1 document (*.FCStd)")).arg(exe));
     if (!project.isEmpty()) {
         FileDialog::setWorkingDirectory(project);
@@ -541,7 +541,7 @@ void StdCmdMergeProjects::activated(int iMsg)
         QFileInfo proj(project);
         if (proj == info) {
             QMessageBox::critical(Gui::getMainWindow(),
-                QString::fromUtf8(QT_TR_NOOP("Merge document")),
+                QString::fromUtf8(QT_TR_NOOP("Merge Document")),
                 QString::fromUtf8(QT_TR_NOOP("Cannot merge document with itself.")));
             return;
         }
@@ -618,7 +618,7 @@ void StdCmdExportDependencyGraph::activated(int iMsg)
     Q_UNUSED(iMsg);
     App::Document* doc = App::GetApplication().getActiveDocument();
     QString format = QStringLiteral("%1 (*.gv)").arg(Gui::GraphvizView::tr("Graphviz format"));
-    QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), Gui::GraphvizView::tr("Export graph"), QString(), format);
+    QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), Gui::GraphvizView::tr("Export Graph"), QString(), format);
     if (!fn.isEmpty()) {
         QFile file(fn);
         if (file.open(QFile::WriteOnly)) {
@@ -1236,7 +1236,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
         std::vector<App::Document*> unsaved;
         hasXLink = App::PropertyXLink::hasXLink(sel,&unsaved);
         if(!unsaved.empty()) {
-            QMessageBox::critical(getMainWindow(), QObject::tr("Unsaved document"),
+            QMessageBox::critical(getMainWindow(), QObject::tr("Unsaved Document"),
                 QObject::tr("The exported object contains an external link. Save the document."
                    "at least once before exporting."));
             return;
@@ -1254,7 +1254,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
         bool proceed = true;
         if(hasXLink && !doc->isSaved()) {
             auto ret = QMessageBox::question(getMainWindow(),
-                qApp->translate("Std_DuplicateSelection","Object dependencies"),
+                qApp->translate("Std_DuplicateSelection","Object Dependencies"),
                 qApp->translate("Std_DuplicateSelection",
                 "To link to external objects, the document must be saved at least once.\n"
                 "Save the document now?"),
@@ -1423,7 +1423,7 @@ void StdCmdDelete::activated(int iMsg)
                     bodyMessageStream << "\n...";
 
                 auto ret = QMessageBox::warning(Gui::getMainWindow(),
-                    qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+                    qApp->translate("Std_Delete", "Object Dependencies"), bodyMessage,
                     QMessageBox::Yes, QMessageBox::No);
                 if (ret == QMessageBox::Yes)
                     autoDeletion = true;
@@ -1458,11 +1458,11 @@ void StdCmdDelete::activated(int iMsg)
             }
         }
     } catch (const Base::Exception& e) {
-        QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
+        QMessageBox::critical(getMainWindow(), QObject::tr("Delete Failed"),
                 QString::fromLatin1(e.what()));
         e.reportException();
     } catch (...) {
-        QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
+        QMessageBox::critical(getMainWindow(), QObject::tr("Delete Failed"),
                 QStringLiteral("Unknown error"));
     }
     commitCommand();
@@ -1514,7 +1514,7 @@ void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
         doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
     }
     catch (Base::Exception& /*e*/) {
-        auto ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
+        auto ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency Error"),
             qApp->translate("Std_Refresh", "The document contains dependency cycles.\n"
                         "Check the report view for more details.\n\n"
                         "Proceed?"),
@@ -1950,7 +1950,7 @@ protected:
             }
         }
         if(failed) {
-            QMessageBox::critical(getMainWindow(), QObject::tr("Expression error"),
+            QMessageBox::critical(getMainWindow(), QObject::tr("Expression Error"),
                 QObject::tr("Failed to parse some of the expressions.\n"
                             "Check the report view for more details."));
             return;
@@ -1975,7 +1975,7 @@ protected:
             commitCommand();
         } catch (const Base::Exception& e) {
             abortCommand();
-            QMessageBox::critical(getMainWindow(), QObject::tr("Failed to paste expressions"),
+            QMessageBox::critical(getMainWindow(), QObject::tr("Failed to Paste Expressions"),
                 QString::fromLatin1(e.what()));
             e.reportException();
         }
@@ -2048,4 +2048,3 @@ void CreateDocCommands()
 }
 
 } // namespace Gui
-
