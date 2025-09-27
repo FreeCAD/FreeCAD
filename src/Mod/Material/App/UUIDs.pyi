@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import Final
@@ -14,7 +18,7 @@ from typing import Final
 class UUIDs(BaseClass):
     """
     Material model UUID identifiers.
-    
+
     Author: DavidCarter (dcarter@davidcarter.ca)
     Licence: LGPL
     """

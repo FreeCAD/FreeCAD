@@ -1,12 +1,15 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from Base.BaseClass import BaseClass
-
 
 @export(
     Include="Mod/Material/App/MaterialFilter.h",
     Namespace="Materials",
     Constructor=True,
-    Delete=True
+    Delete=True,
 )
 class MaterialFilterOptions(BaseClass):
     """

@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from typing import Any, Final
 
 from Base.PyObjectBase import PyObjectBase
@@ -12,7 +16,7 @@ from Base.Metadata import constmethod, export
 class CosmeticVertex(PyObjectBase):
     """
     CosmeticVertex specifies an extra (cosmetic) vertex in Views
-    
+
     Author: WandererFan (wandererfan@gmail.com)
     License: LGPL-2.1-or-later
     """
@@ -35,7 +39,7 @@ class CosmeticVertex(PyObjectBase):
     Show: bool
     """Show/hide the vertex."""
 
-    Color: Any # type: tuple[float, float, float, float]]
+    Color: Any  # type: tuple[float, float, float, float]]
     """set/return the vertex's colour using a tuple (rgba)."""
 
     Size: Any

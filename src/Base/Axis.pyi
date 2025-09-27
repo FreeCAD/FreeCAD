@@ -1,8 +1,11 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Metadata import export
 from PyObjectBase import PyObjectBase
 from Vector import Vector
 from Placement import Placement
-from Axis import Axis
 from typing import overload
 
 @export(
@@ -53,7 +56,7 @@ class Axis(PyObjectBase):
         """
         ...
 
-    def move(self, vector: Vector) -> None:
+    def move(self, vector: Vector, /) -> None:
         """
         move(vector) -> None
 
@@ -64,7 +67,7 @@ class Axis(PyObjectBase):
         """
         ...
 
-    def multiply(self, placement: Placement) -> Axis:
+    def multiply(self, placement: Placement, /) -> Axis:
         """
         multiply(placement) -> Base.Axis
 

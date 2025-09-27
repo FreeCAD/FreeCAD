@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Metadata import export, constmethod
 from typing import Final, overload
 from Part.Geom2d import ArcOfConic2d
@@ -26,6 +30,7 @@ class ArcOfCircle2d(ArcOfConic2d):
 
     @overload
     def __init__(self, Radius: float, Circle: object) -> None: ...
+
     """
     ArcOfCircle2d(Radius, Circle) -> None
 

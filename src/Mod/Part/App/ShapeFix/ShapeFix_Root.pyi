@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
 from typing import Final, overload
@@ -7,7 +11,8 @@ from typing import Final, overload
     Include="ShapeFix_Root.hxx",
     Constructor=True,
 )
-@class_declarations("""
+@class_declarations(
+    """
 private:
     Handle(ShapeFix_Root) hRoot;
 
@@ -16,7 +21,8 @@ public:
         setTwinPointer(handle.get());
         hRoot = handle;
     }
-""")
+"""
+)
 class ShapeFix_Root(PyObjectBase):
     """
     Root class for fixing operations

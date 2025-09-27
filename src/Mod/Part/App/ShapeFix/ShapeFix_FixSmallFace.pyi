@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 from Part.App.TopoShape import TopoShape
@@ -7,7 +11,7 @@ from typing import Final, overload
     PythonName="Part.ShapeFix.FixSmallFace",
     Include="ShapeFix_FixSmallFace.hxx",
     FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h",
-    Constructor=True
+    Constructor=True,
 )
 class ShapeFix_FixSmallFace(ShapeFix_Root):
     """

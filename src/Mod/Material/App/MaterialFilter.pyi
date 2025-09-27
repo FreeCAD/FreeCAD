@@ -1,7 +1,10 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import List
-
 
 @export(
     Include="Mod/Material/App/MaterialFilter.h",

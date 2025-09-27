@@ -1,12 +1,12 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import Final, List, Dict
 
-@export(
-    Include="Mod/Material/App/ModelManager.h",
-    Namespace="Materials",
-    Constructor=True
-)
+@export(Include="Mod/Material/App/ModelManager.h", Namespace="Materials", Constructor=True)
 class ModelManager(BaseClass):
     """
     Material model descriptions.

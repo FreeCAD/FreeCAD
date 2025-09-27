@@ -1,8 +1,11 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Part.GeometrySurface import GeometrySurface
 from Base.Vector import Vector
 from typing import Final
-
 
 @export(
     Name="ToroidPy",

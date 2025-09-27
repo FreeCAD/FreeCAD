@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Metadata import constmethod
 from BaseClass import BaseClass
 from typing import Final
@@ -19,7 +23,7 @@ class Persistence(BaseClass):
     """Memory size of the object in bytes."""
 
     @constmethod
-    def dumpContent(self, *, Compression: int = 3) -> bytearray:
+    def dumpContent(self, Compression: int = 3) -> bytearray:
         """
         dumpContent(Compression=3) -> bytearray
 
@@ -31,7 +35,7 @@ class Persistence(BaseClass):
         """
         ...
 
-    def restoreContent(self, obj: object) -> None:
+    def restoreContent(self, obj: object, /) -> None:
         # TODO: Starting with Python 3.12, collections.abc.Buffer can be used for type hinting
         """
         restoreContent(obj) -> None

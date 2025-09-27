@@ -1,5 +1,8 @@
-from DocumentObject import DocumentObject
+# SPDX-License: LGPL-2.1-or-later
 
+from __future__ import annotations
+
+from DocumentObject import DocumentObject
 
 class DocumentObjectGroup(DocumentObject):
     """
@@ -7,4 +10,5 @@ class DocumentObjectGroup(DocumentObject):
     Author: Werner Mayer (wmayer@users.sourceforge.net)
     Licence: LGPL
     """
+
     ...

@@ -1,5 +1,8 @@
-from GroupExtension import GroupExtension
+# SPDX-License: LGPL-2.1-or-later
 
+from __future__ import annotations
+
+from GroupExtension import GroupExtension
 
 class GeoFeatureGroupExtension(GroupExtension):
     """
@@ -7,4 +10,5 @@ class GeoFeatureGroupExtension(GroupExtension):
     Licence: LGPL
     This class handles placeable group of document objects
     """
+
     ...

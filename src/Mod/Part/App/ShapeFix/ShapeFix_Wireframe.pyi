@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 from typing import Final
@@ -48,5 +52,4 @@ class ShapeFix_Wireframe(ShapeFix_Root):
         """
         ...
 
-    def shape(self) -> None:
-        ...
+    def shape(self) -> None: ...

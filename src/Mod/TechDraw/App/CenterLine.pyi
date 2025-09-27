@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from typing import Any, Final
 
 from Base.PyObjectBase import PyObjectBase
@@ -12,7 +16,7 @@ from Base.Metadata import constmethod, export
 class CenterLine(PyObjectBase):
     """
     CenterLine specifies additional mark up edges in a View
-    
+
     Author: WandererFan (wandererfan@gmail.com)
     License: LGPL-2.1-or-later
     """

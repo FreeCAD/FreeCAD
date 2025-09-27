@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 from typing import overload
@@ -16,7 +20,7 @@ class ShapeFix_FixSmallSolid(ShapeFix_Root):
     Licence: LGPL
     """
 
-    def setFixMode(self, theMode: int) -> None:
+    def setFixMode(self, theMode: int, /) -> None:
         """
         Set working mode for operator:
         - theMode = 0 use both WidthFactorThreshold and VolumeThreshold parameters

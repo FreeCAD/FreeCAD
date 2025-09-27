@@ -1,10 +1,13 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from Base.Vector import Vector
 from Base.Axis import Axis as AxisPy
 from GeometrySurface import GeometrySurface
 from typing import Final
-
 
 @export(
     Twin="GeomSphere",

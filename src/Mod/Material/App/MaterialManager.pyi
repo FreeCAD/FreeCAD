@@ -1,16 +1,16 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import Final, List, Dict, overload
 
-@export(
-    Include="Mod/Material/App/MaterialManager.h",
-    Namespace="Materials",
-    Constructor=True
-)
+@export(Include="Mod/Material/App/MaterialManager.h", Namespace="Materials", Constructor=True)
 class MaterialManager(BaseClass):
     """
     Material descriptions.
-    
+
     Author: DavidCarter (dcarter@davidcarter.ca)
     Licence: LGPL
     """

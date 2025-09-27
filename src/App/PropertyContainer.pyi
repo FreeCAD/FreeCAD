@@ -1,7 +1,10 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.Persistence import Persistence
 from typing import Any, Final, Union, List, Optional
-
 
 @export(
     DisableNotify=True,
@@ -14,7 +17,7 @@ class PropertyContainer(Persistence):
     PropertiesList: Final[list] = []
     """A list of all property names."""
 
-    def getPropertyByName(self, name: str, checkOwner: int = 0) -> Any:
+    def getPropertyByName(self, name: str, checkOwner: int = 0, /) -> Any:
         """
         getPropertyByName(name, checkOwner=0) -> object or Tuple
 
@@ -30,7 +33,7 @@ class PropertyContainer(Persistence):
         """
         ...
 
-    def getPropertyTouchList(self, name: str) -> tuple:
+    def getPropertyTouchList(self, name: str, /) -> tuple:
         """
         getPropertyTouchList(name) -> tuple
 
@@ -41,7 +44,7 @@ class PropertyContainer(Persistence):
         """
         ...
 
-    def getTypeOfProperty(self, name: str) -> list:
+    def getTypeOfProperty(self, name: str, /) -> list:
         """
         getTypeOfProperty(name) -> list
 
@@ -53,7 +56,7 @@ class PropertyContainer(Persistence):
         """
         ...
 
-    def getTypeIdOfProperty(self, name: str) -> str:
+    def getTypeIdOfProperty(self, name: str, /) -> str:
         """
         getTypeIdOfProperty(name) -> str
 
@@ -64,7 +67,7 @@ class PropertyContainer(Persistence):
         """
         ...
 
-    def setEditorMode(self, name: str, type: Union[int, List[str]]) -> None:
+    def setEditorMode(self, name: str, type: Union[int, List[str]], /) -> None:
         """
         setEditorMode(name, type) -> None
 
@@ -79,7 +82,7 @@ class PropertyContainer(Persistence):
         """
         ...
 
-    def getEditorMode(self, name: str) -> list:
+    def getEditorMode(self, name: str, /) -> list:
         """
         getEditorMode(name) -> list
 
@@ -95,7 +98,7 @@ class PropertyContainer(Persistence):
         """
         ...
 
-    def getGroupOfProperty(self, name: str) -> str:
+    def getGroupOfProperty(self, name: str, /) -> str:
         """
         getGroupOfProperty(name) -> str
 
@@ -107,7 +110,7 @@ class PropertyContainer(Persistence):
         """
         ...
 
-    def setGroupOfProperty(self, name: str, group: str) -> None:
+    def setGroupOfProperty(self, name: str, group: str, /) -> None:
         """
         setGroupOfProperty(name, group) -> None
 
@@ -120,9 +123,7 @@ class PropertyContainer(Persistence):
         """
         ...
 
-    def setPropertyStatus(
-        self, name: str, val: Union[int, str, List[Union[str, int]]]
-    ) -> None:
+    def setPropertyStatus(self, name: str, val: Union[int, str, List[Union[str, int]]], /) -> None:
         """
         setPropertyStatus(name, val) -> None
 
@@ -136,7 +137,7 @@ class PropertyContainer(Persistence):
         """
         ...
 
-    def getPropertyStatus(self, name: str = "") -> list:
+    def getPropertyStatus(self, name: str = "", /) -> list:
         """
         getPropertyStatus(name='') -> list
 
@@ -147,7 +148,7 @@ class PropertyContainer(Persistence):
         """
         ...
 
-    def getDocumentationOfProperty(self, name: str) -> str:
+    def getDocumentationOfProperty(self, name: str, /) -> str:
         """
         getDocumentationOfProperty(name) -> str
 
@@ -158,7 +159,7 @@ class PropertyContainer(Persistence):
         """
         ...
 
-    def setDocumentationOfProperty(self, name: str, docstring: str) -> None:
+    def setDocumentationOfProperty(self, name: str, docstring: str, /) -> None:
         """
         setDocumentationOfProperty(name, docstring) -> None
 
@@ -171,7 +172,7 @@ class PropertyContainer(Persistence):
         """
         ...
 
-    def getEnumerationsOfProperty(self, name: str) -> Optional[list]:
+    def getEnumerationsOfProperty(self, name: str, /) -> Optional[list]:
         """
         getEnumerationsOfProperty(name) -> list or  None
 
@@ -198,7 +199,7 @@ class PropertyContainer(Persistence):
         """
         ...
 
-    def restorePropertyContent(self, name: str, obj: object) -> None:
+    def restorePropertyContent(self, name: str, obj: object, /) -> None:
         """
         restorePropertyContent(name, obj) -> None
 
@@ -213,7 +214,7 @@ class PropertyContainer(Persistence):
         ...
 
     @constmethod
-    def renameProperty(self, oldName: str, newName: str) -> None:
+    def renameProperty(self, oldName: str, newName: str, /) -> None:
         """
         renameProperty(oldName, newName) -> None
 

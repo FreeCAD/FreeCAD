@@ -1,7 +1,10 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from typing import Any, overload
-
 
 @export(
     Constructor=True,
@@ -22,10 +25,8 @@ class Material(PyObjectBase):
     """
 
     @overload
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        ...
-
-    def set(self, string: str) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None: ...
+    def set(self, string: str, /) -> None:
         """
         Set(string) -- Set the material.
 
@@ -34,7 +35,6 @@ class Material(PyObjectBase):
         Satin, Metalized, Neon GNC, Chrome, Aluminium, Obsidian, Neon PHC, Jade, Ruby or Emerald.
         """
         ...
-
     AmbientColor: Any = ...
     """Ambient color"""
 

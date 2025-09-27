@@ -1,8 +1,11 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 from Part.TopoShape import TopoShape
 from typing import Final, overload
-
 
 @export(
     PythonName="Part.ShapeFix.Shape",

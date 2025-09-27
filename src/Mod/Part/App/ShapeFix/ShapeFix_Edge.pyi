@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from typing import Final
@@ -7,7 +11,8 @@ from typing import Final
     Include="ShapeFix_Edge.hxx",
     Constructor=True,
 )
-@class_declarations("""
+@class_declarations(
+    """
 private:
     Handle(ShapeFix_Edge) hEdge;
 
@@ -16,7 +21,8 @@ public:
         setTwinPointer(handle.get());
         hEdge = handle;
     }
-""")
+"""
+)
 class ShapeFix_Edge(PyObjectBase):
     """
     Fixing invalid edge

@@ -1,7 +1,10 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import constmethod
 from Base.PyObjectBase import PyObjectBase
 from typing import Any, Dict, List, Optional
-
 
 class Command(PyObjectBase):
     """
@@ -12,7 +15,7 @@ class Command(PyObjectBase):
     """
 
     @staticmethod
-    def get(name: str) -> Optional["Command"]:
+    def get(name: str, /) -> Optional["Command"]:
         """
         get(name) -> Gui.Command or None
 
@@ -42,7 +45,7 @@ class Command(PyObjectBase):
         ...
 
     @staticmethod
-    def listByShortcut(string: str, useRegExp: bool = False) -> List[str]:
+    def listByShortcut(string: str, useRegExp: bool = False, /) -> List[str]:
         """
         listByShortcut(string, useRegExp=False) -> list of str
 
@@ -57,7 +60,7 @@ class Command(PyObjectBase):
         """
         ...
 
-    def run(self, item: int = 0) -> None:
+    def run(self, item: int = 0, /) -> None:
         """
         run(item=0) -> None
 
@@ -85,7 +88,7 @@ class Command(PyObjectBase):
         """
         ...
 
-    def setShortcut(self, string: str) -> bool:
+    def setShortcut(self, string: str, /) -> bool:
         """
         setShortcut(string) -> bool
 
@@ -129,7 +132,7 @@ class Command(PyObjectBase):
         whatsThis: str,
         statusTip: str,
         pixmap: str,
-        shortcut: str
+        shortcut: str,
     ) -> str:
         """
         createCustomCommand(macroFile, menuText, toolTip, whatsThis, statusTip, pixmap, shortcut) -> str
@@ -154,7 +157,7 @@ class Command(PyObjectBase):
         ...
 
     @staticmethod
-    def removeCustomCommand(name: str) -> bool:
+    def removeCustomCommand(name: str, /) -> bool:
         """
         removeCustomCommand(name) -> bool
 
@@ -170,7 +173,7 @@ class Command(PyObjectBase):
         ...
 
     @staticmethod
-    def findCustomCommand(name: str) -> Optional[str]:
+    def findCustomCommand(name: str, /) -> Optional[str]:
         """
         findCustomCommand(name) -> str or None
 

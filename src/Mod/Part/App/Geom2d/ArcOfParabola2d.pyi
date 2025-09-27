@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Metadata import export, constmethod, overload
 from typing import Final
 from Part.Geom2d import ArcOfConic2d
@@ -25,5 +29,4 @@ class ArcOfParabola2d(ArcOfConic2d):
     """The internal parabola representation."""
 
     @overload
-    def __init__(self) -> None:
-        ...
+    def __init__(self) -> None: ...

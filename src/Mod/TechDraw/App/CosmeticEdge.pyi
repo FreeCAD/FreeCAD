@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from typing import Final
 
 from Base.PyObjectBase import PyObjectBase
@@ -13,7 +17,7 @@ from Base.Metadata import export
 class CosmeticEdge(PyObjectBase):
     """
     CosmeticEdge specifies an extra (cosmetic) edge in Views
-    
+
     Author: WandererFan (wandererfan@gmail.com)
     License: LGPL-2.1-or-later
     """

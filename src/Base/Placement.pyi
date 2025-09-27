@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Metadata import export, constmethod, class_declarations
 from PyObjectBase import PyObjectBase
 from Matrix import Matrix as MatrixPy
@@ -90,7 +94,7 @@ class Placement(PyObjectBase):
         """
         ...
 
-    def move(self, vector: Vector) -> None:
+    def move(self, vector: Vector, /) -> None:
         """
         move(vector) -> None
 
@@ -101,7 +105,7 @@ class Placement(PyObjectBase):
         """
         ...
 
-    def translate(self, vector: Vector) -> None:
+    def translate(self, vector: Vector, /) -> None:
         """
         translate(vector) -> None
 
@@ -137,7 +141,7 @@ class Placement(PyObjectBase):
         ...
 
     @constmethod
-    def multiply(self, placement: "Placement") -> "Placement":
+    def multiply(self, placement: "Placement", /) -> "Placement":
         """
         multiply(placement) -> Base.Placement
 
@@ -150,7 +154,7 @@ class Placement(PyObjectBase):
         ...
 
     @constmethod
-    def multVec(self, vector: Vector) -> Vector:
+    def multVec(self, vector: Vector, /) -> Vector:
         """
         multVec(vector) -> Base.Vector
 
@@ -180,7 +184,7 @@ class Placement(PyObjectBase):
         ...
 
     @constmethod
-    def pow(self, t: float, shorten: bool = True) -> "Placement":
+    def pow(self, t: float, shorten: bool = True, /) -> "Placement":
         """
         pow(t, shorten=True) -> Base.Placement
 
@@ -196,7 +200,7 @@ class Placement(PyObjectBase):
         ...
 
     @constmethod
-    def sclerp(self, placement2: "Placement", t: float, shorten: bool = True) -> "Placement":
+    def sclerp(self, placement2: "Placement", t: float, shorten: bool = True, /) -> "Placement":
         """
         sclerp(placement2, t, shorten=True) -> Base.Placement
 
@@ -217,7 +221,7 @@ class Placement(PyObjectBase):
         ...
 
     @constmethod
-    def slerp(self, placement2: "Placement", t: float) -> "Placement":
+    def slerp(self, placement2: "Placement", t: float, /) -> "Placement":
         """
         slerp(placement2, t) -> Base.Placement
 
@@ -234,7 +238,7 @@ class Placement(PyObjectBase):
         ...
 
     @constmethod
-    def isIdentity(self, tol: float = 0.0) -> bool:
+    def isIdentity(self, tol: float = 0.0, /) -> bool:
         """
         isIdentity([tol=0.0]) -> bool
 
@@ -247,7 +251,7 @@ class Placement(PyObjectBase):
         ...
 
     @constmethod
-    def isSame(self, other: "Placement", tol: float = 0.0) -> bool:
+    def isSame(self, other: "Placement", tol: float = 0.0, /) -> bool:
         """
         isSame(Base.Placement, [tol=0.0]) -> bool
 

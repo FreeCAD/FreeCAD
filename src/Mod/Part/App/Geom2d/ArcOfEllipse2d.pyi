@@ -1,3 +1,7 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Metadata import export, constmethod
 from typing import Final, overload
 from Part import ArcOfConic2d
@@ -27,5 +31,4 @@ class ArcOfEllipse2d(ArcOfConic2d):
     """The internal ellipse representation"""
 
     @overload
-    def __init__(self) -> None:
-        ...
+    def __init__(self) -> None: ...

@@ -1,7 +1,10 @@
+# SPDX-License: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from DocumentObject import DocumentObject
 from Base import Placement
 from typing import Any, Final, Optional
-
 
 class GeoFeature(DocumentObject):
     """
@@ -39,7 +42,7 @@ class GeoFeature(DocumentObject):
         ...
 
     @staticmethod
-    def getGlobalPlacementOf(targetObj: Any, rootObj: Any, subname: str) -> Placement:
+    def getGlobalPlacementOf(targetObj: Any, rootObj: Any, subname: str, /) -> Placement:
         """
         getGlobalPlacementOf(targetObj, rootObj, subname) -> Base.Placement
         Selection example: obj = "part1" sub = "linkToPart2.LinkToBody.Pad.face1"
