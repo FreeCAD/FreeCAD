@@ -26,6 +26,7 @@
 #include <algorithm>
 #include <codecvt>
 #include <cstring>
+#include <fstream>
 #include <iostream>
 #include <system_error>
 #ifdef FC_OS_WIN32
@@ -304,11 +305,36 @@ bool FileInfo::isReadable() const
     return (perms & fs::perms::owner_read) == fs::perms::owner_read;
 }
 
+bool directoryIsWritable(const fs::path& dir)
+{
+    try {
+        if (!fs::exists(dir) || !fs::is_directory(dir)) {
+            return false;
+        }
+        fs::path test_file = dir / (".fs_perm_test_" + std::to_string(std::rand()) + ".tmp");
+        {
+            std::ofstream ofs(test_file);
+            if (!ofs) {
+                return false;
+            }
+        }
+        std::error_code ec;
+        fs::remove(test_file, ec);
+        return true;
+    }
+    catch (...) {
+        return false;
+    }
+}
+
 bool FileInfo::isWritable() const
 {
     fs::path path = stringToPath(FileName);
     if (!fs::exists(path)) {
         return false;
+    }
+    if (fs::is_directory(path)) {
+        return directoryIsWritable(path);
     }
     fs::file_status stat = fs::status(path);
     fs::perms perms = stat.permissions();
