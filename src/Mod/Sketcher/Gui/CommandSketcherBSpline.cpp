@@ -1056,7 +1056,6 @@ void CmdSketcherJoinCurves::activated(int iMsg)
                                            QObject::tr("Too few curves on point"),
                                            QObject::tr("Exactly two curves should end at the "
                                                        "selected point to be able to join them."));
-
                 return;
             }
 
