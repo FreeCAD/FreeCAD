@@ -6,9 +6,10 @@ translate = FreeCAD.Qt.translate
 
 PROP_TYPE_QTYES = ["App::PropertyDistance", "App::PropertyAngle"]
 PROP_TYPE_NUMERIC = PROP_TYPE_QTYES + [
-    "App::PropertyPercent",
+    "App::PropertyFloat",
     "App::PropertyInteger",
-    "App:PropertyFloat",
+    "App::PropertyLength",
+    "App::PropertyPercent",
 ]
 
 

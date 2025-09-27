@@ -1125,6 +1125,7 @@ class TaskDressupLeadInOut(SimpleEditPanel):
         self.connectWidget("OffsetIn", self.form.dspOffsetIn)
         self.connectWidget("OffsetOut", self.form.dspOffsetOut)
         self.connectWidget("RapidPlunge", self.form.chkRapidPlunge)
+        self.connectWidget("RetractThreshold", self.form.dspRetractThreshold)
         self.setFields()
 
         def handleGroupBoxCheck():
