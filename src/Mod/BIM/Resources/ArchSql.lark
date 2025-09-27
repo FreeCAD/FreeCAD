@@ -34,18 +34,20 @@ statement: SELECT columns from_clause where_clause? group_by_clause? order_by_cl
 // Allow FROM to accept either a simple reference (e.g., 'document')
 // or a function invocation that returns a set (e.g., CHILDREN(SELECT ...)).
 from_clause: FROM from_source
-from_source: reference | from_function
+from_source: CNAME | from_function
 from_function: CNAME "(" statement ")"
 where_clause: WHERE boolean_expression
-group_by_clause: GROUP BY reference ("," reference)*
-order_by_clause: ORDER BY reference ("," reference)* (ASC | DESC)?
+group_by_clause: GROUP BY member_access ("," member_access)*
+order_by_clause: ORDER BY member_access ("," member_access)* (ASC | DESC)?
 columns: (column ("," column)*)
 column: (ASTERISK | operand) as_clause?
 as_clause: AS literal
 // Arithmetic Expression Parsing with Operator Precedence
-expr: term (ADD term | SUB term)*      // Lowest precedence: Addition/Subtraction
-term: factor (MUL factor | DIV factor)*  // Medium precedence: Multiplication/Division
-factor: function | reference | literal | NUMBER | NULL | "(" expr ")" // Highest precedence: Values and grouping
+expr: term (ADD term | SUB term)*          // Lowest precedence: Addition/Subtraction
+term: member_access (MUL member_access | DIV member_access)* // Next precedence: Multiplication/Division
+member_access: primary ("." CNAME)*       // Highest precedence: Member Access using '.'
+primary: function | CNAME | literal | NUMBER | NULL | "(" expr ")" // The fundamental building blocks
+
 //  'operand' is an alias for a full arithmetic expression.
 operand: expr
 
@@ -57,7 +59,7 @@ boolean_and: boolean_and AND boolean_term -> boolean_expression_recursive
             | boolean_term
 boolean_term: boolean_comparison | in_expression | "(" boolean_expression ")"
 boolean_comparison: operand comparison_operator operand
-in_expression: reference IN "(" literal ("," literal)* ")"
+in_expression: member_access IN "(" literal ("," literal)* ")"
 
 // Comparison Operator
 comparison_operator: eq_op | neq_op | gt_op | lt_op | gte_op | lte_op | is_not_op | is_op | like_op
@@ -72,7 +74,6 @@ is_op: IS
 like_op: LIKE
 
 // Basic Tokens
-reference: CNAME
 literal: STRING
 
 // Functions
