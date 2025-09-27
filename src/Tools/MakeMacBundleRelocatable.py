@@ -25,6 +25,9 @@ systemPaths = [
 # that libraries found there aren't meant to be bundled.
 warnPaths = ["/Library/Frameworks/"]
 
+# dynamically get homebrew prefix ie. `brew --prefix`
+brew_prefix = check_output(["brew", "--prefix"], text=True).strip()
+
 
 class LibraryNotFound(Exception):
     pass
@@ -120,9 +123,74 @@ def is_system_lib(lib):
 
 def get_path(name, search_paths):
     for path in search_paths:
-        if os.path.isfile(os.path.join(path, name)):
+        full_path = os.path.join(path, name)
+        if os.path.isfile(full_path):
             return path
+        # also check if it's a symlink and resolve it
+        if os.path.islink(full_path):
+            real_path = os.path.realpath(full_path)
+            if os.path.isfile(real_path):
+                return path
     return None
+
+
+def resolve_loader_path(lib_path, referencing_lib_path):
+    """
+    resolve @loader_path in lib_path relative to referencing_lib_path
+    """
+    if lib_path.startswith("@loader_path/"):
+        # get directory containing the referencing library
+        referencing_dir = os.path.dirname(referencing_lib_path)
+        # replace @loader_path with referencing directory
+        resolved_path = lib_path.replace("@loader_path/", referencing_dir + "/")
+        return resolved_path
+    return lib_path
+
+
+def get_rpaths_for_resolution(library_path):
+    """get rpaths from a library for resolving @rpath dependencies"""
+    try:
+        rpaths = get_rpaths(library_path)
+        resolved_rpaths = []
+        for rpath in rpaths:
+            if rpath.startswith("@loader_path"):
+                # resolve @loader_path in rpath
+                lib_dir = os.path.dirname(library_path)
+                resolved = rpath.replace("@loader_path", lib_dir)
+                resolved_rpaths.append(resolved)
+            else:
+                resolved_rpaths.append(rpath)
+        return resolved_rpaths
+    except:
+        return []
+
+
+def resolve_rpath(lib_path, search_paths, referencing_lib_path=None):
+    """
+    resolve @rpath is lib_path by searching in search_paths and rpaths from referencing library
+    """
+    if lib_path.startswith("@rpath/"):
+        lib_name = lib_path.replace("@rpath/", "")
+
+        # first check rpaths from the referencing library
+        if referencing_lib_path:
+            rpaths = get_rpaths_for_resolution(referencing_lib_path)
+            for rpath in rpaths:
+                full_path = os.path.join(rpath, lib_name)
+                if os.path.isfile(full_path):
+                    return full_path
+
+        # then check search paths as fallback
+        # search for the library in all search paths
+        for search_path in search_paths:
+            full_path = os.path.join(search_path, lib_name)
+            if os.path.isfile(full_path):
+                return full_path
+            if os.path.islink(full_path):
+                real_path = os.path.realpath(full_path)
+                if os.path.isfile(real_path):
+                    return full_path
+    return lib_path
 
 
 def list_install_names(path_macho):
@@ -159,18 +227,30 @@ def library_paths(install_names, search_paths):
     return paths
 
 
-def create_dep_nodes(install_names, search_paths):
+def create_dep_nodes(install_names, search_paths, referencing_lib_path=None):
     """
     Return a list of Node objects from the provided install names.
+    referencing_lib_path: path to the library that references these dependencies
     """
     nodes = []
     for lib in install_names:
+        original_lib = lib
+
+        # resolve @loader_path if present
+        if referencing_lib_path and lib.startswith("@loader_path/"):
+            lib = resolve_loader_path(lib, referencing_lib_path)
+            logging.debug(f"Resolved {original_lib} to {lib} (referencing from {referencing_lib_path})")
+
+        # resolve @rpath if present
+        elif lib.startswith("@rpath/"):
+            resolved_lib = resolve_rpath(lib, search_paths)
+            if resolved_lib != lib:
+                lib = resolved_lib
+                logging.debug(f"resolved {original_lib} to {lib}")
+
         install_path = os.path.dirname(lib)
         lib_name = os.path.basename(lib)
 
-        # even if install_path is absolute, see if library can be found by
-        # searching search_paths, so that we have control over what library
-        # location to use
         path = get_path(lib_name, search_paths)
 
         if install_path != "" and lib[0] != "@":
@@ -179,8 +259,13 @@ def create_dep_nodes(install_names, search_paths):
                 path = install_path
 
         if not path:
-            logging.error("Unable to find LC_DYLD_LOAD entry: " + lib)
-            raise LibraryNotFound(lib_name + " not found in given search paths")
+            logging.error("unable to find LC_DYLD_LOAD entry: " + original_lib)
+            if referencing_lib_path:
+                logging.error(f" referenced from: {referencing_lib_path}")
+            logging.error(f" resolved to: {lib}")
+            logging.error(f" searching for: {lib_name}")
+            logging.error(f" search paths: {search_paths}")
+            raise LibraryNotFound(lib_name + " not found in given search paths:")
 
         nodes.append(Node(lib_name, path))
 
@@ -239,6 +324,21 @@ def build_deps_graph(graph, bundle_path, dirs_filter=None, search_paths=[]):
 
         s_paths.insert(0, root)
 
+        # Automatically add Homebrew Cellar lib directories to search paths
+        homebrew_cellar = os.path.join(brew_prefix, "Cellar")
+        if os.path.exists(homebrew_cellar):
+            for cellar_dir in os.listdir(homebrew_cellar):
+                cellar_path = os.path.join(homebrew_cellar, cellar_dir)
+                if os.path.isdir(cellar_path):
+                    # Look for version directories
+                    for version_dir in os.listdir(cellar_path):
+                        version_path = os.path.join(cellar_path, version_dir)
+                        lib_path = os.path.join(version_path, "lib")
+                        if os.path.isdir(lib_path):
+                            if lib_path not in s_paths:
+                                s_paths.append(lib_path)
+                                logging.debug(f"Auto-discovered Homebrew lib path: {lib_path}")
+
         for f in files:
             fpath = os.path.join(root, f)
             ext = os.path.splitext(f)[1]
@@ -258,7 +358,7 @@ def build_deps_graph(graph, bundle_path, dirs_filter=None, search_paths=[]):
                     graph.add_node(node)
 
                 try:
-                    deps = create_dep_nodes(list_install_names(k2), s_paths)
+                    deps = create_dep_nodes(list_install_names(k2), s_paths, k2)
                 except Exception:
                     logging.error("Failed to resolve dependency in " + k2)
                     raise
@@ -395,7 +495,17 @@ def main():
     bundle_path = os.path.abspath(os.path.join(path, "Contents"))
     graph = DepsGraph()
     dir_filter = ["MacOS", "lib", "Mod"]
-    search_paths = [bundle_path + "/lib"] + sys.argv[2:]
+
+    # get the initial search paths
+    initial_search_paths = [bundle_path + "/lib"] + sys.argv[2:]
+
+    # add additional search paths if required
+    additional_search_paths = [
+            os.path.join(brew_prefix, "lib", "gcc", "current")
+            ]
+
+    # combine the initial + additional search paths
+    search_paths = initial_search_paths + [p for p in additional_search_paths if p not in initial_search_paths]
 
     # change to level to logging.DEBUG for diagnostic messages
     logging.basicConfig(
