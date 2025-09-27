@@ -27,6 +27,7 @@
 #include <set>
 #include <vector>
 #include <string>
+#include <cstring>
 
 #include <Base/Console.h>
 #include <Base/Matrix.h>
@@ -66,8 +67,8 @@ DocumentObject::DocumentObject()
 {
     // define Label of type 'Output' to avoid being marked as touched after relabeling
     ADD_PROPERTY_TYPE(Label, ("Unnamed"), "Base", Prop_Output, "User name of the object (UTF8)");
-    ADD_PROPERTY_TYPE(Label2, (""), "Base", Prop_Hidden, "User description of the object (UTF8)");
-    Label2.setStatus(App::Property::Output, true);
+    ADD_PROPERTY_TYPE(Description, (""), "Base", Prop_Hidden, "User description of the object (UTF8)");
+    Description.setStatus(App::Property::Output, true);
     ADD_PROPERTY_TYPE(ExpressionEngine, (), "Base", Prop_Hidden, "Property expressions");
 
     ADD_PROPERTY(Visibility, (true));
@@ -1586,5 +1587,17 @@ void DocumentObject::onPropertyStatusChanged(const Property& prop, unsigned long
     (void)oldStatus;
     if (!Document::isAnyRestoring() && isAttachedToDocument() && getDocument()) {
         getDocument()->signalChangePropertyEditor(*getDocument(), prop);
+    }
+}
+
+void DocumentObject::handleChangedPropertyName(Base::XMLReader& reader,
+                                               const char* typeName,
+                                               const char* propName)
+{
+    if (strcmp(propName, "Label2") == 0) {
+        Description.Restore(reader);
+    }
+    else {
+        ExtensionContainer::handleChangedPropertyName(reader, typeName, propName);
     }
 }

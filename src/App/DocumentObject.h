@@ -112,7 +112,7 @@ class AppExport DocumentObject: public App::TransactionalObject
 
 public:
     PropertyString Label;
-    PropertyString Label2;
+    PropertyString Description;
     PropertyExpressionEngine ExpressionEngine;
 
     /// Allow control visibility status in App name space
@@ -767,6 +767,10 @@ protected:
 
     /// get called when a property status has changed
     void onPropertyStatusChanged(const Property& prop, unsigned long oldStatus) override;
+
+    void handleChangedPropertyName(Base::XMLReader& reader,
+                                   const char* typeName,
+                                   const char* propName) override;
 
 private:
     void printInvalidLinks() const;
