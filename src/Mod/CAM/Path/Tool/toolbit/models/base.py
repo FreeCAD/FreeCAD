@@ -711,6 +711,38 @@ class ToolBit(Asset, ABC):
             PathUtil.setProperty(self.obj, name, value)
             self.obj.setEditorMode(name, 0)
 
+        # 3. Ensure SpindleDirection property exists and is set
+        # Maybe this could be done with a global schema or added to each
+        # shape schema?
+        if not hasattr(self.obj, "SpindleDirection"):
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "SpindleDirection",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Direction of spindle rotation"),
+            )
+            self.obj.SpindleDirection = ["Forward", "Reverse", "None"]
+            self.obj.SpindleDirection = "Forward"  # Default value
+
+        spindle_value = self._tool_bit_shape.get_parameters().get("SpindleDirection")
+        if spindle_value in ("Forward", "Reverse", "None"):
+            self.obj.SpindleDirection = spindle_value
+
+        # 4. Ensure Material property exists and is set
+        if not hasattr(self.obj, "Material"):
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "Material",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Tool material"),
+            )
+            self.obj.Material = ["HSS", "Carbide"]
+            self.obj.Material = "HSS"  # Default value
+
+        material_value = self._tool_bit_shape.get_parameters().get("Material")
+        if material_value in ("HSS", "Carbide"):
+            self.obj.Material = material_value
+
     def _update_visual_representation(self):
         """
         Updates the visual representation of the tool bit based on the current
