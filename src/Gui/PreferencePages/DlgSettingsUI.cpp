@@ -32,11 +32,29 @@
 #include "Dialogs/DlgThemeEditor.h"
 
 #include <Base/ServiceProvider.h>
+// Qt headers
+#include <QColor>
+#include <QApplication>
+// Base color packing helpers
+#include <Base/Color.h>
+// platform headers for system accent color
+#ifdef FC_OS_WIN32
+#  include <windows.h>
+#  include <dwmapi.h>
+#  pragma comment(lib, "dwmapi.lib")
+#endif
+#ifdef FC_OS_MACOSX
+#  include <CoreFoundation/CoreFoundation.h>
+#endif
 
 
 using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsUI */
+
+namespace {
+QColor getSystemAccentColor();
+}
 
 /**
  *  Constructs a DlgSettingsUI which is a child of 'parent', with the
@@ -48,9 +66,103 @@ DlgSettingsUI::DlgSettingsUI(QWidget* parent)
 {
     ui->setupUi(this);
 
-    connect(ui->themeEditorButton, &QPushButton::clicked, [this]() {
-        openThemeEditor();
-    });
+    connect(ui->themeEditorButton, &QPushButton::clicked, [this]() { openThemeEditor(); });
+
+    // helper: update preview color and enable/disable pickers
+    auto updateAccentUi = [this]() {
+        QColor accent;
+        bool useSystem = false;
+
+        if (ui->UseSystemAccentColors) {
+            useSystem = ui->UseSystemAccentColors->isChecked();
+        }
+
+        // If using system accent, prefer the stored ThemeAccentColor1 so the
+        // preview matches the persisted setting; fall back to runtime system
+        // accent if the parameter is not present.
+        if (useSystem) {
+            auto hGrpThemes = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Themes");
+            unsigned long stored = hGrpThemes->GetUnsigned("ThemeAccentColor1", 0);
+            if (stored != 0) {
+                int a = (int)((stored >> 24) & 0xFF);
+                int r = (int)((stored >> 16) & 0xFF);
+                int g = (int)((stored >> 8) & 0xFF);
+                int b = (int)(stored & 0xFF);
+                if (a == 0) a = 255;
+                accent = QColor(r, g, b, a);
+            }
+            if (!accent.isValid()) {
+                accent = getSystemAccentColor();
+            }
+            // normalize alpha to opaque for consistent rendering
+            accent.setAlpha(255);
+            // ensure the pref button shows the same color even when disabled
+            if (ui->ThemeAccentColor1) {
+                ui->ThemeAccentColor1->setColor(accent);
+            }
+        } else {
+            accent = getSystemAccentColor();
+        }
+
+        // set preview background
+        if (ui->SystemAccentPreview) {
+            // ensure opaque preview
+            QColor previewColor = accent;
+            previewColor.setAlpha(255);
+            QString style = QStringLiteral("background-color: %1; border: 1px solid %2;")
+                .arg(previewColor.name(QColor::HexArgb))
+                .arg(previewColor.darker(250).name());
+            ui->SystemAccentPreview->setStyleSheet(style);
+        }
+
+        // enable/disable pickers based on checkbox state — only disable
+        // the primary accent picker. Secondary tones remain editable.
+        if (ui->UseSystemAccentColors) {
+            ui->ThemeAccentColor1->setEnabled(!useSystem);
+            // keep ThemeAccentColor2/3 editable so users can tweak variants
+            // even when following the OS accent for the primary tone.
+            ui->ThemeAccentColor2->setEnabled(true);
+            ui->ThemeAccentColor3->setEnabled(true);
+            // gray out preview when not using system accent
+            ui->SystemAccentPreview->setEnabled(useSystem);
+            ui->SystemAccentPreview->setWindowOpacity(useSystem ? 1.0 : 0.45);
+        }
+    };
+
+    if (ui->UseSystemAccentColors) {
+        connect(ui->UseSystemAccentColors, &Gui::PrefCheckBox::toggled, this, [this, updateAccentUi](bool on){
+            updateAccentUi();
+            if (on) {
+                // persist the system accent colors immediately into the Themes group
+                QColor accent = getSystemAccentColor();
+                auto hGrpThemes = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/Themes");
+                // Use the same packed RGBA format as PrefColorButton
+                unsigned int icol = Base::Color::asPackedRGBA<QColor>(accent);
+                unsigned long val1 = static_cast<unsigned long>(icol);
+                unsigned long val2 = val1; // start from same base, will darken/lighen using QColor
+                unsigned long val3 = val1;
+                QColor c2 = accent.darker(115);
+                QColor c3 = accent.lighter(140);
+                val2 = ((unsigned long)c2.alpha() << 24) | ((unsigned long)c2.red() << 16) |
+                       ((unsigned long)c2.green() << 8) | (unsigned long)c2.blue();
+                val3 = ((unsigned long)c3.alpha() << 24) | ((unsigned long)c3.red() << 16) |
+                       ((unsigned long)c3.green() << 8) | (unsigned long)c3.blue();
+                // Persist only the primary accent color. Windows exposes
+                // multiple accent tones, but we only store ThemeAccentColor1
+                // here to keep behavior deterministic and avoid overwriting
+                // user-customized secondary tones.
+                hGrpThemes->SetUnsigned("ThemeAccentColor1", val1);
+                // Immediately restore the pref button from the parameter so
+                // the UI matches the persisted value (avoids transient
+                // mismatch between preview and button rendering).
+                if (ui->ThemeAccentColor1) {
+                    ui->ThemeAccentColor1->onRestore();
+                }
+            }
+        });
+    }
 }
 
 /**
@@ -64,8 +176,26 @@ void DlgSettingsUI::saveSettings()
     ui->ThemeAccentColor1->onSave();
     ui->ThemeAccentColor2->onSave();
     ui->ThemeAccentColor3->onSave();
+    ui->UseSystemAccentColors->onSave();
     ui->StyleSheets->onSave();
     ui->OverlayStyleSheets->onSave();
+
+    // If using system accent colors, persist the computed values into the Themes group
+    if (ui->UseSystemAccentColors && ui->UseSystemAccentColors->isChecked()) {
+        QColor accent = getSystemAccentColor();
+        auto hGrpThemes = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Themes");
+    unsigned int icol = Base::Color::asPackedRGBA<QColor>(accent);
+    unsigned long val1 = static_cast<unsigned long>(icol);
+        QColor c2 = accent.darker(115);
+        QColor c3 = accent.lighter(140);
+        unsigned long val2 = ((unsigned long)c2.alpha() << 24) | ((unsigned long)c2.red() << 16) |
+                            ((unsigned long)c2.green() << 8) | (unsigned long)c2.blue();
+        unsigned long val3 = ((unsigned long)c3.alpha() << 24) | ((unsigned long)c3.red() << 16) |
+                            ((unsigned long)c3.green() << 8) | (unsigned long)c3.blue();
+    // Persist only the primary accent color (ThemeAccentColor1).
+    hGrpThemes->SetUnsigned("ThemeAccentColor1", val1);
+    }
 
     // Tree View
     ui->fontSizeSpinBox->onSave();
@@ -95,6 +225,39 @@ void DlgSettingsUI::loadSettings()
     ui->ThemeAccentColor1->onRestore();
     ui->ThemeAccentColor2->onRestore();
     ui->ThemeAccentColor3->onRestore();
+    ui->UseSystemAccentColors->onRestore();
+
+    // If available, override the accent color widgets with the OS accent color
+    // so the UI matches the system look-and-feel. We compute two simple
+    // variants for accent2/3 (darker/lighter).
+    QColor systemAccent = getSystemAccentColor();
+
+    if (systemAccent.isValid()) {
+        // Only override if the stored theme accent is missing or still the
+        // default that comes with the preference pack. This avoids clobbering
+        // explicit user choices.
+        auto hGrpThemes = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Themes");
+        const unsigned long nonExistentColor = -1434171135;
+        const unsigned long defaultAccentColor = 1434171135;
+        unsigned long stored = hGrpThemes->GetUnsigned("ThemeAccentColor1", nonExistentColor);
+        if (stored == nonExistentColor || stored == defaultAccentColor) {
+            ui->ThemeAccentColor1->setColor(systemAccent);
+            ui->ThemeAccentColor2->setColor(systemAccent.darker(115));
+            ui->ThemeAccentColor3->setColor(systemAccent.lighter(140));
+        }
+    }
+
+    // Respect the use-system-accent checkbox: if enabled, disable manual pickers
+    bool useSystem = false;
+    if (ui->UseSystemAccentColors) {
+        // PrefCheckBox stores a boolean
+        useSystem = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Themes")->GetBool("UseSystemAccentColors", false);
+        ui->ThemeAccentColor1->setEnabled(!useSystem);
+        ui->ThemeAccentColor2->setEnabled(!useSystem);
+        ui->ThemeAccentColor3->setEnabled(!useSystem);
+    }
 
     // Tree View
     ui->fontSizeSpinBox->onRestore();
@@ -116,6 +279,25 @@ void DlgSettingsUI::loadSettings()
 
     // TaskWatcher
     ui->showTaskWatcherCheckBox->onRestore();
+
+    // update preview color and preview/picker enable state (initial)
+    QColor systemAccentColor = getSystemAccentColor();
+    if (ui->SystemAccentPreview) {
+        QString style = QStringLiteral("background-color: %1; border: 1px solid %2;")
+            .arg(systemAccentColor.name(QColor::HexArgb))
+            .arg(systemAccentColor.darker(250).name());
+        ui->SystemAccentPreview->setStyleSheet(style);
+    }
+
+    if (ui->UseSystemAccentColors) {
+        // useSystem was earlier read to enable/disable pickers; maintain preview state
+        bool useSystemPreview = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Themes")->GetBool("UseSystemAccentColors", false);
+        if (ui->SystemAccentPreview) {
+            ui->SystemAccentPreview->setEnabled(useSystemPreview);
+            ui->SystemAccentPreview->setWindowOpacity(useSystemPreview ? 1.0 : 0.45);
+        }
+    }
 
     loadStyleSheet();
 }
@@ -219,6 +401,63 @@ void applyStyleSheet(ParameterGrp *hGrp)
 }
 
 } // anonymous namespace
+
+// system accent helper (Windows DWM, macOS preferences, Qt fallback)
+namespace {
+QColor getSystemAccentColor()
+{
+#ifdef FC_OS_WIN32
+    DWORD color = 0;
+    BOOL opaque = FALSE;
+    if (SUCCEEDED(DwmGetColorizationColor(&color, &opaque))) {
+        int a = (int)((color >> 24) & 0xFF);
+        int r = (int)((color >> 16) & 0xFF);
+        int g = (int)((color >> 8) & 0xFF);
+        int b = (int)(color & 0xFF);
+        if (a == 0) a = 255;
+        return QColor(r, g, b, a);
+    }
+#endif
+#ifdef FC_OS_MACOSX
+    if (auto val = CFPreferencesCopyAppValue(CFSTR("AppleHighlightColor"), kCFPreferencesAnyApplication)) {
+        if (CFGetTypeID(val) == CFArrayGetTypeID()) {
+            CFIndex count = CFArrayGetCount((CFArrayRef)val);
+            if (count >= 3) {
+                double r = 0, g = 0, b = 0;
+                CFNumberRef num = (CFNumberRef)CFArrayGetValueAtIndex((CFArrayRef)val, 0);
+                CFNumberGetValue(num, kCFNumberDoubleType, &r);
+                num = (CFNumberRef)CFArrayGetValueAtIndex((CFArrayRef)val, 1);
+                CFNumberGetValue(num, kCFNumberDoubleType, &g);
+                num = (CFNumberRef)CFArrayGetValueAtIndex((CFArrayRef)val, 2);
+                CFNumberGetValue(num, kCFNumberDoubleType, &b);
+                CFRelease(val);
+                return QColor::fromRgbF((float)r, (float)g, (float)b);
+            }
+        }
+        CFRelease(val);
+    }
+    if (auto idxVal = CFPreferencesCopyAppValue(CFSTR("AppleAccentColor"), kCFPreferencesAnyApplication)) {
+        if (CFGetTypeID(idxVal) == CFNumberGetTypeID()) {
+            int idx = 0;
+            CFNumberGetValue((CFNumberRef)idxVal, kCFNumberIntType, &idx);
+            CFRelease(idxVal);
+            switch (idx) {
+                case 0: return QColor(128,128,128);
+                case 1: return QColor(255,59,48);
+                case 2: return QColor(255,149,0);
+                case 3: return QColor(255,204,0);
+                case 4: return QColor(52,199,89);
+                case 5: return QColor(0,122,255);
+                case 6: return QColor(88,86,214);
+                default: break;
+            }
+        }
+        CFRelease(idxVal);
+    }
+#endif
+    return qApp->palette().color(QPalette::Highlight);
+}
+} // helper namespace
 
 void DlgSettingsUI::attachObserver()
 {
