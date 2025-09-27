@@ -259,7 +259,7 @@ void TaskPostWidget::updateEnumerationList(App::PropertyEnumeration& prop, QComb
     box->setCurrentIndex(index);
 }
 
-void TaskPostWidget::handlePropertyChange(const App::DocumentObject& obj, const App::Property& prop)
+void TaskPostWidget::handlePropertyChange(const App::DocumentObject&, const App::Property& prop)
 {
     if (auto postobj = m_object.get<Fem::FemPostObject>()) {
         if (&prop == &postobj->Data) {

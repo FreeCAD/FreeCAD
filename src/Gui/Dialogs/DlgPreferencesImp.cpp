@@ -1719,7 +1719,6 @@ bool PreferencesSearchController::fuzzyMatch(const QString& searchText, const QS
     int targetIndex = 0;
     int consecutiveMatches = 0;
     int maxConsecutive = 0;
-    int totalMatches = 0;
     int firstMatchIndex = -1;
     int lastMatchIndex = -1;
     
@@ -1730,7 +1729,6 @@ bool PreferencesSearchController::fuzzyMatch(const QString& searchText, const QS
             }
             lastMatchIndex = targetIndex;
             searchIndex++;
-            totalMatches++;
             consecutiveMatches++;
             maxConsecutive = qMax(maxConsecutive, consecutiveMatches);
     } else {

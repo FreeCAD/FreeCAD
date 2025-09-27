@@ -566,6 +566,11 @@ DocumentRecoveryPrivate::XmlConfig DocumentRecoveryPrivate::readXmlFile(const QS
     if (!file.open(QFile::ReadOnly))
         return cfg;
 
+#if QT_VERSION >= QT_VERSION_CHECK(6,5,0)
+    if (!domDocument.setContent(&file, QDomDocument::ParseOption::UseNamespaceProcessing)) {
+        return cfg;
+    }
+#else
     QString errorStr;
     int errorLine;
     int errorColumn;
@@ -574,6 +579,7 @@ DocumentRecoveryPrivate::XmlConfig DocumentRecoveryPrivate::readXmlFile(const QS
                                 &errorColumn)) {
         return cfg;
     }
+#endif
 
     QDomElement root = domDocument.documentElement();
     if (root.tagName() != QLatin1String("AutoRecovery")) {
