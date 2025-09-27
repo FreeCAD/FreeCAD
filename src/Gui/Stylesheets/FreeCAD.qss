@@ -11,12 +11,10 @@ https://forum.freecad.org/viewtopic.php?t=78431
 
 INSTALLATION WHEN NECESSARY
 ============================================================================================================
-1) Place the .qss files and /images/ folder in the path that fits your OS:
-  OSX = /Users/[YOUR_USER_NAME]/Library/Preferences/FreeCAD/Gui/Stylesheets/
-  WINDOWS = C:/[INSTALLATION_PATH]/FreeCAD/data/Gui/Stylesheets/
-  LINUX = /home/[YOUR_USER_NAME]/.FreeCAD/Gui/Stylesheets/
-
-2) Open FreeCAD and go to Edit > Preferences > General > Appearance > Stylesheet
+1) Place the .qss file and associated images folder inside the `Gui/Stylesheets/` directory (capitalization matters). This directory is located within FreeCAD's user-data folder, which varies by operating system. You can find your user data folder in one of two ways:
+   a. In FreeCAD, open the Python console and run: App.getUserAppDataDir()
+   b. From the command line, run: FreeCAD --get-config UserAppData
+2) Start FreeCAD and go to Preferences > Display > UI > Theme Customization > Style sheet (advanced)
 3) Select the stylesheet you want to use from the dropdown menu
 4) Click Apply and then OK
 5) You need to set the theme to implement the token system.
