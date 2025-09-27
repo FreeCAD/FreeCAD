@@ -320,13 +320,13 @@ void PolarPattern::updateSpacings()
     if (spacings.size() == targetCount) {
         return;
     }
-    else if (spacings.size() < targetCount) {
+    if (spacings.size() < targetCount) {
         spacings.reserve(targetCount);
         while (spacings.size() < targetCount) {
             spacings.push_back(-1.0);
         }
     }
-    else if ((int)spacings.size() > targetCount) {
+    else {
         spacings.resize(targetCount);
     }
 
