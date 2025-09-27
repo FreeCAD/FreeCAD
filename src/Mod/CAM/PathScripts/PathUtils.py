@@ -544,6 +544,83 @@ def addToJob(obj, jobname=None):
     return job
 
 
+def sort_locations_2opt(locations, keys, attractors=None, startPoint=None, endPoint=None):
+    """
+    2-opt search algorithm to optimize travel between points
+
+    https://forum.freecad.org/viewtopic.php?p=844218#p844218
+
+    variable "keys" and "attractors" are ignored (just to avoid errors when calling from other parts of the program)
+
+    variable "startPoint" specifies where ROUGHLY the route should start; Example: startPoint=[10,30]
+    if startPoint=None then it will be the first point in the "locations" list
+
+    variable "endPoint" specifies where ROUGHLY the route should end; Example: endPoint=[10,30]
+    if endPoint=None then it will be chosen by the algorithm
+    """
+    import time
+
+    startTime = time.monotonic()
+    # STEP 1: Add the startPoint and apply Nearest neighbour algorithm (https://en.wikipedia.org/wiki/Nearest_neighbour_algorithm)
+    if startPoint is not None:
+        locations.insert(0, {"x": startPoint[0], "y": startPoint[1]})
+
+    lastNeighbourAdded = locations[0]
+    potentialNeighbours = locations[1:]
+    route = [lastNeighbourAdded]
+
+    while potentialNeighbours:
+        minCost = 10e12
+        for i in range(len(potentialNeighbours)):
+            # 10e-3 is added to prefer X direction when there are mupltiple neighbours the same distance away
+            cost = (potentialNeighbours[i]["x"] - lastNeighbourAdded["x"]) ** 2 + (
+                abs(potentialNeighbours[i]["y"] - lastNeighbourAdded["y"]) + 10e-3
+            ) ** 2
+            if cost < minCost:
+                minCost = cost
+                nearestNeighbour = potentialNeighbours[i]
+        route.append(nearestNeighbour)
+        potentialNeighbours.remove(nearestNeighbour)
+        lastNeighbourAdded = nearestNeighbour
+
+    # STEP 2: Add the endPoint and apply 2-opt algorithm (https://en.wikipedia.org/wiki/2-opt)
+    if endPoint is not None:
+        route.append({"x": endPoint[0], "y": endPoint[1]})
+
+    for repetition in range(len(route)):
+        """number of repetitions can be arbitrary
+        more repetitions will give better ressult,
+        but after len(route) repetitions doesn't improve anymore"""
+        for i in range(1, len(route) - 2):
+            for j in range(i + 1, len(route)):
+                lengthDelta = 0
+                lengthDelta += math.dist(
+                    [route[i - 1]["x"], route[i - 1]["y"]], [route[j - 1]["x"], route[j - 1]["y"]]
+                )
+                lengthDelta += math.dist(
+                    [route[i]["x"], route[i]["y"]], [route[j]["x"], route[j]["y"]]
+                )
+                lengthDelta -= math.dist(
+                    [route[i - 1]["x"], route[i - 1]["y"]], [route[i]["x"], route[i]["y"]]
+                )
+                lengthDelta -= math.dist(
+                    [route[j]["x"], route[j]["y"]], [route[j - 1]["x"], route[j - 1]["y"]]
+                )
+                if lengthDelta < 10e-6:
+                    # check if swapping would actually reduce total route length
+                    # instead of 0 is used 10e-6 to avoid some glitches
+                    route[i:j] = route[i:j][::-1]
+                    # perform the swap of i'th and j'th element, and make all elements in between in reverse order
+
+    if startPoint is not None:
+        del route[0]
+    if endPoint is not None:
+        del route[-1]
+    endTime = time.monotonic()
+    print("time", endTime - startTime)
+    return route
+
+
 def sort_locations(locations, keys, attractors=None):
     """sort holes by the nearest neighbor method
     keys: two-element list of keys for X and Y coordinates. for example ['x','y']
