@@ -47,6 +47,8 @@ SET(Arch_SRCS
     BimStatus.py
     TestArch.py
     TestArchGui.py
+    ArchReport.py
+    ArchSql.py
 )
 
 SET(importers_SRCS
@@ -87,6 +89,8 @@ SET(Arch_presets
     Presets/ifc_contexts_IFC2X3.json
     Presets/ifc_contexts_IFC4.json
     Presets/properties_conversion.csv
+	Presets/ArchReport/query_presets.json
+	Presets/ArchReport/report_templates.json
 )
 
 SET(bimcommands_SRCS
@@ -170,6 +174,7 @@ SET(bimcommands_SRCS
     bimcommands/BimWindow.py
     bimcommands/BimWindows.py
     bimcommands/BimWPCommands.py
+    bimcommands/BimReport.py
     bimcommands/__init__.py
 )
 
@@ -232,6 +237,7 @@ SET(bimtests_SRCS
     bimtests/TestWebGLExportGui.py
     bimtests/TestArchImportersGui.py
     bimtests/TestArchBuildingPartGui.py
+    bimtests/TestArchReport.py
 )
 
 SOURCE_GROUP("" FILES ${Arch_SRCS})
@@ -242,6 +248,39 @@ SET(BIMGuiIcon_SVG
 
 SET(ImportersSample_Files
     importers/samples/Sample.sh3d
+)
+
+SET(ArchSql_resources
+    Resources/ArchSql.lark
+    Resources/ArchSqlParserGenerator.py
+)
+
+find_package(PythonInterp REQUIRED)
+set(BIM_LARK_GRAMMAR ${CMAKE_CURRENT_SOURCE_DIR}/Resources/ArchSql.lark)
+set(BIM_PARSER_GENERATOR ${CMAKE_CURRENT_SOURCE_DIR}/Resources/ArchSqlParserGenerator.py)
+
+set(BIM_GENERATED_PARSER ${CMAKE_BINARY_DIR}/Mod/BIM/generated_sql_parser.py)
+
+add_custom_command(
+    OUTPUT ${BIM_GENERATED_PARSER}
+    COMMAND ${PYTHON_EXECUTABLE} ${BIM_PARSER_GENERATOR} ${BIM_LARK_GRAMMAR} ${BIM_GENERATED_PARSER}
+    DEPENDS ${BIM_LARK_GRAMMAR} ${BIM_PARSER_GENERATOR}
+    COMMENT "Generating Arch SQL parser..."
+)
+
+add_custom_target(ArchSqlParser ALL DEPENDS ${BIM_GENERATED_PARSER})
+
+# Copy ArchReport presets to the build directory to make them available for testing.
+# This is separate from the INSTALL command, which handles the final installation.
+file(COPY
+    ${CMAKE_CURRENT_SOURCE_DIR}/Presets/ArchReport/
+    DESTINATION ${CMAKE_BINARY_DIR}/Mod/BIM/Presets/ArchReport/
+)
+
+fc_target_copy_resource(BIM
+    ${CMAKE_SOURCE_DIR}/src/Mod/BIM
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/BIM
+    ${ArchSql_resources}
 )
 
 ADD_CUSTOM_TARGET(BIM ALL
@@ -352,3 +391,10 @@ INSTALL(
     DESTINATION
         "${CMAKE_INSTALL_DATADIR}/Mod/BIM/Resources/templates"
     )
+
+INSTALL(
+    FILES
+        ${BIM_GENERATED_PARSER}
+    DESTINATION
+        Mod/BIM
+)
