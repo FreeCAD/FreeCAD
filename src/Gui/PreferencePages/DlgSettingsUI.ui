@@ -207,7 +207,7 @@
       <string>Tree View</string>
      </property>
      <layout class="QGridLayout" name="gridLayout1" columnstretch="2,1">
-      <item row="7" column="0" colspan="2">
+      <item row="5" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="hideInternalNamesCheckBox">
         <property name="toolTip">
          <string>Hide extra tree view column for internal names</string>
@@ -227,34 +227,6 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::PrefSpinBox" name="itemBackgroundPaddingSpinBox">
-        <property name="toolTip">
-         <string>Icon size override, set to 0 for the default value.</string>
-        </property>
-        <property name="minimum">
-         <number>0</number>
-        </property>
-        <property name="maximum">
-         <number>100</number>
-        </property>
-        <property name="singleStep">
-         <number>1</number>
-        </property>
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="value">
-         <number>0</number>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>TreeView</cstring>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ItemBackgroundPadding</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
        <widget class="Gui::PrefSpinBox" name="fontSizeSpinBox">
         <property name="toolTip">
          <string>Font size override, set to 0 for the default value.</string>
@@ -282,7 +254,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="1" column="1">
        <widget class="Gui::PrefSpinBox" name="iconSizeSpinBox">
         <property name="toolTip">
          <string>Icon size override, set to 0 for the default value.</string>
@@ -301,17 +273,8 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="rowSpacingLabel">
-        <property name="text">
-         <string>Additional row spacing</string>
-        </property>
-        <property name="buddy">
-         <cstring>rowSpacingSpinBox</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0" colspan="2">
+
+      <item row="3" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="resizableColumnsCheckBox">
         <property name="toolTip">
          <string>Allow tree view columns to be manually resized.</string>
@@ -327,7 +290,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="1" column="0">
        <widget class="QLabel" name="iconSizeLabel">
         <property name="text">
          <string>Icon size</string>
@@ -337,7 +300,7 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="0" column="0">
        <widget class="QLabel" name="fontSizeLabel">
         <property name="text">
          <string>Font size</string>
@@ -347,36 +310,7 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="itemBackgroundPaddingLabel">
-        <property name="text">
-         <string>Item background padding</string>
-        </property>
-        <property name="buddy">
-         <cstring>itemBackgroundPaddingSpinBox</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="Gui::PrefSpinBox" name="rowSpacingSpinBox">
-        <property name="toolTip">
-         <string>Additional spacing for tree view rows. Bigger values will increase row item heights.</string>
-        </property>
-        <property name="singleStep">
-         <number>1</number>
-        </property>
-        <property name="value">
-         <number>0</number>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ItemSpacing</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>TreeView</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0" colspan="2">
+      <item row="2" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="showVisibilityIconCheckBox">
         <property name="toolTip">
          <string>Displays an eye icon in front of the tree view items, showing their visibility status. When clicked the visibility is toggled.</string>
@@ -395,7 +329,7 @@
         </property>
        </widget>
       </item>
-      <item row="9" column="0" colspan="2">
+      <item row="7" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="hideHeaderCheckBox">
         <property name="toolTip">
          <string>Hide header with column names from the tree view.</string>
@@ -414,7 +348,7 @@
         </property>
        </widget>
       </item>
-      <item row="8" column="0" colspan="2">
+      <item row="6" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="hideTreeViewScrollBarCheckBox">
         <property name="toolTip">
          <string>Hide scroll bar from the tree view, scrolling will still be possible using mouse wheel.</string>
@@ -433,7 +367,7 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0" colspan="2">
+      <item row="4" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="hideDescriptionCheckBox">
         <property name="toolTip">
          <string>Hide column with object description in tree view.</string>
@@ -642,10 +576,8 @@
   <tabstop>ThemeAccentColor3</tabstop>
   <tabstop>StyleSheets</tabstop>
   <tabstop>OverlayStyleSheets</tabstop>
-  <tabstop>itemBackgroundPaddingSpinBox</tabstop>
   <tabstop>fontSizeSpinBox</tabstop>
   <tabstop>iconSizeSpinBox</tabstop>
-  <tabstop>rowSpacingSpinBox</tabstop>
   <tabstop>resizableColumnsCheckBox</tabstop>
   <tabstop>showVisibilityIconCheckBox</tabstop>
   <tabstop>hideDescriptionCheckBox</tabstop>
