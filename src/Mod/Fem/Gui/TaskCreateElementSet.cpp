@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <boost/algorithm/string.hpp>
 
 #include <Inventor/events/SoMouseButtonEvent.h>
@@ -34,7 +32,6 @@
 #include <SMESH_Mesh.hxx>
 #include <SMESHDS_Mesh.hxx>
 #include <SMESH_MeshEditor.hxx>
-#endif
 
 #include <Base/Console.h>
 #include <Gui/Application.h>

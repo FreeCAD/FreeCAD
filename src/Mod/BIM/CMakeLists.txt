@@ -202,9 +202,9 @@ SET(nativeifc_SRCS
 )
 
 SET(bimtests_SRCS
-    bimtests/TestArch.py
     bimtests/TestArchAxis.py
     bimtests/TestArchBase.py
+    bimtests/TestArchBaseGui.py
     bimtests/TestArchComponent.py
     bimtests/TestArchBuildingPart.py
     bimtests/TestArchRoof.py
@@ -214,6 +214,7 @@ SET(bimtests_SRCS
     bimtests/TestArchPanel.py
     bimtests/TestArchWindow.py
     bimtests/TestArchStairs.py
+    bimtests/TestArchStructure.py
     bimtests/TestArchPipe.py
     bimtests/TestArchCurtainWall.py
     bimtests/TestArchProfile.py
@@ -229,6 +230,8 @@ SET(bimtests_SRCS
     bimtests/TestArchTruss.py
     bimtests/TestWebGLExport.py
     bimtests/TestWebGLExportGui.py
+    bimtests/TestArchImportersGui.py
+    bimtests/TestArchBuildingPartGui.py
 )
 
 SOURCE_GROUP("" FILES ${Arch_SRCS})

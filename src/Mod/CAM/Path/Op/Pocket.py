@@ -261,7 +261,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
     def areaOpSetDefaultValues(self, obj, job):
         """areaOpSetDefaultValues(obj, job) ... set default values"""
-        obj.StepOver = 100
+        obj.StepOver = 50
         obj.ZigZagAngle = 45
         obj.HandleMultipleFeatures = "Collectively"
         obj.AdaptivePocketStart = False

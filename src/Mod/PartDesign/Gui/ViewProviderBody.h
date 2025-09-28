@@ -88,6 +88,9 @@ public:
     bool canDropObject(App::DocumentObject*) const override;
     /** Add an object to the view provider by drag and drop */
     void dropObject(App::DocumentObject*) override;
+    bool canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const override;
+    /* Check whether the object accept reordering of its children during drop.*/
+    bool acceptReorderingObjects() const override { return true; };
 
 protected:
     /// Copy over all visual properties to the child features
@@ -105,3 +108,4 @@ private:
 
 
 #endif // PARTGUI_ViewProviderHole_H
+

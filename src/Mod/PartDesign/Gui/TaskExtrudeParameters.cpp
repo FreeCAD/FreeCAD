@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QSignalBlocker>
 #include <QAction>
-#endif
+
 
 #include <App/Document.h>
 #include <Base/Tools.h>
@@ -1390,6 +1388,12 @@ void TaskExtrudeParameters::setGizmoPositions()
     }
 
     auto extrude = getObject<PartDesign::FeatureExtrude>();
+    if (!extrude || extrude->isError()) {
+        gizmoContainer->visible = false;
+        return;
+    }
+    gizmoContainer->visible = true;
+
     PartDesign::TopoShape shape = extrude->getProfileShape();
     Base::Vector3d center = getMidPointFromProfile(shape);
     std::string sideType = std::string(extrude->SideType.getValueAsString());

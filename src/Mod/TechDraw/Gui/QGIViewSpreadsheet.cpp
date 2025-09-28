@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
 

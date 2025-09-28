@@ -21,7 +21,6 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
 #include <App/Document.h>
 #include <Gui/CommandT.h>
@@ -72,8 +71,24 @@ void ViewProviderBase::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     if (!base->Placement.testStatus(App::Property::Immutable) &&
         !base->Placement.testStatus(App::Property::ReadOnly) &&
         !base->Placement.testStatus(App::Property::Hidden)) {
+
+        // Handling of the edge case where some base features are outside the body
+        // that should not happen, but it was possible to do in older FreeCAD versions.
+        // This ensures that for older files it still works correctly.
+        if (!getBodyViewProvider()) {
+            ViewProviderPartExt::setupContextMenu(menu, receiver, member);
+        }
+
         ViewProvider::setupContextMenu(menu, receiver, member);
     }
+}
+Gui::ViewProvider* ViewProviderBase::startEditing(int ModNum)
+{
+    if (!getBodyViewProvider()) {
+        return ViewProviderPartExt::startEditing(ModNum);
+    }
+
+    return ViewProvider::startEditing(ModNum);
 }
 
 bool ViewProviderBase::setEdit(int ModNum)
@@ -82,6 +97,12 @@ bool ViewProviderBase::setEdit(int ModNum)
     if (!base->Placement.testStatus(App::Property::Immutable) &&
         !base->Placement.testStatus(App::Property::ReadOnly) &&
         !base->Placement.testStatus(App::Property::Hidden)) {
+
+        // same as in setupContextMenu
+        if (!getBodyViewProvider()) {
+            return ViewProviderPartExt::setEdit(ModNum);
+        }
+
         return ViewProvider::setEdit(ModNum);
     }
 

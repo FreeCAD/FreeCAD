@@ -22,11 +22,9 @@
  **************************************************************************/
 
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <algorithm>
 #include <Precision.hxx>
-#endif
+
 
 #include "BRepMesh.h"
 #include <Base/Tools.h>

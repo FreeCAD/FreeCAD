@@ -356,59 +356,59 @@
       <translation>Ne kösd össze</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="483"/>
+      <location filename="../../../CommandCreateSimulation.py" line="490"/>
       <source>Enter your formula...</source>
       <translation>Adja meg a képletet...</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="536"/>
+      <location filename="../../../CommandCreateSimulation.py" line="543"/>
       <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
       <translation>A táblázatban nagybetűs változók vannak, amelyeket tényleges értékekkel kell helyettesíteni. További részletek minden példáról az információs ablakában.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="539"/>
+      <location filename="../../../CommandCreateSimulation.py" line="546"/>
       <source> - Linear: C + VEL*time</source>
       <translation> - Lineáris: C + VEL*idő</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="541"/>
+      <location filename="../../../CommandCreateSimulation.py" line="548"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
       <translation> - Kvadratikus: C + VEL*idő + ACC*idő^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="544"/>
+      <location filename="../../../CommandCreateSimulation.py" line="551"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
       <translation> - Harmonikus: C + AMP*sin(VEL*idő - FÁZIS)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="547"/>
+      <location filename="../../../CommandCreateSimulation.py" line="554"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
       <translation> - Exponenciális: C*exp(idő/TIMEC)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="553"/>
+      <location filename="../../../CommandCreateSimulation.py" line="560"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
       <translation> - Sima lépés: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(LEJTŐ*(idő - T0)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="560"/>
+      <location filename="../../../CommandCreateSimulation.py" line="567"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
       <translation> - Sima kvadratikus impulzus: (H/pi)*(arctan(dőlésszög*(idő - T1)) - arctan(dőlésszög*(idő - T2)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="567"/>
+      <location filename="../../../CommandCreateSimulation.py" line="574"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
       <translation> - Sima rámpa csúcsimpulzusok: ((1/pi)*(arctan(1000*(idő - T1)) - arctan(1000*(idő - T2))))*(((H2 - H1)/(T2 - T1))*(idő - T1) + H1)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="577"/>
+      <location filename="../../../CommandCreateSimulation.py" line="584"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation>C egy állandó eltolás.
 VEL egy sebesség, vagy egy meredekség, vagy az egyenes meredeksége.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="585"/>
+      <location filename="../../../CommandCreateSimulation.py" line="592"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
@@ -417,7 +417,7 @@ VEL a sebesség, vagy meredekség, vagy az egyenes meredeksége.
 ACC a gyorsulás vagy a másodrendű együttható. A függvény egy parabola.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="594"/>
+      <location filename="../../../CommandCreateSimulation.py" line="601"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
@@ -428,14 +428,14 @@ VEL a szögsebesség radián/másodpercben.
 PHASE a szinuszhullám fázisa.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="601"/>
+      <location filename="../../../CommandCreateSimulation.py" line="608"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
       <translation>C egy állandó.
 TIMEC az exponenciális függvény időállandója.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="609"/>
+      <location filename="../../../CommandCreateSimulation.py" line="616"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
@@ -444,7 +444,7 @@ L2 a léocsőfok szintje az idő = T0 után.
 SLOPE az L1 és L2 közötti átmenet meredekségét határozza meg T0-nál. A nagyobb értékek élesebb lépcsőfokokat adnak. A SLOPE értékek ≥ 1000 megfelelőek.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="618"/>
+      <location filename="../../../CommandCreateSimulation.py" line="625"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -455,7 +455,7 @@ T2 az impulzus vége.
 A SLOPE a 0 és H közötti átmenet meredekségét határozza meg a = T1 és T2 időpontban. Nagyobb értékek élesebb sarkos impulzusokat adnak. SLOPE = 1000 vagy nagyobb értékek megfelelőek.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="629"/>
+      <location filename="../../../CommandCreateSimulation.py" line="636"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -470,13 +470,13 @@ H2 a magasság a T2-nél a rámpa végén.
 A SLOPE határozza meg a 0 és H1, illetve H2 és 0 közötti átmenet meredekségét a T1 és T2 idő körül. Nagyobb értékek élesebb sarkos impulzusokat adnak. SLOPE = 1000 vagy nagyobb értékek megfelelőek.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="667"/>
-      <location filename="../../../CommandCreateSimulation.py" line="684"/>
+      <location filename="../../../CommandCreateSimulation.py" line="674"/>
+      <location filename="../../../CommandCreateSimulation.py" line="691"/>
       <source>Help</source>
       <translation>Súgó</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="682"/>
+      <location filename="../../../CommandCreateSimulation.py" line="689"/>
       <source>Hide help</source>
       <translation>Súgó elrejtése</translation>
     </message>
@@ -894,53 +894,53 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
       <translation>El akarja mozgatni az objektumot és törölni a hozzá tartozó csatlakozásokat?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="982"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="997"/>
       <source>Move part</source>
       <translation>Mozgassa a részt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1316"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1331"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>A szerkesztő néző szolgáltatója</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1333"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1348"/>
       <source>Empty Assembly</source>
       <translation>Üres összeállítás</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1337"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1352"/>
       <source>Over-constrained:</source>
       <translation>Eltúlzott kényszer:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1344"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1359"/>
       <source>Malformed joints:</source>
       <translation>Hibás csatlakozás:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1350"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1365"/>
       <source>Redundant joints:</source>
       <translation>Felesleges csatlakozás:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1357"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1372"/>
       <source>Partially redundant:</source>
       <translation>Részben felesleges:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1363"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1378"/>
       <source>Solver failed to converge</source>
       <translation>A megoldó nem tudott hasonlítani</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1369"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1384"/>
       <source>Under-constrained:</source>
       <translation>Nem eléggé kényszerített:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1371"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1386"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Szabadsági fok</numerusform>
@@ -948,7 +948,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1375"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1390"/>
       <source>Fully constrained</source>
       <translation>Teljesen kényszertett</translation>
     </message>
@@ -1109,7 +1109,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="495"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="511"/>
       <source>Joints</source>
       <translation>Csatlakozások</translation>
     </message>
@@ -1160,7 +1160,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="89"/>
       <source>Simulation Settings</source>
-      <translation type="unfinished">Simulation Settings</translation>
+      <translation>Szimulációs beállítások</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="95"/>
@@ -1193,23 +1193,23 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="132"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="139"/>
       <source>Time step</source>
-      <translation type="unfinished">Time step</translation>
+      <translation>Időtartam</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="149"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="156"/>
       <source>Global error tolerance</source>
-      <translation type="unfinished">Global error tolerance</translation>
+      <translation>Általános hibahatár</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="173"/>
       <source>Animation Player</source>
-      <translation type="unfinished">Animation Player</translation>
+      <translation>Animáció lejátszó</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="212"/>
       <source>Frames per second</source>
-      <translation type="unfinished">Frames per second</translation>
+      <translation>Képkockasebesség</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="146"/>
@@ -1262,12 +1262,12 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="49"/>
       <source>New Assembly</source>
-      <translation type="unfinished">New Assembly</translation>
+      <translation>Új összeállítás</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="54"/>
       <source>Creates an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</source>
-      <translation type="unfinished">Creates an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</translation>
+      <translation>Létrehoz egy szerelvényt (Összeállítás-objektumot) a jelenlegi dokumentumban vagy a jelenleg aktív összeállításban (ha van ilyen). Egy fájl csak egy fő összeállítást tartalmazhat.</translation>
     </message>
   </context>
   <context>
@@ -1276,17 +1276,17 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
       <location filename="../../../CommandCreateAssembly.py" line="101"/>
       <location filename="../../../CommandCreateAssembly.py" line="135"/>
       <source>Activate Assembly</source>
-      <translation type="unfinished">Activate Assembly</translation>
+      <translation>Összeállítás létrehozása</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="106"/>
       <source>Select an assembly to activate:</source>
-      <translation type="unfinished">Select an assembly to activate:</translation>
+      <translation>Válasszon egy összeállítást az aktiváláshoz:</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="138"/>
       <source>Sets an assembly as the active one for editing.</source>
-      <translation type="unfinished">Sets an assembly as the active one for editing.</translation>
+      <translation>Egy összeállítás állít be aktívként szerkesztéshez.</translation>
     </message>
   </context>
   <context>
@@ -1294,17 +1294,17 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="77"/>
       <source>Fixed Joint</source>
-      <translation type="unfinished">Fixed Joint</translation>
+      <translation>Rögzített csatlakozás</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="84"/>
       <source>1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation</source>
-      <translation type="unfinished">1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation</translation>
+      <translation>1 - Ha egy összeállítás aktív: Létrehoz egy csatlakozást, amely véglegesen rögzíti a két részt egymáshoz, megakadályozva ezzel a mozgatást vagy forgást</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="90"/>
       <source>2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.</source>
-      <translation type="unfinished">2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.</translation>
+      <translation>2 - Ha egy rész aktív: A kiválasztott koordináta-rendszerek összehangolásával pozicionálja a részeket. A második kiválasztott rész mozogni fog.</translation>
     </message>
   </context>
   <context>
@@ -1312,12 +1312,12 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="111"/>
       <source>Revolute Joint</source>
-      <translation type="unfinished">Revolute Joint</translation>
+      <translation>Forgócsatlakozások</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="118"/>
       <source>Creates a revolute joint allowing rotation around a single axis between selected parts</source>
-      <translation type="unfinished">Creates a revolute joint allowing rotation around a single axis between selected parts</translation>
+      <translation>Forgócsatlakozást hoz létre, amely lehetővé teszi a kiválasztott részek közötti forgást egyetlen tengely körül</translation>
     </message>
   </context>
   <context>
@@ -1330,7 +1330,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="143"/>
       <source>Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</source>
-      <translation type="unfinished">Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</translation>
+      <translation>Olyan hengeres csatlakozást hoz létre, amely lehetővé teszi a forgást egy tengely körül és az eltolást egy tengely mentén az összeállított részek között</translation>
     </message>
   </context>
   <context>
@@ -1343,7 +1343,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="168"/>
       <source>Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</source>
-      <translation type="unfinished">Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</translation>
+      <translation>Létrehoz egy csúszó csatlakozást, amely lehetővé teszi a folyamatos mozgást egyetlen tengely mentén, de korlátozza a forgást a kiválasztott részek között</translation>
     </message>
   </context>
   <context>
@@ -1356,7 +1356,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="193"/>
       <source>Creates a ball joint that connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact</source>
-      <translation type="unfinished">Creates a ball joint that connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact</translation>
+      <translation>Létrehoz egy gömbcsuklót, amely a részeket egy pontban köti össze, lehetővé téve a korlátlan mozgást, amíg a kapcsolódási pontok érintkezésben maradnak</translation>
     </message>
   </context>
   <context>
@@ -1369,12 +1369,12 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="218"/>
       <source>Creates a distance joint that fixes the distance between the selected objects</source>
-      <translation type="unfinished">Creates a distance joint that fixes the distance between the selected objects</translation>
+      <translation>Olyan távolsági kapcsolatot hoz létre, amely rögzíti a távolságot a kiválasztott objektumok között</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="224"/>
       <source>Creates one of several different joints based on the selectionFor example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</source>
-      <translation type="unfinished">Creates one of several different joints based on the selectionFor example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</translation>
+      <translation>Különböző csatlakozások egyikét hozza létre a kiválasztás alapján. Például, ha egy sík és egy hengert között a távolság 0, akkor ez egy érintkező csatlakozás jön létrre. Ha a síkok között a távolság 0, akkor egy síkban lesznek.</translation>
     </message>
   </context>
   <context>
@@ -1382,12 +1382,12 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="242"/>
       <source>Parallel Joint</source>
-      <translation type="unfinished">Parallel Joint</translation>
+      <translation>Párhuzamos csatlakozás</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="249"/>
       <source>Creates a parallel joint that makes the Z-axis of the selected coordinate systems parallel</source>
-      <translation type="unfinished">Creates a parallel joint that makes the Z-axis of the selected coordinate systems parallel</translation>
+      <translation>Létrehoz egy párhuzamos csatlakozást, amely párhuzamossá teszi a kiválasztott koordináta-rendszerek Z-tengelyét</translation>
     </message>
   </context>
   <context>
@@ -1400,7 +1400,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="276"/>
       <source>Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</source>
-      <translation type="unfinished">Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</translation>
+      <translation>Létrehoz egy merőleges csatlakozást, amely a kiválasztott koordináta-rendszerek Z-tengelyét merőlegessé teszi</translation>
     </message>
   </context>
   <context>
@@ -1408,12 +1408,12 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="294"/>
       <source>Angle Joint</source>
-      <translation type="unfinished">Angle Joint</translation>
+      <translation>Sarkos csatlakozás</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="301"/>
       <source>Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</source>
-      <translation type="unfinished">Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</translation>
+      <translation>Létrehoz egy sarkos csatlakozást, amely rögzíti a kiválasztott koordinátarendszerek Z-tengelye közötti szöget</translation>
     </message>
   </context>
   <context>
@@ -1421,17 +1421,17 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="321"/>
       <source>Rack and Pinion Joint</source>
-      <translation type="unfinished">Rack and Pinion Joint</translation>
+      <translation>Fogasléc és fogaskerék csatlakozás</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="328"/>
       <source>Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint</source>
-      <translation type="unfinished">Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint</translation>
+      <translation>Létrehoz egy fogasléc és fogaskerék csatlakozást, amely összekapcsol egy csúszó csatlakozást egy forgócsatlakozás résszel</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="333"/>
       <source>Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.</source>
-      <translation type="unfinished">Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.</translation>
+      <translation>Kiválasztja ugyanazokat a koordináta-rendszereket, mint a forgó és csúszó csatlakozók. A fogaskerék sugara meghatározza a mozgás arányát a bordás rúd és a fogaskerék között.</translation>
     </message>
   </context>
   <context>
@@ -1439,12 +1439,12 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="381"/>
       <source>Gears Joint</source>
-      <translation type="unfinished">Gears Joint</translation>
+      <translation>Fogaskerék csatlakozás</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="388"/>
       <source>Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.</source>
-      <translation type="unfinished">Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.</translation>
+      <translation>Létrehoz egy fogaskerék csatlakozót, amely összeköti a 2 forgó fogaskereket. Ezek ellentétes forgási irányúak lesznek.</translation>
     </message>
   </context>
   <context>
@@ -1457,7 +1457,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="418"/>
       <source>Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.</source>
-      <translation type="unfinished">Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.</translation>
+      <translation>Létrehoz egy szíj csatlakozás, amely összekapcsol két forgó objektumot. Ezeknek ugyanolyan forgási irányuk lesz.</translation>
     </message>
   </context>
   <context>
@@ -1465,14 +1465,14 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
     <message>
       <location filename="../../../CommandCreateJoint.py" line="486"/>
       <source>Toggle Grounded</source>
-      <translation type="unfinished">Toggle Grounded</translation>
+      <translation>Kapcsolja be a zérolsás módot</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="493"/>
       <source>Toggles the grounding of a part.
 Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
-      <translation type="unfinished">Toggles the grounding of a part.
-Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</translation>
+      <translation>Kapcsolja a zárolt alkatrészt.
+A rész rögzítése állandóra zárolja annak pozícióját az összeszerelésben, megakadályozva bármilyen mozgást vagy forgást. Legalább egy rögzített részre van szükséged az összeszerelés megkezdéséhez.</translation>
     </message>
   </context>
   <context>
@@ -1485,7 +1485,7 @@ Grounding a part permanently locks its position in the assembly, preventing any 
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="74"/>
       <source>Creates a new simulation of the current assembly</source>
-      <translation type="unfinished">Creates a new simulation of the current assembly</translation>
+      <translation>Létrehoz egy új szimulációt a jelenlegi összeállításból</translation>
     </message>
   </context>
   <context>
@@ -1498,7 +1498,7 @@ Grounding a part permanently locks its position in the assembly, preventing any 
     <message>
       <location filename="../../../CommandCreateView.py" line="61"/>
       <source>Creates an exploded view of the current assembly</source>
-      <translation type="unfinished">Creates an exploded view of the current assembly</translation>
+      <translation>Létrehozza a jelenlegi összeállítás robbantott nézetét</translation>
     </message>
   </context>
   <context>
@@ -1514,27 +1514,27 @@ Grounding a part permanently locks its position in the assembly, preventing any 
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="41"/>
       <source>Solver messages</source>
-      <translation type="unfinished">Solver messages</translation>
+      <translation>Megoldó üzenetei</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
       <source>Click to select these conflicting joints.</source>
-      <translation type="unfinished">Click to select these conflicting joints.</translation>
+      <translation>Kattintson az ütköző csatlakozások kijelöléséhez.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
       <source>Click to select these redundant joints.</source>
-      <translation type="unfinished">Click to select these redundant joints.</translation>
+      <translation>Kattintással jelölje ki ezeket a felesleges csatlakozásokat.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="64"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
-      <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</translation>
+      <translation>A szerkezetnek korlátlan összetevői vannak, amelyek szabadságfokokat adnak. Kattintson az ezen korlátlan alkatrészek kiválasztásához.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="68"/>
       <source>Click to select these malformed joints.</source>
-      <translation type="unfinished">Click to select these malformed joints.</translation>
+      <translation>Kattintson a hibás csatlakozások kiválasztásához.</translation>
     </message>
   </context>
 </TS>

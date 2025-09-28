@@ -20,17 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 # include <QMessageBox>
 # include <QAction>
 # include <QMenu>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <BRep_Builder.hxx>
-#endif
 
 #include <Base/Exception.h>
 #include <Base/ServiceProvider.h>
@@ -148,9 +143,16 @@ bool ViewProvider::setEdit(int ModNum)
             }
         }
 
-        previouslyShownViewProvider = dynamic_cast<ViewProvider*>(
-            Gui::Application::Instance->getViewProvider(getBodyViewProvider()->getShownFeature())
-        );
+        // This is handling for an erroneous case where features are for some reason placed outside
+        // the body container. That should never happen, but in some cases we find models with a
+        // problem like that.
+        if (ViewProviderBody* bodyViewProvider = getBodyViewProvider()) {
+            PartDesign::Feature* shownFeature = bodyViewProvider->getShownFeature();
+
+            previouslyShownViewProvider = freecad_cast<ViewProvider*>(
+                Gui::Application::Instance->getViewProvider(shownFeature)
+            );
+        }
 
         // clear the selection (convenience)
         Gui::Selection().clearSelection();

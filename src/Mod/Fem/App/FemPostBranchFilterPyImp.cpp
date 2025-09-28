@@ -20,10 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <Python.h>
-#endif
 
 // clang-format off
 #include "FemPostBranchFilter.h"

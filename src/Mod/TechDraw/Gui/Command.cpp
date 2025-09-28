@@ -19,15 +19,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QCheckBox>
 #include <QPushButton>
 #include <vector>
-#endif
+
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -424,9 +422,9 @@ void CmdTechDrawView::activated(int iMsg)
             // If nothing was selected, then we offer to insert SVG or Images files.
             bool dontShowAgain = hGrp->GetBool("DontShowInsertFileMessage", false);
             if (!dontShowAgain) {
-                auto msgText = QObject::tr("to insert a view from existing objects, "
+                auto msgText = QObject::tr("To insert a view from existing objects, "
                         "select them before invoking this tool. Without a selection, a "
-                        "file browser will open to insert a SVG or image file.");
+                        "file browser will open to insert an SVG or image file.");
                 QMessageBox msgBox(Gui::getMainWindow());
                 msgBox.setText(msgText);
                 auto dontShowMsg = QObject::tr("Do not show this message again");
@@ -1308,14 +1306,14 @@ void CmdTechDrawBalloon::activated(int iMsg)
         QGVPage* viewPage = pageVP->getQGVPage();
         QGSPage* scenePage = pageVP->getQGSPage();
         if (viewPage) {
-            viewPage->startBalloonPlacing(objFeat);
-
-            QGIView* view = dynamic_cast<QGIView*>(viewVP->getQView());
+            auto* view = dynamic_cast<QGIView*>(viewVP->getQView());
             QPointF placement;
             if (view && _checkDirectPlacement(view, selection[0].getSubNames(), placement)) {
                 //this creates the balloon if something is already selected
                 scenePage->createBalloon(placement, objFeat);
+                return;
             }
+            viewPage->startBalloonPlacing(objFeat);
         }
     }
 }

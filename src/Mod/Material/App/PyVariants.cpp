@@ -19,8 +19,6 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-
 #include <QVariant>
 
 #include "PyVariants.h"

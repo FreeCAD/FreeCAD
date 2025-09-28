@@ -93,6 +93,7 @@ private:
     bool typeOkForVarSet();
     void initializeErrorFrame();
     void initializeVarSets();
+    bool checkCyclicDependencyVarSet(const QString& text);
     void checkExpression(const QString& text);
     int getVarSetIndex(const App::Document* doc) const;
     void preselectGroup();
@@ -104,6 +105,7 @@ private:
     bool reportName();
     bool reportGroup(const QString& nameGroup);
     void updateVarSetInfo(bool checkExpr = true);
+    void createBindingVarSet(App::Property* propVarSet, App::DocumentObject* varSet);
     void acceptWithVarSet();
     bool isPropertyNameValid(const QString& nameProp,
                              const App::DocumentObject* obj, QString& message) const;

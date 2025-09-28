@@ -41,6 +41,8 @@
 #include <Python.h>
 #include <QString>
 
+#include "Base/Console.h"
+
 
 using namespace App;
 namespace fs = std::filesystem;
@@ -576,6 +578,7 @@ void ApplicationDirectories::migrateAllPaths(const std::vector<fs::path> &paths)
         } else {
             newPath = path / versionStringForPath(major, minor);
         }
+        Base::Console().message("Migrating config from %s to %s\n", Base::FileInfo::pathToString(path), Base::FileInfo::pathToString(newPath));
         if (fs::exists(newPath)) {
             continue;  // Ignore an existing path: not an error, just a migration that was already done
         }

@@ -77,7 +77,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
     def areaOpSetDefaultValues(self, obj, job):
         """areaOpSetDefaultValues(obj, job) ... set default values"""
-        obj.OffsetPattern = "Offset"
+        obj.ClearingPattern = "Offset"
         obj.StepOver = 50
         obj.ZigZagAngle = 45
         obj.UseOutline = False

@@ -26,6 +26,8 @@
 #include <App/GeoFeature.h>
 #include <App/PropertyGeo.h>
 
+#include <Mod/Robot/RobotGlobal.h>
+
 #include "PropertyTrajectory.h"
 #include "Trajectory.h"
 

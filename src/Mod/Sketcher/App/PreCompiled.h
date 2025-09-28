@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __PRECOMPILED__
-#define __PRECOMPILED__
+#ifndef SKETCHER_APP_PRECOMPILED_H
+#define SKETCHER_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-
-#ifdef _PreComp_
 
 // standard
 #include <algorithm>
@@ -109,6 +107,5 @@
 
 #elif defined(FC_OS_WIN32)
 #include <windows.h>
-#endif  // _PreComp_
 
 #endif

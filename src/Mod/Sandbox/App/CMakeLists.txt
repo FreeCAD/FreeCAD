@@ -32,7 +32,6 @@ SET(Sandbox_SRCS
     DocumentProtectorPy.h
     DocumentThread.cpp
     DocumentThread.h
-    PreCompiled.cpp
     PreCompiled.h
 )
 
@@ -44,6 +43,12 @@ set (Sandbox_Scripts
 add_library(Sandbox SHARED ${Sandbox_SRCS} ${Sandbox_Scripts})
 target_link_libraries(Sandbox ${Sandbox_LIBS})
 
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(Sandbox PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
 
 fc_target_copy_resource_flat(Sandbox
     ${CMAKE_CURRENT_SOURCE_DIR}

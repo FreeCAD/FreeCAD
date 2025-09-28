@@ -921,7 +921,7 @@ tako da je izbjegnuto samopresjecanje.</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="514"/>
-      <location filename="../../SketchWorkflow.cpp" line="742"/>
+      <location filename="../../SketchWorkflow.cpp" line="746"/>
       <source>New Sketch</source>
       <translation type="unfinished">New Sketch</translation>
     </message>
@@ -980,44 +980,6 @@ tako da je izbjegnuto samopresjecanje.</translation>
       <location filename="../../TaskMultiTransformParameters.cpp" line="382"/>
       <source>Scale</source>
       <translation>Skaliraj</translation>
-    </message>
-  </context>
-  <context>
-    <name>FeaturePickDialog</name>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="42"/>
-      <source>Valid</source>
-      <translation>Važeći</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="43"/>
-      <source>Invalid shape</source>
-      <translation>Ne važeći oblik</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="44"/>
-      <source>No wire in sketch</source>
-      <translation>Nema žice u skici</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="45"/>
-      <source>Sketch already used by other feature</source>
-      <translation>Skica upravo korištena kod drugog elementa</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="46"/>
-      <source>Sketch belongs to another body feature</source>
-      <translation type="unfinished">Sketch belongs to another body feature</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="48"/>
-      <source>Feature is located after the tip of the body</source>
-      <translation type="unfinished">Feature is located after the tip of the body</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="47"/>
-      <source>Base plane</source>
-      <translation>Osnovna ploha</translation>
     </message>
   </context>
   <context>
@@ -2251,7 +2213,7 @@ If zero, it is equal to Radius2</translation>
       <translation>Površina</translation>
     </message>
     <message>
-      <location filename="../../TaskMirroredParameters.cpp" line="175"/>
+      <location filename="../../TaskMirroredParameters.cpp" line="182"/>
       <source>Error</source>
       <translation>Pogreška</translation>
     </message>
@@ -3189,48 +3151,48 @@ mjereno duž navedenog smjera</translation>
       <translation>Pogreška</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="775"/>
+      <location filename="../../SketchWorkflow.cpp" line="779"/>
       <source>Several sub-elements selected</source>
       <translation>Nekoliko pod-elemenata odabrano</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="776"/>
+      <location filename="../../SketchWorkflow.cpp" line="780"/>
       <source>Select a single face as support for a sketch!</source>
       <translation type="unfinished">Select a single face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="780"/>
+      <location filename="../../SketchWorkflow.cpp" line="784"/>
       <source>Select a face as support for a sketch!</source>
       <translation type="unfinished">Select a face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="784"/>
+      <location filename="../../SketchWorkflow.cpp" line="788"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation type="unfinished">Need a planar face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="788"/>
+      <location filename="../../SketchWorkflow.cpp" line="792"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation type="unfinished">Create a plane first or select a face to sketch on</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="779"/>
+      <location filename="../../SketchWorkflow.cpp" line="783"/>
       <source>No support face selected</source>
       <translation>Nije odabrana površina za podršku</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="783"/>
+      <location filename="../../SketchWorkflow.cpp" line="787"/>
       <source>No planar support</source>
       <translation>Nema planarni podršku</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="787"/>
+      <location filename="../../SketchWorkflow.cpp" line="791"/>
       <source>No valid planes in this document</source>
       <translation>Nema valjanih ravnina u ovom dokumentu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1014"/>
-      <location filename="../../SketchWorkflow.cpp" line="702"/>
+      <location filename="../../SketchWorkflow.cpp" line="706"/>
       <location filename="../../ViewProvider.cpp" line="139"/>
       <location filename="../../ViewProviderDatum.cpp" line="250"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
@@ -3274,7 +3236,7 @@ mjereno duž navedenog smjera</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../SketchWorkflow.cpp" line="703"/>
+      <location filename="../../SketchWorkflow.cpp" line="707"/>
       <location filename="../../ViewProvider.cpp" line="140"/>
       <location filename="../../ViewProviderDatum.cpp" line="251"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
@@ -4530,7 +4492,7 @@ preko 90: veći polumjer rupe na dnu</translation>
       <location filename="../../../App/FeatureExtrude.cpp" line="599"/>
       <location filename="../../../App/FeatureFillet.cpp" line="119"/>
       <location filename="../../../App/FeatureGroove.cpp" line="196"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2185"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2197"/>
       <location filename="../../../App/FeatureLoft.cpp" line="277"/>
       <location filename="../../../App/FeatureLoft.cpp" line="312"/>
       <location filename="../../../App/FeaturePipe.cpp" line="404"/>
@@ -4632,7 +4594,7 @@ preko 90: veći polumjer rupe na dnu</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="112"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1904"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1913"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4725,7 +4687,7 @@ Nije dozvoljeno presjecanje elemenata na skici.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="299"/>
       <location filename="../../../App/FeatureHelix.cpp" line="331"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2529"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2541"/>
       <source>Error: Result is not a solid</source>
       <translation>Greška: Rezultat nije volumensko tijelo</translation>
     </message>
@@ -4767,73 +4729,78 @@ Nije dozvoljeno presjecanje elemenata na skici.</translation>
       <translation type="unfinished">Thread type is invalid</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1944"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1953"/>
       <source>Hole error: Unsupported length specification</source>
       <translation>Greška provrta: Nepodržana specifikacija dužine</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1947"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1956"/>
       <source>Hole error: Invalid hole depth</source>
       <translation>Greška provrta: Neispravna dubina rupe</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1970"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1979"/>
       <source>Hole error: Invalid taper angle</source>
       <translation>Greška provrta: Pogrešan kut konusa</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1991"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2000"/>
       <source>Hole error: Hole cut diameter too small</source>
       <translation>Greška provrta: Promjer rezanog otvora je premali</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1995"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2004"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
       <translation>Greška provrta: Dubina rezanog otvora mora biti manja od dubine rupe</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1999"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2008"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
       <translation>Greška provrta: Dubina rezanog otvora mora biti veća ili  jednaka 0</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2021"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2030"/>
       <source>Hole error: Invalid countersink</source>
       <translation>Greška provrta: Pogrešano upuštanje kose rupe</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2054"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2063"/>
       <source>Hole error: Invalid drill point angle</source>
       <translation>Greška provrta: Pogrešan kut mjesta bušenja</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2064"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2073"/>
       <source>Hole error: Invalid drill point</source>
       <translation>Greška provrta: Pogrešano mjesto bušenja</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2098"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2107"/>
       <source>Hole error: Could not revolve sketch</source>
       <translation>Greška provrta: Rotacija skice nije uspjela</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2102"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2111"/>
       <source>Hole error: Resulting shape is empty</source>
       <translation>Greška provrta: Rezultat je prazna figura</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2112"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2121"/>
       <source>Error: Adding the thread failed</source>
       <translation>Greška: Dodaj navoj nije uspjelo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2163"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2168"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2129"/>
+      <source>Hole error: Finding axis failed</source>
+      <translation type="unfinished">Hole error: Finding axis failed</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2175"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2180"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>Booleova operacija nije uspjela na rubu profila</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2174"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2186"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>Booleova operacija proizvela je nečvrsto tijelo na rubu profila</translation>
     </message>
@@ -4844,24 +4811,24 @@ Nije dozvoljeno presjecanje elemenata na skici.</translation>
 </translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2195"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2207"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Nije moguće napraviti površinu pomoću skice.
 Ukrštanje elemenata skice ili više površina u skici nije dozvoljeno za izradu utora do plohe.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2345"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2357"/>
       <source>Thread type out of range</source>
       <translation>Vrsta navoja izvan dometa</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2348"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2360"/>
       <source>Thread size out of range</source>
       <translation>Veličina navoja izvan dometa</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2504"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2516"/>
       <source>Error: Thread could not be built</source>
       <translation>Greška: navoj nije moguće napraviti</translation>
     </message>

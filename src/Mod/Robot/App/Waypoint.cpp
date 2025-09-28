@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include "kdl_cp/chain.hpp"
-#endif
+
 
 #include <Base/Reader.h>
 #include <Base/Writer.h>

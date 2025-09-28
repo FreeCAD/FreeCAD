@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QMessageBox>
 #include <cmath>
-#endif// #ifndef _PreComp_
 
 #include "Widgets/CompassWidget.h"
 #include "Widgets/VectorEditWidget.h"

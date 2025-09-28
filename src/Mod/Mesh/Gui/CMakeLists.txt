@@ -126,7 +126,6 @@ SET(MeshGui_SRCS
     AppMeshGui.cpp
     Command.cpp
     Doxygen.cpp
-    PreCompiled.cpp
     PreCompiled.h
     MeshEditor.cpp
     MeshEditor.h
@@ -139,12 +138,6 @@ SET(MeshGui_SRCS
     Workbench.cpp
     Workbench.h
 )
-
-if(FREECAD_USE_PCH)
-    add_definitions(-D_PreComp_)
-    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${MeshGui_SRCS})
-    ADD_MSVC_PRECOMPILED_HEADER(MeshGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
-endif(FREECAD_USE_PCH)
 
 SET(MeshGuiIcon_SVG
     Resources/icons/MeshWorkbench.svg
@@ -159,6 +152,13 @@ if (EIGEN3_NO_DEPRECATED_COPY)
 endif ()
 
 add_library(MeshGui SHARED ${MeshGui_SRCS} ${MeshGuiIcon_SVG})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(MeshGui PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
 target_include_directories(
     MeshGui
     PRIVATE

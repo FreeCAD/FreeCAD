@@ -20,21 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <cmath>
+#include <limits>
 
-#ifndef _PreComp_
-# include <cmath>
-# include <limits>
-
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/nodes/SoCamera.h>
-# include <Inventor/nodes/SoOrthographicCamera.h>
-# include <QDialog>
-# include <QDockWidget>
-# include <QDoubleSpinBox>
-# include <QSlider>
-# include <QToolTip>
-#endif
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <QDialog>
+#include <QDockWidget>
+#include <QDoubleSpinBox>
+#include <QSlider>
+#include <QToolTip>
 
 #include <App/Document.h>
 #include <App/Link.h>

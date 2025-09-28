@@ -20,10 +20,8 @@
  *                                                                            *
  ******************************************************************************/
 
-
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <limits>
+
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <gp_Dir.hxx>
@@ -31,7 +29,6 @@
 # include <Precision.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
-#endif
 
 #include <App/Datums.h>
 #include <Base/Axis.h>
@@ -467,13 +464,13 @@ void LinearPattern::updateSpacings(LinearPatternDirection dir)
     if (spacings.size() == targetCount) {
         return;
     }
-    else if (spacings.size() < targetCount) {
+    if (spacings.size() < targetCount) {
         spacings.reserve(targetCount);
         while (spacings.size() < targetCount) {
             spacings.push_back(-1.0);
         }
     }
-    else if ((int)spacings.size() > targetCount) {
+    else {
         spacings.resize(targetCount);
     }
 

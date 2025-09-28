@@ -37,6 +37,8 @@
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "PartFeature.h"
 
 

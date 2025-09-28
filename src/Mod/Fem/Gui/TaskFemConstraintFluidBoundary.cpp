@@ -22,16 +22,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <QAction>
 #include <QMessageBox>
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 #include <limits>
 #include <sstream>
-#endif
+
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -831,8 +829,16 @@ void TaskFemConstraintFluidBoundary::addToSelection()
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames = it.getSubNames();
+
         App::DocumentObject* obj = it.getObject();
+        if (obj->getDocument() != pcConstraint->getDocument()) {
+            QMessageBox::warning(this,
+                                 tr("Selection error"),
+                                 tr("External object selection is not supported"));
+            return;
+        }
+
+        const std::vector<std::string>& subNames = it.getSubNames();
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
             for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();

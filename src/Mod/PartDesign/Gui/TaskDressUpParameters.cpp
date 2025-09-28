@@ -22,15 +22,13 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <QAction>
 # include <QApplication>
 # include <QKeyEvent>
 # include <QListWidgetItem>
 # include <QTimer>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>

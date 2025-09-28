@@ -71,6 +71,11 @@ class BIM_Material:
 
     def Activated(self):
 
+        # only raise the dialog if it is already open
+        if getattr(self, "dlg", None):
+            self.dlg.raise_()
+            return
+
         self.dlg = None
         self.dlg = QtGui.QDialog()
         self.dlg.objects = [
@@ -453,13 +458,13 @@ class BIM_Material:
             p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
             p.SetInt("BimMaterialDialogWidth", self.dlg.width())
             p.SetInt("BimMaterialDialogHeight", self.dlg.height())
-            from draftutils import todo
-
-            todo.ToDo.delay(self.dlg.hide, None)
+            return self.onReject()
 
     def onReject(self):
-        if self.dlg:
+        if getattr(self, "dlg", None):
             self.dlg.hide()
+            del self.dlg
+        return True
 
     def onUpArrow(self):
         if self.dlg:

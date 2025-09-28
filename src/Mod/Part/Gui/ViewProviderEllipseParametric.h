@@ -24,6 +24,8 @@
 #ifndef PARTGUI_VIEWPROVIDERELLIPSEPARAMETRIC_H
 #define PARTGUI_VIEWPROVIDERELLIPSEPARAMETRIC_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "ViewProviderPrimitive.h"
 
 

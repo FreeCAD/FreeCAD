@@ -356,59 +356,59 @@
       <translation>不链接</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="483"/>
+      <location filename="../../../CommandCreateSimulation.py" line="490"/>
       <source>Enter your formula...</source>
       <translation>输入您的公式...</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="536"/>
+      <location filename="../../../CommandCreateSimulation.py" line="543"/>
       <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
       <translation>粗体（或大写）部分是需要你用实际值替换的变量。有关每个示例的更多详细信息，请参见其工具提示。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="539"/>
+      <location filename="../../../CommandCreateSimulation.py" line="546"/>
       <source> - Linear: C + VEL*time</source>
       <translation> - 线性：C + VEL*time</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="541"/>
+      <location filename="../../../CommandCreateSimulation.py" line="548"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
       <translation> - 二次：C + VEL*time + ACC*time^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="544"/>
+      <location filename="../../../CommandCreateSimulation.py" line="551"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
       <translation> - 谐波：C + AMP*sin(VEL*time - PHASE)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="547"/>
+      <location filename="../../../CommandCreateSimulation.py" line="554"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
       <translation> - 指数：C*exp(time/TIMEC)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="553"/>
+      <location filename="../../../CommandCreateSimulation.py" line="560"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
       <translation> - 平滑步骤：L1 + (L2 - L1)*(1/2) + (1/pi) * arctan(SLOPE*(time - T0)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="560"/>
+      <location filename="../../../CommandCreateSimulation.py" line="567"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
       <translation> - 平滑矩形脉冲： (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="567"/>
+      <location filename="../../../CommandCreateSimulation.py" line="574"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
       <translation> - 平滑斜坡顶脉冲：((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="577"/>
+      <location filename="../../../CommandCreateSimulation.py" line="584"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation>C 为常数偏移量。
 VEL 为直线的速度、斜率或梯度。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="585"/>
+      <location filename="../../../CommandCreateSimulation.py" line="592"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
@@ -417,7 +417,7 @@ VEL 为直线的速度、斜率或梯度。
 ACC 为二阶加速度或系数。该函数为抛物线。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="594"/>
+      <location filename="../../../CommandCreateSimulation.py" line="601"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
@@ -428,14 +428,14 @@ VEL 为角速度，单位为弧度/秒。
 PHASE 为正弦波的相位。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="601"/>
+      <location filename="../../../CommandCreateSimulation.py" line="608"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
       <translation>C 为常数。
 TIMEC 为指数函数的时间常数。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="609"/>
+      <location filename="../../../CommandCreateSimulation.py" line="616"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
@@ -444,7 +444,7 @@ L2 表示时间 = T0 之后的阶跃水平。
 SLOPE 定义 L1 和 L2 之间在时间 = T0 时的过渡陡度。值越高，阶跃的转角越尖锐。SLOPE = 1000 或更高为适宜。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="618"/>
+      <location filename="../../../CommandCreateSimulation.py" line="625"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -455,7 +455,7 @@ T2 是脉冲的结束点。
 SLOPE 定义了在时间 = T1 和 T2 时，0 到 H 之间的过渡的陡度。值越高，脉冲的拐角越尖锐。SLOPE = 1000 或更高是合适的。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="629"/>
+      <location filename="../../../CommandCreateSimulation.py" line="636"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -470,13 +470,13 @@ H2 是斜坡结束点（T2 处）的高度。
 SLOPE 定义了在 time = T1 和 T2 附近，从 0 到 H1、从 H2 到 0 之间过渡的陡峭程度。SLOPE 值越大，脉冲的边角越尖锐。将 SLOPE 设为 1000 或更大比较合适。</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="667"/>
-      <location filename="../../../CommandCreateSimulation.py" line="684"/>
+      <location filename="../../../CommandCreateSimulation.py" line="674"/>
+      <location filename="../../../CommandCreateSimulation.py" line="691"/>
       <source>Help</source>
       <translation>帮助</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="682"/>
+      <location filename="../../../CommandCreateSimulation.py" line="689"/>
       <source>Hide help</source>
       <translation>隐藏帮助</translation>
     </message>
@@ -897,60 +897,60 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>您想要移动对象并删除关联的配合吗？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="982"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="997"/>
       <source>Move part</source>
       <translation>移动零件</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1316"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1331"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation/>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1333"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1348"/>
       <source>Empty Assembly</source>
       <translation>空装配体</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1337"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1352"/>
       <source>Over-constrained:</source>
       <translation>过度约束：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1344"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1359"/>
       <source>Malformed joints:</source>
       <translation>错误配合：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1350"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1365"/>
       <source>Redundant joints:</source>
       <translation>冗余配合：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1357"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1372"/>
       <source>Partially redundant:</source>
       <translation>部分冗余：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1363"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1378"/>
       <source>Solver failed to converge</source>
       <translation>求解器未能收敛</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1369"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1384"/>
       <source>Under-constrained:</source>
       <translation>约束不足：</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1371"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1386"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n 自由度</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1375"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1390"/>
       <source>Fully constrained</source>
       <translation>完全约束</translation>
     </message>
@@ -1111,7 +1111,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="495"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="511"/>
       <source>Joints</source>
       <translation>关节</translation>
     </message>

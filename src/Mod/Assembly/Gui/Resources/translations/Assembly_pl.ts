@@ -368,60 +368,60 @@ nowa część nie będzie mogła zostać powiązana w złożeniu.</translation>
       <translation>Nie łącz</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="483"/>
+      <location filename="../../../CommandCreateSimulation.py" line="490"/>
       <source>Enter your formula...</source>
       <translation>Wprowadź swoje równanie...</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="536"/>
+      <location filename="../../../CommandCreateSimulation.py" line="543"/>
       <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
       <translation>WIELKIMI literami zapisano zmienne, które należy zastąpić rzeczywistymi wartościami.
 Więcej szczegółów o każdym przykładzie znajduje się w jego podpowiedzi.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="539"/>
+      <location filename="../../../CommandCreateSimulation.py" line="546"/>
       <source> - Linear: C + VEL*time</source>
       <translation> - Liniowy: C + VEL*czas</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="541"/>
+      <location filename="../../../CommandCreateSimulation.py" line="548"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
       <translation> - Kwadrat: C + VEL*czas + ACC*czas^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="544"/>
+      <location filename="../../../CommandCreateSimulation.py" line="551"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
       <translation> - Harmoniczna: C + AMP*sin(VEL*czas - PHASE)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="547"/>
+      <location filename="../../../CommandCreateSimulation.py" line="554"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
       <translation> - Wykładnicza: C*exp(czas/TIMEC)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="553"/>
+      <location filename="../../../CommandCreateSimulation.py" line="560"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
       <translation> - Gładki krok: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan (SLOPE*(czas- T0)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="560"/>
+      <location filename="../../../CommandCreateSimulation.py" line="567"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
       <translation> - Impuls gładkiego kwadratu: (H/pi)*(arctan (SLOPE*(czas - T1)) - arctan (SLOPE*(czas - T2)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="567"/>
+      <location filename="../../../CommandCreateSimulation.py" line="574"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
       <translation> - Impuls gładkiej rampy: ((1/pi)*(arctan(1000*(czas - T1)) - arctan(1000*(czas - T2)))*(((H2 - H1)/(T2 - T1))*(czas - T1) + H1)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="577"/>
+      <location filename="../../../CommandCreateSimulation.py" line="584"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation>C jest stałym przesunięciem.
 VEL jest prędkością lub nachyleniem linii prostej.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="585"/>
+      <location filename="../../../CommandCreateSimulation.py" line="592"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
@@ -430,7 +430,7 @@ VEL jest prędkością lub nachyleniem linii prostej.
 ACC jest przyspieszeniem lub współczynnikiem drugiego rzędu. Funkcją jest parabola.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="594"/>
+      <location filename="../../../CommandCreateSimulation.py" line="601"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
@@ -441,14 +441,14 @@ VEL jest prędkością kątową w radianach na sekundę.
 FAZE jest fazą fali sinusoidalnej.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="601"/>
+      <location filename="../../../CommandCreateSimulation.py" line="608"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
       <translation>C jest stałą.
 TIMEC jest stałą czasową funkcji wykładniczej.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="609"/>
+      <location filename="../../../CommandCreateSimulation.py" line="616"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
@@ -459,7 +459,7 @@ SLOPE definiuje stromość przejścia między L1 i L2 wokół czasu = T0.
  Wartości SLOPE = 1000 lub większe są odpowiednie.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="618"/>
+      <location filename="../../../CommandCreateSimulation.py" line="625"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -472,7 +472,7 @@ Wyższe wartości dają ostrzejsze przejścia impulsów.
 Wartości SLOPE = 1000 lub większe są odpowiednie.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="629"/>
+      <location filename="../../../CommandCreateSimulation.py" line="636"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -489,13 +489,13 @@ Wyższe wartości dają ostrzejsze przejścia impulsów.
 Wartości SLOPE = 1000 lub większe są odpowiednie.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="667"/>
-      <location filename="../../../CommandCreateSimulation.py" line="684"/>
+      <location filename="../../../CommandCreateSimulation.py" line="674"/>
+      <location filename="../../../CommandCreateSimulation.py" line="691"/>
       <source>Help</source>
       <translation>Pomoc</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="682"/>
+      <location filename="../../../CommandCreateSimulation.py" line="689"/>
       <source>Hide help</source>
       <translation>Ukryj pomoc</translation>
     </message>
@@ -915,53 +915,53 @@ Pliki noszą nazwy „runPreDrag.asmt” oraz „dragging.log” i są zapisywan
       <translation>Czy chcesz przenieść obiekt i usunąć powiązane połączenia?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="982"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="997"/>
       <source>Move part</source>
       <translation>Przesuń część</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1316"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1331"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>Dostawca Widoku Złożenia</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1333"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1348"/>
       <source>Empty Assembly</source>
       <translation>Poste złożenie</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1337"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1352"/>
       <source>Over-constrained:</source>
       <translation>Wiązania nadmierne:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1344"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1359"/>
       <source>Malformed joints:</source>
       <translation>Nieprawidłowe połączenia:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1350"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1365"/>
       <source>Redundant joints:</source>
       <translation>Nadmiarowe połączenia:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1357"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1372"/>
       <source>Partially redundant:</source>
       <translation>Częściowo nadmiarowe:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1363"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1378"/>
       <source>Solver failed to converge</source>
       <translation>Solver nie osiągnął zbieżności</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1369"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1384"/>
       <source>Under-constrained:</source>
       <translation>Niedostatecznie związane:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1371"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1386"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n stopień swobody</numerusform>
@@ -971,7 +971,7 @@ Pliki noszą nazwy „runPreDrag.asmt” oraz „dragging.log” i są zapisywan
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1375"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1390"/>
       <source>Fully constrained</source>
       <translation>W pełni związany</translation>
     </message>
@@ -1141,7 +1141,7 @@ Jeśli obiekt BOM nie ma być zapisany jako obiekt dokumentu, można go po prost
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="495"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="511"/>
       <source>Joints</source>
       <translation>Połączenia</translation>
     </message>

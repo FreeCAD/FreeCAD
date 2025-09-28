@@ -21,9 +21,7 @@
 
 #include "Gui/Application.h"
 #include "Gui/MDIView.h"
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoBaseColor.h>
@@ -38,7 +36,7 @@
 #include <Inventor/engines/SoTransformVec3f.h>
 #include <Inventor/engines/SoConcatenate.h>
 #include <Inventor/SbViewportRegion.h>
-#endif
+
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>

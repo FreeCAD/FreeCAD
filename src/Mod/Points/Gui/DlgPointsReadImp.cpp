@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include "DlgPointsReadImp.h"
 #include "ui_DlgPointsRead.h"

@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_PRECOMPILED_H
-#define APP_PRECOMPILED_H
+#ifndef PATH_SIMULATOR_APPGL_PRECOMPILED_H
+#define PATH_SIMULATOR_APPGL_PRECOMPILED_H
 
 #include <FCConfig.h>
-
-#ifdef _PreComp_
 
 // standard
 #include <cstdio>
@@ -49,7 +47,5 @@
 
 // Xerces
 #include <xercesc/util/XercesDefs.hpp>
-
-#endif  //_PreComp_
 
 #endif

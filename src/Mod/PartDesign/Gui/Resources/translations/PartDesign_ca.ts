@@ -921,7 +921,7 @@ de manera que s'evita l'autointersecció.</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="514"/>
-      <location filename="../../SketchWorkflow.cpp" line="742"/>
+      <location filename="../../SketchWorkflow.cpp" line="746"/>
       <source>New Sketch</source>
       <translation>Croquis nou</translation>
     </message>
@@ -980,44 +980,6 @@ de manera que s'evita l'autointersecció.</translation>
       <location filename="../../TaskMultiTransformParameters.cpp" line="382"/>
       <source>Scale</source>
       <translation>Escala</translation>
-    </message>
-  </context>
-  <context>
-    <name>FeaturePickDialog</name>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="42"/>
-      <source>Valid</source>
-      <translation>Vàlid</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="43"/>
-      <source>Invalid shape</source>
-      <translation>Forma invàlida</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="44"/>
-      <source>No wire in sketch</source>
-      <translation>No hi ha cap fil a l'esbós</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="45"/>
-      <source>Sketch already used by other feature</source>
-      <translation>Esbós ja utilitzat per una altra operació</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="46"/>
-      <source>Sketch belongs to another body feature</source>
-      <translation>El croquis pertany a una altra característica del cos</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="48"/>
-      <source>Feature is located after the tip of the body</source>
-      <translation>La característica es troba després de la punta del cos</translation>
-    </message>
-    <message>
-      <location filename="../../FeaturePickDialog.cpp" line="47"/>
-      <source>Base plane</source>
-      <translation>Pla base</translation>
     </message>
   </context>
   <context>
@@ -2251,7 +2213,7 @@ Si el valor és zero, serà igual al Radi2</translation>
       <translation>Pla</translation>
     </message>
     <message>
-      <location filename="../../TaskMirroredParameters.cpp" line="175"/>
+      <location filename="../../TaskMirroredParameters.cpp" line="182"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
@@ -3189,48 +3151,48 @@ mesurada al llarg de la direcció especificada</translation>
       <translation>Error</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="775"/>
+      <location filename="../../SketchWorkflow.cpp" line="779"/>
       <source>Several sub-elements selected</source>
       <translation>S'han seleccionat diversos sub-elements</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="776"/>
+      <location filename="../../SketchWorkflow.cpp" line="780"/>
       <source>Select a single face as support for a sketch!</source>
       <translation>Seleccioneu una única cara com a suport del croquis!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="780"/>
+      <location filename="../../SketchWorkflow.cpp" line="784"/>
       <source>Select a face as support for a sketch!</source>
       <translation>Seleccioneu una cara de suport per a un croquis!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="784"/>
+      <location filename="../../SketchWorkflow.cpp" line="788"/>
       <source>Need a planar face as support for a sketch!</source>
       <translation>Necessita una cara plana com a suport per a un croquis!</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="788"/>
+      <location filename="../../SketchWorkflow.cpp" line="792"/>
       <source>Create a plane first or select a face to sketch on</source>
       <translation>Creeu un pla mestre o seleccioneu una cara per al croquis</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="779"/>
+      <location filename="../../SketchWorkflow.cpp" line="783"/>
       <source>No support face selected</source>
       <translation>No s'ha seleccionat una cara de suport</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="783"/>
+      <location filename="../../SketchWorkflow.cpp" line="787"/>
       <source>No planar support</source>
       <translation>No hi ha suport pla</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="787"/>
+      <location filename="../../SketchWorkflow.cpp" line="791"/>
       <source>No valid planes in this document</source>
       <translation>Esbossos no vàlids en aquest document</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1014"/>
-      <location filename="../../SketchWorkflow.cpp" line="702"/>
+      <location filename="../../SketchWorkflow.cpp" line="706"/>
       <location filename="../../ViewProvider.cpp" line="139"/>
       <location filename="../../ViewProviderDatum.cpp" line="250"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
@@ -3274,7 +3236,7 @@ mesurada al llarg de la direcció especificada</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../SketchWorkflow.cpp" line="703"/>
+      <location filename="../../SketchWorkflow.cpp" line="707"/>
       <location filename="../../ViewProvider.cpp" line="140"/>
       <location filename="../../ViewProviderDatum.cpp" line="251"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
@@ -4523,7 +4485,7 @@ més de 90: radi de forat més gran a la part inferior</translation>
       <location filename="../../../App/FeatureExtrude.cpp" line="599"/>
       <location filename="../../../App/FeatureFillet.cpp" line="119"/>
       <location filename="../../../App/FeatureGroove.cpp" line="196"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2185"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2197"/>
       <location filename="../../../App/FeatureLoft.cpp" line="277"/>
       <location filename="../../../App/FeatureLoft.cpp" line="312"/>
       <location filename="../../../App/FeaturePipe.cpp" line="404"/>
@@ -4625,7 +4587,7 @@ més de 90: radi de forat més gran a la part inferior</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="112"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1904"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1913"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4717,7 +4679,7 @@ No es permet la intersecció d'entitats d'un croquis.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="299"/>
       <location filename="../../../App/FeatureHelix.cpp" line="331"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2529"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2541"/>
       <source>Error: Result is not a solid</source>
       <translation>Error: El resultat no és un sòlid</translation>
     </message>
@@ -4759,73 +4721,78 @@ No es permet la intersecció d'entitats d'un croquis.</translation>
       <translation>El tipus de rosca és invàlida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1944"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1953"/>
       <source>Hole error: Unsupported length specification</source>
       <translation>Error de forat: Especificació de longitud no suportada</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1947"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1956"/>
       <source>Hole error: Invalid hole depth</source>
       <translation>Error de forat: Profunditat del forat invàlida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1970"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1979"/>
       <source>Hole error: Invalid taper angle</source>
       <translation>Error de forat: Angle cònic invàlid</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1991"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2000"/>
       <source>Hole error: Hole cut diameter too small</source>
       <translation>Error de forat: El diàmetre del tall del forat és massa petit</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1995"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2004"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
       <translation>Error de forat: La profunditat del tall del forat ha de ser menor que la profunditat del forat</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1999"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2008"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
       <translation>Error de forat: La profunditat del tall del forat ha de ser major o igual a 0</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2021"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2030"/>
       <source>Hole error: Invalid countersink</source>
       <translation>Error de forat: Avellanat invàlid</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2054"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2063"/>
       <source>Hole error: Invalid drill point angle</source>
       <translation>Error de forat: Angle de la punta del trepant invàlid</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2064"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2073"/>
       <source>Hole error: Invalid drill point</source>
       <translation>Error de forat: Punta del trepant invàlida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2098"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2107"/>
       <source>Hole error: Could not revolve sketch</source>
       <translation>Error de forat: No s'ha pogut revolucionar el croquis</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2102"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2111"/>
       <source>Hole error: Resulting shape is empty</source>
       <translation>Error de forat: La forma resultant és buida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2112"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2121"/>
       <source>Error: Adding the thread failed</source>
       <translation>Error: L'afegit de la rosca ha fallat</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2163"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2168"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2129"/>
+      <source>Hole error: Finding axis failed</source>
+      <translation type="unfinished">Hole error: Finding axis failed</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureHole.cpp" line="2175"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2180"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>L'operació booleana ha fallat pel perfil Aresta</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2174"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2186"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>L'operació booleana ha produït un objecte no sòlid pel perfil Aresta</translation>
     </message>
@@ -4835,24 +4802,24 @@ No es permet la intersecció d'entitats d'un croquis.</translation>
       <translation>L'operació booleana ha fallat</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2195"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2207"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>No s'ha pogut crear una cara del croquis.
 No es permet la intersecció d'entitats o múltiples cares d'un croquis per crear un buidatge en una cara.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2345"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2357"/>
       <source>Thread type out of range</source>
       <translation>Tipus de rosca fora de rang</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2348"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2360"/>
       <source>Thread size out of range</source>
       <translation>Mida de rosca fora de rang</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2504"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2516"/>
       <source>Error: Thread could not be built</source>
       <translation>Error: No s'ha pogut construir la rosca</translation>
     </message>

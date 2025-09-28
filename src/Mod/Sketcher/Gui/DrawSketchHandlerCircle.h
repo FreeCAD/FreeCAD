@@ -720,9 +720,7 @@ void DSHCircleController::addConstraints()
             const std::vector<Sketcher::Constraint*>& ConStr =
                 handler->sketchgui->getSketchObject()->Constraints.getValues();
             int index = static_cast<int>(ConStr.size()) - 1;
-            Base::Vector2d dir = handler->secondPoint - handler->centerPoint;
-            Base::Vector2d toPnt = handler->secondPoint + dir * 0.3;
-            handler->moveConstraint(index, toPnt);
+            handler->moveConstraint(index, prevCursorPosition);
         };
 
         // NOTE: if AutoConstraints is empty, we can add constraints directly without any diagnose.

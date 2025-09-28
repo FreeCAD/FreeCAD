@@ -35,7 +35,6 @@ set(Start_SRCS
         CustomFolderModel.h
         FileUtilities.cpp
         FileUtilities.h
-        PreCompiled.cpp
         PreCompiled.h
         RecentFilesModel.cpp
         RecentFilesModel.h
@@ -43,6 +42,13 @@ set(Start_SRCS
         ThumbnailSource.h)
 
 add_library(Start SHARED ${Start_SRCS})
+
+if(FREECAD_USE_PCH)
+    target_precompile_headers(Start PRIVATE
+            $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">
+    )
+endif(FREECAD_USE_PCH)
+
 target_link_libraries(Start ${Start_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Start)

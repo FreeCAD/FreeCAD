@@ -26,6 +26,8 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Robot/App/Edge2TracObject.h>
 
+#include <Mod/Robot/RobotGlobal.h>
+
 #include "TaskEdge2TracParameter.h"
 
 

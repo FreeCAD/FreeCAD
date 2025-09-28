@@ -20,13 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <cmath>
 # include <limits>
 # include <QMessageBox>
 # include <regex>
-#endif // #ifndef _PreComp_
 
 #include <App/Document.h>
 #include <Base/Tools.h>
@@ -238,7 +235,7 @@ void TaskDimension::recomputeFeature()
 void TaskDimension::onNumDecChanged(int decimals)
 {
     std::string currentFormat = ui->leFormatSpecifier->text().toUtf8().constData();
-    
+
     std::smatch match;
     std::regex specRegex("%\\.([0-9]+)([fFrRgGwWeE])");
 
@@ -278,7 +275,7 @@ void TaskDimension::onReferenceChanged()
     std::regex specRegex("%\\.([0-9]+)([fFrRgGwWeE])");
     // Find a reference format specifier
     std::regex refRegex("\\((%\\.([0-9]+)([fFrRgGwWeE]))\\)");
-    
+
     if (isChecked) {
         newFormat = std::regex_replace(currentFormat, specRegex, "($&)");
     } else {
@@ -289,7 +286,7 @@ void TaskDimension::onReferenceChanged()
     ui->leFormatSpecifier->blockSignals(true);
     ui->leFormatSpecifier->setText(QString::fromStdString(newFormat));
     ui->leFormatSpecifier->blockSignals(false);
-    
+
     onFormatSpecifierChanged();
 }
 

@@ -24,6 +24,8 @@
 #ifndef ROBOT_VIEWPROVIDEREDGE2TRACOBJECT_H
 #define ROBOT_VIEWPROVIDEREDGE2TRACOBJECT_H
 
+#include <Mod/Robot/RobotGlobal.h>
+
 #include "ViewProviderTrajectory.h"
 
 namespace RobotGui

@@ -21,13 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <iomanip>
 #include <sstream>
 #include <boost_regex.hpp>
-#endif
+
 
 #include <App/Property.h>
 #include <Base/Console.h>

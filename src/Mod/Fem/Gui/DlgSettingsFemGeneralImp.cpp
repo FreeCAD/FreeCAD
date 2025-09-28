@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
 #include <App/Application.h>
 #include <Mod/Fem/App/FemTools.h>

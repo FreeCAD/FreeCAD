@@ -21,9 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 #include <boost/core/ignore_unused.hpp>
 #include <QMessageBox>
 #include <QTimer>
@@ -38,7 +36,7 @@
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/sensors/SoSensor.h>
-#endif
+
 
 #include <chrono>
 
@@ -766,7 +764,18 @@ void ViewProviderAssembly::collectMovableObjects(App::DocumentObject* selRoot,
         for (auto* child : children) {
             // Recurse on children, appending the child's name to the subName prefix
             std::string newSubNamePrefix = subNamePrefix + child->getNameInDocument() + ".";
-            collectMovableObjects(selRoot, newSubNamePrefix, child, onlySolids);
+            if (child->isDerivedFrom<App::Link>() && child->isLinkGroup()) {
+                auto* link = static_cast<App::Link*>(child);
+                std::vector<App::DocumentObject*> elts = link->ElementList.getValues();
+                for (auto* elt : elts) {
+                    std::string eltSubNamePrefix =
+                        newSubNamePrefix + elt->getNameInDocument() + ".";
+                    collectMovableObjects(selRoot, eltSubNamePrefix, elt, onlySolids);
+                }
+            }
+            else {
+                collectMovableObjects(selRoot, newSubNamePrefix, child, onlySolids);
+            }
         }
         return;
     }
@@ -775,7 +784,8 @@ void ViewProviderAssembly::collectMovableObjects(App::DocumentObject* selRoot,
     if (onlySolids
         && !(currentObject->isDerivedFrom<App::Part>()
              || currentObject->isDerivedFrom<Part::Feature>()
-             || currentObject->isDerivedFrom<App::Link>())) {
+             || currentObject->isDerivedFrom<App::Link>()
+             || currentObject->isDerivedFrom<App::LinkElement>())) {
         return;
     }
 
@@ -793,6 +803,9 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
 {
     auto addPartsToMove = [&](const std::vector<Assembly::ObjRef>& refs) {
         for (auto& partRef : refs) {
+            if (!partRef.obj) {
+                continue;
+            }
             auto* pPlc =
                 dynamic_cast<App::PropertyPlacement*>(partRef.obj->getPropertyByName("Placement"));
             if (pPlc) {

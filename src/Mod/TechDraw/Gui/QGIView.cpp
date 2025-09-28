@@ -21,15 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QApplication>
 # include <QGraphicsSceneHoverEvent>
 # include <QGraphicsSceneMouseEvent>
 # include <QPainter>
 # include <QStyleOptionGraphicsItem>
 # include <QTransform>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -230,6 +228,10 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 
     return QGraphicsItemGroup::itemChange(change, value);
 }
+
+//! The default behaviour here only applies to views whose (X, Y) describes a position on the page.
+//! Others, like QGILeaderLine whose (X, Y) describes a position within a view's boundary and is not
+//! draggable, should override this method.
 void QGIView::dragFinished()
 {
     if (!viewObj) {

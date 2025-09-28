@@ -128,7 +128,10 @@ class PropertyCreate(object):
         self.form = FreeCADGui.PySideUic.loadUi(":panels/PropertyCreate.ui")
 
         obj.Proxy.refreshCustomPropertyGroups()
-        for g in sorted(obj.CustomPropertyGroups):
+        groups = obj.CustomPropertyGroups
+        if not isinstance(groups, (list, tuple)):
+            groups = [groups]
+        for g in sorted(groups):
             self.form.propertyGroup.addItem(g)
         if grp:
             self.form.propertyGroup.setCurrentText(grp)

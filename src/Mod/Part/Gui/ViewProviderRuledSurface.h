@@ -23,6 +23,8 @@
 #ifndef PARTGUI_VIEWPROVIDERRULEDSURFACE_H
 #define PARTGUI_VIEWPROVIDERRULEDSURFACE_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include "ViewProvider.h"
 
 

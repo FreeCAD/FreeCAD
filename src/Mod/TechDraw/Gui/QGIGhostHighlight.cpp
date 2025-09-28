@@ -20,10 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # include <QGraphicsSceneEvent>
-#endif
+
 
 #include <Mod/TechDraw/App/DrawUtil.h>
 

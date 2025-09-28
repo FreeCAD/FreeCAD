@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef APP_PRECOMPILED_H
-#define APP_PRECOMPILED_H
+#ifndef TEMPLATE_APP_PRECOMPILED_H
+#define TEMPLATE_APP_PRECOMPILED_H
 
 #include <FCConfig.h>
 
@@ -32,8 +32,6 @@
 #else  // for Linux
 #define _TEMPLATE_AppExport
 #endif
-
-#ifdef _PreComp_
 
 // standard
 #include <cassert>
@@ -54,7 +52,5 @@
 
 // Xerces
 #include <xercesc/util/XercesDefs.hpp>
-
-#endif  //_PreComp_
 
 #endif

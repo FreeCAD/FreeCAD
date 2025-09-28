@@ -20,9 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
 
-#ifndef _PreComp_
 # include <sstream>
 # include <BRep_Tool.hxx>
 # include <gp_Pnt.hxx>
@@ -32,7 +30,7 @@
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoCamera.h>
-#endif
+
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>

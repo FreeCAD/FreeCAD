@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
+#include <FCConfig.h>
 
-#ifndef _PreComp_
+
 #include <limits>
-#endif
-
 
 #if defined(FC_OS_WIN32)
 #include <Windows.h>

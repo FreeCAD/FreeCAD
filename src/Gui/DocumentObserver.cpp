@@ -345,6 +345,10 @@ ViewProviderWeakPtrT::ViewProviderWeakPtrT(ViewProviderDocumentObject* obj)
 {
 }
 
+ViewProviderWeakPtrT::ViewProviderWeakPtrT(ViewProviderWeakPtrT&&) = default;
+
+ViewProviderWeakPtrT& ViewProviderWeakPtrT::operator=(ViewProviderWeakPtrT&&) = default;
+
 ViewProviderWeakPtrT::~ViewProviderWeakPtrT() = default;
 
 ViewProviderDocumentObject* ViewProviderWeakPtrT::_get() const noexcept

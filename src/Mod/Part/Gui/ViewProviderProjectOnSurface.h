@@ -26,6 +26,8 @@
 #ifndef PARTGUI_VIEWPROVIDERPROJECTONSURFACE_H
 #define PARTGUI_VIEWPROVIDERPROJECTONSURFACE_H
 
+#include <Mod/Part/PartGlobal.h>
+
 #include <Mod/Part/Gui/ViewProvider.h>
 
 

@@ -66,12 +66,13 @@ class BIM_Layers:
 
     def Activated(self):
 
-        from PySide import QtGui
-
-        # check if the dialog is running)
+        # only raise the dialog if it is already open
         if getattr(self, "dialog", None):
+            self.dialog.raise_()
             return
-
+            
+        from PySide import QtGui
+        
         # store changes to be committed
         self.deleteList = []
 

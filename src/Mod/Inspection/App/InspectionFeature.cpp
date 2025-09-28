@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <boost/core/ignore_unused.hpp>
 #include <numeric>
 #include <limits>
@@ -39,7 +36,6 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
-#endif
 
 #include <Base/Console.h>
 #include <Base/FutureWatcherProgress.h>

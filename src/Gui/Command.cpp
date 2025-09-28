@@ -1579,6 +1579,7 @@ Action * PythonGroupCommand::createAction()
                 cmd->setChecked(pycmd->isChecked());
                 cmd->blockSignals(false);
             }
+            cmd->setShortcut(ShortcutManager::instance()->getShortcut(cmd->property("CommandName").toByteArray()));
         }
 
         if (cmd.hasAttr("GetDefaultCommand")) {
@@ -1638,9 +1639,25 @@ void PythonGroupCommand::languageChange()
     applyCommandData(this->getName(), _pcAction);
 
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    // Reapply setup to ensure group action tooltip includes shortcut
+    auto* pcActionGroup = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> groupActions = pcActionGroup->actions();
+    int idx = _pcAction->property("defaultAction").toInt();
+    if (idx >= 0 && idx < groupActions.size()) {
+        QAction* defaultAction = groupActions[idx];
+        Gui::Command* cmd = rcCmdMgr.getCommandByName(defaultAction->property("CommandName").toByteArray());
+        if (cmd) {
+            const char *context = cmd->getName();
+            QString tip = QApplication::translate(context, cmd->getToolTipText());
+            _pcAction->setShortcut(cmd->getShortcut());
+            QString newTip = Gui::Action::createToolTip(tip, _pcAction->text(), _pcAction->action()->font(), _pcAction->shortcut().toString(), cmd);
+            _pcAction->setToolTip(newTip);
+        }
+    }
     auto* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-    for (const auto & it : a) {
+    QList<QAction*> actions = pcAction->actions();
+    for (const auto & it : actions) {
         Gui::Command* cmd = rcCmdMgr.getCommandByName(it->property("CommandName").toByteArray());
         if (cmd) {
             // Python command use getName as context
@@ -1652,8 +1669,13 @@ void PythonGroupCommand::languageChange()
             }
 
             it->setIcon(Gui::BitmapFactory().iconFromTheme(cmd->getPixmap()));
-            it->setText(QApplication::translate(context, cmd->getMenuText()));
-            it->setToolTip(QApplication::translate(context, tooltip));
+            QString text = QApplication::translate(context, cmd->getMenuText());
+            it->setText(text);
+            QString helpText = QApplication::translate(context, tooltip);
+            QString shortCut = it->shortcut().toString();
+            QFont font = it->font();
+            QString newTip = Gui::Action::createToolTip(helpText, text, font, shortCut, cmd);
+            it->setToolTip(newTip);
             it->setStatusTip(QApplication::translate(context, statustip));
         }
     }

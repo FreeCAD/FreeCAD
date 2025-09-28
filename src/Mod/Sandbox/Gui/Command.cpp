@@ -20,9 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <FCConfig.h>
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 # ifdef FC_OS_WIN32
 # include <windows.h>
 # endif
@@ -55,7 +54,6 @@
 # include <boost/thread/future.hpp>
 # include <boost/bind/bind.hpp>
 # include <memory>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Sequencer.h>

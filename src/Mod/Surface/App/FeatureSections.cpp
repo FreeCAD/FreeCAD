@@ -20,8 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <GeomFill_NSections.hxx>
@@ -31,7 +29,7 @@
 #include <Standard_Version.hxx>
 #include <TopLoc_Location.hxx>
 #include <TopoDS.hxx>
-#endif
+
 
 #include "FeatureSections.h"
 

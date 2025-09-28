@@ -23,6 +23,14 @@
 # ***************************************************************************
 import FreeCAD
 
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from FreeCADGui import Workbench
+else:
+    # Provide a dummy Workbench class when GUI is not available
+    class Workbench:
+        pass
+
 
 FreeCAD.__unit_test__ += ["TestCAMGui"]
 
@@ -82,6 +90,16 @@ class CAMWorkbench(Workbench):
         from Path.Main.Gui import SanityCmd as SanityCmd
         from Path.Tool.toolbit.ui import cmd as PathToolBitCmd
         from Path.Tool.library.ui import cmd as PathToolBitLibraryCmd
+
+        from Path.Tool.camassets import cam_assets
+
+        cam_assets.setup()
+
+        # Check if CAM asset migration is needed for version upgrade
+        from Path.Tool.migration.migration import CAMAssetMigrator
+
+        migrator = CAMAssetMigrator()
+        migrator.check_migration_needed()
 
         from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -339,6 +357,7 @@ class CAMWorkbench(Workbench):
                     "Profile" in selectedName
                     or "Contour" in selectedName
                     or "Dressup" in selectedName
+                    or "Pocket" in selectedName
                 ):
                     self.appendContextMenu("", "Separator")
                     # self.appendContextMenu("", ["Set_StartPoint"])

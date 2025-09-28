@@ -21,13 +21,11 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <boost/core/ignore_unused.hpp>
 #include <cmath>
 #include <vector>
 #include <unordered_map>
-#endif
+
 
 #include <App/Application.h>
 #include <App/Datums.h>
@@ -997,6 +995,11 @@ AssemblyObject::getConnectedParts(App::DocumentObject* part,
 
         App::DocumentObject* obj1 = getMovingPartFromRef(this, joint, "Reference1");
         App::DocumentObject* obj2 = getMovingPartFromRef(this, joint, "Reference2");
+
+        if (!obj1 || !obj2) {
+            continue;
+        }
+
         if (obj1 == part) {
             auto* ref =
                 dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName("Reference2"));

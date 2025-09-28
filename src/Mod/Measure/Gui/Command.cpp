@@ -19,10 +19,7 @@
  *                                                                         *
  **************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <QApplication>
-#endif
 
 #include <App/Application.h>
 #include <App/Document.h>

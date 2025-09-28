@@ -122,6 +122,7 @@ class ViewProviderWire(ViewProviderDraft):
 
     def updateData(self, obj, prop):
         if prop == "Points" \
+                and hasattr(obj, "Points") \
                 and len(obj.Points) >= 2 \
                 and hasattr(self, "coords1") \
                 and hasattr(self, "coords2"):

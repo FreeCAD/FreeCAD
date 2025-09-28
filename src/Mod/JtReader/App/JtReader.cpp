@@ -3,13 +3,11 @@
  *   LGPL                                                                  *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
 #include <string.h>
 #include <strstream>
 #include <sys/types.h>
 #include <vector>
-#endif
+
 
 #include <JtTk/JtkCADExporter.h>
 #include <JtTk/JtkCADImporter.h>

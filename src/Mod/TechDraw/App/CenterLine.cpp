@@ -21,13 +21,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-    #include <BRepBuilderAPI_MakeEdge.hxx>
-    #include <BRepBndLib.hxx>
-    #include <Bnd_Box.hxx>
-    #include <TopoDS_Shape.hxx>
-#endif
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBndLib.hxx>
+#include <Bnd_Box.hxx>
+#include <TopoDS_Shape.hxx>
 
 #include <BRepTools.hxx>
 

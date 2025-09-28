@@ -26,6 +26,7 @@
 
 import Arch
 import Draft
+import Part
 import FreeCAD as App
 from bimtests import TestArchBase
 from draftutils.messages import _msg
@@ -33,6 +34,32 @@ from draftutils.messages import _msg
 from math import pi, cos, sin, radians
 
 class TestArchComponent(TestArchBase.TestArchBase):
+
+    def testAdd(self):
+        App.Console.PrintLog ('Checking Arch Add...\n')
+        l=Draft.makeLine(App.Vector(0,0,0),App.Vector(2,0,0))
+        w = Arch.makeWall(l,width=0.2,height=2)
+        sb = Part.makeBox(1,1,1)
+        b = App.ActiveDocument.addObject('Part::Feature','Box')
+        b.Shape = sb
+        App.ActiveDocument.recompute()
+        Arch.addComponents(b,w)
+        App.ActiveDocument.recompute()
+        r = (w.Shape.Volume > 1.5)
+        self.assertTrue(r,"Arch Add failed")
+
+    def testRemove(self):
+        App.Console.PrintLog ('Checking Arch Remove...\n')
+        l=Draft.makeLine(App.Vector(0,0,0),App.Vector(2,0,0))
+        w = Arch.makeWall(l,width=0.2,height=2,align="Right")
+        sb = Part.makeBox(1,1,1)
+        b = App.ActiveDocument.addObject('Part::Feature','Box')
+        b.Shape = sb
+        App.ActiveDocument.recompute()
+        Arch.removeComponents(b,w)
+        App.ActiveDocument.recompute()
+        r = (w.Shape.Volume < 0.75)
+        self.assertTrue(r,"Arch Remove failed")
 
     def testBsplineSlabAreas(self):
         """Test the HorizontalArea and VerticalArea properties of a Bspline-based slab.

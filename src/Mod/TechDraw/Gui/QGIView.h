@@ -178,7 +178,7 @@ protected:
     QGIView* getQGIVByName(std::string name) const;
 
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    void dragFinished();
+    virtual void dragFinished();
 
     // Preselection events:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;

@@ -20,9 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <Python.h>
 #include <vtkDoubleArray.h>
 #include <vtkPointData.h>
@@ -30,7 +27,6 @@
 #include <vtkAlgorithmOutput.h>
 #include <vtkUnstructuredGrid.h>
 #include <vtkInformation.h>
-#endif
 
 #include <App/FeaturePythonPyImp.h>
 #include <App/Document.h>
