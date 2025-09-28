@@ -45,7 +45,7 @@ as_clause: AS literal
 // Arithmetic Expression Parsing with Operator Precedence
 expr: term (ADD term | SUB term)*          // Lowest precedence: Addition/Subtraction
 term: member_access (MUL member_access | DIV member_access)* // Next precedence: Multiplication/Division
-member_access: primary ("." CNAME)*       // Highest precedence: Member Access using '.'
+member_access: primary ("." (CNAME | function))* // Explicitly allow a function after a dot
 primary: function | CNAME | literal | NUMBER | NULL | "(" expr ")" // The fundamental building blocks
 
 //  'operand' is an alias for a full arithmetic expression.

@@ -1159,47 +1159,61 @@ class TestArchReport(TestArchBase.TestArchBase):
         clause_tooltip = editor._get_tooltip_for_word("SELECT")
         self.assertIn("SQL Clause", clause_tooltip)
 
-    def test_parent_function(self):
+    def test_parent_function_and_chaining(self):
         """
-        Tests the PARENT(*) function to find an object's container.
-        This test verifies that the function returns the correct parent OBJECT.
+        Tests the PARENT(*) function with simple and chained calls,
+        and verifies the logic for transparently skipping generic groups.
         """
-        # 1. Setup a nested hierarchy: Building -> Floor -> Group -> Space
-        building = Arch.makeBuilding(name="My Building")
-        floor = Arch.makeFloor(name="Ground Floor")
-        group = self.doc.addObject("App::DocumentObjectGroup", "Room Group")
-        # Use a simple profile for the space
-        space_profile = Draft.makeRectangle(length=2000, height=3000)
-        space = Arch.makeSpace(space_profile, name="Main Office")
+        # 1. ARRANGE: Create a comprehensive hierarchy
+        site = Arch.makeSite(name="Test Site")
+        building = Arch.makeBuilding(name="Test Building")
+        floor = Arch.makeFloor(name="Test Floor")
+        wall = Arch.makeWall(name="Test Wall")
+        win_profile = Draft.makeRectangle(1000, 1000)
+        window = Arch.makeWindow(win_profile, name="Test Window")
 
+        generic_group = self.doc.addObject("App::DocumentObjectGroup", "Test Generic Group")
+        space_profile = Draft.makeRectangle(2000, 2000)
+        space = Arch.makeSpace(space_profile, name="Test Space")
+
+        site.addObject(building)
         building.addObject(floor)
-        floor.addObject(group)
-        group.addObject(space)
+        floor.addObject(wall)
+        floor.addObject(generic_group)
+        generic_group.addObject(space)
+        Arch.addComponents(window, wall)
         self.doc.recompute()
 
-        with self.subTest(description="Pure PARENT(*) returns the parent object"):
-            # 2a. The Query for the pure function
-            # This should return the Floor object itself.
-            query = f"SELECT PARENT(*) FROM document WHERE Label = '{space.Label}'"
+        # 2. ACT & ASSERT
+
+        # Sub-Test A: Skipping a generic group
+        # The PARENT of the Space should be the Floor, not the Generic Group.
+        with self.subTest(description="Skipping generic group"):
+            query = f"SELECT PARENT(*).Label FROM document WHERE Label = '{space.Label}'"
+            _, data = Arch.select(query)
+            self.assertEqual(data[0][0], floor.Label, "PARENT(Space) should skip the group and return the Floor.")
+
+        # Sub-Test B: Chained parent finding for a contained object
+        # The significant grandparent of the Wall (Wall -> Floor -> Building) is the Building.
+        with self.subTest(description="Chained PARENT of Wall"):
+            query = f"SELECT PARENT(*).PARENT(*).Label FROM document WHERE Label = '{wall.Label}'"
+            _, data = Arch.select(query)
+            self.assertEqual(data[0][0], building.Label)
+
+        # Sub-Test C: Chained parent finding for a hosted object
+        # The significant great-grandparent of the Window (Window -> Wall -> Floor -> Building) is the Building.
+        with self.subTest(description="Chained PARENT of Window"):
+            query = f"SELECT PARENT(*).PARENT(*).PARENT(*).Label FROM document WHERE Label = '{window.Label}'"
+            _, data = Arch.select(query)
+            self.assertEqual(data[0][0], building.Label)
+
+        # Sub-Test D: Filtering by a logical grandparent
+        # This query should find all objects whose significant grandparent is the Building.
+        # This includes the Space (grandparent is Floor's parent) and the Wall (grandparent is Floor's parent).
+        with self.subTest(description="Filtering by logical grandparent"):
+            query = f"SELECT Label FROM document WHERE PARENT(*).PARENT(*).Label = '{building.Label}'"
             _, data = Arch.select(query)
 
-            # 2b. Assertions for the pure function
-            self.assertEqual(len(data), 1, "Query should return exactly one row.")
-            returned_parent = data[0][0]
-            self.assertEqual(returned_parent, floor, "PARENT(*) did not return the correct Floor object.")
-
-        with self.subTest(description="Pythonic access PARENT(*).Label"):
-            # 3a. The Query for Pythonic access
-            query_py = f"SELECT PARENT(*).Label FROM document WHERE Label = '{space.Label}'"
-            _, data_py = Arch.select(query_py)
-
-            # 3b. Assertions for Pythonic access
-            self.assertEqual(len(data_py), 1, "Query should return exactly one row.")
-            self.assertEqual(data_py[0][0], floor.Label, "PARENT(*).Label did not return the correct parent Label.")
-
-        # 4. Test case with no significant parent
-        # A top-level object's parent should be None.
-        query_no_parent = f"SELECT PARENT(*) FROM document WHERE Label = '{building.Label}'"
-        _, data_no_parent = Arch.select(query_no_parent)
-        self.assertEqual(len(data_no_parent), 1)
-        self.assertIsNone(data_no_parent[0][0], "A top-level object should have no parent.")
+            found_labels = sorted([row[0] for row in data])
+            expected_labels = sorted([space.Label, wall.Label, generic_group.Label]) # The group's logical grandparent is also the building.
+            self.assertListEqual(found_labels, expected_labels, "Query did not find all objects with the correct logical grandparent.")
