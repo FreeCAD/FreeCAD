@@ -21,8 +21,8 @@
 
 import FreeCAD
 import FreeCADGui
-import Path
-import PathScripts
+from Path.Base.Util import coolantModeForOp
+from Path.Base.Util import toolControllerForOp
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __doc__ = """CAM SimpleCopy command"""
@@ -62,43 +62,53 @@ class CommandPathSimpleCopy:
             "Pixmap": "CAM_SimpleCopy",
             "MenuText": QT_TRANSLATE_NOOP("CAM_SimpleCopy", "Simple Copy"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_SimpleCopy", "Creates a non-parametric copy of another toolpath"
+                "CAM_SimpleCopy",
+                "Creates a non-parametric copy of another toolpath\n"
+                "Several operations can be used with identical tool controller and coolant mode",
             ),
         }
 
     def IsActive(self):
-        if bool(FreeCADGui.Selection.getSelection()) is False:
+        selection = FreeCADGui.Selection.getSelection()
+
+        if not len(selection):
             return False
-        try:
-            obj = FreeCADGui.Selection.getSelectionEx()[0].Object
-            return isinstance(obj.Proxy, Path.Op.Base.ObjectOp)
-        except Exception:
+
+        if not all([hasattr(sel, "Path") for sel in selection]):
             return False
+
+        if not all([len(op.Path.Commands) for op in selection]):
+            return False
+
+        coolant = coolantModeForOp(selection[0])
+        if not all([coolant == coolantModeForOp(op) for op in selection]):
+            return False
+
+        toolController = toolControllerForOp(selection[0])
+        if not all([toolController == toolControllerForOp(op) for op in selection]):
+            return False
+
+        return True
 
     def Activated(self):
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            FreeCAD.Console.PrintError(
-                translate("CAM_SimpleCopy", "Select exactly one toolpath object") + "\n"
-            )
-            return
-        if not (selection[0].isDerivedFrom("Path::Feature")):
-            FreeCAD.Console.PrintError(
-                translate("CAM_SimpleCopy", "Select exactly one toolpath object") + "\n"
-            )
-            return
-
+        name = f"{selection[0].Name}_SimpleCopy" if len(selection) == 1 else "SimpleCopy"
         FreeCAD.ActiveDocument.openTransaction("Simple Copy")
-        FreeCADGui.doCommand("srcobj = FreeCADGui.Selection.getSelectionEx()[0].Object\n")
-
+        FreeCADGui.doCommand("srcobjs = FreeCADGui.Selection.getSelection()")
         FreeCADGui.addModule("PathScripts.PathUtils")
-        FreeCADGui.doCommand("srcpath = PathScripts.PathUtils.getPathWithPlacement(srcobj)\n")
+        FreeCADGui.doCommand(
+            "srcpaths = [PathScripts.PathUtils.getPathWithPlacement(srcobj) for srcobj in srcobjs]"
+        )
         FreeCADGui.addModule("Path.Op.Custom")
-        FreeCADGui.doCommand('obj = Path.Op.Custom.Create("' + selection[0].Name + '_SimpleCopy")')
-        FreeCADGui.doCommand("obj.Gcode = [c.toGCode() for c in srcpath.Commands]")
+        FreeCADGui.doCommand('obj = Path.Op.Custom.Create("' + name + '")')
+        FreeCADGui.doCommand("obj.ToolController = Path.Base.Util.toolControllerForOp(srcobjs[0])")
+        FreeCADGui.doCommand("obj.CoolantMode = Path.Base.Util.coolantModeForOp(srcobjs[0])")
         FreeCADGui.doCommand(
             "obj.ViewObject.Proxy = Path.Op.Gui.SimpleCopy.ViewProvider(obj.ViewObject)"
+        )
+        FreeCADGui.doCommand(
+            "obj.Gcode = [c.toGCode() for srcpath in srcpaths for c in srcpath.Commands]"
         )
         FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
@@ -108,3 +118,4 @@ class CommandPathSimpleCopy:
 if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_SimpleCopy", CommandPathSimpleCopy())
+
