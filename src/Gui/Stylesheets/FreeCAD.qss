@@ -509,8 +509,6 @@ QMenu::item:disabled {
 QMenu::separator {
   height: 2px;
   background-color: @PrimaryColor;
-  margin-left: 10%;
-  margin-right: 10%;
 }
 
 QMenu::item {
@@ -518,8 +516,8 @@ QMenu::item {
   padding-left: 5px;
   padding-top: 4px;
   padding-bottom: 4px;
-  padding-right: 5px;
-  /* Reserve space for selection border */}
+  padding-right: 23px;
+}
 
 QMenu::item:selected {
   background-color: @AccentBackgroundColor;
@@ -540,14 +538,13 @@ QMenu::indicator {
   margin-right: 2px;
   width: 12px;
   height: 12px;
-  /* non-exclusive indicator = check box style indicator (see QActionGroup::setExclusive) */
-  /* exclusive indicator = radio button style indicator (see QActionGroup::setExclusive) */}
+}
+
 QMenu::icon:checked { /* appearance of a 'checked' icon */
   background-color: @AccentColor;
   margin-left: -5px;
   border: 5px solid @AccentColor;
   position: absolute;
-
 }
 
 QMenu::indicator:non-exclusive:unchecked {
@@ -589,36 +586,35 @@ QMenu::indicator:non-exclusive:indeterminate:focus, QMenu::indicator:non-exclusi
 }
 
 QMenu::indicator:exclusive:unchecked {
-  image: url(qss:@IconsLocationFolderName/transparent.svg);
+  image: url(qss:@IconsLocationFolderName/radio-unchecked-@StylesheetIconsColor.svg);
 }
 
 QMenu::indicator:exclusive:unchecked:hover, QMenu::indicator:exclusive:unchecked:focus, QMenu::indicator:exclusive:unchecked:pressed {
   border-style: none;
   outline: none;
   background-color: @GeneralBackgroundHoverColor;
-  image: url(qss:@IconsLocationFolderName/checkbox-empty-@StylesheetIconsColor.svg);
+  image: url(qss:@IconsLocationFolderName/radio-unchecked-@StylesheetIconsColor.svg);
 }
 
 QMenu::indicator:exclusive:unchecked:disabled {
-  image: url(qss:@IconsLocationFolderName/checkbox-empty-@StylesheetIconsColor.svg);
+  image: url(qss:@IconsLocationFolderName/radio-unchecked-lightgray.svg);
 }
 
 QMenu::indicator:exclusive:checked {
   border-style: none;
   outline: none;
-  image: url(qss:@IconsLocationFolderName/checkbox-checked-@StylesheetIconsColor.svg);
+  image: url(qss:@IconsLocationFolderName/radio-checked-@StylesheetIconsColor.svg);
 }
 
 QMenu::indicator:exclusive:checked:hover, QMenu::indicator:exclusive:checked:focus, QMenu::indicator:exclusive:checked:pressed {
   border-style: none;
   outline: none;
   background-color: @GeneralBackgroundHoverColor;
-  image: url(qss:@IconsLocationFolderName/checkbox-empty-@StylesheetIconsColor.svg);
 }
 
 QMenu::indicator:exclusive:checked:disabled {
   outline: none;
-  image: url(qss:@IconsLocationFolderName/checkbox-checked-lightgray.svg);
+  image: url(qss:@IconsLocationFolderName/radio-checked-lightgray.svg);
 }
 
 QMenu::right-arrow {
