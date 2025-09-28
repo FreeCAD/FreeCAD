@@ -251,9 +251,30 @@ class FunctionBase:
     def __init__(self, function_name, arg_extractors):
         self.function_name = function_name
         self.arg_extractors = arg_extractors
-        # Arity (argument count) check is performed by child classes.
+        # The 'base' is set by the transformer during parsing of a chain.
+        self.base = None
+
     def get_value(self, obj):
-        """Calculates the function's value for a single object row."""
+        """
+        Calculates the function's value. This is the entry point.
+        It determines the object to operate on (from the chain, or the row object)
+        and then calls the specific implementation.
+        """
+        if self.base:
+            on_object = self.base.get_value(obj)
+            if on_object is None:
+                return None
+        else:
+            on_object = obj
+
+        return self._execute_function(on_object, obj)
+
+    def _execute_function(self, on_object, original_obj):
+        """
+        Child classes must implement this.
+        - on_object: The object the function should run on (from the chain).
+        - original_obj: The original row object, used to evaluate arguments.
+        """
         raise NotImplementedError()
 
 
@@ -479,34 +500,49 @@ class ParentFunction(FunctionBase):
         if len(self.arg_extractors) != 1 or self.arg_extractors[0] != '*':
             raise ValueError(f"Function {self.function_name} requires exactly one argument: '*'")
 
-    def get_value(self, obj):
+    def _execute_function(self, on_object, original_obj):
         """
-        Walks up the hierarchy from the object to find the first
-        architecturally significant parent (e.g., a Floor, not a generic Group).
+        Walks up the document tree from the given on_object to find the first
+        architecturally significant parent, transparently skipping generic groups.
         """
-        current_obj = obj
-        # Limit search depth to prevent infinite loops in malformed documents
+        current_obj = on_object
+
+        # Limit search depth to 20 levels to prevent infinite loops.
         for _ in range(20):
-            if not hasattr(current_obj, 'InList') or not current_obj.InList:
-                return None # Reached the top of this branch
+            # --- Step 1: Find the immediate parent of current_obj ---
+            immediate_parent = None
 
-            # For simplicity, we consider the first parent in the InList.
-            parent = current_obj.InList[0]
-            parent_type = get_type(parent)
+            # Priority 1: Check for a host (for Windows, Doors, etc.)
+            if hasattr(current_obj, 'Hosts') and current_obj.Hosts:
+                immediate_parent = current_obj.Hosts[0]
 
-            # A "significant" parent is an architectural container (Floor, Building)
-            # or a host object (Wall, Structure). A generic "Group" is not.
-            significant_types = {'BuildingPart', 'Wall', 'Structure'}
-            is_significant = parent_type in significant_types
+            # Priority 2: If no host, search InList for a container
+            elif hasattr(current_obj, 'InList') and current_obj.InList:
+                for obj_in_list in current_obj.InList:
+                    # A container is any object that is a BuildingPart or a Group.
+                    # This check is broad, and we will refine significance next.
+                    if (obj_in_list.isDerivedFrom("App::DocumentObjectGroup") or
+                            get_type(obj_in_list) == "BuildingPart"):
+                        immediate_parent = obj_in_list
+                        break
 
-            if is_significant:
-                return parent # Found the significant parent
+            if not immediate_parent:
+                return None # No parent found, top of branch.
 
-            # If the parent is not significant (e.g., it's a generic group),
-            # continue walking up the tree from that parent.
-            current_obj = parent
+            # --- Step 2: Check if the found parent is a generic group to be skipped ---
+            parent_type = get_type(immediate_parent)
+            is_generic_group = (immediate_parent.isDerivedFrom("App::DocumentObjectGroup") and
+                                parent_type != "BuildingPart")
 
-        return None # Search limit exceeded
+            if is_generic_group:
+                # The parent is a generic group. Skip it and continue the search
+                # from this parent's level in the next loop.
+                current_obj = immediate_parent
+            else:
+                # The parent is architecturally significant. This is our answer.
+                return immediate_parent
+
+        return None # Search limit reached.
 
 
 class GroupByClause:
@@ -1329,20 +1365,25 @@ class SqlTransformerMixin:
         return tree
 
     def member_access(self, items):
-        """This transformer handles the 'member_access' rule for chained property access."""
-
-        # Start with the base of the chain.
+        """
+        This transformer handles the 'member_access' rule for chained property access.
+        It can handle both simple properties (CNAME) and function calls after a dot.
+        """
+        # Start with the base of the chain (the result of the 'primary' rule).
         base_extractor = items[0]
 
-        # Filter the rest of the items to get only the CNAME tokens,
-        # ignoring the '.' literal tokens that are also passed in.
-        prop_tokens = [item for item in items[1:] if isinstance(item, generated_sql_parser.Token) and item.type == 'CNAME']
-
-        # Iteratively wrap the base with a new ReferenceExtractor for each
-        # property in the chain.
-        for prop_token in prop_tokens:
-            prop_name = str(prop_token)
-            base_extractor = ReferenceExtractor(prop_name, base=base_extractor)
+        # The rest of the items are a mix of CNAME tokens and transformed Function objects.
+        for member in items[1:]:
+            if isinstance(member, generated_sql_parser.Token) and member.type == 'CNAME':
+                # Case 1: A simple property access like '.Label'
+                # Wrap the current chain in a new ReferenceExtractor.
+                base_extractor = ReferenceExtractor(str(member), base=base_extractor)
+            else:
+                # Case 2: A function call like '.PARENT(*)'
+                # The 'member' is already a transformed object (e.g., ParentFunction).
+                # We set its base to the current chain, making it the new end of the chain.
+                member.base = base_extractor
+                base_extractor = member
 
         return base_extractor
 
