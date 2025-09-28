@@ -484,7 +484,7 @@ void DSHCircleControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
                 == DrawSketchHandlerCircle::ConstructionMethod::Center) {
                 if (thirdParam->isSet) {
                     double radius = (handler->isDiameter ? 0.5 : 1) * thirdParam->getValue();
-                    if (radius < Precision::Confusion()) {
+                    if (radius < Precision::Confusion() && thirdParam->hasFinishedEditing) {
                         unsetOnViewParameter(thirdParam.get());
                         return;
                     }
@@ -509,7 +509,8 @@ void DSHCircleControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
                 }
 
                 if (thirdParam->isSet && fourthParam->isSet
-                    && (onSketchPos - handler->firstPoint).Length() < Precision::Confusion()) {
+                    && (onSketchPos - handler->firstPoint).Length() < Precision::Confusion()
+                    && thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing) {
                     unsetOnViewParameter(thirdParam.get());
                     unsetOnViewParameter(fourthParam.get());
                 }
@@ -527,7 +528,8 @@ void DSHCircleControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
                 onSketchPos.y = sixthParam->getValue();
             }
             if (fifthParam->isSet && sixthParam->isSet
-                && areCollinear(handler->firstPoint, handler->secondPoint, onSketchPos)) {
+                && areCollinear(handler->firstPoint, handler->secondPoint, onSketchPos)
+                && fifthParam->hasFinishedEditing && sixthParam->hasFinishedEditing) {
                 unsetOnViewParameter(fifthParam.get());
                 unsetOnViewParameter(sixthParam.get());
             }

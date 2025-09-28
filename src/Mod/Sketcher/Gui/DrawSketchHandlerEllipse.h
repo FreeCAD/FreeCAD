@@ -558,7 +558,7 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
                 if (thirdParam->isSet) {
                     length = thirdParam->getValue();
-                    if (length < Precision::Confusion()) {
+                    if (length < Precision::Confusion() && thirdParam->hasFinishedEditing) {
                         unsetOnViewParameter(thirdParam.get());
                         return;
                     }
@@ -582,7 +582,8 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                 }
 
                 if (thirdParam->isSet && fourthParam->isSet
-                    && (onSketchPos - handler->apoapsis).Length() < Precision::Confusion()) {
+                    && (onSketchPos - handler->apoapsis).Length() < Precision::Confusion()
+                    && thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing) {
                     unsetOnViewParameter(thirdParam.get());
                     unsetOnViewParameter(fourthParam.get());
                 }
@@ -613,7 +614,8 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                 }
 
                 if (fifthParam->isSet && sixthParam->isSet
-                    && areCollinear(handler->apoapsis, handler->periapsis, onSketchPos)) {
+                    && areCollinear(handler->apoapsis, handler->periapsis, onSketchPos)
+                    && fifthParam->hasFinishedEditing && sixthParam->hasFinishedEditing) {
                     unsetOnViewParameter(fifthParam.get());
                     unsetOnViewParameter(sixthParam.get());
                 }

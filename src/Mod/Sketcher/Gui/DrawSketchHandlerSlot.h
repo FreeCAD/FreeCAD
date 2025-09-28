@@ -435,7 +435,7 @@ void DSHSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
 
             if (thirdParam->isSet) {
                 length = thirdParam->getValue();
-                if (length < Precision::Confusion()) {
+                if (length < Precision::Confusion() && thirdParam->hasFinishedEditing) {
                     unsetOnViewParameter(thirdParam.get());
                     return;
                 }
@@ -456,7 +456,7 @@ void DSHSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
             if (fifthParam->isSet) {
                 double radius = fifthParam->getValue();
 
-                if (radius < Precision::Confusion()) {
+                if (radius < Precision::Confusion() && fifthParam->hasFinishedEditing) {
                     unsetOnViewParameter(fifthParam.get());
                     return;
                 }

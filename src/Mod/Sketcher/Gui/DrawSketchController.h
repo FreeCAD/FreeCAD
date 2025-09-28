@@ -697,6 +697,7 @@ protected:
         onViewParameter->isSet = false;
         onViewParameter->hasFinishedEditing = false;
         onViewParameter->setColor(colorManager.dimConstrDeactivatedColor);
+        onViewParameter->setLockedAppearance(false);
     }
 
     void setOnViewParameterValue(OnViewParameter index,
