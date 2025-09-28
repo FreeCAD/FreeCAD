@@ -1220,9 +1220,18 @@ class SqlTransformerMixin:
         return items
 
     def as_clause(self, items):
-        # items[0]=AS token, items[1]=StaticExtractor from the 'literal' rule.
-        # We must extract the raw string value from the extractor object.
-        return items[1].get_value(None)
+        # The alias will be the second item. It can either be a transformed
+        # StaticExtractor (from a quoted string) or a raw CNAME token.
+        alias_part = items[1]
+
+        if isinstance(alias_part, StaticExtractor):
+            # Case 1: The alias was a quoted string like "Floor Name".
+            # The 'literal' rule transformed it into a StaticExtractor.
+            return alias_part.get_value(None)
+        else:
+            # Case 2: The alias was an unquoted name like FloorName.
+            # The grammar passed the raw CNAME Token directly.
+            return str(alias_part)
 
     def column(self, items):
         # Each item in `items` is either '*' (for SELECT *) or an extractor object.

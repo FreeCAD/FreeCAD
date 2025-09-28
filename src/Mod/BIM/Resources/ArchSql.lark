@@ -41,7 +41,7 @@ group_by_clause: GROUP BY member_access ("," member_access)*
 order_by_clause: ORDER BY member_access ("," member_access)* (ASC | DESC)?
 columns: (column ("," column)*)
 column: (ASTERISK | operand) as_clause?
-as_clause: AS literal
+as_clause: AS (literal | CNAME)
 // Arithmetic Expression Parsing with Operator Precedence
 expr: term (ADD term | SUB term)*          // Lowest precedence: Addition/Subtraction
 term: member_access (MUL member_access | DIV member_access)* // Next precedence: Multiplication/Division
