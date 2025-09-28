@@ -1736,7 +1736,7 @@ QSlider::handle:vertical:focus {
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qlineedit
 
 --------------------------------------------------------------------------- */
-QLineEdit, QTextEdit {
+QLineEdit, QTextEdit, QPlainTextEdit {
   background-color: @TextEditFieldBackgroundColor;
   padding-top: 2px;
   padding-bottom: 2px;
@@ -1747,16 +1747,16 @@ QLineEdit, QTextEdit {
   border-radius: @InputFieldBorderRadius;
 }
 
-QLineEdit:disabled, QTextEdit:disabled {
+QLineEdit:disabled, QTextEdit:disabled, QPlainTextEdit:disabled {
   background-color: @GeneralDisabledBackgroundColor;
   color @TextDisabledColor;
 }
 
-QLineEdit:focus, QTextEdit:focus {
+QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {
   border: 1px solid @AccentColor;
 }
 
-QLineEdit:selected, QTextEdit:selected {
+QLineEdit:selected, QTextEdit:selected, QPlainTextEdit:selected {
   background-color: @GeneralBackgroundHoverColor;
 }
 
