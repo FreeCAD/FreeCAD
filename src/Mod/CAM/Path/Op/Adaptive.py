@@ -1798,8 +1798,6 @@ class PathAdaptive(PathOp.ObjectOp):
                 "To take a finishing profile path at the end",
             ),
         )
-
-        # --- NEW ADAPTIVE FEED PROPERTIES ---
         obj.addProperty(
             "App::PropertyBool",
             "AdaptiveFeed",
@@ -1826,8 +1824,6 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Minimum radius for adaptive feed calculations (3-5 times the Tool Diameter is recommended). Paths with a larger radius will be considered straight. ",
             ),
         )
-        # --- END NEW PROPERTIES ---
-
         obj.addProperty(
             "App::PropertyBool",
             "Stopped",
@@ -1954,12 +1950,9 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.UseHelixArcs = False
         obj.UseOutline = False
         obj.OrderCutsByRegion = False
-
-        # --- DEFAULTS FOR ADAPTIVE FEED RATES PROPERTIES ---
         obj.AdaptiveFeed = False
         obj.AdaptiveFeedMaxReduction = 50
         obj.AdaptiveFeedMinRadius = 15
-        # --- END DEFAULTS ---
 
         FeatureExtensions.set_default_property_values(obj, job)
 
