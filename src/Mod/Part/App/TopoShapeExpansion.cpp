@@ -4352,10 +4352,10 @@ TopoShape& TopoShape::makeElementPrism(const TopoShape& base, const gp_Vec& vec,
     return makeElementShape(mkPrism, base, op);
 }
 
-TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
+TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& base,
                                             const TopoShape& profile,
                                             const TopoShape& supportFace,
-                                            const TopoShape& __uptoface,
+                                            const TopoShape& uptoface,
                                             const gp_Dir& direction,
                                             PrismMode Mode,
                                             Standard_Boolean checkLimits,
@@ -4367,47 +4367,50 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
 
     BRepFeat_MakePrism PrismMaker;
 
+    // only check limits of face
+    bool okToCheckLimits = checkLimits && uptoface.shapeType(true) == TopAbs_FACE;
+
     // don't remove limits of concave face
-    if (checkLimits && __uptoface.shapeType(true) == TopAbs_FACE){
+    if (okToCheckLimits){
         Base::Vector3d vCog;
         profile.getCenterOfGravity(vCog);
         gp_Pnt pCog(vCog.x, vCog.y, vCog.z);
-        checkLimits = ! Part::Tools::isConcave(TopoDS::Face(__uptoface.getShape()), pCog , direction);
+        okToCheckLimits = ! Part::Tools::isConcave(TopoDS::Face(uptoface.getShape()), pCog , direction);
     }
 
-    TopoShape _uptoface(__uptoface);
-    if (checkLimits && _uptoface.shapeType(true) == TopAbs_FACE
-        && !BRep_Tool::NaturalRestriction(TopoDS::Face(_uptoface.getShape()))) {
-        // When using the face with BRepFeat_MakePrism::Perform(const TopoDS_Shape& Until)
-        // then the algorithm expects that the 'NaturalRestriction' flag is set in order
-        // to work as expected.
+    // When using the face with BRepFeat_MakePrism::Perform(const TopoDS_Shape& Until)
+    // then the algorithm expects that the 'NaturalRestriction' flag is set in order
+    // to work as expected.
+    TopoShape uptofaceRestricted(uptoface);
+    if (okToCheckLimits && !BRep_Tool::NaturalRestriction(TopoDS::Face(uptofaceRestricted.getShape()))) {
+
         BRep_Builder builder;
-        _uptoface = _uptoface.makeElementCopy();
-        builder.NaturalRestriction(TopoDS::Face(_uptoface.getShape()), Standard_True);
+        uptofaceRestricted = uptofaceRestricted.makeElementCopy();
+        builder.NaturalRestriction(TopoDS::Face(uptofaceRestricted.getShape()), Standard_True);
     }
 
-    TopoShape uptoface(_uptoface);
-    TopoShape base(_base);
-
-    if (base.isNull()) {
+    // copy the given const base to modify it as necessary
+    TopoShape baseCopy(base);
+    if (baseCopy.isNull()) {
         Mode = PrismMode::None;
-        base = profile;
+        baseCopy = profile;
     }
+
+    // upToFace without limits so that the extrusion works even if profile is larger
+    // than the upToFace
+    TopoShape uptofaceUnlimited(uptofaceRestricted);
 
     // Check whether the face has limits or not. Unlimited faces have no wire
     // Note: Datum planes are always unlimited
-    if (checkLimits && uptoface.shapeType(true) == TopAbs_FACE
-        && uptoface.hasSubShape(TopAbs_WIRE)) {
-        TopoDS_Face face = TopoDS::Face(uptoface.getShape());
-        bool remove_limits = false;
-        // Remove the limits of the upToFace so that the extrusion works even if profile is larger
-        // than the upToFace
+    if (okToCheckLimits && uptofaceUnlimited.hasSubShape(TopAbs_WIRE)) {
+        TopoDS_Face face = TopoDS::Face(uptofaceUnlimited.getShape());
+        bool removeLimits = false;
         for (auto& sketchface : profile.getSubTopoShapes(TopAbs_FACE)) {
             // Get outermost wire of sketch face
             TopoShape outerWire = sketchface.splitWires();
             BRepProj_Projection proj(TopoDS::Wire(outerWire.getShape()), face, direction);
             if (!proj.More() || !proj.Current().Closed()) {
-                remove_limits = true;
+                removeLimits = true;
                 break;
             }
         }
@@ -4415,55 +4418,54 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
         // It must also be checked that all projected inner wires of the upToFace
         // lie outside the sketch shape. If this is not the case then the sketch
         // shape is not completely covered by the upToFace. See #0003141
-        if (!remove_limits) {
+        if (!removeLimits) {
             std::vector<TopoShape> wires;
-            uptoface.splitWires(&wires);
+            uptofaceUnlimited.splitWires(&wires);
             for (auto& w : wires) {
                 BRepProj_Projection proj(TopoDS::Wire(w.getShape()),
                                          profile.getShape(),
                                          -direction);
                 if (proj.More()) {
-                    remove_limits = true;
+                    removeLimits = true;
                     break;
                 }
             }
         }
 
-        if (remove_limits) {
-            // Note: Using an unlimited face every time gives unnecessary failures for concave
-            // faces
+        if (removeLimits) {
             TopLoc_Location loc = face.Location();
             BRepAdaptor_Surface adapt(face, Standard_False);
             // use the placement of the adapter, not of the upToFace
             loc = TopLoc_Location(adapt.Trsf());
             BRepBuilderAPI_MakeFace mkFace(adapt.Surface().Surface(), Precision::Confusion());
             if (mkFace.IsDone()) {
-                uptoface.setShape(located(mkFace.Shape(), loc), false);
+                uptofaceUnlimited.setShape(located(mkFace.Shape(), loc), false);
             }
         }
     }
 
-    TopoShape uptofaceCopy = uptoface;
+    // Define a retry function for the loop below
+    TopoShape uptofaceSave(uptofaceUnlimited);
     bool checkBase = false;
     auto retry = [&]() {
-        if (!uptoface.isSame(_uptoface)) {
+        if (!uptofaceUnlimited.isSame(uptofaceRestricted)) {
             // retry using the original up to face in case unnecessary failure
             // due to removing the limits
-            uptoface = _uptoface;
+            uptofaceUnlimited = uptofaceRestricted;
             return true;
         }
-        if ((!_base.isNull() && base.isSame(_base)) || (_base.isNull() && base.isSame(profile))) {
+        if ((!base.isNull() && baseCopy.isSame(base)) || (base.isNull() && baseCopy.isSame(profile))) {
             // It is unclear under exactly what condition extrude up to face
             // can fail. Either the support face or the up to face must be part
             // of the base, or maybe some thing else.
             //
             // To deal with it, we retry again by disregard the supplied base,
             // and use up to face to extrude our own base. Later on, use the
-            // supplied base (i.e. _base) to calculate the final shape if the
+            // supplied base (i.e. base) to calculate the final shape if the
             // mode is FuseWithBase or CutWithBase.
             checkBase = true;
-            uptoface = uptofaceCopy;
-            base.makeElementPrism(_uptoface, direction);
+            uptofaceUnlimited = uptofaceSave;
+            baseCopy.makeElementPrism(uptofaceRestricted, direction);
             return true;
         }
         return false;
@@ -4473,7 +4475,7 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
     TopoShape result;
     for (;;) {
         try {
-            result = base;
+            result = baseCopy;
 
             // We do not rely on BRepFeat_MakePrism to perform fuse or cut for
             // us because of its poor support of shape history.
@@ -4513,13 +4515,13 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
                                 Standard_False);
                 mode = PrismMode::FuseWithBase;
 
-                PrismMaker.Perform(uptoface.getShape());
+                PrismMaker.Perform(uptofaceUnlimited.getShape());
 
                 if (!PrismMaker.IsDone() || PrismMaker.Shape().IsNull()) {
                     FC_THROWM(Base::CADKernelError, "BRepFeat_MakePrism: extrusion failed");
                 }
 
-                result.makeElementShape(PrismMaker, srcShapes, uptoface, op);
+                result.makeElementShape(PrismMaker, srcShapes, uptofaceUnlimited, op);
             }
             break;
         }
@@ -4535,12 +4537,12 @@ TopoShape& TopoShape::makeElementPrismUntil(const TopoShape& _base,
         }
     }
 
-    if (!_base.isNull() && Mode != PrismMode::None) {
+    if (!base.isNull() && Mode != PrismMode::None) {
         if (Mode == PrismMode::FuseWithBase) {
-            result.makeElementFuse({_base, result});
+            result.makeElementFuse({base, result});
         }
         else {
-            result.makeElementCut({_base, result});
+            result.makeElementCut({base, result});
         }
     }
 
