@@ -5245,7 +5245,7 @@ CmdSketcherConstrainDistanceX::CmdSketcherConstrainDistanceX()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Horizontal Dimension");
-    sToolTipText = QT_TR_NOOP("Constrains the horizontal distance between two points, or from a point to the origin if one is selected");
+    sToolTipText = QT_TR_NOOP("Constrains the horizontal distance between two points, or from a point to the origin if only one is selected");
     sWhatsThis = "Sketcher_ConstrainDistanceX";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_HorizontalDistance";
@@ -8854,7 +8854,7 @@ CmdSketcherConstrainAngle::CmdSketcherConstrainAngle()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Angle Dimension");
-    sToolTipText = QT_TR_NOOP("Constrains the angle of the selected elements");
+    sToolTipText = QT_TR_NOOP("Constrains the angle between two straight lines or between one line and the X-axis of the sketch if only one is selected");
     sWhatsThis = "Sketcher_ConstrainAngle";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_InternalAngle";

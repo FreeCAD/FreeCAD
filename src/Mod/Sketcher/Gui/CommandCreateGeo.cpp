@@ -1523,7 +1523,7 @@ CmdSketcherCreateFillet::CmdSketcherCreateFillet()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Fillet");
-    sToolTipText = QT_TR_NOOP("Creates a fillet between 2 selected lines or 1 coincident point");
+    sToolTipText = QT_TR_NOOP("Creates a fillet between 2 selected lines or at coincident points");
     sWhatsThis = "Sketcher_CreateFillet";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateFillet";
@@ -1554,7 +1554,7 @@ CmdSketcherCreateChamfer::CmdSketcherCreateChamfer()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Chamfer");
-    sToolTipText = QT_TR_NOOP("Creates a chamfer between 2 selected lines or 1 coincident point");
+    sToolTipText = QT_TR_NOOP("Creates a chamfer between 2 selected lines or at coincident points");
     sWhatsThis = "Sketcher_CreateChamfer";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateChamfer";
