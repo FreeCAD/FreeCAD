@@ -13,6 +13,163 @@ import ArchSql
 from bimtests import TestArchBase
 import Draft
 
+def create_test_model(document):
+    """
+    Creates a complete, standard BIM model in the active document.
+
+    The model includes a site, building, levels, walls, openings (doors and
+    windows), spaces, structural elements (column, beam, slab), and a roof.
+    It also adds a non-BIM part and a custom property for comprehensive testing.
+    """
+    doc = document
+    if not doc:
+        FreeCAD.Console.PrintError("Error: No active document found. Please create a new document first.\n")
+        return
+
+    # --- Configuration ---
+    # Define the core dimensions of the building to make the model parametric.
+    building_length = 4000.0
+    building_width = 3200.0
+    ground_floor_height = 3200.0
+    interior_wall_height = 3000.0
+    slab_thickness = 200.0
+    roof_overhang = 200.0
+
+    # --- 1. BIM Hierarchy (Site, Building, Levels) ---
+    site = Arch.makeSite(name="Main Site")
+    building = Arch.makeBuilding(name="Main Building")
+    site.addObject(building)
+
+    level_0 = Arch.makeFloor(name="Ground Floor")
+    level_1 = Arch.makeFloor(name="Upper Floor")
+    level_1.Placement.Base.z = ground_floor_height
+    building.addObject(level_0)
+    building.addObject(level_1)
+
+    # --- 2. Ground Floor Walls ---
+    p1 = FreeCAD.Vector(0, 0, 0)
+    p2 = FreeCAD.Vector(building_length, 0, 0)
+    p3 = FreeCAD.Vector(building_length, building_width, 0)
+    p4 = FreeCAD.Vector(0, building_width, 0)
+    exterior_wire = Draft.makeWire([p1, p2, p3, p4], closed=True)
+    exterior_wall = Arch.makeWall(exterior_wire, name="Exterior Wall", height=ground_floor_height)
+    level_0.addObject(exterior_wall)
+
+    p5 = FreeCAD.Vector(building_length / 2, 0, 0)
+    p6 = FreeCAD.Vector(building_length / 2, building_width, 0)
+    interior_wire = Draft.makeWire([p5, p6])
+    interior_wall = Arch.makeWall(interior_wire, name="Interior Partition", height=interior_wall_height)
+    interior_wall.Width = 100.0
+    level_0.addObject(interior_wall)
+
+    doc.recompute()
+
+    # --- 3. Openings (Doors and Windows) ---
+    door = Arch.makeWindowPreset(
+        "Simple door", width=900, height=2100,
+        h1=50, h2=50, h3=50, w1=100, w2=40, o1=0, o2=0
+    )
+    # Rotate 90 degrees around X-axis to place vertically in the front wall.
+    door.Placement = FreeCAD.Placement(FreeCAD.Vector(800, 0, 0), FreeCAD.Rotation(FreeCAD.Vector(1,0,0), 90))
+    door.Label = "Front Door"
+    door.Hosts = [exterior_wall]
+
+    window = Arch.makeWindowPreset(
+        "Open 1-pane", width=1500, height=1200,
+        h1=50, h2=50, h3=50, w1=100, w2=50, o1=0, o2=50
+    )
+    # Rotate 270 degrees around Y-axis to face inward on the right-hand wall.
+    window.Placement = FreeCAD.Placement(FreeCAD.Vector(building_length, building_width / 2, 900), FreeCAD.Rotation(FreeCAD.Vector(0,1,0), 270))
+    window.Label = "Living Room Window"
+    window.Hosts = [exterior_wall]
+
+    doc.recompute()
+
+    # --- 4. Spaces (from Volumetric Shapes) ---
+    # Define spaces using helper volumes for robustness.
+    office_box = doc.addObject("Part::Box", "OfficeVolume")
+    office_box.Length = building_length / 2
+    office_box.Width = building_width
+    office_box.Height = interior_wall_height
+    #office_box.ViewObject.Visibility = False
+    room1_space = Arch.makeSpace(office_box, name="Office Space")
+    level_0.addObject(room1_space)
+
+    living_box = doc.addObject("Part::Box", "LivingVolume")
+    living_box.Length = building_length / 2
+    living_box.Width = building_width
+    living_box.Height = interior_wall_height
+    living_box.Placement.Base = FreeCAD.Vector(building_length / 2, 0, 0)
+    #living_box.ViewObject.Visibility = False
+    room2_space = Arch.makeSpace(living_box, name="Living Space")
+    level_0.addObject(room2_space)
+
+    doc.recompute()
+
+    # --- 5. Structural Elements ---
+    column = Arch.makeStructure(length=200, width=200, height=interior_wall_height, name="Main Column")
+    column.IfcType = "Column"
+    column.Placement.Base = FreeCAD.Vector((building_length / 2) - 100, (building_width / 2) - 100, 0)
+    level_0.addObject(column)
+
+    beam = Arch.makeStructure(length=building_length, width=150, height=300, name="Main Beam")
+    beam.IfcType = "Beam"
+    beam.Placement = FreeCAD.Placement(FreeCAD.Vector(0, building_width / 2, interior_wall_height), FreeCAD.Rotation())
+    level_0.addObject(beam)
+
+    # --- 6. Upper Floor Slab and Roof ---
+    slab_profile = Draft.makeRectangle(length=building_length, height=building_width, placement=FreeCAD.Placement(FreeCAD.Vector(0,0,interior_wall_height), FreeCAD.Rotation()))
+    slab = Arch.makeStructure(slab_profile, height=slab_thickness, name="Floor Slab")
+    slab.IfcType = "Slab"
+    level_1.addObject(slab)
+
+    roof_profile = Draft.makeRectangle(
+        length=building_length + (2 * roof_overhang),
+        height=building_width + (2 * roof_overhang),
+        placement=FreeCAD.Placement(FreeCAD.Vector(-roof_overhang, -roof_overhang, ground_floor_height), FreeCAD.Rotation())
+    )
+    # Recompute is required for the profile's geometry to be available to makeRoof.
+    doc.recompute()
+
+    # The 'run' must be large enough for roof planes to intersect.
+    # Use .Value to extract the unitless number for calculations.
+    safe_run = (max(roof_profile.Length.Value, roof_profile.Height.Value) / 2) + 100
+
+    roof = Arch.makeRoof(roof_profile,
+                         angles=[30.0] * 4,
+                         run=[safe_run] * 4,
+                         name="Main Roof")
+    level_1.addObject(roof)
+
+    # --- 7. Non-BIM Object ---
+    generic_box = doc.addObject("Part::Box", "Generic Box")
+    generic_box.Placement.Base = FreeCAD.Vector(building_length + 1000, building_width + 1000, 0)
+
+    # --- 8. Custom Dynamic Property ---
+    exterior_wall.addProperty("App::PropertyString", "FireRating", "BIM")
+    exterior_wall.FireRating = "60 minutes"
+
+    # --- Final Step: Recompute and Fit View ---
+    doc.recompute()
+
+    # Create and return a dictionary of the direct object references.
+    model_objects = {
+        "site": site,
+        "building": building,
+        "ground_floor": level_0,
+        "upper_floor": level_1,
+        "exterior_wall": exterior_wall,
+        "interior_wall": interior_wall,
+        "front_door": door,
+        "living_window": window,
+        "office_space": room1_space,
+        "living_space": room2_space,
+        "column": column,
+        "slab": slab,
+    }
+    return model_objects
+
+
 class TestArchReport(TestArchBase.TestArchBase):
 
     def setUp(self):
@@ -1217,3 +1374,70 @@ class TestArchReport(TestArchBase.TestArchBase):
             found_labels = sorted([row[0] for row in data])
             expected_labels = sorted([space.Label, wall.Label, generic_group.Label]) # The group's logical grandparent is also the building.
             self.assertListEqual(found_labels, expected_labels, "Query did not find all objects with the correct logical grandparent.")
+
+    def test_ppa_and_query_permutations(self):
+        """
+        Runs a suite of integration tests against a complex model to
+        validate Pythonic Property Access and other query features.
+        """
+        # --- 1. ARRANGE: Create a complex model ---
+        # Build the model using the generator function
+        model = create_test_model(self.document)
+
+        # Get references to key objects from the returned dictionary
+        building = model["building"]
+        ground_floor = model["ground_floor"]
+        upper_floor = model["upper_floor"]
+        front_door = model["front_door"]
+        living_window = model["living_window"]
+        office_space = model["office_space"]
+        living_space = model["living_space"]
+
+        # --- 2. ACT & ASSERT: Run query permutations ---
+
+        # Sub-Test A: Chained PARENT in SELECT clause
+        with self.subTest(description="PPA in SELECT clause"):
+            query = f"SELECT PARENT(*).PARENT(*).Label FROM document WHERE Label = '{front_door.Label}'"
+            _, data = Arch.select(query)
+            self.assertEqual(data[0][0], ground_floor.Label, "Grandparent of Front Door should be Ground Floor")
+
+        # Sub-Test B: Chained PARENT in WHERE clause
+        with self.subTest(description="PPA in WHERE clause"):
+            query = f"SELECT Label FROM document WHERE PARENT(*).PARENT(*).Label = '{ground_floor.Label}'"
+            _, data = Arch.select(query)
+            found_labels = sorted([row[0] for row in data])
+            expected_labels = sorted([front_door.Label, living_window.Label])
+            self.assertListEqual(found_labels, expected_labels, "Should find the Door and Window on the Ground Floor")
+
+        # Sub-Test C: Chained PARENT in ORDER BY clause
+        with self.subTest(description="PPA in ORDER BY clause"):
+            # Create a proper 3D solid volume for the new space.
+            upper_box = self.document.addObject("Part::Box", "UpperSpaceVolume")
+            upper_box.Length, upper_box.Width, upper_box.Height = 1000.0, 1000.0, 3000.0
+
+            upper_space = Arch.makeSpace(baseobj=upper_box, name="Upper Space")
+            upper_floor.addObject(upper_space)
+            self.document.recompute()
+
+            # The query now selects both the space's label and its parent's label.
+            # This is the robust way to verify the sort order.
+            query = f"SELECT Label, PARENT(*).Label AS ParentLabel FROM document WHERE IfcType = 'Space' ORDER BY ParentLabel DESC"
+            _, data = Arch.select(query)
+
+            # data is now a list of lists, e.g., [['Upper Space', 'Upper Floor'], ['Office Space', 'Ground Floor'], ...]
+
+            # The assertion now directly checks the parent label returned by the query.
+            # This is self-contained and does not require error-prone lookups.
+            parent_label_of_first_result = data[0][1]
+            self.assertEqual(parent_label_of_first_result, upper_floor.Label, "The first item in the sorted list should belong to the Upper Floor.")
+
+        # Sub-Test D: Accessing a sub-property of a parent
+        with self.subTest(description="PPA with sub-property access"):
+            # The Floor's placement Z is 0.0
+            query = f"SELECT Label FROM document WHERE PARENT(*).Placement.Base.z = 0.0 AND IfcType = 'Space'"
+            _, data = Arch.select(query)
+            found_labels = sorted([row[0] for row in data])
+            expected_labels = sorted([office_space.Label, living_space.Label])
+            self.assertListEqual(found_labels, expected_labels, "Should find spaces on the ground floor by parent's placement")
+
+
