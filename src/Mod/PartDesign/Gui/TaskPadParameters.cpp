@@ -69,8 +69,8 @@ void TaskPadParameters::translateModeList(QComboBox* box, int index)
 {
     box->clear();
     box->addItem(tr("Dimension"));
-    box->addItem(tr("To last"));
     box->addItem(tr("To first"));
+    box->addItem(tr("To last"));
     box->addItem(tr("Up to face"));
     box->addItem(tr("Up to shape"));
     box->setCurrentIndex(index);
