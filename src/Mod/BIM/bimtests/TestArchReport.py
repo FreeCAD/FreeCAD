@@ -1680,3 +1680,205 @@ class TestArchReport(TestArchBase.TestArchBase):
         # message explaining the correct syntax.
         with self.assertRaisesRegex(ArchSql.SqlEngineError, "ORDER BY expressions are not supported directly"):
             Arch.select(query)
+
+    def test_core_engine_enhancements_for_pipeline(self):
+        """
+        Tests the Stage 1 enhancements to the internal SQL engine.
+        This test validates both regression (ensuring old functions still work)
+        and the new ability to query against a pre-filtered list of objects.
+        """
+        # This test needs to access the internal _run_query function.
+        try:
+            from ArchSql import _run_query
+        except ImportError:
+            self.fail("Failed to import internal function ArchSql._run_query for testing.")
+
+        # --- 1. ARRANGE: Create a specific subset of objects for the test ---
+        # The main test setup already provides a diverse set of objects.
+        # We will create a specific list to act as our pipeline's source data.
+        pipeline_source_objects = [self.wall_ext, self.wall_int, self.window]
+        pipeline_source_labels = sorted([o.Label for o in pipeline_source_objects])
+        self.assertEqual(len(pipeline_source_objects), 3, "Pre-condition failed: Source object list should have 3 items.")
+
+        # --- 2. ACT & ASSERT (REGRESSION TEST) ---
+        # First, prove that the existing public APIs still work perfectly.
+        # This test implicitly calls the original code path of _run_query where
+        # source_objects is None.
+        with self.subTest(description="Regression test for Arch.select"):
+            _, results_data = Arch.select('SELECT Label FROM document WHERE IfcType = "Wall"')
+            found_labels = sorted([row[0] for row in results_data])
+            self.assertListEqual(found_labels, sorted([self.wall_ext.Label, self.wall_int.Label]))
+
+        with self.subTest(description="Regression test for Arch.count"):
+            count, error = Arch.count('SELECT * FROM document WHERE IfcType = "Wall"')
+            self.assertIsNone(error)
+            self.assertEqual(count, 2)
+
+        # --- 3. ACT & ASSERT (NEW FUNCTIONALITY TEST) ---
+        # Now, test the new core functionality by calling the enhanced _run_query directly.
+        with self.subTest(description="Test _run_query with a source_objects list"):
+            # This query selects all objects (*) but should only run on our source list.
+            query = "SELECT * FROM document"
+
+            # Execute the query, passing our specific list as the source.
+            _, data_rows, resulting_objects = _run_query(
+                query,
+                mode='full_data',
+                source_objects=pipeline_source_objects
+            )
+
+            # Assertions for the new behavior:
+            # a) The number of data rows should match the size of our source list.
+            self.assertEqual(len(data_rows), 3, "_run_query did not return the correct number of rows for the provided source.")
+
+            # b) The content of the data should match the objects from our source list.
+            found_labels = sorted([row[0] for row in data_rows])
+            self.assertListEqual(found_labels, pipeline_source_labels, "The data returned does not match the source objects.")
+
+            # c) The new third return value, `resulting_objects`, should contain the correct FreeCAD objects.
+            self.assertEqual(len(resulting_objects), 3, "The returned object list has the wrong size.")
+            self.assertIsInstance(resulting_objects[0], FreeCAD.DocumentObject, "The resulting_objects list should contain DocumentObject instances.")
+            resulting_object_labels = sorted([o.Label for o in resulting_objects])
+            self.assertListEqual(resulting_object_labels, pipeline_source_labels, "The list of resulting objects is incorrect.")
+
+        with self.subTest(description="Test _run_query with filtering on a source_objects list"):
+            # This query applies a WHERE clause to the pre-filtered source list.
+            query = "SELECT Label FROM document WHERE IfcType = 'Wall'"
+
+            _, data_rows, resulting_objects = _run_query(
+                query,
+                mode='full_data',
+                source_objects=pipeline_source_objects
+            )
+
+            # Of the 3 source objects, only the 2 walls should be returned.
+            self.assertEqual(len(data_rows), 2, "Filtering on the source object list failed.")
+            found_labels = sorted([row[0] for row in data_rows])
+            expected_labels = sorted([self.wall_ext.Label, self.wall_int.Label])
+            self.assertListEqual(found_labels, expected_labels, "The data returned after filtering the source is incorrect.")
+            self.assertEqual(len(resulting_objects), 2, "The object list returned after filtering the source is incorrect.")
+
+    def test_execute_pipeline_orchestrator(self):
+        """
+        Tests the new `execute_pipeline` orchestrator function in ArchSql.
+        """
+        # We need the orchestrator function and the data model class.
+        from ArchSql import execute_pipeline
+        from ArchReport import ReportStatement
+
+        # --- ARRANGE: Create a set of statements for various scenarios ---
+
+        # Statement 1: Get all Wall objects. (Result: 2 objects)
+        stmt1 = ReportStatement(
+            query_string="SELECT * FROM document WHERE IfcType = 'Wall'",
+            is_pipelined=False
+        )
+
+        # Statement 2: From the walls, get the one with "Exterior" in its name. (Result: 1 object)
+        stmt2 = ReportStatement(
+            query_string="SELECT * FROM document WHERE Label LIKE '%Exterior%'",
+            is_pipelined=True
+        )
+
+        # Statement 3: A standalone query to get the Column object. (Result: 1 object)
+        stmt3 = ReportStatement(
+            query_string="SELECT * FROM document WHERE IfcType = 'Column'",
+            is_pipelined=False
+        )
+
+        # Statement 4: A pipelined query that will run on an empty set from a failing previous step.
+        stmt4_failing = ReportStatement(
+            query_string="SELECT * FROM document WHERE IfcType = 'NonExistentType'",
+            is_pipelined=False
+        )
+        stmt5_piped_from_fail = ReportStatement(
+            query_string="SELECT * FROM document",
+            is_pipelined=True
+        )
+
+        # --- ACT & ASSERT ---
+
+        with self.subTest(description="Test a simple two-step pipeline"):
+            statements = [stmt1, stmt2]
+            results_generator = execute_pipeline(statements)
+
+            # The generator should yield exactly one result: the final one from stmt2.
+            output_list = list(results_generator)
+            self.assertEqual(len(output_list), 1, "A simple pipeline should only yield one final result.")
+
+            # Check the content of the single yielded result.
+            result_stmt, result_headers, result_data = output_list[0]
+            self.assertIs(result_stmt, stmt2, "The yielded statement should be the last one in the chain.")
+            self.assertEqual(len(result_data), 1, "The final pipeline result should contain one row.")
+            self.assertEqual(result_data[0][0], self.wall_ext.Label, "The final result is not the expected 'Exterior Wall'.")
+
+        with self.subTest(description="Test a mixed report with pipeline and standalone"):
+            statements = [stmt1, stmt2, stmt3]
+            results_generator = execute_pipeline(statements)
+
+            # The generator should yield two results: the end of the first pipeline (stmt2)
+            # and the standalone statement (stmt3).
+            output_list = list(results_generator)
+            self.assertEqual(len(output_list), 2, "A mixed report should yield two results.")
+
+            # Check the first result (from the pipeline)
+            self.assertEqual(output_list[0][2][0][0], self.wall_ext.Label)
+            # Check the second result (from the standalone query)
+            self.assertEqual(output_list[1][2][0][0], self.column.Label)
+
+        with self.subTest(description="Test a pipeline that runs dry"):
+            statements = [stmt4_failing, stmt5_piped_from_fail]
+            results_generator = execute_pipeline(statements)
+            output_list = list(results_generator)
+
+            # The generator should yield only one result: the final, empty output
+            # of the pipeline. The intermediate step's result should be suppressed.
+            self.assertEqual(len(output_list), 1)
+
+            # Check that the single yielded result has zero data rows.
+            result_stmt, _, result_data = output_list[0]
+            self.assertIs(result_stmt, stmt5_piped_from_fail)
+            self.assertEqual(len(result_data), 0, "The final pipelined statement should yield 0 rows.")
+
+    def test_public_api_for_pipelines(self):
+        """
+        Tests the new and enhanced public API functions for Stage 3.
+        """
+        from ArchReport import ReportStatement
+
+        # --- Test 1: Enhanced Arch.count() with source_objects ---
+        with self.subTest(description="Test Arch.count with a source_objects list"):
+            # Create a source list containing only the two wall objects.
+            source_list = [self.wall_ext, self.wall_int]
+
+            # This query would normally find 1 object (the column) in the full document.
+            query = "SELECT * FROM document WHERE IfcType = 'Column'"
+
+            # Run the count against our pre-filtered source list.
+            count, error = Arch.count(query, source_objects=source_list)
+
+            self.assertIsNone(error)
+            # The count should be 0, because there are no 'Column' objects in our source_list.
+            self.assertEqual(count, 0, "Arch.count failed to respect the source_objects list.")
+
+        # --- Test 2: New Arch.selectObjectsFromPipeline() ---
+        with self.subTest(description="Test Arch.selectObjectsFromPipeline"):
+            # Define a simple two-step pipeline.
+            stmt1 = ReportStatement(
+                query_string="SELECT * FROM document WHERE IfcType = 'Wall'",
+                is_pipelined=False
+            )
+            stmt2 = ReportStatement(
+                query_string="SELECT * FROM document WHERE Label LIKE '%Exterior%'",
+                is_pipelined=True
+            )
+
+            # Execute the pipeline via the new high-level API.
+            resulting_objects = Arch.selectObjectsFromPipeline([stmt1, stmt2])
+
+            # Assert that the result is correct.
+            self.assertIsInstance(resulting_objects, list)
+            self.assertEqual(len(resulting_objects), 1, "Pipeline should result in one final object.")
+            self.assertIsInstance(resulting_objects[0], FreeCAD.DocumentObject)
+            self.assertEqual(resulting_objects[0].Name, self.wall_ext.Name, "The final object from the pipeline is incorrect.")
+

@@ -244,13 +244,15 @@ class ReportStatement:
 
     def __init__(self, description="", query_string="",
                  use_description_as_header=False, include_column_names=True,
-                 add_empty_row_after=False, print_results_in_bold=False):
+                 add_empty_row_after=False, print_results_in_bold=False,
+                 is_pipelined=False):
         self.description = description
         self.query_string = query_string
         self.use_description_as_header = use_description_as_header
         self.include_column_names = include_column_names
         self.add_empty_row_after = add_empty_row_after
         self.print_results_in_bold = print_results_in_bold
+        self.is_pipelined = is_pipelined
 
         # Internal validation state (transient, not serialized)
         self._validation_status = "Ready" # e.g., "OK", "0_RESULTS", "ERROR", "INCOMPLETE"
@@ -266,6 +268,7 @@ class ReportStatement:
             'include_column_names': self.include_column_names,
             'add_empty_row_after': self.add_empty_row_after,
             'print_results_in_bold': self.print_results_in_bold,
+            'is_pipelined': self.is_pipelined,
         }
 
     def loads(self, state):
@@ -276,6 +279,7 @@ class ReportStatement:
         self.include_column_names = state.get('include_column_names', True)
         self.add_empty_row_after = state.get('add_empty_row_after', False)
         self.print_results_in_bold = state.get('print_results_in_bold', False)
+        self.is_pipelined = state.get('is_pipelined', False)
 
         # Validation state is transient and re-calculated on UI load/edit
         self._validation_status = "Ready"

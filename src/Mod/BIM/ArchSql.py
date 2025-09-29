@@ -130,6 +130,61 @@ def _generate_friendly_token_names(parser):
     return friendly_names
 
 
+def _map_results_to_objects(headers, data_rows):
+    """
+    Maps the raw data rows from a query result back to FreeCAD DocumentObjects.
+
+    It uses a 'Name' or 'Label' column in the results to perform the lookup.
+
+    Parameters
+    ----------
+    headers : list of str
+        The list of column headers from the query result.
+    data_rows : list of list
+        The list of data rows from the query result.
+
+    Returns
+    -------
+    list of FreeCAD.DocumentObject
+        A list of unique FreeCAD DocumentObject instances that correspond to the
+        query results. Returns an empty list if no identifiable column is
+        found or if no objects match.
+    """
+    if not data_rows:
+        return []
+
+    # Build a lookup map for fast access to objects by their unique Name.
+    objects_by_name = {o.Name: o for o in FreeCAD.ActiveDocument.Objects}
+    objects_by_label = {}  # Lazy-loaded if needed
+
+    # Find the index of the column that contains the object identifier.
+    # Prefer 'Name' as it is guaranteed to be unique. Fallback to 'Label'.
+    if 'Name' in headers:
+        id_idx = headers.index('Name')
+        lookup_dict = objects_by_name
+    elif 'Label' in headers:
+        id_idx = headers.index('Label')
+        objects_by_label = {o.Label: o for o in FreeCAD.ActiveDocument.Objects}
+        lookup_dict = objects_by_label
+    elif SELECT_STAR_HEADER in headers:  # Handle 'SELECT *' case
+        id_idx = headers.index(SELECT_STAR_HEADER)
+        objects_by_label = {o.Label: o for o in FreeCAD.ActiveDocument.Objects}
+        lookup_dict = objects_by_label
+    else:
+        # If no identifiable column, we cannot map back to objects.
+        # This can happen for queries like "SELECT 1 + 1".
+        return []
+
+    # Map the identifiers from the query results back to the actual objects.
+    found_objects = []
+    for row in data_rows:
+        identifier = row[id_idx]
+        obj = lookup_dict.get(identifier)
+        if obj and obj not in found_objects:  # Avoid duplicates
+            found_objects.append(obj)
+
+    return found_objects
+
 # --- Logical Classes for the SQL Statement Object Model ---
 
 class FunctionRegistry:
@@ -401,7 +456,7 @@ class FromFunctionBase:
         Helper to execute the subquery and resolve the resulting rows back
         into a list of FreeCAD document objects.
         """
-        headers, rows = self.substatement.execute()
+        headers, rows = self.substatement.execute(FreeCAD.ActiveDocument.Objects)
         if not rows:
             return []
 
@@ -572,14 +627,14 @@ class SelectStatement:
         self.group_by_clause = group_by_clause
         self.order_by_clause = order_by_clause
 
-    def execute(self):
+    def execute(self, all_objects):
         # 1. Phase 1: Get filtered and grouped object data.
-        grouped_data = self._get_grouped_data()
+        grouped_data = self._get_grouped_data(all_objects)
         # 2. Determine the column headers from the parsed statement
         headers = [display_name for _, display_name in self.columns_info]
 
         # 3. Phase 2: Process the SELECT columns to get the final data rows.
-        results_data = self._process_select_columns(grouped_data)
+        results_data = self._process_select_columns(grouped_data, all_objects)
 
         # 4. Perform final sorting if an ORDER BY clause was provided.
         if self.order_by_clause:
@@ -846,22 +901,21 @@ class SelectStatement:
 
         return results_data
 
-    def get_row_count(self):
+    def get_row_count(self, all_objects):
         """
         Calculates only the number of rows the query will produce, performing
         the minimal amount of work necessary. This is used by Arch.count()
         for a fast UI preview.
         """
-        grouped_data = self._get_grouped_data()
+        grouped_data = self._get_grouped_data(all_objects)
         return len(grouped_data)
 
-    def _get_grouped_data(self):
+    def _get_grouped_data(self, all_objects):
         """
         Performs Phase 1 of execution: FROM, WHERE, and GROUP BY.
         This is the fast part of the query that only deals with object lists.
         Returns a list of "groups", where each group is a list of objects.
         """
-        all_objects = self.from_clause.get_objects()
         filtered_objects = [o for o in all_objects if self.where_clause is None or self.where_clause.matches(o)]
 
         if not self.group_by_clause:
@@ -879,7 +933,7 @@ class SelectStatement:
                 groups[key].append(obj)
             return list(groups.values())
 
-    def _process_select_columns(self, grouped_data):
+    def _process_select_columns(self, grouped_data, all_objects_for_context):
         """
         Performs Phase 2 of execution: processes the SELECT columns.
         This is the slow part of the query that does data extraction,
@@ -899,8 +953,10 @@ class SelectStatement:
         if is_single_row_aggregate:
             # A query with aggregates but no GROUP BY always returns one summary row
             # based on all objects that passed the filter.
+
             all_filtered_objects = [obj for group in grouped_data for obj in group]
             row = self._calculate_row_values(all_filtered_objects)
+
             return [row]
 
         # Standard processing: one output row for each group.
@@ -1510,7 +1566,7 @@ except Exception as e:
 
 # --- Internal API Functions ---
 
-def _run_query(query_string: str, mode: str):
+def _run_query(query_string: str, mode: str, source_objects: Optional[List] = None):
     """
     The single, internal entry point for the SQL engine.
 
@@ -1526,6 +1582,9 @@ def _run_query(query_string: str, mode: str):
         The raw SQL query string to be processed.
     mode : str
         The execution mode, either 'full_data' or 'count_only'.
+    source_objects : list of FreeCAD.DocumentObject, optional
+        If provided, the query will run on this list of objects instead of the
+        entire document. Defaults to None.
 
     Returns
     -------
@@ -1572,31 +1631,114 @@ def _run_query(query_string: str, mode: str):
 
     statement = _parse_and_transform(query_string)
 
+    if source_objects is not None:
+        all_objects = source_objects
+    else:
+        all_objects = statement.from_clause.get_objects()
+
+
     if mode == 'count_only':
         # Phase 1: Perform the fast filtering and grouping to get the
         # correct final row count.
-        grouped_data = statement._get_grouped_data()
+        grouped_data = statement._get_grouped_data(all_objects)
         row_count = len(grouped_data)
 
         # If there are no results, the query is valid and simply returns 0 rows.
         if row_count == 0:
-            return 0
+            return 0, [], []
 
         # Phase 2 Validation: Perform a "sample execution" on the first group
         # to validate the SELECT clause and catch any execution-time errors.
         # We only care if it runs without error; the result is discarded.
-        first_group_sample = grouped_data[0]
-        _ = statement._process_select_columns([first_group_sample])
+        # For aggregates without GROUP BY, the "group" is all filtered objects.
+        is_single_row_aggregate = any(isinstance(ex, AggregateFunction) for ex, _ in statement.columns_info) and not statement.group_by_clause
+        if is_single_row_aggregate:
+            sample_group = [obj for group in grouped_data for obj in group]
+        else:
+            sample_group = grouped_data[0]
+
+        # Get headers from the parsed statement object.
+        headers = [display_name for _, display_name in statement.columns_info]
+        # Get data from the process method, which returns a single list of rows.
+        data = statement._process_select_columns([sample_group], all_objects)
 
         # If the sample execution succeeds, the query is fully valid.
-        return row_count
+        # The resulting_objects are not needed for the count validation itself,
+        # but are returned for API consistency.
+        resulting_objects = _map_results_to_objects(headers, data)
+        return row_count, headers, resulting_objects
     else: # 'full_data'
-        return statement.execute()
+        headers, results_data = statement.execute(all_objects)
+        resulting_objects = _map_results_to_objects(headers, results_data)
+        return headers, results_data, resulting_objects
 
 
 # --- Public API Functions ---
 
-def count(query_string: str) -> Tuple[int, Optional[str]]:
+def execute_pipeline(statements: List['ReportStatement']):
+    """
+    Executes a list of statements, handling chained data flow as a generator.
+
+    This function orchestrates a multi-step query. It yields the results of
+    each standalone statement or the final statement of a contiguous pipeline,
+    allowing the caller to handle presentation.
+
+    Parameters
+    ----------
+    statements : list of ArchReport.ReportStatement
+        A configured list of statements to execute.
+
+    Yields
+    ------
+    tuple
+        A tuple `(statement, headers, data_rows)` for each result block that
+        should be outputted.
+    """
+    pipeline_input_objects = None
+
+    for i, statement in enumerate(statements):
+        # Skip empty queries (user may have a placeholder statement)
+        if not statement.query_string or not statement.query_string.strip():
+            # If this empty statement breaks a chain, reset the pipeline
+            if not statement.is_pipelined:
+                pipeline_input_objects = None
+            continue
+
+        # Determine the data source for the current query
+        source = pipeline_input_objects if statement.is_pipelined else None
+
+        try:
+            headers, data, resulting_objects = _run_query(
+                statement.query_string,
+                mode='full_data',
+                source_objects=source
+            )
+        except (SqlEngineError, BimSqlSyntaxError) as e:
+            # If a step fails, yield an error block and reset the pipeline
+            yield (statement, ["Error"], [[str(e)]])
+            pipeline_input_objects = None
+            continue
+
+        # The output of this query becomes the input for the next one.
+        pipeline_input_objects = resulting_objects
+
+        # If this statement is NOT pipelined, it breaks any previous chain.
+        # Its own output becomes the new potential start for a subsequent chain.
+        if not statement.is_pipelined:
+            pass # The pipeline_input_objects is already correctly set for the next step.
+
+        # Determine if this statement's results should be part of the final output.
+        is_last_statement = (i == len(statements) - 1)
+
+        # A statement's results are yielded UNLESS it is an intermediate step.
+        # An intermediate step is any statement that is immediately followed by a pipelined statement.
+        is_intermediate_step = not is_last_statement and statements[i+1].is_pipelined
+
+        if not is_intermediate_step:
+            yield (statement, headers, data)
+
+
+def count(query_string: str, source_objects: Optional[List] = None) -> Tuple[int, Optional[str]]:
     """
     Executes a query and returns only the count of resulting rows.
 
@@ -1608,6 +1750,9 @@ def count(query_string: str) -> Tuple[int, Optional[str]]:
     ----------
     query_string : str
         The raw SQL query string.
+    source_objects : list of FreeCAD.DocumentObject, optional
+        If provided, the query count will run on this list of objects instead
+        of the entire document. Defaults to None.
 
     Returns
     -------
@@ -1621,7 +1766,7 @@ def count(query_string: str) -> Tuple[int, Optional[str]]:
         return -1, "INCOMPLETE"
 
     try:
-        count_result = _run_query(query_string, mode='count_only')
+        count_result, _, _ = _run_query(query_string, mode='count_only', source_objects=source_objects)
         return count_result, None
     except BimSqlSyntaxError as e:
         if e.is_incomplete:
@@ -1656,8 +1801,7 @@ def select(query_string: str) -> Tuple[List[str], List[List[Any]]]:
     # This is the "unsafe" API. It performs no error handling and lets all
     # exceptions propagate up to the caller, who is responsible for logging
     # or handling them as needed.
-    # The 'select' function always performs a full data query.
-    headers, results_data = _run_query(query_string, mode='full_data')
+    headers, results_data, _ = _run_query(query_string, mode='full_data')
     return headers, results_data
 
 
@@ -1688,39 +1832,7 @@ def selectObjects(query_string: str) -> List['FreeCAD.DocumentObject']:
         # Execute the query using the internal 'select' function.
         headers, data_rows = select(query_string)
 
-        if not data_rows:
-            return []
-
-        # Build a lookup map for fast access to objects by their unique Name.
-        objects_by_name = {o.Name: o for o in FreeCAD.ActiveDocument.Objects}
-        objects_by_label = {} # Lazy-loaded if needed
-
-        # Find the index of the column that contains the object identifier.
-        # Prefer 'Name' as it is guaranteed to be unique. Fallback to 'Label'.
-        if 'Name' in headers:
-            id_idx = headers.index('Name')
-            lookup_dict = objects_by_name
-        elif 'Label' in headers:
-            id_idx = headers.index('Label')
-            objects_by_label = {o.Label: o for o in FreeCAD.ActiveDocument.Objects}
-            lookup_dict = objects_by_label
-        elif SELECT_STAR_HEADER in headers: # Handle 'SELECT *' case
-            id_idx = headers.index(SELECT_STAR_HEADER)
-            objects_by_label = {o.Label: o for o in FreeCAD.ActiveDocument.Objects}
-            lookup_dict = objects_by_label
-        else:
-            FreeCAD.Console.PrintError("Query for selectObjects must return a 'Name' or 'Label' column, or use 'SELECT *'.\n")
-            return []
-
-        # Map the identifiers from the query results back to the actual objects.
-        found_objects = []
-        for row in data_rows:
-            identifier = row[id_idx]
-            obj = lookup_dict.get(identifier)
-            if obj and obj not in found_objects: # Avoid duplicates
-                found_objects.append(obj)
-
-        return found_objects
+        return _map_results_to_objects(headers, data_rows)
 
     except (SqlEngineError, BimSqlSyntaxError) as e:
         # If the query fails, log the error and return an empty list.
