@@ -12,7 +12,6 @@
 
 import FreeCAD
 import re
-from Draft import get_type
 
 if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -32,10 +31,12 @@ __all__ = [
     'select',
     'count',
     'selectObjects',
+    'selectObjectsFromPipeline',
     'getSqlKeywords',
     'getSqlApiDocumentation',
     'BimSqlSyntaxError',
     'SqlEngineError',
+    'ReportStatement',
 ]
 
 # --- Custom Exceptions for the SQL Engine ---
@@ -349,8 +350,9 @@ class TypeFunction(FunctionBase):
 
     def get_value(self, obj):
         # The argument for TYPE is the object itself, represented by '*'.
-        import Draft
-        return Draft.get_type(obj)
+        # Local import to prevent circular dependencies
+        from Draft import get_type
+        return get_type(obj)
 
 
 @register_select_function(
@@ -560,6 +562,7 @@ class ParentFunction(FunctionBase):
         Walks up the document tree from the given on_object to find the first
         architecturally significant parent, transparently skipping generic groups.
         """
+        from Draft import get_type
         current_obj = on_object
 
         # Limit search depth to 20 levels to prevent infinite loops.
@@ -1673,7 +1676,162 @@ def _run_query(query_string: str, mode: str, source_objects: Optional[List] = No
         return headers, results_data, resulting_objects
 
 
+# --- Public API Objects ---
+
+class ReportStatement:
+    """A data model for a single statement within a BIM Report.
+
+    This class encapsulates all the information required to execute and present
+    a single query. It holds the SQL string itself, options for how its
+    results should be formatted in the final spreadsheet, and the crucial flag
+    that controls whether it participates in a pipeline.
+
+    Instances of this class are created and managed by the ReportTaskPanel UI
+    and are passed as a list to the `execute_pipeline` engine function. The
+    class includes methods for serialization to and from a dictionary format,
+    allowing it to be persisted within a FreeCAD document object.
+
+    Parameters
+    ----------
+    description : str, optional
+        A user-defined description for the statement. This is shown in the UI
+        and can optionally be used as a section header in the spreadsheet.
+    query_string : str, optional
+        The SQL query to be executed for this statement.
+    use_description_as_header : bool, optional
+        If True, the `description` will be written as a merged header row
+        before the statement's results in the spreadsheet. Defaults to False.
+    include_column_names : bool, optional
+        If True, the column names from the SQL query (e.g., 'Label', 'Area')
+        will be included as a header row for this statement's results.
+        Defaults to True.
+    add_empty_row_after : bool, optional
+        If True, an empty row will be inserted after this statement's results
+        to provide visual spacing in the report. Defaults to False.
+    print_results_in_bold : bool, optional
+        If True, the data cells for this statement's results will be formatted
+        with a bold font for emphasis. Defaults to False.
+    is_pipelined : bool, optional
+        If True, this statement will use the resulting objects from the
+        previous statement as its data source instead of the entire document.
+        This is the flag that enables pipeline functionality. Defaults to False.
+
+    Attributes
+    ----------
+    _validation_status : str
+        A transient (not saved) string indicating the validation state for the
+        UI (e.g., "OK", "ERROR").
+    _validation_message : str
+        A transient (not saved) user-facing message corresponding to the
+        validation status.
+    _validation_count : int
+        A transient (not saved) count of objects found during validation.
+    """
+    def __init__(self, description="", query_string="",
+                 use_description_as_header=False, include_column_names=True,
+                 add_empty_row_after=False, print_results_in_bold=False,
+                 is_pipelined=False):
+        self.description = description
+        self.query_string = query_string
+        self.use_description_as_header = use_description_as_header
+        self.include_column_names = include_column_names
+        self.add_empty_row_after = add_empty_row_after
+        self.print_results_in_bold = print_results_in_bold
+        self.is_pipelined = is_pipelined
+
+        # Internal validation state (transient, not serialized)
+        self._validation_status = "Ready" # e.g., "OK", "0_RESULTS", "ERROR", "INCOMPLETE"
+        self._validation_message = translate("Arch", "Ready") # e.g., "Found 5 objects.", "Syntax Error: ..."
+        self._validation_count = 0
+
+    def dumps(self):
+        """Returns the internal state for serialization."""
+        return {
+            'description': self.description,
+            'query_string': self.query_string,
+            'use_description_as_header': self.use_description_as_header,
+            'include_column_names': self.include_column_names,
+            'add_empty_row_after': self.add_empty_row_after,
+            'print_results_in_bold': self.print_results_in_bold,
+            'is_pipelined': self.is_pipelined,
+        }
+
+    def loads(self, state):
+        """Restores the internal state from serialized data."""
+        self.description = state.get('description', '')
+        self.query_string = state.get('query_string', '')
+        self.use_description_as_header = state.get('use_description_as_header', False)
+        self.include_column_names = state.get('include_column_names', True)
+        self.add_empty_row_after = state.get('add_empty_row_after', False)
+        self.print_results_in_bold = state.get('print_results_in_bold', False)
+        self.is_pipelined = state.get('is_pipelined', False)
+
+        # Validation state is transient and re-calculated on UI load/edit
+        self._validation_status = "Ready"
+        self._validation_message = translate("Arch", "Ready")
+        self._validation_count = 0
+
+    def validate_and_update_status(self):
+        """Runs validation for this statement's query and updates its internal status."""
+        if not self.query_string.strip():
+            self._validation_status = "OK" # Empty query is valid, no error
+            self._validation_message = translate("Arch", "Ready")
+            self._validation_count = 0
+            return
+
+        count, error = count(self.query_string)
+
+        if error == "INCOMPLETE":
+            self._validation_status = "INCOMPLETE"
+            self._validation_message = translate("Arch", "Typing...")
+            self._validation_count = -1
+        elif error:
+            self._validation_status = "ERROR"
+            self._validation_message = error
+            self._validation_count = -1
+        elif count == 0:
+            self._validation_status = "0_RESULTS"
+            self._validation_message = translate("Arch", "Query is valid, but found 0 objects.")
+            self._validation_count = 0
+        else:
+            self._validation_status = "OK"
+            self._validation_message = f"{translate('Arch', 'Found')} {count} {translate('Arch', 'objects')}."
+            self._validation_count = count
+
 # --- Public API Functions ---
+
+def selectObjectsFromPipeline(statements: list) -> list:
+    """
+    Executes a multi-statement pipeline and returns a final list of FreeCAD objects.
+
+    This is a high-level convenience function for scripting complex, multi-step
+    selections that are too difficult or cumbersome for a single SQL query.
+
+    Parameters
+    ----------
+    statements : list of ArchReport.ReportStatement
+        A configured list of statements defining the pipeline.
+
+    Returns
+    -------
+    list of FreeCAD.DocumentObject
+        A list of the final FreeCAD.DocumentObject instances that result from
+        the pipeline.
+    """
+    # 1. The pipeline orchestrator is a generator. We consume it to get the
+    #    list of all output blocks.
+    output_blocks = list(execute_pipeline(statements))
+
+    if not output_blocks:
+        return []
+
+    # 2. For scripting, we are only interested in the final result.
+    #    The final result is the last item yielded by the generator.
+    _, final_headers, final_data = output_blocks[-1]
+
+    # 3. Use the existing helper to map the final raw data back to objects.
+    return _map_results_to_objects(final_headers, final_data)
+
 
 def execute_pipeline(statements: List['ReportStatement']):
     """

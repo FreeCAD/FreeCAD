@@ -17,7 +17,8 @@ else:
     def QT_TRANSLATE_NOOP(ctxt, txt):
         return txt
 
-import Arch
+import ArchSql
+from ArchSql import ReportStatement
 
 if FreeCAD.GuiUp:
     ICON_STATUS_OK = FreeCADGui.getIcon(":/icons/edit_OK.svg")
@@ -237,81 +238,6 @@ if FreeCAD.GuiUp:
 
             # Show the completer.
             self._completer.complete(cursor_rect)
-
-
-class ReportStatement:
-    """Encapsulates a single SQL query statement and its display options."""
-
-    def __init__(self, description="", query_string="",
-                 use_description_as_header=False, include_column_names=True,
-                 add_empty_row_after=False, print_results_in_bold=False,
-                 is_pipelined=False):
-        self.description = description
-        self.query_string = query_string
-        self.use_description_as_header = use_description_as_header
-        self.include_column_names = include_column_names
-        self.add_empty_row_after = add_empty_row_after
-        self.print_results_in_bold = print_results_in_bold
-        self.is_pipelined = is_pipelined
-
-        # Internal validation state (transient, not serialized)
-        self._validation_status = "Ready" # e.g., "OK", "0_RESULTS", "ERROR", "INCOMPLETE"
-        self._validation_message = translate("Arch", "Ready") # e.g., "Found 5 objects.", "Syntax Error: ..."
-        self._validation_count = 0
-
-    def dumps(self):
-        """Returns the internal state for serialization."""
-        return {
-            'description': self.description,
-            'query_string': self.query_string,
-            'use_description_as_header': self.use_description_as_header,
-            'include_column_names': self.include_column_names,
-            'add_empty_row_after': self.add_empty_row_after,
-            'print_results_in_bold': self.print_results_in_bold,
-            'is_pipelined': self.is_pipelined,
-        }
-
-    def loads(self, state):
-        """Restores the internal state from serialized data."""
-        self.description = state.get('description', '')
-        self.query_string = state.get('query_string', '')
-        self.use_description_as_header = state.get('use_description_as_header', False)
-        self.include_column_names = state.get('include_column_names', True)
-        self.add_empty_row_after = state.get('add_empty_row_after', False)
-        self.print_results_in_bold = state.get('print_results_in_bold', False)
-        self.is_pipelined = state.get('is_pipelined', False)
-
-        # Validation state is transient and re-calculated on UI load/edit
-        self._validation_status = "Ready"
-        self._validation_message = translate("Arch", "Ready")
-        self._validation_count = 0
-
-    def validate_and_update_status(self):
-        """Runs validation for this statement's query and updates its internal status."""
-        if not self.query_string.strip():
-            self._validation_status = "OK" # Empty query is valid, no error
-            self._validation_message = translate("Arch", "Ready")
-            self._validation_count = 0
-            return
-
-        count, error = Arch.count(self.query_string)
-
-        if error == "INCOMPLETE":
-            self._validation_status = "INCOMPLETE"
-            self._validation_message = translate("Arch", "Typing...")
-            self._validation_count = -1
-        elif error:
-            self._validation_status = "ERROR"
-            self._validation_message = error
-            self._validation_count = -1
-        elif count == 0:
-            self._validation_status = "0_RESULTS"
-            self._validation_message = translate("Arch", "Query is valid, but found 0 objects.")
-            self._validation_count = 0
-        else:
-            self._validation_status = "OK"
-            self._validation_message = f"{translate('Arch', 'Found')} {count} {translate('Arch', 'objects')}."
-            self._validation_count = count
 
 
 class _ArchReportDocObserver:
@@ -566,10 +492,10 @@ class _ArchReport:
                 continue
 
             try:
-                # Arch.select will log detailed errors and then re-raise an exception.
+                # ArchSql.select will log detailed errors and then re-raise an exception.
                 # We catch it here to write a user-friendly message to the spreadsheet.
-                headers, results_data = Arch.select(statement.query_string)
-            except Arch.SqlEngineError as e:
+                headers, results_data = ArchSql.select(statement.query_string)
+            except ArchSql.SqlEngineError as e:
                 # On failure, record the error in the spreadsheet.
                 self.spreadsheet_current_row = self.setSpreadsheetData(
                     obj,
@@ -856,7 +782,7 @@ class ReportTaskPanel:
         self._load_and_populate_presets()
         self._populate_table_from_statements()
         # Pass the documentation data to the editor for its tooltips
-        api_docs = Arch.getSqlApiDocumentation()
+        api_docs = ArchSql.getSqlApiDocumentation()
         self.sql_query_edit.set_api_documentation(api_docs)
         self._update_editor_visibility(False)  # Start with editor collapsed/hidden
         # Do not auto-select the first statement; leave editor collapsed until user selects
@@ -1248,7 +1174,7 @@ class ReportTaskPanel:
 
     def _show_cheatsheet_dialog(self):
         """Gets the API documentation and displays it in a dialog."""
-        api_data = Arch.getSqlApiDocumentation()
+        api_data = ArchSql.getSqlApiDocumentation()
         dialog = CheatsheetDialog(api_data, parent=self.editor_widget)
         dialog.exec_()
 
@@ -1265,8 +1191,8 @@ class ReportTaskPanel:
             return
 
         try:
-            # Execute the query using the Arch.select API, which raises on failure
-            headers, data_rows = Arch.select(query)
+            # Execute the query using the ArchSql.select API, which raises on failure
+            headers, data_rows = ArchSql.select(query)
             # --- Success Case: Populate the table with results ---
             self.table_preview_results.clear()
             self.table_preview_results.setColumnCount(len(headers))
@@ -1281,7 +1207,7 @@ class ReportTaskPanel:
             # Restore default resize mode in case it was changed for error display
             self.table_preview_results.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
 
-        except Arch.SqlEngineError as e:
+        except ArchSql.SqlEngineError as e:
             # --- Failure Case: Display the error in the preview table ---
             self.table_preview_results.clear()
             self.table_preview_results.setRowCount(1)
@@ -1303,7 +1229,7 @@ class ReportTaskPanel:
         property names across all objects in the active document.
         """
         # 1. Start with the static SQL keywords and functions.
-        all_words = set(Arch.getSqlKeywords())
+        all_words = set(ArchSql.getSqlKeywords())
 
         # 2. Add all unique property names from all objects in the document.
         if FreeCAD.ActiveDocument:
@@ -1402,7 +1328,7 @@ if FreeCAD.GuiUp:
 
             # Keywords (case-insensitive regex)
             # Get the list of keywords from the SQL engine.
-            for word in Arch.getSqlKeywords():
+            for word in ArchSql.getSqlKeywords():
                 pattern = QtCore.QRegExp(r"\b" + word + r"\b", QtCore.Qt.CaseInsensitive)
                 rule = {"pattern": pattern, "format": keyword_format}
                 self.highlighting_rules.append(rule)
