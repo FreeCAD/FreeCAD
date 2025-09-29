@@ -393,6 +393,10 @@ gp_Dir LinearPattern::getDirectionFromProperty(const App::PropertyLinkSub& dirPr
         Base::Vector3d d = line->getDirection();
         dir = gp_Dir(d.x, d.y, d.z);
     }
+    else if (auto* plane = freecad_cast<App::Plane*>(refObject)) {
+        Base::Vector3d d = plane->getDirection();
+        dir = gp_Dir(d.x, d.y, d.z);
+    }
     else if (auto* line = freecad_cast<App::Line*>(refObject)) {
         Base::Vector3d d = line->getDirection();
         dir = gp_Dir(d.x, d.y, d.z);
