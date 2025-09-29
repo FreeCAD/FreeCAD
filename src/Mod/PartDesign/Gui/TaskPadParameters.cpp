@@ -104,11 +104,11 @@ void TaskPadParameters::onModeChanged(int index, Side side)
                 }
             }
             break;
-        case Mode::ToLast:
-            sideCtrl.Type->setValue("UpToLast");
-            break;
         case Mode::ToFirst:
             sideCtrl.Type->setValue("UpToFirst");
+            break;
+        case Mode::ToLast:
+            sideCtrl.Type->setValue("UpToLast");
             break;
         case Mode::ToFace:
             sideCtrl.Type->setValue("UpToFace");
@@ -146,3 +146,4 @@ TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView, bool /*newO
 //==== calls from the TaskView ===============================================================
 
 #include "moc_TaskPadParameters.cpp"
+
