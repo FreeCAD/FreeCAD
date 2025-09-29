@@ -313,10 +313,13 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
     std::string method2(Type2.getValueAsString());
 
     // Validate parameters
-    double L = method == "ThroughAll" ? getThroughAllLength() : Length.getValue();
-    double L2 = Sidemethod == "Two sides"
-        ? method2 == "ThroughAll" ? getThroughAllLength() : Length2.getValue()
-        : 0;
+    double L = method == "ThroughAll" ? getThroughAllLength()
+        : method == "Length"          ? Length.getValue()
+                                      : 0.0;
+    double L2 = Sidemethod == "Two sides" ? method2 == "ThroughAll" ? getThroughAllLength()
+            : method2 == "Length"                                   ? Length2.getValue()
+                                                                    : 0.0
+                                          : 0.0;
 
     if ((Sidemethod == "One side" && method == "Length")
         || (Sidemethod == "Two sides" && method == "Length" && method2 == "Length")) {
@@ -546,16 +549,38 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             double offset2 = Offset2.getValue();
             gp_Dir dir2 = dir;
             dir2.Reverse();
+            bool noTaper = std::fabs(taper1) < Precision::Angular()
+                && std::fabs(taper2) < Precision::Angular();
+            bool method1LengthBased = method == "Length" || method == "ThroughAll";
+            bool method2LengthBased = method2 == "Length" || method2 == "ThroughAll";
 
-            if (method == "Length" && method2 == "Length"
-                && std::fabs(taper1) < Precision::Angular()
-                && std::fabs(taper2) < Precision::Angular()) {
+            if (method1LengthBased && method2 != "UpToFirst" && noTaper) {
+                gp_Trsf start_transform;
+                start_transform.SetTranslation(gp_Vec(dir) * L);
+
+                TopoShape moved_sketch = sketchshape.makeElementCopy();
+                moved_sketch.move(start_transform);
+                TopoShape prism = generateSingleExtrusionSide(moved_sketch,
+                                                               method2,
+                                                               L + L2,
+                                                               0.0,
+                                                               UpToFace2,
+                                                               UpToShape2,
+                                                               dir2,
+                                                               offset2,
+                                                               makeface,
+                                                               base);
+                if (!prism.isNull() && !prism.getShape().IsNull()) {
+                    prisms.push_back(prism);
+                }
+            }
+            else if (method2LengthBased && method != "UpToFirst" && noTaper) {
                 gp_Trsf start_transform;
                 start_transform.SetTranslation(gp_Vec(dir).Reversed() * L2);
 
                 TopoShape moved_sketch = sketchshape.makeElementCopy();
                 moved_sketch.move(start_transform);
-                TopoShape prism1 = generateSingleExtrusionSide(moved_sketch,
+                TopoShape prism = generateSingleExtrusionSide(moved_sketch,
                                                                method,
                                                                L + L2,
                                                                0.0,
@@ -565,8 +590,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                                                                offset1,
                                                                makeface,
                                                                base);
-                if (!prism1.isNull() && !prism1.getShape().IsNull()) {
-                    prisms.push_back(prism1);
+                if (!prism.isNull() && !prism.getShape().IsNull()) {
+                    prisms.push_back(prism);
                 }
             }
             else {
