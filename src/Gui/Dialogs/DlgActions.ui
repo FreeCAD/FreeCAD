@@ -123,19 +123,13 @@
              <layout class="QHBoxLayout" name="horizontalLayout">
               <item>
                <widget class="QToolButton" name="buttonChoosePixmap">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
                 <property name="minimumSize">
-                 <size>
-                  <width>40</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
                  <size>
                   <width>40</width>
                   <height>30</height>
