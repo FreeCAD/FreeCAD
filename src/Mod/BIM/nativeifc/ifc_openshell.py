@@ -25,7 +25,6 @@
 """Utilities to help people verify and update their version of ifcopenshell"""
 
 import os
-import sys
 from packaging.version import Version
 
 import FreeCAD
@@ -103,19 +102,13 @@ class IFC_UpdateIOS:
 
 
     def install(self):
-        """Installs the given version and reloads the module"""
+        """Installs the given version"""
 
         from PySide import QtCore, QtGui
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         vendor_path = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", "UpdatedPythonPackages")
         args = ["install", "--upgrade", "--disable-pip-version-check", "--target", vendor_path, "ifcopenshell"]
         result = self.run_pip(args)
-        if result:
-            if vendor_path not in sys.path:
-                sys.path = [vendor_path] + sys.path
-            import ifcopenshell
-            import importlib
-            importlib.reload(ifcopenshell)
         QtGui.QApplication.restoreOverrideCursor()
         return result
 
