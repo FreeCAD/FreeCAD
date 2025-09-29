@@ -20,20 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #include <cstdlib>
 #include <QApplication>
 #include <QClipboard>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
-#include <QMutex>
 #include <QPainter>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
-#include <QWaitCondition>
-
 
 #include <App/Application.h>
 #include <App/Metadata.h>
@@ -59,50 +54,10 @@ public:
     SplashObserver& operator=(const SplashObserver&) = delete;
     SplashObserver& operator=(SplashObserver&&) = delete;
 
-    explicit SplashObserver(QSplashScreen* splasher = nullptr)
+    explicit SplashObserver(SplashScreen* splasher = nullptr)
         : splash(splasher)
-        , alignment(Qt::AlignBottom | Qt::AlignLeft)
-        , textColor(Qt::black)
     {
         Base::Console().attachObserver(this);
-
-        // allow to customize text position and color
-        const std::map<std::string, std::string>& cfg = App::Application::Config();
-        auto al = cfg.find("SplashAlignment");
-        if (al != cfg.end()) {
-            QString alt = QString::fromLatin1(al->second.c_str());
-            int align = 0;
-            if (alt.startsWith(QLatin1String("VCenter"))) {
-                align = Qt::AlignVCenter;
-            }
-            else if (alt.startsWith(QLatin1String("Top"))) {
-                align = Qt::AlignTop;
-            }
-            else {
-                align = Qt::AlignBottom;
-            }
-
-            if (alt.endsWith(QLatin1String("HCenter"))) {
-                align += Qt::AlignHCenter;
-            }
-            else if (alt.endsWith(QLatin1String("Right"))) {
-                align += Qt::AlignRight;
-            }
-            else {
-                align += Qt::AlignLeft;
-            }
-
-            alignment = align;
-        }
-
-        // choose text color
-        auto tc = cfg.find("SplashTextColor");
-        if (tc != cfg.end()) {
-            QColor col(QString::fromStdString(tc->second));
-            if (col.isValid()) {
-                textColor = col;
-            }
-        }
     }
     ~SplashObserver() override
     {
@@ -150,16 +105,11 @@ public:
             }
         }
 
-        splash->showMessage(msg.replace(QLatin1String("\n"), QString()), alignment, textColor);
-        QMutex mutex;
-        QMutexLocker ml(&mutex);
-        QWaitCondition().wait(&mutex, 50);
+        splash->pushMessage(msg.replace(QLatin1String("\n"), QString()));
     }
 
 private:
-    QSplashScreen* splash;
-    int alignment;
-    QColor textColor;
+    SplashScreen* splash;
 };
 
 /**
@@ -227,7 +177,24 @@ static void renderDevBuildWarning(QPainter& painter,
  */
 SplashScreen::SplashScreen(const QPixmap& pixmap, Qt::WindowFlags f)
     : QSplashScreen(pixmap, f)
+    , textColor(Qt::black)
 {
+    const std::map<std::string, std::string>& cfg = App::Application::Config();
+    auto tc = cfg.find("SplashTextColor");
+    if (tc != cfg.end()) {
+        QColor col(QString::fromStdString(tc->second));
+        if (col.isValid()) {
+            textColor = col;
+        }
+    }
+
+    QFontMetrics fm(font());
+    lineSpacing = fm.lineSpacing();
+    int h = pixmap.rect().height();
+    lineCount = std::max(3, (h * 3 / 10) / lineSpacing);
+    startX = pixmap.rect().width() / 20;
+    startY = h - h / 10;
+
     // write the messages to splasher
     messages = new SplashObserver(this);
 }
@@ -239,12 +206,19 @@ SplashScreen::~SplashScreen()
 }
 
 /**
- * Draws the contents of the splash screen using painter \a painter. The default
- * implementation draws the message passed by message().
+ * Draws the contents of the splash screen using painter.
  */
 void SplashScreen::drawContents(QPainter* painter)
 {
-    QSplashScreen::drawContents(painter);
+    painter->setPen(textColor);
+    int y = startY;
+    for (auto str : lines) {
+        painter->drawText(startX, y, str);
+        y -= lineSpacing;
+        if (y < 0) {
+            break;
+        }
+    }
 }
 
 void SplashScreen::setShowMessages(bool on)
@@ -253,6 +227,15 @@ void SplashScreen::setShowMessages(bool on)
     messages->bMsg = on;
     messages->bLog = on;
     messages->bWrn = on;
+}
+
+void SplashScreen::pushMessage(const QString& msg)
+{
+    lines.push_front(msg);
+    if (lines.size() > lineCount) {
+        lines.pop_back();
+    }
+    repaint();
 }
 
 QPixmap SplashScreen::splashImage()
