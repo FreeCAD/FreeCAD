@@ -153,6 +153,9 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
 
     ui->lw_Rect->clear();
 
+    ui->lbl_info_2->setText(tr("Select single geometry of type: ")
+                            + QString::fromUtf8("<b>%1</b>").arg(tr("Face")));
+
     // Transformable surfaces
     Gui::Command::doCommand(Gui::Command::Doc,
                             TaskFemConstraintTransform::getSurfaceReferences(

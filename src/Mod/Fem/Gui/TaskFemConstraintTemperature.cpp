@@ -97,6 +97,9 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
 
+    ui->lbl_info->setText(tr("Select geometry of type: ")
+                          + QString::fromUtf8("<b>%1</b>").arg(tr("Vertex, Edge, Face")));
+
     // create a context menu for the listview of the references
     createActions(ui->lw_references);
     connect(deleteAction,

@@ -145,6 +145,9 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
 
+    ui->lbl_references->setText(tr("Select geometry of type: ")
+                                + QString::fromUtf8("<b>%1</b>").arg(tr("Edge, Face")));
+
     // Selection buttons
     buttonGroup->addButton(ui->btnAdd, static_cast<int>(SelectionChangeModes::refAdd));
     buttonGroup->addButton(ui->btnRemove, static_cast<int>(SelectionChangeModes::refRemove));
