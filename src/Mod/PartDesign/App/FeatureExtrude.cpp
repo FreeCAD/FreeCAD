@@ -542,38 +542,62 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
         }
         else if (Sidemethod == "Two sides") {
-            TopoShape prism1 = generateSingleExtrusionSide(sketchshape.makeElementCopy(),
-                                                            method,
-                                                            L,
-                                                            taper1,
-                                                            UpToFace,
-                                                            UpToShape,
-                                                            dir,
-                                                            offset1,
-                                                            makeface,
-                                                            base);
-            if (!prism1.isNull() && !prism1.getShape().IsNull()) {
-                prisms.push_back(prism1);
-            }
-
-            // Side 2
             double taper2 = TaperAngle2.getValue();
             double offset2 = Offset2.getValue();
             gp_Dir dir2 = dir;
             dir2.Reverse();
 
-            TopoShape prism2 = generateSingleExtrusionSide(sketchshape.makeElementCopy(),
-                                                            method2,
-                                                            L2,
-                                                            taper2,
-                                                            UpToFace2,
-                                                            UpToShape2,
-                                                            dir2,
-                                                            offset2,
-                                                            makeface,
-                                                            base);
-            if (!prism2.isNull() && !prism2.getShape().IsNull()) {
-                prisms.push_back(prism2);
+            if (method == "Length" && method2 == "Length"
+                && std::fabs(taper1) < Precision::Angular()
+                && std::fabs(taper2) < Precision::Angular()) {
+                gp_Trsf start_transform;
+                start_transform.SetTranslation(gp_Vec(dir).Reversed() * L2);
+
+                TopoShape moved_sketch = sketchshape.makeElementCopy();
+                moved_sketch.move(start_transform);
+                TopoShape prism1 = generateSingleExtrusionSide(moved_sketch,
+                                                               method,
+                                                               L + L2,
+                                                               0.0,
+                                                               UpToFace,
+                                                               UpToShape,
+                                                               dir,
+                                                               offset1,
+                                                               makeface,
+                                                               base);
+                if (!prism1.isNull() && !prism1.getShape().IsNull()) {
+                    prisms.push_back(prism1);
+                }
+            }
+            else {
+                TopoShape prism1 = generateSingleExtrusionSide(sketchshape.makeElementCopy(),
+                                                               method,
+                                                               L,
+                                                               taper1,
+                                                               UpToFace,
+                                                               UpToShape,
+                                                               dir,
+                                                               offset1,
+                                                               makeface,
+                                                               base);
+                if (!prism1.isNull() && !prism1.getShape().IsNull()) {
+                    prisms.push_back(prism1);
+                }
+
+                // Side 2
+                TopoShape prism2 = generateSingleExtrusionSide(sketchshape.makeElementCopy(),
+                                                               method2,
+                                                               L2,
+                                                               taper2,
+                                                               UpToFace2,
+                                                               UpToShape2,
+                                                               dir2,
+                                                               offset2,
+                                                               makeface,
+                                                               base);
+                if (!prism2.isNull() && !prism2.getShape().IsNull()) {
+                    prisms.push_back(prism2);
+                }
             }
         }
 
