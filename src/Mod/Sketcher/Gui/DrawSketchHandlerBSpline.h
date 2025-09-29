@@ -1057,9 +1057,8 @@ void DSHBSplineControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                 onSketchPos.y = prevPoint.y + sin(angle) * length;
             }
 
-            if (thirdParam->isSet && fourthParam->isSet
-                && (onSketchPos - prevPoint).Length() < Precision::Confusion()
-                && thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing) {
+            if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing
+                && (onSketchPos - prevPoint).Length() < Precision::Confusion()) {
                 unsetOnViewParameter(thirdParam.get());
                 unsetOnViewParameter(fourthParam.get());
             }

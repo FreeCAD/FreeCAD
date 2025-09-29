@@ -2048,11 +2048,9 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                     onSketchPos.y = onViewParameters[OnViewParameter::Fourth]->getValue();
                 }
-                if (onViewParameters[OnViewParameter::Third]->isSet
-                    && onViewParameters[OnViewParameter::Fourth]->isSet
-                    && (onSketchPos - handler->center).Length() < Precision::Confusion()
-                    && onViewParameters[OnViewParameter::Third]->hasFinishedEditing
-                    && onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
+                if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
+                    && onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing
+                    && (onSketchPos - handler->center).Length() < Precision::Confusion()) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
                 }

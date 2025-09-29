@@ -486,9 +486,8 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
                 }
             }
 
-            if (thirdParam->isSet && fourthParam->isSet
-                && (onSketchPos - handler->startPoint).Length() < Precision::Confusion()
-                && thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing) {
+            if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing
+                && (onSketchPos - handler->startPoint).Length() < Precision::Confusion()) {
                 unsetOnViewParameter(thirdParam.get());
                 unsetOnViewParameter(fourthParam.get());
             }

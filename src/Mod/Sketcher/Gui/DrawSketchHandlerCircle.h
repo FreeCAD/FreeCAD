@@ -508,9 +508,8 @@ void DSHCircleControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
                     onSketchPos.y = fourthParam->getValue();
                 }
 
-                if (thirdParam->isSet && fourthParam->isSet
-                    && (onSketchPos - handler->firstPoint).Length() < Precision::Confusion()
-                    && thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing) {
+                if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing
+                    && (onSketchPos - handler->firstPoint).Length() < Precision::Confusion()) {
                     unsetOnViewParameter(thirdParam.get());
                     unsetOnViewParameter(fourthParam.get());
                 }
@@ -527,9 +526,8 @@ void DSHCircleControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
             if (sixthParam->isSet) {
                 onSketchPos.y = sixthParam->getValue();
             }
-            if (fifthParam->isSet && sixthParam->isSet
-                && areCollinear(handler->firstPoint, handler->secondPoint, onSketchPos)
-                && fifthParam->hasFinishedEditing && sixthParam->hasFinishedEditing) {
+            if (fifthParam->hasFinishedEditing && sixthParam->hasFinishedEditing
+                && areCollinear(handler->firstPoint, handler->secondPoint, onSketchPos)) {
                 unsetOnViewParameter(fifthParam.get());
                 unsetOnViewParameter(sixthParam.get());
             }
