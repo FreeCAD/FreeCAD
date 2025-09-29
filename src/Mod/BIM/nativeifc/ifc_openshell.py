@@ -24,6 +24,8 @@
 
 """Utilities to help people verify and update their version of ifcopenshell"""
 
+import os
+import sys
 from packaging.version import Version
 
 import FreeCAD
@@ -95,20 +97,25 @@ class IFC_UpdateIOS:
                 result = self.install()
                 if result:
                     FreeCAD.Console.PrintLog(f"{result.stdout}\n")
-                    text = translate("BIM", "IfcOpenShell update successfully installed.")
+                    text = translate("BIM", "IfcOpenShell update successfully installed.\nYou must restart FreeCAD for changes to take effect.")
                     buttons = QtGui.QMessageBox.Ok
                     reply = QtGui.QMessageBox.information(None, title, text, buttons)
 
 
     def install(self):
-        """Installs the given version"""
+        """Installs the given version and reloads the module"""
 
-        import addonmanager_utilities as utils
         from PySide import QtCore, QtGui
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
-        vendor_path = utils.get_pip_target_directory()
+        vendor_path = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", "UpdatedPythonPackages")
         args = ["install", "--upgrade", "--disable-pip-version-check", "--target", vendor_path, "ifcopenshell"]
         result = self.run_pip(args)
+        if result:
+            if vendor_path not in sys.path:
+                sys.path = [vendor_path] + sys.path
+            import ifcopenshell
+            import importlib
+            importlib.reload(ifcopenshell)
         QtGui.QApplication.restoreOverrideCursor()
         return result
 
@@ -123,7 +130,7 @@ class IFC_UpdateIOS:
         cmd = create_pip_call(args)
         result = None
         try:
-            result = utils.run_interruptable_subprocess(cmd)
+            result = utils.run_interruptable_subprocess(cmd, timeout_secs=60)
         except CalledProcessError as pe:
             FreeCAD.Console.PrintError(pe.stderr)
         except Exception as e:
