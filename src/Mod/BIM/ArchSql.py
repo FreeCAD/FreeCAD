@@ -555,6 +555,7 @@ class GroupByClause:
 class OrderByClause:
     """Represents the ORDER BY clause of a SQL statement."""
     def __init__(self, column_references, direction='ASC'):
+        # Store the string names of the columns to sort by, which can be properties or aliases.
         self.column_names = [ref.value for ref in column_references]
         self.direction = direction.upper()
 
@@ -582,22 +583,18 @@ class SelectStatement:
 
         # 4. Perform final sorting if an ORDER BY clause was provided.
         if self.order_by_clause:
-            sort_keys = []
-            for original_name in self.order_by_clause.column_names:
-                final_name = original_name
-                # Check if the ORDER BY column was aliased in the SELECT list.
-                for extractor, aliased_name in self.columns_info:
-                    if isinstance(extractor, ReferenceExtractor) and extractor.value == original_name:
-                        final_name = aliased_name
-                        break
-
+            # Sorting logic: it finds the index of the ORDER BY column name/alias in the final
+            # headers list and sorts the existing results_data based on that index.
+            sort_column_indices = []
+            for sort_column_name in self.order_by_clause.column_names:
                 try:
-                    # Find the column index to sort by from the final headers.
-                    sort_column_index = headers.index(final_name)
-                    sort_keys.append(sort_column_index)
+                    # Find the 0-based index of the column to sort by from the
+                    # final headers. This works for properties and aliases.
+                    idx = headers.index(sort_column_name)
+                    sort_column_indices.append(idx)
                 except ValueError:
                     raise ValueError(
-                        f"ORDER BY column '{original_name}' is not in the SELECT list."
+                        f"ORDER BY column '{sort_column_name}' is not in the SELECT list."
                     )
 
             is_descending = self.order_by_clause.direction == 'DESC'
@@ -609,7 +606,7 @@ class SelectStatement:
                 column specified in the ORDER BY clause.
                 """
                 keys = []
-                for index in sort_keys:
+                for index in sort_column_indices:
                     value = row[index]
                     # Create a consistent, comparable key for each value.
                     if value is None:
@@ -920,6 +917,15 @@ class SelectStatement:
         """
         row = []
         for extractor, _ in self.columns_info:
+            # Add a specific handler for the SELECT * case.
+            if extractor == '*':
+                if object_list:
+                    obj = object_list[0]
+                    value = obj.Label if hasattr(obj, 'Label') else getattr(obj, 'Name', '')
+                    row.append(value)
+                # '*' is the only column in this case, so we must stop here.
+                continue
+
             value = None
             if isinstance(extractor, AggregateFunction):
                 value = self._calculate_aggregate(extractor, object_list)
@@ -1174,9 +1180,9 @@ class ReferenceExtractor:
             A list of all objects in the active document if `self.value` is 'document', otherwise an
             empty list.
         """
-
         if self.value == 'document' and not self.base:
-            return FreeCAD.ActiveDocument.Objects
+            found_objects = FreeCAD.ActiveDocument.Objects
+            return found_objects
         return []
 
 
@@ -1235,7 +1241,20 @@ class SqlTransformerMixin:
 
     def order_by_clause(self, items):
         # items contains: ORDER, BY, reference, (",", reference)*, optional direction
-        column_references = [item for item in items if isinstance(item, ReferenceExtractor)]
+
+        # The ORDER BY clause only operates on the names of the final columns, which are always
+        # parsed as simple identifiers.
+        column_references = []
+        for item in items:
+            if isinstance(item, ReferenceExtractor):
+                column_references.append(item)
+            # This is the new, stricter validation.
+            elif isinstance(item, (FunctionBase, ArithmeticOperation)):
+                raise ValueError(
+                    "ORDER BY expressions are not supported directly. Please include the expression "
+                    "as a column in the SELECT list with an alias, and ORDER BY the alias."
+                )
+
         direction = 'ASC'
         # The optional direction token will be the last item if it exists.
         last_item = items[-1]
