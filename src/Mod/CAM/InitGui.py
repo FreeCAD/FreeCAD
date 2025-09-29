@@ -148,7 +148,7 @@ class CAMWorkbench(Workbench):
         ]
         threedopcmdlist = ["CAM_Pocket3D"]
         engravecmdlist = ["CAM_Engrave", "CAM_Deburr", "CAM_Vcarve"]
-        drillingcmdlist = ["CAM_Drilling", "CAM_Tapping"]
+        drillingcmdlist = ["CAM_Drilling"]
         modcmdlist = ["CAM_OperationCopy", "CAM_Array", "CAM_SimpleCopy"]
         dressupcmdlist = [
             "CAM_DressupArray",
@@ -175,14 +175,21 @@ class CAMWorkbench(Workbench):
                 QT_TRANSLATE_NOOP("CAM_EngraveTools", "Engraving Operations"),
             ),
         )
-        drillingcmdgroup = ["CAM_DrillingTools"]
-        FreeCADGui.addCommand(
-            "CAM_DrillingTools",
-            PathCommandGroup(
-                drillingcmdlist,
-                QT_TRANSLATE_NOOP("CAM_DrillingTools", "Drilling Operations"),
-            ),
-        )
+        if Path.Preferences.experimentalFeaturesEnabled():
+            drillingcmdlist.append("CAM_Tapping")
+
+        if set(["CAM_Drilling", "CAM_Tapping"]).issubset(drillingcmdlist):
+            drillingcmdgroup = ["CAM_DrillingTools"]
+            FreeCADGui.addCommand(
+                "CAM_DrillingTools",
+                PathCommandGroup(
+                    drillingcmdlist,
+                    QT_TRANSLATE_NOOP("CAM_DrillingTools", "Drilling Operations"),
+                ),
+            )
+        else:
+            drillingcmdgroup = drillingcmdlist
+
         dressupcmdgroup = ["CAM_DressupTools"]
         FreeCADGui.addCommand(
             "CAM_DressupTools",
