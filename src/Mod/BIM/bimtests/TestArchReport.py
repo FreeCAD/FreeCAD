@@ -1578,5 +1578,64 @@ class TestArchReport(TestArchBase.TestArchBase):
         with self.assertRaisesRegex(ArchSql.SqlEngineError, "must appear in the GROUP BY clause"):
             Arch.select(query)
 
+    def test_where_clause_with_arithmetic(self):
+        """
+        Tests that the WHERE clause can correctly filter rows based on an
+        arithmetic calculation involving multiple properties. This verifies
+        that the arithmetic engine is correctly integrated into the filtering
+        logic.
+        """
+        # ARRANGE: Create two walls with different dimensions.
+        # Wall 1 Area = 1000 * 200 = 200,000
+        large_wall = Arch.makeWall(name="Unit Test Large Wall", length=1000, width=200)
+        # Wall 2 Area = 500 * 200 = 100,000
+        _ = Arch.makeWall(name="Unit Test Small Wall", length=500, width=200)
+        self.document.recompute()
 
+        # ACT: Select walls where the calculated area is greater than 150,000.
+        query = "SELECT Label FROM document WHERE Label LIKE 'Unit Test %' AND Length * Width > 150000"
+        _, data = Arch.select(query)
+        print(data)
 
+        # ASSERT: Only the "Large Wall" should be returned.
+        self.assertEqual(len(data), 1, "The query should find exactly one matching wall.")
+        self.assertEqual(data[0][0], f"{large_wall.Label}", "The found wall should be the large one.")
+
+    def test_select_with_nested_functions(self):
+        """
+        Tests the engine's ability to handle a function (CONCAT) whose
+        arguments are a mix of properties, literals, and another function
+        (TYPE). This is a stress test for the recursive expression evaluator
+        and signature generator.
+        """
+        # ARRANGE: Create a single, predictable object.
+        Arch.makeWall(name="My Test Wall")
+        self.document.recompute()
+
+        # ACT: Construct a complex string using nested function calls.
+        query = "SELECT CONCAT(Label, ' (Type: ', TYPE(*), ')') FROM document WHERE Label = 'My Test Wall'"
+        _, data = Arch.select(query)
+
+        # ASSERT: The engine should correctly evaluate all parts and concatenate them.
+        self.assertEqual(len(data), 1, "The query should have found the target object.")
+        expected_string = "My Test Wall (Type: Wall)"
+        self.assertEqual(data[0][0], expected_string, "The nested function expression was not evaluated correctly.")
+
+    def test_group_by_with_alias_is_not_supported(self):
+        """
+        Tests that GROUP BY with a column alias is not supported, as per the
+        dialect's known limitations. This test verifies that the engine's
+        validation correctly rejects this syntax.
+        """
+        # ARRANGE: A single object is sufficient for this validation test.
+        Arch.makeWall(name="Test Wall For Alias")
+        self.document.recompute()
+
+        # ACT: Use the "incorrect" syntax where GROUP BY refers to an alias.
+        query = "SELECT TYPE(*) AS BimType, COUNT(*) FROM document GROUP BY BimType"
+
+        # ASSERT: The engine's validator must raise an SqlEngineError because
+        # the signature of the SELECT column ('TYPE(*)') does not match the
+        # signature of the GROUP BY column ('BimType').
+        with self.assertRaisesRegex(ArchSql.SqlEngineError, "must appear in the GROUP BY clause"):
+            Arch.select(query)

@@ -1065,21 +1065,29 @@ class ArithmeticOperation:
         self.right = right
 
     def _normalize_value(self, value):
-        """Converts Quantities to floats for calculation."""
+        """Converts Quantities to floats for calculation, propagating None."""
+        # This is the first point of defense.
+        if value is None:
+            return None
+
         if isinstance(value, FreeCAD.Units.Quantity):
             return value.Value
         elif isinstance(value, (int, float)):
             return value
         else:
-            # If a non-numeric type is used, we must raise a clear error.
-            # This prevents silent failures and confusing TypeErrors later on.
+            # A non-numeric, non-None value is still an error.
             type_name = type(value).__name__
             raise SqlEngineError(f"Cannot perform arithmetic on a non-numeric value of type '{type_name}'.")
 
     def get_value(self, obj):
-        """Recursively evaluates the calculation tree."""
+        """Recursively evaluates the calculation tree, propagating None."""
         left_val = self._normalize_value(self.left.get_value(obj))
         right_val = self._normalize_value(self.right.get_value(obj))
+
+        # This is the second point of defense. If either operand resolved to None,
+        # the entire arithmetic expression resolves to None (SQL NULL).
+        if left_val is None or right_val is None:
+            return None
 
         if self.op == '+':
             return left_val + right_val
@@ -1088,7 +1096,6 @@ class ArithmeticOperation:
         if self.op == '*':
             return left_val * right_val
         if self.op == '/':
-            # Basic division-by-zero protection.
             return left_val / right_val if right_val != 0 else float('inf')
 
 
