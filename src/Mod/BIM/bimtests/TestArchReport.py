@@ -41,7 +41,9 @@ def create_test_model(document):
     site.addObject(building)
 
     level_0 = Arch.makeFloor(name="Ground Floor")
+    level_0.Height = ground_floor_height
     level_1 = Arch.makeFloor(name="Upper Floor")
+    level_1.Height = ground_floor_height
     level_1.Placement.Base.z = ground_floor_height
     building.addObject(level_0)
     building.addObject(level_1)
@@ -1392,6 +1394,8 @@ class TestArchReport(TestArchBase.TestArchBase):
         living_window = model["living_window"]
         office_space = model["office_space"]
         living_space = model["living_space"]
+        interior_wall = model["interior_wall"]
+        exterior_wall = model["exterior_wall"]
 
         # --- 2. ACT & ASSERT: Run query permutations ---
 
@@ -1439,5 +1443,140 @@ class TestArchReport(TestArchBase.TestArchBase):
             found_labels = sorted([row[0] for row in data])
             expected_labels = sorted([office_space.Label, living_space.Label])
             self.assertListEqual(found_labels, expected_labels, "Should find spaces on the ground floor by parent's placement")
+
+        # === Advanced Cross-Feature Permutation Tests ===
+
+        with self.subTest(description="Permutation: GROUP BY on a PPA result"):
+            query = "SELECT PARENT(*).Label AS FloorName, COUNT(*) FROM document WHERE IfcType = 'Space' GROUP BY PARENT(*).Label ORDER BY FloorName"
+            _, data = Arch.select(query)
+            # Expected: Ground Floor has 2 spaces, Upper Floor has 1.
+            self.assertEqual(len(data), 2)
+            self.assertEqual(data[0][0], ground_floor.Label)
+            self.assertEqual(data[0][1], 2)
+            self.assertEqual(data[1][0], upper_floor.Label)
+            self.assertEqual(data[1][1], 1)
+
+        with self.subTest(description="Permutation: GROUP BY on a Function result"):
+            for obj in model.values():
+                ifc_class = getattr(obj, "IfcType", None)
+            query = "SELECT TYPE(*) AS BimType, COUNT(*) FROM document WHERE IfcType IS NOT NULL GROUP BY TYPE(*) ORDER BY BimType"
+            _, data = Arch.select(query)
+            for obj in model.values():
+                ifc_class = getattr(obj, "IfcType", None)
+            results_dict = {row[0]: row[1] for row in data}
+            self.assertGreaterEqual(results_dict.get('Wall', 0), 2)
+            self.assertGreaterEqual(results_dict.get('Space', 0), 2)
+
+        with self.subTest(description="Permutation: Complex WHERE with PPA and Functions"):
+            query = f"SELECT Label FROM document WHERE TYPE(*) = 'Wall' AND LOWER(PARENT(*).Label) = 'ground floor' AND FireRating IS NOT NULL"
+            _, data = Arch.select(query)
+            self.assertEqual(len(data), 1)
+            self.assertEqual(data[0][0], exterior_wall.Label)
+
+        with self.subTest(description="Permutation: Filtering by a custom property on a parent"):
+            query = "SELECT Label FROM document WHERE PARENT(*).FireRating = '60 minutes' AND IfcType IN ('Door', 'Window')"
+            _, data = Arch.select(query)
+            found_labels = sorted([row[0] for row in data])
+            expected_labels = sorted([front_door.Label, living_window.Label])
+            self.assertListEqual(found_labels, expected_labels)
+
+        with self.subTest(description="Permutation: Arithmetic with parent properties"):
+            # The Interior Partition has height 3000, its parent (Ground Floor) has height 3200.
+            query = f"SELECT Label FROM document WHERE TYPE(*) = 'Wall' AND Height < PARENT(*).Height"
+            _, data = Arch.select(query)
+            self.assertEqual(len(data), 1)
+            self.assertEqual(data[0][0], interior_wall.Label)
+
+    def test_group_by_with_function_and_count(self):
+        """
+        Tests that GROUP BY correctly partitions results based on a function (TYPE)
+        and aggregates them with another function (COUNT). This is the canonical
+        non-regression test for the core GROUP BY functionality.
+        """
+        # ARRANGE: Create a simple, self-contained model for this test.
+        # This makes the test independent of the main setUp fixture.
+        doc = self.document # Use the document created by TestArchBase
+        Arch.makeWall(name="Unit Test Wall 1")
+        Arch.makeWall(name="Unit Test Wall 2")
+        Arch.makeSpace(baseobj=doc.addObject("Part::Box"), name="Unit Test Space")
+        doc.recompute()
+
+        # ACT: Run the query with GROUP BY a function expression.
+        query = "SELECT TYPE(*) AS BimType, COUNT(*) FROM document WHERE Label LIKE 'Unit Test %' AND IfcType IS NOT NULL GROUP BY TYPE(*)"
+        _, data = Arch.select(query)
+        engine_results_dict = {row[0]: row[1] for row in data}
+
+        # ASSERT: The results must be correctly grouped and counted.
+        # We only check for the objects created within this test.
+        expected_counts = {
+            "Wall": 2,
+            "Space": 1,
+        }
+
+        # The assertion should check that the expected items are a subset of the results,
+        # as the main test fixture might still be present.
+        self.assertDictContainsSubset(expected_counts, engine_results_dict)
+
+    def test_group_by_chained_parent_function(self):
+        """
+        Tests GROUP BY on a complex expression involving a chained function
+        call (PPA), ensuring the engine's signature generation and grouping
+        logic can handle nested extractors.
+        """
+        # ARRANGE: Use the complex model from the ppa_and_query_permutations test
+        model = create_test_model(self.document)
+        ground_floor = model["ground_floor"]
+        upper_floor = model["upper_floor"] # Has one space
+
+        # Add one more space to the upper floor for a meaningful group
+        upper_box = self.document.addObject("Part::Box", "UpperSpaceVolume2")
+        upper_box.Length, upper_box.Width, upper_box.Height = 1000.0, 1000.0, 3000.0
+        upper_space2 = Arch.makeSpace(baseobj=upper_box, name="Upper Space 2")
+        upper_floor.addObject(upper_space2)
+        self.document.recompute()
+
+        # ACT: Group windows and doors by the Label of their great-grandparent (the Floor)
+        query = """
+            SELECT PARENT(*).PARENT(*).Label AS FloorName, COUNT(*)
+            FROM document
+            WHERE IfcType IN ('Door', 'Window')
+            GROUP BY PARENT(*).PARENT(*).Label
+        """
+        _, data = Arch.select(query)
+        results_dict = {row[0]: row[1] for row in data}
+
+        # ASSERT: The ground floor should contain 2 items (1 door, 1 window)
+        self.assertEqual(results_dict.get(ground_floor.Label), 2)
+
+    def test_group_by_multiple_mixed_columns(self):
+        """
+        Tests GROUP BY with multiple columns of different types (a property
+        and a function result) to verify multi-part key generation.
+        """
+        # ARRANGE: Add a second column to the test fixture for a better test case
+        Arch.makeStructure(length=300, width=330, height=2500, name="Second Column")
+        self.document.recompute()
+
+        # ACT
+        query = "SELECT IfcType, TYPE(*), COUNT(*) FROM document GROUP BY IfcType, TYPE(*)"
+        _, data = Arch.select(query)
+
+        # ASSERT: Find the specific row for IfcType='Column' and TYPE='Structure'
+        # and assert its count is 2. This proves the multi-part key worked.
+        column_row = next((row for row in data if row[0] == 'Column' and row[1] == 'Structure'), None)
+        self.assertIsNotNone(column_row, "A group for (Column, Structure) should exist.")
+        self.assertEqual(column_row[2], 2, "The count for (Column, Structure) should be 2.")
+
+    def test_invalid_group_by_with_aggregate_raises_error(self):
+        """
+        Ensures the engine's validation correctly rejects an attempt to
+        GROUP BY an aggregate function, which is invalid SQL.
+        """
+        query = "SELECT IfcType, COUNT(*) FROM document GROUP BY COUNT(*)"
+
+        # The "unsafe" select() API should raise the validation error
+        with self.assertRaisesRegex(ArchSql.SqlEngineError, "must appear in the GROUP BY clause"):
+            Arch.select(query)
+
 
 
