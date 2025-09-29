@@ -915,7 +915,7 @@ class TestArchReport(TestArchBase.TestArchBase):
     def test_column_aliasing(self):
         """Tests renaming columns using the AS keyword."""
         # This query renames 'Label' to 'Wall Name' and sorts the results for a predictable check.
-        query = "SELECT Label AS 'Wall Name' FROM document WHERE IfcType = 'Wall' ORDER BY Label ASC"
+        query = "SELECT Label AS 'Wall Name' FROM document WHERE IfcType = 'Wall' ORDER BY 'Wall Name' ASC"
         headers, results_data = Arch.select(query)
 
         # 1. Assert that the header is the alias, not the original property name.
@@ -1638,4 +1638,45 @@ class TestArchReport(TestArchBase.TestArchBase):
         # the signature of the SELECT column ('TYPE(*)') does not match the
         # signature of the GROUP BY column ('BimType').
         with self.assertRaisesRegex(ArchSql.SqlEngineError, "must appear in the GROUP BY clause"):
+            Arch.select(query)
+
+    def test_order_by_with_alias_is_supported(self):
+        """
+        Tests the supported ORDER BY behavior: sorting by an alias of a
+        function expression that is present in the SELECT list.
+        """
+        # ARRANGE: Create objects that require case-insensitive sorting.
+        Arch.makeWall(name="Wall_C")
+        Arch.makeWall(name="wall_b")
+        Arch.makeWall(name="WALL_A")
+        self.document.recompute()
+
+        # ACT: Use the correct syntax: include the expression in SELECT with an
+        # alias, and then ORDER BY that alias.
+        query = "SELECT Label, LOWER(Label) AS sort_key FROM document WHERE Label LIKE 'Wall_%' ORDER BY sort_key ASC"
+        _, data = Arch.select(query)
+
+        # Extract the original labels from the correctly sorted results.
+        sorted_labels = [row[0] for row in data]
+
+        # ASSERT: The results must be sorted correctly, proving the logic works.
+        expected_order = ["WALL_A", "wall_b", "Wall_C"]
+        self.assertListEqual(sorted_labels, expected_order)
+
+    def test_order_by_with_raw_expression_is_not_supported(self):
+        """
+        Tests the unsupported ORDER BY behavior, documenting that the engine
+        correctly rejects a query that tries to sort by a raw expression
+        not present in the SELECT list.
+        """
+        # ARRANGE: A single object is sufficient for this validation test.
+        Arch.makeWall(name="Test Wall")
+        self.document.recompute()
+
+        # ACT: Use the incorrect syntax.
+        query = "SELECT Label FROM document ORDER BY LOWER(Label) ASC"
+
+        # ASSERT: The engine's transformer must raise an error with a clear
+        # message explaining the correct syntax.
+        with self.assertRaisesRegex(ArchSql.SqlEngineError, "ORDER BY expressions are not supported directly"):
             Arch.select(query)
