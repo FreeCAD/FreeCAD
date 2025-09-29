@@ -2400,7 +2400,6 @@ def makeReport(name=None):
     App::FeaturePython
         The created report object.
     """
-    import ArchReport
 
     # Use the helper to create the main object. Note that we pass the
     # correct class and module names.
@@ -2421,7 +2420,7 @@ def makeReport(name=None):
     # Report object proxy needs its Statements list initialized before getSpreadSheet is called,
     # as getSpreadSheet calls execute() which now relies on obj.Statements.
     # Initialize with one default statement to provide a starting point for the user.
-    default_stmt = ArchReport.ReportStatement(description=translate("Arch", "New Statement"))
+    default_stmt = ReportStatement(description=translate("Arch", "New Statement"))
     report_obj.Statements = [default_stmt.dumps()]
 
     # Initialize a spreadsheet if the report requests one. The report is responsible for how the
@@ -2435,38 +2434,3 @@ def makeReport(name=None):
         FreeCADGui.ActiveDocument.setEdit(report_obj.Name, 0)
 
     return report_obj
-
-def selectObjectsFromPipeline(statements: list) -> list:
-    """
-    Executes a multi-statement pipeline and returns a final list of FreeCAD objects.
-
-    This is a high-level convenience function for scripting complex, multi-step
-    selections that are too difficult or cumbersome for a single SQL query.
-
-    Parameters
-    ----------
-    statements : list of ArchReport.ReportStatement
-        A configured list of statements defining the pipeline.
-
-    Returns
-    -------
-    list of FreeCAD.DocumentObject
-        A list of the final FreeCAD.DocumentObject instances that result from
-        the pipeline.
-    """
-    import ArchSql
-
-    # 1. The pipeline orchestrator is a generator. We consume it to get the
-    #    list of all output blocks.
-    output_blocks = list(ArchSql.execute_pipeline(statements))
-
-    if not output_blocks:
-        return []
-
-    # 2. For scripting, we are only interested in the final result.
-    #    The final result is the last item yielded by the generator.
-    final_statement, final_headers, final_data = output_blocks[-1]
-
-    # 3. Use the existing helper to map the final raw data back to objects.
-    #    The helper is internal to ArchSql, so we call it via its module.
-    return ArchSql._map_results_to_objects(final_headers, final_data)
