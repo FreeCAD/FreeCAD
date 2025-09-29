@@ -163,7 +163,7 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
     }
 
     try {
-        mbdAssembly->runKINEMATIC();
+        mbdAssembly->runPreDrag();
     }
     catch (const std::exception& e) {
         FC_ERR("Solve failed: " << e.what());
@@ -286,8 +286,6 @@ void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
 
         draggedParts.push_back(part);
     }
-
-    mbdAssembly->runPreDrag();
 }
 
 void AssemblyObject::doDragStep()
