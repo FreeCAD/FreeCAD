@@ -403,7 +403,7 @@ public:
     /**
      * /!\ This method is not thread safe.
      * Initialize the underlying libraries for execution. This is
-     * not required as it is automatically defined by the libaries.
+     * not required as it is automatically defined by the libraries.
      * However, it can be used to control the maximum number of thread used.
      * Make sure to call it before the parallel operation.
      *

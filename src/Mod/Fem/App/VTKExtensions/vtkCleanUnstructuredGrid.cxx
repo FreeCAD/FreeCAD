@@ -284,7 +284,7 @@ struct SpatialDensityStrategy: public WeighingStrategy
         }
         distribute(0, ds->GetNumberOfCells());
         // Merits a dedicated struct with a reduce operation
-        // collisions occuring in the += operation
+        // collisions occurring in the += operation
         // vtkSMPTools::For(0, ds->GetNumberOfCells(), distribute);
         // Normalize spatial densities with respect to point map
         {
@@ -300,7 +300,7 @@ struct SpatialDensityStrategy: public WeighingStrategy
             };
             computeMasses(0, ds->GetNumberOfPoints());
             // Merits a dedicated struct with a reduce operation
-            // collisions occuring in the += operation
+            // collisions occurring in the += operation
             // vtkSMPTools::For(0, ds->GetNumberOfPoints(), computeMasses);
             vtkSMPTools::For(0,
                              ds->GetNumberOfPoints(),
@@ -364,7 +364,7 @@ struct WeighingWorklet
         };
         weighing(0, inArray->GetNumberOfTuples());
         // Merits a dedicated struct with a reduce operation
-        // collisions occuring in the += operation
+        // collisions occurring in the += operation
         // vtkSMPTools::For(0, inArray->GetNumberOfTuples(), weighing);
     }
 };
