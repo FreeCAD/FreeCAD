@@ -625,6 +625,23 @@ class SelectStatement:
 
         return headers, results_data
 
+    def _get_extractor_signature(self, extractor):
+        """Generates a unique, hashable signature for any extractor object."""
+        if isinstance(extractor, ReferenceExtractor):
+            return extractor.value
+        elif isinstance(extractor, FunctionBase):
+            # Recursively build a signature for functions, e.g., "LOWER(Label)"
+            arg_sigs = []
+            for arg_ex in extractor.arg_extractors:
+                if arg_ex == '*':
+                    arg_sigs.append('*')
+                else:
+                    # This recursive call handles nested functions correctly
+                    arg_sigs.append(self._get_extractor_signature(arg_ex))
+            return f"{extractor.function_name.upper()}({', '.join(arg_sigs)})"
+        # Return a non-string type for unsupported extractors to prevent accidental matches
+        return None
+
     def validate(self):
         """
         Validates the select statement against SQL rules, such as those for GROUP BY.
@@ -633,21 +650,25 @@ class SelectStatement:
         if self.group_by_clause:
             # Rule: Every column in the SELECT list must either be an aggregate function,
             # a static value, or be part of the GROUP BY clause.
-            group_by_col_names = {ex.value for ex in self.group_by_clause.columns}
+            group_by_signatures = {self._get_extractor_signature(ex) for ex in self.group_by_clause.columns}
 
             for extractor, _ in self.columns_info:
-                if isinstance(extractor, (AggregateFunction, StaticExtractor, FunctionBase)):
-                    continue  # Valid cases
+                # This check is for columns that are inherently valid (aggregates, static values).
+                # A regular function (FunctionBase) is NOT inherently valid, so it must be checked below.
+                if isinstance(extractor, (AggregateFunction, StaticExtractor)):
+                    continue
 
                 if extractor == '*':
                     raise ValueError("Cannot use '*' in a SELECT statement with a GROUP BY clause.")
 
-                if isinstance(extractor, ReferenceExtractor):
-                    if extractor.value not in group_by_col_names:
-                        raise ValueError(
-                            f"Column '{extractor.value}' must appear in the GROUP BY clause "
-                            "or be used in an aggregate function."
-                        )
+                # This is the main check. It generates a signature for the current SELECT column
+                # (which could be a property OR a function) and ensures it exists in the GROUP BY clause.
+                select_col_signature = self._get_extractor_signature(extractor)
+                if select_col_signature not in group_by_signatures:
+                    raise ValueError(
+                        f"Column '{select_col_signature}' must appear in the GROUP BY clause "
+                        "or be used in an aggregate function."
+                    )
             return
 
         # Rule: If there is no GROUP BY, you cannot mix aggregate and non-aggregate columns.
@@ -1201,7 +1222,8 @@ class SqlTransformerMixin:
         return function_class(substatement)
 
     def group_by_clause(self, items):
-        references = [item for item in items if isinstance(item, ReferenceExtractor)]
+        # Allow both property references and function calls as grouping keys.
+        references = [item for item in items if isinstance(item, (ReferenceExtractor, FunctionBase))]
         return GroupByClause(references)
 
     def order_by_clause(self, items):
