@@ -122,13 +122,23 @@
          <number>2</number>
         </property>
         <property name="minimum">
-         <double>-360.000000000000000</double>
+         <double>0.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>360.000000000000000</double>
+         <double>180.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>1.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QCheckBox" name="reverse">
+        <property name="text">
+         <string>Reverse</string>
+        </property>
+        <property name="toolTip">
+         <string>Reverse the cutting direction for the selected pattern</string>
         </property>
        </widget>
       </item>
@@ -165,13 +175,33 @@
        </widget>
       </item>
       <item row="4" column="0">
+       <widget class="QLabel" name="passExtension_label">
+        <property name="text">
+         <string>Pass Extension</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::InputField" name="passExtension">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Distance to extend cuts beyond polygon boundary for tool disengagement</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
        <widget class="QLabel" name="materialAllowance_label">
         <property name="text">
          <string>Material Allowance</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="5" column="1">
        <widget class="Gui::InputField" name="materialAllowance">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">

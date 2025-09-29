@@ -53,7 +53,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         comboToPropertyMap = [
             ("cutMode", "CutMode"),
             ("clearingPattern", "ClearingPattern"),
-            ("axisPreference", "AxisPreference"),
         ]
 
         enumTups = PathMillFacing.ObjectMillFacing.propertyEnumerations(dataType="raw")
@@ -71,8 +70,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.ClearingPattern != str(self.form.clearingPattern.currentData()):
             obj.ClearingPattern = str(self.form.clearingPattern.currentData())
 
-        if hasattr(obj, 'AxisPreference') and obj.AxisPreference != str(self.form.axisPreference.currentData()):
-            obj.AxisPreference = str(self.form.axisPreference.currentData())
+        # Reverse checkbox
+        if hasattr(obj, 'Reverse') and obj.Reverse != self.form.reverse.isChecked():
+            obj.Reverse = self.form.reverse.isChecked()
 
         if obj.Angle != self.form.angle.value():
             obj.Angle = self.form.angle.value()
@@ -91,14 +91,13 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
         
-        self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.selectInComboBox(obj.ClearingPattern, self.form.clearingPattern)
         
         # Handle new properties that may not exist in older operations
-        if hasattr(obj, 'AxisPreference'):
-            self.selectInComboBox(obj.AxisPreference, self.form.axisPreference)
+        if hasattr(obj, 'Reverse'):
+            self.form.reverse.setChecked(bool(obj.Reverse))
         else:
-            self.form.axisPreference.setCurrentText("Long")  # Default value
+            self.form.reverse.setChecked(False)
         
         self.form.angle.setValue(obj.Angle)
         self.form.stepOver.setValue(obj.StepOver)
@@ -120,7 +119,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.clearingPattern.currentIndexChanged)
-        signals.append(self.form.axisPreference.currentIndexChanged)
+        # Qt 6 compatibility for checkbox state change
+        if hasattr(self.form.reverse, "checkStateChanged"):  # Qt >= 6.7.0
+            signals.append(self.form.reverse.checkStateChanged)
+        else:
+            signals.append(self.form.reverse.stateChanged)
         signals.append(self.form.angle.editingFinished)
         signals.append(self.form.stepOver.editingFinished)
         signals.append(self.form.materialAllowance.editingFinished)

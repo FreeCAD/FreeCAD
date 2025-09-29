@@ -166,21 +166,21 @@ class ObjectMillFacing(PathOp.ObjectOp):
                 ),
             ),
             (
-                "App::PropertyEnumeration",
-                "AxisPreference",
-                "Facing",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Set the axis preference for the toolpath direction.",
-                ),
-            ),
-            (
                 "App::PropertyDistance",
                 "PassExtension",
                 "Facing",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Distance to extend cuts beyond polygon boundary for tool disengagement.",
+                ),
+            ),
+            (
+                "App::PropertyBool",
+                "Reverse",
+                "Facing",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Reverse the cutting direction for the selected pattern.",
                 ),
             ),
         ]
@@ -207,10 +207,6 @@ class ObjectMillFacing(PathOp.ObjectOp):
                 (translate("CAM_MillFacing", "Bidirectional"), "Bidirectional"),
                 (translate("CAM_MillFacing", "Directional"), "Directional"),
                 (translate("CAM_MillFacing", "Spiral"), "Spiral"),
-            ],
-            "AxisPreference": [
-                (translate("CAM_MillFacing", "Long"), "Long"),
-                (translate("CAM_MillFacing", "Short"), "Short"),
             ],
         }
 
@@ -251,8 +247,8 @@ class ObjectMillFacing(PathOp.ObjectOp):
         obj.Angle = 0.0
         obj.StepOver = 25  # 25% as percentage
         obj.MaterialAllowance = 0.0
-        obj.AxisPreference = "Long"
         obj.PassExtension = 3.0  # Default to 3mm, will be adjusted based on tool diameter in opExecute
+        obj.Reverse = False
 
 
 
@@ -325,7 +321,8 @@ class ObjectMillFacing(PathOp.ObjectOp):
         
         # Get operation parameters
         stepover_percent = obj.StepOver
-        axis_preference = obj.AxisPreference.lower() if hasattr(obj, 'AxisPreference') else "long"
+        # Axis preference removed from UI/properties; keep placeholder until generators updated
+        axis_preference = "long"
         pass_extension = obj.PassExtension.Value if hasattr(obj, 'PassExtension') else tool_diameter * 0.5
         retract_height = obj.SafeHeight.Value
         
@@ -488,4 +485,7 @@ def SetupProperties():
     setup.append("ClearingPattern") 
     setup.append("Angle")
     setup.append("StepOver")
+    setup.append("MaterialAllowance")
+    setup.append("PassExtension")
+    setup.append("Reverse")
     return setup
