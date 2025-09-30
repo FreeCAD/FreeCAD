@@ -66,24 +66,41 @@ class ShapeString(DraftObject):
         if "Justification" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Horizontal and vertical alignment")
             obj.addProperty("App::PropertyEnumeration", "Justification", "Draft", _tip, locked=True)
-            obj.Justification = ["Top-Left", "Top-Center", "Top-Right",
-                                 "Middle-Left", "Middle-Center", "Middle-Right",
-                                 "Bottom-Left", "Bottom-Center", "Bottom-Right"]
+            obj.Justification = [
+                "Top-Left",
+                "Top-Center",
+                "Top-Right",
+                "Middle-Left",
+                "Middle-Center",
+                "Middle-Right",
+                "Bottom-Left",
+                "Bottom-Center",
+                "Bottom-Right",
+            ]
             obj.Justification = "Bottom-Left"
 
         if "JustificationReference" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Height reference used for justification")
-            obj.addProperty("App::PropertyEnumeration", "JustificationReference", "Draft", _tip, locked=True)
+            obj.addProperty(
+                "App::PropertyEnumeration", "JustificationReference", "Draft", _tip, locked=True
+            )
             obj.JustificationReference = ["Cap Height", "Shape Height"]
             obj.JustificationReference = "Cap Height"
 
         if "KeepLeftMargin" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property", "Keep left margin and leading white space when justification is left")
-            obj.addProperty("App::PropertyBool", "KeepLeftMargin", "Draft", _tip, locked=True).KeepLeftMargin = False
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Keep left margin and leading white space when justification is left",
+            )
+            obj.addProperty(
+                "App::PropertyBool", "KeepLeftMargin", "Draft", _tip, locked=True
+            ).KeepLeftMargin = False
 
         if "ScaleToSize" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Scale to ensure cap height is equal to size")
-            obj.addProperty("App::PropertyBool", "ScaleToSize", "Draft", _tip, locked=True).ScaleToSize = True
+            obj.addProperty(
+                "App::PropertyBool", "ScaleToSize", "Draft", _tip, locked=True
+            ).ScaleToSize = True
 
         if "Tracking" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Inter-character spacing")
@@ -95,10 +112,15 @@ class ShapeString(DraftObject):
 
         if "MakeFace" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Fill letters with faces")
-            obj.addProperty("App::PropertyBool", "MakeFace", "Draft", _tip, locked=True).MakeFace = True
+            obj.addProperty(
+                "App::PropertyBool", "MakeFace", "Draft", _tip, locked=True
+            ).MakeFace = True
 
         if "Fuse" not in properties:
-            _tip = QT_TRANSLATE_NOOP("App::Property", "Fuse faces if faces overlap, usually not required (can be very slow)")
+            _tip = QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Fuse faces if faces overlap, usually not required (can be very slow)",
+            )
             obj.addProperty("App::PropertyBool", "Fuse", "Draft", _tip, locked=True).Fuse = False
 
     def onDocumentRestored(self, obj):
@@ -106,12 +128,12 @@ class ShapeString(DraftObject):
         gui_utils.restore_view_object(
             obj, vp_module="view_shapestring", vp_class="ViewProviderShapeString"
         )
-        if not hasattr(obj, "ObliqueAngle"): # several more properties were added
+        if not hasattr(obj, "ObliqueAngle"):  # several more properties were added
             self.update_properties_1v0(obj)
 
     def update_properties_1v0(self, obj):
         """Update view properties."""
-        old_tracking = obj.Tracking # no need for obj.getTypeIdOfProperty("Tracking")
+        old_tracking = obj.Tracking  # no need for obj.getTypeIdOfProperty("Tracking")
         obj.removeProperty("Tracking")
         self.set_properties(obj)
         obj.KeepLeftMargin = True
@@ -123,13 +145,11 @@ class ShapeString(DraftObject):
             + ", "
             + "added 'Fuse', 'Justification', 'JustificationReference', 'KeepLeftMargin', "
             + "'ObliqueAngle' and 'ScaleToSize' properties"
-          )
+        )
         _log("v1.0, " + obj.Name + ", changed 'Tracking' property type")
 
     def execute(self, obj):
-        if self.props_changed_placement_only() \
-                or not obj.String \
-                or not obj.FontFile:
+        if self.props_changed_placement_only() or not obj.String or not obj.FontFile:
             obj.positionBySupport()
             self.props_changed_clear()
             return
@@ -174,10 +194,11 @@ class ShapeString(DraftObject):
                 # https://github.com/FreeCAD/FreeCAD/issues/21501
                 char_comp = Part.Compound(char)
                 factor = 1 / char_comp.BoundBox.YLength
-                fill = sum([shape.Area for shape in shapes]) > (0.03 / factor ** 2) \
-                        and math.isclose(char_comp.BoundBox.DiagonalLength,
-                                         Part.Compound(shapes).BoundBox.DiagonalLength,
-                                         rel_tol=1e-7)
+                fill = sum([shape.Area for shape in shapes]) > (0.03 / factor**2) and math.isclose(
+                    char_comp.BoundBox.DiagonalLength,
+                    Part.Compound(shapes).BoundBox.DiagonalLength,
+                    rel_tol=1e-7,
+                )
 
         chars = Part.makeWireString(obj.String, font_file, obj.Size, obj.Tracking)
         shapes = []
@@ -208,13 +229,21 @@ class ShapeString(DraftObject):
                     mtx.A12 = math.tan(math.radians(obj.ObliqueAngle))
                     ss_shape = ss_shape.transformGeometry(mtx)
                 else:
-                    wrn = translate("draft", "ShapeString: oblique angle must be in the -80 to +80 degree range") + "\n"
+                    wrn = (
+                        translate(
+                            "draft",
+                            "ShapeString: oblique angle must be in the -80 to +80 degree range",
+                        )
+                        + "\n"
+                    )
                     App.Console.PrintWarning(wrn)
-            just_vec = self.justification_vector(ss_shape,
-                                                 cap_height,
-                                                 obj.Justification,
-                                                 obj.JustificationReference,
-                                                 obj.KeepLeftMargin)
+            just_vec = self.justification_vector(
+                ss_shape,
+                cap_height,
+                obj.Justification,
+                obj.JustificationReference,
+                obj.KeepLeftMargin,
+            )
             shapes = ss_shape.SubShapes
             for shape in shapes:
                 shape.translate(just_vec)
@@ -229,13 +258,17 @@ class ShapeString(DraftObject):
     def onChanged(self, obj, prop):
         self.props_changed_store(prop)
 
-    def justification_vector(self, ss_shape, cap_height, just, just_ref, keep_left_margin): # ss_shape is a compound
+    def justification_vector(
+        self, ss_shape, cap_height, just, just_ref, keep_left_margin
+    ):  # ss_shape is a compound
         box = ss_shape.optimalBoundingBox()
         if keep_left_margin is True and "Left" in just:
             vec = App.Vector(0, 0, 0)
         else:
-            vec = App.Vector(-box.XMin, 0, 0) # remove left margin caused by kerning and white space characters
-        width  = box.XLength
+            vec = App.Vector(
+                -box.XMin, 0, 0
+            )  # remove left margin caused by kerning and white space characters
+        width = box.XLength
         if "Shape" in just_ref:
             vec = vec + App.Vector(0, -box.YMin, 0)
             height = box.YLength
@@ -244,11 +277,11 @@ class ShapeString(DraftObject):
         if "Top" in just:
             vec = vec + App.Vector(0, -height, 0)
         elif "Middle" in just:
-            vec = vec + App.Vector(0, -height/2, 0)
+            vec = vec + App.Vector(0, -height / 2, 0)
         if "Right" in just:
             vec = vec + App.Vector(-width, 0, 0)
         elif "Center" in just:
-            vec = vec + App.Vector(-width/2, 0, 0)
+            vec = vec + App.Vector(-width / 2, 0, 0)
         return vec
 
     def make_faces(self, wireChar):
@@ -307,7 +340,7 @@ class ShapeString(DraftObject):
         for face in faces:
             try:
                 # some fonts fail here
-                if face.normalAt(0, 0).z < 0: # Does not seem to occur for FaceMakerBullseye.
+                if face.normalAt(0, 0).z < 0:  # Does not seem to occur for FaceMakerBullseye.
                     face.reverse()
             except Exception:
                 pass

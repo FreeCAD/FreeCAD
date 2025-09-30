@@ -67,10 +67,10 @@ class Rectangle(DraftObject):
         obj.addProperty("App::PropertyArea", "Area", "Draft", _tip, locked=True)
 
         obj.MakeFace = params.get_param("MakeFaceMode")
-        obj.Length=1
-        obj.Height=1
-        obj.Rows=1
-        obj.Columns=1
+        obj.Length = 1
+        obj.Height = 1
+        obj.Rows = 1
+        obj.Columns = 1
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
@@ -95,7 +95,7 @@ class Rectangle(DraftObject):
 
         shape = None
 
-        if hasattr(obj,"Rows") and hasattr(obj,"Columns"):
+        if hasattr(obj, "Rows") and hasattr(obj, "Columns"):
             # TODO: verify if this is needed:
             if obj.Rows > 1:
                 rows = obj.Rows
@@ -109,29 +109,28 @@ class Rectangle(DraftObject):
 
             if (rows > 1) or (columns > 1):
                 shapes = []
-                l = obj.Length.Value/columns
-                h = obj.Height.Value/rows
+                l = obj.Length.Value / columns
+                h = obj.Height.Value / rows
                 for i in range(columns):
                     for j in range(rows):
-                        p1 = App.Vector(i*l,j*h,0)
-                        p2 = App.Vector(p1.x+l,p1.y,p1.z)
-                        p3 = App.Vector(p1.x+l,p1.y+h,p1.z)
-                        p4 = App.Vector(p1.x,p1.y+h,p1.z)
-                        p = Part.makePolygon([p1,p2,p3,p4,p1])
+                        p1 = App.Vector(i * l, j * h, 0)
+                        p2 = App.Vector(p1.x + l, p1.y, p1.z)
+                        p3 = App.Vector(p1.x + l, p1.y + h, p1.z)
+                        p4 = App.Vector(p1.x, p1.y + h, p1.z)
+                        p = Part.makePolygon([p1, p2, p3, p4, p1])
                         if "ChamferSize" in obj.PropertiesList:
                             if obj.ChamferSize.Value != 0:
-                                w = DraftGeomUtils.filletWire(p,
-                                                              obj.ChamferSize.Value,
-                                                              chamfer=True)
+                                w = DraftGeomUtils.filletWire(
+                                    p, obj.ChamferSize.Value, chamfer=True
+                                )
                                 if w:
                                     p = w
                         if "FilletRadius" in obj.PropertiesList:
                             if obj.FilletRadius.Value != 0:
-                                w = DraftGeomUtils.filletWire(p,
-                                                              obj.FilletRadius.Value)
+                                w = DraftGeomUtils.filletWire(p, obj.FilletRadius.Value)
                                 if w:
                                     p = w
-                        if hasattr(obj,"MakeFace"):
+                        if hasattr(obj, "MakeFace"):
                             if obj.MakeFace:
                                 p = Part.Face(p)
                         shapes.append(p)
@@ -139,31 +138,22 @@ class Rectangle(DraftObject):
                     shape = Part.makeCompound(shapes)
 
         if not shape:
-            p1 = App.Vector(0,0,0)
-            p2 = App.Vector(p1.x+obj.Length.Value,
-                            p1.y,
-                            p1.z)
-            p3 = App.Vector(p1.x+obj.Length.Value,
-                            p1.y+obj.Height.Value,
-                            p1.z)
-            p4 = App.Vector(p1.x,
-                            p1.y+obj.Height.Value,
-                            p1.z)
+            p1 = App.Vector(0, 0, 0)
+            p2 = App.Vector(p1.x + obj.Length.Value, p1.y, p1.z)
+            p3 = App.Vector(p1.x + obj.Length.Value, p1.y + obj.Height.Value, p1.z)
+            p4 = App.Vector(p1.x, p1.y + obj.Height.Value, p1.z)
             shape = Part.makePolygon([p1, p2, p3, p4, p1])
             if "ChamferSize" in obj.PropertiesList:
                 if obj.ChamferSize.Value != 0:
-                    w = DraftGeomUtils.filletWire(shape,
-                                                  obj.ChamferSize.Value,
-                                                  chamfer=True)
+                    w = DraftGeomUtils.filletWire(shape, obj.ChamferSize.Value, chamfer=True)
                     if w:
                         shape = w
             if "FilletRadius" in obj.PropertiesList:
                 if obj.FilletRadius.Value != 0:
-                    w = DraftGeomUtils.filletWire(shape,
-                                                  obj.FilletRadius.Value)
+                    w = DraftGeomUtils.filletWire(shape, obj.FilletRadius.Value)
                     if w:
                         shape = w
-            if hasattr(obj,"MakeFace"):
+            if hasattr(obj, "MakeFace"):
                 if obj.MakeFace:
                     shape = Part.Face(shape)
             else:
@@ -171,7 +161,7 @@ class Rectangle(DraftObject):
 
         obj.Shape = shape
 
-        if hasattr(obj,"Area") and hasattr(shape,"Area"):
+        if hasattr(obj, "Area") and hasattr(shape, "Area"):
             obj.Area = shape.Area
 
         obj.Placement = plm

@@ -122,18 +122,17 @@ class ToDo:
         The lists are `itinerary`, `commitlist` and `afteritinerary`.
         """
         if _DEBUG:
-            _msg("Debug: doing delayed tasks.\n"
-                 "itinerary: {0}\n"
-                 "commitlist: {1}\n"
-                 "afteritinerary: {2}\n".format(todo.itinerary,
-                                                todo.commitlist,
-                                                todo.afteritinerary))
+            _msg(
+                "Debug: doing delayed tasks.\n"
+                "itinerary: {0}\n"
+                "commitlist: {1}\n"
+                "afteritinerary: {2}\n".format(todo.itinerary, todo.commitlist, todo.afteritinerary)
+            )
         try:
             for f, arg in ToDo.itinerary:
                 try:
                     if _DEBUG_inner:
-                        _msg("Debug: executing.\n"
-                             "function: {}\n".format(f))
+                        _msg("Debug: executing.\n" "function: {}\n".format(f))
                     if arg or (arg is False):
                         f(arg)
                     else:
@@ -141,13 +140,14 @@ class ToDo:
                 except Exception:
                     _log(traceback.format_exc())
                     _err(traceback.format_exc())
-                    wrn = ("ToDo.doTasks, Unexpected error:\n"
-                           "{0}\n"
-                           "in {1}({2})".format(sys.exc_info()[0], f, arg))
+                    wrn = (
+                        "ToDo.doTasks, Unexpected error:\n"
+                        "{0}\n"
+                        "in {1}({2})".format(sys.exc_info()[0], f, arg)
+                    )
                     _wrn(wrn)
         except ReferenceError:
-            _wrn("Debug: ToDo.doTasks: "
-                 "queue contains a deleted object, skipping")
+            _wrn("Debug: ToDo.doTasks: " "queue contains a deleted object, skipping")
         ToDo.itinerary = []
 
         if ToDo.commitlist:
@@ -155,8 +155,7 @@ class ToDo:
             ToDo.commitlist = []  # Reset immediately to avoid race condition.
             for name, func in commit_list:
                 if _DEBUG_inner:
-                    _msg("Debug: committing.\n"
-                         "name: {}\n".format(name))
+                    _msg("Debug: committing.\n" "name: {}\n".format(name))
                 try:
                     name = str(name)
                     App.activeDocument().openTransaction(name)
@@ -169,20 +168,20 @@ class ToDo:
                 except Exception:
                     _log(traceback.format_exc())
                     _err(traceback.format_exc())
-                    wrn = ("ToDo.doTasks, Unexpected error:\n"
-                           "{0}\n"
-                           "in {1}".format(sys.exc_info()[0], func))
+                    wrn = (
+                        "ToDo.doTasks, Unexpected error:\n"
+                        "{0}\n"
+                        "in {1}".format(sys.exc_info()[0], func)
+                    )
                     _wrn(wrn)
             # Restack Draft screen widgets after creation
             if hasattr(Gui, "Snapper"):
                 Gui.Snapper.restack()
 
-
         for f, arg in ToDo.afteritinerary:
             try:
                 if _DEBUG_inner:
-                    _msg("Debug: executing after.\n"
-                         "function: {}\n".format(f))
+                    _msg("Debug: executing after.\n" "function: {}\n".format(f))
                 if arg:
                     f(arg)
                 else:
@@ -190,9 +189,11 @@ class ToDo:
             except Exception:
                 _log(traceback.format_exc())
                 _err(traceback.format_exc())
-                wrn = ("ToDo.doTasks, Unexpected error:\n"
-                       "{0}\n"
-                       "in {1}({2})".format(sys.exc_info()[0], f, arg))
+                wrn = (
+                    "ToDo.doTasks, Unexpected error:\n"
+                    "{0}\n"
+                    "in {1}({2})".format(sys.exc_info()[0], f, arg)
+                )
                 _wrn(wrn)
         ToDo.afteritinerary = []
 
@@ -224,8 +225,7 @@ class ToDo:
                 f(arg)
         """
         if _DEBUG:
-            _msg("Debug: delaying.\n"
-                 "function: {}\n".format(f))
+            _msg("Debug: delaying.\n" "function: {}\n".format(f))
         if ToDo.itinerary == []:
             QtCore.QTimer.singleShot(0, ToDo.doTasks)
         ToDo.itinerary.append((f, arg))
@@ -254,8 +254,7 @@ class ToDo:
             See the attributes of the `ToDo` class for more information.
         """
         if _DEBUG:
-            _msg("Debug: delaying commit.\n"
-                 "commitlist: {}\n".format(cl))
+            _msg("Debug: delaying commit.\n" "commitlist: {}\n".format(cl))
         QtCore.QTimer.singleShot(0, ToDo.doTasks)
         ToDo.commitlist = cl
 
@@ -276,8 +275,7 @@ class ToDo:
         and append it to the `afteritinerary` list.
         """
         if _DEBUG:
-            _msg("Debug: delaying after.\n"
-                 "function: {}\n".format(f))
+            _msg("Debug: delaying after.\n" "function: {}\n".format(f))
         if ToDo.afteritinerary == []:
             QtCore.QTimer.singleShot(0, ToDo.doTasks)
         ToDo.afteritinerary.append((f, arg))

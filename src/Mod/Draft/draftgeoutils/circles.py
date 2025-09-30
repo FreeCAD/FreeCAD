@@ -65,18 +65,18 @@ def getCircleFromSpline(edge):
 
     # get 2 points
     p1 = edge.Curve.value(0)
-    p2 = edge.Curve.value(math.pi/2)
+    p2 = edge.Curve.value(math.pi / 2)
     # get 2 tangents
     t1 = edge.Curve.tangent(0)[0]
-    t2 = edge.Curve.tangent(math.pi/2)[0]
+    t2 = edge.Curve.tangent(math.pi / 2)[0]
     # get normal
     n = p1.cross(p2)
     if DraftVecUtils.isNull(n):
         return None
 
     # get rays
-    r1 = DraftVecUtils.rotate(t1, math.pi/2, n)
-    r2 = DraftVecUtils.rotate(t2, math.pi/2, n)
+    r1 = DraftVecUtils.rotate(t1, math.pi / 2, n)
+    r2 = DraftVecUtils.rotate(t2, math.pi / 2, n)
     # get center (intersection of rays)
     i = findIntersection(p1, p1.add(r1), p2, p2.add(r2), True, True)
     if not i:
@@ -116,10 +116,8 @@ def circlefrom1Line2Points(edge, p1, p2):
     x = DraftVecUtils.crossproduct(vec(p1_p2))
     x.normalize()
     perp_mid = App.Vector.add(mid, x)
-    cen1 = findIntersection(edg(projectedCen1, perpCen1),
-                            edg(mid, perp_mid), True, True)
-    cen2 = findIntersection(edg(projectedCen2, perpCen2),
-                            edg(mid, perp_mid), True, True)
+    cen1 = findIntersection(edg(projectedCen1, perpCen1), edg(mid, perp_mid), True, True)
+    cen2 = findIntersection(edg(projectedCen2, perpCen2), edg(mid, perp_mid), True, True)
 
     circles = []
     if cen1:
@@ -157,8 +155,9 @@ def circleFrom2LinesRadius(edge1, edge2, radius):
 
     intsec = intsec[0]
     bis12 = angleBisection(edge1, edge2)
-    bis21 = Part.LineSegment(bis12.Vertexes[0].Point,
-                             DraftVecUtils.rotate(vec(bis12), math.pi/2.0))
+    bis21 = Part.LineSegment(
+        bis12.Vertexes[0].Point, DraftVecUtils.rotate(vec(bis12), math.pi / 2.0)
+    )
     ang12 = abs(DraftVecUtils.angle(vec(edge1), vec(edge2)))
     ang21 = math.pi - ang12
     dist12 = radius / math.sin(ang12 * 0.5)
@@ -185,10 +184,9 @@ def circleFrom3LineTangents(edge1, edge2, edge3):
 
     It calculates up to 6 possible centers.
     """
+
     def rot(ed):
-        geo = Part.LineSegment(v1(ed),
-                               v1(ed).add(DraftVecUtils.rotate(vec(ed),
-                                                               math.pi/2)))
+        geo = Part.LineSegment(v1(ed), v1(ed).add(DraftVecUtils.rotate(vec(ed), math.pi / 2)))
         return geo.toShape()
 
     bis12 = angleBisection(edge1, edge2)
@@ -273,7 +271,7 @@ def circleFromPointLineRadius(point, edge, radius):
     else:
         normPoint = point.add(findDistance(point, edge, False))
         normDist = DraftVecUtils.dist(normPoint, point)
-        dist = math.sqrt(radius**2 - (radius - normDist)**2)
+        dist = math.sqrt(radius**2 - (radius - normDist) ** 2)
         centerNormVec = DraftVecUtils.scaleTo(point.sub(normPoint), radius)
         edgeDir = edge.Vertexes[0].Point.sub(normPoint)
         edgeDir.normalize()
@@ -311,7 +309,7 @@ def circleFrom2PointsRadius(p1, p2, radius):
     dist_p1p2 = DraftVecUtils.dist(p1, p2)
     mid = findMidpoint(p1_p2)
 
-    if dist_p1p2 == 2*radius:
+    if dist_p1p2 == 2 * radius:
         circle = Part.Circle(mid, NORM, radius)
         if circle:
             return [circle]
@@ -322,7 +320,7 @@ def circleFrom2PointsRadius(p1, p2, radius):
     _dir.normalize()
     perpDir = _dir.cross(App.Vector(0, 0, 1))
     perpDir.normalize()
-    dist = math.sqrt(radius**2 - (dist_p1p2 / 2.0)**2)
+    dist = math.sqrt(radius**2 - (dist_p1p2 / 2.0) ** 2)
     cen1 = App.Vector.add(mid, App.Vector(perpDir).multiply(dist))
     cen2 = App.Vector.add(mid, App.Vector(perpDir).multiply(-dist))
 
@@ -346,16 +344,14 @@ def findHomotheticCenterOfCircles(circle1, circle2):
     http://en.wikipedia.org/wiki/Homothetic_center
     http://mathworld.wolfram.com/HomotheticCenter.html
     """
-    if (geomType(circle1) == "Circle" and geomType(circle2) == "Circle"):
+    if geomType(circle1) == "Circle" and geomType(circle2) == "Circle":
         print("debug: findHomotheticCenterOfCircles bad parameters!")
         return None
 
-    if DraftVecUtils.equals(circle1.Curve.Center,
-                            circle2.Curve.Center):
+    if DraftVecUtils.equals(circle1.Curve.Center, circle2.Curve.Center):
         return None
 
-    cen1_cen2 = Part.LineSegment(circle1.Curve.Center,
-                                 circle2.Curve.Center).toShape()
+    cen1_cen2 = Part.LineSegment(circle1.Curve.Center, circle2.Curve.Center).toShape()
     cenDir = vec(cen1_cen2)
     cenDir.normalize()
 
@@ -364,18 +360,17 @@ def findHomotheticCenterOfCircles(circle1, circle2):
     perpCenDir.normalize()
 
     # Get point on first circle
-    p1 = App.Vector.add(circle1.Curve.Center,
-                        App.Vector(perpCenDir).multiply(circle1.Curve.Radius))
+    p1 = App.Vector.add(circle1.Curve.Center, App.Vector(perpCenDir).multiply(circle1.Curve.Radius))
 
     centers = []
     # Calculate inner homothetic center
     # Get point on second circle
-    p2_inner = App.Vector.add(circle1.Curve.Center,
-                              App.Vector(perpCenDir).multiply(-circle1.Curve.Radius))
-    hCenterInner = DraftVecUtils.intersect(circle1.Curve.Center,
-                                           circle2.Curve.Center,
-                                           p1, p2_inner,
-                                           True, True)
+    p2_inner = App.Vector.add(
+        circle1.Curve.Center, App.Vector(perpCenDir).multiply(-circle1.Curve.Radius)
+    )
+    hCenterInner = DraftVecUtils.intersect(
+        circle1.Curve.Center, circle2.Curve.Center, p1, p2_inner, True, True
+    )
     if hCenterInner:
         centers.append(hCenterInner)
 
@@ -383,12 +378,12 @@ def findHomotheticCenterOfCircles(circle1, circle2):
     # have different radii
     if circle1.Curve.Radius != circle2.Curve.Radius:
         # Get point on second circle
-        p2_outer = App.Vector.add(circle1.Curve.Center,
-                                  App.Vector(perpCenDir).multiply(circle1.Curve.Radius))
-        hCenterOuter = DraftVecUtils.intersect(circle1.Curve.Center,
-                                               circle2.Curve.Center,
-                                               p1, p2_outer,
-                                               True, True)
+        p2_outer = App.Vector.add(
+            circle1.Curve.Center, App.Vector(perpCenDir).multiply(circle1.Curve.Radius)
+        )
+        hCenterOuter = DraftVecUtils.intersect(
+            circle1.Curve.Center, circle2.Curve.Center, p1, p2_outer, True, True
+        )
         if hCenterOuter:
             centers.append(hCenterOuter)
 
@@ -473,9 +468,11 @@ def findRadicalCenter(circle1, circle2, circle3):
     --------
     findRadicalAxis
     """
-    if (geomType(circle1) != "Circle"
-            or geomType(circle2) != "Circle"
-            or geomType(circle3) != "Circle"):
+    if (
+        geomType(circle1) != "Circle"
+        or geomType(circle2) != "Circle"
+        or geomType(circle3) != "Circle"
+    ):
         print("debug: findRadicalCenter bad parameters! Must be circles.")
         return None
 
@@ -493,5 +490,6 @@ def findRadicalCenter(circle1, circle2, circle3):
     else:
         # No radical center could be calculated.
         return None
+
 
 ## @}

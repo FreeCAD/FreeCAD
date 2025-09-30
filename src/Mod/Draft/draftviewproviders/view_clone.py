@@ -35,10 +35,11 @@ import FreeCADGui as Gui
 from drafttaskpanels import task_scale
 from draftutils.translate import translate
 
+
 class ViewProviderClone:
     """a view provider that displays a Clone icon instead of a Draft icon"""
 
-    def __init__(self,vobj):
+    def __init__(self, vobj):
         vobj.Proxy = self
 
     def attach(self, vobj):
@@ -65,9 +66,7 @@ class ViewProviderClone:
 
     def setupContextMenu(self, vobj, menu):
         action_edit = QtGui.QAction(translate("draft", "Edit"), menu)
-        QtCore.QObject.connect(action_edit,
-                               QtCore.SIGNAL("triggered()"),
-                               self.edit)
+        QtCore.QObject.connect(action_edit, QtCore.SIGNAL("triggered()"), self.edit)
         menu.addAction(action_edit)
 
     def edit(self):

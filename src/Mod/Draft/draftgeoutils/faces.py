@@ -48,8 +48,10 @@ def concatenate(shape):
         wires = [Part.Wire(edges) for edges in sorted_edges]
         face = Part.makeFace(wires, "Part::FaceMakerBullseye")
     except Base.FreeCADError:
-        print("DraftGeomUtils: Fails to join faces into one. "
-              + "The precision of the faces would be insufficient")
+        print(
+            "DraftGeomUtils: Fails to join faces into one. "
+            + "The precision of the faces would be insufficient"
+        )
         return shape
     else:
         if not wires[0].isClosed():
@@ -106,6 +108,7 @@ def is_coplanar(faces, tol=-1):
 
     return True
 
+
 isCoplanar = is_coplanar
 
 
@@ -122,10 +125,8 @@ def bind(w1, w2, per_segment=False):
     def create_face(w1, w2):
 
         try:
-            w3 = Part.LineSegment(w1.Vertexes[0].Point,
-                                  w2.Vertexes[0].Point).toShape()
-            w4 = Part.LineSegment(w1.Vertexes[-1].Point,
-                                  w2.Vertexes[-1].Point).toShape()
+            w3 = Part.LineSegment(w1.Vertexes[0].Point, w2.Vertexes[0].Point).toShape()
+            w4 = Part.LineSegment(w1.Vertexes[-1].Point, w2.Vertexes[-1].Point).toShape()
         except Part.OCCError:
             print("DraftGeomUtils: unable to bind wires")
             return None
@@ -138,12 +139,10 @@ def bind(w1, w2, per_segment=False):
         print("DraftGeomUtils: unable to bind wires")
         return None
 
-    if (per_segment
-            and len(w1.Edges) > 1
-            and len(w1.Edges) == len(w2.Edges)):
+    if per_segment and len(w1.Edges) > 1 and len(w1.Edges) == len(w2.Edges):
         faces = []
         faces_list = []
-        for (edge1, edge2) in zip(w1.Edges, w2.Edges):
+        for edge1, edge2 in zip(w1.Edges, w2.Edges):
             # Find touching edges due to ArchWall Align in opposite
             # directions, and/or opposite edge orientations.
             #
@@ -181,32 +180,40 @@ def bind(w1, w2, per_segment=False):
             # 1) there are only 2 series, connecting would return invalid shape
             # 2) 1st series of faces happens to be [], i.e. 1st edge pairs touch
             #
-            if w1.isClosed() and w2.isClosed() \
-            and len(faces_list) > 1 and faces_list[0]:
-                faces_list[0].extend(faces)  # TODO: To be reviewed, 'afterthought' on 2025.3.29, seems by 'extend', faces in 1st and last faces are not in sequential order
+            if w1.isClosed() and w2.isClosed() and len(faces_list) > 1 and faces_list[0]:
+                faces_list[0].extend(
+                    faces
+                )  # TODO: To be reviewed, 'afterthought' on 2025.3.29, seems by 'extend', faces in 1st and last faces are not in sequential order
             else:
                 faces_list.append(faces)  # Break into separate list
         from collections import Counter
+
         if faces_list:
             faces_fused_list = []
             for faces in faces_list:
                 dir = []
                 countDir = None
                 for f in faces:
-                    dir.append(f.normalAt(0,0).z)
+                    dir.append(f.normalAt(0, 0).z)
                 countDir = Counter(dir)
                 l = len(faces)
                 m = max(countDir.values())  # max(countDir, key=countDir.get)
                 if m != l:
-                    print("DraftGeomUtils: Problem, the direction of " + str(l-m) + " out of " + str(l) + " segment is reversed, please check!")
-                if len(faces) > 1 :
+                    print(
+                        "DraftGeomUtils: Problem, the direction of "
+                        + str(l - m)
+                        + " out of "
+                        + str(l)
+                        + " segment is reversed, please check!"
+                    )
+                if len(faces) > 1:
                     # Below not good if a face is self-intersecting or reversed
-                    #faces_fused = faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+                    # faces_fused = faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
                     rf = faces[0]
                     for f in faces[1:]:
                         rf = rf.fuse(f).removeSplitter().Faces[0]
-                        #rf = rf.fuse(f)  # Not working
-                    #rf = rf.removeSplitter().Faces[0]  # Not working
+                        # rf = rf.fuse(f)  # Not working
+                    # rf = rf.removeSplitter().Faces[0]  # Not working
                     faces_fused_list.append(rf)
                 # faces might be empty list [], see above; skip if empty
                 elif faces:
@@ -217,19 +224,25 @@ def bind(w1, w2, per_segment=False):
             dir = []
             countDir = None
             for f in faces:
-                dir.append(f.normalAt(0,0).z)
+                dir.append(f.normalAt(0, 0).z)
             countDir = Counter(dir)
             l = len(faces)
             m = max(countDir.values())  # max(countDir, key=countDir.get)
             if m != l:
-                print("DraftGeomUtils: Problem, the direction of " + str(l-m) + " out of " + str(l) + " segment is reversed, please check!")
+                print(
+                    "DraftGeomUtils: Problem, the direction of "
+                    + str(l - m)
+                    + " out of "
+                    + str(l)
+                    + " segment is reversed, please check!"
+                )
             # Below not good if a face is self-intersecting or reversed
-            #return faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+            # return faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
             rf = faces[0]
             for f in faces[1:]:
                 rf = rf.fuse(f).removeSplitter().Faces[0]
-                #rf = rf.fuse(f)  # Not working
-            #rf = rf.removeSplitter().Faces[0]  # Not working
+                # rf = rf.fuse(f)  # Not working
+            # rf = rf.removeSplitter().Faces[0]  # Not working
             return rf
 
     elif w1.isClosed() and w2.isClosed():
@@ -384,5 +397,6 @@ def removeSplitter(shape):
             return face
 
     return None
+
 
 ## @}

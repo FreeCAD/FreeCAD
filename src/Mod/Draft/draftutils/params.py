@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-""" Contains a parameter observer class and parameter related functions."""
+"""Contains a parameter observer class and parameter related functions."""
 
 import os
 import PySide.QtCore as QtCore
@@ -29,6 +29,7 @@ import xml.etree.ElementTree as ET
 
 import FreeCAD as App
 import Draft_rc
+
 try:
     import Arch_rc
 except ModuleNotFoundError:
@@ -40,14 +41,23 @@ if App.GuiUp:
     import FreeCADGui as Gui
     from PySide import QtWidgets
 
+
 class ParamObserverDraft:
 
     def slotParamChanged(self, param_grp, typ, entry, value):
         if entry == "textheight":
             _param_observer_callback_tray()
             return
-        if entry in ("gridBorder", "gridShowHuman", "coloredGridAxes", "gridEvery",
-                    "gridSpacing", "gridSize", "gridTransparency", "gridColor"):
+        if entry in (
+            "gridBorder",
+            "gridShowHuman",
+            "coloredGridAxes",
+            "gridEvery",
+            "gridSpacing",
+            "gridSize",
+            "gridTransparency",
+            "gridColor",
+        ):
             _param_observer_callback_grid()
             return
         if entry == "DefaultAnnoScaleMultiplier":
@@ -83,6 +93,7 @@ class ParamObserverView:
             _param_observer_callback_snaptextsize()
             return
 
+
 def _param_observer_callback_tray():
     if not hasattr(Gui, "draftToolBar"):
         return
@@ -96,6 +107,7 @@ def _param_observer_callback_scalemultiplier(value):
     # value is a string.
     # import has to happen here to avoid circular imports
     from draftutils import init_draft_statusbar
+
     if not value:
         return
     value = float(value)
@@ -103,7 +115,7 @@ def _param_observer_callback_scalemultiplier(value):
         return
     mw = Gui.getMainWindow()
     sb = mw.statusBar()
-    scale_widget = sb.findChild(QtWidgets.QToolBar,"draft_scale_widget")
+    scale_widget = sb.findChild(QtWidgets.QToolBar, "draft_scale_widget")
     if scale_widget is not None:
         scale_label = init_draft_statusbar.scale_to_label(1 / value)
         scale_widget.scaleLabel.setText(scale_label)
@@ -138,6 +150,7 @@ def _param_observer_callback_snapbar(value):
 def _param_observer_callback_snapwidget():
     # import has to happen here to avoid circular imports
     from draftutils import init_draft_statusbar
+
     if Gui.activeWorkbench().name() == "DraftWorkbench":
         init_draft_statusbar.hide_draft_statusbar()
         init_draft_statusbar.show_draft_statusbar()
@@ -146,6 +159,7 @@ def _param_observer_callback_snapwidget():
 def _param_observer_callback_scalewidget():
     # import has to happen here to avoid circular imports
     from draftutils import init_draft_statusbar
+
     if Gui.activeWorkbench().name() == "DraftWorkbench":
         init_draft_statusbar.hide_draft_statusbar()
         init_draft_statusbar.show_draft_statusbar()
@@ -176,6 +190,7 @@ def _param_observer_callback_svg_pattern():
     # imports have to happen here to avoid circular imports
     from draftutils import utils
     from draftviewproviders import view_base
+
     utils.load_svg_patterns()
     if App.ActiveDocument is None:
         return
@@ -190,22 +205,30 @@ def _param_observer_callback_svg_pattern():
         for obj in doc.Objects:
             if hasattr(obj, "ViewObject"):
                 vobj = obj.ViewObject
-                if hasattr(vobj, "Pattern") \
-                        and hasattr(vobj, "Proxy") \
-                        and isinstance(vobj.Proxy, view_base.ViewProviderDraft) \
-                        and vobj.getEnumerationsOfProperty("Pattern") != pats:
+                if (
+                    hasattr(vobj, "Pattern")
+                    and hasattr(vobj, "Proxy")
+                    and isinstance(vobj.Proxy, view_base.ViewProviderDraft)
+                    and vobj.getEnumerationsOfProperty("Pattern") != pats
+                ):
                     vobjs.append(vobj)
         if vobjs:
             data.append([doc, vobjs])
     if not data:
         return
 
-    msg = translate("draft",
-"""Do you want to update the SVG pattern options
-of existing objects in all opened documents?""")
-    res = QtWidgets.QMessageBox.question(None, "Update SVG patterns", msg,
-                                     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
-                                     QtWidgets.QMessageBox.No)
+    msg = translate(
+        "draft",
+        """Do you want to update the SVG pattern options
+of existing objects in all opened documents?""",
+    )
+    res = QtWidgets.QMessageBox.question(
+        None,
+        "Update SVG patterns",
+        msg,
+        QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+        QtWidgets.QMessageBox.No,
+    )
     if res == QtWidgets.QMessageBox.No:
         return
 
@@ -229,11 +252,13 @@ def _param_observer_start():
         _param_observer_start_view()
 
 
-def _param_observer_start_draft(param_grp = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")):
+def _param_observer_start_draft(
+    param_grp=App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft"),
+):
     param_grp.AttachManager(ParamObserverDraft())
 
 
-def _param_observer_start_view(param_grp = App.ParamGet("User parameter:BaseApp/Preferences/View")):
+def _param_observer_start_view(param_grp=App.ParamGet("User parameter:BaseApp/Preferences/View")):
     param_grp.AttachManager(ParamObserverView())
 
 
@@ -350,7 +375,7 @@ def _param_from_PrefLineEdit(widget):
     for elem in list(widget):
         if "name" in elem.keys():
             att_name = elem.attrib["name"]
-            if att_name == "text":                # Can be missing.
+            if att_name == "text":  # Can be missing.
                 value = elem.find("string").text  # If text is missing value will be None here.
             elif att_name == "prefEntry":
                 entry = elem.find("cstring").text
@@ -376,6 +401,7 @@ def _param_from_PrefFileChooser(widget):
 def _param_from_PrefFontBox(widget):
     if App.GuiUp:
         from PySide import QtGui
+
         font = QtGui.QFont()
         font.setStyleHint(QtGui.QFont.StyleHint.SansSerif)
         value = font.defaultFamily()
@@ -403,12 +429,12 @@ def _get_shape_string_font_file():
     # Mac fonts: "geneva" and "helvetica"
     # Linux fonts: "dejavusans" and "freesans"
     favorite_names = ("arial", "geneva", "helvetica", "dejavusans", "freesans")
-    font_file_sans = None   # Font with name containing "sans". 1st fallback.
+    font_file_sans = None  # Font with name containing "sans". 1st fallback.
     font_file_alpha = None  # Font with name starting with a letter. 2nd fallback.
     # Reverse the order of the paths so that user related paths come last:
     for path in QtCore.QStandardPaths.standardLocations(QtCore.QStandardPaths.FontsLocation)[::-1]:
         # We don't use os.path.join as dir_path has forward slashes even on Windows.
-        for (dir_path, dir_names, file_names) in os.walk(path):
+        for dir_path, dir_names, file_names in os.walk(path):
             for file_name in file_names:
                 base_name, ext = [s.lower() for s in os.path.splitext(file_name)]
                 if not ext in (".ttc", ".ttf"):
@@ -432,84 +458,83 @@ def _get_param_dictionary():
 
     param_dict = {}
 
-    hatch_pattern_file = App.getResourceDir().replace("\\", "/").rstrip("/") \
-            + "/Mod/TechDraw/PAT/FCPAT.pat"
+    hatch_pattern_file = (
+        App.getResourceDir().replace("\\", "/").rstrip("/") + "/Mod/TechDraw/PAT/FCPAT.pat"
+    )
 
     # Draft parameters that are not in the preferences:
     param_dict["Mod/Draft"] = {
-        "AnnotationStyleEditorHeight": ("int",       450),
-        "AnnotationStyleEditorWidth":  ("int",       450),
-        "CenterPlaneOnView":           ("bool",      False),
-        "ChainedMode":                 ("bool",      False),
-        "CopyMode":                    ("bool",      False),
-        "DefaultAnnoDisplayMode":      ("int",       0),
-        "DefaultDisplayMode":          ("int",       0),
-        "DefaultDrawStyle":            ("int",       0),
-        "DefaultPrintColor":           ("unsigned",  255),
-        "DimAutoFlipText":             ("bool",      True),
-        "Draft_array_fuse":            ("bool",      False),
-        "Draft_array_Link":            ("bool",      True),
-        "FilletChamferMode":           ("bool",      False),
-        "FilletDeleteMode":            ("bool",      False),
-        "FilletRadius":                ("float",     100.0),
-        "GlobalMode":                  ("bool",      False),
-        "GridHideInOtherWorkbenches":  ("bool",      True),
-        "HatchPatternFile":            ("string",    hatch_pattern_file),
-        "HatchPatternName":            ("string",    "Diamond"),
-        "HatchPatternResolution":      ("int",       128),  # used for SVG patterns
-        "HatchPatternRotation":        ("float",     0.0),
-        "HatchPatternScale":           ("float",     100.0),
-        "HatchPatternTranslate":       ("bool",      True),
-        "labeltype":                   ("string",    "Custom"),
-        "LayersManagerHeight":         ("int",       320),
-        "LayersManagerWidth":          ("int",       640),
-        "MakeFaceMode":                ("bool",      True),
-        "maxSnapEdges":                ("int",       0),
-        "maxSnapFaces":                ("int",       0),
-        "OffsetCopyMode":              ("bool",      False),
-        "Offset_OCC":                  ("bool",      False),
-        "RelativeMode":                ("bool",      True),
-        "ScaleClone":                  ("bool",      False),
-        "ScaleCopy":                   ("bool",      False),
-        "ScaleRelative":               ("bool",      False),
-        "ScaleUniform":                ("bool",      False),
-        "ShapeStringFontFile":         ("string",    _get_shape_string_font_file()),
-        "ShapeStringHeight":           ("float",     10.0),
-        "ShapeStringText":             ("string",    translate("draft", "Default")),
-        "snapModes":                   ("string",    "100000000000000"),
-        "snapRange":                   ("int",       8),
-        "SubelementMode":              ("bool",      False),
-        "SvgLinesBlack":               ("bool",      True),
-        "useSupport":                  ("bool",      False),
+        "AnnotationStyleEditorHeight": ("int", 450),
+        "AnnotationStyleEditorWidth": ("int", 450),
+        "CenterPlaneOnView": ("bool", False),
+        "ChainedMode": ("bool", False),
+        "CopyMode": ("bool", False),
+        "DefaultAnnoDisplayMode": ("int", 0),
+        "DefaultDisplayMode": ("int", 0),
+        "DefaultDrawStyle": ("int", 0),
+        "DefaultPrintColor": ("unsigned", 255),
+        "DimAutoFlipText": ("bool", True),
+        "Draft_array_fuse": ("bool", False),
+        "Draft_array_Link": ("bool", True),
+        "FilletChamferMode": ("bool", False),
+        "FilletDeleteMode": ("bool", False),
+        "FilletRadius": ("float", 100.0),
+        "GlobalMode": ("bool", False),
+        "GridHideInOtherWorkbenches": ("bool", True),
+        "HatchPatternFile": ("string", hatch_pattern_file),
+        "HatchPatternName": ("string", "Diamond"),
+        "HatchPatternResolution": ("int", 128),  # used for SVG patterns
+        "HatchPatternRotation": ("float", 0.0),
+        "HatchPatternScale": ("float", 100.0),
+        "HatchPatternTranslate": ("bool", True),
+        "labeltype": ("string", "Custom"),
+        "LayersManagerHeight": ("int", 320),
+        "LayersManagerWidth": ("int", 640),
+        "MakeFaceMode": ("bool", True),
+        "maxSnapEdges": ("int", 0),
+        "maxSnapFaces": ("int", 0),
+        "OffsetCopyMode": ("bool", False),
+        "Offset_OCC": ("bool", False),
+        "RelativeMode": ("bool", True),
+        "ScaleClone": ("bool", False),
+        "ScaleCopy": ("bool", False),
+        "ScaleRelative": ("bool", False),
+        "ScaleUniform": ("bool", False),
+        "ShapeStringFontFile": ("string", _get_shape_string_font_file()),
+        "ShapeStringHeight": ("float", 10.0),
+        "ShapeStringText": ("string", translate("draft", "Default")),
+        "snapModes": ("string", "100000000000000"),
+        "snapRange": ("int", 8),
+        "SubelementMode": ("bool", False),
+        "SvgLinesBlack": ("bool", True),
+        "useSupport": ("bool", False),
     }
 
     param_dict["Mod/Draft/ContinueMode"] = {
         # Draft
-        "Arc":                         ("bool",      False),
-        "Arc_3Points":                 ("bool",      False),
-        "BezCurve":                    ("bool",      False),
-        "Bspline":                     ("bool",      False),
-        "Circle":                      ("bool",      False),
-        "CubicBezCurve":               ("bool",      False),
-        "Dimension":                   ("bool",      False),
-        "Ellipse":                     ("bool",      False),
-        "Line":                        ("bool",      False),
-        "Point":                       ("bool",      False),
-        "Polygon":                     ("bool",      False),
-        "Polyline":                    ("bool",      False),
-        "Rectangle":                   ("bool",      False),
-        "Text":                        ("bool",      False),
-
+        "Arc": ("bool", False),
+        "Arc_3Points": ("bool", False),
+        "BezCurve": ("bool", False),
+        "Bspline": ("bool", False),
+        "Circle": ("bool", False),
+        "CubicBezCurve": ("bool", False),
+        "Dimension": ("bool", False),
+        "Ellipse": ("bool", False),
+        "Line": ("bool", False),
+        "Point": ("bool", False),
+        "Polygon": ("bool", False),
+        "Polyline": ("bool", False),
+        "Rectangle": ("bool", False),
+        "Text": ("bool", False),
         # Standard operations (Draft)
-        "Copy":                        ("bool",      False),
-        "Move":                        ("bool",      False),
-        "Rotate":                      ("bool",      False),
-
+        "Copy": ("bool", False),
+        "Move": ("bool", False),
+        "Rotate": ("bool", False),
         # Arch/BIM
-        "Beam":                        ("bool",      False),
-        "Column":                      ("bool",      False),
-        "Panel":                       ("bool",      False),
-        "Wall":                        ("bool",      False),
+        "Beam": ("bool", False),
+        "Column": ("bool", False),
+        "Panel": ("bool", False),
+        "Wall": ("bool", False),
     }
 
     start_val = App.Units.Quantity(100.0, App.Units.Length).Value
@@ -521,136 +546,137 @@ def _get_param_dictionary():
         "ZInterval": ("float", start_val),
         "XNumOfElements": ("int", 2),
         "YNumOfElements": ("int", 2),
-        "ZNumOfElements": ("int", 2)
+        "ZNumOfElements": ("int", 2),
     }
 
     # Arch parameters that are not in the preferences:
     param_dict["Mod/Arch"] = {
-        "applyConstructionStyle":      ("bool",      True),
-        "ClaimHosted":                 ("bool",      True),
-        "CustomIfcSchema":             ("string",    ""),     # importIFClegacy.py
-        "createIfcGroups":             ("bool",      False),  # importIFClegacy.py
-        "DoorHeight":                  ("float",     2100.0),
-        "DoorPreset":                  ("int",       5),
-        "DoorSill":                    ("float",     0.0),
-        "DoorWidth":                   ("float",     1000.0),
-        "FreeLinking":                 ("bool",      False),
-        "forceIfcPythonParser":        ("bool",      False),  # importIFClegacy.py
-        "getStandardType":             ("bool",      False),
-        "ifcAggregateWindows":         ("bool",      False),  # importIFClegacy.py
-        "ifcAsMesh":                   ("string",    ""),     # importIFClegacy.py
-        "IfcExportList":               ("bool",      False),  # importIFClegacy.py
-        "ifcImportLayer":              ("bool",      True),
-        "ifcJoinSolids":               ("bool",      False),  # importIFClegacy.py
-        "ifcMergeProfiles":            ("bool",      False),
-        "IfcScalingFactor":            ("float",     1.0),    # importIFClegacy.py
-        "ifcSeparatePlacements":       ("bool",      False),  # importIFClegacy.py
-        "MultiMaterialColumnWidth0":   ("int",       60),
-        "MultiMaterialColumnWidth1":   ("int",       60),
-        "PanelLength":                 ("float",     1000.0),
-        "PanelThickness":              ("float",     10.0),
-        "PanelWidth":                  ("float",     1000.0),
-        "PrecastBase":                 ("float",     0.0),
-        "PrecastChamfer":              ("float",     0.0),
-        "PrecastDentHeight":           ("float",     0.0),
-        "PrecastDentLength":           ("float",     0.0),
-        "PrecastDentWidth":            ("float",     0.0),
-        "PrecastDownLength":           ("float",     0.0),
-        "PrecastGrooveDepth":          ("float",     0.0),
-        "PrecastGrooveHeight":         ("float",     0.0),
-        "PrecastGrooveSpacing":        ("float",     0.0),
-        "PrecastHoleMajor":            ("float",     0.0),
-        "PrecastHoleMinor":            ("float",     0.0),
-        "PrecastHoleSpacing":          ("float",     0.0),
-        "PrecastRiser":                ("float",     0.0),
-        "PrecastTread":                ("float",     0.0),
-        "ProfilePreset":               ("string",    ""),
-        "ScheduleColumnWidth0":        ("int",       100),
-        "ScheduleColumnWidth1":        ("int",       100),
-        "ScheduleColumnWidth2":        ("int",       50),
-        "ScheduleColumnWidth3":        ("int",       100),
-        "ScheduleDialogHeight":        ("int",       200),
-        "ScheduleDialogWidth":         ("int",       300),
-        "StructureHeight":             ("float",     1000.0),
-        "StructureLength":             ("float",     100.0),
-        "StructurePreset":             ("string",    ""),
-        "StructureWidth":              ("float",     100.0),
-        "swallowAdditions":            ("bool",      True),
-        "swallowSubtractions":         ("bool",      True),
-        "WallAlignment":               ("int",       0),
-        "WallHeight":                  ("float",     3000.0),
-        "WallWidth":                   ("float",     200.0),
-        "WallOffset":                  ("float",     0.0),
-        "WindowH1":                    ("float",     50.0),
-        "WindowH2":                    ("float",     50.0),
-        "WindowH3":                    ("float",     50.0),
-        "WindowHeight":                ("float",     1000.0),
-        "WindowO1":                    ("float",     0.0),
-        "WindowO2":                    ("float",     50.0),
-        "WindowPreset":                ("int",       0),
-        "WindowSill":                  ("float",     0.0),
-        "WindowW1":                    ("float",     100.0),
-        "WindowW2":                    ("float",     50.0),
-        "WindowWidth":                 ("float",     1000.0),
+        "applyConstructionStyle": ("bool", True),
+        "ClaimHosted": ("bool", True),
+        "CustomIfcSchema": ("string", ""),  # importIFClegacy.py
+        "createIfcGroups": ("bool", False),  # importIFClegacy.py
+        "DoorHeight": ("float", 2100.0),
+        "DoorPreset": ("int", 5),
+        "DoorSill": ("float", 0.0),
+        "DoorWidth": ("float", 1000.0),
+        "FreeLinking": ("bool", False),
+        "forceIfcPythonParser": ("bool", False),  # importIFClegacy.py
+        "getStandardType": ("bool", False),
+        "ifcAggregateWindows": ("bool", False),  # importIFClegacy.py
+        "ifcAsMesh": ("string", ""),  # importIFClegacy.py
+        "IfcExportList": ("bool", False),  # importIFClegacy.py
+        "ifcImportLayer": ("bool", True),
+        "ifcJoinSolids": ("bool", False),  # importIFClegacy.py
+        "ifcMergeProfiles": ("bool", False),
+        "IfcScalingFactor": ("float", 1.0),  # importIFClegacy.py
+        "ifcSeparatePlacements": ("bool", False),  # importIFClegacy.py
+        "MultiMaterialColumnWidth0": ("int", 60),
+        "MultiMaterialColumnWidth1": ("int", 60),
+        "PanelLength": ("float", 1000.0),
+        "PanelThickness": ("float", 10.0),
+        "PanelWidth": ("float", 1000.0),
+        "PrecastBase": ("float", 0.0),
+        "PrecastChamfer": ("float", 0.0),
+        "PrecastDentHeight": ("float", 0.0),
+        "PrecastDentLength": ("float", 0.0),
+        "PrecastDentWidth": ("float", 0.0),
+        "PrecastDownLength": ("float", 0.0),
+        "PrecastGrooveDepth": ("float", 0.0),
+        "PrecastGrooveHeight": ("float", 0.0),
+        "PrecastGrooveSpacing": ("float", 0.0),
+        "PrecastHoleMajor": ("float", 0.0),
+        "PrecastHoleMinor": ("float", 0.0),
+        "PrecastHoleSpacing": ("float", 0.0),
+        "PrecastRiser": ("float", 0.0),
+        "PrecastTread": ("float", 0.0),
+        "ProfilePreset": ("string", ""),
+        "ScheduleColumnWidth0": ("int", 100),
+        "ScheduleColumnWidth1": ("int", 100),
+        "ScheduleColumnWidth2": ("int", 50),
+        "ScheduleColumnWidth3": ("int", 100),
+        "ScheduleDialogHeight": ("int", 200),
+        "ScheduleDialogWidth": ("int", 300),
+        "StructureHeight": ("float", 1000.0),
+        "StructureLength": ("float", 100.0),
+        "StructurePreset": ("string", ""),
+        "StructureWidth": ("float", 100.0),
+        "swallowAdditions": ("bool", True),
+        "swallowSubtractions": ("bool", True),
+        "WallAlignment": ("int", 0),
+        "WallHeight": ("float", 3000.0),
+        "WallWidth": ("float", 200.0),
+        "WallOffset": ("float", 0.0),
+        "WindowH1": ("float", 50.0),
+        "WindowH2": ("float", 50.0),
+        "WindowH3": ("float", 50.0),
+        "WindowHeight": ("float", 1000.0),
+        "WindowO1": ("float", 0.0),
+        "WindowO2": ("float", 50.0),
+        "WindowPreset": ("int", 0),
+        "WindowSill": ("float", 0.0),
+        "WindowW1": ("float", 100.0),
+        "WindowW2": ("float", 50.0),
+        "WindowWidth": ("float", 1000.0),
     }
 
     # For the Mod/Mesh parameters we do not check the preferences:
     param_dict["Mod/Mesh"] = {
-        "MaxDeviationExport":          ("float",     0.1),
+        "MaxDeviationExport": ("float", 0.1),
     }
 
     # For the General parameters we do not check the preferences:
     param_dict["General"] = {
-        "ToolbarIconSize":             ("int",       24),
+        "ToolbarIconSize": ("int", 24),
     }
 
     # For the Units parameters we do not check the preferences:
     param_dict["Units"] = {
-        "Decimals":                    ("int",       2),
-        "UserSchema":                  ("int",       0),
+        "Decimals": ("int", 2),
+        "UserSchema": ("int", 0),
     }
 
     # For the View parameters we do not check the preferences:
     param_dict["View"] = {
-        "BackgroundColor":             ("unsigned",  336897023),
-        "BackgroundColor2":            ("unsigned",  859006463),
-        "BackgroundColor3":            ("unsigned",  2543299327),
-        "DefaultAmbientColor":         ("unsigned",  1431655935),
-        "DefaultEmissiveColor":        ("unsigned",  255),
-        "DefaultShapeColor":           ("unsigned",  3435980543),
-        "DefaultShapeLineColor":       ("unsigned",  421075455),
-        "DefaultShapeLineWidth":       ("int",       2),
-        "DefaultShapePointSize":       ("int",       2),
-        "DefaultShapeShininess":       ("int",       90),
-        "DefaultShapeTransparency":    ("int",       0),
-        "DefaultShapeVertexColor":     ("unsigned",  421075455),
-        "DefaultSpecularColor":        ("unsigned",  2290649343),
-        "EnableSelection":             ("bool",      True),
-        "Gradient":                    ("bool",      True),
-        "MarkerSize":                  ("int",       9),
-        "NewDocumentCameraScale":      ("float",     100.0),
+        "BackgroundColor": ("unsigned", 336897023),
+        "BackgroundColor2": ("unsigned", 859006463),
+        "BackgroundColor3": ("unsigned", 2543299327),
+        "DefaultAmbientColor": ("unsigned", 1431655935),
+        "DefaultEmissiveColor": ("unsigned", 255),
+        "DefaultShapeColor": ("unsigned", 3435980543),
+        "DefaultShapeLineColor": ("unsigned", 421075455),
+        "DefaultShapeLineWidth": ("int", 2),
+        "DefaultShapePointSize": ("int", 2),
+        "DefaultShapeShininess": ("int", 90),
+        "DefaultShapeTransparency": ("int", 0),
+        "DefaultShapeVertexColor": ("unsigned", 421075455),
+        "DefaultSpecularColor": ("unsigned", 2290649343),
+        "EnableSelection": ("bool", True),
+        "Gradient": ("bool", True),
+        "MarkerSize": ("int", 9),
+        "NewDocumentCameraScale": ("float", 100.0),
     }
-
 
     # Preferences ui files are stored in resource files.
     # For the Draft Workbench: /Mod/Draft/Draft_rc.py
     # For the Arch Workbench: /Mod/Arch/Arch_rc.py
-    for fnm in (":/ui/preferences-draft.ui",
-                ":/ui/preferences-draftinterface.ui",
-                ":/ui/preferences-draftsnap.ui",
-                ":/ui/preferences-drafttexts.ui",
-                ":/ui/preferences-draftvisual.ui",
-                ":/ui/preferences-dwg.ui",
-                ":/ui/preferences-dxf.ui",
-                ":/ui/preferences-oca.ui",
-                ":/ui/preferences-svg.ui",
-                ":/ui/preferences-arch.ui",
-                ":/ui/preferences-archdefaults.ui",
-                ":/ui/preferences-dae.ui",
-                ":/ui/preferences-ifc.ui",
-                ":/ui/preferences-ifc-export.ui",
-                ":/ui/preferences-sh3d-import.ui",
-                ":/ui/preferences-webgl.ui",):
+    for fnm in (
+        ":/ui/preferences-draft.ui",
+        ":/ui/preferences-draftinterface.ui",
+        ":/ui/preferences-draftsnap.ui",
+        ":/ui/preferences-drafttexts.ui",
+        ":/ui/preferences-draftvisual.ui",
+        ":/ui/preferences-dwg.ui",
+        ":/ui/preferences-dxf.ui",
+        ":/ui/preferences-oca.ui",
+        ":/ui/preferences-svg.ui",
+        ":/ui/preferences-arch.ui",
+        ":/ui/preferences-archdefaults.ui",
+        ":/ui/preferences-dae.ui",
+        ":/ui/preferences-ifc.ui",
+        ":/ui/preferences-ifc-export.ui",
+        ":/ui/preferences-sh3d-import.ui",
+        ":/ui/preferences-webgl.ui",
+    ):
 
         # https://stackoverflow.com/questions/14750997/load-txt-file-from-resources-in-python
         fd = QtCore.QFile(fnm)

@@ -32,8 +32,7 @@ import FreeCADGui as Gui
 from draftutils import gui_utils
 
 __title__ = "FreeCAD Draft Workbench GUI Tools - Working plane-related tools"
-__author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
-              "Dmitry Chigrin")
+__author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, " "Dmitry Chigrin"
 __url__ = "https://www.freecad.org"
 
 
@@ -42,9 +41,14 @@ class Draft_WorkingPlaneProxy:
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {"Pixmap": "Draft_PlaneProxy",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_WorkingPlaneProxy", "Working Plane Proxy"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_WorkingPlaneProxy", "Creates a proxy object from the current working plane that allows to restore the camera position and visibility of objects")}
+        return {
+            "Pixmap": "Draft_PlaneProxy",
+            "MenuText": QT_TRANSLATE_NOOP("Draft_WorkingPlaneProxy", "Working Plane Proxy"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Draft_WorkingPlaneProxy",
+                "Creates a proxy object from the current working plane that allows to restore the camera position and visibility of objects",
+            ),
+        }
 
     def IsActive(self):
         """Return True when this command should be available."""
@@ -61,6 +65,6 @@ class Draft_WorkingPlaneProxy:
         App.ActiveDocument.recompute()
 
 
-Gui.addCommand('Draft_WorkingPlaneProxy', Draft_WorkingPlaneProxy())
+Gui.addCommand("Draft_WorkingPlaneProxy", Draft_WorkingPlaneProxy())
 
 ## @}

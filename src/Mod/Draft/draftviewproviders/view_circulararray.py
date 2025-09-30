@@ -48,4 +48,5 @@ class ViewProviderCircularArray(ViewProviderDraftArray):
         """Set the icon in the tree view."""
         return ":/icons/Draft_CircularArray"
 
+
 ## @}
