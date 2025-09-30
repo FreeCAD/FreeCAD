@@ -1867,3 +1867,41 @@ class TestArchReport(TestArchBase.TestArchBase):
             self.assertIsInstance(resulting_objects[0], FreeCAD.DocumentObject)
             self.assertEqual(resulting_objects[0].Name, self.wall_ext.Name, "The final object from the pipeline is incorrect.")
 
+    def test_pipeline_with_children_function(self):
+        """
+        Tests that the CHILDREN function correctly uses the input from a
+        previous pipeline step instead of running its own subquery.
+        """
+        # --- ARRANGE ---
+        # Create a parent Floor and a Wall that is a child of that floor.
+        floor = Arch.makeFloor(name="Pipeline Test Floor")
+        wall = Arch.makeWall(name="Wall on Test Floor")
+        floor.addObject(wall)
+
+        # Create a "distractor" wall that is NOT a child, to prove the filter works.
+        _ = Arch.makeWall(name="Unrelated Distractor Wall")
+        self.doc.recompute()
+
+        # Define a two-step pipeline.
+        # Step 1: Select only the 'Pipeline Test Floor'.
+        stmt1 = ArchReport.ReportStatement(
+            query_string="SELECT * FROM document WHERE Label = 'Pipeline Test Floor'",
+            is_pipelined=False
+        )
+
+        # Step 2: Use CHILDREN to get the walls from the previous step's result.
+        stmt2 = ArchReport.ReportStatement(
+            query_string="SELECT * FROM CHILDREN(SELECT * FROM document) WHERE IfcType = 'Wall'",
+            is_pipelined=True
+        )
+
+        # --- ACT ---
+        # Execute the pipeline and get the final list of objects.
+        resulting_objects = Arch.selectObjectsFromPipeline([stmt1, stmt2])
+
+        # --- ASSERT ---
+        # With the bug present, `resulting_objects` will be an empty list,
+        # causing this assertion to fail as expected.
+        self.assertEqual(len(resulting_objects), 1, "The pipeline should have resulted in exactly one child object.")
+        self.assertEqual(resulting_objects[0].Name, wall.Name, "The object found via the pipeline is incorrect.")
+        
