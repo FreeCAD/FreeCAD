@@ -2968,7 +2968,7 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
 
     // center to line distance (=h) and its derivative (=dh)
     double darea = 0.0;
-    double area = v_line.crossProdNorm(v_p1ct, darea);  // parallelogram oriented area
+    double area = v_line.crossProdZ(v_p1ct, darea);  // parallelogram oriented area
 
     double dlength;
     double length = v_line.length(dlength);
