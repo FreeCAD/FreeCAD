@@ -186,6 +186,36 @@ def _map_results_to_objects(headers, data_rows):
 
     return found_objects
 
+
+def _execute_pipeline_for_objects(statements: List['ReportStatement']) -> List:
+    """
+    Internal helper to run a pipeline and get the final list of objects.
+
+    Unlike the main generator, this function consumes the entire pipeline and
+    returns only the final list of resulting objects, for use in validation.
+    """
+    pipeline_input_objects = None
+
+    for i, statement in enumerate(statements):
+        if not statement.query_string or not statement.query_string.strip():
+            pipeline_input_objects = [] if statement.is_pipelined else None
+            continue
+
+        source = pipeline_input_objects if statement.is_pipelined else None
+
+        try:
+            _, _, resulting_objects = _run_query(
+                statement.query_string,
+                mode='full_data',
+                source_objects=source
+            )
+            pipeline_input_objects = resulting_objects
+        except (SqlEngineError, BimSqlSyntaxError):
+            # If any step fails, the final output is an empty list of objects.
+            return []
+
+    return pipeline_input_objects or []
+
 # --- Logical Classes for the SQL Statement Object Model ---
 
 class FunctionRegistry:
@@ -446,19 +476,26 @@ class ConvertFunction(FunctionBase):
 
 class FromFunctionBase:
     """Base class for all functions used in a FROM clause."""
-    def __init__(self, substatement):
-        self.substatement = substatement
+    def __init__(self, args):
+        # args will be the SelectStatement to be executed
+        self.args = args
 
-    def get_objects(self):
+    def get_objects(self, source_objects=None):
         """Executes the subquery and returns the final list of objects."""
         raise NotImplementedError()
 
-    def _get_parent_objects(self):
+    def _get_parent_objects(self, source_objects=None):
         """
         Helper to execute the subquery and resolve the resulting rows back
         into a list of FreeCAD document objects.
         """
-        headers, rows = self.substatement.execute(FreeCAD.ActiveDocument.Objects)
+        if source_objects is not None:
+            # If source_objects are provided by the pipeline, use them directly as the parents.
+            return source_objects
+
+        # Only execute the substatement if no source_objects are provided.
+        headers, rows = self.args.execute(FreeCAD.ActiveDocument.Objects)
+
         if not rows:
             return []
 
@@ -521,9 +558,9 @@ class ChildrenFromFunction(FromFunctionBase):
             else:
                 results_set.add(member)
 
-    def get_objects(self):
+    def get_objects(self, source_objects=None):
         # Execute the subquery to find parent objects.
-        parent_objects = self._get_parent_objects()
+        parent_objects = self._get_parent_objects(source_objects=source_objects)
         if not parent_objects:
             return []
 
@@ -1032,12 +1069,12 @@ class SelectStatement:
 class FromClause:
     def __init__(self, reference):
         self.reference = reference
-    def get_objects(self):
+    def get_objects(self, source_objects=None):
         """
         Delegates the object retrieval to the contained logical object.
         This works for both ReferenceExtractor and FromFunctionBase children.
         """
-        return self.reference.get_objects()
+        return self.reference.get_objects(source_objects=source_objects)
 
 
 class WhereClause:
@@ -1226,7 +1263,7 @@ class ReferenceExtractor:
             # Original behavior for a base reference from the current row's object.
             return _get_property(obj, self.value)
 
-    def get_objects(self):
+    def get_objects(self, source_objects=None):
         """
         Provides the interface for the FromClause to get the initial set of objects to query.
 
@@ -1239,6 +1276,9 @@ class ReferenceExtractor:
             A list of all objects in the active document if `self.value` is 'document', otherwise an
             empty list.
         """
+        if source_objects is not None:
+            # If source_objects are provided, they override 'FROM document'.
+            return source_objects
         if self.value == 'document' and not self.base:
             found_objects = FreeCAD.ActiveDocument.Objects
             return found_objects
@@ -1286,12 +1326,14 @@ class SqlTransformerMixin:
     def where_clause(self, i): return WhereClause(i[1])
 
     def from_function(self, items):
-        function_name_token, substatement = items[0], items[1]
+        function_name_token = items[0]
+        # The argument is the substatement to be executed
+        arg = items[1]
         function_name = str(function_name_token).upper()
         function_class = self.from_function_registry.get_class(function_name)
         if not function_class:
             raise ValueError(f"Unknown FROM function: {function_name}")
-        return function_class(substatement)
+        return function_class(arg)
 
     def group_by_clause(self, items):
         # Allow both property references and function calls as grouping keys.
@@ -1634,11 +1676,7 @@ def _run_query(query_string: str, mode: str, source_objects: Optional[List] = No
 
     statement = _parse_and_transform(query_string)
 
-    if source_objects is not None:
-        all_objects = source_objects
-    else:
-        all_objects = statement.from_clause.get_objects()
-
+    all_objects = statement.from_clause.get_objects(source_objects=source_objects)
 
     if mode == 'count_only':
         # Phase 1: Perform the fast filtering and grouping to get the
