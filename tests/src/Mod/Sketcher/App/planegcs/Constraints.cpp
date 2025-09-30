@@ -174,7 +174,7 @@ TEST_F(ConstraintsTest, tangentBSplineAndArc)  // NOLINT
     double dprd;
     // FIXME: This error is probably too high. Fixing this may require improving the solver,
     // however.
-    EXPECT_NEAR(std::fabs(centerToPoint.crossProdNorm(tangentBSplineAtPoint, dprd))
+    EXPECT_NEAR(std::fabs(centerToPoint.crossProdZ(tangentBSplineAtPoint, dprd))
                     / (centerToPoint.length() * tangentBSplineAtPoint.length()),
                 1.0,
                 0.005);
