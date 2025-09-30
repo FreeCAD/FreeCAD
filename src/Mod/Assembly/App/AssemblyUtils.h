@@ -174,6 +174,7 @@ AssemblyExport App::DocumentObject* getMovingPartFromRef(const AssemblyObject* a
 AssemblyExport std::vector<std::string> getSubAsList(const App::PropertyXLinkSub* prop);
 AssemblyExport std::vector<std::string> getSubAsList(const App::DocumentObject* joint,
                                                      const char* propName);
+AssemblyExport void syncPlacements(App::DocumentObject* src, App::DocumentObject* to);
 
 }  // namespace Assembly
 
