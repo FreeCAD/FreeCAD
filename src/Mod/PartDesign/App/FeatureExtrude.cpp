@@ -224,7 +224,7 @@ void FeatureExtrude::updateProperties()
             localOffset = true;
         }
         else if (method == "ThroughAll") {
-            // No specific length/taper/offset for ThroughAll type
+            taperVisible = true;
         }
     };
 
