@@ -284,6 +284,7 @@ class _ArchReport:
     def onDocumentRestored(self, obj):
         """Called after the object properties are restored from a file."""
         # Rebuild the live list of objects from the newly loaded persistent data
+        self.obj = obj
         self.hydrate_live_statements(obj)
         self.setProperties(obj) # This will ensure observer is re-attached
 
@@ -474,53 +475,34 @@ class _ArchReport:
         return current_row # Return the next available row
 
     def execute(self, obj):
-        # Execute using the live list of objects, managed by the proxy
+        """Executes all statements and writes the results to the target spreadsheet."""
         if not self.live_statements:
             return
 
-        sp = obj.Target # Ensure we use the explicitly linked Target
-        if not sp: # ensure spreadsheet exists, this is an error condition
+        sp = self.getSpreadSheet(obj, force=True)
+        if not sp:
             FreeCAD.Console.PrintError(f"Report '{getattr(obj, 'Label', '')}': No target spreadsheet found.\n")
             return
-        sp.clearAll() # Clear the spreadsheet for a new report
+        sp.clearAll()
 
-        self.spreadsheet_current_row = 1 # Reset row counter for a new report build
+        # Reset the row counter for a new report build.
+        self.spreadsheet_current_row = 1
 
-        for statement in self.live_statements:
-            # Skip empty queries (user may have an empty placeholder statement)
-            if not statement.query_string or not statement.query_string.strip():
-                continue
-
-            try:
-                # ArchSql.select will log detailed errors and then re-raise an exception.
-                # We catch it here to write a user-friendly message to the spreadsheet.
-                headers, results_data = ArchSql.select(statement.query_string)
-            except ArchSql.SqlEngineError as e:
-                # On failure, record the error in the spreadsheet.
-                self.spreadsheet_current_row = self.setSpreadsheetData(
-                    obj,
-                    ["Error"],
-                    [[str(e)]],
-                    self.spreadsheet_current_row,
-                    use_description_as_header=True, # Give context to the error
-                    description_text=statement.description,
-                    include_column_names=False, # Don't print "Error" twice
-                    print_results_in_bold=True
-                )
-                self.spreadsheet_current_row += 1 # Add a space after the error row
-                continue # Move to the next statement
-
+        # The execute_pipeline function is a generator that yields the results
+        # of each standalone statement or the final result of a pipeline chain.
+        for statement, headers, results_data in ArchSql.execute_pipeline(self.live_statements):
+            # For each yielded result block, write it to the spreadsheet.
+            # The setSpreadsheetData helper already handles all the formatting.
             self.spreadsheet_current_row = self.setSpreadsheetData(
                 obj,
                 headers,
                 results_data,
-                self.spreadsheet_current_row,
+                start_row=self.spreadsheet_current_row,
                 use_description_as_header=statement.use_description_as_header,
                 description_text=statement.description,
                 include_column_names=statement.include_column_names,
                 add_empty_row_after=statement.add_empty_row_after,
-                print_results_in_bold=statement.print_results_in_bold,
-                force=False # Spreadsheet already exists
+                print_results_in_bold=statement.print_results_in_bold
             )
 
         sp.recompute()
@@ -603,28 +585,33 @@ class ReportTaskPanel:
 
         # Table for statements: Description | Header | Cols | Status
         self.table_statements = QtWidgets.QTableWidget()
-        self.table_statements.setColumnCount(4)  # Description, Header, Cols, Status
+        self.table_statements.setColumnCount(5)  # Description, Pipe, Header, Cols, Status
         self.table_statements.setHorizontalHeaderLabels([
             translate("Arch", "Description"),
+            translate("Arch", "Pipe"),
             translate("Arch", "Header"),
             translate("Arch", "Cols"),
             translate("Arch", "Status"),
         ])
 
         # Add informative tooltips to the headers
-        self.table_statements.horizontalHeaderItem(0).setToolTip(translate("Arch", "A user-defined description for this statement."))
-        self.table_statements.horizontalHeaderItem(1).setToolTip(translate("Arch", "If checked, the Description will be used as a section header in the report."))
-        self.table_statements.horizontalHeaderItem(2).setToolTip(translate("Arch", "If checked, the column names (e.g., 'Label', 'Area') will be included in the report."))
-        self.table_statements.horizontalHeaderItem(3).setToolTip(translate("Arch", "Indicates the status of the SQL query."))
+        self.table_statements.horizontalHeaderItem(2).setToolTip(translate("Arch", "A user-defined description for this statement."))
+        self.table_statements.horizontalHeaderItem(1).setToolTip(translate("Arch", "If checked, this statement will use the results of the previous statement as its data source."))
+        self.table_statements.horizontalHeaderItem(2).setToolTip(translate("Arch", "If checked, the Description will be used as a section header in the report."))
+        self.table_statements.horizontalHeaderItem(3).setToolTip(translate("Arch", "If checked, the column names (e.g., 'Label', 'Area') will be included in the report."))
+        self.table_statements.horizontalHeaderItem(4).setToolTip(translate("Arch", "Indicates the status of the SQL query."))
 
         # Description stretches, others sized to contents
-        self.table_statements.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
-        self.table_statements.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        self.table_statements.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch) # Description
+        self.table_statements.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents) # Pipe
         self.table_statements.horizontalHeader().setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         self.table_statements.horizontalHeader().setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
+        self.table_statements.horizontalHeader().setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeToContents)
         self.table_statements.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.table_statements.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.table_statements.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
+        self.table_statements.setDragDropOverwriteMode(False)
+        self.table_statements.verticalHeader().sectionMoved.connect(self._on_row_moved)
         self.statements_overview_layout.addWidget(self.table_statements)
 
         # Template controls for full reports
@@ -755,6 +742,8 @@ class ReportTaskPanel:
         self.display_options_group = QtWidgets.QGroupBox(translate("Arch", "Display Options"))
         self.display_options_layout = QtWidgets.QVBoxLayout(self.display_options_group)
 
+        self.chk_is_pipelined = QtWidgets.QCheckBox(translate("Arch", "Use as Pipeline Step"))
+        self.chk_is_pipelined.setToolTip(translate("Arch", "When checked, this statement will use the results of the previous statement as its data source."))
         self.chk_use_description_as_header = QtWidgets.QCheckBox(translate("Arch", "Use Description as Section Header"))
         self.chk_use_description_as_header.setToolTip(translate("Arch", "When checked, the statement's description will be written as a merged header row before its results."))
         self.chk_include_column_names = QtWidgets.QCheckBox(translate("Arch", "Include Column Names"))
@@ -763,6 +752,7 @@ class ReportTaskPanel:
         self.chk_add_empty_row_after.setToolTip(translate("Arch", "Insert one empty row after this statement's results."))
         self.chk_print_results_in_bold = QtWidgets.QCheckBox(translate("Arch", "Print Results in Bold"))
         self.chk_print_results_in_bold.setToolTip(translate("Arch", "Render the result cells in bold font for emphasis."))
+        self.display_options_layout.addWidget(self.chk_is_pipelined)
         self.display_options_layout.addWidget(self.chk_use_description_as_header)
         self.display_options_layout.addWidget(self.chk_include_column_names)
         self.display_options_layout.addWidget(self.chk_add_empty_row_after)
@@ -790,34 +780,41 @@ class ReportTaskPanel:
         self.form = [self.overview_widget, self.editor_widget]
 
         # --- Connections ---
-        self.btn_add_statement.clicked.connect(self._add_statement)
-        self.btn_remove_statement.clicked.connect(self._remove_selected_statement)
-        self.btn_duplicate_statement.clicked.connect(self._duplicate_selected_statement)
-        self.btn_edit_selected.clicked.connect(self._start_edit_session)
+        self.btn_add_statement.clicked.connect(lambda: self._add_statement())
+        self.btn_remove_statement.clicked.connect(lambda: self._remove_selected_statement())
+        self.btn_duplicate_statement.clicked.connect(lambda: self._duplicate_selected_statement()) # type: ignore
+        self.btn_edit_selected.clicked.connect(lambda: self._start_edit_session())
         self.table_statements.itemSelectionChanged.connect(self._on_table_selection_changed)
         self.template_dropdown.activated.connect(self._on_load_report_template)
-        self.btn_save_template.clicked.connect(self._on_save_report_template)
+        self.btn_save_template.clicked.connect(lambda: self._on_save_report_template())
         # Keep table edits in sync with the runtime statements
         self.table_statements.itemChanged.connect(self._on_table_item_changed)
 
-        # Connect all editor fields to a single handler to manage dirty state and UI sync.
+        # Connect all editor fields to a generic handler to manage the dirty state.
+        self.description_edit.textChanged.connect(self._on_editor_field_changed)
         self.sql_query_edit.textChanged.connect(self._on_editor_sql_changed)
+        for checkbox in self.display_options_group.findChildren(QtWidgets.QCheckBox):
+            checkbox.stateChanged.connect(self._on_editor_field_changed)
         self.query_preset_dropdown.activated.connect(self._on_load_query_preset)
-        self.btn_save_query_preset.clicked.connect(self._on_save_query_preset)
+        self.chk_is_pipelined.stateChanged.connect(self._on_editor_sql_changed)
+        self.btn_save_query_preset.clicked.connect(lambda: self._on_save_query_preset())
 
         # Preview and Commit connections
-        self.btn_toggle_preview.toggled.connect(self._on_show_preview_toggled)
-        self.btn_refresh_preview.clicked.connect(self._run_and_display_preview)
-        self.btn_save.clicked.connect(self.on_apply_clicked)
-        self.btn_discard.clicked.connect(self.on_discard_clicked)
-
-        self.btn_show_cheatsheet.clicked.connect(self._show_cheatsheet_dialog)
+        self.btn_toggle_preview.toggled.connect(self._on_preview_toggled)
+        self.btn_refresh_preview.clicked.connect(lambda: self._run_and_display_preview())
+        self.btn_save.clicked.connect(lambda: self.on_save_clicked())
+        self.btn_discard.clicked.connect(lambda: self.on_discard_clicked())
+        self.btn_show_cheatsheet.clicked.connect(lambda: self._show_cheatsheet_dialog())
 
         # Validation Timer for live SQL preview
         # Timer doesn't need a specific QWidget parent here; use no parent.
         self.validation_timer = QtCore.QTimer()
         self.validation_timer.setSingleShot(True)
         self.validation_timer.timeout.connect(self._run_live_validation_for_editor)
+
+        # Store icons for dynamic button changes
+        self.icon_show_preview = FreeCADGui.getIcon(":/icons/Std_ToggleVisibility.svg")
+        self.icon_hide_preview = FreeCADGui.getIcon(":/icons/Invisible.svg")
 
         # Initial UI setup
         self._load_and_populate_presets()
@@ -854,19 +851,30 @@ class ReportTaskPanel:
             desc_item.setToolTip(translate("Arch", "Double-click to edit description in place."))
             self.table_statements.setItem(row_idx, 0, desc_item)
 
+            # Pipe checkbox
+            pipe_item = QtWidgets.QTableWidgetItem()
+            pipe_item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
+            pipe_item.setCheckState(QtCore.Qt.Checked if statement.is_pipelined else QtCore.Qt.Unchecked)
+            if row_idx == 0:
+                pipe_item.setFlags(pipe_item.flags() & ~QtCore.Qt.ItemIsEnabled) # Disable for first row
+                pipe_item.setToolTip(translate("Arch", "The first statement cannot be pipelined."))
+            else:
+                pipe_item.setToolTip(translate("Arch", "Toggle whether to use the previous statement's results as input."))
+            self.table_statements.setItem(row_idx, 1, pipe_item)
+
             # Header checkbox
             header_item = QtWidgets.QTableWidgetItem()
             header_item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
             header_item.setCheckState(QtCore.Qt.Checked if statement.use_description_as_header else QtCore.Qt.Unchecked)
             header_item.setToolTip(translate("Arch", "Toggle whether to use this statement's Description as a section header."))
-            self.table_statements.setItem(row_idx, 1, header_item)
+            self.table_statements.setItem(row_idx, 2, header_item)
 
             # Cols checkbox (Include Column Names)
             cols_item = QtWidgets.QTableWidgetItem()
             cols_item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
             cols_item.setCheckState(QtCore.Qt.Checked if statement.include_column_names else QtCore.Qt.Unchecked)
             cols_item.setToolTip(translate("Arch", "Toggle whether to include this statement's column names in the report."))
-            self.table_statements.setItem(row_idx, 2, cols_item)
+            self.table_statements.setItem(row_idx, 3, cols_item)
 
             # Status Item (Icon + Tooltip) - read-only
             status_icon, status_tooltip = self._get_status_icon_and_tooltip(statement)
@@ -874,7 +882,7 @@ class ReportTaskPanel:
             status_item.setIcon(status_icon)
             status_item.setToolTip(status_tooltip)
             status_item.setFlags(status_item.flags() & ~QtCore.Qt.ItemIsEditable) # Make read-only
-            self.table_statements.setItem(row_idx, 3, status_item)
+            self.table_statements.setItem(row_idx, 4, status_item)
 
             # Recalculate status for each statement (important on load)
             statement.validate_and_update_status()
@@ -882,51 +890,76 @@ class ReportTaskPanel:
         self.table_statements.blockSignals(False)
 
     def _on_table_item_changed(self, item):
-        # Synchronize direct table edits (description and checkboxes) back into the runtime statement
+        """Synchronize direct table edits (description and checkboxes) back into the runtime statement."""
         row = item.row()
         col = item.column()
         if row < 0 or row >= len(self.obj.Proxy.live_statements):
             return
         stmt = self.obj.Proxy.live_statements[row]
 
-        if col == 0:
-            # Description text edited
+        if col == 0: # Description
             new_text = item.text()
-            stmt.description = new_text
-            stmt.validate_and_update_status()
-            self._update_table_row_status(row, stmt)
-            if row == self.current_edited_statement_index:
-                # Prevent echo loops by blocking editor signals briefly
-                try:
-                    self.description_edit.blockSignals(True)
-                    self.description_edit.setText(new_text)
-                finally:
-                    self.description_edit.blockSignals(False)
-        elif col == 1:
-            # Header checkbox toggled
-            stmt.use_description_as_header = (item.checkState() == QtCore.Qt.Checked)
-            stmt.validate_and_update_status()
-            self._update_table_row_status(row, stmt)
-            # If this row is currently edited, update the editor checkbox to match
-            if row == self.current_edited_statement_index:
-                self.chk_use_description_as_header.setChecked(stmt.use_description_as_header)
-        elif col == 2:
-            # Cols checkbox toggled -> include_column_names
-            stmt.include_column_names = (item.checkState() == QtCore.Qt.Checked)
-            stmt.validate_and_update_status()
-            self._update_table_row_status(row, stmt)
-            if row == self.current_edited_statement_index:
-                self.chk_include_column_names.setChecked(stmt.include_column_names)
+            if stmt.description != new_text:
+                stmt.description = new_text
+                self._set_dirty(True)
+
+        elif col == 1: # Pipe checkbox
+            is_checked = (item.checkState() == QtCore.Qt.Checked)
+            if stmt.is_pipelined != is_checked:
+                stmt.is_pipelined = is_checked
+                self._set_dirty(True)
+                # Re-validate the editor if its context has changed
+                if self.current_edited_statement_index != -1:
+                    self._run_live_validation_for_editor()
+
+        elif col == 2: # Header checkbox
+            is_checked = (item.checkState() == QtCore.Qt.Checked)
+            if stmt.use_description_as_header != is_checked:
+                stmt.use_description_as_header = is_checked
+                self._set_dirty(True)
+
+        elif col == 3: # Cols checkbox
+            is_checked = (item.checkState() == QtCore.Qt.Checked)
+            if stmt.include_column_names != is_checked:
+                stmt.include_column_names = is_checked
+                self._set_dirty(True)
+
+    def _on_row_moved(self, logical_index, old_visual_index, new_visual_index):
+        """Handles the reordering of statements via drag-and-drop."""
+        # The visual index is what the user sees. The logical index is tied to the original sort.
+        # When a row is moved, we need to map the visual change back to our data model.
+
+        # Pop the item from its original position in the data model.
+        moving_statement = self.obj.Proxy.live_statements.pop(old_visual_index)
+        # Insert it into its new position.
+        self.obj.Proxy.live_statements.insert(new_visual_index, moving_statement)
 
         self._set_dirty(True)
+        # After reordering the data, we must repopulate the table to ensure
+        # everything is visually correct and consistent, especially the disabled
+        # "Pipe" checkbox on the new first row.
+        self._populate_table_from_statements()
+        # Restore the selection to the row that was just moved.
+        self.table_statements.selectRow(new_visual_index)
 
-    def _add_statement(self):
-        # Modify the live list; changes will be committed to the object property on accept()
+    def _add_statement(self, start_editing=False):
+        """Creates a new statement, adds it to the report, and optionally starts editing it."""
+        # Create the new statement object and add it to the live list.
         new_statement = ReportStatement(description=translate("Arch", f"New Statement {len(self.obj.Proxy.live_statements) + 1}"))
         self.obj.Proxy.live_statements.append(new_statement)
-        self._populate_table_from_statements() # Refresh the table
-        new_statement.validate_and_update_status() # Validate immediately
-        self._select_statement_in_table(len(self.obj.Proxy.live_statements) - 1)
+
+        # Refresh the entire overview table to show the new row.
+        self._populate_table_from_statements()
+
+        # Validate the new (empty) statement to populate its status.
+        new_statement.validate_and_update_status()
+
+        new_row_index = len(self.obj.Proxy.live_statements) - 1
+        if start_editing:
+            self._start_edit_session(row_index=new_row_index)
+        else:
+            self.table_statements.selectRow(new_row_index)
+
         self._set_dirty(True)
 
     def _remove_selected_statement(self):
@@ -943,65 +976,54 @@ class ReportTaskPanel:
             self.obj.Proxy.live_statements.pop(row_to_remove)
             self._set_dirty(True)
             self._populate_table_from_statements()
-            self._select_first_statement_if_available()
+            self._end_edit_session() # Close editor and reset selection
 
     def _duplicate_selected_statement(self):
+        """Duplicates the selected statement without opening the editor."""
         selected_rows = self.table_statements.selectionModel().selectedRows()
-        if not selected_rows:
-            return
+        if not selected_rows: return
 
         row_to_duplicate = selected_rows[0].row()
-        original_statement = self.obj.Proxy.live_statements[row_to_duplicate]
+        original = self.obj.Proxy.live_statements[row_to_duplicate]
 
-        duplicated_statement = ReportStatement()
-        duplicated_statement.loads(original_statement.dumps()) # Use serialization to deep copy
-        duplicated_statement.description = translate("Arch", f"Copy of {original_statement.description}")
+        duplicated = ReportStatement()
+        duplicated.loads(original.dumps())
+        duplicated.description = translate("Arch", f"Copy of {original.description}")
 
-        self.obj.Proxy.live_statements.insert(row_to_duplicate + 1, duplicated_statement)
+        self.obj.Proxy.live_statements.insert(row_to_duplicate + 1, duplicated)
         self._set_dirty(True)
         self._populate_table_from_statements()
-        duplicated_statement.validate_and_update_status()
-        self._select_statement_in_table(row_to_duplicate + 1)
+        duplicated.validate_and_update_status()
 
-    def _select_first_statement_if_available(self):
-        if self.obj.Proxy.live_statements:
-            self._select_statement_in_table(0)
-        else:
-            self._update_editor_visibility(False) # Hide editor if no statements
+        # New behavior: Just select the newly created row. Do NOT open the editor.
+        self.table_statements.selectRow(row_to_duplicate + 1)
 
     def _select_statement_in_table(self, row_idx):
-        # Select the row visually and trigger _on_table_selection_changed
+        # Select the row visually and trigger the new edit session
         self.table_statements.selectRow(row_idx)
-        # Ensure the editor is expanded if a statement is selected explicitly
-        self._update_editor_visibility(True)
+        # This method should ONLY select, not start an edit session.
 
 
     # --- Editor (Box 2) Management ---
-    def _on_table_selection_changed(self):
-        selected_rows = self.table_statements.selectionModel().selectedRows()
-        if selected_rows:
-            new_index = selected_rows[0].row()
-            if new_index != self.current_edited_statement_index:
-                self._save_current_editor_state_to_statement() # Save old state
-                self.current_edited_statement_index = new_index
-                self._load_statement_to_editor(self.obj.Proxy.live_statements[new_index])
-                self._update_editor_title(self.obj.Proxy.live_statements[new_index].description)
-                self._run_live_validation_for_editor() # Validate the loaded query
-                self._update_editor_visibility(True) # Ensure editor is visible
-        else:
-            self._save_current_editor_state_to_statement() # Save last edited state
-            self.current_edited_statement_index = -1
-            self._update_editor_visibility(False) # Hide editor if nothing selected
 
     def _load_statement_to_editor(self, statement: ReportStatement):
+        # Disable/enable the pipeline checkbox based on row index
+        is_first_statement = (self.current_edited_statement_index == 0)
+        self.chk_is_pipelined.setEnabled(not is_first_statement)
+        if is_first_statement:
+            # Ensure the first statement can never be pipelined
+            statement.is_pipelined = False
+
         self.description_edit.setText(statement.description)
         self.sql_query_edit.setPlainText(statement.query_string)
+        self.chk_is_pipelined.setChecked(statement.is_pipelined)
         self.chk_use_description_as_header.setChecked(statement.use_description_as_header)
         self.chk_include_column_names.setChecked(statement.include_column_names)
         self.chk_add_empty_row_after.setChecked(statement.add_empty_row_after)
         self.chk_print_results_in_bold.setChecked(statement.print_results_in_bold)
-        # Update validation status label for loaded query
-        self._update_editor_status_display(statement)
+
+        # We must re-run validation here because the context may have changed
+        self._run_live_validation_for_editor()
 
     def _save_current_editor_state_to_statement(self):
         if self.current_edited_statement_index != -1 and self.current_edited_statement_index < len(self.obj.Proxy.live_statements):
@@ -1016,16 +1038,16 @@ class ReportTaskPanel:
             self._update_table_row_status(self.current_edited_statement_index, statement) # Refresh table status
 
     def _on_editor_sql_changed(self):
-        self._set_dirty(True)
+        """Handles text changes in the SQL editor, triggering validation."""
+        self._on_editor_field_changed() # Mark as dirty
+        # Start the validation timer
         self.sql_query_status_label.setText(translate("Arch", "<i>Typing...</i>"))
         self.sql_query_status_label.setStyleSheet("color: gray;")
-        self.validation_timer.start(500) # (Re)start timer for live validation
+        self.validation_timer.start(500)
 
     def _on_editor_field_changed(self):
-        """A generic slot that handles any change in an editor field."""
+        """A generic slot that handles any change in an editor field to mark it as dirty."""
         self._set_dirty(True)
-        # The logic to sync with the table is now handled by _commit_changes,
-        # so this method only needs to set the dirty state.
 
     def _on_load_query_preset(self, index):
         """Handles the selection of a query preset from the dropdown."""
@@ -1101,18 +1123,47 @@ class ReportTaskPanel:
             self._load_and_populate_presets() # Refresh the template dropdown
 
     def _run_live_validation_for_editor(self):
-        # Validate the query currently in the editor's text area
-        temp_statement = ReportStatement(query_string=self.sql_query_edit.toPlainText())
-        temp_statement.validate_and_update_status()
-        self._update_editor_status_display(temp_statement) # Update the status label in the editor UI
+        """
+        Runs live validation for the query in the editor, providing
+        contextual feedback if the statement is part of a pipeline.
+        This method does NOT modify the underlying statement object.
+        """
+        if self.current_edited_statement_index == -1:
+            return
 
-        # Also update table if this is the currently edited statement
-        if self.current_edited_statement_index != -1:
-            statement_obj = self.obj.Proxy.live_statements[self.current_edited_statement_index]
-            statement_obj.query_string = temp_statement.query_string # Keep statement object's query updated for validation.
-            statement_obj.validate_and_update_status()
-            self._update_table_row_status(self.current_edited_statement_index, statement_obj)
+        current_query = self.sql_query_edit.toPlainText()
+        is_pipelined = self.chk_is_pipelined.isChecked()
 
+        # Create a temporary, in-memory statement object for validation.
+        # This prevents mutation of the real data model.
+        temp_statement = ReportStatement()
+
+        source_objects = None
+        input_count_str = ""
+
+        if is_pipelined and self.current_edited_statement_index > 0:
+            preceding_statements = self.obj.Proxy.live_statements[:self.current_edited_statement_index]
+            source_objects = ArchSql._execute_pipeline_for_objects(preceding_statements)
+            input_count = len(source_objects)
+            input_count_str = translate("Arch", f" (from {input_count} in pipeline)")
+
+        count, error = ArchSql.count(current_query, source_objects=source_objects)
+
+        # --- Update the UI display using the validation results ---
+        if not error and count > 0:
+            temp_statement._validation_status = "OK"
+            temp_statement._validation_message = f"{translate('Arch', 'Found')} {count} {translate('Arch', 'objects')}{input_count_str}."
+        elif not error and count == 0:
+            temp_statement._validation_status = "0_RESULTS"
+            temp_statement._validation_message = f"{translate('Arch', 'Found 0 objects')}{input_count_str}."
+        elif error == "INCOMPLETE":
+            temp_statement._validation_status = "INCOMPLETE"
+            temp_statement._validation_message = translate("Arch", "Typing...")
+        else: # An actual error occurred
+            temp_statement._validation_status = "ERROR"
+            temp_statement._validation_message = f"{error}{input_count_str}"
+
+        self._update_editor_status_display(temp_statement)
 
     def _update_editor_status_display(self, statement: ReportStatement):
         # Update the status label (below SQL editor) in Box 2
@@ -1130,26 +1181,29 @@ class ReportTaskPanel:
             self.sql_query_status_label.setStyleSheet("color: green;")
 
     def _update_table_row_status(self, row_idx, statement: ReportStatement):
-        # Update the status icon/tooltip in the QTableWidget (Box 1)
-        # Status column moved to index 3
-        status_item = self.table_statements.item(row_idx, 3)
+        """Updates the status icon/tooltip and other data in the QTableWidget for a given row."""
+        if row_idx < 0 or row_idx >= self.table_statements.rowCount():
+            return
+
+        # Correct Column Mapping:
+        # 0: Description
+        # 1: Pipe
+        # 2: Header
+        # 3: Cols
+        # 4: Status
+
+        # Update all cells in the row to be in sync with the statement object.
+        # This is safer than assuming which property might have changed.
+        self.table_statements.item(row_idx, 0).setText(statement.description)
+        self.table_statements.item(row_idx, 1).setCheckState(QtCore.Qt.Checked if statement.is_pipelined else QtCore.Qt.Unchecked)
+        self.table_statements.item(row_idx, 2).setCheckState(QtCore.Qt.Checked if statement.use_description_as_header else QtCore.Qt.Unchecked)
+        self.table_statements.item(row_idx, 3).setCheckState(QtCore.Qt.Checked if statement.include_column_names else QtCore.Qt.Unchecked)
+
+        status_item = self.table_statements.item(row_idx, 4)
         if status_item:
             status_icon, status_tooltip = self._get_status_icon_and_tooltip(statement)
             status_item.setIcon(status_icon)
             status_item.setToolTip(status_tooltip)
-
-        # Update description in table in case it was changed via editor
-        desc_item = self.table_statements.item(row_idx, 0)
-        if desc_item:
-            desc_item.setText(statement.description)
-
-        # Update checkbox columns to reflect current statement state
-        header_item = self.table_statements.item(row_idx, 1)
-        if header_item:
-            header_item.setCheckState(QtCore.Qt.Checked if statement.use_description_as_header else QtCore.Qt.Unchecked)
-        cols_item = self.table_statements.item(row_idx, 2)
-        if cols_item:
-            cols_item.setCheckState(QtCore.Qt.Checked if statement.include_column_names else QtCore.Qt.Unchecked)
 
 
     def _get_status_icon_and_tooltip(self, statement: ReportStatement):
@@ -1215,6 +1269,7 @@ class ReportTaskPanel:
             self.btn_edit_selected.setEnabled(False)
             self.template_dropdown.setEnabled(False)
             self.btn_save_template.setEnabled(False)
+            self.table_statements.setEnabled(False)
         else: # "overview" mode
             # In overview mode, re-enable controls
             self.btn_add_statement.setEnabled(True)
@@ -1222,6 +1277,7 @@ class ReportTaskPanel:
             self.btn_duplicate_statement.setEnabled(True)
             self.template_dropdown.setEnabled(True)
             self.btn_save_template.setEnabled(True)
+            self.table_statements.setEnabled(True)
             # The "Edit" button state depends on whether a row is selected
             self._on_table_selection_changed()
 
@@ -1271,6 +1327,7 @@ class ReportTaskPanel:
         statement = self.obj.Proxy.live_statements[self.current_edited_statement_index]
         statement.description = self.description_edit.text()
         statement.query_string = self.sql_query_edit.toPlainText()
+        statement.is_pipelined = self.chk_is_pipelined.isChecked()
         statement.use_description_as_header = self.chk_use_description_as_header.isChecked()
         statement.include_column_names = self.chk_include_column_names.isChecked()
         statement.add_empty_row_after = self.chk_add_empty_row_after.isChecked()
@@ -1280,52 +1337,60 @@ class ReportTaskPanel:
         self._update_table_row_status(self.current_edited_statement_index, statement)
         self._set_dirty(True)
 
-    def on_apply_clicked(self):
-        """Applies changes and closes the editor or loads the next statement."""
+    def on_save_clicked(self):
+        """Saves changes and either closes the editor or adds a new statement."""
+        # First, always commit the changes from the current edit session.
         self._commit_changes()
 
         if self.chk_save_and_next.isChecked():
-            current_row = self.current_edited_statement_index
-            next_row = current_row + 1
-            if next_row < self.table_statements.rowCount():
-                # There is a next statement, load it
-                self.table_statements.selectRow(next_row)
-                self._start_edit_session(row_index=next_row)
-            else:
-                # This was the last statement, just close the editor
-                self._end_edit_session()
+            # If the checkbox is checked, the "Next" action is to add a new
+            # blank statement. The _add_statement helper already handles
+            # creating the statement and opening it in the editor.
+            self._add_statement(start_editing=True)
         else:
+            # The default action is to simply close the editor.
             self._end_edit_session()
 
     def on_discard_clicked(self):
         """Discards changes and closes the editor."""
         self._end_edit_session()
 
-    def _on_show_preview_toggled(self, checked):
-        """Shows or hides the preview pane based on the toggle button state."""
-        # The Refresh button is a child of the pane, so it will automatically
-        # show and hide along with its parent. We only need to control the pane.
-        self.preview_pane.setVisible(checked)
+    def _on_preview_toggled(self, checked):
+        """Shows or hides the preview pane and updates the toggle button's appearance."""
         if checked:
-            # When the preview is shown, run it immediately.
+            self.btn_toggle_preview.setText(translate("Arch", "Hide Preview"))
+            self.btn_toggle_preview.setIcon(self.icon_hide_preview)
+            self.preview_pane.setVisible(True)
+            self.btn_refresh_preview.setVisible(True)
             self._run_and_display_preview()
+        else:
+            self.btn_toggle_preview.setText(translate("Arch", "Show Preview"))
+            self.btn_toggle_preview.setIcon(self.icon_show_preview)
+            self.preview_pane.setVisible(False)
+            self.btn_refresh_preview.setVisible(False)
 
     def _run_and_display_preview(self):
-        """Executes the query in the editor and populates the preview table."""
+        """Executes the query in the editor and populates the preview table, respecting the pipeline context."""
         query = self.sql_query_edit.toPlainText().strip()
+        is_pipelined = self.chk_is_pipelined.isChecked()
 
         if not self.preview_pane.isVisible():
-            return # Don't run if the pane is hidden
-
+            return
         if not query:
             self.table_preview_results.clear()
             self.table_preview_results.setRowCount(0)
             self.table_preview_results.setColumnCount(0)
             return
 
+        source_objects = None
+        if is_pipelined and self.current_edited_statement_index > 0:
+            preceding_statements = self.obj.Proxy.live_statements[:self.current_edited_statement_index]
+            source_objects = ArchSql._execute_pipeline_for_objects(preceding_statements)
+
         try:
-            # Always run the preview in isolation against the full document.
-            headers, data_rows = ArchSql.select(query)
+            # Run the preview with the correct context.
+            headers, data_rows, _ = ArchSql._run_query(query, mode='full_data', source_objects=source_objects)
+
             self.table_preview_results.clear()
             self.table_preview_results.setColumnCount(len(headers))
             self.table_preview_results.setHorizontalHeaderLabels(headers)
@@ -1335,10 +1400,10 @@ class ReportTaskPanel:
                 for col_idx, cell_value in enumerate(row_data):
                     item = QtWidgets.QTableWidgetItem(str(cell_value))
                     self.table_preview_results.setItem(row_idx, col_idx, item)
-
             self.table_preview_results.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
 
         except (ArchSql.SqlEngineError, ArchSql.BimSqlSyntaxError) as e:
+            # Error handling remains the same
             self.table_preview_results.clear()
             self.table_preview_results.setRowCount(1)
             self.table_preview_results.setColumnCount(1)
@@ -1349,30 +1414,39 @@ class ReportTaskPanel:
             self.table_preview_results.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
 
     # --- Dialog Acceptance / Rejection ---
+
     def accept(self):
         """Saves changes from UI to Report object and triggers recompute."""
-        # Ensure the currently edited statement's state is saved before final accept
-        self._save_current_editor_state_to_statement()
-        # First, ensure the currently edited statement's state is saved to the live list
+        # First, check if there is an active, unsaved edit session.
+        if self.current_edited_statement_index != -1:
+            reply = QtWidgets.QMessageBox.question(None,
+                translate("Arch", "Unsaved Changes"),
+                translate("Arch", "You have unsaved changes in the statement editor. Do you want to save them before closing?"),
+                QtWidgets.QMessageBox.Save | QtWidgets.QMessageBox.Discard | QtWidgets.QMessageBox.Cancel,
+                QtWidgets.QMessageBox.Save)
 
-        # This is the "commit" step: convert the live list of objects into a
-        # Delegate to proxy helper to persist the live statements
+            if reply == QtWidgets.QMessageBox.Save:
+                self._commit_changes()
+            elif reply == QtWidgets.QMessageBox.Cancel:
+                return # Abort the close operation entirely.
+            # If Discard, do nothing and proceed with closing.
+
+        # This is the "commit" step: persist the live statements to the document object.
         self.obj.Proxy.commit_statements()
 
-        # Trigger a recompute to run the report and mark the document as modified
+        # Trigger a recompute to run the report and mark the document as modified.
+        # This will now run the final, correct pipeline.
         FreeCAD.ActiveDocument.recompute()
 
-        # Quality of life: open the target spreadsheet to show the results upon manual accept
+        # Quality of life: open the target spreadsheet to show the results.
         spreadsheet = self.obj.Target
         if spreadsheet:
             FreeCADGui.ActiveDocument.setEdit(spreadsheet.Name, 0)
 
-        # Close the task panel via FreeCADGui when GUI is available
+        # Close the task panel.
         try:
             FreeCADGui.Control.closeDialog()
         except Exception as e:
-            # This is a defensive catch. If closing the dialog fails for any reason
-            # (e.g., it was already closed), we log the error but do not crash.
             FreeCAD.Console.PrintLog(f"Could not close Report Task Panel: {e}\n")
         self._set_dirty(False)
 
