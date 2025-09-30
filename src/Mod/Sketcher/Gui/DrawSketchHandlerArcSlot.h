@@ -660,7 +660,7 @@ void DSHArcSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
             if (thirdParam->isSet) {
                 radius = thirdParam->getValue();
-                if (radius < Precision::Confusion()) {
+                if (radius < Precision::Confusion() && thirdParam->hasFinishedEditing) {
                     unsetOnViewParameter(thirdParam.get());
                     return;
                 }
@@ -679,7 +679,8 @@ void DSHArcSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
             if (fifthParam->isSet) {
                 double arcAngle = Base::toRadians(fifthParam->getValue());
-                if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
+                if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()
+                    && fifthParam->hasFinishedEditing) {
                     unsetOnViewParameter(fifthParam.get());
                 }
                 else {
@@ -697,12 +698,13 @@ void DSHArcSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
             if (sixthParam->isSet) {
                 double radius2 = sixthParam->getValue();
-                if ((fabs(radius2) < Precision::Confusion()
-                     && handler->constructionMethod()
-                         == DrawSketchHandlerArcSlot::ConstructionMethod::ArcSlot)
-                    || (fabs(handler->radius - radius2) < Precision::Confusion()
-                        && handler->constructionMethod()
-                            == DrawSketchHandlerArcSlot::ConstructionMethod::RectangleSlot)) {
+                if (((fabs(radius2) < Precision::Confusion()
+                      && handler->constructionMethod()
+                          == DrawSketchHandlerArcSlot::ConstructionMethod::ArcSlot)
+                     || (fabs(handler->radius - radius2) < Precision::Confusion()
+                         && handler->constructionMethod()
+                             == DrawSketchHandlerArcSlot::ConstructionMethod::RectangleSlot))
+                    && sixthParam->hasFinishedEditing) {
                     unsetOnViewParameter(sixthParam.get());
                 }
                 else {

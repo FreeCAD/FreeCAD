@@ -613,7 +613,7 @@ void DSHTranslateControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
             if (thirdParam->isSet) {
                 length = thirdParam->getValue();
-                if (length < Precision::Confusion()) {
+                if (length < Precision::Confusion() && thirdParam->hasFinishedEditing) {
                     unsetOnViewParameter(thirdParam.get());
                     return;
                 }
@@ -639,7 +639,7 @@ void DSHTranslateControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
             if (fifthParam->isSet) {
                 length = fifthParam->getValue();
-                if (length < Precision::Confusion()) {
+                if (length < Precision::Confusion() && fifthParam->hasFinishedEditing) {
                     unsetOnViewParameter(fifthParam.get());
                     return;
                 }
