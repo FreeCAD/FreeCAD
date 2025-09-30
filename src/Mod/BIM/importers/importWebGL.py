@@ -92,8 +92,7 @@ def getHTMLTemplate():
         """Helper function to safely read a template file."""
         if not os.path.isfile(path):
             FreeCAD.Console.PrintWarning(
-                f"{description.capitalize()} file '{path}' does not "
-                "exist or is not a file.\n"
+                f"{description.capitalize()} file '{path}' does not " "exist or is not a file.\n"
             )
             return None
         try:
@@ -101,35 +100,25 @@ def getHTMLTemplate():
                 return f.read()
         except Exception as e:
             FreeCAD.Console.PrintWarning(
-                f"Failed to read {description} file '{path}' "
-                f"due to: {str(e)}\n"
+                f"Failed to read {description} file '{path}' " f"due to: {str(e)}\n"
             )
             return None
 
-    using_custom_template = params.get_param(
-        "useCustomWebGLExportTemplate", path="Mod/BIM"
-    )
+    using_custom_template = params.get_param("useCustomWebGLExportTemplate", path="Mod/BIM")
 
     # Try to use custom template if enabled
     if using_custom_template:
-        custom_path = params.get_param(
-            "WebGLTemplateCustomPath", path="Mod/BIM"
-        )
-        custom_content = try_read_template(
-            custom_path, "custom WebGL template"
-        )
+        custom_path = params.get_param("WebGLTemplateCustomPath", path="Mod/BIM")
+        custom_content = try_read_template(custom_path, "custom WebGL template")
         if custom_content:
-            FreeCAD.Console.PrintMessage(
-                f"Using custom template file '{custom_path}'.\n"
-            )
+            FreeCAD.Console.PrintMessage(f"Using custom template file '{custom_path}'.\n")
             return custom_content
         else:
             # Custom template failed - ask user or auto-fallback
             if not FreeCADGui:
                 # In non-GUI mode, cancel export when custom template fails
                 FreeCAD.Console.PrintError(
-                    f"Export cancelled: Custom template '{custom_path}' "
-                    "not available.\n"
+                    f"Export cancelled: Custom template '{custom_path}' " "not available.\n"
                 )
                 return None
 
@@ -151,8 +140,7 @@ def getHTMLTemplate():
             if reply != QtWidgets.QMessageBox.Yes:
                 # User chose not to proceed - return None to indicate failure
                 FreeCAD.Console.PrintError(
-                    f"Export cancelled: Custom template '{custom_path}' "
-                    "not available.\n"
+                    f"Export cancelled: Custom template '{custom_path}' " "not available.\n"
                 )
                 return None
 
@@ -165,13 +153,9 @@ def getHTMLTemplate():
         "templates",
         "webgl_export_template.html",
     )
-    default_content = try_read_template(
-        default_template_path, "default WebGL template"
-    )
+    default_content = try_read_template(default_template_path, "default WebGL template")
     if default_content:
-        FreeCAD.Console.PrintMessage(
-            f"Using default template file '{default_template_path}'.\n"
-        )
+        FreeCAD.Console.PrintMessage(f"Using default template file '{default_template_path}'.\n")
         return default_content
 
     # No template available - export cannot proceed
@@ -192,8 +176,7 @@ def getHTMLTemplate():
     else:
         # In headless mode, print to console
         FreeCAD.Console.PrintError(
-            "Default WebGL export template not available at"
-            f"path: {default_template_path}\n"
+            "Default WebGL export template not available at" f"path: {default_template_path}\n"
         )
 
     return None

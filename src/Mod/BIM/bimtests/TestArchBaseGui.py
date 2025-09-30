@@ -27,6 +27,7 @@ import FreeCAD
 import FreeCADGui
 from bimtests.TestArchBase import TestArchBase
 
+
 class TestArchBaseGui(TestArchBase):
     """
     The base class for all Arch/BIM GUI unit tests.
@@ -42,7 +43,7 @@ class TestArchBaseGui(TestArchBase):
         """
         if not FreeCAD.GuiUp:
             raise unittest.SkipTest("Cannot run GUI tests in a CLI environment.")
-        
+
         # Activating the workbench ensures all GUI commands are loaded and ready.
         FreeCADGui.activateWorkbench("BIMWorkbench")
 
@@ -52,4 +53,3 @@ class TestArchBaseGui(TestArchBase):
         The workbench is already activated by setUpClass.
         """
         super().setUp()
-

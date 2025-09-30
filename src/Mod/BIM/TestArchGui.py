@@ -24,6 +24,6 @@
 
 """Import all Arch module unit tests in GUI mode."""
 
-#from bimtests.TestArchImportersGui import TestArchImportersGui
-#from bimtests.TestArchBuildingPartGui import TestArchBuildingPartGui
+# from bimtests.TestArchImportersGui import TestArchImportersGui
+# from bimtests.TestArchBuildingPartGui import TestArchBuildingPartGui
 from bimtests.TestWebGLExportGui import TestWebGLExportGui

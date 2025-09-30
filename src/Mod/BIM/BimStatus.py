@@ -35,6 +35,7 @@ translate = FreeCAD.Qt.translate
 
 # Status bar buttons
 
+
 def setStatusIcons(show=True):
     "shows or hides the BIM icons in the status bar"
 
@@ -78,9 +79,7 @@ def setStatusIcons(show=True):
             form = FreeCADGui.PySideUic.loadUi(":/ui/dialogNudgeValue.ui")
             # center the dialog over FreeCAD window
             mw = FreeCADGui.getMainWindow()
-            form.move(
-                mw.frameGeometry().topLeft() + mw.rect().center() - form.rect().center()
-            )
+            form.move(mw.frameGeometry().topLeft() + mw.rect().center() - form.rect().center())
             result = form.exec_()
             if not result:
                 return
@@ -122,31 +121,40 @@ def setStatusIcons(show=True):
             else:
                 statuswidget = FreeCADGui.UiLoader().createWidget("Gui::ToolBar")
                 statuswidget.setObjectName("BIMStatusWidget")
-                text = translate("BIMStatusWidget", "BIM status widget",
-                "A context menu action used to show or hide this toolbar widget")
+                text = translate(
+                    "BIMStatusWidget",
+                    "BIM status widget",
+                    "A context menu action used to show or hide this toolbar widget",
+                )
                 statuswidget.setWindowTitle(text)
-                s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetInt("ToolbarIconSize", 24)
-                statuswidget.setIconSize(QtCore.QSize(s,s))
+                s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetInt(
+                    "ToolbarIconSize", 24
+                )
+                statuswidget.setIconSize(QtCore.QSize(s, s))
                 st.insertPermanentWidget(2, statuswidget)
 
                 # report panels toggle button
                 togglebutton = QtGui.QAction()
                 togglemenu = QtGui.QMenu()
-                for t in ["Toggle", "Report view", "Python console", "Selection view", "Combo View"]:
+                for t in [
+                    "Toggle",
+                    "Report view",
+                    "Python console",
+                    "Selection view",
+                    "Combo View",
+                ]:
                     a = QtGui.QAction(t)
                     togglemenu.addAction(a)
                 togglemenu.triggered.connect(toggleSaveSettings)
                 togglebutton.setIcon(QtGui.QIcon(":/icons/BIM_TogglePanels.svg"))
                 togglebutton.setText("")
-                togglebutton.setToolTip(
-                    translate("BIM", "Toggle report panels on/off (Ctrl+0)")
-                )
+                togglebutton.setToolTip(translate("BIM", "Toggle report panels on/off (Ctrl+0)"))
                 togglebutton.setCheckable(True)
                 rv = mw.findChild(QtGui.QWidget, "Python console")
                 if rv and rv.isVisible():
                     togglebutton.setChecked(True)
                 statuswidget.togglebutton = togglebutton
-                #togglebutton.setMenu(togglemenu)
+                # togglebutton.setMenu(togglemenu)
                 togglebutton.triggered.connect(toggle)
                 statuswidget.addAction(togglebutton)
 
@@ -169,14 +177,12 @@ def setStatusIcons(show=True):
 
                 # background toggle button
                 bgbutton = QtGui.QAction()
-                #bwidth = bgbutton.fontMetrics().boundingRect("AAAA").width()
-                #bgbutton.setMaximumWidth(bwidth)
+                # bwidth = bgbutton.fontMetrics().boundingRect("AAAA").width()
+                # bgbutton.setMaximumWidth(bwidth)
                 bgbutton.setIcon(QtGui.QIcon(":/icons/BIM_Background.svg"))
                 bgbutton.setText("")
                 bgbutton.setToolTip(
-                    translate(
-                        "BIM", "Toggle 3D view background between simple and gradient"
-                    )
+                    translate("BIM", "Toggle 3D view background between simple and gradient")
                 )
                 statuswidget.bgbutton = bgbutton
                 bgbutton.triggered.connect(toggleBackground)
@@ -192,8 +198,7 @@ def setStatusIcons(show=True):
 
                 # nudge button
                 nudge = QtGui.QPushButton(nudgeLabelsM[-1])
-                nudge.setIcon(
-                    QtGui.QIcon(":/icons/BIM_Nudge.svg"))
+                nudge.setIcon(QtGui.QIcon(":/icons/BIM_Nudge.svg"))
                 nudge.setFlat(True)
                 nudge.setToolTip(
                     translate(
