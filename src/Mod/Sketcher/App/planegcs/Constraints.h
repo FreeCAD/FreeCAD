@@ -86,6 +86,7 @@ enum ConstraintType
     AngleViaTwoPoints = 35,
     ArcLength = 36,
     PointOnSegment = 37,
+    PointOnArcRange = 38,
 };
 
 enum InternalAlignmentType
@@ -193,7 +194,7 @@ public:
     };
     virtual double grad(double* param)
     {
-        if (findParamInPvec(param) == -1) {
+        if (!param || findParamInPvec(param) == -1) {
             return 0.0;
         }
 
@@ -1372,6 +1373,22 @@ public:
     ConstraintType getTypeId() override
     {
         return PointOnSegment;
+    };
+};
+
+// PointOnArcRange
+class ConstraintPointOnArcRange: public Constraint
+{
+    Point point;
+    Arc arc;
+    void ReconstructGeomPointers();  // writes pointers in pvec to the parameters of p and l
+    void errorgrad(double* err, double* grad, double* param) override;
+
+public:
+    ConstraintPointOnArcRange(Point& p, Arc& a);
+    ConstraintType getTypeId() override
+    {
+        return PointOnArcRange;
     };
 };
 

@@ -377,6 +377,7 @@ public:
             case Sketcher::Block:
             case Sketcher::PointOnObject:
             case Sketcher::PointOnSegment:
+            case Sketcher::PointOnArcRange:
             case Sketcher::Parallel:
             case Sketcher::Perpendicular:
             case Sketcher::Tangent:

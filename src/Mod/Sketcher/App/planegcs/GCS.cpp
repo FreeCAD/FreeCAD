@@ -899,6 +899,14 @@ int System::addConstraintPointOnSegment(Point& p, Line& l, int tagId, bool drivi
     return addConstraint(constr);
 }
 
+int System::addConstraintPointOnArcRange(Point& p, Arc& a, int tagId, bool driving)
+{
+    Constraint* constr = new ConstraintPointOnArcRange(p, a);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
 
 // derived constraints
 

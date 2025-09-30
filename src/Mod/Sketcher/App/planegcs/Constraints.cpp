@@ -3235,5 +3235,83 @@ void ConstraintPointOnSegment::errorgrad(double* err, double* grad, double* para
         *grad = dh + dDist;
     }
 }
+// --------------------------------------------------------
+// ConstraintPointOnArcRange
+ConstraintPointOnArcRange::ConstraintPointOnArcRange(Point& p, Arc& a)
+    : point(p)
+    , arc(a)
+{
+    point.PushOwnParams(pvec);
+    arc.PushOwnParams(pvec);
+
+    origpvec = pvec;
+    pvecChangedFlag = true;
+    rescale();
+}
+
+void ConstraintPointOnArcRange::ReconstructGeomPointers()
+{
+    int i = 0;
+    point.ReconstructOnNewPvec(pvec, i);
+    arc.ReconstructOnNewPvec(pvec, i);
+    pvecChangedFlag = false;
+}
+
+void ConstraintPointOnArcRange::errorgrad(double* err, double* grad, double* param)
+{
+    if (pvecChangedFlag) {
+        ReconstructGeomPointers();
+    }
+
+    const DeriVector2 p(point, param);
+    const DeriVector2 ct(arc.center, param);
+
+    const DeriVector2 v_p = p.subtr(ct);
+
+    double dist = 0.;
+    double dDist = 0.;
+    dist = v_p.length(dDist);
+
+    // error for point on cirlce
+    const double cErr = dist - *arc.rad;
+    // grad for point on circle
+    const double cGrad = dDist - (param == arc.rad ? 1. : 0.);
+
+    // unit vector from center to point, arc start and arc end
+    const DeriVector2 v_pN = v_p.getNormalized();
+    const DeriVector2 v_sN = DeriVector2(arc.start, param).subtr(ct).getNormalized();
+    const DeriVector2 v_eN = DeriVector2(arc.end, param).subtr(ct).getNormalized();
+
+    double dCrossStart;
+    const double crossStart = v_sN.crossProdZ(v_pN, dCrossStart);
+    double dCrossEnd;
+    const double crossEnd = v_eN.crossProdZ(v_pN, dCrossEnd);
+
+    // error for range
+    double rErr = 0.;
+    // grad for range
+    double rGrad = 0.;
+    // this gap is required to prevent the point to jump at the arc line of symetry
+    const double epsilon = 1e-9;
+    if (*arc.endAngle - *arc.startAngle < std::numbers::pi) {
+        if (crossStart < 0 || crossEnd > 0) {
+            rErr = crossStart + (std::abs(crossStart + crossEnd) > epsilon ? crossEnd : 0.);
+            rGrad = dCrossStart + (std::abs(crossStart + crossEnd) > epsilon ? dCrossEnd : 0.);
+        }
+    }
+    else {
+        if (crossStart < 0 && crossEnd > 0) {
+            rErr = crossStart + (crossStart + crossEnd > epsilon ? crossEnd : 0.);
+            rGrad = dCrossStart + (crossStart + crossEnd > epsilon ? dCrossEnd : 0.);
+        }
+    }
+
+    if (err) {
+        *err = rErr == 0. ? cErr : rErr;
+    }
+    if (grad) {
+        *grad = rGrad == 0. ? cGrad : rGrad;
+    }
+}
 
 }  // namespace GCS

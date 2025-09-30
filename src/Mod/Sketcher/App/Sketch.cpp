@@ -2474,6 +2474,12 @@ int Sketch::addConstraint(const Constraint* constraint)
                                               constraint->Second,
                                               c.driving);
         } break;
+        case PointOnArcRange: {
+            rtn = addPointOnArcRangeConstraint(constraint->First,
+                                               constraint->FirstPos,
+                                               constraint->Second,
+                                               c.driving);
+        } break;
         case Sketcher::None:   // ambiguous enum value
         case Sketcher::Block:  // handled separately while adding geometry
         case NumConstraintTypes:
@@ -3683,6 +3689,29 @@ int Sketch::addPointOnSegmentConstraint(int geoId1, PointPos pos1, int geoId2, b
 
         int tag = ++ConstraintsCounter;
         GCSsys.addConstraintPointOnSegment(p, l, tag, driving);
+        return ConstraintsCounter;
+    }
+    return -1;
+}
+
+// point on arc range constraint
+int Sketch::addPointOnArcRangeConstraint(int geoId1, PointPos pos1, int geoId2, bool driving)
+{
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    if (Geoms[geoId2].type != Arc) {
+        return -1;
+    }
+    GCS::Arc a = Arcs[Geoms[geoId2].index];
+
+    int pointId = getPointId(geoId1, pos1);
+
+    if (pointId >= 0 && pointId < int(Points.size())) {
+        GCS::Point p = Points[pointId];
+
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintPointOnArcRange(p, a, tag, driving);
         return ConstraintsCounter;
     }
     return -1;

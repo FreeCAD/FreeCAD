@@ -393,6 +393,7 @@ public:
         bool driving = true
     );
     int addConstraintPointOnSegment(Point& p, Line& l, int tagId, bool driving = true);
+    int addConstraintPointOnArcRange(Point& p, Arc& a, int tagId, bool driving = true);
 
     // derived constraints
     int addConstraintP2PCoincident(Point& p1, Point& p2, int tagId = 0, bool driving = true);

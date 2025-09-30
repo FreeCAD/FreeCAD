@@ -4890,6 +4890,141 @@ void CmdSketcherConstrainPointOnSegment::applyConstraint(std::vector<SelIdPair>&
 {
     ;
 }
+// ======================================================================================
+
+class CmdSketcherConstrainPointOnArcRange: public CmdSketcherConstraint
+{
+public:
+    CmdSketcherConstrainPointOnArcRange();
+    ~CmdSketcherConstrainPointOnArcRange() override
+    {}
+    const char* className() const override
+    {
+        return "CmdSketcherConstrainPointOnArcRange";
+    }
+
+protected:
+    void activated(int iMsg) override;
+    void applyConstraint(std::vector<SelIdPair>& selSeq, int seqIndex) override;
+};
+
+CmdSketcherConstrainPointOnArcRange::CmdSketcherConstrainPointOnArcRange()
+    : CmdSketcherConstraint("CmdSketcherConstrainPointOnArcRange")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Point-On-ArcRange Constraint");
+    sToolTipText = QT_TR_NOOP("Constrains the selected point onto the selected arc segment");
+    sWhatsThis = "Sketcher_ConstrainPointOnArcRange";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_PointOnArcRange";
+    //sAccel = "O";
+    eType = ForEdit;
+
+    allowedSelSequences = {{SelVertex, SelEdge},
+                           {SelRoot, SelEdge},
+                           {SelVertex, SelExternalEdge},
+                           {SelEdge, SelVertexOrRoot},
+                           {SelEdge, SelVertex},
+                           {SelExternalEdge, SelVertex}};
+}
+
+void CmdSketcherConstrainPointOnArcRange::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // get the selection
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1
+        || !selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool constraintMode = hGrp->GetBool("ContinuousConstraintMode", true);
+
+        if (constraintMode) {
+            ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerGenConstraint>(this));
+            getSelection().clearSelection();
+        }
+        else {
+            Gui::TranslatedUserWarning(getActiveGuiDocument(), QObject::tr("Wrong selection"), "");
+        }
+        return;
+    }
+
+    // get the needed lists and objects
+    const std::vector<std::string>& SubNames = selection[0].getSubNames();
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+
+    // count curves and points
+    std::vector<SelIdPair> points;
+    std::vector<SelIdPair> curves;
+    for (std::size_t i = 0; i < SubNames.size(); i++) {
+        SelIdPair id;
+        getIdsFromName(SubNames[i], Obj, id.GeoId, id.PosId);
+        if (isEdge(id.GeoId, id.PosId)) {
+            curves.push_back(id);
+        }
+        if (isVertex(id.GeoId, id.PosId)) {
+            points.push_back(id);
+        }
+    }
+
+    if (points.size() != 1 || curves.empty())  {
+        Gui::TranslatedUserWarning(Obj, QObject::tr("Wrong selection"), "");
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add point on arc range constraint"));
+    int cnt = 0;
+    for (std::size_t iPnt = 0; iPnt < points.size(); iPnt++) {
+        for (std::size_t iCrv = 0; iCrv < curves.size(); iCrv++) {
+            if (areBothPointsOrSegmentsFixed(Obj, points[iPnt].GeoId, curves[iCrv].GeoId)) {
+                showNoConstraintBetweenFixedGeometry(Obj);
+                continue;
+            }
+            if (points[iPnt].GeoId == curves[iCrv].GeoId) {
+                continue;// constraining a point of an element onto the element is a bad idea...
+            }
+
+            const Part::Geometry* geom = Obj->getGeometry(curves[iCrv].GeoId);
+
+            if (! geom || ! isArcOfCircle(*geom)) {
+                Gui::TranslatedUserWarning(
+                    Obj,
+                    QObject::tr("Wrong selection"),
+                    QObject::tr("Select a line segment."));
+                abortCommand();
+
+                continue;
+            }
+
+            cnt++;
+            Gui::cmdAppObjectArgs(
+                Obj,
+                "addConstraint(Sketcher.Constraint('PointOnArcRange',%d,%d,%d))",
+                points[iPnt].GeoId,
+                static_cast<int>(points[iPnt].PosId),
+                curves[iCrv].GeoId);
+        }
+    }
+    if (cnt) {
+        commitCommand();
+        getSelection().clearSelection();
+    }
+    else {
+        abortCommand();
+        Gui::TranslatedUserWarning(Obj,
+            QObject::tr("Wrong selection"),
+            QObject::tr("None of the selected points were constrained onto the respective curves, because they are part of the same element, they are both external geometry, or the edge is not eligible."));
+    }
+    return;
+}
+
+void CmdSketcherConstrainPointOnArcRange::applyConstraint(std::vector<SelIdPair>& selSeq,
+                                                        int seqIndex)
+{
+    ;
+}
 
 // ======================================================================================
 

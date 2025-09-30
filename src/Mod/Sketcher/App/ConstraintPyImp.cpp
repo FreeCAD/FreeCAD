@@ -298,6 +298,10 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 constraint->Type = PointOnSegment;
                 valid = true;
             }
+            else if (strcmp("PointOnArcRange", ConstraintType) == 0) {
+                constraint->Type = PointOnArcRange;
+                valid = true;
+            }
             else if (strstr(ConstraintType, "InternalAlignment")) {
                 constraint->Type = InternalAlignment;
 
