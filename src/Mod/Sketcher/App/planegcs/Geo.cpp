@@ -109,7 +109,7 @@ DeriVector2 DeriVector2::divD(double val, double dval) const
     return {x / val, y / val, dx / val - x * dval / (val * val), dy / val - y * dval / (val * val)};
 }
 
-double DeriVector2::crossProdNorm(const DeriVector2& v2, double& dprd) const
+double DeriVector2::crossProdZ(const DeriVector2& v2, double& dprd) const
 {
     dprd = dx * v2.y + x * v2.dy - dy * v2.x - y * v2.dx;
     return x * v2.y - y * v2.x;
