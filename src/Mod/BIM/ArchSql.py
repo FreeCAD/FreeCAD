@@ -1779,7 +1779,9 @@ class ReportStatement:
             self._validation_count = 0
             return
 
-        count, error = count(self.query_string)
+        # Avoid shadowing the module-level `count` function by using a
+        # different local name for the numeric result.
+        count_result, error = count(self.query_string)
 
         if error == "INCOMPLETE":
             self._validation_status = "INCOMPLETE"
@@ -1789,14 +1791,14 @@ class ReportStatement:
             self._validation_status = "ERROR"
             self._validation_message = error
             self._validation_count = -1
-        elif count == 0:
+        elif count_result == 0:
             self._validation_status = "0_RESULTS"
             self._validation_message = translate("Arch", "Query is valid, but found 0 objects.")
             self._validation_count = 0
         else:
             self._validation_status = "OK"
-            self._validation_message = f"{translate('Arch', 'Found')} {count} {translate('Arch', 'objects')}."
-            self._validation_count = count
+            self._validation_message = f"{translate('Arch', 'Found')} {count_result} {translate('Arch', 'objects')}."
+            self._validation_count = count_result
 
 # --- Public API Functions ---
 

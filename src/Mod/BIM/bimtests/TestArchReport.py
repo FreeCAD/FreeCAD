@@ -1457,12 +1457,8 @@ class TestArchReport(TestArchBase.TestArchBase):
             self.assertEqual(data[1][1], 1)
 
         with self.subTest(description="Permutation: GROUP BY on a Function result"):
-            for obj in model.values():
-                ifc_class = getattr(obj, "IfcType", None)
             query = "SELECT TYPE(*) AS BimType, COUNT(*) FROM document WHERE IfcType IS NOT NULL GROUP BY TYPE(*) ORDER BY BimType"
             _, data = Arch.select(query)
-            for obj in model.values():
-                ifc_class = getattr(obj, "IfcType", None)
             results_dict = {row[0]: row[1] for row in data}
             self.assertGreaterEqual(results_dict.get('Wall', 0), 2)
             self.assertGreaterEqual(results_dict.get('Space', 0), 2)
@@ -1687,12 +1683,6 @@ class TestArchReport(TestArchBase.TestArchBase):
         This test validates both regression (ensuring old functions still work)
         and the new ability to query against a pre-filtered list of objects.
         """
-        # This test needs to access the internal _run_query function.
-        try:
-            from ArchSql import _run_query
-        except ImportError:
-            self.fail("Failed to import internal function ArchSql._run_query for testing.")
-
         # --- 1. ARRANGE: Create a specific subset of objects for the test ---
         # The main test setup already provides a diverse set of objects.
         # We will create a specific list to act as our pipeline's source data.
@@ -1721,7 +1711,7 @@ class TestArchReport(TestArchBase.TestArchBase):
             query = "SELECT * FROM document"
 
             # Execute the query, passing our specific list as the source.
-            _, data_rows, resulting_objects = _run_query(
+            _, data_rows, resulting_objects = ArchSql._run_query(
                 query,
                 mode='full_data',
                 source_objects=pipeline_source_objects
@@ -1745,7 +1735,7 @@ class TestArchReport(TestArchBase.TestArchBase):
             # This query applies a WHERE clause to the pre-filtered source list.
             query = "SELECT Label FROM document WHERE IfcType = 'Wall'"
 
-            _, data_rows, resulting_objects = _run_query(
+            _, data_rows, resulting_objects = ArchSql._run_query(
                 query,
                 mode='full_data',
                 source_objects=pipeline_source_objects
@@ -1762,36 +1752,33 @@ class TestArchReport(TestArchBase.TestArchBase):
         """
         Tests the new `execute_pipeline` orchestrator function in ArchSql.
         """
-        # We need the orchestrator function and the data model class.
-        from ArchSql import execute_pipeline
-        from ArchReport import ReportStatement
 
         # --- ARRANGE: Create a set of statements for various scenarios ---
 
         # Statement 1: Get all Wall objects. (Result: 2 objects)
-        stmt1 = ReportStatement(
+        stmt1 = ArchSql.ReportStatement(
             query_string="SELECT * FROM document WHERE IfcType = 'Wall'",
             is_pipelined=False
         )
 
         # Statement 2: From the walls, get the one with "Exterior" in its name. (Result: 1 object)
-        stmt2 = ReportStatement(
+        stmt2 = ArchSql.ReportStatement(
             query_string="SELECT * FROM document WHERE Label LIKE '%Exterior%'",
             is_pipelined=True
         )
 
         # Statement 3: A standalone query to get the Column object. (Result: 1 object)
-        stmt3 = ReportStatement(
+        stmt3 = ArchSql.ReportStatement(
             query_string="SELECT * FROM document WHERE IfcType = 'Column'",
             is_pipelined=False
         )
 
         # Statement 4: A pipelined query that will run on an empty set from a failing previous step.
-        stmt4_failing = ReportStatement(
+        stmt4_failing = ArchSql.ReportStatement(
             query_string="SELECT * FROM document WHERE IfcType = 'NonExistentType'",
             is_pipelined=False
         )
-        stmt5_piped_from_fail = ReportStatement(
+        stmt5_piped_from_fail = ArchSql.ReportStatement(
             query_string="SELECT * FROM document",
             is_pipelined=True
         )
@@ -1800,21 +1787,21 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         with self.subTest(description="Test a simple two-step pipeline"):
             statements = [stmt1, stmt2]
-            results_generator = execute_pipeline(statements)
+            results_generator = ArchSql.execute_pipeline(statements)
 
             # The generator should yield exactly one result: the final one from stmt2.
             output_list = list(results_generator)
             self.assertEqual(len(output_list), 1, "A simple pipeline should only yield one final result.")
 
             # Check the content of the single yielded result.
-            result_stmt, result_headers, result_data = output_list[0]
+            result_stmt, _, result_data = output_list[0]
             self.assertIs(result_stmt, stmt2, "The yielded statement should be the last one in the chain.")
             self.assertEqual(len(result_data), 1, "The final pipeline result should contain one row.")
             self.assertEqual(result_data[0][0], self.wall_ext.Label, "The final result is not the expected 'Exterior Wall'.")
 
         with self.subTest(description="Test a mixed report with pipeline and standalone"):
             statements = [stmt1, stmt2, stmt3]
-            results_generator = execute_pipeline(statements)
+            results_generator = ArchSql.execute_pipeline(statements)
 
             # The generator should yield two results: the end of the first pipeline (stmt2)
             # and the standalone statement (stmt3).
@@ -1828,7 +1815,7 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         with self.subTest(description="Test a pipeline that runs dry"):
             statements = [stmt4_failing, stmt5_piped_from_fail]
-            results_generator = execute_pipeline(statements)
+            results_generator = ArchSql.execute_pipeline(statements)
             output_list = list(results_generator)
 
             # The generator should yield only one result: the final, empty output
@@ -1844,8 +1831,6 @@ class TestArchReport(TestArchBase.TestArchBase):
         """
         Tests the new and enhanced public API functions for Stage 3.
         """
-        from ArchReport import ReportStatement
-
         # --- Test 1: Enhanced Arch.count() with source_objects ---
         with self.subTest(description="Test Arch.count with a source_objects list"):
             # Create a source list containing only the two wall objects.
@@ -1855,7 +1840,7 @@ class TestArchReport(TestArchBase.TestArchBase):
             query = "SELECT * FROM document WHERE IfcType = 'Column'"
 
             # Run the count against our pre-filtered source list.
-            count, error = Arch.count(query, source_objects=source_list)
+            count, error = ArchSql.count(query, source_objects=source_list)
 
             self.assertIsNone(error)
             # The count should be 0, because there are no 'Column' objects in our source_list.
@@ -1864,11 +1849,11 @@ class TestArchReport(TestArchBase.TestArchBase):
         # --- Test 2: New Arch.selectObjectsFromPipeline() ---
         with self.subTest(description="Test Arch.selectObjectsFromPipeline"):
             # Define a simple two-step pipeline.
-            stmt1 = ReportStatement(
+            stmt1 = ArchSql.ReportStatement(
                 query_string="SELECT * FROM document WHERE IfcType = 'Wall'",
                 is_pipelined=False
             )
-            stmt2 = ReportStatement(
+            stmt2 = ArchSql.ReportStatement(
                 query_string="SELECT * FROM document WHERE Label LIKE '%Exterior%'",
                 is_pipelined=True
             )
