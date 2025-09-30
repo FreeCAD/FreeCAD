@@ -25,7 +25,7 @@ if FreeCAD.GuiUp:
     ICON_STATUS_WARN = FreeCADGui.getIcon(":/icons/Warning.svg")
     ICON_STATUS_ERROR = FreeCADGui.getIcon(":/icons/delete.svg")
     ICON_STATUS_INCOMPLETE = FreeCADGui.getIcon(":/icons/button_invalid.svg")
-    ICON_EDIT = FreeCADGui.getIcon(":/icons/Draft_Edit.svg")
+    ICON_EDIT = FreeCADGui.getIcon(":/icons/edit-edit.svg")
     ICON_ADD = FreeCADGui.getIcon(":/icons/list-add.svg")
     ICON_REMOVE = FreeCADGui.getIcon(":/icons/list-remove.svg")
     ICON_DUPLICATE = FreeCADGui.getIcon(":/icons/edit-copy.svg")
@@ -648,16 +648,19 @@ class ReportTaskPanel:
         self.btn_remove_statement.setToolTip(translate("Arch", "Remove the selected statement from the report."))
         self.btn_duplicate_statement = QtWidgets.QPushButton(ICON_DUPLICATE, translate("Arch", "Duplicate Selected"))
         self.btn_duplicate_statement.setToolTip(translate("Arch", "Create a copy of the selected statement."))
+        self.btn_edit_selected = QtWidgets.QPushButton(ICON_EDIT, translate("Arch", "Edit Selected"))
+        self.btn_edit_selected.setToolTip(translate("Arch", "Load the selected statement into the editor below."))
 
         self.statement_buttons_layout.addWidget(self.btn_add_statement)
         self.statement_buttons_layout.addWidget(self.btn_remove_statement)
         self.statement_buttons_layout.addWidget(self.btn_duplicate_statement)
+        self.statement_buttons_layout.addStretch()
+        self.statement_buttons_layout.addWidget(self.btn_edit_selected)
         self.statements_overview_layout.addLayout(self.statement_buttons_layout)
 
         # Editor widget (TaskBox 2) -- starts collapsed until a statement is selected
         self.editor_widget = QtWidgets.QWidget()
-        # Use a neutral title; the specific statement is displayed when selected
-        self.editor_widget.setWindowTitle(translate("Arch", "Edit Statement"))
+        self.editor_widget.setWindowTitle(translate("Arch", "Statement Editor"))
         # Keep compatibility name used elsewhere
         self.editor_box = self.editor_widget
         self.editor_layout = QtWidgets.QVBoxLayout(self.editor_box)
@@ -710,26 +713,43 @@ class ReportTaskPanel:
         self.editor_layout.addWidget(self.sql_query_edit)
         self.editor_layout.addWidget(self.sql_query_status_label)
 
-        # --- On-Demand Preview ---
-        self.preview_layout = QtWidgets.QHBoxLayout()
-        self.btn_preview_results = QtWidgets.QPushButton(translate("Arch", "Preview Results"))
-        self.btn_preview_results.setIcon(FreeCADGui.getIcon(":/icons/Std_ToggleVisibility.svg"))
-        self.btn_preview_results.setToolTip(translate("Arch", "Execute the current query and show the results in a table below."))
+        # --- Debugging Actions (Show Preview, Help) ---
+        self.debugging_actions_layout = QtWidgets.QHBoxLayout()
+
+        self.btn_toggle_preview = QtWidgets.QPushButton(translate("Arch", "Show Preview"))
+        self.btn_toggle_preview.setIcon(FreeCADGui.getIcon(":/icons/Std_ToggleVisibility.svg"))
+        self.btn_toggle_preview.setToolTip(translate("Arch", "Show a preview pane to test the current query in isolation."))
+        self.btn_toggle_preview.setCheckable(True) # Make it a toggle button
+
         self.btn_show_cheatsheet = QtWidgets.QPushButton(translate("Arch", "Help"))
         self.btn_show_cheatsheet.setIcon(FreeCADGui.getIcon(":/icons/help-browser.svg"))
         self.btn_show_cheatsheet.setToolTip(translate("Arch", "Show a cheatsheet of the supported SQL syntax."))
-        self.preview_layout.addStretch()
-        self.preview_layout.addWidget(self.btn_preview_results)
-        #self.preview_layout.addStretch()
-        self.preview_layout.addWidget(self.btn_show_cheatsheet)
-        self.editor_layout.addLayout(self.preview_layout)
+
+        self.editor_layout.addLayout(self.debugging_actions_layout)
+        self.debugging_actions_layout.addStretch() # Add stretch first for right-alignment
+        self.debugging_actions_layout.addWidget(self.btn_show_cheatsheet)
+        self.debugging_actions_layout.addWidget(self.btn_toggle_preview)
+
+        # --- Self-Contained Preview Pane ---
+        self.preview_pane = QtWidgets.QWidget()
+        preview_pane_layout = QtWidgets.QVBoxLayout(self.preview_pane)
+        preview_pane_layout.setContentsMargins(0, 5, 0, 0) # Add a small top margin
+
+        preview_toolbar_layout = QtWidgets.QHBoxLayout()
+        self.btn_refresh_preview = QtWidgets.QPushButton(translate("Arch", "Refresh"))
+        self.btn_refresh_preview.setIcon(FreeCADGui.getIcon(":/icons/view-refresh.svg"))
+        self.btn_refresh_preview.setToolTip(translate("Arch", "Re-run the query and update the preview table."))
+        preview_toolbar_layout.addWidget(QtWidgets.QLabel(translate("Arch", "<b>Query Results Preview</b>")))
+        preview_toolbar_layout.addStretch()
+        preview_toolbar_layout.addWidget(self.btn_refresh_preview)
 
         self.table_preview_results = QtWidgets.QTableWidget()
-        self.table_preview_results.setVisible(False) # Start hidden
         self.table_preview_results.setMinimumHeight(150)
         self.table_preview_results.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers) # Make read-only
         self.table_preview_results.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-        self.editor_layout.addWidget(self.table_preview_results)
+        preview_pane_layout.addLayout(preview_toolbar_layout)
+        preview_pane_layout.addWidget(self.table_preview_results)
+        self.editor_layout.addWidget(self.preview_pane)
 
         # Display Options GroupBox
         self.display_options_group = QtWidgets.QGroupBox(translate("Arch", "Display Options"))
@@ -749,6 +769,22 @@ class ReportTaskPanel:
         self.display_options_layout.addWidget(self.chk_print_results_in_bold)
         self.editor_layout.addWidget(self.display_options_group)
 
+        # --- Commit Actions (Apply, Discard) ---
+        self.commit_actions_layout = QtWidgets.QHBoxLayout()
+        self.chk_save_and_next = QtWidgets.QCheckBox(translate("Arch", "Save and Next"))
+        self.chk_save_and_next.setToolTip(translate("Arch", "If checked, clicking 'Save' will automatically load the next statement for editing."))
+        self.btn_save = QtWidgets.QPushButton(translate("Arch", "Save"))
+        self.btn_save.setIcon(FreeCADGui.getIcon(":/icons/document-save.svg"))
+        self.btn_save.setToolTip(translate("Arch", "Save changes to this statement and close the statement editor."))
+        self.btn_discard = QtWidgets.QPushButton(translate("Arch", "Discard"))
+        self.btn_discard.setIcon(FreeCADGui.getIcon(":/icons/delete.svg"))
+        self.btn_discard.setToolTip(translate("Arch", "Discard all changes made in the statement editor."))
+        self.commit_actions_layout.addStretch()
+        self.commit_actions_layout.addWidget(self.chk_save_and_next)
+        self.commit_actions_layout.addWidget(self.btn_discard)
+        self.commit_actions_layout.addWidget(self.btn_save)
+        self.editor_layout.addLayout(self.commit_actions_layout)
+
         # Expose form as a list of the two top-level widgets so FreeCAD creates
         # two built-in TaskBox sections. The overview goes first, editor second.
         self.form = [self.overview_widget, self.editor_widget]
@@ -757,20 +793,25 @@ class ReportTaskPanel:
         self.btn_add_statement.clicked.connect(self._add_statement)
         self.btn_remove_statement.clicked.connect(self._remove_selected_statement)
         self.btn_duplicate_statement.clicked.connect(self._duplicate_selected_statement)
+        self.btn_edit_selected.clicked.connect(self._start_edit_session)
         self.table_statements.itemSelectionChanged.connect(self._on_table_selection_changed)
         self.template_dropdown.activated.connect(self._on_load_report_template)
         self.btn_save_template.clicked.connect(self._on_save_report_template)
         # Keep table edits in sync with the runtime statements
         self.table_statements.itemChanged.connect(self._on_table_item_changed)
+
         # Connect all editor fields to a single handler to manage dirty state and UI sync.
-        self.description_edit.textChanged.connect(self._on_editor_field_changed)
         self.sql_query_edit.textChanged.connect(self._on_editor_sql_changed)
-        for checkbox in self.display_options_group.findChildren(QtWidgets.QCheckBox):
-            checkbox.stateChanged.connect(self._on_editor_field_changed)
         self.query_preset_dropdown.activated.connect(self._on_load_query_preset)
         self.btn_save_query_preset.clicked.connect(self._on_save_query_preset)
+
+        # Preview and Commit connections
+        self.btn_toggle_preview.toggled.connect(self._on_show_preview_toggled)
+        self.btn_refresh_preview.clicked.connect(self._run_and_display_preview)
+        self.btn_save.clicked.connect(self.on_apply_clicked)
+        self.btn_discard.clicked.connect(self.on_discard_clicked)
+
         self.btn_show_cheatsheet.clicked.connect(self._show_cheatsheet_dialog)
-        self.btn_preview_results.clicked.connect(self._on_preview_results_clicked)
 
         # Validation Timer for live SQL preview
         # Timer doesn't need a specific QWidget parent here; use no parent.
@@ -784,8 +825,8 @@ class ReportTaskPanel:
         # Pass the documentation data to the editor for its tooltips
         api_docs = ArchSql.getSqlApiDocumentation()
         self.sql_query_edit.set_api_documentation(api_docs)
-        self._update_editor_visibility(False)  # Start with editor collapsed/hidden
-        # Do not auto-select the first statement; leave editor collapsed until user selects
+        self.editor_widget.setVisible(False)  # Start with editor hidden
+        self._update_ui_for_mode("overview") # Set initial button states
 
     def _load_and_populate_presets(self):
         """Loads all presets from disk and populates the UI dropdowns."""
@@ -983,31 +1024,8 @@ class ReportTaskPanel:
     def _on_editor_field_changed(self):
         """A generic slot that handles any change in an editor field."""
         self._set_dirty(True)
-        # --- Specific logic for description sync ---
-        if self.current_edited_statement_index != -1:
-            # This provides the real-time two-way data binding for the description.
-            item = self.table_statements.item(self.current_edited_statement_index, 0)
-            if item and item.text() != self.description_edit.text():
-                item.setText(self.description_edit.text())
-            self._update_editor_title(self.description_edit.text())
-
-        # --- Specific logic for checkboxes ---
-        # If a statement is currently selected in the table, mirror the editor state to the table
-        if self.current_edited_statement_index != -1:
-            row = self.current_edited_statement_index
-            header_item = self.table_statements.item(row, 1)
-            if header_item:
-                header_item.setCheckState(QtCore.Qt.Checked if self.chk_use_description_as_header.isChecked() else QtCore.Qt.Unchecked)
-            cols_item = self.table_statements.item(row, 2)
-            if cols_item:
-                cols_item.setCheckState(QtCore.Qt.Checked if self.chk_include_column_names.isChecked() else QtCore.Qt.Unchecked)
-            # Also update the underlying statement object to keep model consistent
-            stmt = self.obj.Proxy.live_statements[row]
-            stmt.use_description_as_header = self.chk_use_description_as_header.isChecked()
-            stmt.include_column_names = self.chk_include_column_names.isChecked()
-            stmt.validate_and_update_status()
-            self._update_table_row_status(row, stmt)
-        self._set_dirty(True)
+        # The logic to sync with the table is now handled by _commit_changes,
+        # so this method only needs to set the dirty state.
 
     def _on_load_query_preset(self, index):
         """Handles the selection of a query preset from the dropdown."""
@@ -1149,19 +1167,6 @@ class ReportTaskPanel:
             return ICON_STATUS_INCOMPLETE, translate("Arch", "Query incomplete or typing...")
         return QtGui.QIcon(), translate("Arch", "Ready") # Default/initial state
 
-    def _update_editor_title(self, description):
-        # Updates the title of the collapsible editor box (Box 2)
-        if description.strip():
-            self.editor_box.setWindowTitle(translate("Arch", f"Edit Statement: {description}"))
-        else:
-            self.editor_box.setWindowTitle(translate("Arch", "Edit Statement: (No Description)"))
-
-    def _update_editor_visibility(self, visible: bool):
-        # Controls the visibility/collapsing of the editor box
-        self.editor_box.setVisible(visible)
-        # Change arrow indicator (Qt handles this if QGroupBox is collapsible,
-        # but we control visibility directly here.)
-
     def _set_dirty(self, dirty_state):
         """Updates the UI to show if there are uncommitted changes."""
         if self.is_dirty == dirty_state:
@@ -1177,49 +1182,6 @@ class ReportTaskPanel:
         api_data = ArchSql.getSqlApiDocumentation()
         dialog = CheatsheetDialog(api_data, parent=self.editor_widget)
         dialog.exec_()
-
-    def _on_preview_results_clicked(self):
-        """Handles the 'Preview Results' button click."""
-        query = self.sql_query_edit.toPlainText().strip()
-
-        if not query:
-            # If query is empty, just clear and hide the table
-            self.table_preview_results.clear()
-            self.table_preview_results.setRowCount(0)
-            self.table_preview_results.setColumnCount(0)
-            self.table_preview_results.setVisible(False)
-            return
-
-        try:
-            # Execute the query using the ArchSql.select API, which raises on failure
-            headers, data_rows = ArchSql.select(query)
-            # --- Success Case: Populate the table with results ---
-            self.table_preview_results.clear()
-            self.table_preview_results.setColumnCount(len(headers))
-            self.table_preview_results.setHorizontalHeaderLabels(headers)
-            self.table_preview_results.setRowCount(len(data_rows))
-
-            for row_idx, row_data in enumerate(data_rows):
-                for col_idx, cell_value in enumerate(row_data):
-                    item = QtWidgets.QTableWidgetItem(str(cell_value))
-                    self.table_preview_results.setItem(row_idx, col_idx, item)
-
-            # Restore default resize mode in case it was changed for error display
-            self.table_preview_results.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
-
-        except ArchSql.SqlEngineError as e:
-            # --- Failure Case: Display the error in the preview table ---
-            self.table_preview_results.clear()
-            self.table_preview_results.setRowCount(1)
-            self.table_preview_results.setColumnCount(1)
-            self.table_preview_results.setHorizontalHeaderLabels(["Query Error"])
-            error_item = QtWidgets.QTableWidgetItem(f"❌ {str(e)}")
-            error_item.setForeground(QtGui.QColor("red"))
-            self.table_preview_results.setItem(0, 0, error_item)
-            # Make the single error column stretch to fill the available space
-            self.table_preview_results.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
-
-        self.table_preview_results.setVisible(True) # Always show the table for results or errors
 
     def _build_completion_model(self):
         """
@@ -1242,6 +1204,149 @@ class ReportTaskPanel:
 
         # 3. Return a sorted model for the completer.
         return QtCore.QStringListModel(sorted(list(all_words)))
+
+    def _update_ui_for_mode(self, mode):
+        """Centralizes enabling/disabling of UI controls based on the current mode."""
+        if mode == "editing":
+            # In edit mode, disable overview actions to prevent conflicts
+            self.btn_add_statement.setEnabled(False)
+            self.btn_remove_statement.setEnabled(False)
+            self.btn_duplicate_statement.setEnabled(False)
+            self.btn_edit_selected.setEnabled(False)
+            self.template_dropdown.setEnabled(False)
+            self.btn_save_template.setEnabled(False)
+        else: # "overview" mode
+            # In overview mode, re-enable controls
+            self.btn_add_statement.setEnabled(True)
+            self.btn_remove_statement.setEnabled(True)
+            self.btn_duplicate_statement.setEnabled(True)
+            self.template_dropdown.setEnabled(True)
+            self.btn_save_template.setEnabled(True)
+            # The "Edit" button state depends on whether a row is selected
+            self._on_table_selection_changed()
+
+    def _on_table_selection_changed(self):
+        """Slot for selection changes in the overview table."""
+        # This method's only job is to enable the "Edit" button if a row is selected.
+        has_selection = bool(self.table_statements.selectionModel().selectedRows())
+        self.btn_edit_selected.setEnabled(has_selection)
+
+    def _start_edit_session(self, row_index=None):
+        """Loads a statement into the editor and displays it."""
+        if row_index is None:
+            selected_rows = self.table_statements.selectionModel().selectedRows()
+            if not selected_rows:
+                return
+            row_index = selected_rows[0].row()
+
+        # Explicitly hide the preview pane and reset the toggle when starting a new session.
+        self.preview_pane.setVisible(False)
+        self.btn_toggle_preview.setChecked(False)
+
+        self.current_edited_statement_index = row_index
+        statement = self.obj.Proxy.live_statements[row_index]
+
+        # Load data into the editor
+        self._load_statement_to_editor(statement)
+
+        # Show editor and set focus
+        self.editor_widget.setVisible(True)
+        self.sql_query_edit.setFocus()
+        self._update_ui_for_mode("editing")
+
+    def _end_edit_session(self):
+        """Hides the editor and restores the overview state."""
+        self.editor_widget.setVisible(False)
+        self.preview_pane.setVisible(False) # Also hide preview if it was open
+        self.btn_toggle_preview.setChecked(False) # Ensure toggle is reset
+        self.current_edited_statement_index = -1
+        self._update_ui_for_mode("overview")
+        self.table_statements.setFocus()
+
+    def _commit_changes(self):
+        """Saves the data from the editor back to the live statement object."""
+        if self.current_edited_statement_index == -1:
+            return
+
+        statement = self.obj.Proxy.live_statements[self.current_edited_statement_index]
+        statement.description = self.description_edit.text()
+        statement.query_string = self.sql_query_edit.toPlainText()
+        statement.use_description_as_header = self.chk_use_description_as_header.isChecked()
+        statement.include_column_names = self.chk_include_column_names.isChecked()
+        statement.add_empty_row_after = self.chk_add_empty_row_after.isChecked()
+        statement.print_results_in_bold = self.chk_print_results_in_bold.isChecked()
+
+        statement.validate_and_update_status()
+        self._update_table_row_status(self.current_edited_statement_index, statement)
+        self._set_dirty(True)
+
+    def on_apply_clicked(self):
+        """Applies changes and closes the editor or loads the next statement."""
+        self._commit_changes()
+
+        if self.chk_save_and_next.isChecked():
+            current_row = self.current_edited_statement_index
+            next_row = current_row + 1
+            if next_row < self.table_statements.rowCount():
+                # There is a next statement, load it
+                self.table_statements.selectRow(next_row)
+                self._start_edit_session(row_index=next_row)
+            else:
+                # This was the last statement, just close the editor
+                self._end_edit_session()
+        else:
+            self._end_edit_session()
+
+    def on_discard_clicked(self):
+        """Discards changes and closes the editor."""
+        self._end_edit_session()
+
+    def _on_show_preview_toggled(self, checked):
+        """Shows or hides the preview pane based on the toggle button state."""
+        # The Refresh button is a child of the pane, so it will automatically
+        # show and hide along with its parent. We only need to control the pane.
+        self.preview_pane.setVisible(checked)
+        if checked:
+            # When the preview is shown, run it immediately.
+            self._run_and_display_preview()
+
+    def _run_and_display_preview(self):
+        """Executes the query in the editor and populates the preview table."""
+        query = self.sql_query_edit.toPlainText().strip()
+
+        if not self.preview_pane.isVisible():
+            return # Don't run if the pane is hidden
+
+        if not query:
+            self.table_preview_results.clear()
+            self.table_preview_results.setRowCount(0)
+            self.table_preview_results.setColumnCount(0)
+            return
+
+        try:
+            # Always run the preview in isolation against the full document.
+            headers, data_rows = ArchSql.select(query)
+            self.table_preview_results.clear()
+            self.table_preview_results.setColumnCount(len(headers))
+            self.table_preview_results.setHorizontalHeaderLabels(headers)
+            self.table_preview_results.setRowCount(len(data_rows))
+
+            for row_idx, row_data in enumerate(data_rows):
+                for col_idx, cell_value in enumerate(row_data):
+                    item = QtWidgets.QTableWidgetItem(str(cell_value))
+                    self.table_preview_results.setItem(row_idx, col_idx, item)
+
+            self.table_preview_results.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Interactive)
+
+        except (ArchSql.SqlEngineError, ArchSql.BimSqlSyntaxError) as e:
+            self.table_preview_results.clear()
+            self.table_preview_results.setRowCount(1)
+            self.table_preview_results.setColumnCount(1)
+            self.table_preview_results.setHorizontalHeaderLabels(["Query Error"])
+            error_item = QtWidgets.QTableWidgetItem(f"❌ {str(e)}")
+            error_item.setForeground(QtGui.QColor("red"))
+            self.table_preview_results.setItem(0, 0, error_item)
+            self.table_preview_results.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
 
     # --- Dialog Acceptance / Rejection ---
     def accept(self):
@@ -1402,7 +1507,7 @@ if FreeCAD.GuiUp:
         def __init__(self, api_data, parent=None):
             super().__init__(parent)
             self.setWindowTitle(translate("Arch", "BIM SQL Cheatsheet"))
-            self.setMinimumSize(750, 600)
+            self.setMinimumSize(800, 600)
             layout = QtWidgets.QVBoxLayout(self)
             html = self._format_as_html(api_data)
             text_edit = QtWidgets.QTextEdit()
