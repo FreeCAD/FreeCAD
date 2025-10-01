@@ -31,33 +31,11 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MDIView.h>
+#include "Utils.h"
 
 //===========================================================================
 // Utils
 //===========================================================================
-namespace
-{
-QString getAutoGroupCommandStr(bool useActiveBody = true)
-// Helper function to get the python code to add the newly created object to the active Part/Body
-// object if present
-{
-    App::GeoFeature* activeObj = nullptr;
-    if (useActiveBody) {
-        Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PDBODYKEY);
-        if (!activeObj) {
-            activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(
-                PARTKEY);
-        }
-    }
-    if (activeObj) {
-        QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
-        return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n")
-            .arg(activeName);
-    }
-
-    return QStringLiteral("# Object created at document root.");
-}
-}  // namespace
 
 //===========================================================================
 // Part_Cylinder
@@ -87,7 +65,7 @@ void CmdPartCylinder::activated(int iMsg)
     cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartCylinder","Cylinder"));
     runCommand(Doc,cmd.toUtf8());
-    runCommand(Doc, getAutoGroupCommandStr(false).toUtf8());
+    runCommand(Doc, PartGui::getAutoGroupCommandStr(false).toUtf8());
     commitCommand();
     updateActive();
     runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
@@ -131,7 +109,7 @@ void CmdPartBox::activated(int iMsg)
     cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartBox","Cube"));
     runCommand(Doc,cmd.toUtf8());
-    runCommand(Doc, getAutoGroupCommandStr(false).toUtf8());
+    runCommand(Doc, PartGui::getAutoGroupCommandStr(false).toUtf8());
     commitCommand();
     updateActive();
     runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
@@ -175,7 +153,7 @@ void CmdPartSphere::activated(int iMsg)
     cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartSphere","Sphere"));
     runCommand(Doc,cmd.toUtf8());
-    runCommand(Doc, getAutoGroupCommandStr(false).toUtf8());
+    runCommand(Doc, PartGui::getAutoGroupCommandStr(false).toUtf8());
     commitCommand();
     updateActive();
     runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
@@ -219,7 +197,7 @@ void CmdPartCone::activated(int iMsg)
     cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartCone","Cone"));
     runCommand(Doc,cmd.toUtf8());
-    runCommand(Doc, getAutoGroupCommandStr(false).toUtf8());
+    runCommand(Doc, PartGui::getAutoGroupCommandStr(false).toUtf8());
     commitCommand();
     updateActive();
     runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
@@ -263,7 +241,7 @@ void CmdPartTorus::activated(int iMsg)
     cmd = QStringLiteral("App.ActiveDocument.ActiveObject.Label = \"%1\"")
         .arg(qApp->translate("CmdPartTorus","Torus"));
     runCommand(Doc,cmd.toUtf8());
-    runCommand(Doc, getAutoGroupCommandStr(false).toUtf8());
+    runCommand(Doc, PartGui::getAutoGroupCommandStr(false).toUtf8());
     commitCommand();
     updateActive();
     runCommand(Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
