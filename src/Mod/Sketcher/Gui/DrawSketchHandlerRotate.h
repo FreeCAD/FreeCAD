@@ -419,24 +419,6 @@ private:
             }
         }
     }
-
-    Base::Vector3d
-    getRotatedPoint(Base::Vector3d&& pointToRotate, const Base::Vector2d& centerPoint, double angle)
-    {
-        Base::Vector2d pointToRotate2D = Base::Vector2d(pointToRotate.x, pointToRotate.y);
-
-        double initialAngle = (pointToRotate2D - centerPoint).Angle();
-        double lengthToCenter = (pointToRotate2D - centerPoint).Length();
-
-        pointToRotate2D = centerPoint
-            + lengthToCenter * Base::Vector2d(cos(angle + initialAngle), sin(angle + initialAngle));
-
-
-        pointToRotate.x = pointToRotate2D.x;
-        pointToRotate.y = pointToRotate2D.y;
-
-        return pointToRotate;
-    }
 };
 
 template<>
@@ -676,3 +658,4 @@ void DSHRotateController::computeNextDrawSketchHandlerMode()
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerRotate_H
+
