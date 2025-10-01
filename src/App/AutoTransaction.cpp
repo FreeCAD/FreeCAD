@@ -137,9 +137,6 @@ int Application::setActiveTransaction(const char* name, bool persist)
     }
     
     this->signalBeforeOpenTransaction(name);
-
-    this->signalBeforeOpenTransaction(name);
-
     if (_activeTransactionGuard > 0 && getActiveTransaction()) {
         if (_activeTransactionTmpName) {
             FC_LOG("transaction rename to '" << name << "'");
