@@ -32,72 +32,187 @@ if FreeCAD.GuiUp:
 
 
 def _get_preset_paths(preset_type):
-    """Gets the file paths for bundled and user presets."""
+    """
+    Gets the file paths for bundled (system) and user preset directories.
+
+    Parameters
+    ----------
+    preset_type : str
+        The type of preset, either 'query' or 'report'.
+
+    Returns
+    -------
+    tuple
+        A tuple containing (system_preset_dir, user_preset_dir).
+    """
     if preset_type == 'query':
-        filename = "query_presets.json"
-    elif preset_type == 'template':
-        filename = "report_templates.json"
+        subdir = "QueryPresets"
+    elif preset_type == 'report':
+        subdir = "ReportPresets"
     else:
         return None, None
 
-    resource_path = os.path.join(FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "ArchReport", filename)
-    user_path = os.path.join(FreeCAD.getUserAppDataDir(), "BIM", "ArchReport", f"user_{filename}")
-    return resource_path, user_path
+    # Path to the bundled presets installed with FreeCAD
+    system_path = os.path.join(FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "ArchReport", subdir)
+    # Path to the user's custom presets in their AppData directory
+    user_path = os.path.join(FreeCAD.getUserAppDataDir(), "BIM", "Presets", "ArchReport", subdir)
+
+    return system_path, user_path
+
 
 def _get_presets(preset_type):
-    """Loads bundled and user presets, with user presets overriding bundled ones."""
-    resource_path, user_path = _get_preset_paths(preset_type)
+    """
+    Loads all bundled and user presets from the filesystem.
+
+    This function scans the mirrored system and user directories, loading each
+    valid .json file. It is resilient to errors in user-created files.
+
+    Parameters
+    ----------
+    preset_type : str
+        The type of preset to load, either 'query' or 'report'.
+
+    Returns
+    -------
+    dict
+        A dictionary mapping the preset's filename (its stable ID) to a
+        dictionary containing its display name, data, and origin.
+        Example:
+        {
+          "room-schedule.json": {"name": "Room Schedule", "data": {...}, "is_user": False},
+          "c2f5b1a0...json": {"name": "My Custom Report", "data": {...}, "is_user": True}
+        }
+    """
+    system_dir, user_dir = _get_preset_paths(preset_type)
     presets = {}
 
-    # 1. Load bundled presets first
-    if resource_path and os.path.exists(resource_path):
-        try:
-            with open(resource_path, 'r', encoding='utf8') as f:
-                presets.update(json.load(f))
-        except Exception as e:
-            FreeCAD.Console.PrintError(f"BIM Report: Could not load bundled presets from {resource_path}: {e}\n")
+    def scan_directory(directory, is_user_preset):
+        if not os.path.isdir(directory):
+            return
 
-    # 2. Load user presets, which will override any bundled presets with the same name
-    if user_path and os.path.exists(user_path):
-        try:
-            with open(user_path, 'r', encoding='utf8') as f:
-                presets.update(json.load(f))
-        except Exception as e:
-            FreeCAD.Console.PrintError(f"BIM Report: Could not load user presets from {user_path}: {e}\n")
+        for filename in os.listdir(directory):
+            if not filename.endswith(".json"):
+                continue
+
+            file_path = os.path.join(directory, filename)
+            try:
+                with open(file_path, 'r', encoding='utf8') as f:
+                    data = json.load(f)
+
+                if "name" not in data:
+                    # Graceful handling: use filename as fallback, log a warning
+                    display_name = os.path.splitext(filename)[0]
+                    FreeCAD.Console.PrintWarning(f"BIM Report: Preset file '{file_path}' is missing a 'name' key. Using filename as fallback.\n")
+                else:
+                    display_name = data["name"]
+
+                # Apply translation only to bundled system presets
+                if not is_user_preset:
+                    display_name = translate("Arch", display_name)
+
+                presets[filename] = {
+                    "name": display_name,
+                    "data": data,
+                    "is_user": is_user_preset
+                }
+
+            except json.JSONDecodeError:
+                # Graceful handling: skip malformed file, log a detailed error
+                FreeCAD.Console.PrintError(f"BIM Report: Could not parse preset file at '{file_path}'. It may contain a syntax error.\n")
+            except Exception as e:
+                FreeCAD.Console.PrintError(f"BIM Report: An unexpected error occurred while loading preset '{file_path}': {e}\n")
+
+    # Scan system presets first, then user presets. User presets will not
+    # overwrite system presets as their filenames (UUIDs) are unique.
+    scan_directory(system_dir, is_user_preset=False)
+    scan_directory(user_dir, is_user_preset=True)
 
     return presets
 
+
 def _save_preset(preset_type, name, data):
-    """Saves a single preset or template to the user's preset file."""
+    """
+    Saves a preset to a new, individual .json file with a UUID-based filename.
+
+    This function handles name collision checks and ensures the user's preset
+    is saved in their personal AppData directory.
+
+    Parameters
+    ----------
+    preset_type : str
+        The type of preset, either 'query' or 'report'.
+    name : str
+        The desired human-readable display name for the preset.
+    data : dict
+        The dictionary of preset data to be saved as JSON.
+    """
+    import uuid
+
     _, user_path = _get_preset_paths(preset_type)
     if not user_path:
         return
 
-    user_dir = os.path.dirname(user_path)
-    os.makedirs(user_dir, exist_ok=True)
+    os.makedirs(user_path, exist_ok=True)
 
-    # Load existing user presets to avoid overwriting them
-    user_presets = {}
-    if os.path.exists(user_path):
-        try:
-            with open(user_path, 'r', encoding='utf8') as f:
-                # Handle case where file might be empty
-                content = f.read()
-                if content:
-                    user_presets = json.loads(content)
-        except Exception as e:
-            FreeCAD.Console.PrintError(f"BIM Report: Could not read user presets file at {user_path}: {e}\n")
+    # --- Name Collision Handling ---
+    existing_presets = _get_presets(preset_type)
+    existing_display_names = {p["name"] for p in existing_presets.values() if p["is_user"]}
 
-    # Add or update the new preset
-    user_presets[name] = data
+    final_name = name
+    counter = 1
+    while final_name in existing_display_names:
+        final_name = f"{name} ({counter:03d})"
+        counter += 1
 
-    # Write the entire collection back to the file
+    # The display name is stored inside the JSON content
+    data_to_save = data.copy()
+    data_to_save["name"] = final_name
+
+    # The filename is a stable, unique identifier
+    filename = f"{uuid.uuid4()}.json"
+    file_path = os.path.join(user_path, filename)
+
     try:
-        with open(user_path, 'w', encoding='utf8') as f:
-            json.dump(user_presets, f, indent=2)
-        FreeCAD.Console.PrintMessage(f"BIM Report: Preset '{name}' saved successfully.\n")
+        with open(file_path, 'w', encoding='utf8') as f:
+            json.dump(data_to_save, f, indent=2)
+        FreeCAD.Console.PrintMessage(f"BIM Report: Preset '{final_name}' saved successfully to '{file_path}'.\n")
     except Exception as e:
-        FreeCAD.Console.PrintError(f"BIM Report: Could not save preset to {user_path}: {e}\n")
+        FreeCAD.Console.PrintError(f"BIM Report: Could not save preset to '{file_path}': {e}\n")
+
+def _rename_preset(preset_type, filename, new_name):
+    """Renames a user preset by updating the 'name' key in its JSON file."""
+    _, user_path = _get_preset_paths(preset_type)
+    file_path = os.path.join(user_path, filename)
+
+    if not os.path.exists(file_path):
+        FreeCAD.Console.PrintError(f"BIM Report: Cannot rename preset. File not found: {file_path}\n")
+        return
+
+    try:
+        with open(file_path, 'r', encoding='utf8') as f:
+            data = json.load(f)
+
+        data['name'] = new_name
+
+        with open(file_path, 'w', encoding='utf8') as f:
+            json.dump(data, f, indent=2)
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"BIM Report: Failed to rename preset file '{file_path}': {e}\n")
+
+
+def _delete_preset(preset_type, filename):
+    """Deletes a user preset file from disk."""
+    _, user_path = _get_preset_paths(preset_type)
+    file_path = os.path.join(user_path, filename)
+
+    if not os.path.exists(file_path):
+        FreeCAD.Console.PrintError(f"BIM Report: Cannot delete preset. File not found: {file_path}\n")
+        return
+
+    try:
+        os.remove(file_path)
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"BIM Report: Failed to delete preset file '{file_path}': {e}\n")
 
 
 if FreeCAD.GuiUp:
@@ -618,10 +733,15 @@ class ReportTaskPanel:
         self.template_layout = QtWidgets.QHBoxLayout()
         self.template_dropdown = NoScrollHijackComboBox()
         self.template_dropdown.setToolTip(translate("Arch", "Load a full report template, replacing all current statements."))
+        # Enable per-item tooltips in the dropdown view
+        self.template_dropdown.view().setToolTip("")
+        self.btn_manage_templates = QtWidgets.QPushButton(translate("Arch", "Manage..."))
+        self.btn_manage_templates.setToolTip(translate("Arch", "Rename, delete, or edit saved report templates."))
         self.btn_save_template = QtWidgets.QPushButton(translate("Arch", "Save as Template..."))
         self.btn_save_template.setToolTip(translate("Arch", "Save the current set of statements as a new report template."))
         self.btn_save_template.setIcon(FreeCADGui.getIcon(":/icons/document-save.svg"))
         self.template_layout.addWidget(self.template_dropdown)
+        self.template_layout.addWidget(self.btn_manage_templates)
         self.template_layout.addWidget(self.btn_save_template)
         template_label = QtWidgets.QLabel(translate("Arch", "Report Templates:"))
         self.statements_overview_layout.addWidget(template_label)
@@ -664,9 +784,14 @@ class ReportTaskPanel:
         self.preset_controls_layout = QtWidgets.QHBoxLayout()
         self.query_preset_dropdown = NoScrollHijackComboBox()
         self.query_preset_dropdown.setToolTip(translate("Arch", "Load a saved query preset into the editor."))
+        # Enable per-item tooltips in the dropdown view
+        self.query_preset_dropdown.view().setToolTip("")
+        self.btn_manage_queries = QtWidgets.QPushButton(translate("Arch", "Manage..."))
+        self.btn_manage_queries.setToolTip(translate("Arch", "Rename, delete, or edit your saved query presets."))
         self.btn_save_query_preset = QtWidgets.QPushButton(translate("Arch", "Save..."))
         self.btn_save_query_preset.setToolTip(translate("Arch", "Save the current query as a new preset."))
         self.preset_controls_layout.addWidget(self.query_preset_dropdown)
+        self.preset_controls_layout.addWidget(self.btn_manage_queries)
         self.preset_controls_layout.addWidget(self.btn_save_query_preset)
         self.form_layout.addRow(translate("Arch", "Query Presets:"), self.preset_controls_layout)
 
@@ -786,9 +911,16 @@ class ReportTaskPanel:
         self.btn_edit_selected.clicked.connect(lambda: self._start_edit_session())
         self.table_statements.itemSelectionChanged.connect(self._on_table_selection_changed)
         self.template_dropdown.activated.connect(self._on_load_report_template)
-        self.btn_save_template.clicked.connect(lambda: self._on_save_report_template())
+
         # Keep table edits in sync with the runtime statements
         self.table_statements.itemChanged.connect(self._on_table_item_changed)
+        self.btn_save_template.clicked.connect(lambda: self._on_save_report_template())
+
+        # Enable and connect the preset management buttons
+        self.btn_manage_templates.setEnabled(True)
+        self.btn_manage_queries.setEnabled(True)
+        self.btn_manage_templates.clicked.connect(lambda: self._on_manage_presets('report'))
+        self.btn_manage_queries.clicked.connect(lambda: self._on_manage_presets('query'))
 
         # Connect all editor fields to a generic handler to manage the dirty state.
         self.description_edit.textChanged.connect(self._on_editor_field_changed)
@@ -826,16 +958,63 @@ class ReportTaskPanel:
         self._update_ui_for_mode("overview") # Set initial button states
 
     def _load_and_populate_presets(self):
-        """Loads all presets from disk and populates the UI dropdowns."""
-        self.query_presets = _get_presets('query')
-        self.query_preset_dropdown.clear()
-        self.query_preset_dropdown.addItem(translate("Arch", "--- Select a Query Preset ---"))
-        self.query_preset_dropdown.addItems(sorted(self.query_presets.keys()))
+        """Loads all presets and populates the UI dropdowns, including tooltips."""
 
-        self.report_templates = _get_presets('template')
-        self.template_dropdown.clear()
-        self.template_dropdown.addItem(translate("Arch", "--- Load a Report Template ---"))
-        self.template_dropdown.addItems(sorted(self.report_templates.keys()))
+        def _populate_combobox(combobox, preset_type, placeholder_text):
+            """Internal helper to load presets and populate a QComboBox."""
+            # Load the raw preset data from the backend
+            presets = _get_presets(preset_type)
+
+            # Prepare the UI widget
+            combobox.clear()
+            # The placeholder_text is already translated by the caller
+            combobox.addItem(placeholder_text)
+
+            model = combobox.model()
+
+            sorted_presets = sorted(presets.items(), key=lambda item: item[1]['name'])
+
+            # Populate the combobox with the sorted presets
+            for filename, preset in sorted_presets:
+                # Add the item with its display name and stable filename (as userData)
+                combobox.addItem(preset['name'], userData=filename)
+
+                # Get the index of the item that was just added
+                index = combobox.count() - 1
+
+                # Access the description from the nested "data" dictionary.
+                description = preset["data"].get("description", "").strip()
+
+                if description:
+                    item = model.item(index)
+                    if item:
+                        item.setToolTip(description)
+
+            return presets
+
+        # Use the helper function to populate both dropdowns,
+        # ensuring the placeholder strings are translatable.
+        self.query_presets = _populate_combobox(
+            self.query_preset_dropdown,
+            'query',
+            translate("Arch", "--- Select a Query Preset ---")
+        )
+        self.report_templates = _populate_combobox(
+            self.template_dropdown,
+            'report',
+            translate("Arch", "--- Load a Report Template ---")
+        )
+
+    def _on_manage_presets(self, mode):
+        """
+        Launches the ManagePresetsDialog and refreshes the dropdowns
+        when the dialog is closed.
+        """
+        dialog = ManagePresetsDialog(mode, parent=self.form[0])
+        dialog.exec_()
+
+        # Refresh the dropdowns to reflect any changes made
+        self._load_and_populate_presets()
 
     # --- Statement Management (Buttons and Table Interaction) ---
     def _populate_table_from_statements(self):
@@ -1003,7 +1182,6 @@ class ReportTaskPanel:
         self.table_statements.selectRow(row_idx)
         # This method should ONLY select, not start an edit session.
 
-
     # --- Editor (Box 2) Management ---
 
     def _load_statement_to_editor(self, statement: ReportStatement):
@@ -1051,10 +1229,16 @@ class ReportTaskPanel:
 
     def _on_load_query_preset(self, index):
         """Handles the selection of a query preset from the dropdown."""
-        if index == 0: # Ignore the placeholder item
+        if index == 0:  # Ignore the placeholder item
             return
 
-        preset_name = self.query_preset_dropdown.itemText(index)
+        filename = self.query_preset_dropdown.itemData(index)
+        preset_data = self.query_presets.get(filename, {}).get("data")
+
+        if not preset_data:
+            FreeCAD.Console.PrintError(f"BIM Report: Could not load data for query preset with filename '{filename}'.\n")
+            self.query_preset_dropdown.setCurrentIndex(0)
+            return
 
         # Confirm before overwriting existing text
         if self.sql_query_edit.toPlainText().strip():
@@ -1062,14 +1246,14 @@ class ReportTaskPanel:
                                                    translate("Arch", "Loading a preset will overwrite the current text in the query editor. Continue?"),
                                                    QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
             if reply == QtWidgets.QMessageBox.No:
-                self.query_preset_dropdown.setCurrentIndex(0) # Reset dropdown
+                self.query_preset_dropdown.setCurrentIndex(0)  # Reset dropdown
                 return
 
-        preset_data = self.query_presets.get(preset_name)
-        if preset_data and 'query' in preset_data:
+        if 'query' in preset_data:
             self.sql_query_edit.setPlainText(preset_data['query'])
 
-        self.query_preset_dropdown.setCurrentIndex(0) # Reset dropdown to act as a one-shot button
+        # Reset dropdown to act as a one-shot action button
+        self.query_preset_dropdown.setCurrentIndex(0)
 
     def _on_save_query_preset(self):
         """Saves the current query text as a new user preset."""
@@ -1080,7 +1264,8 @@ class ReportTaskPanel:
 
         preset_name, ok = QtWidgets.QInputDialog.getText(None, translate("Arch", "Save Query Preset"), translate("Arch", "Preset Name:"))
         if ok and preset_name:
-            preset_data = {"description": "User-defined preset.", "query": current_query}
+            # The data payload does not include the 'name' key; _save_preset adds it.
+            preset_data = {"description": "User-defined query preset.", "query": current_query}
             _save_preset('query', preset_name, preset_data)
             self._load_and_populate_presets() # Refresh the dropdown with the new preset
 
@@ -1089,7 +1274,13 @@ class ReportTaskPanel:
         if index == 0:
             return
 
-        template_name = self.template_dropdown.itemText(index)
+        filename = self.template_dropdown.itemData(index)
+        template_data = self.report_templates.get(filename, {}).get("data")
+
+        if not template_data:
+            FreeCAD.Console.PrintError(f"BIM Report: Could not load data for template with filename '{filename}'.\n")
+            self.template_dropdown.setCurrentIndex(0)
+            return
 
         if self.obj.Proxy.live_statements:
             reply = QtWidgets.QMessageBox.question(None, translate("Arch", "Overwrite Report?"),
@@ -1099,8 +1290,7 @@ class ReportTaskPanel:
                 self.template_dropdown.setCurrentIndex(0)
                 return
 
-        template_data = self.report_templates.get(template_name)
-        if template_data and 'statements' in template_data:
+        if 'statements' in template_data:
             # Rebuild the live list from the template data
             self.obj.Proxy.live_statements = []
             for s_data in template_data['statements']:
@@ -1109,17 +1299,29 @@ class ReportTaskPanel:
                 self.obj.Proxy.live_statements.append(statement)
 
             self._populate_table_from_statements()
-            self._update_editor_visibility(False)
+
+            # Terminate any active editing session, as loading a template invalidates it. This
+            # correctly resets the entire UI state.
+            self._end_edit_session()
+
             self._set_dirty(True)
 
         self.template_dropdown.setCurrentIndex(0)
 
     def _on_save_report_template(self):
         """Saves the current set of statements as a new report template."""
+        if not self.obj.Proxy.live_statements:
+            QtWidgets.QMessageBox.warning(None, translate("Arch", "Empty Report"), translate("Arch", "Cannot save an empty report as a template."))
+            return
+
         template_name, ok = QtWidgets.QInputDialog.getText(None, translate("Arch", "Save Report Template"), translate("Arch", "Template Name:"))
         if ok and template_name:
-            template_data = {"description": "User-defined report template.", "statements": [s.dumps() for s in self.obj.Proxy.live_statements]}
-            _save_preset('template', template_name, template_data)
+            # The data payload does not include the 'name' key.
+            template_data = {
+                "description": "User-defined report template.",
+                "statements": [s.dumps() for s in self.obj.Proxy.live_statements]
+            }
+            _save_preset('report', template_name, template_data)
             self._load_and_populate_presets() # Refresh the template dropdown
 
     def _run_live_validation_for_editor(self):
@@ -1464,7 +1666,145 @@ class ReportTaskPanel:
             # (e.g., it was already closed), we log the error but do not crash.
             FreeCAD.Console.PrintLog(f"Could not close Report Task Panel: {e}\n")
 
+
 if FreeCAD.GuiUp:
+    from PySide.QtGui import QDesktopServices
+    from PySide.QtCore import QUrl
+
+
+    class ManagePresetsDialog(QtWidgets.QDialog):
+        """A dialog for managing user-created presets (rename, delete, edit source)."""
+        def __init__(self, mode, parent=None):
+            super().__init__(parent)
+            self.mode = mode # 'query' or 'report'
+            self.setWindowTitle(translate("Arch", f"Manage {mode.capitalize()} Presets"))
+            self.setMinimumSize(500, 400)
+
+            # --- UI Layout ---
+            self.layout = QtWidgets.QVBoxLayout(self)
+
+            self.preset_list = QtWidgets.QListWidget()
+            self.layout.addWidget(self.preset_list)
+
+            self.buttons_layout = QtWidgets.QHBoxLayout()
+            self.btn_rename = QtWidgets.QPushButton(translate("Arch", "Rename..."))
+            self.btn_delete = QtWidgets.QPushButton(translate("Arch", "Delete"))
+            self.btn_edit_source = QtWidgets.QPushButton(translate("Arch", "Edit Source..."))
+            self.btn_close = QtWidgets.QPushButton(translate("Arch", "Close"))
+
+            self.buttons_layout.addWidget(self.btn_rename)
+            self.buttons_layout.addWidget(self.btn_delete)
+            self.buttons_layout.addStretch()
+            self.buttons_layout.addWidget(self.btn_edit_source)
+            self.layout.addLayout(self.buttons_layout)
+            self.layout.addWidget(self.btn_close)
+
+            # --- Connections ---
+            self.btn_close.clicked.connect(self.accept)
+            self.preset_list.itemSelectionChanged.connect(self._on_selection_changed)
+            self.btn_rename.clicked.connect(self._on_rename)
+            self.btn_delete.clicked.connect(self._on_delete)
+            self.btn_edit_source.clicked.connect(self._on_edit_source)
+
+            # --- Initial State ---
+            self._populate_list()
+            self._on_selection_changed() # Set initial button states
+
+        def _populate_list(self):
+            """Fills the list widget with system and user presets."""
+            self.preset_list.clear()
+            self.presets = _get_presets(self.mode)
+
+            # Sort by display name for consistent UI order
+            sorted_presets = sorted(self.presets.items(), key=lambda item: item[1]['name'])
+
+            for filename, preset_data in sorted_presets:
+                item = QtWidgets.QListWidgetItem()
+                display_text = preset_data['name']
+
+                if preset_data['is_user']:
+                    item.setText(f"{display_text} (User)")
+                else:
+                    item.setText(display_text)
+                    # Make system presets visually distinct and non-selectable for modification
+                    item.setForeground(QtGui.QColor('gray'))
+                    flags = item.flags()
+                    flags &= ~QtCore.Qt.ItemIsSelectable
+                    item.setFlags(flags)
+
+                # Store the stable filename as data in the item
+                item.setData(QtCore.Qt.UserRole, filename)
+                self.preset_list.addItem(item)
+
+        def _on_selection_changed(self):
+            """Enables/disables buttons based on the current selection."""
+            selected_items = self.preset_list.selectedItems()
+            is_user_preset_selected = False
+
+            if selected_items:
+                filename = selected_items[0].data(QtCore.Qt.UserRole)
+                if self.presets[filename]['is_user']:
+                    is_user_preset_selected = True
+
+            self.btn_rename.setEnabled(is_user_preset_selected)
+            self.btn_delete.setEnabled(is_user_preset_selected)
+            self.btn_edit_source.setEnabled(is_user_preset_selected)
+
+            # --- Add Tooltips for Disabled State (Refinement #2) ---
+            tooltip = translate("Arch", "This action is only available for user-created presets.")
+            self.btn_rename.setToolTip("" if is_user_preset_selected else tooltip)
+            self.btn_delete.setToolTip("" if is_user_preset_selected else tooltip)
+            self.btn_edit_source.setToolTip("" if is_user_preset_selected else tooltip)
+
+        def _on_rename(self):
+            """Handles the rename action."""
+            item = self.preset_list.selectedItems()[0]
+            filename = item.data(QtCore.Qt.UserRole)
+            current_name = self.presets[filename]['name']
+
+            # --- Live Name Collision Check (Refinement #2) ---
+            existing_names = {p['name'] for f, p in self.presets.items() if f != filename}
+
+            new_name, ok = QtWidgets.QInputDialog.getText(self, translate("Arch", "Rename Preset"), translate("Arch", "New name:"), text=current_name)
+            if ok and new_name and new_name != current_name:
+                if new_name in existing_names:
+                    QtWidgets.QMessageBox.warning(self, translate("Arch", "Name Conflict"), translate("Arch", "A preset with this name already exists. Please choose a different name."))
+                    return
+
+                _rename_preset(self.mode, filename, new_name)
+                self._populate_list() # Refresh the list
+
+        def _on_delete(self):
+            """Handles the delete action."""
+            item = self.preset_list.selectedItems()[0]
+            filename = item.data(QtCore.Qt.UserRole)
+            name = self.presets[filename]['name']
+
+            reply = QtWidgets.QMessageBox.question(self, translate("Arch", "Delete Preset"),
+                                                translate("Arch", f"Are you sure you want to permanently delete the preset '{name}'?"),
+                                                QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
+
+            if reply == QtWidgets.QMessageBox.Yes:
+                _delete_preset(self.mode, filename)
+                self._populate_list()
+
+        def _on_edit_source(self):
+            """Opens the preset's JSON file in an external editor."""
+            item = self.preset_list.selectedItems()[0]
+            filename = item.data(QtCore.Qt.UserRole)
+            _, user_path = _get_preset_paths(self.mode)
+            file_path = os.path.join(user_path, filename)
+
+            if not os.path.exists(file_path):
+                QtWidgets.QMessageBox.critical(self, translate("Arch", "File Not Found"), translate("Arch", f"Could not find the preset file at:\n{file_path}"))
+                return
+
+            # --- Use QDesktopServices for robust, cross-platform opening (Refinement #3) ---
+            url = QUrl.fromLocalFile(file_path)
+            if not QDesktopServices.openUrl(url):
+                QtWidgets.QMessageBox.warning(self, translate("Arch", "Could Not Open File"), translate("Arch", "FreeCAD could not open the file. Please check if you have a default text editor configured in your operating system."))
+
+
     class NoScrollHijackComboBox(QtWidgets.QComboBox):
         """
         A custom QComboBox that only processes wheel events when its popup view is visible.
