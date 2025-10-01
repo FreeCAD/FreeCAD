@@ -73,13 +73,15 @@ QString getAutoGroupCommandStr(bool useActiveBody)
 }
 
 QString getAutoGroupCommandStr(QString objectName)
-    // Helper function to get the python code to add the newly created object to the active Part object if present
+// Helper function to get the python code to add the newly created object to the active Part object
+// if present
 {
-    App::Part* activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("part");
+    App::Part* activePart =
+        Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("part");
     if (activePart) {
         QString activeObjectName = QString::fromLatin1(activePart->getNameInDocument());
         return QStringLiteral("App.ActiveDocument.getObject('%1\')."
-            "addObject(App.ActiveDocument.getObject('%2\'))\n")
+                              "addObject(App.ActiveDocument.getObject('%2\'))\n")
             .arg(activeObjectName, objectName);
     }
     return QStringLiteral("# Object %1 created at document root").arg(objectName);
