@@ -131,9 +131,9 @@ def select_starting_corner(corners, primary_vec, step_vec, milling_direction):
     """
     Select starting corner based on milling direction and edge orientation.
     
-    For climb milling, we want to start from the corner that allows the tool to
-    move in the direction that creates the optimal cutting conditions.
-    For conventional milling, we start from the opposite corner.
+    For climb milling (clockwise spiral), start from the corner with minimum
+    combined projection (bottom-left in the primary/step coordinate system).
+    For conventional milling (counter-clockwise spiral), start from the opposite corner.
     
     Args:
         corners (list): List of corner points from the polygon
@@ -147,27 +147,26 @@ def select_starting_corner(corners, primary_vec, step_vec, milling_direction):
     if len(corners) < 4:
         return corners[0]
     
-    # Find the corner with minimum combined projection onto both direction vectors
-    # This gives us the "origin" corner regardless of polygon rotation
+    # Find the corner with minimum combined projection in the primary/step coordinate system
+    # This is the "origin" corner in the rotated coordinate frame
     min_projection = float('inf')
     selected_corner = corners[0]
     
     for corner in corners:
-        # Calculate projections onto both direction vectors
+        # Project corner onto the primary and step vectors
         primary_proj = corner.dot(primary_vec)
         step_proj = corner.dot(step_vec)
         
-        # Combined projection (distance from origin in direction space)
+        # Combined projection gives distance from origin in direction space
         combined_proj = primary_proj + step_proj
         
         if combined_proj < min_projection:
             min_projection = combined_proj
             selected_corner = corner
     
-    # For conventional milling, we want to start from the opposite corner
-    # to ensure proper cutting direction
+    # For conventional milling, start from the diagonally opposite corner
     if milling_direction == "conventional":
-        # Find the corner that's furthest from the selected corner
+        # Find the corner that's furthest from the selected corner (diagonal opposite)
         max_distance = 0
         opposite_corner = selected_corner
         
@@ -238,9 +237,12 @@ def get_angled_polygon(wire, angle):
 
 
 def calculate_engagement_offset(tool_diameter, stepover_percent):
-    """Calculate the engagement offset for proper tool engagement."""
-    tool_radius = tool_diameter / 2.0
-    return tool_radius * (1.0 - stepover_percent / 100.0)
+    """Calculate the engagement offset for proper tool engagement.
+    
+    For 50% stepover, engagement should be 50% of tool diameter.
+    engagement_offset is how much of the tool is NOT engaged.
+    """
+    return tool_diameter * (1.0 - stepover_percent / 100.0)
 
 
 def validate_inputs(wire, tool_diameter, stepover_percent, start_depth, final_depth, 
@@ -302,3 +304,157 @@ def validate_inputs(wire, tool_diameter, stepover_percent, start_depth, final_de
     valid_directions = ["climb", "conventional"]
     if milling_direction not in valid_directions:
         raise ValueError(f"Invalid milling direction: {milling_direction}. Must be one of {valid_directions}")
+
+
+def align_edges_to_angle(primary_vec, step_vec, primary_length, step_length, angle_degrees):
+    """Ensure primary_vec aligns with the desired angle direction.
+
+    If the provided angle direction is closer to step_vec than primary_vec,
+    swap the vectors and their associated lengths so primary_vec matches the
+    intended cut direction. This prevents sudden flips around angles like 46°/90°.
+    """
+    if angle_degrees is None:
+        return primary_vec, step_vec, primary_length, step_length
+
+    # Build a unit vector for the angle in the XY plane (degrees)
+    import math
+    rad = math.radians(angle_degrees)
+    dir_vec = FreeCAD.Vector(math.cos(rad), math.sin(rad), 0)
+
+    # Compare absolute alignment; both primary_vec and step_vec should be normalized already by caller
+    # If not, normalize here safely.
+    def norm(v):
+        L = v.Length
+        return v if L == 0 else v.multiply(1.0 / L)
+
+    p = norm(primary_vec)
+    s = norm(step_vec)
+
+    if abs(dir_vec.dot(p)) >= abs(dir_vec.dot(s)):
+        return p, s, primary_length, step_length
+    else:
+        # Swap so primary follows requested angle direction
+        return s, p, step_length, primary_length
+
+
+def unit_vectors_from_angle(angle_degrees):
+    """Return (primary_vec, step_vec) unit vectors from angle in degrees in XY plane.
+
+    primary_vec points in the angle direction. step_vec is +90° rotation (left normal).
+    """
+    import math
+    rad = math.radians(angle_degrees)
+    p = FreeCAD.Vector(math.cos(rad), math.sin(rad), 0)
+    # +90° rotation
+    s = FreeCAD.Vector(-math.sin(rad), math.cos(rad), 0)
+    return p, s
+
+
+def project_bounds(wire, vec, origin):
+    """Project all vertices of wire onto vec relative to origin and return (min_t, max_t)."""
+    ts = []
+    for v in wire.Vertexes:
+        ts.append(vec.dot(v.Point.sub(origin)))
+    return (min(ts), max(ts))
+
+
+def generate_t_values(wire, step_vec, tool_diameter, stepover_percent, origin):
+    """Generate step positions along step_vec with engagement offset and stepover.
+    
+    The first pass engages (100 - stepover_percent)% of the tool diameter.
+    For 50% stepover, first pass engages 50% of tool diameter.
+    Tool center is positioned so the engaged portion touches the polygon edge.
+    """
+    tool_radius = tool_diameter / 2.0
+    stepover = tool_diameter * (stepover_percent / 100.0)
+    min_t, max_t = project_bounds(wire, step_vec, origin)
+    
+    # Calculate how much of the tool should engage on first pass
+    # For 20% stepover: engage 20% of diameter
+    # For 50% stepover: engage 50% of diameter
+    engagement_amount = tool_diameter * (stepover_percent / 100.0)
+    
+    # Start position: tool center positioned so engagement_amount reaches polygon edge
+    # Tool center at: min_t - tool_radius + engagement_amount
+    # This positions the engaged portion at the polygon edge
+    t = min_t - tool_radius + engagement_amount
+    t_end = max_t + tool_radius - engagement_amount
+    
+    values = []
+    # Guard against zero/negative stepover
+    if stepover <= 0:
+        return [t]
+    while t <= t_end + 1e-9:
+        values.append(t)
+        t += stepover
+    return values
+
+
+def slice_wire_segments(wire, primary_vec, step_vec, t, origin):
+    """Intersect the polygon wire with the infinite line at step coordinate t.
+
+    Returns a sorted list of (s_in, s_out) intervals along primary_vec within the polygon.
+    """
+    import math
+    # For diagnostics
+    bb = wire.BoundBox
+    diag = math.hypot(bb.XLength, bb.YLength)
+    s_debug_threshold = max(1.0, diag * 10.0)
+    
+    s_vals = []
+    # Use scale-relative tolerance for near-parallel detection
+    eps_abs = 1e-12
+    t_scale = max(abs(t), diag, 1.0)
+    eps_parallel = max(eps_abs, t_scale * 1e-9)
+    
+    # Iterate edges
+    for edge in wire.Edges:
+        A = FreeCAD.Vector(edge.Vertexes[0].Point)
+        B = FreeCAD.Vector(edge.Vertexes[1].Point)
+        a = step_vec.dot(A.sub(origin))
+        b = step_vec.dot(B.sub(origin))
+        da = a - t
+        db = b - t
+        # Check for crossing; ignore edges parallel to the step line (db == da)
+        denom = (b - a)
+        if not (math.isfinite(a) and math.isfinite(b) and math.isfinite(denom)):
+            continue
+        # Reject near-parallel edges using scale-relative tolerance
+        if abs(denom) < eps_parallel:
+            continue
+        # Crossing if signs differ or one is zero
+        if da == 0.0 and db == 0.0:
+            # Line coincident with edge: skip to avoid degenerate doubles
+            continue
+        if (da <= 0 and db >= 0) or (da >= 0 and db <= 0):
+            # Linear interpolation factor u from A to B
+            u = (t - a) / (b - a)
+            if not math.isfinite(u):
+                continue
+            # Strict bounds check: u must be in [0,1] with tight tolerance
+            # Reject if u is way outside - indicates numerical instability
+            if u < -0.01 or u > 1.01:
+                continue
+            # Clamp u to [0,1] for valid intersections
+            u = max(0.0, min(1.0, u))
+            
+            # Interpolate using scalars to avoid any in-place vector mutation
+            ux = A.x + u * (B.x - A.x)
+            uy = A.y + u * (B.y - A.y)
+            uz = A.z + u * (B.z - A.z)
+            s = primary_vec.x * (ux - origin.x) + primary_vec.y * (uy - origin.y) + primary_vec.z * (uz - origin.z)
+            
+            # Final sanity check: reject if s is absurdly large
+            if not math.isfinite(s) or abs(s) > diag * 100.0:
+                continue
+            s_vals.append(s)
+
+    # Sort and pair successive intersections into interior segments
+    s_vals.sort()
+    segments = []
+    for i in range(0, len(s_vals) - 1, 2):
+        s0 = s_vals[i]
+        s1 = s_vals[i + 1]
+        if s1 > s0 + 1e-9 and math.isfinite(s0) and math.isfinite(s1):
+            segments.append((s0, s1))
+    return segments

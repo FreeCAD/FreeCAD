@@ -76,8 +76,9 @@ def analyze_rectangle(polygon, axis_preference):
     }
 
 
-def directional(polygon, tool_diameter, stepover_percent, axis_preference="long", 
-               pass_extension=None, retract_height=None, milling_direction="climb"):
+def directional(polygon, tool_diameter, stepover_percent, 
+               pass_extension=None, retract_height=None, milling_direction="climb", reverse=False,
+               angle_degrees=None):
     """
     Generate a unidirectional clearing pattern.
     
@@ -88,105 +89,158 @@ def directional(polygon, tool_diameter, stepover_percent, axis_preference="long"
     due to the rapid repositioning moves between passes.
     
     Args:
-        polygon: The polygon boundary to clear (rectangular, possibly rotated)
+        polygon: The polygon boundary to clear (rectangular)
         tool_diameter: Diameter of the cutting tool
         stepover_percent: Stepover as percentage of tool diameter
-        axis_preference: "long" or "short" - which axis to align primary cutting direction with
         pass_extension: Distance to extend cuts beyond polygon boundary for tool disengagement
         retract_height: Z height for rapid moves (None = cutting height)
         milling_direction: "climb" or "conventional" - milling direction preference
+        reverse: Reverse the cutting direction for the selected pattern.
+        angle_degrees: Angle in degrees to rotate the cutting direction.
     
     Returns:
-        List of Path.Command objects representing the toolpath
+        List of Path.Command objects representing the toolpath. The list will begin with a G0 to the starting position.
+        It is assumed that the calling function will replace the first move with an appropriate set of entry moves if needed
     """
-    Path.Log.debug(f"Directional: Tool diameter: {tool_diameter}, stepover_percent: {stepover_percent}, axis_preference: {axis_preference}, pass_extension: {pass_extension}, retract_height: {retract_height}, milling_direction: {milling_direction}")
     if pass_extension is None:
         pass_extension = tool_diameter * 0.5  # Default to half tool diameter
-    
-    # Analyze the rectangle to get orientation and dimensions
-    rect_info = analyze_rectangle(polygon, axis_preference)
-    primary_vec = rect_info['primary_vec']
-    step_vec = rect_info['step_vec']
-    primary_length = rect_info['primary_length']
-    step_length = rect_info['step_length']
-    reference_corner = rect_info['reference_corner']
 
-    # Ensure vectors are properly normalized
-    primary_vec = primary_vec.multiply(1.0 / primary_vec.Length)
-    step_vec = step_vec.multiply(1.0 / step_vec.Length)
+    import math
+    # 1) Establish frame from angle (default 0° = +X primary)
+    theta = float(angle_degrees) if angle_degrees is not None else 0.0
+    primary_vec, step_vec = facing_common.unit_vectors_from_angle(theta)
+    # Normalize defensively - make copies to avoid mutation
+    primary_vec = FreeCAD.Vector(primary_vec).multiply(1.0 / (primary_vec.Length or 1.0))
+    step_vec = FreeCAD.Vector(step_vec).multiply(1.0 / (step_vec.Length or 1.0))
 
-    # Calculate stepover distance and tool radius
-    stepover = (stepover_percent / 100.0) * tool_diameter
-    tool_radius = tool_diameter / 2.0
-    
-    # Generate step positions along the stepping direction
-    # For proper engagement: tool center should be at engagement_offset outside polygon
-    engagement_offset = facing_common.calculate_engagement_offset(tool_diameter, stepover_percent)
-    step_positions = []
-    current_step = -engagement_offset
-    
-    # Stop when tool edge reaches polygon edge (tool center at step_length - tool_radius)
-    while current_step <= step_length - tool_radius:
-        step_positions.append(current_step)
-        current_step += stepover
-    
-    # Ensure we cover the end - tool edge should reach polygon edge
-    if step_positions and step_positions[-1] < step_length - tool_radius - 0.001:
-        step_positions.append(step_length - tool_radius)
-    
-    # Generate toolpath commands
+    origin = polygon.BoundBox.Center
+    bb = polygon.BoundBox
+    diag = math.hypot(bb.XLength, bb.YLength)
+
+    Path.Log.debug(
+        f"Directional: dia={tool_diameter}, stepover%={stepover_percent}, "
+        f"dir={milling_direction}, angle={theta}, reverse={reverse}"
+    )
+
+    # 2) Compute projection bounds
+    min_s, max_s = facing_common.project_bounds(polygon, primary_vec, origin)
+    min_t, max_t = facing_common.project_bounds(polygon, step_vec, origin)
+    if not (math.isfinite(min_s) and math.isfinite(max_s) and math.isfinite(min_t) and math.isfinite(max_t)):
+        Path.Log.error("Directional: non-finite projection bounds; aborting")
+        return []
+    # 3) Steps along t
+    step_positions = facing_common.generate_t_values(polygon, step_vec, tool_diameter, stepover_percent, origin)
+    # Reverse order if requested (top-to-bottom instead of bottom-to-top)
+    if reverse:
+        # Mirror positions around center to maintain proper engagement at max_t
+        # This both reverses the order AND maintains proper engagement
+        center = (min_t + max_t) / 2.0
+        step_positions = [(2 * center - t) for t in step_positions]
+    Path.Log.debug(f"Directional: {len(step_positions)} passes generated")
+
+    # 4) Slice and emit
     commands = []
     z = polygon.BoundBox.ZMin
-    
-    for step_distance in step_positions:
-        # Calculate the start and end points for this pass
-        step_offset = FreeCAD.Vector(step_vec).multiply(step_distance)
-        pass_start_base = FreeCAD.Vector(reference_corner).add(step_offset)
-        
-        # Extend the pass beyond the polygon boundaries
-        primary_extension = FreeCAD.Vector(primary_vec).multiply(pass_extension)
-        primary_full_length = FreeCAD.Vector(primary_vec).multiply(primary_length)
-        
-        # Determine cutting direction based on milling preference
-        if milling_direction == "climb":
-            # Climb milling: cut in primary vector direction
-            start_point = FreeCAD.Vector(pass_start_base).sub(primary_extension)
-            end_point = FreeCAD.Vector(pass_start_base).add(primary_full_length).add(primary_extension)
-        else:
-            # Conventional milling: cut opposite to primary vector direction
-            start_point = FreeCAD.Vector(pass_start_base).add(primary_full_length).add(primary_extension)
-            end_point = FreeCAD.Vector(pass_start_base).sub(primary_extension)
-        
-        # Set Z coordinate
-        start_point.z = z
-        end_point.z = z
-        
-        # Add rapid move to start of pass (except for first pass)
-        if commands:
-            # Retract to safe height if specified
+    s_margin = pass_extension + tool_diameter
+    kept_segments = 0
+    skipped_segments = 0
+
+    for t in step_positions:
+        intervals = facing_common.slice_wire_segments(polygon, primary_vec, step_vec, t, origin)
+        # If no intervals found (pass is outside polygon), skip this pass
+        if not intervals:
+            skipped_segments += 1
+            continue
+        for (s0, s1) in intervals:
+            # Extend in primary direction by pass_extension + tool_radius + engagement
+            # This ensures the tool fully clears the polygon boundary
+            tool_radius = tool_diameter / 2.0
+            engagement_offset = facing_common.calculate_engagement_offset(tool_diameter, stepover_percent)
+            total_extension = pass_extension + tool_radius + engagement_offset
+            start_s = s0 - total_extension
+            end_s = s1 + total_extension
+            # Clip to safe bounds
+            start_s = max(start_s, min_s - s_margin)
+            end_s = min(end_s, max_s + s_margin)
+            if end_s <= start_s:
+                skipped_segments += 1
+                continue
+
+            # Determine cutting direction based on milling_direction and reverse
+            # When direction of travel reverses, cutting direction must flip to maintain climb/conventional
+            # Bottom-to-top: climb=right-to-left, conventional=left-to-right
+            # Top-to-bottom: climb=left-to-right, conventional=right-to-left
+            if milling_direction == "climb":
+                if reverse:
+                    p_start, p_end = start_s, end_s  # left-to-right for top-to-bottom
+                else:
+                    p_start, p_end = end_s, start_s  # right-to-left for bottom-to-top
+            else:  # conventional
+                if reverse:
+                    p_start, p_end = end_s, start_s  # right-to-left for top-to-bottom
+                else:
+                    p_start, p_end = start_s, end_s  # left-to-right for bottom-to-top
+
+            # Map to XY - use copies to avoid vector mutation
+            start_point = FreeCAD.Vector(origin).add(FreeCAD.Vector(primary_vec).multiply(p_start)).add(FreeCAD.Vector(step_vec).multiply(t))
+            end_point = FreeCAD.Vector(origin).add(FreeCAD.Vector(primary_vec).multiply(p_end)).add(FreeCAD.Vector(step_vec).multiply(t))
+            start_point.z = z
+            end_point.z = z
+            
+            # Sanity check for absurdly large coordinates
+            if not (math.isfinite(start_point.x) and math.isfinite(start_point.y) and 
+                    math.isfinite(end_point.x) and math.isfinite(end_point.y)):
+                continue
+            # Do NOT clamp XY after mapping; we already clipped s-range and t was selected from bbox.
+
+            if commands:
+                if retract_height is not None:
+                    commands.append(Path.Command("G0", {"Z": retract_height}))
+                commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y}))
+                if retract_height is not None:
+                    commands.append(Path.Command("G0", {"Z": z}))
+            else:
+                # First segment: emit a simple G0 to XYZ start position.
+                # The operation will replace this with its own preamble sequence.
+                commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y, "Z": z}))
+
+            commands.append(Path.Command("G1", {"X": end_point.x, "Y": end_point.y, "Z": z}))
+            kept_segments += 1
+
+    Path.Log.debug(f"Directional: generated {kept_segments} segments")
+    # Fallback: if nothing kept due to numeric guards, emit a single mid-line pass across bbox
+    if kept_segments == 0:
+        t_candidates = []
+        # mid, min, max t positions
+        t_candidates.append(0.5 * (min_t + max_t))
+        t_candidates.append(min_t)
+        t_candidates.append(max_t)
+        for t in t_candidates:
+            intervals = facing_common.slice_wire_segments(polygon, primary_vec, step_vec, t, origin)
+            if not intervals:
+                continue
+            s0, s1 = intervals[0]
+            start_s = max(s0 - pass_extension, min_s - s_margin)
+            end_s = min(s1 + pass_extension, max_s + s_margin)
+            if end_s <= start_s:
+                continue
+            if milling_direction == "climb":
+                p_start, p_end = start_s, end_s
+            else:
+                p_start, p_end = end_s, start_s
+            if reverse:
+                p_start, p_end = p_end, p_start
+            sp = FreeCAD.Vector(origin).add(FreeCAD.Vector(primary_vec).multiply(p_start)).add(FreeCAD.Vector(step_vec).multiply(t))
+            ep = FreeCAD.Vector(origin).add(FreeCAD.Vector(primary_vec).multiply(p_end)).add(FreeCAD.Vector(step_vec).multiply(t))
+            sp.z = z
+            ep.z = z
+            # Minimal preamble
             if retract_height is not None:
                 commands.append(Path.Command("G0", {"Z": retract_height}))
-            
-            # Rapid to XY position
-            commands.append(Path.Command("G0", {
-                "X": start_point.x,
-                "Y": start_point.y
-            }))
-            
-            # Rapid down to cutting height if we retracted
-            if retract_height is not None:
+                commands.append(Path.Command("G0", {"X": sp.x, "Y": sp.y}))
                 commands.append(Path.Command("G0", {"Z": z}))
-        
-        # Add cutting moves
-        commands.append(Path.Command("G1", {
-            "X": start_point.x,
-            "Y": start_point.y,
-            "Z": z
-        }))
-        commands.append(Path.Command("G1", {
-            "X": end_point.x,
-            "Y": end_point.y,
-            "Z": z
-        }))
-    
+            else:
+                commands.append(Path.Command("G1", {"X": sp.x, "Y": sp.y, "Z": z}))
+            commands.append(Path.Command("G1", {"X": ep.x, "Y": ep.y, "Z": z}))
+            break
     return commands

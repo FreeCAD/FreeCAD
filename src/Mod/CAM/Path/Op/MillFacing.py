@@ -312,22 +312,19 @@ class ObjectMillFacing(PathOp.ObjectOp):
             Path.Log.error("No stock found for facing operation")
             raise ValueError("No stock found for facing operation")
 
-        # Use facing_common.get_angled_polygon to get the angled polygon with the angle property
-        if obj.Angle.Value != 0:
-            wire = facing_common.get_angled_polygon(wire, obj.Angle.Value)
+        # Preserve the original face wire; only Spiral uses a rotated bounding wire.
+        original_wire = wire
 
         # Determine milling direction
         milling_direction = "climb" if obj.CutMode == "Climb" else "conventional"
         
         # Get operation parameters
         stepover_percent = obj.StepOver
-        # Axis preference removed from UI/properties; keep placeholder until generators updated
-        axis_preference = "long"
         pass_extension = obj.PassExtension.Value if hasattr(obj, 'PassExtension') else tool_diameter * 0.5
         retract_height = obj.SafeHeight.Value
         
         Path.Log.debug(f"Milling direction: {milling_direction}, StepOver: {obj.StepOver}, stepover_percent: {stepover_percent}")
-        Path.Log.debug(f"Clearing pattern: {obj.ClearingPattern}, Axis preference: {axis_preference}")
+        Path.Log.debug(f"Clearing pattern: {obj.ClearingPattern}")
         Path.Log.debug(f"Pass extension: {pass_extension}, Retract height: {retract_height}")
 
         # Generate the base toolpath for one depth level based on clearing pattern
@@ -336,44 +333,47 @@ class ObjectMillFacing(PathOp.ObjectOp):
                 # Spiral has different signature - no pass_extension or retract_height
                 Path.Log.debug("Generating spiral toolpath")
                 base_commands = spiral_facing.spiral(
-                    polygon=wire,
+                    polygon=original_wire,
                     tool_diameter=tool_diameter,
                     stepover_percent=stepover_percent,
-                    axis_preference=axis_preference,
-                    milling_direction=milling_direction
+                    milling_direction=milling_direction,
+                    reverse=bool(getattr(obj, 'Reverse', False)),
+                    angle_degrees=getattr(obj.Angle, 'Value', obj.Angle)
                 )
             elif obj.ClearingPattern == "ZigZag":
                 Path.Log.debug("Generating zigzag toolpath")
                 base_commands = zigzag_facing.zigzag(
-                    polygon=wire,
+                    polygon=original_wire,
                     tool_diameter=tool_diameter,
                     stepover_percent=stepover_percent,
-                    axis_preference=axis_preference,
                     pass_extension=pass_extension,
                     retract_height=retract_height,
-                    milling_direction=milling_direction
+                    milling_direction=milling_direction,
+                    reverse=bool(getattr(obj, 'Reverse', False)),
+                    angle_degrees=getattr(obj.Angle, 'Value', obj.Angle)
                 )
             elif obj.ClearingPattern == "Bidirectional":
                 Path.Log.debug("Generating bidirectional toolpath")
                 base_commands = bidirectional_facing.bidirectional(
-                    polygon=wire,
+                    polygon=original_wire,
                     tool_diameter=tool_diameter,
                     stepover_percent=stepover_percent,
-                    axis_preference=axis_preference,
                     pass_extension=pass_extension,
-                    retract_height=retract_height,
-                    milling_direction=milling_direction
+                    milling_direction=milling_direction,
+                    reverse=bool(getattr(obj, 'Reverse', False)),
+                    angle_degrees=getattr(obj.Angle, 'Value', obj.Angle)
                 )
             elif obj.ClearingPattern == "Directional":
                 Path.Log.debug("Generating directional toolpath")
                 base_commands = directional_facing.directional(
-                    polygon=wire,
+                    polygon=original_wire,
                     tool_diameter=tool_diameter,
                     stepover_percent=stepover_percent,
-                    axis_preference=axis_preference,
                     pass_extension=pass_extension,
                     retract_height=retract_height,
-                    milling_direction=milling_direction
+                    milling_direction=milling_direction,
+                    reverse=bool(getattr(obj, 'Reverse', False)),
+                    angle_degrees=getattr(obj.Angle, 'Value', obj.Angle)
                 )
             else:
                 Path.Log.error(f"Unknown clearing pattern: {obj.ClearingPattern}")
@@ -394,12 +394,60 @@ class ObjectMillFacing(PathOp.ObjectOp):
                 Path.Log.debug(f"Processing depth {depth_count}: {depth}")
                 
                 if depth_count == 1:
-                    # First stepdown - adjust Z depths for the commands directly
-                    for cmd in base_commands:
-                        new_params = dict(cmd.Parameters)
-                        if "Z" in new_params:
-                            new_params["Z"] = depth
-                        self.commandlist.append(Path.Command(cmd.Name, new_params))
+                    # First stepdown preamble:
+                    # 1) Rapid to SafeHeight
+                    # 2) Rapid to XY start position at SafeHeight
+                    # 3) Rapid down to cutting depth
+
+                    # Find the first XY target from the base commands
+                    first_xy = None
+                    first_move_idx = None
+                    for i, bc in enumerate(base_commands):
+                        if 'X' in bc.Parameters and 'Y' in bc.Parameters:
+                            first_xy = (bc.Parameters['X'], bc.Parameters['Y'])
+                            first_move_idx = i
+                            break
+
+                    if first_xy is not None:
+                        # Preamble: single rapid to XY at SafeHeight, then rapid down to cutting depth
+                        # 1) G0 X/Y/Z@SafeHeight
+                        pre1 = {"X": first_xy[0], "Y": first_xy[1], "Z": obj.SafeHeight.Value}
+                        if not self.commandlist or any(
+                            abs(pre1[k] - self.commandlist[-1].Parameters.get(k, pre1[k]+1)) > 1e-9 for k in ("X","Y","Z")
+                        ):
+                            self.commandlist.append(Path.Command("G0", pre1))
+                        # 2) G0 Z@depth (include XY to keep endpoints complete)
+                        pre2 = {"X": first_xy[0], "Y": first_xy[1], "Z": depth}
+                        if any(abs(pre2[k] - self.commandlist[-1].Parameters.get(k, pre2[k]+1)) > 1e-9 for k in ("X","Y","Z")):
+                            self.commandlist.append(Path.Command("G0", pre2))
+
+                    # Now append the base commands, skipping the generator's initial positioning move
+                    for i, cmd in enumerate(base_commands):
+                        # Skip the first move if it only positions at the start point
+                        if i == first_move_idx:
+                            # If this first move has only XY(Z) to the start point, skip it because we preambled it
+                            pass
+                        else:
+                            new_params = dict(cmd.Parameters)
+                            # Clamp cutting Z for G1 and plunges; preserve safe retractions above depth
+                            if "Z" in new_params:
+                                if cmd.Name == "G0":
+                                    if new_params["Z"] <= depth:
+                                        new_params["Z"] = depth
+                                else:
+                                    new_params["Z"] = depth
+                            # Ensure full XYZ by carrying forward last known
+                            if self.commandlist:
+                                last = self.commandlist[-1].Parameters
+                                new_params.setdefault("X", last.get("X"))
+                                new_params.setdefault("Y", last.get("Y"))
+                                new_params.setdefault("Z", last.get("Z"))
+                            # Skip zero-length moves
+                            if self.commandlist:
+                                last_params = self.commandlist[-1].Parameters
+                                if all(abs(new_params[k] - last_params.get(k, new_params[k]+1)) <= 1e-9 for k in ("X","Y","Z")):
+                                    continue
+                            self.commandlist.append(Path.Command(cmd.Name, new_params))
                     Path.Log.debug(f"First stepdown: Added {len(base_commands)} commands for depth {depth}")
                 else:
                     # Subsequent stepdowns - handle linking
@@ -408,7 +456,11 @@ class ObjectMillFacing(PathOp.ObjectOp):
                     for cmd in base_commands:
                         new_params = dict(cmd.Parameters)
                         if "Z" in new_params:
-                            new_params["Z"] = depth
+                            if cmd.Name == "G0":
+                                if new_params["Z"] <= depth:
+                                    new_params["Z"] = depth
+                            else:
+                                new_params["Z"] = depth
                         copy_commands.append(Path.Command(cmd.Name, new_params))
                     
                     # Get the last position from self.commandlist
@@ -419,21 +471,31 @@ class ObjectMillFacing(PathOp.ObjectOp):
                         last_cmd.Parameters.get("Z", depth)
                     )
                     
-                    # Find the first position (first G0 command in the copy)
-                    first_g0_idx = None
-                    first_position = None
+                    # Identify the initial retract+position+plunge bundle (G0s) before the next cut
+                    bundle_start = None
+                    bundle_end = None
+                    target_xy = None
                     for i, cmd in enumerate(copy_commands):
                         if cmd.Name == "G0":
-                            first_g0_idx = i
-                            first_position = FreeCAD.Vector(
-                                cmd.Parameters.get("X", 0),
-                                cmd.Parameters.get("Y", 0),
-                                cmd.Parameters.get("Z", depth)
-                            )
+                            bundle_start = i
+                            # collect consecutive G0s
+                            j = i
+                            while j < len(copy_commands) and copy_commands[j].Name == "G0":
+                                # capture XY target if present
+                                if 'X' in copy_commands[j].Parameters and 'Y' in copy_commands[j].Parameters:
+                                    target_xy = (
+                                        copy_commands[j].Parameters.get('X'),
+                                        copy_commands[j].Parameters.get('Y'),
+                                    )
+                                j += 1
+                            bundle_end = j  # exclusive
                             break
                     
-                    if first_g0_idx is not None:
-                        # Generate linking moves
+                    if bundle_start is not None and target_xy is not None:
+                        # Build target position at cutting depth
+                        first_position = FreeCAD.Vector(target_xy[0], target_xy[1], depth)
+                        
+                        # Generate collision-aware linking moves up to safe/clearance and back down
                         link_commands = linking.get_linking_moves(
                             start_position=last_position,
                             target_position=first_position,
@@ -441,25 +503,104 @@ class ObjectMillFacing(PathOp.ObjectOp):
                             global_clearance=obj.ClearanceHeight.Value,
                             tool_shape=obj.ToolController.Tool.Shape
                         )
+                        # Append linking moves, ensuring full XYZ continuity
+                        current = last_position
+                        for lc in link_commands:
+                            params = dict(lc.Parameters)
+                            X = params.get("X", current.x)
+                            Y = params.get("Y", current.y)
+                            Z = params.get("Z", current.z)
+                            # Skip zero-length
+                            if not (abs(X-current.x)<=1e-9 and abs(Y-current.y)<=1e-9 and abs(Z-current.z)<=1e-9):
+                                self.commandlist.append(Path.Command(lc.Name, {"X": X, "Y": Y, "Z": Z}))
+                            current = FreeCAD.Vector(X, Y, Z)
                         
-                        # Append linking moves to commandlist
-                        self.commandlist.extend(link_commands)
-                        
-                        # Remove the G0 command from copy (replaced by linking moves)
-                        copy_commands.pop(first_g0_idx)
+                        # Remove the entire initial G0 bundle (up, XY, down) from the copy
+                        del copy_commands[bundle_start:bundle_end]
                     
-                    # Append the copy commands
-                    self.commandlist.extend(copy_commands)
+                    # Append the copy commands, filling missing coords
+                    for cc in copy_commands:
+                        cp = dict(cc.Parameters)
+                        if self.commandlist:
+                            last = self.commandlist[-1].Parameters
+                            cp.setdefault("X", last.get("X"))
+                            cp.setdefault("Y", last.get("Y"))
+                            cp.setdefault("Z", last.get("Z"))
+                        # Skip zero-length
+                        if self.commandlist:
+                            last = self.commandlist[-1].Parameters
+                            if all(abs(cp[k] - last.get(k, cp[k]+1)) <= 1e-9 for k in ("X","Y","Z")):
+                                continue
+                        self.commandlist.append(Path.Command(cc.Name, cp))
                     Path.Log.debug(f"Stepdown {depth_count}: Added linking + {len(copy_commands)} commands for depth {depth}")
                 
         except StopIteration:
             Path.Log.debug(f"All depths processed. Total depth levels: {depth_count}")
 
         # Add final G0 to clearance height
-        self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+        targetZ = obj.ClearanceHeight.Value
+        if self.commandlist:
+            last = self.commandlist[-1].Parameters
+            lastZ = last.get("Z")
+            if lastZ is None or abs(targetZ - lastZ) > 1e-9:
+                # Prefer Z-only to avoid non-numeric XY issues
+                self.commandlist.append(Path.Command("G0", {"Z": targetZ}))
         
-        # Apply feedrates to the entire commandlist
-        FeedRate.setFeedRate(self.commandlist, obj.ToolController)
+        # Sanitize commands: ensure full XYZ continuity and remove zero-length/invalid/absurd moves
+        sanitized = []
+        curX = curY = curZ = None
+        # Compute XY bounds from original wire
+        try:
+            bb = original_wire.BoundBox
+            import math
+            diag = math.hypot(bb.XLength, bb.YLength)
+            xy_limit = max(1.0, diag * 10.0)
+        except Exception:
+            xy_limit = 1e6
+        for idx, cmd in enumerate(self.commandlist):
+            params = dict(cmd.Parameters)
+            # Carry forward
+            if curX is not None:
+                params.setdefault("X", curX)
+                params.setdefault("Y", curY)
+                params.setdefault("Z", curZ)
+            # Extract
+            X = params.get("X")
+            Y = params.get("Y")
+            Z = params.get("Z")
+            # Skip if any is None
+            if X is None or Y is None or Z is None:
+                Path.Log.warning(f"Dropping cmd {idx} missing coords: {cmd.Name} {cmd.Parameters}")
+                continue
+            # Skip NaN/inf
+            try:
+                _ = float(X) + float(Y) + float(Z)
+            except Exception:
+                Path.Log.warning(f"Dropping cmd {idx} non-finite coords: {cmd.Name} {cmd.Parameters}")
+                continue
+            # Debug: large finite XY - log but keep for analysis (do not drop)
+            if abs(X) > xy_limit or abs(Y) > xy_limit:
+                Path.Log.warning(f"Large XY detected (limit {xy_limit}): {cmd.Name} {params}")
+            # Skip zero-length
+            if curX is not None and abs(X-curX) <= 1e-12 and abs(Y-curY) <= 1e-12 and abs(Z-curZ) <= 1e-12:
+                continue
+            sanitized.append(Path.Command(cmd.Name, {"X": X, "Y": Y, "Z": Z}))
+            curX, curY, curZ = X, Y, Z
+
+        self.commandlist = sanitized
+
+        # Apply feedrates to the entire commandlist, with debug on failure
+        try:
+            FeedRate.setFeedRate(self.commandlist, obj.ToolController)
+        except Exception as e:
+            # Dump last 12 commands for diagnostics
+            n = len(self.commandlist)
+            start = max(0, n-12)
+            Path.Log.error("FeedRate failure. Dumping last commands:")
+            for i in range(start, n):
+                c = self.commandlist[i]
+                Path.Log.error(f"  #{i}: {c.Name} {c.Parameters}")
+            raise
         
         Path.Log.debug(f"Total commands in commandlist: {len(self.commandlist)}")
         Path.Log.debug("MillFacing.opExecute() completed successfully")

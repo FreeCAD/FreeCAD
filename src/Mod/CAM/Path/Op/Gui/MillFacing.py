@@ -45,6 +45,16 @@ else:
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     """Page controller class for the mill facing operation."""
 
+    def initPage(self, obj):
+        """initPage(obj) ... Initialize page with QuantitySpinBox wrappers for expression support"""
+        self.materialAllowanceSpinBox = PathGuiUtil.QuantitySpinBox(
+            self.form.materialAllowance, obj, "MaterialAllowance"
+        )
+        if hasattr(obj, 'PassExtension'):
+            self.passExtensionSpinBox = PathGuiUtil.QuantitySpinBox(
+                self.form.passExtension, obj, "PassExtension"
+            )
+
     def getForm(self):
         Path.Log.track()
         """getForm() ... return UI"""
@@ -74,23 +84,27 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if hasattr(obj, 'Reverse') and obj.Reverse != self.form.reverse.isChecked():
             obj.Reverse = self.form.reverse.isChecked()
 
-        if obj.Angle != self.form.angle.value():
+        # Angle is a PropertyAngle (quantity). Compare/update by value.
+        if getattr(obj.Angle, 'Value', obj.Angle) != self.form.angle.value():
             obj.Angle = self.form.angle.value()
 
-        if obj.StepOver != self.form.stepOver.value():
-            obj.StepOver = self.form.stepOver.value()
+        # StepOver is an App::PropertyPercent; assign an int percentage value
+        step_over_val = int(self.form.stepOver.value())
+        if obj.StepOver != step_over_val:
+            obj.StepOver = step_over_val
 
-        PathGuiUtil.updateInputField(obj, "MaterialAllowance", self.form.materialAllowance)
-        
-        # Only update PassExtension if the property exists
+        # MaterialAllowance and PassExtension are handled by QuantitySpinBox wrappers
+        self.materialAllowanceSpinBox.updateProperty()
         if hasattr(obj, 'PassExtension'):
-            PathGuiUtil.updateInputField(obj, "PassExtension", self.form.passExtension)
+            self.passExtensionSpinBox.updateProperty()
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
         
+        # Reflect current CutMode and ClearingPattern in UI
+        self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.selectInComboBox(obj.ClearingPattern, self.form.clearingPattern)
         
         # Handle new properties that may not exist in older operations
@@ -99,18 +113,18 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         else:
             self.form.reverse.setChecked(False)
         
-        self.form.angle.setValue(obj.Angle)
+        # Angle is a quantity; set spinbox with numeric degrees
+        self.form.angle.setValue(getattr(obj.Angle, 'Value', obj.Angle))
         self.form.stepOver.setValue(obj.StepOver)
-        self.form.materialAllowance.setText(
-            FreeCAD.Units.Quantity(obj.MaterialAllowance.Value, FreeCAD.Units.Length).UserString
-        )
         
-        if hasattr(obj, 'PassExtension'):
-            self.form.passExtension.setText(
-                FreeCAD.Units.Quantity(obj.PassExtension.Value, FreeCAD.Units.Length).UserString
-            )
-        else:
-            self.form.passExtension.setText("3.0 mm")  # Default value
+        # Update QuantitySpinBox displays
+        self.updateQuantitySpinBoxes()
+
+    def updateQuantitySpinBoxes(self, index=None):
+        """updateQuantitySpinBoxes() ... refresh QuantitySpinBox displays from properties"""
+        self.materialAllowanceSpinBox.updateWidget()
+        if hasattr(self, 'passExtensionSpinBox'):
+            self.passExtensionSpinBox.updateWidget()
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
@@ -119,6 +133,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.clearingPattern.currentIndexChanged)
+        signals.append(self.form.materialAllowance.editingFinished)
+        if hasattr(self.form, 'passExtension'):
+            signals.append(self.form.passExtension.editingFinished)
         # Qt 6 compatibility for checkbox state change
         if hasattr(self.form.reverse, "checkStateChanged"):  # Qt >= 6.7.0
             signals.append(self.form.reverse.checkStateChanged)
@@ -126,8 +143,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             signals.append(self.form.reverse.stateChanged)
         signals.append(self.form.angle.editingFinished)
         signals.append(self.form.stepOver.editingFinished)
-        signals.append(self.form.materialAllowance.editingFinished)
-        signals.append(self.form.passExtension.editingFinished)
         
         return signals
 

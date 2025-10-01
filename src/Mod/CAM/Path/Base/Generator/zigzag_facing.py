@@ -40,173 +40,154 @@ else:
 
 
 
-def zigzag(polygon, tool_diameter, stepover_percent, axis_preference="long", pass_extension=None, retract_height=None, milling_direction="climb"):
+def zigzag(polygon, tool_diameter, stepover_percent, pass_extension=None, retract_height=None, milling_direction="climb", reverse=False, angle_degrees=None):
     """
     Generate a zigzag clearing pattern.
     
     This strategy cuts back and forth across the polygon in alternating directions.
     Each pass reverses direction from the previous pass, creating a zigzag pattern.
     The tool cuts continuously without lifting between passes, minimizing air time.
-    Cutting direction alternates to maintain consistent chip load and surface finish.
     
     Args:
         polygon: The polygon boundary to clear
         tool_diameter: Diameter of the cutting tool
         stepover_percent: Stepover as percentage of tool diameter
-        axis_preference: "long" or "short" - which axis to align primary cutting direction with
-        pass_extension: Distance to extend cuts beyond polygon boundary for tool disengagement
-        retract_height: Z height for rapid moves between passes (None = cutting height, no retracts)
+        pass_extension: Distance to extend cuts beyond polygon boundary
+        retract_height: Z height for rapid moves (None = cutting height)
         milling_direction: "climb" or "conventional" - affects direction of first pass
+        reverse: Reverse the alternation pattern
+        angle_degrees: Angle in degrees to rotate the cutting direction
         
     Returns:
         List of Path.Command objects representing the toolpath
     """
 
-    Path.Log.debug(f"Zigzag: Tool diameter: {tool_diameter}, stepover_percent: {stepover_percent}, axis_preference: {axis_preference}, pass_extension: {pass_extension}, retract_height: {retract_height}, milling_direction: {milling_direction}")
     if pass_extension is None:
-        pass_extension = tool_diameter * 0.5  # Default to half tool diameter
+        pass_extension = tool_diameter * 0.5
     
-    # Analyze the rectangle to get orientation and dimensions
-    rect_info = analyze_rectangle(polygon, axis_preference)
-    primary_vec = rect_info['primary_vec']
-    step_vec = rect_info['step_vec']
-    primary_length = rect_info['primary_length']
-    step_length = rect_info['step_length']
-    reference_corner = rect_info['reference_corner']
+    import math
+    # Establish frame from angle (default 0° = +X primary)
+    theta = float(angle_degrees) if angle_degrees is not None else 0.0
+    primary_vec, step_vec = facing_common.unit_vectors_from_angle(theta)
+    # Make copies to avoid mutation
+    primary_vec = FreeCAD.Vector(primary_vec).multiply(1.0 / (primary_vec.Length or 1.0))
+    step_vec = FreeCAD.Vector(step_vec).multiply(1.0 / (step_vec.Length or 1.0))
 
-    # Ensure vectors are properly normalized
-    primary_vec = primary_vec.multiply(1.0 / primary_vec.Length)
-    step_vec = step_vec.multiply(1.0 / step_vec.Length)
+    Path.Log.debug(
+        f"Zigzag: dia={tool_diameter}, stepover%={stepover_percent}, "
+        f"dir={milling_direction}, angle={theta}, reverse={reverse}"
+    )
 
-    # Calculate stepover distance and tool radius
-    stepover = (stepover_percent / 100.0) * tool_diameter
-    tool_radius = tool_diameter / 2.0
+    origin = polygon.BoundBox.Center
+    bb = polygon.BoundBox
+    z = bb.ZMin
+
+    # Compute projection bounds
+    min_s, max_s = facing_common.project_bounds(polygon, primary_vec, origin)
+    min_t, max_t = facing_common.project_bounds(polygon, step_vec, origin)
+    if not (math.isfinite(min_s) and math.isfinite(max_s) and math.isfinite(min_t) and math.isfinite(max_t)):
+        Path.Log.error("Zigzag: non-finite projection bounds; aborting")
+        return []
+
+    # Generate step positions
+    step_positions = facing_common.generate_t_values(polygon, step_vec, tool_diameter, stepover_percent, origin)
     
-    Path.Log.debug("Zigzag: Tool diameter: {}, stepover_percent: {}, stepover: {}, tool_radius: {}".format(
-        tool_diameter, stepover_percent, stepover, tool_radius))
+    # Reverse controls direction: False=bottom-to-top, True=top-to-bottom
+    Path.Log.debug(f"Zigzag: Before reverse - min_t={min_t}, max_t={max_t}, first_t={step_positions[0] if step_positions else None}, last_t={step_positions[-1] if step_positions else None}")
+    if reverse:
+        # Mirror positions around center to maintain proper engagement offset at max_t
+        # This both reverses the order AND maintains proper engagement
+        center = (min_t + max_t) / 2.0
+        step_positions = [(2 * center - t) for t in step_positions]
+        Path.Log.debug(f"Zigzag: After reverse - center={center}, first_t={step_positions[0] if step_positions else None}, last_t={step_positions[-1] if step_positions else None}")
     
-    # Generate step positions along the stepping direction
-    engagement_offset = tool_radius * (1.0 - stepover_percent / 100.0)
-    step_positions = []
-    current_step = -engagement_offset
+    Path.Log.debug(f"Zigzag: {len(step_positions)} passes generated, reverse={reverse}, step_vec={step_vec}")
     
-    # Stop when tool edge reaches polygon edge (tool center at step_length - tool_radius)
-    while current_step <= step_length - tool_radius:
-        step_positions.append(current_step)
-        current_step += stepover
-    
-    # Ensure we cover the end - tool edge should reach polygon edge
-    if step_positions and step_positions[-1] < step_length - tool_radius - 0.001:
-        step_positions.append(step_length - tool_radius)
-    
-    Path.Log.debug("Zigzag: Generated {} steps with stepover: {}, tool_radius: {}".format(len(step_positions), stepover, tool_radius))
-    
-    # Generate toolpath commands
     commands = []
-    z = polygon.BoundBox.ZMin
+    s_margin = pass_extension + tool_diameter
+    kept_segments = 0
+    tool_radius = tool_diameter / 2.0
+    engagement_offset = facing_common.calculate_engagement_offset(tool_diameter, stepover_percent)
+
+    for idx, t in enumerate(step_positions):
+        if idx == 0:
+            # Debug first pass
+            world_y = origin.y + t
+            Path.Log.debug(f"Zigzag: first pass t={t}, origin.y={origin.y}, world_y={world_y}")
+        
+        intervals = facing_common.slice_wire_segments(polygon, primary_vec, step_vec, t, origin)
+        # If no intervals found (pass is outside polygon), skip this pass
+        if not intervals:
+            continue
+        
+        for (s0, s1) in intervals:
+            # Extend in primary direction
+            total_extension = pass_extension + tool_radius + engagement_offset
+            start_s = s0 - total_extension
+            end_s = s1 + total_extension
+            # Clip to safe bounds
+            start_s = max(start_s, min_s - s_margin)
+            end_s = min(end_s, max_s + s_margin)
+            if end_s <= start_s:
+                continue
+
+            # Determine direction based on segment parity, milling mode, and reverse
+            # reverse=False, climb: start right (end_s), alternate
+            # reverse=False, conventional: start left (start_s), alternate
+            # reverse=True, climb: start left (start_s), alternate
+            # reverse=True, conventional: start right (end_s), alternate
+            parity = kept_segments % 2
+            
+            if not reverse:
+                # Bottom-to-top
+                if milling_direction == "climb":
+                    # Start right, alternate
+                    if parity == 0:
+                        p_start, p_end = end_s, start_s
+                    else:
+                        p_start, p_end = start_s, end_s
+                else:  # conventional
+                    # Start left, alternate
+                    if parity == 0:
+                        p_start, p_end = start_s, end_s
+                    else:
+                        p_start, p_end = end_s, start_s
+            else:
+                # Top-to-bottom
+                if milling_direction == "climb":
+                    # Start left, alternate
+                    if parity == 0:
+                        p_start, p_end = start_s, end_s
+                    else:
+                        p_start, p_end = end_s, start_s
+                else:  # conventional
+                    # Start right, alternate
+                    if parity == 0:
+                        p_start, p_end = end_s, start_s
+                    else:
+                        p_start, p_end = start_s, end_s
+
+            # Map to XY - use copies to avoid vector mutation
+            start_point = FreeCAD.Vector(origin).add(FreeCAD.Vector(primary_vec).multiply(p_start)).add(FreeCAD.Vector(step_vec).multiply(t))
+            end_point = FreeCAD.Vector(origin).add(FreeCAD.Vector(primary_vec).multiply(p_end)).add(FreeCAD.Vector(step_vec).multiply(t))
+            start_point.z = z
+            end_point.z = z
+
+            # Sanity check for absurdly large coordinates
+            if not (math.isfinite(start_point.x) and math.isfinite(start_point.y) and 
+                    math.isfinite(end_point.x) and math.isfinite(end_point.y)):
+                continue
+
+            if commands:
+                # Rapid move at cutting height (no need to retract since tool is outside stock)
+                commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y}))
+            else:
+                # First segment: emit G0 to start for op preamble replacement
+                commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y, "Z": z}))
+
+            commands.append(Path.Command("G1", {"X": end_point.x, "Y": end_point.y, "Z": z}))
+            kept_segments += 1
     
-    for i, step_distance in enumerate(step_positions):
-        # Calculate the start and end points for this pass
-        step_offset = FreeCAD.Vector(step_vec).multiply(step_distance)
-        pass_start_base = FreeCAD.Vector(reference_corner).add(step_offset)
-        
-        # Extend the pass beyond the polygon boundaries
-        primary_extension = FreeCAD.Vector(primary_vec).multiply(pass_extension)
-        primary_full_length = FreeCAD.Vector(primary_vec).multiply(primary_length)
-        
-        # Alternate cutting direction for zigzag pattern based on milling direction preference
-        # For climb milling, start with primary direction; for conventional, start opposite
-        if milling_direction == "climb":
-            if i % 2 == 0:
-                # Even passes: cut in primary vector direction
-                start_point = FreeCAD.Vector(pass_start_base).sub(primary_extension)
-                end_point = FreeCAD.Vector(pass_start_base).add(primary_full_length).add(primary_extension)
-            else:
-                # Odd passes: cut opposite to primary vector direction
-                start_point = FreeCAD.Vector(pass_start_base).add(primary_full_length).add(primary_extension)
-                end_point = FreeCAD.Vector(pass_start_base).sub(primary_extension)
-        else:  # conventional milling
-            if i % 2 == 0:
-                # Even passes: cut opposite to primary vector direction
-                start_point = FreeCAD.Vector(pass_start_base).add(primary_full_length).add(primary_extension)
-                end_point = FreeCAD.Vector(pass_start_base).sub(primary_extension)
-            else:
-                # Odd passes: cut in primary vector direction
-                start_point = FreeCAD.Vector(pass_start_base).sub(primary_extension)
-                end_point = FreeCAD.Vector(pass_start_base).add(primary_full_length).add(primary_extension)
-        
-        # Set Z coordinate
-        start_point.z = z
-        end_point.z = z
-        
-        # Handle connection between passes based on retract_height setting
-        if i > 0:
-            if retract_height is not None:
-                # Lift to retract height, rapid to start, then plunge
-                commands.append(Path.Command("G0", {"Z": retract_height}))
-                commands.append(Path.Command("G0", {
-                    "X": start_point.x,
-                    "Y": start_point.y
-                }))
-                commands.append(Path.Command("G0", {"Z": z}))
-            else:
-                # Traditional zigzag - cutting move to connect passes
-                commands.append(Path.Command("G1", {
-                    "X": start_point.x,
-                    "Y": start_point.y,
-                    "Z": z
-                }))
-        else:
-            # First pass - position to start
-            commands.append(Path.Command("G1", {
-                "X": start_point.x,
-                "Y": start_point.y,
-                "Z": z
-            }))
-        
-        # Add cutting move across the pass
-        commands.append(Path.Command("G1", {
-            "X": end_point.x,
-            "Y": end_point.y,
-            "Z": z
-        }))
-    
+    Path.Log.debug(f"Zigzag: generated {kept_segments} segments")
     return commands
-
-
-def analyze_rectangle(polygon, axis_preference):
-    """Analyze rectangle to determine orientation and dimensions."""
-    # Extract polygon geometry
-    polygon_info = facing_common.extract_polygon_geometry(polygon)
-    edges = polygon_info['edges']
-    corners = polygon_info['corners']
-    
-    # Get primary and step edges
-    edge_info = facing_common.select_primary_step_edges(edges, axis_preference)
-    
-    # Find reference corner using dot product projections
-    primary_vec = edge_info['primary_vec']
-    step_vec = edge_info['step_vec']
-    
-    # Find the corner with minimum combined projection (the "origin" corner)
-    min_projection = float('inf')
-    reference_corner = corners[0]
-    
-    for corner in corners:
-        # Calculate projections onto both direction vectors
-        primary_proj = corner.dot(primary_vec)
-        step_proj = corner.dot(step_vec)
-        combined_proj = primary_proj + step_proj
-        
-        if combined_proj < min_projection:
-            min_projection = combined_proj
-            reference_corner = corner
-    
-    return {
-        'primary_vec': primary_vec,
-        'step_vec': step_vec,
-        'primary_length': edge_info['primary_length'],
-        'step_length': edge_info['step_length'],
-        'reference_corner': reference_corner
-    }
 

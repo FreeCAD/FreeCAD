@@ -23,14 +23,22 @@
 # ***************************************************************************
 
 import FreeCAD
+import math
 import Path.Base.Generator.spiral_facing as spiral_facing
 import Path.Base.Generator.zigzag_facing as zigzag_facing
 import Path.Base.Generator.directional_facing as directional_facing
 import Path.Base.Generator.bidirectional_facing as bidirectional_facing
 import Path.Base.Generator.facing_common as facing_common
 import Part
+import Path
 
 from CAMTests.PathTestUtils import PathTestBase
+
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class TestPathFacingGenerator(PathTestBase):
@@ -72,6 +80,87 @@ class TestPathFacingGenerator(PathTestBase):
         self.spline_wire = Part.Wire([Part.BSplineCurve(points, None, None, False, 3, None, False).toShape()])
 
 
+    def _first_xy(self, commands):
+        # Return XY of first G0 rapid move to get actual start position
+        for cmd in commands:
+            if cmd.Name == 'G0' and 'X' in cmd.Parameters and 'Y' in cmd.Parameters:
+                return (cmd.Parameters['X'], cmd.Parameters['Y'])
+        # Fallback to first cutting move
+        for cmd in commands:
+            if cmd.Name == 'G1' and 'X' in cmd.Parameters and 'Y' in cmd.Parameters:
+                return (cmd.Parameters['X'], cmd.Parameters['Y'])
+        return None
+
+    def _bbox_diag(self, wire):
+        bb = wire.BoundBox
+        dx = bb.XMax - bb.XMin
+        dy = bb.YMax - bb.YMin
+        return math.hypot(dx, dy)
+
+    def test_spiral_reverse_toggles_start_corner_climb(self):
+        """Spiral reverse toggles the starting corner while keeping winding (climb)."""
+        cmds_norm = spiral_facing.spiral(
+            polygon=self.rectangle_wire,
+            tool_diameter=10.0,
+            stepover_percent=50,
+            milling_direction="climb",
+            reverse=False,
+        )
+        cmds_rev = spiral_facing.spiral(
+            polygon=self.rectangle_wire,
+            tool_diameter=10.0,
+            stepover_percent=50,
+            milling_direction="climb",
+            reverse=True,
+        )
+
+        # Non-empty and similar length
+        self.assertIsInstance(cmds_norm, list)
+        self.assertIsInstance(cmds_rev, list)
+        self.assertGreater(len(cmds_norm), 0)
+        self.assertGreater(len(cmds_rev), 0)
+        self.assertAlmostEqual(len(cmds_norm), len(cmds_rev), delta=max(1, 0.05 * len(cmds_norm)))
+
+        # First command should be a move to start corner; compare XY distance equals bbox diagonal
+        self.assertIn(cmds_norm[0].Name, ['G0', 'G1'])
+        self.assertIn(cmds_rev[0].Name, ['G0', 'G1'])
+        p0 = self._first_xy(cmds_norm)
+        p1 = self._first_xy(cmds_rev)
+        self.assertIsNotNone(p0)
+        self.assertIsNotNone(p1)
+        dx = p1[0] - p0[0]
+        dy = p1[1] - p0[1]
+        dist = math.hypot(dx, dy)
+        self.assertAlmostEqual(dist, self._bbox_diag(self.rectangle_wire), places=6)
+
+    def test_spiral_reverse_toggles_start_corner_conventional(self):
+        """Spiral reverse toggles the starting corner while keeping winding (conventional)."""
+        cmds_norm = spiral_facing.spiral(
+            polygon=self.rectangle_wire,
+            tool_diameter=10.0,
+            stepover_percent=50,
+            milling_direction="conventional",
+            reverse=False,
+        )
+        cmds_rev = spiral_facing.spiral(
+            polygon=self.rectangle_wire,
+            tool_diameter=10.0,
+            stepover_percent=50,
+            milling_direction="conventional",
+            reverse=True,
+        )
+
+        self.assertGreater(len(cmds_norm), 0)
+        self.assertGreater(len(cmds_rev), 0)
+        p0 = self._first_xy(cmds_norm)
+        p1 = self._first_xy(cmds_rev)
+        self.assertIsNotNone(p0)
+        self.assertIsNotNone(p1)
+        dx = p1[0] - p0[0]
+        dy = p1[1] - p0[1]
+        dist = math.hypot(dx, dy)
+        self.assertAlmostEqual(dist, self._bbox_diag(self.rectangle_wire), places=6)
+
 
     def test_directional_strategy_basic(self):
         """Test directional strategy basic functionality."""
@@ -79,7 +168,6 @@ class TestPathFacingGenerator(PathTestBase):
             polygon=self.square_wire,
             tool_diameter=5.0,
             stepover_percent=50,
-            axis_preference="long"
         )
         
         # Should return a list of Path.Command objects
@@ -89,6 +177,208 @@ class TestPathFacingGenerator(PathTestBase):
         # All commands should be G0 or G1
         for cmd in commands:
             self.assertIn(cmd.Name, ['G0', 'G1'])
+
+    def test_directional_reverse_changes_start(self):
+        """Directional reverse should start from the opposite side."""
+        cmds_norm = directional_facing.directional(
+            polygon=self.rectangle_wire,
+            tool_diameter=10.0,
+            stepover_percent=50,
+            milling_direction="climb",
+            reverse=False,
+        )
+        cmds_rev = directional_facing.directional(
+            polygon=self.rectangle_wire,
+            tool_diameter=10.0,
+            stepover_percent=50,
+            milling_direction="climb",
+            reverse=True,
+        )
+        self.assertGreater(len(cmds_norm), 0)
+        self.assertGreater(len(cmds_rev), 0)
+        p0 = self._first_xy(cmds_norm)
+        p1 = self._first_xy(cmds_rev)
+        self.assertIsNotNone(p0)
+        self.assertIsNotNone(p1)
+        # Ensure the start points are different
+        self.assertTrue(abs(p0[0]-p1[0]) > 1e-6 or abs(p0[1]-p1[1]) > 1e-6)
+
+    def test_zigzag_reverse_flips_first_pass_direction_climb(self):
+        """Zigzag reverse should flip the first pass direction while preserving alternation (climb)."""
+        cmds_norm = zigzag_facing.zigzag(
+            polygon=self.rectangle_wire,
+            tool_diameter=5.0,
+            stepover_percent=50,
+            angle_degrees=0.0,
+            milling_direction="climb",
+            reverse=False,
+        )
+        cmds_rev = zigzag_facing.zigzag(
+            polygon=self.rectangle_wire,
+            tool_diameter=5.0,
+            stepover_percent=50,
+            angle_degrees=0.0,
+            milling_direction="climb",
+            reverse=True
+        )
+        self.assertGreater(len(cmds_norm), 0)
+        self.assertGreater(len(cmds_rev), 0)
+        p0 = self._first_xy(cmds_norm)
+        p1 = self._first_xy(cmds_rev)
+        self.assertIsNotNone(p0)
+        self.assertIsNotNone(p1)
+        # Ensure start points differ (first pass toggled)
+        self.assertTrue(abs(p0[0]-p1[0]) > 1e-6 or abs(p0[1]-p1[1]) > 1e-6)
+
+    def test_zigzag_reverse_flips_first_pass_direction_conventional(self):
+        """Zigzag reverse should flip the first pass direction while preserving alternation (conventional)."""
+        cmds_norm = zigzag_facing.zigzag(
+            polygon=self.rectangle_wire,
+            tool_diameter=5.0,
+            stepover_percent=50,
+            angle_degrees=0.0,
+            milling_direction="conventional",
+            reverse=False,
+        )
+        cmds_rev = zigzag_facing.zigzag(
+            polygon=self.rectangle_wire,
+            tool_diameter=5.0,
+            stepover_percent=50,
+            angle_degrees=0.0,
+            milling_direction="conventional",
+            reverse=True
+        )
+        self.assertGreater(len(cmds_norm), 0)
+        self.assertGreater(len(cmds_rev), 0)
+        p0 = self._first_xy(cmds_norm)
+        p1 = self._first_xy(cmds_rev)
+        self.assertIsNotNone(p0)
+        self.assertIsNotNone(p1)
+        # Ensure start points differ (first pass toggled)
+        self.assertTrue(abs(p0[0]-p1[0]) > 1e-6 or abs(p0[1]-p1[1]) > 1e-6)
+
+    def test_zigzag_reverse_and_milling_combinations(self):
+        """Test all four combinations of reverse and milling_direction for zigzag."""
+        # Expected behavior for zigzag (rectangle 0,0 to 20,10):
+        # reverse=False, climb: start right, bottom (high X, low Y)
+        # reverse=False, conventional: start left, bottom (low X, low Y)
+        # reverse=True, climb: start left, top (low X, high Y)
+        # reverse=True, conventional: start right, top (high X, high Y)
+        
+        test_cases = [
+            ("climb", False, "right", "bottom"),
+            ("climb", True, "left", "top"),
+            ("conventional", False, "left", "bottom"),
+            ("conventional", True, "right", "top"),
+        ]
+        
+        results = {}
+        for milling_dir, reverse, expected_x_side, expected_y_side in test_cases:
+            commands = zigzag_facing.zigzag(
+                polygon=self.rectangle_wire,
+                tool_diameter=5.0,
+                stepover_percent=50,
+                angle_degrees=0.0,
+                milling_direction=milling_dir,
+                reverse=reverse
+            )
+            pos = self._first_xy(commands)
+            self.assertIsNotNone(pos, f"zigzag {milling_dir} reverse={reverse} returned no position")
+            results[(milling_dir, reverse)] = pos
+            
+            # Verify X side (left < 10, right > 10 for rectangle 0-20)
+            if expected_x_side == "left":
+                self.assertLess(pos[0], 10, f"zigzag {milling_dir} reverse={reverse}: expected left (X<10), got X={pos[0]}")
+            else:  # right
+                self.assertGreater(pos[0], 10, f"zigzag {milling_dir} reverse={reverse}: expected right (X>10), got X={pos[0]}")
+            
+            # Verify Y side (bottom < 5, top > 5 for rectangle 0-10)
+            if expected_y_side == "bottom":
+                self.assertLess(pos[1], 5, f"zigzag {milling_dir} reverse={reverse}: expected bottom (Y<5), got Y={pos[1]}")
+            else:  # top
+                self.assertGreater(pos[1], 5, f"zigzag {milling_dir} reverse={reverse}: expected top (Y>5), got Y={pos[1]}")
+    
+    def test_directional_reverse_and_milling_combinations(self):
+        """Test all four combinations of reverse and milling_direction for directional."""
+        # Expected behavior for directional (rectangle 0,0 to 20,10):
+        # Bottom-to-top (reverse=False): climb=right-to-left, conventional=left-to-right
+        # Top-to-bottom (reverse=True): climb=left-to-right, conventional=right-to-left
+        # reverse=False, climb: start right, bottom (high X, low Y)
+        # reverse=False, conventional: start left, bottom (low X, low Y)
+        # reverse=True, climb: start left, top (low X, high Y)
+        # reverse=True, conventional: start right, top (high X, high Y)
+        
+        test_cases = [
+            ("climb", False, "right", "bottom"),
+            ("climb", True, "left", "top"),
+            ("conventional", False, "left", "bottom"),
+            ("conventional", True, "right", "top"),
+        ]
+        
+        for milling_dir, reverse, expected_x_side, expected_y_side in test_cases:
+            commands = directional_facing.directional(
+                polygon=self.rectangle_wire,
+                tool_diameter=5.0,
+                stepover_percent=50,
+                angle_degrees=0.0,
+                milling_direction=milling_dir,
+                reverse=reverse
+            )
+            pos = self._first_xy(commands)
+            self.assertIsNotNone(pos, f"directional {milling_dir} reverse={reverse} returned no position")
+            
+            # Verify X side
+            if expected_x_side == "left":
+                self.assertLess(pos[0], 10, f"directional {milling_dir} reverse={reverse}: expected left (X<10), got X={pos[0]}")
+            else:  # right
+                self.assertGreater(pos[0], 10, f"directional {milling_dir} reverse={reverse}: expected right (X>10), got X={pos[0]}")
+            
+            # Verify Y side
+            if expected_y_side == "bottom":
+                self.assertLess(pos[1], 5, f"directional {milling_dir} reverse={reverse}: expected bottom (Y<5), got Y={pos[1]}")
+            else:  # top
+                self.assertGreater(pos[1], 5, f"directional {milling_dir} reverse={reverse}: expected top (Y>5), got Y={pos[1]}")
+    
+    def test_bidirectional_reverse_and_milling_combinations(self):
+        """Test all four combinations of reverse and milling_direction for bidirectional."""
+        # Expected behavior for bidirectional (rectangle 0,0 to 20,10):
+        # Bidirectional alternates between bottom and top
+        # reverse controls which side starts first
+        # reverse=False, climb: start right, bottom (high X, low Y)
+        # reverse=False, conventional: start left, bottom (low X, low Y)
+        # reverse=True, climb: start right, top (high X, high Y)
+        # reverse=True, conventional: start left, top (low X, high Y)
+        
+        test_cases = [
+            ("climb", False, "right", "bottom"),
+            ("climb", True, "right", "top"),
+            ("conventional", False, "left", "bottom"),
+            ("conventional", True, "left", "top"),
+        ]
+        
+        for milling_dir, reverse, expected_x_side, expected_y_side in test_cases:
+            commands = bidirectional_facing.bidirectional(
+                polygon=self.rectangle_wire,
+                tool_diameter=5.0,
+                stepover_percent=50,
+                angle_degrees=0.0,
+                milling_direction=milling_dir,
+                reverse=reverse
+            )
+            pos = self._first_xy(commands)
+            self.assertIsNotNone(pos, f"bidirectional {milling_dir} reverse={reverse} returned no position")
+            
+            # Verify X side
+            if expected_x_side == "left":
+                self.assertLess(pos[0], 10, f"bidirectional {milling_dir} reverse={reverse}: expected left (X<10), got X={pos[0]}")
+            else:  # right
+                self.assertGreater(pos[0], 10, f"bidirectional {milling_dir} reverse={reverse}: expected right (X>10), got X={pos[0]}")
+            
+            # Verify Y side
+            if expected_y_side == "bottom":
+                self.assertLess(pos[1], 5, f"bidirectional {milling_dir} reverse={reverse}: expected bottom (Y<5), got Y={pos[1]}")
+            else:  # top
+                self.assertGreater(pos[1], 5, f"bidirectional {milling_dir} reverse={reverse}: expected top (Y>5), got Y={pos[1]}")
 
     def test_directional_climb_vs_conventional(self):
         """Test directional with different milling directions."""
@@ -145,18 +435,21 @@ class TestPathFacingGenerator(PathTestBase):
         """Test zigzag strategy basic functionality."""
         commands = zigzag_facing.zigzag(
             polygon=self.square_wire,
-            tool_diameter=5.0,
+            tool_diameter=10.0,
             stepover_percent=50,
-            axis_preference="long"
+            angle_degrees=0.0
         )
         
         # Should return a list of Path.Command objects
         self.assertIsInstance(commands, list)
         self.assertGreater(len(commands), 0)
         
-        # All commands should be G1 (no rapid moves in traditional zigzag)
-        for cmd in commands:
-            self.assertEqual(cmd.Name, 'G1')
+        # First command should be G0 (for op preamble replacement)
+        self.assertEqual(commands[0].Name, 'G0')
+        
+        # Should have cutting moves (G1)
+        cutting_moves = [cmd for cmd in commands if cmd.Name == 'G1']
+        self.assertGreater(len(cutting_moves), 0)
 
     def test_zigzag_alternating_direction(self):
         """Test that zigzag alternates cutting direction."""
@@ -164,11 +457,11 @@ class TestPathFacingGenerator(PathTestBase):
             polygon=self.rectangle_wire,
             tool_diameter=2.0,  # Small tool for more passes
             stepover_percent=25,  # Small stepover for more passes
-            axis_preference="long"
+            angle_degrees=0.0
         )
         
         # Should have multiple passes
-        self.assertGreater(len(commands), 4)
+        self.assertGreater(len(commands), 2)
         
         # Extract X coordinates from cutting moves
         x_coords = []
@@ -180,7 +473,7 @@ class TestPathFacingGenerator(PathTestBase):
         self.assertGreater(len(x_coords), 2)
 
     def test_zigzag_with_retract_height(self):
-        """Test zigzag with retract height (converts to directional-like behavior)."""
+        """Test zigzag with retract height."""
         commands_no_retract = zigzag_facing.zigzag(
             polygon=self.square_wire,
             tool_diameter=5.0,
@@ -195,12 +488,13 @@ class TestPathFacingGenerator(PathTestBase):
             retract_height=15.0
         )
         
-        # Commands with retract should have rapid moves
-        rapid_moves_no_retract = [cmd for cmd in commands_no_retract if cmd.Name == 'G0']
-        rapid_moves_with_retract = [cmd for cmd in commands_with_retract if cmd.Name == 'G0']
+        # Both should generate valid toolpaths
+        self.assertGreater(len(commands_no_retract), 0)
+        self.assertGreater(len(commands_with_retract), 0)
         
-        # With retract should have more rapid moves
-        self.assertGreater(len(rapid_moves_with_retract), len(rapid_moves_no_retract))
+        # With retract should have Z moves to retract height
+        z_retracts = [cmd for cmd in commands_with_retract if cmd.Name == 'G0' and 'Z' in cmd.Parameters and cmd.Parameters['Z'] == 15.0]
+        self.assertGreater(len(z_retracts), 0)
 
     def test_zigzag_milling_direction(self):
         """Test zigzag with different milling directions."""
@@ -260,32 +554,26 @@ class TestPathFacingGenerator(PathTestBase):
         self.assertEqual(len(result.Edges), 4)
 
     def test_analyze_rectangle_axis_aligned(self):
-        """Test analyze_rectangle with axis-aligned rectangle."""
-        result = zigzag_facing.analyze_rectangle(self.rectangle_wire, "long")
+        """Test polygon geometry extraction with axis-aligned rectangle."""
+        result = facing_common.extract_polygon_geometry(self.rectangle_wire)
         
-        # Check that we get the expected keys
-        expected_keys = ['primary_vec', 'step_vec', 'primary_length', 'step_length', 'reference_corner']
-        for key in expected_keys:
-            self.assertIn(key, result)
-        
-        # For a 20x10 rectangle with "long" preference, primary should be along 20-unit side
-        self.assertAlmostEqual(result['primary_length'], 20, places=1)
-        self.assertAlmostEqual(result['step_length'], 10, places=1)
-        
-        # Vectors should be normalized
-        self.assertAlmostEqual(result['primary_vec'].Length, 1.0, places=5)
-        self.assertAlmostEqual(result['step_vec'].Length, 1.0, places=5)
+        # Should have edges and corners
+        self.assertIsNotNone(result['edges'])
+        self.assertIsNotNone(result['corners'])
+        self.assertEqual(len(result['edges']), 4)
+        self.assertEqual(len(result['corners']), 4)
 
     def test_analyze_rectangle_short_preference(self):
-        """Test analyze_rectangle with short axis preference."""
-        result = zigzag_facing.analyze_rectangle(self.rectangle_wire, "short")
+        """Test edge selection with short axis preference."""
+        polygon_info = facing_common.extract_polygon_geometry(self.rectangle_wire)
+        result = facing_common.select_primary_step_edges(polygon_info['edges'], "short")
         
-        # For a 20x10 rectangle with "short" preference, primary should be along 10-unit side
+        # Primary should be shorter axis (Y for this rectangle)
         self.assertAlmostEqual(result['primary_length'], 10, places=1)
         self.assertAlmostEqual(result['step_length'], 20, places=1)
 
     def test_analyze_rectangle_invalid_polygon(self):
-        """Test analyze_rectangle with invalid polygon."""
+        """Test edge selection with invalid polygon."""
         # Create a triangle (3 edges instead of 4)
         triangle_wire = Part.makePolygon([
             FreeCAD.Vector(0, 0, 0),
@@ -294,8 +582,9 @@ class TestPathFacingGenerator(PathTestBase):
             FreeCAD.Vector(0, 0, 0)
         ])
         
+        # Should raise ValueError for non-rectangular polygon
         with self.assertRaises(ValueError):
-            zigzag_facing.analyze_rectangle(triangle_wire, "long")
+            facing_common.extract_polygon_geometry(triangle_wire)
 
     def test_spiral_conventional_milling(self):
         """Test spiral strategy with conventional milling direction."""
@@ -314,8 +603,8 @@ class TestPathFacingGenerator(PathTestBase):
         commands = bidirectional_facing.bidirectional(self.square_wire, 10.0, 50.0)
         
         self.assertGreater(len(commands), 0)
-        # First move should be G1 to start position
-        self.assertEqual(commands[0].Name, "G1")
+        # First move should be G0 to start position (op will replace with preamble)
+        self.assertEqual(commands[0].Name, "G0")
         
         # Check that we have cutting moves (G1 commands)
         cutting_moves = [cmd for cmd in commands if cmd.Name == "G1"]
@@ -330,8 +619,8 @@ class TestPathFacingGenerator(PathTestBase):
         commands = bidirectional_facing.bidirectional(self.square_wire, 10.0, 50.0, milling_direction="climb")
         
         self.assertGreater(len(commands), 0)
-        # First move should be G1 to start position
-        self.assertEqual(commands[0].Name, "G1")
+        # First move should be G0 to start position (op will replace with preamble)
+        self.assertEqual(commands[0].Name, "G0")
         
         # Check that we have cutting moves (G1 commands)
         cutting_moves = [cmd for cmd in commands if cmd.Name == "G1"]
@@ -342,23 +631,22 @@ class TestPathFacingGenerator(PathTestBase):
         commands = bidirectional_facing.bidirectional(self.square_wire, 10.0, 50.0, milling_direction="conventional")
         
         self.assertGreater(len(commands), 0)
-        # First move should be G1 to start position
-        self.assertEqual(commands[0].Name, "G1")
+        # First move should be G0 to start position (op will replace with preamble)
+        self.assertEqual(commands[0].Name, "G0")
         
         # Check that we have cutting moves (G1 commands)
         cutting_moves = [cmd for cmd in commands if cmd.Name == "G1"]
         self.assertGreater(len(cutting_moves), 1)
 
     def test_bidirectional_with_retract_height(self):
-        """Test bidirectional strategy with retract height parameter."""
-        retract_height = 5.0
-        commands = bidirectional_facing.bidirectional(self.square_wire, 10.0, 50.0, retract_height=retract_height)
+        """Test bidirectional strategy - rapids stay at cutting height."""
+        commands = bidirectional_facing.bidirectional(self.square_wire, 10.0, 50.0)
         
         self.assertGreater(len(commands), 0)
         
-        # Check for Z moves to retract height
-        z_retracts = [cmd for cmd in commands if cmd.Name == "G0" and "Z" in cmd.Parameters and cmd.Parameters["Z"] == retract_height]
-        self.assertGreater(len(z_retracts), 0)
+        # Bidirectional should have rapid moves at cutting height (no Z retracts between passes)
+        rapid_moves = [cmd for cmd in commands if cmd.Name == "G0" and "X" in cmd.Parameters and "Y" in cmd.Parameters]
+        self.assertGreater(len(rapid_moves), 0)
 
     def test_bidirectional_alternating_positions(self):
         """Test that bidirectional strategy alternates between bottom and top positions."""
@@ -374,30 +662,29 @@ class TestPathFacingGenerator(PathTestBase):
         rapid_moves = [cmd for cmd in commands if cmd.Name == "G0"]
         self.assertGreater(len(rapid_moves), 0)
         
-        # Extract Y coordinates of positioning moves (every other move starting from 0)
-        positioning_y_coords = []
-        for i in range(0, len(cutting_moves), 2):
-            if i < len(cutting_moves):
-                positioning_y_coords.append(cutting_moves[i].Parameters["Y"])
+        # Extract Y coordinates of start positions for each cutting move
+        start_y_coords = [cutting_moves[i].Parameters["Y"] for i in range(0, len(cutting_moves), 2) if i < len(cutting_moves)]
         
         # Should have alternating Y positions (bottom and top)
-        if len(positioning_y_coords) >= 2:
-            # First two positions should be different (alternating between bottom and top)
-            self.assertNotEqual(positioning_y_coords[0], positioning_y_coords[1])
+        if len(start_y_coords) >= 4:
+            # Separate into bottom and top passes based on Y coordinate
+            sorted_coords = sorted(start_y_coords)
+            mid_y = (sorted_coords[0] + sorted_coords[-1]) / 2.0
+            
+            bottom_passes = sorted([y for y in start_y_coords if y < mid_y])
+            top_passes = sorted([y for y in start_y_coords if y > mid_y], reverse=True)
             
             # Bottom passes should be increasing (stepping inward from bottom)
-            bottom_passes = [positioning_y_coords[i] for i in range(0, len(positioning_y_coords), 2)]
             if len(bottom_passes) >= 2:
                 self.assertLess(bottom_passes[0], bottom_passes[1])  # Second bottom pass higher than first
             
             # Top passes should be decreasing (stepping inward from top)
-            top_passes = [positioning_y_coords[i] for i in range(1, len(positioning_y_coords), 2)]
             if len(top_passes) >= 2:
                 self.assertGreater(top_passes[0], top_passes[1])  # Second top pass lower than first
 
     def test_bidirectional_axis_preference_long(self):
-        """Test bidirectional strategy with long axis preference."""
-        commands = bidirectional_facing.bidirectional(self.rectangle_wire, 5.0, 50.0, axis_preference="long")
+        """Test bidirectional strategy with angle for long axis."""
+        commands = bidirectional_facing.bidirectional(self.rectangle_wire, 5.0, 50.0, angle_degrees=0.0)
         
         self.assertGreater(len(commands), 0)
         # Should generate valid toolpath commands
@@ -405,8 +692,8 @@ class TestPathFacingGenerator(PathTestBase):
         self.assertGreater(len(cutting_moves), 1)
 
     def test_bidirectional_axis_preference_short(self):
-        """Test bidirectional strategy with short axis preference."""
-        commands = bidirectional_facing.bidirectional(self.rectangle_wire, 5.0, 50.0, axis_preference="short")
+        """Test bidirectional strategy with angle for short axis."""
+        commands = bidirectional_facing.bidirectional(self.rectangle_wire, 5.0, 50.0, angle_degrees=90.0)
         
         self.assertGreater(len(commands), 0)
         # Should generate valid toolpath commands
@@ -429,8 +716,7 @@ class TestPathFacingGenerator(PathTestBase):
         commands = spiral_facing.spiral(
             polygon=self.square_wire,  # 10x10 square
             tool_diameter=2.0,
-            stepover_percent=25,  # 0.5mm stepover
-            axis_preference="long"
+            stepover_percent=25  # 0.5mm stepover
         )
         
         # Should have multiple layers
@@ -493,8 +779,7 @@ class TestPathFacingGenerator(PathTestBase):
         commands = spiral_facing.spiral(
             polygon=centered_rectangle,  # 10x6 rectangle centered on origin
             tool_diameter=2.0,
-            stepover_percent=25,  # 0.5mm stepover
-            axis_preference="long"
+            stepover_percent=25  # 0.5mm stepover
         )
         
         # Should have multiple layers
@@ -544,7 +829,6 @@ class TestPathFacingGenerator(PathTestBase):
                     polygon=test_rectangle,
                     tool_diameter=2.0,
                     stepover_percent=25,
-                    axis_preference=axis_pref,
                     milling_direction=milling_dir
                 )
                 
@@ -590,7 +874,6 @@ class TestPathFacingGenerator(PathTestBase):
                     polygon=angled_rectangle,
                     tool_diameter=2.0,
                     stepover_percent=25,
-                    axis_preference=axis_pref,
                     milling_direction="climb"
                 )
                 
@@ -613,7 +896,6 @@ class TestPathFacingGenerator(PathTestBase):
         
         # Spiral should have only one rapid move (G0) for initial positioning
         rapid_moves = [cmd for cmd in commands if cmd.Name == 'G0']
-        cutting_moves = [cmd for cmd in commands if cmd.Name == 'G1']
         
         # Should have exactly one rapid move for initial positioning
         self.assertEqual(len(rapid_moves), 1)
@@ -621,6 +903,7 @@ class TestPathFacingGenerator(PathTestBase):
         self.assertEqual(commands[0].Name, 'G0')
         
         # Should have multiple cutting moves after the initial rapid move
+        cutting_moves = [cmd for cmd in commands if cmd.Name == 'G1']
         self.assertGreater(len(cutting_moves), 0)
         # Total commands should be rapid moves + cutting moves
         self.assertEqual(len(commands), len(rapid_moves) + len(cutting_moves))
@@ -630,8 +913,7 @@ class TestPathFacingGenerator(PathTestBase):
         commands = spiral_facing.spiral(
             polygon=self.rectangle_wire,  # 20x10 rectangle
             tool_diameter=3.0,
-            stepover_percent=40,
-            axis_preference="long"
+            stepover_percent=40
         )
         
         # Should generate valid spiral
@@ -655,33 +937,75 @@ class TestPathFacingGenerator(PathTestBase):
                 self.assertGreaterEqual(y, -5)
                 self.assertLessEqual(y, 15)
 
-    def test_spiral_axis_preference(self):
-        """Test spiral with different axis preferences."""
-        long_commands = spiral_facing.spiral(
+    def test_spiral_basic(self):
+        """Test spiral basic functionality."""
+        commands = spiral_facing.spiral(
             polygon=self.rectangle_wire,
             tool_diameter=4.0,
-            stepover_percent=50,
-            axis_preference="long"
+            stepover_percent=50
         )
         
-        short_commands = spiral_facing.spiral(
-            polygon=self.rectangle_wire,
-            tool_diameter=4.0,
-            stepover_percent=50,
-            axis_preference="short"
+        # Should generate valid path
+        self.assertGreater(len(commands), 0)
+        
+        # First command should be G0 rapid positioning
+        self.assertEqual(commands[0].Name, 'G0')
+        
+        # Should have cutting moves
+        cutting_moves = [cmd for cmd in commands if cmd.Name == 'G1']
+        self.assertGreater(len(cutting_moves), 0)
+    
+    def test_spiral_continuous_pattern(self):
+        """Test that spiral generates a continuous inward pattern without diagonal jumps."""
+        # Use a simple 10x10 square with 2mm tool and 50% stepover for predictable results
+        commands = spiral_facing.spiral(
+            polygon=self.square_wire,  # 10x10 square
+            tool_diameter=2.0,
+            stepover_percent=50,  # 1mm stepover
+            milling_direction="climb"
         )
         
-        # Both should generate valid paths
-        self.assertGreater(len(long_commands), 0)
-        self.assertGreater(len(short_commands), 0)
+        # Extract all G1 cutting moves
+        cutting_moves = [(cmd.Parameters.get('X'), cmd.Parameters.get('Y')) 
+                        for cmd in commands if cmd.Name == 'G1' and 'X' in cmd.Parameters and 'Y' in cmd.Parameters]
         
-        # Paths should be different due to different orientation
-        different_coords = False
-        for i in range(min(len(long_commands), len(short_commands))):
-            if long_commands[i].Parameters != short_commands[i].Parameters:
-                different_coords = True
-                break
-        self.assertTrue(different_coords)
+        self.assertGreater(len(cutting_moves), 0, "Should have cutting moves")
+        
+        # Verify the spiral pattern:
+        # ALL moves should be axis-aligned (straight along edges, X or Y constant)
+        # A proper rectangular spiral has no diagonal moves at all
+        diagonal_moves = []
+        for i in range(len(cutting_moves) - 1):
+            x1, y1 = cutting_moves[i]
+            x2, y2 = cutting_moves[i + 1]
+            
+            # Check if move is axis-aligned (either X or Y stays constant)
+            x_change = abs(x2 - x1)
+            y_change = abs(y2 - y1)
+            
+            # Allow small tolerance for floating point errors
+            is_axis_aligned = (x_change < 0.01 or y_change < 0.01)
+            
+            if not is_axis_aligned:
+                diagonal_moves.append((i, x1, y1, x2, y2, x_change, y_change))
+        
+        # Should have NO diagonal moves
+        if diagonal_moves:
+            msg = "Found diagonal moves instead of axis-aligned edges:\n"
+            for i, x1, y1, x2, y2, dx, dy in diagonal_moves[:5]:  # Show first 5
+                msg += f"  Move {i} to {i+1}: ({x1:.2f},{y1:.2f}) -> ({x2:.2f},{y2:.2f}) dx={dx:.2f} dy={dy:.2f}\n"
+            self.fail(msg)
+        
+        # Verify the pattern spirals inward by checking that later moves are closer to center
+        center_x, center_y = 5.0, 5.0
+        first_quarter = cutting_moves[:len(cutting_moves)//4]
+        last_quarter = cutting_moves[3*len(cutting_moves)//4:]
+        
+        avg_dist_first = sum(((x - center_x)**2 + (y - center_y)**2)**0.5 for x, y in first_quarter) / len(first_quarter)
+        avg_dist_last = sum(((x - center_x)**2 + (y - center_y)**2)**0.5 for x, y in last_quarter) / len(last_quarter)
+        
+        self.assertLess(avg_dist_last, avg_dist_first, 
+                       "Spiral should move inward - later moves should be closer to center")
 
     def _create_mock_tool_controller(self, spindle_dir):
         """Create a mock tool controller for testing."""

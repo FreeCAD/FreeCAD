@@ -42,167 +42,153 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-def bidirectional(polygon, tool_diameter, stepover_percent, axis_preference="long", pass_extension=None, retract_height=None, milling_direction="climb"):
+def bidirectional(polygon, tool_diameter, stepover_percent, pass_extension=None, milling_direction="climb", reverse=False, angle_degrees=None):
     """
-    Generate a bidirectional clearing pattern.
+    Generate a bidirectional clearing pattern using scanline intersection.
     
-    This strategy cuts back and forth across the polygon but alternates which side of the polygon is cut. 
-    Like spiral, this maintains consistency of milling type.  Unlike the sprial strategy,
-    -bidirectional only cuts on the preferred axis and does rapid moves between them.
-    The end moves on the non-preferred axis are rapid moves that stay outside the stock area,
-    so no tool lifting is required. This provides efficient material removal
-    while avoiding cutting on the short ends of the rectangle, which can be
-    beneficial for surface finish and tool life.
+    This strategy cuts back and forth across the polygon, alternating which side
+    is cut to maintain consistent milling direction. Rapids between passes stay
+    at cutting height for efficiency.
     
     Args:
         polygon: The polygon boundary to clear
         tool_diameter: Diameter of the cutting tool
         stepover_percent: Stepover as percentage of tool diameter
-        axis_preference: "long" or "short" - which axis to align primary cutting direction with
-        pass_extension: Distance to extend cuts beyond polygon boundary for tool disengagement
-        retract_height: Z height for rapid moves (None = cutting height, no retracts)
-        milling_direction: "climb" or "conventional" - affects direction of first pass
+        pass_extension: Distance to extend cuts beyond polygon boundary
+        milling_direction: "climb" or "conventional"
+        reverse: Reverse the alternation pattern
+        angle_degrees: Angle in degrees to rotate the cutting direction
         
     Returns:
-        List of Path.Command objects representing the toolpath
+        List of Path.Command objects representing the toolpath. First move is G0 to start position.
     """
-    Path.Log.debug(f"Bidirectional: Tool diameter: {tool_diameter}, stepover_percent: {stepover_percent}, axis_preference: {axis_preference}, pass_extension: {pass_extension}, retract_height: {retract_height}, milling_direction: {milling_direction}")
-
     if pass_extension is None:
-        pass_extension = tool_diameter * 0.5  # Default to half tool diameter
-    
-    # Analyze the rectangle to get orientation and dimensions
-    rect_info = analyze_rectangle(polygon, axis_preference)
-    primary_vec = rect_info['primary_vec']
-    step_vec = rect_info['step_vec']
-    primary_length = rect_info['primary_length']
-    step_length = rect_info['step_length']
-    reference_corner = rect_info['reference_corner']
+        pass_extension = tool_diameter * 0.5
 
-    # Ensure vectors are properly normalized
-    primary_vec = primary_vec.multiply(1.0 / primary_vec.Length)
-    step_vec = step_vec.multiply(1.0 / step_vec.Length)
+    import math
+    # Establish frame from angle (default 0° = +X primary)
+    theta = float(angle_degrees) if angle_degrees is not None else 0.0
+    primary_vec, step_vec = facing_common.unit_vectors_from_angle(theta)
+    # Make copies to avoid mutation
+    primary_vec = FreeCAD.Vector(primary_vec).multiply(1.0 / (primary_vec.Length or 1.0))
+    step_vec = FreeCAD.Vector(step_vec).multiply(1.0 / (step_vec.Length or 1.0))
 
-    # Calculate stepover distance and tool radius
-    stepover = (stepover_percent / 100.0) * tool_diameter
+    origin = polygon.BoundBox.Center
+    bb = polygon.BoundBox
+    z = bb.ZMin
+
+    Path.Log.debug(
+        f"Bidirectional: dia={tool_diameter}, stepover%={stepover_percent}, "
+        f"dir={milling_direction}, angle={theta}, reverse={reverse}"
+    )
+
+    # Compute projection bounds
+    min_s, max_s = facing_common.project_bounds(polygon, primary_vec, origin)
+    min_t, max_t = facing_common.project_bounds(polygon, step_vec, origin)
+    if not (math.isfinite(min_s) and math.isfinite(max_s) and math.isfinite(min_t) and math.isfinite(max_t)):
+        Path.Log.error("Bidirectional: non-finite projection bounds; aborting")
+        return []
+
+    # Generate step positions for BOTH sides with proper engagement offsets
     tool_radius = tool_diameter / 2.0
+    engagement_amount = tool_diameter * (stepover_percent / 100.0)
+    stepover = tool_diameter * (stepover_percent / 100.0)
     
-    Path.Log.debug("Bidirectional: Tool diameter: {}, stepover_percent: {}, stepover: {}, tool_radius: {}".format(
-        tool_diameter, stepover_percent, stepover, tool_radius))
+    # Calculate the midpoint - passes should stop here
+    t_mid = (min_t + max_t) / 2.0
     
-    # For bidirectional, we start outside the polygon and step inward
-    # Calculate how many passes we need based on stepover
-    max_passes = int((step_length + 2 * tool_radius) / stepover) + 1
+    # Bottom positions: start at min_t with engagement offset, stop at midpoint
+    bottom_positions = []
+    t = min_t - tool_radius + engagement_amount
+    while t <= t_mid:
+        bottom_positions.append(t)
+        t += stepover
     
-    Path.Log.debug("Bidirectional: Calculated {} passes with stepover {}".format(max_passes, stepover))
+    # Top positions: start at max_t with engagement offset, stop at midpoint
+    top_positions = []
+    t = max_t + tool_radius - engagement_amount
+    while t >= t_mid:
+        top_positions.append(t)
+        t -= stepover
     
-    # Generate toolpath commands
+    # Interleave bottom and top positions
+    # reverse controls which side starts first
+    all_passes = []
+    max_passes = max(len(bottom_positions), len(top_positions))
+    for i in range(max_passes):
+        if not reverse:
+            # Start with bottom
+            if i < len(bottom_positions):
+                all_passes.append(('bottom', bottom_positions[i]))
+            if i < len(top_positions):
+                all_passes.append(('top', top_positions[i]))
+        else:
+            # Start with top
+            if i < len(top_positions):
+                all_passes.append(('top', top_positions[i]))
+            if i < len(bottom_positions):
+                all_passes.append(('bottom', bottom_positions[i]))
+    
+    Path.Log.debug(f"Bidirectional: {len(all_passes)} passes generated ({len(bottom_positions)} bottom, {len(top_positions)} top)")
+    
     commands = []
-    z = polygon.BoundBox.ZMin
-    
-    # Bidirectional alternates between bottom and top while stepping inward
-    pass_count = 0
-    while pass_count < max_passes:
-        # Calculate step distance - start outside and step inward
-        if pass_count % 2 == 0:
-            # Bottom passes: start outside bottom edge, step inward (increasing)
-            step_distance = -tool_radius + (pass_count // 2) * stepover
-        else:
-            # Top passes: start outside top edge, step inward (decreasing)
-            step_distance = step_length + tool_radius - (pass_count // 2) * stepover
+    s_margin = pass_extension + tool_diameter
+    kept_segments = 0
+    engagement_offset = facing_common.calculate_engagement_offset(tool_diameter, stepover_percent)
+
+    for side, t in all_passes:
+        intervals = facing_common.slice_wire_segments(polygon, primary_vec, step_vec, t, origin)
+        # If no intervals found (pass is outside polygon), skip this pass
+        if not intervals:
+            continue
         
-        # Stop if we've stepped too far inward
-        if pass_count % 2 == 0:  # Bottom pass
-            if step_distance > step_length - tool_radius:
-                break
-        else:  # Top pass
-            if step_distance < tool_radius:
-                break
-        
-        # Calculate the start and end points for this pass
-        step_offset = FreeCAD.Vector(step_vec).multiply(step_distance)
-        pass_base = FreeCAD.Vector(reference_corner).add(step_offset)
-        
-        # Extend the pass beyond the polygon boundaries
-        primary_extension = FreeCAD.Vector(primary_vec).multiply(pass_extension)
-        primary_full_length = FreeCAD.Vector(primary_vec).multiply(primary_length)
-        
-        # Maintain consistent milling direction but alternate cutting direction to stay climb/conventional
-        if milling_direction == "climb":
-            if pass_count % 2 == 0:
-                # Bottom pass: cut left to right (climb)
-                start_point = FreeCAD.Vector(pass_base).sub(primary_extension)
-                end_point = FreeCAD.Vector(pass_base).add(primary_full_length).add(primary_extension)
+        for (s0, s1) in intervals:
+            # Extend in primary direction
+            total_extension = pass_extension + tool_radius + engagement_offset
+            start_s = s0 - total_extension
+            end_s = s1 + total_extension
+            # Clip to safe bounds
+            start_s = max(start_s, min_s - s_margin)
+            end_s = min(end_s, max_s + s_margin)
+            if end_s <= start_s:
+                continue
+
+            # Determine cutting direction based on side and milling_direction
+            # To maintain consistent climb/conventional when alternating sides,
+            # reverse the cutting direction for top vs bottom passes
+            # Bottom passes (from min_t): climb=right-to-left, conventional=left-to-right
+            # Top passes (from max_t): climb=left-to-right, conventional=right-to-left
+            if side == 'bottom':
+                if milling_direction == "climb":
+                    p_start, p_end = end_s, start_s  # right-to-left
+                else:  # conventional
+                    p_start, p_end = start_s, end_s  # left-to-right
+            else:  # side == 'top'
+                if milling_direction == "climb":
+                    p_start, p_end = start_s, end_s  # left-to-right (reversed)
+                else:  # conventional
+                    p_start, p_end = end_s, start_s  # right-to-left (reversed)
+
+            # Map to XY - use copies to avoid vector mutation
+            start_point = FreeCAD.Vector(origin).add(FreeCAD.Vector(primary_vec).multiply(p_start)).add(FreeCAD.Vector(step_vec).multiply(t))
+            end_point = FreeCAD.Vector(origin).add(FreeCAD.Vector(primary_vec).multiply(p_end)).add(FreeCAD.Vector(step_vec).multiply(t))
+            start_point.z = z
+            end_point.z = z
+
+            # Finite check
+            if not (math.isfinite(start_point.x) and math.isfinite(start_point.y) and
+                    math.isfinite(end_point.x) and math.isfinite(end_point.y)):
+                continue
+
+            if commands:
+                # Rapid move at cutting height (no need to retract for bidirectional)
+                commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y}))
             else:
-                # Top pass: cut right to left (still climb)
-                start_point = FreeCAD.Vector(pass_base).add(primary_full_length).add(primary_extension)
-                end_point = FreeCAD.Vector(pass_base).sub(primary_extension)
-        else:  # conventional milling
-            if pass_count % 2 == 0:
-                # Bottom pass: cut right to left (conventional)
-                start_point = FreeCAD.Vector(pass_base).add(primary_full_length).add(primary_extension)
-                end_point = FreeCAD.Vector(pass_base).sub(primary_extension)
-            else:
-                # Top pass: cut left to right (still conventional)
-                start_point = FreeCAD.Vector(pass_base).sub(primary_extension)
-                end_point = FreeCAD.Vector(pass_base).add(primary_full_length).add(primary_extension)
-        
-        Path.Log.debug("Bidirectional Pass {}: step_distance={}, start_point={}, end_point={}".format(
-            pass_count, step_distance, start_point, end_point))
-        
-        # Set Z coordinate
-        start_point.z = z
-        end_point.z = z
-        
-        # Bidirectional uses rapid moves between passes (like directional)
-        if pass_count > 0:
-            if retract_height is not None:
-                # Retract to safe height
-                commands.append(Path.Command("G0", {"Z": retract_height}))
-            
-            # Rapid to XY position
-            commands.append(Path.Command("G0", {
-                "X": start_point.x,
-                "Y": start_point.y
-            }))
-            
-            # Rapid down to cutting height if we retracted
-            if retract_height is not None:
-                commands.append(Path.Command("G0", {"Z": z}))
-        else:
-            # First pass - position to start
-            commands.append(Path.Command("G1", {
-                "X": start_point.x,
-                "Y": start_point.y,
-                "Z": z
-            }))
-        
-        # Add cutting move across the pass
-        commands.append(Path.Command("G1", {
-            "X": end_point.x,
-            "Y": end_point.y,
-            "Z": z
-        }))
-        
-        pass_count += 1
-    
+                # First segment: emit G0 to start for op preamble replacement
+                commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y, "Z": z}))
+
+            commands.append(Path.Command("G1", {"X": end_point.x, "Y": end_point.y, "Z": z}))
+            kept_segments += 1
+
+    Path.Log.debug(f"Bidirectional: generated {kept_segments} segments")
     return commands
-
-
-def analyze_rectangle(polygon, axis_preference):
-    """Analyze rectangle to determine orientation and dimensions."""
-    # Extract polygon geometry
-    polygon_info = facing_common.extract_polygon_geometry(polygon)
-    edges = polygon_info['edges']
-    corners = polygon_info['corners']
-    
-    # Get primary and step edges
-    edge_info = facing_common.select_primary_step_edges(edges, axis_preference)
-    
-    return {
-        'primary_vec': edge_info['primary_vec'],
-        'step_vec': edge_info['step_vec'],
-        'primary_length': edge_info['primary_length'],
-        'step_length': edge_info['step_length'],
-        'reference_corner': facing_common.select_starting_corner(corners, edge_info['primary_vec'], edge_info['step_vec'], "climb")
-    }
