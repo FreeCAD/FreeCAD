@@ -5875,8 +5875,6 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
     mk->SetTools(shapeTools);
     if (tolerance > 0.0) {
         mk->SetFuzzyValue(tolerance);
-    } else if (tolerance < 0.0) {
-        FCBRepAlgoAPIHelper::setAutoFuzzy(mk.get());
     }
 #if OCC_VERSION_HEX >= 0x070600
     mk->Build(OCCTProgressIndicator::getAppIndicator().Start());
