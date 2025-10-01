@@ -51,6 +51,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
+#include "Utils.h"
 
 #include <Mod/Part/App/Datums.h>
 #include <Mod/Part/App/Part2DObject.h>
@@ -921,29 +922,6 @@ bool CmdPartCompCompoundTools::isActive()
     }
 }
 
-namespace
-{
-QString getAutoGroupCommandStr(bool useActiveBody = true)
-// Helper function to get the python code to add the newly created object to the active Part/Body
-// object if present
-{
-    App::GeoFeature* activeObj = nullptr;
-    if (useActiveBody) {
-        Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PDBODYKEY);
-        if (!activeObj) {
-            activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(
-                PARTKEY);
-        }
-    }
-    if (activeObj) {
-        QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
-        return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n")
-            .arg(activeName);
-    }
-
-    return QStringLiteral("# Object created at document root.");
-}
-}  // namespace
 
 //===========================================================================
 // Part_Compound
@@ -998,7 +976,7 @@ void CmdPartCompound::activated(int iMsg)
     doCommand(Doc,
               "obj = App.activeDocument().addObject(\"Part::Compound\",\"%s\")",
               FeatName.c_str());
-    doCommand(Doc, getAutoGroupCommandStr().toUtf8());
+    doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
     runCommand(Doc, str.str().c_str());
     updateActive();
     commitCommand();
@@ -2557,7 +2535,7 @@ void CmdPartCoordinateSystem::activated(int iMsg)
         "obj = App.activeDocument().addObject('Part::LocalCoordinateSystem','%s')",
         name.c_str()
     );
-    doCommand(Doc, getAutoGroupCommandStr().toUtf8());
+    doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.Visibility = True");
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
@@ -2591,7 +2569,7 @@ void CmdPartDatumPlane::activated(int iMsg)
 
     std::string name = getUniqueObjectName("DatumPlane");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPlane','%s')", name.c_str());
-    doCommand(Doc, getAutoGroupCommandStr().toUtf8());
+    doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
@@ -2624,7 +2602,7 @@ void CmdPartDatumLine::activated(int iMsg)
 
     std::string name = getUniqueObjectName("DatumLine");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumLine','%s')", name.c_str());
-    doCommand(Doc, getAutoGroupCommandStr().toUtf8());
+    doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
@@ -2657,7 +2635,7 @@ void CmdPartDatumPoint::activated(int iMsg)
 
     std::string name = getUniqueObjectName("DatumPoint");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPoint','%s')", name.c_str());
-    doCommand(Doc, getAutoGroupCommandStr().toUtf8());
+    doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
