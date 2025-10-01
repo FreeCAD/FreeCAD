@@ -658,4 +658,3 @@ void DSHRotateController::computeNextDrawSketchHandlerMode()
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerRotate_H
-
