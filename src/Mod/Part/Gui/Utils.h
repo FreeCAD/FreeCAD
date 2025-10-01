@@ -22,9 +22,8 @@
 
 #pragma once
 
-namespace PartGui {
-    QString getAutoGroupCommandStr(bool useActiveBody = true);
-    QString getAutoGroupCommandStr(QString objectName);
-}
-
-
+namespace PartGui
+{
+QString getAutoGroupCommandStr(bool useActiveBody = true);
+QString getAutoGroupCommandStr(QString objectName);
+}  // namespace PartGui
