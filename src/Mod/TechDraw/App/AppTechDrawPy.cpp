@@ -572,7 +572,7 @@ private:
         TopoDS_Shape shape = ShapeUtils::mirrorShape(gObj->getVisHard());
         double offX = 0.0;
         double offY = 0.0;
-        if (dvp->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
+        if (DrawView::isProjGroupItem(dvp)) {
             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(dvp);
             TechDraw::DrawProjGroup*      dpg = dpgi->getPGroup();
             if (dpg) {
@@ -730,7 +730,7 @@ private:
                         }
                         double grandParentX = 0.0;
                         double grandParentY = 0.0;
-                        if (dvp->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
+                        if (DrawView::isProjGroupItem(dvp)) {
                             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(dvp);
                             TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
                             if (!dpg) {

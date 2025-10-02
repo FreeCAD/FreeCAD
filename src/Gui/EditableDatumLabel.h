@@ -51,7 +51,8 @@ class GuiExport EditableDatumLabel : public QObject
 public:
     enum class Function {
         Positioning,
-        Dimensioning
+        Dimensioning,
+        Forced
     };
 
     EditableDatumLabel(View3DInventorViewer* view, const Base::Placement& plc, SbColor color, bool autoDistance = false, bool avoidMouseCursor = false);

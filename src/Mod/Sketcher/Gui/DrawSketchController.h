@@ -210,6 +210,10 @@ private:
 
         bool isVisible(Gui::EditableDatumLabel* ovp) const
         {
+            if (ovp->getFunction() == Gui::EditableDatumLabel::Function::Forced) {
+                return true;
+            }
+
             switch (onViewParameterVisibility) {
 
                 case OnViewParameterVisibility::Hidden:
@@ -697,6 +701,7 @@ protected:
         onViewParameter->isSet = false;
         onViewParameter->hasFinishedEditing = false;
         onViewParameter->setColor(colorManager.dimConstrDeactivatedColor);
+        onViewParameter->setLockedAppearance(false);
     }
 
     void setOnViewParameterValue(OnViewParameter index,

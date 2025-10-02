@@ -789,7 +789,6 @@ void TaskExtrudeParameters::updateSideUI(const SideController& s,
     // Default states for all controls for this side
     bool isLengthVisible = false;
     bool isOffsetVisible = false;
-    bool isOffsetEnabled = true;
     bool isTaperVisible = false;
     bool isFaceVisible = false;
     bool isShapeVisible = false;
@@ -804,8 +803,6 @@ void TaskExtrudeParameters::updateSideUI(const SideController& s,
         }
     }
     else if (sideMode == Mode::ThroughAll && featureType == Type::Pocket) {
-        isOffsetVisible = true;
-        isOffsetEnabled = false;  // "through all" pocket offset doesn't work
         isTaperVisible = true;
     }
     else if (sideMode == Mode::ToLast && featureType == Type::Pad) {
@@ -844,7 +841,7 @@ void TaskExtrudeParameters::updateSideUI(const SideController& s,
     const bool finalOffsetVisible = isParentVisible && isOffsetVisible;
     s.labelOffset->setVisible(finalOffsetVisible);
     s.offsetEdit->setVisible(finalOffsetVisible);
-    s.offsetEdit->setEnabled(finalOffsetVisible && isOffsetEnabled);
+    s.offsetEdit->setEnabled(finalOffsetVisible);
 
     const bool finalTaperVisible = isParentVisible && isTaperVisible;
     s.labelTaperAngle->setVisible(finalTaperVisible);
@@ -1453,6 +1450,7 @@ bool TaskDlgExtrudeParameters::reject()
 }
 
 #include "moc_TaskExtrudeParameters.cpp"
+
 
 
 

@@ -157,10 +157,29 @@ void AssemblyLink::onChanged(const App::Property* prop)
                         continue;
                     }
 
-                    auto* prop =
-                        dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
-                    if (prop) {
-                        prop->setValue(plc * prop->getValue());
+                    if (obj->isLinkGroup()) {
+                        auto* srcLink = static_cast<App::Link*>(obj);
+                        const std::vector<App::DocumentObject*> srcElements =
+                            srcLink->ElementList.getValues();
+
+                        for (auto elt : srcElements) {
+                            if (!elt) {
+                                continue;
+                            }
+
+                            auto* prop = dynamic_cast<App::PropertyPlacement*>(
+                                elt->getPropertyByName("Placement"));
+                            if (prop) {
+                                prop->setValue(plc * prop->getValue());
+                            }
+                        }
+                    }
+                    else {
+                        auto* prop = dynamic_cast<App::PropertyPlacement*>(
+                            obj->getPropertyByName("Placement"));
+                        if (prop) {
+                            prop->setValue(plc * prop->getValue());
+                        }
                     }
                 }
 
@@ -216,6 +235,8 @@ void AssemblyLink::synchronizeComponents()
         // In which case we need to add an AssemblyLink and not a Link.
         App::DocumentObject* link = nullptr;
         bool found = false;
+        std::set<App::Link*> linkGroupsAdded;
+
         for (auto* obj2 : assemblyLinkGroup) {
             App::DocumentObject* linkedObj;
 
@@ -226,6 +247,30 @@ void AssemblyLink::synchronizeComponents()
                 linkedObj = subAsmLink->getLinkedObject2(false);  // not recursive
             }
             else if (link2) {
+                if (obj->isLinkGroup() && link2->isLinkGroup()) {
+                    auto* srcLink = static_cast<App::Link*>(obj);
+                    if ((srcLink->getTrueLinkedObject(false) == link2->getTrueLinkedObject(false))
+                        && link2->ElementCount.getValue() == srcLink->ElementCount.getValue()
+                        && linkGroupsAdded.find(srcLink) == linkGroupsAdded.end()) {
+                        found = true;
+                        link = obj2;
+                        // In case where there are more than 2 link groups with the
+                        // same number of elements.
+                        linkGroupsAdded.insert(srcLink);
+
+                        const std::vector<App::DocumentObject*> srcElements =
+                            srcLink->ElementList.getValues();
+                        const std::vector<App::DocumentObject*> newElements =
+                            link2->ElementList.getValues();
+                        for (int i = 0; i < srcElements.size(); ++i) {
+                            objLinkMap[srcElements[i]] = newElements[i];
+                        }
+                        break;
+                    }
+                }
+                else if (obj->isLinkGroup() && !link2->isLinkGroup()) {
+                    continue;  // make sure we migrate sub assemblies that had link to linkgroups
+                }
                 linkedObj = link2->getLinkedObject(false);  // not recursive
             }
             else {
@@ -253,38 +298,68 @@ void AssemblyLink::synchronizeComponents()
                 addObject(subAsmLink);
                 link = subAsmLink;
             }
+            else if (obj->isDerivedFrom<App::Link>() && obj->isLinkGroup()) {
+                auto* srcLink = static_cast<App::Link*>(obj);
+
+                auto* newLink =
+                    static_cast<App::Link*>(doc->addObject("App::Link", obj->getNameInDocument()));
+                newLink->LinkedObject.setValue(srcLink->getTrueLinkedObject(false));
+
+                newLink->Label.setValue(obj->Label.getValue());
+                addObject(newLink);
+
+                newLink->ElementCount.setValue(srcLink->ElementCount.getValue());
+                const std::vector<App::DocumentObject*> srcElements =
+                    srcLink->ElementList.getValues();
+                const std::vector<App::DocumentObject*> newElements =
+                    newLink->ElementList.getValues();
+                for (int i = 0; i < srcElements.size(); ++i) {
+                    auto* newObj = newElements[i];
+                    auto* srcObj = srcElements[i];
+                    if (newObj && srcObj) {
+                        syncPlacements(srcObj, newObj);
+                    }
+                    objLinkMap[srcObj] = newObj;
+                }
+
+                link = newLink;
+            }
             else {
-                auto* appLink = new App::Link();
-                doc->addObject(appLink, obj->getNameInDocument());
-                appLink->LinkedObject.setValue(obj);
-                appLink->Label.setValue(obj->Label.getValue());
-                addObject(appLink);
-                link = appLink;
+                App::DocumentObject* newObj = doc->addObject("App::Link", obj->getNameInDocument());
+                auto* newLink = static_cast<App::Link*>(newObj);
+                newLink->LinkedObject.setValue(obj);
+                newLink->Label.setValue(obj->Label.getValue());
+                addObject(newLink);
+                link = newLink;
             }
         }
 
         objLinkMap[obj] = link;
-        // If the assemblyLink is rigid, then we keep the placement synchronized.
-        if (isRigid()) {
-            auto* plcProp =
-                dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
-            auto* plcProp2 =
-                dynamic_cast<App::PropertyPlacement*>(link->getPropertyByName("Placement"));
-            if (plcProp && plcProp2) {
-                if (!plcProp->getValue().isSame(plcProp2->getValue())) {
-                    plcProp2->setValue(plcProp->getValue());
-                }
-            }
+    }
+
+    // If the assemblyLink is rigid, then we keep all placements synchronized.
+    if (isRigid()) {
+        for (const auto& [sourceObj, linkObj] : objLinkMap) {
+            syncPlacements(sourceObj, linkObj);
         }
     }
 
     // We check if a component needs to be removed from the AssemblyLink
-    for (auto* link : assemblyLinkGroup) {
+    // NOTE: this is not being executed when a src link is deleted, because the link
+    // is then in error, and so AssemblyLink::execute() does not get called.
+    std::set<App::DocumentObject*> validLinks;
+    for (const auto& pair : objLinkMap) {
+        validLinks.insert(pair.second);
+    }
+    for (auto* obj : assemblyLinkGroup) {
         // We don't need to update assemblyLinkGroup after the addition since we're not removing
         // something we just added.
-
-        if (objLinkMap.find(link) != objLinkMap.end()) {
-            doc->removeObject(link->getNameInDocument());
+        if (!obj->isDerivedFrom<App::Part>() && !obj->isDerivedFrom<PartApp::Feature>()
+            && !obj->isDerivedFrom<App::Link>()) {
+            continue;
+        }
+        if (validLinks.find(obj) == validLinks.end()) {
+            doc->removeObject(obj->getNameInDocument());
         }
     }
 }
