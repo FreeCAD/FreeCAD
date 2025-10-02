@@ -96,6 +96,16 @@ public:
      * system
      */
     Base::Placement globalGroupPlacement();
+    static Base::Placement globalGroupPlacementInBoundary(const App::DocumentObject* obj);
+
+    // New: capability flag — does this group act as a link/scope boundary?
+    // Default: true (current upstream behavior).
+    bool actsAsGroupBoundary() const noexcept { return m_actsAsGroupBoundary; }
+    void setActsAsGroupBoundary(bool v) noexcept { m_actsAsGroupBoundary = v; }
+
+    // New: helper used by selection/validation to hop over transparent groups.
+    // Returns the nearest GeoFeatureGroup that *acts as a boundary*; nullptr = top level.
+    static const App::DocumentObject* getBoundaryGroupOfObject(const App::DocumentObject* obj);
 
     /// Returns true if the given DocumentObject is DocumentObjectGroup but not GeoFeatureGroup
     static bool isNonGeoGroup(const DocumentObject* obj)
@@ -152,6 +162,7 @@ private:
 
     static void recursiveCSRelevantLinks(const App::DocumentObject* obj,
                                          std::vector<App::DocumentObject*>& vec);
+    bool m_actsAsGroupBoundary = true;
 };
 
 using GeoFeatureGroupExtensionPython =

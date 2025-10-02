@@ -7,7 +7,6 @@ endif(BUILD_GUI)
 set(PartDesign_Scripts
     __init__.py
     Init.py
-    TestPartDesignApp.py
 )
 
 if(BUILD_GUI)

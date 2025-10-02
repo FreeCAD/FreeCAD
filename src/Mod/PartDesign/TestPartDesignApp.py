@@ -59,3 +59,4 @@ from PartDesignTests.TestSketch import TestSketch
 
 # Topological naming problem
 from PartDesignTests.TestTopologicalNamingProblem import TestTopologicalNamingProblem
+

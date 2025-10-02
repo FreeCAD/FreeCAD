@@ -29,6 +29,7 @@
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
 #include <App/Part.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Selection/Selection.h>
@@ -123,10 +124,16 @@ bool TaskDlgDatumParameters::accept()
     // check the prerequisites for the selected objects
     // the user has to decide which option we should take if external references are used
     bool extReference = false;
+    
+    // Determine the “owner boundary” from the active Body, but make Body transparent.
+    const App::DocumentObject* pcActiveGroupObject =
+        App::GeoFeatureGroupExtension::getBoundaryGroupOfObject(static_cast<const App::DocumentObject*>(pcActiveBody));
+    auto pcActiveGroup = pcActiveGroupObject->getExtensionByType<App::OriginGroupExtension>();
+
     for (App::DocumentObject* obj : pcDatum->AttachmentSupport.getValues()) {
-        if (pcActiveBody && !pcActiveBody->hasObject(obj)
-            && !pcActiveBody->getOrigin()->hasObject(obj)) {
+        if (pcActiveBody && !pcActiveBody->hasObject(obj) && pcActiveGroup) if(!pcActiveGroup->hasObject(obj)) {
             extReference = true;
+            break;
         }
     }
 
@@ -146,12 +153,14 @@ bool TaskDlgDatumParameters::accept()
             std::vector<std::string> subs = pcDatum->AttachmentSupport.getSubValues();
             int index = 0;
             for (App::DocumentObject* obj : pcDatum->AttachmentSupport.getValues()) {
-                if (pcActiveBody && !pcActiveBody->hasObject(obj)
-                    && !pcActiveBody->getOrigin()->hasObject(obj)) {
+                if (pcActiveBody
+                    && !pcActiveBody->hasObject(obj)
+                    && pcActiveGroup
+                    && !pcActiveGroup->hasObject(obj)) {
                     auto* copy = PartDesignGui::TaskFeaturePick::makeCopy(
-                        obj,
-                        subs[index],
-                        dlg.radioIndependent->isChecked()
+                         obj,
+                         subs[index],
+                         dlg.radioIndependent->isChecked()
                     );
                     if (copy) {
                         copyObjects.push_back(copy);

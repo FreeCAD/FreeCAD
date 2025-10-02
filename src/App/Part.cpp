@@ -59,6 +59,11 @@ Part::Part()
     ADD_PROPERTY(Color, (1.0, 1.0, 1.0, 0.0));  // set transparent -> not used
 
     GroupExtension::initExtension(this);
+
+    if (auto* gext = this->getExtensionByType<App::GeoFeatureGroupExtension>()) {
+        gext->setActsAsGroupBoundary(false); // Parts are transparent boundaries
+    }
+
 }
 
 Part::~Part() = default;
@@ -109,6 +114,19 @@ PyObject* Part::getPyObject()
     }
     return Py::new_reference_to(PythonObject);
 }
+
+
+void App::Part::onDocumentRestored()
+{
+    App::GeoFeature::onDocumentRestored();
+
+    if (auto* gext = this->getExtensionByType<App::GeoFeatureGroupExtension>()) {
+        // imposta a false solo se è "true" (evita di sovrascrivere scelte esplicite salvate)
+        if (gext->actsAsGroupBoundary())
+            gext->setActsAsGroupBoundary(false);
+    }
+}
+
 
 void Part::handleChangedPropertyType(Base::XMLReader& reader,
                                      const char* TypeName,

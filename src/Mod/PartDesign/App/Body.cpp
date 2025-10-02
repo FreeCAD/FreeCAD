@@ -44,6 +44,10 @@ Body::Body()
     ADD_PROPERTY_TYPE(AllowCompound, (true), "Base", App::Prop_None, "Allow multiple solids in Body");
 
     _GroupTouched.setStatus(App::Property::Output, true);
+
+    if (auto* gext = this->getExtensionByType<App::GeoFeatureGroupExtension>()) {
+        gext->setActsAsGroupBoundary(false); // Bodies are transparent boundaries
+    }
 }
 
 /*
@@ -605,6 +609,9 @@ void Body::onDocumentRestored()
         Tip.touch();
     }
 
+    if (auto* gext = this->getExtensionByType<App::GeoFeatureGroupExtension>()) {
+        gext->setActsAsGroupBoundary(false); // Bodies are transparent boundaries
+    }
     DocumentObject::onDocumentRestored();
 }
 
@@ -619,3 +626,4 @@ bool Body::isSolid()
     }
     return false;
 }
+

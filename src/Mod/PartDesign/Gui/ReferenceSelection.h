@@ -56,14 +56,9 @@ public:
     bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName) override;
 
 private:
-    PartDesign::Body* getBody() const;
-    App::OriginGroupExtension* getOriginGroupExtension(PartDesign::Body* body) const;
-    bool allowOrigin(
-        PartDesign::Body* body,
-        App::OriginGroupExtension* originGroup,
-        App::DocumentObject* pObj
-    ) const;
-    bool allowDatum(PartDesign::Body* body, App::DocumentObject* pObj) const;
+    App::OriginGroupExtension* getBoundaryOriginGroupExtension() const;
+    bool allowOrigin(App::OriginGroupExtension* originGroup, App::DocumentObject* pObj) const;
+    bool allowDatum(App::OriginGroupExtension* originGroup, App::DocumentObject* pObj) const;
     bool allowPartFeature(App::DocumentObject* pObj, const char* sSubName) const;
     bool isEdge(App::DocumentObject* pObj, const char* sSubName) const;
     bool isFace(App::DocumentObject* pObj, const char* sSubName) const;

@@ -56,6 +56,7 @@
 #include <Mod/Part/App/FaceMakerCheese.h>
 
 #include "FeatureSketchBased.h"
+#include "Body.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
 #include "Mod/Part/App/Geometry.h"
@@ -701,6 +702,10 @@ Part::Feature* ProfileBased::getBaseObject(bool silent) const
     else {
         err = "No base set, no sketch support either";
     }
+
+    PartDesign::Body* body= Feature::getFeatureBody();
+    if(body && spt) if(!body->hasObject(spt))
+        return nullptr;
 
     if (!silent && err) {
         throw Base::RuntimeError(err);

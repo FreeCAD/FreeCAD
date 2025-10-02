@@ -102,8 +102,6 @@ TaskFeaturePick::TaskFeaturePick(
 
     // clang-format off
     connect(ui->checkUsed, &QCheckBox::toggled, this, &TaskFeaturePick::onUpdate);
-    connect(ui->checkOtherBody, &QCheckBox::toggled, this, &TaskFeaturePick::onUpdate);
-    connect(ui->checkOtherPart, &QCheckBox::toggled, this, &TaskFeaturePick::onUpdate);
     connect(ui->radioIndependent, &QRadioButton::toggled, this, &TaskFeaturePick::onUpdate);
     connect(ui->radioDependent, &QRadioButton::toggled, this, &TaskFeaturePick::onUpdate);
     connect(ui->radioXRef, &QRadioButton::toggled, this, &TaskFeaturePick::onUpdate);
@@ -206,13 +204,13 @@ void TaskFeaturePick::updateList()
                 item->setHidden(true);
                 break;
             case otherBody:
-                item->setHidden(!ui->checkOtherBody->isChecked());
+                item->setHidden(false);
                 break;
             case otherPart:
-                item->setHidden(!ui->checkOtherPart->isChecked());
+                item->setHidden(false);
                 break;
             case notInBody:
-                item->setHidden(!ui->checkOtherPart->isChecked());
+                item->setHidden(false);
                 break;
             case basePlane:
                 item->setHidden(false);
@@ -229,9 +227,6 @@ void TaskFeaturePick::updateList()
 void TaskFeaturePick::onUpdate(bool)
 {
     bool enable = false;
-    if (ui->checkOtherBody->isChecked() || ui->checkOtherPart->isChecked()) {
-        enable = true;
-    }
 
     ui->radioDependent->setEnabled(enable);
     ui->radioIndependent->setEnabled(enable);
@@ -287,42 +282,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
                                .getDocument(documentName.c_str())
                                ->getObject(t.toLatin1().data());
 
-                // build the dependent copy or reference if wanted by the user
-                if (status == otherBody || status == otherPart || status == notInBody) {
-                    if (!ui->radioXRef->isChecked()) {
-                        auto copy = makeCopy(obj, "", ui->radioIndependent->isChecked());
-
-                        if (status == otherBody) {
-                            activeBody->addObject(copy);
-                        }
-                        else if (status == otherPart) {
-                            auto oBody = PartDesignGui::getBodyFor(obj, false);
-                            if (!oBody) {
-                                activePart->addObject(copy);
-                            }
-                            else {
-                                activeBody->addObject(copy);
-                            }
-                        }
-                        else if (status == notInBody) {
-                            activeBody->addObject(copy);
-                            // doesn't supposed to get here anything but sketch but to be on the
-                            // safe side better to check
-                            if (copy->isDerivedFrom<Sketcher::SketchObject>()) {
-                                Sketcher::SketchObject* sketch
-                                    = static_cast<Sketcher::SketchObject*>(copy);
-                                PartDesignGui::fixSketchSupport(sketch);
-                            }
-                        }
-                        result.push_back(copy);
-                    }
-                    else {
-                        result.push_back(obj);
-                    }
-                }
-                else {
-                    result.push_back(obj);
-                }
+                result.push_back(obj);
             }
 
             index++;
@@ -584,8 +544,6 @@ void TaskFeaturePick::slotDeleteDocument(const Gui::Document&)
 
 void TaskFeaturePick::showExternal(bool val)
 {
-    ui->checkOtherBody->setChecked(val);
-    ui->checkOtherPart->setChecked(val);
     updateList();
 }
 
