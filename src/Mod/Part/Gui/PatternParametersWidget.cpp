@@ -97,6 +97,7 @@ void PatternParametersWidget::connectSignals()
     connect(ui->addSpacingButton, &QToolButton::clicked,
         this, &PatternParametersWidget::onAddSpacingButtonClicked);
 
+    connect(ui->groupBox, &QGroupBox::toggled, this, &PatternParametersWidget::onGroupBoxToggled);
     // Note: Connections for dynamic rows are done in addSpacingRow()
 }
 
@@ -136,6 +137,10 @@ void PatternParametersWidget::bindProperties(App::PropertyLinkSub* directionProp
     ui->spinOccurrences->setMaximum(m_occurrencesProp->getMaximum());
     ui->spinOccurrences->setMinimum(m_occurrencesProp->getMinimum());
     ui->spinOccurrences->blockSignals(false);
+
+    if (ui->groupBox->isCheckable()) {
+        setChecked(m_occurrencesProp->getValue() > 1);
+    }
 
     // Initial UI update from properties
     updateUI();
@@ -177,6 +182,20 @@ void PatternParametersWidget::updateUI()
     adaptVisibilityToMode();
 }
 
+void PatternParametersWidget::onGroupBoxToggled(bool checked)
+{
+    if (blockUpdate || !m_occurrencesProp) {
+        return;
+    }
+
+    if (!checked) {
+        // When unchecked, the pattern in this direction is disabled.
+        // Set occurrences to 1, which effectively removes the pattern effect.
+        if (m_occurrencesProp->getValue() != 1) {
+            ui->spinOccurrences->setValue(1);
+        }
+    }
+}
 
 void PatternParametersWidget::adaptVisibilityToMode()
 {
