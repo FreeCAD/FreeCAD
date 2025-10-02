@@ -250,28 +250,6 @@ class TestArchReport(TestArchBase.TestArchBase):
         return headers, filtered_results_for_specific_columns
 
 
-    def _find_preset_file(self, filename):
-        """
-        Finds a test resource file by searching in the build tree first,
-        then falling back to the final install directory. This makes the
-        test robust for both development and post-install testing.
-        """
-        # Path for running tests from a standard build directory (most common)
-        # This navigates from .../bimtests/ up to the BIM module root
-        # Note: A self-correction was made here from a previous version.
-        # The path is relative to the *test file's* location.
-        build_path = os.path.join(os.path.dirname(__file__), "..", "Presets", "ArchReport", filename)
-        if os.path.exists(build_path):
-            return build_path
-
-        # Fallback to the final installed resource directory
-        install_path = os.path.join(FreeCAD.getResourceDir(), "Mod", "BIM", "Presets", "ArchReport", filename)
-        if os.path.exists(install_path):
-            return install_path
-
-        # If neither is found, the test will fail below.
-        return None
-
     # Category 1: Basic Object Creation and Validation
     def test_makeReport_default(self):
         report = Arch.makeReport()
@@ -307,13 +285,13 @@ class TestArchReport(TestArchBase.TestArchBase):
 
     # Category 3: WHERE Clause Filtering
     def test_where_equals_string(self):
-        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType = "Wall"')
+        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType = "Wall"')
         self.assertEqual(len(results_labels), 2)
         self.assertCountEqual(results_labels, [self.wall_ext.Label, self.wall_int.Label])
 
     def test_where_not_equals_string(self):
         """Test a WHERE clause with a not-equals check."""
-        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType != "Wall"')
+        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType != "Wall"')
         # Strict SQL semantics: comparisons with NULL are treated as UNKNOWN
         # and therefore excluded. Use IS NULL / IS NOT NULL to test for nulls.
         expected_labels = [self.column.Label, self.beam.Label, self.window.Label]
@@ -322,66 +300,65 @@ class TestArchReport(TestArchBase.TestArchBase):
 
     def test_where_is_null(self):
         """Test a WHERE clause with an IS NULL check."""
-        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NULL')
-        # --- FIX: Corrected expected labels for IS NULL ---
-        # This now expects only self.part_box as it's the only one in self.test_objects_in_doc with IfcType=None.
+        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NULL')
+        # This expects only self.part_box as it's the only one in self.test_objects_in_doc with IfcType=None.
         self.assertEqual(len(results_labels), 1)
         self.assertEqual(results_labels[0], self.part_box.Label)
 
     def test_where_is_not_null(self):
-        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NOT NULL')
+        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NOT NULL')
         self.assertEqual(len(results_labels), 5)
         self.assertNotIn(self.part_box.Label, results_labels)
 
     def test_where_like_case_insensitive(self):
-        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE Label LIKE "exterior wall"')
+        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE Label LIKE "exterior wall"')
         self.assertEqual(len(results_labels), 1)
         self.assertEqual(results_labels[0], self.wall_ext.Label)
 
     def test_where_like_wildcard_middle(self):
-        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE Label LIKE "%wall%"')
+        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE Label LIKE "%wall%"')
         self.assertEqual(len(results_labels), 2)
         self.assertCountEqual(results_labels, [self.wall_ext.Label, self.wall_int.Label])
 
     def test_null_equality_is_excluded(self):
         """Strict SQL: comparisons with NULL should be excluded; use IS NULL."""
-        headers, results = self._run_query_for_objects('SELECT * FROM document WHERE IfcType = NULL')
+        _, results = self._run_query_for_objects('SELECT * FROM document WHERE IfcType = NULL')
         # '=' with NULL should not match (UNKNOWN -> excluded)
         self.assertEqual(len(results), 0)
 
     def test_null_inequality_excludes_nulls(self):
         """Strict SQL: IfcType != 'Wall' should exclude rows where IfcType is NULL."""
-        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType != "Wall"')
+        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType != "Wall"')
         expected_labels = [self.column.Label, self.beam.Label, self.window.Label]
         self.assertCountEqual(results_labels, expected_labels)
 
     def test_is_null_and_is_not_null_behaviour(self):
-        headers, isnull_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NULL')
+        _, isnull_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NULL')
         self.assertIn(self.part_box.Label, isnull_labels)
 
-        headers, isnotnull_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NOT NULL')
+        _, isnotnull_labels = self._run_query_for_objects('SELECT * FROM document WHERE IfcType IS NOT NULL')
         self.assertNotIn(self.part_box.Label, isnotnull_labels)
 
     def test_where_like_wildcard_end(self):
-        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE Label LIKE "Exterior%"')
+        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE Label LIKE "Exterior%"')
         self.assertEqual(len(results_labels), 1)
         self.assertEqual(results_labels[0], self.wall_ext.Label)
 
     def test_where_boolean_and(self):
         query = 'SELECT * FROM document WHERE IfcType = "Wall" AND Label LIKE "%Exterior%"'
-        headers, results_labels = self._run_query_for_objects(query)
+        _, results_labels = self._run_query_for_objects(query)
         self.assertEqual(len(results_labels), 1)
         self.assertEqual(results_labels[0], self.wall_ext.Label)
 
     def test_where_boolean_or(self):
         query = 'SELECT * FROM document WHERE IfcType = "Window" OR IfcType = "Column"'
-        headers, results_labels = self._run_query_for_objects(query)
+        _, results_labels = self._run_query_for_objects(query)
         self.assertEqual(len(results_labels), 2)
         self.assertCountEqual(results_labels, [self.window.Label, self.column.Label])
 
     # Category 4: Edge Cases and Error Handling
     def test_query_no_results(self):
-        headers, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE Label = "NonExistentObject"')
+        _, results_labels = self._run_query_for_objects('SELECT * FROM document WHERE Label = "NonExistentObject"')
         self.assertEqual(len(results_labels), 0)
 
     @patch('FreeCAD.Console.PrintError')
@@ -421,7 +398,7 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         for name, query in invalid_queries.items():
             with self.subTest(name=name, query=query):
-                count, error = Arch.count(query)
+                _, error = Arch.count(query)
                 self.assertNotEqual(error, "INCOMPLETE", f"Query '{query}' should be a syntax error, not incomplete.")
                 self.assertIsNotNone(error, f"Query '{query}' should have returned an error.")
 
@@ -553,7 +530,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         query = "SELECT SUM(Height) FROM document WHERE IfcType = 'Wall'"
 
         # We call the engine directly, bypassing the _run_query_for_objects helper.
-        headers, results_data = Arch.select(query)
+        _, results_data = Arch.select(query)
 
         # --- Assertions ---
         # 1. An aggregate query without a GROUP BY should always return exactly one row.
@@ -575,7 +552,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         query = "SELECT 'Total Height', SUM(Height) FROM document WHERE IfcType = 'Wall'"
 
         # We call the engine directly to isolate its behavior.
-        headers, results_data = Arch.select(query)
+        _, results_data = Arch.select(query)
 
         # --- Assertions ---
         # 1. The query should still return exactly one row.
@@ -617,7 +594,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         query = "SELECT SUM(Area) FROM document WHERE IfcType = 'Space'"
 
         # Call the engine directly to isolate its behavior
-        headers, results_data = Arch.select(query)
+        _, results_data = Arch.select(query)
 
         # --- Assertions ---
         # 1. An aggregate query should return exactly one row.
@@ -646,7 +623,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # Interior Wall: Length = 500mm
         query = "SELECT MIN(Length), MAX(Length) FROM document WHERE IfcType = 'Wall'"
 
-        headers, results_data = Arch.select(query)
+        _, results_data = Arch.select(query)
 
         self.assertEqual(len(results_data), 1, "Aggregate query should return a single row.")
         self.assertIsInstance(results_data[0][0], float, "MIN() should return a float.")
@@ -709,63 +686,68 @@ class TestArchReport(TestArchBase.TestArchBase):
         Performs an integration test to ensure all bundled report templates
         can be parsed and executed without errors against a sample model.
         """
-        import os
-        import json
+        # 1. Load presets.
+        report_presets = ArchReport._get_presets('report')
+        self.assertGreater(len(report_presets), 0, "No bundled report templates were found. Check CMakeLists.txt and file paths.")
 
-        # Find the bundled templates file using the helper
-        template_path = self._find_preset_file("report_templates.json")
-        self.assertIsNotNone(template_path, "Bundled report_templates.json not found in build or install directories. Check CMakeLists.txt.")
+        # 2. Verify that the expected templates were loaded by their display name.
+        loaded_template_names = {preset['name'] for preset in report_presets.values()}
+        self.assertIn("Room and Area Schedule", loaded_template_names)
+        self.assertIn("Wall Quantities", loaded_template_names)
 
-        with open(template_path, 'r', encoding='utf8') as f:
-            templates = json.load(f)
+        # 3. Execute every query in every statement of every template.
+        for filename, preset in report_presets.items():
+            # This test should only validate bundled system presets.
+            if preset.get('is_user'):
+                continue
 
-        self.assertIn("Room and Area Schedule", templates)
-        self.assertIn("Wall Quantities", templates)
+            template_name = preset['name']
+            statements = preset['data'].get('statements', [])
+            self.assertGreater(len(statements), 0, f"Template '{template_name}' contains no statements.")
 
-        # Execute every query in every statement of every template
-        for template_name, template_data in templates.items():
-            for i, statement_data in enumerate(template_data["statements"]):
-                query = statement_data["query_string"]
+            for i, statement_data in enumerate(statements):
+                query = statement_data.get("query_string")
+                self.assertIsNotNone(query, f"Statement {i} in '{template_name}' is missing a 'query_string'.")
 
                 with self.subTest(template=template_name, statement_index=i):
                     # We only care that the query executes without raising an exception.
-                    # This verifies syntax and compatibility with the sample model.
                     try:
-                        headers, results_data = Arch.select(query)
-                        # A successful query returns a list of headers (even if empty)
+                        headers, _ = Arch.select(query)
                         self.assertIsInstance(headers, list)
                     except Exception as e:
-                        self.fail(f"Query '{query}' from template '{template_name}' failed with an exception: {e}")
+                        self.fail(f"Query '{query}' from template '{template_name}' (file: {filename}) failed with an exception: {e}")
 
     def test_bundled_query_presets_are_valid(self):
         """
         Performs an integration test to ensure all bundled single-query presets
         are syntactically valid and executable.
         """
-        import json
+        # 1. Load presets using the new, correct backend function.
+        query_presets = ArchReport._get_presets('query')
+        self.assertGreater(len(query_presets), 0, "No bundled query presets were found. Check CMakeLists.txt and file paths.")
 
-        # Find the bundled presets file using the robust helper
-        preset_path = self._find_preset_file("query_presets.json")
-        self.assertIsNotNone(preset_path, "Bundled query_presets.json not found in build or install directories. Check CMakeLists.txt.")
+        # 2. Verify that the expected presets were loaded.
+        loaded_preset_names = {preset['name'] for preset in query_presets.values()}
+        self.assertIn("All Walls", loaded_preset_names)
+        self.assertIn("Count by IfcType", loaded_preset_names)
 
-        with open(preset_path, 'r', encoding='utf8') as f:
-            presets = json.load(f)
+        # 3. Execute every query in the presets file.
+        for filename, preset in query_presets.items():
+            # This test should only validate bundled system presets.
+            if preset.get('is_user'):
+                continue
 
-        # Sanity check that the expected presets are present
-        self.assertIn("All Walls", presets)
-        self.assertIn("Count by IfcType", presets)
-
-        # Execute every query in the presets file
-        for preset_name, preset_data in presets.items():
-            query = preset_data["query"]
+            preset_name = preset['name']
+            query = preset['data'].get("query")
+            self.assertIsNotNone(query, f"Preset '{preset_name}' is missing a 'query'.")
 
             with self.subTest(preset=preset_name):
                 # We only care that the query executes without raising an exception.
                 try:
-                    headers, results_data = Arch.select(query)
+                    headers, _ = Arch.select(query)
                     self.assertIsInstance(headers, list)
                 except Exception as e:
-                    self.fail(f"Query '{query}' from preset '{preset_name}' failed with an exception: {e}")
+                    self.fail(f"Query '{query}' from preset '{preset_name}' (file: {filename}) failed with an exception: {e}")
 
     def test_where_in_clause(self):
         """
@@ -775,7 +757,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         query = "SELECT * FROM document WHERE Label IN ('Exterior Wall', 'Interior partition wall')"
 
         # This will fail at the parsing stage until the 'IN' keyword is implemented.
-        headers, results_data = Arch.select(query)
+        _, results_data = Arch.select(query)
 
         # --- Assertions ---
         # 1. The query should return exactly two rows.
@@ -795,7 +777,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # We want the type of the Part::Box and one of the Arch Walls.
         query = "SELECT TYPE(*) FROM document WHERE Name IN ('Generic_Box', 'Wall')"
 
-        headers, results_data = Arch.select(query)
+        _, results_data = Arch.select(query)
 
         # --- Assertions ---
         # The query should return two rows, one for each object.
@@ -848,7 +830,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # --- Sub-Test 1: Direct containment and group traversal ---
         with self.subTest(description="Direct containment with group traversal"):
             query = f"SELECT Label FROM CHILDREN(SELECT * FROM document WHERE Label = '{floor.Label}')"
-            headers, results = Arch.select(query)
+            _, results = Arch.select(query)
 
             returned_labels = sorted([row[0] for row in results])
             # The result should contain the spaces, but NOT the intermediate group itself.
@@ -859,7 +841,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # --- Sub-Test 2: Hosting Relationship (Reverse Lookup) ---
         with self.subTest(description="Hosting relationship"):
             query = f"SELECT Label FROM CHILDREN(SELECT * FROM document WHERE Label = '{host_wall.Label}')"
-            headers, results = Arch.select(query)
+            _, results = Arch.select(query)
 
             self.assertEqual(len(results), 1)
             self.assertEqual(results[0][0], window.Label)
@@ -867,7 +849,7 @@ class TestArchReport(TestArchBase.TestArchBase):
     def test_order_by_label_desc(self):
         """Tests the ORDER BY clause to sort results alphabetically."""
         query = "SELECT Label FROM document WHERE IfcType = 'Wall' ORDER BY Label DESC"
-        headers, results_data = Arch.select(query)
+        _, results_data = Arch.select(query)
 
         # The results should be a list of lists, e.g., [['Wall 2'], ['Wall 1']]
         self.assertEqual(len(results_data), 2)
@@ -905,19 +887,19 @@ class TestArchReport(TestArchBase.TestArchBase):
 
         with self.subTest(description="LOWER function"):
             query = f"SELECT LOWER(Label) FROM document WHERE Name = '{target_obj_name}'"
-            headers, data = Arch.select(query)
+            _, data = Arch.select(query)
             self.assertEqual(len(data), 1)
             self.assertEqual(data[0][0], target_obj_label.lower())
 
         with self.subTest(description="UPPER function"):
             query = f"SELECT UPPER(Label) FROM document WHERE Name = '{target_obj_name}'"
-            headers, data = Arch.select(query)
+            _, data = Arch.select(query)
             self.assertEqual(len(data), 1)
             self.assertEqual(data[0][0], target_obj_label.upper())
 
         with self.subTest(description="CONCAT function with properties and literals"):
             query = f"SELECT CONCAT(Label, ': ', IfcType) FROM document WHERE Name = '{target_obj_name}'"
-            headers, data = Arch.select(query)
+            _, data = Arch.select(query)
             self.assertEqual(len(data), 1)
             expected_string = f"{target_obj_label}: {target_obj_ifctype}"
             self.assertEqual(data[0][0], expected_string)
@@ -1036,7 +1018,7 @@ class TestArchReport(TestArchBase.TestArchBase):
         # --- Test 1: Successful Conversion ---
         # This part of the test verifies that a valid conversion works correctly.
         query = f"SELECT CONVERT(Length, 'm') FROM document WHERE Name = '{target_name}'"
-        headers, data = Arch.select(query)
+        _, data = Arch.select(query)
 
         self.assertEqual(len(data), 1, "The query should return exactly one row.")
         self.assertEqual(len(data[0]), 1, "The row should contain exactly one column.")
@@ -1248,7 +1230,7 @@ class TestArchReport(TestArchBase.TestArchBase):
             WHERE IfcType IN ('Wall', 'Column', 'Beam')
             ORDER BY IfcType, Label ASC
         """
-        headers, data = Arch.select(query)
+        _, data = Arch.select(query)
 
         self.assertEqual(len(data), 4, "Should find the two walls, one column, and one beam.")
 
