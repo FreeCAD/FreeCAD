@@ -196,9 +196,10 @@ def directional(polygon, tool_diameter, stepover_percent,
             if commands:
                 if retract_height is not None:
                     commands.append(Path.Command("G0", {"Z": retract_height}))
-                commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y}))
-                if retract_height is not None:
+                    commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y}))
                     commands.append(Path.Command("G0", {"Z": z}))
+                else:
+                    commands.append(Path.Command("G0", {"X": start_point.x, "Y": start_point.y, "Z": z}))
             else:
                 # First segment: emit a simple G0 to XYZ start position.
                 # The operation will replace this with its own preamble sequence.

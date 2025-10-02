@@ -429,24 +429,47 @@ class ObjectMillFacing(PathOp.ObjectOp):
                             pass
                         else:
                             new_params = dict(cmd.Parameters)
-                            # Clamp cutting Z for G1 and plunges; preserve safe retractions above depth
+                            # Handle Z coordinate based on command type
                             if "Z" in new_params:
                                 if cmd.Name == "G0":
-                                    if new_params["Z"] <= depth:
+                                    # For rapids, distinguish between true retracts and plunges
+                                    # True retracts are at/near retract_height and should be preserved
+                                    # Plunges are at/near polygon ZMin and should be clamped to depth
+                                    if abs(new_params["Z"] - retract_height) < 1.0:  # Within 1mm of retract height
+                                        # Keep as-is (true retract)
+                                        pass
+                                    else:
+                                        # Not a retract - clamp to depth (includes plunges)
                                         new_params["Z"] = depth
                                 else:
+                                    # For G1 cutting moves, always use depth
                                     new_params["Z"] = depth
-                            # Ensure full XYZ by carrying forward last known
+                            else:
+                                # Missing Z coordinate - set based on command type
+                                if cmd.Name == "G1":
+                                    # Cutting moves always at depth
+                                    new_params["Z"] = depth
+                                else:
+                                    # Rapids without Z - carry forward last Z
+                                    if self.commandlist:
+                                        new_params["Z"] = self.commandlist[-1].Parameters.get("Z", depth)
+                            
+                            # Fill in missing X,Y coordinates from last position
                             if self.commandlist:
                                 last = self.commandlist[-1].Parameters
-                                new_params.setdefault("X", last.get("X"))
-                                new_params.setdefault("Y", last.get("Y"))
-                                new_params.setdefault("Z", last.get("Z"))
-                            # Skip zero-length moves
+                                if "X" not in cmd.Parameters:
+                                    new_params.setdefault("X", last.get("X"))
+                                if "Y" not in cmd.Parameters:
+                                    new_params.setdefault("Y", last.get("Y"))
+                            # Skip zero-length moves (but allow Z-only moves for plunges/retracts)
                             if self.commandlist:
                                 last_params = self.commandlist[-1].Parameters
-                                if all(abs(new_params[k] - last_params.get(k, new_params[k]+1)) <= 1e-9 for k in ("X","Y","Z")):
-                                    continue
+                                # Only skip if X and Y are identical (allow Z-only moves)
+                                if all(abs(new_params[k] - last_params.get(k, new_params[k]+1)) <= 1e-9 for k in ("X","Y")):
+                                    # But if Z is different, keep it (it's a plunge or retract)
+                                    z_changed = abs(new_params.get("Z", 0) - last_params.get("Z", new_params.get("Z", 0)+1)) > 1e-9
+                                    if not z_changed:
+                                        continue
                             self.commandlist.append(Path.Command(cmd.Name, new_params))
                     Path.Log.debug(f"First stepdown: Added {len(base_commands)} commands for depth {depth}")
                 else:
@@ -455,12 +478,25 @@ class ObjectMillFacing(PathOp.ObjectOp):
                     copy_commands = []
                     for cmd in base_commands:
                         new_params = dict(cmd.Parameters)
+                        # Handle Z coordinate based on command type (same logic as first stepdown)
                         if "Z" in new_params:
                             if cmd.Name == "G0":
-                                if new_params["Z"] <= depth:
+                                # For rapids, distinguish between true retracts and plunges
+                                if abs(new_params["Z"] - retract_height) < 1.0:  # Within 1mm of retract height
+                                    # Keep as-is (true retract)
+                                    pass
+                                else:
+                                    # Not a retract - clamp to depth (includes plunges)
                                     new_params["Z"] = depth
                             else:
+                                # For G1 cutting moves, always use depth
                                 new_params["Z"] = depth
+                        else:
+                            # Missing Z coordinate - set based on command type
+                            if cmd.Name == "G1":
+                                # Cutting moves always at depth
+                                new_params["Z"] = depth
+                            # For G0 without Z, we'll let it get filled in later from context
                         copy_commands.append(Path.Command(cmd.Name, new_params))
                     
                     # Get the last position from self.commandlist
@@ -523,9 +559,18 @@ class ObjectMillFacing(PathOp.ObjectOp):
                         cp = dict(cc.Parameters)
                         if self.commandlist:
                             last = self.commandlist[-1].Parameters
-                            cp.setdefault("X", last.get("X"))
-                            cp.setdefault("Y", last.get("Y"))
-                            cp.setdefault("Z", last.get("Z"))
+                            # Only fill in coordinates that are truly missing from the original command
+                            if "X" not in cc.Parameters:
+                                cp.setdefault("X", last.get("X"))
+                            if "Y" not in cc.Parameters:
+                                cp.setdefault("Y", last.get("Y"))
+                            # Don't carry forward Z - it should already be set correctly in copy_commands
+                            if "Z" not in cc.Parameters:
+                                # Only set Z if it wasn't in the original command
+                                if cc.Name == "G1":
+                                    cp["Z"] = depth  # Cutting moves at depth
+                                else:
+                                    cp.setdefault("Z", last.get("Z"))
                         # Skip zero-length
                         if self.commandlist:
                             last = self.commandlist[-1].Parameters
