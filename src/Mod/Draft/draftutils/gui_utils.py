@@ -258,7 +258,10 @@ def dim_symbol(symbol=None, invert=False):
         h = coin.SoShapeHints()
         h.vertexOrdering = h.COUNTERCLOCKWISE
         c = coin.SoCoordinate3()
-        c.point.setValues([(-1, -2, 0), (0, 2, 0), (1, 2, 0), (0, -2, 0)])
+        # fmt: off
+        c.point.setValues([(-1, -2, 0), (0, 2, 0),
+                           (1, 2, 0), (0, -2, 0)])
+        # fmt: on
         f = coin.SoFaceSet()
         marker.addChild(h)
         marker.addChild(c)

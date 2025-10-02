@@ -1101,16 +1101,12 @@ class svgHandler(xml.sax.ContentHandler):
                 # (+0 -0 +0 +1)           (0 0 0 1)
                 #
                 # Put the first two rows of the matrix
-                _m = FreeCAD.Matrix(
-                    argsplit[0],
-                    -argsplit[2],
-                    0,
-                    argsplit[4],
-                    -argsplit[1],
-                    argsplit[3],
-                    0,
-                    -argsplit[5],
-                )
+                # fmt: off
+                _m = FreeCAD.Matrix(argsplit[0], -argsplit[2],
+                                    0, argsplit[4],
+                                    -argsplit[1], argsplit[3],
+                                    0, -argsplit[5])
+                # fmt: on
                 m = m.multiply(_m)
             # else:
             #    print('SKIPPED %s' % transformation)

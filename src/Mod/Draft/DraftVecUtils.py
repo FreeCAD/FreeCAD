@@ -498,20 +498,11 @@ def rotate(u, angle, axis=Vector(0, 0, 1)):
     ys = y * s
     zs = z * s
 
-    m = FreeCAD.Matrix(
-        c + x * x * t,
-        xyt - zs,
-        xzt + ys,
-        0,
-        xyt + zs,
-        c + y * y * t,
-        yzt - xs,
-        0,
-        xzt - ys,
-        yzt + xs,
-        c + z * z * t,
-        0,
-    )
+    # fmt: off
+    m = FreeCAD.Matrix(c + x*x*t,   xyt - zs,   xzt + ys,   0,
+                       xyt + zs,    c + y*y*t,  yzt - xs,   0,
+                       xzt - ys,    yzt + xs,   c + z*z*t,  0)
+    # fmt: on
 
     return m.multiply(u)
 
@@ -804,7 +795,13 @@ def getPlaneRotation(u, v, _=None):
     w.normalize()
     v = w.cross(u)
 
-    m = FreeCAD.Matrix(u.x, v.x, w.x, 0, u.y, v.y, w.y, 0, u.z, v.z, w.z, 0, 0.0, 0.0, 0.0, 1.0)
+    # fmt: off
+    m = FreeCAD.Matrix(u.x, v.x, w.x, 0,
+                       u.y, v.y, w.y, 0,
+                       u.z, v.z, w.z, 0,
+                       0.0, 0.0, 0.0, 1.0)
+    # fmt: on
+
     return m
 
 

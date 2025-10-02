@@ -138,40 +138,21 @@ class ViewProviderWorkingPlaneProxy:
         import PartGui  # Required for "SoBrepEdgeSet" (because a WorkingPlaneProxy is not a Part::FeaturePython object).
 
         ls = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
+        # fmt: off
         ls.coordIndex.setValues(
             0,
             28,
             [
-                0,
-                1,
-                -1,
-                2,
-                3,
-                4,
-                5,
-                -1,
-                6,
-                7,
-                -1,
-                8,
-                9,
-                10,
-                11,
-                -1,
-                12,
-                13,
-                -1,
-                14,
-                15,
-                16,
-                17,
-                -1,
-                18,
-                19,
-                20,
-                21,
+                0, 1, -1,
+                2, 3, 4, 5, -1,
+                6, 7, -1,
+                8, 9, 10, 11, -1,
+                12, 13, -1,
+                14, 15, 16, 17, -1,
+                18, 19, 20, 21
             ],
         )
+        # fmt: on
         sep = coin.SoSeparator()
         psep = coin.SoSeparator()
         fsep = coin.SoSeparator()

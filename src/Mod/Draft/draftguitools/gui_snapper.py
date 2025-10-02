@@ -127,23 +127,25 @@ class Snapper:
 
         # snap keys, it's important that they are in this order for
         # saving in preferences and for properly restoring the toolbar
+        # fmt: off
         self.snaps = [
-            "Lock",  # 0
-            "Near",  # 1 former "passive" snap
-            "Extension",  # 2
-            "Parallel",  # 3
-            "Grid",  # 4
-            "Endpoint",  # 5
-            "Midpoint",  # 6
-            "Perpendicular",  # 7
-            "Angle",  # 8
-            "Center",  # 9
-            "Ortho",  # 10
+            "Lock",          # 0
+            "Near",          # 1 former "passive" snap
+            "Extension",     # 2
+            "Parallel",      # 3
+            "Grid",          # 4
+            "Endpoint",      # 5
+            "Midpoint",      # 6
+            "Perpendicular", # 7
+            "Angle",         # 8
+            "Center",        # 9
+            "Ortho",         # 10
             "Intersection",  # 11
-            "Special",  # 12
-            "Dimensions",  # 13
+            "Special",       # 12
+            "Dimensions",    # 13
             "WorkingPlane",  # 14
         ]
+        # fmt: on
 
         self.init_active_snaps()
         self.set_snap_style()
