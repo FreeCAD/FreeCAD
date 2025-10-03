@@ -57,6 +57,83 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     def areaOpFeatures(self, obj):
         return super(self.__class__, self).areaOpFeatures(obj) | PathOp.FeatureLocations
 
+    def removeHoles(self, solid, face, tolerance=1e-6):
+        """removeHoles(solid, face, tolerance) ... Remove hole wires from a face, keeping outer wire and boss wires.
+        
+        Args:
+            solid: The parent solid object
+            face: The face to process
+            tolerance: Z-tolerance for comparisons
+            
+        Returns:
+            New face with outer wire and boss wires only
+        """
+        Path.Log.debug("Removing holes from face")
+        outer_wire = face.OuterWire
+        all_wires = face.Wires
+        
+        # Get candidate wires (all except outer wire)
+        candidate_wires = [w for w in all_wires if not w.isSame(outer_wire)]
+        Path.Log.debug("Candidate wires: {}".format(len(candidate_wires)))
+        
+        # Get the Z-level of the original face for comparison
+        face_center = face.CenterOfMass
+        face_z = face_center.z
+        
+        boss_wires = []
+        
+        # Test each candidate wire
+        for wire in candidate_wires:
+            is_boss = True  # Assume it's a boss until proven otherwise
+            
+            # Find faces in the solid that share edges with this wire
+            wire_edges = wire.Edges
+            adjacent_faces = []
+            
+            for edge in wire_edges:
+                for solid_face in solid.Shape.Faces:
+                    # Skip if it's the same as the original face
+                    if solid_face.isSame(face):
+                        continue
+                    
+                    # Check if this face shares the edge
+                    for face_edge in solid_face.Edges:
+                        if edge.isSame(face_edge):
+                            # Avoid duplicates
+                            is_duplicate = False
+                            for existing in adjacent_faces:
+                                if existing.isSame(solid_face):
+                                    is_duplicate = True
+                                    break
+                            if not is_duplicate:
+                                adjacent_faces.append(solid_face)
+                            break
+            
+            # Check each adjacent face
+            for adj_face in adjacent_faces:
+                # Use the highest point of the adjacent face (ZMax) for comparison
+                # If even the highest point is below the original face plane, it's a hole
+                adj_z_max = adj_face.BoundBox.ZMax
+                
+                # If the highest point of the face is below or at the original face plane (within tolerance), it's a hole
+                if adj_z_max < face_z + tolerance:
+                    Path.Log.debug("Adjacent face is below original face plane")
+                    is_boss = False
+                    break
+            
+            # If all adjacent faces are at or above the original face Z-level, it's a boss
+            if is_boss:
+                boss_wires.append(wire)
+
+        Path.Log.debug("Boss wires: {}".format(len(boss_wires))) 
+        # Construct new face from outer wire and boss wires
+        if boss_wires:
+            new_face = Part.Face([outer_wire] + boss_wires)
+        else:
+            new_face = Part.Face(outer_wire)
+        
+        return new_face
+
     def initPocketOp(self, obj):
         """initPocketOp(obj) ... setup receiver"""
         if not hasattr(obj, "UseOutline"):
@@ -113,8 +190,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
             # Convert horizontal faces to use outline only if requested
             if obj.UseOutline and self.horiz:
-                horiz = [Part.Face(f.Wire1) for f in self.horiz]
+                horiz = [self.removeHoles(base, face) for (face, base) in self.horiz]
                 self.horiz = horiz
+            else:
+                # Extract just the faces from the tuples for further processing
+                self.horiz = [face for (face, base) in self.horiz]
 
             # Check if selected vertical faces form a loop
             if len(self.vert) > 0:
@@ -133,6 +213,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         self.horiz.append(face)
 
             # Add faces for extensions
+            # Note: Extension faces don't have a parent base object, so we append them directly
             self.exts = []
             for ext in extensions:
                 if not ext.avoid:
@@ -205,44 +286,41 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         """
         face = bs.Shape.getElement(sub)
 
-        if isinstance(face.Surface, Part.BSplineSurface):
-            Path.Log.debug("face Part.BSplineSurface")
-            if Path.Geom.isRoughly(face.BoundBox.ZLength, 0):
-                Path.Log.debug("  flat horizontal or almost flat horizontal")
-                self.horiz.append(face)
-                return True
-
-        elif isinstance(face.Surface, Part.Plane):
-            Path.Log.debug("face Part.Plane")
-            if Path.Geom.isRoughly(abs(face.Surface.Axis.z), 1, 0.001):
-                Path.Log.debug("  flat horizontal or almost flat horizontal")
-                self.horiz.append(face)
+        if type(face.Surface) == Part.Plane:
+            Path.Log.debug("type() == Part.Plane")
+            if Path.Geom.isVertical(face.Surface.Axis):
+                Path.Log.debug("  -isVertical()")
+                # it's a flat horizontal face
+                self.horiz.append((face, bs))
                 return True
 
             elif Path.Geom.isHorizontal(face.Surface.Axis):
-                Path.Log.debug("  flat vertical")
+                Path.Log.debug("  -isHorizontal()")
                 self.vert.append(face)
                 return True
 
-        elif isinstance(face.Surface, Part.Cylinder) and Path.Geom.isVertical(face.Surface.Axis):
-            Path.Log.debug("face Part.Cylinder")
+            else:
+                return False
+
+        elif type(face.Surface) == Part.Cylinder and Path.Geom.isVertical(face.Surface.Axis):
+            Path.Log.debug("type() == Part.Cylinder")
             # vertical cylinder wall
             if any(e.isClosed() for e in face.Edges):
-                Path.Log.debug("  isClosed()")
+                Path.Log.debug("  -e.isClosed()")
                 # complete cylinder
                 circle = Part.makeCircle(face.Surface.Radius, face.Surface.Center)
                 disk = Part.Face(Part.Wire(circle))
                 disk.translate(FreeCAD.Vector(0, 0, face.BoundBox.ZMin - disk.BoundBox.ZMin))
-                self.horiz.append(disk)
+                self.horiz.append((disk, bs))
                 return True
 
             else:
-                Path.Log.debug("  not isClosed()")
+                Path.Log.debug("  -none isClosed()")
                 # partial cylinder wall
                 self.vert.append(face)
                 return True
 
-        elif isinstance(face.Surface, Part.SurfaceOfExtrusion):
+        elif type(face.Surface) == Part.SurfaceOfExtrusion:
             # extrusion wall
             Path.Log.debug("type() == Part.SurfaceOfExtrusion")
             # Save face to self.horiz for processing or display error
@@ -254,8 +332,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         else:
             Path.Log.debug("  -type(face.Surface): {}".format(type(face.Surface)))
-
-        return False
+            return False
 
 
 # Eclass
