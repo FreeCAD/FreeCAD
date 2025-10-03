@@ -238,10 +238,10 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <item row="1" column="1">
        <widget class="QCheckBox" name="useOutline">
         <property name="toolTip">
-         <string>If selected the operation uses the outline of the selected base geometry and ignores all holes and islands</string>
+         <string>If selected the operation uses the outline of the selected base geometry and ignores all holes</string>
         </property>
         <property name="text">
-         <string>Use outline</string>
+         <string>Ignore holes</string>
         </property>
        </widget>
       </item>
