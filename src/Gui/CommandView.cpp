@@ -48,6 +48,7 @@
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Part.h>
 #include <App/Link.h>
+#include <App/PropertyStandard.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
@@ -951,7 +952,34 @@ void StdCmdToggleTransparency::activated(int iMsg)
                         // Make sure it has a transparency prop too
                         parentProp = parentView->getPropertyByName("Transparency");
                         if (parentProp && parentProp->isDerivedFrom<App::PropertyInteger>()) {
-                            view = parentView;
+                            // Preserve user-set feature colors: if the child has a custom
+                            // ShapeAppearance (different from the parent's or per-face), then
+                            // prefer applying transparency to the child instead of redirecting to the parent.
+                            bool preferChild = false;
+
+                            // Compare ShapeAppearance materials when available
+                            if (auto* childMatProp = dynamic_cast<App::PropertyMaterialList*>(view->getPropertyByName("ShapeAppearance"))) {
+                                const auto& childValues = childMatProp->getValues();
+                                // Per-face colors -> definitely custom on child
+                                if (childValues.size() > 1) {
+                                    preferChild = true;
+                                }
+                                else if (childValues.size() == 1) {
+                                    if (auto* parentMatProp = dynamic_cast<App::PropertyMaterialList*>(parentView->getPropertyByName("ShapeAppearance"))) {
+                                        const auto& parentValues = parentMatProp->getValues();
+                                        if (parentValues.size() == 1) {
+                                            // If materials differ, treat child as customized
+                                            if (!(childValues[0] == parentValues[0])) {
+                                                preferChild = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (!preferChild) {
+                                view = parentView;
+                            }
                         }
                     }
                 }
