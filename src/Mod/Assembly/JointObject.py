@@ -612,7 +612,10 @@ class Joint:
         This script migrates properties with fixed types from PropertyFloat to the
         correct PropertyLength or PropertyAngle type.
         """
-        if hasattr(joint, "Distance") and joint.getTypeIdOfProperty("Distance") == "App::PropertyFloat":
+        if (
+            hasattr(joint, "Distance")
+            and joint.getTypeIdOfProperty("Distance") == "App::PropertyFloat"
+        ):
             old_value = joint.Distance
             joint.setPropertyStatus("Distance", "-LockDynamic")
             joint.removeProperty("Distance")
@@ -625,35 +628,50 @@ class Joint:
             else:
                 joint.Distance = old_value
 
-        if hasattr(joint, "Distance2") and joint.getTypeIdOfProperty("Distance2") == "App::PropertyFloat":
+        if (
+            hasattr(joint, "Distance2")
+            and joint.getTypeIdOfProperty("Distance2") == "App::PropertyFloat"
+        ):
             old_value = joint.Distance2
             joint.setPropertyStatus("Distance2", "-LockDynamic")
             joint.removeProperty("Distance2")
             self.addDistance2Property(joint)
             joint.Distance2 = old_value
 
-        if hasattr(joint, "LengthMin") and joint.getTypeIdOfProperty("LengthMin") == "App::PropertyFloat":
+        if (
+            hasattr(joint, "LengthMin")
+            and joint.getTypeIdOfProperty("LengthMin") == "App::PropertyFloat"
+        ):
             old_value = joint.LengthMin
             joint.setPropertyStatus("LengthMin", "-LockDynamic")
             joint.removeProperty("LengthMin")
             self.addLengthMinProperty(joint)
             joint.LengthMin = old_value
 
-        if hasattr(joint, "LengthMax") and joint.getTypeIdOfProperty("LengthMax") == "App::PropertyFloat":
+        if (
+            hasattr(joint, "LengthMax")
+            and joint.getTypeIdOfProperty("LengthMax") == "App::PropertyFloat"
+        ):
             old_value = joint.LengthMax
             joint.setPropertyStatus("LengthMax", "-LockDynamic")
             joint.removeProperty("LengthMax")
             self.addLengthMaxProperty(joint)
             joint.LengthMax = old_value
 
-        if hasattr(joint, "AngleMin") and joint.getTypeIdOfProperty("AngleMin") == "App::PropertyFloat":
+        if (
+            hasattr(joint, "AngleMin")
+            and joint.getTypeIdOfProperty("AngleMin") == "App::PropertyFloat"
+        ):
             old_value = joint.AngleMin
             joint.setPropertyStatus("AngleMin", "-LockDynamic")
             joint.removeProperty("AngleMin")
             self.addAngleMinProperty(joint)
             joint.AngleMin = old_value
 
-        if hasattr(joint, "AngleMax") and joint.getTypeIdOfProperty("AngleMax") == "App::PropertyFloat":
+        if (
+            hasattr(joint, "AngleMax")
+            and joint.getTypeIdOfProperty("AngleMax") == "App::PropertyFloat"
+        ):
             old_value = joint.AngleMax
             joint.setPropertyStatus("AngleMax", "-LockDynamic")
             joint.removeProperty("AngleMax")
@@ -703,8 +721,13 @@ class Joint:
 
         if prop == "Reference1" or prop == "Reference2":
             joint.recompute()
-            
-        if not hasattr(joint, "Reference1") or not hasattr(joint, "Reference2") or joint.Reference1 is None or joint.Reference2 is None:
+
+        if (
+            not hasattr(joint, "Reference1")
+            or not hasattr(joint, "Reference2")
+            or joint.Reference1 is None
+            or joint.Reference2 is None
+        ):
             return
 
         if prop == "Offset1" or prop == "Offset2":
