@@ -39,6 +39,9 @@
 
 
 #include <chrono>
+#include <set>
+#include <algorithm>
+#include <iterator>
 
 #include <App/Link.h>
 #include <App/Document.h>
@@ -57,6 +60,8 @@
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/ViewProviderLink.h>
+#include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewParams.h>
 
 #include <Mod/Assembly/App/AssemblyLink.h>
@@ -111,9 +116,15 @@ ViewProviderAssembly::ViewProviderAssembly()
     , lastClickTime(0)
     , jointVisibilitiesBackup({})
     , docsToMove({})
-{}
+{
+    m_preTransactionConn = App::GetApplication().signalBeforeOpenTransaction.connect(
+        std::bind(&ViewProviderAssembly::slotAboutToOpenTransaction, this, std::placeholders::_1));
+}
 
-ViewProviderAssembly::~ViewProviderAssembly() = default;
+ViewProviderAssembly::~ViewProviderAssembly()
+{
+    m_preTransactionConn.disconnect();
+};
 
 QIcon ViewProviderAssembly::getIcon() const
 {
@@ -1106,6 +1117,23 @@ void ViewProviderAssembly::draggerMotionCallback(void* data, SoDragger* d)
 
 void ViewProviderAssembly::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    // Joint components isolation
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        auto selection = Gui::Selection().getSelection();
+        if (selection.size() == 1) {
+            App::DocumentObject* obj = selection[0].pObject;
+            // A simple way to identify a joint is to check for its "JointType" property.
+            if (obj && obj->getPropertyByName("JointType")) {
+                isolateJointReferences(obj);
+                return;
+            }
+        }
+    }
+    if (msg.Type == Gui::SelectionChanges::ClrSelection
+        || msg.Type == Gui::SelectionChanges::RmvSelection) {
+        clearIsolate();
+    }
+
     if (!isInEditMode()) {
         return;
     }
@@ -1262,6 +1290,168 @@ PyObject* ViewProviderAssembly::getPyObject()
     }
     pyViewObject->IncRef();
     return pyViewObject;
+}
+
+void ViewProviderAssembly::applyIsolationRecursively(App::DocumentObject* current,
+                                                     std::set<App::DocumentObject*>& isolateSet,
+                                                     IsolateMode mode,
+                                                     std::set<App::DocumentObject*>& visited)
+{
+    if (!current || !visited.insert(current).second) {
+        return;  // Object is null or already processed
+    }
+
+    bool isolate = isolateSet.count(current);
+
+    if (auto* group = dynamic_cast<App::DocumentObjectGroup*>(current)) {
+        for (auto* child : group->Group.getValues()) {
+            applyIsolationRecursively(child, isolateSet, mode, visited);
+        }
+    }
+    else if (auto* part = dynamic_cast<App::Part*>(current)) {
+        // As App::Part currently don't have material override
+        // (there is in LinkStage and RealThunder said he'll try to PR later)
+        // we have to recursively apply to children of App::Parts.
+
+        // If Part is in isolateSet, then all its children should be added to isolateSet
+        if (isolate) {
+            for (auto* child : part->Group.getValues()) {
+                isolateSet.insert(child);
+            }
+        }
+        for (auto* child : part->Group.getValues()) {
+            applyIsolationRecursively(child, isolateSet, mode, visited);
+        }
+    }
+
+    auto* vp = Gui::Application::Instance->getViewProvider(current);
+    auto* vpl = dynamic_cast<Gui::ViewProviderLink*>(vp);
+    auto* vpg = dynamic_cast<Gui::ViewProviderGeometryObject*>(vp);
+    if (!vpl && !vpg) {
+        return;  // we process only geometric objects and links.
+    }
+
+    // Backup the initial values.
+    ComponentState state;
+    state.visibility = current->Visibility.getValue();
+    if (vpl) {
+        state.selectable = vpl->Selectable.getValue();
+        state.overrideMaterial = vpl->OverrideMaterial.getValue();
+        state.shapeMaterial = vpl->ShapeMaterial.getValue();
+    }
+    else {  // vpg
+        state.selectable = vpg->Selectable.getValue();
+        state.shapeMaterial = vpg->ShapeAppearance.getValue()[0];
+    }
+    stateBackup[current] = state;
+
+    if (mode == IsolateMode::Hidden) {
+        stateBackup[current] = state;
+        current->Visibility.setValue(isolate);
+        return;
+    }
+
+    if (isolate && !state.visibility) {  // force visibility for isolated objects
+        current->Visibility.setValue(true);
+    }
+
+    App::Material mat = App::Material::getDefaultAppearance();
+    float trans = mode == IsolateMode::Transparent ? 0.8 : 1.0;
+    mat.transparency = trans;
+
+    if (vpl) {
+        vpl->Selectable.setValue(isolate);
+        if (!isolate) {
+            vpl->OverrideMaterial.setValue(true);
+            vpl->ShapeMaterial.setValue(mat);
+        }
+    }
+    else if (vpg) {
+        vpg->Selectable.setValue(isolate);
+        if (!isolate) {
+            vpg->ShapeAppearance.setValue(mat);
+        }
+    }
+}
+
+void ViewProviderAssembly::isolateComponents(std::set<App::DocumentObject*>& isolateSet,
+                                             IsolateMode mode)
+{
+    if (!stateBackup.empty()) {
+        clearIsolate();
+    }
+
+    auto* assembly = getObject<AssemblyObject>();
+    if (!assembly) {
+        return;
+    }
+
+    std::vector<App::DocumentObject*> topLevelChildren = assembly->Group.getValues();
+
+    std::set<App::DocumentObject*> visited;
+    for (auto* child : topLevelChildren) {
+        applyIsolationRecursively(child, isolateSet, mode, visited);
+    }
+}
+
+void ViewProviderAssembly::isolateJointReferences(App::DocumentObject* joint, IsolateMode mode)
+{
+    if (!joint || isolatedJoint == joint) {
+        return;
+    }
+
+    AssemblyObject* assembly = getObject<AssemblyObject>();
+
+    App::DocumentObject* part1 = getMovingPartFromRef(assembly, joint, "Reference1");
+    App::DocumentObject* part2 = getMovingPartFromRef(assembly, joint, "Reference2");
+    if (!part1 || !part2) {
+        return;
+    }
+
+    isolatedJoint = joint;
+    isolatedJointVisibilityBackup = joint->Visibility.getValue();
+    joint->Visibility.setValue(true);
+
+    std::set<App::DocumentObject*> isolateSet = {part1, part2};
+    isolateComponents(isolateSet, mode);
+}
+
+void ViewProviderAssembly::clearIsolate()
+{
+    if (isolatedJoint) {
+        isolatedJoint->Visibility.setValue(isolatedJointVisibilityBackup);
+        isolatedJoint = nullptr;
+    }
+
+    for (const auto& pair : stateBackup) {
+        App::DocumentObject* component = pair.first;
+        const ComponentState& state = pair.second;
+        if (!component || !component->isAttachedToDocument()) {
+            continue;
+        }
+
+        component->Visibility.setValue(state.visibility);
+
+        if (auto* vpl = dynamic_cast<Gui::ViewProviderLink*>(
+                Gui::Application::Instance->getViewProvider(component))) {
+            vpl->Selectable.setValue(state.selectable);
+            vpl->ShapeMaterial.setValue(state.shapeMaterial);
+            vpl->OverrideMaterial.setValue(state.overrideMaterial);
+        }
+        else if (auto* vpg = dynamic_cast<Gui::ViewProviderGeometryObject*>(
+                     Gui::Application::Instance->getViewProvider(component))) {
+            vpg->Selectable.setValue(state.selectable);
+            vpg->ShapeAppearance.setValue(state.shapeMaterial);
+        }
+    }
+
+    stateBackup.clear();
+}
+
+void ViewProviderAssembly::slotAboutToOpenTransaction(const std::string& cmdName)
+{
+    Q_UNUSED(cmdName);
+    this->clearIsolate();
 }
 
 // UTILS
