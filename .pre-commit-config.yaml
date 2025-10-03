@@ -44,6 +44,7 @@ exclude: |
         src/Gui/3Dconnexion/navlib|
         src/Gui/QSint|
         src/Gui/Quarter|
+        src/Mod/Fem/femexamples|
         src/Mod/Import/App/SCL|
         src/Mod/Import/App/SCL_output|
         src/Mod/Mesh/App/TestData|
@@ -60,8 +61,8 @@ repos:
     -   id: check-yaml
     -   id: check-added-large-files
     -   id: mixed-line-ending
--   repo: https://github.com/psf/black
-    rev: af0ba72a73598c76189d6dd1b21d8532255d5942  # frozen: 25.9.0
+-   repo: https://github.com/psf/black-pre-commit-mirror
+    rev: fe95161893684893d68b1225356702ca71f8d388  # frozen: 25.9.0
     hooks:
         -   id: black
             args: ['--line-length', '100']
