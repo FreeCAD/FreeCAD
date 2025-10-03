@@ -536,7 +536,8 @@ bool DlgAddProperty::isGroupValid()
 bool DlgAddProperty::isTypeValid()
 {
     std::string type = ui->comboBoxType->currentText().toStdString();
-    return Base::Type::fromName(type.c_str()).isDerivedFrom(App::Property::getClassTypeId());
+    return Base::Type::fromName(type.c_str()).isDerivedFrom(App::Property::getClassTypeId()) &&
+        type != "App::Property";
 }
 
 bool DlgAddProperty::isDocument() const
