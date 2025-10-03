@@ -28,13 +28,7 @@ name: FreeCAD master CI
 
 on:
   push:
-<<<<<<< HEAD
-    branches: [ SimplerBody ]
-||||||| parent of d45212b926 (fixed CI_master.yml)
-    branches: [ SimplERBody ]
-=======
     branches: [ "SimplerBody" ]
->>>>>>> d45212b926 (fixed CI_master.yml)
   pull_request:
     branches: [ "SimplerBody" ]
   merge_group:
