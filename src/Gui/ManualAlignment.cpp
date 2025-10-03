@@ -874,6 +874,21 @@ void ManualAlignment::closeViewer()
     if (myViewer->parentWidget())
         myViewer->parentWidget()->deleteLater();
     myViewer = nullptr;
+
+#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
+    QTimer::singleShot(0, []() {
+        auto* activeDoc = Gui::Application::Instance->activeDocument();
+        if (activeDoc) {
+            auto* activeView = activeDoc->getActiveView();
+            if (activeView) {
+                Gui::getMainWindow()->setActiveWindow(activeView);
+                if (auto* subWindow = qobject_cast<QMdiSubWindow*>(activeView->parentWidget())) {
+                    subWindow->showMaximized();
+                }
+            }
+        }
+    });
+#endif
 }
 
 /**
