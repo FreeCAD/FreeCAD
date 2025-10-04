@@ -432,8 +432,8 @@ TEST_F(RenameProperty, redo)
 }
 
 /*
- * For these tests we have the following variables that correspond to the
- * following names:
+ * For the move property and copy property tests we have the following
+ * variables that correspond to the following names:
  *
  * The documents:
  * - doc1: "test"
@@ -508,7 +508,7 @@ TEST_F(MoveProperty, staticProperty)
     doc1->removeObject(cube->getNameInDocument());
 }
 
-// Tests whether we can move a static property
+// Tests whether we can move a locked property
 // test#VarSet.Variable (locked) -> FAIL
 TEST_F(MoveProperty, lockedProperty)
 {
@@ -885,4 +885,207 @@ TEST_F(MoveProperty, redoExpressionOriginatingContainerOtherDoc)
 TEST_F(MoveProperty, redoExpressionTargetContainerOtherDoc)
 {
     testRedoMovePropertyExpression(varSetDoc2, varSetDoc2, "Variable", "test#VarSet.Variable");
+}
+
+/*
+ * See the description at the top of the MoveProperty tests for the variables used here.
+ */
+
+void CopyProperty::assertCopiedProperty(App::Property* property, App::DocumentObject* target)
+
+{
+    ASSERT_TRUE(property != nullptr);
+    EXPECT_EQ(property->getContainer(), target);
+    EXPECT_EQ(varSet1Doc1->getDynamicPropertyByName("Variable"), prop);
+
+    auto* copiedPropWithType =
+        freecad_cast<App::PropertyInteger*>(target->getDynamicPropertyByName("Variable"));
+    ASSERT_TRUE(copiedPropWithType != nullptr);
+    EXPECT_EQ(copiedPropWithType->getValue(), value);
+}
+
+// Helper function to test moving a property
+void CopyProperty::testCopyProperty(App::DocumentObject* target)
+{
+    // Act
+    App::Property* copiedProp = varSet1Doc1->copyDynamicProperty(prop, target);
+
+    assertCopiedProperty(copiedProp, target);
+    // Assert
+}
+
+// Tests whether we can copy a property to a different container
+// test#VarSet.Variable -> test#VarSet001.Variable
+TEST_F(CopyProperty, simple)
+{
+    testCopyProperty(varSet2Doc1);
+}
+
+// Tests whether we can copy a property to a container in a different document
+// test#VarSet.Variable -> test1#VarSet.Variable
+TEST_F(CopyProperty, otherDoc)
+{
+    testCopyProperty(varSetDoc2);
+}
+
+// Tests whether we can copy a static property
+// test#Cube.Length -> FAIL
+TEST_F(CopyProperty, staticProperty)
+{
+    // Arrange
+    App::DocumentObject* cube = doc1->addObject("Part::Box", "Cube");
+    App::Property* prop = cube->getPropertyByName("Length");
+
+    // Act
+    EXPECT_THROW(varSet1Doc1->copyDynamicProperty(prop, varSet2Doc1), Base::RuntimeError);
+
+    // Assert
+    EXPECT_EQ(cube->getPropertyByName("Length"), prop);
+    EXPECT_EQ(varSet2Doc1->getDynamicPropertyByName("Length"), nullptr);
+
+    // Tear down
+    doc1->removeObject(cube->getNameInDocument());
+}
+
+// Tests whether we can copy a locked property
+// test#VarSet.Variable (locked) -> FAIL
+TEST_F(CopyProperty, lockedProperty)
+{
+    // Arrange
+    prop->setStatus(App::Property::LockDynamic, true);
+
+    // Act / Assert
+    EXPECT_THROW(varSet1Doc1->moveDynamicProperty(prop, varSet2Doc1), Base::RuntimeError);
+    EXPECT_EQ(varSet1Doc1->getPropertyByName("Variable"), prop);
+}
+
+// Tests whether we can copy to a property that already exists
+// test#VarSet.Variable -> test#VarSet001.Variable (already existing): FAIL
+TEST_F(CopyProperty, toExistingProperty)
+{
+    // Arrange
+    App::Property* prop2 =
+        varSet2Doc1->addDynamicProperty("App::PropertyInteger", "Variable", "Variables");
+
+    // Act / Assert
+    EXPECT_THROW(varSet1Doc1->copyDynamicProperty(prop, varSet2Doc1), Base::NameError);
+
+    EXPECT_EQ(varSet1Doc1->getPropertyByName("Variable"), prop);
+    EXPECT_EQ(varSet2Doc1->getPropertyByName("Variable"), prop2);
+}
+
+// Tests whether we can copy a property that obtains its value from an expression.
+// test#VarSet.Variable -> test#VarSet001.Variable where
+// test#VarSet.Variable = Variable2 -> test#VarSet001.Variable = VarSet.Variable2
+TEST_F(CopyProperty, updateExpressionCopiedProp)
+{
+    // Arrange
+    auto* prop2 = freecad_cast<App::PropertyInteger*>(
+        varSet1Doc1->addDynamicProperty("App::PropertyInteger", "Variable2", "Variables"));
+    int valueVar2 = 10;
+    prop2->setValue(valueVar2);
+
+    App::ObjectIdentifier path(*prop);
+    std::shared_ptr<App::Expression> expr(App::Expression::parse(varSet1Doc1, "Variable2"));
+    varSet1Doc1->setExpression(path, expr);
+    varSet1Doc1->ExpressionEngine.execute();
+
+    // Assert before the move
+    EXPECT_EQ(prop->getValue(), valueVar2);
+    EXPECT_EQ(prop2->getValue(), valueVar2);
+
+    // Act
+    App::Property* copiedProp = nullptr;
+    copiedProp = varSet1Doc1->copyDynamicProperty(prop, varSet2Doc1);
+    varSet1Doc1->ExpressionEngine.execute();
+    varSet2Doc1->ExpressionEngine.execute();
+
+    // Assert after the move
+    ASSERT_TRUE(copiedProp != nullptr);
+    EXPECT_EQ(varSet1Doc1->getPropertyByName("Variable"), prop);
+    EXPECT_EQ(varSet1Doc1->ExpressionEngine.getExpressions().size(), 1);
+
+    auto* copiedPropWithType =
+        freecad_cast<App::PropertyInteger*>(varSet2Doc1->getDynamicPropertyByName("Variable"));
+    ASSERT_TRUE(copiedPropWithType != nullptr);
+    EXPECT_EQ(copiedPropWithType->getValue(), valueVar2);
+
+    std::map<App::ObjectIdentifier, const App::Expression*> expressions =
+        varSet2Doc1->ExpressionEngine.getExpressions();
+    ASSERT_EQ(expressions.size(), 1);
+    EXPECT_STREQ(expressions.begin()->first.getPropertyName().c_str(), "Variable");
+    EXPECT_STREQ(expressions.begin()->second->toString().c_str(), "VarSet.Variable2");
+}
+
+void CopyProperty::testUndoProperty(App::DocumentObject* target)
+{
+    // Arrange
+    doc1->setUndoMode(1);
+    doc2->setUndoMode(1);
+
+    // Act
+    App::Property* copiedProp = nullptr;
+    {
+        App::AutoTransaction transaction("Copy Property");
+        copiedProp = varSet1Doc1->copyDynamicProperty(prop, target);
+    }
+
+    // Assert
+    assertCopiedProperty(copiedProp, target);
+
+    // Act: Undo the copy
+    bool undone = target->getDocument()->undo();
+
+    // Assert: The copied property should not exist anymore
+    EXPECT_TRUE(undone);
+    EXPECT_EQ(target->getPropertyByName("Variable"), nullptr);
+}
+
+// Tests whether we can copy a property and undo it
+// test#VarSet.Variable -> test#VarSet001.Variable and back
+TEST_F(CopyProperty, undo)
+{
+    testUndoProperty(varSet2Doc1);
+}
+
+// Tests whether we can copy a property to a container in a different document
+// test#VarSet.Variable -> test1#VarSet.Variable and back
+TEST_F(CopyProperty, undoOtherDoc)
+{
+    testUndoProperty(varSetDoc2);
+}
+
+// Tests whether we can undo and redo a property copy
+//
+// test#VarSet.Variable -> test#VarSet001.Variable and back and back again.
+TEST_F(CopyProperty, redoSimple)
+{
+    testUndoProperty(varSet2Doc1);
+    // Act: Redo the move
+    bool redone = varSet2Doc1->getDocument()->redo();
+
+    // Assert: The property should be moved to the new container again
+    EXPECT_TRUE(redone);
+    App::Property* copiedPropWithType =
+        freecad_cast<App::PropertyInteger*>(varSet2Doc1->getDynamicPropertyByName("Variable"));
+    assertCopiedProperty(copiedPropWithType, varSet2Doc1);
+}
+
+// Tests whether we can undo and redo a property copy to a different document
+//
+// test#VarSet.Variable -> test1#VarSet001.Variable and back and back again.
+TEST_F(CopyProperty, redoOtherDoc)
+{
+    testUndoProperty(varSetDoc2);
+
+    // Act: Redo the move
+    bool redone = varSetDoc2->getDocument()->redo();
+    doc1->recompute();
+    doc2->recompute();
+
+    // Assert: The property should be copied to the new container again
+    EXPECT_TRUE(redone);
+    App::Property* copiedPropWithType =
+        freecad_cast<App::PropertyInteger*>(varSetDoc2->getDynamicPropertyByName("Variable"));
+    assertCopiedProperty(copiedPropWithType, varSetDoc2);
 }
