@@ -589,6 +589,20 @@ public:
    */
     virtual Property* moveDynamicProperty(Property* prop, DocumentObject* targetObj);
 
+  /**
+   * @brief Copy the dynamic property to a document object.
+   *
+   * @param[in] prop The property to copy.
+   * @param[in] targetObj The object to which the property is copied.
+   *
+   * @return a pointer to the copied property if successful; `nullptr` if the
+   * target object is the same as the current one.
+   * @throw Base::NameError If the property already exists in the object.
+   * @throw Base::RuntimeError On various runtime errors, such as when the
+   *   property is locked or the target object is invalid.
+   */
+    virtual Property* copyDynamicProperty(Property* prop, DocumentObject* targetObj);
+
     App::Property* addDynamicProperty(const char* type,
                                       const char* name = nullptr,
                                       const char* group = nullptr,
@@ -788,6 +802,10 @@ protected:
     void onPropertyStatusChanged(const Property& prop, unsigned long oldStatus) override;
 
 private:
+    void checkForRefactorProperty(const Property* prop,
+                                  const DocumentObject* targetObj) const;
+    void copyExpressionTargetingProp(Property* prop, Property* newProp,
+                                     DocumentObject* targetObj) const;
     void moveExpressionTargetingProp(Property* prop, Property* newProp,
                                      DocumentObject* targetObj);
     void arrangeMoveProperty(Property* toBeMovedProp,

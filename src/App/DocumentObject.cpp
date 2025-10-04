@@ -770,29 +770,10 @@ void DocumentObject::moveExpressionTargetingProp(Property* prop,
                                                  Property* newProp,
                                                  DocumentObject* targetObj)
 {
+    copyExpressionTargetingProp(prop, newProp, targetObj);
+    // remove the expression that is targeting the property that is moved
     ObjectIdentifier propId = ObjectIdentifier(*prop);
-    ObjectIdentifier newPropId = ObjectIdentifier(*newProp);
-
-    boost::any pathValue = ExpressionEngine.getPathValue(propId);
-    if (pathValue.empty()) {
-        return;
-    }
-
-    auto info = boost::any_cast<PropertyExpressionEngine::ExpressionInfo>(pathValue);
-    std::shared_ptr<Expression> expression = info.expression;
-
     setExpression(propId, std::shared_ptr<Expression>());
-    targetObj->setExpression(newPropId, expression);
-
-    // force identifiers in the expression to use the document name
-    std::map<ObjectIdentifier, ObjectIdentifier> paths;
-    std::map<ObjectIdentifier, bool> ids = expression->getIdentifiers();
-    for (const auto& [id, _] : ids) {
-        ObjectIdentifier newOne = ObjectIdentifier(id);
-        newOne.setDocumentObjectName(this, true);
-        paths.emplace(id, newOne);
-    }
-    targetObj->ExpressionEngine.renameObjectIdentifiers(paths);
 }
 
 void DocumentObject::arrangeMoveProperty(Property* toBeMovedProp,
@@ -825,8 +806,8 @@ void DocumentObject::arrangeMoveProperty(Property* toBeMovedProp,
     targetObj->_pDoc->setDefiningTransaction(false);
 }
 
-Property* DocumentObject::moveDynamicProperty(Property* prop,
-                                              DocumentObject* targetObj)
+void DocumentObject::checkForRefactorProperty(const Property* prop,
+                                              const DocumentObject* targetObj) const
 {
     if (prop == nullptr) {
         FC_THROWM(Base::RuntimeError, "The property does not exist");
@@ -838,9 +819,9 @@ Property* DocumentObject::moveDynamicProperty(Property* prop,
         FC_THROWM(Base::RuntimeError, "The target container does not exist");
     }
 
-    if (targetObj == this) {
+    if (targetObj == prop->getContainer()) {
         FC_THROWM(Base::RuntimeError,
-                  "Cannot move property " << propertyName << " to its own container");
+                  "Cannot move or copy property " << propertyName << " to its own container");
     }
 
     if (targetObj->getPropertyByName(propertyName) != nullptr) {
@@ -853,14 +834,21 @@ Property* DocumentObject::moveDynamicProperty(Property* prop,
                   "Property " << propertyName << " is not dynamic");
     }
 
-    if (prop->testStatus(App::Property::LockDynamic)) {
-        FC_THROWM(Base::RuntimeError,
-                 "Property " << propertyName << " is locked");
-    }
-
     if (!_pDoc || testStatus(ObjectStatus::Destroy)) {
         FC_THROWM(Base::RuntimeError,
                   "Object " << getFullName() << " is being destroyed");;
+    }
+}
+
+Property* DocumentObject::moveDynamicProperty(Property* prop,
+                                              DocumentObject* targetObj)
+{
+    checkForRefactorProperty(prop, targetObj);
+    const char* propertyName = prop->getName();
+
+    if (prop->testStatus(App::Property::LockDynamic)) {
+        FC_THROWM(Base::RuntimeError,
+                 "Property " << propertyName << " is locked");
     }
 
     if (prop->isDerivedFrom<PropertyLinkBase>()) {
@@ -895,6 +883,59 @@ Property* DocumentObject::moveDynamicProperty(Property* prop,
     }
 
     return newProp;
+}
+
+void DocumentObject::copyExpressionTargetingProp(Property* prop,
+                                                 Property* newProp,
+                                                 DocumentObject* targetObj) const
+{
+    ObjectIdentifier propId = ObjectIdentifier(*prop);
+    ObjectIdentifier newPropId = ObjectIdentifier(*newProp);
+
+    boost::any pathValue = ExpressionEngine.getPathValue(propId);
+    if (pathValue.empty()) {
+        return;
+    }
+
+    auto info = boost::any_cast<PropertyExpressionEngine::ExpressionInfo>(pathValue);
+    std::shared_ptr<Expression> expression{info.expression->copy()};
+
+    targetObj->setExpression(newPropId, expression);
+
+    // force identifiers in the expression to use the document name
+    std::map<ObjectIdentifier, ObjectIdentifier> paths;
+    std::map<ObjectIdentifier, bool> ids = expression->getIdentifiers();
+    for (const auto& [id, _] : ids) {
+        ObjectIdentifier newOne = ObjectIdentifier(id);
+        newOne.setDocumentObjectName(this, true);
+        paths.emplace(id, newOne);
+    }
+    targetObj->ExpressionEngine.renameObjectIdentifiers(paths);
+}
+
+Property* DocumentObject::copyDynamicProperty(Property* prop, DocumentObject* targetObj)
+{
+    checkForRefactorProperty(prop, targetObj);
+
+    Property* copiedProp =
+        targetObj->addDynamicProperty(prop->getTypeId().getName(),
+                                      prop->getName(),
+                                      prop->getGroup(),
+                                      prop->getDocumentation(),
+                                      prop->getType(),
+                                      prop->isReadOnly(),
+                                      prop->testStatus(App::Property::Hidden));
+    if (!copiedProp) {
+        FC_THROWM(Base::RuntimeError,
+                  "Failed to copy property " << prop->getName() << " to container "
+                                             << targetObj->getFullName());
+    }
+
+    copiedProp->Paste(*prop);
+
+    copyExpressionTargetingProp(prop, copiedProp, targetObj);
+
+    return copiedProp;
 }
 
 App::Property* DocumentObject::addDynamicProperty(const char* type,
