@@ -815,6 +815,31 @@ static void moveProperties(std::unordered_set<App::Property*>& props,
     }
 }
 
+static void copyProperties(std::unordered_set<App::Property*>& props,
+                           QList<App::SubObjectT>& subObjects)
+{
+    for (auto& prop : props) {
+        if (std::ranges::any_of(subObjects, [&prop](const App::SubObjectT& subObj) {
+            return !movePossible(subObj, prop); })) {
+            return;
+        }
+    }
+
+    App::AutoTransaction committer(props.size() == 1 ? "Copy property" : "Copy properties");
+
+    for (auto& prop : props) {
+        auto* obj = freecad_cast<App::DocumentObject*>(prop->getContainer());
+        if (!obj) {
+            FC_ERR("Cannot copy property " << prop->getName()
+                   << " because its container is not a DocumentObject");
+            continue;
+        }
+        for (const auto& subObj : subObjects) {
+            obj->copyDynamicProperty(prop, subObj.getSubObject());
+        }
+    }
+}
+
 enum MenuAction
 {
     MA_AutoCollapse,
@@ -829,6 +854,7 @@ enum MenuAction
     MA_RenameProp,
     MA_AddProp,
     MA_MoveProp,
+    MA_CopyProp,
     MA_EditPropTooltip,
     MA_EditPropGroup,
     MA_Transient,
@@ -1043,6 +1069,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
 
     if (props.size() > 0 && std::ranges::all_of(props, canBeMoved)) {
         menu.addAction(tr("Move property"))->setData(QVariant(MA_MoveProp));
+        menu.addAction(tr("Copy property"))->setData(QVariant(MA_CopyProp));
     }
 
     // add a separator between adding/removing properties and the rest
@@ -1283,6 +1310,20 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             }
             QList<App::SubObjectT> subObjects = dlg.currentSubObjects();
             moveProperties(props, subObjects);
+            break;
+        }
+        case MA_CopyProp: {
+            Gui::Dialog::DlgDocumentObject dlg(Gui::getMainWindow());
+            App::Property* prop = *props.begin();
+            auto* obj = freecad_cast<App::DocumentObject*>(prop->getContainer());
+            bool singleSelect = false;
+            dlg.init(obj, singleSelect);
+            if (dlg.exec() == QDialog::Rejected) {
+                break;
+            }
+            QList<App::SubObjectT> subObjects = dlg.currentSubObjects();
+            copyProperties(props, subObjects);
+            break;
         }
         default:
             break;
