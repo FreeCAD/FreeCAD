@@ -103,7 +103,10 @@ class _Stairs(ArchComponent.Component):
             obj.addProperty("App::PropertyLength","Nosing","Steps",QT_TRANSLATE_NOOP("App::Property","The size of the nosing"), locked=True)
         if not "TreadThickness" in pl:
             obj.addProperty("App::PropertyLength","TreadThickness","Steps",QT_TRANSLATE_NOOP("App::Property","The thickness of the treads"), locked=True)
-        if not "BlondelRatio" in pl:
+        if not ("BlondelRatio" in pl and obj.getTypeIdOfProperty('BlondelRatio') == 'App::PropertyLength'):
+            if "BlondelRatio" in pl:
+                obj.setPropertyStatus("BlondelRatio", "-LockDynamic")
+                obj.removeProperty("BlondelRatio")
             # Change from unitless float to Length
             #obj.addProperty("App::PropertyFloat","BlondelRatio","Steps",QT_TRANSLATE_NOOP("App::Property","The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in"), locked=True)
             obj.addProperty("App::PropertyLength","BlondelRatio","Steps",QT_TRANSLATE_NOOP("App::Property","The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in"), locked=True)
