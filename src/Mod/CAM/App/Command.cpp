@@ -45,9 +45,11 @@ TYPESYSTEM_SOURCE(Path::Command, Base::Persistence)
 Command::Command(const char* name, const std::map<std::string, double>& parameters)
     : Name(name)
     , Parameters(parameters)
+    , Annotations()
 {}
 
 Command::Command()
+    : Annotations()
 {}
 
 Command::~Command()
@@ -332,6 +334,95 @@ void Command::scaleBy(double factor)
     }
 }
 
+void Command::setAnnotation(const std::string& key, const std::string& value)
+{
+    Annotations[key] = value;
+}
+
+void Command::setAnnotation(const std::string& key, double value)
+{
+    Annotations[key] = value;
+}
+
+std::string Command::getAnnotation(const std::string& key) const
+{
+    auto it = Annotations.find(key);
+    if (it != Annotations.end()) {
+        if (std::holds_alternative<std::string>(it->second)) {
+            return std::get<std::string>(it->second);
+        }
+        else if (std::holds_alternative<double>(it->second)) {
+            return std::to_string(std::get<double>(it->second));
+        }
+    }
+    return "";
+}
+
+std::string Command::getAnnotationString(const std::string& key) const
+{
+    auto it = Annotations.find(key);
+    if (it != Annotations.end() && std::holds_alternative<std::string>(it->second)) {
+        return std::get<std::string>(it->second);
+    }
+    return "";
+}
+
+double Command::getAnnotationDouble(const std::string& key, double fallback) const
+{
+    auto it = Annotations.find(key);
+    if (it != Annotations.end() && std::holds_alternative<double>(it->second)) {
+        return std::get<double>(it->second);
+    }
+    return fallback;
+}
+
+std::variant<std::string, double> Command::getAnnotationValue(const std::string& key) const
+{
+    auto it = Annotations.find(key);
+    if (it != Annotations.end()) {
+        return it->second;
+    }
+    return std::string("");
+}
+
+bool Command::hasAnnotation(const std::string& key) const
+{
+    return Annotations.find(key) != Annotations.end();
+}
+
+Command& Command::setAnnotations(const std::string& annotationString)
+{
+    // Simple parser: split by space, then by colon
+    std::stringstream ss(annotationString);
+    std::string token;
+    while (ss >> token) {
+        auto pos = token.find(':');
+        if (pos != std::string::npos) {
+            std::string key = token.substr(0, pos);
+            std::string value = token.substr(pos + 1);
+
+            // Try to parse as double, if successful store as double, otherwise as string
+            try {
+                size_t processed = 0;
+                double numValue = std::stod(value, &processed);
+                if (processed == value.length()) {
+                    // Entire string was successfully parsed as a number
+                    Annotations[key] = numValue;
+                }
+                else {
+                    // Partial parse, treat as string
+                    Annotations[key] = value;
+                }
+            }
+            catch (const std::exception&) {
+                // Not a valid number, store as string
+                Annotations[key] = value;
+            }
+        }
+    }
+    return *this;
+}
+
 // Reimplemented from base class
 
 unsigned int Command::getMemSize() const
@@ -341,10 +432,39 @@ unsigned int Command::getMemSize() const
 
 void Command::Save(Writer& writer) const
 {
-    // this will only get used if saved as XML (probably never)
+    // Save command with GCode and annotations
     writer.Stream() << writer.ind() << "<Command "
-                    << "gcode=\"" << toGCode() << "\" />";
-    writer.Stream() << std::endl;
+                    << "gcode=\"" << toGCode() << "\"";
+
+    // Add annotation count for faster restoration
+    if (!Annotations.empty()) {
+        writer.Stream() << " annotationCount=\"" << Annotations.size() << "\"";
+    }
+
+    if (Annotations.empty()) {
+        writer.Stream() << " />" << std::endl;
+    }
+    else {
+        writer.Stream() << ">" << std::endl;
+        writer.incInd();
+
+        // Save each annotation with type information
+        for (const auto& annotation : Annotations) {
+            writer.Stream() << writer.ind() << "<Annotation key=\"" << annotation.first << "\"";
+
+            if (std::holds_alternative<std::string>(annotation.second)) {
+                writer.Stream() << " type=\"string\" value=\""
+                                << std::get<std::string>(annotation.second) << "\" />" << std::endl;
+            }
+            else if (std::holds_alternative<double>(annotation.second)) {
+                writer.Stream() << " type=\"double\" value=\""
+                                << std::get<double>(annotation.second) << "\" />" << std::endl;
+            }
+        }
+
+        writer.decInd();
+        writer.Stream() << writer.ind() << "</Command>" << std::endl;
+    }
 }
 
 void Command::Restore(XMLReader& reader)
@@ -352,4 +472,37 @@ void Command::Restore(XMLReader& reader)
     reader.readElement("Command");
     std::string gcode = reader.getAttribute<const char*>("gcode");
     setFromGCode(gcode);
+
+    // Clear any existing annotations
+    Annotations.clear();
+
+    // Check if there are annotations to restore
+    int annotationCount = reader.getAttribute<int>("annotationCount", 0);
+
+    if (annotationCount > 0) {
+        // Read annotation elements
+        for (int i = 0; i < annotationCount; i++) {
+            reader.readElement("Annotation");
+            std::string key = reader.getAttribute<const char*>("key");
+            std::string type = reader.getAttribute<const char*>("type");
+            std::string value = reader.getAttribute<const char*>("value");
+
+            if (type == "string") {
+                Annotations[key] = value;
+            }
+            else if (type == "double") {
+                try {
+                    double dvalue = std::stod(value);
+                    Annotations[key] = dvalue;
+                }
+                catch (const std::exception&) {
+                    // If conversion fails, store as string
+                    Annotations[key] = value;
+                }
+            }
+        }
+
+        // Read closing tag
+        reader.readEndElement("Command");
+    }
 }
