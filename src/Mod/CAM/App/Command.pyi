@@ -28,7 +28,7 @@ class Command(Persistence):
         """setFromGCode(): sets the path from the contents of the given GCode string"""
         ...
 
-    def transform(self, placement: Placement, /) -> "CommandPy":
+    def transform(self, placement: Placement, /) -> Command:
         """transform(Placement): returns a copy of this command transformed by the given placement"""
         ...
     Name: str

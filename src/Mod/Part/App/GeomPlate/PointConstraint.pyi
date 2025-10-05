@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
+from typing import Tuple
 
 @export(
     PythonName="Part.GeomPlate.PointConstraintPy",
@@ -97,13 +98,13 @@ class PointConstraint(PyObjectBase):
         """
         ...
 
-    def setPnt2dOnSurf(self, p: "gp_Pnt2d", /) -> None:
+    def setPnt2dOnSurf(self, x: float, y: float, /) -> None:
         """
         Allows you to set a 2D point on the surface. It takes a gp_Pnt2d as an argument, representing the 2D point to be associated with the surface.
         """
         ...
 
-    def pnt2dOnSurf(self) -> "gp_Pnt2d":
+    def pnt2dOnSurf(self) -> Tuple[float, float]:
         """
         Returns the 2D point on the surface. It returns a gp_Pnt2d representing the associated 2D point.
         """

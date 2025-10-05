@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
-from typing import Final
+from typing import Final, TypeAlias
 
 from Base.PyObjectBase import PyObjectBase
 from Base.Metadata import export
+from Base import Vector
+
+PyCXXVector: TypeAlias = Vector  # Dirty trick to workaround current generator limitations
 
 @export(
     Include="Mod/TechDraw/App/Cosmetic.h",
