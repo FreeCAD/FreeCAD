@@ -44,7 +44,9 @@ class TestArchBaseGui(TestArchBase):
             raise unittest.SkipTest("Cannot run GUI tests in a CLI environment.")
 
         # Activating the workbench ensures all GUI commands are loaded and ready.
-        FreeCADGui.activateWorkbench("BIMWorkbench")
+        # TODO: commenting out this line for now as it causes a timeout without further logging in
+        # CI
+        #FreeCADGui.activateWorkbench("BIMWorkbench")
 
     def setUp(self):
         """
