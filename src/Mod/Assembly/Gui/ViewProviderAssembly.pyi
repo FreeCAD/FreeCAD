@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, List, Tuple
 
 from Base.Metadata import export
-
+from App.DocumentObject import DocumentObject
 from Gui.ViewProvider import ViewProvider
 
 @export(Include="Mod/Assembly/Gui/ViewProviderAssembly.h", Namespace="AssemblyGui")
@@ -34,7 +34,7 @@ class ViewProviderAssembly(ViewProvider):
         ...
 
     def isolateComponents(
-        self, components: List[DocumentObject] | Tuple[DocumentObject, ...], mode: int
+        self, components: List[DocumentObject] | Tuple[DocumentObject, ...], mode: int, /
     ) -> None:
         """
         Temporarily isolates a given set of components in the 3D view.
@@ -55,6 +55,7 @@ class ViewProviderAssembly(ViewProvider):
         Restores the visual state of all components, clearing any active isolation.
         """
         ...
+
     EnableMovement: bool
     """Enable moving the parts by clicking and dragging."""
 
