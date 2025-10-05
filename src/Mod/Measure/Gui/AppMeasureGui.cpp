@@ -110,5 +110,8 @@ PyMOD_INIT_FUNC(MeasureGui)
 
     Base::Interpreter().addType(&MeasureGui::QuickMeasurePy::Type, mod, "QuickMeasure");
 
+    // Create a QuickMeasure instance
+    new MeasureGui::QuickMeasure(QApplication::instance());
+
     PyMOD_Return(mod);
 }

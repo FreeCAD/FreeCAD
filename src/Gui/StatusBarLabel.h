@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
- *   Copyright (c) 2025 Kacper Donat <kacper@kadet.net>                     *
+ *   Copyright (c) 2025 Benjamin Nauck <benjamin@nauck.se>                  *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,33 +21,43 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef INPUTHINTWIDGET_H
-#define INPUTHINTWIDGET_H
+#ifndef STATUSBARLABEL_H
+#define STATUSBARLABEL_H
 
-#include <optional>
+#include <string>
+
+#include <QAction>
+#include <QApplication>
+#include <QClipboard>
+#include <QContextMenuEvent>
+#include <QLabel>
+#include <QStatusBar>
+#include <QMenu>
 
 #include <FCGlobal.h>
 
-#include "StatusBarLabel.h"
-#include "InputHint.h"
+#include <Base/Parameter.h>
 
 namespace Gui
 {
-class GuiExport InputHintWidget : public StatusBarLabel
+/**
+ * @brief Label for displaying information in the status bar
+ *
+ * A QLabel subclass that provides a context menu with additional actions
+ * similar to the standard status bar widgets.
+ */
+class GuiExport StatusBarLabel : public QLabel
 {
     Q_OBJECT
-
 public:
-    explicit InputHintWidget(QWidget *parent);
-
-    void showHints(const std::list<InputHint>& hints);
-    void clearHints();
-
+    explicit StatusBarLabel(QWidget *parent, const std::string& parameterName = {});
+protected:
+    void contextMenuEvent(QContextMenuEvent *event) override;
+    void setVisible(bool visible) override;
 private:
-    static std::optional<const char*> getCustomIconPath(InputHint::UserInput key);
-    static QString inputRepresentation(InputHint::UserInput key);
-    QPixmap generateKeyIcon(InputHint::UserInput key, QColor color, int height = 24);
+    ParameterGrp::handle hGrp;
+    std::string parameterName;
 };
 
 } // Namespace Gui
-#endif //INPUTHINTWIDGET_H
+#endif //STATUSBARLABEL_H
