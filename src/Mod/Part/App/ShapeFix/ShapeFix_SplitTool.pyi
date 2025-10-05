@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod
+from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
-from typing import overload
 
 @export(
     PythonName="Part.ShapeFix.SplitTool",

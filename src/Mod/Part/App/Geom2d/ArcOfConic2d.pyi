@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod, overload
+from Base.Metadata import export
 from typing import Final
 from Part.Geom2d import Curve2d
 

@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from Metadata import export, constmethod
-from typing import Final, overload, Tuple
+from Metadata import export
+from typing import overload, Tuple
 from Part.Geom2d import Conic2d
 
 @export(

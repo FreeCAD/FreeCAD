@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod, class_declarations
+from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
-from typing import Final
 
 @export(
     PythonName="Part.ShapeFix.Edge",

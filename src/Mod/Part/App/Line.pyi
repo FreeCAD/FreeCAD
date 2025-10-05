@@ -5,7 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export
 from Base.Vector import Vector
 from GeometryCurve import GeometryCurve
-from typing import overload, Final
+from typing import overload
 
 @export(
     PythonName="Part.Line",

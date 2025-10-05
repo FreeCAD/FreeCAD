@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod
+from Base.Metadata import export
 from Part.Geom2d.Curve2d import Curve2d
-from typing import overload
 
 @export(
     PythonName="Part.Geom2d.Line2d",

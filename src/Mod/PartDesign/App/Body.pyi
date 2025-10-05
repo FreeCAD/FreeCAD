@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod
+from Base.Metadata import export
 from Part.BodyBase import BodyBase
-from typing import Final, overload
+from typing import Final
 
 @export(
     Include="Mod/PartDesign/App/Body.h",

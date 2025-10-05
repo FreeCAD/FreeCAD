@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod
+from Base.Metadata import export
 from Base.BaseClass import BaseClass
-from typing import Final
 
 @export(
     Include="Mod/Material/App/MaterialLibrary.h",

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from Metadata import export, constmethod
+from Metadata import export
 from typing import Final, overload
 from Part.Geom2d import ArcOfConic2d
 

@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod
+from Base.Metadata import export
 from Part.TopoShapePy import TopoShape
 from Base.PyObjectBase import PyObjectBase
-from typing import Optional, overload
+from typing import Optional
 
 @export(
     PythonName="Part.HLRToShapePy",

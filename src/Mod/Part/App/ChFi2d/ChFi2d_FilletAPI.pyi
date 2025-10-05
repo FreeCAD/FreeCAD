@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod
+from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
-from typing import overload
 from Part.TopoShapeEdgePy import TopoShapeEdge
 from Part.PointPy import Point
 

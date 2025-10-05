@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod
-from typing import Final, overload
+from Base.Metadata import export
+from typing import overload
 from Part.Geom2d import Curve2d
 
 @export(

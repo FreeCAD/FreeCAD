@@ -5,7 +5,6 @@ from __future__ import annotations
 from Base.Metadata import export
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 from Part.App.TopoShape import TopoShape
-from typing import Final, overload
 
 @export(
     PythonName="Part.ShapeFix.FixSmallFace",

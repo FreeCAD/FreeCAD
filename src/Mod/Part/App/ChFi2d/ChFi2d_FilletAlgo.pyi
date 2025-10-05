@@ -2,10 +2,9 @@
 
 from __future__ import annotations
 
-from Metadata import export, constmethod
+from Metadata import export
 from Base.PyObjectBase import PyObjectBase
 from Base.Vector import Vector
-from typing import Final
 
 @export(
     Name="ChFi2d_FilletAlgoPy",
