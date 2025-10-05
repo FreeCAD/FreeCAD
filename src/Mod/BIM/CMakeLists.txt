@@ -257,6 +257,8 @@ SET(bimtests_SRCS
 
 set(bimtests_FIXTURES
     bimtests/fixtures/FC_site_simple-102.FCStd
+    bimtests/fixtures/__init__.py
+    bimtests/fixtures/BimFixtures.py
 )
 
 SET(BIMGuiIcon_SVG
