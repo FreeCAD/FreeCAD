@@ -125,6 +125,15 @@ class ObjectSurface(PathOp.ObjectOp):
                 ),
             ),
             (
+                "App::PropertyInteger",
+                "Accuracy",
+                "Mesh Conversion",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Controls the trade-off between path accuracy and processing speed.",
+                ),
+            ),
+            (
                 "App::PropertyDistance",
                 "AngularDeflection",
                 "Mesh Conversion",
@@ -140,6 +149,15 @@ class ObjectSurface(PathOp.ObjectOp):
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.",
+                ),
+            ),
+            (
+                "App::PropertyFloat",
+                "MeshSimplification",
+                "Mesh Conversion",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Reduces the number of triangles in the mesh before sending to OCL Algorithm. Higher values speed up processing but may reduce accuracy (0-100%).",
                 ),
             ),
             (
@@ -523,9 +541,10 @@ class ObjectSurface(PathOp.ObjectOp):
             "AvoidLastX_Faces": 0,
             "PatternCenterCustom": FreeCAD.Vector(0.0, 0.0, 0.0),
             "GapThreshold": 0.005,
-            "AngularDeflection": 0.25,  # AngularDeflection is unused
-            # Reasonable compromise between speed & precision
-            "LinearDeflection": 0.001,
+            "Accuracy": 3, # Default slider to the middle position
+            "AngularDeflection": 0.15,
+            "LinearDeflection": 0.01,
+            "MeshSimplification": 0.0,
             # For debugging
             "ShowTempObjects": False,
         }
@@ -534,14 +553,12 @@ class ObjectSurface(PathOp.ObjectOp):
         if hasattr(job, "GeometryTolerance"):
             if job.GeometryTolerance.Value != 0.0:
                 warn = False
-                # Tessellation precision dictates the offsets we need to add to
-                # avoid false collisions with the model mesh, so make sure we
-                # default to tessellating with greater precision than the target
-                # GeometryTolerance.
-                defaults["LinearDeflection"] = job.GeometryTolerance.Value / 4
+                # Override the LinearDeflection default if a Job tolerance is set
+                # The user can still use the slider, which will then set the value.
+                pass
         if warn:
             msg = translate("PathSurface", "The GeometryTolerance for this Job is 0.0.")
-            msg += translate("PathSurface", "Initializing LinearDeflection to 0.001 mm.")
+            msg += translate("PathSurface", "This may impact the quality of the generated path.")
             FreeCAD.Console.PrintWarning(msg + "\n")
 
         return defaults
@@ -571,12 +588,36 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.setEditorMode("CutPatternAngle", P0)
         obj.setEditorMode("PatternCenterAt", P2)
         obj.setEditorMode("PatternCenterCustom", P2)
+        obj.setEditorMode("AngularDeflection", 2)
+        obj.setEditorMode("LinearDeflection", 2)
+        obj.setEditorMode("MeshSimplification", 2)
 
     def onChanged(self, obj, prop):
         if hasattr(self, "propertiesReady"):
             if self.propertiesReady:
+                if prop == "Accuracy":
+                    self._applyAccuracySettings(obj)
                 if prop in ["ScanType", "CutPattern"]:
                     self.setEditorProperties(obj)
+                    
+    def _applyAccuracySettings(self, obj):
+        """Applies the mesh settings based on the Accuracy slider's value."""
+        accuracy_map = {
+            # Level: [AngularDeflection, LinearDeflection, MeshSimplification]
+            1: [0.25, 0.02, 20.0],
+            2: [0.25, 0.02, 10.0],
+            3: [0.25, 0.02,  0.0],
+            4: [0.15, 0.01,  0.0],
+            5: [0.15, 0.005, 0.0],
+            6: [0.15, 0.001, 0.0],
+            7: [0.05, 0.001, 0.0],
+        }
+        
+        settings = accuracy_map.get(obj.Accuracy, accuracy_map[5]) # Default to level 3 if invalid
+        
+        obj.AngularDeflection = settings[0]
+        obj.LinearDeflection = settings[1]
+        obj.MeshSimplification = settings[2]
 
     def opOnDocumentRestored(self, obj):
         self.propertiesReady = False
@@ -598,6 +639,7 @@ class ObjectSurface(PathOp.ObjectOp):
             if restore:
                 setattr(obj, prop, val)
 
+        self._applyAccuracySettings(obj)
         self.setEditorProperties(obj)
 
     def opApplyPropertyDefaults(self, obj, job, propList):
@@ -1124,8 +1166,8 @@ class ObjectSurface(PathOp.ObjectOp):
             PGG = PathSurfaceSupport.PathGeometryGenerator(obj, cmpdShp, obj.CutPattern)
             if self.showDebugObjects:
                 PGG.setDebugObjectsGroup(self.tempGroup)
-            self.tmpCOM = PGG.getCenterOfPattern()
             pathGeom = PGG.generatePathGeometry()
+            self.tmpCOM = PGG.getCenterOfPattern()
             if pathGeom is False:
                 msg = translate("PathSurface", "No clearing shape returned.")
                 Path.Log.error(msg)
@@ -1246,7 +1288,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 # PNTSET = PathSurfaceSupport.pathGeomToZigzagPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps)
                 PNTSET = PathSurfaceSupport.pathGeomToZigzagPointSet(self, obj, pathGeom)
             elif obj.CutPattern == "Spiral":
-                PNTSET = PathSurfaceSupport.pathGeomToSpiralPointSet(obj, pathGeom)
+                PNTSET = PathSurfaceSupport.pathGeomToSpiralPointSet(obj, pathGeom)              
 
             for STEP in PNTSET:
                 for LN in STEP:
@@ -1325,27 +1367,24 @@ class ObjectSurface(PathOp.ObjectOp):
 
     # Main planar scan functions
     def _planarDropCutSingle(self, JOB, obj, pdc, safePDC, depthparams, SCANDATA):
-        Path.Log.debug("_planarDropCutSingle()")
-
-        GCODE = [Path.Command("N (Beginning of Single-pass layer.)", {})]
+        Path.Log.debug("_planarDropCutSingle_Final_Robust()")
+        GCODE = []
         tolrnc = JOB.GeometryTolerance.Value
+        
+        if not SCANDATA: return GCODE
+        first_segment = next((prt for so in SCANDATA for prt in so if prt != "BRK" and prt), None)
+        if not first_segment: return GCODE
+
         lenSCANDATA = len(SCANDATA)
         gDIR = ["G3", "G2"]
+        if self.CutClimb: gDIR = ["G2", "G3"]
 
-        if self.CutClimb:
-            gDIR = ["G2", "G3"]
+        peIdx = lenSCANDATA
+        if obj.ProfileEdges == "Only": peIdx = -1
+        elif obj.ProfileEdges == "First": peIdx = 0
+        elif obj.ProfileEdges == "Last": peIdx = lenSCANDATA - 1
 
-        # Set `ProfileEdges` specific trigger indexes
-        peIdx = lenSCANDATA  # off by default
-        if obj.ProfileEdges == "Only":
-            peIdx = -1
-        elif obj.ProfileEdges == "First":
-            peIdx = 0
-        elif obj.ProfileEdges == "Last":
-            peIdx = lenSCANDATA - 1
-
-        # Send cutter to x,y position of first point on first line
-        first = SCANDATA[0][0][0]  # [step][item][point]
+        first = first_segment[0]
         GCODE.append(Path.Command("G0", {"X": first.x, "Y": first.y, "F": self.horizRapid}))
 
         # Cycle through step-over sections (line segments or arcs)
@@ -1355,60 +1394,73 @@ class ObjectSurface(PathOp.ObjectOp):
             cmds = []
             PRTS = SCANDATA[so]
             lenPRTS = len(PRTS)
-            first = PRTS[0][0]  # first point of arc/line stepover group
+            
+            first_in_step = next((prt[0] for prt in PRTS if prt != "BRK" and prt), None)
+            if not first_in_step: continue
+
             last = None
             cmds.append(Path.Command("N (Begin step {}.)".format(so), {}))
 
-            if so > 0:
-                if obj.CutPattern == "CircularZigZag":
-                    if odd:
-                        odd = False
-                    else:
-                        odd = True
-                cmds.extend(self._stepTransitionCmds(obj, lstStpEnd, first, safePDC, tolrnc))
-            # Override default `OptimizeLinearPaths` behavior to allow
-            # `ProfileEdges` optimization
+            if so > 0 and lstStpEnd:
+                if obj.CutPattern == "CircularZigZag": odd = not odd
+                cmds.extend(self._stepTransitionCmds(obj, lstStpEnd, first_in_step, safePDC, tolrnc))
+
             if so == peIdx or peIdx == -1:
-                obj.OptimizeLinearPaths = self.preOLP
+                self.preOLP = obj.OptimizeLinearPaths # Store the original value
 
             # Cycle through current step-over parts
             for i in range(0, lenPRTS):
                 prt = PRTS[i]
-                lenPrt = len(prt)
+
                 if prt == "BRK":
-                    nxtStart = PRTS[i + 1][0]
-                    cmds.append(Path.Command("N (Break)", {}))
-                    cmds.extend(self._stepTransitionCmds(obj, last, nxtStart, safePDC, tolrnc))
+                    # Only process a break if there is a valid "next" segment to transition to
+                    # This handles trailing and duplicate BRK markers.
+                    if (i + 1) < lenPRTS:
+                        next_valid_prt = next((p for p in PRTS[i+1:] if p != "BRK" and p), None)
+                        if next_valid_prt:
+                            nxtStart = next_valid_prt[0]
+                            cmds.append(Path.Command("N (Break)", {}))
+                            cmds.extend(self._stepTransitionCmds(obj, last, nxtStart, safePDC, tolrnc))
                 else:
+                    lenPrt = len(prt)
                     cmds.append(Path.Command("N (part {}.)".format(i + 1), {}))
-                    last = prt[lenPrt - 1]
+                    last = prt[-1]                  
+
                     if so == peIdx or peIdx == -1:
                         cmds.extend(self._planarSinglepassProcess(obj, prt))
-                    elif (
-                        obj.CutPattern in ["Circular", "CircularZigZag"]
-                        and obj.CircularUseG2G3 is True
-                        and lenPrt > 2
-                    ):
+                    elif (obj.CutPattern in ["Circular", "CircularZigZag"]
+                        and obj.CircularUseG2G3 is True and lenPrt > 2):
                         (rtnVal, gcode) = self._arcsToG2G3(prt, lenPrt, odd, gDIR, tolrnc)
-                        if rtnVal:
-                            cmds.extend(gcode)
-                        else:
-                            cmds.extend(self._planarSinglepassProcess(obj, prt))
+                        if rtnVal: cmds.extend(gcode)
+                        else: cmds.extend(self._planarSinglepassProcess(obj, prt))
                     else:
                         cmds.extend(self._planarSinglepassProcess(obj, prt))
             cmds.append(Path.Command("N (End of step {}.)".format(so), {}))
-            GCODE.extend(cmds)  # save line commands
+            GCODE.extend(cmds)
             lstStpEnd = last
 
-            # Return `OptimizeLinearPaths` to disabled
             if so == peIdx or peIdx == -1:
                 if obj.CutPattern in ["Circular", "CircularZigZag"]:
                     obj.OptimizeLinearPaths = False
-        # Efor
 
         return GCODE
 
     def _planarSinglepassProcess(self, obj, points):
+        if not points:
+            return []
+
+        # Create a new list, starting with the first point.
+        unique_points = [points[0]]
+
+        # Iterate through the rest of the points, only adding them if they are
+        # different from the last point that was added.
+        for i in range(1, len(points)):
+            if points[i] != unique_points[-1]:
+                unique_points.append(points[i])
+
+        # All subsequent operations now use the clean, de-duplicated list.
+        points = unique_points
+
         if obj.OptimizeLinearPaths:
             points = PathUtils.simplify3dLine(points, tolerance=obj.LinearDeflection.Value)
         # Begin processing ocl points list into gcode
@@ -1420,318 +1472,88 @@ class ObjectSurface(PathOp.ObjectOp):
         return commands
 
     def _planarDropCutMulti(self, JOB, obj, pdc, safePDC, depthparams, SCANDATA):
-        GCODE = [Path.Command("N (Beginning of Multi-pass layers.)", {})]
-        tolrnc = JOB.GeometryTolerance.Value
-        lenDP = len(depthparams)
-        prevDepth = depthparams[0]
-        lenSCANDATA = len(SCANDATA)
-        gDIR = ["G3", "G2"]
+        Path.Log.debug("Executing Multi-pass strategy.")
+        
+        GCODE = []
+        last_point_of_previous_layer = None        
 
-        if self.CutClimb:
-            gDIR = ["G2", "G3"]
-
-        # Set `ProfileEdges` specific trigger indexes
-        peIdx = lenSCANDATA  # off by default
-        if obj.ProfileEdges == "Only":
-            peIdx = -1
-        elif obj.ProfileEdges == "First":
-            peIdx = 0
-        elif obj.ProfileEdges == "Last":
-            peIdx = lenSCANDATA - 1
-
-        # Process each layer in depthparams
-        lastPrvStpLast = None
-        for lyr in range(0, lenDP):
-            odd = True  # ZigZag directional switch
-            lyrHasCmds = False
-            actvSteps = 0
-            LYR = []
-            # if lyr > 0:
-            #     if prvStpLast is not None:
-            #         lastPrvStpLast = prvStpLast
-            prvStpLast = None
-            lyrDep = depthparams[lyr]
-            Path.Log.debug("Multi-pass lyrDep: {}".format(round(lyrDep, 4)))
-
-            # Cycle through step-over sections (line segments or arcs)
-            for so in range(0, len(SCANDATA)):
-                SO = SCANDATA[so]
-                lenSO = len(SO)
-
-                # Pre-process step-over parts for layer depth and holds
-                ADJPRTS = []
-                LMAX = []
-                soHasPnts = False
-                brkFlg = False
-                for i in range(0, lenSO):
-                    prt = SO[i]
-                    lenPrt = len(prt)
+        for i, layDep in enumerate(depthparams):
+            FreeCAD.Console.PrintMessage(f"Processing layer {i+1} at Z={layDep}\n")
+            pdc.setZ(layDep)
+            
+            # Get the depth of the previous layer to check for "air cutting"
+            prvDep = obj.StartDepth.Value if i == 0 else depthparams[i-1]            
+            
+            # Build a new scandata for this layer, intelligently creating breaks
+            # to skip segments that are entirely in "air" (above the previous layer)
+            processed_scandata = []
+            for so in SCANDATA: # Iterate through the original, full-depth scandata
+                new_so = [] # This will hold the new, broken-up stepover parts
+                for prt in so:
                     if prt == "BRK":
-                        if brkFlg:
-                            ADJPRTS.append(prt)
-                            LMAX.append(prt)
-                            brkFlg = False
-                    else:
-                        (PTS, lMax) = self._planarMultipassPreProcess(obj, prt, prevDepth, lyrDep)
-                        if len(PTS) > 0:
-                            ADJPRTS.append(PTS)
-                            soHasPnts = True
-                            brkFlg = True
-                            LMAX.append(lMax)
-                # Efor
-                lenAdjPrts = len(ADJPRTS)
+                        if new_so and new_so[-1] != "BRK":
+                            new_so.append("BRK")
+                        continue
 
-                # Process existing parts within current step over
-                prtsHasCmds = False
-                stepHasCmds = False
-                prtsCmds = []
-                stpOvrCmds = []
-                transCmds = []
-                if soHasPnts is True:
-                    first = ADJPRTS[0][0]  # first point of arc/line stepover group
-                    last = None
+                    current_segment = []
+                    was_lifted = False # State flag to track if we're in an "air" section
 
-                    # Manage step over transition and CircularZigZag direction
-                    if so > 0:
-                        # Control ZigZag direction
-                        if obj.CutPattern == "CircularZigZag":
-                            if odd is True:
-                                odd = False
-                            else:
-                                odd = True
-                        # Control step over transition
-                        if prvStpLast is None:
-                            prvStpLast = lastPrvStpLast
-                        transCmds.extend(
-                            self._stepTransitionCmds(obj, prvStpLast, first, safePDC, tolrnc)
-                        )
+                    for p in prt:
+                        # Check if the point is above the already-cleared material
+                        if p.z > prvDep:
+                            if not was_lifted:
+                                # This is the first point in the air, so we end the previous segment
+                                if current_segment:
+                                    new_so.append(current_segment)
+                                # And add a "BRK" to signal a retract/rapid move
+                                if new_so and new_so[-1] != "BRK":
+                                    new_so.append("BRK")
+                                current_segment = []
+                            was_lifted = True
+                            # Drop the point by continuing the loop
+                            continue
+                        
+                        # This point is a valid cutting move for this layer
+                        was_lifted = False
+                        
+                        # Flatten the Z-depth if it's below the current layer plane
+                        new_z = layDep if p.z < layDep else p.z
+                        current_segment.append(FreeCAD.Vector(p.x, p.y, new_z))
+                    
+                    # After iterating through all points in a part, add any remaining segment
+                    if current_segment:
+                        new_so.append(current_segment)
 
-                    # Override default `OptimizeLinearPaths` behavior to allow `ProfileEdges` optimization
-                    if so == peIdx or peIdx == -1:
-                        obj.OptimizeLinearPaths = self.preOLP
+                if new_so:
+                    processed_scandata.append(new_so)
 
-                    # Cycle through current step-over parts
-                    for i in range(0, lenAdjPrts):
-                        prt = ADJPRTS[i]
-                        lenPrt = len(prt)
-                        if prt == "BRK" and prtsHasCmds:
-                            if i + 1 < lenAdjPrts:
-                                nxtStart = ADJPRTS[i + 1][0]
-                                prtsCmds.append(Path.Command("N (--Break)", {}))
-                            else:
-                                # Transition straight up to Safe Height if no more parts
-                                nxtStart = FreeCAD.Vector(last.x, last.y, obj.SafeHeight.Value)
-                            prtsCmds.extend(
-                                self._stepTransitionCmds(obj, last, nxtStart, safePDC, tolrnc)
-                            )
-                        else:
-                            segCmds = False
-                            prtsCmds.append(Path.Command("N (part {})".format(i + 1), {}))
-                            last = prt[lenPrt - 1]
-                            if so == peIdx or peIdx == -1:
-                                segCmds = self._planarSinglepassProcess(obj, prt)
-                            elif (
-                                obj.CutPattern in ["Circular", "CircularZigZag"]
-                                and obj.CircularUseG2G3 is True
-                                and lenPrt > 2
-                            ):
-                                (rtnVal, gcode) = self._arcsToG2G3(prt, lenPrt, odd, gDIR, tolrnc)
-                                if rtnVal is True:
-                                    segCmds = gcode
-                                else:
-                                    segCmds = self._planarSinglepassProcess(obj, prt)
-                            else:
-                                segCmds = self._planarSinglepassProcess(obj, prt)
+            # Call the single-pass function with our new, intelligently broken-up path data
+            layer_gcode = self._planarDropCutSingle(JOB, obj, pdc, safePDC, [layDep], processed_scandata)                                
 
-                            if segCmds is not False:
-                                prtsCmds.extend(segCmds)
-                                prtsHasCmds = True
-                                prvStpLast = last
-                        # Eif
-                    # Efor
-                # Eif
+            if layer_gcode:
+                # Stitch the G-code for this layer to the final result
+                if i > 0 and last_point_of_previous_layer:
+                    # Find the first G1/G2/G3 command to get the start point for the transition
+                    first_cmd = next((cmd for cmd in layer_gcode if cmd.Name in ['G1', 'G2', 'G3']), None)
+                    if first_cmd:
+                        first_point = FreeCAD.Vector(first_cmd.Parameters['X'],
+                                                     first_cmd.Parameters['Y'],
+                                                     first_cmd.Parameters['Z'])
+                        GCODE.extend(self._stepTransitionCmds(obj, last_point_of_previous_layer,
+                                                                    first_point, safePDC,
+                                                                    JOB.GeometryTolerance.Value))
 
-                # Return `OptimizeLinearPaths` to disabled
-                if so == peIdx or peIdx == -1:
-                    if obj.CutPattern in ["Circular", "CircularZigZag"]:
-                        obj.OptimizeLinearPaths = False
+                GCODE.extend(layer_gcode)
 
-                # Compile step over(prts) commands
-                if prtsHasCmds is True:
-                    stepHasCmds = True
-                    actvSteps += 1
-                    stpOvrCmds.extend(transCmds)
-                    stpOvrCmds.append(Path.Command("N (Begin step {}.)".format(so), {}))
-                    stpOvrCmds.append(
-                        Path.Command("G0", {"X": first.x, "Y": first.y, "F": self.horizRapid})
-                    )
-                    stpOvrCmds.extend(prtsCmds)
-                    stpOvrCmds.append(Path.Command("N (End of step {}.)".format(so), {}))
-
-                # Layer transition at first active step over in current layer
-                if actvSteps == 1:
-                    LYR.append(Path.Command("N (Layer {} begins)".format(lyr), {}))
-                    if lyr > 0:
-                        LYR.append(Path.Command("N (Layer transition)", {}))
-                        LYR.append(
-                            Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
-                        )
-                        LYR.append(
-                            Path.Command("G0", {"X": first.x, "Y": first.y, "F": self.horizRapid})
-                        )
-
-                if stepHasCmds is True:
-                    lyrHasCmds = True
-                    LYR.extend(stpOvrCmds)
-            # Eif
-
-            # Close layer, saving commands, if any
-            if lyrHasCmds is True:
-                GCODE.extend(LYR)  # save line commands
-                GCODE.append(Path.Command("N (End of layer {})".format(lyr), {}))
-
-            # Set previous depth
-            prevDepth = lyrDep
-        # Efor
-
-        Path.Log.debug("Multi-pass op has {} layers (step downs).".format(lyr + 1))
+                # Find the last point of this layer for the next transition
+                last_cmd = next((cmd for cmd in reversed(layer_gcode) if cmd.Name in ['G1', 'G2', 'G3']), None)
+                if last_cmd:
+                    last_point_of_previous_layer = FreeCAD.Vector(last_cmd.Parameters['X'],
+                                                                  last_cmd.Parameters['Y'],
+                                                                  last_cmd.Parameters['Z'])
 
         return GCODE
 
-    def _planarMultipassPreProcess(self, obj, LN, prvDep, layDep):
-        ALL = []
-        PTS = []
-        optLinTrans = obj.OptimizeStepOverTransitions
-        safe = math.ceil(obj.SafeHeight.Value)
-
-        if optLinTrans is True:
-            for P in LN:
-                ALL.append(P)
-                # Handle layer depth AND hold points
-                if P.z <= layDep:
-                    PTS.append(FreeCAD.Vector(P.x, P.y, layDep))
-                elif P.z > prvDep:
-                    PTS.append(FreeCAD.Vector(P.x, P.y, safe))
-                else:
-                    PTS.append(FreeCAD.Vector(P.x, P.y, P.z))
-            # Efor
-        else:
-            for P in LN:
-                ALL.append(P)
-                # Handle layer depth only
-                if P.z <= layDep:
-                    PTS.append(FreeCAD.Vector(P.x, P.y, layDep))
-                else:
-                    PTS.append(FreeCAD.Vector(P.x, P.y, P.z))
-            # Efor
-
-        if optLinTrans is True:
-            # Remove leading and trailing Hold Points
-            popList = []
-            for i in range(0, len(PTS)):  # identify leading string
-                if PTS[i].z == safe:
-                    popList.append(i)
-                else:
-                    break
-            popList.sort(reverse=True)
-            for p in popList:  # Remove hold points
-                PTS.pop(p)
-                ALL.pop(p)
-            popList = []
-            for i in range(len(PTS) - 1, -1, -1):  # identify trailing string
-                if PTS[i].z == safe:
-                    popList.append(i)
-                else:
-                    break
-            popList.sort(reverse=True)
-            for p in popList:  # Remove hold points
-                PTS.pop(p)
-                ALL.pop(p)
-
-        # Determine max Z height for remaining points on line
-        lMax = obj.FinalDepth.Value
-        if len(ALL) > 0:
-            lMax = ALL[0].z
-            for P in ALL:
-                if P.z > lMax:
-                    lMax = P.z
-
-        return (PTS, lMax)
-
-    def _planarMultipassProcess(self, obj, PNTS, lMax):
-        output = []
-        optimize = obj.OptimizeLinearPaths
-        safe = math.ceil(obj.SafeHeight.Value)
-        lenPNTS = len(PNTS)
-        prcs = True
-        onHold = False
-        onLine = False
-        clrScnLn = lMax + 2.0
-
-        # Initialize first three points
-        nxt = None
-        pnt = PNTS[0]
-        prev = FreeCAD.Vector(-442064564.6, 258539656553.27, 3538553425.847)
-
-        #  Add temp end point
-        PNTS.append(FreeCAD.Vector(-4895747464.6, -25855763553.2, 35865763425))
-
-        # Begin processing ocl points list into gcode
-        for i in range(0, lenPNTS):
-            prcs = True
-            nxt = PNTS[i + 1]
-
-            if pnt.z == safe:
-                prcs = False
-                if onHold is False:
-                    onHold = True
-                    output.append(Path.Command("N (Start hold)", {}))
-                    output.append(Path.Command("G0", {"Z": clrScnLn, "F": self.vertRapid}))
-            else:
-                if onHold is True:
-                    onHold = False
-                    output.append(Path.Command("N (End hold)", {}))
-                    output.append(
-                        Path.Command("G0", {"X": pnt.x, "Y": pnt.y, "F": self.horizRapid})
-                    )
-
-            # Process point
-            if prcs is True:
-                if optimize is True:
-                    # iPOL = prev.isOnLineSegment(nxt, pnt)
-                    iPOL = pnt.isOnLineSegment(prev, nxt)
-                    if iPOL is True:
-                        onLine = True
-                    else:
-                        onLine = False
-                        output.append(
-                            Path.Command(
-                                "G1",
-                                {
-                                    "X": pnt.x,
-                                    "Y": pnt.y,
-                                    "Z": pnt.z,
-                                    "F": self.horizFeed,
-                                },
-                            )
-                        )
-                else:
-                    output.append(
-                        Path.Command(
-                            "G1",
-                            {"X": pnt.x, "Y": pnt.y, "Z": pnt.z, "F": self.horizFeed},
-                        )
-                    )
-
-            # Rotate point data
-            if onLine is False:
-                prev = pnt
-            pnt = nxt
-        # Efor
-
-        PNTS.pop()  # Remove temp end point
-
-        return output
 
     def _stepTransitionCmds(self, obj, p1, p2, safePDC, tolrnc):
         """Generate transition commands / paths between two dropcutter steps or
@@ -1741,6 +1563,7 @@ class ObjectSurface(PathOp.ObjectOp):
         cmds = []
         rtpd = False
         height = obj.SafeHeight.Value
+        ChecklayDep = obj.OpStartDepth.Value - obj.StepDown.Value
         # Allow cutter-down transitions with a distance up to 2x cutter
         # diameter. We might be able to extend this further to the
         # full-retract-and-rapid break even point in the future, but this will
@@ -1748,7 +1571,12 @@ class ObjectSurface(PathOp.ObjectOp):
         # to avoid inadvertent cutting.
         maxXYDistanceSqrd = (self.cutter.getDiameter() * 2) ** 2
 
-        if obj.OptimizeStepOverTransitions:
+        # For a single-pass spiral, there are no real transitions to optimize.
+        if obj.LayerMode == "Single-pass" and obj.CutPattern == "Spiral":
+            obj.OptimizeStepOverTransitions = False
+
+        #if obj.OptimizeStepOverTransitions:
+        if obj.OptimizeStepOverTransitions and p2.z != ChecklayDep:
             if p1 and p2:
                 # Short distance within step over
                 xyDistanceSqrd = (p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2
