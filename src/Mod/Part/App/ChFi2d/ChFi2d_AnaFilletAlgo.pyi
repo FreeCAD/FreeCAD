@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from Metadata import export, constmethod
+from Metadata import export
 from Base.PyObjectBase import PyObjectBase
 from typing import Tuple
 

@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod
+from Base.Metadata import export
 from Part.ShapeFix_Root import ShapeFix_Root
 from Part.TopoShapeFace import TopoShapeFace
 from Part.TopoShapeShell import TopoShapeShell
-from typing import Final, Union, overload
+from typing import Union
 
 @export(
     PythonName="Part.ShapeFix.Face",

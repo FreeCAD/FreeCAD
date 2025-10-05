@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from Metadata import export, constmethod, sequence_protocol, class_declarations
 from PyObjectBase import PyObjectBase
-from typing import overload, Sequence, TYPE_CHECKING
+from typing import overload, Sequence
 
 @export(
     TwinPointer="Vector3d",

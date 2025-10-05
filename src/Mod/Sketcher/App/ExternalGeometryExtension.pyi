@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from Base.Metadata import export, constmethod
 from Part.App.GeometryExtension import GeometryExtension
-from typing import Final, overload
 
 @export(
     PythonName="Sketcher.ExternalGeometryExtension",

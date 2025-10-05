@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod
+from Base.Metadata import export
 from Part.GeometrySurface import GeometrySurface
 from Base.Vector import Vector
 from typing import Final

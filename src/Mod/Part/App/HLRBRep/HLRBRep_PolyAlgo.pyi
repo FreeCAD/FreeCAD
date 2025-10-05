@@ -2,10 +2,9 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod, class_declarations
+from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from Part.TopoShapePy import TopoShape
-from typing import Final, overload
 
 @export(
     PythonName="Part.HLRBRep_PolyAlgo",

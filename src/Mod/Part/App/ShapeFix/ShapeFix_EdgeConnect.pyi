@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod
+from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 from Part.App.TopoShapeEdge import TopoShapeEdge
 from Part.App.TopoShape import TopoShape

@@ -5,9 +5,6 @@ from __future__ import annotations
 from Base.Metadata import (
     export,
     constmethod,
-    forward_declarations,
-    class_declarations,
-    sequence_protocol,
 )
 from GeometrySurface import GeometrySurface
 from typing import Final, Tuple
