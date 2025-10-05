@@ -40,7 +40,7 @@ using TLicenseArr = std::array<const char*, colsInArray>;
 constexpr int posnOfIdentifier = 0;
 constexpr int posnOfFullName = 1;
 constexpr int posnOfUrl = 2;
-constexpr int countOfLicenses {18};
+constexpr int countOfLicenses {19};
 // clang-format off
 constexpr std::array<TLicenseArr, countOfLicenses> licenseItems {{
     { "AllRightsReserved", "All rights reserved",                                          "https://en.wikipedia.org/wiki/All_rights_reserved"  },
