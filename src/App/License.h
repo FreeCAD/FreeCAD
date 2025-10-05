@@ -61,6 +61,7 @@ constexpr std::array<TLicenseArr, countOfLicenses> licenseItems {{
     { "CERN_OHS_S",        "CERN Open Hardware Licence strongly-reciprocal",               "https://cern-ohl.web.cern.ch/"                      },
     { "CERN_OHS_W",        "CERN Open Hardware Licence weakly-reciprocal",                 "https://cern-ohl.web.cern.ch/"                      },
     { "CERN_OHS_P",        "CERN Open Hardware Licence permissive",                        "https://cern-ohl.web.cern.ch/"                      },
+    { "GPL-3.0-or-later",  "GNU General Public License 3.0 or later",                      "https://www.gnu.org/licenses/gpl-3.0.html"          },
 }};
 // clang-format on
 
