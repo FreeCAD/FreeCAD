@@ -36,7 +36,7 @@ import math
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
-MeshPart = LazyLoader('MeshPart', globals(), 'MeshPart') # tessellate bug Workaround
+MeshPart = LazyLoader("MeshPart", globals(), "MeshPart")  # tessellate bug Workaround
 Part = LazyLoader("Part", globals(), "Part")
 
 
@@ -403,8 +403,9 @@ class PathGeometryGenerator:
         offset = 0.0  # Start right at the edge of cut area
 
         while True:
-            offsetArea = PathUtils.getOffsetArea(shape, offset, plane=self.wpc,
-                                                 tolerance=self.obj.LinearDeflection.Value)
+            offsetArea = PathUtils.getOffsetArea(
+                shape, offset, plane=self.wpc, tolerance=self.obj.LinearDeflection.Value
+            )
             if not offsetArea:
                 # Area fully consumed
                 break
@@ -412,10 +413,11 @@ class PathGeometryGenerator:
             # process each wire within face
             for f in offsetArea.Faces:
                 wires = wires + f.Wires
-                #wires.extend(f.Wires)
+                # wires.extend(f.Wires)
             offset -= self.cutOut
 
         return wires
+
 
 # Eclass
 
@@ -877,8 +879,9 @@ class ProcessSelectedFaces:
 
         if cont:
             ofstVal = self._calculateOffsetValue(isHole)
-            faceOffsetShape = PathUtils.getOffsetArea(csFaceShape, ofstVal, plane=self.wpc,
-                                                      tolerance=self.obj.LinearDeflection.Value)
+            faceOffsetShape = PathUtils.getOffsetArea(
+                csFaceShape, ofstVal, plane=self.wpc, tolerance=self.obj.LinearDeflection.Value
+            )
             if faceOffsetShape is False:
                 Path.Log.debug("getOffsetArea() failed for entire base.")
             else:
@@ -1143,7 +1146,7 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
             padding = self.cutter.getDiameter()
         except Exception:
             padding = obj.ToolController.Tool.Diameter
-        
+
         xMin = mBB.XMin - padding
         yMin = mBB.YMin - padding
         bL = mBB.XLength + (2 * padding)
@@ -1152,7 +1155,7 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
         crnr = FreeCAD.Vector(xMin, yMin, mBB.ZMin - 1.0)
         B = Part.makeBox(bL, bW, bH, crnr, FreeCAD.Vector(0, 0, 1))
         fuseShapes.append(B)
-    else: 
+    else:
         # Original fast "Stock" path
         toolDiam = self.cutter.getDiameter()
         zMin = JOB.Stock.Shape.BoundBox.ZMin
@@ -1167,9 +1170,7 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
 
     if voidShapes:
         voidComp = Part.makeCompound(voidShapes)
-        voidEnv = PathUtils.getEnvelope(
-            partshape=voidComp, depthparams=self.depthParams
-        )
+        voidEnv = PathUtils.getEnvelope(partshape=voidComp, depthparams=self.depthParams)
         fuseShapes.append(voidEnv)
 
     fused = Part.makeCompound(fuseShapes)
@@ -1177,7 +1178,7 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
     # Instead of meshing the entire solid, we extract only its outer shells.
     # This discards all unnecessary internal faces, resulting in a much
     # smaller and faster-to-process STL for collision checking.
-    shape_to_mesh = fused # Default to the original solid
+    shape_to_mesh = fused  # Default to the original solid
     try:
         if fused.Shells:
             # Create a new compound shape containing only the outer shells
@@ -1196,6 +1197,7 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
     # Pass the final, potentially hollow, shape to the mesher
     self.safeSTLs[mdlIdx] = _makeSTL(shape_to_mesh, obj, ocl)
 
+
 def _makeSTL(model, obj, ocl, model_type=None):
     """Convert a mesh or shape into an OCL STL, using the tessellation
     tolerance specified in obj.LinearDeflection.
@@ -1209,7 +1211,7 @@ def _makeSTL(model, obj, ocl, model_type=None):
             shape = model
 
         # Clipping shape to final depth to reduce the volume of STL file
-        try:           
+        try:
             final_depth = obj.FinalDepth.Value
             bbox = shape.BoundBox
             padding = 1.0
@@ -1220,43 +1222,51 @@ def _makeSTL(model, obj, ocl, model_type=None):
             box_width = bbox.YLength + (2 * padding)
             box_height = bbox.ZMax - final_depth + padding
             box_corner = FreeCAD.Vector(bbox.XMin - padding, bbox.YMin - padding, final_depth)
-            
+
             volume_to_keep = Part.makeBox(box_len, box_width, box_height, box_corner)
 
             # Perform the boolean intersection to get the final, optimized shape.
             clipped_shape = shape.common(volume_to_keep)
 
             if not clipped_shape.isNull() and (clipped_shape.Solids or clipped_shape.Shells):
-                 shape = clipped_shape
+                shape = clipped_shape
             else:
-                 FreeCAD.Console.PrintWarning("Clipping resulted in an empty shape. Using original shape.\n")
+                FreeCAD.Console.PrintWarning(
+                    "Clipping resulted in an empty shape. Using original shape.\n"
+                )
 
         except Exception as e:
-            FreeCAD.Console.PrintError(f"Failed to apply pre-tessellation clip: {e}. Using original shape.\n")
+            FreeCAD.Console.PrintError(
+                f"Failed to apply pre-tessellation clip: {e}. Using original shape.\n"
+            )
 
-        #vertices, facet_indices = shape.tessellate(obj.LinearDeflection.Value) # tessellate workaround
+        # vertices, facet_indices = shape.tessellate(obj.LinearDeflection.Value) # tessellate workaround
         # Workaround for tessellate bug. Tessellation is often unsuccessful in producing a clean shape from models with sharp edges.
         mesh = MeshPart.meshFromShape(Shape=shape, LinearDeflection=0.001, AngularDeflection=0.25)
 
         # If the user has set a simplification value, we reduce the mesh density here.
         if hasattr(obj, "MeshSimplification") and obj.MeshSimplification > 0:
             reduction_percent = obj.MeshSimplification
-            if reduction_percent > 99.0: reduction_percent = 99.0 # Safety cap
-            
+            if reduction_percent > 99.0:
+                reduction_percent = 99.0  # Safety cap
+
             reduction_decimal = reduction_percent / 100.0
             tolerance = 0.001
-            
+
             original_count = mesh.CountPoints
-            FreeCAD.Console.PrintMessage(f"Simplifying mesh by {reduction_percent}%. Original triangle count: {len(mesh.Facets)}\n")
-            
+            FreeCAD.Console.PrintMessage(
+                f"Simplifying mesh by {reduction_percent}%. Original triangle count: {len(mesh.Facets)}\n"
+            )
+
             # This is the core decimation command
             try:
                 mesh.decimate(tolerance, reduction_decimal)
             except Exception as ee:
-                FreeCAD.Console.PrintError(f"Mesh decimation failed: {ee}. Using original shape.\n")    
-                
-            
-            FreeCAD.Console.PrintMessage(f"Decimation complete. New triangle count: {len(mesh.Facets)}\n")        
+                FreeCAD.Console.PrintError(f"Mesh decimation failed: {ee}. Using original shape.\n")
+
+            FreeCAD.Console.PrintMessage(
+                f"Decimation complete. New triangle count: {len(mesh.Facets)}\n"
+            )
         vertices = [point.Vector for point in mesh.Points]
         facet_indices = [facet.PointIndices for facet in mesh.Facets]
 

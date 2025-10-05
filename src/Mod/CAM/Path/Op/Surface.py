@@ -541,7 +541,7 @@ class ObjectSurface(PathOp.ObjectOp):
             "AvoidLastX_Faces": 0,
             "PatternCenterCustom": FreeCAD.Vector(0.0, 0.0, 0.0),
             "GapThreshold": 0.005,
-            "Accuracy": 3, # Default slider to the middle position
+            "Accuracy": 3,  # Default slider to the middle position
             "AngularDeflection": 0.15,
             "LinearDeflection": 0.01,
             "MeshSimplification": 0.0,
@@ -599,22 +599,22 @@ class ObjectSurface(PathOp.ObjectOp):
                     self._applyAccuracySettings(obj)
                 if prop in ["ScanType", "CutPattern"]:
                     self.setEditorProperties(obj)
-                    
+
     def _applyAccuracySettings(self, obj):
         """Applies the mesh settings based on the Accuracy slider's value."""
         accuracy_map = {
             # Level: [AngularDeflection, LinearDeflection, MeshSimplification]
             1: [0.25, 0.02, 20.0],
             2: [0.25, 0.02, 10.0],
-            3: [0.25, 0.02,  0.0],
-            4: [0.15, 0.01,  0.0],
+            3: [0.25, 0.02, 0.0],
+            4: [0.15, 0.01, 0.0],
             5: [0.15, 0.005, 0.0],
             6: [0.15, 0.001, 0.0],
             7: [0.05, 0.001, 0.0],
         }
-        
-        settings = accuracy_map.get(obj.Accuracy, accuracy_map[5]) # Default to level 3 if invalid
-        
+
+        settings = accuracy_map.get(obj.Accuracy, accuracy_map[5])  # Default to level 3 if invalid
+
         obj.AngularDeflection = settings[0]
         obj.LinearDeflection = settings[1]
         obj.MeshSimplification = settings[2]
@@ -1288,7 +1288,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 # PNTSET = PathSurfaceSupport.pathGeomToZigzagPointSet(obj, pathGeom, self.CutClimb, self.toolDiam, self.closedGap, self.gaps)
                 PNTSET = PathSurfaceSupport.pathGeomToZigzagPointSet(self, obj, pathGeom)
             elif obj.CutPattern == "Spiral":
-                PNTSET = PathSurfaceSupport.pathGeomToSpiralPointSet(obj, pathGeom)              
+                PNTSET = PathSurfaceSupport.pathGeomToSpiralPointSet(obj, pathGeom)
 
             for STEP in PNTSET:
                 for LN in STEP:
@@ -1370,19 +1370,25 @@ class ObjectSurface(PathOp.ObjectOp):
         Path.Log.debug("_planarDropCutSingle_Final_Robust()")
         GCODE = []
         tolrnc = JOB.GeometryTolerance.Value
-        
-        if not SCANDATA: return GCODE
+
+        if not SCANDATA:
+            return GCODE
         first_segment = next((prt for so in SCANDATA for prt in so if prt != "BRK" and prt), None)
-        if not first_segment: return GCODE
+        if not first_segment:
+            return GCODE
 
         lenSCANDATA = len(SCANDATA)
         gDIR = ["G3", "G2"]
-        if self.CutClimb: gDIR = ["G2", "G3"]
+        if self.CutClimb:
+            gDIR = ["G2", "G3"]
 
         peIdx = lenSCANDATA
-        if obj.ProfileEdges == "Only": peIdx = -1
-        elif obj.ProfileEdges == "First": peIdx = 0
-        elif obj.ProfileEdges == "Last": peIdx = lenSCANDATA - 1
+        if obj.ProfileEdges == "Only":
+            peIdx = -1
+        elif obj.ProfileEdges == "First":
+            peIdx = 0
+        elif obj.ProfileEdges == "Last":
+            peIdx = lenSCANDATA - 1
 
         first = first_segment[0]
         GCODE.append(Path.Command("G0", {"X": first.x, "Y": first.y, "F": self.horizRapid}))
@@ -1394,19 +1400,23 @@ class ObjectSurface(PathOp.ObjectOp):
             cmds = []
             PRTS = SCANDATA[so]
             lenPRTS = len(PRTS)
-            
+
             first_in_step = next((prt[0] for prt in PRTS if prt != "BRK" and prt), None)
-            if not first_in_step: continue
+            if not first_in_step:
+                continue
 
             last = None
             cmds.append(Path.Command("N (Begin step {}.)".format(so), {}))
 
             if so > 0 and lstStpEnd:
-                if obj.CutPattern == "CircularZigZag": odd = not odd
-                cmds.extend(self._stepTransitionCmds(obj, lstStpEnd, first_in_step, safePDC, tolrnc))
+                if obj.CutPattern == "CircularZigZag":
+                    odd = not odd
+                cmds.extend(
+                    self._stepTransitionCmds(obj, lstStpEnd, first_in_step, safePDC, tolrnc)
+                )
 
             if so == peIdx or peIdx == -1:
-                self.preOLP = obj.OptimizeLinearPaths # Store the original value
+                self.preOLP = obj.OptimizeLinearPaths  # Store the original value
 
             # Cycle through current step-over parts
             for i in range(0, lenPRTS):
@@ -1416,23 +1426,30 @@ class ObjectSurface(PathOp.ObjectOp):
                     # Only process a break if there is a valid "next" segment to transition to
                     # This handles trailing and duplicate BRK markers.
                     if (i + 1) < lenPRTS:
-                        next_valid_prt = next((p for p in PRTS[i+1:] if p != "BRK" and p), None)
+                        next_valid_prt = next((p for p in PRTS[i + 1 :] if p != "BRK" and p), None)
                         if next_valid_prt:
                             nxtStart = next_valid_prt[0]
                             cmds.append(Path.Command("N (Break)", {}))
-                            cmds.extend(self._stepTransitionCmds(obj, last, nxtStart, safePDC, tolrnc))
+                            cmds.extend(
+                                self._stepTransitionCmds(obj, last, nxtStart, safePDC, tolrnc)
+                            )
                 else:
                     lenPrt = len(prt)
                     cmds.append(Path.Command("N (part {}.)".format(i + 1), {}))
-                    last = prt[-1]                  
+                    last = prt[-1]
 
                     if so == peIdx or peIdx == -1:
                         cmds.extend(self._planarSinglepassProcess(obj, prt))
-                    elif (obj.CutPattern in ["Circular", "CircularZigZag"]
-                        and obj.CircularUseG2G3 is True and lenPrt > 2):
+                    elif (
+                        obj.CutPattern in ["Circular", "CircularZigZag"]
+                        and obj.CircularUseG2G3 is True
+                        and lenPrt > 2
+                    ):
                         (rtnVal, gcode) = self._arcsToG2G3(prt, lenPrt, odd, gDIR, tolrnc)
-                        if rtnVal: cmds.extend(gcode)
-                        else: cmds.extend(self._planarSinglepassProcess(obj, prt))
+                        if rtnVal:
+                            cmds.extend(gcode)
+                        else:
+                            cmds.extend(self._planarSinglepassProcess(obj, prt))
                     else:
                         cmds.extend(self._planarSinglepassProcess(obj, prt))
             cmds.append(Path.Command("N (End of step {}.)".format(so), {}))
@@ -1473,22 +1490,22 @@ class ObjectSurface(PathOp.ObjectOp):
 
     def _planarDropCutMulti(self, JOB, obj, pdc, safePDC, depthparams, SCANDATA):
         Path.Log.debug("Executing Multi-pass strategy.")
-        
+
         GCODE = []
-        last_point_of_previous_layer = None        
+        last_point_of_previous_layer = None
 
         for i, layDep in enumerate(depthparams):
             FreeCAD.Console.PrintMessage(f"Processing layer {i+1} at Z={layDep}\n")
             pdc.setZ(layDep)
-            
+
             # Get the depth of the previous layer to check for "air cutting"
-            prvDep = obj.StartDepth.Value if i == 0 else depthparams[i-1]            
-            
+            prvDep = obj.StartDepth.Value if i == 0 else depthparams[i - 1]
+
             # Build a new scandata for this layer, intelligently creating breaks
             # to skip segments that are entirely in "air" (above the previous layer)
             processed_scandata = []
-            for so in SCANDATA: # Iterate through the original, full-depth scandata
-                new_so = [] # This will hold the new, broken-up stepover parts
+            for so in SCANDATA:  # Iterate through the original, full-depth scandata
+                new_so = []  # This will hold the new, broken-up stepover parts
                 for prt in so:
                     if prt == "BRK":
                         if new_so and new_so[-1] != "BRK":
@@ -1496,7 +1513,7 @@ class ObjectSurface(PathOp.ObjectOp):
                         continue
 
                     current_segment = []
-                    was_lifted = False # State flag to track if we're in an "air" section
+                    was_lifted = False  # State flag to track if we're in an "air" section
 
                     for p in prt:
                         # Check if the point is above the already-cleared material
@@ -1512,14 +1529,14 @@ class ObjectSurface(PathOp.ObjectOp):
                             was_lifted = True
                             # Drop the point by continuing the loop
                             continue
-                        
+
                         # This point is a valid cutting move for this layer
                         was_lifted = False
-                        
+
                         # Flatten the Z-depth if it's below the current layer plane
                         new_z = layDep if p.z < layDep else p.z
                         current_segment.append(FreeCAD.Vector(p.x, p.y, new_z))
-                    
+
                     # After iterating through all points in a part, add any remaining segment
                     if current_segment:
                         new_so.append(current_segment)
@@ -1528,32 +1545,45 @@ class ObjectSurface(PathOp.ObjectOp):
                     processed_scandata.append(new_so)
 
             # Call the single-pass function with our new, intelligently broken-up path data
-            layer_gcode = self._planarDropCutSingle(JOB, obj, pdc, safePDC, [layDep], processed_scandata)                                
+            layer_gcode = self._planarDropCutSingle(
+                JOB, obj, pdc, safePDC, [layDep], processed_scandata
+            )
 
             if layer_gcode:
                 # Stitch the G-code for this layer to the final result
                 if i > 0 and last_point_of_previous_layer:
                     # Find the first G1/G2/G3 command to get the start point for the transition
-                    first_cmd = next((cmd for cmd in layer_gcode if cmd.Name in ['G1', 'G2', 'G3']), None)
+                    first_cmd = next(
+                        (cmd for cmd in layer_gcode if cmd.Name in ["G1", "G2", "G3"]), None
+                    )
                     if first_cmd:
-                        first_point = FreeCAD.Vector(first_cmd.Parameters['X'],
-                                                     first_cmd.Parameters['Y'],
-                                                     first_cmd.Parameters['Z'])
-                        GCODE.extend(self._stepTransitionCmds(obj, last_point_of_previous_layer,
-                                                                    first_point, safePDC,
-                                                                    JOB.GeometryTolerance.Value))
+                        first_point = FreeCAD.Vector(
+                            first_cmd.Parameters["X"],
+                            first_cmd.Parameters["Y"],
+                            first_cmd.Parameters["Z"],
+                        )
+                        GCODE.extend(
+                            self._stepTransitionCmds(
+                                obj,
+                                last_point_of_previous_layer,
+                                first_point,
+                                safePDC,
+                                JOB.GeometryTolerance.Value,
+                            )
+                        )
 
                 GCODE.extend(layer_gcode)
 
                 # Find the last point of this layer for the next transition
-                last_cmd = next((cmd for cmd in reversed(layer_gcode) if cmd.Name in ['G1', 'G2', 'G3']), None)
+                last_cmd = next(
+                    (cmd for cmd in reversed(layer_gcode) if cmd.Name in ["G1", "G2", "G3"]), None
+                )
                 if last_cmd:
-                    last_point_of_previous_layer = FreeCAD.Vector(last_cmd.Parameters['X'],
-                                                                  last_cmd.Parameters['Y'],
-                                                                  last_cmd.Parameters['Z'])
+                    last_point_of_previous_layer = FreeCAD.Vector(
+                        last_cmd.Parameters["X"], last_cmd.Parameters["Y"], last_cmd.Parameters["Z"]
+                    )
 
         return GCODE
-
 
     def _stepTransitionCmds(self, obj, p1, p2, safePDC, tolrnc):
         """Generate transition commands / paths between two dropcutter steps or
@@ -1575,7 +1605,7 @@ class ObjectSurface(PathOp.ObjectOp):
         if obj.LayerMode == "Single-pass" and obj.CutPattern == "Spiral":
             obj.OptimizeStepOverTransitions = False
 
-        #if obj.OptimizeStepOverTransitions:
+        # if obj.OptimizeStepOverTransitions:
         if obj.OptimizeStepOverTransitions and p2.z != ChecklayDep:
             if p1 and p2:
                 # Short distance within step over
