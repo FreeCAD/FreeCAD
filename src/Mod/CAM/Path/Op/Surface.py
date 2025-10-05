@@ -800,6 +800,15 @@ class ObjectSurface(PathOp.ObjectOp):
         else:
             self.showDebugObjects = False
 
+        # Inform the user about the accuracy slider settings.
+        accuracy_msg = (
+            f"Accuracy settings: "
+            f"Linear Deflection = {obj.LinearDeflection.Value:.3f} mm, "
+            f"Angular Deflection = {obj.AngularDeflection.Value:.2f}, "
+            f"Mesh Simplification = {obj.MeshSimplification:.1f}%\n"
+        )
+        FreeCAD.Console.PrintMessage(accuracy_msg)
+
         # mark beginning of operation and identify parent Job
         startTime = time.time()
 

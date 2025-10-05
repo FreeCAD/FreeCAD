@@ -1127,8 +1127,8 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
     """_makeSafeSTL(JOB, obj, mdlIdx, faceShapes, voidShapes)...
     Creates and OCL.stl object with combined data with waste stock,
     model, and avoided faces.  Travel lines can be checked against this
-    STL object to determine minimum travel height to clear stock and model."""
-    """Optimized with "hollowing" strategy. Creates a lightweight,
+    STL object to determine minimum travel height to clear stock and model.
+    Optimized with "hollowing" strategy. Creates a lightweight,
     hollow shell of the safety model to significantly speed up transition path collision checks."""
     Path.Log.debug("_makeSafeSTL()")
 
@@ -1255,7 +1255,7 @@ def _makeSTL(model, obj, ocl, model_type=None):
 
             original_count = mesh.CountPoints
             FreeCAD.Console.PrintMessage(
-                f"Simplifying mesh by {reduction_percent}%. Original triangle count: {len(mesh.Facets)}\n"
+                f"Simplifying mesh. Original triangle count: {len(mesh.Facets)}\n"
             )
 
             # This is the core decimation command
