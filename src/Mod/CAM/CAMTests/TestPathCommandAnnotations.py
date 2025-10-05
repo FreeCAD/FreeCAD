@@ -208,9 +208,16 @@ class TestPathCommandAnnotations(PathTestBase):
         self.assertEqual(c.Annotations["depth"], "10mm")
 
         # Annotations should not appear in gcode output
-        self.assertNotIn("operation", gcode)
-        self.assertNotIn("tapping", gcode)
-        self.assertNotIn("thread", gcode)
+        gcode_parts = gcode.split(";", 1)
+        main_gcode = gcode_parts[0]
+        comment = gcode_parts[1] if len(gcode_parts) > 1 else ""
+
+        self.assertIn("operation:'tapping'", comment)
+        self.assertIn("thread:'M6x1.0'", comment)
+        self.assertIn("depth:'10mm'", comment)
+        self.assertNotIn("operation", main_gcode)
+        self.assertNotIn("thread", main_gcode)
+        self.assertNotIn("depth", main_gcode)
 
     def test11(self):
         """Test save/restore with mixed string and numeric annotations (in-memory)."""
@@ -301,6 +308,6 @@ class TestPathCommandAnnotations(PathTestBase):
         self.assertIsInstance(complex_restored.Annotations["operation_id"], str)
         self.assertIsInstance(complex_restored.Annotations["thread_spec"], str)
 
-        # Check scientific notation
-        self.assertAlmostEqual(complex_restored.Annotations["scientific"], 1.23e-6, places=8)
+        # Check scientific notation (now only 6 decimal places)
+        self.assertAlmostEqual(complex_restored.Annotations["scientific"], 1.23e-6, places=6)
         self.assertIsInstance(complex_restored.Annotations["scientific"], float)

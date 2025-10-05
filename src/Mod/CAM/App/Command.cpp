@@ -25,7 +25,6 @@
 #include <iomanip>
 #include <boost/algorithm/string.hpp>
 
-
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Rotation.h>
@@ -139,20 +138,54 @@ std::string Command::toGCode(int precision, bool padzero) const
         }
         str << '.' << std::setw(width) << std::right << digits;
     }
+
+    // Add annotations as a comment if they exist
+    if (!Annotations.empty()) {
+        str << " ; ";
+        bool first = true;
+        for (const auto& pair : Annotations) {
+            if (!first) {
+                str << " ";
+            }
+            first = false;
+            str << pair.first << ":";
+            if (std::holds_alternative<std::string>(pair.second)) {
+                str << "'" << std::get<std::string>(pair.second) << "'";
+            }
+            else if (std::holds_alternative<double>(pair.second)) {
+                std::ostringstream oss;
+                oss << std::fixed << std::setprecision(6) << std::get<double>(pair.second);
+                str << oss.str();
+            }
+        }
+    }
+
     return str.str();
 }
 
 void Command::setFromGCode(const std::string& str)
 {
     Parameters.clear();
+    Annotations.clear();
+
+    // Check for annotation comment and split the string
+    std::string gcode_part = str;
+    std::string annotation_part;
+
+    auto comment_pos = str.find("; ");
+    if (comment_pos != std::string::npos) {
+        gcode_part = str.substr(0, comment_pos);
+        annotation_part = str.substr(comment_pos + 1);  // length of "; "
+    }
+
     std::string mode = "none";
     std::string key;
     std::string value;
-    for (unsigned int i = 0; i < str.size(); i++) {
-        if ((isdigit(str[i])) || (str[i] == '-') || (str[i] == '.')) {
-            value += str[i];
+    for (unsigned int i = 0; i < gcode_part.size(); i++) {
+        if ((isdigit(gcode_part[i])) || (gcode_part[i] == '-') || (gcode_part[i] == '.')) {
+            value += gcode_part[i];
         }
-        else if (isalpha(str[i])) {
+        else if (isalpha(gcode_part[i])) {
             if (mode == "command") {
                 if (!key.empty() && !value.empty()) {
                     std::string cmd = key + value;
@@ -183,24 +216,30 @@ void Command::setFromGCode(const std::string& str)
                 }
             }
             else if (mode == "comment") {
-                value += str[i];
+                value += gcode_part[i];
             }
-            key = str[i];
+            key = gcode_part[i];
         }
-        else if (str[i] == '(') {
+        else if (gcode_part[i] == '(') {
             mode = "comment";
         }
-        else if (str[i] == ')') {
+        else if (gcode_part[i] == ')') {
             key = "(";
             value += ")";
         }
         else {
             // add non-ascii characters only if this is a comment
             if (mode == "comment") {
-                value += str[i];
+                value += gcode_part[i];
             }
         }
     }
+
+    // Parse annotations if found
+    if (!annotation_part.empty()) {
+        setAnnotations(annotation_part);
+    }
+
     if (!key.empty() && !value.empty()) {
         if ((mode == "command") || (mode == "comment")) {
             std::string cmd = key + value;
@@ -392,117 +431,109 @@ bool Command::hasAnnotation(const std::string& key) const
 
 Command& Command::setAnnotations(const std::string& annotationString)
 {
-    // Simple parser: split by space, then by colon
-    std::stringstream ss(annotationString);
+    std::istringstream iss(annotationString);
     std::string token;
-    while (ss >> token) {
+    while (iss >> token) {
         auto pos = token.find(':');
         if (pos != std::string::npos) {
             std::string key = token.substr(0, pos);
             std::string value = token.substr(pos + 1);
 
-            // Try to parse as double, if successful store as double, otherwise as string
-            try {
-                size_t processed = 0;
-                double numValue = std::stod(value, &processed);
-                if (processed == value.length()) {
-                    // Entire string was successfully parsed as a number
-                    Annotations[key] = numValue;
+            // If value starts and ends with single quote, treat as string
+            if (value.size() >= 2 && value.front() == '\'' && value.back() == '\'') {
+                Annotations[key] = value.substr(1, value.size() - 2);
+            }
+            else {
+                // Try to parse as double, if successful store as double, otherwise as string
+                try {
+                    size_t processed = 0;
+                    double numValue = std::stod(value, &processed);
+                    if (processed == value.length()) {
+                        Annotations[key] = numValue;
+                    }
+                    else {
+                        Annotations[key] = value;
+                    }
                 }
-                else {
-                    // Partial parse, treat as string
+                catch (const std::exception&) {
                     Annotations[key] = value;
                 }
-            }
-            catch (const std::exception&) {
-                // Not a valid number, store as string
-                Annotations[key] = value;
             }
         }
     }
     return *this;
 }
 
-// Reimplemented from base class
-
 unsigned int Command::getMemSize() const
 {
     return toGCode().size();
 }
 
-void Command::Save(Writer& writer) const
+void Command::Save(Base::Writer& writer) const
 {
-    // Save command with GCode and annotations
-    writer.Stream() << writer.ind() << "<Command "
-                    << "gcode=\"" << toGCode() << "\"";
+    // this will only get used if saved as XML (probably never)
+    writer.Stream() << writer.ind() << "<Command gcode=\"" << toGCode() << "\"";
 
-    // Add annotation count for faster restoration
     if (!Annotations.empty()) {
-        writer.Stream() << " annotationCount=\"" << Annotations.size() << "\"";
-    }
-
-    if (Annotations.empty()) {
-        writer.Stream() << " />" << std::endl;
-    }
-    else {
-        writer.Stream() << ">" << std::endl;
-        writer.incInd();
-
-        // Save each annotation with type information
-        for (const auto& annotation : Annotations) {
-            writer.Stream() << writer.ind() << "<Annotation key=\"" << annotation.first << "\"";
-
-            if (std::holds_alternative<std::string>(annotation.second)) {
-                writer.Stream() << " type=\"string\" value=\""
-                                << std::get<std::string>(annotation.second) << "\" />" << std::endl;
+        writer.Stream() << " annotations=\"";
+        bool first = true;
+        for (const auto& pair : Annotations) {
+            if (!first) {
+                writer.Stream() << " ";
             }
-            else if (std::holds_alternative<double>(annotation.second)) {
-                writer.Stream() << " type=\"double\" value=\""
-                                << std::get<double>(annotation.second) << "\" />" << std::endl;
+            first = false;
+            writer.Stream() << pair.first << ":";
+            if (std::holds_alternative<std::string>(pair.second)) {
+                writer.Stream() << "'" << std::get<std::string>(pair.second) << "'";
+            }
+            else if (std::holds_alternative<double>(pair.second)) {
+                writer.Stream() << std::fixed << std::setprecision(6)
+                                << std::get<double>(pair.second);
             }
         }
-
-        writer.decInd();
-        writer.Stream() << writer.ind() << "</Command>" << std::endl;
+        writer.Stream() << "\"";
     }
+
+    writer.Stream() << " />" << std::endl;
 }
 
-void Command::Restore(XMLReader& reader)
+void Command::Restore(Base::XMLReader& reader)
 {
     reader.readElement("Command");
     std::string gcode = reader.getAttribute<const char*>("gcode");
     setFromGCode(gcode);
 
-    // Clear any existing annotations
     Annotations.clear();
 
-    // Check if there are annotations to restore
-    int annotationCount = reader.getAttribute<int>("annotationCount", 0);
+    std::string attr;
+    try {
+        attr = reader.getAttribute<const char*>("annotations");
+    }
+    catch (...) {
+        return;  // No annotations
+    }
 
-    if (annotationCount > 0) {
-        // Read annotation elements
-        for (int i = 0; i < annotationCount; i++) {
-            reader.readElement("Annotation");
-            std::string key = reader.getAttribute<const char*>("key");
-            std::string type = reader.getAttribute<const char*>("type");
-            std::string value = reader.getAttribute<const char*>("value");
+    std::istringstream iss(attr);
+    std::string token;
+    while (iss >> token) {
+        auto pos = token.find(':');
+        if (pos != std::string::npos) {
+            std::string key = token.substr(0, pos);
+            std::string value = token.substr(pos + 1);
 
-            if (type == "string") {
-                Annotations[key] = value;
+            // If value starts and ends with single quote, treat as string
+            if (value.size() >= 2 && value.front() == '\'' && value.back() == '\'') {
+                Annotations[key] = value.substr(1, value.size() - 2);
             }
-            else if (type == "double") {
+            else {
                 try {
-                    double dvalue = std::stod(value);
-                    Annotations[key] = dvalue;
+                    double d = std::stod(value);
+                    Annotations[key] = d;
                 }
-                catch (const std::exception&) {
-                    // If conversion fails, store as string
+                catch (...) {
                     Annotations[key] = value;
                 }
             }
         }
-
-        // Read closing tag
-        reader.readEndElement("Command");
     }
 }
