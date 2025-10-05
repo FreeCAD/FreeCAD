@@ -6,6 +6,8 @@ from Base.Metadata import export, constmethod
 from Base.Vector import Vector
 from Base.Rotation import Rotation as RotationPy
 from Geometry import Geometry
+from Part.App.BSplineCurve import BSplineCurve
+from Part.App.TrimmedCurve import TrimmedCurve
 from typing import Final, overload, List, Union, Optional, Tuple
 
 @export(
@@ -361,7 +363,7 @@ class GeometryCurve(Geometry):
         ...
 
     @constmethod
-    def toBSpline(self, points: Tuple[float, float], /) -> "BSplineCurve":
+    def toBSpline(self, points: Tuple[float, float], /) -> BSplineCurve:
         """
         Converts a curve of any type (only part from First to Last) to BSpline curve.
         toBSpline((first: float, last: float)) -> BSplineCurve
@@ -369,7 +371,7 @@ class GeometryCurve(Geometry):
         ...
 
     @constmethod
-    def toNurbs(self, points: Tuple[float, float], /) -> "NurbsCurve":
+    def toNurbs(self, points: Tuple[float, float], /) -> BSplineCurve:
         """
         Converts a curve of any type (only part from First to Last) to NURBS curve.
         toNurbs((first: float, last: float)) -> NurbsCurve
@@ -377,7 +379,7 @@ class GeometryCurve(Geometry):
         ...
 
     @constmethod
-    def trim(self, points: Tuple[float, float], /) -> "TrimmedCurve":
+    def trim(self, points: Tuple[float, float], /) -> TrimmedCurve:
         """
         Returns a trimmed curve defined in the given parameter range.
         trim((first: float, last: float)) -> TrimmedCurve
@@ -387,7 +389,7 @@ class GeometryCurve(Geometry):
     @constmethod
     def approximateBSpline(
         self, Tolerance: float, MaxSegments: int, MaxDegree: int, Order: str = "C2", /
-    ) -> "BSplineCurve":
+    ) -> BSplineCurve:
         """
         Approximates a curve of any type to a B-Spline curve.
         approximateBSpline(Tolerance, MaxSegments, MaxDegree, [Order='C2']) -> BSplineCurve

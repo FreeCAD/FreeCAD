@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Final
 
-from Base.Metadata import constmethod, export
+from Base.Metadata import constmethod, export, class_declarations
 
 from App.ComplexGeoData import ComplexGeoData
 

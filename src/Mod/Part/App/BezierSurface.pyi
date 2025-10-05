@@ -7,7 +7,7 @@ from Base.Metadata import (
     constmethod,
 )
 from GeometrySurface import GeometrySurface
-from typing import Final, Tuple
+from typing import Final, Tuple, Any
 
 @export(
     Twin="GeomBezierSurface",

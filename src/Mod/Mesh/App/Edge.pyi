@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Final
+from typing import Final, Any
 
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase

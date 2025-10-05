@@ -5,7 +5,9 @@ from __future__ import annotations
 from Base.Metadata import export, constmethod
 from Base.Vector import Vector
 from BoundedCurve import BoundedCurve
-from typing import Final, List, overload
+from Part.App.Arc import Arc
+from Part.App.BezierCurve import BezierCurve
+from typing import Final, List, overload, Any
 
 @export(
     PythonName="Part.BSplineCurve",
@@ -503,14 +505,14 @@ class BSplineCurve(BoundedCurve):
         ...
 
     @constmethod
-    def toBezier(self) -> List["BezierCurve"]:
+    def toBezier(self) -> List[BezierCurve]:
         """
         Build a list of Bezier splines.
         """
         ...
 
     @constmethod
-    def toBiArcs(self, tolerance: float, /) -> List["Arc"]:
+    def toBiArcs(self, tolerance: float, /) -> List[Arc]:
         """
         Build a list of arcs and lines to approximate the B-spline.
         toBiArcs(tolerance) -> list.
