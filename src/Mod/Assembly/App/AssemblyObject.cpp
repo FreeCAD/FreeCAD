@@ -375,7 +375,7 @@ bool AssemblyObject::validateNewPlacements()
                     newPlacement = newPlacement * it->second.offsetPlc;
                 }
 
-                if (!oldPlc.isSame(newPlacement)) {
+                if (!oldPlc.isSame(newPlacement, Precision::Confusion())) {
                     Base::Console().warning(
                         "Assembly : Ignoring bad solve, a grounded object (%s) moved.\n",
                         obj->getFullLabel());
