@@ -1,11 +1,13 @@
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: BSL-1.0
 # Copyright 2020 Andy Maloney <asmaloney@gmail.com>
 
 # Generate the export header file for E57Format
 
 include( GenerateExportHeader )
 
-set( comment "// NOTE: This is a generated file. Any changes will be overwritten." )
+set( comment "\r
+// NOTE: This is a generated file. Any changes will be overwritten."
+)
 
 generate_export_header( E57Format
 	EXPORT_FILE_NAME E57Export.h

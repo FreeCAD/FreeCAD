@@ -39,8 +39,9 @@ namespace e57
 
       NodeType type() const override
       {
-         return E57_BLOB;
+         return TypeBlob;
       }
+
       bool isTypeEquivalent( NodeImplSharedPtr ni ) override;
       bool isDefined( const ustring &pathName ) override;
 
@@ -53,7 +54,7 @@ namespace e57
       void writeXml( ImageFileImplSharedPtr imf, CheckedFile &cf, int indent,
                      const char *forcedFieldName = nullptr ) override;
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
       void dump( int indent = 0, std::ostream &os = std::cout ) const override;
 #endif
 
