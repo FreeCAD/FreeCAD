@@ -1246,7 +1246,11 @@ def _makeSTL(model, obj, ocl, model_type=None):
 
         # vertices, facet_indices = shape.tessellate(obj.LinearDeflection.Value) # tessellate workaround
         # Workaround for tessellate bug. Tessellation is often unsuccessful in producing a clean shape from models with sharp edges.
-        mesh = MeshPart.meshFromShape(Shape=shape, LinearDeflection=0.001, AngularDeflection=0.25)
+        mesh = MeshPart.meshFromShape(
+            Shape=shape,
+            LinearDeflection=obj.LinearDeflection.Value,
+            AngularDeflection=obj.AngularDeflection.Value
+        )
 
         # If the user has set a simplification value, we reduce the mesh density here.
         if hasattr(obj, "MeshSimplification") and obj.MeshSimplification > 0:
