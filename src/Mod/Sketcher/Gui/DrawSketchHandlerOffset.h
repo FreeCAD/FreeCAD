@@ -1177,7 +1177,7 @@ void DSHOffsetController::configureToolWidget()
 
     onViewParameters[OnViewParameter::First]->setLabelType(
         Gui::SoDatumLabel::DISTANCE,
-        Gui::EditableDatumLabel::Function::Dimensioning);
+        Gui::EditableDatumLabel::Function::Forced);
 }
 
 template<>
@@ -1185,9 +1185,12 @@ void DSHOffsetControllerBase::adaptDrawingToOnViewParameterChange(int labelindex
 {
     switch (labelindex) {
         case OnViewParameter::First: {
-            if (value == 0.) {
-                // Do not accept 0.
+            if (value == 0. && onViewParameters[OnViewParameter::First]->hasFinishedEditing) {
+                // Do not accept 0, but only if user has finished editing the OVP.
                 unsetOnViewParameter(onViewParameters[OnViewParameter::First].get());
+
+                // reset offsetLengthSet so mouse can control the offset again
+                handler->offsetLengthSet = false;
 
                 Gui::NotifyUserError(
                     handler->sketchgui->getSketchObject(),
@@ -1246,8 +1249,29 @@ void DSHOffsetController::adaptParameters(Base::Vector2d onSketchPos)
                 setOnViewParameterValue(OnViewParameter::First, handler->offsetLength);
             }
 
+            Base::Vector3d dimensionEndpoint;
+            if (handler->offsetLengthSet && firstParam->isSet) {
+                // if user has typed a value, calculate correct endpoint based on typed value
+                Base::Vector2d direction = handler->endpoint - handler->pointOnSourceWire;
+                if (direction.Length() > Precision::Confusion()) {
+                    direction.Normalize();
+                    Base::Vector2d correctedEndpoint =
+                        handler->pointOnSourceWire + direction * handler->offsetLength;
+                    dimensionEndpoint =
+                        Base::Vector3d(correctedEndpoint.x, correctedEndpoint.y, 0.);
+                }
+                else {
+                    dimensionEndpoint =
+                        Base::Vector3d(handler->endpoint.x, handler->endpoint.y, 0.);
+                }
+            }
+            else {
+                // use mouse pos when user hasn't typed a value
+                dimensionEndpoint = Base::Vector3d(handler->endpoint.x, handler->endpoint.y, 0.);
+            }
+
             firstParam->setPoints(
-                Base::Vector3d(handler->endpoint.x, handler->endpoint.y, 0.),
+                dimensionEndpoint,
                 Base::Vector3d(handler->pointOnSourceWire.x, handler->pointOnSourceWire.y, 0.));
         } break;
         default:

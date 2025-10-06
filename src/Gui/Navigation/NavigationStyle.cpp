@@ -24,6 +24,7 @@
 # include <Inventor/SbViewportRegion.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/draggers/SoDragger.h>
 # include <Inventor/errors/SoDebugError.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoCamera.h>
@@ -1540,6 +1541,25 @@ const std::vector<SbVec2s>& NavigationStyle::getPolygon(SelectionRole* role) con
     if (role)
         *role = this->selectedRole;
     return pcPolygon;
+}
+
+bool NavigationStyle::isDraggerUnderCursor(const SbVec2s pos) const
+{
+    SoRayPickAction rp(this->viewer->getSoRenderManager()->getViewportRegion());
+    rp.setRadius(viewer->getPickRadius());
+    rp.setPoint(pos);
+    rp.apply(this->viewer->getSoRenderManager()->getSceneGraph());
+    SoPickedPoint* pick = rp.getPickedPoint();
+    if (pick) {
+        const auto fullpath = static_cast<const SoFullPath*>(pick->getPath());
+        for (int i = 0; i < fullpath->getLength(); ++i) {
+            if (fullpath->getNode(i)->isOfType(SoDragger::getClassTypeId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    return false;
 }
 
 // This method adds another point to the mouse location log, used for spin

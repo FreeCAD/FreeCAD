@@ -23,7 +23,6 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
-#include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
@@ -32,7 +31,6 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 
-#include "QuickMeasure.h"
 #include "TaskMeasure.h"
 
 
@@ -79,68 +77,6 @@ bool StdCmdMeasure::isActive()
     return false;
 }
 
-
-class StdCmdQuickMeasure: public Gui::Command
-{
-public:
-    StdCmdQuickMeasure()
-        : Command("Std_QuickMeasure")
-    {
-        sGroup = "Measure";
-        sMenuText = QT_TR_NOOP("&Quick measure");
-        sToolTipText = QT_TR_NOOP("Toggle quick measure");
-        sWhatsThis = "Std_QuickMeasure";
-        sStatusTip = QT_TR_NOOP("Toggle quick measure");
-        accessParameter();
-    }
-    ~StdCmdQuickMeasure() override = default;
-    StdCmdQuickMeasure(const StdCmdQuickMeasure&) = delete;
-    StdCmdQuickMeasure(StdCmdQuickMeasure&&) = delete;
-    StdCmdQuickMeasure& operator=(const StdCmdQuickMeasure&) = delete;
-    StdCmdQuickMeasure& operator=(StdCmdQuickMeasure&&) = delete;
-
-    const char* className() const override
-    {
-        return "StdCmdQuickMeasure";
-    }
-
-protected:
-    void activated(int iMsg) override
-    {
-        if (parameter.isValid()) {
-            parameter->SetBool("EnableQuickMeasure", iMsg > 0);
-        }
-
-        if (iMsg == 0) {
-            if (quickMeasure) {
-                quickMeasure->print(QString());
-            }
-            quickMeasure.reset();
-        }
-        else {
-            quickMeasure = std::make_unique<MeasureGui::QuickMeasure>(QApplication::instance());
-        }
-    }
-    Gui::Action* createAction() override
-    {
-        Gui::Action* action = Gui::Command::createAction();
-        action->setCheckable(true);
-        action->setChecked(parameter->GetBool("EnableQuickMeasure", true));
-        return action;
-    }
-    void accessParameter()
-    {
-        // clang-format off
-        parameter = App::GetApplication().GetUserParameter().
-                    GetGroup("BaseApp/Preferences/Mod/Measure");
-        // clang-format on
-    }
-
-private:
-    std::unique_ptr<MeasureGui::QuickMeasure> quickMeasure;
-    ParameterGrp::handle parameter;
-};
-
 void CreateMeasureCommands()
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -148,5 +84,4 @@ void CreateMeasureCommands()
     auto cmd = new StdCmdMeasure();
     cmd->initAction();
     rcCmdMgr.addCommand(cmd);
-    rcCmdMgr.addCommand(new StdCmdQuickMeasure);
 }

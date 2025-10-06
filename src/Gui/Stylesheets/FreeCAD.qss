@@ -2287,9 +2287,9 @@ QTreeView::item:!selected:hover{
   background-color: @AccentHoverColor;
 }
 
-/* QTreeView::item, */
+/* QTreeView::item,
+QTableView::item, removed to fix Issue 24246 */
 QListView::item,
-QTableView::item,
 QColumnView::item {
   /* border: 1px solid @GeneralBorderColor;  we got gridlines so we do not need this*/
   background-color: transparent;

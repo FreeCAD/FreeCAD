@@ -726,5 +726,17 @@ App::DocumentObject* getMovingPartFromRef(const AssemblyObject* assemblyObject,
     return getMovingPartFromRef(assemblyObject, prop);
 }
 
+void syncPlacements(App::DocumentObject* src, App::DocumentObject* to)
+{
+    auto* plcPropSource =
+        dynamic_cast<App::PropertyPlacement*>(src->getPropertyByName("Placement"));
+    auto* plcPropLink = dynamic_cast<App::PropertyPlacement*>(to->getPropertyByName("Placement"));
+
+    if (plcPropSource && plcPropLink) {
+        if (!plcPropSource->getValue().isSame(plcPropLink->getValue())) {
+            plcPropLink->setValue(plcPropSource->getValue());
+        }
+    }
+}
 
 }  // namespace Assembly
