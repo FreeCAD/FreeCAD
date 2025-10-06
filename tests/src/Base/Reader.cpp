@@ -463,6 +463,153 @@ TEST_F(ReaderTest, validDefaults)
     EXPECT_EQ(value20, TimesIGoToBed::Late);
 }
 
+TEST_F(ReaderTest, AsciiUnchanged)
+{
+    std::string input = "Hello, world!";
+    std::string result = Base::Persistence::validateXMLString(input);
+    EXPECT_EQ(result, input);
+}
+
+TEST_F(ReaderTest, AllowedWhitespacePreserved)
+{
+    std::string input = "a\tb\nc\rd";
+    std::string result = Base::Persistence::validateXMLString(input);
+    EXPECT_EQ(result, input);
+}
+
+TEST_F(ReaderTest, DisallowedC0ControlsBecomeUnderscore)
+{
+    std::string input = "A";
+    input.push_back(char(0x00));
+    input.push_back(char(0x0F));
+    input.push_back(char(0x1B));
+    input += "Z";
+    std::string expected = "A___Z";
+    std::string result = Base::Persistence::validateXMLString(input);
+    EXPECT_EQ(result, expected);
+}
+
+TEST_F(ReaderTest, DelAndC1ControlsBecomeUnderscore)
+{
+    std::string input;
+    input.push_back('X');
+    input.push_back(char(0x7F));  // DEL
+    // U+0086 (SSA) in UTF-8: 0xC2 0x86
+    input += std::string("\xC2\x86", 2);
+    input.push_back('Y');
+    std::string expected = "X__Y";
+    std::string result = Base::Persistence::validateXMLString(input);
+    EXPECT_EQ(result, expected);
+}
+
+namespace
+{
+
+// Minimal UTF-8 encoder -- not valid for full production use, test suite only!
+static void append_cp_utf8(std::string& s, char32_t cp)
+{
+    if (cp <= 0x7F) {
+        s.push_back(static_cast<char>(cp));
+    }
+    else if (cp <= 0x7FF) {
+        s.push_back(static_cast<char>(0xC0 | (cp >> 6)));
+        s.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+    }
+    else if (cp <= 0xFFFF) {
+        s.push_back(static_cast<char>(0xE0 | (cp >> 12)));
+        s.push_back(static_cast<char>(0x80 | ((cp >> 6) & 0x3F)));
+        s.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+    }
+    else {
+        s.push_back(static_cast<char>(0xF0 | (cp >> 18)));
+        s.push_back(static_cast<char>(0x80 | ((cp >> 12) & 0x3F)));
+        s.push_back(static_cast<char>(0x80 | ((cp >> 6) & 0x3F)));
+        s.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+    }
+}
+
+static std::string make_utf8(std::initializer_list<char32_t> cps)
+{
+    std::string s;
+    for (char32_t cp : cps) {
+        append_cp_utf8(s, cp);
+    }
+    return s;
+}
+
+}  // namespace
+
+TEST_F(ReaderTest, BmpBoundaryAndNoncharacters)
+{
+    std::string input;
+    input += "X";
+    input += make_utf8({0xFFFD});  // allowed
+    input += make_utf8({0xFFFE});  // disallowed
+    input += "Y";
+
+    std::string expected;
+    expected += "X";
+    expected += make_utf8({0xFFFD});
+    expected += "_";
+    expected += "Y";
+
+    std::string result = Base::Persistence::validateXMLString(input);
+    EXPECT_EQ(result, expected);
+}
+
+TEST_F(ReaderTest, NonBmpEmojiPreserved)
+{
+    // 😀 U+1F600
+    std::string emoji = make_utf8({0x1F600});
+    std::string input = "A" + emoji + "B";
+    std::string result = Base::Persistence::validateXMLString(input);
+    EXPECT_EQ(result, input);
+}
+
+TEST_F(ReaderTest, ZwjSequencePreserved)
+{
+    std::string family = make_utf8({0x1F468, 0x200D, 0x1F469, 0x200D, 0x1F467, 0x200D, 0x1F466});
+    std::string input = "X" + family + "Y";
+    std::string result = Base::Persistence::validateXMLString(input);
+    EXPECT_EQ(result, input);
+}
+
+TEST_F(ReaderTest, CombiningMarksPreserved)
+{
+    std::string decomposed = std::string("caf") + make_utf8({0x0065, 0x0301});  // "café"
+    std::string result = Base::Persistence::validateXMLString(decomposed);
+    EXPECT_EQ(result, decomposed);
+}
+
+TEST_F(ReaderTest, PrivateUseAreaPreserved)
+{
+    // Yes, actually permitted by XML (as far as I can determine - chennes)
+    std::string pua = make_utf8({0xE000});
+    std::string input = "A" + pua + "B";
+    std::string result = Base::Persistence::validateXMLString(input);
+    EXPECT_EQ(result, input);
+}
+
+TEST_F(ReaderTest, MixedContentSanitization)
+{
+    std::string input;
+    input += "A";
+    input.push_back(char(0x1F));    // disallowed control -> '_'
+    input += make_utf8({0x1F602});  // 😂 allowed
+    input.push_back(char(0x00));    // disallowed control -> '_'
+    input += "Z";
+
+    std::string expected;
+    expected += "A";
+    expected += "_";
+    expected += make_utf8({0x1F602});
+    expected += "_";
+    expected += "Z";
+
+    std::string result = Base::Persistence::validateXMLString(input);
+    EXPECT_EQ(result, expected);
+}
+
 TEST_F(ReaderTest, validateXmlString)
 {
     std::string input = "abcde";
