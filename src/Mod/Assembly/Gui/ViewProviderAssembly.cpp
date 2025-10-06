@@ -1105,6 +1105,13 @@ void ViewProviderAssembly::draggerMotionCallback(void* data, SoDragger* d)
     Base::Placement draggerPlc = sudoThis->getDraggerPlacement();
     Base::Placement movePlc = draggerPlc * sudoThis->draggerInitPlc.inverse();
 
+    // Transform the global delta `movePlc` in case the assembly is transformed.
+    Base::Placement asmPlc =
+        App::GeoFeature::getGlobalPlacement(sudoThis->getObject<AssemblyObject>());
+    if (!asmPlc.isIdentity()) {
+        movePlc = asmPlc.inverse() * movePlc * asmPlc;
+    }
+
     for (auto& movingObj : sudoThis->docsToMove) {
         App::DocumentObject* obj = movingObj.obj;
 
