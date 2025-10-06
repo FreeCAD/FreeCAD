@@ -1210,35 +1210,36 @@ def _makeSTL(model, obj, ocl, model_type=None):
         else:
             shape = model
 
-        # Clipping shape to final depth to reduce the volume of STL file
-        try:
-            final_depth = obj.FinalDepth.Value
-            bbox = shape.BoundBox
-            padding = 1.0
+        # Clipping shape for ScanType Planar to final depth to reduce the volume of STL file
+        if obj.ScanType = "Planar":
+            try:
+                final_depth = obj.FinalDepth.Value
+                bbox = shape.BoundBox
+                padding = 1.0
 
-            # Define the "volume to keep" based on the final_depth.
-            # Its bottom face is at the final_depth, ensuring everything below is removed.
-            box_len = bbox.XLength + (2 * padding)
-            box_width = bbox.YLength + (2 * padding)
-            box_height = bbox.ZMax - final_depth + padding
-            box_corner = FreeCAD.Vector(bbox.XMin - padding, bbox.YMin - padding, final_depth)
+                # Define the "volume to keep" based on the final_depth.
+                # Its bottom face is at the final_depth, ensuring everything below is removed.
+                box_len = bbox.XLength + (2 * padding)
+                box_width = bbox.YLength + (2 * padding)
+                box_height = bbox.ZMax - final_depth + padding
+                box_corner = FreeCAD.Vector(bbox.XMin - padding, bbox.YMin - padding, final_depth)
 
-            volume_to_keep = Part.makeBox(box_len, box_width, box_height, box_corner)
+                volume_to_keep = Part.makeBox(box_len, box_width, box_height, box_corner)
 
-            # Perform the boolean intersection to get the final, optimized shape.
-            clipped_shape = shape.common(volume_to_keep)
+                # Perform the boolean intersection to get the final, optimized shape.
+                clipped_shape = shape.common(volume_to_keep)
 
-            if not clipped_shape.isNull() and (clipped_shape.Solids or clipped_shape.Shells):
-                shape = clipped_shape
-            else:
-                FreeCAD.Console.PrintWarning(
-                    "Clipping resulted in an empty shape. Using original shape.\n"
+                if not clipped_shape.isNull() and (clipped_shape.Solids or clipped_shape.Shells):
+                    shape = clipped_shape
+                else:
+                    FreeCAD.Console.PrintWarning(
+                        "Clipping resulted in an empty shape. Using original shape.\n"
+                    )
+
+            except Exception as e:
+                FreeCAD.Console.PrintError(
+                    f"Failed to apply pre-tessellation clip: {e}. Using original shape.\n"
                 )
-
-        except Exception as e:
-            FreeCAD.Console.PrintError(
-                f"Failed to apply pre-tessellation clip: {e}. Using original shape.\n"
-            )
 
         # vertices, facet_indices = shape.tessellate(obj.LinearDeflection.Value) # tessellate workaround
         # Workaround for tessellate bug. Tessellation is often unsuccessful in producing a clean shape from models with sharp edges.
