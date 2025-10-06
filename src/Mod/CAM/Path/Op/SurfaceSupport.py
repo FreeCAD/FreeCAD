@@ -1254,7 +1254,6 @@ def _makeSTL(model, obj, ocl, model_type=None):
             reduction_decimal = reduction_percent / 100.0
             tolerance = 0.001
 
-            original_count = mesh.CountPoints
             FreeCAD.Console.PrintMessage(
                 f"Simplifying mesh. Original triangle count: {len(mesh.Facets)}\n"
             )
