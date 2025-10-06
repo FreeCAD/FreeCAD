@@ -127,7 +127,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="625"/>
       <source>Extension line length</source>
-      <translation>Длина строки расширения</translation>
+      <translation>Длина удлиняющей линии</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="642"/>
@@ -294,7 +294,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="266"/>
       <source>Line spacing factor</source>
-      <translation>Коэффициент интервала строки</translation>
+      <translation>Коэффициент межстрочного интервала</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="300"/>
@@ -315,7 +315,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="335"/>
       <source>Line width</source>
-      <translation>Ширина линии</translation>
+      <translation>Толщина линии</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="378"/>
@@ -345,12 +345,12 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="398"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="477"/>
       <source>Tick-2</source>
-      <translation>Зацепление-2</translation>
+      <translation>Засечка-2</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="546"/>
       <source>Shows the unit next to the dimension value</source>
-      <translation>Показывает единицу рядом со значением размера</translation>
+      <translation>Показывает единицы измерения рядом со значением размера</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="579"/>
@@ -360,7 +360,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="645"/>
       <source>Extension line overshoot</source>
-      <translation>Нахлёст линии расширения</translation>
+      <translation>Нахлёст выносных линий</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="622"/>
@@ -397,7 +397,7 @@ It cannot be zero.</source>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="61"/>
       <source>Tangential distance</source>
-      <translation>Тангенциальное расстояние</translation>
+      <translation>Расстояние вдоль касателной</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="110"/>
@@ -430,12 +430,12 @@ It cannot be zero.</source>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="93"/>
       <source>Number of concentric circles to create, including a copy of the original object.
 It must be at least 2.</source>
-      <translation>Количество создаваемых концентрических окружностей, включая копию исходного объекта, должно быть не менее 2.</translation>
+      <translation>Количество создаваемых концентрических слоёв, включая копию исходного объекта, должно быть не менее 2.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="86"/>
       <source>Number of concentric circles</source>
-      <translation>Количество концентрических окружностей</translation>
+      <translation>Количество концентрических слоёв</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="135"/>
@@ -1169,12 +1169,12 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="587"/>
       <source>Extension line length</source>
-      <translation>Длина строки расширения</translation>
+      <translation>Длина удлиняющей линии</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="607"/>
       <source>Extension line overshoot</source>
-      <translation>Нахлёст линии расширения</translation>
+      <translation>Нахлёст выносных линий</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="624"/>
@@ -1210,7 +1210,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="358"/>
       <source>Line spacing factor</source>
-      <translation>Коэффициент интервала строки</translation>
+      <translation>Коэффициент межстрочного интервала</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="298"/>
@@ -1806,7 +1806,7 @@ pattern definitions to be added to the standard patterns</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="669"/>
       <source>Extension line overshoot</source>
-      <translation>Нахлёст линии расширения</translation>
+      <translation>Нахлёст выносных линий</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="595"/>
@@ -1832,7 +1832,7 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="149"/>
       <source>Line spacing factor</source>
-      <translation>Коэффициент интервала строки</translation>
+      <translation>Коэффициент межстрочного интервала</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="156"/>
@@ -1928,7 +1928,7 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</source>
       <location filename="../ui/preferences-drafttexts.ui" line="309"/>
       <location filename="../ui/preferences-drafttexts.ui" line="397"/>
       <source>Tick-2</source>
-      <translation>Зацепление-2</translation>
+      <translation>Засечка-2</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="442"/>
@@ -1985,7 +1985,7 @@ or cm, leave blank to use the current unit defined in FreeCAD.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="637"/>
       <source>Extension line length</source>
-      <translation>Длина строки расширения</translation>
+      <translation>Длина удлиняющей линии</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="644"/>
@@ -5879,27 +5879,27 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../InitGui.py" line="103"/>
       <source>Draft Creation</source>
-      <translation>Создание черновика</translation>
+      <translation>Создание наброска</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="106"/>
       <source>Draft Annotation</source>
-      <translation type="unfinished">Draft Annotation</translation>
+      <translation>Аннотация наброска</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="109"/>
       <source>Draft Modification</source>
-      <translation>Модификация черновика</translation>
+      <translation>Модификация наброска</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="112"/>
       <source>Draft Utility</source>
-      <translation type="unfinished">Draft Utility</translation>
+      <translation>Утилиты наброска</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="115"/>
       <source>Draft Snap</source>
-      <translation type="unfinished">Draft Snap</translation>
+      <translation>Привязки наброска</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="120"/>
@@ -8053,7 +8053,7 @@ If other objects are selected they are ignored.</translation>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="57"/>
       <source>Draft to Sketch</source>
-      <translation>Преобразовать из эскиза в набросок</translation>
+      <translation>Преобразовать из Наброска в Эскиз</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="60"/>
@@ -8669,15 +8669,17 @@ The initial projection direction is the opposite of the current active view dire
 reusable objects (Part Compounds) and instances become `App::Link` objects,
 maintaining the block structure. Best for full integration with the Draft
 workbench.</source>
-      <translation type="unfinished">Creates fully parametric Draft objects. Block definitions are imported as
-reusable objects (Part Compounds) and instances become `App::Link` objects,
-maintaining the block structure. Best for full integration with the Draft
-workbench.</translation>
+      <translation>Создаёт полностью параметрические объекты Наброска. 
+Значения блоков импортируются как объекты 
+многократного использования (соединения деталей), 
+а экземпляры становятся объектами "App::Link",
+сохраняя структуру блоков. Лучше всего подходит для 
+полной интеграции с верстаком Набросок.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="32"/>
       <source>Editable Draft objects</source>
-      <translation type="unfinished">Editable Draft objects</translation>
+      <translation>Редактируемые объекты Наброска</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="39"/>

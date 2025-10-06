@@ -4,17 +4,17 @@
   <context>
     <name>CmdPathArea</name>
     <message>
-      <location filename="../../Command.cpp" line="47"/>
+      <location filename="../../Command.cpp" line="45"/>
       <source>CAM</source>
       <translation>CAM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="48"/>
+      <location filename="../../Command.cpp" line="46"/>
       <source>Area</source>
       <translation>Плошча</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="49"/>
+      <location filename="../../Command.cpp" line="47"/>
       <source>Creates a feature area from the selected objects</source>
       <translation>Стварае вобласць характарыстык з абраных аб'ектаў</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdPathAreaWorkplane</name>
     <message>
-      <location filename="../../Command.cpp" line="142"/>
+      <location filename="../../Command.cpp" line="140"/>
       <source>CAM</source>
       <translation>CAM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="143"/>
+      <location filename="../../Command.cpp" line="141"/>
       <source>Area Workplane</source>
       <translation>Плошча працоўнай плоскасці</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="144"/>
+      <location filename="../../Command.cpp" line="142"/>
       <source>Selects a workplane for a feature area</source>
       <translation>Абірае плошчу працоўнай плоскасці для вобласці характарыстык</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdPathCompound</name>
     <message>
-      <location filename="../../Command.cpp" line="237"/>
+      <location filename="../../Command.cpp" line="235"/>
       <source>CAM</source>
       <translation>CAM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
+      <location filename="../../Command.cpp" line="236"/>
       <source>Compound</source>
       <translation>Злучэнне</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="239"/>
+      <location filename="../../Command.cpp" line="237"/>
       <source>Creates a compound from the selected toolpaths</source>
       <translation>Стварае злучэнне з абраных траекторый руху інструмента</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdPathShape</name>
     <message>
-      <location filename="../../Command.cpp" line="300"/>
+      <location filename="../../Command.cpp" line="298"/>
       <source>CAM</source>
       <translation>CAM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="301"/>
+      <location filename="../../Command.cpp" line="299"/>
       <source>From Shape</source>
       <translation>З фігуры</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="302"/>
+      <location filename="../../Command.cpp" line="300"/>
       <source>Creates a toolpath from a selected shape</source>
       <translation>Стварае траекторыю руху інструмента з абранай фігуры</translation>
     </message>
@@ -76,27 +76,27 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="101"/>
+      <location filename="../../Command.cpp" line="99"/>
       <source>Create Path Area View</source>
       <translation>Стварыць выгляд вобласці траекторыі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="114"/>
+      <location filename="../../Command.cpp" line="112"/>
       <source>Create Path Area</source>
       <translation>Стварыць вобласць траекторыі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="209"/>
+      <location filename="../../Command.cpp" line="207"/>
       <source>Select Workplane for Path Area</source>
       <translation>Абраць працоўную плоскасць для вобласці траекторыі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="268"/>
+      <location filename="../../Command.cpp" line="266"/>
       <source>Create Path Compound</source>
       <translation>Стварыць злучэнне траекторыі</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="346"/>
+      <location filename="../../Command.cpp" line="344"/>
       <source>Create Path Shape</source>
       <translation>Стварыць форму траекторыі</translation>
     </message>
@@ -2735,8 +2735,8 @@ See the file save policy below on how to deal with name conflicts.</source>
   <context>
     <name>PathGui::DlgProcessorChooser</name>
     <message>
-      <location filename="../../DlgProcessorChooser.cpp" line="43"/>
-      <location filename="../../DlgProcessorChooser.cpp" line="72"/>
+      <location filename="../../DlgProcessorChooser.cpp" line="41"/>
+      <location filename="../../DlgProcessorChooser.cpp" line="70"/>
       <source>None</source>
       <translation>Адсутнічае</translation>
     </message>
@@ -2944,7 +2944,7 @@ See the file save policy below on how to deal with name conflicts.</source>
   <context>
     <name>PathGui::TaskWidgetPathCompound</name>
     <message>
-      <location filename="../../TaskDlgPathCompound.cpp" line="50"/>
+      <location filename="../../TaskDlgPathCompound.cpp" line="48"/>
       <source>Compound paths</source>
       <translation>Злучэнне траекторыі</translation>
     </message>
@@ -3945,60 +3945,60 @@ Default: 3 mm</source>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../InitGui.py" line="240"/>
+      <location filename="../../../InitGui.py" line="247"/>
       <source>Project Setup</source>
       <translation>Налады праекту</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="241"/>
+      <location filename="../../../InitGui.py" line="248"/>
       <source>Tool Commands</source>
       <translation>Каманды інструменту</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="243"/>
+      <location filename="../../../InitGui.py" line="250"/>
       <source>New Operations</source>
       <translation>Новыя аперацыі</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="247"/>
-      <location filename="../../../InitGui.py" line="283"/>
+      <location filename="../../../InitGui.py" line="254"/>
+      <location filename="../../../InitGui.py" line="290"/>
       <source>Path Modification</source>
       <translation>Змена шляху</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="250"/>
+      <location filename="../../../InitGui.py" line="257"/>
       <source>Helpful Tools</source>
       <translation>Карысныя інструменты</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="253"/>
-      <location filename="../../../InitGui.py" line="268"/>
+      <location filename="../../../InitGui.py" line="260"/>
       <location filename="../../../InitGui.py" line="275"/>
       <location filename="../../../InitGui.py" line="282"/>
-      <location filename="../../../InitGui.py" line="290"/>
-      <location filename="../../../InitGui.py" line="296"/>
-      <location filename="../../../InitGui.py" line="298"/>
-      <location filename="../../../InitGui.py" line="301"/>
+      <location filename="../../../InitGui.py" line="289"/>
+      <location filename="../../../InitGui.py" line="297"/>
+      <location filename="../../../InitGui.py" line="303"/>
+      <location filename="../../../InitGui.py" line="305"/>
+      <location filename="../../../InitGui.py" line="308"/>
       <source>&amp;CAM</source>
       <translation>&amp;CAM</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="269"/>
+      <location filename="../../../InitGui.py" line="276"/>
       <source>Path Dressup</source>
       <translation>Паляпшэнне траекторыі</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="276"/>
+      <location filename="../../../InitGui.py" line="283"/>
       <source>Supplemental Commands</source>
       <translation>Дадатковыя каманды</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="291"/>
+      <location filename="../../../InitGui.py" line="298"/>
       <source>Specialty Operations</source>
       <translation>Спецыялізаваныя аперацыі</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="302"/>
+      <location filename="../../../InitGui.py" line="309"/>
       <source>Utils</source>
       <translation>Утыліты</translation>
     </message>
@@ -4338,67 +4338,67 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="90"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="354"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="355"/>
       <source>Set distance which will attempts to avoid unnecessary retractions</source>
       <translation>Задаць адлегласць, якая дазволіць пазбегнуць непатрэбных уцягванняў</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="96"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="231"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="232"/>
       <source>The style of motion into the toolpath</source>
       <translation>Стыль руху па траекторыі руху інструмента</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="103"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="243"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="244"/>
       <source>The style of motion out of the toolpath</source>
       <translation>Стыль руху па-за траекторыяй руху інструмента</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="116"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="254"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="255"/>
       <source>Angle of the Lead-In (1..90)</source>
       <translation>Вугал уваходу (1..90)</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="122"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="262"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="263"/>
       <source>Angle of the Lead-Out (1..90)</source>
       <translation>Вугал выхаду (1..90)</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="128"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="294"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="295"/>
       <source>Determine length of the Lead-In</source>
       <translation>Вызначыць даўжыню ўваходу</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="134"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="303"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="304"/>
       <source>Determine length of the Lead-Out</source>
       <translation>Вызначыць даўжыню выхаду</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="140"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="323"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="324"/>
       <source>Invert Lead-In direction</source>
       <translation>Змяніць напрамак уваходу</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="146"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="330"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="331"/>
       <source>Invert Lead-Out direction</source>
       <translation>Змяніць напрамак выхаду</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="152"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="337"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="338"/>
       <source>Move start point</source>
       <translation>Рухаць пачатковую кропку</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="158"/>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="344"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="345"/>
       <source>Move end point</source>
       <translation>Рухаць канечную кропку</translation>
     </message>
@@ -5666,6 +5666,7 @@ Use property KeepToolDown to change this</source>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="285"/>
+      <location filename="../../../Path/Tool/toolbit/models/base.py" line="742"/>
       <source>Tool material</source>
       <translation>Матэрыял інструмента</translation>
     </message>
@@ -5687,6 +5688,7 @@ Use property KeepToolDown to change this</source>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="82"/>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="276"/>
+      <location filename="../../../Path/Tool/toolbit/models/base.py" line="723"/>
       <source>Direction of spindle rotation</source>
       <translation>Напрамак кручэння шпіндаля</translation>
     </message>
@@ -6395,8 +6397,8 @@ Aborting op creation</source>
       <location filename="../../../InitGui.py" line="112"/>
       <location filename="../../../InitGui.py" line="116"/>
       <location filename="../../../InitGui.py" line="120"/>
-      <location filename="../../../InitGui.py" line="319"/>
-      <location filename="../../AppPathGui.cpp" line="91"/>
+      <location filename="../../../InitGui.py" line="326"/>
+      <location filename="../../AppPathGui.cpp" line="90"/>
       <source>CAM</source>
       <translation>CAM</translation>
     </message>
@@ -6412,7 +6414,7 @@ Aborting op creation</source>
   <context>
     <name>CAM_3dTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="233"/>
+      <location filename="../../../InitGui.py" line="240"/>
       <source>3D Operations</source>
       <translation>Трохмерныя аперацыі</translation>
     </message>
@@ -6543,7 +6545,7 @@ Aborting op creation</source>
       <translation>Дуга</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1195"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1197"/>
       <source>Lead In/Out</source>
       <translation>Уваход/выхад</translation>
     </message>
@@ -6588,22 +6590,22 @@ Aborting op creation</source>
       <translation>Па вертыкалі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1199"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1201"/>
       <source>Creates entry and exit motions for a selected path</source>
       <translation>Стварае руху ўваходу і выхаду для абранай траекторыі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1212"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1214"/>
       <source>Select one toolpath object</source>
       <translation>Абраць адзін аб'ект траекторыі руху інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1221"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1223"/>
       <source>Select a Profile object</source>
       <translation>Абраць аб'ект профілю</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1217"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1219"/>
       <source>The selected object is not a toolpath</source>
       <translation>Абраны аб'ект не з'яўляецца траекторыяй руху інструмента</translation>
     </message>
@@ -7002,52 +7004,53 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="137"/>
       <source>&lt;b&gt;This document uses an improper unit schema which can result in dangerous situations and machine crashes!&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;This document uses an improper unit schema which can result in dangerous situations and machine crashes!&lt;/b&gt;</translation>
+      <translation>У дакуменце ўжываецца няправільная схема адзінак вымярэнняў, што можа прывесці да небяспечных сітуацый і паломак станка!</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="148"/>
       <source>Current unit schema &apos;{}&apos; expresses velocity in values &lt;i&gt;per second&lt;/i&gt;.</source>
-      <translation type="unfinished">Current unit schema &apos;{}&apos; expresses velocity in values &lt;i&gt;per second&lt;/i&gt;.</translation>
+      <translation>Бягучая схема адзінак вымярэнняў '{}' выражае хуткасць у значэннях "у секунду".</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="160"/>
       <source>Please select a unit schema that expresses feed rates &lt;i&gt;per minute&lt;/i&gt; instead:</source>
-      <translation type="unfinished">Please select a unit schema that expresses feed rates &lt;i&gt;per minute&lt;/i&gt; instead:</translation>
+      <translation>Абярыце схему адзінак вымярэнняў, якая выражае хуткасць падачы "у хвіліну" замест гэтага:</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="165"/>
       <source>Recommended Unit Schemas</source>
-      <translation type="unfinished">Recommended Unit Schemas</translation>
+      <translation>Рэкамендаваныя схемы адзінак вымярэнняў</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="189"/>
       <source>Keeping the current unit schema can result in dangerous G-code errors. For details please refer to the &lt;a href=&apos;https://wiki.freecad.org/CAM_Workbench#Units&apos;&gt;Units section&lt;/a&gt; of the CAM Workbench&apos;s wiki page.</source>
-      <translation type="unfinished">Keeping the current unit schema can result in dangerous G-code errors. For details please refer to the &lt;a href=&apos;https://wiki.freecad.org/CAM_Workbench#Units&apos;&gt;Units section&lt;/a&gt; of the CAM Workbench&apos;s wiki page.</translation>
+      <translation>Захаванне бягучай схемы адзінак вымярэнняў можа прывесці да небяспечных памылак у G-code.
+Для атрымання падрабязнай інфармацыі, звярніцеся да &lt;a href="https://wiki.freecad.org/CAM_Workbench#Units&amp;apos&lt;/a>, падзел "Прылады" на вікі-старонцы варштата CAM.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="197"/>
       <source>Change Unit Schema</source>
-      <translation type="unfinished">Change Unit Schema</translation>
+      <translation>Змяніць схему адзінак вымярэнняў</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="201"/>
       <source>Keep Current Schema</source>
-      <translation type="unfinished">Keep Current Schema</translation>
+      <translation>Пакінуць бягучую схему</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="204"/>
       <source>Don&apos;t Show Again</source>
-      <translation type="unfinished">Don&apos;t Show Again</translation>
+      <translation>Больш не паказваць</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="233"/>
       <source>Unit Schema Changed</source>
-      <translation type="unfinished">Unit Schema Changed</translation>
+      <translation>Схема адзінак вымярэнняў зменена</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="234"/>
       <source>Unit schema successfully changed to &apos;{}&apos;.</source>
-      <translation type="unfinished">Unit schema successfully changed to &apos;{}&apos;.</translation>
+      <translation>Схема адзінак вымярэнняў паспяхова зменена на '{}'.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="242"/>
@@ -7057,17 +7060,17 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="243"/>
       <source>Failed to change unit schema: {}</source>
-      <translation type="unfinished">Failed to change unit schema: {}</translation>
+      <translation>Не атрымалася змяніць схему аб'екта: {}</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="248"/>
       <source>No Selection</source>
-      <translation type="unfinished">No Selection</translation>
+      <translation>Не абрана</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="249"/>
       <source>Please select a unit schema.</source>
-      <translation type="unfinished">Please select a unit schema.</translation>
+      <translation>Абярыце схему адзінак вымярэнняў.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="347"/>
@@ -7173,309 +7176,309 @@ Aborting op creation</source>
   <context>
     <name>CAM_Sanity</name>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="90"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="103"/>
       <source>Table of Contents</source>
       <translation>Змест</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="78"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="91"/>
       <source>Part Information</source>
       <translation>Інфармацыя аб дэталі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="83"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="96"/>
       <source>Run Summary</source>
       <translation>Зводка выканання</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="82"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="95"/>
       <source>Rough Stock</source>
       <translation>Неапрацаваная загатоўка</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="92"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="105"/>
       <source>Tool Data</source>
       <translation>Дадзеныя інструменту</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="62"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="75"/>
       <source>Fixtures</source>
       <translation>Арматура</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="86"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="99"/>
       <source>Squawks</source>
       <translation>Кавалкі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="104"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="117"/>
       <source>Job Type</source>
       <translation>Тып задання</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="107"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="120"/>
       <source>Customer</source>
       <translation>Кліент</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="74"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="87"/>
       <source>Operation</source>
       <translation>Аперацыя</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="101"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="114"/>
       <source>Cycle Time</source>
       <translation>Час цыклу</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="93"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="106"/>
       <source>Tool Number</source>
       <translation>Нумар інструмента</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="58"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="71"/>
       <source>Description</source>
       <translation>Апісанне</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="70"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="83"/>
       <source>Manufacturer</source>
       <translation>Вытворца</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="90"/>
       <source>Output (G-code)</source>
       <translation>Вывад (G-code)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="79"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="92"/>
       <source>Part Number</source>
       <translation>Артыкул дэталі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="102"/>
       <source>Surface Speed HSS</source>
       <translation>Павярхоўная хуткасць HSS</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="94"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="107"/>
       <source>URL</source>
       <translation>URL-адрас</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="66"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="79"/>
       <source>Inspection Notes</source>
       <translation>Заўвагі да праверкі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="91"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="104"/>
       <source>Tool Controller</source>
       <translation>Кантролер інструментаў</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="60"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="73"/>
       <source>Feed Rate</source>
       <translation>Хуткасць падачы</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="85"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="98"/>
       <source>Spindle Speed</source>
       <translation>Хуткасць шпіндаля</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="84"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="97"/>
       <source>Tool Shape</source>
       <translation>Форма інструменту</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="59"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="72"/>
       <source>Tool Diameter</source>
       <translation>Дыяметр інструменту</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="65"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="78"/>
       <source>Setup Report for CAM Job</source>
       <translation>Наладкі справаздачы для задання CAM</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="88"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="101"/>
       <source>Surface Speed Carbide</source>
       <translation>Цвёрдасплаўны сплаў з павярхоўнай хуткасцю</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="95"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="108"/>
       <source>X Size</source>
       <translation>Памер па восі X</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="96"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="109"/>
       <source>Y Size</source>
       <translation>Памер па восі Y</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="97"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="110"/>
       <source>Z Size</source>
       <translation>Памер па восі Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="98"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="111"/>
       <source>Minimum Z</source>
       <translation>Найменшы Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="99"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="112"/>
       <source>Maximum Z</source>
       <translation>Найбольшы Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="100"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="113"/>
       <source>Coolant Mode</source>
       <translation>Рэжым астуджэння</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="102"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="115"/>
       <source>Part</source>
       <translation>Дэталь</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="103"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="116"/>
       <source>Sequence</source>
       <translation>Паслядоўнасць</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="105"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="118"/>
       <source>CAD File</source>
       <translation>Файл CAD</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="106"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="119"/>
       <source>Last Save</source>
       <translation>Апошняе захаванае</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="71"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="84"/>
       <source>Material</source>
       <translation>Матэрыял</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="73"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="86"/>
       <source>Work Offsets</source>
       <translation>Працоўныя зрушэнні</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="76"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="89"/>
       <source>Order By</source>
       <translation>Парадкаваць па</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="57"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="70"/>
       <source>Part Datum</source>
       <translation>Апорныя каардынаты дэталі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="64"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="77"/>
       <source>G-code File</source>
       <translation>Файл G-code</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="67"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="80"/>
       <source>Last Post Process Date</source>
       <translation>Дата апошняй апрацоўкі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="87"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="100"/>
       <source>Stops</source>
       <translation>Спыненні</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="81"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="94"/>
       <source>Programmer</source>
       <translation>Праграміст</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="69"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="82"/>
       <source>Machine</source>
       <translation>Станок</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="80"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="93"/>
       <source>Postprocessor</source>
       <translation>Пасляапрацоўка</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="63"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="76"/>
       <source>Post Processor Flags</source>
       <translation>Флагі пасляапрацоўкі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="61"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="74"/>
       <source>File Size (kB)</source>
       <translation>Памер файла (Кб)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="68"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="81"/>
       <source>Line Count</source>
       <translation>Колькасць ліній</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="72"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="85"/>
       <source>Note</source>
       <translation>Заўвага</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="75"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="88"/>
       <source>Operator</source>
       <translation>Аператар</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="56"/>
+      <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="69"/>
       <source>Date</source>
       <translation>Дата</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="231"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="245"/>
       <source>The Job&apos;s last post-processed file is missing</source>
       <translation>Адсутнічае апошні файл пасляапрацоўкі задання</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="378"/>
       <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
       <translation>Нумар інструменту {} - гэта састарэлы інструмент.
 Састарэлыя інструменты не падтрымліваюцца функцыяй Path-Sanity</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="376"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="390"/>
       <source>Tool number {} used by multiple tools</source>
       <translation>Нумар інструмента {} ужываецца некалькімі інструментамі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="399"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="423"/>
       <source>Toolbit Shape for TC: {} not found</source>
       <translation>Форма такарнага разца кантролеру інструментаў: {} не знойдзена</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="419"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="448"/>
       <source>Tool Controller &apos;{}&apos; has no feedrate</source>
       <translation>Кантролер інструментаў &apos;{}&apos; не мае хуткасці падачы</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="431"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="460"/>
       <source>Tool Controller &apos;{}&apos; has no spindlespeed</source>
       <translation>Кантролер інструментаў &apos;{}&apos; не мае хуткасці кручэння шпіндаля</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="457"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="486"/>
       <source>Tool Controller &apos;{}&apos; is not used</source>
       <translation>Кантролер інструментаў &apos;{}&apos; не ўжываецца</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="335"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="349"/>
       <source>Consider Specifying the Stock Material</source>
       <translation>Разглядзіце магчымасць паказаць матэрыял загатоўкі</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Sanity/Sanity.py" line="215"/>
+      <location filename="../../../Path/Main/Sanity/Sanity.py" line="229"/>
       <source>The Job has not been post-processed</source>
       <translation>Заданне не было апрацавана пасляапрацоўкай</translation>
     </message>
@@ -7802,11 +7805,6 @@ Aborting op creation</source>
       <translation>{diameter} рэжучая піла, {blade_thickness} ляз, {flutes} - выемка</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/models/tap.py" line="46"/>
-      <source>{diameter} tap, {flutes}-flute, {cutting_edge_length} cutting edge</source>
-      <translation>{diameter} разьба, {flutes} - выемка, {cutting_edge_length} абрэзка рабра</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Tool/toolbit/models/threadmill.py" line="46"/>
       <source>{diameter} thread mill, {flutes}-flute, {cutting_angle} cutting angle</source>
       <translation>{diameter} рэзьбанаразны, {flutes} - выемка, {cutting_angle} абрэзка вугла</translation>
@@ -7966,17 +7964,18 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="278"/>
       <source>Missing Toolbit</source>
-      <translation type="unfinished">Missing Toolbit</translation>
+      <translation>Адсутнічае такарны разец</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="282"/>
       <source>This toolbit is missing from your local store. It may be a placeholder for a toolbit that was not found during library import.</source>
-      <translation type="unfinished">This toolbit is missing from your local store. It may be a placeholder for a toolbit that was not found during library import.</translation>
+      <translation>Такарны разец адсутнічае ў лакальным сховішчы.
+Магчыма, ён з'яўляецца запаўняльнікам такарнага разца, які не быў знойдзены пры імпартаванні бібліятэкі.</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="289"/>
       <source>Failed to load toolbit: {e}</source>
-      <translation type="unfinished">Failed to load toolbit: {e}</translation>
+      <translation>Не атрымалася загрузіць такарны разец: {e}</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="426"/>
@@ -7994,6 +7993,11 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../PathScripts/PathUtils.py" line="218"/>
       <source>Selected faces should be vertical</source>
       <translation>Абраныя грані павінны быць вертыкальнымі</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/models/tap.py" line="74"/>
+      <source>{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge</source>
+      <translation type="unfinished">{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge</translation>
     </message>
   </context>
   <context>
@@ -8918,7 +8922,7 @@ This will not delete the toolbits contained within it.</source>
   <context>
     <name>CAM_DrillingTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="183"/>
+      <location filename="../../../InitGui.py" line="187"/>
       <source>Drilling Operations</source>
       <translation>Аперацыі свідравання</translation>
     </message>
@@ -8962,17 +8966,9 @@ This will not delete the toolbits contained within it.</source>
     </message>
   </context>
   <context>
-    <name>Path_Tapping</name>
-    <message>
-      <location filename="../../../Path/Op/Tapping.py" line="158"/>
-      <source>Tapping Operation requires a Tap tool with Pitch or TPI</source>
-      <translation>Для наразання разьбы патрабуецца разьбавы інструмент з падачай ці TPI</translation>
-    </message>
-  </context>
-  <context>
     <name>CAM_DressupTools</name>
     <message>
-      <location filename="../../../InitGui.py" line="191"/>
+      <location filename="../../../InitGui.py" line="198"/>
       <source>Dressup Operations</source>
       <translation>Аперацыя аздаблення</translation>
     </message>
@@ -9069,7 +9065,7 @@ This will not delete the toolbits contained within it.</source>
   <context>
     <name>CAMSimulator::DlgCAMSimulator</name>
     <message>
-      <location filename="../../../PathSimulator/AppGL/DlgCAMSimulator.cpp" line="335"/>
+      <location filename="../../../PathSimulator/AppGL/DlgCAMSimulator.cpp" line="334"/>
       <source>%1 - New CAM Simulator</source>
       <translation>%1 - Новы сродак мадэлявання CAM</translation>
     </message>
@@ -9158,7 +9154,7 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="63"/>
       <source>Note: Select the directory that will contain the Tool folder with Bit/, Shape/, and Library/ subfolders.</source>
-      <translation type="unfinished">Note: Select the directory that will contain the Tool folder with Bit/, Shape/, and Library/ subfolders.</translation>
+      <translation>Заўвага: абярыце каталог, які будзе ўтрымліваць каталог інструментаў з укладзенымі каталогамі Bit/, Shape/ і Library/.</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="68"/>
@@ -9407,7 +9403,12 @@ This will not delete the toolbits contained within it.</source>
       <translation>Агульная даўжыня метчыка</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/tap.py" line="64"/>
+      <location filename="../../../Path/Tool/shape/models/tap.py" line="60"/>
+      <source>Thread pitch</source>
+      <translation>Крок разьбы</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/tap.py" line="68"/>
       <source>Tap</source>
       <translation>Разьбавы</translation>
     </message>
@@ -9563,6 +9564,24 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Tool/library/ui/properties.py" line="81"/>
       <source>Library Properties - {current_name or self.library.label}</source>
       <translation>Уласцівасці бібліятэкі - {current_name or self.library.label}</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Tapping</name>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="156"/>
+      <source>Tapping Operation requires a Tap tool with Pitch</source>
+      <translation type="unfinished">Tapping Operation requires a Tap tool with Pitch</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="234"/>
+      <source>Tapping Operation requires a Tap tool with non-zero Pitch</source>
+      <translation type="unfinished">Tapping Operation requires a Tap tool with non-zero Pitch</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Tapping.py" line="244"/>
+      <source>Tapping Operation requires a ToolController with non-zero SpindleSpeed</source>
+      <translation type="unfinished">Tapping Operation requires a ToolController with non-zero SpindleSpeed</translation>
     </message>
   </context>
 </TS>

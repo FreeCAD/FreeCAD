@@ -3130,7 +3130,7 @@ se corrispondono agli assi X, Y o Z del sistema di coordinate globali</translati
     <message>
       <location filename="../../WorkingPlane.py" line="1229"/>
       <source>Current working plane: Auto</source>
-      <translation type="unfinished">Current working plane: Auto</translation>
+      <translation>Piano di lavoro attuale: Auto</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1703"/>
@@ -8083,7 +8083,7 @@ However, a single sketch with disconnected traces is converted into several indi
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="60"/>
       <source>Toggle Grid</source>
-      <translation type="unfinished">Toggle Grid</translation>
+      <translation>Attiva/Disattiva Griglia</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="62"/>

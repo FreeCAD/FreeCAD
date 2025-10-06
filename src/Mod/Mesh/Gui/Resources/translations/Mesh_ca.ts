@@ -1219,7 +1219,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="163"/>
       <source>Height</source>
-      <translation>Alçària</translation>
+      <translation>Alçada</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="219"/>
@@ -1353,7 +1353,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="138"/>
       <source>Height</source>
-      <translation>Alçària</translation>
+      <translation>Alçada</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExportImp.cpp" line="38"/>

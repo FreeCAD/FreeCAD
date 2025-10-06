@@ -807,7 +807,7 @@ Uncheck to use working plane coordinate system</source>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="109"/>
       <source>Height</source>
-      <translation>Alçària</translation>
+      <translation>Alçada</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="116"/>
@@ -3101,7 +3101,7 @@ si coincideixen amb l'eix X, Y o Z del sistema de coordenades global</translatio
     <message>
       <location filename="../../WorkingPlane.py" line="1229"/>
       <source>Current working plane: Auto</source>
-      <translation type="unfinished">Current working plane: Auto</translation>
+      <translation>Pla de treball actual: Automàtic</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1703"/>

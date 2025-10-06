@@ -502,12 +502,12 @@
     <message>
       <location filename="../../Command.cpp" line="922"/>
       <source>Section From Plane</source>
-      <translation type="unfinished">Section From Plane</translation>
+      <translation>Пресеци помоћу равни</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="923"/>
       <source>Sections the mesh with the selected plane</source>
-      <translation type="unfinished">Sections the mesh with the selected plane</translation>
+      <translation>Направи пресек мреже помоћу изабране равни</translation>
     </message>
   </context>
   <context>
@@ -525,7 +525,7 @@
     <message>
       <location filename="../../Command.cpp" line="1614"/>
       <source>Creates new mesh segments from the mesh</source>
-      <translation type="unfinished">Creates new mesh segments from the mesh</translation>
+      <translation>Направи нове сегменте мреже од мреже</translation>
     </message>
   </context>
   <context>
@@ -556,12 +556,12 @@
     <message>
       <location filename="../../Command.cpp" line="1298"/>
       <source>Smooth</source>
-      <translation type="unfinished">Smooth</translation>
+      <translation>Глачање</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1299"/>
       <source>Smoothes the selected meshes</source>
-      <translation type="unfinished">Smoothes the selected meshes</translation>
+      <translation>Заглади изабране мреже</translation>
     </message>
   </context>
   <context>
@@ -592,12 +592,12 @@
     <message>
       <location filename="../../Command.cpp" line="893"/>
       <source>Trim With Plane</source>
-      <translation type="unfinished">Trim With Plane</translation>
+      <translation>Исеци са равни</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="894"/>
       <source>Trims a mesh by removing faces on one side of a selected plane</source>
-      <translation type="unfinished">Trims a mesh by removing faces on one side of a selected plane</translation>
+      <translation>Исеци мрежу уклањањем пљосни са једне стране изабране равни</translation>
     </message>
   </context>
   <context>
