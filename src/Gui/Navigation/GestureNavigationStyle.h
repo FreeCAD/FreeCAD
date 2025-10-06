@@ -98,8 +98,6 @@ protected: // members variables
     int rollDir = 0;
     bool logging = false;
 
-protected: //helper functions
-    bool isDraggerUnderCursor(SbVec2s pos);
 public:
     bool is2DViewing() const;
 
