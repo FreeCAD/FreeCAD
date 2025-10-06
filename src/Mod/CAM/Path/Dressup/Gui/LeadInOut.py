@@ -384,7 +384,7 @@ class ObjectDressup:
         return output
 
     # Create safety movements to start point
-    def getTravelStart(self, obj, pos, first, inInstrPrev, outInstrPrev):
+    def getTravelStart(self, obj, pos, first, outInstrPrev):
         op = PathDressup.baseOp(obj.Base)
         vertfeed = PathDressup.toolController(obj.Base).VertFeed.Value
         commands = []
@@ -397,50 +397,17 @@ class ObjectDressup:
             # move to clearance height
             commands.append(PathLanguage.MoveStraight(None, "G00", {"Z": op.ClearanceHeight.Value}))
 
-            # move to mill X/Y-position (without move Z)
+            # move to mill position at clearance height
             commands.append(PathLanguage.MoveStraight(None, "G00", {"X": pos.x, "Y": pos.y}))
 
-        if distance > obj.RetractThreshold:
             # move vertical down to mill position
             if obj.RapidPlunge:
                 # move to mill position rapidly
                 commands.append(PathLanguage.MoveStraight(None, "G00", {"Z": pos.z}))
             else:
-                # move to mill position in one or two steps
-                if first:
-                    # move down to SafeHeight
-                    commands.append(
-                        PathLanguage.MoveStraight(None, "G00", {"Z": op.SafeHeight.Value})
-                    )
+                # move to mill position in two steps
+                commands.append(PathLanguage.MoveStraight(None, "G00", {"Z": op.SafeHeight.Value}))
                 commands.append(PathLanguage.MoveStraight(None, "G01", {"Z": pos.z, "F": vertfeed}))
-
-        elif obj.StyleOut == "Helix":
-            # move by helix to next mill position
-            if obj.StyleIn == "Helix":
-                halfStepZ = (posPrev.z - pos.z) / 2
-                stepOutZ = halfStepZ * outInstrPrev.arcAngle() / math.pi
-                lastZMove = stepOutZ
-            else:
-                stepOutZ = posPrev.z - pos.z
-                lastZMove = 0
-            outInstrPrev.param["Z"] = posPrev.z - stepOutZ
-            if not Path.Geom.pointsCoincide(posPrevXY, posXY):
-                if obj.RapidPlunge:
-                    commands.append(
-                        PathLanguage.MoveStraight(
-                            outInstrPrev.positionEnd(),
-                            "G00",
-                            {"X": pos.x, "Y": pos.y, "Z": pos.z + lastZMove},
-                        )
-                    )
-                else:
-                    commands.append(
-                        PathLanguage.MoveStraight(
-                            outInstrPrev.positionEnd(),
-                            "G01",
-                            {"X": pos.x, "Y": pos.y, "Z": pos.z + lastZMove, "F": vertfeed},
-                        )
-                    )
 
         else:
             # move to next mill position by short path
@@ -584,6 +551,7 @@ class ObjectDressup:
 
         lead = []
         begin = move.positionBegin()
+        beginZ = move.positionBegin().z  # do not change this variable below
 
         if obj.StyleIn not in ["No Retract", "Vertical"]:
             toolRadius = PathDressup.toolController(obj.Base).Tool.Diameter.Value / 2
@@ -669,16 +637,39 @@ class ObjectDressup:
 
             if obj.StyleIn in ["Arc3d", "Line3d"]:
                 # up Z start point for Arc3d and Line3d
-                op = PathDressup.baseOp(obj.Base)
                 if inInstrPrev and inInstrPrev.z() > begin.z:
                     begin.z = inInstrPrev.z()
                 else:
+                    op = PathDressup.baseOp(obj.Base)
                     begin.z = op.StartDepth.Value
                 lead[0].setPositionBegin(begin)
 
+            elif obj.StyleIn == "Helix":
+                # change Z for current helix lead-in
+                posPrevZ = None
+                if outInstrPrev:
+                    posPrevZ = outInstrPrev.positionEnd().z
+                if posPrevZ is not None and posPrevZ > beginZ:
+                    halfStepZ = (posPrevZ - beginZ) / 2
+                    begin.z += halfStepZ
+                else:
+                    op = PathDressup.baseOp(obj.Base)
+                    begin.z = op.StartDepth.Value
+
+        if obj.StyleOut == "Helix" and outInstrPrev:
+            """change Z for previous helix lead-out
+            Can not do it in getLeadEnd(),
+            because no any information about next moves there while creating Lead-out"""
+            posPrevZ = outInstrPrev.positionEnd().z
+            if posPrevZ > beginZ:
+                """previous profile upper than this
+                mean procesing one stepdown profile"""
+                halfStepZ = (posPrevZ - beginZ) / 2
+                outInstrPrev.param["Z"] = posPrevZ - halfStepZ
+
         # get complete start travel moves
         if obj.StyleIn != "No Retract":
-            travelToStart = self.getTravelStart(obj, begin, first, inInstrPrev, outInstrPrev)
+            travelToStart = self.getTravelStart(obj, begin, first, outInstrPrev)
         else:
             # exclude any lead-in commands
             horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value
@@ -689,7 +680,7 @@ class ObjectDressup:
 
         return lead
 
-    def getLeadEnd(self, obj, move, last, inInstrPrev, outInstrPrev):
+    def getLeadEnd(self, obj, move, last, outInstrPrev):
 
         #            move       end   tangent
         #    x-------------------x-----_---->
@@ -1097,7 +1088,7 @@ class ObjectDressup:
                         commands.extend(overtravelOut)
 
                 # add lead end and travel moves
-                leadEndInstr = self.getLeadEnd(obj, commands[-1], last, inInstrPrev, outInstrPrev)
+                leadEndInstr = self.getLeadEnd(obj, commands[-1], last, outInstrPrev)
                 commands.extend(leadEndInstr)
 
                 # Last mill position to check RetractThreshold
