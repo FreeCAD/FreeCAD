@@ -888,8 +888,6 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
             if (createowncommand) {
                 Gui::Command::commitCommand();
             }
-            // Gui::Command::updateActive(); // There is already an recompute in each command
-            // creation, this is redundant.
         }
     }
 }
