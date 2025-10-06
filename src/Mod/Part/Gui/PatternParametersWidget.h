@@ -169,6 +169,7 @@ namespace PartGui {
         void onOccurrencesChanged(unsigned int value);
 
         void onGroupBoxToggled(bool checked);
+        void onEnableCheckBoxToggled(bool checked);
 
         // Slots for dynamic spacing
         void onAddSpacingButtonClicked();
@@ -211,5 +212,6 @@ namespace PartGui {
     };
 
 } // namespace PartGui
+
 
 #endif // PARTGUI_PATTERNPARAMETERSWIDGET_H
