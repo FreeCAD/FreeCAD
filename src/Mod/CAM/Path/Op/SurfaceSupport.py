@@ -1249,7 +1249,7 @@ def _makeSTL(model, obj, ocl, model_type=None):
         mesh = MeshPart.meshFromShape(
             Shape=shape,
             LinearDeflection=obj.LinearDeflection.Value,
-            AngularDeflection=obj.AngularDeflection.Value
+            AngularDeflection=obj.AngularDeflection.Value,
         )
 
         # If the user has set a simplification value, we reduce the mesh density here.
