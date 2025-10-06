@@ -724,6 +724,14 @@ int System::addConstraintPerpendicular(
     return addConstraint(constr);
 }
 
+int System::addConstraintPerpendicular(Point& l1p1, Point& l1p2, Line& l2, int tagId, bool driving)
+{
+    Constraint* constr = new ConstraintPerpendicular(l1p1, l1p2, l2);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
 int System::addConstraintL2LAngle(Line& l1, Line& l2, double* angle, int tagId, bool driving)
 {
     Constraint* constr = new ConstraintL2LAngle(l1, l2, angle);
