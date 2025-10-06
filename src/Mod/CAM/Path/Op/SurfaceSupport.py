@@ -1210,8 +1210,11 @@ def _makeSTL(model, obj, ocl, model_type=None):
         else:
             shape = model
 
-        # Clipping shape for ScanType Planar to final depth to reduce the volume of STL file
-        if obj.ScanType = "Planar":
+        # Clipping shape for Planar Scan Type to final depth to reduce the volume of STL file
+        # Disabled only for Rotational Scan Type on 3D Surface operation (Maintain compatibility with Waterline operation).
+        should_clip = not (hasattr(obj, 'ScanType') and obj.ScanType == "Rotational")
+
+        if should_clip:
             try:
                 final_depth = obj.FinalDepth.Value
                 bbox = shape.BoundBox
