@@ -78,9 +78,12 @@ JointTypes = [
     "Belt",
 ]
 
+JointUsingAngle = [
+    "Angle",
+]
+
 JointUsingDistance = [
     "Distance",
-    "Angle",
     "RackPinion",
     "Screw",
     "Gears",
@@ -199,6 +202,7 @@ class Joint:
         self.migrationScript3(joint)
         self.migrationScript4(joint)
         self.migrationScript5(joint)
+        self.migrationScript6(joint)
 
         # First Joint Connector
         if not hasattr(joint, "Reference1"):
@@ -293,29 +297,14 @@ class Joint:
             )
 
         # Other properties
+        if not hasattr(joint, "Angle"):
+            self.addAngleProperty(joint)
+
         if not hasattr(joint, "Distance"):
-            joint.addProperty(
-                "App::PropertyFloat",
-                "Distance",
-                "Joint",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)",
-                ),
-                locked=True,
-            )
+            self.addDistanceProperty(joint)
 
         if not hasattr(joint, "Distance2"):
-            joint.addProperty(
-                "App::PropertyFloat",
-                "Distance2",
-                "Joint",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "This is the second distance of the joint. It is used only by the gear joint to store the second radius.",
-                ),
-                locked=True,
-            )
+            self.addDistance2Property(joint)
 
         if not hasattr(joint, "EnableLengthMin"):
             joint.addProperty(
@@ -370,52 +359,100 @@ class Joint:
             joint.EnableAngleMax = False
 
         if not hasattr(joint, "LengthMin"):
-            joint.addProperty(
-                "App::PropertyFloat",
-                "LengthMin",
-                "Limits",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "This is the minimum limit for the length between both coordinate systems (along their z-axis)",
-                ),
-                locked=True,
-            )
+            self.addLengthMinProperty(joint)
 
         if not hasattr(joint, "LengthMax"):
-            joint.addProperty(
-                "App::PropertyFloat",
-                "LengthMax",
-                "Limits",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "This is the maximum limit for the length between both coordinate systems (along their z-axis)",
-                ),
-                locked=True,
-            )
+            self.addLengthMaxProperty(joint)
 
         if not hasattr(joint, "AngleMin"):
-            joint.addProperty(
-                "App::PropertyFloat",
-                "AngleMin",
-                "Limits",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "This is the minimum limit for the angle between both coordinate systems (between their x-axis)",
-                ),
-                locked=True,
-            )
+            self.addAngleMinProperty(joint)
 
         if not hasattr(joint, "AngleMax"):
-            joint.addProperty(
-                "App::PropertyFloat",
-                "AngleMax",
-                "Limits",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "This is the maximum limit for the angle between both coordinate systems (between their x-axis)",
-                ),
-                locked=True,
-            )
+            self.addAngleMaxProperty(joint)
+
+    def addAngleProperty(self, joint):
+        joint.addProperty(
+            "App::PropertyAngle",
+            "Angle",
+            "Joint",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "This is the angle of the joint. It is used only by the Angle joint.",
+            ),
+            locked=True,
+        )
+
+    def addDistanceProperty(self, joint):
+        joint.addProperty(
+            "App::PropertyLength",
+            "Distance",
+            "Joint",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)",
+            ),
+            locked=True,
+        )
+
+    def addDistance2Property(self, joint):
+        joint.addProperty(
+            "App::PropertyLength",
+            "Distance2",
+            "Joint",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "This is the second distance of the joint. It is used only by the gear joint to store the second radius.",
+            ),
+            locked=True,
+        )
+
+    def addLengthMinProperty(self, joint):
+        joint.addProperty(
+            "App::PropertyLength",
+            "LengthMin",
+            "Limits",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "This is the minimum limit for the length between both coordinate systems (along their z-axis)",
+            ),
+            locked=True,
+        )
+
+    def addLengthMaxProperty(self, joint):
+        joint.addProperty(
+            "App::PropertyLength",
+            "LengthMax",
+            "Limits",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "This is the maximum limit for the length between both coordinate systems (along their z-axis)",
+            ),
+            locked=True,
+        )
+
+    def addAngleMinProperty(self, joint):
+        joint.addProperty(
+            "App::PropertyAngle",
+            "AngleMin",
+            "Limits",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "This is the minimum limit for the angle between both coordinate systems (between their x-axis)",
+            ),
+            locked=True,
+        )
+
+    def addAngleMaxProperty(self, joint):
+        joint.addProperty(
+            "App::PropertyAngle",
+            "AngleMax",
+            "Limits",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "This is the maximum limit for the angle between both coordinate systems (between their x-axis)",
+            ),
+            locked=True,
+        )
 
     def migrationScript(self, joint):
         if hasattr(joint, "Object1") and isinstance(joint.Object1, str):
@@ -570,6 +607,77 @@ class Joint:
             joint.removeProperty("Activated")
             joint.Suppressed = not activated
 
+    def migrationScript6(self, joint):
+        """
+        This script migrates properties with fixed types from PropertyFloat to the
+        correct PropertyLength or PropertyAngle type.
+        """
+        if (
+            hasattr(joint, "Distance")
+            and joint.getTypeIdOfProperty("Distance") == "App::PropertyFloat"
+        ):
+            old_value = joint.Distance
+            joint.setPropertyStatus("Distance", "-LockDynamic")
+            joint.removeProperty("Distance")
+            self.addDistanceProperty(joint)
+
+            # Additionally "Angle" joint is now using Angle property instead of Distance as it did
+            if joint.JointType == "Angle":
+                self.addAngleProperty(joint)
+                joint.Angle = old_value
+            else:
+                joint.Distance = old_value
+
+        if (
+            hasattr(joint, "Distance2")
+            and joint.getTypeIdOfProperty("Distance2") == "App::PropertyFloat"
+        ):
+            old_value = joint.Distance2
+            joint.setPropertyStatus("Distance2", "-LockDynamic")
+            joint.removeProperty("Distance2")
+            self.addDistance2Property(joint)
+            joint.Distance2 = old_value
+
+        if (
+            hasattr(joint, "LengthMin")
+            and joint.getTypeIdOfProperty("LengthMin") == "App::PropertyFloat"
+        ):
+            old_value = joint.LengthMin
+            joint.setPropertyStatus("LengthMin", "-LockDynamic")
+            joint.removeProperty("LengthMin")
+            self.addLengthMinProperty(joint)
+            joint.LengthMin = old_value
+
+        if (
+            hasattr(joint, "LengthMax")
+            and joint.getTypeIdOfProperty("LengthMax") == "App::PropertyFloat"
+        ):
+            old_value = joint.LengthMax
+            joint.setPropertyStatus("LengthMax", "-LockDynamic")
+            joint.removeProperty("LengthMax")
+            self.addLengthMaxProperty(joint)
+            joint.LengthMax = old_value
+
+        if (
+            hasattr(joint, "AngleMin")
+            and joint.getTypeIdOfProperty("AngleMin") == "App::PropertyFloat"
+        ):
+            old_value = joint.AngleMin
+            joint.setPropertyStatus("AngleMin", "-LockDynamic")
+            joint.removeProperty("AngleMin")
+            self.addAngleMinProperty(joint)
+            joint.AngleMin = old_value
+
+        if (
+            hasattr(joint, "AngleMax")
+            and joint.getTypeIdOfProperty("AngleMax") == "App::PropertyFloat"
+        ):
+            old_value = joint.AngleMax
+            joint.setPropertyStatus("AngleMax", "-LockDynamic")
+            joint.removeProperty("AngleMax")
+            self.addAngleMaxProperty(joint)
+            joint.AngleMax = old_value
+
     def dumps(self):
         return None
 
@@ -614,10 +722,15 @@ class Joint:
         if prop == "Reference1" or prop == "Reference2":
             joint.recompute()
 
-        if prop == "Offset1" or prop == "Offset2":
-            if joint.Reference1 is None or joint.Reference2 is None:
-                return
+        if (
+            not hasattr(joint, "Reference1")
+            or not hasattr(joint, "Reference2")
+            or joint.Reference1 is None
+            or joint.Reference2 is None
+        ):
+            return
 
+        if prop == "Offset1" or prop == "Offset2":
             self.updateJCSPlacements(joint)
 
             presolved = joint.JointType in JointUsingPreSolve and self.preSolve(joint, False)
@@ -628,11 +741,11 @@ class Joint:
             else:
                 self.updateJCSPlacements(joint)
 
-        if prop == "Distance" and (joint.JointType == "Distance" or joint.JointType == "Angle"):
-            if joint.Reference1 is None or joint.Reference2 is None:
-                return
+        if prop == "Distance" and joint.JointType == "Distance":
+            solveIfAllowed(self.getAssembly(joint))
 
-            if joint.JointType == "Angle" and joint.Distance != 0.0:
+        if prop == "Angle" and joint.JointType == "Angle":
+            if joint.Angle != 0.0:
                 self.preventParallel(joint)
             solveIfAllowed(self.getAssembly(joint))
 
@@ -836,16 +949,26 @@ class Joint:
             self.partMovedByPresolved = part2
             self.presolveBackupPlc = part2.Placement
 
+            # Get the global JCS placement to find a suitable rotation axis (its own X-axis)
+            globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(joint.Placement2, joint.Reference2)
+            # Transform the local X-axis vector (1,0,0) into the global coordinate system
+            rotation_axis = globalJcsPlc.Rotation.multVec(App.Vector(1, 0, 0))
+
             part2.Placement = UtilsAssembly.applyRotationToPlacementAlongAxis(
-                part2.Placement, 10, App.Vector(1, 0, 0)
+                part2.Placement, 10, rotation_axis
             )
 
         elif part1ConnectedByJoint:
             self.partMovedByPresolved = part1
             self.presolveBackupPlc = part1.Placement
 
+            # Get the global JCS placement to find a suitable rotation axis (its own X-axis)
+            globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Reference1)
+            # Transform the local X-axis vector (1,0,0) into the global coordinate system
+            rotation_axis = globalJcsPlc.Rotation.multVec(App.Vector(1, 0, 0))
+
             part1.Placement = UtilsAssembly.applyRotationToPlacementAlongAxis(
-                part1.Placement, 10, App.Vector(1, 0, 0)
+                part1.Placement, 10, rotation_axis
             )
 
     def areJcsSameDir(self, joint):
@@ -1347,10 +1470,12 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.createJointObject()
             self.visibilityBackup = False
 
+        self.jForm.angleSpinbox.valueChanged.connect(self.onAngleChanged)
         self.jForm.distanceSpinbox.valueChanged.connect(self.onDistanceChanged)
         self.jForm.distanceSpinbox2.valueChanged.connect(self.onDistance2Changed)
         self.jForm.offsetSpinbox.valueChanged.connect(self.onOffsetChanged)
         self.jForm.rotationSpinbox.valueChanged.connect(self.onRotationChanged)
+        bind = Gui.ExpressionBinding(self.jForm.angleSpinbox).bind(self.joint, "Angle")
         bind = Gui.ExpressionBinding(self.jForm.distanceSpinbox).bind(self.joint, "Distance")
         bind = Gui.ExpressionBinding(self.jForm.distanceSpinbox2).bind(self.joint, "Distance2")
         bind = Gui.ExpressionBinding(self.jForm.offsetSpinbox).bind(self.joint, "Offset2.Base.z")
@@ -1513,6 +1638,9 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.joint.Proxy.setJointType(self.joint, self.jType)
         self.adaptUi()
 
+    def onAngleChanged(self, quantity):
+        self.joint.Angle = self.jForm.angleSpinbox.property("rawValue")
+
     def onDistanceChanged(self, quantity):
         self.joint.Distance = self.jForm.distanceSpinbox.property("rawValue")
 
@@ -1561,25 +1689,22 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def adaptUi(self):
         jType = self.jType
 
+        needAngle = jType in JointUsingAngle
+        self.jForm.angleLabel.setVisible(needAngle)
+        self.jForm.angleSpinbox.setVisible(needAngle)
+
         needDistance = jType in JointUsingDistance
         self.jForm.distanceLabel.setVisible(needDistance)
         self.jForm.distanceSpinbox.setVisible(needDistance)
         if needDistance:
             if jType == "Distance":
                 self.jForm.distanceLabel.setText(translate("Assembly", "Distance"))
-            elif jType == "Angle":
-                self.jForm.distanceLabel.setText(translate("Assembly", "Angle"))
             elif jType == "Gears" or jType == "Belt":
                 self.jForm.distanceLabel.setText(translate("Assembly", "Radius 1"))
             elif jType == "Screw":
                 self.jForm.distanceLabel.setText(translate("Assembly", "Thread pitch"))
             else:
                 self.jForm.distanceLabel.setText(translate("Assembly", "Pitch radius"))
-
-            if jType == "Angle":
-                self.jForm.distanceSpinbox.setProperty("unit", "deg")
-            else:
-                self.jForm.distanceSpinbox.setProperty("unit", "mm")
 
         needDistance2 = jType in JointUsingDistance2
         self.jForm.distanceLabel2.setVisible(needDistance2)
@@ -1718,6 +1843,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         Gui.Selection.addSelection(ref1[0].Document.Name, ref1[0].Name, ref1[1][0])
         Gui.Selection.addSelection(ref2[0].Document.Name, ref2[0].Name, ref2[1][0])
 
+        self.jForm.angleSpinbox.setProperty("rawValue", self.joint.Angle.Value)
         self.jForm.distanceSpinbox.setProperty("rawValue", self.joint.Distance)
         self.jForm.distanceSpinbox2.setProperty("rawValue", self.joint.Distance2)
         self.jForm.offsetSpinbox.setProperty("rawValue", self.joint.Offset2.Base.z)
@@ -1731,8 +1857,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.jForm.limitCheckbox4.setChecked(self.joint.EnableAngleMax)
         self.jForm.limitLenMinSpinbox.setProperty("rawValue", self.joint.LengthMin)
         self.jForm.limitLenMaxSpinbox.setProperty("rawValue", self.joint.LengthMax)
-        self.jForm.limitRotMinSpinbox.setProperty("rawValue", self.joint.AngleMin)
-        self.jForm.limitRotMaxSpinbox.setProperty("rawValue", self.joint.AngleMax)
+        self.jForm.limitRotMinSpinbox.setProperty("rawValue", self.joint.AngleMin.Value)
+        self.jForm.limitRotMaxSpinbox.setProperty("rawValue", self.joint.AngleMax.Value)
 
         self.jForm.jointType.setCurrentIndex(JointTypes.index(self.joint.JointType))
         self.updateJointList()

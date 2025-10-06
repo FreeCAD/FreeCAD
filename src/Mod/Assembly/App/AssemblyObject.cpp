@@ -1132,7 +1132,7 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointOfType(App::DocumentObjec
             return CREATE<ASMTPerpendicularJoint>::With();
 
         case JointType::Angle: {
-            double angle = fabs(Base::toRadians(getJointDistance(joint)));
+            double angle = fabs(Base::toRadians(getJointAngle(joint)));
             if (fmod(angle, 2 * std::numbers::pi) < Precision::Confusion()) {
                 return CREATE<ASMTParallelAxesJoint>::With();
             }
