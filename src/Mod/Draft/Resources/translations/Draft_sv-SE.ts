@@ -3132,7 +3132,7 @@ om de matchar X-, Y- eller Z-axeln i det globala koordinatsystemet</translation>
     <message>
       <location filename="../../WorkingPlane.py" line="1229"/>
       <source>Current working plane: Auto</source>
-      <translation type="unfinished">Current working plane: Auto</translation>
+      <translation>Aktuellt arbetsplan: Auto</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1703"/>
@@ -4432,7 +4432,7 @@ Den slutliga vinkeln kommer att vara basvinkeln plus detta belopp.</translation>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="68"/>
       <source>B-Spline</source>
-      <translation type="unfinished">B-Spline</translation>
+      <translation>B-Spline</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_splines.py" line="187"/>
@@ -6506,7 +6506,7 @@ Om alternativet "Copy" är aktivt skapas roterade kopior.</translation>
     <message>
       <location filename="../../draftguitools/gui_orthoarray.py" line="55"/>
       <source>Array</source>
-      <translation type="unfinished">Array</translation>
+      <translation>Array</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_orthoarray.py" line="58"/>

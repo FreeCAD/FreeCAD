@@ -17,27 +17,12 @@
   <context>
     <name>Assembly_InsertLink</name>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="51"/>
-      <source>Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;</source>
-      <translation>ჩასვამს კომპონენტს აქტიურ ანაწყობში. ეს შექმნის დინამიკურ ბმულებს ნაწილებამდე, სხეულებამდე, პრიმიტივებამდე და ანაწყობებამდე. გარე კომპონენტების ჩასასმელად დარწმუნდით, რომ ფაილი &lt;b&gt;ღიაა მიმდინარე სესიაში&lt;/b&gt;</translation>
+      <location filename="../../../CommandInsertLink.py" line="56"/>
+      <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="53"/>
-      <source>Insert by left clicking items in the list.</source>
-      <translation>ჩასვით სიის ელემენტებზე მარცხენა წკაპით.</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandInsertLink.py" line="55"/>
-      <source>Remove by right clicking items in the list.</source>
-      <translation>წაშლა სიის ელემენტებზე მარჯვენა წკაპით.</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandInsertLink.py" line="60"/>
-      <source>Press shift to add several instances of the component while clicking on the view.</source>
-      <translation>გეჭიროთ ღილაკზე 'shift', რომ ხედზე დაწკაპუნებისას კომპონენტის რამდენიმე ასლი დაამატოთ.</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandInsertLink.py" line="89"/>
+      <location filename="../../../CommandInsertLink.py" line="81"/>
       <source>Component</source>
       <translation>კომპონენტი</translation>
     </message>
@@ -50,7 +35,7 @@
       <translation>აწყობის ამოხსნა</translation>
     </message>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="57"/>
+      <location filename="../../../CommandSolveAssembly.py" line="55"/>
       <source>Solves the currently active assembly.</source>
       <translation>ამოხსნის ამჟამად აქტიურ ანაწყობს.</translation>
     </message>
@@ -63,37 +48,37 @@
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="129"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="138"/>
       <source>Active object</source>
       <translation>აქტიური ობიექტი</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="125"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="123"/>
       <source>Turn flexible</source>
       <translation>მოქნილზე გადართვა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="126"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="124"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
       <translation>თქვენი ქვეანაწყობი ამჟამად მყარია. ეს მას მოქნილად გახდის.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="130"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="128"/>
       <source>Turn rigid</source>
       <translation>მყარზე გადართვა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="131"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="129"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
       <translation>თქვენი ქვეანაწყობი ამჟამად მოქნილია. ეს მას მყარად გახდის.</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="272"/>
+      <location filename="../../../App/BomObject.cpp" line="270"/>
       <source>N/A</source>
       <translation>N/A</translation>
     </message>
     <message>
-      <location filename="../../../App/BomObject.cpp" line="296"/>
+      <location filename="../../../App/BomObject.cpp" line="294"/>
       <source>Not supported</source>
       <translation>მხარდაჭერილი არაა</translation>
     </message>
@@ -145,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1560"/>
+      <location filename="../../../JointObject.py" line="1569"/>
       <source>Distance</source>
       <translation>დაშორება</translation>
     </message>
@@ -161,7 +146,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="58"/>
-      <location filename="../../../JointObject.py" line="1562"/>
+      <location filename="../../../JointObject.py" line="1571"/>
       <source>Angle</source>
       <translation>კუთხე</translation>
     </message>
@@ -191,22 +176,22 @@
       <translation>გაფუჭებული ბმული სად: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1404"/>
+      <location filename="../../../JointObject.py" line="1413"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>აირჩიეთ 2 ელემენტი 2 განსხვავებული ნაწილიდან</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1564"/>
+      <location filename="../../../JointObject.py" line="1573"/>
       <source>Radius 1</source>
       <translation>რადიუსი 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1566"/>
+      <location filename="../../../JointObject.py" line="1575"/>
       <source>Thread pitch</source>
       <translation>კუთხვილის ტონი</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1568"/>
+      <location filename="../../../JointObject.py" line="1577"/>
       <source>Pitch radius</source>
       <translation>ფერდობის რადიუსი</translation>
     </message>
@@ -251,164 +236,164 @@
       <translation>რაოდენობა (ავტო)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="200"/>
+      <location filename="../../../CommandCreateBom.py" line="190"/>
       <source>Default</source>
       <translation>ნაგულისხმევი</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="296"/>
+      <location filename="../../../CommandCreateBom.py" line="286"/>
       <source>Duplicate Name</source>
       <translation>გამეორებული სახელი</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="297"/>
+      <location filename="../../../CommandCreateBom.py" line="287"/>
       <source>This name is already used. Please choose a different name.</source>
       <translation>სახელი უკვე გამოიყენება. აირჩიეთ სხვა სახელი.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="376"/>
+      <location filename="../../../CommandCreateBom.py" line="366"/>
       <source>Options</source>
       <translation>პარამეტრები</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="383"/>
+      <location filename="../../../CommandCreateBom.py" line="373"/>
       <source>Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</source>
       <translation>ქვეანაწყობის შვილები: ქვეანაწყობის შვილები ჩასმული იქნება ზედნადებში</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="389"/>
+      <location filename="../../../CommandCreateBom.py" line="379"/>
       <source>Parts children: the children of parts will be added to the bill of materials</source>
       <translation>ნაწილის შვილები: ნაწილის შვილები დაემატება ზედნადებს</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="395"/>
+      <location filename="../../../CommandCreateBom.py" line="385"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
       <translation>მხოლოდ ნაწილები: ჩასვამს, მხოლოდ, ნაწილის კონტეინერებს და ქვეანაწყობებს ზედნადებში. ისეთი მყარი სხეულები, როგორიცაა ნაწილის დიზაინის სხეულები, დამჭერები, ან ნაწილის სამუშაო მაგიდის პრიმიტივები, გამოტოვებულია.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="397"/>
+      <location filename="../../../CommandCreateBom.py" line="387"/>
       <source>Columns</source>
       <translation>სვეტები</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="410"/>
+      <location filename="../../../CommandCreateBom.py" line="400"/>
       <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).</source>
       <translation>მორგებული სვეტები : 'აღწერა' და სხვა მორებული სვეტები, რომლებსაც თქვენ დაამატებთ 'სვეტის დამატებაზე' დაწკაპუნებით, თავიანთ მონაცემებს არ დაკარგავენ. თუ სვეტის სახელიიწყება '.'-ით, რომელსაც თვისების სახელი მოჰყვება (მაგ: '.სიგრძე'), ის ავტომატურად შეივსება ამ თვისების მნიშვნელობით. ამ სვეტების სახელის გადარქმევა მათზე ორმაგი დაწკაპუნებით ან F2-ზე დაჭერით შეგიძლიათ (ამჟამად სვეტის სახელის გადარქმევა მის მონაცემებს დაკარგავს).</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="416"/>
+      <location filename="../../../CommandCreateBom.py" line="406"/>
       <source>Any column (custom or not), can be deleted by pressing the Delete key</source>
       <translation>ნებისმიერი სვეტი (მორგებული, თუ არა) შეიძლება წაიშალოს დაჭერით ღილაკზე 'Del'</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="418"/>
+      <location filename="../../../CommandCreateBom.py" line="408"/>
       <source>Export</source>
       <translation>გატანა</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="425"/>
+      <location filename="../../../CommandCreateBom.py" line="415"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences</source>
       <translation>გატანილი ფაილის ფორმატის მორგება ელცხრილის სამუშაო მაგიდის მორგების ფანჯარაში შეგიძლიათ</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateBom.py" line="404"/>
+      <location filename="../../../CommandCreateBom.py" line="394"/>
       <source>Auto columns :  (Index, Quantity, Name...) are populated automatically. Any modification you make will be overridden. These columns cannot be renamed.</source>
       <translation>ავტომატური სვეტები : (ინდექსი, რაოდენობა, სახელი...) ავტომატურად შეივსება. ცვლილებებს, რომელსაც თქვენ შეიტანთ, გადაიფარება. ამ სვეტების სახელის შეცვლა შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="87"/>
+      <location filename="../../../CommandInsertNewPart.py" line="85"/>
       <source>Part name</source>
       <translation>ნაწილის სახელი</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="92"/>
+      <location filename="../../../CommandInsertNewPart.py" line="90"/>
       <source>Part</source>
       <translation>ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="97"/>
+      <location filename="../../../CommandInsertNewPart.py" line="95"/>
       <source>Create part in new file</source>
       <translation>ნაწილის შექმნა ახალ ფაილში</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="104"/>
+      <location filename="../../../CommandInsertNewPart.py" line="102"/>
       <source>Joint new part origin</source>
       <translation>სახსრის ახალი ნაწილის წყარო</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="140"/>
+      <location filename="../../../CommandInsertNewPart.py" line="138"/>
       <source>If the new document is not saved the new part cannot be linked in the assembly.</source>
       <translation>თუ ახალი დოკუმენტი შენახული არაა, ახალი ნაწილის ანაწყობთან დაკავშირება შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="141"/>
+      <location filename="../../../CommandInsertNewPart.py" line="139"/>
       <source>Save Document</source>
       <translation>დოკუმენტის შენახვა</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="143"/>
+      <location filename="../../../CommandInsertNewPart.py" line="141"/>
       <source>Save</source>
       <translation>შენახვა</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="146"/>
+      <location filename="../../../CommandInsertNewPart.py" line="144"/>
       <source>Do not Link</source>
       <translation>არ დააკავშირო</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="490"/>
+      <location filename="../../../CommandCreateSimulation.py" line="488"/>
       <source>Enter your formula...</source>
       <translation>შეიყვანეთ თქვენი ფორმულა...</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="543"/>
+      <location filename="../../../CommandCreateSimulation.py" line="541"/>
       <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
       <translation>დიდი ასოებით იწერება ცვლადები, რომლებიც საჭიროა, მიმდინარე მნიშვნელობებით ჩაანაცვლოთ. თითოეული მაგალითის მეტი დეტალები მინიშნებებში შეგიძლიათ, წაიკითხოთ.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="546"/>
+      <location filename="../../../CommandCreateSimulation.py" line="544"/>
       <source> - Linear: C + VEL*time</source>
       <translation> - წრფივი: C + VEL*time</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="548"/>
+      <location filename="../../../CommandCreateSimulation.py" line="546"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
       <translation> - კვადრატული: C + VEL*time + ACC*time^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="551"/>
+      <location filename="../../../CommandCreateSimulation.py" line="549"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
       <translation> - ჰარმონიული: C + AMP*sin(VEL*time - PHASE)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="554"/>
+      <location filename="../../../CommandCreateSimulation.py" line="552"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
       <translation> - ექსპონენტური: C*exp(time/TIMEC)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="560"/>
+      <location filename="../../../CommandCreateSimulation.py" line="558"/>
       <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
       <translation> - გლუვი ნაბიჯი: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="567"/>
+      <location filename="../../../CommandCreateSimulation.py" line="565"/>
       <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
       <translation> - კვადრატული იმპულსის მოგლუვება: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="574"/>
+      <location filename="../../../CommandCreateSimulation.py" line="572"/>
       <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
       <translation> - გლუვი რამპის საუკეთესო იმპუსი: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="584"/>
+      <location filename="../../../CommandCreateSimulation.py" line="582"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
       <translation>C მუდმივი წანაცვლებაა.
 VEL აჩქარებაა, ან დახრაა, ან სწორი ხაზის გრადიენტი.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="592"/>
+      <location filename="../../../CommandCreateSimulation.py" line="590"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
@@ -417,7 +402,7 @@ VEL სწორი ხაზის აჩქარება, დახრა, �
 ACC აჩქარებაა, ან მეორე რიგის კოეფიციენტი. ფუნქცია პარაბოლაა.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="601"/>
+      <location filename="../../../CommandCreateSimulation.py" line="599"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
@@ -428,14 +413,14 @@ VEL კუთხოვანი აჩქარებაა რადიან�
 PHASE სინუსოიდური ტალღის ფაზაა.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="608"/>
+      <location filename="../../../CommandCreateSimulation.py" line="606"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
       <translation>C მუდმივაა.
 TIMEC ექსპონენტური ფუნქსიის დროის მუდმივაა.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="616"/>
+      <location filename="../../../CommandCreateSimulation.py" line="614"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
@@ -444,7 +429,7 @@ L2 ნაბიჯის დონეა დროის შემდეგ = T0
 SLOPE აღწერს დახრას გადატანისას L1-სა და L2-ს შორის, როცა დრო = T0. უფრო დიდი მნიშვნელობები უფრო მკვეთრ კუთხის ნაბიჯებს გამოიწვევს. კარგია SLOPE = 1000, ან უფრო მეტი.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="625"/>
+      <location filename="../../../CommandCreateSimulation.py" line="623"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -455,7 +440,7 @@ T2 იმპულსის დასასრულია.
 SLOPE აღწერს გადასვლის დახრილობას 0-სა და H-ს შორის, როცა დრო = T1 და T2. რაც მაღალია მნიშვნელობა, მით მკვეთრია კუთხიანი იმპულსები. სასურველია SLOPE = 1000, ან უფრო მეტი.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="636"/>
+      <location filename="../../../CommandCreateSimulation.py" line="634"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
@@ -470,13 +455,13 @@ H2 T2-ის სიმაღლეა რამპის დასასრუ�
 SLOPE აღწერს დახრილობას 0-დან H1-მდე და H2-ის 0-მდე გადასსვლისას დროში T1 და T2 შესაბამისად. რაც მეტია მნიშვნელობა, მით მკვეთრია კუთხოვანი იმპილსები. სასურველია SLOPE = 1000 ან მეტი.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="674"/>
-      <location filename="../../../CommandCreateSimulation.py" line="691"/>
+      <location filename="../../../CommandCreateSimulation.py" line="672"/>
+      <location filename="../../../CommandCreateSimulation.py" line="689"/>
       <source>Help</source>
       <translation>დახმარება</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="689"/>
+      <location filename="../../../CommandCreateSimulation.py" line="687"/>
       <source>Hide help</source>
       <translation>დახმარების დამალვა</translation>
     </message>
@@ -631,68 +616,68 @@ SLOPE აღწერს დახრილობას 0-დან H1-მდე
       <translation>ამ შეერთების {order} მიმართვა</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1035"/>
+      <location filename="../../../JointObject.py" line="1037"/>
       <source>The object to ground</source>
       <translation>ობიექტი დამაგრებამდე</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="261"/>
-      <location filename="../../../CommandCreateView.py" line="298"/>
+      <location filename="../../../CommandCreateView.py" line="259"/>
+      <location filename="../../../CommandCreateView.py" line="296"/>
       <source>The objects moved by the move</source>
       <translation>გადატანით გადატანილი ობიექტები</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="273"/>
+      <location filename="../../../CommandCreateView.py" line="271"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
       <translation>ეს გადაადგილების მოძრაობაა. საბოლოო მოთავსება არის შედეგი საწყისი მოთავსება * ეს მოთავსება.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="282"/>
+      <location filename="../../../CommandCreateView.py" line="280"/>
       <source>The type of the move</source>
       <translation>გადაადგილების ტიპი</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="113"/>
+      <location filename="../../../CommandCreateSimulation.py" line="111"/>
       <source>Simulation start time.</source>
       <translation>სიმულაციის დაწყების დრო.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="125"/>
+      <location filename="../../../CommandCreateSimulation.py" line="123"/>
       <source>Simulation end time.</source>
       <translation>სიმულაციის დასრულების დრო.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="137"/>
+      <location filename="../../../CommandCreateSimulation.py" line="135"/>
       <source>Simulation time step for output.</source>
       <translation>სიმულაციის დროის ნაბიჯი გამოსატანად.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="149"/>
+      <location filename="../../../CommandCreateSimulation.py" line="147"/>
       <source>Integration global error tolerance.</source>
       <translation>ინტეგრაცია გლობალური შეცდომის აცდენასთან.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="161"/>
+      <location filename="../../../CommandCreateSimulation.py" line="159"/>
       <source>Frames Per Second.</source>
       <translation>კადრი წამში.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="213"/>
+      <location filename="../../../CommandCreateSimulation.py" line="211"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>გენერირებულ ტექსტებში წილადი რიცხვების სიზუსტე</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="313"/>
+      <location filename="../../../CommandCreateSimulation.py" line="311"/>
       <source>The joint that is moved by the motion</source>
       <translation>შეერთება, რომელიც მოძრაობამ გადაიტანა</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="325"/>
+      <location filename="../../../CommandCreateSimulation.py" line="323"/>
       <source>This is the formula of the motion. For example '1.0*time'.</source>
       <translation>ეს მოძრაობის ფორმულაა. მაგ: '1,0*time'.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="334"/>
+      <location filename="../../../CommandCreateSimulation.py" line="332"/>
       <source>The type of the motion</source>
       <translation>მოძრაობის ტიპი</translation>
     </message>
@@ -700,37 +685,37 @@ SLOPE აღწერს დახრილობას 0-დან H1-მდე
   <context>
     <name>TaskAssemblyCreateJoint</name>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="41"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="55"/>
       <source>Distance</source>
       <translation>დაშორება</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="65"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="79"/>
       <source>Radius 2</source>
       <translation>რადიუსი 2</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="89"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="103"/>
       <source>Offset</source>
       <translation>წანაცვლება</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="113"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="127"/>
       <source>Rotation</source>
       <translation>მობრუნება</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="137"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="151"/>
       <source>Offset1</source>
       <translation>წანაცვლება1</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="158"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="172"/>
       <source>Offset2</source>
       <translation>წანაცვლება2</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="177"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="191"/>
       <source>Show advanced offsets</source>
       <translation>დამატებითი წანაცვლებების ჩვენება</translation>
     </message>
@@ -740,52 +725,57 @@ SLOPE აღწერს დახრილობას 0-დან H1-მდე
       <translation>სახსარი</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="144"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="25"/>
+      <source>Isolate</source>
+      <translation>იზოლირება</translation>
+    </message>
+    <message>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="158"/>
       <source>Sets the attachment offset of the joint’s first marker (coordinate system)</source>
       <translation>დააყენებს სახსრის პირველი მარკერის (კოოარდინატების სისტემის) მიმაგრების წანაცვლებას</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="165"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="179"/>
       <source>Sets the attachment offset of the second marker (coordinate system) of the joint</source>
       <translation>დააყენებს სახსრის მეორე მარკერის (კოოარდინატების სისტემის) მიმაგრების წანაცვლებას</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="193"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="207"/>
       <source>Reverse the direction of the joint</source>
       <translation>სახსრის მიმართულების რევერსი</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="196"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="210"/>
       <source>Reverse</source>
       <translation>რევერსი</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="207"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="221"/>
       <source>Limits</source>
       <translation>ზღვრები</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="213"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="227"/>
       <source>Min length</source>
       <translation>მინ სიგრძე</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="236"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="250"/>
       <source>Max length</source>
       <translation>მაქს სიგრძე</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="259"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="273"/>
       <source>Min angle</source>
       <translation>მინ კუთხე</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="288"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="302"/>
       <source>Max angle</source>
       <translation>მაქს კუთხე</translation>
     </message>
     <message>
-      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="320"/>
+      <location filename="../panels/TaskAssemblyCreateJoint.ui" line="334"/>
       <source>Reverse rotation</source>
       <translation>შებრუნების რევერსი</translation>
     </message>
@@ -883,63 +873,63 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="198"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="207"/>
       <source>The object is associated to one or more joints.</source>
       <translation>ობიექტი ასოცირებულია ერთ ან მეტ სახსართან.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="200"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="209"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>გნებავთ გადაიტანოთ ობიექტი და წაშალოთ ასოცირებული სახსრები?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="997"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1006"/>
       <source>Move part</source>
       <translation>ნაწილის გადატანა</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1331"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1519"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>მომწოდებლის ანაწყობის ხედი</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1348"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1536"/>
       <source>Empty Assembly</source>
       <translation>სარიელი ანაწყობი</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1352"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1540"/>
       <source>Over-constrained:</source>
       <translation>ზედმეტად-შეზღუდული:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1359"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1547"/>
       <source>Malformed joints:</source>
       <translation>არასწორად შექმნილი სახსრები:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1365"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1553"/>
       <source>Redundant joints:</source>
       <translation>დამატებითი სახსრები:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1372"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1560"/>
       <source>Partially redundant:</source>
       <translation>ნაწილობრივ დამატებითი:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1378"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1566"/>
       <source>Solver failed to converge</source>
       <translation>ამომხსნელის შეცდომა შეერთების დროს</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1384"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1572"/>
       <source>Under-constrained:</source>
       <translation>საკმარისზე ნაკლებად შეზღუდული:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1386"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1574"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n თავისუფლების ხარისხი</numerusform>
@@ -947,7 +937,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1390"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1578"/>
       <source>Fully constrained</source>
       <translation>სრულად შეზღუდული</translation>
     </message>
@@ -955,43 +945,27 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointScrew</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="351"/>
+      <location filename="../../../CommandCreateJoint.py" line="318"/>
       <source>Screw Joint</source>
       <translation>ხრახნით შეერთება</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="358"/>
-      <source>Creates a screw joint that links a part with a sliding joint to a part with a revolute joint</source>
-      <translation>ქმნის ხრახნით შეერთება, რომელიც ნაწილს, რომელსაც აქვს სრიალა შეერთება, აკავშირებს მბრუნავ სახსართან</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="363"/>
-      <source>Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.</source>
-      <translation>მონიშნეთ იგივე კოორდინატების სისტემები, რაც ბრუნავ და სრიალა სახსრებს აქვთ. ტონის რადიუსი განსაზვრავს მოძრაობის კოენფიციენდს ხრახნსა და სრიალა ნაწილს შორის.</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="393"/>
-      <location filename="../../../CommandCreateJoint.py" line="423"/>
-      <source>Select the same coordinate systems as the revolute joints.</source>
-      <translation>აირჩიეთ იგივე კოორდინატების სისტემა, რომელიც მბრუნავ სახსრებს გააჩნია.</translation>
+      <location filename="../../../CommandCreateJoint.py" line="324"/>
+      <source>&lt;p&gt;Creates a screw joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Creates a screw joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointGearBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="442"/>
+      <location filename="../../../CommandCreateJoint.py" line="391"/>
       <source>Gears/Belt Joint</source>
       <translation>კბილანა/ღვედური სახსარი</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="448"/>
-      <source>Creates a gears or belt joint that links 2 rotating gears together</source>
-      <translation>ქმნის კბილანა ან ღვედურ სახსარს, რომელიც ორ მბრუნავ კბილანას ერთმანეთთან აკავშირებს</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="453"/>
-      <source>Select the same coordinate systems as the revolute joints.</source>
-      <translation>აირჩიეთ იგივე კოორდინატების სისტემა, რომელიც მბრუნავ სახსრებს გააჩნია.</translation>
+      <location filename="../../../CommandCreateJoint.py" line="396"/>
+      <source>&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Creates a gears or belt joint that links 2 rotating gears together&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1091,24 +1065,14 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="76"/>
-      <source>Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.</source>
-      <translation>ქმნის მიმდინარე ანაწყობის ზედნადებს. თუ ანაწყობი აქტიურია, ეს ამ ანაწყობის BOM იქნება. წინააღმდეგ შემთხვევასი ეს იქნება მთელი დოკუმენტის ზედნადები.</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateBom.py" line="81"/>
-      <source>The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.</source>
-      <translation>BOM ობიექტი დოკუმენტის ობიექტია, რომელიც იმახსოვრებს თქვენი BOM-ის არამეტრებს. ის ასევე ელცხრილის ობიექტია, ასე რომ, BOM-ის ვიზუალიზაცია ადვილად შეგიძლიათ. თუ არ გჭირდებათ BOM ობიექტის შენახვა, შეგიძლიათ, უბრალოდ გაიტანოთ ის და გააუქმოთ ამოცანა.</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateBom.py" line="86"/>
-      <source>The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.</source>
-      <translation>სვეტები 'ინდექსი', 'სახელი', 'ფაილის სახელი' და 'რაოდენობა' ავტომატურად გენერირდება თავიდან გამოტვლისას. სვეტების 'აღწერა' და მომხმარებლის სვეტების თავზე გადაწერა არ ხდება.</translation>
+      <source>&lt;p&gt;Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.&lt;/p&gt;&lt;p&gt;The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.&lt;/p&gt;&lt;p&gt;The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.&lt;/p&gt;&lt;p&gt;The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.&lt;/p&gt;&lt;p&gt;The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="511"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="584"/>
       <source>Joints</source>
       <translation>შეერთებები</translation>
     </message>
@@ -1116,7 +1080,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ViewProviderAssemblyLink.cpp" line="137"/>
+      <location filename="../../ViewProviderAssemblyLink.cpp" line="135"/>
       <source>Toggle Rigid</source>
       <translation>სიმყარის გადართვა</translation>
     </message>
@@ -1129,7 +1093,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>ახალი ნაწილი</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertNewPart.py" line="61"/>
+      <location filename="../../../CommandInsertNewPart.py" line="59"/>
       <source>Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</source>
       <translation>ახალი ნაწილის ჩასმა აქტიურ ანაწყობში. ახალი ნაწილის წყარო შეიძლება ანაწყობში მდებარეობდეს.</translation>
     </message>
@@ -1296,25 +1260,20 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>დამაგრებული სახსარი</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="84"/>
-      <source>1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation</source>
-      <translation>1 - თუ ანაწყობი აქტიურია : ქმნის სახსარს, რომელიც მუდმივად ჩაკეტავს ორ ნაწილს ერთად და ხელს უშლის მოძრაობას, ან ბრუნვას</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="90"/>
-      <source>2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.</source>
-      <translation>2 - თუ ნაწილი აქტიურია: მოათავსებს ქვენაწილებს მათი შესაბამისი მონიშნული კოორდინატების სისტემის მიხედვით. მონიშნულის მეორე ნაწილი გადაადგილდება.</translation>
+      <location filename="../../../CommandCreateJoint.py" line="83"/>
+      <source>&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;1 - If an assembly is active : Creates a joint permanently locking two parts together, preventing any movement or rotation&lt;/p&gt;&lt;p&gt;2 - If a part is active: Positions sub-parts by matching selected coordinate systems. The second part selected will move.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointRevolute</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="111"/>
+      <location filename="../../../CommandCreateJoint.py" line="104"/>
       <source>Revolute Joint</source>
       <translation>შარნირული სახსარი</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="118"/>
+      <location filename="../../../CommandCreateJoint.py" line="109"/>
       <source>Creates a revolute joint allowing rotation around a single axis between selected parts</source>
       <translation>ქმნის მბრუნავ სახსარს, რომელიც უშვებს მონიშნული ნაწილების ბრუნვას მონიშნულ ნაწილებს შორის</translation>
     </message>
@@ -1322,12 +1281,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointCylindrical</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="136"/>
+      <location filename="../../../CommandCreateJoint.py" line="127"/>
       <source>Cylindrical Joint</source>
       <translation>ცილინდრული სახსარი</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="143"/>
+      <location filename="../../../CommandCreateJoint.py" line="132"/>
       <source>Creates a cylindrical joint that allows rotation around and translation along a single axis between assembled parts</source>
       <translation>ქმნის ცილინდრულ სახსარს, რომელიც უშვებს ბრუნვას გარშემო და მოძრაობით გადატანას აწყობილი ნაწილების ერთი ღერძის გასწვრივ</translation>
     </message>
@@ -1335,12 +1294,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointSlider</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="161"/>
+      <location filename="../../../CommandCreateJoint.py" line="150"/>
       <source>Slider Joint</source>
       <translation>სრიალა შეერთება</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="168"/>
+      <location filename="../../../CommandCreateJoint.py" line="155"/>
       <source>Creates a slider joint that allows linear movement along a single axis, but restricts rotation between selected parts</source>
       <translation>ქმნის სრიალა სახსარს, რომელიც უშვებს წრფივ მოძრაობას ერთი ღერძის გასწვრივ, მაგრამ ხელს უშლის ბრუნვას მონიშნულ ნაწილებს შორის</translation>
     </message>
@@ -1348,12 +1307,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointBall</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="186"/>
+      <location filename="../../../CommandCreateJoint.py" line="173"/>
       <source>Ball Joint</source>
       <translation>ბურთულა სახსარი</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="193"/>
+      <location filename="../../../CommandCreateJoint.py" line="178"/>
       <source>Creates a ball joint that connects parts at a point, allowing unrestricted movement as long as the connection points remain in contact</source>
       <translation>ქმნის ბურთულა სახსარს, რომელიც აკავშირებს ნაწილებს წერტილში და გაძლევთ შეუზღუდავი მოძრაობის საშუალებას მანამდე, სანამ კავშირის წერტილები ერთმანეთს ეხება</translation>
     </message>
@@ -1361,30 +1320,25 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointDistance</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="211"/>
+      <location filename="../../../CommandCreateJoint.py" line="196"/>
       <source>Distance Joint</source>
       <translation>შეერთების სიგრძე</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="218"/>
-      <source>Creates a distance joint that fixes the distance between the selected objects</source>
-      <translation>ქმნის დაშორებულ სახსარს, რომელიც ამაგრებს მანძილს მონიშნულ ობიექტებს შორის</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="224"/>
-      <source>Creates one of several different joints based on the selectionFor example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</source>
-      <translation>ქმნის ერთ-ერთს რამდენიმე განსხვავებული სახსრიდან არჩევანზე დამოკიდებულებით. მაგალითად, თუ ცილინდრსა და სიბრტყეს შორის მანძილი 0-ია, შეიქმნება მხები სახსარი. სიბრტყეებს შორის მანძილი 0 მათ კოპლანარულს გახდის.</translation>
+      <location filename="../../../CommandCreateJoint.py" line="203"/>
+      <source>&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Creates a distance joint that fixes the distance between the selected objects&lt;/p&gt;&lt;p&gt;Creates one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointParallel</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="242"/>
+      <location filename="../../../CommandCreateJoint.py" line="221"/>
       <source>Parallel Joint</source>
       <translation>პარალელური სახსარი</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="249"/>
+      <location filename="../../../CommandCreateJoint.py" line="226"/>
       <source>Creates a parallel joint that makes the Z-axis of the selected coordinate systems parallel</source>
       <translation>ქმნის პარალელურ შეერთებას, რომელიც მონიშნული კოორდინატების სისტემების Z ღერძებს პარალელურს გახდის</translation>
     </message>
@@ -1392,12 +1346,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointPerpendicular</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="269"/>
+      <location filename="../../../CommandCreateJoint.py" line="246"/>
       <source>Perpendicular Joint</source>
       <translation>პერპენტიკულარული სახსარი</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="276"/>
+      <location filename="../../../CommandCreateJoint.py" line="251"/>
       <source>Creates a perpendicular joint that makes the Z-axis of the selected coordinate systems perpendicular</source>
       <translation>ქმნის პერპერნდიკულარულ სახსარს, რომელიც მონიშნული კოორდინატების სისტემების Z ღერძებს პერპერნდიკულარულს ხდის</translation>
     </message>
@@ -1405,12 +1359,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointAngle</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="294"/>
+      <location filename="../../../CommandCreateJoint.py" line="269"/>
       <source>Angle Joint</source>
       <translation>კუთხოვანი სახსარი</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="301"/>
+      <location filename="../../../CommandCreateJoint.py" line="274"/>
       <source>Creates an angle joint that fixes the angle between the Z-axis of the selected coordinate systems</source>
       <translation>ქმნის კუთხოვან სახსარს, რომელიც ამუდმივებს კუთხეს მონიშნული კოორდინატების სისტემების Z ღერძებს შორის</translation>
     </message>
@@ -1418,60 +1372,53 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateJointRackPinion</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="321"/>
+      <location filename="../../../CommandCreateJoint.py" line="294"/>
       <source>Rack and Pinion Joint</source>
       <translation>ლარტყული სახსარი</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="328"/>
-      <source>Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint</source>
-      <translation>ქმნის ლარტყული გადაცემის სახსარს, რომელიც ნაწილს, რომელსაც აქვს სრიალა შეერთება, აკავშირებს მბრუნავ სახსართან</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateJoint.py" line="333"/>
-      <source>Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.</source>
-      <translation>მონიშნავს იგივე კოორდინატების სისტემას, რაც ბრუნავ და სრიალა სახსრებს აქვთ. ტონის რადიუს განსაზვრავს მოძრაობის კოენფიციენდს კბილანასა და საჭერს შორის.</translation>
+      <location filename="../../../CommandCreateJoint.py" line="300"/>
+      <source>&lt;p&gt;Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint&lt;/p&gt;&lt;p&gt;Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointGears</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="381"/>
+      <location filename="../../../CommandCreateJoint.py" line="342"/>
       <source>Gears Joint</source>
       <translation>კბილანა სახსარი</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="388"/>
-      <source>Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.</source>
-      <translation>ქმნის კბილანა სახსარს, რომელიც აერთებს 2 მბრუნავ კბილანას. მათ შებრუნებული ბრუნვის მიმართულება ექნებათ.</translation>
+      <location filename="../../../CommandCreateJoint.py" line="348"/>
+      <source>&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Creates a gears joint that links 2 rotating gears together. They will have inverse rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly_CreateJointBelt</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="411"/>
+      <location filename="../../../CommandCreateJoint.py" line="366"/>
       <source>Belt Joint</source>
       <translation>ღვედური სახსარი</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="418"/>
-      <source>Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.</source>
-      <translation>ქმნის ღვედურ სახსარს, რომელიც აერთიანებს 2 მბრუნავ ობიექტს. მათ იგივე ბრუნვის მიმართულება ექნებათ.</translation>
+      <location filename="../../../CommandCreateJoint.py" line="372"/>
+      <source>&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;p&gt;Creates a belt joint that links 2 rotating objects together. They will have the same rotation direction.&lt;/p&gt;&lt;p&gt;Select the same coordinate systems as the revolute joints.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="486"/>
+      <location filename="../../../CommandCreateJoint.py" line="429"/>
       <source>Toggle Grounded</source>
       <translation>დამაგრების გადართვა</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="493"/>
-      <source>Toggles the grounding of a part.
-Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
-      <translation>გადართავს ნაწილის დამაგრებას.
-ნაწილის დამაგრება სამუდამოდ დაამაგრებს ანაწყობის მდებარეობას და ხელს უშლის ნებისმიერ მოძრაობას თუ ბრუნვას. აწყობის დასაწყებად, სულ ცოტა, ერთი დამაგრებული ნაწილი გჭირდებათ.</translation>
+      <location filename="../../../CommandCreateJoint.py" line="435"/>
+      <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
+      <translation type="unfinished">&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</translation>
     </message>
   </context>
   <context>
@@ -1482,7 +1429,7 @@ Grounding a part permanently locks its position in the assembly, preventing any 
       <translation>სიმულაცია</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="74"/>
+      <location filename="../../../CommandCreateSimulation.py" line="72"/>
       <source>Creates a new simulation of the current assembly</source>
       <translation>ქმნის მიმდინარე ანაწყობის ახალ სიმულაციას</translation>
     </message>
@@ -1495,7 +1442,7 @@ Grounding a part permanently locks its position in the assembly, preventing any 
       <translation>გაფანტული ხედი</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="61"/>
+      <location filename="../../../CommandCreateView.py" line="59"/>
       <source>Creates an exploded view of the current assembly</source>
       <translation>ქმნის მიმდინარე ანაწყობის გაფანტულ ხედს</translation>
     </message>
@@ -1503,7 +1450,7 @@ Grounding a part permanently locks its position in the assembly, preventing any 
   <context>
     <name>Assembly_Insert</name>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="73"/>
+      <location filename="../../../CommandInsertLink.py" line="65"/>
       <source>Insert Component</source>
       <translation>კომპონენტის ჩასმა</translation>
     </message>
@@ -1511,27 +1458,27 @@ Grounding a part permanently locks its position in the assembly, preventing any 
   <context>
     <name>AssemblyGui::TaskAssemblyMessages</name>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="41"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="37"/>
       <source>Solver messages</source>
       <translation>ამომხსნელის შეტყობინებები</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="58"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="54"/>
       <source>Click to select these conflicting joints.</source>
       <translation>დააწკაპუნეთ ამ კონფლიქტური სახსრების მოსანიშნად.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="61"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="57"/>
       <source>Click to select these redundant joints.</source>
       <translation>დააწკაპუნეთ დამატებითი სახსრების მოსანიშნად.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="64"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="60"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
       <translation type="unfinished">The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</translation>
     </message>
     <message>
-      <location filename="../../TaskAssemblyMessages.cpp" line="68"/>
+      <location filename="../../TaskAssemblyMessages.cpp" line="64"/>
       <source>Click to select these malformed joints.</source>
       <translation>დააწკაპუნეთ არასწორად ჩამოყალიბებული სახსრების მოსანიშნად.</translation>
     </message>

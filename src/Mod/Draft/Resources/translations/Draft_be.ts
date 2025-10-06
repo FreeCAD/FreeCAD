@@ -3128,7 +3128,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../../WorkingPlane.py" line="1229"/>
       <source>Current working plane: Auto</source>
-      <translation type="unfinished">Current working plane: Auto</translation>
+      <translation>Бягучая працоўная плоскасць: аўтаматычна</translation>
     </message>
     <message>
       <location filename="../../WorkingPlane.py" line="1703"/>
