@@ -5,6 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export, constmethod
 from TopoShape import TopoShape
 
+
 @export(
     Twin="TopoShape",
     TwinPointer="TopoShape",
@@ -28,9 +29,7 @@ class TopoShapeCompound(TopoShape):
         ...
 
     @constmethod
-    def connectEdgesToWires(
-        self, Shared: bool = True, Tolerance: float = 1e-7, /
-    ) -> "TopoShapeCompound":
+    def connectEdgesToWires(self, Shared: bool = True, Tolerance: float = 1e-7, /) -> "TopoShapeCompound":
         """
         Build a compound of wires out of the edges of this compound.
         connectEdgesToWires([Shared = True, Tolerance = 1e-7]) -> Compound

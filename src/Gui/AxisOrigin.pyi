@@ -6,6 +6,7 @@ from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import Any, Final, Tuple, Dict
 
+
 @export(
     Constructor=True,
     Delete=True,
@@ -45,6 +46,7 @@ class AxisOrigin(BaseClass):
             Output Coin path leading to the returned element detail.
         """
         ...
+
     AxisLength: float = 0.0
     """Get/set the axis length."""
 

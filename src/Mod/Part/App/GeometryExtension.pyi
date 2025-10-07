@@ -5,6 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
 
+
 @export(
     Include="Mod/Part/App/GeometryExtension.h",
     Constructor=True,

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from GeoFeature import GeoFeature
 
+
 class Part(GeoFeature):
     """
     Author: Juergen Riegel (FreeCAD@juergen-riegel.net)

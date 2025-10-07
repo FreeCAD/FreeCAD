@@ -5,6 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export
 from TechDraw.DrawTile import DrawTile
 
+
 @export(
     Include="Mod/TechDraw/App/DrawTileWeld.h",
     Namespace="TechDraw",

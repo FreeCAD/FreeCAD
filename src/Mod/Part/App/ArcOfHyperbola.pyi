@@ -6,6 +6,7 @@ from Base.Metadata import export
 from Part.ArcOfConic import ArcOfConic
 from typing import Final
 
+
 @export(
     Father="ArcOfConicPy",
     Name="ArcOfHyperbolaPy",

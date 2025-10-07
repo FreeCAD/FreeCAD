@@ -8,6 +8,7 @@ from Base.Metadata import export
 
 from Gui.ViewProviderGeometryObject import ViewProviderGeometryObject
 
+
 @export(
     Include="Mod/Fem/Gui/ViewProviderFemConstraint.h",
     Namespace="FemGui",
@@ -32,6 +33,7 @@ class ViewProviderFemConstraint(ViewProviderGeometryObject):
         filename : str
             Open Inventor file."""
         ...
+
     SymbolNode: Final[Any]
     """A pivy SoSeparator with the nodes of the constraint symbols"""
 

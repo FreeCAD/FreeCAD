@@ -5,6 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export
 from Part.App.GeometryExtension import GeometryExtension
 
+
 @export(
     PythonName="SketcherGui.ViewProviderSketchGeometryExtension",
     Include="Mod/Sketcher/Gui/ViewProviderSketchGeometryExtension.h",

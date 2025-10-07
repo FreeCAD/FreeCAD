@@ -7,6 +7,7 @@ from Base.Persistence import Persistence
 from Base.Vector import Vector
 from typing import Final, Tuple
 
+
 @export(
     Include="Mod/Sketcher/App/Sketch.h",
     FatherInclude="Base/PersistencePy.h",

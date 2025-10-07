@@ -6,6 +6,7 @@ from typing import Any
 from Gui.ViewProviderGeometryObject import ViewProviderGeometryObject
 from Base.Metadata import export
 
+
 @export(
     Include="Mod/Mesh/Gui/ViewProvider.h",
     Namespace="MeshGui",

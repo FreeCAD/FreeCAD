@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from GroupExtension import GroupExtension
 
+
 class GeoFeatureGroupExtension(GroupExtension):
     """
     Author: Werner Mayer (wmayer@users.sourceforge.net)

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from Base.PyObjectBase import PyObjectBase
 
+
 class ApplicationDirectories(PyObjectBase):
     """
     Provides access to the directory versioning methods of its C++ counterpart.

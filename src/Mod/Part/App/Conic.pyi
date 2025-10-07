@@ -6,6 +6,7 @@ from Base.Metadata import export
 from GeometryCurve import GeometryCurve
 from typing import Final
 
+
 @export(
     PythonName="Part.Conic",
     Twin="GeomConic",

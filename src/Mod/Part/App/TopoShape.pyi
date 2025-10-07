@@ -9,6 +9,7 @@ from Base.BoundBox import BoundBox
 from App.ComplexGeoData import ComplexGeoData
 from typing import Final, List, Tuple, Union, overload
 
+
 @export(
     Include="Mod/Part/App/TopoShape.h",
     FatherInclude="App/ComplexGeoDataPy.h",
@@ -87,9 +88,7 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def writeInventor(
-        self, *, Mode: int, Deviation: float, Angle: float, FaceColors: object
-    ) -> str:
+    def writeInventor(self, *, Mode: int, Deviation: float, Angle: float, FaceColors: object) -> str:
         """
         Write the mesh in OpenInventor format to a string.
         writeInventor() -> string
@@ -296,7 +295,11 @@ class TopoShape(ComplexGeoData):
 
     @constmethod
     def section(
-        self, tool: Tuple[TopoShape, ...], tolerance: float = 0.0, approximation: bool = False, /
+        self,
+        tool: Tuple[TopoShape, ...],
+        tolerance: float = 0.0,
+        approximation: bool = False,
+        /
     ) -> TopoShape:
         """
         Section of this with a given (list of) topo shape.
@@ -349,9 +352,10 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def generalFuse(
-        self, shapes: Tuple[TopoShape, ...], fuzzy_value: float = 0.0, /
-    ) -> Tuple[TopoShape, List[List[TopoShape]]]:
+    def generalFuse(self,
+        shapes: Tuple[TopoShape, ...],
+        fuzzy_value: float = 0.0,
+        /) -> Tuple[TopoShape, List[List[TopoShape]]]:
         """
         Run general fuse algorithm (GFA) between this and given shapes.
         generalFuse(list_of_other_shapes, [fuzzy_value = 0.0]) -> (result, map)
@@ -452,9 +456,7 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
-    def transformShape(
-        self, matrix: Matrix, copy: bool = False, checkScale: bool = False, /
-    ) -> None:
+    def transformShape(self, matrix: Matrix, copy: bool = False, checkScale: bool = False, /) -> None:
         """
         Apply transformation on a shape without changing the underlying geometry.
         transformShape(Matrix, [boolean copy=False, checkScale=False]) -> None
@@ -523,10 +525,14 @@ class TopoShape(ComplexGeoData):
 
     @overload
     @constmethod
-    def makeFillet(self, radius: float, edgeList: List, /) -> TopoShape: ...
+    def makeFillet(self, radius: float, edgeList: List, /) -> TopoShape:
+        ...
+
     @overload
     @constmethod
-    def makeFillet(self, radius1: float, radius2: float, edgeList: List, /) -> TopoShape: ...
+    def makeFillet(self, radius1: float, radius2: float, edgeList: List, /) -> TopoShape:
+        ...
+
     @constmethod
     def makeFillet(self, *args) -> TopoShape:
         """
@@ -537,13 +543,16 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
+    @overload
+    @constmethod
+    def makeChamfer(self, radius: float, edgeList: List, /) -> TopoShape:
+        ...
 
     @overload
     @constmethod
-    def makeChamfer(self, radius: float, edgeList: List, /) -> TopoShape: ...
-    @overload
-    @constmethod
-    def makeChamfer(self, radius1: float, radius2: float, edgeList: List, /) -> TopoShape: ...
+    def makeChamfer(self, radius1: float, radius2: float, edgeList: List, /) -> TopoShape:
+        ...
+
     @constmethod
     def makeChamfer(self, *args) -> TopoShape:
         """
@@ -787,9 +796,7 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
-    def fix(
-        self, working_precision: float, minimum_precision: float, maximum_precision: float, /
-    ) -> bool:
+    def fix(self, working_precision: float, minimum_precision: float, maximum_precision: float, /) -> bool:
         """
         Tries to fix a broken shape.
         fix(working precision, minimum precision, maximum precision) -> bool
@@ -965,9 +972,7 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def proximity(
-        self, shape: TopoShape, tolerance: float = None, /
-    ) -> Tuple[List[int], List[int]]:
+    def proximity(self, shape: TopoShape, tolerance: float = None, /) -> Tuple[List[int], List[int]]:
         """
         Returns two lists of Face indexes for the Faces involved in the intersection.
         proximity(shape,[tolerance]) -> (selfFaces, shapeFaces)
@@ -975,9 +980,10 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def distToShape(
-        self, shape: TopoShape, tol: float = 1e-7, /
-    ) -> Tuple[float, List[Tuple[Vector, Vector]], List[Tuple]]:
+    def distToShape(self,
+        shape: TopoShape,
+        tol: float = 1e-7,
+        /) -> Tuple[float, List[Tuple[Vector, Vector]], List[Tuple]]:
         """
         Find the minimum distance to another shape.
         distToShape(shape, tol=1e-7) -> (dist, vectors, infos)
@@ -1022,9 +1028,7 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
-    def mapSubElement(
-        self, shape: Union[TopoShape, Tuple[TopoShape, ...]], op: str = "", /
-    ) -> None:
+    def mapSubElement(self, shape: Union[TopoShape, Tuple[TopoShape, ...]], op: str = "", /) -> None:
         """
         mapSubElement(shape|[shape...], op='') - maps the sub element of other shape
 
@@ -1097,9 +1101,7 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def inTolerance(
-        self, valmin: float, valmax: float, ShapeType: str = "Shape", /
-    ) -> List[TopoShape]:
+    def inTolerance(self, valmin: float, valmax: float, ShapeType: str = "Shape", /) -> List[TopoShape]:
         """
         Determines which shapes have a tolerance within a given interval
         inTolerance(valmin, valmax, [ShapeType=Shape]) -> ShapeList

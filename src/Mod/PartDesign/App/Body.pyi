@@ -6,6 +6,7 @@ from Base.Metadata import export
 from Part.BodyBase import BodyBase
 from typing import Final
 
+
 @export(
     Include="Mod/PartDesign/App/Body.h",
     FatherInclude="Mod/Part/App/BodyBasePy.h",

@@ -9,6 +9,7 @@ from Vertex import Vertex
 from TopoShape import TopoShape
 from typing import Final, Tuple, Dict, List, overload
 
+
 @export(
     Twin="TopoShape",
     TwinPointer="TopoShape",
@@ -455,27 +456,29 @@ class TopoShapeEdge(TopoShape):
 
     @constmethod
     @overload
-    def discretize(self, Number: int, First: float = ..., Last: float = ...) -> List[Vector]: ...
+    def discretize(self, Number: int, First: float = ..., Last: float = ...) -> List[Vector]:
+        ...
+
     @constmethod
     @overload
-    def discretize(
-        self, QuasiNumber: int, First: float = ..., Last: float = ...
-    ) -> List[Vector]: ...
+    def discretize(self, QuasiNumber: int, First: float = ..., Last: float = ...) -> List[Vector]:
+        ...
+
     @constmethod
     @overload
-    def discretize(
-        self, Distance: float, First: float = ..., Last: float = ...
-    ) -> List[Vector]: ...
+    def discretize(self, Distance: float, First: float = ..., Last: float = ...) -> List[Vector]:
+        ...
+
     @constmethod
     @overload
-    def discretize(
-        self, Deflection: float, First: float = ..., Last: float = ...
-    ) -> List[Vector]: ...
+    def discretize(self, Deflection: float, First: float = ..., Last: float = ...) -> List[Vector]:
+        ...
+
     @constmethod
     @overload
-    def discretize(
-        self, QuasiDeflection: float, First: float = ..., Last: float = ...
-    ) -> List[Vector]: ...
+    def discretize(self, QuasiDeflection: float, First: float = ..., Last: float = ...) -> List[Vector]:
+        ...
+
     @constmethod
     @overload
     def discretize(
@@ -485,7 +488,9 @@ class TopoShapeEdge(TopoShape):
         Minimum: int = ...,
         First: float = ...,
         Last: float = ...,
-    ) -> List[Vector]: ...
+    ) -> List[Vector]:
+        ...
+
     @constmethod
     def discretize(self, **kwargs) -> List[Vector]:
         """

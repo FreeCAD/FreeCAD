@@ -7,6 +7,7 @@ from typing import Any, Final
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 
+
 @export(
     Include="Mod/Mesh/App/MeshPoint.h",
     Namespace="Mesh",
@@ -33,6 +34,7 @@ class MeshPoint(PyObjectBase):
         After calling unbound() no topological operation will
         work!"""
         ...
+
     Index: Final[int]
     """The index of this point in the MeshObject"""
 

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from PyObjectBase import PyObjectBase
 
+
 class Precision(PyObjectBase):
     """
     This is the Precision class

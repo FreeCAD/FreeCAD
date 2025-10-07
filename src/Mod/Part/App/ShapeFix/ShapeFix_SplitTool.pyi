@@ -5,6 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 
+
 @export(
     PythonName="Part.ShapeFix.SplitTool",
     Include="ShapeFix_SplitTool.hxx",

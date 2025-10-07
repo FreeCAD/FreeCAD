@@ -6,6 +6,7 @@ from Base.Metadata import export
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 from Part.App.TopoShape import TopoShape
 
+
 @export(
     PythonName="Part.ShapeFix.FixSmallFace",
     Include="ShapeFix_FixSmallFace.hxx",
