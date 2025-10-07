@@ -832,45 +832,26 @@ class Joint:
         return plc
 
     def flipOnePart(self, joint):
-        assembly = self.getAssembly(joint)
-
-        part2 = UtilsAssembly.getMovingPart(assembly, joint.Reference2)
-        if part2 is not None:
-            part2ConnectedByJoint = assembly.isJointConnectingPartToGround(joint, "Reference2")
-            part2Grounded = assembly.isPartGrounded(part2)
-            if part2ConnectedByJoint and not part2Grounded:
-                jcsPlc = UtilsAssembly.getJcsPlcRelativeToPart(
-                    assembly, joint.Placement2, joint.Reference2
-                )
-                globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(joint.Placement2, joint.Reference2)
-                jcsPlc = UtilsAssembly.flipPlacement(jcsPlc)
-                part2.Placement = globalJcsPlc * jcsPlc.inverse()
-                solveIfAllowed(self.getAssembly(joint))
-                return
-
-        part1 = UtilsAssembly.getMovingPart(assembly, joint.Reference1)
-        if part1 is not None:
-            part1Grounded = assembly.isPartGrounded(part1)
-            if not part1Grounded:
-                jcsPlc = UtilsAssembly.getJcsPlcRelativeToPart(
-                    assembly, joint.Placement1, joint.Reference1
-                )
-                globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Reference1)
-                jcsPlc = UtilsAssembly.flipPlacement(jcsPlc)
-                part1.Placement = globalJcsPlc * jcsPlc.inverse()
-                return
+        self.matchJCS(joint, False, True)
 
     def preSolve(self, joint, savePlc=True):
         # The goal of this is to put the part in the correct position to avoid wrong placement by the solve.
 
         # we actually don't want to match perfectly the JCS, it is best to match them
         # in the current closest direction, ie either matched or flipped.
+        self.matchJCS(joint, savePlc)
 
-        sameDir = self.areJcsSameDir(joint)
+    def matchJCS(self, joint, savePlc=True, reverse=False):
         assembly = self.getAssembly(joint)
+        sameDir = self.areJcsSameDir(joint)
+        if reverse:
+            sameDir = not sameDir
 
         part1 = UtilsAssembly.getMovingPart(assembly, joint.Reference1)
         part2 = UtilsAssembly.getMovingPart(assembly, joint.Reference2)
+
+        if not part1 or not part2:
+            return False
 
         isAssembly = assembly.Type == "Assembly"
         if isAssembly:
@@ -882,47 +863,54 @@ class Joint:
             part1Connected = True
             part2Connected = False
 
-        if not part1Connected:
-            if savePlc:
-                self.partMovedByPresolved = part1
-                self.presolveBackupPlc = part1.Placement
+        moving_part = None
+        moving_part_ref = None
+        fixed_part_ref = None
+        moving_placement = None
+        fixed_placement = None
 
-            globalJcsPlc2 = UtilsAssembly.getJcsGlobalPlc(joint.Placement2, joint.Reference2)
-            jcsPlc1 = UtilsAssembly.getJcsPlcRelativeToPart(
-                assembly, joint.Placement1, joint.Reference1
-            )
-            if not sameDir:
-                jcsPlc1 = UtilsAssembly.flipPlacement(jcsPlc1)
+        if not part1Connected and part1:
+            moving_part = part1
+            moving_part_ref = joint.Reference1
+            fixed_part_ref = joint.Reference2
+            moving_placement = joint.Placement1
+            fixed_placement = joint.Placement2
+        elif not part2Connected and part2:
+            moving_part = part2
+            moving_part_ref = joint.Reference2
+            fixed_part_ref = joint.Reference1
+            moving_placement = joint.Placement2
+            fixed_placement = joint.Placement1
+        else:
+            # Both parts are constrained, or something is invalid. Nothing to pre-solve.
+            return False
 
-            # For link groups and sub-assemblies we have to take into account
-            # the parent placement (ie the linkgroup plc) as the linkgroup is not the moving part
-            # But instead of doing as follow, we rather enforce identity placement for linkgroups.
-            # parentPlc = UtilsAssembly.getParentPlacementIfNeeded(part2)
-            # part2.Placement = globalJcsPlc1 * jcsPlc2.inverse() * parentPlc.inverse()
+        parts_to_move = [moving_part]
+        if isAssembly:
+            parts_to_move = parts_to_move + assembly.getDownstreamParts(moving_part, joint)
 
-            part1.Placement = globalJcsPlc2 * jcsPlc1.inverse()
-            return True
+        if savePlc:
+            self.partsMovedByPresolved = {p: p.Placement for p in parts_to_move}
 
-        elif not part2Connected:
-            if savePlc:
-                self.partMovedByPresolved = part2
-                self.presolveBackupPlc = part2.Placement
+        moving_part_global_jcs = UtilsAssembly.getJcsGlobalPlc(moving_placement, moving_part_ref)
+        fixed_part_global_jcs = UtilsAssembly.getJcsGlobalPlc(fixed_placement, fixed_part_ref)
 
-            globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Reference1)
-            jcsPlc2 = UtilsAssembly.getJcsPlcRelativeToPart(
-                assembly, joint.Placement2, joint.Reference2
-            )
-            if not sameDir:
-                jcsPlc2 = UtilsAssembly.flipPlacement(jcsPlc2)
+        if not sameDir:
+            moving_part_global_jcs = UtilsAssembly.flipPlacement(moving_part_global_jcs)
 
-            part2.Placement = globalJcsPlc1 * jcsPlc2.inverse()
-            return True
-        return False
+        transform_plc = fixed_part_global_jcs * moving_part_global_jcs.inverse()
+
+        for part in parts_to_move:
+            part.Placement = transform_plc * part.Placement
+
+        return True
 
     def undoPreSolve(self, joint):
-        if hasattr(self, "partMovedByPresolved") and self.partMovedByPresolved:
-            self.partMovedByPresolved.Placement = self.presolveBackupPlc
-            self.partMovedByPresolved = None
+        if hasattr(self, "partsMovedByPresolved") and self.partsMovedByPresolved:
+            for part, plc in self.partsMovedByPresolved.items():
+                if part and hasattr(part, "Placement"):
+                    part.Placement = plc
+            self.partsMovedByPresolved = {}
 
             joint.Placement1 = joint.Placement1  # Make sure plc1 is redrawn
 
