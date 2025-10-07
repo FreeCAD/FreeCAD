@@ -11,11 +11,20 @@ if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
+    # Create an alias for the Slot decorator for use within the GUI-only classes.
+    Slot = QtCore.Slot
 else:
     def translate(ctxt, txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt, txt):
         return txt
+    # In headless mode, create a dummy decorator named 'Slot'. This allows the
+    # Python interpreter to parse the @Slot syntax in GUI-only classes without
+    # raising a NameError because QtCore is not imported.
+    def Slot(*args, **kwargs):
+        def decorator(func):
+            return func
+        return decorator
 
 import ArchSql
 from ArchSql import ReportStatement
@@ -905,16 +914,18 @@ class ReportTaskPanel:
         self.form = [self.overview_widget, self.editor_widget]
 
         # --- Connections ---
-        self.btn_add_statement.clicked.connect(lambda: self._add_statement())
-        self.btn_remove_statement.clicked.connect(lambda: self._remove_selected_statement())
-        self.btn_duplicate_statement.clicked.connect(lambda: self._duplicate_selected_statement()) # type: ignore
-        self.btn_edit_selected.clicked.connect(lambda: self._start_edit_session())
+        # Use explicit slots instead of lambda wrappers so Qt's meta-object
+        # system can see the call targets and avoid creating anonymous functions.
+        self.btn_add_statement.clicked.connect(self._on_add_statement_clicked)
+        self.btn_remove_statement.clicked.connect(self._on_remove_selected_statement_clicked)
+        self.btn_duplicate_statement.clicked.connect(self._on_duplicate_selected_statement_clicked) # type: ignore
+        self.btn_edit_selected.clicked.connect(self._on_edit_selected_clicked)
         self.table_statements.itemSelectionChanged.connect(self._on_table_selection_changed)
         self.template_dropdown.activated.connect(self._on_load_report_template)
 
         # Keep table edits in sync with the runtime statements
         self.table_statements.itemChanged.connect(self._on_table_item_changed)
-        self.btn_save_template.clicked.connect(lambda: self._on_save_report_template())
+        self.btn_save_template.clicked.connect(self._on_save_report_template)
 
         # Enable and connect the preset management buttons
         self.btn_manage_templates.setEnabled(True)
@@ -929,14 +940,14 @@ class ReportTaskPanel:
             checkbox.stateChanged.connect(self._on_editor_field_changed)
         self.query_preset_dropdown.activated.connect(self._on_load_query_preset)
         self.chk_is_pipelined.stateChanged.connect(self._on_editor_sql_changed)
-        self.btn_save_query_preset.clicked.connect(lambda: self._on_save_query_preset())
+        self.btn_save_query_preset.clicked.connect(self._on_save_query_preset)
 
         # Preview and Commit connections
         self.btn_toggle_preview.toggled.connect(self._on_preview_toggled)
-        self.btn_refresh_preview.clicked.connect(lambda: self._run_and_display_preview())
-        self.btn_save.clicked.connect(lambda: self.on_save_clicked())
-        self.btn_discard.clicked.connect(lambda: self.on_discard_clicked())
-        self.btn_show_cheatsheet.clicked.connect(lambda: self._show_cheatsheet_dialog())
+        self.btn_refresh_preview.clicked.connect(self._run_and_display_preview)
+        self.btn_save.clicked.connect(self.on_save_clicked)
+        self.btn_discard.clicked.connect(self.on_discard_clicked)
+        self.btn_show_cheatsheet.clicked.connect(self._show_cheatsheet_dialog)
 
         # Validation Timer for live SQL preview
         # Timer doesn't need a specific QWidget parent here; use no parent.
@@ -1067,6 +1078,30 @@ class ReportTaskPanel:
             statement.validate_and_update_status()
         # Re-enable signals after population so user edits are handled
         self.table_statements.blockSignals(False)
+
+    # --- Explicit Qt Slot Wrappers ---
+    @Slot()
+    def _on_add_statement_clicked(self):
+        """Slot wrapper for the Add button (clicked)."""
+        # Default behavior: create a new statement but do not open editor.
+        self._add_statement(start_editing=False)
+
+    @Slot()
+    def _on_remove_selected_statement_clicked(self):
+        """Slot wrapper for the Remove button (clicked)."""
+        self._remove_selected_statement()
+
+    @Slot()
+    def _on_duplicate_selected_statement_clicked(self):
+        """Slot wrapper for the Duplicate button (clicked)."""
+        self._duplicate_selected_statement()
+
+    @Slot()
+    def _on_edit_selected_clicked(self):
+        """Slot wrapper for the Edit Selected button (clicked)."""
+        # Delegate to _start_edit_session() which will find the selection if no
+        # explicit row_index is given.
+        self._start_edit_session()
 
     def _on_table_item_changed(self, item):
         """Synchronize direct table edits (description and checkboxes) back into the runtime statement."""
@@ -1223,10 +1258,16 @@ class ReportTaskPanel:
         self.sql_query_status_label.setStyleSheet("color: gray;")
         self.validation_timer.start(500)
 
-    def _on_editor_field_changed(self):
-        """A generic slot that handles any change in an editor field to mark it as dirty."""
+    def _on_editor_field_changed(self, *args):
+        """A generic slot that handles any change in an editor field to mark it as dirty.
+
+        This method is connected to multiple signal signatures (textChanged -> str,
+        stateChanged -> int). Leaving it undecorated (or accepting *args) keeps it
+        flexible so Qt can call it with varying argument lists.
+        """
         self._set_dirty(True)
 
+    @Slot(int)
     def _on_load_query_preset(self, index):
         """Handles the selection of a query preset from the dropdown."""
         if index == 0:  # Ignore the placeholder item
@@ -1255,6 +1296,7 @@ class ReportTaskPanel:
         # Reset dropdown to act as a one-shot action button
         self.query_preset_dropdown.setCurrentIndex(0)
 
+    @Slot()
     def _on_save_query_preset(self):
         """Saves the current query text as a new user preset."""
         current_query = self.sql_query_edit.toPlainText().strip()
@@ -1269,6 +1311,7 @@ class ReportTaskPanel:
             _save_preset('query', preset_name, preset_data)
             self._load_and_populate_presets() # Refresh the dropdown with the new preset
 
+    @Slot(int)
     def _on_load_report_template(self, index):
         """Handles the selection of a full report template from the dropdown."""
         if index == 0:
@@ -1308,6 +1351,7 @@ class ReportTaskPanel:
 
         self.template_dropdown.setCurrentIndex(0)
 
+    @Slot()
     def _on_save_report_template(self):
         """Saves the current set of statements as a new report template."""
         if not self.obj.Proxy.live_statements:
@@ -1557,6 +1601,7 @@ class ReportTaskPanel:
         """Discards changes and closes the editor."""
         self._end_edit_session()
 
+    @Slot(bool)
     def _on_preview_toggled(self, checked):
         """Shows or hides the preview pane and updates the toggle button's appearance."""
         if checked:
