@@ -55,7 +55,7 @@ def create_test_model(document, **overrides):
     doc = document
     if not doc:
         FreeCAD.Console.PrintError("Error: No active document found. Please create a new document first.\n")
-        return
+        return {}
 
     # Merge defaults with overrides
     cfg = DEFAULTS.copy()

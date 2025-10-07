@@ -1202,6 +1202,8 @@ class ArithmeticOperation:
         if self.op == '/':
             return left_val / right_val if right_val != 0 else float('inf')
 
+        raise SqlEngineError(f"Unknown arithmetic operator: '{self.op}'")
+
 
 class ReferenceExtractor:
     """
