@@ -1087,7 +1087,6 @@ class TestArchReport(TestArchBase.TestArchBase):
         model = create_test_model(self.document)
 
         # Get references to key objects from the returned dictionary
-        building = model["building"]
         ground_floor = model["ground_floor"]
         upper_floor = model["upper_floor"]
         front_door = model["front_door"]
