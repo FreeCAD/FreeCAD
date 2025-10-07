@@ -120,6 +120,8 @@ class Placement(PyObjectBase):
     def rotate(
         self, center: Sequence[float], axis: Sequence[float], angle: float, *, comp: bool = False
     ) -> None: ...
+
+    @overload
     def rotate(self, center: Vector, axis: Vector, angle: float, *, comp: bool = False) -> None:
         """
         rotate(center, axis, angle, comp) -> None
@@ -138,6 +140,8 @@ class Placement(PyObjectBase):
             optional keyword only argument, if True (default=False),
         behave like TopoShape.rotate() (i.e. the resulting placements are interchangeable).
         """
+
+    def rotate(self, *args, **kwargs) -> None:
         ...
 
     @constmethod

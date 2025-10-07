@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from DocumentObject import DocumentObject
-from Base import Placement
+from Base.Placement import Placement
 from typing import Any, Final, Optional
 
 class GeoFeature(DocumentObject):
