@@ -168,8 +168,8 @@ class ObjectDressup:
     def setup(self, obj):
         obj.LeadIn = True
         obj.LeadOut = True
-        obj.AngleIn = 45
-        obj.AngleOut = 45
+        obj.AngleIn = 90
+        obj.AngleOut = 90
         obj.InvertIn = False
         obj.InvertOut = False
         obj.PercentageRadiusIn = 150
@@ -254,7 +254,7 @@ class ObjectDressup:
                 "Path Lead-in",
                 QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-In (1..90)"),
             )
-            obj.AngleIn = 45
+            obj.AngleIn = 90
         if not hasattr(obj, "AngleOut"):
             obj.addProperty(
                 "App::PropertyAngle",
@@ -262,7 +262,7 @@ class ObjectDressup:
                 "Path Lead-out",
                 QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-Out (1..90)"),
             )
-            obj.AngleOut = 45
+            obj.AngleOut = 90
 
         if styleOn:
             if styleOn == "Arc":
