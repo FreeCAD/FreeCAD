@@ -52,8 +52,10 @@
 
 #include <App/Document.h>
 #include <App/Datums.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "FeatureSketchBased.h"
 #include "Body.h"
@@ -732,6 +734,9 @@ void ProfileBased::getUpToFaceFromLinkSub(TopoShape& upToFace, const App::Proper
         throw Base::ValueError("SketchBased: No face selected");
     }
 
+    Base::Placement groupPla;
+    groupPla=App::GeoFeatureGroupExtension::globalGroupPlacementInBoundary(ref);
+
     if (ref->isDerivedFrom<App::Plane>()) {
         upToFace = makeShapeFromPlane(ref);
         return;
@@ -745,9 +750,16 @@ void ProfileBased::getUpToFaceFromLinkSub(TopoShape& upToFace, const App::Proper
         subs.empty() ? nullptr : subs[0].c_str()
     );
 
+
     if (!upToFace.hasSubShape(TopAbs_FACE)) {
         throw Base::ValueError("SketchBased: Up to face: Failed to extract face");
     }
+
+    if (!groupPla.isIdentity()) {
+        TopLoc_Location groupLoc=Part::Tools::fromPlacement(groupPla);
+        upToFace.move(groupLoc);
+    }
+
 }
 
 int ProfileBased::getUpToShapeFromLinkSubList(
@@ -762,6 +774,9 @@ int ProfileBased::getUpToShapeFromLinkSubList(
     std::vector<TopoShape> faceList;
     for (auto& subSet : subSets) {
         auto ref = subSet.first;
+        Base::Placement groupPla;
+        groupPla=App::GeoFeatureGroupExtension::globalGroupPlacementInBoundary(ref);
+        TopLoc_Location groupLoc=Part::Tools::fromPlacement(groupPla);
         if (ref->isDerivedFrom<App::Plane>()) {
             faceList.push_back(makeTopoShapeFromPlane(ref));
             ret++;
@@ -780,7 +795,10 @@ int ProfileBased::getUpToShapeFromLinkSubList(
                 );
 
 
-                for (auto face : baseShape.getSubTopoShapes(TopAbs_FACE)) {
+                for (auto face : baseShape.getSubTopoShapes(TopAbs_FACE)){
+                    if (!groupPla.isIdentity()) {
+                       face.move(groupLoc);
+                    }
                     faceList.push_back(face);
                     ret++;
                 }
@@ -798,6 +816,9 @@ int ProfileBased::getUpToShapeFromLinkSubList(
                     face = face.makeElementFace();
                     if (face.isNull()) {
                         throw Base::ValueError("SketchBased: Failed to extract face");
+                    }
+                    if (!groupPla.isIdentity()) {
+                       face.move(groupLoc);
                     }
                     faceList.push_back(face);
                     ret++;
