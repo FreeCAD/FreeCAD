@@ -521,6 +521,12 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
+    @overload
+    @constmethod
+    def makeFillet(self, radius: float, edgeList: List, /) -> TopoShape: ...
+    @overload
+    @constmethod
+    def makeFillet(self, radius1: float, radius2: float, edgeList: List, /) -> TopoShape: ...
     @constmethod
     def makeFillet(self, *args) -> TopoShape:
         """
@@ -531,12 +537,13 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
+
     @overload
     @constmethod
-    def makeFillet(self, radius: float, edgeList: List, /) -> TopoShape: ...
+    def makeChamfer(self, radius: float, edgeList: List, /) -> TopoShape: ...
     @overload
     @constmethod
-    def makeFillet(self, radius1: float, radius2: float, edgeList: List, /) -> TopoShape: ...
+    def makeChamfer(self, radius1: float, radius2: float, edgeList: List, /) -> TopoShape: ...
     @constmethod
     def makeChamfer(self, *args) -> TopoShape:
         """
@@ -547,12 +554,6 @@ class TopoShape(ComplexGeoData):
         """
         ...
 
-    @overload
-    @constmethod
-    def makeChamfer(self, radius: float, edgeList: List, /) -> TopoShape: ...
-    @overload
-    @constmethod
-    def makeChamfer(self, radius1: float, radius2: float, edgeList: List, /) -> TopoShape: ...
     @constmethod
     def makeThickness(self, faces: List, offset: float, tolerance: float, /) -> TopoShape:
         """

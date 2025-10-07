@@ -24,8 +24,6 @@ class Material(PyObjectBase):
     UserDocu: This is the Material class
     """
 
-    @overload
-    def __init__(self, *args: Any, **kwargs: Any) -> None: ...
     def set(self, string: str, /) -> None:
         """
         Set(string) -- Set the material.
@@ -35,6 +33,7 @@ class Material(PyObjectBase):
         Satin, Metalized, Neon GNC, Chrome, Aluminium, Obsidian, Neon PHC, Jade, Ruby or Emerald.
         """
         ...
+
     AmbientColor: Any = ...
     """Ambient color"""
 

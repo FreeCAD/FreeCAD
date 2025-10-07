@@ -19,7 +19,9 @@ class StringHasher(BaseClass):
     """
 
     @overload
-    def __init__(self, *args: Any, **kwargs: Any) -> None: ...
+    def getID(self, txt: str, base64: bool = False, /) -> Any: ...
+    @overload
+    def getID(self, id: int, base64: bool = False, /) -> Any: ...
     def getID(self, arg: Any, base64: bool = False, /) -> Any:
         """
         getID(txt|id, base64=False) -> StringID
@@ -34,16 +36,13 @@ class StringHasher(BaseClass):
         """
         ...
 
-    @overload
-    def getID(self, txt: str, base64: bool = False, /) -> Any: ...
-    @overload
-    def getID(self, id: int, base64: bool = False, /) -> Any: ...
     @constmethod
     def isSame(self, other: "StringHasher", /) -> bool:
         """
         Check if two hasher are the same
         """
         ...
+
     Count: Final[int] = 0
     """Return count of used hashes"""
 

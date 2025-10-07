@@ -54,6 +54,10 @@ class Quantity(PyObjectBase):
     def __init__(self, string: str) -> None: ...
     # fmt: on
 
+    @overload
+    def toStr(self, /) -> str: ...
+    @overload
+    def toStr(self, decimals: int, /) -> str: ...
     @constmethod
     def toStr(self, decimals: int = ..., /) -> str:
         """
@@ -64,10 +68,6 @@ class Quantity(PyObjectBase):
         """
         ...
 
-    @overload
-    def toStr(self, /) -> str: ...
-    @overload
-    def toStr(self, decimals: int, /) -> str: ...
     @constmethod
     def getUserPreferred(self) -> Tuple["Quantity", str]:
         """
@@ -97,6 +97,10 @@ class Quantity(PyObjectBase):
         """
         ...
 
+    @overload
+    def __round__(self, /) -> int: ...
+    @overload
+    def __round__(self, ndigits: int, /) -> float: ...
     @constmethod
     def __round__(self, ndigits: int = ..., /) -> Union[int, float]:
         """
@@ -105,7 +109,3 @@ class Quantity(PyObjectBase):
         """
         ...
 
-    @overload
-    def __round__(self, /) -> int: ...
-    @overload
-    def __round__(self, ndigits: int, /) -> float: ...
