@@ -7,6 +7,7 @@ from Base.Vector import Vector
 from Geometry import Geometry
 from typing import overload
 
+
 @export(
     PythonName="Part.Point",
     Twin="GeomPoint",
@@ -33,17 +34,24 @@ class Point(Geometry):
     """
 
     @overload
-    def __init__(self) -> None: ...
+    def __init__(self) -> None:
+        ...
+
     @overload
-    def __init__(self, other: "Point") -> None: ...
+    def __init__(self, other: "Point") -> None:
+        ...
+
     @overload
-    def __init__(self, coordinates: Vector) -> None: ...
+    def __init__(self, coordinates: Vector) -> None:
+        ...
+
     @constmethod
     def toShape(self) -> object:
         """
         Create a vertex from this point.
         """
         ...
+
     X: float = ...
     """X component of this point."""
 

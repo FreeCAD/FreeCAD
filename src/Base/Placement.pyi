@@ -9,6 +9,7 @@ from Rotation import Rotation as RotationPy
 from Vector import Vector
 from typing import Sequence, overload
 
+
 @export(
     Constructor=True,
     Delete=True,
@@ -119,7 +120,8 @@ class Placement(PyObjectBase):
     @overload
     def rotate(
         self, center: Sequence[float], axis: Sequence[float], angle: float, *, comp: bool = False
-    ) -> None: ...
+    ) -> None:
+        ...
 
     @overload
     def rotate(self, center: Vector, axis: Vector, angle: float, *, comp: bool = False) -> None:

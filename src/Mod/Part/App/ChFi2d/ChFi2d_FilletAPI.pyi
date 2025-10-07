@@ -7,6 +7,7 @@ from Base.PyObjectBase import PyObjectBase
 from Part.TopoShapeEdgePy import TopoShapeEdge
 from Part.PointPy import Point
 
+
 @export(
     PythonName="Part.ChFi2d.FilletAPI",
     Twin="ChFi2d_FilletAPI",
@@ -43,9 +44,8 @@ class ChFi2d_FilletAPI(PyObjectBase):
         """
         ...
 
-    def result(
-        self, point: Point, solution: int = -1, /
-    ) -> tuple[TopoShapeEdge, TopoShapeEdge, TopoShapeEdge]:
+    def result(self, point: Point, solution: int = -1,
+        /) -> tuple[TopoShapeEdge, TopoShapeEdge, TopoShapeEdge]:
         """
         result(point, solution=-1)
 

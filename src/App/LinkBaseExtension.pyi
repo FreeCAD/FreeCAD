@@ -6,9 +6,8 @@ from Base.Metadata import export
 from DocumentObjectExtension import DocumentObjectExtension
 from typing import Any, Final, List, Tuple, Optional, Union, overload
 
-@export(
-    Include="App/Link.h",
-)
+
+@export(Include="App/Link.h", )
 class LinkBaseExtension(DocumentObjectExtension):
     """
     Link extension base class
@@ -57,11 +56,17 @@ class LinkBaseExtension(DocumentObjectExtension):
         ...
 
     @overload
-    def getLinkPropertyInfo(self, /) -> tuple: ...
+    def getLinkPropertyInfo(self, /) -> tuple:
+        ...
+
     @overload
-    def getLinkPropertyInfo(self, index: int, /) -> tuple: ...
+    def getLinkPropertyInfo(self, index: int, /) -> tuple:
+        ...
+
     @overload
-    def getLinkPropertyInfo(self, name: str, /) -> tuple: ...
+    def getLinkPropertyInfo(self, name: str, /) -> tuple:
+        ...
+
     def getLinkPropertyInfo(self, arg: Any = None, /) -> tuple:
         """
         getLinkPropertyInfo(): return a tuple of (name,type,doc) for all supported properties.

@@ -6,6 +6,7 @@ from Base.Metadata import export, no_args, sequence_protocol
 from Base.BaseClass import BaseClass
 from typing import Final
 
+
 @export(
     Include="Mod/Material/App/Materials.h",
     Namespace="Materials",

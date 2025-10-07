@@ -6,6 +6,7 @@ from Base.Metadata import export
 from Base.BaseClass import BaseClass
 from typing import Final, List, Dict
 
+
 @export(Include="Mod/Material/App/ModelManager.h", Namespace="Materials", Constructor=True)
 class ModelManager(BaseClass):
     """
@@ -24,13 +25,13 @@ class ModelManager(BaseClass):
     Models: Final[Dict] = ...
     """List of model libraries."""
 
-    def getModel(self) -> ...:
+    def getModel(self) ->...:
         """
         Get a model object by specifying its UUID
         """
         ...
 
-    def getModelByPath(self) -> ...:
+    def getModelByPath(self) ->...:
         """
         Get a model object by specifying its path
         """

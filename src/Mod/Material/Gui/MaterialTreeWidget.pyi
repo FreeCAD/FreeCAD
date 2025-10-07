@@ -7,6 +7,7 @@ from Metadata import (
 )
 from Base.BaseClass import BaseClass
 
+
 @export(
     Twin="MaterialTreeWidget",
     TwinPointer="MaterialTreeWidget",

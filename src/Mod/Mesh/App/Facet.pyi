@@ -7,6 +7,7 @@ from typing import Any, Final
 from Base.Metadata import export
 from Base.PyObjectBase import PyObjectBase
 
+
 @export(
     Include="Mod/Mesh/App/Facet.h",
     Namespace="Mesh",
@@ -56,6 +57,7 @@ class Facet(PyObjectBase):
         """getEdge(int) -> Edge
         Returns the edge of the facet."""
         ...
+
     Index: Final[int]
     """The index of this facet in the MeshObject"""
 

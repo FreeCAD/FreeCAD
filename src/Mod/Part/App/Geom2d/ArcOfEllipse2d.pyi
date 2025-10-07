@@ -6,6 +6,7 @@ from Metadata import export
 from typing import Final, overload
 from Part import ArcOfConic2d
 
+
 @export(
     PythonName="Part.Geom2d.ArcOfEllipse2d",
     Twin="Geom2dArcOfEllipse",
@@ -31,4 +32,5 @@ class ArcOfEllipse2d(ArcOfConic2d):
     """The internal ellipse representation"""
 
     @overload
-    def __init__(self) -> None: ...
+    def __init__(self) -> None:
+        ...

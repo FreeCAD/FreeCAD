@@ -9,6 +9,7 @@ from DocumentObjectGroup import DocumentObjectGroup
 from ExtensionContainer import ExtensionContainer
 from typing import Any, Final, List, Optional, Union, Tuple
 
+
 class DocumentObject(ExtensionContainer):
     """
     This is the father of all classes handled by the document

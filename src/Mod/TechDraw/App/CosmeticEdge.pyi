@@ -10,6 +10,7 @@ from Base import Vector
 
 PyCXXVector: TypeAlias = Vector  # Dirty trick to workaround current generator limitations
 
+
 @export(
     Include="Mod/TechDraw/App/Cosmetic.h",
     Namespace="TechDraw",

@@ -6,6 +6,7 @@ from Base.Metadata import export, constmethod
 from Base.BaseClass import BaseClass
 from typing import Any, Final, overload, Dict
 
+
 @export(
     Constructor=True,
     Reference=True,
@@ -19,9 +20,13 @@ class StringHasher(BaseClass):
     """
 
     @overload
-    def getID(self, txt: str, base64: bool = False, /) -> Any: ...
+    def getID(self, txt: str, base64: bool = False, /) -> Any:
+        ...
+
     @overload
-    def getID(self, id: int, base64: bool = False, /) -> Any: ...
+    def getID(self, id: int, base64: bool = False, /) -> Any:
+        ...
+
     def getID(self, arg: Any, base64: bool = False, /) -> Any:
         """
         getID(txt|id, base64=False) -> StringID

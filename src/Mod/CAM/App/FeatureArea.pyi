@@ -6,6 +6,7 @@ from Base.Metadata import export
 
 from App.DocumentObject import DocumentObject
 
+
 @export(
     Include="Mod/CAM/App/FeatureArea.h",
     Namespace="Path",
@@ -28,5 +29,6 @@ class FeatureArea(DocumentObject):
         Same usage as Path.Area.setParams(). This function stores the parameters in the properties.
         """
         ...
+
     WorkPlane: Any
     """The current workplane. If no plane is set, it is derived from the added shapes."""

@@ -5,6 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
 
+
 @export(
     PythonName="Part.ShapeFix.Wireframe",
     Twin="ShapeFix_Wireframe",
@@ -51,4 +52,5 @@ class ShapeFix_Wireframe(ShapeFix_Root):
         """
         ...
 
-    def shape(self) -> None: ...
+    def shape(self) -> None:
+        ...

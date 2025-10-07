@@ -4,6 +4,7 @@ from Base.Metadata import export
 from Base.BaseClass import BaseClass
 from typing import Any, Final, Tuple
 
+
 @export(
     Include="Gui/Selection/SelectionObject.h",
     Delete=True,
@@ -31,6 +32,7 @@ class SelectionObject(BaseClass):
         isObjectTypeOf(type) -> Bool
         """
         ...
+
     ObjectName: Final[str] = ""
     """Name of the selected object"""
 

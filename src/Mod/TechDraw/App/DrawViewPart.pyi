@@ -7,6 +7,7 @@ from typing import Any
 from Base.Metadata import export
 from TechDraw.rawView import DrawView
 
+
 @export(
     Include="Mod/TechDraw/App/DrawViewPart.h",
     Namespace="TechDraw",

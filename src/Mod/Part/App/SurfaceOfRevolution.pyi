@@ -9,6 +9,7 @@ from GeometrySurface import GeometrySurface
 from GeometryCurve import GeometryCurve
 from typing import overload
 
+
 @export(
     Twin="GeomSurfaceOfRevolution",
     TwinPointer="GeomSurfaceOfRevolution",
@@ -35,6 +36,5 @@ class SurfaceOfRevolution(GeometrySurface):
     """Sets or gets the basic curve."""
 
     @overload
-    def __init__(
-        self, location: Placement, direction: Vector, basis_curve: GeometryCurve
-    ) -> None: ...
+    def __init__(self, location: Placement, direction: Vector, basis_curve: GeometryCurve) -> None:
+        ...

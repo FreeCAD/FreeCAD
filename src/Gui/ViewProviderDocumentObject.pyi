@@ -5,6 +5,7 @@ from __future__ import annotations
 from ViewProvider import ViewProvider
 from typing import Any, Final
 
+
 class ViewProviderDocumentObject(ViewProvider):
     """
     This is the ViewProvider base class
@@ -18,6 +19,7 @@ class ViewProviderDocumentObject(ViewProvider):
         Update the view representation of the object
         """
         ...
+
     Object: Any = ...
     """Set/Get the associated data object"""
 

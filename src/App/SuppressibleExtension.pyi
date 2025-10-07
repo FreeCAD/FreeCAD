@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from DocumentObjectExtension import DocumentObjectExtension
 
+
 class SuppressibleExtension(DocumentObjectExtension):
     """
     Author: Florian Foinant-Willig (flachyjoe@users.sourceforge.net)

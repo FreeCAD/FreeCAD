@@ -7,6 +7,7 @@ from Part.GeometrySurface import GeometrySurface
 from Base.Vector import Vector
 from typing import Final
 
+
 @export(
     Name="ToroidPy",
     Namespace="Part",

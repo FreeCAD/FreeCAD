@@ -7,6 +7,7 @@ from Base.Vector import Vector
 from GeometryCurve import GeometryCurve
 from typing import overload
 
+
 @export(
     PythonName="Part.Line",
     Twin="GeomLine",
@@ -39,8 +40,13 @@ class Line(GeometryCurve):
     """Returns the direction of this line."""
 
     @overload
-    def __init__(self) -> None: ...
+    def __init__(self) -> None:
+        ...
+
     @overload
-    def __init__(self, line: "Line") -> None: ...
+    def __init__(self, line: "Line") -> None:
+        ...
+
     @overload
-    def __init__(self, point1: Vector, point2: Vector) -> None: ...
+    def __init__(self, point1: Vector, point2: Vector) -> None:
+        ...

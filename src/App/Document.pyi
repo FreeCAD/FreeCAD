@@ -6,6 +6,7 @@ from PropertyContainer import PropertyContainer
 from DocumentObject import DocumentObject
 from typing import Final, Sequence
 
+
 class Document(PropertyContainer):
     """
     This is the Document class.

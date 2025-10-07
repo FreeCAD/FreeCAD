@@ -6,15 +6,14 @@ from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from typing import Any, overload
 
+
 @export(
     Constructor=True,
     Delete=True,
 )
-@class_declarations(
-    """public:
+@class_declarations("""public:
     static Base::Color toColor(PyObject* value);
-        """
-)
+        """)
 class Material(PyObjectBase):
     """
     App.Material class.

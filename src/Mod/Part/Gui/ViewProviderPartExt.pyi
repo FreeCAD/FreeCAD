@@ -5,6 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export
 from Gui.ViewProviderGeometryObject import ViewProviderGeometryObject
 
+
 @export(
     Include="Mod/Part/Gui/ViewProviderExt.h",
     Namespace="PartGui",

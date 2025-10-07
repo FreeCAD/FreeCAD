@@ -8,6 +8,7 @@ from Vector import Vector
 from Matrix import Matrix
 from typing import overload, Tuple, List, Final
 
+
 @export(
     Constructor=True,
     Delete=True,

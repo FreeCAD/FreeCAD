@@ -6,6 +6,7 @@ from Base.Metadata import export
 from ModelProperty import ModelProperty
 from typing import Final
 
+
 @export(
     Include="Mod/Material/App/Materials.h",
     Namespace="Materials",

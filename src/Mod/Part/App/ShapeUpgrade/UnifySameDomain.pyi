@@ -5,6 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export, constmethod
 from Base.PyObjectBase import PyObjectBase
 
+
 @export(
     PythonName="Part.ShapeUpgrade.UnifySameDomain",
     Include="ShapeUpgrade_UnifySameDomain.hxx",

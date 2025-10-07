@@ -6,6 +6,7 @@ from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
 from Part.TopoShapePy import TopoShape
 
+
 @export(
     PythonName="Part.HLRBRep_PolyAlgo",
     Twin="HLRBRep_PolyAlgo",
@@ -174,6 +175,7 @@ class HLRBRep_PolyAlgo(PyObjectBase):
         Make a shape with the internal outlines in each face of shape S.
         """
         ...
+
     TolAngular: float = ...
 
     TolCoef: float = ...

@@ -8,6 +8,7 @@ from Part.HLRBRep_PolyAlgo import HLRBRep_PolyAlgo
 from Part.TopoShapePy import TopoShape
 from typing import Optional
 
+
 @export(
     PythonName="Part.PolyHLRToShapePy",
     Twin="HLRBRep_PolyHLRToShape",
