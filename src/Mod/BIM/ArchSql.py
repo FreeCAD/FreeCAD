@@ -721,6 +721,8 @@ class SelectStatement:
         """Generates a unique, hashable signature for any extractor object."""
         if isinstance(extractor, ReferenceExtractor):
             return extractor.value
+        elif isinstance(extractor, StaticExtractor):
+            return f"'{extractor.get_value(None)}'"
         elif isinstance(extractor, FunctionBase):
             # Recursively build a signature for functions, e.g., "LOWER(Label)"
             arg_sigs = []
