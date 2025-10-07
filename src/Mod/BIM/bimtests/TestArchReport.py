@@ -1604,3 +1604,43 @@ class TestArchReport(TestArchBase.TestArchBase):
         # causing this assertion to fail as expected.
         self.assertEqual(len(resulting_objects), 1, "The pipeline should have resulted in exactly one child object.")
         self.assertEqual(resulting_objects[0].Name, wall.Name, "The object found via the pipeline is incorrect.")
+
+    def test_group_by_with_function_and_literal_argument(self):
+        """
+        Tests that a GROUP BY clause with a function that takes a literal
+        string argument (e.g., CONVERT(Area, 'm^2')) does not crash the
+        validation engine. This is the non-regression test for the TypeError
+        found in the _get_extractor_signature method.
+        """
+        # ARRANGE: Create a single object with a Quantity property.
+        # A 1000x1000 box gives an area of 1,000,000 mm^2, which is 1 m^2.
+        base_box = self.doc.addObject("Part::Box", "BaseBoxForConvertTest")
+        base_box.Length = 1000
+        base_box.Width = 1000
+        space = Arch.makeSpace(base_box, name="SpaceForGroupByConvertTest")
+        self.doc.recompute()
+
+        # ACT: Construct the query that was causing the crash.
+        query = """
+            SELECT
+                Label,
+                CONVERT(Area, 'm^2')
+            FROM
+                document
+            WHERE
+                Label = 'SpaceForGroupByConvertTest'
+            GROUP BY
+                Label, CONVERT(Area, 'm^2')
+        """
+
+        # ASSERT: The query should now execute without any exceptions.
+        headers, results_data = Arch.select(query)
+
+        # Assertions for the passing test
+        self.assertEqual(len(results_data), 1, "The query should return exactly one row.")
+        self.assertEqual(headers, ['Label', "CONVERT(Area, 'm^2')"])
+
+        # Check the content of the result
+        self.assertEqual(results_data[0][0], space.Label)
+        # Correctly call assertAlmostEqual with the message as a keyword argument
+        self.assertAlmostEqual(results_data[0][1], 1.0, msg="The converted area should be 1.0 m^2.")
